@@ -498,7 +498,7 @@
               "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},
               "y": {"scale": "concat_1_y", "field": "weather"},
-              "height": {"scale": "concat_1_y", "band": 1}
+              "height": {"signal": "max(0.25, bandwidth('concat_1_y'))"}
             }
           }
         }

@@ -92,7 +92,7 @@
               "x": {"scale": "concat_0_x", "field": "__count"},
               "x2": {"scale": "concat_0_x", "value": 0},
               "y": {"scale": "concat_0_y", "field": "Name"},
-              "height": {"scale": "concat_0_y", "band": 1}
+              "height": {"signal": "max(0.25, bandwidth('concat_0_y'))"}
             }
           }
         }
@@ -362,7 +362,7 @@
               "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},
               "y": {"scale": "concat_1_y", "field": "Name"},
-              "height": {"scale": "concat_1_y", "band": 1}
+              "height": {"signal": "max(0.25, bandwidth('concat_1_y'))"}
             }
           }
         },

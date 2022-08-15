@@ -190,6 +190,15 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
   timeFormat?: string;
 
   /**
+   * [Custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type)
+   * for `config.timeFormat`.
+   *
+   * __Default value:__ `undefined` -- This is equilvalent to call D3-time-format, which is exposed as [`timeFormat` in Vega-Expression](https://vega.github.io/vega/docs/expressions/#timeFormat).
+   * __Note:__ You must also set `customFormatTypes` to `true` and there must *not* be a `timeUnit` defined to use this feature.
+   */
+  timeFormatType?: string;
+
+  /**
    * Allow the `formatType` property for text marks and guides to accept a custom formatter function [registered as a Vega expression](https://vega.github.io/vega-lite/usage/compile.html#format-type).
    */
   customFormatTypes?: boolean;

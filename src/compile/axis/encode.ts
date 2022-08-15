@@ -1,5 +1,5 @@
 import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel';
-import {channelDefType, getFieldOrDatumDef, isPositionFieldOrDatumDef} from '../../channeldef';
+import {channelDefType, getFieldOrDatumDef, isFieldDef, isPositionFieldOrDatumDef} from '../../channeldef';
 import {formatCustomType, isCustomFormatType} from '../format';
 import {UnitModel} from '../unit';
 
@@ -22,34 +22,48 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
       }),
       ...specifiedLabelsSpec
     };
-  } else if (
-    format === undefined &&
-    formatType === undefined &&
-    channelDefType(fieldOrDatumDef) === 'quantitative' &&
-    config.customFormatTypes
-  ) {
+  } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
+    if (channelDefType(fieldOrDatumDef) === 'quantitative') {
+      if (
+        isPositionFieldOrDatumDef(fieldOrDatumDef) &&
+        fieldOrDatumDef.stack === 'normalize' &&
+        config.normalizedNumberFormatType
+      ) {
+        return {
+          text: formatCustomType({
+            fieldOrDatumDef,
+            field: 'datum.value',
+            format: config.normalizedNumberFormat,
+            formatType: config.normalizedNumberFormatType,
+            config
+          }),
+          ...specifiedLabelsSpec
+        };
+      } else if (config.numberFormatType) {
+        return {
+          text: formatCustomType({
+            fieldOrDatumDef,
+            field: 'datum.value',
+            format: config.numberFormat,
+            formatType: config.numberFormatType,
+            config
+          }),
+          ...specifiedLabelsSpec
+        };
+      }
+    }
     if (
-      isPositionFieldOrDatumDef(fieldOrDatumDef) &&
-      fieldOrDatumDef.stack === 'normalize' &&
-      config.normalizedNumberFormatType
+      channelDefType(fieldOrDatumDef) === 'temporal' &&
+      config.timeFormatType &&
+      isFieldDef(fieldOrDatumDef) &&
+      !fieldOrDatumDef.timeUnit
     ) {
       return {
         text: formatCustomType({
           fieldOrDatumDef,
           field: 'datum.value',
-          format: config.normalizedNumberFormat,
-          formatType: config.normalizedNumberFormatType,
-          config
-        }),
-        ...specifiedLabelsSpec
-      };
-    } else if (config.numberFormatType) {
-      return {
-        text: formatCustomType({
-          fieldOrDatumDef,
-          field: 'datum.value',
-          format: config.numberFormat,
-          formatType: config.numberFormatType,
+          format: config.timeFormat,
+          formatType: config.timeFormatType,
           config
         }),
         ...specifiedLabelsSpec

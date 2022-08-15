@@ -53,7 +53,7 @@
           "x": {"scale": "x", "field": "mean_IMDB Rating"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Major Genre"},
-          "height": {"scale": "y", "band": 1}
+          "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }
     },

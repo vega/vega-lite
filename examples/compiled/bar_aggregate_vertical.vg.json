@@ -45,7 +45,7 @@
             "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Mean of Acceleration: \" + (format(datum[\"mean_Acceleration\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Cylinders"},
-          "width": {"scale": "x", "band": 1},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "mean_Acceleration"},
           "y2": {"scale": "y", "value": 0}
         }

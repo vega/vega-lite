@@ -317,7 +317,7 @@
                 "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "Major Genre"},
-              "width": {"scale": "concat_1_x", "band": 1},
+              "width": {"signal": "max(0.25, bandwidth('concat_1_x'))"},
               "y": {"scale": "concat_1_y", "field": "__count"},
               "y2": {"scale": "concat_1_y", "value": 0}
             }

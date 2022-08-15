@@ -4,7 +4,8 @@ import {
   guideFormat,
   guideFormatType,
   numberFormat,
-  timeFormatExpression
+  timeFormatExpression,
+  timeFormat
 } from '../../src/compile/format';
 import {defaultConfig} from '../../src/config';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
@@ -13,13 +14,11 @@ describe('Format', () => {
   describe('timeFormatExpression()', () => {
     it('should get the right time expression for month', () => {
       const fieldDef = {timeUnit: 'month', field: 'a', type: TEMPORAL} as const;
-      const expression = timeFormatExpression(
-        vgField(fieldDef, {expr: 'datum'}),
-        'month',
-        undefined,
-        defaultConfig.timeFormat,
-        false
-      );
+      const expression = timeFormatExpression({
+        field: vgField(fieldDef, {expr: 'datum'}),
+        timeUnit: 'month',
+        rawTimeFormat: defaultConfig.timeFormat
+      });
       expect(expression).toBe(
         'timeFormat(datum["month_a"], timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
       );
@@ -27,38 +26,33 @@ describe('Format', () => {
 
     it('should get the right time expression for yearmonth with custom format', () => {
       const fieldDef = {timeUnit: 'yearmonth', field: 'a', type: TEMPORAL} as const;
-      const expression = timeFormatExpression(
-        vgField(fieldDef, {expr: 'datum'}),
-        'month',
-        '%Y',
-        defaultConfig.timeFormat,
-        false
-      );
+      const expression = timeFormatExpression({
+        field: vgField(fieldDef, {expr: 'datum'}),
+        timeUnit: 'month',
+        format: '%Y',
+        rawTimeFormat: defaultConfig.timeFormat
+      });
       expect(expression).toBe(`timeFormat(datum["yearmonth_a"], '%Y')`);
     });
 
     it('should get the right time expression for quarter', () => {
       const fieldDef = {timeUnit: 'quarter', field: 'a', type: TEMPORAL} as const;
-      const expression = timeFormatExpression(
-        vgField(fieldDef, {expr: 'datum'}),
-        'quarter',
-        undefined,
-        defaultConfig.timeFormat,
-        false
-      );
+      const expression = timeFormatExpression({
+        field: vgField(fieldDef, {expr: 'datum'}),
+        timeUnit: 'quarter',
+        rawTimeFormat: defaultConfig.timeFormat
+      });
       expect(expression).toBe(
         'timeFormat(datum["quarter_a"], timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
       );
     });
 
     it('should get the right time expression for yearquarter', () => {
-      const expression = timeFormatExpression(
-        'datum["data"]',
-        'yearquarter',
-        undefined,
-        defaultConfig.timeFormat,
-        false
-      );
+      const expression = timeFormatExpression({
+        field: 'datum["data"]',
+        timeUnit: 'yearquarter',
+        rawTimeFormat: defaultConfig.timeFormat
+      });
       expect(expression).toBe(
         'timeFormat(datum["data"], timeUnitSpecifier(["year","quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
       );
@@ -66,14 +60,59 @@ describe('Format', () => {
 
     it('should get the right time expression for yearmonth with custom format and utc scale type', () => {
       const fieldDef = {timeUnit: 'yearmonth', field: 'a', type: TEMPORAL} as const;
-      const expression = timeFormatExpression(
-        vgField(fieldDef, {expr: 'datum'}),
-        'month',
-        '%Y',
-        defaultConfig.timeFormat,
-        true
-      );
+      const expression = timeFormatExpression({
+        field: vgField(fieldDef, {expr: 'datum'}),
+        timeUnit: 'month',
+        format: '%Y',
+        rawTimeFormat: defaultConfig.timeFormat,
+        isUTCScale: true
+      });
       expect(expression).toBe(`utcFormat(datum["yearmonth_a"], '%Y')`);
+    });
+
+    it('should get the right time expression for with a custom timeFormatType', () => {
+      const fieldDef = {field: 'a', type: TEMPORAL} as const;
+      const expression = timeFormatExpression({
+        field: vgField(fieldDef, {expr: 'datum'}),
+        format: '%Y',
+        formatType: 'customFormat'
+      });
+      expect(expression).toBe(`customFormat(datum["a"], '%Y')`);
+    });
+
+    it('should prefer timeUnit over timeFormatType', () => {
+      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: 'date'} as const;
+      const expression = timeFormatExpression({
+        field: vgField(fieldDef, {expr: 'datum'}),
+        format: '%Y',
+        timeUnit: 'date',
+        formatType: 'customFormat'
+      });
+      expect(expression).toBe(`timeFormat(datum["date_a"], '%Y')`);
+    });
+  });
+
+  describe('timeFormat()', () => {
+    it('returns the specifiedFormat if it exists', () => {
+      const formatted = timeFormat({specifiedFormat: 'abc', config: {}});
+      expect(formatted).toBe('abc');
+    });
+
+    it('returns the the formatted timeUnitExpression', () => {
+      const formatted = timeFormat({timeUnit: 'date', config: {}});
+      expect(formatted).toEqual({
+        signal: 'timeUnitSpecifier(["date"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+      });
+    });
+
+    it('omits the timeFormat when omitTimeFormatConfig and no specifiedFormat', () => {
+      const formatted = timeFormat({config: {timeFormat: '%y'}, omitTimeFormatConfig: true});
+      expect(formatted).toBeUndefined();
+    });
+
+    it('returns the timeFormat when !omitTimeFormatConfig and no specifiedFormat', () => {
+      const formatted = timeFormat({config: {timeFormat: '%y'}, omitTimeFormatConfig: false});
+      expect(formatted).toBe('%y');
     });
   });
 
@@ -189,6 +228,20 @@ describe('Format', () => {
       });
     });
 
+    it('should use a custom formatter datumDef if config.timeFormatType is present', () => {
+      expect(
+        formatSignalRef({
+          fieldOrDatumDef: {field: 'date', type: 'temporal'},
+          format: undefined,
+          formatType: undefined,
+          expr: 'parent',
+          config: {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true}
+        })
+      ).toEqual({
+        signal: 'customFormatter(parent["date"], "abc")'
+      });
+    });
+
     it('should use a custom formatter datumDef if config.normalizedNumberFormatType is present and stack is normalized', () => {
       expect(
         formatSignalRef({
@@ -235,6 +288,7 @@ describe('Format', () => {
       const format = guideFormat({datum: 200, type: 'quantitative'}, 'quantitative', 'abc', 'custom', {}, false);
       expect(format).toBeUndefined();
     });
+
     it('returns undefined for custom formatType in the config', () => {
       const format = guideFormat(
         {datum: 200, type: 'quantitative'},
@@ -257,6 +311,32 @@ describe('Format', () => {
         false
       );
       expect(format).toBeUndefined();
+    });
+
+    it('returns undefined for a field if custom timeFormatType is in the config', () => {
+      const format = guideFormat(
+        {datum: 200, type: 'temporal'},
+        'temporal',
+        undefined,
+        undefined,
+        {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true},
+        false
+      );
+      expect(format).toBeUndefined();
+    });
+
+    it('Prefers timeUnit to timeFormatType', () => {
+      const format = guideFormat(
+        {field: 'x', type: 'temporal', timeUnit: 'hours'},
+        'temporal',
+        undefined,
+        undefined,
+        {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true},
+        false
+      );
+      expect(format).toEqual({
+        signal: 'timeUnitSpecifier(["hours"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+      });
     });
 
     it('returns format as normalizedNumberFormatType it is not in the config', () => {

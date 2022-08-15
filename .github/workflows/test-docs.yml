@@ -1,0 +1,31 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'site/**'
+      - 'yarn.lock'
+      - '**prettier**'
+
+jobs:
+  build-site:
+    name: Build Site
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Lint
+        run: yarn prettierbase --check
+
+      - name: Build
+        run: yarn build:site
