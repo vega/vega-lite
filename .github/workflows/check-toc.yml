@@ -2,7 +2,8 @@ name: Check
 
 on:
   workflow_dispatch:
-  pull_request_target:
+    workflows: ['Test']
+  pull_request:
     paths:
       - 'site/**'
       - 'scripts/**'
