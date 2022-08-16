@@ -417,7 +417,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   xReverse?: boolean | ES;
 
   /**
-   * Override the default `scale.zero` for [`continuous`](https://vega.github.io/vega-lite/docs/scale.html#continuous) scales except for (1) x/y-scales of non-ranged bar or area charts and (2) size scales.
+   * Default `scale.zero` for [`continuous`](https://vega.github.io/vega-lite/docs/scale.html#continuous) scales except for (1) x/y-scales of non-ranged bar or area charts and (2) size scales.
    *
    * __Default value:__ `true`
    *

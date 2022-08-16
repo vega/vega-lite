@@ -330,7 +330,7 @@ describe('compile/scale', () => {
       ).toBe(configZero);
     });
 
-    it(`should return true for x/y scales of the non-ranged are/bar charts regardless to config`, () => {
+    it(`should return true for x/y scales of the non-ranged area/bar charts regardless to config`, () => {
       for (const mark of [BAR, AREA]) {
         for (const channel of ['x', 'y'] as const) {
           expect(
