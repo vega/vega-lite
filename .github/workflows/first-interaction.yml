@@ -3,8 +3,12 @@ name: 'First Interaction'
 on:
   pull_request:
 
-steps:
-  - uses: actions/first-interaction@v1
-    with:
-      repo-token: ${{ secrets.GITHUB_TOKEN }}
-      pr-message: 'Welcome to Vega. Since this is your first contribution, please make sure to read the [contributing guide](https://github.com/vega/vega-lite/blob/next/CONTRIBUTING.md).'
+jobs:
+  first-interaction:
+    name: First Interaction
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          pr-message: 'Welcome to Vega. Since this is your first contribution, please make sure to read the [contributing guide](https://github.com/vega/vega-lite/blob/next/CONTRIBUTING.md).'
