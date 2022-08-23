@@ -4,12 +4,7 @@
   "height": 300,
   "params": [
     {
-      "name": "rotate0",
-      "value": 0,
-      "bind": {"input": "range", "min": -90, "max": 90, "step": 1}
-    },
-    {
-      "name": "rotate1",
+      "name": "rotate",
       "value": 0,
       "bind": {"input": "range", "min": -90, "max": 90, "step": 1}
     },
@@ -25,7 +20,7 @@
       "mark": {"type": "geoshape", "fill": "aliceblue"},
       "projection": {
         "type": "orthographic",
-        "rotate": {"expr": "[rotate0, rotate1, 0]"}
+        "rotate": {"expr": "[rotate, 0, 0]"}
       }
     },
     {
@@ -37,7 +32,7 @@
       "mark": {"type": "geoshape", "fill": "mintcream", "stroke": "black"},
       "projection": {
         "type": "orthographic",
-        "rotate": {"expr": "[rotate0, rotate1, 0]"}
+        "rotate": {"expr": "[rotate, 0, 0]"}
       }
     },
     {
@@ -60,19 +55,23 @@
             "range": [0, {"expr": "pow(earthquakeSize, 3)"}]
           }
         },
-        "tooltip": [{"field": "magnitude"}]
+        "tooltip": [
+          {"field": "magnitude"},
+          {"field": "longitude"},
+          {"field": "latitude"}
+        ]
       },
       "transform": [
         {"calculate": "datum.geometry.coordinates[0]", "as": "longitude"},
         {"calculate": "datum.geometry.coordinates[1]", "as": "latitude"},
         {
-          "filter": "(rotate0 * -1) - 90 < datum.longitude && datum.longitude < (rotate0 * -1) + 90 && (rotate1 * -1) - 90 < datum.latitude && datum.latitude < (rotate1 * -1) + 90"
+          "filter": "(rotate * -1) - 90 < datum.longitude && datum.longitude < (rotate * -1) + 90"
         },
         {"calculate": "datum.properties.mag", "as": "magnitude"}
       ],
       "projection": {
         "type": "orthographic",
-        "rotate": {"expr": "[rotate0, rotate1, 0]"}
+        "rotate": {"expr": "[rotate, 0, 0]"}
       }
     }
   ]

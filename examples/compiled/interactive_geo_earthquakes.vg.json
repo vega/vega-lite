@@ -28,7 +28,7 @@
         },
         {
           "type": "filter",
-          "expr": "(rotate0 * -1) - 90 < datum.longitude && datum.longitude < (rotate0 * -1) + 90 && (rotate1 * -1) - 90 < datum.latitude && datum.latitude < (rotate1 * -1) + 90"
+          "expr": "(rotate * -1) - 90 < datum.longitude && datum.longitude < (rotate * -1) + 90"
         },
         {"type": "formula", "expr": "datum.properties.mag", "as": "magnitude"},
         {
@@ -55,17 +55,12 @@
       "size": {"signal": "[width, height]"},
       "fit": {"signal": "[data('source_0'), data('world'), layer_2_geojson_0]"},
       "type": "orthographic",
-      "rotate": {"signal": "[rotate0, rotate1, 0]"}
+      "rotate": {"signal": "[rotate, 0, 0]"}
     }
   ],
   "signals": [
     {
-      "name": "rotate0",
-      "value": 0,
-      "bind": {"input": "range", "min": -90, "max": 90, "step": 1}
-    },
-    {
-      "name": "rotate1",
+      "name": "rotate",
       "value": 0,
       "bind": {"input": "range", "min": -90, "max": 90, "step": 1}
     },
@@ -113,7 +108,7 @@
           "opacity": {"value": 0.25},
           "fill": {"value": "red"},
           "tooltip": {
-            "signal": "{\"magnitude\": isValid(datum[\"magnitude\"]) ? datum[\"magnitude\"] : \"\"+datum[\"magnitude\"]}"
+            "signal": "{\"magnitude\": isValid(datum[\"magnitude\"]) ? datum[\"magnitude\"] : \"\"+datum[\"magnitude\"], \"longitude\": isValid(datum[\"longitude\"]) ? datum[\"longitude\"] : \"\"+datum[\"longitude\"], \"latitude\": isValid(datum[\"latitude\"]) ? datum[\"latitude\"] : \"\"+datum[\"latitude\"]}"
           },
           "ariaRoleDescription": {"value": "circle"},
           "description": {
