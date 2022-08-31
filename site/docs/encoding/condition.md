@@ -30,7 +30,7 @@ permalink: /docs/condition.html
 }
 ```
 
-For [mark property channels](encoding.html#mark-prop) as well as [text and tooltip channels](encoding.html#text), the `condition` property of their channel definitions can be used to determine encoding rules based on whether data values satisfy a [parameter](parameter.html) (e.g. fall withing a [selection parameter](parameter.html#select)) or satisfy a `test` predicate.
+For [mark property channels](encoding.html#mark-prop) as well as [text and tooltip channels](encoding.html#text), the `condition` property of their channel definitions can be used to determine encoding rules based on whether data values satisfy a [parameter](parameter.html) (e.g. fall within a [selection parameter](parameter.html#select)) or satisfy a `test` predicate.
 
 {:#condition}
 
