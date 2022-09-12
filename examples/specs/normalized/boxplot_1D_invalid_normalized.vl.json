@@ -57,7 +57,7 @@
             {
               "mark": {
                 "type": "rule",
-                "invalid": null,
+                "invalid": "filter",
                 "aria": false,
                 "style": "boxplot-rule"
               },
@@ -91,7 +91,7 @@
             {
               "mark": {
                 "type": "rule",
-                "invalid": null,
+                "invalid": "filter",
                 "aria": false,
                 "style": "boxplot-rule"
               },
@@ -145,7 +145,7 @@
             "type": "bar",
             "size": 14,
             "orient": "vertical",
-            "invalid": null,
+            "invalid": "filter",
             "ariaRoleDescription": "box",
             "style": "boxplot-box"
           },
@@ -183,7 +183,7 @@
           "mark": {
             "color": "white",
             "type": "tick",
-            "invalid": null,
+            "invalid": "filter",
             "size": 14,
             "orient": "horizontal",
             "aria": false,
