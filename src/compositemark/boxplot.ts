@@ -4,7 +4,7 @@ import {getMarkPropOrConfig} from '../compile/common';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';
 import * as log from '../log';
-import {isMarkDef, MarkDef, MarkInvalid} from '../mark';
+import {isMarkDef, MarkDef, MarkInvalidMixins} from '../mark';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
@@ -47,7 +47,7 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
 
 export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
   BoxPlotConfig &
-  MarkInvalid & {
+  MarkInvalidMixins & {
     /**
      * Type of the mark. For box plots, this should always be `"boxplot"`.
      * [boxplot](https://vega.github.io/vega-lite/docs/boxplot.html)
@@ -103,7 +103,7 @@ export function normalizeBoxPlot(
     config
   );
 
-  const invalid = markDef.invalid || null; //|| null to respect the existed default behavior
+  const invalid = markDef.invalid;
 
   const boxPlotType = getBoxPlotType(extent);
   const {

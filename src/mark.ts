@@ -75,7 +75,7 @@ export interface TooltipContent {
 /** @hidden */
 export type Hide = 'hide';
 
-export interface MarkInvalid {
+export interface MarkInvalidMixins {
   /**
    * Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`).
    * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
@@ -84,7 +84,7 @@ export interface MarkInvalid {
   invalid?: 'filter' | Hide | null;
 }
 
-export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorMixins<ES>, MarkInvalid {
+export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorMixins<ES>, MarkInvalidMixins {
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
    *
