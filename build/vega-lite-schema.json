@@ -4536,6 +4536,17 @@
           ],
           "description": "The extent of the whiskers. Available options include:\n- `\"min-max\"`: min and max are the lower and upper whiskers respectively.\n- A number representing multiple of the interquartile range. This number will be multiplied by the IQR to determine whisker boundary, which spans from the smallest data to the largest data within the range _[Q1 - k * IQR, Q3 + k * IQR]_ where _Q1_ and _Q3_ are the first and third quartiles while _IQR_ is the interquartile range (_Q3-Q1_).\n\n__Default value:__ `1.5`."
         },
+        "invalid": {
+          "description": "Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`).\n- If set to `\"filter\"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).\n- If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
+          "enum": [
+            "filter",
+            null
+          ],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "median": {
           "anyOf": [
             {
