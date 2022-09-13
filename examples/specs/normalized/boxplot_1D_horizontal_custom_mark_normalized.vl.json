@@ -71,12 +71,7 @@
           ],
           "layer": [
             {
-              "mark": {
-                "type": "rule",
-                "invalid": null,
-                "aria": false,
-                "style": "boxplot-rule"
-              },
+              "mark": {"type": "rule", "aria": false, "style": "boxplot-rule"},
               "encoding": {
                 "x": {
                   "field": "lower_whisker_Body Mass (g)",
@@ -100,12 +95,7 @@
               }
             },
             {
-              "mark": {
-                "type": "rule",
-                "invalid": null,
-                "aria": false,
-                "style": "boxplot-rule"
-              },
+              "mark": {"type": "rule", "aria": false, "style": "boxplot-rule"},
               "encoding": {
                 "x": {
                   "field": "upper_box_Body Mass (g)",
@@ -134,7 +124,6 @@
                 "color": "black",
                 "opacity": 1,
                 "orient": "vertical",
-                "invalid": null,
                 "aria": false,
                 "style": "boxplot-ticks"
               },
@@ -165,7 +154,6 @@
                 "color": "black",
                 "opacity": 1,
                 "orient": "vertical",
-                "invalid": null,
                 "aria": false,
                 "style": "boxplot-ticks"
               },
@@ -225,7 +213,6 @@
             "type": "bar",
             "size": 14,
             "orient": "horizontal",
-            "invalid": null,
             "ariaRoleDescription": "box",
             "style": "boxplot-box"
           },
@@ -270,7 +257,6 @@
           "mark": {
             "color": "red",
             "type": "tick",
-            "invalid": null,
             "size": 14,
             "orient": "vertical",
             "aria": false,

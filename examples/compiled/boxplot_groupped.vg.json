@@ -63,6 +63,26 @@
     },
     {
       "name": "data_3",
+      "source": "data_2",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"lower_whisker_Acceleration\"]) && isFinite(+datum[\"lower_whisker_Acceleration\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "data_2",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"upper_box_Acceleration\"]) && isFinite(+datum[\"upper_box_Acceleration\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_5",
       "source": "source_0",
       "transform": [
         {
@@ -83,6 +103,26 @@
             "min_Acceleration",
             "max_Acceleration"
           ]
+        }
+      ]
+    },
+    {
+      "name": "data_6",
+      "source": "data_5",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"lower_box_Acceleration\"]) && isFinite(+datum[\"lower_box_Acceleration\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_7",
+      "source": "data_5",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mid_box_Acceleration\"]) && isFinite(+datum[\"mid_box_Acceleration\"])"
         }
       ]
     }
@@ -126,7 +166,7 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_2"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -138,20 +178,8 @@
             "field": "Cylinders",
             "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
           },
-          "y": [
-            {
-              "test": "!isValid(datum[\"lower_whisker_Acceleration\"]) || !isFinite(+datum[\"lower_whisker_Acceleration\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "lower_whisker_Acceleration"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"lower_box_Acceleration\"]) || !isFinite(+datum[\"lower_box_Acceleration\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "lower_box_Acceleration"}
-          ]
+          "y": {"scale": "y", "field": "lower_whisker_Acceleration"},
+          "y2": {"scale": "y", "field": "lower_box_Acceleration"}
         }
       }
     },
@@ -160,7 +188,7 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_2"},
+      "from": {"data": "data_4"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -172,20 +200,8 @@
             "field": "Cylinders",
             "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
           },
-          "y": [
-            {
-              "test": "!isValid(datum[\"upper_box_Acceleration\"]) || !isFinite(+datum[\"upper_box_Acceleration\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "upper_box_Acceleration"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"upper_whisker_Acceleration\"]) || !isFinite(+datum[\"upper_whisker_Acceleration\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "upper_whisker_Acceleration"}
-          ]
+          "y": {"scale": "y", "field": "upper_box_Acceleration"},
+          "y2": {"scale": "y", "field": "upper_whisker_Acceleration"}
         }
       }
     },
@@ -193,7 +209,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rect",
       "style": ["bar", "boxplot-box"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_6"},
       "encode": {
         "update": {
           "ariaRoleDescription": {"value": "box"},
@@ -210,20 +226,8 @@
             "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
           },
           "width": {"value": 14},
-          "y": [
-            {
-              "test": "!isValid(datum[\"lower_box_Acceleration\"]) || !isFinite(+datum[\"lower_box_Acceleration\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "lower_box_Acceleration"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"upper_box_Acceleration\"]) || !isFinite(+datum[\"upper_box_Acceleration\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "upper_box_Acceleration"}
-          ]
+          "y": {"scale": "y", "field": "lower_box_Acceleration"},
+          "y2": {"scale": "y", "field": "upper_box_Acceleration"}
         }
       }
     },
@@ -232,7 +236,7 @@
       "type": "rect",
       "style": ["tick", "boxplot-median"],
       "aria": false,
-      "from": {"data": "data_3"},
+      "from": {"data": "data_7"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -245,13 +249,7 @@
             "field": "Cylinders",
             "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
           },
-          "yc": [
-            {
-              "test": "!isValid(datum[\"mid_box_Acceleration\"]) || !isFinite(+datum[\"mid_box_Acceleration\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "mid_box_Acceleration"}
-          ],
+          "yc": {"scale": "y", "field": "mid_box_Acceleration"},
           "width": {"value": 14},
           "height": {"value": 1}
         }
@@ -265,8 +263,10 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "Cylinders"},
-          {"data": "data_2", "field": "Cylinders"},
-          {"data": "data_3", "field": "Cylinders"}
+          {"data": "data_3", "field": "Cylinders"},
+          {"data": "data_4", "field": "Cylinders"},
+          {"data": "data_6", "field": "Cylinders"},
+          {"data": "data_7", "field": "Cylinders"}
         ],
         "sort": true
       },
@@ -280,13 +280,13 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "Acceleration"},
-          {"data": "data_2", "field": "lower_whisker_Acceleration"},
-          {"data": "data_2", "field": "lower_box_Acceleration"},
-          {"data": "data_2", "field": "upper_box_Acceleration"},
-          {"data": "data_2", "field": "upper_whisker_Acceleration"},
+          {"data": "data_3", "field": "lower_whisker_Acceleration"},
           {"data": "data_3", "field": "lower_box_Acceleration"},
-          {"data": "data_3", "field": "upper_box_Acceleration"},
-          {"data": "data_3", "field": "mid_box_Acceleration"}
+          {"data": "data_4", "field": "upper_box_Acceleration"},
+          {"data": "data_4", "field": "upper_whisker_Acceleration"},
+          {"data": "data_6", "field": "lower_box_Acceleration"},
+          {"data": "data_6", "field": "upper_box_Acceleration"},
+          {"data": "data_7", "field": "mid_box_Acceleration"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -299,8 +299,10 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "Origin"},
-          {"data": "data_2", "field": "Origin"},
-          {"data": "data_3", "field": "Origin"}
+          {"data": "data_3", "field": "Origin"},
+          {"data": "data_4", "field": "Origin"},
+          {"data": "data_6", "field": "Origin"},
+          {"data": "data_7", "field": "Origin"}
         ],
         "sort": true
       },
@@ -312,7 +314,7 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "Origin"},
-          {"data": "data_3", "field": "Origin"}
+          {"data": "data_6", "field": "Origin"}
         ],
         "sort": true
       },
