@@ -131,7 +131,7 @@ In this example, we create a scale that maps the field `"l"` to colors specified
 
 <div class="vl-example" data-name="point_scale_range_field"></div>
 
-**Note:** This only works if there is a 1:1 mapping between the color domain field (`l`) and therange field (`c`).
+**Note:** This only works if there is a 1:1 mapping between the color domain field (`l`) and the range field (`c`).
 
 ### Example: Setting Range Min/Max
 
