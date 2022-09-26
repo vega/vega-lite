@@ -81,7 +81,7 @@ In addition, there are two ways to encode the data that satisfy the specified co
 }
 ```
 
-A conditional field definition uses a data-driven encoding rule when marks satisfy a [parameter](parameter.html) (e.g. fall withing a [selection parameter](parameter.html#select)) or satisfy a logical predicate. A value definition can be specified as the "else" case when the condition is not satisfied otherwise.
+A conditional field definition uses a data-driven encoding rule when marks satisfy a [parameter](parameter.html) (e.g. fall within a [selection parameter](parameter.html#select)) or satisfy a logical predicate. A value definition can be specified as the "else" case when the condition is not satisfied otherwise.
 
 A condition field definition must contain either [a `param` name or a `test` predicate](#condition) in addition to the encoded `field` name and its data `type` like a typical [field definition](encoding.html#field-def). In addition, a condition field definition may contain other encoding properties including transformation functions ([`aggregate`](aggregate.html), [`bin`](bin.html), [`timeUnit`](timeunit.html)) as well as [`scale`](scale.html) and [`legend`](legend.html) (for [mark property channels]({encoding.html#mark-prop})) or [`format`](format.html) (for [text and tooltip channels](encoding.html#text)).
 
