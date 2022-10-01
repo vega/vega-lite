@@ -6,7 +6,12 @@ on:
 jobs:
   first-interaction:
     name: First Interaction
+
     runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+
     steps:
       - uses: actions/first-interaction@v1
         with:
