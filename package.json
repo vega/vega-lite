@@ -130,7 +130,7 @@
     "ts-json-schema-generator": "^1.1.1",
     "vega-cli": "^5.22.1",
     "typescript": "~4.8.3",
-    "vega-datasets": "~2.4.0",
+    "vega-datasets": "~2.5.1",
     "vega-embed": "^6.21.0",
     "vega-tooltip": "^0.28.0",
     "yaml-front-matter": "^4.1.1"
