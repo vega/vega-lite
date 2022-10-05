@@ -251,7 +251,7 @@ function parseSingleChannelDomain(
 
     const unionWith = convertDomainIfItIsDateTime(domain.unionWith, type, timeUnit);
 
-    return makeExplicit([...defaultDomain.value, ...unionWith]);
+    return makeExplicit([...unionWith, ...defaultDomain.value]);
   } else if (isSignalRef(domain)) {
     return makeExplicit([domain]);
   } else if (domain && domain !== 'unaggregated' && !isParameterDomain(domain)) {
