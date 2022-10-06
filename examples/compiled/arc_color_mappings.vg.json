@@ -69,10 +69,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [[5, 6], {"data": "data_0", "field": "category"}],
-        "sort": true
-      },
+      "domain": {"fields": [[5, 6], {"data": "data_0", "field": "category"}]},
       "range": ["purple", "green", "blue", "yellow", "magenta", "brown"]
     }
   ],
