@@ -151,7 +151,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'interpolate', 'tension', 'tooltip']),
           ...lineOverlay
         },
-        encoding: overlayEncoding
+        encoding: omit(overlayEncoding, ['y2', 'x2'])
       });
     }
     if (pointOverlay) {
@@ -164,7 +164,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'tooltip']),
           ...pointOverlay
         },
-        encoding: overlayEncoding
+        encoding: omit(overlayEncoding, ['y2', 'x2'])
       });
     }
 

@@ -50,18 +50,21 @@
     },
     {
       "name": "layer_1_marks",
-      "type": "rule",
-      "style": ["rule"],
-      "from": {"data": "data_0"},
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "black"},
+          "stroke": {"value": "#4c78a8"},
           "description": {
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
-          "y2": {"scale": "y", "value": 0}
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+          }
         }
       }
     },
