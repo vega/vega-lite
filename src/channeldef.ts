@@ -143,9 +143,7 @@ export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
 export type ConditionalTemplate = FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef;
 
-export type Conditional<CD extends ConditionalTemplate> =
-  | ConditionalPredicate<CD>
-  | ConditionalParameter<CD>;
+export type Conditional<CD extends ConditionalTemplate> = ConditionalPredicate<CD> | ConditionalParameter<CD>;
 
 export type ConditionalPredicate<CD extends ConditionalTemplate> = {
   /**
@@ -154,8 +152,7 @@ export type ConditionalPredicate<CD extends ConditionalTemplate> = {
   test: LogicalComposition<Predicate>;
 } & CD;
 
-export type ConditionalParameter<CD extends ConditionalTemplate> =
-  ParameterPredicate & CD;
+export type ConditionalParameter<CD extends ConditionalTemplate> = ParameterPredicate & CD;
 
 export function isConditionalParameter<T extends ConditionalTemplate>(c: Conditional<T>): c is ConditionalParameter<T> {
   return c['param'];
