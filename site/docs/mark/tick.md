@@ -46,7 +46,7 @@ For example, the following dot plot uses tick marks to show the distribution of 
 
 <!-- TODO: better explain this -->
 
-The following strip-plot use `tick` mark to show the distribution of each car’s Horsepower.
+The following strip-plot use `tick` mark to show the distribution of each car's Horsepower.
 
 <span class="vl-example" data-name="tick_strip"></span>
 
