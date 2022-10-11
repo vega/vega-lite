@@ -143,6 +143,11 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
       };
     }
 
+    // overlay line layer should be on the edge of area but passing y2/x2 makes
+    // it as "rule" mark so that it draws unwanted vertical/horizontal lines.
+    // point overlay also should not have y2/x2 as it does not support.
+    overlayEncoding = omit(overlayEncoding, ['y2', 'x2']);
+
     if (lineOverlay) {
       layer.push({
         ...(projection ? {projection} : {}),
@@ -151,7 +156,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'interpolate', 'tension', 'tooltip']),
           ...lineOverlay
         },
-        encoding: omit(overlayEncoding, ['y2', 'x2'])
+        encoding: overlayEncoding
       });
     }
     if (pointOverlay) {
@@ -164,7 +169,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'tooltip']),
           ...pointOverlay
         },
-        encoding: omit(overlayEncoding, ['y2', 'x2'])
+        encoding: overlayEncoding
       });
     }
 
