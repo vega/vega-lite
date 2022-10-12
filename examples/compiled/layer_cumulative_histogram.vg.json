@@ -48,6 +48,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["bin_IMDB_Rating", "bin_IMDB_Rating"],
+          "field": "Cumulative Count",
+          "sort": {"field": [], "order": []},
+          "as": ["Cumulative Count_start", "Cumulative Count_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"bin_IMDB_Rating\"]) && isFinite(+datum[\"bin_IMDB_Rating\"]) && isValid(datum[\"Cumulative Count\"]) && isFinite(+datum[\"Cumulative Count\"])"
         }
@@ -57,6 +65,14 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
+        {
+          "type": "stack",
+          "groupby": ["bin_IMDB_Rating", "bin_IMDB_Rating"],
+          "field": "count",
+          "sort": {"field": [], "order": []},
+          "as": ["count_start", "count_end"],
+          "offset": "zero"
+        },
         {
           "type": "filter",
           "expr": "isValid(datum[\"bin_IMDB_Rating\"]) && isFinite(+datum[\"bin_IMDB_Rating\"]) && isValid(datum[\"count\"]) && isFinite(+datum[\"count\"])"
@@ -75,12 +91,12 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (format(datum[\"bin_IMDB_Rating\"], \"\")) + \"; Cumulative Count: \" + (format(datum[\"Cumulative Count\"], \"\")) + \"; bin_IMDB_Rating_end: \" + (format(datum[\"bin_IMDB_Rating_end\"], \"\"))"
+            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_IMDB_Rating_end\"], \"\")) + \"; Cumulative Count: \" + (format(datum[\"Cumulative Count\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "bin_IMDB_Rating"},
-          "x2": {"scale": "x", "field": "bin_IMDB_Rating_end"},
-          "y": {"scale": "y", "field": "Cumulative Count"},
-          "y2": {"scale": "y", "value": 0}
+          "x2": {"scale": "x", "field": "bin_IMDB_Rating", "offset": 1},
+          "x": {"scale": "x", "field": "bin_IMDB_Rating_end"},
+          "y": {"scale": "y", "field": "Cumulative Count_end"},
+          "y2": {"scale": "y", "field": "Cumulative Count_start"}
         }
       }
     },
@@ -95,12 +111,12 @@
           "fill": {"value": "yellow"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (format(datum[\"bin_IMDB_Rating\"], \"\")) + \"; count: \" + (format(datum[\"count\"], \"\")) + \"; bin_IMDB_Rating_end: \" + (format(datum[\"bin_IMDB_Rating_end\"], \"\"))"
+            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_IMDB_Rating_end\"], \"\")) + \"; count: \" + (format(datum[\"count\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "bin_IMDB_Rating"},
-          "x2": {"scale": "x", "field": "bin_IMDB_Rating_end"},
-          "y": {"scale": "y", "field": "count"},
-          "y2": {"scale": "y", "value": 0}
+          "x2": {"scale": "x", "field": "bin_IMDB_Rating", "offset": 1},
+          "x": {"scale": "x", "field": "bin_IMDB_Rating_end"},
+          "y": {"scale": "y", "field": "count_end"},
+          "y2": {"scale": "y", "field": "count_start"}
         }
       }
     }
@@ -118,17 +134,17 @@
         ]
       },
       "range": [0, {"signal": "width"}],
-      "zero": false,
-      "nice": true,
-      "padding": 5
+      "zero": false
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Cumulative Count"},
-          {"data": "data_1", "field": "count"}
+          {"data": "data_0", "field": "Cumulative Count_start"},
+          {"data": "data_0", "field": "Cumulative Count_end"},
+          {"data": "data_1", "field": "count_start"},
+          {"data": "data_1", "field": "count_end"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -137,20 +153,6 @@
     }
   ],
   "axes": [
-    {
-      "scale": "x",
-      "orient": "bottom",
-      "gridScale": "y",
-      "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "domain": false,
-      "labels": false,
-      "aria": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
-      "zindex": 0
-    },
     {
       "scale": "y",
       "orient": "left",

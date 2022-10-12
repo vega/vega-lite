@@ -123,18 +123,24 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
           return specifiedOrient;
         }
 
-        // If y is range and x is non-range, non-bin Q, y is likely a prebinned field
+        // If y is range and x is non-range, non-bin Q
         if (!x2) {
           if ((isFieldDef(x) && x.type === QUANTITATIVE && !isBinning(x.bin)) || isNumericDataDef(x)) {
-            return 'horizontal';
+            if (isFieldDef(y) && isBinned(y.bin)) {
+              return 'horizontal';
+            }
           }
+          return 'vertical';
         }
 
-        // If x is range and y is non-range, non-bin Q, x is likely a prebinned field
+        // If x is range and y is non-range, non-bin Q
         if (!y2) {
           if ((isFieldDef(y) && y.type === QUANTITATIVE && !isBinning(y.bin)) || isNumericDataDef(y)) {
-            return 'vertical';
+            if (isFieldDef(x) && isBinned(x.bin)) {
+              return 'vertical';
+            }
           }
+          return 'horizontal';
         }
       }
 

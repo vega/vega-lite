@@ -44,8 +44,8 @@
           "description": {
             "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; b2: \" + (format(datum[\"b2\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "b"},
-          "x2": {"scale": "x", "value": 0},
+          "xc": {"scale": "x", "field": "b"},
+          "width": {"value": 5},
           "y": {"scale": "y", "field": "b"},
           "y2": {"scale": "y", "field": "b2"}
         }
@@ -59,7 +59,8 @@
       "domain": {"data": "data_0", "field": "b"},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "y",
@@ -67,8 +68,7 @@
       "domain": {"data": "data_0", "fields": ["b", "b2"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": false,
-      "padding": 5
+      "zero": true
     }
   ],
   "axes": [
