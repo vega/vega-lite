@@ -5,6 +5,7 @@ Please:
   - Use imperative mood and present tense.
 - Mention relevant issues in the description (e.g., `Fixes #1` / `Fixes part of #1`).
 - [ ] Lint and test (Run `yarn test`).
+- [ ] If you send a pull request from a fork, make sure that GitHub actions run successfully. Make sure to add a [`GH_PAT` secret](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets) for a [personal access token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) with public repository permissions.
 - [ ] Review your changes before sending the PR (to ensure code quality).
 - For new features:
   - [ ] Add new unit tests.

@@ -858,6 +858,7 @@ describe('normalizeBoxIQR', () => {
         style: 'boxplot-box',
         size: 14,
         orient: 'vertical',
+        invalid: null,
         ariaRoleDescription: 'box'
       },
       encoding: {

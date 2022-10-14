@@ -47,26 +47,6 @@
     },
     {
       "name": "data_1",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"lower_whisker_people\"]) && isFinite(+datum[\"lower_whisker_people\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"upper_box_people\"]) && isFinite(+datum[\"upper_box_people\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
       "source": "source_0",
       "transform": [
         {
@@ -85,27 +65,7 @@
       ]
     },
     {
-      "name": "data_4",
-      "source": "data_3",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"lower_box_people\"]) && isFinite(+datum[\"lower_box_people\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_5",
-      "source": "data_3",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"mid_box_people\"]) && isFinite(+datum[\"mid_box_people\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_6",
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {
@@ -125,15 +85,27 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"Upper Whisker of population\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of population\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "x": {"scale": "x", "field": "lower_whisker_people"},
-          "x2": {"scale": "x", "field": "lower_box_people"},
+          "x": [
+            {
+              "test": "!isValid(datum[\"lower_whisker_people\"]) || !isFinite(+datum[\"lower_whisker_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_whisker_people"}
+          ],
+          "x2": [
+            {
+              "test": "!isValid(datum[\"lower_box_people\"]) || !isFinite(+datum[\"lower_box_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_box_people"}
+          ],
           "y": {"scale": "y", "field": "age", "band": 0.5}
         }
       }
@@ -143,15 +115,27 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"Upper Whisker of population\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of population\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "x": {"scale": "x", "field": "upper_box_people"},
-          "x2": {"scale": "x", "field": "upper_whisker_people"},
+          "x": [
+            {
+              "test": "!isValid(datum[\"upper_box_people\"]) || !isFinite(+datum[\"upper_box_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_box_people"}
+          ],
+          "x2": [
+            {
+              "test": "!isValid(datum[\"upper_whisker_people\"]) || !isFinite(+datum[\"upper_whisker_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_whisker_people"}
+          ],
           "y": {"scale": "y", "field": "age", "band": 0.5}
         }
       }
@@ -160,7 +144,7 @@
       "name": "layer_0_layer_1_layer_0_marks",
       "type": "rect",
       "style": ["bar", "boxplot-box"],
-      "from": {"data": "data_4"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "ariaRoleDescription": {"value": "box"},
@@ -171,8 +155,20 @@
           "description": {
             "signal": "\"population: \" + (format(datum[\"lower_box_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; upper_box_people: \" + (format(datum[\"upper_box_people\"], \"\")) + \"; Max of population: \" + (format(datum[\"max_people\"], \"\")) + \"; Q3 of population: \" + (format(datum[\"upper_box_people\"], \"\")) + \"; Median of population: \" + (format(datum[\"mid_box_people\"], \"\")) + \"; Q1 of population: \" + (format(datum[\"lower_box_people\"], \"\")) + \"; Min of population: \" + (format(datum[\"min_people\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "lower_box_people"},
-          "x2": {"scale": "x", "field": "upper_box_people"},
+          "x": [
+            {
+              "test": "!isValid(datum[\"lower_box_people\"]) || !isFinite(+datum[\"lower_box_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_box_people"}
+          ],
+          "x2": [
+            {
+              "test": "!isValid(datum[\"upper_box_people\"]) || !isFinite(+datum[\"upper_box_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_box_people"}
+          ],
           "yc": {"scale": "y", "field": "age", "band": 0.5},
           "height": {"value": 14}
         }
@@ -183,7 +179,7 @@
       "type": "rect",
       "style": ["tick", "boxplot-median"],
       "aria": false,
-      "from": {"data": "data_5"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -191,7 +187,13 @@
           "tooltip": {
             "signal": "{\"Max of population\": format(datum[\"max_people\"], \"\"), \"Q3 of population\": format(datum[\"upper_box_people\"], \"\"), \"Median of population\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of population\": format(datum[\"lower_box_people\"], \"\"), \"Min of population\": format(datum[\"min_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "xc": {"scale": "x", "field": "mid_box_people"},
+          "xc": [
+            {
+              "test": "!isValid(datum[\"mid_box_people\"]) || !isFinite(+datum[\"mid_box_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "mid_box_people"}
+          ],
           "yc": {"scale": "y", "field": "age", "band": 0.5},
           "height": {"value": 14},
           "width": {"value": 1}
@@ -202,7 +204,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_6"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.2},
@@ -224,14 +226,14 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "lower_whisker_people"},
+          {"data": "data_0", "field": "lower_whisker_people"},
+          {"data": "data_0", "field": "lower_box_people"},
+          {"data": "data_0", "field": "upper_box_people"},
+          {"data": "data_0", "field": "upper_whisker_people"},
           {"data": "data_1", "field": "lower_box_people"},
-          {"data": "data_2", "field": "upper_box_people"},
-          {"data": "data_2", "field": "upper_whisker_people"},
-          {"data": "data_4", "field": "lower_box_people"},
-          {"data": "data_4", "field": "upper_box_people"},
-          {"data": "data_5", "field": "mid_box_people"},
-          {"data": "data_6", "field": "people"}
+          {"data": "data_1", "field": "upper_box_people"},
+          {"data": "data_1", "field": "mid_box_people"},
+          {"data": "data_2", "field": "people"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -243,11 +245,9 @@
       "type": "band",
       "domain": {
         "fields": [
+          {"data": "data_0", "field": "age"},
           {"data": "data_1", "field": "age"},
-          {"data": "data_2", "field": "age"},
-          {"data": "data_4", "field": "age"},
-          {"data": "data_5", "field": "age"},
-          {"data": "data_6", "field": "age"}
+          {"data": "data_2", "field": "age"}
         ],
         "sort": true
       },

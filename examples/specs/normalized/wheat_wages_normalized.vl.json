@@ -11,8 +11,7 @@
         "x": {
           "type": "quantitative",
           "axis": {"tickCount": 5, "format": "d"},
-          "field": "year",
-          "bin": "binned"
+          "field": "year"
         },
         "x2": {"field": "year_end"}
       }
@@ -76,7 +75,7 @@
     },
     {
       "data": {"url": "data/monarchs.json"},
-      "mark": {"type": "rect", "stroke": "#000"},
+      "mark": {"type": "bar", "stroke": "#000"},
       "encoding": {
         "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "y"},
         "x": {

@@ -75,16 +75,7 @@ export interface TooltipContent {
 /** @hidden */
 export type Hide = 'hide';
 
-export interface MarkInvalidMixins {
-  /**
-   * Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`).
-   * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
-   * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
-   */
-  invalid?: 'filter' | Hide | null;
-}
-
-export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorMixins<ES>, MarkInvalidMixins {
+export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorMixins<ES> {
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
    *
@@ -94,6 +85,13 @@ export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorM
    *
    */
   filled?: boolean;
+
+  /**
+   * Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`).
+   * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
+   * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
+   */
+  invalid?: 'filter' | Hide | null;
 
   /**
    * For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.

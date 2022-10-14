@@ -86,12 +86,12 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
 
   /**
    * Controls whether data values should be toggled (inserted or removed from a point selection)
-   * or only ever inserted into point selections.
+   * or only ever inserted into multi selections.
    *
    * One of:
    * - `true` -- the default behavior, which corresponds to `"event.shiftKey"`.  As a result, data values are toggled when the user interacts with the shift-key pressed.
-   * - `false` -- disables toggling behaviour; the selection will only ever contain a single data value corresponding to the most recent interaction.
-   * - A [Vega expression](https://vega.github.io/vega/docs/expressions/) which is re-evaluated as the user interacts. If the expression evaluates to `true`, the data value is toggled into or out of the point selection. If the expression evaluates to `false`, the point selection is first cleared, and the data value is then inserted. For example, setting the value to the Vega expression `"true"` will toggle data values
+   * - `false` -- disables toggling behaviour; as the user interacts, data values are only inserted into the multi selection and never removed.
+   * - A [Vega expression](https://vega.github.io/vega/docs/expressions/) which is re-evaluated as the user interacts. If the expression evaluates to `true`, the data value is toggled into or out of the multi selection. If the expression evaluates to `false`, the multi selection is first clear, and the data value is then inserted. For example, setting the value to the Vega expression `"true"` will toggle data values
    * without the user pressing the shift-key.
    *
    * __Default value:__ `true`

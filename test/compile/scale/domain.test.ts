@@ -50,7 +50,7 @@ describe('compile/scale', () => {
       });
 
       const xDomain = testParseDomainForChannel(model, 'x');
-      expect(xDomain).toEqual([[0, 100], {data: 'main', field: 'a'}]);
+      expect(xDomain).toEqual([{data: 'main', field: 'a'}, [0, 100]]);
     });
 
     it('correctly parse signal domain', () => {

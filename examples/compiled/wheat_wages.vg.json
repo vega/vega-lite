@@ -34,14 +34,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "stack",
-          "groupby": ["year", "year"],
-          "field": "wheat",
-          "sort": {"field": [], "order": []},
-          "as": ["wheat_start", "wheat_end"],
-          "offset": "zero"
-        },
-        {
           "type": "filter",
           "expr": "isValid(datum[\"year\"]) && isFinite(+datum[\"year\"]) && isValid(datum[\"wheat\"]) && isFinite(+datum[\"wheat\"])"
         }
@@ -106,12 +98,12 @@
           "stroke": {"value": "#999"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"year: \" + (!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"]) ? \"null\" : format(datum[\"year\"], \"d\") + \" – \" + format(datum[\"year_end\"], \"d\")) + \"; wheat: \" + (format(datum[\"wheat\"], \"\"))"
+            "signal": "\"year: \" + (format(datum[\"year\"], \"d\")) + \"; wheat: \" + (format(datum[\"wheat\"], \"\")) + \"; year_end: \" + (format(datum[\"year_end\"], \"\"))"
           },
-          "x2": {"scale": "x", "field": "year", "offset": 1},
-          "x": {"scale": "x", "field": "year_end"},
-          "y": {"scale": "y", "field": "wheat_end"},
-          "y2": {"scale": "y", "field": "wheat_start"}
+          "x": {"scale": "x", "field": "year"},
+          "x2": {"scale": "x", "field": "year_end"},
+          "y": {"scale": "y", "field": "wheat"},
+          "y2": {"scale": "y", "value": 0}
         }
       }
     },
@@ -201,12 +193,13 @@
     {
       "name": "layer_5_marks",
       "type": "rect",
-      "style": ["rect"],
+      "style": ["bar"],
       "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "#000"},
           "fill": {"scale": "fill", "field": "commonwealth"},
+          "ariaRoleDescription": {"value": "bar"},
           "description": {
             "signal": "\"start: \" + (format(datum[\"start\"], \"d\")) + \"; y: \" + (format(datum[\"y\"], \"\")) + \"; end: \" + (format(datum[\"end\"], \"\")) + \"; offset: \" + (format(datum[\"offset\"], \"\")) + \"; commonwealth: \" + (isValid(datum[\"commonwealth\"]) ? datum[\"commonwealth\"] : \"\"+datum[\"commonwealth\"])"
           },
@@ -258,15 +251,15 @@
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": false
+      "zero": false,
+      "padding": 5
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "wheat_start"},
-          {"data": "data_0", "field": "wheat_end"},
+          {"data": "data_0", "field": "wheat"},
           {"data": "source_0", "field": "wages"},
           {"data": "data_2", "field": "y"},
           {"data": "data_2", "field": "offset"},
@@ -285,6 +278,20 @@
     }
   ],
   "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "tickCount": 5,
+      "gridScale": "y",
+      "grid": true,
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
     {
       "scale": "y",
       "orient": "left",

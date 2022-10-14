@@ -48,7 +48,7 @@
   "title": "Distribution of Frame Render Time (ms)",
   "width": {"step": 40},
   "height": 100,
-  "mark": {"type": "bar", "cornerRadiusEnd": 0, "orient": "vertical"},
+  "mark": {"type": "bar", "cornerRadiusEnd": 0},
   "encoding": {
     "x": {
       "title": "",

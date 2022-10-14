@@ -19,8 +19,7 @@
     "x": {
       "field": "bin_IMDB_Rating", "type": "quantitative",
       "scale": {"zero": false},
-      "title": "IMDB Rating",
-      "bin": "binned"
+      "title": "IMDB Rating"
     },
     "x2": {"field": "bin_IMDB_Rating_end"}
   },

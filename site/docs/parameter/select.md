@@ -126,15 +126,33 @@ In addition to all [common selection properties](#selection-props), point select
 
 The `toggle` property customizes how user interaction can insert or remove data values from a point selection if they are or are not already members of the selection, respectively.
 
-For example, you can highlight points in the scatterplot below by toggling them into the `paintbrush` selection when clicking<span id="toggle-expl"> with: <br> <label onclick="buildToggle()"><input type="checkbox" name="toggle" value="shiftKey" checked="checked" />`event.shiftKey`</label> <label onclick="buildToggle()"><input type="checkbox" name="toggle" value="altKey" />`event.altKey`</label></span>.
+For example, you can highlight points in the scatterplot below by <select name="toggle" onchange="buildToggle(true)"><option value="toggle">toggling</option><option value="insert">inserting</option></select> into the `paintbrush` selection when clicking<span id="toggle-expl"> with: <br> <label onclick="buildToggle()"><input type="checkbox" name="toggle" value="shiftKey" checked="checked" />`event.shiftKey`</label> <label onclick="buildToggle()"><input type="checkbox" name="toggle" value="altKey" />`event.altKey`</label></span>.
 
-<div id="paintbrush_toggle" class="vl-example" data-name="selection_toggle_shiftKey"></div>
+<div id="toggle" class="vl-example" data-name="selection_toggle_shiftKey"></div>
 
 <script type="text/javascript">
-function buildToggle() {
-  const inputs = document.querySelectorAll('input[name=toggle]:checked');
-  const values = Array.from(inputs).map(n => n.value).sort().join('_');
-  changeSpec('paintbrush_toggle', `selection_toggle_${values}` );
+function buildToggle(changeType) {
+  const type = document.querySelector('select[name=toggle]');
+  const expl = document.getElementById('toggle-expl');
+  const inputs = document.querySelectorAll('input[name=toggle]');
+
+  if (!changeType && !inputs[0].checked && !inputs[1].checked) {
+    type.value = 'insert';
+    changeType = true;
+  }
+
+  if (changeType) {
+    if (type.value === 'toggle') {
+      expl.style.display = 'inline';
+      inputs[0].checked = true;
+      inputs[1].checked = false;
+    } else {
+      expl.style.display = 'none';
+      inputs[0].checked = inputs[1].checked = false;
+    }
+  }
+
+  buildSpecOpts('toggle', 'selection_');
 }
 </script>
 

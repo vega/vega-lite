@@ -199,63 +199,35 @@ describe('compile/scale', () => {
   });
 
   describe('zero', () => {
-    it('should return default (undefined) when mapping a quantitative field to x with scale.domain = "unaggregated"', () => {
+    it('should return true when mapping a quantitative field to x with scale.domain = "unaggregated"', () => {
       expect(
-        rules.zero('x', {field: 'a', type: 'quantitative'}, 'unaggregated', {type: 'point'}, 'linear', undefined, false)
-      ).toBeUndefined();
+        rules.zero('x', {field: 'a', type: 'quantitative'}, 'unaggregated', {type: 'point'}, 'linear')
+      ).toBeTruthy();
     });
 
     it('should return true when mapping a quantitative field to size', () => {
-      expect(
-        rules.zero('size', {field: 'a', type: 'quantitative'}, undefined, {type: 'point'}, 'linear', undefined, false)
-      ).toBeTruthy();
+      expect(rules.zero('size', {field: 'a', type: 'quantitative'}, undefined, {type: 'point'}, 'linear')).toBeTruthy();
     });
 
     it('should return false when mapping a ordinal field to size', () => {
-      expect(
-        !rules.zero('size', {field: 'a', type: 'ordinal'}, undefined, {type: 'point'}, 'linear', undefined, false)
-      ).toBeTruthy();
+      expect(!rules.zero('size', {field: 'a', type: 'ordinal'}, undefined, {type: 'point'}, 'linear')).toBeTruthy();
     });
 
-    it('should return default (undefined) when mapping a non-binned quantitative field to x/y of point', () => {
+    it('should return true when mapping a non-binned quantitative field to x/y of point', () => {
       for (const channel of ['x', 'y'] as const) {
         expect(
-          rules.zero(
-            channel,
-            {field: 'a', type: 'quantitative'},
-            undefined,
-            {type: 'point'},
-            'linear',
-            undefined,
-            false
-          )
-        ).toBeUndefined();
+          rules.zero(channel, {field: 'a', type: 'quantitative'}, undefined, {type: 'point'}, 'linear')
+        ).toBeTruthy();
       }
     });
 
     it('should return false when mapping a quantitative field to dimension axis of bar, line, and area', () => {
       for (const mark of [BAR, AREA, LINE]) {
         expect(
-          rules.zero(
-            'x',
-            {field: 'a', type: 'quantitative'},
-            undefined,
-            {type: mark, orient: 'vertical'},
-            'linear',
-            undefined,
-            false
-          )
+          rules.zero('x', {field: 'a', type: 'quantitative'}, undefined, {type: mark, orient: 'vertical'}, 'linear')
         ).toBe(false);
         expect(
-          rules.zero(
-            'y',
-            {field: 'a', type: 'quantitative'},
-            undefined,
-            {type: mark, orient: 'horizontal'},
-            'linear',
-            undefined,
-            false
-          )
+          rules.zero('y', {field: 'a', type: 'quantitative'}, undefined, {type: mark, orient: 'horizontal'}, 'linear')
         ).toBe(false);
       }
     });
@@ -263,15 +235,7 @@ describe('compile/scale', () => {
     it('should return false when mapping a binned quantitative field to x/y', () => {
       for (const channel of ['x', 'y'] as const) {
         expect(
-          !rules.zero(
-            channel,
-            {bin: true, field: 'a', type: 'quantitative'},
-            undefined,
-            {type: 'point'},
-            'linear',
-            undefined,
-            false
-          )
+          !rules.zero(channel, {bin: true, field: 'a', type: 'quantitative'}, undefined, {type: 'point'}, 'linear')
         ).toBeTruthy();
       }
     });
@@ -288,78 +252,10 @@ describe('compile/scale', () => {
             },
             [3, 5],
             {type: 'point'},
-            'linear',
-            undefined,
-            false
+            'linear'
           )
         ).toBeTruthy();
       }
-    });
-
-    it(`should return config.scale.zero instead of true if it is specified`, () => {
-      const configZero = false;
-      for (const channel of ['x', 'y'] as const) {
-        expect(
-          rules.zero(
-            channel,
-            {field: 'a', type: 'quantitative'},
-            undefined,
-            {type: 'point'},
-            'linear',
-            {zero: configZero},
-            false
-          )
-        ).toBe(configZero);
-      }
-
-      expect(
-        rules.zero(
-          'size',
-          {field: 'a', type: 'ordinal'},
-          undefined,
-          {type: 'point'},
-          'linear',
-          {zero: configZero},
-          false
-        )
-      ).toBe(configZero);
-
-      // ranged bar/area should take default configZero
-      expect(
-        rules.zero('x', {field: 'a', type: 'quantitative'}, undefined, {type: BAR}, 'linear', {zero: configZero}, true)
-      ).toBe(configZero);
-    });
-
-    it(`should return true for x/y scales of the non-ranged area/bar charts regardless to config`, () => {
-      for (const mark of [BAR, AREA]) {
-        for (const channel of ['x', 'y'] as const) {
-          expect(
-            rules.zero(
-              channel,
-              {field: 'a', type: 'quantitative'},
-              undefined,
-              {type: mark},
-              'linear',
-              {zero: false},
-              false
-            )
-          ).toBe(true);
-        }
-      }
-    });
-
-    it(`should return true for the continuous & quantitative size scale regardless to config`, () => {
-      expect(
-        rules.zero(
-          'size',
-          {field: 'a', type: 'quantitative'},
-          undefined,
-          {type: 'point'},
-          'linear',
-          {zero: false},
-          false
-        )
-      ).toBe(true);
     });
   });
 });

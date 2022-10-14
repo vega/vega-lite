@@ -185,48 +185,6 @@ describe('PathOverlayNormalizer', () => {
     });
   });
 
-  it('correctly normalizes area using y2 with overlay line.', () => {
-    const spec: TopLevelSpec = {
-      data: {url: 'data/stocks.csv'},
-      mark: 'area',
-      encoding: {
-        x: {field: 'date', type: 'temporal'},
-        y: {field: 'price', type: 'quantitative'},
-        y2: {value: 0, type: 'quantitative'}
-      },
-      config: {area: {line: {}, point: {}}}
-    };
-    const normalizedSpec = normalize(spec);
-    expect(normalizedSpec).toEqual({
-      data: {url: 'data/stocks.csv'},
-      layer: [
-        {
-          mark: {type: 'area', opacity: 0.7},
-          encoding: {
-            x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'},
-            y2: {value: 0, type: 'quantitative'}
-          }
-        },
-        {
-          mark: {type: 'line'},
-          encoding: {
-            x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative', stack: 'zero'}
-          }
-        },
-        {
-          mark: {type: 'point', opacity: 1, filled: true},
-          encoding: {
-            x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative', stack: 'zero'}
-          }
-        }
-      ],
-      config: {area: {line: {}, point: {}}}
-    });
-  });
-
   it('correctly normalizes interpolated area with overlay line', () => {
     const spec: TopLevelSpec = {
       data: {url: 'data/stocks.csv'},

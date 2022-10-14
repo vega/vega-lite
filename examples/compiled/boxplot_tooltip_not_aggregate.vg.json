@@ -67,26 +67,6 @@
     },
     {
       "name": "data_3",
-      "source": "data_2",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"lower_whisker_Body Mass (g)\"]) && isFinite(+datum[\"lower_whisker_Body Mass (g)\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_4",
-      "source": "data_2",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"upper_box_Body Mass (g)\"]) && isFinite(+datum[\"upper_box_Body Mass (g)\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_5",
       "source": "source_0",
       "transform": [
         {
@@ -107,26 +87,6 @@
             "min_Body Mass (g)",
             "max_Body Mass (g)"
           ]
-        }
-      ]
-    },
-    {
-      "name": "data_6",
-      "source": "data_5",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"lower_box_Body Mass (g)\"]) && isFinite(+datum[\"lower_box_Body Mass (g)\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_7",
-      "source": "data_5",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"mid_box_Body Mass (g)\"]) && isFinite(+datum[\"mid_box_Body Mass (g)\"])"
         }
       ]
     }
@@ -161,15 +121,27 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_3"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"Upper Whisker of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Lower Whisker of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
           },
-          "x": {"scale": "x", "field": "lower_whisker_Body Mass (g)"},
-          "x2": {"scale": "x", "field": "lower_box_Body Mass (g)"},
+          "x": [
+            {
+              "test": "!isValid(datum[\"lower_whisker_Body Mass (g)\"]) || !isFinite(+datum[\"lower_whisker_Body Mass (g)\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_whisker_Body Mass (g)"}
+          ],
+          "x2": [
+            {
+              "test": "!isValid(datum[\"lower_box_Body Mass (g)\"]) || !isFinite(+datum[\"lower_box_Body Mass (g)\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_box_Body Mass (g)"}
+          ],
           "y": {"scale": "y", "field": "Species", "band": 0.5}
         }
       }
@@ -179,15 +151,27 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_4"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"Upper Whisker of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Lower Whisker of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
           },
-          "x": {"scale": "x", "field": "upper_box_Body Mass (g)"},
-          "x2": {"scale": "x", "field": "upper_whisker_Body Mass (g)"},
+          "x": [
+            {
+              "test": "!isValid(datum[\"upper_box_Body Mass (g)\"]) || !isFinite(+datum[\"upper_box_Body Mass (g)\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_box_Body Mass (g)"}
+          ],
+          "x2": [
+            {
+              "test": "!isValid(datum[\"upper_whisker_Body Mass (g)\"]) || !isFinite(+datum[\"upper_whisker_Body Mass (g)\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_whisker_Body Mass (g)"}
+          ],
           "y": {"scale": "y", "field": "Species", "band": 0.5}
         }
       }
@@ -196,7 +180,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rect",
       "style": ["bar", "boxplot-box"],
-      "from": {"data": "data_6"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "ariaRoleDescription": {"value": "box"},
@@ -207,8 +191,20 @@
           "description": {
             "signal": "\"Body Mass (g): \" + (format(datum[\"lower_box_Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; upper_box_Body Mass (g): \" + (format(datum[\"upper_box_Body Mass (g)\"], \"\")) + \"; Max of Body Mass (g): \" + (format(datum[\"max_Body Mass (g)\"], \"\")) + \"; Q3 of Body Mass (g): \" + (format(datum[\"upper_box_Body Mass (g)\"], \"\")) + \"; Median of Body Mass (g): \" + (format(datum[\"mid_box_Body Mass (g)\"], \"\")) + \"; Q1 of Body Mass (g): \" + (format(datum[\"lower_box_Body Mass (g)\"], \"\")) + \"; Min of Body Mass (g): \" + (format(datum[\"min_Body Mass (g)\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "lower_box_Body Mass (g)"},
-          "x2": {"scale": "x", "field": "upper_box_Body Mass (g)"},
+          "x": [
+            {
+              "test": "!isValid(datum[\"lower_box_Body Mass (g)\"]) || !isFinite(+datum[\"lower_box_Body Mass (g)\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_box_Body Mass (g)"}
+          ],
+          "x2": [
+            {
+              "test": "!isValid(datum[\"upper_box_Body Mass (g)\"]) || !isFinite(+datum[\"upper_box_Body Mass (g)\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_box_Body Mass (g)"}
+          ],
           "yc": {"scale": "y", "field": "Species", "band": 0.5},
           "height": {"value": 14}
         }
@@ -219,7 +215,7 @@
       "type": "rect",
       "style": ["tick", "boxplot-median"],
       "aria": false,
-      "from": {"data": "data_7"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -227,7 +223,13 @@
           "tooltip": {
             "signal": "{\"Max of Body Mass (g)\": format(datum[\"max_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"min_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
           },
-          "xc": {"scale": "x", "field": "mid_box_Body Mass (g)"},
+          "xc": [
+            {
+              "test": "!isValid(datum[\"mid_box_Body Mass (g)\"]) || !isFinite(+datum[\"mid_box_Body Mass (g)\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "mid_box_Body Mass (g)"}
+          ],
           "yc": {"scale": "y", "field": "Species", "band": 0.5},
           "height": {"value": 14},
           "width": {"value": 1}
@@ -242,13 +244,13 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "Body Mass (g)"},
-          {"data": "data_3", "field": "lower_whisker_Body Mass (g)"},
+          {"data": "data_2", "field": "lower_whisker_Body Mass (g)"},
+          {"data": "data_2", "field": "lower_box_Body Mass (g)"},
+          {"data": "data_2", "field": "upper_box_Body Mass (g)"},
+          {"data": "data_2", "field": "upper_whisker_Body Mass (g)"},
           {"data": "data_3", "field": "lower_box_Body Mass (g)"},
-          {"data": "data_4", "field": "upper_box_Body Mass (g)"},
-          {"data": "data_4", "field": "upper_whisker_Body Mass (g)"},
-          {"data": "data_6", "field": "lower_box_Body Mass (g)"},
-          {"data": "data_6", "field": "upper_box_Body Mass (g)"},
-          {"data": "data_7", "field": "mid_box_Body Mass (g)"}
+          {"data": "data_3", "field": "upper_box_Body Mass (g)"},
+          {"data": "data_3", "field": "mid_box_Body Mass (g)"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -261,10 +263,8 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "Species"},
-          {"data": "data_3", "field": "Species"},
-          {"data": "data_4", "field": "Species"},
-          {"data": "data_6", "field": "Species"},
-          {"data": "data_7", "field": "Species"}
+          {"data": "data_2", "field": "Species"},
+          {"data": "data_3", "field": "Species"}
         ],
         "sort": true
       },
