@@ -4,7 +4,7 @@ import {getMarkPropOrConfig} from '../compile/common';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';
 import * as log from '../log';
-import {isMarkDef, MarkDef} from '../mark';
+import {isMarkDef, MarkDef, MarkInvalidMixins} from '../mark';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
@@ -46,7 +46,8 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
 }
 
 export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
-  BoxPlotConfig & {
+  BoxPlotConfig &
+  MarkInvalidMixins & {
     /**
      * Type of the mark. For box plots, this should always be `"boxplot"`.
      * [boxplot](https://vega.github.io/vega-lite/docs/boxplot.html)
@@ -102,6 +103,8 @@ export function normalizeBoxPlot(
     config
   );
 
+  const invalid = markDef.invalid;
+
   const boxPlotType = getBoxPlotType(extent);
   const {
     bins,
@@ -147,7 +150,7 @@ export function normalizeBoxPlot(
 
   // ## Whisker Layers
 
-  const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: ticksOrient, invalid: null, aria: false};
+  const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: ticksOrient, invalid, aria: false};
   const whiskerTooltipEncoding: Encoding<string> =
     boxPlotType === 'min-max'
       ? fiveSummaryTooltipEncoding // for min-max, show five-summary tooltip for whisker
@@ -164,14 +167,14 @@ export function normalizeBoxPlot(
   const whiskerLayers = [
     ...makeBoxPlotExtent({
       partName: 'rule',
-      mark: {type: 'rule', invalid: null, aria: false},
+      mark: {type: 'rule', invalid, aria: false},
       positionPrefix: 'lower_whisker',
       endPositionPrefix: 'lower_box',
       extraEncoding: whiskerTooltipEncoding
     }),
     ...makeBoxPlotExtent({
       partName: 'rule',
-      mark: {type: 'rule', invalid: null, aria: false},
+      mark: {type: 'rule', invalid, aria: false},
       positionPrefix: 'upper_box',
       endPositionPrefix: 'upper_whisker',
       extraEncoding: whiskerTooltipEncoding
@@ -201,7 +204,7 @@ export function normalizeBoxPlot(
         type: 'bar',
         ...(sizeValue ? {size: sizeValue} : {}),
         orient: boxOrient,
-        invalid: null,
+        invalid,
         ariaRoleDescription: 'box'
       },
       positionPrefix: 'lower_box',
@@ -212,7 +215,7 @@ export function normalizeBoxPlot(
       partName: 'median',
       mark: {
         type: 'tick',
-        invalid: null,
+        invalid,
         ...(isObject(config.boxplot.median) && config.boxplot.median.color ? {color: config.boxplot.median.color} : {}),
         ...(sizeValue ? {size: sizeValue} : {}),
         orient: ticksOrient,

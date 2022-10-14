@@ -1,4 +1,3 @@
-import 'array-flat-polyfill';
 import {default as clone_} from 'clone';
 import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'fast-json-stable-stringify';

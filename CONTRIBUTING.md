@@ -2,6 +2,8 @@
 
 Welcome to the Vega community. Everyone is welcome to contribute. We value all forms of contributions including code reviews, patches, examples, community participation, tutorial, and blog posts. In this document, we outline the guidelines for contributing to the various aspects of the project.
 
+If you send a pull request from a fork, make sure that GitHub actions run successfully. Make sure to add a [`GH_PAT` secret](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets) for a [personal access token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) with public repository permissions.
+
 If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/vega-lite/docs/) or want a new feature, you can help us by creating an issue to [our repository](https://github.com/vega/vega-lite), or even submit a pull request (PR).
 
 - For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
@@ -194,7 +196,7 @@ During development, it can be convenient to rebuild automatically or to run test
 
 ### Deployment
 
-Publishing is handled by a 2-branch [pre-release process](https://intuit.github.io/auto/docs/generated/shipit#next-branch-default), configured in `publish.yml`. All changes should be based off the default `next` branch, and are published automatically.
+Publishing is handled by a 2-branch [pre-release process](https://intuit.github.io/auto/docs/generated/shipit#next-branch-default), configured in `publish-to-npm.yml`. All changes should be based off the default `next` branch, and are published automatically.
 
 - PRs made into the default branch are auto-deployed to the `next` pre-release tag on NPM. The result can be installed with `npm install vega-lite/@next`.
   - When merging into `next`, please use the `squash and merge` strategy.

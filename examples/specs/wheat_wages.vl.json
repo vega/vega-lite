@@ -18,7 +18,7 @@
     {
       "mark": {"type": "bar", "fill": "#aaa", "stroke": "#999"},
       "encoding": {
-        "x": {"field": "year"},
+        "x": {"field": "year", "bin":"binned"},
         "x2": {"field": "year_end"},
         "y": {"field": "wheat"}
       }
@@ -74,7 +74,7 @@
         { "calculate": "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 2 + 95", "as": "offset" },
         { "calculate": "95", "as": "y" }
       ],
-      "mark": {"type": "bar", "stroke": "#000"},
+      "mark": {"type": "rect", "stroke": "#000"},
       "encoding": {
         "x": {"field": "start"},
         "x2": {"field": "end"},
