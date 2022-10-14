@@ -1,0 +1,224 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {"a": "null", "b": 28},
+      {"a": 33, "b": 55},
+      {"a": 33, "b": 43},
+      {"a": "null", "b": 91},
+      {"a": "null", "b": 81},
+      {"a": "null", "b": 53}
+    ]
+  },
+  "layer": [
+    {
+      "transform": [
+        {
+          "joinaggregate": [
+            {"op": "q1", "field": "b", "as": "lower_box_b"},
+            {"op": "q3", "field": "b", "as": "upper_box_b"}
+          ],
+          "groupby": ["a"]
+        }
+      ],
+      "layer": [
+        {
+          "transform": [
+            {
+              "filter": "(datum[\"b\"] < datum[\"lower_box_b\"] - 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"])) || (datum[\"b\"] > datum[\"upper_box_b\"] + 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]))"
+            }
+          ],
+          "mark": {"type": "point", "style": "boxplot-outliers"},
+          "encoding": {
+            "y": {"field": "b", "type": "quantitative", "title": "b"},
+            "x": {
+              "field": "a",
+              "type": "quantitative",
+              "axis": {"labelAngle": 0}
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "(datum[\"lower_box_b\"] - 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]) <= datum[\"b\"]) && (datum[\"b\"] <= datum[\"upper_box_b\"] + 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]))"
+            },
+            {
+              "aggregate": [
+                {"op": "min", "field": "b", "as": "lower_whisker_b"},
+                {"op": "max", "field": "b", "as": "upper_whisker_b"},
+                {"op": "min", "field": "lower_box_b", "as": "lower_box_b"},
+                {"op": "max", "field": "upper_box_b", "as": "upper_box_b"}
+              ],
+              "groupby": ["a"]
+            }
+          ],
+          "layer": [
+            {
+              "mark": {
+                "type": "rule",
+                "invalid": "filter",
+                "aria": false,
+                "style": "boxplot-rule"
+              },
+              "encoding": {
+                "y": {
+                  "field": "lower_whisker_b",
+                  "type": "quantitative",
+                  "title": "b"
+                },
+                "y2": {"field": "lower_box_b"},
+                "x": {
+                  "field": "a",
+                  "type": "quantitative",
+                  "axis": {"labelAngle": 0}
+                },
+                "tooltip": [
+                  {
+                    "field": "upper_whisker_b",
+                    "type": "quantitative",
+                    "title": "Upper Whisker of b"
+                  },
+                  {
+                    "field": "lower_whisker_b",
+                    "type": "quantitative",
+                    "title": "Lower Whisker of b"
+                  },
+                  {"field": "a", "type": "quantitative"}
+                ]
+              }
+            },
+            {
+              "mark": {
+                "type": "rule",
+                "invalid": "filter",
+                "aria": false,
+                "style": "boxplot-rule"
+              },
+              "encoding": {
+                "y": {
+                  "field": "upper_box_b",
+                  "type": "quantitative",
+                  "title": "b"
+                },
+                "y2": {"field": "upper_whisker_b"},
+                "x": {
+                  "field": "a",
+                  "type": "quantitative",
+                  "axis": {"labelAngle": 0}
+                },
+                "tooltip": [
+                  {
+                    "field": "upper_whisker_b",
+                    "type": "quantitative",
+                    "title": "Upper Whisker of b"
+                  },
+                  {
+                    "field": "lower_whisker_b",
+                    "type": "quantitative",
+                    "title": "Lower Whisker of b"
+                  },
+                  {"field": "a", "type": "quantitative"}
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {"op": "q1", "field": "b", "as": "lower_box_b"},
+            {"op": "q3", "field": "b", "as": "upper_box_b"},
+            {"op": "median", "field": "b", "as": "mid_box_b"},
+            {"op": "min", "field": "b", "as": "min_b"},
+            {"op": "max", "field": "b", "as": "max_b"}
+          ],
+          "groupby": ["a"]
+        }
+      ],
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 14,
+            "orient": "vertical",
+            "invalid": "filter",
+            "ariaRoleDescription": "box",
+            "style": "boxplot-box"
+          },
+          "encoding": {
+            "y": {"field": "lower_box_b", "type": "quantitative", "title": "b"},
+            "y2": {"field": "upper_box_b"},
+            "x": {
+              "field": "a",
+              "type": "quantitative",
+              "axis": {"labelAngle": 0}
+            },
+            "tooltip": [
+              {"field": "max_b", "type": "quantitative", "title": "Max of b"},
+              {
+                "field": "upper_box_b",
+                "type": "quantitative",
+                "title": "Q3 of b"
+              },
+              {
+                "field": "mid_box_b",
+                "type": "quantitative",
+                "title": "Median of b"
+              },
+              {
+                "field": "lower_box_b",
+                "type": "quantitative",
+                "title": "Q1 of b"
+              },
+              {"field": "min_b", "type": "quantitative", "title": "Min of b"},
+              {"field": "a", "type": "quantitative"}
+            ]
+          }
+        },
+        {
+          "mark": {
+            "color": "white",
+            "type": "tick",
+            "invalid": "filter",
+            "size": 14,
+            "orient": "horizontal",
+            "aria": false,
+            "style": "boxplot-median"
+          },
+          "encoding": {
+            "y": {"field": "mid_box_b", "type": "quantitative", "title": "b"},
+            "x": {
+              "field": "a",
+              "type": "quantitative",
+              "axis": {"labelAngle": 0}
+            },
+            "tooltip": [
+              {"field": "max_b", "type": "quantitative", "title": "Max of b"},
+              {
+                "field": "upper_box_b",
+                "type": "quantitative",
+                "title": "Q3 of b"
+              },
+              {
+                "field": "mid_box_b",
+                "type": "quantitative",
+                "title": "Median of b"
+              },
+              {
+                "field": "lower_box_b",
+                "type": "quantitative",
+                "title": "Q1 of b"
+              },
+              {"field": "min_b", "type": "quantitative", "title": "Min of b"},
+              {"field": "a", "type": "quantitative"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
