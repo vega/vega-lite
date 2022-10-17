@@ -31,7 +31,7 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
     }
 
     normParams.selections = selections;
-    return super.map(spec, addSpecNameToParams(spec, normParams));
+    return super.map(spec, normParams);
   }
 
   public mapUnit(spec: UnitSpec<Field>, normParams: NormalizerParams): NormalizedUnitSpec | NormalizedLayerSpec {
