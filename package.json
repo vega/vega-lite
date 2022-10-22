@@ -92,7 +92,7 @@
     "@rollup/plugin-babel": "^6.0.0",
     "@rollup/plugin-commonjs": "^23.0.0",
     "@rollup/plugin-json": "^5.0.0",
-    "@rollup/plugin-node-resolve": "^14.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
     "@types/chai": "^4.3.3",
     "@types/d3": "^7.4.0",
     "@types/jest": "^27.4.1",
