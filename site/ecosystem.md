@@ -105,7 +105,6 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Scalene](https://github.com/plasma-umass/scalene): A CPU+GPU+memory profiler for Python.
 - [CSrankings](https://csrankings.org): a metrics-based ranking of top computer science institutions around the world.
 
-
 ## Tools for Embedding Vega-Lite Visualizations
 
 - <span class="octicon octicon-star"></span> [Vega-Embed](https://github.com/vega/vega-embed), a convenience wrapper for Vega and Vega-Lite.
