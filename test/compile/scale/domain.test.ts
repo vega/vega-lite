@@ -1085,7 +1085,7 @@ describe('compile/scale', () => {
     );
 
     it(
-      'should warn if sorts conflict even if one sort object is not default',
+      'should use non-min aggregation when sort ops conflict',
       log.wrap(localLogger => {
         const domain = mergeDomains([
           {
