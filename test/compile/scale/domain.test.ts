@@ -1085,6 +1085,38 @@ describe('compile/scale', () => {
     );
 
     it(
+      'should warn if sorts conflict even if one sort object is not default',
+      log.wrap(localLogger => {
+        const domain = mergeDomains([
+          {
+            data: 'foo',
+            field: 'a',
+            sort: {
+              op: 'min'
+            }
+          },
+          {
+            data: 'foo',
+            field: 'a',
+            sort: {
+              op: 'sum'
+            }
+          }
+        ]);
+
+        expect(domain).toEqual({
+          data: 'foo',
+          field: 'a',
+          sort: {
+            op: 'sum'
+          }
+        });
+
+        expect(localLogger.warns[0]).toEqual(log.message.MORE_THAN_ONE_SORT);
+      })
+    );
+
+    it(
       'should warn if sorts conflict even if we do not union',
       log.wrap(localLogger => {
         const domain = mergeDomains([
