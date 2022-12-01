@@ -583,6 +583,11 @@ footer .edit-page {
   max-width: 180px;
 }
 
+.example .vega-bind input {
+  vertical-align: text-bottom;
+  margin-right: 3px;
+}
+
 .example .vega-bind-name {
   display: inline-block;
   min-width: 150px;
