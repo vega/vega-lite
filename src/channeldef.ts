@@ -141,21 +141,20 @@ export type StringValueDefWithCondition<F extends Field, T extends Type = Standa
 >;
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
-export type Conditional<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> =
-  | ConditionalPredicate<CD>
-  | ConditionalParameter<CD>;
+export type ConditionalTemplate = FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef;
 
-export type ConditionalPredicate<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> = {
+export type Conditional<CD extends ConditionalTemplate> = ConditionalPredicate<CD> | ConditionalParameter<CD>;
+
+export type ConditionalPredicate<CD extends ConditionalTemplate> = {
   /**
    * Predicate for triggering the condition
    */
   test: LogicalComposition<Predicate>;
 } & CD;
 
-export type ConditionalParameter<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> =
-  ParameterPredicate & CD;
+export type ConditionalParameter<CD extends ConditionalTemplate> = ParameterPredicate & CD;
 
-export function isConditionalParameter<T>(c: Conditional<T>): c is ConditionalParameter<T> {
+export function isConditionalParameter<T extends ConditionalTemplate>(c: Conditional<T>): c is ConditionalParameter<T> {
   return c['param'];
 }
 
