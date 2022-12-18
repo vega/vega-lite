@@ -6,6 +6,7 @@ on:
     paths:
       - 'site/**'
       - 'scripts/**'
+      - '.github/workflows/**'
 
 jobs:
   toc:
