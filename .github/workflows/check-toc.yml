@@ -6,6 +6,7 @@ on:
     paths:
       - 'site/**'
       - 'scripts/**'
+      - '.github/workflows/**'
 
 jobs:
   toc:
@@ -28,16 +29,15 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Setup Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.x'
+          ruby-version: '2.7'
 
       - name: Setup data
         run: yarn data
 
       - name: Build Jekyll
         run: |
-          gem install bundler
           pushd site
           bundle install
           bundle exec jekyll build -q
