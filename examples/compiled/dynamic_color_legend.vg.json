@@ -66,9 +66,7 @@
     {
       "name": "unit",
       "value": {},
-      "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
-      ]
+      "on": [{"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}]
     },
     {
       "name": "brush",
@@ -78,10 +76,10 @@
       "name": "click",
       "update": "vlSelectionResolve(\"click_store\", \"union\", true, true)"
     },
-    {"name": "color_rain", "value": "#9982b4", "bind": {"input": "color"}},
-    {"name": "color_sun", "value": "#128224", "bind": {"input": "color"}},
-    {"name": "color_fog", "value": "#4682e4", "bind": {"input": "color"}},
-    {"name": "color_drizzle", "value": "#46f254", "bind": {"input": "color"}},
+    {"name": "color_rain", "value": "#4682b4", "bind": {"input": "color"}},
+    {"name": "color_sun", "value": "#4682b4", "bind": {"input": "color"}},
+    {"name": "color_fog", "value": "#4682b4", "bind": {"input": "color"}},
+    {"name": "color_drizzle", "value": "#4682b4", "bind": {"input": "color"}},
     {"name": "color_snow", "value": "#4682b4", "bind": {"input": "color"}}
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
@@ -105,9 +103,7 @@
               "events": {
                 "source": "scope",
                 "type": "mousedown",
-                "filter": [
-                  "!event.item || event.item.mark.name !== \"brush_brush\""
-                ]
+                "filter": ["!event.item || event.item.mark.name !== \"brush_brush\""]
               },
               "update": "[x(unit), x(unit)]"
             },
@@ -120,9 +116,7 @@
                   {
                     "source": "scope",
                     "type": "mousedown",
-                    "filter": [
-                      "!event.item || event.item.mark.name !== \"brush_brush\""
-                    ]
+                    "filter": ["!event.item || event.item.mark.name !== \"brush_brush\""]
                   },
                   {"source": "window", "type": "mouseup"}
                 ]
@@ -367,10 +361,7 @@
                 },
                 {"value": 0}
               ],
-              "stroke": [
-                {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
-                {"value": null}
-              ]
+              "stroke": [{"test": "brush_x[0] !== brush_x[1]", "value": "white"}, {"value": null}]
             }
           }
         }
@@ -615,6 +606,5 @@
         }
       }
     }
-  ],
-  "config": {}
+  ]
 }
