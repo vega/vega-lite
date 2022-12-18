@@ -102,6 +102,8 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Datablocks](https://datablocks.pro), a node-based editor for exploring, analyzing and transforming data without code.
 - [Rath](https://github.com/Kanaries/Rath) An augmented analysis tool including auto-EDA, pattern discovery, multi-dimensional visualization recommendation, and interactive dashboards generation.
 - [MarkText](https://github.com/marktext/marktext): An open-source markdown editor that supports Vega-Lite.
+- [Scalene](https://github.com/plasma-umass/scalene): A CPU+GPU+memory profiler for Python.
+- [CSrankings](https://csrankings.org): a metrics-based ranking of top computer science institutions around the world.
 
 ## Tools for Embedding Vega-Lite Visualizations
 
