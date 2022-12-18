@@ -23,12 +23,12 @@
       {
         "name": "bar_grouped",
         "title": "Grouped Bar Chart",
-        "description": "Read [here](https://vega.github.io/editor/#/examples/vega-lite/size.html#offset-step) for more details about how to set step size for grouped bar. "
+        "description": "Read [here](https://vega.github.io/vega-lite/docs/size.html#offset-step) for more details about how to set step size for grouped bar. "
       },
       {
         "name": "bar_grouped_repeated",
         "title": "Grouped Bar Chart (Multiple Measure with Repeat)",
-        "description": "Read [here](https://vega.github.io/editor/#/examples/vega-lite/size.html#offset-step) for more details about how to set step size for grouped bar. "
+        "description": "Read [here](https://vega.github.io/vega-lite/docs/size.html#offset-step) for more details about how to set step size for grouped bar. "
       },
       {
         "name": "stacked_bar_weather",
