@@ -32,15 +32,15 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
-          bundler-cache: true
-          working-directory: 'site'
 
       - name: Setup data
         run: yarn data
 
       - name: Build Jekyll
         run: |
+          gem install bundler
           pushd site
+          bundle install
           bundle exec jekyll build -q
           popd
 
