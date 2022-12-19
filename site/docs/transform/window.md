@@ -116,7 +116,7 @@ Here we use window transform to visualize how the average MPG for vehicles have 
 
 ## Additional Examples
 
-These are examples of window transforms that can be simplifies with the join aggregate transform. Please refer to the [join aggregate examples](joinaggregate.html#examples).
+These are examples of window transforms that can be simplified with the join aggregate transform. Please refer to the [join aggregate examples](joinaggregate.html#examples).
 
 ### Percent of Total
 
@@ -124,4 +124,4 @@ You can use the window transform to compute an aggregate and attach it to all re
 
 Here we use the window transform to derive the global sum so that we can calculate percentage.
 
-<div class="vl-example" data-name="window_percent_of_total"></div>
+<div class="vl-example" data-name="joinaggregate_percent_of_total"></div>
