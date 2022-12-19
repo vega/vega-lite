@@ -120,8 +120,4 @@ These are examples of window transforms that can be simplified with the join agg
 
 ### Percent of Total
 
-You can use the window transform to compute an aggregate and attach it to all records. In this case, you can use the [join aggregate](joinaggregate.html) instead of the window transform. Please refer to the [join aggregate examples](joinaggregate.html#examples).
-
-Here we use the window transform to derive the global sum so that we can calculate percentage.
-
-<div class="vl-example" data-name="joinaggregate_percent_of_total"></div>
+The window transform *can* be used to compute an aggregate and attach it to all records in order to derive a percent of total, however, a simpler approach is to use the [join aggregate](joinaggregate.html) transform instead.
