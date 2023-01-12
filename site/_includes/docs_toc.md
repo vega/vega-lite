@@ -96,7 +96,6 @@
         - [Window Transform Definition]({{site.baseurl}}/docs/window.html#window-transform-definition)
         - [Window Only Operation Reference]({{site.baseurl}}/docs/window.html#ops)
         - [Examples]({{site.baseurl}}/docs/window.html#examples)
-        - [Additional Examples]({{site.baseurl}}/docs/window.html#additional-examples)
 - [Mark]({{site.baseurl}}/docs/mark.html)
     - [Documentation Overview]({{site.baseurl}}/docs/mark.html#documentation-overview)
     - [Mark Types]({{site.baseurl}}/docs/mark.html#types)
