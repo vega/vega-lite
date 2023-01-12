@@ -18,7 +18,7 @@ export type ErrorBand = typeof ERRORBAND;
 
 export const ERRORBAND_PARTS = ['band', 'borders'] as const;
 
-type ErrorBandPart = typeof ERRORBAND_PARTS[number];
+type ErrorBandPart = (typeof ERRORBAND_PARTS)[number];
 
 export type ErrorBandPartsMixins = PartsMixins<ErrorBandPart>;
 

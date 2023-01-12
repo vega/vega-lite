@@ -193,11 +193,11 @@ const {row: _r, column: _c, facet: _f, ...SINGLE_DEF_UNIT_CHANNEL_INDEX} = SINGL
 
 export const SINGLE_DEF_CHANNELS = keys(SINGLE_DEF_CHANNEL_INDEX);
 
-export type SingleDefChannel = typeof SINGLE_DEF_CHANNELS[number];
+export type SingleDefChannel = (typeof SINGLE_DEF_CHANNELS)[number];
 
 export const SINGLE_DEF_UNIT_CHANNELS = keys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
 
-export type SingleDefUnitChannel = typeof SINGLE_DEF_UNIT_CHANNELS[number];
+export type SingleDefUnitChannel = (typeof SINGLE_DEF_UNIT_CHANNELS)[number];
 
 export function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel {
   return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
@@ -389,7 +389,7 @@ const {
 } = UNIT_CHANNEL_INDEX;
 
 export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
-export type NonPositionChannel = typeof NONPOSITION_CHANNELS[number];
+export type NonPositionChannel = (typeof NONPOSITION_CHANNELS)[number];
 
 const POSITION_SCALE_CHANNEL_INDEX = {
   x: 1,
@@ -418,7 +418,7 @@ const OFFSET_SCALE_CHANNEL_INDEX: {xOffset: 1; yOffset: 1} = {xOffset: 1, yOffse
 
 export const OFFSET_SCALE_CHANNELS = keys(OFFSET_SCALE_CHANNEL_INDEX);
 
-export type OffsetScaleChannel = typeof OFFSET_SCALE_CHANNELS[0];
+export type OffsetScaleChannel = (typeof OFFSET_SCALE_CHANNELS)[0];
 
 export function isXorYOffset(channel: Channel): channel is OffsetScaleChannel {
   return channel in OFFSET_SCALE_CHANNEL_INDEX;
@@ -441,7 +441,7 @@ const {
   ...NONPOSITION_SCALE_CHANNEL_INDEX
 } = NONPOSITION_CHANNEL_INDEX;
 export const NONPOSITION_SCALE_CHANNELS = keys(NONPOSITION_SCALE_CHANNEL_INDEX);
-export type NonPositionScaleChannel = typeof NONPOSITION_SCALE_CHANNELS[number];
+export type NonPositionScaleChannel = (typeof NONPOSITION_SCALE_CHANNELS)[number];
 
 export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
   return !!NONPOSITION_CHANNEL_INDEX[channel];
@@ -478,7 +478,7 @@ const SCALE_CHANNEL_INDEX = {
 
 /** List of channels with scales */
 export const SCALE_CHANNELS = keys(SCALE_CHANNEL_INDEX);
-export type ScaleChannel = typeof SCALE_CHANNELS[number];
+export type ScaleChannel = (typeof SCALE_CHANNELS)[number];
 
 export function isScaleChannel(channel: Channel): channel is ScaleChannel {
   return !!SCALE_CHANNEL_INDEX[channel];
