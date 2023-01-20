@@ -27,7 +27,7 @@ export type BoxPlot = typeof BOXPLOT;
 
 export const BOXPLOT_PARTS = ['box', 'median', 'outliers', 'rule', 'ticks'] as const;
 
-type BoxPlotPart = typeof BOXPLOT_PARTS[number];
+type BoxPlotPart = (typeof BOXPLOT_PARTS)[number];
 
 export type BoxPlotPartsMixins = PartsMixins<BoxPlotPart>;
 
