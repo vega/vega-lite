@@ -44,7 +44,7 @@ export type ErrorInputType = 'raw' | 'aggregated-upper-lower' | 'aggregated-erro
 
 export const ERRORBAR_PARTS = ['ticks', 'rule'] as const;
 
-export type ErrorBarPart = typeof ERRORBAR_PARTS[number];
+export type ErrorBarPart = (typeof ERRORBAR_PARTS)[number];
 
 export interface ErrorExtraEncoding<F extends Field> {
   /**
