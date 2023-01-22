@@ -31,15 +31,15 @@
     }
   ],
   "signals": [
-    {"name": "plotname_x_step", "value": 20},
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
-      "update": "bandspace(domain('plotname_x').length, 1, 0.5) * plotname_x_step"
+      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
     }
   ],
   "marks": [
     {
-      "name": "plotname_marks",
+      "name": "marks",
       "type": "symbol",
       "style": ["point"],
       "from": {"data": "data_0"},
@@ -52,22 +52,22 @@
           "description": {
             "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
-          "x": {"scale": "plotname_x", "field": "a"},
-          "y": {"scale": "plotname_y", "field": "b"}
+          "x": {"scale": "x", "field": "a"},
+          "y": {"scale": "y", "field": "b"}
         }
       }
     }
   ],
   "scales": [
     {
-      "name": "plotname_x",
+      "name": "x",
       "type": "point",
       "domain": {"data": "data_0", "field": "a", "sort": true},
-      "range": {"step": {"signal": "plotname_x_step"}},
+      "range": {"step": {"signal": "x_step"}},
       "padding": 0.5
     },
     {
-      "name": "plotname_y",
+      "name": "y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "b"},
       "range": [{"signal": "height"}, 0],
@@ -77,9 +77,9 @@
   ],
   "axes": [
     {
-      "scale": "plotname_y",
+      "scale": "y",
       "orient": "left",
-      "gridScale": "plotname_x",
+      "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
@@ -91,7 +91,7 @@
       "zindex": 0
     },
     {
-      "scale": "plotname_x",
+      "scale": "x",
       "orient": "bottom",
       "grid": false,
       "title": "a",
@@ -101,7 +101,7 @@
       "zindex": 0
     },
     {
-      "scale": "plotname_y",
+      "scale": "y",
       "orient": "left",
       "grid": false,
       "title": "b",
