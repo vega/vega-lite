@@ -65,6 +65,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
     const specWithReplacedEncoding = {
       ...spec,
+      name: spec.name && params.repeaterPrefix ? params.repeaterPrefix + spec.name : undefined,
       ...(encoding ? {encoding} : {})
     };
 
