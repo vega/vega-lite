@@ -12467,6 +12467,9 @@
               "$ref": "#/definitions/LayerSpec"
             },
             {
+              "$ref": "#/definitions/UnitSpecWithFrame"
+            },
+            {
               "$ref": "#/definitions/UnitSpec"
             }
           ],
@@ -29221,6 +29224,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/LayerSpec"
+                },
+                {
+                  "$ref": "#/definitions/UnitSpecWithFrame"
                 },
                 {
                   "$ref": "#/definitions/UnitSpec"
