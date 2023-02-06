@@ -15,12 +15,17 @@
   resolved "https://registry.yarnpkg.com/@auto-it/bot-list/-/bot-list-10.37.6.tgz#3ca9380a44b9c8d33b2088b8fed2c2ffc79c91ed"
   integrity sha512-ltcLZEzXOOWh24qgNE4mPYJR25Dh9mQy2QwyD8uOE01Vy0yu89RGLi0TahUlUNZUSPBjLYUCxNOcp9WHKBJ7Sg==
 
+"@auto-it/bot-list@10.38.5":
+  version "10.38.5"
+  resolved "https://registry.yarnpkg.com/@auto-it/bot-list/-/bot-list-10.38.5.tgz#51453cd9dfe455e0dfefdfc004756749a84d5575"
+  integrity sha512-Svi7SyMpXjvPmsRXEW/sU4SoI+gpvZW3KeHBdRHXE+kGd4TIvGwX8Sg0ojT8OsaiFk+8xSodv9ajf8MMI6jqPA==
+
 "@auto-it/conventional-commits@^10.37.6":
-  version "10.37.6"
-  resolved "https://registry.yarnpkg.com/@auto-it/conventional-commits/-/conventional-commits-10.37.6.tgz#e30a3130bbd6b5cdb4185b55956c73cc20589b9d"
-  integrity sha512-IJvKrEST7iOlKsohTPgSDkKLTRBF+5RD8arAXc7ZV9QMI9A/BmyoaMhj8uh9wt5QuSpNmw2C3EJWldbvmu695Q==
+  version "10.38.5"
+  resolved "https://registry.yarnpkg.com/@auto-it/conventional-commits/-/conventional-commits-10.38.5.tgz#dc0d92339c655104414f4e39fd2be0471a4914c8"
+  integrity sha512-cVYXvDfcIazME+1t0zkP3eqEP/+YJTFuIkLUu+riUoeLRgzxhoPCk8LS4oPxPw2bNeNBP2356OQsTS0JAnZ0yQ==
   dependencies:
-    "@auto-it/core" "10.37.6"
+    "@auto-it/core" "10.38.5"
     array.prototype.flatmap "^1.2.2"
     conventional-changelog-core "^4.2.0"
     conventional-changelog-preset-loader "^2.3.4"
@@ -36,6 +41,52 @@
   integrity sha512-XfQq+DmUAg7hXSwq0KxOCGyPLlri8hJoEAp3QDaAa42CSnM5A5oZ67VaL7D/mFcSPDYK8o3w69mQfwcmOENjBA==
   dependencies:
     "@auto-it/bot-list" "10.37.6"
+    "@endemolshinegroup/cosmiconfig-typescript-loader" "^3.0.2"
+    "@octokit/core" "^3.5.1"
+    "@octokit/plugin-enterprise-compatibility" "1.3.0"
+    "@octokit/plugin-retry" "^3.0.9"
+    "@octokit/plugin-throttling" "^3.6.2"
+    "@octokit/rest" "^18.12.0"
+    await-to-js "^3.0.0"
+    chalk "^4.0.0"
+    cosmiconfig "7.0.0"
+    deepmerge "^4.0.0"
+    dotenv "^8.0.0"
+    endent "^2.1.0"
+    enquirer "^2.3.4"
+    env-ci "^5.0.1"
+    fast-glob "^3.1.1"
+    fp-ts "^2.5.3"
+    fromentries "^1.2.0"
+    gitlog "^4.0.3"
+    https-proxy-agent "^5.0.0"
+    import-cwd "^3.0.0"
+    import-from "^3.0.0"
+    io-ts "^2.1.2"
+    lodash.chunk "^4.2.0"
+    log-symbols "^4.0.0"
+    node-fetch "2.6.7"
+    parse-author "^2.0.0"
+    parse-github-url "1.0.2"
+    pretty-ms "^7.0.0"
+    requireg "^0.2.2"
+    semver "^7.0.0"
+    signale "^1.4.0"
+    tapable "^2.2.0"
+    terminal-link "^2.1.1"
+    tinycolor2 "^1.4.1"
+    ts-node "^10.9.1"
+    tslib "2.1.0"
+    type-fest "^0.21.1"
+    typescript-memoize "^1.0.0-alpha.3"
+    url-join "^4.0.0"
+
+"@auto-it/core@10.38.5":
+  version "10.38.5"
+  resolved "https://registry.yarnpkg.com/@auto-it/core/-/core-10.38.5.tgz#c6766c62fafe15a66c2bc13cc93d447fd830c67b"
+  integrity sha512-H463k1iC/lyFWbxLszLs3f+mM5CgbcHTN+ivDxOvRyUd3EDHZwv6sHHcN6BfWwmSpT03kjtsAugoQdMsyeArWA==
+  dependencies:
+    "@auto-it/bot-list" "10.38.5"
     "@endemolshinegroup/cosmiconfig-typescript-loader" "^3.0.2"
     "@octokit/core" "^3.5.1"
     "@octokit/plugin-enterprise-compatibility" "1.3.0"
