@@ -4430,7 +4430,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -4452,7 +4452,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -4462,7 +4462,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -4472,7 +4472,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -4486,7 +4486,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         }
@@ -4502,7 +4502,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -4553,7 +4553,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -4573,7 +4573,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -4583,7 +4583,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -4597,7 +4597,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -8338,7 +8338,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -8348,7 +8348,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -8378,7 +8378,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -8388,7 +8388,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -8461,7 +8461,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -8479,7 +8479,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         }
@@ -8527,7 +8527,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
@@ -8545,7 +8545,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig"
+              "$ref": "#/definitions/AnyMarkConfig"
             }
           ]
         },
