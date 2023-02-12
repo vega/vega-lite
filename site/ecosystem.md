@@ -16,9 +16,9 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 
 - <span class="octicon octicon-star"></span> [Vega-Editor](https://vega.github.io/editor/), the online editor for Vega and Vega-Lite. You can also get an output Vega spec from a given Vega-Lite spec as well.
 - <span class="octicon octicon-star"></span> [Vega Viewer](https://github.com/RandomFractals/vscode-vega-viewer), a VSCode extension for interactive preview of Vega and Vega-Lite maps and graphs.
-- <span class="octicon octicon-star"></span> [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that lets you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. This is useful for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
+- [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that lets you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. This is useful for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
 - <span class="octicon octicon-star"></span> [Voyager (2)](https://github.com/vega/voyager), visualization tool for exploratory data analysis that blends a Tableau-style specification interface (formerly [Polestar](https://github.com/vega/polestar)) with chart recommendations (formerly the Voyager visualization browser) and generates Vega-Lite visualizations.
-- <span class="octicon octicon-star"></span>[Bayes](https://bayes.com) - A creative data exploration and storytelling tool. Easily create and publish Vega-Lite visualizations.
+- [Bayes](https://bayes.com) - A creative data exploration and storytelling tool. Easily create and publish Vega-Lite visualizations.
 - [data.world Chart Builder](https://data.world/integrations/chart-builder), a chart builder that imports data from queries in data.world. The generated specs can be saved locally or uploaded back to data.world. Project is [open source](https://github.com/datadotworld/chart-builder).
 - [ColorBrewer-Lite](https://github.com/vis-au/colorbrewer), a fork of the ColorBrewer project that allows importing Vega-Lite specifications into the ColorBrewer interface to pick effective color schemes "in situ" for any color encoding.
 - [Emacs Vega View](https://github.com/applied-science/emacs-vega-view), a tool that allows one to view Vega visualizations directly within emacs, currently supporting specs written in JSON, elisp or clojure.
@@ -39,13 +39,13 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Plug-ins for Vega-Lite
 
 - <span class="octicon octicon-star"></span> [Tooltips for Vega and Vega-Lite](https://github.com/vega/vega-lite-tooltip)
-- <span class="octicon octicon-star"></span> [Leaflet Tile Map integration for Vega and Vega-Lite](https://github.com/nyurik/leaflet-vega)
+- [Leaflet Tile Map integration for Vega and Vega-Lite](https://github.com/nyurik/leaflet-vega)
 
 ## Bindings for Programming Languages
 
 - <span class="octicon octicon-star"></span> [Altair](https://altair-viz.github.io) exposes a Python API for building statistical visualizations that follows Vega-Lite syntax.
 - <span class="octicon octicon-star"></span> [Vega-Lite API](https://github.com/vega/vega-lite-api) is a JavaScript API for creating Vega-Lite JSON specifications.
-- <span class="octicon octicon-star"></span> [Elm-Vega](https://package.elm-lang.org/packages/gicentre/elm-vega/latest) generates Vega-Lite specifications in the pure functional language [Elm](https://elm-lang.org).
+- <span class="octicon octicon-star"></span> [elm-vegaLite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest) generates Vega-Lite specifications in the pure functional language [Elm](https://elm-lang.org).
 - [Altair wrapper in R](https://vegawidget.github.io/altair/)
 - [ipyvega](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts in Jupyter Notebooks.
 - [VegaLite (Elixir bindings)](https://github.com/elixir-nx/vega_lite).
@@ -108,7 +108,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Tools for Embedding Vega-Lite Visualizations
 
 - <span class="octicon octicon-star"></span> [Vega-Embed](https://github.com/vega/vega-embed), a convenience wrapper for Vega and Vega-Lite.
-- <span class="octicon octicon-star"></span>[Flourish](https://flourish.studio/2018/05/29/vega-lite-in-flourish/) - Visualization and Storytelling Platform
+- <span class="octicon octicon-star"></span> [Flourish](https://flourish.studio/2018/05/29/vega-lite-in-flourish/) - Visualization and Storytelling Platform
 - [Visdown](http://visdown.com), a web app to create Vega-Lite visualizations in Markdown. Specs are written in [YAML](http://www.yaml.org/) (not JSON) within `code` blocks.
 - [vega-element](https://www.webcomponents.org/element/PolymerVis/vega-element) is a Polymer web component to embed Vega or Vega-Lite visualization using custom HTML tags.
 - [marked-vega](https://www.webcomponents.org/element/PolymerVis/marked-vega) is a Polymer web component to parse image/code markdowns into Vega and Vega-Lite charts.
