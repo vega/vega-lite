@@ -38,7 +38,7 @@ A tick mark definition can contain any [standard mark properties](mark.html#mark
 
 ### Dot Plot
 
-For example, the following dot plot uses tick marks to show the distribution of each car's Horsepower.
+For example, the following dot plot uses tick marks to show the distribution of rainfall over time.
 
 <span class="vl-example" data-name="tick_dot"></span>
 
@@ -46,7 +46,7 @@ For example, the following dot plot uses tick marks to show the distribution of 
 
 <!-- TODO: better explain this -->
 
-The following strip-plot use `tick` mark to represent its data.
+The following strip-plot use `tick` mark to show the distribution of horsepower.
 
 <span class="vl-example" data-name="tick_strip"></span>
 
