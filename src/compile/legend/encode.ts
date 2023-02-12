@@ -150,15 +150,40 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
 
   const {format, formatType} = legend;
 
-  const text = isCustomFormatType(formatType)
-    ? formatCustomType({
+  let text = undefined;
+
+  if (isCustomFormatType(formatType)) {
+    text = formatCustomType({
+      fieldOrDatumDef,
+      field: 'datum.value',
+      format,
+      formatType,
+      config
+    });
+  } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
+    if (fieldOrDatumDef.type === 'quantitative' && config.numberFormatType) {
+      text = formatCustomType({
         fieldOrDatumDef,
         field: 'datum.value',
-        format,
-        formatType,
+        format: config.numberFormat,
+        formatType: config.numberFormatType,
         config
-      })
-    : undefined;
+      });
+    } else if (
+      fieldOrDatumDef.type === 'temporal' &&
+      config.timeFormatType &&
+      isFieldDef(fieldOrDatumDef) &&
+      fieldOrDatumDef.timeUnit === undefined
+    ) {
+      text = formatCustomType({
+        fieldOrDatumDef,
+        field: 'datum.value',
+        format: config.timeFormat,
+        formatType: config.timeFormatType,
+        config
+      });
+    }
+  }
 
   const labelsSpec = {
     ...(opacity ? {opacity} : {}),

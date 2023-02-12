@@ -19,7 +19,7 @@ Let's start by looking at the precipitation. Precipitation is a quantitative var
 
 <div class="vl-example" data-name="tick_dot"></div>
 
-It looks as though precipitation is skewed towards lower values; that is, when it rains, it usually doesn't rain very much. To better see this, we can create a histogram of the precipitation data. For this, we have to add an encoding channel for `y` that shows aggregated `count`. As it is difficult to see patterns across continuous variables, you can discretize temperature values by setting `"bin": true`. Note that aggregate and binned fields are quantitative by default, thus we don't have to explicitly specify "type".
+It looks as though precipitation is skewed towards lower values; that is, when it rains, it usually doesn't rain very much. To better see this, we can create a histogram of the precipitation data. For this, we have to add an encoding channel for `y` that shows aggregated `count`. As it is difficult to see patterns across continuous variables, you can discretize precipitation values by setting `"bin": true`. Note that aggregate and binned fields are quantitative by default, thus we don't have to explicitly specify "type".
 
 <div class="vl-example" data-name="bar_aggregate_count"></div>
 

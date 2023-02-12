@@ -60,3 +60,6 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 - [Car Registrations in Portugal - 3 plots with cross-filtering](https://observablehq.com/@jlmborges/vega-lite-car_sales) by [@jlborges](https://observablehq.com/@jlmborges)
 - [An interactive Rank-Plot](https://observablehq.com/@jlmborges/rank-plot_vega-lite) by [@jlborges](https://observablehq.com/@jlmborges)
 - [An interactive Dashboard](https://paginas.fe.up.pt/~jlborges/vis/cars_dashboard/db.html) by [@jlborges](https://observablehq.com/@jlmborges)
+- [Dashboard for the Effects of Labor Market Subsidies in Austria](https://observablehq.com/@schmoigl/effektivitat) by [@schmoigl](https://observablehq.com/@schmoigl)
+- [Size of People around the World](https://observablehq.com/@schmoigl/makeover2) by [@schmoigl](https://observablehq.com/@schmoigl)
+

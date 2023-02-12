@@ -49,7 +49,7 @@ As the name suggests, variable values can be modified dynamically, either by [bi
 
 #### Expression
 
-Besides setting the initial `value`, you can also create make a parameter using an expression (`expr`).
+Besides setting the initial `value`, you can also create a parameter using an expression (`expr`).
 
 {% include table.html props="expr" source="VariableParameter" %}
 

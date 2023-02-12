@@ -1,0 +1,53 @@
+name: Check
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'site/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
+
+jobs:
+  toc:
+    name: TOC
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_PAT || github.token }}
+          ref: ${{ github.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+
+      - name: Setup data
+        run: yarn data
+
+      - name: Build Jekyll
+        run: |
+          pushd site
+          bundle install
+          bundle exec jekyll build -q
+          popd
+
+      - name: Build TOC
+        run: scripts/generate-toc
+
+      - name: Setup Git remote
+        run: scripts/setup-git-ci.sh
+
+      - name: Check and Commit
+        run: scripts/check-and-commit-toc.sh

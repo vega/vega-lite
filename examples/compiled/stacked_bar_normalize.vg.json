@@ -56,10 +56,10 @@
           "fill": {"scale": "color", "field": "gender"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \".0%\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
           },
           "x": {"scale": "x", "field": "age"},
-          "width": {"scale": "x", "band": 1},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "sum_people_end"},
           "y2": {"scale": "y", "field": "sum_people_start"}
         }
@@ -120,6 +120,7 @@
       "orient": "left",
       "grid": false,
       "title": "population",
+      "format": ".0%",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

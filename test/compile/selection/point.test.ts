@@ -107,7 +107,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['one'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
+              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
             force: true
           }
         ]
@@ -122,7 +122,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['two'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: two_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon"], (item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon_end"]], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: two_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon"], (item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon_end"]], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
             force: true
           }
         ]
@@ -137,7 +137,7 @@ describe('Multi Selection', () => {
           {
             events: [{source: 'scope', type: 'click'}],
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: thr_ee_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"]]} : null',
+              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: thr_ee_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"]]} : null',
             force: true
           }
         ]
@@ -152,7 +152,7 @@ describe('Multi Selection', () => {
           {
             events: [{source: 'scope', type: 'click'}],
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
             force: true
           }
         ]
@@ -167,7 +167,7 @@ describe('Multi Selection', () => {
           {
             events: [{source: 'scope', type: 'click'}],
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: five_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Year"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: five_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Year"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
             force: true
           }
         ]
@@ -182,7 +182,7 @@ describe('Multi Selection', () => {
           {
             events: [{source: 'scope', type: 'click'}],
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: six_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["nested.a"], (item().isVoronoi ? datum.datum : datum)["nested.b"]]} : null',
+              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: six_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["nested.a"], (item().isVoronoi ? datum.datum : datum)["nested.b"]]} : null',
             force: true
           }
         ]
@@ -208,7 +208,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['one'].events,
             update:
-              "datum && item().mark.marktype !== 'group' && indexof(item().mark.name, 'two_brush') < 0 && indexof(item().mark.name, 'three_brush') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(item().mark.name, 'two_brush') < 0 && indexof(item().mark.name, 'three_brush') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
             force: true
           }
         ]

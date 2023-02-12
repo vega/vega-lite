@@ -58,7 +58,7 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
+          "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
@@ -121,9 +121,9 @@
             "signal": "\"predicted: \" + (isValid(datum[\"predicted\"]) ? datum[\"predicted\"] : \"\"+datum[\"predicted\"]) + \"; actual: \" + (isValid(datum[\"actual\"]) ? datum[\"actual\"] : \"\"+datum[\"actual\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "predicted"},
-          "width": {"scale": "x", "band": 1},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "actual"},
-          "height": {"scale": "y", "band": 1}
+          "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }
     }

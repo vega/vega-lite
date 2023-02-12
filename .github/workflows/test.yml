@@ -1,13 +1,13 @@
 name: Test
 
 on:
-  push:
-    branches:
-      - next
+  workflow_dispatch:
   pull_request:
+    paths-ignore:
+      - 'site/**'
 
 jobs:
-  test-matrix:
+  test:
     name: Node
     runs-on: ubuntu-latest
 
@@ -31,24 +31,6 @@ jobs:
       - name: Build
         run: yarn build
 
-  build-site:
-    name: Build Site
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          cache: 'yarn'
-
-      - name: Install Node dependencies
-        run: yarn --frozen-lockfile
-
-      - name: Build
-        run: yarn build:site
-
   runtime-lint-coverage:
     name: Runtime, Linting, and Coverage
     runs-on: ubuntu-latest
@@ -56,13 +38,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Node dependencies
-        run: yarn --frozen-lockfile
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           cache: 'yarn'
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
 
       - name: Install extra dependencies for Puppeteer
         run: sudo apt-get install libgbm1
@@ -83,7 +65,7 @@ jobs:
         run: yarn jest test/ --collectCoverage=true
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3.1.0
+        uses: codecov/codecov-action@v3.1.1
 
   test-cli:
     name: CLI
@@ -95,13 +77,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Node dependencies
-        run: yarn --frozen-lockfile
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           cache: 'yarn'
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
 
       - name: Build
         run: yarn build:only

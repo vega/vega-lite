@@ -65,7 +65,7 @@
             "signal": "\"country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; gold: \" + (format(datum[\"gold\"], \"\"))"
           },
           "x": {"scale": "x", "field": "country"},
-          "width": {"scale": "x", "band": 1},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "gold_end"},
           "y2": {"scale": "y", "field": "gold_start"}
         }

@@ -1,0 +1,150 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Heat lane chart based on https://www.smashingmagazine.com/2022/07/accessibility-first-approach-chart-visual-design/",
+  "background": "white",
+  "padding": 5,
+  "width": 400,
+  "height": 150,
+  "title": {"text": "Heat Lane of Horsepower", "frame": "group"},
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "extent",
+          "field": "Horsepower",
+          "signal": "bin_maxbins_10_Horsepower_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Horsepower",
+          "as": ["bin_Horsepower_start", "bin_Horsepower_end"],
+          "signal": "bin_maxbins_10_Horsepower_bins",
+          "extent": {"signal": "bin_maxbins_10_Horsepower_extent"},
+          "maxbins": 10
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["bin_Horsepower_start", "bin_Horsepower_end"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["count"]
+        },
+        {
+          "type": "extent",
+          "field": "count",
+          "signal": "bin_maxbins_10_count_extent"
+        },
+        {
+          "type": "bin",
+          "field": "count",
+          "as": ["bin_count_start", "bin_count_end"],
+          "signal": "bin_maxbins_10_count_bins",
+          "extent": {"signal": "bin_maxbins_10_count_extent"},
+          "maxbins": 10
+        },
+        {"type": "formula", "expr": "-datum.bin_count_end/2", "as": "y2"},
+        {"type": "formula", "expr": "datum.bin_count_end/2", "as": "y"},
+        {
+          "type": "joinaggregate",
+          "as": ["max_bin_count_end"],
+          "ops": ["max"],
+          "fields": ["bin_count_end"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"bin_Horsepower_start\"]) && isFinite(+datum[\"bin_Horsepower_start\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "cornerRadius": {"value": 3},
+          "fill": {"scale": "color", "field": "max_bin_count_end"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Horsepower: \" + (format(datum[\"bin_Horsepower_start\"], \"\")) + \"; y: \" + (isValid(datum[\"y\"]) ? datum[\"y\"] : \"\"+datum[\"y\"]) + \"; bin_Horsepower_end: \" + (format(datum[\"bin_Horsepower_end\"], \"\")) + \"; y2: \" + (isValid(datum[\"y2\"]) ? datum[\"y2\"] : \"\"+datum[\"y2\"]) + \"; count: \" + (isValid(datum[\"max_bin_count_end\"]) ? datum[\"max_bin_count_end\"] : \"\"+datum[\"max_bin_count_end\"])"
+          },
+          "x": {"scale": "x", "field": "bin_Horsepower_start", "offset": 2},
+          "x2": {"scale": "x", "field": "bin_Horsepower_end", "offset": -2},
+          "y": {"scale": "y", "field": "y", "band": 0.5},
+          "y2": {"scale": "y", "field": "y2", "band": 0.5}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "bin_count_end"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Horsepower: \" + (format(datum[\"bin_Horsepower_start\"], \"\")) + \"; y: \" + (isValid(datum[\"y\"]) ? datum[\"y\"] : \"\"+datum[\"y\"]) + \"; bin_Horsepower_end: \" + (format(datum[\"bin_Horsepower_end\"], \"\")) + \"; y2: \" + (isValid(datum[\"y2\"]) ? datum[\"y2\"] : \"\"+datum[\"y2\"]) + \"; count: \" + (isValid(datum[\"bin_count_end\"]) ? datum[\"bin_count_end\"] : \"\"+datum[\"bin_count_end\"])"
+          },
+          "x": {"scale": "x", "field": "bin_Horsepower_start", "offset": 2},
+          "x2": {"scale": "x", "field": "bin_Horsepower_end", "offset": -2},
+          "y": {"scale": "y", "field": "y", "offset": -3, "band": 0.5},
+          "y2": {"scale": "y", "field": "y2", "offset": 3, "band": 0.5}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["bin_Horsepower_start", "bin_Horsepower_end"]
+      },
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {"data": "source_0", "fields": ["y", "y2"], "sort": true},
+      "range": [0, {"signal": "height"}],
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {
+        "data": "source_0",
+        "fields": ["max_bin_count_end", "bin_count_end"],
+        "sort": true
+      },
+      "range": {"scheme": "lighttealblue"},
+      "interpolate": "hcl"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [{"title": "count", "fill": "color", "symbolType": "square"}]
+}

@@ -23,12 +23,12 @@
       {
         "name": "bar_grouped",
         "title": "Grouped Bar Chart",
-        "description": "Read [here](https://vega.github.io/editor/#/examples/vega-lite/size.html#offset-step) for more details about how to set step size for grouped bar. "
+        "description": "Read [here](https://vega.github.io/vega-lite/docs/size.html#offset-step) for more details about how to set step size for grouped bar. "
       },
       {
         "name": "bar_grouped_repeated",
         "title": "Grouped Bar Chart (Multiple Measure with Repeat)",
-        "description": "Read [here](https://vega.github.io/editor/#/examples/vega-lite/size.html#offset-step) for more details about how to set step size for grouped bar. "
+        "description": "Read [here](https://vega.github.io/vega-lite/docs/size.html#offset-step) for more details about how to set step size for grouped bar. "
       },
       {
         "name": "stacked_bar_weather",
@@ -95,6 +95,10 @@
       {
         "name": "bar_axis_space_saving",
         "title": "Bar Chart with a Spacing-Saving Y-Axis"
+      },
+      {
+        "name": "bar_heatlane",
+        "title": "Heat Lane Chart"
       }
     ],
     "Histograms, Density Plots, and Dot Plots": [
@@ -160,6 +164,10 @@
         "name": "isotype_bar_chart_emoji",
         "title": "Isotype Dot Plot with Emoji",
         "description": "This example was inspired by [@jakevdp](https://github.com/jakevdp) and Isotype Bar Chart by [@jwoLondon](https://github.com/jwoLondon)."
+      },
+      {
+        "name": "bar_percent_of_total",
+        "title": "Relative Bar Chart (Calculate Percentage of Total)"
       }
     ],
     "Scatter & Strip Plots": [
@@ -397,6 +405,11 @@
         "description": "A pie chart encodes proportional differences among a set of numeric values as the angular extent and area of a circular slice."
       },
       {
+        "name": "arc_pie_normalize_tooltip",
+        "title": "Pie Chart with percentage_tooltip",
+        "description": "A pie chart with a tooltip that shows the percentage covered by the hovered slice."
+      },
+      {
         "name": "arc_donut",
         "title": "Donut Chart",
         "description": "A donut chart encodes proportional differences among a set of numeric values using angular extents."
@@ -418,8 +431,8 @@
     ],
     "Advanced Calculations": [
       {
-        "name": "window_percent_of_total",
-        "title": "Calculate Percentage of Total"
+        "name": "bar_percent_of_total",
+        "title": "Relative Bar Chart (Calculate Percentage of Total)"
       },
       {
         "name": "joinaggregate_mean_difference",
@@ -772,6 +785,12 @@
         "title": "Projection explorer",
         "description": "Compare different projections.",
         "png": true
+      },
+      {
+        "name": "interactive_geo_earthquakes",
+        "title": "Earthquakes Example",
+        "description": "Interactive globe visualization of earthquakes",
+        "png": true
       }
     ]
   },
@@ -780,6 +799,10 @@
       {
         "name": "interactive_bar_select_highlight",
         "title": "Bar Chart with Highlighting on Hover and Selection on Click"
+      },
+      {
+        "name": "interactive_histogram_full_height_hover",
+        "title": "Histogram with Full-Height Hover Targets for Tooltip"
       },
       {
         "name": "interactive_legend",
@@ -818,8 +841,12 @@
       },
       {
         "name": "interactive_line_hover",
-        "title": "Multi Series Line Chart with Interactive Highlight",
+        "title": "Multi Series Line Chart with an Interactive Line Highlight",
         "description": "The plot below uses argmax to position text labels at the end of line.  It also applies single selection to highlight a hovered line.  Note that we can hidden thick lines to make it easier to hover."
+      },
+      {
+        "name": "interactive_line_point_hover",
+        "title": "Multi Series Line Chart with an Interactive Point Highlight"
       },
       {
         "name": "interactive_multi_line_label",

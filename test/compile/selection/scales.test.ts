@@ -11,13 +11,13 @@ describe('Selection + Scales', () => {
   describe('selectionExtent', () => {
     it('is assembled from selection parameter', () => {
       const model = parseConcatModel({
+        params: [{name: 'var'}],
         vconcat: [
           {
             mark: 'area',
             params: [
               {name: 'brush', select: {type: 'interval', encodings: ['x']}},
-              {name: 'brush2', select: {type: 'point', fields: ['price'], resolve: 'intersect'}},
-              {name: 'var'}
+              {name: 'brush2', select: {type: 'point', fields: ['price'], resolve: 'intersect'}}
             ],
             encoding: {
               x: {field: 'date', type: 'temporal'},

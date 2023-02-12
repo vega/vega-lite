@@ -49,5 +49,57 @@ describe('compile/axis/encode', () => {
       const labels = encode.labels(model, 'x', {});
       expect(labels.text.signal).toBe('customNumberFormat(datum.value)');
     });
+
+    it('applies custom format type from config', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'}
+        },
+        config: {customFormatTypes: true, numberFormat: 'abc', numberFormatType: 'customNumberFormat'}
+      });
+      const labels = encode.labels(model, 'x', {});
+      expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
+    });
+
+    it('applies custom format type from a normalized stack', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', stack: 'normalize'}
+        },
+        config: {
+          customFormatTypes: true,
+          normalizedNumberFormat: 'abc',
+          normalizedNumberFormatType: 'customNumberFormat'
+        }
+      });
+      const labels = encode.labels(model, 'x', {});
+      expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
+    });
+
+    it('applies custom timeFormatType from config', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'temporal'}
+        },
+        config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customTimeFormat'}
+      });
+      const labels = encode.labels(model, 'x', {});
+      expect(labels.text.signal).toBe('customTimeFormat(datum.value, "abc")');
+    });
+
+    it('prefers timeUnit over timeFormatType from config', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'date'}
+        },
+        config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customTimeFormat'}
+      });
+      const labels = encode.labels(model, 'x', {});
+      expect(labels).toEqual({});
+    });
   });
 });

@@ -72,12 +72,12 @@
           "fill": {"scale": "color", "field": "gender"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+            "signal": "\"population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \".0%\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
           },
           "x": {"scale": "x", "field": "sum_people_end"},
           "x2": {"scale": "x", "field": "sum_people_start"},
           "y": {"scale": "y", "field": "age"},
-          "height": {"scale": "y", "band": 1}
+          "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }
     },
@@ -91,7 +91,7 @@
           "opacity": {"value": 0.9},
           "fill": {"value": "white"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+            "signal": "\"population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \".0%\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
           },
           "x": {
             "signal": "scale(\"x\", 0.5 * datum[\"sum_people_start\"] + 0.5 * datum[\"sum_people_end\"])"
@@ -154,6 +154,7 @@
       "orient": "bottom",
       "grid": false,
       "title": "population",
+      "format": ".0%",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
