@@ -589,7 +589,13 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
       let sort = sorts[0];
       if (sorts.length > 1) {
         log.warn(log.message.MORE_THAN_ONE_SORT);
-        sort = true;
+        // Get sorts with non-default ops
+        const filteredSorts = sorts.filter(s => isObject(s) && 'op' in s && s.op !== 'min');
+        if (sorts.every(s => isObject(s) && 'op' in s) && filteredSorts.length === 1) {
+          sort = filteredSorts[0];
+        } else {
+          sort = true;
+        }
       } else {
         // Simplify domain sort by removing field and op when the field is the same as the domain field.
         if (isObject(sort) && 'field' in sort) {
