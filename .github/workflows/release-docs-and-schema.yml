@@ -1,6 +1,7 @@
 name: Publish Documentation and Schema
 
 on:
+  workflow_dispatch:
   release:
     # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
     # The "published" event includes both releases and prereleases
