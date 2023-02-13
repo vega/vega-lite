@@ -141,21 +141,20 @@ export type StringValueDefWithCondition<F extends Field, T extends Type = Standa
 >;
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
-export type Conditional<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> =
-  | ConditionalPredicate<CD>
-  | ConditionalParameter<CD>;
+export type ConditionalTemplate = FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef;
 
-export type ConditionalPredicate<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> = {
+export type Conditional<CD extends ConditionalTemplate> = ConditionalPredicate<CD> | ConditionalParameter<CD>;
+
+export type ConditionalPredicate<CD extends ConditionalTemplate> = {
   /**
    * Predicate for triggering the condition
    */
   test: LogicalComposition<Predicate>;
 } & CD;
 
-export type ConditionalParameter<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> =
-  ParameterPredicate & CD;
+export type ConditionalParameter<CD extends ConditionalTemplate> = ParameterPredicate & CD;
 
-export function isConditionalParameter<T>(c: Conditional<T>): c is ConditionalParameter<T> {
+export function isConditionalParameter<T extends ConditionalTemplate>(c: Conditional<T>): c is ConditionalParameter<T> {
   return c['param'];
 }
 
@@ -299,7 +298,7 @@ export interface TypeMixins<T extends Type> {
    * 1) For a data `field`, `"nominal"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:
    * - `"quantitative"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `"argmin"` and `"argmax"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).
    * - `"temporal"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale
-   * - `ordinal""` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.
+   * - `"ordinal"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.
    *
    * 2) For a constant value in data domain (`datum`):
    * - `"quantitative"` if the datum is a number

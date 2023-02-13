@@ -16,13 +16,14 @@ import {
 import {Encoding, fieldDefs} from '../encoding';
 import {ExprRef} from '../expr';
 import * as log from '../log';
-import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
+import {ColorMixins, GenericMarkDef, isMarkDef, Mark, AnyMarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {getFirstDefined, hash, unique} from '../util';
 import {isSignalRef} from '../vega.schema';
 import {toStringFieldDef} from './../channeldef';
 
-export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig<ExprRef | SignalRef>>>;
+// Parts mixins can be any mark type. We could make a more specific type for each part.
+export type PartsMixins<P extends string> = Partial<Record<P, boolean | AnyMarkConfig<ExprRef | SignalRef>>>;
 
 export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
   ColorMixins<ExprRef | SignalRef> & {
@@ -207,13 +208,13 @@ export function partLayerMixins<P extends PartsMixins<any>>(
       {
         ...partBaseSpec,
         mark: {
-          ...(compositeMarkConfig[part] as MarkConfig<ExprRef | SignalRef>),
+          ...(compositeMarkConfig[part] as AnyMarkConfig<ExprRef | SignalRef>),
           ...(clip ? {clip} : {}),
           ...(color ? {color} : {}),
           ...(opacity ? {opacity} : {}),
           ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
           style: `${mark}-${String(part)}`,
-          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as MarkConfig<ExprRef | SignalRef>))
+          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as AnyMarkConfig<ExprRef | SignalRef>))
         }
       }
     ];
