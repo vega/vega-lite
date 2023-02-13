@@ -1,3 +1,35 @@
+
+
+## <small>5.6.1 (2023-02-13)</small>
+
+* chore: require clean working dir and main for releases ([b9f15eb](https://github.com/vega/vega-lite/commit/b9f15eb))
+* chore: switch to release-it ([4a02b5a](https://github.com/vega/vega-lite/commit/4a02b5a))
+* chore: update lockfile ([bddc5d5](https://github.com/vega/vega-lite/commit/bddc5d5))
+* chore: upgrade deps including rollup ([e757bfd](https://github.com/vega/vega-lite/commit/e757bfd))
+* chore(deps-dev): bump @auto-it/conventional-commits from 10.38.5 to 10.42.0 (#8704) ([4797d48](https://github.com/vega/vega-lite/commit/4797d48)), closes [#8704](https://github.com/vega/vega-lite/issues/8704)
+* chore(deps-dev): bump @auto-it/first-time-contributor from 10.38.5 to 10.42.0 (#8710) ([4912870](https://github.com/vega/vega-lite/commit/4912870)), closes [#8710](https://github.com/vega/vega-lite/issues/8710)
+* chore(deps-dev): bump @typescript-eslint/eslint-plugin from 5.50.0 to 5.51.0 (#8705) ([0cbfb2b](https://github.com/vega/vega-lite/commit/0cbfb2b)), closes [#8705](https://github.com/vega/vega-lite/issues/8705)
+* chore(deps-dev): bump @typescript-eslint/parser from 5.50.0 to 5.51.0 (#8706) ([3b8e8d8](https://github.com/vega/vega-lite/commit/3b8e8d8)), closes [#8706](https://github.com/vega/vega-lite/issues/8706)
+* chore(deps-dev): bump auto from 10.38.5 to 10.42.0 (#8711) ([ebe2fbf](https://github.com/vega/vega-lite/commit/ebe2fbf)), closes [#8711](https://github.com/vega/vega-lite/issues/8711)
+* chore(deps-dev): bump eslint from 8.33.0 to 8.34.0 (#8709) ([0ab6c0e](https://github.com/vega/vega-lite/commit/0ab6c0e)), closes [#8709](https://github.com/vega/vega-lite/issues/8709)
+* chore(deps-dev): bump prettier from 2.8.3 to 2.8.4 (#8703) ([534cec1](https://github.com/vega/vega-lite/commit/534cec1)), closes [#8703](https://github.com/vega/vega-lite/issues/8703)
+* chore(deps-dev): bump vega-datasets from 2.5.3 to 2.5.4 (#8707) ([c64cf94](https://github.com/vega/vega-lite/commit/c64cf94)), closes [#8707](https://github.com/vega/vega-lite/issues/8707)
+* chore(deps-dev): bump vega-embed from 6.21.0 to 6.21.2 (#8712) ([59c0650](https://github.com/vega/vega-lite/commit/59c0650)), closes [#8712](https://github.com/vega/vega-lite/issues/8712)
+
+
+
+## 5.6.0 (2022-10-14)
+
+* Bump version to: 5.6.0 [skip ci] ([1ff500a](https://github.com/vega/vega-lite/commit/1ff500a))
+* Update CHANGELOG.md [skip ci] ([71a7e87](https://github.com/vega/vega-lite/commit/71a7e87))
+
+
+
+## 5.5.0 (2022-08-15)
+
+* Bump version to: 5.5.0 [skip ci] ([0a2b57f](https://github.com/vega/vega-lite/commit/0a2b57f))
+* Update CHANGELOG.md [skip ci] ([6562bea](https://github.com/vega/vega-lite/commit/6562bea))
+
 # v5.6.0 (Fri Oct 14 2022)
 
 :tada: This release contains work from new contributors! :tada:
