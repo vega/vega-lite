@@ -6,7 +6,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import bundleSize from 'rollup-plugin-bundle-size';
 
-import pkg from './package.json';
+import pkg from './package.json' assert {type: 'json'};
 
 export function disallowedImports() {
   return {
