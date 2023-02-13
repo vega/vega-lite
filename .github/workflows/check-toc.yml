@@ -1,4 +1,4 @@
-name: Check
+name: Check TOC
 
 on:
   workflow_dispatch:

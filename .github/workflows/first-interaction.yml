@@ -1,4 +1,4 @@
-name: 'First Interaction'
+name: First Interaction
 
 on:
   pull_request:
