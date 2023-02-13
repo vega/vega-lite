@@ -68,11 +68,8 @@ jobs:
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
-      - name: Build
-        run: yarn build
-
       - name: Prebuild website
-        run: yarn predeploy:site
+        run: yarn presite
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1

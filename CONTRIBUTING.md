@@ -196,7 +196,7 @@ During development, it can be convenient to rebuild automatically or to run test
 
 ### Publishing
 
-To make a release, run `npm run release`. After the release notes are generated (from commits), please take a look to clean up so they are readable to the community. Triggered by the GitHub release, the CI will automatically deploy the website and update the schema repo.
+To make a release, run `npm run release`. After the release notes are generated (from commits), please take a look to clean up so they are readable to the community. Triggered by the GitHub release, the CI will automatically deploy the website and update the schema repo. The website deployment will require an approval from the maintainers on GitHub.
 
 ## Suggested Programming Environment.
 
