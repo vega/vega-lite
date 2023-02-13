@@ -8056,9 +8056,9 @@ vega-dataflow@^5.7.3, vega-dataflow@^5.7.4, vega-dataflow@~5.7.4:
     vega-util "^1.16.1"
 
 vega-datasets@~2.5.1:
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.5.3.tgz#dfe6fa8b908d242aaeeae527f3014e93d34de6f5"
-  integrity sha512-pzyPaGLutNso4vvhVgkHAQhQ2Lc9y3F02BI5geujqucyZr5rTy4GrUwmnRaHUfXsscDzoK4Mn3euShh/8KV86Q==
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.5.4.tgz#a8071d88ca82635e0df7368bb0a37c923538cbbb"
+  integrity sha512-GTOXrEVVkjJiSeye1SECCnEI+jGSyZbzhgYdoXpAnfNKOKyLX4zrfeQ+GeEwFVs0ctDwIL07he4yxaz5Iog7vw==
 
 vega-embed@^6.21.0:
   version "6.21.0"
