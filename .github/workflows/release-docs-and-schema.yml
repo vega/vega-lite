@@ -7,9 +7,50 @@ on:
     # use "released" to limit triggers to official releases
     types: [released]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  release:
-    name: Release
+  schema:
+    name: Release Schema
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build
+        run: yarn schema
+
+      - name: Setup Git remote
+        run: scripts/setup-git-ci.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add schema repo
+        run: |
+          pushd ..
+          git clone https://x-access-token:${GH_PAT}@github.com/vega/schema.git
+          popd
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+
+      - name: Publish schema
+        run: scripts/deploy-schema.sh
+
+  build:
+    name: Build Site
+
     runs-on: ubuntu-latest
 
     steps:
@@ -26,27 +67,25 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Setup Git remote
-        run: scripts/setup-git-ci.sh
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Add schema repo
-        run: |
-          pushd ..
-          git clone https://x-access-token:${GH_PAT}@github.com/vega/schema.git
-          popd
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-
       - name: Prebuild website
         run: yarn predeploy:site
 
-      - name: Publish website
-        uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
+      - uses: actions/upload-pages-artifact@v1
         with:
-          repo-token: ${{ secrets.GH_PAT }}
-          site-directory: 'site/'
+          path: 'site/'
 
-      - name: Publish schema
-        run: scripts/deploy-schema.sh
+  deploy:
+    name: Deploy Site
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
