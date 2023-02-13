@@ -1,10 +1,11 @@
+import alias from '@rollup/plugin-alias';
 import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
-import alias from '@rollup/plugin-alias';
+import terser from '@rollup/plugin-terser';
 import bundleSize from 'rollup-plugin-bundle-size';
-import {terser} from 'rollup-plugin-terser';
+
 import pkg from './package.json';
 
 export function disallowedImports() {
