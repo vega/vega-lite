@@ -62,6 +62,9 @@ jobs:
         with:
           cache: 'yarn'
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
@@ -71,9 +74,15 @@ jobs:
       - name: Prebuild website
         run: yarn predeploy:site
 
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./site
+          destination: ./_site
+
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: 'site/'
+          path: './_site'
 
   deploy:
     name: Deploy Site
