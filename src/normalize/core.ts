@@ -128,7 +128,9 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
             layer: layerValue
           };
 
-          const childName = `${(childSpec.name || '') + repeaterPrefix}child__layer_${varName(layerValue)}`;
+          const childName = `${(childSpec.name ? `${childSpec.name}_` : '') + repeaterPrefix}child__layer_${varName(
+            layerValue
+          )}`;
 
           const child = this.mapLayerOrUnit(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
           child.name = childName;
@@ -169,7 +171,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           };
 
           const childName =
-            (childSpec.name || '') +
+            (childSpec.name ? `${childSpec.name}_` : '') +
             repeaterPrefix +
             'child__' +
             (isArray(repeat)
