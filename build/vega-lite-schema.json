@@ -12467,7 +12467,7 @@
               "$ref": "#/definitions/LayerSpec"
             },
             {
-              "$ref": "#/definitions/UnitSpec"
+              "$ref": "#/definitions/UnitSpecWithFrame"
             }
           ],
           "description": "A specification of the view that gets repeated."
@@ -29223,7 +29223,7 @@
                   "$ref": "#/definitions/LayerSpec"
                 },
                 {
-                  "$ref": "#/definitions/UnitSpec"
+                  "$ref": "#/definitions/UnitSpecWithFrame"
                 }
               ],
               "description": "A specification of the view that gets repeated."
