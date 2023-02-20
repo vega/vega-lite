@@ -891,6 +891,10 @@
       {
         "name": "interactive_bin_extent",
         "title": "Focus + Context - Smooth Histogram Zooming"
+      },
+      {
+        "name": "dynamic_color_legend",
+        "title": "Dynamic Color Legend"
       }
     ],
     "Interactive Multi-View Displays": [
