@@ -93,7 +93,7 @@
     "@types/chai": "^4.3.4",
     "@types/d3": "^7.4.0",
     "@types/jest": "^27.4.1",
-    "@types/mkdirp": "^1.0.2",
+    "@types/mkdirp": "^2.0.0",
     "@types/pako": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
