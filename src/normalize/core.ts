@@ -65,7 +65,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
     const specWithReplacedEncoding = {
       ...spec,
-      name: [params.repeaterPrefix, spec.name].filter(n => n).join('_'),
+      ...(spec.name ? {name: [params.repeaterPrefix, spec.name].filter(n => n).join('_')} : {}),
       ...(encoding ? {encoding} : {})
     };
 
@@ -328,7 +328,13 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       parentEncoding: mergeEncoding({parentEncoding, encoding, layer: true}),
       parentProjection: mergeProjection({parentProjection, projection})
     };
-    return super.mapLayer(rest, params);
+    return super.mapLayer(
+      {
+        ...rest,
+        ...(spec.name ? {name: [params.repeaterPrefix, spec.name].filter(n => n).join('_')} : {})
+      },
+      params
+    );
   }
 }
 
