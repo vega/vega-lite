@@ -10,7 +10,7 @@
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
-      "format": {"type": "csv", "parse": {"date": "date"}, "delimiter": ","}
+      "format": {"type": "csv", "parse": {"date": "date"}}
     },
     {
       "name": "data_0",
@@ -66,7 +66,9 @@
     {
       "name": "unit",
       "value": {},
-      "on": [{"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}]
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
     },
     {
       "name": "brush",
@@ -103,7 +105,9 @@
               "events": {
                 "source": "scope",
                 "type": "mousedown",
-                "filter": ["!event.item || event.item.mark.name !== \"brush_brush\""]
+                "filter": [
+                  "!event.item || event.item.mark.name !== \"brush_brush\""
+                ]
               },
               "update": "[x(unit), x(unit)]"
             },
@@ -116,7 +120,9 @@
                   {
                     "source": "scope",
                     "type": "mousedown",
-                    "filter": ["!event.item || event.item.mark.name !== \"brush_brush\""]
+                    "filter": [
+                      "!event.item || event.item.mark.name !== \"brush_brush\""
+                    ]
                   },
                   {"source": "window", "type": "mouseup"}
                 ]
@@ -361,7 +367,10 @@
                 },
                 {"value": 0}
               ],
-              "stroke": [{"test": "brush_x[0] !== brush_x[1]", "value": "white"}, {"value": null}]
+              "stroke": [
+                {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
+                {"value": null}
+              ]
             }
           }
         }

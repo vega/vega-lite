@@ -195,7 +195,7 @@ describe('Translate interval selections at runtime', () => {
     await testRender(`geo-0`);
 
     for (let i = 0; i < hits.translate.length; i++) {
-      const translate = await page.evaluate(brush('translate', i, null, true));
+      const translate: any = await page.evaluate(brush('translate', i, null, true));
       expect(translate.length).toBeGreaterThan(0);
       await testRender(`geo-${i + 1}`);
     }
