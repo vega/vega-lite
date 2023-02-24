@@ -80,6 +80,7 @@
       "type": "group",
       "name": "concat_0_group",
       "title": {"text": "Single Arc", "frame": "group"},
+      "style": "view",
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
@@ -114,6 +115,7 @@
       "type": "group",
       "name": "concat_1_group",
       "title": {"text": "Stacked Arcs", "frame": "group"},
+      "style": "view",
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},

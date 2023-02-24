@@ -1,6 +1,6 @@
 import {TopLevelSpec} from '../src';
 import {SelectionType} from '../src/selection';
-import {brush, embedFn, hits as hitsMaster, spec, testRenderFn, tuples} from './util';
+import {brush, embedFn, geoSpec, hits as hitsMaster, spec, testRenderFn, tuples} from './util';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 
 describe('interval selections at runtime in unit views', () => {
@@ -196,5 +196,27 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].values[1]).toHaveLength(2);
       await testRender(`logpow_${i}`);
     }
+  });
+
+  describe('geo-intervals', () => {
+    it('should add IDs to the store', async () => {
+      await embed(geoSpec());
+      const store = await page.evaluate(brush('drag', 1));
+      expect(store).toHaveLength(13);
+      for (const t of store) {
+        expect(t).toHaveProperty('_vgsid_');
+      }
+      await testRender(`geo_1`);
+    });
+
+    it('should respect projections', async () => {
+      await embed(geoSpec({encodings: ['longitude']}));
+      const store = await page.evaluate(brush('drag', 0));
+      expect(store).toHaveLength(20);
+      for (const t of store) {
+        expect(t).toHaveProperty('_vgsid_');
+      }
+      await testRender(`geo_0`);
+    });
   });
 });

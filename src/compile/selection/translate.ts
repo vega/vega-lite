@@ -18,12 +18,12 @@ const translate: SelectionCompiler<'interval'> = {
 
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
-    const hasScales = scalesCompiler.defined(selCmpt);
+    const boundScales = scalesCompiler.defined(selCmpt);
     const anchor = name + ANCHOR;
     const {x, y} = selCmpt.project.hasChannel;
     let events = parseSelector(selCmpt.translate, 'scope');
 
-    if (!hasScales) {
+    if (!boundScales) {
       events = events.map(e => ((e.between[0].markname = name + INTERVAL_BRUSH), e));
     }
 
@@ -36,8 +36,8 @@ const translate: SelectionCompiler<'interval'> = {
             events: events.map(e => e.between[0]),
             update:
               '{x: x(unit), y: y(unit)' +
-              (x !== undefined ? `, extent_x: ${hasScales ? domain(model, X) : `slice(${x.signals.visual})`}` : '') +
-              (y !== undefined ? `, extent_y: ${hasScales ? domain(model, Y) : `slice(${y.signals.visual})`}` : '') +
+              (x !== undefined ? `, extent_x: ${boundScales ? domain(model, X) : `slice(${x.signals.visual})`}` : '') +
+              (y !== undefined ? `, extent_y: ${boundScales ? domain(model, Y) : `slice(${y.signals.visual})`}` : '') +
               '}'
           }
         ]
@@ -79,25 +79,26 @@ function onDelta(
   const anchor = name + ANCHOR;
   const delta = name + DELTA;
   const channel = proj.channel as ScaleChannel;
-  const hasScales = scalesCompiler.defined(selCmpt);
-  const signal = signals.filter(s => s.name === proj.signals[hasScales ? 'data' : 'visual'])[0];
+  const boundScales = scalesCompiler.defined(selCmpt);
+  const signal = signals.filter(s => s.name === proj.signals[boundScales ? 'data' : 'visual'])[0];
   const sizeSg = model.getSizeSignalRef(size).signal;
   const scaleCmpt = model.getScaleComponent(channel);
-  const scaleType = scaleCmpt.get('type');
-  const reversed = scaleCmpt.get('reverse'); // scale parsing sets this flag for fieldDef.sort
-  const sign = !hasScales ? '' : channel === X ? (reversed ? '' : '-') : reversed ? '-' : '';
+  const scaleType = scaleCmpt && scaleCmpt.get('type');
+  const reversed = scaleCmpt && scaleCmpt.get('reverse'); // scale parsing sets this flag for fieldDef.sort
+  const sign = !boundScales ? '' : channel === X ? (reversed ? '' : '-') : reversed ? '-' : '';
   const extent = `${anchor}.extent_${channel}`;
-  const offset = `${sign}${delta}.${channel} / ${hasScales ? `${sizeSg}` : `span(${extent})`}`;
-  const panFn = !hasScales
-    ? 'panLinear'
-    : scaleType === 'log'
-    ? 'panLog'
-    : scaleType === 'symlog'
-    ? 'panSymlog'
-    : scaleType === 'pow'
-    ? 'panPow'
-    : 'panLinear';
-  const arg = !hasScales
+  const offset = `${sign}${delta}.${channel} / ${boundScales ? `${sizeSg}` : `span(${extent})`}`;
+  const panFn =
+    !boundScales || !scaleCmpt
+      ? 'panLinear'
+      : scaleType === 'log'
+      ? 'panLog'
+      : scaleType === 'symlog'
+      ? 'panSymlog'
+      : scaleType === 'pow'
+      ? 'panPow'
+      : 'panLinear';
+  const arg = !boundScales
     ? ''
     : scaleType === 'pow'
     ? `, ${scaleCmpt.get('exponent') ?? 1}`
@@ -108,6 +109,6 @@ function onDelta(
 
   signal.on.push({
     events: {signal: delta},
-    update: hasScales ? update : `clampRange(${update}, 0, ${sizeSg})`
+    update: boundScales ? update : `clampRange(${update}, 0, ${sizeSg})`
   });
 }
