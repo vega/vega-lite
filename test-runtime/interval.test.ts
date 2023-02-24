@@ -201,7 +201,7 @@ describe('interval selections at runtime in unit views', () => {
   describe('geo-intervals', () => {
     it('should add IDs to the store', async () => {
       await embed(geoSpec());
-      const store = await page.evaluate(brush('drag', 1));
+      const store: any = await page.evaluate(brush('drag', 1));
       expect(store).toHaveLength(13);
       for (const t of store) {
         expect(t).toHaveProperty('_vgsid_');
@@ -211,7 +211,7 @@ describe('interval selections at runtime in unit views', () => {
 
     it('should respect projections', async () => {
       await embed(geoSpec({encodings: ['longitude']}));
-      const store = await page.evaluate(brush('drag', 0));
+      const store: any = await page.evaluate(brush('drag', 0));
       expect(store).toHaveLength(20);
       for (const t of store) {
         expect(t).toHaveProperty('_vgsid_');

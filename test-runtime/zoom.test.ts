@@ -225,7 +225,7 @@ describe('Zoom interval selections at runtime', () => {
     await testRender(`geo-0`);
 
     for (let i = 0; i < hits.zoom.length; i++) {
-      const zoomed = await page.evaluate(zoom('zoom', i, i % 2 ? 'out' : 'in', null, true));
+      const zoomed: any = await page.evaluate(zoom('zoom', i, i % 2 ? 'out' : 'in', null, true));
       expect(zoomed.length).toBeGreaterThan(0);
       await testRender(`geo-${i + 1}`);
     }
