@@ -1,6 +1,6 @@
 import {Orientation, SignalRef} from 'vega';
 import {isBinned, isBinning} from '../../bin';
-import {isContinuousFieldOrDatumDef, isFieldDef, isNumericDataDef, TypedFieldDef} from '../../channeldef';
+import {isFieldDef, isNumericDataDef, isUnbinnedQuantitativeFieldOrDatumDef, isTypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
 import {replaceExprRef} from '../../expr';
@@ -178,39 +178,31 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     // falls through
     case LINE:
     case TICK: {
-      // Tick is opposite to bar, line, area and never have ranged mark.
-      const xIsContinuous = isContinuousFieldOrDatumDef(x);
-      const yIsContinuous = isContinuousFieldOrDatumDef(y);
+      const xIsMeasure = isUnbinnedQuantitativeFieldOrDatumDef(x);
+      const yIsMeasure = isUnbinnedQuantitativeFieldOrDatumDef(y);
 
       if (specifiedOrient) {
         return specifiedOrient;
-      } else if (xIsContinuous && !yIsContinuous) {
+      } else if (xIsMeasure && !yIsMeasure) {
+        // Tick is opposite to bar, line, area
         return mark !== 'tick' ? 'horizontal' : 'vertical';
-      } else if (!xIsContinuous && yIsContinuous) {
+      } else if (!xIsMeasure && yIsMeasure) {
+        // Tick is opposite to bar, line, area
         return mark !== 'tick' ? 'vertical' : 'horizontal';
-      } else if (xIsContinuous && yIsContinuous) {
-        const xDef = x as TypedFieldDef<string>; // we can cast here since they are surely fieldDef
-        const yDef = y as TypedFieldDef<string>;
-
-        const xIsTemporal = xDef.type === TEMPORAL;
-        const yIsTemporal = yDef.type === TEMPORAL;
-
-        // temporal without timeUnit is considered continuous, but better serves as dimension
-        if (xIsTemporal && !yIsTemporal) {
-          return mark !== 'tick' ? 'vertical' : 'horizontal';
-        } else if (!xIsTemporal && yIsTemporal) {
-          return mark !== 'tick' ? 'horizontal' : 'vertical';
-        }
-
-        if (!xDef.aggregate && yDef.aggregate) {
-          return mark !== 'tick' ? 'vertical' : 'horizontal';
-        } else if (xDef.aggregate && !yDef.aggregate) {
-          return mark !== 'tick' ? 'horizontal' : 'vertical';
-        }
+      } else if (xIsMeasure && yIsMeasure) {
         return 'vertical';
       } else {
-        return undefined;
+        const xIsTemporal = isTypedFieldDef(x) && x.type === TEMPORAL;
+        const yIsTemporal = isTypedFieldDef(y) && y.type === TEMPORAL;
+
+        // x: T, y: N --> vertical tick
+        if (xIsTemporal && !yIsTemporal) {
+          return 'vertical';
+        } else if (!xIsTemporal && yIsTemporal) {
+          return 'horizontal';
+        }
       }
+      return undefined;
     }
   }
   return 'vertical';

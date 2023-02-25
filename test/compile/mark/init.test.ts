@@ -102,6 +102,15 @@ describe('compile/mark/init', () => {
       });
       expect(model.markDef.orient).toBe('vertical');
     });
+    it('should return correct default for T', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          x: {type: 'temporal', field: 'bar'}
+        }
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
 
     it('should return correct default for empty plot', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({

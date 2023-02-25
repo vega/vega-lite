@@ -701,9 +701,9 @@ export function isContinuousFieldOrDatumDef<F extends Field>(
   return (isTypedFieldDef(cd) && !isDiscrete(cd)) || isNumericDataDef(cd);
 }
 
-export function isQuantitativeFieldOrDatumDef<F extends Field>(cd: ChannelDef<F>) {
+export function isUnbinnedQuantitativeFieldOrDatumDef<F extends Field>(cd: ChannelDef<F>) {
   // TODO: make datum support DateTime object
-  return channelDefType(cd) === 'quantitative' || isNumericDataDef(cd);
+  return (isTypedFieldDef(cd) && cd.type === 'quantitative' && !cd.bin) || isNumericDataDef(cd);
 }
 
 export function isNumericDataDef<F extends Field>(cd: ChannelDef<F>): cd is DatumDef<F, number> {
