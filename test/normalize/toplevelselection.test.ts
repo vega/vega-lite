@@ -63,15 +63,11 @@ describe('TopLevelSelectionNormalizer', () => {
     const spec: TopLevelSpec = {
       params: [
         {name: 'one', select: 'point', views: ['child__row_Acceleration']},
-        {name: 'two', select: 'point', views: [['child__row_Horsepower', 'child__row_Horsepower_b']]},
+        {name: 'two', select: 'point', views: ['child__row_Horsepower_b']},
         {
           name: 'three',
           select: 'interval',
-          views: [
-            'child__row_Horsepower_a',
-            ['child__row_Horsepower', 'child__row_Horsepower_b', 'child__row_Horsepower_c'],
-            'child__row_Acceleration_a'
-          ]
+          views: ['child__row_Horsepower_a', 'child__row_Horsepower_c', 'child__row_Acceleration_a']
         },
         {name: 'four', expr: 'true'},
         {name: 'five', bind: {input: 'range'}}
