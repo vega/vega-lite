@@ -5,7 +5,7 @@ import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
 import {hasContinuousDomain} from '../../scale';
 import {SelectionInit, SelectionInitInterval, ParameterExtent, SELECTION_ID} from '../../selection';
-import {keys, stringify, vals} from '../../util';
+import {keys, replacePathInField, stringify, vals} from '../../util';
 import {VgData, VgDomain} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -13,6 +13,13 @@ import {isUnitModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
 import {UnitModel} from '../unit';
 import {parseSelectionExtent} from './parse';
+import {SelectionProjection} from './project';
+
+export function assembleProjection(proj: SelectionProjection) {
+  const {signals, hasLegend, index, ...rest} = proj;
+  rest.field = replacePathInField(rest.field);
+  return rest;
+}
 
 export function assembleInit(
   init: readonly (SelectionInit | readonly SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
@@ -124,10 +131,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
     }
 
     if (selCmpt.init) {
-      const fields = selCmpt.project.items.map(proj => {
-        const {signals, ...rest} = proj;
-        return rest;
-      });
+      const fields = selCmpt.project.items.map(assembleProjection);
 
       store.values = selCmpt.project.hasSelectionId
         ? selCmpt.init.map(i => ({unit, [SELECTION_ID]: assembleInit(i, false)[0]}))

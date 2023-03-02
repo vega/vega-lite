@@ -39,7 +39,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
       }
 
       if (defaults[key] === undefined || defaults[key] === true) {
-        defaults[key] = cfg[key] ?? defaults[key];
+        defaults[key] = duplicate(cfg[key] ?? defaults[key]);
       }
     }
 
@@ -52,9 +52,10 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
       events: isString(defaults.on) ? parseSelector(defaults.on, 'scope') : array(duplicate(defaults.on))
     } as any);
 
+    const def_ = duplicate(def); // defensive copy to prevent compilers from causing side effects
     for (const c of selectionCompilers) {
       if (c.defined(selCmpt) && c.parse) {
-        c.parse(model, selCmpt, def);
+        c.parse(model, selCmpt, def_);
       }
     }
   }

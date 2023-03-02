@@ -4,6 +4,7 @@
   "padding": 5,
   "width": 500,
   "height": 300,
+  "style": "view",
   "data": [
     {
       "name": "source_0",

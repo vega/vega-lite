@@ -1,0 +1,125 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "vconcat": [
+    {
+      "width": 500,
+      "height": 300,
+      "layer": [
+        {
+          "data": {
+            "url": "data/us-10m.json",
+            "format": {"type": "topojson", "feature": "states"}
+          },
+          "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "white"},
+          "projection": {"type": "albersUsa"}
+        },
+        {
+          "data": {"url": "data/flights-airport.csv"},
+          "params": [
+            {
+              "name": "brush",
+              "select": "interval",
+              "value": {"latitude": [30, 40], "longitude": [-86, -118]}
+            }
+          ],
+          "mark": "circle",
+          "encoding": {
+            "longitude": {"field": "longitude", "type": "quantitative"},
+            "latitude": {"field": "latitude", "type": "quantitative"},
+            "size": {
+              "field": "routes",
+              "type": "quantitative",
+              "scale": {"rangeMax": 500},
+              "legend": null
+            },
+            "color": {
+              "condition": {
+                "param": "brush",
+                "empty": false,
+                "value": "goldenrod"
+              },
+              "value": "steelblue"
+            }
+          },
+          "transform": [
+            {
+              "aggregate": [{"op": "count", "as": "routes"}],
+              "groupby": ["origin"]
+            },
+            {
+              "lookup": "origin",
+              "from": {
+                "data": {"url": "data/airports.csv"},
+                "key": "iata",
+                "fields": ["state", "latitude", "longitude"]
+              }
+            },
+            {"filter": "datum.state !== 'PR' && datum.state !== 'VI'"}
+          ],
+          "projection": {"type": "albersUsa"}
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "data/flights-2k.json",
+        "format": {"parse": {"date": "date"}}
+      },
+      "align": "all",
+      "transform": [
+        {"lookup": "origin", "from": {"param": "brush", "key": "origin"}}
+      ],
+      "columns": 2,
+      "concat": [
+        {
+          "layer": [
+            {
+              "mark": "bar",
+              "encoding": {
+                "x": {"field": "distance", "bin": {"maxbins": 20}},
+                "y": {"aggregate": "count"},
+                "color": {"value": "steelblue"}
+              }
+            },
+            {
+              "mark": "bar",
+              "encoding": {
+                "x": {"field": "distance", "bin": {"maxbins": 20}},
+                "y": {"aggregate": "count"},
+                "color": {"value": "goldenrod"}
+              },
+              "transform": [
+                {"filter": "data('brush_store').length && isValid(datum.brush)"}
+              ]
+            }
+          ],
+          "name": "child__column_distance"
+        },
+        {
+          "layer": [
+            {
+              "mark": "bar",
+              "encoding": {
+                "x": {"field": "delay", "bin": {"maxbins": 20}},
+                "y": {"aggregate": "count"},
+                "color": {"value": "steelblue"}
+              }
+            },
+            {
+              "mark": "bar",
+              "encoding": {
+                "x": {"field": "delay", "bin": {"maxbins": 20}},
+                "y": {"aggregate": "count"},
+                "color": {"value": "goldenrod"}
+              },
+              "transform": [
+                {"filter": "data('brush_store').length && isValid(datum.brush)"}
+              ]
+            }
+          ],
+          "name": "child__column_delay"
+        }
+      ]
+    }
+  ]
+}

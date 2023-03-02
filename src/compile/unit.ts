@@ -281,7 +281,7 @@ export class UnitModel extends ModelWithField {
     if (this.encoding.x || this.encoding.y) {
       return 'cell';
     } else {
-      return undefined;
+      return 'view';
     }
   }
 

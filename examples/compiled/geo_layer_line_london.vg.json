@@ -4,6 +4,7 @@
   "padding": 5,
   "width": 700,
   "height": 500,
+  "style": "view",
   "encode": {"update": {"stroke": {"value": "transparent"}}},
   "data": [
     {

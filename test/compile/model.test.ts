@@ -32,7 +32,7 @@ describe('Model', () => {
         mark: 'point'
       });
 
-      expect(model.assembleGroupStyle()).toBeUndefined();
+      expect(model.assembleGroupStyle()).toBe('view');
     });
 
     it('returns cell by default for cartesian plots', () => {

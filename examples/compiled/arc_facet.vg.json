@@ -72,6 +72,7 @@
     {
       "name": "cell",
       "type": "group",
+      "style": "view",
       "from": {
         "facet": {"name": "facet", "data": "source_0", "groupby": ["year"]}
       },

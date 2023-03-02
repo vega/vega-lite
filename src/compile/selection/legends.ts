@@ -1,4 +1,4 @@
-import {isObject, MergedStream, Stream} from 'vega';
+import {isObject, MergedStream, NewSignal, Stream} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {array, isString} from 'vega-util';
 import {disableDirectManipulation, TUPLE} from '.';
@@ -85,7 +85,7 @@ const legendBindings: SelectionCompiler<'point'> = {
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const proj = selCmpt.project;
-    const tuple = signals.find(s => s.name === name + TUPLE);
+    const tuple: NewSignal = signals.find(s => s.name === name + TUPLE);
     const fields = name + TUPLE_FIELDS;
     const values = proj.items.filter(p => p.hasLegend).map(p => varName(`${name}_${varName(p.field)}_legend`));
     const valid = values.map(v => `${v} !== null`).join(' && ');
