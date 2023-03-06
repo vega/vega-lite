@@ -65,6 +65,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
     const specWithReplacedEncoding = {
       ...spec,
+      ...(spec.name ? {name: [params.repeaterPrefix, spec.name].filter(n => n).join('_')} : {}),
       ...(encoding ? {encoding} : {})
     };
 
@@ -127,7 +128,9 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
             layer: layerValue
           };
 
-          const childName = `${(childSpec.name || '') + repeaterPrefix}child__layer_${varName(layerValue)}`;
+          const childName = `${(childSpec.name ? `${childSpec.name}_` : '') + repeaterPrefix}child__layer_${varName(
+            layerValue
+          )}`;
 
           const child = this.mapLayerOrUnit(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
           child.name = childName;
@@ -168,7 +171,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           };
 
           const childName =
-            (childSpec.name || '') +
+            (childSpec.name ? `${childSpec.name}_` : '') +
             repeaterPrefix +
             'child__' +
             (isArray(repeat)
@@ -325,7 +328,13 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       parentEncoding: mergeEncoding({parentEncoding, encoding, layer: true}),
       parentProjection: mergeProjection({parentProjection, projection})
     };
-    return super.mapLayer(rest, params);
+    return super.mapLayer(
+      {
+        ...rest,
+        ...(spec.name ? {name: [params.repeaterPrefix, spec.name].filter(n => n).join('_')} : {})
+      },
+      params
+    );
   }
 }
 

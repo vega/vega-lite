@@ -40,7 +40,7 @@ const zoom: SelectionCompiler<'interval'> = {
               ? `{x: x(unit), y: y(unit)}`
               : '{' +
                 [sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : '']
-                  .filter(expr => !!expr)
+                  .filter(expr => expr)
                   .join(', ') +
                 '}'
           }

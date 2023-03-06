@@ -63,8 +63,12 @@ describe('TopLevelSelectionNormalizer', () => {
     const spec: TopLevelSpec = {
       params: [
         {name: 'one', select: 'point', views: ['child__row_Acceleration']},
-        {name: 'two', select: 'point', views: [['child__row_Horsepower', 'b']]},
-        {name: 'three', select: 'interval', views: ['a', ['child__row_Horsepower', 'b', 'c']]},
+        {name: 'two', select: 'point', views: ['child__row_Horsepower_b']},
+        {
+          name: 'three',
+          select: 'interval',
+          views: ['child__row_Horsepower_a', 'child__row_Horsepower_c', 'child__row_Acceleration_a']
+        },
         {name: 'four', expr: 'true'},
         {name: 'five', bind: {input: 'range'}}
       ],
@@ -86,13 +90,13 @@ describe('TopLevelSelectionNormalizer', () => {
     expect(normalized.concat[0].name).toBe('child__row_Horsepower');
     expect(normalized.concat[0].params).toBeUndefined();
 
-    expect(normalized.concat[0].layer[0].name).toBe('a');
+    expect(normalized.concat[0].layer[0].name).toBe('child__row_Horsepower_a');
     expect(normalized.concat[0].layer[0].params).toHaveLength(1);
     expect(normalized.concat[0].layer[0].params[0].name).toBe('three');
 
-    expect(normalized.concat[0].layer[1].name).toBe('b');
+    expect(normalized.concat[0].layer[1].name).toBe('child__row_Horsepower_b');
     expect(normalized.concat[0].layer[1].params).toBeUndefined();
-    expect(normalized.concat[0].layer[1].layer[0].name).toBe('c');
+    expect(normalized.concat[0].layer[1].layer[0].name).toBe('child__row_Horsepower_c');
     expect(normalized.concat[0].layer[1].layer[0].params).toHaveLength(2);
     expect(normalized.concat[0].layer[1].layer[0].params[0].name).toBe('two');
     expect(normalized.concat[0].layer[1].layer[0].params[1].name).toBe('three');
@@ -102,14 +106,14 @@ describe('TopLevelSelectionNormalizer', () => {
     expect(normalized.concat[1].name).toBe('child__row_Acceleration');
     expect(normalized.concat[1].params).toBeUndefined();
 
-    expect(normalized.concat[1].layer[0].name).toBe('a');
+    expect(normalized.concat[1].layer[0].name).toBe('child__row_Acceleration_a');
     expect(normalized.concat[1].layer[0].params).toHaveLength(2);
     expect(normalized.concat[1].layer[0].params[0].name).toBe('one');
     expect(normalized.concat[1].layer[0].params[1].name).toBe('three');
 
-    expect(normalized.concat[1].layer[1].name).toBe('b');
+    expect(normalized.concat[1].layer[1].name).toBe('child__row_Acceleration_b');
     expect(normalized.concat[1].layer[1].params).toBeUndefined();
-    expect(normalized.concat[1].layer[1].layer[0].name).toBe('c');
+    expect(normalized.concat[1].layer[1].layer[0].name).toBe('child__row_Acceleration_c');
     expect(normalized.concat[1].layer[1].layer[0].params).toHaveLength(1);
     expect(normalized.concat[1].layer[1].layer[0].params[0].name).toBe('one');
     expect(normalized.concat[1].layer[1].layer[1].params).toHaveLength(1);

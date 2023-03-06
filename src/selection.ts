@@ -249,7 +249,7 @@ export type TopLevelSelectionParameter = SelectionParameter & {
    * By default, top-level selections are applied to every view in the visualization.
    * If this property is specified, selections will only be applied to views with the given names.
    */
-  views?: (string | string[])[];
+  views?: string[];
 };
 
 export type ParameterExtent =
