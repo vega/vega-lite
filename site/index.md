@@ -92,18 +92,19 @@ Vega-Lite is used by thousands of data enthusiasts, developers, journalists, dat
 
 {:.logos}
 
+- ![Airbnb]({{ site.baseurl }}/static/logo_airbnb.png 'Airbnb')
 - ![Apple]({{ site.baseurl }}/static/logo_apple.png 'Apple')
+- ![Databricks]({{ site.baseurl }}/static/logo_databricks.png 'Databricks')
 - ![Google]({{ site.baseurl }}/static/logo_google.png 'Google')
 - ![Microsoft]({{ site.baseurl }}/static/logo_ms.png 'Microsoft')
 - ![Tableau]({{ site.baseurl }}/static/logo_tableau.png 'Tableau')
-- ![Airbnb]({{ site.baseurl }}/static/logo_airbnb.png 'Airbnb')
+- ![Berkeley]({{ site.baseurl }}/static/logo_berkeley.png 'Berkeley')
+- ![Carnegie Mellon University]({{ site.baseurl }}/static/logo_cmu.png 'Carnegie Mellon University')
+- ![CERN]({{ site.baseurl }}/static/logo_cern.png 'CERN')
 - ![JupyterLab]({{ site.baseurl }}/static/logo_jlab.png 'JupyterLab')
 - ![LA Times]({{ site.baseurl }}/static/logo_la_times.png 'LA Times')
-- ![CERN]({{ site.baseurl }}/static/logo_cern.png 'CERN')
 - ![Massachusetts Institute of Technology]({{ site.baseurl }}/static/logo_mit.png 'Massachusetts Institute of Technology')
 - ![University of Washington]({{ site.baseurl }}/static/logo_uw.png 'University of Washington')
-- ![Carnegie Mellon University]({{ site.baseurl }}/static/logo_cmu.png 'Carnegie Mellon University')
-- ![Berkeley]({{ site.baseurl }}/static/logo_berkeley.png 'Berkeley')
 
 ## Team
 
