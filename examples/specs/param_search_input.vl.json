@@ -20,7 +20,7 @@
       "bind": {
         "input": "search",
         "placeholder": "Car model",
-        "name": "Search "
+        "name": "Search"
       },
       "value": ""
     }
