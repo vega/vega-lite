@@ -22,7 +22,7 @@
     {
       "name": "search_input",
       "value": "",
-      "bind": {"input": "search", "placeholder": "Car model", "name": "Search "}
+      "bind": {"input": "search", "placeholder": "Car model", "name": "Search"}
     }
   ],
   "marks": [
