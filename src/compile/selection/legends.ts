@@ -72,7 +72,7 @@ const legendBindings: SelectionCompiler<'point'> = {
           ...(!selCmpt.init ? {value: null} : {}),
           on: [
             // Legend entries do not store values, so we need to walk the scenegraph to the symbol datum.
-            {events, update: 'datum.value || item().items[0].items[0].datum.value', force: true},
+            {events, update: 'datum.value !== null? datum.value: item().items[0].items[0].datum.value', force: true},
             {events: stream.merge, update: `!event.item || !datum ? null : ${sgName}`, force: true}
           ]
         });
