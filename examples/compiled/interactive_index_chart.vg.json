@@ -12,7 +12,7 @@
         {
           "unit": "layer_0",
           "fields": [{"field": "date", "channel": "x", "type": "E"}],
-          "values": [1104566400000]
+          "values": [1104555600000]
         }
       ]
     },
