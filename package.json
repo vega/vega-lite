@@ -110,7 +110,7 @@
     "highlight.js": "^11.7.0",
     "jest-dev-server": "^6.1.1",
     "jest": "^27.5.1",
-    "mkdirp": "^2.1.3",
+    "mkdirp": "^3.0.0",
     "pako": "^2.1.0",
     "prettier": "^2.8.4",
     "puppeteer": "^15.0.0",
