@@ -16,6 +16,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["a"],
+          "field": "b",
+          "sort": {"field": [], "order": []},
+          "as": ["b_start", "b_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"]) && isValid(datum[\"a\"]) && isFinite(+datum[\"a\"])"
         }
@@ -35,8 +43,8 @@
           "description": {
             "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; a: \" + (format(datum[\"a\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "b"},
-          "x2": {"scale": "x", "value": 0},
+          "x": {"scale": "x", "field": "b_end"},
+          "x2": {"scale": "x", "field": "b_start"},
           "yc": {"scale": "y", "field": "a"},
           "height": {"value": 5}
         }
@@ -47,7 +55,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "data_0", "fields": ["b_start", "b_end"]},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
