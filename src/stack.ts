@@ -82,9 +82,12 @@ function isUnbinnedQuantitative(channelDef: PositionDef<string>) {
 
 function potentialStackedChannel(
   encoding: Encoding<string>,
-  x: 'x' | 'theta'
+  x: 'x' | 'theta',
+  {orient, type: mark}: MarkDef
 ): 'x' | 'y' | 'theta' | 'radius' | undefined {
   const y = x === 'x' ? 'y' : 'radius';
+
+  const isCartesian = x === 'x';
 
   const xDef = encoding[x];
   const yDef = encoding[y];
@@ -108,6 +111,14 @@ function potentialStackedChannel(
         if (xScale && xScale !== 'linear') {
           return y;
         } else if (yScale && yScale !== 'linear') {
+          return x;
+        }
+      }
+
+      if (isCartesian && mark === 'bar') {
+        if (orient === 'vertical') {
+          return y;
+        } else if (orient === 'horizontal') {
           return x;
         }
       }
@@ -138,7 +149,9 @@ function getDimensionChannel(channel: 'x' | 'y' | 'theta' | 'radius') {
 }
 
 export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackProperties {
-  const mark = isMarkDef(m) ? m.type : m;
+  const markDef = isMarkDef(m) ? m : {type: m};
+  const mark = markDef.type;
+
   // Should have stackable mark
   if (!STACKABLE_MARKS.has(mark)) {
     return null;
@@ -149,7 +162,8 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   // Note: The logic here is not perfectly correct.  If we want to support stacked dot plots where each dot is a pie chart with label, we have to change the stack logic here to separate Cartesian stacking for polar stacking.
   // However, since we probably never want to do that, let's just note the limitation here.
-  const fieldChannel = potentialStackedChannel(encoding, 'x') || potentialStackedChannel(encoding, 'theta');
+  const fieldChannel =
+    potentialStackedChannel(encoding, 'x', markDef) || potentialStackedChannel(encoding, 'theta', markDef);
 
   if (!fieldChannel) {
     return null;

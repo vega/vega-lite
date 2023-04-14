@@ -113,7 +113,7 @@ export class UnitModel extends ModelWithField {
     });
 
     // calculate stack properties
-    this.stack = stack(mark, encoding);
+    this.stack = stack(this.markDef, encoding);
     this.specifiedScales = this.initScales(mark, encoding);
 
     this.specifiedAxes = this.initAxes(encoding);
