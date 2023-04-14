@@ -97,7 +97,8 @@ export function noSameUnitLookup(name: string) {
 
 export const NEEDS_SAME_SELECTION = 'The same selection must be used to override scale domains in a layered view.';
 
-export const INTERVAL_INITIALIZED_WITH_X_Y = 'Interval selections should be initialized using "x" and/or "y" keys.';
+export const INTERVAL_INITIALIZED_WITH_POS =
+  'Interval selections should be initialized using "x", "y", "longitude", or "latitude" keys.';
 
 // REPEAT
 export function noSuchRepeatedValue(field: string) {

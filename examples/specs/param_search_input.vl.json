@@ -1,0 +1,28 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "opacity": {
+      "condition": {
+        "test": "test(regexp(search_input,'i'),datum.Name)",
+        "value": 0.8
+      },
+      "value": 0.1
+    },
+    "tooltip": {"field": "Name", "type": "nominal"},
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+  },
+  "params": [
+    {
+      "name": "search_input",
+      "bind": {
+        "input": "search",
+        "placeholder": "Car model",
+        "name": "Search"
+      },
+      "value": ""
+    }
+  ]
+}

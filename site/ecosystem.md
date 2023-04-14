@@ -6,7 +6,7 @@ permalink: /ecosystem.html
 redirect_from: /applications.html
 ---
 
-This is an incomplete list of integrations, applications, and extensions of the Vega-Lite language and compiler. If you want to add a tool or library, [edit this file and send us a pull request](https://github.com/vega/vega-lite/blob/next/site/ecosystem.md).
+This is an incomplete list of integrations, applications, and extensions of the Vega-Lite language and compiler. If you want to add a tool or library, [edit this file and send us a pull request](https://github.com/vega/vega-lite/blob/main/site/ecosystem.md).
 
 We mark featured plugins and tools with a <span class="octicon octicon-star"></span>.
 

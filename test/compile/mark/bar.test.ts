@@ -903,8 +903,8 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should produce horizontal bar using x, x2', () => {
-      expect(props.x).toEqual({scale: 'x', field: 'Acceleration'});
-      expect(props.x2).toEqual({scale: 'x', value: 0});
+      expect(props.x).toEqual({scale: 'x', field: 'Acceleration_end'});
+      expect(props.x2).toEqual({scale: 'x', field: 'Acceleration_start'});
       expect(props.yc).toEqual({scale: 'y', field: 'Horsepower'});
       expect(props.height).toEqual({value: defaultBarConfig.continuousBandSize});
     });
@@ -930,8 +930,8 @@ describe('Mark: Bar', () => {
     it('should produce horizontal bar using x, x2', () => {
       expect(props.xc).toEqual({scale: 'x', field: 'Acceleration'});
       expect(props.width).toEqual({value: defaultBarConfig.continuousBandSize});
-      expect(props.y).toEqual({scale: 'y', field: 'Horsepower'});
-      expect(props.y2).toEqual({scale: 'y', value: 0});
+      expect(props.y).toEqual({scale: 'y', field: 'Horsepower_end'});
+      expect(props.y2).toEqual({scale: 'y', field: 'Horsepower_start'});
     });
   });
 

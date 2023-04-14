@@ -31,7 +31,7 @@ layout: plain
       <ul class="sub-sub-nav">
         {% for sub_link in link.sub-sidebar %}
         <li class="sidebar-nav-item sub-item"><a {% if sub_link.url == url %}aria-current="page"{% endif %}
-            href="{{site.baseurl}}{{layout.base}}{% if sub_link.url != 'index' %}{{sub_link.url}}.html{{link.anchor}}{% endif %}" title="{{sub_link.title}}">{{sub_link.text}}
+            href="{{site.baseurl}}{{layout.base}}{% if sub_link.url != 'index' %}{{sub_link.url}}.html{{sub_link.anchor}}{% endif %}" title="{{sub_link.title}}">{{sub_link.text}}
         </a></li>
         {% endfor %}
       </ul>

@@ -4,7 +4,10 @@
   "background": "white",
   "padding": 5,
   "height": 100,
-  "title": {"text": "Distribution of Frame Render Time (ms)", "frame": "group"},
+  "title": {
+    "text": "Distribution of Frame Render Time (fps)",
+    "frame": "group"
+  },
   "style": "cell",
   "data": [
     {
@@ -103,6 +106,15 @@
       "grid": false,
       "labelAngle": 0,
       "labelBaseline": "top",
+      "encode": {
+        "labels": {
+          "update": {
+            "text": {
+              "signal": "datum.value === '∞' ? '0' : format(1000/datum.value, 'd')"
+            }
+          }
+        }
+      },
       "zindex": 0
     },
     {

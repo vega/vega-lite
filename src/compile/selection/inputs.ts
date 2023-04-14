@@ -6,6 +6,7 @@ import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
 import {SelectionCompiler} from '.';
 import {isLegendBinding} from '../../selection';
+import {NewSignal} from 'vega';
 
 const inputBindings: SelectionCompiler<'point'> = {
   defined: selCmpt => {
@@ -54,7 +55,7 @@ const inputBindings: SelectionCompiler<'point'> = {
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const proj = selCmpt.project;
-    const signal = signals.filter(s => s.name === name + TUPLE)[0];
+    const signal: NewSignal = signals.filter(s => s.name === name + TUPLE)[0];
     const fields = name + TUPLE_FIELDS;
     const values = proj.items.map(p => varName(`${name}_${p.field}`));
     const valid = values.map(v => `${v} !== null`).join(' && ');

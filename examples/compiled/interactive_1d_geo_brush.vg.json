@@ -1,0 +1,346 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 500,
+  "height": 300,
+  "style": "view",
+  "data": [
+    {
+      "name": "brush_store",
+      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}],
+      "values": [{"unit": "layer_1", "_vgsid_": [45, 51.5]}]
+    },
+    {
+      "name": "source_0",
+      "url": "data/us-10m.json",
+      "format": {"type": "topojson", "feature": "states"},
+      "transform": [{"type": "identifier", "as": "_vgsid_"}]
+    },
+    {
+      "name": "source_1",
+      "url": "data/airports.csv",
+      "format": {"type": "csv"},
+      "transform": [
+        {"type": "identifier", "as": "_vgsid_"},
+        {
+          "type": "filter",
+          "expr": "datum.state !== 'PR' && datum.state !== 'VI'"
+        },
+        {
+          "type": "geojson",
+          "fields": ["longitude", "latitude"],
+          "signal": "layer_1_geojson_0"
+        },
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["longitude", "latitude"],
+          "as": ["layer_1_x", "layer_1_y"]
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "[data('source_0'), layer_1_geojson_0]"},
+      "type": "albersUsa"
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "geo_interval_init_tick",
+      "value": null,
+      "on": [
+        {
+          "events": "timer{1}",
+          "update": "geo_interval_init_tick === null ? {} : geo_interval_init_tick"
+        }
+      ]
+    },
+    {
+      "name": "brush",
+      "update": "vlSelectionResolve(\"brush_store\", \"union\")"
+    },
+    {
+      "name": "projection_center",
+      "update": "invert(\"projection\", [width/2, height/2])"
+    },
+    {
+      "name": "brush_init",
+      "init": "[scale(\"projection\", [projection_center[0], 45]), scale(\"projection\", [projection_center[0], 51.5])]"
+    },
+    {
+      "name": "brush_latitude_1",
+      "init": "[brush_init[0][1], brush_init[1][1]]",
+      "on": [
+        {
+          "events": {
+            "source": "scope",
+            "type": "mousedown",
+            "filter": [
+              "!event.item || event.item.mark.name !== \"brush_brush\""
+            ]
+          },
+          "update": "[y(unit), y(unit)]"
+        },
+        {
+          "events": {
+            "source": "window",
+            "type": "mousemove",
+            "consume": true,
+            "between": [
+              {
+                "source": "scope",
+                "type": "mousedown",
+                "filter": [
+                  "!event.item || event.item.mark.name !== \"brush_brush\""
+                ]
+              },
+              {"source": "window", "type": "mouseup"}
+            ]
+          },
+          "update": "[brush_latitude_1[0], clamp(y(unit), 0, height)]"
+        },
+        {
+          "events": [{"source": "view", "type": "dblclick"}],
+          "update": "[0, 0]"
+        },
+        {
+          "events": {"signal": "brush_translate_delta"},
+          "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, height)"
+        },
+        {
+          "events": {"signal": "brush_zoom_delta"},
+          "update": "clampRange(zoomLinear(brush_latitude_1, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
+        }
+      ]
+    },
+    {
+      "name": "brush_tuple",
+      "on": [
+        {
+          "events": [
+            {"signal": "brush_latitude_1"},
+            {"signal": "geo_interval_init_tick"}
+          ],
+          "update": "vlSelectionTuples(intersect([[0, brush_latitude_1[0]],[width, brush_latitude_1[1]]], {markname: \"layer_1_marks\"}, unit.mark), {unit: \"layer_1\"})"
+        }
+      ]
+    },
+    {
+      "name": "brush_translate_anchor",
+      "value": {},
+      "on": [
+        {
+          "events": [
+            {"source": "scope", "type": "mousedown", "markname": "brush_brush"}
+          ],
+          "update": "{x: x(unit), y: y(unit), extent_y: slice(brush_latitude_1)}"
+        }
+      ]
+    },
+    {
+      "name": "brush_translate_delta",
+      "value": {},
+      "on": [
+        {
+          "events": [
+            {
+              "source": "window",
+              "type": "mousemove",
+              "consume": true,
+              "between": [
+                {
+                  "source": "scope",
+                  "type": "mousedown",
+                  "markname": "brush_brush"
+                },
+                {"source": "window", "type": "mouseup"}
+              ]
+            }
+          ],
+          "update": "{x: brush_translate_anchor.x - x(unit), y: brush_translate_anchor.y - y(unit)}"
+        }
+      ]
+    },
+    {
+      "name": "brush_zoom_anchor",
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "wheel",
+              "consume": true,
+              "markname": "brush_brush"
+            }
+          ],
+          "update": "{x: x(unit), y: y(unit)}"
+        }
+      ]
+    },
+    {
+      "name": "brush_zoom_delta",
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "wheel",
+              "consume": true,
+              "markname": "brush_brush"
+            }
+          ],
+          "force": true,
+          "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
+        }
+      ]
+    },
+    {
+      "name": "brush_modify",
+      "on": [
+        {
+          "events": {"signal": "brush_tuple"},
+          "update": "modify(\"brush_store\", brush_tuple, true)"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "brush_brush_bg",
+      "type": "rect",
+      "clip": true,
+      "encode": {
+        "enter": {"fill": {"value": "#333"}, "fillOpacity": {"value": 0.125}},
+        "update": {
+          "x": [
+            {
+              "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
+              "value": 0
+            },
+            {"value": 0}
+          ],
+          "y": [
+            {
+              "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
+              "signal": "brush_latitude_1[0]"
+            },
+            {"value": 0}
+          ],
+          "x2": [
+            {
+              "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
+              "field": {"group": "width"}
+            },
+            {"value": 0}
+          ],
+          "y2": [
+            {
+              "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
+              "signal": "brush_latitude_1[1]"
+            },
+            {"value": 0}
+          ]
+        }
+      }
+    },
+    {
+      "name": "layer_0_marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "interactive": true,
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "lightgray"},
+          "stroke": {"value": "white"},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "interactive": true,
+      "from": {"data": "source_1"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": [
+            {
+              "test": "length(data(\"brush_store\")) && vlSelectionIdTest(\"brush_store\", datum)",
+              "value": "goldenrod"
+            },
+            {"value": "steelblue"}
+          ],
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\"))"
+          },
+          "x": {"field": "layer_1_x"},
+          "y": {"field": "layer_1_y"},
+          "size": {"value": 10},
+          "shape": {"value": "circle"}
+        }
+      }
+    },
+    {
+      "name": "brush_brush",
+      "type": "rect",
+      "clip": true,
+      "encode": {
+        "enter": {"fill": {"value": "transparent"}},
+        "update": {
+          "x": [
+            {
+              "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
+              "value": 0
+            },
+            {"value": 0}
+          ],
+          "y": [
+            {
+              "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
+              "signal": "brush_latitude_1[0]"
+            },
+            {"value": 0}
+          ],
+          "x2": [
+            {
+              "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
+              "field": {"group": "width"}
+            },
+            {"value": 0}
+          ],
+          "y2": [
+            {
+              "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
+              "signal": "brush_latitude_1[1]"
+            },
+            {"value": 0}
+          ],
+          "stroke": [
+            {
+              "test": "brush_latitude_1[0] !== brush_latitude_1[1]",
+              "value": "white"
+            },
+            {"value": null}
+          ]
+        }
+      }
+    }
+  ]
+}

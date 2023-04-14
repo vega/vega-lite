@@ -891,6 +891,15 @@
       {
         "name": "interactive_bin_extent",
         "title": "Focus + Context - Smooth Histogram Zooming"
+      },
+      {
+        "name": "dynamic_color_legend",
+        "title": "Dynamic Color Legend"
+      },
+      {
+        "name": "param_search_input",
+        "description": "Search to highlight the relevant car models. Regexes are supported so you can type e.g. `mazda|ford`",
+        "title": "Search Input"
       }
     ],
     "Interactive Multi-View Displays": [

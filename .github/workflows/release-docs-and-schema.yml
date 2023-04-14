@@ -1,15 +1,22 @@
 name: Publish Documentation and Schema
 
 on:
+  workflow_dispatch:
   release:
     # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
     # The "published" event includes both releases and prereleases
     # use "released" to limit triggers to official releases
     types: [released]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  release:
-    name: Release
+  schema:
+    name: Release Schema
+
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +31,7 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Build
-        run: yarn build
+        run: yarn schema
 
       - name: Setup Git remote
         run: scripts/setup-git-ci.sh
@@ -39,14 +46,53 @@ jobs:
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
 
-      - name: Prebuild website
-        run: yarn predeploy:site
-
-      - name: Publish website
-        uses: alex-page/blazing-fast-gh-pages-deploy@v1.1.0
-        with:
-          repo-token: ${{ secrets.GH_PAT }}
-          site-directory: 'site/'
-
       - name: Publish schema
         run: scripts/deploy-schema.sh
+
+  build:
+    name: Build Site
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'yarn'
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Prebuild website
+        run: yarn presite
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./site
+          destination: ./_site
+
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: './_site'
+
+  deploy:
+    name: Deploy Site
+
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
