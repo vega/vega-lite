@@ -1,5 +1,23 @@
 
 
+# [5.7.0](https://github.com/vega/vega-lite/compare/v5.6.1...v5.7.0) (2023-04-15)
+
+
+### Bug Fixes
+
+* add repeat prefix to name in normalization ([#8733](https://github.com/vega/vega-lite/issues/8733)) ([2ea3265](https://github.com/vega/vega-lite/commit/2ea32651f9865311b25aa71f2da30277ea2a976e))
+* allow setting width/height in repeated layers ([#8723](https://github.com/vega/vega-lite/issues/8723)) ([9e26410](https://github.com/vega/vega-lite/commit/9e264103dea45996b52ab8cdeb9be15254fc1bba))
+* correctly apply stacked to bar with quantitative x and quantitative y axes ([#8838](https://github.com/vega/vega-lite/issues/8838)) ([4b9d22c](https://github.com/vega/vega-lite/commit/4b9d22c693860faf58c1868c0960b0b60405b504))
+* correctly handle merging of domains with more than one sort object ([#8567](https://github.com/vega/vega-lite/issues/8567)) ([1eedb8f](https://github.com/vega/vega-lite/commit/1eedb8f31e35afb5e05fdacd8902448c2a9da706))
+* move name from layer chart to one of the inside layers ([#8662](https://github.com/vega/vega-lite/issues/8662)) ([d99f614](https://github.com/vega/vega-lite/commit/d99f614cb322f9dd47c07af2cf02d6a3bfe36c9d))
+* orient logic for when bar with x=T + simplify logic ([#8739](https://github.com/vega/vega-lite/issues/8739)) ([ea4aa64](https://github.com/vega/vega-lite/commit/ea4aa64644fbc31b0c9ee06cfde5660c04efe59b))
+* prevent duplicate spec names in top-level selection view paths ([#8486](https://github.com/vega/vega-lite/issues/8486)) ([ba46bd2](https://github.com/vega/vega-lite/commit/ba46bd2b538be46686e90d8d6da032d160fac6e6))
+
+
+### Features
+
+* enable interval selections for cartographic projections ([#6953](https://github.com/vega/vega-lite/issues/6953)) ([e5cbe8f](https://github.com/vega/vega-lite/commit/e5cbe8f71e4d99f81c83ea1cbbc2938839cc8933))
+
 ## <small>5.6.1 (2023-02-13)</small>
 
 * chore: require clean working dir and main for releases ([b9f15eb](https://github.com/vega/vega-lite/commit/b9f15eb))
