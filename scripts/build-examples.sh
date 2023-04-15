@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# script for npm run x-compile
 
 set -eo pipefail
 
