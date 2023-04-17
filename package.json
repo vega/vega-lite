@@ -142,7 +142,7 @@
     "yargs": "~17.7.0"
   },
   "peerDependencies": {
-    "vega": "^5.22.0"
+    "vega": "^5.24.0"
   },
   "engines": {
     "node": ">=12"
