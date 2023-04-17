@@ -8585,10 +8585,10 @@ vega-dataflow@^5.7.5:
     vega-loader "^4.5.1"
     vega-util "^1.17.1"
 
-vega-datasets@~2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.5.4.tgz#a8071d88ca82635e0df7368bb0a37c923538cbbb"
-  integrity sha512-GTOXrEVVkjJiSeye1SECCnEI+jGSyZbzhgYdoXpAnfNKOKyLX4zrfeQ+GeEwFVs0ctDwIL07he4yxaz5Iog7vw==
+vega-datasets@~2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.7.0.tgz#458bec5e4ec1b506fc1ba63fed59ea86feaef764"
+  integrity sha512-dvHJFK9ousiblywNcRcJbedwbcAfVY/RH1UAqEWfvu4GZrXFibPlO+u8nP/onxDETcaHFDOGFs/+SK1P/sjjOQ==
 
 vega-embed@^6.21.3:
   version "6.21.3"
