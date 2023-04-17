@@ -65,7 +65,7 @@ jobs:
         run: yarn jest test/ --collectCoverage=true
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3.1.1
+        uses: codecov/codecov-action@v3.1.2
 
   test-cli:
     name: CLI
