@@ -1,5 +1,7 @@
 
 
+## [5.7.1](https://github.com/vega/vega-lite/compare/v5.7.0...v5.7.1) (2023-04-17)
+
 # [5.7.0](https://github.com/vega/vega-lite/compare/v5.6.1...v5.7.0) (2023-04-15)
 
 
