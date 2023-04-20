@@ -11,7 +11,7 @@ import pkg from './package.json' assert {type: 'json'};
 export function disallowedImports() {
   return {
     resolveId: module => {
-      if (module === 'vega' || module === 'util' || module === 'd3') {
+      if (['vega', 'util', 'd3'].includes(module)) {
         throw new Error('Cannot import from Vega, Node Util, or D3 in Vega-Lite.');
       }
       return null;
@@ -76,7 +76,7 @@ const outputs = [
           [
             '@babel/env',
             {
-              targets: 'defaults and not IE 11'
+              targets: 'defaults'
             }
           ],
           '@babel/typescript'
