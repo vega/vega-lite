@@ -7,6 +7,6 @@ const render = require('./render');
 render('png', function(canvas, arg) {
   const file = arg._[1] || null;
   const out = file ? createWriteStream(file) : process.stdout;
-  const stream = canvas.createPNGStream();
+  const stream = canvas.createPNGStream({ resolution: arg.ppi || undefined });
   stream.on('data', chunk => { out.write(chunk); });
 });
