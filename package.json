@@ -141,6 +141,9 @@
     "vega-util": "~1.17.0",
     "yargs": "~17.7.0"
   },
+  "resolutions": {
+    "vega-scale": "7.3.0"
+  },
   "peerDependencies": {
     "vega": "^5.24.0"
   },
