@@ -104,6 +104,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [MarkText](https://github.com/marktext/marktext): An open-source markdown editor that supports Vega-Lite.
 - [Scalene](https://github.com/plasma-umass/scalene): A CPU+GPU+memory profiler for Python.
 - [CSrankings](https://csrankings.org): a metrics-based ranking of top computer science institutions around the world.
+- [Kibana](https://github.com/elastic/kibana): a browser-based analytics and search dashboard for Elasticsearch that supports [authoring and embedding Vega and Vega-Lite visualizations](https://www.elastic.co/guide/en/kibana/current/vega.html).
 
 ## Tools for Embedding Vega-Lite Visualizations
 
