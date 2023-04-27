@@ -117,7 +117,9 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {
+        "signal": "min(ceil(width/40), abs((year(domain('x')[1]) * 12 + month(domain('x')[1])) - (year(domain('x')[0]) * 12 + month(domain('x')[0]))))"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -148,7 +150,9 @@
       "format": "%Y",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {
+        "signal": "min(ceil(width/40), abs((year(domain('x')[1]) * 12 + month(domain('x')[1])) - (year(domain('x')[0]) * 12 + month(domain('x')[0]))))"
+      },
       "zindex": 0
     },
     {

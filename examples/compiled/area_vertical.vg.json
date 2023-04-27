@@ -89,7 +89,9 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "min(ceil(height/40), abs(year(domain('y')[1]) - year(domain('y')[0])))"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -117,7 +119,9 @@
         "signal": "timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
       },
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "min(ceil(height/40), abs(year(domain('y')[1]) - year(domain('y')[0])))"
+      },
       "zindex": 0
     }
   ]
