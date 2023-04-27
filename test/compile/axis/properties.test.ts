@@ -55,7 +55,10 @@ describe('compile/axis/properties', () => {
       const tickCount = properties.defaultTickCount({
         fieldOrDatumDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
         scaleType: 'linear',
-        size: {signal: 'a'}
+        size: {signal: 'a'},
+        format: undefined,
+        formatType: undefined,
+        scaleName: 'x'
       });
       expect(tickCount).toEqual({signal: 'ceil(a/10)'});
     });
@@ -65,7 +68,10 @@ describe('compile/axis/properties', () => {
         fieldOrDatumDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
         scaleType: 'linear',
         size: {signal: 'a'},
-        values: [1, 2, 3]
+        values: [1, 2, 3],
+        format: undefined,
+        formatType: undefined,
+        scaleName: 'x'
       });
       expect(tickCount).toBeUndefined();
     });
@@ -75,7 +81,10 @@ describe('compile/axis/properties', () => {
         const tickCount = properties.defaultTickCount({
           fieldOrDatumDef: {timeUnit, field: 'a', type: 'temporal'},
           scaleType: 'linear',
-          size: {signal: 'a'}
+          size: {signal: 'a'},
+          format: undefined,
+          formatType: undefined,
+          scaleName: 'x'
         });
         expect(tickCount).toBeUndefined();
       });
@@ -85,15 +94,59 @@ describe('compile/axis/properties', () => {
       const tickCount = properties.defaultTickCount({
         fieldOrDatumDef: {field: 'a', type: 'quantitative'},
         scaleType: 'linear',
-        size: {signal: 'a'}
+        size: {signal: 'a'},
+        format: undefined,
+        formatType: undefined,
+        scaleName: 'x'
       });
       expect(tickCount).toEqual({signal: 'ceil(a/40)'});
+    });
+
+    it('should return expression for calculating the min of default count and span for linear scale with integer format', () => {
+      const tickCount = properties.defaultTickCount({
+        fieldOrDatumDef: {field: 'a', type: 'quantitative'},
+        scaleType: 'linear',
+        size: {signal: 'a'},
+        format: 'd',
+        formatType: undefined,
+        scaleName: 'x'
+      });
+      expect(tickCount).toEqual({signal: `min(ceil(a/40), abs(domain('x')[1] - domain('x')[0]))`});
+    });
+
+    it('should return expression for calculating the min of default count and span for year field', () => {
+      const tickCount = properties.defaultTickCount({
+        fieldOrDatumDef: {timeUnit: 'year', field: 'a', type: 'quantitative'},
+        scaleType: 'time',
+        size: {signal: 'a'},
+        format: undefined,
+        formatType: undefined,
+        scaleName: 'x'
+      });
+      expect(tickCount).toEqual({signal: `min(ceil(a/40), abs(year(domain('x')[1]) - year(domain('x')[0])))`});
+    });
+
+    it('should return expression for calculating the min of default count and span for yearmonth field', () => {
+      const tickCount = properties.defaultTickCount({
+        fieldOrDatumDef: {timeUnit: 'yearmonth', field: 'a', type: 'quantitative'},
+        scaleType: 'time',
+        size: {signal: 'a'},
+        format: undefined,
+        formatType: undefined,
+        scaleName: 'x'
+      });
+      expect(tickCount).toEqual({
+        signal: `min(ceil(a/40), abs((year(domain('x')[1]) * 12 + month(domain('x')[1])) - (year(domain('x')[0]) * 12 + month(domain('x')[0]))))`
+      });
     });
 
     it('should return undefined by default for log scale', () => {
       const tickCount = properties.defaultTickCount({
         fieldOrDatumDef: {field: 'a', type: 'quantitative'},
-        scaleType: 'log'
+        scaleType: 'log',
+        format: undefined,
+        formatType: undefined,
+        scaleName: 'x'
       });
       expect(tickCount).toBeUndefined();
     });
@@ -101,7 +154,10 @@ describe('compile/axis/properties', () => {
     it('should return undefined by default for point scale', () => {
       const tickCount = properties.defaultTickCount({
         fieldOrDatumDef: {field: 'a', type: 'quantitative'},
-        scaleType: 'point'
+        scaleType: 'point',
+        format: undefined,
+        formatType: undefined,
+        scaleName: 'x'
       });
       expect(tickCount).toBeUndefined();
     });

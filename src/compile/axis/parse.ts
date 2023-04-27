@@ -14,6 +14,7 @@ import {AxisComponent, AxisComponentIndex, AxisComponentProps, AXIS_COMPONENT_PR
 import {getAxisConfig, getAxisConfigs} from './config';
 import * as encode from './encode';
 import {AxisRuleParams, axisRules, defaultOrient, getFieldDefTitle, getLabelAngle} from './properties';
+import {guideFormat, guideFormatType} from '../format';
 
 export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
   return POSITION_SCALE_CHANNELS.reduce((axis, channel) => {
@@ -247,6 +248,8 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   axis = axis || {};
 
   const labelAngle = getLabelAngle(fieldOrDatumDef, axis, channel, config.style, axisConfigs);
+  const formatType = guideFormatType(axis.formatType, fieldOrDatumDef, scaleType);
+  const format = guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, axis.format, axis.formatType, config, true);
 
   const ruleParams: AxisRuleParams = {
     fieldOrDatumDef,
@@ -256,6 +259,8 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     scaleType,
     orient,
     labelAngle,
+    format,
+    formatType,
     mark,
     config
   };

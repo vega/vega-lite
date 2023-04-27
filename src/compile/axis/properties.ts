@@ -1,5 +1,5 @@
 import {Align, AxisOrient, Orient, SignalRef} from 'vega';
-import {isArray, isObject} from 'vega-util';
+import {identity, isArray, isObject} from 'vega-util';
 import {AxisInternal} from '../../axis';
 import {isBinned, isBinning} from '../../bin';
 import {PositionScaleChannel, X} from '../../channel';
@@ -22,7 +22,7 @@ import {NOMINAL, ORDINAL, Type} from '../../type';
 import {contains, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {mergeTitle, mergeTitleFieldDefs} from '../common';
-import {guideFormat, guideFormatType} from '../format';
+import {guideFormatType} from '../format';
 import {UnitModel} from '../unit';
 import {ScaleType} from './../../scale';
 import {AxisComponentProps} from './component';
@@ -38,6 +38,8 @@ export interface AxisRuleParams {
   scaleType: ScaleType;
   orient: Orient | SignalRef;
   labelAngle: number | SignalRef;
+  format: string | SignalRef;
+  formatType: ReturnType<typeof guideFormatType>;
   config: Config;
 }
 
@@ -46,15 +48,9 @@ export const axisRules: {
 } = {
   scale: ({model, channel}) => model.scaleName(channel),
 
-  format: ({fieldOrDatumDef, config, axis}) => {
-    const {format, formatType} = axis;
-    return guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, format, formatType, config, true);
-  },
+  format: ({format}) => format, // we already calculate this in parse
 
-  formatType: ({axis, fieldOrDatumDef, scaleType}) => {
-    const {formatType} = axis;
-    return guideFormatType(formatType, fieldOrDatumDef, scaleType);
-  },
+  formatType: ({formatType}) => formatType, // we already calculate this in parse
 
   grid: ({fieldOrDatumDef, axis, scaleType}) => axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef),
 
@@ -82,10 +78,14 @@ export const axisRules: {
   // we already calculate orient in parse
   orient: ({orient}) => orient as AxisOrient, // Need to cast until Vega supports signal
 
-  tickCount: ({channel, model, axis, fieldOrDatumDef, scaleType}) => {
+  tickCount: ({channel, model, axis, fieldOrDatumDef, scaleType, format, formatType}) => {
     const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
     const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
-    return axis.tickCount ?? defaultTickCount({fieldOrDatumDef, scaleType, size, values: axis.values});
+    const scaleName = model.scaleName(channel);
+    return (
+      axis.tickCount ??
+      defaultTickCount({fieldOrDatumDef, scaleType, size, values: axis.values, format, formatType, scaleName})
+    );
   },
 
   title: ({axis, model, channel}) => {
@@ -287,32 +287,60 @@ export function defaultTickCount({
   fieldOrDatumDef,
   scaleType,
   size,
-  values: vals
+  values: vals,
+  format,
+  formatType,
+  scaleName
 }: {
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
   scaleType: ScaleType;
   size?: SignalRef;
   values?: AxisInternal['values'];
+  format: string | SignalRef;
+  formatType: string | SignalRef;
+  scaleName: string;
 }) {
   if (!vals && !hasDiscreteDomain(scaleType) && scaleType !== 'log') {
+    const defaultSignal = `ceil(${size.signal}/40)`;
     if (isFieldDef(fieldOrDatumDef)) {
       if (isBinning(fieldOrDatumDef.bin)) {
         // for binned data, we don't want more ticks than maxbins
         return {signal: `ceil(${size.signal}/10)`};
       }
 
-      if (
-        fieldOrDatumDef.timeUnit &&
-        contains(['month', 'hours', 'day', 'quarter'], normalizeTimeUnit(fieldOrDatumDef.timeUnit)?.unit)
-      ) {
-        return undefined;
+      const {timeUnit} = fieldOrDatumDef;
+
+      if (timeUnit) {
+        const normalizedTimeUnit = normalizeTimeUnit(timeUnit);
+        const unit = normalizedTimeUnit?.unit;
+        if (contains(['month', 'hours', 'day', 'quarter'], unit)) {
+          return undefined;
+        } else if (unit === 'year') {
+          return minOfDefaultTickCountAndSpan(scaleName, defaultSignal, val => `year(${val})`);
+        } else if (unit === 'yearmonth') {
+          return minOfDefaultTickCountAndSpan(scaleName, defaultSignal, val => `(year(${val}) * 12 + month(${val}))`);
+        }
       }
     }
 
-    return {signal: `ceil(${size.signal}/40)`};
+    if (format === 'd' && (formatType === undefined || formatType === 'number')) {
+      return minOfDefaultTickCountAndSpan(scaleName, defaultSignal);
+    }
+
+    return {signal: defaultSignal};
   }
 
   return undefined;
+}
+
+function minOfDefaultTickCountAndSpan(
+  scaleName: string,
+  defaultSignal: string,
+  wrapValue: (x: string) => string = identity
+) {
+  const max = wrapValue(`domain('${scaleName}')[1]`);
+  const min = wrapValue(`domain('${scaleName}')[0]`);
+  return {signal: `min(${defaultSignal}, abs(${max} - ${min}))`};
 }
 
 export function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
