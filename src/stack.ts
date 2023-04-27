@@ -104,15 +104,6 @@ function potentialStackedChannel(
       // if there is no explicit stacking, only apply stack if there is only one aggregate for x or y
       if (xAggregate !== yAggregate) {
         return xAggregate ? x : y;
-      } else {
-        const xScale = xDef.scale?.type;
-        const yScale = yDef.scale?.type;
-
-        if (xScale && xScale !== 'linear') {
-          return y;
-        } else if (yScale && yScale !== 'linear') {
-          return x;
-        }
       }
 
       if (isCartesian && mark === 'bar') {
