@@ -51,6 +51,9 @@ To load data, you may need to set a base directory:
   if (type === 'vega') {
     args.boolean('p').alias('p', 'pretty').describe('p', 'Output human readable/pretty spec.');
   }
+  else if (type === 'png') {
+    args.number('ppi').describe('ppi', 'Resolution in ppi.');
+  }
 
   return args.help().version().argv;
 };

@@ -33,6 +33,9 @@ module.exports = (type, callback, opt) => {
   // set output image scale factor
   const scale = arg.scale || undefined;
 
+  // Allows for other ppi settings than 72 for png files
+  const ppi = arg.ppi || 72;
+
   // use a seeded random number generator, if specified
   if (typeof arg.seed !== 'undefined') {
     if (Number.isNaN(arg.seed)) throw 'Illegal seed value: must be a valid number.';
@@ -55,7 +58,7 @@ module.exports = (type, callback, opt) => {
       renderer: 'none' // no primary renderer needed
     }).finalize(); // clear any timers, etc
 
-    return (type === 'svg' ? view.toSVG(scale) : view.toCanvas(scale, opt)).then(_ => callback(_, arg));
+    return (type === 'svg' ? view.toSVG(scale) : view.toCanvas(scale * ppi / 72, opt)).then(_ => callback(_, arg));
   }
 
   // read input from file or stdin
