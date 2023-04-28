@@ -234,7 +234,7 @@ describe('stack', () => {
   it(
     'should always warn if the aggregated axis has non-linear scale',
     log.wrap(localLogger => {
-      for (const s of [undefined, 'center', 'zero', 'normalize'] as const) {
+      for (const s of ['center', 'zero', 'normalize'] as const) {
         for (const scaleType of [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT]) {
           const marks = s === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
           for (const mark of marks) {

@@ -104,15 +104,6 @@ function potentialStackedChannel(
       // if there is no explicit stacking, only apply stack if there is only one aggregate for x or y
       if (xAggregate !== yAggregate) {
         return xAggregate ? x : y;
-      } else {
-        const xScale = xDef.scale?.type;
-        const yScale = yDef.scale?.type;
-
-        if (xScale && xScale !== 'linear') {
-          return y;
-        } else if (yScale && yScale !== 'linear') {
-          return x;
-        }
       }
 
       if (isCartesian && mark === 'bar') {
@@ -247,7 +238,9 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   // warn when stacking non-linear
   if (stackedFieldDef?.scale?.type && stackedFieldDef?.scale?.type !== ScaleType.LINEAR) {
-    log.warn(log.message.cannotStackNonLinearScale(stackedFieldDef.scale.type));
+    if (stackedFieldDef?.stack) {
+      log.warn(log.message.cannotStackNonLinearScale(stackedFieldDef.scale.type));
+    }
     return null;
   }
 
