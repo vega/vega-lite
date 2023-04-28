@@ -17,7 +17,7 @@ import {Config, StyleConfigIndex} from '../../config';
 import {Mark} from '../../mark';
 import {hasDiscreteDomain} from '../../scale';
 import {Sort} from '../../sort';
-import {getSmallestTimeUnitPart, normalizeTimeUnit} from '../../timeunit';
+import {durationExpr, normalizeTimeUnit} from '../../timeunit';
 import {NOMINAL, ORDINAL, Type} from '../../type';
 import {contains, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
@@ -27,7 +27,6 @@ import {UnitModel} from '../unit';
 import {ScaleType} from './../../scale';
 import {AxisComponentProps} from './component';
 import {AxisConfigs, getAxisConfig} from './config';
-import {DateTime, dateTimeToExpr} from '../../datetime';
 
 export interface AxisRuleParams {
   fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>;
@@ -322,30 +321,9 @@ export function defaultTickMinStep({format, fieldOrDatumDef}: Pick<AxisRuleParam
   if (isFieldDef(fieldOrDatumDef)) {
     const {timeUnit} = fieldOrDatumDef;
     if (timeUnit) {
-      const normalizedTimeUnit = normalizeTimeUnit(timeUnit);
-      const smallestUnitPart = getSmallestTimeUnitPart(normalizedTimeUnit.unit);
-      if (smallestUnitPart && smallestUnitPart !== 'day') {
-        const startDate: DateTime = {
-          year: 2001, // pick a non-leap year
-          month: 1,
-          date: 1,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-          milliseconds: 0
-        };
-        const step = normalizedTimeUnit.step || 1;
-        const endDate: DateTime = {
-          ...startDate,
-          ...(smallestUnitPart === 'quarter'
-            ? {month: +startDate.month + step * 3}
-            : {[smallestUnitPart]: +startDate[smallestUnitPart] + step})
-        };
-
-        // Calculate timestamp duration for the smallest unit listed
-        return {
-          signal: `${dateTimeToExpr(endDate)} - ${dateTimeToExpr(startDate)}`
-        };
+      const signal = durationExpr(timeUnit);
+      if (signal) {
+        return {signal};
       }
     }
   }
