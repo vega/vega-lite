@@ -125,6 +125,22 @@ describe('encoding', () => {
         expect(logger.warns[0]).toEqual(log.message.offsetNestedInsideContinuousPositionScaleDropped('x'));
       })
     );
+    it('does not drop xOffset if x is time with timeUnit', () => {
+      const encoding = initEncoding(
+        {
+          x: {field: 'a', type: 'temporal', timeUnit: 'year'},
+          xOffset: {field: 'b', type: 'nominal'}
+        },
+        'point',
+        false,
+        defaultConfig
+      );
+
+      expect(encoding).toEqual({
+        x: {field: 'a', type: 'temporal', timeUnit: {unit: 'year'}},
+        xOffset: {field: 'b', type: 'nominal'}
+      });
+    });
   });
 
   describe('extractTransformsFromEncoding', () => {

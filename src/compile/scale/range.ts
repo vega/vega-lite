@@ -27,7 +27,7 @@ import {
   Y,
   YOFFSET
 } from '../../channel';
-import {getFieldOrDatumDef, isFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
+import {getFieldOrDatumDef, isFieldDef, isFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
 import {DataSourceType} from '../../data';
 import {channelHasFieldOrDatum} from '../../encoding';
@@ -55,6 +55,7 @@ import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
+import {durationExpr} from '../../timeunit';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
@@ -383,6 +384,11 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
     return [0, {signal: `bandwidth('${positionScaleName}')`}];
   } else {
     // continuous scale
+    const positionDef = model.encoding[positionChannel];
+    if (isFieldDef(positionDef) && positionDef.timeUnit) {
+      const duration = durationExpr(positionDef.timeUnit, expr => `scale('${positionScaleName}', ${expr})`);
+      return [0, {signal: duration}];
+    }
     return util.never(`Cannot use ${channel} scale if ${positionChannel} scale is not discrete.`);
   }
 }

@@ -335,7 +335,7 @@ export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
   }
 }
 
-export function durationExpr(timeUnit: TimeUnit | TimeUnitParams) {
+export function durationExpr(timeUnit: TimeUnit | TimeUnitParams, wrap: (x: string) => string = x => x) {
   const normalizedTimeUnit = normalizeTimeUnit(timeUnit);
   let smallestUnitPart = getSmallestTimeUnitPart(normalizedTimeUnit.unit);
   if (smallestUnitPart === 'day') {
@@ -360,7 +360,7 @@ export function durationExpr(timeUnit: TimeUnit | TimeUnitParams) {
     };
 
     // Calculate timestamp duration for the smallest unit listed
-    return `${dateTimeToExpr(endDate)} - ${dateTimeToExpr(startDate)}`;
+    return `${wrap(dateTimeToExpr(endDate))} - ${wrap(dateTimeToExpr(startDate))}`;
   }
   return undefined;
 }
