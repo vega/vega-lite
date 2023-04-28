@@ -93,6 +93,9 @@
       "labelOverlap": false,
       "formatType": "time",
       "labelBaseline": "top",
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
       "encode": {
         "labels": {
           "update": {

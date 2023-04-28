@@ -307,6 +307,7 @@
       "tickCount": 5,
       "labelFlush": true,
       "labelOverlap": true,
+      "tickMinStep": 1,
       "zindex": 0
     },
     {

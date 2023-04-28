@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Temperature in Seattle as a bar chart with yearmonth time unit.",
+  "description": "Google's stock price from 2006 to 2008.",
   "background": "white",
   "padding": 5,
   "width": 200,
@@ -9,25 +9,27 @@
   "data": [
     {
       "name": "source_0",
-      "url": "data/seattle-weather.csv",
+      "url": "data/stocks.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [
+        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
+        {
+          "type": "filter",
+          "expr": "inrange(time(datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)), [time(datetime(2006, 0, 1, 0, 0, 0, 0)), time(datetime(2008, 0, 1, 0, 0, 0, 0))])"
+        },
         {
           "field": "date",
           "type": "timeunit",
-          "units": ["year", "month"],
-          "as": ["yearmonth_date", "yearmonth_date_end"]
+          "units": ["year"],
+          "step": 2,
+          "as": ["year_step_2_date", "year_step_2_date_end"]
         },
         {
           "type": "aggregate",
-          "groupby": ["yearmonth_date", "yearmonth_date_end"],
-          "ops": ["mean"],
-          "fields": ["temp_max"],
-          "as": ["mean_temp_max"]
-        },
-        {
-          "type": "filter",
-          "expr": "(isDate(datum[\"yearmonth_date\"]) || (isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"]))) && isValid(datum[\"mean_temp_max\"]) && isFinite(+datum[\"mean_temp_max\"])"
+          "groupby": ["year_step_2_date"],
+          "ops": ["average"],
+          "fields": ["price"],
+          "as": ["average_price"]
         }
       ]
     }
@@ -35,20 +37,21 @@
   "marks": [
     {
       "name": "marks",
-      "type": "rect",
-      "style": ["bar"],
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"year_step_2_date\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
-          "ariaRoleDescription": {"value": "bar"},
+          "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of temp_max: \" + (format(datum[\"mean_temp_max\"], \"\"))"
+            "signal": "\"date (year): \" + (timeFormat(datum[\"year_step_2_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (format(datum[\"average_price\"], \"\"))"
           },
-          "x2": {"scale": "x", "field": "yearmonth_date", "offset": 1},
-          "x": {"scale": "x", "field": "yearmonth_date_end"},
-          "y": {"scale": "y", "field": "mean_temp_max"},
-          "y2": {"scale": "y", "value": 0}
+          "x": {"scale": "x", "field": "year_step_2_date"},
+          "y": {"scale": "y", "field": "average_price"},
+          "defined": {
+            "signal": "isValid(datum[\"year_step_2_date\"]) && isFinite(+datum[\"year_step_2_date\"]) && isValid(datum[\"average_price\"]) && isFinite(+datum[\"average_price\"])"
+          }
         }
       }
     }
@@ -57,16 +60,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "data": "source_0",
-        "fields": ["yearmonth_date", "yearmonth_date_end"]
-      },
+      "domain": {"data": "source_0", "field": "year_step_2_date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "mean_temp_max"},
+      "domain": {"data": "source_0", "field": "average_price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -80,7 +80,7 @@
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
       "tickMinStep": {
-        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+        "signal": "datetime(2003, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
       "domain": false,
       "labels": false,
@@ -108,15 +108,15 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "date (year-month)",
+      "title": "date (year)",
       "format": {
-        "signal": "timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+        "signal": "timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
       },
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
       "tickMinStep": {
-        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+        "signal": "datetime(2003, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
       "zindex": 0
     },
@@ -124,7 +124,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Mean of temp_max",
+      "title": "Average of price",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

@@ -85,6 +85,9 @@
           "orient": "bottom",
           "gridScale": "child__temp_max_y",
           "grid": true,
+          "tickMinStep": {
+            "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -117,6 +120,9 @@
           },
           "labelFlush": true,
           "labelOverlap": true,
+          "tickMinStep": {
+            "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+          },
           "zindex": 0
         },
         {
@@ -193,6 +199,9 @@
           "orient": "bottom",
           "gridScale": "child__precipitation_y",
           "grid": true,
+          "tickMinStep": {
+            "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -225,6 +234,9 @@
           },
           "labelFlush": true,
           "labelOverlap": true,
+          "tickMinStep": {
+            "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+          },
           "zindex": 0
         },
         {
@@ -295,6 +307,9 @@
           "orient": "bottom",
           "gridScale": "child__wind_y",
           "grid": true,
+          "tickMinStep": {
+            "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -327,6 +342,9 @@
           },
           "labelFlush": true,
           "labelOverlap": true,
+          "tickMinStep": {
+            "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+          },
           "zindex": 0
         },
         {
