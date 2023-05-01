@@ -1,5 +1,21 @@
 
 
+# [5.8.0](https://github.com/vega/vega-lite/compare/v5.7.1...v5.8.0) (2023-05-01)
+
+
+### Bug Fixes
+
+* avoid repetitive labels by using tickMinStep ([#8872](https://github.com/vega/vega-lite/issues/8872)) ([0b1c385](https://github.com/vega/vega-lite/commit/0b1c3857b5ec538ad0acec3e21c9ed741b38135f))
+* remove incorrect stack transform from charts with one linear Q-axis one non-linear Q-axis. ([#8871](https://github.com/vega/vega-lite/issues/8871)) ([f4d928a](https://github.com/vega/vega-lite/commit/f4d928a4e9f3272e0b24025e7243499d023dca76))
+
+
+### Features
+
+* enable ppi setting on png cli export ([#8854](https://github.com/vega/vega-lite/issues/8854)) ([d3a30bf](https://github.com/vega/vega-lite/commit/d3a30bf56397177f0764163c9ee37ca675d074f2))
+* return error exit code for cli tools ([#8858](https://github.com/vega/vega-lite/issues/8858)) ([c3f1b8f](https://github.com/vega/vega-lite/commit/c3f1b8f35171c9f95ceed1cd26f3afe7825b98f2))
+* simplify rollup script and update to more modern js ([#8852](https://github.com/vega/vega-lite/issues/8852)) ([b396595](https://github.com/vega/vega-lite/commit/b39659563a9e1d1d9418c3587c3fc8f696c5f165))
+* update vega and other dependencies ([#8857](https://github.com/vega/vega-lite/issues/8857)) ([6a6da3b](https://github.com/vega/vega-lite/commit/6a6da3b85b58e2ae71d07f2b029d56c4a73c9171))
+
 ## [5.7.1](https://github.com/vega/vega-lite/compare/v5.7.0...v5.7.1) (2023-04-17)
 
 # [5.7.0](https://github.com/vega/vega-lite/compare/v5.6.1...v5.7.0) (2023-04-15)
