@@ -113,6 +113,9 @@
           },
           "formatType": "time",
           "labelOverlap": true,
+          "tickMinStep": {
+            "signal": "datetime(2001, 3, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+          },
           "zindex": 0
         }
       ]

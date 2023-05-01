@@ -120,6 +120,9 @@
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickMinStep": {
+            "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+          },
           "zindex": 0
         }
       ]

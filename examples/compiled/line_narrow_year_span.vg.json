@@ -1,0 +1,132 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Google's stock price between 2006-2007.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
+        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
+        {
+          "type": "filter",
+          "expr": "inrange(time(datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)), [time(datetime(2006, 0, 1, 0, 0, 0, 0)), time(datetime(2007, 0, 1, 0, 0, 0, 0))])"
+        },
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["year"],
+          "as": ["year_date", "year_date_end"]
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["year_date"],
+          "ops": ["average"],
+          "fields": ["price"],
+          "as": ["average_price"]
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"year_date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (format(datum[\"average_price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "year_date"},
+          "y": {"scale": "y", "field": "average_price"},
+          "defined": {
+            "signal": "isValid(datum[\"year_date\"]) && isFinite(+datum[\"year_date\"]) && isValid(datum[\"average_price\"]) && isFinite(+datum[\"average_price\"])"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "year_date"},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "average_price"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (year)",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Average of price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

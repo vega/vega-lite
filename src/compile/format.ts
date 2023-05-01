@@ -177,11 +177,11 @@ export function guideFormat(
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
   type: Type,
   format: string | Dict<unknown>,
-  formatType: string,
+  formatType: string | SignalRef,
   config: Config,
   omitTimeFormatConfig: boolean // axis doesn't use config.timeFormat
 ) {
-  if (isCustomFormatType(formatType)) {
+  if (isString(formatType) && isCustomFormatType(formatType)) {
     return undefined; // handled in encode block
   } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
     if (channelDefType(fieldOrDatumDef) === 'quantitative') {

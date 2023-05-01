@@ -122,6 +122,9 @@
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -155,6 +158,9 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
       "zindex": 0
     },
     {

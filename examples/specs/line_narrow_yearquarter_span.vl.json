@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Google's stock price between 2006-2007.",
+  "data": {"url": "data/stocks.csv"},
+  "transform": [
+    {"filter": "datum.symbol==='GOOG'"},
+    {"filter": {"field": "date", "timeUnit": "year", "equal": 2006}}
+
+  ],
+  "mark": "line",
+  "encoding": {
+    "x": {"field": "date", "timeUnit": "yearquarter", "type": "temporal"},
+    "y": {"aggregate": "average", "field": "price", "type": "quantitative"}
+  }
+}

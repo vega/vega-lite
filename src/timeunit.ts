@@ -197,6 +197,11 @@ export function getTimeUnitParts(timeUnit: TimeUnit): LocalSingleTimeUnit[] {
   return TIMEUNIT_PARTS.filter(part => containsTimeUnit(timeUnit, part));
 }
 
+export function getSmallestTimeUnitPart(timeUnit: TimeUnit): LocalSingleTimeUnit {
+  const parts = getTimeUnitParts(timeUnit);
+  return parts[parts.length - 1];
+}
+
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
   const index = fullTimeUnit.indexOf(timeUnit);
