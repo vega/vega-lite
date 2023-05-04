@@ -156,6 +156,9 @@
         "signal": "timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
       },
       "formatType": "time",
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
       "encode": {
         "labels": {
           "update": {
