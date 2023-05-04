@@ -116,7 +116,7 @@ export function tooltipData(
         format,
         formatType,
         expr,
-        config,
+        config: {...config, ...config?.tooltipFormat},
         normalizeStack: true
       }).signal;
     }

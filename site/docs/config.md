@@ -44,13 +44,13 @@ The rest of this page outlines different types of config properties:
 
 A Vega-Lite `config` object can have the following top-level properties:
 
-{% include table.html props="autosize,background,countTitle,fieldTitle,font,lineBreak,padding" source="Config" %}
+{% include table.html props="autosize,background,countTitle,fieldTitle,font,lineBreak,padding,tooltipConfig" source="Config" %}
 
 {:#format}
 
 ## Format Configuration
 
-These config properties define the default number and time formats for text marks as well as axes, headers, and legends:
+These config properties define the default number and time formats for text marks as well as axes, headers, tooltip, and legends:
 
 {% include table.html props="numberFormat,numberFormatType,normalizedNumberFormat,normalizedNumberFormatType,timeFormat,timeFormatType,customFormatTypes" source="Config" %}
 
