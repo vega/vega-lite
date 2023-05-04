@@ -337,11 +337,8 @@ export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
 
 export function durationExpr(timeUnit: TimeUnit | TimeUnitParams, wrap: (x: string) => string = x => x) {
   const normalizedTimeUnit = normalizeTimeUnit(timeUnit);
-  let smallestUnitPart = getSmallestTimeUnitPart(normalizedTimeUnit.unit);
-  if (smallestUnitPart === 'day') {
-    smallestUnitPart = 'date';
-  }
-  if (smallestUnitPart) {
+  const smallestUnitPart = getSmallestTimeUnitPart(normalizedTimeUnit.unit);
+  if (smallestUnitPart && smallestUnitPart !== 'day') {
     const startDate: DateTime = {
       year: 2001, // pick a non-leap year
       month: 1,
