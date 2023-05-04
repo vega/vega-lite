@@ -1,0 +1,14 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 250,
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {"timeUnit": "year", "field": "Year", "type": "temporal"},
+    "xOffset": {"field": "Origin"},
+    "color": {"field": "Origin"},
+    "y": {"aggregate": "count", "title": "Number of Cars"}
+  },
+  "autosize": {"type": "fit-x", "contains": "padding"}
+}

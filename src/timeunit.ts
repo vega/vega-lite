@@ -1,5 +1,5 @@
 import {isObject, isString} from 'vega-util';
-import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
+import {DateTime, DateTimeExpr, dateTimeExprToExpr, dateTimeToExpr} from './datetime';
 import {accessPathWithDatum, keys, stringify, varName} from './util';
 
 /** Time Unit that only corresponds to only one part of Date objects. */
@@ -333,4 +333,31 @@ export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
         .join('')
     );
   }
+}
+
+export function durationExpr(timeUnit: TimeUnit | TimeUnitParams, wrap: (x: string) => string = x => x) {
+  const normalizedTimeUnit = normalizeTimeUnit(timeUnit);
+  const smallestUnitPart = getSmallestTimeUnitPart(normalizedTimeUnit.unit);
+  if (smallestUnitPart && smallestUnitPart !== 'day') {
+    const startDate: DateTime = {
+      year: 2001, // pick a non-leap year
+      month: 1,
+      date: 1,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0
+    };
+    const step = normalizedTimeUnit.step || 1;
+    const endDate: DateTime = {
+      ...startDate,
+      ...(smallestUnitPart === 'quarter'
+        ? {month: +startDate.month + step * 3}
+        : {[smallestUnitPart]: +startDate[smallestUnitPart] + step})
+    };
+
+    // Calculate timestamp duration for the smallest unit listed
+    return `${wrap(dateTimeToExpr(endDate))} - ${wrap(dateTimeToExpr(startDate))}`;
+  }
+  return undefined;
 }

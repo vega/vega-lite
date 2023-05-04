@@ -27,6 +27,7 @@ import {vgAlignedPositionChannel} from './position-align';
 import {pointPositionDefaultRef} from './position-point';
 import {rangePosition} from './position-range';
 import * as ref from './valueref';
+import {getOffsetScaleChannel} from '../../../channel';
 
 export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'radius'): VgEncodeEntry {
   const {config, encoding, markDef} = model;
@@ -44,6 +45,8 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
   const hasSizeDef =
     encoding[sizeChannel] ?? encoding.size ?? getMarkPropOrConfig('size', markDef, config, {vgChannel: sizeChannel});
 
+  const offsetScaleChannel = getOffsetChannel(channel);
+
   const isBarBand = mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal');
 
   // x, x2, and width -- we must specify two of these in all conditions
@@ -51,6 +54,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
     isFieldDef(channelDef) &&
     (isBinning(channelDef.bin) || isBinned(channelDef.bin) || (channelDef.timeUnit && !channelDef2)) &&
     !(hasSizeDef && !isRelativeBandSize(hasSizeDef)) &&
+    !encoding[offsetScaleChannel] &&
     !hasDiscreteDomain(scaleType)
   ) {
     return rectBinPosition({
@@ -128,6 +132,7 @@ function positionAndSize(
 
   const offsetScaleChannel = getOffsetChannel(channel);
   const offsetScaleName = model.scaleName(offsetScaleChannel);
+  const offsetScale = model.getScaleComponent(getOffsetScaleChannel(channel));
 
   // use "size" channel for bars, if there is orient and the channel matches the right orientation
   const useVlSizeChannel = (orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x');
@@ -150,7 +155,7 @@ function positionAndSize(
   const bandSize = getBandSize({channel, fieldDef, markDef, config, scaleType: scale?.get('type'), useVlSizeChannel});
 
   sizeMixins = sizeMixins || {
-    [vgSizeChannel]: defaultSizeRef(vgSizeChannel, offsetScaleName || scaleName, scale, config, bandSize)
+    [vgSizeChannel]: defaultSizeRef(vgSizeChannel, offsetScaleName || scaleName, offsetScale || scale, config, bandSize)
   };
 
   /*

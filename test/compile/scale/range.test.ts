@@ -111,6 +111,26 @@ describe('compile/scale', () => {
         );
       });
 
+      it('should return [0, year duration] when there is a nested offset with year time scale', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'temporal', timeUnit: 'year'},
+            xOffset: {field: 'xSub', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(
+          makeImplicit([
+            0,
+            {
+              signal: "scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0))"
+            }
+          ])
+        );
+      });
+
       it('should return step * bandspace when there is a nested offset with band scale with custom padding', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'bar',

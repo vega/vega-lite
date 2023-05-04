@@ -362,7 +362,10 @@ export function channelHasNestedOffsetScale<F extends Field>(
 ): boolean {
   if (isXorY(channel)) {
     const fieldDef = encoding[channel];
-    if ((isFieldDef(fieldDef) || isDatumDef(fieldDef)) && isDiscrete(fieldDef.type)) {
+    if (
+      (isFieldDef(fieldDef) || isDatumDef(fieldDef)) &&
+      (isDiscrete(fieldDef.type) || (isFieldDef(fieldDef) && fieldDef.timeUnit))
+    ) {
       const offsetChannel = getOffsetScaleChannel(channel);
       return channelHasFieldOrDatum(encoding, offsetChannel);
     }
@@ -545,7 +548,7 @@ export function initEncoding(
       const positionDef = normalizedEncoding[mainChannel];
       if (isFieldDef(positionDef)) {
         if (isContinuous(positionDef.type)) {
-          if (isFieldDef(channelDef)) {
+          if (isFieldDef(channelDef) && !positionDef.timeUnit) {
             // TODO: nesting continuous field instead continuous field should
             // behave like offsetting the data in data domain
             log.warn(log.message.offsetNestedInsideContinuousPositionScaleDropped(mainChannel));
