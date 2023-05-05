@@ -206,7 +206,7 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> extends FormatConf
   customFormatTypes?: boolean;
 
   /**
-   * Allows custom configuration on a tooltip. Will be preferred over the general configuration formatters.
+   * Define [custom format configuration](https://vega.github.io/vega-lite/docs/config.html#format) for tooltips. If unspecified, default format config will be applied.
    */
   tooltipFormat?: FormatConfig;
 
