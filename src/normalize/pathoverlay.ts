@@ -136,11 +136,15 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
     const tileOverlay = getTileOverlay(markDef, config[markDef.type]);
 
+    const pushDownData: boolean = markDef.type === 'geoshape' && tileOverlay && isObject(outerSpec.data);
     const layer: NormalizedUnitSpec[] = [
       {
         name,
         ...(params ? {params} : {}),
         ...(markDef.type === 'geoshape' && tileOverlay && isObject(projection) ? {projection} : {}),
+        // Data is pushed down into this first layer so that we can use a different dataset for the tile
+        // layer. The data is removed from outerSpec further below.
+        ...(pushDownData ? {data: outerSpec.data} : {}),
         mark: dropLineAndPointAndTile({
           // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
           ...(markDef.type === 'area' && markDef.opacity === undefined && markDef.fillOpacity === undefined
@@ -243,7 +247,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
 
     return normalize(
       {
-        ...outerSpec,
+        ...(pushDownData ? omit(outerSpec, ['data']) : outerSpec),
         layer,
         ...(tileOverlay
           ? {
