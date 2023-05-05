@@ -118,7 +118,7 @@
     }
   ],
   "config": {
-    "tooltipFormat": {"numberFormatType": "format", "numberFormat": ".2f"},
+    "tooltipFormat": {"numberFormat": ".2f"},
     "customFormatTypes": true
   }
 }
