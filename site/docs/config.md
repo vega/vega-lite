@@ -44,7 +44,7 @@ The rest of this page outlines different types of config properties:
 
 A Vega-Lite `config` object can have the following top-level properties:
 
-{% include table.html props="autosize,background,countTitle,fieldTitle,font,lineBreak,padding,tooltipConfig" source="Config" %}
+{% include table.html props="autosize,background,countTitle,fieldTitle,font,lineBreak,padding,tooltipFormat" source="Config" %}
 
 {:#format}
 
