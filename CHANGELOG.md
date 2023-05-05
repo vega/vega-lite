@@ -1,5 +1,13 @@
 
 
+# [5.9.0](https://github.com/vega/vega-lite/compare/v5.8.0...v5.9.0) (2023-05-05)
+
+
+### Features
+
+* allow custom tooltip formatting ([#8883](https://github.com/vega/vega-lite/issues/8883)) ([e7b45b8](https://github.com/vega/vega-lite/commit/e7b45b8ca0dd67915a8d8d962747f56de41a4cab))
+* support grouped bars inside time axis with time bins ([#8874](https://github.com/vega/vega-lite/issues/8874)) ([b29fa64](https://github.com/vega/vega-lite/commit/b29fa64d2b06d424385d0ed7d9bb7163f73d5706))
+
 # [5.8.0](https://github.com/vega/vega-lite/compare/v5.7.1...v5.8.0) (2023-05-01)
 
 
