@@ -69,7 +69,7 @@ vega.expressionFunction('customFormatA', function(datum, params) {
 });
 ```
 
-2. Setting the `customFormatTypes` config to `true`.
+(2) Setting the `customFormatTypes` config to `true`.
 
 ```js
 {
@@ -78,7 +78,7 @@ vega.expressionFunction('customFormatA', function(datum, params) {
 }
 ```
 
-3. You can then use this custom format function with `format` and `formatType` properties in text encodings and guides (axis/legend/header).
+(3) You can then use this custom format function with `format` and `formatType` properties in text encodings and guides (axis/legend/header).
 
 ```js
 {
@@ -86,6 +86,8 @@ vega.expressionFunction('customFormatA', function(datum, params) {
   "formatType": "customFormatA"
 }
 ```
+
+<span class="vl-example" data-name="config_numberFormatType_tooltip"></span>
 
 {:#axis-config}
 
