@@ -11,9 +11,9 @@
   },
   "config": {
     "tooltipFormat": {
-      "numberFormat": ".2f"
+      "numberFormat": ".8f"
     },
-    "numberFormat": ".4f",
+    "numberFormat": "d",
     "customFormatTypes": true
   }
 }
