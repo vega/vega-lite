@@ -140,6 +140,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
       {
         name,
         ...(params ? {params} : {}),
+        ...(markDef.type === 'geoshape' && tileOverlay && isObject(projection) ? {projection} : {}),
         mark: dropLineAndPointAndTile({
           // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
           ...(markDef.type === 'area' && markDef.opacity === undefined && markDef.fillOpacity === undefined
@@ -200,7 +201,6 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     }
     if (tileOverlay) {
       layer.push({
-        ...(projection ? {projection} : {}),
         mark: {
           type: 'image',
           clip: true,
