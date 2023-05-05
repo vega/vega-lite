@@ -7767,7 +7767,7 @@
         },
         "tooltipFormat": {
           "$ref": "#/definitions/FormatConfig",
-          "description": "Allows custom configuration on a tooltip. Will be preferred over the general configuration formatters."
+          "description": "Define [custom format configuration](https://vega.github.io/vega-lite/docs/config.html#format) for tooltips. If unspecified, default format config will be applied."
         },
         "trail": {
           "$ref": "#/definitions/LineConfig",
@@ -10858,10 +10858,6 @@
     "FormatConfig": {
       "additionalProperties": false,
       "properties": {
-        "customFormatTypes": {
-          "description": "Allow the `formatType` property for text marks and guides to accept a custom formatter function [registered as a Vega expression](https://vega.github.io/vega-lite/usage/compile.html#format-type).",
-          "type": "boolean"
-        },
         "normalizedNumberFormat": {
           "description": "If normalizedNumberFormatType is not specified, D3 number format for axis labels, text marks, and tooltips of normalized stacked fields (fields with `stack: \"normalize\"`). For example `\"s\"` for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).\n\nIf `config.normalizedNumberFormatType` is specified and `config.customFormatTypes` is `true`, this value will be passed as `format` alongside `datum.value` to the `config.numberFormatType` function. __Default value:__ `%`",
           "type": "string"
