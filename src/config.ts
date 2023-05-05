@@ -161,11 +161,6 @@ export interface FormatConfig {
    * __Note:__ You must also set `customFormatTypes` to `true` and there must *not* be a `timeUnit` defined to use this feature.
    */
   timeFormatType?: string;
-
-  /**
-   * Allow the `formatType` property for text marks and guides to accept a custom formatter function [registered as a Vega expression](https://vega.github.io/vega-lite/usage/compile.html#format-type).
-   */
-  customFormatTypes?: boolean;
 }
 
 export interface VLOnlyConfig<ES extends ExprRef | SignalRef> extends FormatConfig {
@@ -204,6 +199,11 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> extends FormatConf
    * - `"plain"` - displays only the field name without functions (e.g., "field", "date", "field").
    */
   fieldTitle?: 'verbal' | 'functional' | 'plain';
+
+  /**
+   * Allow the `formatType` property for text marks and guides to accept a custom formatter function [registered as a Vega expression](https://vega.github.io/vega-lite/usage/compile.html#format-type).
+   */
+  customFormatTypes?: boolean;
 
   /**
    * Allows custom configuration on a tooltip. Will be preferred over the general configuration formatters.
