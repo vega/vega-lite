@@ -203,17 +203,122 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
         ...(projection ? {projection} : {}),
         mark: {
           type: 'image',
-          ...pick(markDef, ['clip', 'tooltip']),
+          clip: true,
+          height: {expr: 'tile_size'},
+          width: {expr: 'tile_size'},
           ...tileOverlay
         },
-        encoding: overlayEncoding
+        encoding: {
+          url: {field: 'url', type: 'nominal'},
+          x: {field: 'x', scale: null, type: 'quantitative'},
+          y: {field: 'y', scale: null, type: 'quantitative'}
+        },
+        data: {
+          sequence: {
+            start: 0,
+            stop: 4,
+            as: 'a'
+          },
+          name: 'tile_list'
+        },
+        transform: [
+          {calculate: 'sequence(0, 4)', as: 'b'},
+          {flatten: ['b']},
+          {
+            calculate:
+              "base_tile_url + zoom_ceil + '/' + (datum.a + dii_floor + tiles_count) % tiles_count + '/' + ((datum.b + djj_floor)) + '.png'",
+            as: 'url'
+          },
+          {
+            calculate: '(datum.a * tile_size + dx) + tile_size / 2',
+            as: 'x'
+          },
+          {
+            calculate: '(datum.b * tile_size + dy) + tile_size / 2',
+            as: 'y'
+          }
+        ]
       });
     }
 
     return normalize(
       {
         ...outerSpec,
-        layer
+        layer,
+        ...(tileOverlay
+          ? {
+              params: [
+                {
+                  name: 'base_tile_size',
+                  value: 256
+                },
+                {
+                  name: 'base_tile_url',
+                  value: 'https://tile.openstreetmap.org/'
+                },
+                {
+                  name: 'tx',
+                  value: 'width / 2'
+                },
+                {
+                  name: 'ty',
+                  value: 'height / 2'
+                },
+                {
+                  name: 'zoom_level',
+                  value: 2.75
+                },
+                {
+                  name: 'zoom_ceil',
+                  expr: 'ceil(zoom_level)'
+                },
+                {
+                  name: 'rotate_longitude',
+                  value: 5.9025
+                },
+                {
+                  name: 'center_latitude',
+                  value: 52.56
+                },
+                {
+                  name: 'tiles_count',
+                  expr: 'pow(2, zoom_level)'
+                },
+                {
+                  name: 'tile_size',
+                  expr: 'base_tile_size * pow(2, zoom_level - zoom_ceil)'
+                },
+                {
+                  name: 'base_point',
+                  expr: "invert('projection', [0, 0])"
+                },
+                {
+                  name: 'dii',
+                  expr: '(base_point[0] + 180) / 360 * tiles_count'
+                },
+                {
+                  name: 'dii_floor',
+                  expr: 'floor(dii)'
+                },
+                {
+                  name: 'dx',
+                  expr: '(dii_floor - dii) * tile_size'
+                },
+                {
+                  name: 'djj',
+                  expr: '(1 - log(tan(base_point[1] * PI / 180) + 1 / cos(base_point[1] * PI / 180)) / PI) / 2 * tiles_count'
+                },
+                {
+                  name: 'djj_floor',
+                  expr: 'floor(djj)'
+                },
+                {
+                  name: 'dy',
+                  expr: 'round(djj_floor - djj) * tile_size'
+                }
+              ]
+            }
+          : {})
       },
       {
         ...normParams,
