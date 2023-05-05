@@ -87,6 +87,10 @@ vega.expressionFunction('customFormatA', function(datum, params) {
 }
 ```
 
+### Customize Formatter for Tooltips only
+
+Since tooltips have more screen estate and less chance of collisions, sometimes it is desirable to have a truncated format in a visualization, with a longer format in the tooltip. For example, in the visualization below, we want the y-axis to have the format `.2f`, so as not to have incredibly long labels, but on the tooltip it has the longer `.8f`. To achieve this specificity, one can add a `tooltipFormat` prop to their config that conforms to the [FormatConfig](#format) type.
+
 <span class="vl-example" data-name="config_numberFormatType_tooltip"></span>
 
 {:#axis-config}
