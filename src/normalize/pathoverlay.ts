@@ -3,7 +3,7 @@ import {isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
 import {ExprRef} from '../expr';
-import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark';
+import {AreaConfig, isMarkDef, LineConfig, GeoshapeConfig, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {isUnitSpec} from '../spec/unit';
 import {stack} from '../stack';
@@ -12,19 +12,19 @@ import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './
 
 type UnitSpecWithPathOverlay = GenericUnitSpec<Encoding<string>, Mark | MarkDef<'line' | 'area' | 'rule' | 'trail'>>;
 
-function dropLineAndPoint(markDef: MarkDef): MarkDef | Mark {
-  const {point: _point, line: _line, ...mark} = markDef;
+function dropLineAndPointAndTile(markDef: MarkDef): MarkDef | Mark {
+  const {point: _point, line: _line, tile: _tile, ...mark} = markDef;
 
   return keys(mark).length > 1 ? mark : mark.type;
 }
 
-function dropLineAndPointFromConfig(config: Config<SignalRef>) {
-  for (const mark of ['line', 'area', 'rule', 'trail'] as const) {
+function dropLineAndPointAndTileFromConfig(config: Config<SignalRef>) {
+  for (const mark of ['line', 'area', 'rule', 'trail', 'geoshape'] as const) {
     if (config[mark]) {
       config = {
         ...config,
         // TODO: remove as any
-        [mark]: omit(config[mark], ['point', 'line'] as any)
+        [mark]: omit(config[mark], ['point', 'line', 'tile'] as any)
       };
     }
   }
@@ -51,6 +51,26 @@ function getPointOverlay(
       return isObject(markConfig.point) ? markConfig.point : {};
     }
     // markDef.point is defined as falsy
+    return undefined;
+  }
+}
+
+function getTileOverlay(
+  markDef: MarkDef,
+  markConfig: GeoshapeConfig<ExprRef | SignalRef> = {}
+): MarkConfig<ExprRef | SignalRef> {
+  if (markDef.tile) {
+    return isObject(markDef.tile) ? markDef.tile : {};
+  } else if (markDef.tile !== undefined) {
+    // false or null
+    return null;
+  } else {
+    // undefined (not disabled)
+    if (markConfig.tile) {
+      // enable tile overlay if config[mark].tile is truthy
+      return isObject(markConfig.tile) ? markConfig.tile : {};
+    }
+    // markDef.tile is defined as falsy
     return undefined;
   }
 }
@@ -88,6 +108,8 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
         case 'rule':
         case 'trail':
           return !!getPointOverlay(markDef, config[markDef.type], encoding);
+        case 'geoshape':
+          return !!getTileOverlay(markDef, config[markDef.type]);
         case 'area':
           return (
             // false / null are also included as we want to remove the properties
@@ -103,19 +125,22 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     const {config} = normParams;
     const {params, projection, mark, name, encoding: e, ...outerSpec} = spec;
 
+    // Encoding can be undefined
+    const enc = e === undefined ? {} : e;
     // Need to call normalizeEncoding because we need the inferred types to correctly determine stack
-    const encoding = normalizeEncoding(e, config);
+    const encoding = normalizeEncoding(enc, config);
 
     const markDef: MarkDef = isMarkDef(mark) ? mark : {type: mark};
 
     const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
     const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
+    const tileOverlay = getTileOverlay(markDef, config[markDef.type]);
 
     const layer: NormalizedUnitSpec[] = [
       {
         name,
         ...(params ? {params} : {}),
-        mark: dropLineAndPoint({
+        mark: dropLineAndPointAndTile({
           // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
           ...(markDef.type === 'area' && markDef.opacity === undefined && markDef.fillOpacity === undefined
             ? {opacity: 0.7}
@@ -173,6 +198,17 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
         encoding: overlayEncoding
       });
     }
+    if (tileOverlay) {
+      layer.push({
+        ...(projection ? {projection} : {}),
+        mark: {
+          type: 'image',
+          ...pick(markDef, ['clip', 'tooltip']),
+          ...tileOverlay
+        },
+        encoding: overlayEncoding
+      });
+    }
 
     return normalize(
       {
@@ -181,7 +217,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
       },
       {
         ...normParams,
-        config: dropLineAndPointFromConfig(config)
+        config: dropLineAndPointAndTileFromConfig(config)
       }
     );
   }
