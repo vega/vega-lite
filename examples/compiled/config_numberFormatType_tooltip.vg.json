@@ -1,0 +1,126 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Testing global number formatting config",
+  "background": "white",
+  "padding": 5,
+  "width": 150,
+  "height": 150,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json", "parse": {"Year": "date"}},
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Year"],
+          "ops": ["average"],
+          "fields": ["Miles_per_Gallon"],
+          "as": ["average_Miles_per_Gallon"]
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"Year\"]) || (isValid(datum[\"Year\"]) && isFinite(+datum[\"Year\"]))) && isValid(datum[\"average_Miles_per_Gallon\"]) && isFinite(+datum[\"average_Miles_per_Gallon\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "tooltip": {
+            "signal": "{\"Year\": timeFormat(datum[\"Year\"], '%b %d, %Y'), \"Average of Miles_per_Gallon\": format(datum[\"average_Miles_per_Gallon\"], \".8f\")}"
+          },
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Average of Miles_per_Gallon: \" + (format(datum[\"average_Miles_per_Gallon\"], \".8f\"))"
+          },
+          "xc": {"scale": "x", "field": "Year"},
+          "width": {"value": 5},
+          "y": {"scale": "y", "field": "average_Miles_per_Gallon"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "Year"},
+      "range": [0, {"signal": "width"}],
+      "padding": 5
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "average_Miles_per_Gallon"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "tickMinStep": 1,
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Year",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Average of Miles_per_Gallon",
+      "format": "d",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "tickMinStep": 1,
+      "zindex": 0
+    }
+  ],
+  "config": {
+    "tooltipFormat": {"numberFormat": ".8f"},
+    "customFormatTypes": true
+  }
+}

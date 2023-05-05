@@ -107,43 +107,7 @@ export type ColorConfig = Record<string, Color>;
 
 export type FontSizeConfig = Record<string, number>;
 
-export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
-  /**
-   * Default font for all text marks, titles, and labels.
-   */
-  font?: string;
-
-  /**
-   * Default color signals.
-   *
-   * @hidden
-   */
-  color?: boolean | ColorConfig;
-
-  /**
-   * Default font size signals.
-   *
-   * @hidden
-   */
-  fontSize?: boolean | FontSizeConfig;
-
-  /**
-   * Default axis and legend title for count fields.
-   *
-   * __Default value:__ `'Count of Records`.
-   *
-   * @type {string}
-   */
-  countTitle?: string;
-
-  /**
-   * Defines how Vega-Lite generates title for fields. There are three possible styles:
-   * - `"verbal"` (Default) - displays function in a verbal style (e.g., "Sum of field", "Year-month of date", "field (binned)").
-   * - `"function"` - displays function using parentheses and capitalized texts (e.g., "SUM(field)", "YEARMONTH(date)", "BIN(field)").
-   * - `"plain"` - displays only the field name without functions (e.g., "field", "date", "field").
-   */
-  fieldTitle?: 'verbal' | 'functional' | 'plain';
-
+export interface FormatConfig {
   /**
    * If numberFormatType is not specified,
    * D3 number format for guide labels, text marks, and tooltips of non-normalized fields (fields *without* `stack: "normalize"`). For example `"s"` for SI units.
@@ -197,11 +161,54 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
    * __Note:__ You must also set `customFormatTypes` to `true` and there must *not* be a `timeUnit` defined to use this feature.
    */
   timeFormatType?: string;
+}
+
+export interface VLOnlyConfig<ES extends ExprRef | SignalRef> extends FormatConfig {
+  /**
+   * Default font for all text marks, titles, and labels.
+   */
+  font?: string;
+
+  /**
+   * Default color signals.
+   *
+   * @hidden
+   */
+  color?: boolean | ColorConfig;
+
+  /**
+   * Default font size signals.
+   *
+   * @hidden
+   */
+  fontSize?: boolean | FontSizeConfig;
+
+  /**
+   * Default axis and legend title for count fields.
+   *
+   * __Default value:__ `'Count of Records`.
+   *
+   * @type {string}
+   */
+  countTitle?: string;
+
+  /**
+   * Defines how Vega-Lite generates title for fields. There are three possible styles:
+   * - `"verbal"` (Default) - displays function in a verbal style (e.g., "Sum of field", "Year-month of date", "field (binned)").
+   * - `"function"` - displays function using parentheses and capitalized texts (e.g., "SUM(field)", "YEARMONTH(date)", "BIN(field)").
+   * - `"plain"` - displays only the field name without functions (e.g., "field", "date", "field").
+   */
+  fieldTitle?: 'verbal' | 'functional' | 'plain';
 
   /**
    * Allow the `formatType` property for text marks and guides to accept a custom formatter function [registered as a Vega expression](https://vega.github.io/vega-lite/usage/compile.html#format-type).
    */
   customFormatTypes?: boolean;
+
+  /**
+   * Define [custom format configuration](https://vega.github.io/vega-lite/docs/config.html#format) for tooltips. If unspecified, default format config will be applied.
+   */
+  tooltipFormat?: FormatConfig;
 
   /** Default properties for [single view plots](https://vega.github.io/vega-lite/docs/spec.html#single). */
   view?: ViewConfig<ES>;

@@ -72,6 +72,7 @@ export function tooltipData(
   config: Config,
   {reactiveGeom}: {reactiveGeom?: boolean} = {}
 ) {
+  const formatConfig = {...config, ...config.tooltipFormat};
   const toSkip = {};
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
   const tuples: {channel: Channel; key: string; value: string}[] = [];
@@ -86,7 +87,7 @@ export function tooltipData(
           type: (encoding[mainChannel] as TypedFieldDef<any>).type // for secondary field def, copy type from main channel
         };
 
-    const title = fieldDef.title || defaultTitle(fieldDef, config);
+    const title = fieldDef.title || defaultTitle(fieldDef, formatConfig);
     const key = array(title).join(', ');
 
     let value: string;
@@ -99,7 +100,7 @@ export function tooltipData(
         const startField = vgField(fieldDef, {expr});
         const endField = vgField(fieldDef2, {expr});
         const {format, formatType} = getFormatMixins(fieldDef);
-        value = binFormatExpression(startField, endField, format, formatType, config);
+        value = binFormatExpression(startField, endField, format, formatType, formatConfig);
         toSkip[channel2] = true;
       }
     }
@@ -116,12 +117,12 @@ export function tooltipData(
         format,
         formatType,
         expr,
-        config,
+        config: formatConfig,
         normalizeStack: true
       }).signal;
     }
 
-    value ??= textRef(fieldDef, config, expr).signal;
+    value ??= textRef(fieldDef, formatConfig, expr).signal;
 
     tuples.push({channel, key, value});
   }

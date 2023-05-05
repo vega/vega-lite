@@ -44,13 +44,13 @@ The rest of this page outlines different types of config properties:
 
 A Vega-Lite `config` object can have the following top-level properties:
 
-{% include table.html props="autosize,background,countTitle,fieldTitle,font,lineBreak,padding" source="Config" %}
+{% include table.html props="autosize,background,countTitle,fieldTitle,font,lineBreak,padding,tooltipFormat" source="Config" %}
 
 {:#format}
 
 ## Format Configuration
 
-These config properties define the default number and time formats for text marks as well as axes, headers, and legends:
+These config properties define the default number and time formats for text marks as well as axes, headers, tooltip, and legends:
 
 {% include table.html props="numberFormat,numberFormatType,normalizedNumberFormat,normalizedNumberFormatType,timeFormat,timeFormatType,customFormatTypes" source="Config" %}
 
@@ -69,7 +69,7 @@ vega.expressionFunction('customFormatA', function(datum, params) {
 });
 ```
 
-2. Setting the `customFormatTypes` config to `true`.
+(2) Setting the `customFormatTypes` config to `true`.
 
 ```js
 {
@@ -78,7 +78,7 @@ vega.expressionFunction('customFormatA', function(datum, params) {
 }
 ```
 
-3. You can then use this custom format function with `format` and `formatType` properties in text encodings and guides (axis/legend/header).
+(3) You can then use this custom format function with `format` and `formatType` properties in text encodings and guides (axis/legend/header).
 
 ```js
 {
@@ -86,6 +86,12 @@ vega.expressionFunction('customFormatA', function(datum, params) {
   "formatType": "customFormatA"
 }
 ```
+
+### Customize Formatter for Tooltips only
+
+Since tooltips have more screen estate and less chance of collisions, sometimes it is desirable to have a truncated format in a visualization, with a longer format in the tooltip. For example, in the visualization below, we want the y-axis to have the format `d` so it does not have a decimal point, so as not to have incredibly long labels, but on the tooltip it has the longer `.8f`. To achieve this specificity, one can add a `tooltipFormat` prop to their config that conforms to the [FormatConfig](#format) type.
+
+<span class="vl-example" data-name="config_numberFormatType_tooltip"></span>
 
 {:#axis-config}
 
