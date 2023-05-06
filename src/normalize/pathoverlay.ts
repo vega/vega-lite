@@ -136,14 +136,16 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
     const tileOverlay = getTileOverlay(markDef, config[markDef.type]);
 
+    // In case of a geoshape mark with a tile overlay, we push down the data to the first layer,
+    // i.e. the geoshape layer, and remove the data from the outer spec. This allows us to
+    // use a different dataset for the tile layer.
     const pushDownData: boolean = markDef.type === 'geoshape' && tileOverlay && isObject(outerSpec.data);
+
     const layer: NormalizedUnitSpec[] = [
       {
         name,
         ...(params ? {params} : {}),
         ...(markDef.type === 'geoshape' && tileOverlay && isObject(projection) ? {projection} : {}),
-        // Data is pushed down into this first layer so that we can use a different dataset for the tile
-        // layer. The data is removed from outerSpec further below.
         ...(pushDownData ? {data: outerSpec.data} : {}),
         mark: dropLineAndPointAndTile({
           // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
@@ -203,6 +205,8 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
         encoding: overlayEncoding
       });
     }
+
+    let outerParams = {};
     if (tileOverlay) {
       layer.push({
         mark: {
@@ -243,86 +247,85 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           }
         ]
       });
+      outerParams = {
+        params: [
+          {
+            name: 'base_tile_size',
+            value: 256
+          },
+          {
+            name: 'base_tile_url',
+            value: 'https://tile.openstreetmap.org/'
+          },
+          {
+            name: 'tx',
+            value: 'width / 2'
+          },
+          {
+            name: 'ty',
+            value: 'height / 2'
+          },
+          {
+            name: 'zoom_level',
+            value: 2.75
+          },
+          {
+            name: 'zoom_ceil',
+            expr: 'ceil(zoom_level)'
+          },
+          {
+            name: 'rotate_longitude',
+            value: 5.9025
+          },
+          {
+            name: 'center_latitude',
+            value: 52.56
+          },
+          {
+            name: 'tiles_count',
+            expr: 'pow(2, zoom_level)'
+          },
+          {
+            name: 'tile_size',
+            expr: 'base_tile_size * pow(2, zoom_level - zoom_ceil)'
+          },
+          {
+            name: 'base_point',
+            expr: "invert('projection', [0, 0])"
+          },
+          {
+            name: 'dii',
+            expr: '(base_point[0] + 180) / 360 * tiles_count'
+          },
+          {
+            name: 'dii_floor',
+            expr: 'floor(dii)'
+          },
+          {
+            name: 'dx',
+            expr: '(dii_floor - dii) * tile_size'
+          },
+          {
+            name: 'djj',
+            expr: '(1 - log(tan(base_point[1] * PI / 180) + 1 / cos(base_point[1] * PI / 180)) / PI) / 2 * tiles_count'
+          },
+          {
+            name: 'djj_floor',
+            expr: 'floor(djj)'
+          },
+          {
+            name: 'dy',
+            expr: 'round(djj_floor - djj) * tile_size'
+          }
+        ]
+      };
     }
 
     return normalize(
       {
         ...(pushDownData ? omit(outerSpec, ['data']) : outerSpec),
         layer,
-        ...(tileOverlay
-          ? {
-              params: [
-                {
-                  name: 'base_tile_size',
-                  value: 256
-                },
-                {
-                  name: 'base_tile_url',
-                  value: 'https://tile.openstreetmap.org/'
-                },
-                {
-                  name: 'tx',
-                  value: 'width / 2'
-                },
-                {
-                  name: 'ty',
-                  value: 'height / 2'
-                },
-                {
-                  name: 'zoom_level',
-                  value: 2.75
-                },
-                {
-                  name: 'zoom_ceil',
-                  expr: 'ceil(zoom_level)'
-                },
-                {
-                  name: 'rotate_longitude',
-                  value: 5.9025
-                },
-                {
-                  name: 'center_latitude',
-                  value: 52.56
-                },
-                {
-                  name: 'tiles_count',
-                  expr: 'pow(2, zoom_level)'
-                },
-                {
-                  name: 'tile_size',
-                  expr: 'base_tile_size * pow(2, zoom_level - zoom_ceil)'
-                },
-                {
-                  name: 'base_point',
-                  expr: "invert('projection', [0, 0])"
-                },
-                {
-                  name: 'dii',
-                  expr: '(base_point[0] + 180) / 360 * tiles_count'
-                },
-                {
-                  name: 'dii_floor',
-                  expr: 'floor(dii)'
-                },
-                {
-                  name: 'dx',
-                  expr: '(dii_floor - dii) * tile_size'
-                },
-                {
-                  name: 'djj',
-                  expr: '(1 - log(tan(base_point[1] * PI / 180) + 1 / cos(base_point[1] * PI / 180)) / PI) / 2 * tiles_count'
-                },
-                {
-                  name: 'djj_floor',
-                  expr: 'floor(djj)'
-                },
-                {
-                  name: 'dy',
-                  expr: 'round(djj_floor - djj) * tile_size'
-                }
-              ]
-            }
-          : {})
+        ...outerParams
       },
       {
         ...normParams,
