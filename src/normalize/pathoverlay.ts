@@ -208,6 +208,9 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
 
     let outerParams = {};
     if (tileOverlay) {
+      // Right now, we assume that the following properties are present in projections.
+      // Should be fixed with some graceful failure or fallback values
+      const prScale = projection.scale;
       layer.push({
         mark: {
           type: 'image',
@@ -233,8 +236,9 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           {calculate: 'sequence(0, 4)', as: 'b'},
           {flatten: ['b']},
           {
+            // Using 'round' below as else sometimes it uses values like 1.9999999999999998 instead of 2
             calculate:
-              "base_tile_url + zoom_ceil + '/' + (datum.a + dii_floor + tiles_count) % tiles_count + '/' + ((datum.b + djj_floor)) + '.png'",
+              "base_tile_url + zoom_ceil + '/' + round((datum.a + dii_floor + tiles_count) % tiles_count) + '/' + ((datum.b + djj_floor)) + '.png'",
             as: 'url'
           },
           {
@@ -266,20 +270,16 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
             value: 'height / 2'
           },
           {
+            name: 'prScale',
+            expr: prScale
+          },
+          {
             name: 'zoom_level',
-            value: 2.75
+            expr: 'log((2 * PI * prScale) / base_tile_size) / log(2)'
           },
           {
             name: 'zoom_ceil',
             expr: 'ceil(zoom_level)'
-          },
-          {
-            name: 'rotate_longitude',
-            value: 5.9025
-          },
-          {
-            name: 'center_latitude',
-            value: 52.56
           },
           {
             name: 'tiles_count',
