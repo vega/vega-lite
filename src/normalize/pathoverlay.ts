@@ -264,7 +264,9 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           },
           {
             name: 'prScale',
-            expr: prScale
+            // Using expr in case it is an expression and not just a number.
+            // Convert to String in case it is just a number.
+            expr: String(prScale)
           },
           {
             name: 'zoom_level',
