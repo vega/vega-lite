@@ -308,7 +308,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           },
           {
             name: 'dy',
-            expr: 'round(djj_floor - djj) * tile_size'
+            expr: 'round((djj_floor - djj) * tile_size)'
           }
         ]
       };
