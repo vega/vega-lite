@@ -174,7 +174,7 @@ This section lists commands that are commonly used during development. See `pack
 
 ### Build
 
-You can run `yarn build` to compile Vega-Lite and regenerate `vega-lite-schema.json`.
+You can run `yarn build` to compile Vega-Lite and `yarn schema` to regenerate `vega-lite-schema.json`.
 
 ### Basic Lint & Test & Test Coverage
 
