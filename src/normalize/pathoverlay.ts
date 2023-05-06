@@ -211,7 +211,9 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
       // Right now, we assume that the following properties are present in projections.
       // Should be fixed with some graceful failure or fallback values
       const prScale = projection.scale;
-      layer.push({
+      // Use unshift to insert layer at the beginning of the array so that
+      // the geoshape layer will be plotted on top of the tiles.
+      layer.unshift({
         mark: {
           type: 'image',
           clip: true,
@@ -236,17 +238,16 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           {calculate: 'sequence(0, 4)', as: 'b'},
           {flatten: ['b']},
           {
-            // Using 'round' below as else sometimes it uses values like 1.9999999999999998 instead of 2
             calculate:
-              "base_tile_url + zoom_ceil + '/' + round((datum.a + dii_floor + tiles_count) % tiles_count) + '/' + ((datum.b + djj_floor)) + '.png'",
+              "base_tile_url + zoom_ceil + '/' + (datum.a + dii_floor + tiles_count) % tiles_count + '/' + ((datum.b + djj_floor)) + '.png'",
             as: 'url'
           },
           {
-            calculate: '(datum.a * tile_size + dx) + tile_size / 2',
+            calculate: 'datum.a * tile_size + dx + tile_size / 2',
             as: 'x'
           },
           {
-            calculate: '(datum.b * tile_size + dy) + tile_size / 2',
+            calculate: 'datum.b * tile_size + dy + tile_size / 2',
             as: 'y'
           }
         ]
@@ -262,14 +263,6 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
             value: 'https://tile.openstreetmap.org/'
           },
           {
-            name: 'tx',
-            value: 'width / 2'
-          },
-          {
-            name: 'ty',
-            value: 'height / 2'
-          },
-          {
             name: 'prScale',
             expr: prScale
           },
@@ -283,7 +276,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           },
           {
             name: 'tiles_count',
-            expr: 'pow(2, zoom_level)'
+            expr: 'pow(2, zoom_ceil)'
           },
           {
             name: 'tile_size',
