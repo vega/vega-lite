@@ -36,7 +36,7 @@
   "scripts": {
     "changelog": "conventional-changelog -p angular -r 2",
     "prebuild": "yarn clean:build",
-    "build": "yarn build:only",
+    "build": "yarn build:only && yarn schema",
     "build:only": "tsc -p tsconfig.build.json && rollup -c",
     "prebuild:examples": "yarn build:only",
     "build:examples": "yarn data && TZ=America/Los_Angeles scripts/build-examples.sh",
