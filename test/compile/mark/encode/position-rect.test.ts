@@ -210,5 +210,24 @@ describe('compile/mark/encode/position-rect', () => {
         signal: 't + (r ? -1 : 1) * (o + 0.5)'
       });
     });
+
+    it('produces correct default y-mixins for empty y encoding', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: {type: 'bar'},
+        encoding: {
+          x: {
+            field: 'x',
+            type: 'quantitative',
+            aggregate: 'mean'
+          }
+        }
+      });
+
+      const props = rectPosition(model, 'y');
+      expect(props.height).toEqual({
+        signal: '0.8 * height'
+      });
+    });
   });
 });

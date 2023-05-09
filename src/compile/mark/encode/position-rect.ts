@@ -75,7 +75,8 @@ function defaultSizeRef(
   scaleName: string,
   scale: ScaleComponent,
   config: Config,
-  bandSize: BandSize
+  bandSize: BandSize,
+  hasFieldDef: boolean
 ): VgValueRef {
   if (isRelativeBandSize(bandSize)) {
     if (scale) {
@@ -109,6 +110,9 @@ function defaultSizeRef(
     if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
       return {value: scaleRange.step - 2};
     }
+  }
+  if (!hasFieldDef) {
+    return {signal: `0.8 * ${sizeChannel}`};
   }
   const defaultStep = getViewConfigDiscreteStep(config.view, sizeChannel);
   return {value: defaultStep - 2};
@@ -155,7 +159,14 @@ function positionAndSize(
   const bandSize = getBandSize({channel, fieldDef, markDef, config, scaleType: scale?.get('type'), useVlSizeChannel});
 
   sizeMixins = sizeMixins || {
-    [vgSizeChannel]: defaultSizeRef(vgSizeChannel, offsetScaleName || scaleName, offsetScale || scale, config, bandSize)
+    [vgSizeChannel]: defaultSizeRef(
+      vgSizeChannel,
+      offsetScaleName || scaleName,
+      offsetScale || scale,
+      config,
+      bandSize,
+      !!fieldDef
+    )
   };
 
   /*
