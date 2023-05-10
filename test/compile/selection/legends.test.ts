@@ -139,7 +139,7 @@ describe('Interactive Legends', () => {
                   markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value || item().items[0].items[0].datum.value',
+              update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
               force: true
             },
             {
@@ -186,7 +186,7 @@ describe('Interactive Legends', () => {
                   markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value || item().items[0].items[0].datum.value',
+              update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
               force: true
             },
             {
@@ -227,7 +227,7 @@ describe('Interactive Legends', () => {
                   markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value || item().items[0].items[0].datum.value',
+              update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
               force: true
             },
             {
@@ -264,7 +264,7 @@ describe('Interactive Legends', () => {
                   markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value || item().items[0].items[0].datum.value',
+              update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
               force: true
             },
             {
@@ -301,7 +301,7 @@ describe('Interactive Legends', () => {
                   markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value || item().items[0].items[0].datum.value',
+              update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
               force: true
             },
             {
@@ -431,7 +431,7 @@ describe('Interactive Legends', () => {
                   markname: 'Origin_legend_entries'
                 }
               ],
-              update: 'datum.value || item().items[0].items[0].datum.value',
+              update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
               force: true
             },
             {
