@@ -226,7 +226,7 @@ describe('compile/mark/encode/position-rect', () => {
 
       const props = rectPosition(model, 'y');
       expect(props.height).toEqual({
-        signal: '(1 - (0.1)) * height'
+        signal: '0.9 * height'
       });
     });
   });

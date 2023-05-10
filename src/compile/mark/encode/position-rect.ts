@@ -121,7 +121,7 @@ function defaultSizeRef(
     if (isSignalRef(padding)) {
       return {signal: `(1 - (${padding.signal})) * ${sizeChannel}`};
     } else if (isNumber(padding)) {
-      return {signal: `(1 - (${padding})) * ${sizeChannel}`};
+      return {signal: `${1 - padding} * ${sizeChannel}`};
     } else if (isExprRef(padding)) {
       return {signal: `(1 - (${padding.expr})) * ${sizeChannel}`};
     }
