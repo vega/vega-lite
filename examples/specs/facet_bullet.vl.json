@@ -45,5 +45,5 @@
     }]
   },
   "resolve": {"scale": {"x": "independent"}},
-  "config": {"tick": {"thickness": 2}}
+  "config": {"tick": {"thickness": 2}, "scale": {"barBandPaddingInner": 0}}
 }

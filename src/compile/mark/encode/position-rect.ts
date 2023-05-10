@@ -28,6 +28,9 @@ import {pointPositionDefaultRef} from './position-point';
 import {rangePosition} from './position-range';
 import * as ref from './valueref';
 import {getOffsetScaleChannel} from '../../../channel';
+import {getFirstDefined} from '../../../util';
+import {Mark} from '../../../mark';
+import {isExprRef} from '../../../expr';
 
 export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'radius'): VgEncodeEntry {
   const {config, encoding, markDef} = model;
@@ -76,7 +79,8 @@ function defaultSizeRef(
   scale: ScaleComponent,
   config: Config,
   bandSize: BandSize,
-  hasFieldDef: boolean
+  hasFieldDef: boolean,
+  mark: Mark
 ): VgValueRef {
   if (isRelativeBandSize(bandSize)) {
     if (scale) {
@@ -112,7 +116,17 @@ function defaultSizeRef(
     }
   }
   if (!hasFieldDef) {
-    return {signal: `0.8 * ${sizeChannel}`};
+    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner} = config.scale;
+    const padding = getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner); // this part is like paddingInner in scale.ts
+    if (isSignalRef(padding)) {
+      return {signal: `(1 - (${padding.signal})) * ${sizeChannel}`};
+    } else if (isNumber(padding)) {
+      return {signal: `(1 - (${padding})) * ${sizeChannel}`};
+    } else if (isExprRef(padding)) {
+      return {signal: `(1 - (${padding.expr})) * ${sizeChannel}`};
+    }
+    /* istanbul ignore next: Condition should not happen -- only for warning in development. */
+    throw new Error('It should never reach here');
   }
   const defaultStep = getViewConfigDiscreteStep(config.view, sizeChannel);
   return {value: defaultStep - 2};
@@ -165,7 +179,8 @@ function positionAndSize(
       offsetScale || scale,
       config,
       bandSize,
-      !!fieldDef
+      !!fieldDef,
+      markDef.type
     )
   };
 
