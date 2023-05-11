@@ -344,7 +344,7 @@
               "x": {"scale": "child_x", "field": "ranges\\.2\\._end"},
               "x2": {"scale": "child_x", "field": "ranges\\.2\\._start"},
               "yc": {"signal": "child_height", "mult": 0.5},
-              "height": {"value": 18}
+              "height": {"signal": "1 * height"}
             }
           }
         },
@@ -363,7 +363,7 @@
               "x": {"scale": "child_x", "field": "ranges\\.1\\._end"},
               "x2": {"scale": "child_x", "field": "ranges\\.1\\._start"},
               "yc": {"signal": "child_height", "mult": 0.5},
-              "height": {"value": 18}
+              "height": {"signal": "1 * height"}
             }
           }
         },
@@ -382,7 +382,7 @@
               "x": {"scale": "child_x", "field": "ranges\\.0\\._end"},
               "x2": {"scale": "child_x", "field": "ranges\\.0\\._start"},
               "yc": {"signal": "child_height", "mult": 0.5},
-              "height": {"value": 18}
+              "height": {"signal": "1 * height"}
             }
           }
         },

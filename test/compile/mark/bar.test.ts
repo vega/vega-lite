@@ -769,7 +769,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should not use config.mark.size', () => {
-      expect(props.width).toEqual({value: 18});
+      expect(props.width).toEqual({signal: '0.9 * width'});
     });
   });
 

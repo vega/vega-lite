@@ -49,7 +49,7 @@
           "x": {"scale": "x", "field": "sum_Acceleration_end"},
           "x2": {"scale": "x", "field": "sum_Acceleration_start"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 18}
+          "height": {"signal": "0.9 * height"}
         }
       }
     }
