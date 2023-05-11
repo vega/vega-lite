@@ -125,8 +125,6 @@ function defaultSizeRef(
     } else if (isExprRef(padding)) {
       return {signal: `(1 - (${padding.expr})) * ${sizeChannel}`};
     }
-    /* istanbul ignore next: Condition should not happen -- only for warning in development. */
-    throw new Error('It should never reach here');
   }
   const defaultStep = getViewConfigDiscreteStep(config.view, sizeChannel);
   return {value: defaultStep - 2};
