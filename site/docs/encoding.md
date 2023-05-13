@@ -213,7 +213,7 @@ In addition to the general [field definition properties](#field-def), field defi
 
 **Note:** `x2` and `y2` do not have their own definitions for `scale`, `axis`, `sort`, and `stack` since they share the same scales and axes with `x` and `y` respectively.
 
-{:#positon-offset}
+{:#position-offset}
 
 ## Position Offset Channels
 
