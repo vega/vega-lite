@@ -33,7 +33,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 
 - [altair-transform](https://github.com/altair-viz/altair-transform), a Python library for pre-evaluating Altair/Vega-Lite transforms with Pandas.
 - [ibis-vega-transform](https://github.com/Quansight/ibis-vega-transform), a Python library and JupyterLab extension for evaluating Altair/Vega-Lite transforms with external databases using [Ibis](https://ibis-project.org/).
-- [StatisticalGraphics.jl](https://sl-solution.github.io/StatisticalGraphics.jl/stable/Plots/), a Julia library for producing statistical graphics. It exploits Julia to enhance Vega for data analysis.  
+- [StatisticalGraphics.jl](https://sl-solution.github.io/StatisticalGraphics.jl/stable/Plots/), a Julia library for statistical graphics.
 - <span class="octicon octicon-star"></span> [VegaFusion](https://vegafusion.io/), a Rust library and Python API that provides server-side acceleration for interactive Altair/Vega-Lite visualizations using [Apache Arrow](https://arrow.apache.org/) and [DataFusion](https://arrow.apache.org/datafusion/).
 - [Scalable Vega](https://github.com/vega/scalable-vega), a demo of how to scale Vega to large datasets by implementing a custom transform that accepts SQL queries and requests data from an external database.
 
