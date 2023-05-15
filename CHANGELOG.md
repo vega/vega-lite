@@ -1,5 +1,13 @@
 
 
+## [5.9.1](https://github.com/vega/vega-lite/compare/v5.9.0...v5.9.1) (2023-05-15)
+
+
+### Bug Fixes
+
+* handle falsy legend values in selections (take 2) ([#8895](https://github.com/vega/vega-lite/issues/8895)) ([fe599a2](https://github.com/vega/vega-lite/commit/fe599a2ab82f3a161d0df0f88f35eba9115d5e88))
+* Make bars with one axis thicker ([#8894](https://github.com/vega/vega-lite/issues/8894)) ([309af9a](https://github.com/vega/vega-lite/commit/309af9ac314b5c83ecf89afbda6069a63fd7a53e))
+
 # [5.9.0](https://github.com/vega/vega-lite/compare/v5.8.0...v5.9.0) (2023-05-05)
 
 
