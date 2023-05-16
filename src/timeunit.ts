@@ -353,6 +353,8 @@ export function durationExpr(timeUnit: TimeUnit | TimeUnitParams, wrap: (x: stri
       ...startDate,
       ...(smallestUnitPart === 'quarter'
         ? {month: +startDate.month + step * 3}
+        : smallestUnitPart === 'week'
+        ? {date: +startDate.date + step * 7}
         : {[smallestUnitPart]: +startDate[smallestUnitPart] + step})
     };
 
