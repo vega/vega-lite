@@ -84,10 +84,10 @@
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
       "range": [
         {
-          "signal": "0.1 * (scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+          "signal": "0.1 * (scale('x', datetime(2001, 0, 8, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
         },
         {
-          "signal": "0.9 * (scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+          "signal": "0.9 * (scale('x', datetime(2001, 0, 8, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
         }
       ]
     },
@@ -106,7 +106,7 @@
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
       "tickMinStep": {
-        "signal": "datetime(2001, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+        "signal": "datetime(2001, 0, 8, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
       "domain": false,
       "labels": false,
@@ -142,7 +142,7 @@
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
       "tickMinStep": {
-        "signal": "datetime(2001, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+        "signal": "datetime(2001, 0, 8, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
       "zindex": 0
     },
