@@ -387,6 +387,12 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
     const positionDef = model.encoding[positionChannel];
     if (isFieldDef(positionDef) && positionDef.timeUnit) {
       const duration = durationExpr(positionDef.timeUnit, expr => `scale('${positionScaleName}', ${expr})`);
+      const padding = model.config.scale.bandWithNestedOffsetPaddingInner;
+      if (padding) {
+        const startRatio = isSignalRef(padding) ? `${padding.signal}/2` : `${padding / 2}`;
+        const endRatio = isSignalRef(padding) ? `(1 - ${padding.signal}/2)` : `${1 - padding / 2}`;
+        return [{signal: `${startRatio} * (${duration})`}, {signal: `${endRatio} * (${duration})`}];
+      }
       return [0, {signal: duration}];
     }
     return util.never(`Cannot use ${channel} scale if ${positionChannel} scale is not discrete.`);

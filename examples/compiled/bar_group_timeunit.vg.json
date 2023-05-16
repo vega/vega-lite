@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "autosize": {"type": "fit-x", "contains": "padding"},
   "background": "white",
   "padding": 5,
+  "width": 400,
   "height": 250,
   "style": "cell",
   "data": [
@@ -27,18 +27,6 @@
         {
           "type": "filter",
           "expr": "(isDate(datum[\"year_Year\"]) || (isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"])))"
-        }
-      ]
-    }
-  ],
-  "signals": [
-    {
-      "name": "width",
-      "init": "isFinite(containerSize()[0]) ? containerSize()[0] : 200",
-      "on": [
-        {
-          "update": "isFinite(containerSize()[0]) ? containerSize()[0] : 200",
-          "events": "window:resize"
         }
       ]
     }
@@ -88,9 +76,11 @@
       "type": "band",
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
       "range": [
-        0,
         {
-          "signal": "scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0))"
+          "signal": "0.1 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+        },
+        {
+          "signal": "0.9 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
         }
       ]
     },
