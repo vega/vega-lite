@@ -1,5 +1,13 @@
 
 
+## [5.9.2](https://github.com/vega/vega-lite/compare/v5.9.1...v5.9.2) (2023-05-17)
+
+
+### Bug Fixes
+
+* make durationExpr work for week ([#8907](https://github.com/vega/vega-lite/issues/8907)) ([bf99571](https://github.com/vega/vega-lite/commit/bf995711ccb05fb27cfea8bab14fd419dadee503))
+* respect bandWithNestedOffsetPaddingInner for grouped bar within discretized temporal axis ([#8906](https://github.com/vega/vega-lite/issues/8906)) ([9050e6b](https://github.com/vega/vega-lite/commit/9050e6bbb87ede9475040d57c13c49b18e364aea))
+
 ## [5.9.1](https://github.com/vega/vega-lite/compare/v5.9.0...v5.9.1) (2023-05-15)
 
 
