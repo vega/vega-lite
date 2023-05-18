@@ -4990,6 +4990,9 @@
             },
             {
               "$ref": "#/definitions/OrderValueDef"
+            },
+            {
+              "$ref": "#/definitions/OrderOnlyDef"
             }
           ],
           "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
@@ -9076,6 +9079,9 @@
             },
             {
               "$ref": "#/definitions/OrderValueDef"
+            },
+            {
+              "$ref": "#/definitions/OrderOnlyDef"
             }
           ],
           "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
@@ -17972,6 +17978,16 @@
       },
       "type": "object"
     },
+    "OrderOnlyDef": {
+      "additionalProperties": false,
+      "properties": {
+        "sort": {
+          "$ref": "#/definitions/SortOrder",
+          "description": "The sort order. One of `\"ascending\"` (default) or `\"descending\"`."
+        }
+      },
+      "type": "object"
+    },
     "OrderValueDef": {
       "additionalProperties": false,
       "properties": {
@@ -24211,6 +24227,9 @@
             },
             {
               "$ref": "#/definitions/OrderValueDef"
+            },
+            {
+              "$ref": "#/definitions/OrderOnlyDef"
             }
           ],
           "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."

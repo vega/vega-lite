@@ -64,6 +64,7 @@ import {
   isConditionalDef,
   isDatumDef,
   isFieldDef,
+  isOrderOnlyDef,
   isTypedFieldDef,
   isValueDef,
   LatLongDef,
@@ -71,6 +72,7 @@ import {
   NumericMarkPropDef,
   OffsetDef,
   OrderFieldDef,
+  OrderOnlyDef,
   OrderValueDef,
   PolarDef,
   Position2Def,
@@ -321,7 +323,7 @@ export interface Encoding<F extends Field> {
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
-  order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef;
+  order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef;
 }
 
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
@@ -594,6 +596,13 @@ export function initEncoding(
       (channel === TOOLTIP && isArray(channelDef))
     ) {
       if (channelDef) {
+        if (channel === ORDER) {
+          const def = encoding[channel];
+          if (isOrderOnlyDef(def)) {
+            normalizedEncoding[channel] = def;
+            continue;
+          }
+        }
         // Array of fieldDefs for detail channel (or production rule)
         (normalizedEncoding[channel] as any) = array(channelDef).reduce(
           (defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {

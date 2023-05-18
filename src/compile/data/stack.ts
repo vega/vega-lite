@@ -1,6 +1,6 @@
 import {Transforms as VgTransform} from 'vega';
 import {isArray, isString} from 'vega-util';
-import {FieldDef, FieldName, getFieldDef, isFieldDef, vgField} from '../../channeldef';
+import {FieldDef, FieldName, getFieldDef, isFieldDef, isOrderOnlyDef, vgField} from '../../channeldef';
 import {SortFields, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
@@ -141,12 +141,13 @@ export class StackNode extends DataFlowNode {
     if (isArray(orderDef) || isFieldDef(orderDef)) {
       sort = sortParams(orderDef);
     } else {
+      const sortOrder = isOrderOnlyDef(orderDef) ? orderDef.sort : fieldChannel === 'y' ? 'descending' : 'ascending';
       // default = descending by stackFields
       // FIXME is the default here correct for binned fields?
       sort = stackby.reduce(
         (s, field) => {
           s.field.push(field);
-          s.order.push(fieldChannel === 'y' ? 'descending' : 'ascending');
+          s.order.push(sortOrder);
           return s;
         },
         {field: [], order: []}

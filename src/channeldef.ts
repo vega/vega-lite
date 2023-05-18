@@ -633,11 +633,19 @@ export interface LegendMixins {
 
 // Order Path have no scale
 
-export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> {
+export type OrderFieldDef<F extends Field> = FieldDefWithoutScale<F> & OrderOnlyDef;
+
+export interface OrderOnlyDef {
   /**
    * The sort order. One of `"ascending"` (default) or `"descending"`.
    */
   sort?: SortOrder;
+}
+
+export function isOrderOnlyDef<F extends Field>(
+  orderDef: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef
+): orderDef is OrderOnlyDef {
+  return orderDef && !!(orderDef as OrderOnlyDef).sort && !orderDef['field'];
 }
 
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
