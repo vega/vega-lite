@@ -1,5 +1,12 @@
 
 
+## [5.9.3](https://github.com/vega/vega-lite/compare/v5.9.2...v5.9.3) (2023-05-18)
+
+
+### Bug Fixes
+
+* support stack bar with reverse order ([#8910](https://github.com/vega/vega-lite/issues/8910)) ([055e32f](https://github.com/vega/vega-lite/commit/055e32f2ce109c6a663c3950e6ad9f80b321f65b))
+
 ## [5.9.2](https://github.com/vega/vega-lite/compare/v5.9.1...v5.9.2) (2023-05-17)
 
 
