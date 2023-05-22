@@ -7592,9 +7592,9 @@ rollup-plugin-sourcemaps@^0.6.3:
     source-map-resolve "^0.6.0"
 
 rollup@^3.21.6:
-  version "3.21.7"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.21.7.tgz#022ab47416712c93546f369abfb20da5fb8ed42e"
-  integrity sha512-KXPaEuR8FfUoK2uHwNjxTmJ18ApyvD6zJpYv9FOJSqLStmt6xOY84l1IjK2dSolQmoXknrhEFRaPRgOPdqCT5w==
+  version "3.23.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.23.0.tgz#b8d6146dac4bf058ee817f92820988e9b358b564"
+  integrity sha512-h31UlwEi7FHihLe1zbk+3Q7z1k/84rb9BSwmBSr/XjOCEaBJ2YyedQDuM0t/kfOS0IxM+vk1/zI9XxYj9V+NJQ==
   optionalDependencies:
     fsevents "~2.3.2"
 
