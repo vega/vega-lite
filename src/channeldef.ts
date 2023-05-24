@@ -523,7 +523,7 @@ export type TimeDef<F extends Field> = TimeFieldDef<F>;
 export interface TimeMixins {
   rescale: boolean;
 }
-export type TimeFieldDef<F extends Field> = ScaleFieldDef<F, Exclude<StandardType, 'nominal'>> & TimeMixins;
+export type TimeFieldDef<F extends Field> = ScaleFieldDef<F, StandardType> & TimeMixins;
 
 export function getBandPosition({
   fieldDef,

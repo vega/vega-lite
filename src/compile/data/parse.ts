@@ -163,6 +163,8 @@ function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
 export function parseTransformArray(head: DataFlowNode, model: Model, ancestorParse: AncestorParse): DataFlowNode {
   let lookupCounter = 0;
 
+  console.log('model', model);
+
   for (const t of model.transforms) {
     let derivedType: ParseValue = undefined;
     let transformNode: DataFlowNode;

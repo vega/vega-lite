@@ -21,8 +21,10 @@ import {parseScaleProperty, parseScaleRange} from './properties';
 import {scaleType} from './type';
 
 export function parseScales(model: Model, {ignoreRange}: {ignoreRange?: boolean} = {}) {
+  console.log('parsescales');
   parseScaleCore(model);
   parseScaleDomain(model);
+  console.log('done core and domain');
   for (const prop of NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES) {
     parseScaleProperty(model, prop);
   }
@@ -66,6 +68,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
       });
     }
   }
+  console.log(scaleComponents['time']);
   return scaleComponents;
 }
 

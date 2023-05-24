@@ -1,6 +1,6 @@
 import {parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
-import {selectionCompilers, SelectionComponent, STORE} from '.';
+import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
 import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection';
 import {Dict, duplicate, entries, replacePathInField, varName} from '../../util';
@@ -69,6 +69,8 @@ export function parseSelectionPredicate(
   dfnode?: DataFlowNode,
   datum = 'datum'
 ): string {
+  console.log('FUCK');
+  debugger;
   const name = isString(pred) ? pred : pred.param;
   const vname = varName(name);
   const store = stringValue(vname + STORE);
@@ -95,6 +97,11 @@ export function parseSelectionPredicate(
   const resolve = selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`;
   const test = `${fn}${store}, ${datum}${resolve}`;
   const length = `length(data(${store}))`;
+
+  if (isTimerSelection(selCmpt)) {
+    debugger;
+    return 'true';
+  }
 
   return pred.empty === false ? `${length} && ${test}` : `!${length} || ${test}`;
 }

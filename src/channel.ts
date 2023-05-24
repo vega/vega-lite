@@ -431,6 +431,16 @@ export function isXorYOffset(channel: Channel): channel is OffsetScaleChannel {
   return hasOwnProperty(OFFSET_SCALE_CHANNEL_INDEX, channel);
 }
 
+const TIME_SCALE_CHANNEL_INDEX = {
+  time: 1
+} as const;
+export const TIME_SCALE_CHANNELS = keys(TIME_SCALE_CHANNEL_INDEX);
+export type TimeScaleChannel = keyof typeof TIME_SCALE_CHANNEL_INDEX;
+
+export function isTime(channel: ExtendedChannel): channel is TimeScaleChannel {
+  return channel in TIME_SCALE_CHANNEL_INDEX;
+}
+
 // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without position / offset
 const {
   // x2 and y2 share the same scale as x and y

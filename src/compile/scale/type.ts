@@ -3,6 +3,7 @@ import {
   getSizeChannel,
   isColorChannel,
   isScaleChannel,
+  isTime,
   isXorY,
   isXorYOffset,
   rangeType,
@@ -76,6 +77,10 @@ function defaultType(
         return 'ordinal';
       }
 
+      if (isTime(channel)) {
+        return 'band';
+      }
+
       if (isXorY(channel) || isXorYOffset(channel)) {
         if (util.contains(['rect', 'bar', 'image', 'rule', 'tick'], mark.type)) {
           // The rect/bar/tick mark should fit into a band.
@@ -111,7 +116,10 @@ function defaultType(
         return 'ordinal';
       } else if (isFieldDef(fieldDef) && fieldDef.timeUnit && normalizeTimeUnit(fieldDef.timeUnit).utc) {
         return 'utc';
+      } else if (isTime(channel)) {
+        return 'linear';
       }
+
       return 'time';
 
     case 'quantitative':
@@ -125,6 +133,8 @@ function defaultType(
         log.warn(log.message.discreteChannelCannotEncode(channel, 'quantitative'));
         // TODO: consider using quantize (equivalent to binning) once we have it
         return 'ordinal';
+      } else if (isTime(channel)) {
+        return 'linear';
       }
 
       return 'linear';
