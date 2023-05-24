@@ -1,7 +1,7 @@
 import {Signal, SignalRef} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
-import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers} from '.';
+import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers, isTimerSelection} from '.';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
 import {hasContinuousDomain} from '../../scale';
 import {SelectionInit, SelectionInitInterval, ParameterExtent, SELECTION_ID} from '../../selection';
@@ -14,6 +14,7 @@ import {ScaleComponent} from '../scale/component';
 import {UnitModel} from '../unit';
 import {parseSelectionExtent} from './parse';
 import {SelectionProjection} from './project';
+import {CURR} from './point';
 
 export function assembleProjection(proj: SelectionProjection) {
   const {signals, hasLegend, index, ...rest} = proj;
@@ -120,8 +121,11 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
 }
 
 export function assembleUnitSelectionData(model: UnitModel, data: readonly VgData[]): VgData[] {
-  const dataCopy = [...data];
+  const selectionData = [];
+  const animationData = [];
   const unit = unitName(model, {escape: false});
+
+  console.log('data init', data);
 
   for (const selCmpt of vals(model.component.selection ?? {})) {
     const store: VgData = {name: selCmpt.name + STORE};
@@ -138,13 +142,31 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
         : selCmpt.init.map(i => ({unit, fields, values: assembleInit(i, false)}));
     }
 
-    const contains = dataCopy.filter(d => d.name === selCmpt.name + STORE);
+    const contains = selectionData.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
-      dataCopy.push(store);
+      selectionData.push(store);
+    }
+
+    if (isTimerSelection(selCmpt)) {
+      // create dataset to hold current animation frame
+      const sourceData = data[data.length - 1]; // TODO(jzong): which dataset to use when there are derived datasets?
+
+      const currentFrame: VgData = {
+        name: sourceData.name + CURR,
+        source: sourceData.name,
+        transform: [
+          {
+            type: 'filter',
+            expr: `!length(data("${selCmpt.name + STORE}")) || vlSelectionTest("${selCmpt.name + STORE}", datum)`
+          }
+        ]
+      };
+
+      animationData.push(currentFrame);
     }
   }
 
-  return dataCopy;
+  return selectionData.concat(data, animationData);
 }
 
 export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
