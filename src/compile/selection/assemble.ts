@@ -15,7 +15,6 @@ import {UnitModel} from '../unit';
 import {parseSelectionExtent} from './parse';
 import {SelectionProjection} from './project';
 import {CURR} from './point';
-import {DataSourceType} from '../../data';
 
 export function assembleProjection(proj: SelectionProjection) {
   const {signals, hasLegend, index, ...rest} = proj;
