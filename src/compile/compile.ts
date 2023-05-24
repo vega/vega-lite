@@ -202,11 +202,7 @@ function assembleTopLevelModel(
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
 
-  const data = [].concat(
-    model.assembleSelectionData([]),
-    // only assemble data in the root
-    assembleRootData(model.component.data, datasets)
-  );
+  const data = [].concat(model.assembleSelectionData(assembleRootData(model.component.data, datasets)));
 
   const projections = model.assembleProjections();
   const title = model.assembleTitle();

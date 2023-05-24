@@ -6,6 +6,8 @@ import {vals} from '../../util';
 import {BRUSH} from './interval';
 import {TUPLE_FIELDS} from './project';
 
+export const CURR = '_curr';
+
 const timerSignals: Signal[] = [
   {
     name: 'anim_clock',
