@@ -1,7 +1,7 @@
 import {Update} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {isString} from 'vega-util';
-import {TUPLE} from '.';
+import {TUPLE, isTimerSelection} from '.';
 import {varName} from '../../util';
 import inputBindings from './inputs';
 import toggle, {TOGGLE} from './toggle';
@@ -51,7 +51,9 @@ const clear: SelectionCompiler = {
       }
     } else {
       let tIdx = signals.findIndex(n => n.name === selCmpt.name + TUPLE);
-      addClear(tIdx, 'null');
+      if (!isTimerSelection(selCmpt)) {
+        addClear(tIdx, 'null');
+      }
 
       if (toggle.defined(selCmpt)) {
         tIdx = signals.findIndex(n => n.name === selCmpt.name + TOGGLE);

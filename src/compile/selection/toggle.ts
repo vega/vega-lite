@@ -1,4 +1,4 @@
-import {TUPLE, unitName} from '.';
+import {TUPLE, isTimerSelection, unitName} from '.';
 import {SelectionCompiler} from '.';
 
 export const TOGGLE = '_toggle';
@@ -9,11 +9,19 @@ const toggle: SelectionCompiler<'point'> = {
   },
 
   signals: (model, selCmpt, signals) => {
-    return signals.concat({
-      name: selCmpt.name + TOGGLE,
-      value: false,
-      on: [{events: selCmpt.events, update: selCmpt.toggle}]
-    });
+    if (isTimerSelection(selCmpt)) {
+      // timer event: selection is for animation
+      return signals.concat({
+        name: selCmpt.name + TOGGLE,
+        value: false
+      });
+    } else {
+      return signals.concat({
+        name: selCmpt.name + TOGGLE,
+        value: false,
+        on: [{events: selCmpt.events, update: selCmpt.toggle}]
+      });
+    }
   },
 
   modifyExpr: (model, selCmpt) => {

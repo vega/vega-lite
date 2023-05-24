@@ -1,10 +1,52 @@
-import {Stream} from 'vega';
+import {Signal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
-import {SelectionCompiler, TUPLE, unitName} from '.';
+import {SelectionCompiler, TUPLE, isTimerSelection, unitName} from '.';
 import {SELECTION_ID} from '../../selection';
 import {vals} from '../../util';
 import {BRUSH} from './interval';
 import {TUPLE_FIELDS} from './project';
+
+const timerSignals: Signal[] = [
+  {
+    name: 'anim_clock',
+    init: '0',
+    on: [
+      {
+        events: {type: 'timer', throttle: 16.666666666666668},
+        update:
+          'true ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock'
+      }
+    ]
+  },
+  {
+    name: 'last_tick_at',
+    init: 'now()',
+    on: [{events: [{signal: 'anim_clock'}], update: 'now()'}]
+  },
+  {
+    name: 'eased_anim_clock',
+    update: 'easeLinear(anim_clock / max_range_extent) * max_range_extent'
+  },
+  {name: 't_index', update: 'indexof(date_domain, anim_value)'},
+  {name: 'max_range_extent', init: "extent(range('time_date'))[1]"},
+  {name: 'min_extent', init: 'extent(date_domain)[0]'},
+  {name: 'max_extent', init: 'extent(date_domain)[1]'},
+  {name: 'anim_value', update: "invert('time_date', eased_anim_clock)"},
+
+  {name: 'date_domain', init: "domain('time_date')"},
+
+  {name: 'date_tuple_fields', value: [{type: 'E', field: 'date'}]},
+  {
+    name: 'date_tuple',
+    on: [
+      {
+        events: [{signal: 'eased_anim_clock'}, {signal: 'anim_value'}],
+        update: '{unit: "", fields: date_tuple_fields, values: [anim_value ? anim_value : min_extent]}',
+        force: true
+      }
+    ]
+  }
+];
 
 const point: SelectionCompiler<'point'> = {
   defined: selCmpt => selCmpt.type === 'point',
@@ -52,21 +94,26 @@ const point: SelectionCompiler<'point'> = {
       update += `fields: ${fieldsSg}, values: [${values}]`;
     }
 
-    const events: Stream[] = selCmpt.events;
-    return signals.concat([
-      {
-        name: name + TUPLE,
-        on: events
-          ? [
-              {
-                events,
-                update: `${test} ? {${update}} : null`,
-                force: true
-              }
-            ]
-          : []
-      }
-    ]);
+    if (isTimerSelection(selCmpt)) {
+      // timer event: selection is for animation
+      return signals.concat(timerSignals);
+    } else {
+      const events: Stream[] = selCmpt.events;
+      return signals.concat([
+        {
+          name: name + TUPLE,
+          on: events
+            ? [
+                {
+                  events,
+                  update: `${test} ? {${update}} : null`,
+                  force: true
+                }
+              ]
+            : []
+        }
+      ]);
+    }
   }
 };
 
