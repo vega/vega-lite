@@ -27,15 +27,16 @@ const timerSignals: Signal[] = [
   },
   {
     name: 'eased_anim_clock',
-    update: 'easeLinear(anim_clock / max_range_extent) * max_range_extent'
+    // update: 'easeLinear(anim_clock / max_range_extent) * max_range_extent'
+    update: 'anim_clock'
   },
   {name: 't_index', update: 'indexof(date_domain, anim_value)'},
-  {name: 'max_range_extent', init: "extent(range('time_date'))[1]"},
+  {name: 'max_range_extent', init: "extent(range('time'))[1]"},
   {name: 'min_extent', init: 'extent(date_domain)[0]'},
   {name: 'max_extent', init: 'extent(date_domain)[1]'},
-  {name: 'anim_value', update: "invert('time_date', eased_anim_clock)"},
+  {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
 
-  {name: 'date_domain', init: "domain('time_date')"},
+  {name: 'date_domain', init: "domain('time')"},
 
   {name: 'date_tuple_fields', value: [{type: 'E', field: 'date'}]},
   {
