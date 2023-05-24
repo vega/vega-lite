@@ -38,6 +38,7 @@ import {
   TEXT,
   THETA,
   THETA2,
+  TIME,
   TOOLTIP,
   UNIT_CHANNELS,
   URL,
@@ -83,6 +84,7 @@ import {
   StringFieldDefWithCondition,
   StringValueDefWithCondition,
   TextDef,
+  TimeDef,
   title,
   TypedFieldDef,
   vgField
@@ -183,6 +185,8 @@ export interface Encoding<F extends Field> {
    * The inner radius in pixels of arc marks.
    */
   radius2?: Position2Def<F>;
+
+  time?: TimeDef<F>; // TODO(jzong)
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
@@ -732,6 +736,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case THETA2:
       case RADIUS:
       case RADIUS2:
+      case TIME:
       // falls through
 
       case LATITUDE:

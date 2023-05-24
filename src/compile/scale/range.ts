@@ -25,7 +25,8 @@ import {
   X,
   XOFFSET,
   Y,
-  YOFFSET
+  YOFFSET,
+  TIME
 } from '../../channel';
 import {getFieldOrDatumDef, isFieldDef, isFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
@@ -290,6 +291,13 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
           return `min(${w},${h})/2`;
         })
       ];
+    }
+
+    case TIME: {
+      if (scaleType === 'band') {
+        return {step: 500};
+      }
+      return [0, 5000]; // e.g. linear
     }
 
     case STROKEWIDTH:
