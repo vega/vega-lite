@@ -15,6 +15,7 @@ import {UnitModel} from '../unit';
 import {parseSelectionExtent} from './parse';
 import {SelectionProjection} from './project';
 import {CURR} from './point';
+import {DataSourceType} from '../../data';
 
 export function assembleProjection(proj: SelectionProjection) {
   const {signals, hasLegend, index, ...rest} = proj;
@@ -150,6 +151,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
     if (isTimerSelection(selCmpt)) {
       // create dataset to hold current animation frame
       const sourceData = data[data.length - 1]; // TODO(jzong): which dataset to use when there are derived datasets?
+      // model.lookupDataSource(model.getDataName(DataSourceType.Main));
 
       const currentFrame: VgData = {
         name: sourceData.name + CURR,
