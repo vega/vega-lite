@@ -118,3 +118,7 @@ export function disableDirectManipulation(selCmpt: SelectionComponent, selDef: S
   if (isString(selDef.select) || !selDef.select.clear) delete selCmpt.clear;
   if (isString(selDef.select) || !selDef.select.toggle) delete selCmpt.toggle;
 }
+
+export function isTimerSelection<T extends SelectionType>(selCmpt: SelectionComponent<T>) {
+  return selCmpt.events.find(e => 'type' in e && e.type === 'timer');
+}
