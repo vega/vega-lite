@@ -1,4 +1,4 @@
-import {Signal, Stream} from 'vega';
+import {Mark, Signal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, TUPLE, isTimerSelection, unitName} from '.';
 import {SELECTION_ID} from '../../selection';
@@ -116,6 +116,24 @@ const point: SelectionCompiler<'point'> = {
         }
       ]);
     }
+  },
+
+  marks: (model, selCmpt, marks) => {
+    if (isTimerSelection(selCmpt)) {
+      // if ('time' in model.encoding) {
+      // TODO(jzong): which marks do we need to update?
+      return marks.map((mark: Mark) => {
+        if (mark.from.data) {
+          return {
+            ...mark,
+            from: {data: mark.from.data + CURR}
+          };
+        }
+        return mark;
+      });
+      // }
+    }
+    return marks;
   }
 };
 
