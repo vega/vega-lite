@@ -125,8 +125,6 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
   const animationData = [];
   const unit = unitName(model, {escape: false});
 
-  console.log('data init', data);
-
   for (const selCmpt of vals(model.component.selection ?? {})) {
     const store: VgData = {name: selCmpt.name + STORE};
 

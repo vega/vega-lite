@@ -908,6 +908,8 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType, 
         return !hasNestedOffsetScale;
       }
       return false;
+    case CHANNEL.TIME:
+      return contains(['linear', 'band'], scaleType);
     case CHANNEL.SIZE: // TODO: size and opacity can support ordinal with more modification
     case CHANNEL.STROKEWIDTH:
     case CHANNEL.OPACITY:

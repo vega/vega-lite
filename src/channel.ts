@@ -41,6 +41,9 @@ export const LONGITUDE = 'longitude' as const;
 export const LATITUDE2 = 'latitude2' as const;
 export const LONGITUDE2 = 'longitude2' as const;
 
+// Time
+export const TIME = 'time' as const;
+
 // Mark property with scale
 export const COLOR = 'color' as const;
 
@@ -135,6 +138,9 @@ const UNIT_CHANNEL_INDEX: Flag<Channel> = {
   color: 1,
   fill: 1,
   stroke: 1,
+
+  // time
+  time: 1,
 
   // other non-position with scale
   opacity: 1,
@@ -465,6 +471,7 @@ export function supportLegend(channel: NonPositionScaleChannel) {
     case FILLOPACITY:
     case STROKEOPACITY:
     case ANGLE:
+    case TIME:
       return false;
   }
 }
@@ -552,6 +559,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case YOFFSET:
     case LATITUDE:
     case LONGITUDE:
+    case TIME:
       // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
       return ALL_MARKS_EXCEPT_GEOSHAPE;
     case X2:
@@ -626,6 +634,7 @@ export function rangeType(channel: ExtendedChannel): RangeType {
     case OPACITY:
     case FILLOPACITY:
     case STROKEOPACITY:
+    case TIME:
 
     // X2 and Y2 use X and Y scales, so they similarly have continuous range. [falls through]
     case X2:
