@@ -264,6 +264,9 @@ export class UnitModel extends ModelWithField {
   public assembleMarks() {
     let marks = this.component.mark ?? [];
 
+    // TODO(jzong): we append "curr" to time encoding data sources in assembleunitselectionmarks so this needs to happen before that step
+    marks = marks.map(this.correctDataNames);
+
     // If this unit is part of a layer, selections should augment
     // all in concert rather than each unit individually. This
     // ensures correct interleaving of clipping and brushed marks.
@@ -271,7 +274,9 @@ export class UnitModel extends ModelWithField {
       marks = assembleUnitSelectionMarks(this, marks);
     }
 
-    return marks.map(this.correctDataNames);
+    marks = marks.map(this.correctDataNames);
+
+    return marks;
   }
   public assembleGroupStyle(): string | string[] {
     const {style} = this.view || {};
