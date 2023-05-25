@@ -120,5 +120,5 @@ export function disableDirectManipulation(selCmpt: SelectionComponent, selDef: S
 }
 
 export function isTimerSelection<T extends SelectionType>(selCmpt: SelectionComponent<T>) {
-  return selCmpt.events.find(e => 'type' in e && e.type === 'timer');
+  return selCmpt.events?.find(e => 'type' in e && e.type === 'timer');
 }
