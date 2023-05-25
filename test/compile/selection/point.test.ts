@@ -439,13 +439,14 @@ describe('Animated Selection', () => {
 
   it('builds scale signals', () => {
     const signals = assembleUnitSelectionSignals(model, []);
+    // TODO(jzong): uncomment commented signals when implementing interpolation
     expect(signals).toEqual(
       expect.arrayContaining([
         {name: 'avl_domain', init: "domain('time')"},
         {name: 'min_extent', init: 'extent(avl_domain)[0]'},
-        {name: 'max_extent', init: 'extent(avl_domain)[1]'},
+        // {name: 'max_extent', init: 'extent(avl_domain)[1]'},
         {name: 'max_range_extent', init: "extent(range('time'))[1]"},
-        {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
+        // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
         {name: 'anim_value', update: "invert('time', eased_anim_clock)"}
       ])
     );

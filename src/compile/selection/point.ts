@@ -34,11 +34,12 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
     },
 
     // scale signals
+    // TODO(jzong): uncomment commented signals when implementing interpolation
     {name: `${selectionName}_domain`, init: `domain('${scaleName}')`},
     {name: 'min_extent', init: `extent(${selectionName}_domain)[0]`},
-    {name: 'max_extent', init: `extent(${selectionName}_domain)[1]`},
+    // {name: 'max_extent', init: `extent(${selectionName}_domain)[1]`},
     {name: 'max_range_extent', init: `extent(range('${scaleName}'))[1]`},
-    {name: 't_index', update: `indexof(${selectionName}_domain, anim_value)`},
+    // {name: 't_index', update: `indexof(${selectionName}_domain, anim_value)`},
     {name: 'anim_value', update: `invert('${scaleName}', eased_anim_clock)`}
   ];
 };
