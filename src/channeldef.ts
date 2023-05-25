@@ -518,7 +518,7 @@ export type PolarDef<F extends Field> = PositionFieldDefBase<F> | PositionDatumD
 
 export type TimeDef<F extends Field> = TimeFieldDef<F>;
 export interface TimeMixins {
-  rescale: boolean;
+  rescale?: boolean;
 }
 export type TimeFieldDef<F extends Field> = ScaleFieldDef<F, StandardType> & TimeMixins;
 
