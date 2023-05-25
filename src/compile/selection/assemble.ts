@@ -140,7 +140,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
         : selCmpt.init.map(i => ({unit, fields, values: assembleInit(i, false)}));
     }
 
-    const contains = selectionData.filter(d => d.name === selCmpt.name + STORE);
+    const contains = [...selectionData, ...data].filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
       selectionData.push(store);
     }
