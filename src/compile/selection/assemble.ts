@@ -145,7 +145,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
       selectionData.push(store);
     }
 
-    if (isTimerSelection(selCmpt)) {
+    if (isTimerSelection(selCmpt) && data.length) {
       const sourceData = data[data.length - 1]; // TODO(jzong): which dataset to use when there are derived datasets?
       // model.lookupDataSource(model.getDataName(DataSourceType.Main));
 
