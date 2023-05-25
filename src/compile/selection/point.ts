@@ -8,32 +8,32 @@ import {TUPLE_FIELDS} from './project';
 
 export const CURR = '_curr';
 
-const timerSignals: Signal[] = [
-  {
-    name: 'anim_clock',
-    init: '0',
-    on: [
-      {
-        events: {type: 'timer', throttle: 16.666666666666668},
-        update:
-          'true ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock'
-      }
-    ]
-  },
-  {
-    name: 'last_tick_at',
-    init: 'now()',
-    on: [{events: [{signal: 'anim_clock'}], update: 'now()'}]
-  },
-  {
-    name: 'eased_anim_clock',
-    // update: 'easeLinear(anim_clock / max_range_extent) * max_range_extent'
-    update: 'anim_clock' // TODO: replace with above once easing functions are implemented in vega-functions
-  }
-];
-
-const scaleSignals = (selectionName: string, scaleName: string): Signal[] => {
+const animationSignals = (selectionName: string, scaleName: string): Signal[] => {
   return [
+    // timer signals
+    {
+      name: 'anim_clock',
+      init: '0',
+      on: [
+        {
+          events: {type: 'timer', throttle: 16.666666666666668},
+          update:
+            'true ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock'
+        }
+      ]
+    },
+    {
+      name: 'last_tick_at',
+      init: 'now()',
+      on: [{events: [{signal: 'anim_clock'}], update: 'now()'}]
+    },
+    {
+      name: 'eased_anim_clock',
+      // update: 'easeLinear(anim_clock / max_range_extent) * max_range_extent'
+      update: 'anim_clock' // TODO: replace with above once easing functions are implemented in vega-functions
+    },
+
+    // scale signals
     {name: `${selectionName}_domain`, init: `domain('${scaleName}')`},
     {name: 'min_extent', init: `extent(${selectionName}_domain)[0]`},
     {name: 'max_extent', init: `extent(${selectionName}_domain)[1]`},
@@ -42,8 +42,6 @@ const scaleSignals = (selectionName: string, scaleName: string): Signal[] => {
     {name: 'anim_value', update: `invert('${scaleName}', eased_anim_clock)`}
   ];
 };
-
-// {name: 'date_tuple_fields', value: [{type: 'E', field: 'date'}]},
 
 const point: SelectionCompiler<'point'> = {
   defined: selCmpt => selCmpt.type === 'point',
@@ -95,8 +93,8 @@ const point: SelectionCompiler<'point'> = {
 
     if (isTimerSelection(selCmpt)) {
       // timer event: selection is for animation
-      return signals.concat(timerSignals, scaleSignals(selCmpt.name, 'time'), [
-        // TODO(jzong) hard-coded scale name
+      // TODO(jzong) scale name currently hardcoded to 'time'
+      return signals.concat(animationSignals(selCmpt.name, 'time'), [
         {
           name: name + TUPLE,
           on: [

@@ -186,7 +186,7 @@ export interface Encoding<F extends Field> {
    */
   radius2?: Position2Def<F>;
 
-  time?: TimeDef<F>; // TODO(jzong)
+  time?: TimeDef<F>;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
