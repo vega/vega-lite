@@ -69,8 +69,6 @@ export function parseSelectionPredicate(
   dfnode?: DataFlowNode,
   datum = 'datum'
 ): string {
-  console.log('FUCK');
-  debugger;
   const name = isString(pred) ? pred : pred.param;
   const vname = varName(name);
   const store = stringValue(vname + STORE);
@@ -93,15 +91,10 @@ export function parseSelectionPredicate(
     }
   }
 
-  const fn = selCmpt.project.hasSelectionId ? 'vlSelectionIdTest(' : 'vlSelectionTest(';
+  const fn = selCmpt.project.hasSelectionId && !isTimerSelection(selCmpt) ? 'vlSelectionIdTest(' : 'vlSelectionTest(';
   const resolve = selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`;
   const test = `${fn}${store}, ${datum}${resolve}`;
   const length = `length(data(${store}))`;
-
-  if (isTimerSelection(selCmpt)) {
-    debugger;
-    return 'true';
-  }
 
   return pred.empty === false ? `${length} && ${test}` : `!${length} || ${test}`;
 }
