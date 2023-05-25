@@ -10,7 +10,6 @@ const toggle: SelectionCompiler<'point'> = {
 
   signals: (model, selCmpt, signals) => {
     if (isTimerSelection(selCmpt)) {
-      // timer event: selection is for animation
       return signals.concat({
         name: selCmpt.name + TOGGLE,
         value: false
