@@ -150,15 +150,18 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
       const sourceData = data[data.length - 1]; // TODO(jzong): which dataset to use when there are derived datasets?
       // model.lookupDataSource(model.getDataName(DataSourceType.Main));
 
+      // find the filter transform for the current selection
+      const sourceDataFilter = sourceData.transform.find(
+        t => t.type === 'filter' && t.expr.includes('vlSelectionTest')
+      );
+
+      // remove it from the original dataset
+      sourceData.transform = sourceData.transform.filter(t => t !== sourceDataFilter);
+
       const currentFrame: VgData = {
         name: sourceData.name + CURR,
         source: sourceData.name,
-        transform: [
-          {
-            type: 'filter',
-            expr: `!length(data("${selCmpt.name + STORE}")) || vlSelectionTest("${selCmpt.name + STORE}", datum)`
-          }
-        ]
+        transform: [sourceDataFilter] // add the selection filter to the animation dataset
       };
 
       animationData.push(currentFrame);
