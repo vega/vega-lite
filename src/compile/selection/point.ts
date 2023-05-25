@@ -28,7 +28,7 @@ const timerSignals: Signal[] = [
   {
     name: 'eased_anim_clock',
     // update: 'easeLinear(anim_clock / max_range_extent) * max_range_extent'
-    update: 'anim_clock'
+    update: 'anim_clock' // TODO: replace with above once easing functions are implemented in vega-functions
   }
 ];
 
