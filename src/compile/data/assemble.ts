@@ -40,7 +40,6 @@ function makeWalkTree(data: VgData[]) {
    * Recursively walk down the tree.
    */
   function walkTree(node: DataFlowNode, dataSource: VgData) {
-    console.log(node);
     if (node instanceof SourceNode) {
       // If the source is a named data source or a data source with values, we need
       // to put it in a different data source. Otherwise, Vega may override the data.
@@ -227,7 +226,6 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
 
   let sourceIndex = 0;
 
-  // console.log(datasets, data);
   for (const root of dataComponent.sources) {
     // assign a name if the source does not have a name yet
     if (!root.hasName()) {
@@ -235,12 +233,9 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
     }
 
     const newData: VgData = root.assemble();
-    // console.log('nd', JSON.parse(JSON.stringify(newData)));
 
     walkTree(root, newData);
-    // console.log('nd wt', JSON.parse(JSON.stringify(newData)));
   }
-  // console.log(data);
 
   // remove empty transform arrays for cleaner output
   for (const d of data) {
