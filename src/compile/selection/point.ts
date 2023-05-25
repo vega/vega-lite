@@ -29,27 +29,21 @@ const timerSignals: Signal[] = [
     name: 'eased_anim_clock',
     // update: 'easeLinear(anim_clock / max_range_extent) * max_range_extent'
     update: 'anim_clock'
-  },
-  {name: 't_index', update: 'indexof(date_domain, anim_value)'},
-  {name: 'max_range_extent', init: "extent(range('time'))[1]"},
-  {name: 'min_extent', init: 'extent(date_domain)[0]'},
-  {name: 'max_extent', init: 'extent(date_domain)[1]'},
-  {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
-
-  {name: 'date_domain', init: "domain('time')"},
-
-  {name: 'date_tuple_fields', value: [{type: 'E', field: 'date'}]},
-  {
-    name: 'date_tuple',
-    on: [
-      {
-        events: [{signal: 'eased_anim_clock'}, {signal: 'anim_value'}],
-        update: '{unit: "", fields: date_tuple_fields, values: [anim_value ? anim_value : min_extent]}',
-        force: true
-      }
-    ]
   }
 ];
+
+const scaleSignals = (selectionName: string, scaleName: string): Signal[] => {
+  return [
+    {name: `${selectionName}_domain`, init: `domain('${scaleName}')`},
+    {name: 'min_extent', init: `extent(${selectionName}_domain)[0]`},
+    {name: 'max_extent', init: `extent(${selectionName}_domain)[1]`},
+    {name: 'max_range_extent', init: `extent(range('${scaleName}'))[1]`},
+    {name: 't_index', update: `indexof(${selectionName}_domain, anim_value)`},
+    {name: 'anim_value', update: `invert('${scaleName}', eased_anim_clock)`}
+  ];
+};
+
+// {name: 'date_tuple_fields', value: [{type: 'E', field: 'date'}]},
 
 const point: SelectionCompiler<'point'> = {
   defined: selCmpt => selCmpt.type === 'point',
@@ -82,6 +76,8 @@ const point: SelectionCompiler<'point'> = {
 
     if (selCmpt.project.hasSelectionId) {
       update += `${SELECTION_ID}: ${datum}[${stringValue(SELECTION_ID)}]`;
+    } else if (isTimerSelection(selCmpt)) {
+      update += `fields: ${fieldsSg}, values: [anim_value ? anim_value : min_extent]`;
     } else {
       const values = project.items
         .map(p => {
@@ -99,7 +95,19 @@ const point: SelectionCompiler<'point'> = {
 
     if (isTimerSelection(selCmpt)) {
       // timer event: selection is for animation
-      return signals.concat(timerSignals);
+      return signals.concat(timerSignals, scaleSignals(selCmpt.name, 'time'), [
+        // TODO(jzong) hard-coded scale name
+        {
+          name: name + TUPLE,
+          on: [
+            {
+              events: [{signal: 'eased_anim_clock'}, {signal: 'anim_value'}],
+              update: `{${update}}`,
+              force: true
+            }
+          ]
+        }
+      ]);
     } else {
       const events: Stream[] = selCmpt.events;
       return signals.concat([
