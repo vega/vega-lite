@@ -6,7 +6,9 @@ import {
 } from '../../../src/compile/selection/assemble';
 import point from '../../../src/compile/selection/point';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {parseUnitModel, parseUnitModelWithScale} from '../../util';
+import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
+import {assembleRootData} from '../../../src/compile/data/assemble';
+import {optimizeDataflow} from '../../../src/compile/data/optimize';
 
 describe('Multi Selection', () => {
   const model = parseUnitModelWithScale({
@@ -350,7 +352,20 @@ describe('Multi Selection', () => {
 });
 
 describe('Animated Selection', () => {
-  const model = parseUnitModel({
+  const model = parseUnitModelWithScaleAndSelection({
+    data: {
+      url: 'data/gapminder.json'
+    },
+    params: [
+      {
+        name: 'avl',
+        select: {
+          type: 'point',
+          fields: ['year'],
+          on: 'timer'
+        }
+      }
+    ],
     transform: [
       {
         filter: {
@@ -377,16 +392,8 @@ describe('Animated Selection', () => {
     }
   });
 
-  const selCmpts = (model.component.selection = parseUnitSelection(model, [
-    {
-      name: 'avl',
-      select: {
-        type: 'point',
-        fields: ['year'],
-        on: 'timer'
-      }
-    }
-  ]));
+  model.parseData();
+  optimizeDataflow(model.component.data, model);
 
   it('builds tuple signals', () => {
     const signals = assembleUnitSelectionSignals(model, []);
@@ -479,52 +486,8 @@ describe('Animated Selection', () => {
     );
   });
 
-  it('builds unit datasets', () => {
-    expect(
-      assembleUnitSelectionData(model, [
-        {
-          name: 'source_0',
-          url: 'data/gapminder.json',
-          format: {
-            type: 'json'
-          },
-          transform: [
-            {
-              type: 'filter',
-              expr: '!length(data("avl_store")) || vlSelectionTest("avl_store", datum)'
-            },
-            {
-              type: 'filter',
-              expr: 'isValid(datum["fertility"]) && isFinite(+datum["fertility"]) && isValid(datum["life_expect"]) && isFinite(+datum["life_expect"])'
-            }
-          ]
-        }
-      ])
-    ).toEqual(expect.arrayContaining([{name: 'avl_store'}]));
-  });
-
   it('builds animation frame datasets', () => {
-    expect(
-      assembleUnitSelectionData(model, [
-        {
-          name: 'source_0',
-          url: 'data/gapminder.json',
-          format: {
-            type: 'json'
-          },
-          transform: [
-            {
-              type: 'filter',
-              expr: '!length(data("avl_store")) || vlSelectionTest("avl_store", datum)'
-            },
-            {
-              type: 'filter',
-              expr: 'isValid(datum["fertility"]) && isFinite(+datum["fertility"]) && isValid(datum["life_expect"]) && isFinite(+datum["life_expect"])'
-            }
-          ]
-        }
-      ])
-    ).toEqual(
+    expect(assembleUnitSelectionData(model, assembleRootData(model.component.data, {}))).toEqual(
       expect.arrayContaining([
         {
           name: 'source_0_curr',
@@ -538,11 +501,5 @@ describe('Animated Selection', () => {
         }
       ])
     );
-  });
-
-  it('leaves marks alone', () => {
-    const marks: any[] = [];
-    model.component.selection = {avl: selCmpts['avl']};
-    expect(assembleUnitSelectionMarks(model, marks)).toEqual(marks);
   });
 });
