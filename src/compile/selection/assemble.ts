@@ -155,17 +155,19 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
         t => t.type === 'filter' && t.expr.includes('vlSelectionTest')
       );
 
-      // remove it from the original dataset
-      sourceData.transform = sourceData.transform.filter(t => t !== sourceDataFilter);
+      if (sourceDataFilter) {
+        // remove it from the original dataset
+        sourceData.transform = sourceData.transform.filter(t => t !== sourceDataFilter);
 
-      // create dataset to hold current animation frame
-      const currentFrame: VgData = {
-        name: sourceData.name + CURR,
-        source: sourceData.name,
-        transform: [sourceDataFilter] // add the selection filter to the animation dataset
-      };
+        // create dataset to hold current animation frame
+        const currentFrame: VgData = {
+          name: sourceData.name + CURR,
+          source: sourceData.name,
+          transform: [sourceDataFilter] // add the selection filter to the animation dataset
+        };
 
-      animationData.push(currentFrame);
+        animationData.push(currentFrame);
+      }
     }
   }
 
