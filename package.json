@@ -109,7 +109,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "highlight.js": "^11.8.0",
     "jest": "^27.5.1",
-    "jest-dev-server": "^6.1.1",
+    "jest-dev-server": "^9.0.0",
     "mkdirp": "^3.0.1",
     "pako": "^2.1.0",
     "prettier": "^2.8.8",
