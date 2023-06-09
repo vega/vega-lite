@@ -8744,6 +8744,23 @@
       ],
       "type": "object"
     },
+    "ExtentTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "extent": {
+          "$ref": "#/definitions/FieldName",
+          "description": "The field of which to get the extent."
+        },
+        "param": {
+          "$ref": "#/definitions/ParameterName",
+          "description": "The output parameter produced by the extent transform. __Default value:__ `\"extent\"`"
+        }
+      },
+      "required": [
+        "extent"
+      ],
+      "type": "object"
+    },
     "FacetEncodingFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -30189,6 +30206,9 @@
         },
         {
           "$ref": "#/definitions/DensityTransform"
+        },
+        {
+          "$ref": "#/definitions/ExtentTransform"
         },
         {
           "$ref": "#/definitions/FilterTransform"
