@@ -16,7 +16,16 @@
           "fields": ["Displacement", "Horsepower"],
           "as": ["Measurement", "value"]
         },
-        {"type": "extent", "field": [10, 500], "signal": "extent"},
+        {
+          "type": "kde",
+          "field": "value",
+          "bandwidth": 10,
+          "groupby": ["Measurement"],
+          "extent": [10, 500],
+          "counts": true,
+          "steps": 200,
+          "as": ["value", "density"]
+        },
         {
           "type": "impute",
           "field": "density",

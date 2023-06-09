@@ -7,9 +7,16 @@
     {
       "name": "source_0",
       "url": "data/penguins.json",
-      "format": {"type": "json", "parse": {"value": "number"}},
+      "format": {"type": "json"},
       "transform": [
-        {"type": "extent", "field": [2500, 6500], "signal": "extent"},
+        {
+          "type": "kde",
+          "field": "Body Mass (g)",
+          "groupby": ["Species"],
+          "extent": [2500, 6500],
+          "as": ["value", "density"],
+          "steps": 200
+        },
         {
           "type": "impute",
           "field": "density",
