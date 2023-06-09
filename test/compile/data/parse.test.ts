@@ -16,6 +16,7 @@ import {Transform} from '../../../src/transform';
 import {parseUnitModel} from '../../util';
 import {SourceNode} from '../../../src/compile/data/source';
 import {PlaceholderDataFlowNode} from './util';
+import {ExtentTransformNode} from '../../../src/compile/data/extent';
 
 describe('compile/data/parse', () => {
   describe('parseTransformArray()', () => {
@@ -214,6 +215,27 @@ describe('compile/data/parse', () => {
       const result = parseTransformArray(root, model, new AncestorParse());
       expect(root.children[0]).toBeInstanceOf(FoldTransformNode);
       expect(result).toBeInstanceOf(FoldTransformNode);
+    });
+
+    it('should return a ExtentTransformNode', () => {
+      const transform: Transform = {
+        extent: 'a',
+        param: 'A'
+      };
+
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'point',
+        transform: [transform],
+        encoding: {
+          x: {field: 'A', type: 'temporal'},
+          y: {field: 'B', type: 'quantitative'}
+        }
+      });
+      const root = new PlaceholderDataFlowNode(null);
+      const result = parseTransformArray(root, model, new AncestorParse());
+      expect(root.children[0]).toBeInstanceOf(ExtentTransformNode);
+      expect(result).toBeInstanceOf(ExtentTransformNode);
     });
 
     it('should return a PivotTransformNode', () => {
