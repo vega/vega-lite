@@ -40,7 +40,7 @@ Given the following data:
 And the transform:
 
 ```json
-transform: [
+"transform": [
   {"extent": "b"}
 ]
 ```
