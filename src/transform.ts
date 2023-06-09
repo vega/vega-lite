@@ -671,7 +671,7 @@ export function isFold(t: Transform): t is FoldTransform {
 }
 
 export function isExtent(t: Transform): t is ExtentTransform {
-  return 'extent' in t;
+  return 'extent' in t && !('density' in t);
 }
 export type Transform =
   | AggregateTransform
