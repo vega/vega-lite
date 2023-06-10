@@ -4,7 +4,7 @@ import {duplicate, hash} from '../../util';
 import {DataFlowNode} from './dataflow';
 
 /**
- * A class for flatten transform nodes
+ * A class for extent transform nodes
  */
 export class ExtentTransformNode extends DataFlowNode {
   public clone() {
