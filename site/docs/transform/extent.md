@@ -19,7 +19,7 @@ The extent transform finds the extent of a field and stores the result in a [par
 }
 ```
 
-## Fold Transform Definition
+## Extent Transform Definition
 
 {% include table.html props="extent,param" source="ExtentTransform" %}
 
