@@ -8753,11 +8753,12 @@
         },
         "param": {
           "$ref": "#/definitions/ParameterName",
-          "description": "The output parameter produced by the extent transform. __Default value:__ `\"extent\"`"
+          "description": "The output parameter produced by the extent transform."
         }
       },
       "required": [
-        "extent"
+        "extent",
+        "param"
       ],
       "type": "object"
     },
