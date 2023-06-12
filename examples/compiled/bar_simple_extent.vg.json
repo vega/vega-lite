@@ -26,7 +26,7 @@
     {
       "name": "data_0",
       "source": "source_0",
-      "transform": [{"type": "extent", "field": "b", "signal": "extent"}]
+      "transform": [{"type": "extent", "field": "b", "signal": "b_extent"}]
     },
     {
       "name": "data_1",
@@ -82,7 +82,7 @@
       "encode": {
         "update": {
           "stroke": {"value": "firebrick"},
-          "x": {"signal": "scale('x', extent[0])"},
+          "x": {"signal": "scale('x', b_extent[0])"},
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
         }
@@ -96,7 +96,7 @@
       "encode": {
         "update": {
           "stroke": {"value": "#ca8861"},
-          "x": {"signal": "scale('x', extent[1])"},
+          "x": {"signal": "scale('x', b_extent[1])"},
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
         }
