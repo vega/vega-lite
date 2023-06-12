@@ -398,9 +398,8 @@ export interface ExtentTransform {
 
   /**
    * The output parameter produced by the extent transform.
-   * __Default value:__ `"extent"`
    */
-  param?: ParameterName;
+  param: ParameterName;
 }
 
 export interface PivotTransform {

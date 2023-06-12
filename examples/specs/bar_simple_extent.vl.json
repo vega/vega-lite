@@ -8,7 +8,7 @@
       {"a": "G", "b": 19}, {"a": "H", "b": 87}, {"a": "I", "b": 52}
     ]
   },
-  "transform": [{"extent": "b"}],
+  "transform": [{"extent": "b", "param": "b_extent" }],
   "layer": [
     {
       "mark": "bar",
@@ -20,13 +20,13 @@
     {
       "mark": {"type": "rule", "stroke": "firebrick"},
       "encoding": {
-        "x": {"value": {"expr": "scale('x', extent[0])"}}
+        "x": {"value": {"expr": "scale('x', b_extent[0])"}}
       }
     },
     {
       "mark": {"type": "rule", "stroke": "#ca8861"},
       "encoding": {
-        "x": {"value": {"expr": "scale('x', extent[1])"}}
+        "x": {"value": {"expr": "scale('x', b_extent[1])"}}
       }
     }
   ]

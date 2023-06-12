@@ -16,41 +16,10 @@ describe('compile/data/extent', () => {
         signal: 'a_extent'
       });
     });
-
-    it('should handle missing "param" field', () => {
-      const transform: Transform = {
-        extent: 'a'
-      };
-
-      const extent = new ExtentTransformNode(null, transform);
-      expect(extent.assemble()).toEqual({
-        type: 'extent',
-        field: 'a',
-        signal: 'extent'
-      });
-    });
-  });
-
-  describe('dependentFields', () => {
-    it('should return proper produced fields for no "param"', () => {
-      const transform: Transform = {
-        extent: 'a'
-      };
-      const extent = new ExtentTransformNode(null, transform);
-      expect(extent.dependentFields()).toEqual(new Set(['a']));
-    });
   });
 
   describe('producedFields', () => {
-    it('should return proper produced fields for no "param"', () => {
-      const transform: Transform = {
-        extent: 'a'
-      };
-      const fold = new ExtentTransformNode(null, transform);
-      expect(fold.producedFields()).toEqual(new Set(['extent']));
-    });
-
-    it('should return proper produced fields for complete "param"', () => {
+    it('should return proper produced fields for "param"', () => {
       const transform: Transform = {
         extent: 'a',
         param: 'A'
@@ -74,7 +43,7 @@ describe('compile/data/extent', () => {
   describe('clone', () => {
     it('should never clone parent', () => {
       const parent = new PlaceholderDataFlowNode(null);
-      const extent = new ExtentTransformNode(parent, {extent: 'a'});
+      const extent = new ExtentTransformNode(parent, {extent: 'a', param: 'A'});
       expect(extent.clone().parent).toBeNull();
     });
   });

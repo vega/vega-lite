@@ -4,7 +4,7 @@ import {duplicate, hash} from '../../util';
 import {DataFlowNode} from './dataflow';
 
 /**
- * A class for extent transform nodes
+ * A class for flatten transform nodes
  */
 export class ExtentTransformNode extends DataFlowNode {
   public clone() {
@@ -13,9 +13,7 @@ export class ExtentTransformNode extends DataFlowNode {
 
   constructor(parent: DataFlowNode, private transform: ExtentTransform) {
     super(parent);
-    this.transform = duplicate(transform); // duplicate to prevent side effects
-    const specifiedParam = this.transform.param;
-    this.transform.param = specifiedParam ?? 'extent';
+    this.transform = duplicate(transform);
   }
 
   public dependentFields() {

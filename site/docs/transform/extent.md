@@ -12,7 +12,7 @@ The extent transform finds the extent of a field and stores the result in a [par
 {
   ...
   "transform": [
-    {"extent": ...} // Fold Transform
+    {"extent": ..., "param": ...} // Extent Transform
      ...
   ],
   ...
@@ -41,7 +41,7 @@ And the transform:
 
 ```json
 "transform": [
-  {"extent": "b"}
+  {"extent": "b", "param": "b_extent"}
 ]
 ```
 
@@ -49,7 +49,7 @@ this example produces the output `param` will look like:
 
 ```json
 {
-  "name": "extent",
+  "name": "b_extent",
   "value": [19, 91]
 }
 ```
