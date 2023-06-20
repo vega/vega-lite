@@ -302,6 +302,7 @@ function rectBinPosition({
   const vgChannel2 = getVgPositionChannel(channel2);
 
   const {offset} = positionOffset({channel, markDef, encoding, model, bandPosition: 0});
+  const {offset: offset2} = positionOffset({channel: channel2, markDef, encoding, model, bandPosition: 0});
 
   const bandPosition = isSignalRef(bandSize)
     ? {signal: `(1-${bandSize.signal})/2`}
@@ -315,7 +316,7 @@ function rectBinPosition({
         fieldDef,
         scaleName,
         bandPosition,
-        offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset)
+        offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset2 ?? offset)
       }),
       [vgChannel]: rectBinRef({
         fieldDef,
