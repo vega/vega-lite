@@ -7,6 +7,7 @@ import {BinNode} from './bin';
 import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {DensityTransformNode} from './density';
+import {ExtentTransformNode} from './extent';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
@@ -106,7 +107,8 @@ function makeWalkTree(data: VgData[]) {
       node instanceof RegressionTransformNode ||
       node instanceof IdentifierNode ||
       node instanceof SampleTransformNode ||
-      node instanceof PivotTransformNode
+      node instanceof PivotTransformNode ||
+      node instanceof ExtentTransformNode
     ) {
       dataSource.transform.push(node.assemble());
     }
