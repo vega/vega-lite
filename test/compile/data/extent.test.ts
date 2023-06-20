@@ -19,13 +19,13 @@ describe('compile/data/extent', () => {
   });
 
   describe('producedFields', () => {
-    it('should return proper produced fields for "param"', () => {
+    it('should return empty set', () => {
       const transform: Transform = {
         extent: 'a',
         param: 'A'
       };
       const extent = new ExtentTransformNode(null, transform);
-      expect(extent.producedFields()).toEqual(new Set(['A']));
+      expect(extent.producedFields()).toEqual(new Set([]));
     });
   });
 

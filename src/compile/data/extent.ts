@@ -21,7 +21,7 @@ export class ExtentTransformNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return new Set([this.transform.param]);
+    return new Set([]);
   }
 
   public hash() {
