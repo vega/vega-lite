@@ -1,5 +1,17 @@
 
 
+# [5.10.0](https://github.com/vega/vega-lite/compare/v5.9.3...v5.10.0) (2023-06-20)
+
+
+### Bug Fixes
+
+* make timeUnit band respect x2Offset ([#8956](https://github.com/vega/vega-lite/issues/8956)) ([f8a0cfa](https://github.com/vega/vega-lite/commit/f8a0cfae000d335e81a462f9a869552e3e465fe1))
+
+
+### Features
+
+* add `extent` transform ([#8940](https://github.com/vega/vega-lite/issues/8940)) ([85e5cc8](https://github.com/vega/vega-lite/commit/85e5cc84799824aab883cae52d9ccb10b73430ba))
+
 ## [5.9.3](https://github.com/vega/vega-lite/compare/v5.9.2...v5.9.3) (2023-05-18)
 
 
