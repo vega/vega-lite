@@ -442,6 +442,12 @@ export interface RectConfig<ES extends ExprRef | SignalRef> extends RectBinSpaci
    * @minimum 0
    */
   discreteBandSize?: number | RelativeBandSize;
+
+  /**
+   * The minimum band size for bar and rectangle marks.
+   * __Default value:__ `0.25`
+   */
+  minBandSize?: number | ES;
 }
 
 export type BandSize = number | RelativeBandSize | SignalRef;
@@ -650,12 +656,14 @@ const DEFAULT_RECT_BAND_SIZE = 5;
 export const defaultBarConfig: RectConfig<SignalRef> = {
   binSpacing: 1,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
+  minBandSize: 0.25,
   timeUnitBandPosition: 0.5
 };
 
 export const defaultRectConfig: RectConfig<SignalRef> = {
   binSpacing: 0,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
+  minBandSize: 0.25,
   timeUnitBandPosition: 0.5
 };
 
