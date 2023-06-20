@@ -45,14 +45,7 @@ And the transform:
 ]
 ```
 
-this example produces the output `param` will look like:
-
-```json
-{
-  "name": "b_extent",
-  "value": [19, 91]
-}
-```
+this example produces the param `b_extent` with the value `[19, 91]`.
 
 ## Example
 
