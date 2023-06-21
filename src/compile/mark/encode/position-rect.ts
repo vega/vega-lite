@@ -243,22 +243,33 @@ function getBinSpacing(
   spacing: number,
   reverse: boolean | SignalRef,
   translate: number | SignalRef,
-  offset: number | VgValueRef
+  offset: number | VgValueRef,
+  minBandSize: number | SignalRef,
+  bandSizeExpr: string
 ) {
   if (isPolarPositionChannel(channel)) {
     return 0;
   }
 
-  const spacingOffset = channel === 'x' || channel === 'y2' ? -spacing / 2 : spacing / 2;
+  const isEnd = channel === 'x' || channel === 'y2';
 
-  if (isSignalRef(reverse) || isSignalRef(offset) || isSignalRef(translate)) {
+  const spacingOffset = isEnd ? -spacing / 2 : spacing / 2;
+
+  if (isSignalRef(reverse) || isSignalRef(offset) || isSignalRef(translate) || minBandSize) {
     const reverseExpr = signalOrStringValue(reverse);
     const offsetExpr = signalOrStringValue(offset);
     const translateExpr = signalOrStringValue(translate);
+    const minBandSizeExpr = signalOrStringValue(minBandSize);
+
+    const sign = isEnd ? '' : '-';
+
+    const spacingAndSizeOffset = minBandSize
+      ? `(${bandSizeExpr} < ${minBandSizeExpr} ? ${sign}0.5 * (${minBandSizeExpr} - (${bandSizeExpr})) : ${spacingOffset})`
+      : spacingOffset;
 
     const t = translateExpr ? `${translateExpr} + ` : '';
     const r = reverseExpr ? `(${reverseExpr} ? -1 : 1) * ` : '';
-    const o = offsetExpr ? `(${offsetExpr} + ${spacingOffset})` : spacingOffset;
+    const o = offsetExpr ? `(${offsetExpr} + ${spacingAndSizeOffset})` : spacingAndSizeOffset;
 
     return {
       signal: t + r + o
@@ -297,9 +308,22 @@ function rectBinPosition({
   const channel2 = getSecondaryRangeChannel(channel);
   const vgChannel = getVgPositionChannel(channel);
   const vgChannel2 = getVgPositionChannel(channel2);
+  const minBandSize = getMarkConfig('minBandSize', markDef, config);
 
   const {offset} = positionOffset({channel, markDef, encoding, model, bandPosition: 0});
   const {offset: offset2} = positionOffset({channel: channel2, markDef, encoding, model, bandPosition: 0});
+
+  const bandSizeExpr = ref.binSizeExpr({fieldDef, scaleName});
+  const binSpacingOffset = getBinSpacing(channel, spacing, reverse, axisTranslate, offset, minBandSize, bandSizeExpr);
+  const binSpacingOffset2 = getBinSpacing(
+    channel2,
+    spacing,
+    reverse,
+    axisTranslate,
+    offset2 ?? offset,
+    minBandSize,
+    bandSizeExpr
+  );
 
   const bandPosition = isSignalRef(bandSize)
     ? {signal: `(1-${bandSize.signal})/2`}
@@ -313,39 +337,29 @@ function rectBinPosition({
         fieldDef,
         scaleName,
         bandPosition,
-        offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset2 ?? offset)
+        offset: binSpacingOffset2
       }),
       [vgChannel]: rectBinRef({
         fieldDef,
         scaleName,
         bandPosition: isSignalRef(bandPosition) ? {signal: `1-${bandPosition.signal}`} : 1 - bandPosition,
-        offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset)
+        offset: binSpacingOffset
       })
     };
   } else if (isBinned(fieldDef.bin)) {
-    const startRef = ref.valueRefForFieldOrDatumDef(
-      fieldDef,
-      scaleName,
-      {},
-      {offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset)}
-    );
+    const startRef = ref.valueRefForFieldOrDatumDef(fieldDef, scaleName, {}, {offset: binSpacingOffset2});
 
     if (isFieldDef(fieldDef2)) {
       return {
         [vgChannel2]: startRef,
-        [vgChannel]: ref.valueRefForFieldOrDatumDef(
-          fieldDef2,
-          scaleName,
-          {},
-          {offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset)}
-        )
+        [vgChannel]: ref.valueRefForFieldOrDatumDef(fieldDef2, scaleName, {}, {offset: binSpacingOffset})
       };
     } else if (isBinParams(fieldDef.bin) && fieldDef.bin.step) {
       return {
         [vgChannel2]: startRef,
         [vgChannel]: {
           signal: `scale("${scaleName}", ${vgField(fieldDef, {expr: 'datum'})} + ${fieldDef.bin.step})`,
-          offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset)
+          offset: binSpacingOffset
         }
       };
     }
