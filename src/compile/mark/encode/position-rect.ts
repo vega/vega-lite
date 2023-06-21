@@ -90,7 +90,7 @@ function defaultSizeRef(
           bandWidth = `${bandSize.band} * ${bandWidth}`;
         }
         const minBandSize = getMarkConfig('minBandSize', {type: mark}, config);
-        return {signal: `max(${signalOrStringValue(minBandSize)}, ${bandWidth})`};
+        return {signal: minBandSize ? `max(${signalOrStringValue(minBandSize)}, ${bandWidth})` : bandWidth};
       } else if (bandSize.band !== 1) {
         log.warn(log.message.cannotUseRelativeBandSizeWithNonBandScale(scaleType));
         bandSize = undefined;
