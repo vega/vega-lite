@@ -58,7 +58,7 @@
           "endAngle": {
             "scale": "theta",
             "field": "dir",
-            "offset": {"signal": "max(null, bandwidth('theta'))"}
+            "offset": {"signal": "bandwidth('theta')"}
           }
         }
       }
