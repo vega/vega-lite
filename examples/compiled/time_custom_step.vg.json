@@ -67,8 +67,20 @@
           "description": {
             "signal": "\"date (minutes): \" + (timeFormat(datum[\"minutes_step_5_date\"], timeUnitSpecifier([\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of distance: \" + (format(datum[\"sum_distance\"], \"\"))"
           },
-          "x2": {"scale": "x", "field": "minutes_step_5_date", "offset": 1},
-          "x": {"scale": "x", "field": "minutes_step_5_date_end"},
+          "x2": {
+            "scale": "x",
+            "field": "minutes_step_5_date",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"minutes_step_5_date_end\"]) - scale(\"x\", datum[\"minutes_step_5_date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"minutes_step_5_date_end\"]) - scale(\"x\", datum[\"minutes_step_5_date\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "minutes_step_5_date_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"minutes_step_5_date_end\"]) - scale(\"x\", datum[\"minutes_step_5_date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"minutes_step_5_date_end\"]) - scale(\"x\", datum[\"minutes_step_5_date\"])))) : -0.5)"
+            }
+          },
           "y": {"scale": "y", "field": "sum_distance"},
           "y2": {"scale": "y", "value": 0}
         }

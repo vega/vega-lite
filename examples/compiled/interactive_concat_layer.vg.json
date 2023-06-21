@@ -155,22 +155,30 @@
               "x2": {
                 "scale": "concat_0_x",
                 "field": "bin_maxbins_10_IMDB Rating",
-                "offset": 0.5
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB Rating\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB Rating\"])))) : 0)"
+                }
               },
               "x": {
                 "scale": "concat_0_x",
                 "field": "bin_maxbins_10_IMDB Rating_end",
-                "offset": 0.5
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"concat_0_x\", datum[\"bin_maxbins_10_IMDB Rating\"])))) : 0)"
+                }
               },
               "y2": {
                 "scale": "concat_0_y",
                 "field": "bin_maxbins_10_Rotten Tomatoes Rating",
-                "offset": 0.5
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"]) - scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"]) - scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"])))) : 0)"
+                }
               },
               "y": {
                 "scale": "concat_0_y",
                 "field": "bin_maxbins_10_Rotten Tomatoes Rating_end",
-                "offset": 0.5
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"]) - scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"]) - scale(\"concat_0_y\", datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"])))) : 0)"
+                }
               }
             }
           }

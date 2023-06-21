@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 997,
   "height": 200,
   "style": "cell",
   "data": [
@@ -14,19 +14,19 @@
         {
           "field": "date",
           "type": "timeunit",
-          "units": ["month"],
-          "as": ["month_date", "month_date_end"]
+          "units": ["year", "month", "date"],
+          "as": ["yearmonthdate_date", "yearmonthdate_date_end"]
         },
         {
           "type": "aggregate",
-          "groupby": ["month_date", "month_date_end"],
+          "groupby": ["yearmonthdate_date", "yearmonthdate_date_end"],
           "ops": ["mean"],
-          "fields": ["precipitation"],
-          "as": ["mean_precipitation"]
+          "fields": ["temp_max"],
+          "as": ["mean_temp_max"]
         },
         {
           "type": "filter",
-          "expr": "(isDate(datum[\"month_date\"]) || (isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]))) && isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
+          "expr": "(isDate(datum[\"yearmonthdate_date\"]) || (isValid(datum[\"yearmonthdate_date\"]) && isFinite(+datum[\"yearmonthdate_date\"]))) && isValid(datum[\"mean_temp_max\"]) && isFinite(+datum[\"mean_temp_max\"])"
         }
       ]
     }
@@ -42,23 +42,23 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of precipitation: \" + (format(datum[\"mean_precipitation\"], \"\"))"
+            "signal": "\"date (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of temp_max: \" + (format(datum[\"mean_temp_max\"], \"\"))"
           },
           "x2": {
             "scale": "x",
-            "field": "month_date",
+            "field": "yearmonthdate_date",
             "offset": {
-              "signal": "0.5 + (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])))) : 0.5)"
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"yearmonthdate_date_end\"]) - scale(\"x\", datum[\"yearmonthdate_date\"])) < 2 ? -0.5 * (2 - (abs(scale(\"x\", datum[\"yearmonthdate_date_end\"]) - scale(\"x\", datum[\"yearmonthdate_date\"])))) : 0.5)"
             }
           },
           "x": {
             "scale": "x",
-            "field": "month_date_end",
+            "field": "yearmonthdate_date_end",
             "offset": {
-              "signal": "0.5 + (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])))) : -0.5)"
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"yearmonthdate_date_end\"]) - scale(\"x\", datum[\"yearmonthdate_date\"])) < 2 ? 0.5 * (2 - (abs(scale(\"x\", datum[\"yearmonthdate_date_end\"]) - scale(\"x\", datum[\"yearmonthdate_date\"])))) : -0.5)"
             }
           },
-          "y": {"scale": "y", "field": "mean_precipitation"},
+          "y": {"scale": "y", "field": "mean_temp_max"},
           "y2": {"scale": "y", "value": 0}
         }
       }
@@ -70,14 +70,14 @@
       "type": "time",
       "domain": {
         "data": "source_0",
-        "fields": ["month_date", "month_date_end"]
+        "fields": ["yearmonthdate_date", "yearmonthdate_date_end"]
       },
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "mean_precipitation"},
+      "domain": {"data": "source_0", "field": "mean_temp_max"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -89,8 +89,9 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
       "tickMinStep": {
-        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
       "domain": false,
       "labels": false,
@@ -118,14 +119,15 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "date (month)",
+      "title": "date (year-month-date)",
       "format": {
-        "signal": "timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+        "signal": "timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
       },
       "labelFlush": true,
       "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
       "tickMinStep": {
-        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
       "zindex": 0
     },
@@ -133,7 +135,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Mean of precipitation",
+      "title": "Mean of temp_max",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

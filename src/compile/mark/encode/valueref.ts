@@ -187,8 +187,8 @@ export function interpolatedSignalRef({
 
   if (bandPosition === 0 || bandPosition === 1) {
     ref.scale = scaleName;
-    const val = bandPosition === 0 ? start : end;
-    ref.field = val;
+    const field = bandPosition === 0 ? start : end;
+    ref.field = field;
   } else {
     const datum = isSignalRef(bandPosition)
       ? `${bandPosition.signal} * ${start} + (1-${bandPosition.signal}) * ${end}`
@@ -200,6 +200,12 @@ export function interpolatedSignalRef({
     ref.offset = offset;
   }
   return ref;
+}
+
+export function binSizeExpr({scaleName, fieldDef}: {scaleName: string; fieldDef: TypedFieldDef<string>}) {
+  const start = vgField(fieldDef, {expr: 'datum'});
+  const end = vgField(fieldDef, {expr: 'datum', suffix: 'end'});
+  return `abs(scale("${scaleName}", ${end}) - scale("${scaleName}", ${start}))`;
 }
 
 export interface MidPointParams {

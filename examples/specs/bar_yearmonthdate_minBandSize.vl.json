@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/seattle-weather.csv"},
+  "width": 997,
+  "mark": {"type": "bar"},
+  "encoding": {
+    "x": {
+      "timeUnit": "yearmonthdate",
+      "field": "date",
+      "type": "temporal"
+    },
+    "y": {"aggregate": "mean", "field": "temp_max"}
+  },
+  "config": {
+    "bar": {"minBandSize": 2}
+  }
+}

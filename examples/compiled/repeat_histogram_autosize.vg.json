@@ -115,11 +115,16 @@
               "x2": {
                 "scale": "child__Horsepower_x",
                 "field": "bin_maxbins_10_Horsepower",
-                "offset": 1
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"child__Horsepower_x\", datum[\"bin_maxbins_10_Horsepower_end\"]) - scale(\"child__Horsepower_x\", datum[\"bin_maxbins_10_Horsepower\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"child__Horsepower_x\", datum[\"bin_maxbins_10_Horsepower_end\"]) - scale(\"child__Horsepower_x\", datum[\"bin_maxbins_10_Horsepower\"])))) : 0.5)"
+                }
               },
               "x": {
                 "scale": "child__Horsepower_x",
-                "field": "bin_maxbins_10_Horsepower_end"
+                "field": "bin_maxbins_10_Horsepower_end",
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"child__Horsepower_x\", datum[\"bin_maxbins_10_Horsepower_end\"]) - scale(\"child__Horsepower_x\", datum[\"bin_maxbins_10_Horsepower\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"child__Horsepower_x\", datum[\"bin_maxbins_10_Horsepower_end\"]) - scale(\"child__Horsepower_x\", datum[\"bin_maxbins_10_Horsepower\"])))) : -0.5)"
+                }
               },
               "y": {"scale": "child__Horsepower_y", "field": "__count"},
               "y2": {"scale": "child__Horsepower_y", "value": 0}
@@ -189,11 +194,16 @@
               "x2": {
                 "scale": "child__Miles_per_Gallon_x",
                 "field": "bin_maxbins_10_Miles_per_Gallon",
-                "offset": 1
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"child__Miles_per_Gallon_x\", datum[\"bin_maxbins_10_Miles_per_Gallon_end\"]) - scale(\"child__Miles_per_Gallon_x\", datum[\"bin_maxbins_10_Miles_per_Gallon\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"child__Miles_per_Gallon_x\", datum[\"bin_maxbins_10_Miles_per_Gallon_end\"]) - scale(\"child__Miles_per_Gallon_x\", datum[\"bin_maxbins_10_Miles_per_Gallon\"])))) : 0.5)"
+                }
               },
               "x": {
                 "scale": "child__Miles_per_Gallon_x",
-                "field": "bin_maxbins_10_Miles_per_Gallon_end"
+                "field": "bin_maxbins_10_Miles_per_Gallon_end",
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"child__Miles_per_Gallon_x\", datum[\"bin_maxbins_10_Miles_per_Gallon_end\"]) - scale(\"child__Miles_per_Gallon_x\", datum[\"bin_maxbins_10_Miles_per_Gallon\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"child__Miles_per_Gallon_x\", datum[\"bin_maxbins_10_Miles_per_Gallon_end\"]) - scale(\"child__Miles_per_Gallon_x\", datum[\"bin_maxbins_10_Miles_per_Gallon\"])))) : -0.5)"
+                }
               },
               "y": {"scale": "child__Miles_per_Gallon_y", "field": "__count"},
               "y2": {"scale": "child__Miles_per_Gallon_y", "value": 0}

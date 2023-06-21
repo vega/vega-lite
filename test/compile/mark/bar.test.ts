@@ -73,7 +73,8 @@ describe('Mark: Bar', () => {
         x,
         x2,
         y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
     expect(props.x).toEqual({scale: 'x', field: 'bin_end'});
@@ -210,7 +211,8 @@ describe('Mark: Bar', () => {
         y,
         y2,
         x: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
     expect(props.y).toEqual({scale: 'y', field: 'bin_end', offset: 1});
@@ -323,7 +325,8 @@ describe('Mark: Bar', () => {
       encoding: {
         y,
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
 
@@ -346,7 +349,8 @@ describe('Mark: Bar', () => {
       encoding: {
         y,
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
 
@@ -369,7 +373,8 @@ describe('Mark: Bar', () => {
       encoding: {
         y,
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
 
@@ -394,7 +399,8 @@ describe('Mark: Bar', () => {
       encoding: {
         y,
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
 
@@ -413,7 +419,8 @@ describe('Mark: Bar', () => {
       encoding: {
         y,
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
 
@@ -433,7 +440,8 @@ describe('Mark: Bar', () => {
       encoding: {
         x,
         y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
 
@@ -474,7 +482,8 @@ describe('Mark: Bar', () => {
       encoding: {
         x,
         y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
 
@@ -532,7 +541,7 @@ describe('Mark: Bar', () => {
         y,
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
       },
-      config: {bar: {binSpacing: 0}}
+      config: {bar: {binSpacing: 0, minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
 
@@ -552,7 +561,7 @@ describe('Mark: Bar', () => {
         x,
         y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
       },
-      config: {bar: {binSpacing: 0}}
+      config: {bar: {binSpacing: 0, minBandSize: null}}
     });
     const props = bar.encodeEntry(model);
 
@@ -1016,7 +1025,8 @@ describe('Mark: Bar', () => {
             field: 'count',
             type: 'quantitative'
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
       const props = bar.encodeEntry(model);
 
@@ -1048,7 +1058,8 @@ describe('Mark: Bar', () => {
             field: 'count',
             type: 'quantitative'
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
       const props = bar.encodeEntry(model);
 
@@ -1082,7 +1093,8 @@ describe('Mark: Bar', () => {
             field: 'count',
             type: 'quantitative'
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
       const props = bar.encodeEntry(model);
 
@@ -1114,7 +1126,8 @@ describe('Mark: Bar', () => {
             field: 'count',
             type: 'quantitative'
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
       const props = bar.encodeEntry(model);
 

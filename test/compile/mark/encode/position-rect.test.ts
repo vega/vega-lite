@@ -15,7 +15,8 @@ describe('compile/mark/encode/position-rect', () => {
             type: 'quantitative',
             scale: {reverse: {signal: 'r'}}
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
 
       const props = rectPosition(model, 'x');
@@ -37,7 +38,8 @@ describe('compile/mark/encode/position-rect', () => {
             field: 'x',
             type: 'quantitative'
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
 
       const props = rectPosition(model, 'x');
@@ -59,7 +61,8 @@ describe('compile/mark/encode/position-rect', () => {
             type: 'quantitative',
             scale: {reverse: {signal: 'r'}}
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
 
       const props = rectPosition(model, 'y');
@@ -82,7 +85,8 @@ describe('compile/mark/encode/position-rect', () => {
             type: 'quantitative',
             scale: {reverse: {signal: 'r'}}
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
 
       const props = rectPosition(model, 'x');
@@ -106,7 +110,8 @@ describe('compile/mark/encode/position-rect', () => {
             type: 'quantitative',
             scale: {reverse: {signal: 'r'}}
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
 
       const props = rectPosition(model, 'y');
@@ -173,7 +178,8 @@ describe('compile/mark/encode/position-rect', () => {
             type: 'quantitative',
             axis: {translate: {signal: 't'}}
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
       model.parseAxesAndHeaders();
 
@@ -198,7 +204,8 @@ describe('compile/mark/encode/position-rect', () => {
             scale: {reverse: {signal: 'r'}},
             axis: {translate: {signal: 't'}}
           }
-        }
+        },
+        config: {bar: {minBandSize: null}}
       });
       model.parseAxesAndHeaders();
 

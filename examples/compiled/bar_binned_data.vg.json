@@ -51,8 +51,20 @@
           "description": {
             "signal": "\"bin_start: \" + (!isValid(datum[\"bin_start\"]) || !isFinite(+datum[\"bin_start\"]) ? \"null\" : format(datum[\"bin_start\"], \"\") + \" – \" + format(datum[\"bin_end\"], \"\")) + \"; count: \" + (format(datum[\"count\"], \"\"))"
           },
-          "x2": {"scale": "x", "field": "bin_start", "offset": 1},
-          "x": {"scale": "x", "field": "bin_end"},
+          "x2": {
+            "scale": "x",
+            "field": "bin_start",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_start_end\"]) - scale(\"x\", datum[\"bin_start\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_start_end\"]) - scale(\"x\", datum[\"bin_start\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "bin_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_start_end\"]) - scale(\"x\", datum[\"bin_start\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_start_end\"]) - scale(\"x\", datum[\"bin_start\"])))) : -0.5)"
+            }
+          },
           "y": {"scale": "y", "field": "count_end"},
           "y2": {"scale": "y", "field": "count_start"}
         }

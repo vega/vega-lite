@@ -77,9 +77,17 @@
           "x2": {
             "scale": "x",
             "field": "bin_maxbins_10_IMDB Rating",
-            "offset": 1
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating\"])))) : 0.5)"
+            }
           },
-          "x": {"scale": "x", "field": "bin_maxbins_10_IMDB Rating_end"},
+          "x": {
+            "scale": "x",
+            "field": "bin_maxbins_10_IMDB Rating_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating\"])))) : -0.5)"
+            }
+          },
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
