@@ -3424,6 +3424,17 @@
             }
           ]
         },
+        "minBandSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The minimum band size for bar and rectangle marks. __Default value:__ `0.25`"
+        },
         "opacity": {
           "anyOf": [
             {
@@ -16963,6 +16974,17 @@
             }
           ]
         },
+        "minBandSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The minimum band size for bar and rectangle marks. __Default value:__ `0.25`"
+        },
         "opacity": {
           "anyOf": [
             {
@@ -20756,6 +20778,17 @@
               "$ref": "#/definitions/ExprRef"
             }
           ]
+        },
+        "minBandSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The minimum band size for bar and rectangle marks. __Default value:__ `0.25`"
         },
         "opacity": {
           "anyOf": [

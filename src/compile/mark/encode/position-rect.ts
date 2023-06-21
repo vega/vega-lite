@@ -18,7 +18,7 @@ import * as log from '../../../log';
 import {BandSize, isRelativeBandSize} from '../../../mark';
 import {hasDiscreteDomain} from '../../../scale';
 import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkPropOrConfig, signalOrStringValue, signalOrValueRef} from '../../common';
+import {getMarkConfig, getMarkPropOrConfig, signalOrStringValue, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
@@ -30,7 +30,6 @@ import * as ref from './valueref';
 import {getOffsetScaleChannel} from '../../../channel';
 import {getFirstDefined} from '../../../util';
 import {Mark} from '../../../mark';
-import {isExprRef} from '../../../expr';
 
 export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'radius'): VgEncodeEntry {
   const {config, encoding, markDef} = model;
@@ -77,7 +76,7 @@ function defaultSizeRef(
   sizeChannel: 'width' | 'height',
   scaleName: string,
   scale: ScaleComponent,
-  config: Config,
+  config: Config<SignalRef>,
   bandSize: BandSize,
   hasFieldDef: boolean,
   mark: Mark
@@ -90,8 +89,8 @@ function defaultSizeRef(
         if (bandSize.band !== 1) {
           bandWidth = `${bandSize.band} * ${bandWidth}`;
         }
-        // TODO(#8351): make 0.25 here configurable
-        return {signal: `max(0.25, ${bandWidth})`};
+        const minBandSize = getMarkConfig('minBandSize', {type: mark}, config);
+        return {signal: minBandSize ? `max(${signalOrStringValue(minBandSize)}, ${bandWidth})` : bandWidth};
       } else if (bandSize.band !== 1) {
         log.warn(log.message.cannotUseRelativeBandSizeWithNonBandScale(scaleType));
         bandSize = undefined;
@@ -122,8 +121,6 @@ function defaultSizeRef(
       return {signal: `(1 - (${padding.signal})) * ${sizeChannel}`};
     } else if (isNumber(padding)) {
       return {signal: `${1 - padding} * ${sizeChannel}`};
-    } else if (isExprRef(padding)) {
-      return {signal: `(1 - (${padding.expr})) * ${sizeChannel}`};
     }
   }
   const defaultStep = getViewConfigDiscreteStep(config.view, sizeChannel);

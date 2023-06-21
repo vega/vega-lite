@@ -170,6 +170,6 @@ Specifying `x2` or `y2` for the quantitative axis of bar marks creates ranged ba
 
 The `bar` property of the top-level [`config`](config.html) object sets the default properties for all bar marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
-Besides standard [mark properties](#properties), bar config can contain the following additional properties:
+Besides standard [bar mark properties](#properties), bar config can contain the following additional properties:
 
-{% include table.html props="binSpacing,continuousBandSize,discreteBandSize" source="BarConfig" %}
+{% include table.html props="continuousBandSize,discreteBandSize,minBandSize" source="BarConfig" %}

@@ -47,7 +47,7 @@ The `rect` mark represents an arbitrary rectangle.
 
 A rect mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
-{% include table.html props="width,height,align,baseline,cornerRadius" source="MarkConfig" %}
+{% include table.html props="width,height,align,baseline,cornerRadius,binSpacing" source="MarkConfig" %}
 
 ## Examples
 
@@ -90,4 +90,6 @@ For example, we can use `rect` to create an annotation [`layer`](layer.html) tha
 
 The `rect` property of the top-level [`config`](config.html) object sets the default properties for all rect marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
-The rect config can contain any [rect mark properties](#properties) (except `type`, `style`, and `clip`).
+Besides standard [rect mark properties](#properties) (except `type`, `style`, and `clip`), rect config can contain the following additional properties:
+
+{% include table.html props="continuousBandSize,discreteBandSize,minBandSize" source="RectConfig" %}
