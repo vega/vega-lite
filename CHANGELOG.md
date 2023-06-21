@@ -1,5 +1,17 @@
 
 
+# [5.11.0](https://github.com/vega/vega-lite/compare/v5.10.0...v5.11.0) (2023-06-21)
+
+
+### Bug Fixes
+
+* make bin/timeUnit band respect minBandSize config ([#8958](https://github.com/vega/vega-lite/issues/8958)) ([d1c012e](https://github.com/vega/vega-lite/commit/d1c012e563a4e3dac3b95777257b6b613430fb00))
+
+
+### Features
+
+* config.rect/bar.minBandSize ([#8959](https://github.com/vega/vega-lite/issues/8959)) ([f541070](https://github.com/vega/vega-lite/commit/f5410708c2249d3e18d644f1f9cf760df3d8ec3d))
+
 # [5.10.0](https://github.com/vega/vega-lite/compare/v5.9.3...v5.10.0) (2023-06-20)
 
 
