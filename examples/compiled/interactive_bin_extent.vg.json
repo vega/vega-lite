@@ -337,9 +337,17 @@
               "x2": {
                 "scale": "concat_0_x",
                 "field": "bin_maxbins_30_time",
-                "offset": 1
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"concat_0_x\", datum[\"bin_maxbins_30_time_end\"]) - scale(\"concat_0_x\", datum[\"bin_maxbins_30_time\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"concat_0_x\", datum[\"bin_maxbins_30_time_end\"]) - scale(\"concat_0_x\", datum[\"bin_maxbins_30_time\"])))) : 0.5)"
+                }
               },
-              "x": {"scale": "concat_0_x", "field": "bin_maxbins_30_time_end"},
+              "x": {
+                "scale": "concat_0_x",
+                "field": "bin_maxbins_30_time_end",
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"concat_0_x\", datum[\"bin_maxbins_30_time_end\"]) - scale(\"concat_0_x\", datum[\"bin_maxbins_30_time\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"concat_0_x\", datum[\"bin_maxbins_30_time_end\"]) - scale(\"concat_0_x\", datum[\"bin_maxbins_30_time\"])))) : -0.5)"
+                }
+              },
               "y": {"scale": "concat_0_y", "field": "__count"},
               "y2": {"scale": "concat_0_y", "value": 0}
             }
@@ -452,11 +460,16 @@
               "x2": {
                 "scale": "concat_1_x",
                 "field": "bin_maxbins_30_extent_param_brush_time",
-                "offset": 1
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time_end\"]) - scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time_end\"]) - scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time\"])))) : 0.5)"
+                }
               },
               "x": {
                 "scale": "concat_1_x",
-                "field": "bin_maxbins_30_extent_param_brush_time_end"
+                "field": "bin_maxbins_30_extent_param_brush_time_end",
+                "offset": {
+                  "signal": "0.5 + (abs(scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time_end\"]) - scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time_end\"]) - scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time\"])))) : -0.5)"
+                }
               },
               "y": {"scale": "concat_1_y", "field": "__count"},
               "y2": {"scale": "concat_1_y", "value": 0}

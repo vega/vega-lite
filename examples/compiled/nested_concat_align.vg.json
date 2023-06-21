@@ -198,11 +198,16 @@
                   "x2": {
                     "scale": "child__column_Rotten_Tomatoes_Rating_x",
                     "field": "bin_maxbins_20_Rotten Tomatoes Rating",
-                    "offset": 1
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_Rotten_Tomatoes_Rating_x\", datum[\"bin_maxbins_20_Rotten Tomatoes Rating_end\"]) - scale(\"child__column_Rotten_Tomatoes_Rating_x\", datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"child__column_Rotten_Tomatoes_Rating_x\", datum[\"bin_maxbins_20_Rotten Tomatoes Rating_end\"]) - scale(\"child__column_Rotten_Tomatoes_Rating_x\", datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"])))) : 0.5)"
+                    }
                   },
                   "x": {
                     "scale": "child__column_Rotten_Tomatoes_Rating_x",
-                    "field": "bin_maxbins_20_Rotten Tomatoes Rating_end"
+                    "field": "bin_maxbins_20_Rotten Tomatoes Rating_end",
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_Rotten_Tomatoes_Rating_x\", datum[\"bin_maxbins_20_Rotten Tomatoes Rating_end\"]) - scale(\"child__column_Rotten_Tomatoes_Rating_x\", datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"child__column_Rotten_Tomatoes_Rating_x\", datum[\"bin_maxbins_20_Rotten Tomatoes Rating_end\"]) - scale(\"child__column_Rotten_Tomatoes_Rating_x\", datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"])))) : -0.5)"
+                    }
                   },
                   "y": {
                     "scale": "child__column_Rotten_Tomatoes_Rating_y",
@@ -278,11 +283,16 @@
                   "x2": {
                     "scale": "child__column_IMDB_Rating_x",
                     "field": "bin_maxbins_20_IMDB Rating",
-                    "offset": 1
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_IMDB_Rating_x\", datum[\"bin_maxbins_20_IMDB Rating_end\"]) - scale(\"child__column_IMDB_Rating_x\", datum[\"bin_maxbins_20_IMDB Rating\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"child__column_IMDB_Rating_x\", datum[\"bin_maxbins_20_IMDB Rating_end\"]) - scale(\"child__column_IMDB_Rating_x\", datum[\"bin_maxbins_20_IMDB Rating\"])))) : 0.5)"
+                    }
                   },
                   "x": {
                     "scale": "child__column_IMDB_Rating_x",
-                    "field": "bin_maxbins_20_IMDB Rating_end"
+                    "field": "bin_maxbins_20_IMDB Rating_end",
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_IMDB_Rating_x\", datum[\"bin_maxbins_20_IMDB Rating_end\"]) - scale(\"child__column_IMDB_Rating_x\", datum[\"bin_maxbins_20_IMDB Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"child__column_IMDB_Rating_x\", datum[\"bin_maxbins_20_IMDB Rating_end\"]) - scale(\"child__column_IMDB_Rating_x\", datum[\"bin_maxbins_20_IMDB Rating\"])))) : -0.5)"
+                    }
                   },
                   "y": {
                     "scale": "child__column_IMDB_Rating_y",
@@ -363,11 +373,16 @@
                   "x2": {
                     "scale": "child__column_US_Gross_x",
                     "field": "bin_maxbins_20_US Gross",
-                    "offset": 1
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_US_Gross_x\", datum[\"bin_maxbins_20_US Gross_end\"]) - scale(\"child__column_US_Gross_x\", datum[\"bin_maxbins_20_US Gross\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"child__column_US_Gross_x\", datum[\"bin_maxbins_20_US Gross_end\"]) - scale(\"child__column_US_Gross_x\", datum[\"bin_maxbins_20_US Gross\"])))) : 0.5)"
+                    }
                   },
                   "x": {
                     "scale": "child__column_US_Gross_x",
-                    "field": "bin_maxbins_20_US Gross_end"
+                    "field": "bin_maxbins_20_US Gross_end",
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_US_Gross_x\", datum[\"bin_maxbins_20_US Gross_end\"]) - scale(\"child__column_US_Gross_x\", datum[\"bin_maxbins_20_US Gross\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"child__column_US_Gross_x\", datum[\"bin_maxbins_20_US Gross_end\"]) - scale(\"child__column_US_Gross_x\", datum[\"bin_maxbins_20_US Gross\"])))) : -0.5)"
+                    }
                   },
                   "y": {
                     "scale": "child__column_US_Gross_y",
@@ -440,11 +455,16 @@
                   "x2": {
                     "scale": "child__column_Worldwide_Gross_x",
                     "field": "bin_maxbins_20_Worldwide Gross",
-                    "offset": 1
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_Worldwide_Gross_x\", datum[\"bin_maxbins_20_Worldwide Gross_end\"]) - scale(\"child__column_Worldwide_Gross_x\", datum[\"bin_maxbins_20_Worldwide Gross\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"child__column_Worldwide_Gross_x\", datum[\"bin_maxbins_20_Worldwide Gross_end\"]) - scale(\"child__column_Worldwide_Gross_x\", datum[\"bin_maxbins_20_Worldwide Gross\"])))) : 0.5)"
+                    }
                   },
                   "x": {
                     "scale": "child__column_Worldwide_Gross_x",
-                    "field": "bin_maxbins_20_Worldwide Gross_end"
+                    "field": "bin_maxbins_20_Worldwide Gross_end",
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_Worldwide_Gross_x\", datum[\"bin_maxbins_20_Worldwide Gross_end\"]) - scale(\"child__column_Worldwide_Gross_x\", datum[\"bin_maxbins_20_Worldwide Gross\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"child__column_Worldwide_Gross_x\", datum[\"bin_maxbins_20_Worldwide Gross_end\"]) - scale(\"child__column_Worldwide_Gross_x\", datum[\"bin_maxbins_20_Worldwide Gross\"])))) : -0.5)"
+                    }
                   },
                   "y": {
                     "scale": "child__column_Worldwide_Gross_y",

@@ -81,22 +81,30 @@
           "x2": {
             "scale": "x",
             "field": "bin_maxbins_60_IMDB Rating",
-            "offset": 0.5
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_maxbins_60_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_60_IMDB Rating\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_maxbins_60_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_60_IMDB Rating\"])))) : 0)"
+            }
           },
           "x": {
             "scale": "x",
             "field": "bin_maxbins_60_IMDB Rating_end",
-            "offset": 0.5
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_maxbins_60_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_60_IMDB Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_maxbins_60_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_60_IMDB Rating\"])))) : 0)"
+            }
           },
           "y2": {
             "scale": "y",
             "field": "bin_maxbins_40_Rotten Tomatoes Rating",
-            "offset": 0.5
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"y\", datum[\"bin_maxbins_40_Rotten Tomatoes Rating_end\"]) - scale(\"y\", datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"y\", datum[\"bin_maxbins_40_Rotten Tomatoes Rating_end\"]) - scale(\"y\", datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"])))) : 0)"
+            }
           },
           "y": {
             "scale": "y",
             "field": "bin_maxbins_40_Rotten Tomatoes Rating_end",
-            "offset": 0.5
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"y\", datum[\"bin_maxbins_40_Rotten Tomatoes Rating_end\"]) - scale(\"y\", datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"y\", datum[\"bin_maxbins_40_Rotten Tomatoes Rating_end\"]) - scale(\"y\", datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"])))) : 0)"
+            }
           }
         }
       }

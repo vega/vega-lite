@@ -593,11 +593,16 @@
                   "x2": {
                     "scale": "child__column_distance_x",
                     "field": "bin_maxbins_20_distance",
-                    "offset": 1
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance_end\"]) - scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance_end\"]) - scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance\"])))) : 0.5)"
+                    }
                   },
                   "x": {
                     "scale": "child__column_distance_x",
-                    "field": "bin_maxbins_20_distance_end"
+                    "field": "bin_maxbins_20_distance_end",
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance_end\"]) - scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance_end\"]) - scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance\"])))) : -0.5)"
+                    }
                   },
                   "y": {
                     "scale": "child__column_distance_y",
@@ -623,11 +628,16 @@
                   "x2": {
                     "scale": "child__column_distance_x",
                     "field": "bin_maxbins_20_distance",
-                    "offset": 1
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance_end\"]) - scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance_end\"]) - scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance\"])))) : 0.5)"
+                    }
                   },
                   "x": {
                     "scale": "child__column_distance_x",
-                    "field": "bin_maxbins_20_distance_end"
+                    "field": "bin_maxbins_20_distance_end",
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance_end\"]) - scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance_end\"]) - scale(\"child__column_distance_x\", datum[\"bin_maxbins_20_distance\"])))) : -0.5)"
+                    }
                   },
                   "y": {
                     "scale": "child__column_distance_y",
@@ -701,11 +711,16 @@
                   "x2": {
                     "scale": "child__column_delay_x",
                     "field": "bin_maxbins_20_delay",
-                    "offset": 1
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay_end\"]) - scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay_end\"]) - scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay\"])))) : 0.5)"
+                    }
                   },
                   "x": {
                     "scale": "child__column_delay_x",
-                    "field": "bin_maxbins_20_delay_end"
+                    "field": "bin_maxbins_20_delay_end",
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay_end\"]) - scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay_end\"]) - scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay\"])))) : -0.5)"
+                    }
                   },
                   "y": {"scale": "child__column_delay_y", "field": "__count"},
                   "y2": {"scale": "child__column_delay_y", "value": 0}
@@ -728,11 +743,16 @@
                   "x2": {
                     "scale": "child__column_delay_x",
                     "field": "bin_maxbins_20_delay",
-                    "offset": 1
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay_end\"]) - scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay_end\"]) - scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay\"])))) : 0.5)"
+                    }
                   },
                   "x": {
                     "scale": "child__column_delay_x",
-                    "field": "bin_maxbins_20_delay_end"
+                    "field": "bin_maxbins_20_delay_end",
+                    "offset": {
+                      "signal": "0.5 + (abs(scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay_end\"]) - scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay_end\"]) - scale(\"child__column_delay_x\", datum[\"bin_maxbins_20_delay\"])))) : -0.5)"
+                    }
                   },
                   "y": {"scale": "child__column_delay_y", "field": "__count"},
                   "y2": {"scale": "child__column_delay_y", "value": 0}

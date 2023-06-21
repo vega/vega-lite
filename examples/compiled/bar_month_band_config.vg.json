@@ -46,10 +46,15 @@
           },
           "x2": {
             "signal": "scale(\"x\", 0.15000000000000002 * datum[\"month_date\"] + 0.85 * datum[\"month_date_end\"])",
-            "offset": 1
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])))) : 0.5)"
+            }
           },
           "x": {
-            "signal": "scale(\"x\", 0.85 * datum[\"month_date\"] + 0.15000000000000002 * datum[\"month_date_end\"])"
+            "signal": "scale(\"x\", 0.85 * datum[\"month_date\"] + 0.15000000000000002 * datum[\"month_date_end\"])",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])))) : -0.5)"
+            }
           },
           "y": {"scale": "y", "field": "mean_precipitation"},
           "y2": {"scale": "y", "value": 0}

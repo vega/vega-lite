@@ -51,8 +51,20 @@
           "description": {
             "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"binned rating\"]) || !isFinite(+datum[\"binned rating\"]) ? \"null\" : format(datum[\"binned rating\"], \"\") + \" – \" + format(datum[\"binned rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
-          "x2": {"scale": "x", "field": "binned rating", "offset": 1},
-          "x": {"scale": "x", "field": "binned rating_end"},
+          "x2": {
+            "scale": "x",
+            "field": "binned rating",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"binned rating_end\"]) - scale(\"x\", datum[\"binned rating\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"binned rating_end\"]) - scale(\"x\", datum[\"binned rating\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "binned rating_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"binned rating_end\"]) - scale(\"x\", datum[\"binned rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"binned rating_end\"]) - scale(\"x\", datum[\"binned rating\"])))) : -0.5)"
+            }
+          },
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }

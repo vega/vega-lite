@@ -108,8 +108,20 @@
           "description": {
             "signal": "\"year: \" + (!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"]) ? \"null\" : format(datum[\"year\"], \"d\") + \" – \" + format(datum[\"year_end\"], \"d\")) + \"; wheat: \" + (format(datum[\"wheat\"], \"\"))"
           },
-          "x2": {"scale": "x", "field": "year", "offset": 1},
-          "x": {"scale": "x", "field": "year_end"},
+          "x2": {
+            "scale": "x",
+            "field": "year",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"year_end\"]) - scale(\"x\", datum[\"year\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"year_end\"]) - scale(\"x\", datum[\"year\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "year_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"year_end\"]) - scale(\"x\", datum[\"year\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"year_end\"]) - scale(\"x\", datum[\"year\"])))) : -0.5)"
+            }
+          },
           "y": {"scale": "y", "field": "wheat_end"},
           "y2": {"scale": "y", "field": "wheat_start"}
         }
