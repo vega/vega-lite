@@ -337,8 +337,8 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in Mark]?: (keyof Required<MarkConfigMixins<any>>[k])[];
 } = {
   area: ['line', 'point'],
-  bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
-  rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
+  bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
+  rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
   line: ['point'],
   tick: ['bandSize', 'thickness']
 };
