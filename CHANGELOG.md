@@ -1,5 +1,12 @@
 
 
+## [5.11.1](https://github.com/vega/vega-lite/compare/v5.11.0...v5.11.1) (2023-06-26)
+
+
+### Bug Fixes
+
+* show gridline of first axis only for dual axes charts ([#8962](https://github.com/vega/vega-lite/issues/8962)) ([a522a87](https://github.com/vega/vega-lite/commit/a522a877ec79745e94f43fae8d0eeec9fbdc2e4b))
+
 # [5.11.0](https://github.com/vega/vega-lite/compare/v5.10.0...v5.11.0) (2023-06-21)
 
 
