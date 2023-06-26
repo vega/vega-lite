@@ -100,7 +100,7 @@
     "ajv-formats": "^2.1.1",
     "chai": "^4.3.7",
     "cheerio": "^1.0.0-rc.12",
-    "conventional-changelog-cli": "^2.2.2",
+    "conventional-changelog-cli": "^3.0.0",
     "d3": "^7.8.4",
     "del-cli": "^5.0.0",
     "eslint": "^8.40.0",
