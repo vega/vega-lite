@@ -1,0 +1,18 @@
+{
+  "data": {
+    "values": [
+      {"date": "2011-10-10"},
+      {"date": "2011-10-12"}
+    ]
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "timeUnit": "binnedutcyearmonthdatehours",
+      "field": "date",
+      "type": "ordinal",
+      "title": "time"
+    }
+  }
+}
+

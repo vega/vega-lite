@@ -87,6 +87,45 @@ export const LOCAL_MULTI_TIMEUNIT_INDEX = {
 
 export type LocalMultiTimeUnit = keyof typeof LOCAL_MULTI_TIMEUNIT_INDEX;
 
+const BINNED_TIMEUNIT_INDEX = {
+  binnedyear: 1,
+  binnedyearquarter: 1,
+  binnedyearquartermonth: 1,
+
+  binnedyearmonth: 1,
+  binnedyearmonthdate: 1,
+  binnedyearmonthdatehours: 1,
+  binnedyearmonthdatehoursminutes: 1,
+  binnedyearmonthdatehoursminutesseconds: 1,
+
+  binnedyearweek: 1,
+  binnedyearweekday: 1,
+  binnedyearweekdayhours: 1,
+  binnedyearweekdayhoursminutes: 1,
+  binnedyearweekdayhoursminutesseconds: 1,
+
+  binnedyeardayofyear: 1
+} as const;
+
+export type BinnedTimeUnit = keyof typeof BINNED_TIMEUNIT_INDEX;
+
+export function isBinnedTimeUnit(
+  timeUnit: TimeUnit | BinnedTimeUnit | PossiblyBinnedTimeUnitParams | undefined
+): timeUnit is BinnedTimeUnit | PossiblyBinnedTimeUnitParams {
+  if (isObject(timeUnit)) {
+    return timeUnit.binned;
+  }
+  return isBinnedTimeUnitString(timeUnit);
+}
+
+export function isBinnedTimeUnitString(timeUnit: TimeUnit | BinnedTimeUnit | undefined): timeUnit is BinnedTimeUnit {
+  return timeUnit && timeUnit.startsWith('binned');
+}
+
+export function getLocalTimeUnitFromBinnedTimeUnit(timeUnit: BinnedTimeUnit): LocalTimeUnit {
+  return timeUnit.substring(6) as LocalTimeUnit;
+}
+
 export const UTC_MULTI_TIMEUNIT_INDEX = {
   utcyearquarter: 1,
   utcyearquartermonth: 1,
@@ -140,8 +179,8 @@ export function isUTCTimeUnit(t: string): t is UtcTimeUnit {
   return t.startsWith('utc');
 }
 
-export function getLocalTimeUnit(t: UtcTimeUnit): LocalTimeUnit {
-  return t.substr(3) as LocalTimeUnit;
+export function getLocalTimeUnitFromUTCTimeUnit(t: UtcTimeUnit): LocalTimeUnit {
+  return t.substring(3) as LocalTimeUnit;
 }
 
 export type TimeUnit = SingleTimeUnit | MultiTimeUnit;
@@ -182,6 +221,13 @@ export interface TimeUnitParams {
    * True to use UTC timezone. Equivalent to using a `utc` prefixed `TimeUnit`.
    */
   utc?: boolean;
+}
+
+export interface PossiblyBinnedTimeUnitParams extends TimeUnitParams {
+  /**
+   * Whether the data has already been binned to this time unit.
+   */
+  binned?: boolean;
 }
 
 // matches vega time unit format specifier
@@ -288,16 +334,25 @@ export function formatExpression(timeUnit: TimeUnit, field: string, isUTCScale: 
   return `${utc ? 'utc' : 'time'}Format(${field}, ${expr})`;
 }
 
-export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnitParams {
+export function normalizeTimeUnit(
+  timeUnit: TimeUnit | BinnedTimeUnit | PossiblyBinnedTimeUnitParams
+): PossiblyBinnedTimeUnitParams {
   if (!timeUnit) {
     return undefined;
   }
 
-  let params: TimeUnitParams;
+  let params: PossiblyBinnedTimeUnitParams;
   if (isString(timeUnit)) {
-    params = {
-      unit: timeUnit
-    };
+    if (isBinnedTimeUnitString(timeUnit)) {
+      params = {
+        unit: getLocalTimeUnitFromBinnedTimeUnit(timeUnit),
+        binned: true
+      };
+    } else {
+      params = {
+        unit: timeUnit
+      };
+    }
   } else if (isObject(timeUnit)) {
     params = {
       ...timeUnit,
@@ -307,7 +362,7 @@ export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnit
 
   if (isUTCTimeUnit(params.unit)) {
     params.utc = true;
-    params.unit = getLocalTimeUnit(params.unit);
+    params.unit = getLocalTimeUnitFromUTCTimeUnit(params.unit);
   }
 
   return params;
@@ -335,7 +390,10 @@ export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
   }
 }
 
-export function durationExpr(timeUnit: TimeUnit | TimeUnitParams, wrap: (x: string) => string = x => x) {
+export function durationExpr(
+  timeUnit: TimeUnit | BinnedTimeUnit | TimeUnitParams,
+  wrap: (x: string) => string = x => x
+) {
   const normalizedTimeUnit = normalizeTimeUnit(timeUnit);
   const smallestUnitPart = getSmallestTimeUnitPart(normalizedTimeUnit.unit);
   if (smallestUnitPart && smallestUnitPart !== 'day') {

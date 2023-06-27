@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Stock price over time.",
+  "data": {"url": "data/stocks.csv"},
+  "transform": [
+    {"filter": {"timeUnit": "binnedyearmonth", "field": "date", "range": [{"year": 2005, "month": 1}, {"year": 2005, "month": 3}]}}
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {"timeUnit": "binnedyearmonth", "field": "date", "type": "temporal"},
+    "xOffset": {"field": "symbol", "type": "nominal"},
+    "color": {"field": "symbol", "type": "nominal"},
+    "y": {"field": "price", "type": "quantitative"}
+  }
+}
