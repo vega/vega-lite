@@ -348,18 +348,51 @@ export function durationExpr(timeUnit: TimeUnit | TimeUnitParams, wrap: (x: stri
       seconds: 0,
       milliseconds: 0
     };
-    const step = normalizedTimeUnit.step || 1;
+    const {step, part} = getDateTimePartAndStep(smallestUnitPart, normalizedTimeUnit.step);
     const endDate: DateTime = {
       ...startDate,
-      ...(smallestUnitPart === 'quarter'
-        ? {month: +startDate.month + step * 3}
-        : smallestUnitPart === 'week'
-        ? {date: +startDate.date + step * 7}
-        : {[smallestUnitPart]: +startDate[smallestUnitPart] + step})
+      [part]: +startDate[part] + step
     };
 
     // Calculate timestamp duration for the smallest unit listed
     return `${wrap(dateTimeToExpr(endDate))} - ${wrap(dateTimeToExpr(startDate))}`;
   }
   return undefined;
+}
+
+const DATE_PARTS = {
+  year: 1,
+  month: 1,
+  date: 1,
+  hours: 1,
+  minutes: 1,
+  seconds: 1,
+  milliseconds: 1
+} as const;
+
+type DatePart = keyof typeof DATE_PARTS;
+
+export function isDatePart(timeUnit: LocalSingleTimeUnit): timeUnit is DatePart {
+  return !!DATE_PARTS[timeUnit];
+}
+
+export function getDateTimePartAndStep(
+  timeUnit: LocalSingleTimeUnit,
+  step = 1
+): {
+  part: keyof DateTime;
+  step: number;
+} {
+  if (isDatePart(timeUnit)) {
+    return {part: timeUnit, step};
+  }
+  switch (timeUnit) {
+    case 'day':
+    case 'dayofyear':
+      return {part: 'date', step};
+    case 'quarter':
+      return {part: 'month', step: step * 3};
+    case 'week':
+      return {part: 'date', step: step * 7};
+  }
 }
