@@ -2,7 +2,7 @@ import {TimeUnitTransform as VgTimeUnitTransform} from 'vega';
 import {FormulaTransform as VgFormulaTransform} from 'vega';
 import {FieldName, vgField} from '../../channeldef';
 import {
-  PossiblyBinnedTimeUnitParams,
+  TimeUnitParams,
   getDateTimePartAndStep,
   getSmallestTimeUnitPart,
   getTimeUnitParts,
@@ -18,7 +18,7 @@ import {isRectBasedMark} from '../../mark';
 export type TimeUnitComponent = TimeUnitTransform | BinnedTimeUnitOffset;
 
 export interface BinnedTimeUnitOffset {
-  timeUnit: PossiblyBinnedTimeUnitParams;
+  timeUnit: TimeUnitParams;
   field: FieldName;
 }
 

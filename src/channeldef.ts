@@ -250,7 +250,7 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
    *
    * __See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation.
    */
-  timeUnit?: TimeUnit | BinnedTimeUnit | TimeUnitParams; // TODO(#8972): also support BinnedTimeUnitParams
+  timeUnit?: TimeUnit | BinnedTimeUnit | TimeUnitParams;
 
   /**
    * Aggregation function for the field

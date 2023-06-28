@@ -110,8 +110,8 @@ const BINNED_TIMEUNIT_INDEX = {
 export type BinnedTimeUnit = keyof typeof BINNED_TIMEUNIT_INDEX;
 
 export function isBinnedTimeUnit(
-  timeUnit: TimeUnit | BinnedTimeUnit | PossiblyBinnedTimeUnitParams | undefined
-): timeUnit is BinnedTimeUnit | PossiblyBinnedTimeUnitParams {
+  timeUnit: TimeUnit | BinnedTimeUnit | TimeUnitParams | undefined
+): timeUnit is BinnedTimeUnit | TimeUnitParams {
   if (isObject(timeUnit)) {
     return timeUnit.binned;
   }
@@ -200,7 +200,7 @@ export type TimeUnitFormat =
   | 'seconds'
   | 'milliseconds';
 
-export interface TimeUnitParams {
+export interface TimeUnitTransformParams {
   /**
    * Defines how date-time values should be binned.
    */
@@ -223,9 +223,14 @@ export interface TimeUnitParams {
   utc?: boolean;
 }
 
-export interface PossiblyBinnedTimeUnitParams extends TimeUnitParams {
+/**
+ * Time Unit Params for encoding predicate, which can specified if the data is  already "binned".
+ */
+export interface TimeUnitParams extends TimeUnitTransformParams {
   /**
    * Whether the data has already been binned to this time unit.
+   * If true, Vega-Lite will only format the data, marks, and guides,
+   * without applying the timeUnit transform to re-bin the data again.
    */
   binned?: boolean;
 }
@@ -334,14 +339,12 @@ export function formatExpression(timeUnit: TimeUnit, field: string, isUTCScale: 
   return `${utc ? 'utc' : 'time'}Format(${field}, ${expr})`;
 }
 
-export function normalizeTimeUnit(
-  timeUnit: TimeUnit | BinnedTimeUnit | PossiblyBinnedTimeUnitParams
-): PossiblyBinnedTimeUnitParams {
+export function normalizeTimeUnit(timeUnit: TimeUnit | BinnedTimeUnit | TimeUnitParams): TimeUnitParams {
   if (!timeUnit) {
     return undefined;
   }
 
-  let params: PossiblyBinnedTimeUnitParams;
+  let params: TimeUnitParams;
   if (isString(timeUnit)) {
     if (isBinnedTimeUnitString(timeUnit)) {
       params = {
@@ -368,7 +371,7 @@ export function normalizeTimeUnit(
   return params;
 }
 
-export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
+export function timeUnitToString(tu: TimeUnit | TimeUnitTransformParams) {
   const {utc, ...rest} = normalizeTimeUnit(tu);
 
   if (rest.unit) {
@@ -391,7 +394,7 @@ export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
 }
 
 export function durationExpr(
-  timeUnit: TimeUnit | BinnedTimeUnit | TimeUnitParams,
+  timeUnit: TimeUnit | BinnedTimeUnit | TimeUnitTransformParams,
   wrap: (x: string) => string = x => x
 ) {
   const normalizedTimeUnit = normalizeTimeUnit(timeUnit);

@@ -7,7 +7,7 @@ import {LogicalComposition, normalizeLogicalComposition} from './logical';
 import {ParameterName} from './parameter';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
-import {TimeUnit, TimeUnitParams} from './timeunit';
+import {TimeUnit, TimeUnitTransformParams} from './timeunit';
 
 export interface FilterTransform {
   /**
@@ -73,7 +73,7 @@ export interface TimeUnitTransform {
   /**
    * The timeUnit.
    */
-  timeUnit: TimeUnit | TimeUnitParams;
+  timeUnit: TimeUnit | TimeUnitTransformParams;
 
   /**
    * The data field to apply time unit.

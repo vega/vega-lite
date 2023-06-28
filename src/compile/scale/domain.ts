@@ -31,7 +31,7 @@ import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isDomainUnionWith, isParameterDomain, ScaleConfig, ScaleType} from '../../scale';
 import {ParameterExtent} from '../../selection';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
-import {normalizeTimeUnit, TimeUnit, TimeUnitParams} from '../../timeunit';
+import {normalizeTimeUnit, TimeUnit, TimeUnitTransformParams} from '../../timeunit';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {
@@ -223,7 +223,7 @@ function mapDomainToDataSignal(
 function convertDomainIfItIsDateTime(
   domain: (number | string | boolean | DateTime | ExprRef | SignalRef | number[])[],
   type: Type,
-  timeUnit: TimeUnit | TimeUnitParams
+  timeUnit: TimeUnit | TimeUnitTransformParams
 ): [number[]] | [string[]] | [boolean[]] | SignalRef[] {
   // explicit value
   const normalizedTimeUnit = normalizeTimeUnit(timeUnit)?.unit;

@@ -57,7 +57,7 @@ export interface FieldPredicateBase {
   /**
    * Time unit for the field to be tested.
    */
-  timeUnit?: TimeUnit | BinnedTimeUnit | TimeUnitParams; // TODO(#8972): also support BinnedTimeUnitParams
+  timeUnit?: TimeUnit | BinnedTimeUnit | TimeUnitParams;
 
   /**
    * Field to be tested.
