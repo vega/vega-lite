@@ -87,7 +87,7 @@ export const LOCAL_MULTI_TIMEUNIT_INDEX = {
 
 export type LocalMultiTimeUnit = keyof typeof LOCAL_MULTI_TIMEUNIT_INDEX;
 
-const BINNED_TIMEUNIT_INDEX = {
+const BINNED_LOCAL_TIMEUNIT_INDEX = {
   binnedyear: 1,
   binnedyearquarter: 1,
   binnedyearquartermonth: 1,
@@ -107,7 +107,36 @@ const BINNED_TIMEUNIT_INDEX = {
   binnedyeardayofyear: 1
 } as const;
 
-export type BinnedTimeUnit = keyof typeof BINNED_TIMEUNIT_INDEX;
+type BinnedLocalTimeUnit = keyof typeof BINNED_LOCAL_TIMEUNIT_INDEX;
+
+const BINNED_UTC_TIMEUNIT_INDEX = {
+  binnedutcyear: 1,
+  binnedutcyearquarter: 1,
+  binnedutcyearquartermonth: 1,
+
+  binnedutcyearmonth: 1,
+  binnedutcyearmonthdate: 1,
+  binnedutcyearmonthdatehours: 1,
+  binnedutcyearmonthdatehoursminutes: 1,
+  binnedutcyearmonthdatehoursminutesseconds: 1,
+
+  binnedutcyearweek: 1,
+  binnedutcyearweekday: 1,
+  binnedutcyearweekdayhours: 1,
+  binnedutcyearweekdayhoursminutes: 1,
+  binnedutcyearweekdayhoursminutesseconds: 1,
+
+  binnedutcyeardayofyear: 1
+};
+
+export const BINNED_TIMEUNIT_INDEX = {
+  ...BINNED_LOCAL_TIMEUNIT_INDEX,
+  ...BINNED_UTC_TIMEUNIT_INDEX
+};
+
+type BinnedUtcTimeUnit = keyof typeof BINNED_UTC_TIMEUNIT_INDEX;
+
+export type BinnedTimeUnit = BinnedLocalTimeUnit | BinnedUtcTimeUnit;
 
 export function isBinnedTimeUnit(
   timeUnit: TimeUnit | BinnedTimeUnit | TimeUnitParams | undefined
@@ -120,10 +149,6 @@ export function isBinnedTimeUnit(
 
 export function isBinnedTimeUnitString(timeUnit: TimeUnit | BinnedTimeUnit | undefined): timeUnit is BinnedTimeUnit {
   return timeUnit && timeUnit.startsWith('binned');
-}
-
-export function getLocalTimeUnitFromBinnedTimeUnit(timeUnit: BinnedTimeUnit): LocalTimeUnit {
-  return timeUnit.substring(6) as LocalTimeUnit;
 }
 
 export const UTC_MULTI_TIMEUNIT_INDEX = {
@@ -348,7 +373,7 @@ export function normalizeTimeUnit(timeUnit: TimeUnit | BinnedTimeUnit | TimeUnit
   if (isString(timeUnit)) {
     if (isBinnedTimeUnitString(timeUnit)) {
       params = {
-        unit: getLocalTimeUnitFromBinnedTimeUnit(timeUnit),
+        unit: timeUnit.substring(6) as TimeUnit,
         binned: true
       };
     } else {
