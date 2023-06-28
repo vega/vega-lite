@@ -1,4 +1,5 @@
 {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "values": [
       {"date": "2011-10-10"},
