@@ -4425,6 +4425,25 @@
         }
       ]
     },
+    "BinnedTimeUnit": {
+      "enum": [
+        "binnedyear",
+        "binnedyearquarter",
+        "binnedyearquartermonth",
+        "binnedyearmonth",
+        "binnedyearmonthdate",
+        "binnedyearmonthdatehours",
+        "binnedyearmonthdatehoursminutes",
+        "binnedyearmonthdatehoursminutesseconds",
+        "binnedyearweek",
+        "binnedyearweekday",
+        "binnedyearweekdayhours",
+        "binnedyearweekdayhoursminutes",
+        "binnedyearweekdayhoursminutesseconds",
+        "binnedyeardayofyear"
+      ],
+      "type": "string"
+    },
     "Blend": {
       "enum": [
         null,
@@ -5906,6 +5925,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -6084,6 +6106,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -6251,6 +6276,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -6927,6 +6955,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -7097,6 +7128,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -7256,6 +7290,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -8883,6 +8920,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -8969,6 +9009,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -9555,6 +9598,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -9595,6 +9641,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -9639,6 +9688,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -9681,6 +9733,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -9721,6 +9776,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -9778,6 +9836,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -10106,6 +10167,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -10205,6 +10269,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -10308,6 +10375,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -10407,6 +10477,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -10577,6 +10650,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -10671,6 +10747,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -10748,6 +10827,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -10771,6 +10853,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -12584,6 +12669,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -17995,6 +18083,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -19614,6 +19705,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -19705,6 +19799,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -21447,6 +21544,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -22189,6 +22289,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -22373,6 +22476,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -22912,6 +23018,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23071,6 +23180,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23210,6 +23322,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -23379,6 +23494,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23544,6 +23662,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23679,6 +23800,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23757,6 +23881,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23822,6 +23949,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -23899,6 +24029,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -23987,6 +24120,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -24062,6 +24198,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -24222,6 +24361,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -24372,6 +24514,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -24465,6 +24610,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -24623,6 +24771,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -24787,6 +24938,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -24944,6 +25098,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -25111,6 +25268,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -25273,6 +25433,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -25432,6 +25595,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -25584,6 +25750,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -25714,6 +25883,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -25807,6 +25979,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -25963,6 +26138,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26109,6 +26287,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26204,6 +26385,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26273,6 +26457,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26321,6 +26508,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -26413,6 +26603,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -26560,6 +26753,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26655,6 +26851,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26724,6 +26923,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26772,6 +26974,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -26864,6 +27069,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -27275,6 +27483,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -28384,7 +28595,12 @@
     },
     "TimeUnitParams": {
       "additionalProperties": false,
+      "description": "Time Unit Params for encoding predicate, which can specified if the data is  already \"binned\".",
       "properties": {
+        "binned": {
+          "description": "Whether the data has already been binned to this time unit. If true, Vega-Lite will only format the data, marks, and guides, without applying the timeUnit transform to re-bin the data again.",
+          "type": "boolean"
+        },
         "maxbins": {
           "description": "If no `unit` is specified, maxbins is used to infer time units.",
           "type": "number"
@@ -28421,7 +28637,7 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
-              "$ref": "#/definitions/TimeUnitParams"
+              "$ref": "#/definitions/TimeUnitTransformParams"
             }
           ],
           "description": "The timeUnit."
@@ -28432,6 +28648,28 @@
         "field",
         "as"
       ],
+      "type": "object"
+    },
+    "TimeUnitTransformParams": {
+      "additionalProperties": false,
+      "properties": {
+        "maxbins": {
+          "description": "If no `unit` is specified, maxbins is used to infer time units.",
+          "type": "number"
+        },
+        "step": {
+          "description": "The number of steps between bins, in terms of the least significant unit provided.",
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Defines how date-time values should be binned."
+        },
+        "utc": {
+          "description": "True to use UTC timezone. Equivalent to using a `utc` prefixed `TimeUnit`.",
+          "type": "boolean"
+        }
+      },
       "type": "object"
     },
     "TitleAnchor": {
@@ -30347,6 +30585,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
