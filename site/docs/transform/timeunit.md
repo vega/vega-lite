@@ -24,7 +24,7 @@ Vega-Lite time units can also be a string of consecutive time units to indicate 
 
 - By default, all time units represent date time using local time.
 - To use UTC time, you can add the `utc` prefix (e.g., `"utcyear"`, `"utcyearmonth"`).
-- For timeUnit in encoding, you can also add `"binned"` prefix (e.g., `"binnedyearmonth"` or `"binnedutcyearmonth"`) for Chronological time unit (i.e., units that are truncated date time)
+- For timeUnit in encoding, you can also add `"binned"` prefix (e.g., `"binnedyearmonth"` or `"binnedutcyearmonth"`) for Chronological time units (i.e., units that are truncated date times, as opposed to circle time units, which bin data to parts of date times). 
 
 <!--prettier-ignore-start-->
 ## Documentation Overview
