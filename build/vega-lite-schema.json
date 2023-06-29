@@ -4426,23 +4426,46 @@
       ]
     },
     "BinnedTimeUnit": {
-      "enum": [
-        "binnedyear",
-        "binnedyearquarter",
-        "binnedyearquartermonth",
-        "binnedyearmonth",
-        "binnedyearmonthdate",
-        "binnedyearmonthdatehours",
-        "binnedyearmonthdatehoursminutes",
-        "binnedyearmonthdatehoursminutesseconds",
-        "binnedyearweek",
-        "binnedyearweekday",
-        "binnedyearweekdayhours",
-        "binnedyearweekdayhoursminutes",
-        "binnedyearweekdayhoursminutesseconds",
-        "binnedyeardayofyear"
-      ],
-      "type": "string"
+      "anyOf": [
+        {
+          "enum": [
+            "binnedyear",
+            "binnedyearquarter",
+            "binnedyearquartermonth",
+            "binnedyearmonth",
+            "binnedyearmonthdate",
+            "binnedyearmonthdatehours",
+            "binnedyearmonthdatehoursminutes",
+            "binnedyearmonthdatehoursminutesseconds",
+            "binnedyearweek",
+            "binnedyearweekday",
+            "binnedyearweekdayhours",
+            "binnedyearweekdayhoursminutes",
+            "binnedyearweekdayhoursminutesseconds",
+            "binnedyeardayofyear"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "binnedutcyear",
+            "binnedutcyearquarter",
+            "binnedutcyearquartermonth",
+            "binnedutcyearmonth",
+            "binnedutcyearmonthdate",
+            "binnedutcyearmonthdatehours",
+            "binnedutcyearmonthdatehoursminutes",
+            "binnedutcyearmonthdatehoursminutesseconds",
+            "binnedutcyearweek",
+            "binnedutcyearweekday",
+            "binnedutcyearweekdayhours",
+            "binnedutcyearweekdayhoursminutes",
+            "binnedutcyearweekdayhoursminutesseconds",
+            "binnedutcyeardayofyear"
+          ],
+          "type": "string"
+        }
+      ]
     },
     "Blend": {
       "enum": [
