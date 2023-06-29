@@ -1,5 +1,12 @@
 
 
+# [5.12.0](https://github.com/vega/vega-lite/compare/v5.11.1...v5.12.0) (2023-06-29)
+
+
+### Features
+
+* support pre-binned timeUnit ([#8971](https://github.com/vega/vega-lite/issues/8971)) ([dac5c19](https://github.com/vega/vega-lite/commit/dac5c199fe02f6fa73dfbdd6f9717224ffb81cf2))
+
 ## [5.11.1](https://github.com/vega/vega-lite/compare/v5.11.0...v5.11.1) (2023-06-26)
 
 
