@@ -1,12 +1,34 @@
 import {TimeUnitTransform as VgTimeUnitTransform} from 'vega';
-import {vgField} from '../../channeldef';
-import {getTimeUnitParts, normalizeTimeUnit} from '../../timeunit';
+import {FormulaTransform as VgFormulaTransform} from 'vega';
+import {FieldName, vgField} from '../../channeldef';
+import {
+  TimeUnitParams,
+  getDateTimePartAndStep,
+  getSmallestTimeUnitPart,
+  getTimeUnitParts,
+  isBinnedTimeUnit,
+  normalizeTimeUnit
+} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
 import {Dict, duplicate, entries, hash, isEmpty, replacePathInField, vals} from '../../util';
-import {ModelWithField} from '../model';
+import {ModelWithField, isUnitModel} from '../model';
 import {DataFlowNode} from './dataflow';
+import {isRectBasedMark} from '../../mark';
 
-export type TimeUnitComponent = TimeUnitTransform;
+export type TimeUnitComponent = TimeUnitTransform | BinnedTimeUnitOffset;
+
+export interface BinnedTimeUnitOffset {
+  timeUnit: TimeUnitParams;
+  field: FieldName;
+}
+
+function isTimeUnitTransformComponent(timeUnitComponent: TimeUnitComponent): timeUnitComponent is TimeUnitTransform {
+  return (timeUnitComponent as TimeUnitTransform).as !== undefined;
+}
+
+function offsetAs(field: FieldName) {
+  return `${field}_end`;
+}
 
 export class TimeUnitNode extends DataFlowNode {
   public clone() {
@@ -22,18 +44,29 @@ export class TimeUnitNode extends DataFlowNode {
       const {field, timeUnit} = fieldDef;
 
       if (timeUnit) {
-        const as = vgField(fieldDef, {forAs: true});
-        timeUnitComponent[
-          hash({
-            as,
+        let component: TimeUnitComponent | undefined;
+        if (isBinnedTimeUnit(timeUnit)) {
+          // For binned time unit, only produce end if the mark is a rect-based mark (rect, bar, image, arc), which needs "range".
+
+          if (isUnitModel(model)) {
+            const {mark} = model;
+            if (isRectBasedMark(mark) || !!fieldDef.bandPosition) {
+              component = {
+                timeUnit: normalizeTimeUnit(timeUnit),
+                field
+              };
+            }
+          }
+        } else {
+          component = {
+            as: vgField(fieldDef, {forAs: true}),
             field,
             timeUnit
-          })
-        ] = {
-          as,
-          field,
-          timeUnit
-        };
+          };
+        }
+        if (component) {
+          timeUnitComponent[hash(component)] = component;
+        }
       }
       return timeUnitComponent;
     }, {} as Dict<TimeUnitComponent>);
@@ -89,9 +122,12 @@ export class TimeUnitNode extends DataFlowNode {
   public removeFormulas(fields: Set<string>) {
     const newFormula = {};
 
-    for (const [key, timeUnit] of entries(this.formula)) {
-      if (!fields.has(timeUnit.as)) {
-        newFormula[key] = timeUnit;
+    for (const [key, timeUnitComponent] of entries(this.formula)) {
+      const fieldAs = isTimeUnitTransformComponent(timeUnitComponent)
+        ? timeUnitComponent.as
+        : `${timeUnitComponent.field}_end`;
+      if (!fields.has(fieldAs)) {
+        newFormula[key] = timeUnitComponent;
       }
     }
 
@@ -99,7 +135,11 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public producedFields() {
-    return new Set(vals(this.formula).map(f => f.as));
+    return new Set(
+      vals(this.formula).map(f => {
+        return isTimeUnitTransformComponent(f) ? f.as : offsetAs(f.field);
+      })
+    );
   }
 
   public dependentFields() {
@@ -111,20 +151,31 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public assemble() {
-    const transforms: VgTimeUnitTransform[] = [];
+    const transforms: (VgTimeUnitTransform | VgFormulaTransform)[] = [];
 
     for (const f of vals(this.formula)) {
-      const {field, as, timeUnit} = f;
-      const {unit, utc, ...params} = normalizeTimeUnit(timeUnit);
+      if (isTimeUnitTransformComponent(f)) {
+        const {field, as, timeUnit} = f;
+        const {unit, utc, ...params} = normalizeTimeUnit(timeUnit);
 
-      transforms.push({
-        field: replacePathInField(field),
-        type: 'timeunit',
-        ...(unit ? {units: getTimeUnitParts(unit)} : {}),
-        ...(utc ? {timezone: 'utc'} : {}),
-        ...params,
-        as: [as, `${as}_end`]
-      });
+        transforms.push({
+          field: replacePathInField(field),
+          type: 'timeunit',
+          ...(unit ? {units: getTimeUnitParts(unit)} : {}),
+          ...(utc ? {timezone: 'utc'} : {}),
+          ...params,
+          as: [as, `${as}_end`]
+        });
+      } else if (f) {
+        const {field, timeUnit} = f;
+        const smallestUnit = getSmallestTimeUnitPart(timeUnit?.unit);
+        const {part, step} = getDateTimePartAndStep(smallestUnit, timeUnit.step);
+        transforms.push({
+          type: 'formula',
+          expr: `timeOffset('${part}', datum['${field}'], ${step})`,
+          as: offsetAs(field)
+        });
+      }
     }
 
     return transforms;

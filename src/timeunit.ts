@@ -87,6 +87,70 @@ export const LOCAL_MULTI_TIMEUNIT_INDEX = {
 
 export type LocalMultiTimeUnit = keyof typeof LOCAL_MULTI_TIMEUNIT_INDEX;
 
+const BINNED_LOCAL_TIMEUNIT_INDEX = {
+  binnedyear: 1,
+  binnedyearquarter: 1,
+  binnedyearquartermonth: 1,
+
+  binnedyearmonth: 1,
+  binnedyearmonthdate: 1,
+  binnedyearmonthdatehours: 1,
+  binnedyearmonthdatehoursminutes: 1,
+  binnedyearmonthdatehoursminutesseconds: 1,
+
+  binnedyearweek: 1,
+  binnedyearweekday: 1,
+  binnedyearweekdayhours: 1,
+  binnedyearweekdayhoursminutes: 1,
+  binnedyearweekdayhoursminutesseconds: 1,
+
+  binnedyeardayofyear: 1
+} as const;
+
+type BinnedLocalTimeUnit = keyof typeof BINNED_LOCAL_TIMEUNIT_INDEX;
+
+const BINNED_UTC_TIMEUNIT_INDEX = {
+  binnedutcyear: 1,
+  binnedutcyearquarter: 1,
+  binnedutcyearquartermonth: 1,
+
+  binnedutcyearmonth: 1,
+  binnedutcyearmonthdate: 1,
+  binnedutcyearmonthdatehours: 1,
+  binnedutcyearmonthdatehoursminutes: 1,
+  binnedutcyearmonthdatehoursminutesseconds: 1,
+
+  binnedutcyearweek: 1,
+  binnedutcyearweekday: 1,
+  binnedutcyearweekdayhours: 1,
+  binnedutcyearweekdayhoursminutes: 1,
+  binnedutcyearweekdayhoursminutesseconds: 1,
+
+  binnedutcyeardayofyear: 1
+};
+
+export const BINNED_TIMEUNIT_INDEX = {
+  ...BINNED_LOCAL_TIMEUNIT_INDEX,
+  ...BINNED_UTC_TIMEUNIT_INDEX
+};
+
+type BinnedUtcTimeUnit = keyof typeof BINNED_UTC_TIMEUNIT_INDEX;
+
+export type BinnedTimeUnit = BinnedLocalTimeUnit | BinnedUtcTimeUnit;
+
+export function isBinnedTimeUnit(
+  timeUnit: TimeUnit | BinnedTimeUnit | TimeUnitParams | undefined
+): timeUnit is BinnedTimeUnit | TimeUnitParams {
+  if (isObject(timeUnit)) {
+    return timeUnit.binned;
+  }
+  return isBinnedTimeUnitString(timeUnit);
+}
+
+export function isBinnedTimeUnitString(timeUnit: TimeUnit | BinnedTimeUnit | undefined): timeUnit is BinnedTimeUnit {
+  return timeUnit && timeUnit.startsWith('binned');
+}
+
 export const UTC_MULTI_TIMEUNIT_INDEX = {
   utcyearquarter: 1,
   utcyearquartermonth: 1,
@@ -140,8 +204,8 @@ export function isUTCTimeUnit(t: string): t is UtcTimeUnit {
   return t.startsWith('utc');
 }
 
-export function getLocalTimeUnit(t: UtcTimeUnit): LocalTimeUnit {
-  return t.substr(3) as LocalTimeUnit;
+export function getLocalTimeUnitFromUTCTimeUnit(t: UtcTimeUnit): LocalTimeUnit {
+  return t.substring(3) as LocalTimeUnit;
 }
 
 export type TimeUnit = SingleTimeUnit | MultiTimeUnit;
@@ -161,7 +225,7 @@ export type TimeUnitFormat =
   | 'seconds'
   | 'milliseconds';
 
-export interface TimeUnitParams {
+export interface TimeUnitTransformParams {
   /**
    * Defines how date-time values should be binned.
    */
@@ -182,6 +246,18 @@ export interface TimeUnitParams {
    * True to use UTC timezone. Equivalent to using a `utc` prefixed `TimeUnit`.
    */
   utc?: boolean;
+}
+
+/**
+ * Time Unit Params for encoding predicate, which can specified if the data is  already "binned".
+ */
+export interface TimeUnitParams extends TimeUnitTransformParams {
+  /**
+   * Whether the data has already been binned to this time unit.
+   * If true, Vega-Lite will only format the data, marks, and guides,
+   * without applying the timeUnit transform to re-bin the data again.
+   */
+  binned?: boolean;
 }
 
 // matches vega time unit format specifier
@@ -288,16 +364,23 @@ export function formatExpression(timeUnit: TimeUnit, field: string, isUTCScale: 
   return `${utc ? 'utc' : 'time'}Format(${field}, ${expr})`;
 }
 
-export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnitParams {
+export function normalizeTimeUnit(timeUnit: TimeUnit | BinnedTimeUnit | TimeUnitParams): TimeUnitParams {
   if (!timeUnit) {
     return undefined;
   }
 
   let params: TimeUnitParams;
   if (isString(timeUnit)) {
-    params = {
-      unit: timeUnit
-    };
+    if (isBinnedTimeUnitString(timeUnit)) {
+      params = {
+        unit: timeUnit.substring(6) as TimeUnit,
+        binned: true
+      };
+    } else {
+      params = {
+        unit: timeUnit
+      };
+    }
   } else if (isObject(timeUnit)) {
     params = {
       ...timeUnit,
@@ -307,13 +390,13 @@ export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnit
 
   if (isUTCTimeUnit(params.unit)) {
     params.utc = true;
-    params.unit = getLocalTimeUnit(params.unit);
+    params.unit = getLocalTimeUnitFromUTCTimeUnit(params.unit);
   }
 
   return params;
 }
 
-export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
+export function timeUnitToString(tu: TimeUnit | TimeUnitTransformParams) {
   const {utc, ...rest} = normalizeTimeUnit(tu);
 
   if (rest.unit) {
@@ -335,7 +418,10 @@ export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
   }
 }
 
-export function durationExpr(timeUnit: TimeUnit | TimeUnitParams, wrap: (x: string) => string = x => x) {
+export function durationExpr(
+  timeUnit: TimeUnit | BinnedTimeUnit | TimeUnitTransformParams,
+  wrap: (x: string) => string = x => x
+) {
   const normalizedTimeUnit = normalizeTimeUnit(timeUnit);
   const smallestUnitPart = getSmallestTimeUnitPart(normalizedTimeUnit.unit);
   if (smallestUnitPart && smallestUnitPart !== 'day') {
@@ -348,18 +434,51 @@ export function durationExpr(timeUnit: TimeUnit | TimeUnitParams, wrap: (x: stri
       seconds: 0,
       milliseconds: 0
     };
-    const step = normalizedTimeUnit.step || 1;
+    const {step, part} = getDateTimePartAndStep(smallestUnitPart, normalizedTimeUnit.step);
     const endDate: DateTime = {
       ...startDate,
-      ...(smallestUnitPart === 'quarter'
-        ? {month: +startDate.month + step * 3}
-        : smallestUnitPart === 'week'
-        ? {date: +startDate.date + step * 7}
-        : {[smallestUnitPart]: +startDate[smallestUnitPart] + step})
+      [part]: +startDate[part] + step
     };
 
     // Calculate timestamp duration for the smallest unit listed
     return `${wrap(dateTimeToExpr(endDate))} - ${wrap(dateTimeToExpr(startDate))}`;
   }
   return undefined;
+}
+
+const DATE_PARTS = {
+  year: 1,
+  month: 1,
+  date: 1,
+  hours: 1,
+  minutes: 1,
+  seconds: 1,
+  milliseconds: 1
+} as const;
+
+type DatePart = keyof typeof DATE_PARTS;
+
+export function isDatePart(timeUnit: LocalSingleTimeUnit): timeUnit is DatePart {
+  return !!DATE_PARTS[timeUnit];
+}
+
+export function getDateTimePartAndStep(
+  timeUnit: LocalSingleTimeUnit,
+  step = 1
+): {
+  part: keyof DateTime;
+  step: number;
+} {
+  if (isDatePart(timeUnit)) {
+    return {part: timeUnit, step};
+  }
+  switch (timeUnit) {
+    case 'day':
+    case 'dayofyear':
+      return {part: 'date', step};
+    case 'quarter':
+      return {part: 'month', step: step * 3};
+    case 'week':
+      return {part: 'date', step: step * 7};
+  }
 }

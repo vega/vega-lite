@@ -5,7 +5,7 @@ import {DateTime} from './datetime';
 import {ExprRef} from './expr';
 import {LogicalComposition} from './logical';
 import {ParameterName} from './parameter';
-import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams} from './timeunit';
+import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams, BinnedTimeUnit} from './timeunit';
 import {stringify} from './util';
 import {isSignalRef} from './vega.schema';
 
@@ -57,7 +57,7 @@ export interface FieldPredicateBase {
   /**
    * Time unit for the field to be tested.
    */
-  timeUnit?: TimeUnit | TimeUnitParams;
+  timeUnit?: TimeUnit | BinnedTimeUnit | TimeUnitParams;
 
   /**
    * Field to be tested.
@@ -198,30 +198,32 @@ function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], tim
 // This method is used by Voyager. Do not change its behavior without changing Voyager.
 export function fieldFilterExpression(predicate: FieldPredicate, useInRange = true) {
   const {field} = predicate;
-  const timeUnit = normalizeTimeUnit(predicate.timeUnit)?.unit;
-  const fieldExpr = timeUnit
+  const normalizedTimeUnit = normalizeTimeUnit(predicate.timeUnit);
+  const {unit, binned} = normalizedTimeUnit || {};
+  const rawFieldExpr = vgField(predicate, {expr: 'datum'});
+  const fieldExpr = unit
     ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
       // TODO: support utc
-      `time(${timeUnitFieldExpr(timeUnit, field)})`
-    : vgField(predicate, {expr: 'datum'});
+      `time(${!binned ? timeUnitFieldExpr(unit, field) : rawFieldExpr})`
+    : rawFieldExpr;
 
   if (isFieldEqualPredicate(predicate)) {
-    return `${fieldExpr}===${predicateValueExpr(predicate.equal, timeUnit)}`;
+    return `${fieldExpr}===${predicateValueExpr(predicate.equal, unit)}`;
   } else if (isFieldLTPredicate(predicate)) {
     const upper = predicate.lt;
-    return `${fieldExpr}<${predicateValueExpr(upper, timeUnit)}`;
+    return `${fieldExpr}<${predicateValueExpr(upper, unit)}`;
   } else if (isFieldGTPredicate(predicate)) {
     const lower = predicate.gt;
-    return `${fieldExpr}>${predicateValueExpr(lower, timeUnit)}`;
+    return `${fieldExpr}>${predicateValueExpr(lower, unit)}`;
   } else if (isFieldLTEPredicate(predicate)) {
     const upper = predicate.lte;
-    return `${fieldExpr}<=${predicateValueExpr(upper, timeUnit)}`;
+    return `${fieldExpr}<=${predicateValueExpr(upper, unit)}`;
   } else if (isFieldGTEPredicate(predicate)) {
     const lower = predicate.gte;
-    return `${fieldExpr}>=${predicateValueExpr(lower, timeUnit)}`;
+    return `${fieldExpr}>=${predicateValueExpr(lower, unit)}`;
   } else if (isFieldOneOfPredicate(predicate)) {
-    return `indexof([${predicateValuesExpr(predicate.oneOf, timeUnit).join(',')}], ${fieldExpr}) !== -1`;
+    return `indexof([${predicateValuesExpr(predicate.oneOf, unit).join(',')}], ${fieldExpr}) !== -1`;
   } else if (isFieldValidPredicate(predicate)) {
     return fieldValidPredicate(fieldExpr, predicate.valid);
   } else if (isFieldRangePredicate(predicate)) {
@@ -231,22 +233,16 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
 
     if (lower !== null && upper !== null && useInRange) {
       return (
-        'inrange(' +
-        fieldExpr +
-        ', [' +
-        predicateValueExpr(lower, timeUnit) +
-        ', ' +
-        predicateValueExpr(upper, timeUnit) +
-        '])'
+        'inrange(' + fieldExpr + ', [' + predicateValueExpr(lower, unit) + ', ' + predicateValueExpr(upper, unit) + '])'
       );
     }
 
     const exprs = [];
     if (lower !== null) {
-      exprs.push(`${fieldExpr} >= ${predicateValueExpr(lower, timeUnit)}`);
+      exprs.push(`${fieldExpr} >= ${predicateValueExpr(lower, unit)}`);
     }
     if (upper !== null) {
-      exprs.push(`${fieldExpr} <= ${predicateValueExpr(upper, timeUnit)}`);
+      exprs.push(`${fieldExpr} <= ${predicateValueExpr(upper, unit)}`);
     }
 
     return exprs.length > 0 ? exprs.join(' && ') : 'true';
@@ -268,7 +264,7 @@ export function normalizePredicate(f: Predicate): Predicate {
   if (isFieldPredicate(f) && f.timeUnit) {
     return {
       ...f,
-      timeUnit: normalizeTimeUnit(f.timeUnit)?.unit
+      timeUnit: normalizeTimeUnit(f.timeUnit)
     };
   }
   return f;

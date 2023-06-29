@@ -1,0 +1,197 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Google's stock price over time.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
+        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
+        {
+          "type": "filter",
+          "expr": "inrange(time(datum[\"date\"]), [time(datetime(2005, 0, 1, 0, 0, 0, 0)), time(datetime(2005, 2, 1, 0, 0, 0, 0))])"
+        },
+        {
+          "type": "formula",
+          "expr": "timeOffset('month', datum['date'], 1)",
+          "as": "date_end"
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["date"],
+          "field": "price",
+          "sort": {"field": [], "order": []},
+          "as": ["price_start", "price_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x2": {
+            "scale": "x",
+            "field": "date",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "date_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])))) : -0.5)"
+            }
+          },
+          "y": {"scale": "y", "field": "price_end"},
+          "y2": {"scale": "y", "field": "price_start"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "baseline": {"value": "bottom"},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {
+            "signal": "scale(\"x\", 0.5 * datum[\"date\"] + 0.5 * datum[\"date_end\"])"
+          },
+          "y": {"scale": "y", "field": "price"},
+          "text": {"signal": "format(datum[\"price\"], \"\")"},
+          "align": {"value": "center"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "date"},
+          {"data": "data_1", "field": "date_end"},
+          {"data": "data_0", "field": "date"},
+          {"data": "data_0", "field": "date_end"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "price_start"},
+          {"data": "data_1", "field": "price_end"},
+          {"data": "data_0", "field": "price"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

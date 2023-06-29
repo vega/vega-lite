@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 20,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [{"date": "2011-10-10"}, {"date": "2011-10-12"}]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
+        {
+          "type": "formula",
+          "expr": "timeOffset('hours', datum['date'], 1)",
+          "as": "date_end"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"time: \" + (timeFormat(datum[\"date\"], timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+          },
+          "x": {"field": {"group": "width"}},
+          "x2": {"value": 0},
+          "y": {"scale": "y", "field": "date"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "date", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "time",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "formatType": "utc",
+      "labelOverlap": true,
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 1, 1, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    }
+  ]
+}

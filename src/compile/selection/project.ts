@@ -14,6 +14,7 @@ import {Dict, hash, keys, varName, isEmpty} from '../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit';
 import {SelectionCompiler} from '.';
 import {assembleProjection} from './assemble';
+import {isBinnedTimeUnit} from '../../timeunit';
 export const TUPLE_FIELDS = '_tuple_fields';
 
 /**
@@ -129,7 +130,7 @@ const project: SelectionCompiler = {
           continue;
         }
 
-        if (fieldDef.timeUnit) {
+        if (fieldDef.timeUnit && !isBinnedTimeUnit(fieldDef.timeUnit)) {
           field = model.vgField(channel);
           // Construct TimeUnitComponents which will be combined into a
           // TimeUnitNode. This node may need to be inserted into the

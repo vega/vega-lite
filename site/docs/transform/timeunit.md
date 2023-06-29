@@ -22,7 +22,9 @@ Vega-Lite supports the following time units:
 
 Vega-Lite time units can also be a string of consecutive time units to indicate desired intervals of time. For example, `yearmonthdate` indicates chronological time sensitive to year, month, and date (but not to hours, minutes, or seconds). The specifier `monthdate` is sensitive to month and date, but not year, which can be useful for binning time values to look at seasonal patterns only.
 
-By default, all time units represent date time using local time. To use UTC time, you can add the `utc` prefix (e.g., `"utcyear"`, `"utcyearmonth"`).
+- By default, all time units represent date time using local time.
+- To use UTC time, you can add the `utc` prefix (e.g., `"utcyear"`, `"utcyearmonth"`).
+- For timeUnit in encoding, you can also add `"binned"` prefix (e.g., `"binnedyearmonth"` or `"binnedutcyearmonth"`) for Chronological time units (i.e., units that are truncated date times, as opposed to circle time units, which bin data to parts of date times).
 
 <!--prettier-ignore-start-->
 ## Documentation Overview
@@ -63,6 +65,10 @@ A field definition can include a `timeUnit` property. For example, the chart bel
 Using `timeUnit` with rect-based marks (including `bar`, `rect`, and `image`) will treat time units as intervals.
 
 <span class="vl-example" data-name="bar_month_temporal"></span>
+
+You can also add `"binned"` prefix if your data has already been binned and want Vega-Lite to apply the right formatting, including the right bands for the interval, to your charts.
+
+<span class="vl-example" data-name="bar_binnedyearmonth"></span>
 
 ### Time Unit's Band
 
@@ -114,6 +120,10 @@ To parse data in local time or UTC time, there are three cases:
 
 <span class="vl-example" data-name="time_parse_utc"></span>
 
+If you don't want to re-bin the data, you can also add `"binned"` prefix.
+
+<span class="vl-example" data-name="time_parse_binnedutc"></span>
+
 2. If that is not the case, by default, times are assumed to be local.
 
 <span class="vl-example" data-name="time_parse_local"></span>
@@ -140,7 +150,7 @@ By default, Vega-Lite will output data in local time (even when input is parsed 
 
 To customize time unit properties, you can set `timeUnit` to be a time unit definition object. It can have the following properties.
 
-{% include table.html props="unit,maxbins,step,utc" source="TimeUnitParams" %}
+{% include table.html props="unit,maxbins,step,utc,binned" source="TimeUnitParams" %}
 
 ### Example: Customizing Step
 

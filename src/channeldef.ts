@@ -68,7 +68,9 @@ import {isSortByChannel, Sort, SortOrder} from './sort';
 import {isFacetFieldDef} from './spec/facet';
 import {StackOffset} from './stack';
 import {
+  BinnedTimeUnit,
   getTimeUnitParts,
+  isBinnedTimeUnit,
   isLocalSingleTimeUnit,
   normalizeTimeUnit,
   TimeUnit,
@@ -248,7 +250,7 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
    *
    * __See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation.
    */
-  timeUnit?: TimeUnit | TimeUnitParams;
+  timeUnit?: TimeUnit | BinnedTimeUnit | TimeUnitParams;
 
   /**
    * Aggregation function for the field
@@ -819,7 +821,7 @@ export function vgField(
           } else {
             fn = String(aggregate);
           }
-        } else if (timeUnit) {
+        } else if (timeUnit && !isBinnedTimeUnit(timeUnit)) {
           fn = timeUnitToString(timeUnit);
           suffix = ((!['range', 'mid'].includes(opt.binSuffix) && opt.binSuffix) || '') + (opt.suffix ?? '');
         }
@@ -880,7 +882,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
     return config.countTitle;
   } else if (isBinning(bin)) {
     return `${field} (binned)`;
-  } else if (timeUnit) {
+  } else if (timeUnit && !isBinnedTimeUnit(timeUnit)) {
     const unit = normalizeTimeUnit(timeUnit)?.unit;
     if (unit) {
       return `${field} (${getTimeUnitParts(unit).join('-')})`;
@@ -905,7 +907,7 @@ export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
     return `${field} for argmin(${aggregate.argmin})`;
   }
 
-  const timeUnitParams = normalizeTimeUnit(timeUnit);
+  const timeUnitParams = timeUnit && !isBinnedTimeUnit(timeUnit) ? normalizeTimeUnit(timeUnit) : undefined;
 
   const fn = aggregate || timeUnitParams?.unit || (timeUnitParams?.maxbins && 'timeunit') || (isBinning(bin) && 'bin');
   if (fn) {
@@ -1403,8 +1405,10 @@ export function valueArray(
 ) {
   const {type} = fieldOrDatumDef;
   return values.map(v => {
+    const timeUnit =
+      isFieldDef(fieldOrDatumDef) && !isBinnedTimeUnit(fieldOrDatumDef.timeUnit) ? fieldOrDatumDef.timeUnit : undefined;
     const expr = valueExpr(v, {
-      timeUnit: isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.timeUnit : undefined,
+      timeUnit,
       type,
       undefinedIfExprNotRequired: true
     });
