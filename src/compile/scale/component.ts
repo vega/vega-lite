@@ -11,7 +11,7 @@ import {Explicit, Split} from '../split';
  * All VgDomain property except domain.
  * (We exclude domain as we have a special "domains" array that allow us merge them all at once in assemble.)
  */
-export type ScaleComponentProps = Omit<VgScale, 'domain' | 'domainRaw' | 'reverse'> & {
+export type ScaleComponentProps = Omit<VgScale, 'domain' | 'reverse'> & {
   domains: VgNonUnionDomain[];
   selectionExtent?: ParameterExtent;
   reverse?: boolean | SignalRef; // Need override since Vega doesn't official support scale reverse yet (though it does in practice)
