@@ -56,7 +56,7 @@ const UNIT_NAMES = {
 };
 
 export const hits = {
-  discrete: {
+  point: {
     qq: [8, 19],
     qq_clear: [5, 16],
 
@@ -69,6 +69,7 @@ export const hits = {
     facet: [2, 6, 9],
     facet_clear: [3, 4, 8]
   },
+
   interval: {
     drag: [
       [5, 14],
@@ -103,6 +104,42 @@ export const hits = {
       [4, 10]
     ],
     facet_clear: [[3], [5], [7]]
+  },
+
+  region: {
+    circle: [
+      {id: 14, count: 5},
+      {id: 3, count: 2},
+      {id: 6, count: 4}
+    ],
+    circle_clear: [{id: 14}],
+
+    polygon: [
+      {
+        id: 6,
+        coords: [
+          [-30, -30],
+          [-30, 30],
+          [30, 30],
+          [30, -30]
+        ],
+        count: 4
+      },
+      {
+        id: 14,
+        coords: [
+          [-30, -30],
+          [-30, 30],
+          [-15, 15],
+          [-15, -15],
+          [15, -15],
+          [15, 30],
+          [30, 30],
+          [30, -30]
+        ],
+        count: 2
+      }
+    ]
   }
 };
 
@@ -257,16 +294,16 @@ export function parentSelector(compositeType: ComposeType, index: number) {
   return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : `${UNIT_NAMES.repeat[index]}_group`;
 }
 
-export function clear(id: number, parent?: string, targetBrush?: boolean) {
-  return `pureClear(${id}, ${stringValue(parent)}, ${!!targetBrush})`;
+export function clear(idx: number, parent?: string, targetBrush?: boolean) {
+  return `pureClear(${idx}, ${stringValue(parent)}, ${!!targetBrush})`;
 }
 
-export function region(id: number, parent?: string, targetBrush?: boolean) {
-  return `circleRegion(${stringValue(parent)}, ${!!targetBrush}, ${id})`;
+export function circleRegion(idx: number, parent?: string, targetBrush?: boolean, radius = 40, segments = 20) {
+  return `circleRegion(${idx}, ${radius}, ${segments}, ${stringValue(parent)}, ${!!targetBrush})`;
 }
 
-export function regionByPolygon(id: number, polygon: [number, number][], parent?: string, targetBrush?: boolean) {
-  return `polygonRegion(${stringValue(parent)}, ${!!targetBrush}, ${id}, ${JSON.stringify(polygon)})`;
+export function polygonRegion(idx: number, polygon: number[][], parent?: string, targetBrush?: boolean) {
+  return `polygonRegion(${idx}, ${JSON.stringify(polygon)}, ${stringValue(parent)}, ${!!targetBrush})`;
 }
 
 export function brush(key: string, idx: number, parent?: string, targetBrush?: boolean) {
@@ -276,7 +313,7 @@ export function brush(key: string, idx: number, parent?: string, targetBrush?: b
 
 export function pt(key: string, idx: number, parent?: string) {
   const fn = key.match('_clear') ? 'clear' : 'pt';
-  return `${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
+  return `${fn}(${hits.point[key][idx]}, ${stringValue(parent)})`;
 }
 
 export function embedFn(page: Page) {

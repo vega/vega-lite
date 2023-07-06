@@ -1,5 +1,5 @@
 import {TopLevelSpec} from '../src';
-import {SelectionType} from '../src/selection';
+import {SELECTION_ID, SelectionType} from '../src/selection';
 import {brush, embedFn, geoSpec, hits as hitsMaster, spec, testRenderFn, tuples} from './util';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 
@@ -204,7 +204,7 @@ describe('interval selections at runtime in unit views', () => {
       const store: any = await page.evaluate(brush('drag', 1));
       expect(store).toHaveLength(13);
       for (const t of store) {
-        expect(t).toHaveProperty('_vgsid_');
+        expect(t).toHaveProperty(SELECTION_ID);
       }
       await testRender(`geo_1`);
     });
@@ -214,7 +214,7 @@ describe('interval selections at runtime in unit views', () => {
       const store: any = await page.evaluate(brush('drag', 0));
       expect(store).toHaveLength(20);
       for (const t of store) {
-        expect(t).toHaveProperty('_vgsid_');
+        expect(t).toHaveProperty(SELECTION_ID);
       }
       await testRender(`geo_0`);
     });
