@@ -101,7 +101,6 @@ There are two approaches to keep the mark from being plotted outside the desired
 
 <div class="vl-example" data-name="line_inside_domain_using_transform"></div>
 
-
 ### Example: Using `domainRaw` to bind domain interactively
 
 <div class="vl-example" data-name="interactive_point_domainRaw_binding"></div>
