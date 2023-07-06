@@ -547,6 +547,13 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
     | ES;
 
   /**
+   * An expression for an array of raw values that, if non-null, directly overrides the _domain_ property.
+   * This is useful for supporting interactions such as panning or zooming a scale.
+   * The scale may be initially determined using a data-driven domain, then modified in response to user input by setting the rawDomain value.
+   */
+  domainRaw?: ES;
+
+  /**
    * Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.
    */
   domainMid?: number | ES;
@@ -728,6 +735,7 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale<any>> = {
   domainMax: 1,
   domainMin: 1,
   domainMid: 1,
+  domainRaw: 1,
   align: 1,
   range: 1,
   rangeMax: 1,
@@ -785,6 +793,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'domainMax':
     case 'domainMid':
     case 'domainMin':
+    case 'domainRaw':
     case 'clamp':
       return isContinuousToContinuous(scaleType);
     case 'nice':
@@ -830,6 +839,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'domain':
     case 'domainMax':
     case 'domainMin':
+    case 'domainRaw':
     case 'range':
     case 'base':
     case 'exponent':

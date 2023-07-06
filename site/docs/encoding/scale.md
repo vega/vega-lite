@@ -75,7 +75,7 @@ bar, image, rect, and rule marks while `"point"` is the default scales for all o
 
 By default, a scale in Vega-Lite draws domain values directly from a channel's encoded field. Users can specify the `domain` property of a scale to customize its domain values. To sort the order of the domain of the encoded, the [`sort`](sort.html) property of a [field definition](encoding.html#field-def) can be specified.
 
-{% include table.html props="domain,domainMax,domainMin,domainMid" source="Scale" %}
+{% include table.html props="domain,domainMax,domainMin,domainMid,domainRaw" source="Scale" %}
 
 A common use case for the `domain` property is to limit, for example, the `x` range of values to include in a plot. However, setting the domain property alone is insufficient to achieve the desired effect.
 
@@ -100,6 +100,10 @@ There are two approaches to keep the mark from being plotted outside the desired
 - The second approach is to use `transform`. Note that these two approaches have slightly different behaviors. Using `transform` removes unwanted data points, yet setting `clip` to `true` clips the mark to be the enclosing group's width and height.
 
 <div class="vl-example" data-name="line_inside_domain_using_transform"></div>
+
+### Example: Using `domainRaw` to bind domain interactively
+
+<div class="vl-example" data-name="interactive_point_domainRaw_binding"></div>
 
 <!--
 #### Example: Custom Domain
