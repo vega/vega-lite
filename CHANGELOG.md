@@ -1,5 +1,12 @@
 
 
+# [5.13.0](https://github.com/vega/vega-lite/compare/v5.12.0...v5.13.0) (2023-07-07)
+
+
+### Features
+
+* support domainRaw so one may bind domainRaw to a parameter to build custom interaction ([#8989](https://github.com/vega/vega-lite/issues/8989)) ([21c823d](https://github.com/vega/vega-lite/commit/21c823df1ce7c34f9f7a394f39501c5d8033bc49))
+
 # [5.12.0](https://github.com/vega/vega-lite/compare/v5.11.1...v5.12.0) (2023-06-29)
 
 
