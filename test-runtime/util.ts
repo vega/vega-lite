@@ -10,7 +10,7 @@ const generate = process.env.VL_GENERATE_TESTS;
 const output = 'test-runtime/resources';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
-export const selectionTypes: SelectionType[] = ['point', 'interval'];
+export const selectionTypes: SelectionType[] = ['point', 'interval', 'region'];
 export const compositeTypes: ComposeType[] = ['repeat', 'facet'];
 export const resolutions: SelectionResolution[] = ['union', 'intersect'];
 
@@ -139,7 +139,13 @@ export const hits = {
         ],
         count: 2
       }
-    ]
+    ],
+
+    facet: [2, 4, 7],
+    facet_clear: [3, 5, 8],
+
+    repeat: [5, 10, 16],
+    repeat_clear: [13, 14, 2]
   }
 };
 
@@ -294,8 +300,8 @@ export function parentSelector(compositeType: ComposeType, index: number) {
   return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : `${UNIT_NAMES.repeat[index]}_group`;
 }
 
-export function clear(idx: number, parent?: string, targetBrush?: boolean) {
-  return `pureClear(${idx}, ${stringValue(parent)}, ${!!targetBrush})`;
+export function clearRegion(idx: number, parent?: string, targetBrush?: boolean) {
+  return `clear(${idx}, ${stringValue(parent)}, ${!!targetBrush})`;
 }
 
 export function circleRegion(idx: number, parent?: string, targetBrush?: boolean, radius = 40, segments = 20) {
@@ -304,6 +310,12 @@ export function circleRegion(idx: number, parent?: string, targetBrush?: boolean
 
 export function polygonRegion(idx: number, polygon: number[][], parent?: string, targetBrush?: boolean) {
   return `polygonRegion(${idx}, ${JSON.stringify(polygon)}, ${stringValue(parent)}, ${!!targetBrush})`;
+}
+
+export function multiviewRegion(key: string, idx: number, parent?: string, targetBrush?: boolean) {
+  return key.match('_clear')
+    ? clearRegion(hits.region[key][idx], parent, targetBrush)
+    : circleRegion(hits.region[key][idx], parent, targetBrush, 10);
 }
 
 export function brush(key: string, idx: number, parent?: string, targetBrush?: boolean) {

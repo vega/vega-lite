@@ -3,6 +3,7 @@ import {
   compositeTypes,
   embedFn,
   hits as hitsMaster,
+  multiviewRegion,
   parentSelector,
   pt,
   resolutions,
@@ -14,10 +15,15 @@ import {
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 import {TopLevelSpec} from '../src';
 
+const fns = {
+  point: pt,
+  interval: brush,
+  region: multiviewRegion
+};
+
 for (const type of selectionTypes) {
-  const isInterval = type === 'interval';
   const hits = hitsMaster[type];
-  const fn = isInterval ? brush : pt;
+  const fn = fns[type];
 
   describe(`${type} selections at runtime`, () => {
     let page: Page;
@@ -49,7 +55,7 @@ for (const type of selectionTypes) {
           const selection = {
             type,
             resolve: 'global',
-            ...(specType === 'facet' ? {encodings: ['y']} : {})
+            ...(specType === 'facet' && type !== 'region' ? {encodings: ['y']} : {})
           };
 
           for (let i = 0; i < hits[specType].length; i++) {
@@ -72,7 +78,7 @@ for (const type of selectionTypes) {
           const selection = {
             type,
             resolve,
-            ...(specType === 'facet' ? {encodings: ['x']} : {})
+            ...(specType === 'facet' && type !== 'region' ? {encodings: ['x']} : {})
           };
 
           /**
