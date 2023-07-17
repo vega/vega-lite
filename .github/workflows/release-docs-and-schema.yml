@@ -77,7 +77,7 @@ jobs:
           source: ./site
           destination: ./_site
 
-      - uses: actions/upload-pages-artifact@v1
+      - uses: actions/upload-pages-artifact@v2
         with:
           path: './_site'
 
