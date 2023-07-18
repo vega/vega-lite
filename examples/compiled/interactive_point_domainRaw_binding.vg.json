@@ -60,7 +60,6 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
-      "domainRaw": {"signal": "use_custom_x ? [min_x, max_x] : null"},
       "nice": true,
       "zero": true
     },
