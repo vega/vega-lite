@@ -21739,6 +21739,10 @@
           ],
           "description": "Sets the minimum value in the scale domain, overriding the domain property. This property is only intended for use with scales having continuous domains."
         },
+        "domainRaw": {
+          "$ref": "#/definitions/ExprRef",
+          "description": "An expression for an array of raw values that, if non-null, directly overrides the _domain_ property. This is useful for supporting interactions such as panning or zooming a scale. The scale may be initially determined using a data-driven domain, then modified in response to user input by setting the rawDomain value."
+        },
         "exponent": {
           "anyOf": [
             {

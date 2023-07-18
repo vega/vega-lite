@@ -736,6 +736,7 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale<any>> = {
   domainMax: 1,
   domainMin: 1,
   domainMid: 1,
+  domainRaw: 1,
   align: 1,
   range: 1,
   rangeMax: 1,
@@ -793,6 +794,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'domainMax':
     case 'domainMid':
     case 'domainMin':
+    case 'domainRaw':
     case 'clamp':
       return isContinuousToContinuous(scaleType);
     case 'nice':
@@ -838,6 +840,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'domain':
     case 'domainMax':
     case 'domainMin':
+    case 'domainRaw':
     case 'range':
     case 'base':
     case 'exponent':
