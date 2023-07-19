@@ -459,7 +459,7 @@ export interface SchemeParams {
    *
    * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
-  name: string | ColorScheme | SignalRef;
+  name: ColorScheme | SignalRef;
 
   /**
    * The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
@@ -611,7 +611,7 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
    *
    * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
-  scheme?: string | ColorScheme | SchemeParams | ES;
+  scheme?: ColorScheme | SchemeParams | ES;
 
   /**
    * The alignment of the steps within the scale range.
