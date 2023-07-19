@@ -14,7 +14,8 @@
     },
     "y": {
       "field": "Cumulative Count",
-      "type": "quantitative"
+      "type": "quantitative",
+      "aggregate": "max"
     }
   }
 }

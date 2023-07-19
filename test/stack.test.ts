@@ -327,6 +327,21 @@ describe('stack', () => {
       }
     });
 
+    it('should stack even for two plain quantitatives with the orient on the axes', () => {
+      for (const mark of [BAR, AREA]) {
+        const spec: TopLevel<NormalizedUnitSpec> = {
+          data: {url: 'data/movies.json'},
+          mark: {type: mark, orient: 'vertical'}, // orient also can be inferred by init.ts
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+            y: {field: 'Rotten Tomatoes Rating', type: 'quantitative'}
+          }
+        };
+        const stackProps = stack(spec.mark, spec.encoding);
+        expect(stackProps.fieldChannel).toBe(Y);
+      }
+    });
+
     it('should be correct for horizontal (single)', () => {
       for (const stackableMark of [BAR, AREA]) {
         const spec: TopLevel<NormalizedUnitSpec> = {
