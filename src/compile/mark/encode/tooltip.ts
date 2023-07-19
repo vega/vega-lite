@@ -88,7 +88,7 @@ export function tooltipData(
         };
 
     const title = fieldDef.title || defaultTitle(fieldDef, formatConfig);
-    const key = array(title).join(', ');
+    const key = array(title).join(', ').replaceAll(/"/g, '\\"');
 
     let value: string;
 
