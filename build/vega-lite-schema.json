@@ -21912,7 +21912,7 @@
         "scheme": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/ColorScheme"
             },
             {
               "$ref": "#/definitions/SchemeParams"
@@ -22468,8 +22468,8 @@
           "type": "array"
         },
         "name": {
-          "description": "A color scheme name for ordinal scales (e.g., `\"category10\"` or `\"blues\"`).\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
-          "type": "string"
+          "$ref": "#/definitions/ColorScheme",
+          "description": "A color scheme name for ordinal scales (e.g., `\"category10\"` or `\"blues\"`).\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference."
         }
       },
       "required": [

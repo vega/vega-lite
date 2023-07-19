@@ -349,11 +349,11 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'quantitative', scale: {scheme: {name: 'warm', extent: [0.2, 1]}}}
+            color: {field: 'x', type: 'quantitative', scale: {scheme: {name: 'warmgreys', extent: [0.2, 1]}}}
           }
         });
 
-        expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: 'warm', extent: [0.2, 1]}));
+        expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: 'warmgreys', extent: [0.2, 1]}));
       });
 
       it('should support custom range.', () => {
