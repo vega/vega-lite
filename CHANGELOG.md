@@ -1,5 +1,17 @@
 
 
+# [5.14.0](https://github.com/vega/vega-lite/compare/v5.13.0...v5.14.0) (2023-07-20)
+
+
+### Bug Fixes
+
+* escape Quotes in tooltip `title` ([#9019](https://github.com/vega/vega-lite/issues/9019)) ([f7f7735](https://github.com/vega/vega-lite/commit/f7f77351d55a309b820406b4bfa90f0e11b13423))
+
+
+### Features
+
+* Improve color scheme type ([#9015](https://github.com/vega/vega-lite/issues/9015)) ([d535812](https://github.com/vega/vega-lite/commit/d5358127c8e8c097bba02a0cc9004676c576367f))
+
 # [5.13.0](https://github.com/vega/vega-lite/compare/v5.12.0...v5.13.0) (2023-07-07)
 
 
