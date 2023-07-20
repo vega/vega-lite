@@ -23,7 +23,7 @@
       "mark": {"type": "line"},
       "encoding": {
         "x": {"field": "a", "type": "quantitative"},
-        "y": {"field": "b", "type": "quantitative"},
+        "y": {"field": "b", "type": "quantitative", "stack": "zero"},
         "color": {"field": "c", "type": "nominal"}
       }
     }

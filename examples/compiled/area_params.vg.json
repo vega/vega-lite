@@ -21,7 +21,23 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"u\"])", "as": "u"}
+        {"type": "formula", "expr": "toNumber(datum[\"u\"])", "as": "u"},
+        {
+          "type": "impute",
+          "field": "v",
+          "groupby": [],
+          "key": "u",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["u"],
+          "field": "v",
+          "sort": {"field": [], "order": []},
+          "as": ["v_start", "v_end"],
+          "offset": "zero"
+        }
       ]
     }
   ],
@@ -67,8 +83,8 @@
             "signal": "\"u: \" + (format(datum[\"u\"], \"\")) + \"; v: \" + (format(datum[\"v\"], \"\"))"
           },
           "x": {"scale": "x", "field": "u"},
-          "y": {"scale": "y", "field": "v"},
-          "y2": {"scale": "y", "value": 0},
+          "y": {"scale": "y", "field": "v_end"},
+          "y2": {"scale": "y", "field": "v_start"},
           "defined": {
             "signal": "isValid(datum[\"u\"]) && isFinite(+datum[\"u\"]) && isValid(datum[\"v\"]) && isFinite(+datum[\"v\"])"
           }
@@ -88,7 +104,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "v"},
+      "domain": {"data": "data_0", "fields": ["v_start", "v_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -12,13 +12,36 @@
       "format": {"type": "json", "parse": {"IMDB Rating": "number"}},
       "transform": [
         {
+          "type": "aggregate",
+          "groupby": ["IMDB Rating"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["count"]
+        },
+        {
           "type": "window",
           "params": [null],
           "as": ["Cumulative Count"],
-          "ops": ["count"],
+          "ops": ["sum"],
           "fields": ["count"],
           "sort": {"field": ["IMDB Rating"], "order": ["ascending"]},
           "frame": [null, 0]
+        },
+        {
+          "type": "impute",
+          "field": "Cumulative Count",
+          "groupby": [],
+          "key": "IMDB Rating",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["IMDB Rating"],
+          "field": "Cumulative Count",
+          "sort": {"field": [], "order": []},
+          "as": ["Cumulative Count_start", "Cumulative Count_end"],
+          "offset": "zero"
         }
       ]
     }
@@ -38,8 +61,8 @@
             "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Cumulative Count: \" + (format(datum[\"Cumulative Count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "IMDB Rating"},
-          "y": {"scale": "y", "field": "Cumulative Count"},
-          "y2": {"scale": "y", "value": 0},
+          "y": {"scale": "y", "field": "Cumulative Count_end"},
+          "y2": {"scale": "y", "field": "Cumulative Count_start"},
           "defined": {
             "signal": "isValid(datum[\"IMDB Rating\"]) && isFinite(+datum[\"IMDB Rating\"]) && isValid(datum[\"Cumulative Count\"]) && isFinite(+datum[\"Cumulative Count\"])"
           }
@@ -59,7 +82,10 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Cumulative Count"},
+      "domain": {
+        "data": "source_0",
+        "fields": ["Cumulative Count_start", "Cumulative Count_end"]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

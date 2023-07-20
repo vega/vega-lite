@@ -21,7 +21,23 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"a\"])", "as": "a"}
+        {"type": "formula", "expr": "toNumber(datum[\"a\"])", "as": "a"},
+        {
+          "type": "impute",
+          "field": "b",
+          "groupby": ["c"],
+          "key": "a",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["a"],
+          "field": "b",
+          "sort": {"field": ["c"], "order": ["descending"]},
+          "as": ["b_start", "b_end"],
+          "offset": "zero"
+        }
       ]
     }
   ],
@@ -58,8 +74,8 @@
                 "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"])"
               },
               "x": {"scale": "x", "field": "a"},
-              "y": {"scale": "y", "field": "b"},
-              "y2": {"scale": "y", "value": 0},
+              "y": {"scale": "y", "field": "b_end"},
+              "y2": {"scale": "y", "field": "b_start"},
               "defined": {
                 "signal": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
               }
@@ -98,7 +114,7 @@
                 "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"])"
               },
               "x": {"scale": "x", "field": "a"},
-              "y": {"scale": "y", "field": "b"},
+              "y": {"scale": "y", "field": "b_end"},
               "defined": {
                 "signal": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
               }
@@ -120,7 +136,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "data_0", "fields": ["b_start", "b_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
