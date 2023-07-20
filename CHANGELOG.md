@@ -1,5 +1,12 @@
 
 
+## [5.14.1](https://github.com/vega/vega-lite/compare/v5.14.0...v5.14.1) (2023-07-20)
+
+
+### Bug Fixes
+
+* Area with plain quantitative fields on both axes get stacked by default ([#9018](https://github.com/vega/vega-lite/issues/9018)) ([b79bc9f](https://github.com/vega/vega-lite/commit/b79bc9fc3bc757b30aafd744d8ab3d679f85aedb))
+
 # [5.14.0](https://github.com/vega/vega-lite/compare/v5.13.0...v5.14.0) (2023-07-20)
 
 
