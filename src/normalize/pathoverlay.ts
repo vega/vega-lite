@@ -132,6 +132,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     // FIXME: determine rules for applying selections.
 
     // Need to copy stack config to overlayed layer
+    // FIXME: normalizer shouldn't call `initMarkdef`, a method from an init phase.
     const stackProps = stack(initMarkdef(markDef, encoding, config), encoding);
 
     let overlayEncoding = encoding;
