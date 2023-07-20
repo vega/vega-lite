@@ -324,6 +324,42 @@ describe('PathOverlayNormalizer', () => {
     });
   });
 
+  it('correctly normalizes default stacked area with overlay line', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/movies.json'},
+      mark: 'area',
+      encoding: {
+        x: {field: 'IMDB Rating', type: 'quantitative'},
+        y: {field: 'Rotten Tomatoes Rating', type: 'quantitative'},
+        color: {field: 'MPAA RATING', type: 'nominal'}
+      },
+      config: {area: {line: {}}}
+    };
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/movies.json'},
+      layer: [
+        {
+          mark: {type: 'area', opacity: 0.7},
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+            y: {field: 'Rotten Tomatoes Rating', type: 'quantitative'},
+            color: {field: 'MPAA RATING', type: 'nominal'}
+          }
+        },
+        {
+          mark: {type: 'line'},
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+            y: {field: 'Rotten Tomatoes Rating', type: 'quantitative', stack: 'zero'},
+            color: {field: 'MPAA RATING', type: 'nominal'}
+          }
+        }
+      ],
+      config: {area: {line: {}}}
+    });
+  });
+
   it('correctly normalizes streamgraph with overlay line', () => {
     const spec: TopLevelSpec = {
       data: {url: 'data/stocks.csv'},

@@ -16,6 +16,22 @@
           "field": "IMDB Rating",
           "bandwidth": 0.3,
           "as": ["value", "density"]
+        },
+        {
+          "type": "impute",
+          "field": "density",
+          "groupby": [],
+          "key": "value",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["value"],
+          "field": "density",
+          "sort": {"field": [], "order": []},
+          "as": ["density_start", "density_end"],
+          "offset": "zero"
         }
       ]
     }
@@ -35,8 +51,8 @@
             "signal": "\"IMDB Rating: \" + (format(datum[\"value\"], \"\")) + \"; density: \" + (format(datum[\"density\"], \"\"))"
           },
           "x": {"scale": "x", "field": "value"},
-          "y": {"scale": "y", "field": "density"},
-          "y2": {"scale": "y", "value": 0},
+          "y": {"scale": "y", "field": "density_end"},
+          "y2": {"scale": "y", "field": "density_start"},
           "defined": {
             "signal": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"]) && isValid(datum[\"density\"]) && isFinite(+datum[\"density\"])"
           }
@@ -56,7 +72,10 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "density"},
+      "domain": {
+        "data": "source_0",
+        "fields": ["density_start", "density_end"]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

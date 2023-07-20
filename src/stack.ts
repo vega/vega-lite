@@ -106,7 +106,7 @@ function potentialStackedChannel(
         return xAggregate ? x : y;
       }
 
-      if (isCartesian && mark === 'bar') {
+      if (isCartesian && ['bar', 'area'].includes(mark)) {
         if (orient === 'vertical') {
           return y;
         } else if (orient === 'horizontal') {

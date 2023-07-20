@@ -9,6 +9,7 @@ import {isUnitSpec} from '../spec/unit';
 import {stack} from '../stack';
 import {keys, omit, pick} from '../util';
 import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base';
+import {initMarkdef} from '../compile/mark/init';
 
 type UnitSpecWithPathOverlay = GenericUnitSpec<Encoding<string>, Mark | MarkDef<'line' | 'area' | 'rule' | 'trail'>>;
 
@@ -109,6 +110,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     const markDef: MarkDef = isMarkDef(mark) ? mark : {type: mark};
 
     const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
+
     const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
 
     const layer: NormalizedUnitSpec[] = [
@@ -130,7 +132,8 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     // FIXME: determine rules for applying selections.
 
     // Need to copy stack config to overlayed layer
-    const stackProps = stack(markDef, encoding);
+    // FIXME: normalizer shouldn't call `initMarkdef`, a method from an init phase.
+    const stackProps = stack(initMarkdef(markDef, encoding, config), encoding);
 
     let overlayEncoding = encoding;
     if (stackProps) {
