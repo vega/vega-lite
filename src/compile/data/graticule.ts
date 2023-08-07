@@ -8,7 +8,10 @@ export class GraticuleNode extends DataFlowNode {
     return new GraticuleNode(null, this.params);
   }
 
-  constructor(parent: DataFlowNode, private params: true | GraticuleParams) {
+  constructor(
+    parent: DataFlowNode,
+    private params: true | GraticuleParams
+  ) {
     super(parent);
   }
 

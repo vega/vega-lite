@@ -13,7 +13,10 @@ export class FilterInvalidNode extends DataFlowNode {
     return new FilterInvalidNode(null, {...this.filter});
   }
 
-  constructor(parent: DataFlowNode, public readonly filter: Dict<TypedFieldDef<string>>) {
+  constructor(
+    parent: DataFlowNode,
+    public readonly filter: Dict<TypedFieldDef<string>>
+  ) {
     super(parent);
   }
 
@@ -25,20 +28,23 @@ export class FilterInvalidNode extends DataFlowNode {
       return null;
     }
 
-    const filter = model.reduceFieldDef((aggregator: Dict<TypedFieldDef<string>>, fieldDef, channel) => {
-      const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
-      if (scaleComponent) {
-        const scaleType = scaleComponent.get('type');
+    const filter = model.reduceFieldDef(
+      (aggregator: Dict<TypedFieldDef<string>>, fieldDef, channel) => {
+        const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
+        if (scaleComponent) {
+          const scaleType = scaleComponent.get('type');
 
-        // While discrete domain scales can handle invalid values, continuous scales can't.
-        // Thus, for non-path marks, we have to filter null for scales with continuous domains.
-        // (For path marks, we will use "defined" property and skip these values instead.)
-        if (hasContinuousDomain(scaleType) && fieldDef.aggregate !== 'count' && !isPathMark(mark)) {
-          aggregator[fieldDef.field] = fieldDef as any; // we know that the fieldDef is a typed field def
+          // While discrete domain scales can handle invalid values, continuous scales can't.
+          // Thus, for non-path marks, we have to filter null for scales with continuous domains.
+          // (For path marks, we will use "defined" property and skip these values instead.)
+          if (hasContinuousDomain(scaleType) && fieldDef.aggregate !== 'count' && !isPathMark(mark)) {
+            aggregator[fieldDef.field] = fieldDef as any; // we know that the fieldDef is a typed field def
+          }
         }
-      }
-      return aggregator;
-    }, {} as Dict<TypedFieldDef<string>>);
+        return aggregator;
+      },
+      {} as Dict<TypedFieldDef<string>>
+    );
 
     if (!keys(filter).length) {
       return null;

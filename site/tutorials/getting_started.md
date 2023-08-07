@@ -147,7 +147,7 @@ You have learned about basic components of a Vega-Lite specification. Now, let's
 You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-Lite visualization in a webpage. For example, you can create a web page with the following content:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Vega-Lite Bar Chart</title>
