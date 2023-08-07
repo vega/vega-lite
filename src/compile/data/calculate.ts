@@ -17,7 +17,10 @@ export class CalculateNode extends DataFlowNode {
     return new CalculateNode(null, duplicate(this.transform));
   }
 
-  constructor(parent: DataFlowNode, private readonly transform: CalculateTransform) {
+  constructor(
+    parent: DataFlowNode,
+    private readonly transform: CalculateTransform
+  ) {
     super(parent);
 
     this._dependentFields = getDependentFields(this.transform.calculate);

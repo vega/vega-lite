@@ -12,7 +12,10 @@ export abstract class DataFlowNode {
 
   protected _hash: string | number;
 
-  constructor(parent: DataFlowNode, public readonly debugName?: string) {
+  constructor(
+    parent: DataFlowNode,
+    public readonly debugName?: string
+  ) {
     if (parent) {
       this.parent = parent;
     }
