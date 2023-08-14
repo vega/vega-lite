@@ -8905,6 +8905,13 @@ vega-tooltip@^0.32.0:
   dependencies:
     vega-util "^1.17.1"
 
+vega-tooltip@^0.33.0:
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.33.0.tgz#32bcaad713171d2ae00b47189e6334a318566739"
+  integrity sha512-jMcvH2lP20UfyvO2KAEdloiwRyasikaiLuNFhzwrrzf2RamGTxP4G7B2OZ2QENfrGUH05Z9ei5tn/eErdzOaZQ==
+  dependencies:
+    vega-util "^1.17.2"
+
 vega-transforms@~4.10.2:
   version "4.10.2"
   resolved "https://registry.yarnpkg.com/vega-transforms/-/vega-transforms-4.10.2.tgz#3a5ff3e92d8b0ee86868aed88e57b847b459d64e"
@@ -8926,7 +8933,7 @@ vega-typings@~0.24.2:
     vega-expression "^5.0.1"
     vega-util "^1.17.1"
 
-vega-util@^1.15.2, vega-util@^1.17.1, vega-util@~1.17.2:
+vega-util@^1.15.2, vega-util@^1.17.1, vega-util@^1.17.2, vega-util@~1.17.2:
   version "1.17.2"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.17.2.tgz#f69aa09fd5d6110c19c4a0f0af9e35945b99987d"
   integrity sha512-omNmGiZBdjm/jnHjZlywyYqafscDdHaELHx1q96n5UOz/FlO9JO99P4B3jZg391EFG8dqhWjQilSf2JH6F1mIw==
