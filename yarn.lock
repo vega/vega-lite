@@ -8901,6 +8901,13 @@ vega-tooltip@^0.32.0:
   dependencies:
     vega-util "^1.17.1"
 
+vega-tooltip@^0.33.0:
+  version "0.33.0"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.33.0.tgz#32bcaad713171d2ae00b47189e6334a318566739"
+  integrity sha512-jMcvH2lP20UfyvO2KAEdloiwRyasikaiLuNFhzwrrzf2RamGTxP4G7B2OZ2QENfrGUH05Z9ei5tn/eErdzOaZQ==
+  dependencies:
+    vega-util "^1.17.2"
+
 vega-transforms@~4.10.2:
   version "4.10.2"
   resolved "https://registry.yarnpkg.com/vega-transforms/-/vega-transforms-4.10.2.tgz#3a5ff3e92d8b0ee86868aed88e57b847b459d64e"
@@ -8922,7 +8929,7 @@ vega-typings@~0.24.0:
     vega-expression "^5.0.1"
     vega-util "^1.17.1"
 
-vega-util@^1.15.2, vega-util@^1.17.1, vega-util@~1.17.2:
+vega-util@^1.15.2, vega-util@^1.17.1, vega-util@^1.17.2, vega-util@~1.17.2:
   version "1.17.2"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.17.2.tgz#f69aa09fd5d6110c19c4a0f0af9e35945b99987d"
   integrity sha512-omNmGiZBdjm/jnHjZlywyYqafscDdHaELHx1q96n5UOz/FlO9JO99P4B3jZg391EFG8dqhWjQilSf2JH6F1mIw==
@@ -9235,15 +9242,15 @@ y18n@^5.0.5:
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-5.0.8.tgz#7f4934d0f7ca8c56f95314939ddcd2dd91ce1d55"
   integrity sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==
 
-yallist@*, yallist@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
-  integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
-
 yallist@^3.0.2:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
+
+yallist@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
+  integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
 yaml-front-matter@^4.1.1:
   version "4.1.1"
