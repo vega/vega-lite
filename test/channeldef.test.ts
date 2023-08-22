@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {COUNTING_OPS} from '../src/aggregate';
 import {CHANNELS} from '../src/channel';
 import {

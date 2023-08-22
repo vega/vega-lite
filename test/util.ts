@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {Field} from '../src/channeldef';
 import {buildModel} from '../src/compile/buildmodel';
 import {ConcatModel} from '../src/compile/concat';

@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {isString} from 'vega-util';
 import {Field} from '../channeldef';
 import {Config, initConfig} from '../config';

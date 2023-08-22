@@ -73,9 +73,7 @@ export interface BaseSelectionConfig<T extends SelectionType = SelectionType> {
    * __See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.
    */
   encodings?: SingleDefUnitChannel[];
-}
 
-export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
   /**
    * An array of field names whose values must match for a data tuple to
    * fall within the selection.
@@ -83,7 +81,9 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
    * __See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.
    */
   fields?: FieldName[];
+}
 
+export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
   /**
    * Controls whether data values should be toggled (inserted or removed from a point selection)
    * or only ever inserted into point selections.

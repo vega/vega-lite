@@ -1,5 +1,5 @@
 import {SignalRef, TimeInterval} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray, isNumber} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {
   COLOR,
@@ -414,8 +414,8 @@ export function zero(
         const first = specifiedDomain[0];
         const last = specifiedDomain[specifiedDomain.length - 1];
 
-        if (first <= 0 && last >= 0) {
-          // if the domain includes zero, make zero remains true
+        if (isNumber(first) && first <= 0 && isNumber(last) && last >= 0) {
+          // if the domain includes zero, make zero remain true
           return true;
         }
       }
