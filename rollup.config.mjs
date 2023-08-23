@@ -1,6 +1,5 @@
 import alias from '@rollup/plugin-alias';
 import babel from '@rollup/plugin-babel';
-import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
@@ -67,7 +66,6 @@ const outputs = [
         }
       }),
       resolve({browser: true, extensions}),
-      commonjs(),
       json(),
       babel({
         extensions,
