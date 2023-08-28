@@ -3804,9 +3804,9 @@ degenerator@^5.0.0:
     esprima "^4.0.1"
 
 del-cli@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/del-cli/-/del-cli-5.0.0.tgz#fa79fd57e888ecaaf8a468d87e8a175142a24aa9"
-  integrity sha512-rENFhUaYcjoMODwFhhlON+ogN7DoG+4+GFN+bsA1XeDt4w2OKQnQadFP1thHSAlK9FAtl88qgP66wOV+eFZZiQ==
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/del-cli/-/del-cli-5.0.1.tgz#763750ed5f083ede34a220fcc6cd549e53b5b9a7"
+  integrity sha512-hCDHJd0u0jKFqizgInYXZaILsqOIA7Zl6e7M3hJwP+SlwUAgtV/EB22EPF4e2+9VAVnBDQQBE6tDRe+/UuoFhg==
   dependencies:
     del "^7.0.0"
     meow "^10.1.3"
