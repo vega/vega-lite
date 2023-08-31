@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {Config} from '../../config';
 import {Encoding} from '../../encoding';
 import {MarkDef} from '../../mark';
