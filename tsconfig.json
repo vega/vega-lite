@@ -16,6 +16,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "isolatedModules": true,
     "lib": ["ESNext.Array", "DOM", "DOM.Iterable", "ES2021.String"],
+    "ignoreDeprecations": "5.0",
     "noEmit": true
   },
   "files": ["src/index.ts"],

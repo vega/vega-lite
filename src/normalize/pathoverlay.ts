@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
