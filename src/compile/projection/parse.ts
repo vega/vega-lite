@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {hasOwnProperty} from 'vega-util';
 import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {getFieldOrDatumDef} from '../../channeldef';

@@ -1,7 +1,7 @@
 /**
  * Utility files for producing Vega ValueRef for marks
  */
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {isFunction, isString} from 'vega-util';
 import {isCountingAggregateOp} from '../../../aggregate';
 import {isBinned, isBinning} from '../../../bin';
@@ -176,7 +176,7 @@ export function interpolatedSignalRef({
   offset: number | SignalRef | VgValueRef;
   bandPosition: number | SignalRef;
 }): VgValueRef {
-  const expr = 0 < bandPosition && bandPosition < 1 ? 'datum' : undefined;
+  const expr = !isSignalRef(bandPosition) && 0 < bandPosition && bandPosition < 1 ? 'datum' : undefined;
   const start = vgField(fieldOrDatumDef, {expr, suffix: startSuffix});
   const end =
     fieldOrDatumDef2 !== undefined

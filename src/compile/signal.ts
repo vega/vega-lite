@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 
 export type Rename = (oldSignalName: string) => string;
 
