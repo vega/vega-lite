@@ -3123,12 +3123,12 @@ conventional-changelog-atom@^4.0.0:
   integrity sha512-q2YtiN7rnT1TGwPTwjjBSIPIzDJCRE+XAUahWxnh+buKK99Kks4WLMHoexw38GXx9OUxAsrp44f9qXe5VEMYhw==
 
 conventional-changelog-cli@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/conventional-changelog-cli/-/conventional-changelog-cli-4.0.0.tgz#3b83a034e56e54516d9be704335c135b25eccf8a"
-  integrity sha512-BRI/4/MmQi1KKSpXx+jync+vS81A3LO1dtiZGufUatcTgkxD6w3tlRSaoqGlGX/Oggj9aezcH/Xj3lgBtiEQkA==
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-cli/-/conventional-changelog-cli-4.1.0.tgz#e3abc622f82d8923a8603eec19411fae0048e72b"
+  integrity sha512-MscvILWZ6nWOoC+p/3Nn3D2cVLkjeQjyZPUr0bQ+vUORE/SPrkClJh8BOoMNpS4yk+zFJ5LlgXACxH6XGQoRXA==
   dependencies:
     add-stream "^1.0.0"
-    conventional-changelog "^5.0.0"
+    conventional-changelog "^5.1.0"
     meow "^12.0.1"
     tempfile "^5.0.0"
 
@@ -3149,10 +3149,10 @@ conventional-changelog-conventionalcommits@^6.0.0:
   dependencies:
     compare-func "^2.0.0"
 
-conventional-changelog-conventionalcommits@^7.0.0:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/conventional-changelog-conventionalcommits/-/conventional-changelog-conventionalcommits-7.0.1.tgz#b47e7d1b3a0c1e370c4c27eea741f06729913f5f"
-  integrity sha512-VfFJxBmi+LYXeb4pIfZGbuaFCpWZh0qXbUAKP/s6B8tigV6R4D8j5PDlTtMMWawa7+DcNySVoF7kPWz0EMYuCQ==
+conventional-changelog-conventionalcommits@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-conventionalcommits/-/conventional-changelog-conventionalcommits-7.0.2.tgz#aa5da0f1b2543094889e8cf7616ebe1a8f5c70d5"
+  integrity sha512-NKXYmMR/Hr1DevQegFB4MwfM5Vv0m4UIxKZTTYuD98lpTknaZlSRrDOG4X7wIXpGkfsYxZTghUN+Qq+T0YQI7w==
   dependencies:
     compare-func "^2.0.0"
 
@@ -3173,18 +3173,17 @@ conventional-changelog-core@^5.0.0:
     read-pkg "^3.0.0"
     read-pkg-up "^3.0.0"
 
-conventional-changelog-core@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/conventional-changelog-core/-/conventional-changelog-core-6.0.0.tgz#9460a5f320a851167f4b53a9a90cc30f2c2239d1"
-  integrity sha512-7WPwzTp3eRMot/2mbTAHF8m/0Ue4F/R/sMpSjmhBYi/+xnW2SqnXL/FMuYqEpNC2v3rjzRZ4p+9tYcKfHn02Cg==
+conventional-changelog-core@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-core/-/conventional-changelog-core-7.0.0.tgz#d8879ebb8692cd1fa8126c209e1b3af34d94e113"
+  integrity sha512-UYgaB1F/COt7VFjlYKVE/9tTzfU3VUq47r6iWf6lM5T7TlOxr0thI63ojQueRLIpVbrtHK4Ffw+yQGduw2Bhdg==
   dependencies:
     "@hutson/parse-repository-url" "^5.0.0"
     add-stream "^1.0.0"
     conventional-changelog-writer "^7.0.0"
     conventional-commits-parser "^5.0.0"
     git-raw-commits "^4.0.0"
-    git-remote-origin-url "^2.0.0"
-    git-semver-tags "^6.0.0"
+    git-semver-tags "^7.0.0"
     hosted-git-info "^7.0.0"
     normalize-package-data "^6.0.0"
     read-pkg "^8.0.0"
@@ -3249,10 +3248,10 @@ conventional-changelog-preset-loader@^3.0.0:
   resolved "https://registry.yarnpkg.com/conventional-changelog-preset-loader/-/conventional-changelog-preset-loader-3.0.0.tgz#14975ef759d22515d6eabae6396c2ae721d4c105"
   integrity sha512-qy9XbdSLmVnwnvzEisjxdDiLA4OmV3o8db+Zdg4WiFw14fP3B6XNz98X0swPPpkTd/pc1K7+adKgEDM1JCUMiA==
 
-conventional-changelog-preset-loader@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/conventional-changelog-preset-loader/-/conventional-changelog-preset-loader-4.0.0.tgz#885f7ddc4e09e97ad44bb9eefe45d2c66af9d5f0"
-  integrity sha512-xYGvKMkJs8o6vnKDbo2v5VcalZmH54lVU+OCvFQvxj3AQKRMJhbKwvBVsSXfQSuhaG9r6mdK8TIMOaiwiStasg==
+conventional-changelog-preset-loader@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/conventional-changelog-preset-loader/-/conventional-changelog-preset-loader-4.1.0.tgz#996bc40d516471c5bf8248fdc30222563b9bcfe6"
+  integrity sha512-HozQjJicZTuRhCRTq4rZbefaiCzRM2pr6u2NL3XhrmQm4RMnDXfESU6JKu/pnKwx5xtdkYfNCsbhN5exhiKGJA==
 
 conventional-changelog-writer@^6.0.0:
   version "6.0.1"
@@ -3296,22 +3295,22 @@ conventional-changelog@^4.0.0:
     conventional-changelog-jshint "^3.0.0"
     conventional-changelog-preset-loader "^3.0.0"
 
-conventional-changelog@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/conventional-changelog/-/conventional-changelog-5.0.0.tgz#0b758f72d386e69f27e0eb9abf0c41cb1b0dbd60"
-  integrity sha512-k0c3lCtY3+k75gyrIoO7WEyBd4HLxu8QmTTPxM4D+vKk9wN06GZ/iaVJXQsGZae3Cezb02Is5PJ70fia3zZG8Q==
+conventional-changelog@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/conventional-changelog/-/conventional-changelog-5.1.0.tgz#04b36a5ad0518e0323e9d629e3b86e34f7abb7eb"
+  integrity sha512-aWyE/P39wGYRPllcCEZDxTVEmhyLzTc9XA6z6rVfkuCD2UBnhV/sgSOKbQrEG5z9mEZJjnopjgQooTKxEg8mAg==
   dependencies:
     conventional-changelog-angular "^7.0.0"
     conventional-changelog-atom "^4.0.0"
     conventional-changelog-codemirror "^4.0.0"
-    conventional-changelog-conventionalcommits "^7.0.0"
-    conventional-changelog-core "^6.0.0"
+    conventional-changelog-conventionalcommits "^7.0.2"
+    conventional-changelog-core "^7.0.0"
     conventional-changelog-ember "^4.0.0"
     conventional-changelog-eslint "^5.0.0"
     conventional-changelog-express "^4.0.0"
     conventional-changelog-jquery "^5.0.0"
     conventional-changelog-jshint "^4.0.0"
-    conventional-changelog-preset-loader "^4.0.0"
+    conventional-changelog-preset-loader "^4.1.0"
 
 conventional-commits-filter@^3.0.0:
   version "3.0.0"
@@ -4742,10 +4741,10 @@ git-semver-tags@^5.0.0:
     meow "^8.1.2"
     semver "^7.0.0"
 
-git-semver-tags@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/git-semver-tags/-/git-semver-tags-6.0.0.tgz#b011ef94ae23ec8121f311d92a5969fc91502e15"
-  integrity sha512-v5BL6psuUy+Ftuo99141XlOIDoJtKw5+YyDANS7fknSP0iT4cVIanc3toDsH4K+VpIWc19l2/xkwQmXMfloeUA==
+git-semver-tags@^7.0.0:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/git-semver-tags/-/git-semver-tags-7.0.1.tgz#74426e7d7710e5a263655e78b4c651eed804d63e"
+  integrity sha512-NY0ZHjJzyyNXHTDZmj+GG7PyuAKtMsyWSwh07CR2hOZFa+/yoTsXci/nF2obzL8UDhakFNkD9gNdt/Ed+cxh2Q==
   dependencies:
     meow "^12.0.1"
     semver "^7.5.2"
