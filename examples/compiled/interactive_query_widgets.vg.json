@@ -13,19 +13,34 @@
         {
           "unit": "layer_0",
           "fields": [
-            {"type": "E", "field": "Cylinders"},
-            {"type": "E", "field": "Year"}
+            {
+              "type": "E",
+              "field": "Cylinders"
+            },
+            {
+              "type": "E",
+              "field": "Year"
+            }
           ],
-          "values": [4, 1977]
+          "values": [
+            4,
+            1977
+          ]
         }
       ]
     },
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
+      "format": {
+        "type": "json"
+      },
       "transform": [
-        {"type": "formula", "expr": "year(datum.Year)", "as": "Year"}
+        {
+          "type": "formula",
+          "expr": "year(datum.Year)",
+          "as": "Year"
+        }
       ]
     },
     {
@@ -58,18 +73,31 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
       "name": "CylYr_Year",
       "init": "1977",
-      "bind": {"input": "range", "min": 1969, "max": 1981, "step": 1}
+      "bind": {
+        "input": "range",
+        "min": 1969,
+        "max": 1981,
+        "step": 1
+      }
     },
     {
       "name": "CylYr_Cylinders",
       "init": "4",
-      "bind": {"input": "range", "min": 3, "max": 8, "step": 1}
+      "bind": {
+        "input": "range",
+        "min": 3,
+        "max": 8,
+        "step": 1
+      }
     },
     {
       "name": "CylYr",
@@ -82,15 +110,23 @@
     {
       "name": "CylYr_tuple_fields",
       "value": [
-        {"type": "E", "field": "Cylinders"},
-        {"type": "E", "field": "Year"}
+        {
+          "type": "E",
+          "field": "Cylinders"
+        },
+        {
+          "type": "E",
+          "field": "Year"
+        }
       ]
     },
     {
       "name": "CylYr_modify",
       "on": [
         {
-          "events": {"signal": "CylYr_tuple"},
+          "events": {
+            "signal": "CylYr_tuple"
+          },
           "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
         }
       ]
@@ -100,48 +136,87 @@
     {
       "name": "layer_0_marks",
       "type": "symbol",
-      "style": ["circle"],
+      "style": [
+        "circle"
+      ],
       "interactive": true,
-      "from": {"data": "data_0"},
+      "from": {
+        "data": "data_0"
+      },
       "encode": {
         "update": {
-          "opacity": {"value": 0.7},
+          "opacity": {
+            "value": 0.7
+          },
           "fill": [
             {
               "test": "!length(data(\"CylYr_store\")) || vlSelectionTest(\"CylYr_store\", datum)",
               "scale": "color",
               "field": "Origin"
             },
-            {"value": "grey"}
+            {
+              "value": "grey"
+            }
           ],
-          "ariaRoleDescription": {"value": "circle"},
+          "ariaRoleDescription": {
+            "value": "circle"
+          },
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
-          "x": {"scale": "x", "field": "Horsepower"},
-          "y": {"scale": "y", "field": "Miles_per_Gallon"},
-          "shape": {"value": "circle"}
+          "x": {
+            "scale": "x",
+            "field": "Horsepower"
+          },
+          "y": {
+            "scale": "y",
+            "field": "Miles_per_Gallon"
+          },
+          "shape": {
+            "value": "circle"
+          }
         }
       }
     },
     {
       "name": "layer_1_marks",
       "type": "symbol",
-      "style": ["circle"],
+      "style": [
+        "circle"
+      ],
       "interactive": false,
-      "from": {"data": "data_1"},
+      "from": {
+        "data": "data_1"
+      },
       "encode": {
         "update": {
-          "opacity": {"value": 0.7},
-          "fill": {"scale": "color", "field": "Origin"},
-          "ariaRoleDescription": {"value": "circle"},
+          "opacity": {
+            "value": 0.7
+          },
+          "fill": {
+            "scale": "color",
+            "field": "Origin"
+          },
+          "ariaRoleDescription": {
+            "value": "circle"
+          },
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
-          "x": {"scale": "x", "field": "Horsepower"},
-          "y": {"scale": "y", "field": "Miles_per_Gallon"},
-          "size": {"value": 100},
-          "shape": {"value": "circle"}
+          "x": {
+            "scale": "x",
+            "field": "Horsepower"
+          },
+          "y": {
+            "scale": "y",
+            "field": "Miles_per_Gallon"
+          },
+          "size": {
+            "value": 100
+          },
+          "shape": {
+            "value": "circle"
+          }
         }
       }
     }
@@ -152,11 +227,22 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Horsepower"},
-          {"data": "data_1", "field": "Horsepower"}
+          {
+            "data": "data_0",
+            "field": "Horsepower"
+          },
+          {
+            "data": "data_1",
+            "field": "Horsepower"
+          }
         ]
       },
-      "range": [0, {"signal": "width"}],
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
       "nice": true,
       "zero": true
     },
@@ -165,11 +251,22 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Miles_per_Gallon"},
-          {"data": "data_1", "field": "Miles_per_Gallon"}
+          {
+            "data": "data_0",
+            "field": "Miles_per_Gallon"
+          },
+          {
+            "data": "data_1",
+            "field": "Miles_per_Gallon"
+          }
         ]
       },
-      "range": [{"signal": "height"}, 0],
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     },
@@ -178,8 +275,14 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Origin"},
-          {"data": "data_1", "field": "Origin"}
+          {
+            "data": "data_0",
+            "field": "Origin"
+          },
+          {
+            "data": "data_1",
+            "field": "Origin"
+          }
         ],
         "sort": true
       },
@@ -192,7 +295,9 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -206,7 +311,9 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -222,7 +329,9 @@
       "title": "Horsepower",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
       "zindex": 0
     },
     {
@@ -231,7 +340,9 @@
       "grid": false,
       "title": "Miles_per_Gallon",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "zindex": 0
     }
   ],
@@ -240,7 +351,15 @@
       "fill": "color",
       "symbolType": "circle",
       "title": "Origin",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
+      "encode": {
+        "symbols": {
+          "update": {
+            "opacity": {
+              "value": 0.7
+            }
+          }
+        }
+      }
     }
   ]
 }

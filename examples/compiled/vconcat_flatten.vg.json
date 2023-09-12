@@ -5,7 +5,9 @@
   "padding": 5,
   "width": 300,
   "data": [
-    {"name": "pts_store"},
+    {
+      "name": "pts_store"
+    },
     {
       "name": "source_0",
       "values": [
@@ -13,19 +15,46 @@
           "id": "001",
           "ra": 243.35,
           "dec": "+54.6",
-          "lc": [{"time": 1, "mag": 18.5}, {"time": 2, "mag": 19}]
+          "lc": [
+            {
+              "time": 1,
+              "mag": 18.5
+            },
+            {
+              "time": 2,
+              "mag": 19
+            }
+          ]
         },
         {
           "id": "002",
           "ra": 210.35,
           "dec": "+14.6",
-          "lc": [{"time": 1, "mag": 19.5}, {"time": 2, "mag": 20}]
+          "lc": [
+            {
+              "time": 1,
+              "mag": 19.5
+            },
+            {
+              "time": 2,
+              "mag": 20
+            }
+          ]
         },
         {
           "id": "003",
           "ra": 143.35,
           "dec": "+33.6",
-          "lc": [{"time": 1, "mag": 19}, {"time": 2, "mag": 18}]
+          "lc": [
+            {
+              "time": 1,
+              "mag": 19
+            },
+            {
+              "time": 2,
+              "mag": 18
+            }
+          ]
         }
       ]
     },
@@ -33,7 +62,15 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "flatten", "fields": ["lc"], "as": ["lc"]},
+        {
+          "type": "flatten",
+          "fields": [
+            "lc"
+          ],
+          "as": [
+            "lc"
+          ]
+        },
         {
           "type": "formula",
           "expr": "datum[\"lc\"] && datum[\"lc\"][\"time\"]",
@@ -52,7 +89,11 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["ra", "dec", "id"],
+          "groupby": [
+            "ra",
+            "dec",
+            "id"
+          ],
           "ops": [],
           "fields": [],
           "as": []
@@ -75,12 +116,18 @@
     }
   ],
   "signals": [
-    {"name": "childHeight", "value": 200},
+    {
+      "name": "childHeight",
+      "value": 200
+    },
     {
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -88,17 +135,29 @@
       "update": "vlSelectionResolve(\"pts_store\", \"union\", true, true)"
     }
   ],
-  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
+  "layout": {
+    "padding": 20,
+    "columns": 1,
+    "bounds": "full",
+    "align": "each"
+  },
   "marks": [
     {
       "type": "group",
       "name": "concat_0_group",
-      "title": {"text": "Sky position", "frame": "group"},
+      "title": {
+        "text": "Sky position",
+        "frame": "group"
+      },
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "width"},
-          "height": {"signal": "childHeight"}
+          "width": {
+            "signal": "width"
+          },
+          "height": {
+            "signal": "childHeight"
+          }
         }
       },
       "signals": [
@@ -106,27 +165,55 @@
           "name": "pts_tuple",
           "on": [
             {
-              "events": [{"source": "scope", "type": "click"}],
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "click"
+                }
+              ],
               "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"concat_0\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"id\"]]} : null",
               "force": true
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "null"
             }
           ]
         },
-        {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "id"}]},
+        {
+          "name": "pts_tuple_fields",
+          "value": [
+            {
+              "type": "E",
+              "field": "id"
+            }
+          ]
+        },
         {
           "name": "pts_toggle",
           "value": false,
           "on": [
             {
-              "events": [{"source": "scope", "type": "click"}],
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "click"
+                }
+              ],
               "update": "event.shiftKey"
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "false"
             }
           ]
@@ -135,7 +222,9 @@
           "name": "pts_modify",
           "on": [
             {
-              "events": {"signal": "pts_tuple"},
+              "events": {
+                "signal": "pts_tuple"
+              },
               "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
             }
           ]
@@ -145,27 +234,47 @@
         {
           "name": "concat_0_marks",
           "type": "symbol",
-          "style": ["circle"],
+          "style": [
+            "circle"
+          ],
           "interactive": true,
-          "from": {"data": "data_1"},
+          "from": {
+            "data": "data_1"
+          },
           "encode": {
             "update": {
-              "opacity": {"value": 0.7},
+              "opacity": {
+                "value": 0.7
+              },
               "fill": [
                 {
                   "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
                   "value": "steelblue"
                 },
-                {"value": "grey"}
+                {
+                  "value": "grey"
+                }
               ],
-              "ariaRoleDescription": {"value": "circle"},
+              "ariaRoleDescription": {
+                "value": "circle"
+              },
               "description": {
                 "signal": "\"ra: \" + (format(datum[\"ra\"], \"\")) + \"; dec: \" + (format(datum[\"dec\"], \"\"))"
               },
-              "x": {"scale": "concat_0_x", "field": "ra"},
-              "y": {"scale": "concat_0_y", "field": "dec"},
-              "size": {"value": 100},
-              "shape": {"value": "circle"}
+              "x": {
+                "scale": "concat_0_x",
+                "field": "ra"
+              },
+              "y": {
+                "scale": "concat_0_y",
+                "field": "dec"
+              },
+              "size": {
+                "value": 100
+              },
+              "shape": {
+                "value": "circle"
+              }
             }
           }
         }
@@ -176,7 +285,9 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {
+            "signal": "ceil(width/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -190,7 +301,9 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {
+            "signal": "ceil(childHeight/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -206,7 +319,9 @@
           "title": "ra",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {
+            "signal": "ceil(width/40)"
+          },
           "zindex": 0
         },
         {
@@ -215,7 +330,9 @@
           "grid": false,
           "title": "dec",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {
+            "signal": "ceil(childHeight/40)"
+          },
           "zindex": 0
         }
       ]
@@ -223,12 +340,19 @@
     {
       "type": "group",
       "name": "concat_1_group",
-      "title": {"text": "Light curve", "frame": "group"},
+      "title": {
+        "text": "Light curve",
+        "frame": "group"
+      },
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "width"},
-          "height": {"signal": "childHeight"}
+          "width": {
+            "signal": "width"
+          },
+          "height": {
+            "signal": "childHeight"
+          }
         }
       },
       "marks": [
@@ -239,31 +363,55 @@
             "facet": {
               "name": "faceted_path_concat_1_main",
               "data": "data_2",
-              "groupby": ["id"]
+              "groupby": [
+                "id"
+              ]
             }
           },
           "encode": {
             "update": {
-              "width": {"field": {"group": "width"}},
-              "height": {"field": {"group": "height"}}
+              "width": {
+                "field": {
+                  "group": "width"
+                }
+              },
+              "height": {
+                "field": {
+                  "group": "height"
+                }
+              }
             }
           },
           "marks": [
             {
               "name": "concat_1_marks",
               "type": "line",
-              "style": ["line"],
-              "sort": {"field": "datum[\"lc.time\"]"},
+              "style": [
+                "line"
+              ],
+              "sort": {
+                "field": "datum[\"lc.time\"]"
+              },
               "interactive": false,
-              "from": {"data": "faceted_path_concat_1_main"},
+              "from": {
+                "data": "faceted_path_concat_1_main"
+              },
               "encode": {
                 "update": {
-                  "stroke": {"value": "steelblue"},
+                  "stroke": {
+                    "value": "steelblue"
+                  },
                   "description": {
                     "signal": "\"lc.time: \" + (format(datum[\"lc.time\"], \"\")) + \"; lc.mag: \" + (format(datum[\"lc.mag\"], \"\")) + \"; id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
                   },
-                  "x": {"scale": "concat_1_x", "field": "lc\\.time"},
-                  "y": {"scale": "concat_1_y", "field": "lc\\.mag"},
+                  "x": {
+                    "scale": "concat_1_x",
+                    "field": "lc\\.time"
+                  },
+                  "y": {
+                    "scale": "concat_1_y",
+                    "field": "lc\\.mag"
+                  },
                   "defined": {
                     "signal": "isValid(datum[\"lc.time\"]) && isFinite(+datum[\"lc.time\"]) && isValid(datum[\"lc.mag\"]) && isFinite(+datum[\"lc.mag\"])"
                   }
@@ -279,7 +427,9 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {
+            "signal": "ceil(width/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -293,7 +443,9 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {
+            "signal": "ceil(childHeight/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -309,7 +461,9 @@
           "title": "lc.time",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {
+            "signal": "ceil(width/40)"
+          },
           "zindex": 0
         },
         {
@@ -318,7 +472,9 @@
           "grid": false,
           "title": "lc.mag",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {
+            "signal": "ceil(childHeight/40)"
+          },
           "zindex": 0
         }
       ]
@@ -328,32 +484,64 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "ra"},
-      "range": [0, {"signal": "width"}],
+      "domain": {
+        "data": "data_1",
+        "field": "ra"
+      },
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
       "zero": false,
       "nice": true
     },
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "dec"},
-      "range": [{"signal": "childHeight"}, 0],
+      "domain": {
+        "data": "data_1",
+        "field": "dec"
+      },
+      "range": [
+        {
+          "signal": "childHeight"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     },
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "lc\\.time"},
-      "range": [0, {"signal": "width"}],
+      "domain": {
+        "data": "data_2",
+        "field": "lc\\.time"
+      },
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
       "zero": false,
       "nice": true
     },
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "lc\\.mag"},
-      "range": [{"signal": "childHeight"}, 0],
+      "domain": {
+        "data": "data_2",
+        "field": "lc\\.mag"
+      },
+      "range": [
+        {
+          "signal": "childHeight"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     }

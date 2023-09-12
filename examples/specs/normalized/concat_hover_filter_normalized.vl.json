@@ -1,26 +1,56 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Drag out a rectangular brush to highlight points.",
-  "data": {"url": "data/cars.json"},
+  "data": {
+    "url": "data/cars.json"
+  },
   "hconcat": [
     {
       "layer": [
         {
           "params": [
-            {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
+            {
+              "name": "hover",
+              "select": {
+                "type": "point",
+                "on": "pointerover"
+              }
+            }
           ],
           "mark": "point",
           "encoding": {
-            "x": {"field": "Horsepower", "type": "quantitative"},
-            "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+            "x": {
+              "field": "Horsepower",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "Miles_per_Gallon",
+              "type": "quantitative"
+            }
           }
         },
         {
-          "mark": {"type": "point", "color": "goldenrod"},
-          "transform": [{"filter": {"param": "hover", "empty": false}}],
+          "mark": {
+            "type": "point",
+            "color": "goldenrod"
+          },
+          "transform": [
+            {
+              "filter": {
+                "param": "hover",
+                "empty": false
+              }
+            }
+          ],
           "encoding": {
-            "x": {"field": "Horsepower", "type": "quantitative"},
-            "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+            "x": {
+              "field": "Horsepower",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "Miles_per_Gallon",
+              "type": "quantitative"
+            }
           }
         }
       ]
@@ -29,20 +59,48 @@
       "layer": [
         {
           "params": [
-            {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
+            {
+              "name": "hover",
+              "select": {
+                "type": "point",
+                "on": "pointerover"
+              }
+            }
           ],
           "mark": "point",
           "encoding": {
-            "x": {"field": "Horsepower", "type": "quantitative"},
-            "y": {"field": "Acceleration", "type": "quantitative"}
+            "x": {
+              "field": "Horsepower",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "Acceleration",
+              "type": "quantitative"
+            }
           }
         },
         {
-          "mark": {"type": "point", "color": "goldenrod"},
-          "transform": [{"filter": {"param": "hover", "empty": false}}],
+          "mark": {
+            "type": "point",
+            "color": "goldenrod"
+          },
+          "transform": [
+            {
+              "filter": {
+                "param": "hover",
+                "empty": false
+              }
+            }
+          ],
           "encoding": {
-            "x": {"field": "Horsepower", "type": "quantitative"},
-            "y": {"field": "Acceleration", "type": "quantitative"}
+            "x": {
+              "field": "Horsepower",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "Acceleration",
+              "type": "quantitative"
+            }
           }
         }
       ]

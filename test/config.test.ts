@@ -124,12 +124,12 @@ describe('config', () => {
     });
 
     it('correctly merges object-valued configs', () => {
-      const cfg = initConfig({selection: {point: {on: 'mouseover'}, interval: {encodings: ['x']}}});
+      const cfg = initConfig({selection: {point: {on: 'pointerover'}, interval: {encodings: ['x']}}});
       expect(cfg.selection).toHaveProperty('point');
       expect(cfg.selection).toHaveProperty('interval');
 
       // Overrides correctly
-      expect(cfg.selection.point).toHaveProperty('on', 'mouseover');
+      expect(cfg.selection.point).toHaveProperty('on', 'pointerover');
       expect(cfg.selection.interval).toHaveProperty('encodings', ['x']);
 
       // Preserves defaults

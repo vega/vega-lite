@@ -8,14 +8,26 @@
   "data": [
     {
       "name": "hover_store",
-      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+      "transform": [
+        {
+          "type": "collect",
+          "sort": {
+            "field": "_vgsid_"
+          }
+        }
+      ]
     },
     {
       "name": "source_0",
       "url": "data/movies.json",
-      "format": {"type": "json"},
+      "format": {
+        "type": "json"
+      },
       "transform": [
-        {"type": "identifier", "as": "_vgsid_"},
+        {
+          "type": "identifier",
+          "as": "_vgsid_"
+        },
         {
           "type": "extent",
           "field": "IMDB Rating",
@@ -29,7 +41,9 @@
             "bin_maxbins_10_IMDB Rating_end"
           ],
           "signal": "layer_1_bin_maxbins_10_IMDB_Rating_bins",
-          "extent": {"signal": "layer_1_bin_maxbins_10_IMDB_Rating_extent"},
+          "extent": {
+            "signal": "layer_1_bin_maxbins_10_IMDB_Rating_extent"
+          },
           "maxbins": 10
         },
         {
@@ -38,9 +52,15 @@
             "bin_maxbins_10_IMDB Rating",
             "bin_maxbins_10_IMDB Rating_end"
           ],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
+          "ops": [
+            "count"
+          ],
+          "fields": [
+            null
+          ],
+          "as": [
+            "__count"
+          ]
         }
       ]
     },
@@ -48,7 +68,10 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "identifier", "as": "_vgsid_"},
+        {
+          "type": "identifier",
+          "as": "_vgsid_"
+        },
         {
           "type": "filter",
           "expr": "isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"])"
@@ -71,7 +94,10 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -82,11 +108,24 @@
       "name": "hover_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "pointerover"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"layer_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
-        {"events": [{"source": "view", "type": "mouseout"}], "update": "null"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "pointerout"
+            }
+          ],
+          "update": "null"
+        }
       ]
     },
     {
@@ -94,17 +133,32 @@
       "value": false,
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "pointerover"
+            }
+          ],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "view", "type": "mouseout"}], "update": "false"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "pointerout"
+            }
+          ],
+          "update": "false"
+        }
       ]
     },
     {
       "name": "hover_modify",
       "on": [
         {
-          "events": {"signal": "hover_tuple"},
+          "events": {
+            "signal": "hover_tuple"
+          },
           "update": "modify(\"hover_store\", hover_toggle ? null : hover_tuple, hover_toggle ? null : true, hover_toggle ? hover_tuple : null)"
         }
       ]
@@ -114,23 +168,33 @@
     {
       "name": "layer_0_marks",
       "type": "rect",
-      "style": ["bar"],
+      "style": [
+        "bar"
+      ],
       "interactive": true,
-      "from": {"data": "data_0"},
+      "from": {
+        "data": "data_0"
+      },
       "encode": {
         "update": {
           "tooltip": {
             "signal": "{\"IMDB Rating (binned)\": !isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
-          "fill": {"value": "#eee"},
+          "fill": {
+            "value": "#eee"
+          },
           "opacity": [
             {
               "test": "length(data(\"hover_store\")) && vlSelectionIdTest(\"hover_store\", datum)",
               "value": 0.5
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
-          "ariaRoleDescription": {"value": "bar"},
+          "ariaRoleDescription": {
+            "value": "bar"
+          },
           "description": {
             "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
@@ -148,21 +212,35 @@
               "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating\"])))) : -0.5)"
             }
           },
-          "y": {"value": 0},
-          "y2": {"field": {"group": "height"}}
+          "y": {
+            "value": 0
+          },
+          "y2": {
+            "field": {
+              "group": "height"
+            }
+          }
         }
       }
     },
     {
       "name": "layer_1_marks",
       "type": "rect",
-      "style": ["bar"],
+      "style": [
+        "bar"
+      ],
       "interactive": false,
-      "from": {"data": "data_1"},
+      "from": {
+        "data": "data_1"
+      },
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
-          "ariaRoleDescription": {"value": "bar"},
+          "fill": {
+            "value": "#4c78a8"
+          },
+          "ariaRoleDescription": {
+            "value": "bar"
+          },
           "description": {
             "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
@@ -180,8 +258,14 @@
               "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating_end\"]) - scale(\"x\", datum[\"bin_maxbins_10_IMDB Rating\"])))) : -0.5)"
             }
           },
-          "y": {"scale": "y", "field": "__count"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {
+            "scale": "y",
+            "field": "__count"
+          },
+          "y2": {
+            "scale": "y",
+            "value": 0
+          }
         }
       }
     }
@@ -193,15 +277,30 @@
       "domain": {
         "signal": "[layer_1_bin_maxbins_10_IMDB_Rating_bins.start, layer_1_bin_maxbins_10_IMDB_Rating_bins.stop]"
       },
-      "range": [0, {"signal": "width"}],
-      "bins": {"signal": "layer_1_bin_maxbins_10_IMDB_Rating_bins"},
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
+      "bins": {
+        "signal": "layer_1_bin_maxbins_10_IMDB_Rating_bins"
+      },
       "zero": false
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "__count"},
-      "range": [{"signal": "height"}, 0],
+      "domain": {
+        "data": "data_1",
+        "field": "__count"
+      },
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     }
@@ -212,7 +311,9 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -228,7 +329,9 @@
       "title": "IMDB Rating (binned)",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/10)"},
+      "tickCount": {
+        "signal": "ceil(width/10)"
+      },
       "zindex": 0
     },
     {
@@ -237,7 +340,9 @@
       "grid": false,
       "title": "Count of Records",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "zindex": 0
     }
   ]

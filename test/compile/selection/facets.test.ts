@@ -41,7 +41,7 @@ describe('Faceted Selections', () => {
       value: {},
       on: [
         {
-          events: [{source: 'scope', type: 'mousemove'}],
+          events: [{source: 'scope', type: 'pointermove'}],
           update: 'isTuple(facet) ? facet : group("cell").datum'
         }
       ]

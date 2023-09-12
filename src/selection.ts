@@ -169,7 +169,7 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
    * which must include a start and end event to trigger continuous panning.
    * Discrete panning (e.g., pressing the left/right arrow keys) will be supported in future versions.
    *
-   * __Default value:__ `true`, which corresponds to `[mousedown, window:mouseup] > window:mousemove!`.
+   * __Default value:__ `true`, which corresponds to `[pointerdown, window:pointerup] > window:pointermove!`.
    * This default allows users to clicks and drags within an interval selection to reposition it.
    *
    * __See also:__ [`translate` examples](https://vega.github.io/vega-lite/docs/selection.html#translate) in the documentation.
@@ -310,9 +310,9 @@ export const defaultConfig: SelectionConfig = {
     clear: 'dblclick'
   },
   interval: {
-    on: '[mousedown, window:mouseup] > window:mousemove!',
+    on: '[pointerdown, window:pointerup] > window:pointermove!',
     encodings: ['x', 'y'],
-    translate: '[mousedown, window:mouseup] > window:mousemove!',
+    translate: '[pointerdown, window:pointerup] > window:pointermove!',
     zoom: 'wheel!',
     mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
     resolve: 'global',

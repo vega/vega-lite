@@ -1,5 +1,7 @@
 {
-  "data": {"url": "data/cars.json"},
+  "data": {
+    "url": "data/cars.json"
+  },
   "align": "all",
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "columns": 3,
@@ -12,8 +14,8 @@
           "select": {
             "type": "interval",
             "resolve": "union",
-            "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-            "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![event.shiftKey]"
           }
         },
@@ -22,21 +24,30 @@
           "select": {
             "type": "interval",
             "resolve": "global",
-            "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![!event.shiftKey]"
           },
           "bind": "scales"
         }
       ],
       "encoding": {
-        "x": {"field": "Miles_per_Gallon", "type": "quantitative"},
+        "x": {
+          "field": "Miles_per_Gallon",
+          "type": "quantitative"
+        },
         "y": {
           "field": "Horsepower",
           "type": "quantitative",
-          "axis": {"minExtent": 30}
+          "axis": {
+            "minExtent": 30
+          }
         },
         "color": {
-          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "condition": {
+            "param": "brush",
+            "field": "Origin",
+            "type": "nominal"
+          },
           "value": "grey"
         }
       },
@@ -50,8 +61,8 @@
           "select": {
             "type": "interval",
             "resolve": "union",
-            "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-            "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![event.shiftKey]"
           }
         },
@@ -60,21 +71,30 @@
           "select": {
             "type": "interval",
             "resolve": "global",
-            "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![!event.shiftKey]"
           },
           "bind": "scales"
         }
       ],
       "encoding": {
-        "x": {"field": "Acceleration", "type": "quantitative"},
+        "x": {
+          "field": "Acceleration",
+          "type": "quantitative"
+        },
         "y": {
           "field": "Horsepower",
           "type": "quantitative",
-          "axis": {"minExtent": 30}
+          "axis": {
+            "minExtent": 30
+          }
         },
         "color": {
-          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "condition": {
+            "param": "brush",
+            "field": "Origin",
+            "type": "nominal"
+          },
           "value": "grey"
         }
       },
@@ -88,8 +108,8 @@
           "select": {
             "type": "interval",
             "resolve": "union",
-            "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-            "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![event.shiftKey]"
           }
         },
@@ -98,21 +118,30 @@
           "select": {
             "type": "interval",
             "resolve": "global",
-            "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![!event.shiftKey]"
           },
           "bind": "scales"
         }
       ],
       "encoding": {
-        "x": {"field": "Horsepower", "type": "quantitative"},
+        "x": {
+          "field": "Horsepower",
+          "type": "quantitative"
+        },
         "y": {
           "field": "Horsepower",
           "type": "quantitative",
-          "axis": {"minExtent": 30}
+          "axis": {
+            "minExtent": 30
+          }
         },
         "color": {
-          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "condition": {
+            "param": "brush",
+            "field": "Origin",
+            "type": "nominal"
+          },
           "value": "grey"
         }
       },
@@ -126,8 +155,8 @@
           "select": {
             "type": "interval",
             "resolve": "union",
-            "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-            "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![event.shiftKey]"
           }
         },
@@ -136,21 +165,30 @@
           "select": {
             "type": "interval",
             "resolve": "global",
-            "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![!event.shiftKey]"
           },
           "bind": "scales"
         }
       ],
       "encoding": {
-        "x": {"field": "Miles_per_Gallon", "type": "quantitative"},
+        "x": {
+          "field": "Miles_per_Gallon",
+          "type": "quantitative"
+        },
         "y": {
           "field": "Acceleration",
           "type": "quantitative",
-          "axis": {"minExtent": 30}
+          "axis": {
+            "minExtent": 30
+          }
         },
         "color": {
-          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "condition": {
+            "param": "brush",
+            "field": "Origin",
+            "type": "nominal"
+          },
           "value": "grey"
         }
       },
@@ -164,8 +202,8 @@
           "select": {
             "type": "interval",
             "resolve": "union",
-            "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-            "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![event.shiftKey]"
           }
         },
@@ -174,21 +212,30 @@
           "select": {
             "type": "interval",
             "resolve": "global",
-            "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![!event.shiftKey]"
           },
           "bind": "scales"
         }
       ],
       "encoding": {
-        "x": {"field": "Acceleration", "type": "quantitative"},
+        "x": {
+          "field": "Acceleration",
+          "type": "quantitative"
+        },
         "y": {
           "field": "Acceleration",
           "type": "quantitative",
-          "axis": {"minExtent": 30}
+          "axis": {
+            "minExtent": 30
+          }
         },
         "color": {
-          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "condition": {
+            "param": "brush",
+            "field": "Origin",
+            "type": "nominal"
+          },
           "value": "grey"
         }
       },
@@ -202,8 +249,8 @@
           "select": {
             "type": "interval",
             "resolve": "union",
-            "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-            "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![event.shiftKey]"
           }
         },
@@ -212,21 +259,30 @@
           "select": {
             "type": "interval",
             "resolve": "global",
-            "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![!event.shiftKey]"
           },
           "bind": "scales"
         }
       ],
       "encoding": {
-        "x": {"field": "Horsepower", "type": "quantitative"},
+        "x": {
+          "field": "Horsepower",
+          "type": "quantitative"
+        },
         "y": {
           "field": "Acceleration",
           "type": "quantitative",
-          "axis": {"minExtent": 30}
+          "axis": {
+            "minExtent": 30
+          }
         },
         "color": {
-          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "condition": {
+            "param": "brush",
+            "field": "Origin",
+            "type": "nominal"
+          },
           "value": "grey"
         }
       },
@@ -240,8 +296,8 @@
           "select": {
             "type": "interval",
             "resolve": "union",
-            "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-            "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![event.shiftKey]"
           }
         },
@@ -250,21 +306,30 @@
           "select": {
             "type": "interval",
             "resolve": "global",
-            "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![!event.shiftKey]"
           },
           "bind": "scales"
         }
       ],
       "encoding": {
-        "x": {"field": "Miles_per_Gallon", "type": "quantitative"},
+        "x": {
+          "field": "Miles_per_Gallon",
+          "type": "quantitative"
+        },
         "y": {
           "field": "Miles_per_Gallon",
           "type": "quantitative",
-          "axis": {"minExtent": 30}
+          "axis": {
+            "minExtent": 30
+          }
         },
         "color": {
-          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "condition": {
+            "param": "brush",
+            "field": "Origin",
+            "type": "nominal"
+          },
           "value": "grey"
         }
       },
@@ -278,8 +343,8 @@
           "select": {
             "type": "interval",
             "resolve": "union",
-            "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-            "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![event.shiftKey]"
           }
         },
@@ -288,21 +353,30 @@
           "select": {
             "type": "interval",
             "resolve": "global",
-            "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![!event.shiftKey]"
           },
           "bind": "scales"
         }
       ],
       "encoding": {
-        "x": {"field": "Acceleration", "type": "quantitative"},
+        "x": {
+          "field": "Acceleration",
+          "type": "quantitative"
+        },
         "y": {
           "field": "Miles_per_Gallon",
           "type": "quantitative",
-          "axis": {"minExtent": 30}
+          "axis": {
+            "minExtent": 30
+          }
         },
         "color": {
-          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "condition": {
+            "param": "brush",
+            "field": "Origin",
+            "type": "nominal"
+          },
           "value": "grey"
         }
       },
@@ -316,8 +390,8 @@
           "select": {
             "type": "interval",
             "resolve": "union",
-            "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-            "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![event.shiftKey]"
           }
         },
@@ -326,21 +400,30 @@
           "select": {
             "type": "interval",
             "resolve": "global",
-            "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
             "zoom": "wheel![!event.shiftKey]"
           },
           "bind": "scales"
         }
       ],
       "encoding": {
-        "x": {"field": "Horsepower", "type": "quantitative"},
+        "x": {
+          "field": "Horsepower",
+          "type": "quantitative"
+        },
         "y": {
           "field": "Miles_per_Gallon",
           "type": "quantitative",
-          "axis": {"minExtent": 30}
+          "axis": {
+            "minExtent": 30
+          }
         },
         "color": {
-          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "condition": {
+            "param": "brush",
+            "field": "Origin",
+            "type": "nominal"
+          },
           "value": "grey"
         }
       },

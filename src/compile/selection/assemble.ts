@@ -72,7 +72,7 @@ export function assembleFacetSignals(model: FacetModel, signals: Signal[]) {
       value: {},
       on: [
         {
-          events: parseSelector('mousemove', 'scope'),
+          events: parseSelector('pointermove', 'scope'),
           update: `isTuple(facet) ? facet : group(${name}).datum`
         }
       ]
@@ -111,7 +111,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
       signals.unshift({
         name: 'unit',
         value: {},
-        on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
+        on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}]
       });
     }
   }

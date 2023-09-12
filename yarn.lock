@@ -8738,7 +8738,6 @@ vega-embed@^6.22.1:
     vega-schema-url-parser "^2.2.0"
     vega-themes "^2.14.0"
     vega-tooltip "^0.32.0"
-    yallist "*"
 
 vega-encode@~4.9.2:
   version "4.9.2"
@@ -8967,7 +8966,7 @@ vega-transforms@~4.10.2:
 vega-typings@~0.24.2:
   version "0.24.2"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.24.2.tgz#7e1e87557a9bf09e934687197c5e964bd9b416ca"
-  integrity sha512-WNw6tDxwMsynQ9osJb3RZi3g8GZruxVgXfe8N7nbqvNOgDQkUuVjqTZiwGg5kqjmLqx09lRRlskgp/ov7lEGeg==
+  integrity "sha1-f6k+HszPLqHnEQJO9Fqj74S5rRw= sha512-fW02GElYoqweCCaPqH6iH44UZnzXiX9kbm1qyecjU3k5s0vtufLI7Yuz/a/uL37mEAqTMQplBBAlk0T9e2e1Dw=="
   dependencies:
     "@types/geojson" "7946.0.4"
     vega-event-selector "^3.0.1"

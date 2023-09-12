@@ -5,17 +5,29 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "brush_store"},
+    {
+      "name": "brush_store"
+    },
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
-      "format": {"type": "csv", "parse": {"date": "date"}},
+      "format": {
+        "type": "csv",
+        "parse": {
+          "date": "date"
+        }
+      },
       "transform": [
         {
           "field": "date",
           "type": "timeunit",
-          "units": ["month"],
-          "as": ["month_date", "month_date_end"]
+          "units": [
+            "month"
+          ],
+          "as": [
+            "month_date",
+            "month_date_end"
+          ]
         }
       ]
     },
@@ -30,9 +42,15 @@
         {
           "type": "aggregate",
           "groupby": [],
-          "ops": ["mean"],
-          "fields": ["precipitation"],
-          "as": ["mean_precipitation"]
+          "ops": [
+            "mean"
+          ],
+          "fields": [
+            "precipitation"
+          ],
+          "as": [
+            "mean_precipitation"
+          ]
         },
         {
           "type": "filter",
@@ -46,10 +64,18 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["month_date"],
-          "ops": ["mean"],
-          "fields": ["precipitation"],
-          "as": ["mean_precipitation"]
+          "groupby": [
+            "month_date"
+          ],
+          "ops": [
+            "mean"
+          ],
+          "fields": [
+            "precipitation"
+          ],
+          "as": [
+            "mean_precipitation"
+          ]
         },
         {
           "type": "filter",
@@ -59,7 +85,10 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 20},
+    {
+      "name": "x_step",
+      "value": 20
+    },
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
@@ -68,7 +97,10 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -82,7 +114,7 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousedown",
+            "type": "pointerdown",
             "filter": [
               "!event.item || event.item.mark.name !== \"brush_brush\""
             ]
@@ -92,32 +124,49 @@
         {
           "events": {
             "source": "window",
-            "type": "mousemove",
+            "type": "pointermove",
             "consume": true,
             "between": [
               {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
               },
-              {"source": "window", "type": "mouseup"}
+              {
+                "source": "window",
+                "type": "pointerup"
+              }
             ]
           },
           "update": "[brush_x[0], clamp(x(unit), 0, width)]"
         },
-        {"events": {"signal": "brush_scale_trigger"}, "update": "[0, 0]"},
         {
-          "events": [{"source": "view", "type": "dblclick"}],
+          "events": {
+            "signal": "brush_scale_trigger"
+          },
           "update": "[0, 0]"
         },
         {
-          "events": {"signal": "brush_translate_delta"},
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "[0, 0]"
+        },
+        {
+          "events": {
+            "signal": "brush_translate_delta"
+          },
           "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
         },
         {
-          "events": {"signal": "brush_zoom_delta"},
+          "events": {
+            "signal": "brush_zoom_delta"
+          },
           "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
         }
       ]
@@ -126,7 +175,9 @@
       "name": "brush_month_date",
       "on": [
         {
-          "events": {"signal": "brush_x"},
+          "events": {
+            "signal": "brush_x"
+          },
           "update": "brush_x[0] === brush_x[1] ? null : invert(\"x\", brush_x)"
         }
       ]
@@ -136,7 +187,11 @@
       "value": {},
       "on": [
         {
-          "events": [{"scale": "x"}],
+          "events": [
+            {
+              "scale": "x"
+            }
+          ],
           "update": "(!isArray(brush_month_date) || (invert(\"x\", brush_x)[0] === brush_month_date[0] && invert(\"x\", brush_x)[1] === brush_month_date[1])) ? brush_scale_trigger : {}"
         }
       ]
@@ -145,14 +200,24 @@
       "name": "brush_tuple",
       "on": [
         {
-          "events": [{"signal": "brush_month_date"}],
+          "events": [
+            {
+              "signal": "brush_month_date"
+            }
+          ],
           "update": "brush_month_date ? {unit: \"layer_0\", fields: brush_tuple_fields, values: [brush_month_date]} : null"
         }
       ]
     },
     {
       "name": "brush_tuple_fields",
-      "value": [{"field": "month_date", "channel": "x", "type": "E"}]
+      "value": [
+        {
+          "field": "month_date",
+          "channel": "x",
+          "type": "E"
+        }
+      ]
     },
     {
       "name": "brush_translate_anchor",
@@ -160,7 +225,11 @@
       "on": [
         {
           "events": [
-            {"source": "scope", "type": "mousedown", "markname": "brush_brush"}
+            {
+              "source": "scope",
+              "type": "pointerdown",
+              "markname": "brush_brush"
+            }
           ],
           "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
         }
@@ -174,15 +243,18 @@
           "events": [
             {
               "source": "window",
-              "type": "mousemove",
+              "type": "pointermove",
               "consume": true,
               "between": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
+                  "type": "pointerdown",
                   "markname": "brush_brush"
                 },
-                {"source": "window", "type": "mouseup"}
+                {
+                  "source": "window",
+                  "type": "pointerup"
+                }
               ]
             }
           ],
@@ -227,7 +299,9 @@
       "name": "brush_modify",
       "on": [
         {
-          "events": {"signal": "brush_tuple"},
+          "events": {
+            "signal": "brush_tuple"
+          },
           "update": "modify(\"brush_store\", brush_tuple, true)"
         }
       ]
@@ -239,35 +313,52 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "#333"}, "fillOpacity": {"value": 0.125}},
+        "enter": {
+          "fill": {
+            "value": "#333"
+          },
+          "fillOpacity": {
+            "value": 0.125
+          }
+        },
         "update": {
           "x": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
               "signal": "brush_x[0]"
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "y": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
               "value": 0
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "x2": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
               "signal": "brush_x[1]"
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "y2": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
-              "field": {"group": "height"}
+              "field": {
+                "group": "height"
+              }
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ]
         }
       }
@@ -275,46 +366,84 @@
     {
       "name": "layer_0_marks",
       "type": "rect",
-      "style": ["bar"],
+      "style": [
+        "bar"
+      ],
       "interactive": true,
-      "from": {"data": "data_1"},
+      "from": {
+        "data": "data_1"
+      },
       "encode": {
         "update": {
-          "fill": {"value": "#4c78a8"},
+          "fill": {
+            "value": "#4c78a8"
+          },
           "opacity": [
             {
               "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)",
               "value": 1
             },
-            {"value": 0.7}
+            {
+              "value": 0.7
+            }
           ],
-          "ariaRoleDescription": {"value": "bar"},
+          "ariaRoleDescription": {
+            "value": "bar"
+          },
           "description": {
             "signal": "\"date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of precipitation: \" + (format(datum[\"mean_precipitation\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "month_date"},
-          "width": {"signal": "max(0.25, bandwidth('x'))"},
-          "y": {"scale": "y", "field": "mean_precipitation"},
-          "y2": {"scale": "y", "value": 0}
+          "x": {
+            "scale": "x",
+            "field": "month_date"
+          },
+          "width": {
+            "signal": "max(0.25, bandwidth('x'))"
+          },
+          "y": {
+            "scale": "y",
+            "field": "mean_precipitation"
+          },
+          "y2": {
+            "scale": "y",
+            "value": 0
+          }
         }
       }
     },
     {
       "name": "layer_1_marks",
       "type": "rule",
-      "style": ["rule"],
+      "style": [
+        "rule"
+      ],
       "interactive": false,
-      "from": {"data": "data_0"},
+      "from": {
+        "data": "data_0"
+      },
       "encode": {
         "update": {
-          "stroke": {"value": "firebrick"},
+          "stroke": {
+            "value": "firebrick"
+          },
           "description": {
             "signal": "\"Mean of precipitation: \" + (format(datum[\"mean_precipitation\"], \"\"))"
           },
-          "x": {"field": {"group": "width"}},
-          "x2": {"value": 0},
-          "y": {"scale": "y", "field": "mean_precipitation"},
-          "strokeWidth": {"value": 3}
+          "x": {
+            "field": {
+              "group": "width"
+            }
+          },
+          "x2": {
+            "value": 0
+          },
+          "y": {
+            "scale": "y",
+            "field": "mean_precipitation"
+          },
+          "strokeWidth": {
+            "value": 3
+          }
         }
       }
     },
@@ -323,39 +452,58 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "transparent"}},
+        "enter": {
+          "fill": {
+            "value": "transparent"
+          }
+        },
         "update": {
           "x": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
               "signal": "brush_x[0]"
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "y": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
               "value": 0
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "x2": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
               "signal": "brush_x[1]"
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "y2": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_0\"",
-              "field": {"group": "height"}
+              "field": {
+                "group": "height"
+              }
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "stroke": [
-            {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
-            {"value": null}
+            {
+              "test": "brush_x[0] !== brush_x[1]",
+              "value": "white"
+            },
+            {
+              "value": null
+            }
           ]
         }
       }
@@ -365,8 +513,16 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "data_1", "field": "month_date", "sort": true},
-      "range": {"step": {"signal": "x_step"}},
+      "domain": {
+        "data": "data_1",
+        "field": "month_date",
+        "sort": true
+      },
+      "range": {
+        "step": {
+          "signal": "x_step"
+        }
+      },
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     },
@@ -375,11 +531,22 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "mean_precipitation"},
-          {"data": "data_0", "field": "mean_precipitation"}
+          {
+            "data": "data_1",
+            "field": "mean_precipitation"
+          },
+          {
+            "data": "data_0",
+            "field": "mean_precipitation"
+          }
         ]
       },
-      "range": [{"signal": "height"}, 0],
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     }
@@ -390,7 +557,9 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -420,7 +589,9 @@
       "grid": false,
       "title": "Mean of precipitation",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "zindex": 0
     }
   ]

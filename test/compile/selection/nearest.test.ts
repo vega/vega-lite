@@ -56,11 +56,11 @@ function getModel(markType: any) {
     },
     {
       name: 'ten',
-      select: {type: 'point', nearest: true, on: 'mouseover'}
+      select: {type: 'point', nearest: true, on: 'pointerover'}
     },
     {
       name: 'eleven',
-      select: {type: 'point', nearest: true, on: 'mouseover, dblclick'}
+      select: {type: 'point', nearest: true, on: 'pointerover, dblclick'}
     }
   ]);
   model.parseMarkGroup();
@@ -111,9 +111,9 @@ describe('Nearest Selection Transform', () => {
   it('scopes events to the voronoi mark', () => {
     const selCmpts = getModel('circle').component.selection;
     expect(selCmpts['one'].events).toEqual([{source: 'scope', type: 'click', markname: 'voronoi'}]);
-    expect(selCmpts['ten'].events).toEqual([{source: 'scope', type: 'mouseover', markname: 'voronoi'}]);
+    expect(selCmpts['ten'].events).toEqual([{source: 'scope', type: 'pointerover', markname: 'voronoi'}]);
     expect(selCmpts['eleven'].events).toEqual([
-      {source: 'scope', type: 'mouseover', markname: 'voronoi'},
+      {source: 'scope', type: 'pointerover', markname: 'voronoi'},
       {source: 'scope', type: 'dblclick', markname: 'voronoi'}
     ]);
   });

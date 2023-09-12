@@ -6,27 +6,73 @@
   "data": [
     {
       "name": "highlight_store",
-      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+      "transform": [
+        {
+          "type": "collect",
+          "sort": {
+            "field": "_vgsid_"
+          }
+        }
+      ]
     },
     {
       "name": "source_0",
       "values": [
-        {"actual": "A", "predicted": "A", "count": 13},
-        {"actual": "A", "predicted": "B", "count": 0},
-        {"actual": "A", "predicted": "C", "count": 0},
-        {"actual": "B", "predicted": "A", "count": 0},
-        {"actual": "B", "predicted": "B", "count": 10},
-        {"actual": "B", "predicted": "C", "count": 6},
-        {"actual": "C", "predicted": "A", "count": 0},
-        {"actual": "C", "predicted": "B", "count": 0},
-        {"actual": "C", "predicted": "C", "count": 9}
+        {
+          "actual": "A",
+          "predicted": "A",
+          "count": 13
+        },
+        {
+          "actual": "A",
+          "predicted": "B",
+          "count": 0
+        },
+        {
+          "actual": "A",
+          "predicted": "C",
+          "count": 0
+        },
+        {
+          "actual": "B",
+          "predicted": "A",
+          "count": 0
+        },
+        {
+          "actual": "B",
+          "predicted": "B",
+          "count": 10
+        },
+        {
+          "actual": "B",
+          "predicted": "C",
+          "count": 6
+        },
+        {
+          "actual": "C",
+          "predicted": "A",
+          "count": 0
+        },
+        {
+          "actual": "C",
+          "predicted": "B",
+          "count": 0
+        },
+        {
+          "actual": "C",
+          "predicted": "C",
+          "count": 9
+        }
       ]
     },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "identifier", "as": "_vgsid_"},
+        {
+          "type": "identifier",
+          "as": "_vgsid_"
+        },
         {
           "type": "filter",
           "expr": "isValid(datum[\"count\"]) && isFinite(+datum[\"count\"])"
@@ -35,9 +81,18 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 40},
-    {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"},
-    {"name": "y_step", "value": 40},
+    {
+      "name": "x_step",
+      "value": 40
+    },
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0, 0) * x_step"
+    },
+    {
+      "name": "y_step",
+      "value": 40
+    },
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 0, 0) * y_step"
@@ -46,7 +101,10 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -57,11 +115,24 @@
       "name": "highlight_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "click"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "click"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "null"
+        }
       ]
     },
     {
@@ -69,17 +140,32 @@
       "value": false,
       "on": [
         {
-          "events": [{"source": "scope", "type": "click"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "click"
+            }
+          ],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "false"
+        }
       ]
     },
     {
       "name": "highlight_modify",
       "on": [
         {
-          "events": {"signal": "highlight_tuple"},
+          "events": {
+            "signal": "highlight_tuple"
+          },
           "update": "modify(\"highlight_store\", highlight_toggle ? null : highlight_tuple, highlight_toggle ? null : true, highlight_toggle ? highlight_tuple : null)"
         }
       ]
@@ -89,41 +175,66 @@
     {
       "name": "marks",
       "type": "rect",
-      "style": ["rect"],
+      "style": [
+        "rect"
+      ],
       "interactive": true,
-      "from": {"data": "data_0"},
+      "from": {
+        "data": "data_0"
+      },
       "encode": {
         "update": {
-          "strokeWidth": {"value": 2},
-          "fill": {"scale": "fill", "field": "count"},
+          "strokeWidth": {
+            "value": 2
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "count"
+          },
           "stroke": [
             {
               "test": "length(data(\"highlight_store\")) && vlSelectionIdTest(\"highlight_store\", datum)",
               "value": "black"
             },
-            {"value": null}
+            {
+              "value": null
+            }
           ],
           "opacity": [
             {
               "test": "!length(data(\"highlight_store\")) || vlSelectionIdTest(\"highlight_store\", datum)",
               "value": 1
             },
-            {"value": 0.5}
+            {
+              "value": 0.5
+            }
           ],
           "zindex": [
             {
               "test": "!length(data(\"highlight_store\")) || vlSelectionIdTest(\"highlight_store\", datum)",
               "value": 1
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "description": {
             "signal": "\"predicted: \" + (isValid(datum[\"predicted\"]) ? datum[\"predicted\"] : \"\"+datum[\"predicted\"]) + \"; actual: \" + (isValid(datum[\"actual\"]) ? datum[\"actual\"] : \"\"+datum[\"actual\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "predicted"},
-          "width": {"signal": "max(0.25, bandwidth('x'))"},
-          "y": {"scale": "y", "field": "actual"},
-          "height": {"signal": "max(0.25, bandwidth('y'))"}
+          "x": {
+            "scale": "x",
+            "field": "predicted"
+          },
+          "width": {
+            "signal": "max(0.25, bandwidth('x'))"
+          },
+          "y": {
+            "scale": "y",
+            "field": "actual"
+          },
+          "height": {
+            "signal": "max(0.25, bandwidth('y'))"
+          }
         }
       }
     }
@@ -132,23 +243,42 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "data_0", "field": "predicted", "sort": true},
-      "range": {"step": {"signal": "x_step"}},
+      "domain": {
+        "data": "data_0",
+        "field": "predicted",
+        "sort": true
+      },
+      "range": {
+        "step": {
+          "signal": "x_step"
+        }
+      },
       "paddingInner": 0,
       "paddingOuter": 0
     },
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "data_0", "field": "actual", "sort": true},
-      "range": {"step": {"signal": "y_step"}},
+      "domain": {
+        "data": "data_0",
+        "field": "actual",
+        "sort": true
+      },
+      "range": {
+        "step": {
+          "signal": "y_step"
+        }
+      },
       "paddingInner": 0,
       "paddingOuter": 0
     },
     {
       "name": "fill",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "count"},
+      "domain": {
+        "data": "data_0",
+        "field": "count"
+      },
       "range": "heatmap",
       "interpolate": "hcl",
       "zero": false
@@ -176,13 +306,29 @@
   "legends": [
     {
       "fill": "fill",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "gradientLength": {
+        "signal": "clamp(height, 64, 200)"
+      },
       "title": "count",
-      "encode": {"gradient": {"update": {"opacity": {"value": 1}}}}
+      "encode": {
+        "gradient": {
+          "update": {
+            "opacity": {
+              "value": 1
+            }
+          }
+        }
+      }
     }
   ],
   "config": {
-    "range": {"ramp": {"scheme": "yellowgreenblue"}},
-    "axis": {"domain": false}
+    "range": {
+      "ramp": {
+        "scheme": "yellowgreenblue"
+      }
+    },
+    "axis": {
+      "domain": false
+    }
   }
 }

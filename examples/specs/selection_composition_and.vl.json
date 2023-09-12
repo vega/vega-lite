@@ -1,35 +1,53 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {"url": "data/cars.json"},
+  "data": {
+    "url": "data/cars.json"
+  },
   "params": [
     {
       "name": "alex",
       "select": {
         "type": "interval",
-        "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
-        "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+        "on": "[pointerdown[!event.shiftKey], pointerup] > pointermove",
+        "translate": "[pointerdown[!event.shiftKey], pointerup] > pointermove"
       }
     },
     {
       "name": "morgan",
       "select": {
         "type": "interval",
-        "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-        "translate": "[mousedown[event.shiftKey], mouseup] > mousemove",
-        "mark": {"fill": "#fdbb84", "fillOpacity": 0.5, "stroke": "#e34a33"}
+        "on": "[pointerdown[event.shiftKey], pointerup] > pointermove",
+        "translate": "[pointerdown[event.shiftKey], pointerup] > pointermove",
+        "mark": {
+          "fill": "#fdbb84",
+          "fillOpacity": 0.5,
+          "stroke": "#e34a33"
+        }
       }
     }
   ],
   "mark": "rect",
   "encoding": {
-    "y": {"field": "Origin", "type": "ordinal"},
-    "x": {"field": "Cylinders", "type": "ordinal"},
+    "y": {
+      "field": "Origin",
+      "type": "ordinal"
+    },
+    "x": {
+      "field": "Cylinders",
+      "type": "ordinal"
+    },
     "color": {
       "condition": {
-        "test": {"and": [
-          {"param": "alex"},
-          {"param": "morgan"}
-        ]},
+        "test": {
+          "and": [
+            {
+              "param": "alex"
+            },
+            {
+              "param": "morgan"
+            }
+          ]
+        },
         "aggregate": "count"
       },
       "value": "grey"

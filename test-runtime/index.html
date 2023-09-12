@@ -1,111 +1,114 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src="/node_modules/vega/build/vega.js"></script>
-    <script src="/build/vega-lite.js"></script>
-  </head>
-  <body>
-    <div id="vis"></div>
 
-    <script type="text/javascript">
-      // global
-      var view = null;
+<head>
+  <script src="/node_modules/vega/build/vega.js"></script>
+  <script src="/build/vega-lite.js"></script>
+</head>
 
-      function embed(vlSpec) {
-        if (view) {
-          view.finalize();
-        }
+<body>
+  <div id="vis"></div>
 
-        const vgSpec = vegaLite.compile(vlSpec).spec;
-        view = new vega.View(vega.parse(vgSpec))
-          .renderer('svg')
-          .initialize('#vis')
-          .run();
+  <script type="text/javascript">
+    // global
+    var view = null;
+
+    function embed(vlSpec) {
+      if (view) {
+        view.finalize();
       }
 
-      const winSrc = ['mousemove', 'mouseup'];
-      function mouseEvt(type, target, opts) {
-        opts.bubbles = true;
-        target = winSrc.indexOf(type) < 0 ? target : window;
+      const vgSpec = vegaLite.compile(vlSpec).spec;
+      view = new vega.View(vega.parse(vgSpec))
+        .renderer('svg')
+        .initialize('#vis')
+        .run();
+    }
 
-        target.dispatchEvent(
-          new MouseEvent('mousemove', {...opts, clientX: opts.clientX - 5, clientY: opts.clientY - 5})
-        );
+    const winSrc = ['pointermove', 'pointerup'];
+    function pointerEvt(type, target, opts) {
+      opts.bubbles = true;
+      target = winSrc.indexOf(type) < 0 ? target : window;
 
-        target.dispatchEvent(new MouseEvent('mousemove', opts));
+      target.dispatchEvent(
+        new PointerEvent('pointermove', { ...opts, clientX: opts.clientX - 5, clientY: opts.clientY - 5 })
+      );
 
-        target.dispatchEvent(type === 'wheel' ? new WheelEvent('wheel', opts) : new MouseEvent(type, opts));
+      target.dispatchEvent(new PointerEvent('pointermove', opts));
 
-        target.dispatchEvent(
-          new MouseEvent('mousemove', {...opts, clientX: opts.clientX + 5, clientY: opts.clientY + 5})
-        );
-      }
+      target.dispatchEvent(type === 'wheel' ? new WheelEvent('wheel', opts) : new PointerEvent(type, opts));
 
-      function mark(id, parent) {
-        return document.querySelector((parent ? `g.${parent} ` : '') + `g.mark-symbol.role-mark path:nth-child(${id})`);
-      }
+      target.dispatchEvent(
+        new PointerEvent('pointermove', { ...opts, clientX: opts.clientX + 5, clientY: opts.clientY + 5 })
+      );
+    }
 
-      function coords(el) {
-        const rect = el.getBoundingClientRect();
-        return [Math.ceil(rect.left + rect.width / 2), Math.ceil(rect.top + rect.height / 2)];
-      }
+    function mark(id, parent) {
+      return document.querySelector((parent ? `g.${parent} ` : '') + `g.mark-symbol.role-mark path:nth-child(${id})`);
+    }
 
-      function brushOrEl(el, parent, _) {
-        return !_ ? el : document.querySelector((parent ? `g.${parent} ` : '') + 'g.sel_brush > path');
-      }
+    function coords(el) {
+      const rect = el.getBoundingClientRect();
+      return [Math.ceil(rect.left + rect.width / 2), Math.ceil(rect.top + rect.height / 2)];
+    }
 
-      function click(el, evt) {
-        mouseEvt('mousedown', el, evt);
-        mouseEvt('mouseup', window, evt);
-        mouseEvt('click', el, evt);
-      }
+    function brushOrEl(el, parent, _) {
+      return !_ ? el : document.querySelector((parent ? `g.${parent} ` : '') + 'g.sel_brush > path');
+    }
 
-      async function brush(id0, id1, parent, targetBrush) {
-        const el0 = mark(id0, parent);
-        const el1 = mark(id1, parent);
-        const [mdX, mdY] = coords(el0);
-        const [muX, muY] = coords(el1);
-        mouseEvt('mousedown', brushOrEl(el0, parent, targetBrush), {clientX: mdX, clientY: mdY});
-        mouseEvt('mouseup', window, {clientX: muX, clientY: muY});
-        return (await view.runAsync()).data('sel_store');
-      }
+    function click(el, evt) {
+      pointerEvt('pointerdown', el, evt);
+      pointerEvt('pointerup', window, evt);
+      pointerEvt('click', el, evt);
+    }
 
-      async function pt(id, parent, shiftKey) {
-        const el = mark(id, parent);
-        const [clientX, clientY] = coords(el);
-        click(el, {clientX, clientY, shiftKey});
-        return (await view.runAsync()).data('sel_store');
-      }
+    async function brush(id0, id1, parent, targetBrush) {
+      const el0 = mark(id0, parent);
+      const el1 = mark(id1, parent);
+      const [mdX, mdY] = coords(el0);
+      const [muX, muY] = coords(el1);
+      pointerEvt('pointerdown', brushOrEl(el0, parent, targetBrush), { clientX: mdX, clientY: mdY });
+      pointerEvt('pointerup', window, { clientX: muX, clientY: muY });
+      return (await view.runAsync()).data('sel_store');
+    }
 
-      async function clear(id, parent, shiftKey) {
-        const bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
-        const el = mark(id, parent);
-        let [clientX, clientY] = coords(el);
-        clientX += 10;
-        clientY -= 10;
-        click(bg, {clientX, clientY, shiftKey});
-        return (await view.runAsync()).data('sel_store');
-      }
+    async function pt(id, parent, shiftKey) {
+      const el = mark(id, parent);
+      const [clientX, clientY] = coords(el);
+      click(el, { clientX, clientY, shiftKey });
+      return (await view.runAsync()).data('sel_store');
+    }
 
-      async function zoom(id, delta, parent, targetBrush) {
-        const el = mark(id, parent);
-        const [clientX, clientY] = coords(el);
-        mouseEvt('wheel', brushOrEl(el, parent, targetBrush), {
-          clientX,
-          clientY,
-          deltaX: delta,
-          deltaY: delta,
-          deltaZ: delta
-        });
-        mouseEvt('wheel', brushOrEl(el, parent, targetBrush), {
-          clientX,
-          clientY,
-          deltaX: Math.sign(delta),
-          deltaY: Math.sign(delta),
-          deltaZ: Math.sign(delta)
-        });
-        return (await view.runAsync()).data('sel_store');
-      }
-    </script>
-  </body>
+    async function clear(id, parent, shiftKey) {
+      const bg = document.querySelector((parent ? `g.${parent} ` : '') + 'path.background');
+      const el = mark(id, parent);
+      let [clientX, clientY] = coords(el);
+      clientX += 10;
+      clientY -= 10;
+      click(bg, { clientX, clientY, shiftKey });
+      return (await view.runAsync()).data('sel_store');
+    }
+
+    async function zoom(id, delta, parent, targetBrush) {
+      const el = mark(id, parent);
+      const [clientX, clientY] = coords(el);
+      pointerEvt('wheel', brushOrEl(el, parent, targetBrush), {
+        clientX,
+        clientY,
+        deltaX: delta,
+        deltaY: delta,
+        deltaZ: delta
+      });
+      pointerEvt('wheel', brushOrEl(el, parent, targetBrush), {
+        clientX,
+        clientY,
+        deltaX: Math.sign(delta),
+        deltaY: Math.sign(delta),
+        deltaZ: Math.sign(delta)
+      });
+      return (await view.runAsync()).data('sel_store');
+    }
+  </script>
+</body>
+
 </html>

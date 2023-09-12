@@ -3,8 +3,16 @@
   "background": "white",
   "padding": 5,
   "data": [
-    {"name": "brush_store"},
-    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "brush_store"
+    },
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json"
+      }
+    },
     {
       "name": "data_0",
       "source": "source_0",
@@ -21,10 +29,18 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["Name"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
+          "groupby": [
+            "Name"
+          ],
+          "ops": [
+            "count"
+          ],
+          "fields": [
+            null
+          ],
+          "as": [
+            "__count"
+          ]
         }
       ]
     },
@@ -34,28 +50,51 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["Name"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
+          "groupby": [
+            "Name"
+          ],
+          "ops": [
+            "count"
+          ],
+          "fields": [
+            null
+          ],
+          "as": [
+            "__count"
+          ]
         }
       ]
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 200},
-    {"name": "concat_0_y_step", "value": 20},
+    {
+      "name": "concat_0_width",
+      "value": 200
+    },
+    {
+      "name": "concat_0_y_step",
+      "value": 20
+    },
     {
       "name": "concat_0_height",
       "update": "bandspace(domain('concat_0_y').length, 0.1, 0.05) * concat_0_y_step"
     },
-    {"name": "concat_1_width", "value": 50},
-    {"name": "concat_1_height", "value": 200},
+    {
+      "name": "concat_1_width",
+      "value": 50
+    },
+    {
+      "name": "concat_1_height",
+      "value": 200
+    },
     {
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -63,7 +102,11 @@
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
     }
   ],
-  "layout": {"padding": 20, "bounds": "full", "align": "each"},
+  "layout": {
+    "padding": 20,
+    "bounds": "full",
+    "align": "each"
+  },
   "marks": [
     {
       "type": "group",
@@ -71,28 +114,51 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "concat_0_width"},
-          "height": {"signal": "concat_0_height"}
+          "width": {
+            "signal": "concat_0_width"
+          },
+          "height": {
+            "signal": "concat_0_height"
+          }
         }
       },
       "marks": [
         {
           "name": "concat_0_marks",
           "type": "rect",
-          "style": ["bar"],
+          "style": [
+            "bar"
+          ],
           "interactive": false,
-          "from": {"data": "data_1"},
+          "from": {
+            "data": "data_1"
+          },
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
-              "ariaRoleDescription": {"value": "bar"},
+              "fill": {
+                "value": "#4c78a8"
+              },
+              "ariaRoleDescription": {
+                "value": "bar"
+              },
               "description": {
                 "signal": "\"Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Name: \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"])"
               },
-              "x": {"scale": "concat_0_x", "field": "__count"},
-              "x2": {"scale": "concat_0_x", "value": 0},
-              "y": {"scale": "concat_0_y", "field": "Name"},
-              "height": {"signal": "max(0.25, bandwidth('concat_0_y'))"}
+              "x": {
+                "scale": "concat_0_x",
+                "field": "__count"
+              },
+              "x2": {
+                "scale": "concat_0_x",
+                "value": 0
+              },
+              "y": {
+                "scale": "concat_0_y",
+                "field": "Name"
+              },
+              "height": {
+                "signal": "max(0.25, bandwidth('concat_0_y'))"
+              }
             }
           }
         }
@@ -103,7 +169,9 @@
           "orient": "top",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {
+            "signal": "ceil(concat_0_width/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -119,7 +187,9 @@
           "title": "Count of Records",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {
+            "signal": "ceil(concat_0_width/40)"
+          },
           "zindex": 0
         },
         {
@@ -137,8 +207,12 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "concat_1_width"},
-          "height": {"signal": "concat_1_height"}
+          "width": {
+            "signal": "concat_1_width"
+          },
+          "height": {
+            "signal": "concat_1_height"
+          }
         }
       },
       "signals": [
@@ -149,7 +223,7 @@
             {
               "events": {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
@@ -159,32 +233,49 @@
             {
               "events": {
                 "source": "window",
-                "type": "mousemove",
+                "type": "pointermove",
                 "consume": true,
                 "between": [
                   {
                     "source": "scope",
-                    "type": "mousedown",
+                    "type": "pointerdown",
                     "filter": [
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {"source": "window", "type": "mouseup"}
+                  {
+                    "source": "window",
+                    "type": "pointerup"
+                  }
                 ]
               },
               "update": "[brush_y[0], clamp(y(unit), 0, concat_1_height)]"
             },
-            {"events": {"signal": "brush_scale_trigger"}, "update": "[0, 0]"},
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": {
+                "signal": "brush_scale_trigger"
+              },
               "update": "[0, 0]"
             },
             {
-              "events": {"signal": "brush_translate_delta"},
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
+              "update": "[0, 0]"
+            },
+            {
+              "events": {
+                "signal": "brush_translate_delta"
+              },
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, concat_1_height)"
             },
             {
-              "events": {"signal": "brush_zoom_delta"},
+              "events": {
+                "signal": "brush_zoom_delta"
+              },
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_1_height)"
             }
           ]
@@ -193,7 +284,9 @@
           "name": "brush_Name",
           "on": [
             {
-              "events": {"signal": "brush_y"},
+              "events": {
+                "signal": "brush_y"
+              },
               "update": "brush_y[0] === brush_y[1] ? null : invert(\"concat_1_y\", brush_y)"
             }
           ]
@@ -203,7 +296,11 @@
           "value": {},
           "on": [
             {
-              "events": [{"scale": "concat_1_y"}],
+              "events": [
+                {
+                  "scale": "concat_1_y"
+                }
+              ],
               "update": "(!isArray(brush_Name) || (invert(\"concat_1_y\", brush_y)[0] === brush_Name[0] && invert(\"concat_1_y\", brush_y)[1] === brush_Name[1])) ? brush_scale_trigger : {}"
             }
           ]
@@ -212,14 +309,24 @@
           "name": "brush_tuple",
           "on": [
             {
-              "events": [{"signal": "brush_Name"}],
+              "events": [
+                {
+                  "signal": "brush_Name"
+                }
+              ],
               "update": "brush_Name ? {unit: \"concat_1\", fields: brush_tuple_fields, values: [brush_Name]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "value": [{"field": "Name", "channel": "y", "type": "E"}]
+          "value": [
+            {
+              "field": "Name",
+              "channel": "y",
+              "type": "E"
+            }
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -229,7 +336,7 @@
               "events": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
+                  "type": "pointerdown",
                   "markname": "brush_brush"
                 }
               ],
@@ -245,15 +352,18 @@
               "events": [
                 {
                   "source": "window",
-                  "type": "mousemove",
+                  "type": "pointermove",
                   "consume": true,
                   "between": [
                     {
                       "source": "scope",
-                      "type": "mousedown",
+                      "type": "pointerdown",
                       "markname": "brush_brush"
                     },
-                    {"source": "window", "type": "mouseup"}
+                    {
+                      "source": "window",
+                      "type": "pointerup"
+                    }
                   ]
                 }
               ],
@@ -298,7 +408,9 @@
           "name": "brush_modify",
           "on": [
             {
-              "events": {"signal": "brush_tuple"},
+              "events": {
+                "signal": "brush_tuple"
+              },
               "update": "modify(\"brush_store\", brush_tuple, true)"
             }
           ]
@@ -311,8 +423,12 @@
           "clip": true,
           "encode": {
             "enter": {
-              "fill": {"value": "#333"},
-              "fillOpacity": {"value": 0.125}
+              "fill": {
+                "value": "#333"
+              },
+              "fillOpacity": {
+                "value": 0.125
+              }
             },
             "update": {
               "x": [
@@ -320,28 +436,38 @@
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "value": 0
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_y[0]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
-                  "field": {"group": "width"}
+                  "field": {
+                    "group": "width"
+                  }
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_y[1]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ]
             }
           }
@@ -349,20 +475,39 @@
         {
           "name": "concat_1_marks",
           "type": "rect",
-          "style": ["bar"],
+          "style": [
+            "bar"
+          ],
           "interactive": true,
-          "from": {"data": "data_2"},
+          "from": {
+            "data": "data_2"
+          },
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
-              "ariaRoleDescription": {"value": "bar"},
+              "fill": {
+                "value": "#4c78a8"
+              },
+              "ariaRoleDescription": {
+                "value": "bar"
+              },
               "description": {
                 "signal": "\"Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Name: \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"])"
               },
-              "x": {"scale": "concat_1_x", "field": "__count"},
-              "x2": {"scale": "concat_1_x", "value": 0},
-              "y": {"scale": "concat_1_y", "field": "Name"},
-              "height": {"signal": "max(0.25, bandwidth('concat_1_y'))"}
+              "x": {
+                "scale": "concat_1_x",
+                "field": "__count"
+              },
+              "x2": {
+                "scale": "concat_1_x",
+                "value": 0
+              },
+              "y": {
+                "scale": "concat_1_y",
+                "field": "Name"
+              },
+              "height": {
+                "signal": "max(0.25, bandwidth('concat_1_y'))"
+              }
             }
           }
         },
@@ -371,39 +516,58 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "fill": {
+                "value": "transparent"
+              }
+            },
             "update": {
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "value": 0
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_y[0]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
-                  "field": {"group": "width"}
+                  "field": {
+                    "group": "width"
+                  }
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_y[1]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "stroke": [
-                {"test": "brush_y[0] !== brush_y[1]", "value": "white"},
-                {"value": null}
+                {
+                  "test": "brush_y[0] !== brush_y[1]",
+                  "value": "white"
+                },
+                {
+                  "value": null
+                }
               ]
             }
           }
@@ -415,8 +579,16 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": [0, 6],
-      "range": [0, {"signal": "concat_0_width"}],
+      "domain": [
+        0,
+        6
+      ],
+      "range": [
+        0,
+        {
+          "signal": "concat_0_width"
+        }
+      ],
       "zero": true
     },
     {
@@ -425,17 +597,32 @@
       "domain": {
         "data": "data_0",
         "field": "Name",
-        "sort": {"op": "count", "order": "descending"}
+        "sort": {
+          "op": "count",
+          "order": "descending"
+        }
       },
-      "range": {"step": {"signal": "concat_0_y_step"}},
+      "range": {
+        "step": {
+          "signal": "concat_0_y_step"
+        }
+      },
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     },
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "__count"},
-      "range": [0, {"signal": "concat_1_width"}],
+      "domain": {
+        "data": "data_2",
+        "field": "__count"
+      },
+      "range": [
+        0,
+        {
+          "signal": "concat_1_width"
+        }
+      ],
       "nice": true,
       "zero": true
     },
@@ -445,9 +632,17 @@
       "domain": {
         "data": "source_0",
         "field": "Name",
-        "sort": {"op": "count", "order": "descending"}
+        "sort": {
+          "op": "count",
+          "order": "descending"
+        }
       },
-      "range": [0, {"signal": "concat_1_height"}],
+      "range": [
+        0,
+        {
+          "signal": "concat_1_height"
+        }
+      ],
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     }

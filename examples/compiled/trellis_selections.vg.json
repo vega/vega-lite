@@ -4,13 +4,21 @@
   "background": "white",
   "padding": 5,
   "data": [
-    {"name": "brush_store"},
-    {"name": "grid_store"},
-    {"name": "xenc_store"},
+    {
+      "name": "brush_store"
+    },
+    {
+      "name": "grid_store"
+    },
+    {
+      "name": "xenc_store"
+    },
     {
       "name": "source_0",
       "url": "data/anscombe.json",
-      "format": {"type": "json"},
+      "format": {
+        "type": "json"
+      },
       "transform": [
         {
           "type": "filter",
@@ -21,17 +29,33 @@
     {
       "name": "column_domain",
       "source": "source_0",
-      "transform": [{"type": "aggregate", "groupby": ["Series"]}]
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "Series"
+          ]
+        }
+      ]
     }
   ],
   "signals": [
-    {"name": "child_width", "value": 200},
-    {"name": "child_height", "value": 200},
+    {
+      "name": "child_width",
+      "value": 200
+    },
+    {
+      "name": "child_height",
+      "value": 200
+    },
     {
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -42,22 +66,31 @@
           "events": [
             {
               "source": "scope",
-              "type": "mouseover",
+              "type": "pointerover",
               "markname": "child_voronoi"
             }
           ],
           "update": "datum && item().mark.marktype !== 'group' ? (item().isVoronoi ? datum.datum : datum)[\"X\"] : null"
         }
       ],
-      "bind": {"input": "number"}
+      "bind": {
+        "input": "number"
+      }
     },
     {
       "name": "brush",
       "update": "vlSelectionResolve(\"brush_store\", \"intersect\")"
     },
-    {"name": "grid", "update": "{\"X\": grid_X, \"Y\": grid_Y}"},
-    {"name": "grid_X"},
-    {"name": "grid_Y"},
+    {
+      "name": "grid",
+      "update": "{\"X\": grid_X, \"Y\": grid_Y}"
+    },
+    {
+      "name": "grid_X"
+    },
+    {
+      "name": "grid_Y"
+    },
     {
       "name": "xenc",
       "update": "vlSelectionResolve(\"xenc_store\", \"union\", true, true)"
@@ -65,8 +98,12 @@
   ],
   "layout": {
     "padding": 20,
-    "offset": {"columnTitle": 10},
-    "columns": {"signal": "length(data('column_domain'))"},
+    "offset": {
+      "columnTitle": 10
+    },
+    "columns": {
+      "signal": "length(data('column_domain'))"
+    },
     "bounds": "full",
     "align": "all"
   },
@@ -75,13 +112,23 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "Series", "style": "guide-title", "offset": 10}
+      "title": {
+        "text": "Series",
+        "style": "guide-title",
+        "offset": 10
+      }
     },
     {
       "name": "row_header",
       "type": "group",
       "role": "row-header",
-      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "encode": {
+        "update": {
+          "height": {
+            "signal": "child_height"
+          }
+        }
+      },
       "axes": [
         {
           "scale": "y",
@@ -89,7 +136,9 @@
           "grid": false,
           "title": "Y",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {
+            "signal": "ceil(child_height/40)"
+          },
           "zindex": 0
         }
       ]
@@ -98,8 +147,13 @@
       "name": "column_header",
       "type": "group",
       "role": "column-header",
-      "from": {"data": "column_domain"},
-      "sort": {"field": "datum[\"Series\"]", "order": "ascending"},
+      "from": {
+        "data": "column_domain"
+      },
+      "sort": {
+        "field": "datum[\"Series\"]",
+        "order": "ascending"
+      },
       "title": {
         "text": {
           "signal": "isValid(parent[\"Series\"]) ? parent[\"Series\"] : \"\"+parent[\"Series\"]"
@@ -108,15 +162,32 @@
         "frame": "group",
         "offset": 10
       },
-      "encode": {"update": {"width": {"signal": "child_width"}}}
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "child_width"
+          }
+        }
+      }
     },
     {
       "name": "column_footer",
       "type": "group",
       "role": "column-footer",
-      "from": {"data": "column_domain"},
-      "sort": {"field": "datum[\"Series\"]", "order": "ascending"},
-      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "from": {
+        "data": "column_domain"
+      },
+      "sort": {
+        "field": "datum[\"Series\"]",
+        "order": "ascending"
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "child_width"
+          }
+        }
+      },
       "axes": [
         {
           "scale": "x",
@@ -125,7 +196,9 @@
           "title": "X",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {
+            "signal": "ceil(child_width/40)"
+          },
           "zindex": 0
         }
       ]
@@ -135,13 +208,30 @@
       "type": "group",
       "style": "cell",
       "from": {
-        "facet": {"name": "facet", "data": "source_0", "groupby": ["Series"]}
+        "facet": {
+          "name": "facet",
+          "data": "source_0",
+          "groupby": [
+            "Series"
+          ]
+        }
       },
-      "sort": {"field": ["datum[\"Series\"]"], "order": ["ascending"]},
+      "sort": {
+        "field": [
+          "datum[\"Series\"]"
+        ],
+        "order": [
+          "ascending"
+        ]
+      },
       "encode": {
         "update": {
-          "width": {"signal": "child_width"},
-          "height": {"signal": "child_height"}
+          "width": {
+            "signal": "child_width"
+          },
+          "height": {
+            "signal": "child_height"
+          }
         }
       },
       "signals": [
@@ -150,7 +240,12 @@
           "value": {},
           "on": [
             {
-              "events": [{"source": "scope", "type": "mousemove"}],
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "pointermove"
+                }
+              ],
               "update": "isTuple(facet) ? facet : group(\"cell\").datum"
             }
           ]
@@ -162,7 +257,7 @@
             {
               "events": {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "event.shiftKey",
                   "!event.item || event.item.mark.name !== \"brush_brush\""
@@ -173,35 +268,49 @@
             {
               "events": {
                 "source": "scope",
-                "type": "mousemove",
+                "type": "pointermove",
                 "between": [
                   {
                     "source": "scope",
-                    "type": "mousedown",
+                    "type": "pointerdown",
                     "filter": [
                       "event.shiftKey",
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {"source": "scope", "type": "mouseup"}
+                  {
+                    "source": "scope",
+                    "type": "pointerup"
+                  }
                 ]
               },
               "update": "[brush_x[0], clamp(x(unit), 0, child_width)]"
             },
             {
-              "events": {"signal": "brush_scale_trigger"},
+              "events": {
+                "signal": "brush_scale_trigger"
+              },
               "update": "[scale(\"x\", brush_X[0]), scale(\"x\", brush_X[1])]"
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "[0, 0]"
             },
             {
-              "events": {"signal": "brush_translate_delta"},
+              "events": {
+                "signal": "brush_translate_delta"
+              },
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, child_width)"
             },
             {
-              "events": {"signal": "brush_zoom_delta"},
+              "events": {
+                "signal": "brush_zoom_delta"
+              },
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_width)"
             }
           ]
@@ -210,7 +319,9 @@
           "name": "brush_X",
           "on": [
             {
-              "events": {"signal": "brush_x"},
+              "events": {
+                "signal": "brush_x"
+              },
               "update": "brush_x[0] === brush_x[1] ? null : invert(\"x\", brush_x)"
             }
           ]
@@ -220,7 +331,11 @@
           "value": {},
           "on": [
             {
-              "events": [{"scale": "x"}],
+              "events": [
+                {
+                  "scale": "x"
+                }
+              ],
               "update": "(!isArray(brush_X) || (+invert(\"x\", brush_x)[0] === +brush_X[0] && +invert(\"x\", brush_x)[1] === +brush_X[1])) ? brush_scale_trigger : {}"
             }
           ]
@@ -229,14 +344,24 @@
           "name": "brush_tuple",
           "on": [
             {
-              "events": [{"signal": "brush_X"}],
+              "events": [
+                {
+                  "signal": "brush_X"
+                }
+              ],
               "update": "brush_X ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: brush_tuple_fields, values: [brush_X]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "value": [{"field": "X", "channel": "x", "type": "R"}]
+          "value": [
+            {
+              "field": "X",
+              "channel": "x",
+              "type": "R"
+            }
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -246,8 +371,10 @@
               "events": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
-                  "filter": ["event.shiftKey"],
+                  "type": "pointerdown",
+                  "filter": [
+                    "event.shiftKey"
+                  ],
                   "markname": "brush_brush"
                 }
               ],
@@ -263,15 +390,20 @@
               "events": [
                 {
                   "source": "scope",
-                  "type": "mousemove",
+                  "type": "pointermove",
                   "between": [
                     {
                       "source": "scope",
-                      "type": "mousedown",
-                      "filter": ["event.shiftKey"],
+                      "type": "pointerdown",
+                      "filter": [
+                        "event.shiftKey"
+                      ],
                       "markname": "brush_brush"
                     },
-                    {"source": "scope", "type": "mouseup"}
+                    {
+                      "source": "scope",
+                      "type": "pointerup"
+                    }
                   ]
                 }
               ],
@@ -316,7 +448,9 @@
           "name": "brush_modify",
           "on": [
             {
-              "events": {"signal": "brush_tuple"},
+              "events": {
+                "signal": "brush_tuple"
+              },
               "update": "modify(\"brush_store\", brush_tuple, {unit: \"child\" + '__facet_column_' + (facet[\"Series\"])})"
             }
           ]
@@ -325,15 +459,24 @@
           "name": "grid_X",
           "on": [
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "null"
             },
             {
-              "events": {"signal": "grid_translate_delta"},
+              "events": {
+                "signal": "grid_translate_delta"
+              },
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / child_width)"
             },
             {
-              "events": {"signal": "grid_zoom_delta"},
+              "events": {
+                "signal": "grid_zoom_delta"
+              },
               "update": "zoomLinear(domain(\"x\"), grid_zoom_anchor.x, grid_zoom_delta)"
             }
           ],
@@ -343,15 +486,24 @@
           "name": "grid_Y",
           "on": [
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "null"
             },
             {
-              "events": {"signal": "grid_translate_delta"},
+              "events": {
+                "signal": "grid_translate_delta"
+              },
               "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / child_height)"
             },
             {
-              "events": {"signal": "grid_zoom_delta"},
+              "events": {
+                "signal": "grid_zoom_delta"
+              },
               "update": "zoomLinear(domain(\"y\"), grid_zoom_anchor.y, grid_zoom_delta)"
             }
           ],
@@ -361,7 +513,11 @@
           "name": "grid_tuple",
           "on": [
             {
-              "events": [{"signal": "grid_X || grid_Y"}],
+              "events": [
+                {
+                  "signal": "grid_X || grid_Y"
+                }
+              ],
               "update": "grid_X && grid_Y ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: grid_tuple_fields, values: [grid_X,grid_Y]} : null"
             }
           ]
@@ -369,8 +525,16 @@
         {
           "name": "grid_tuple_fields",
           "value": [
-            {"field": "X", "channel": "x", "type": "R"},
-            {"field": "Y", "channel": "y", "type": "R"}
+            {
+              "field": "X",
+              "channel": "x",
+              "type": "R"
+            },
+            {
+              "field": "Y",
+              "channel": "y",
+              "type": "R"
+            }
           ]
         },
         {
@@ -381,8 +545,10 @@
               "events": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
-                  "filter": ["!event.shiftKey"]
+                  "type": "pointerdown",
+                  "filter": [
+                    "!event.shiftKey"
+                  ]
                 }
               ],
               "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"y\")}"
@@ -397,14 +563,19 @@
               "events": [
                 {
                   "source": "scope",
-                  "type": "mousemove",
+                  "type": "pointermove",
                   "between": [
                     {
                       "source": "scope",
-                      "type": "mousedown",
-                      "filter": ["!event.shiftKey"]
+                      "type": "pointerdown",
+                      "filter": [
+                        "!event.shiftKey"
+                      ]
                     },
-                    {"source": "scope", "type": "mouseup"}
+                    {
+                      "source": "scope",
+                      "type": "pointerup"
+                    }
                   ]
                 }
               ],
@@ -416,7 +587,13 @@
           "name": "grid_zoom_anchor",
           "on": [
             {
-              "events": [{"source": "scope", "type": "wheel", "consume": true}],
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "wheel",
+                  "consume": true
+                }
+              ],
               "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
             }
           ]
@@ -425,7 +602,13 @@
           "name": "grid_zoom_delta",
           "on": [
             {
-              "events": [{"source": "scope", "type": "wheel", "consume": true}],
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "wheel",
+                  "consume": true
+                }
+              ],
               "force": true,
               "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
             }
@@ -435,7 +618,9 @@
           "name": "grid_modify",
           "on": [
             {
-              "events": {"signal": "grid_tuple"},
+              "events": {
+                "signal": "grid_tuple"
+              },
               "update": "modify(\"grid_store\", grid_tuple, true)"
             }
           ]
@@ -444,12 +629,22 @@
           "name": "xenc_tuple",
           "update": "xenc_X !== null ? {fields: xenc_tuple_fields, values: [xenc_X]} : null"
         },
-        {"name": "xenc_tuple_fields", "value": [{"type": "E", "field": "X"}]},
+        {
+          "name": "xenc_tuple_fields",
+          "value": [
+            {
+              "type": "E",
+              "field": "X"
+            }
+          ]
+        },
         {
           "name": "xenc_modify",
           "on": [
             {
-              "events": {"signal": "xenc_tuple"},
+              "events": {
+                "signal": "xenc_tuple"
+              },
               "update": "modify(\"xenc_store\", xenc_tuple, true)"
             }
           ]
@@ -462,14 +657,28 @@
           "clip": true,
           "encode": {
             "enter": {
-              "fill": {"value": "#333"},
-              "fillOpacity": {"value": 0.125}
+              "fill": {
+                "value": "#333"
+              },
+              "fillOpacity": {
+                "value": 0.125
+              }
             },
             "update": {
-              "x": {"signal": "brush_x[0]"},
-              "y": {"value": 0},
-              "x2": {"signal": "brush_x[1]"},
-              "y2": {"field": {"group": "height"}}
+              "x": {
+                "signal": "brush_x[0]"
+              },
+              "y": {
+                "value": 0
+              },
+              "x2": {
+                "signal": "brush_x[1]"
+              },
+              "y2": {
+                "field": {
+                  "group": "height"
+                }
+              }
             }
           }
         },
@@ -477,33 +686,53 @@
           "name": "child_marks",
           "type": "symbol",
           "clip": true,
-          "style": ["circle"],
+          "style": [
+            "circle"
+          ],
           "interactive": true,
-          "from": {"data": "facet"},
+          "from": {
+            "data": "facet"
+          },
           "encode": {
             "update": {
-              "opacity": {"value": 1},
+              "opacity": {
+                "value": 1
+              },
               "fill": [
                 {
                   "test": "!length(data(\"xenc_store\")) || vlSelectionTest(\"xenc_store\", datum)",
                   "value": "red"
                 },
-                {"value": "steelblue"}
+                {
+                  "value": "steelblue"
+                }
               ],
-              "ariaRoleDescription": {"value": "circle"},
+              "ariaRoleDescription": {
+                "value": "circle"
+              },
               "description": {
                 "signal": "\"X: \" + (format(datum[\"X\"], \"\")) + \"; Y: \" + (format(datum[\"Y\"], \"\"))"
               },
-              "x": {"scale": "x", "field": "X"},
-              "y": {"scale": "y", "field": "Y"},
+              "x": {
+                "scale": "x",
+                "field": "X"
+              },
+              "y": {
+                "scale": "y",
+                "field": "Y"
+              },
               "size": [
                 {
                   "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"intersect\")",
                   "value": 250
                 },
-                {"value": 100}
+                {
+                  "value": 100
+                }
               ],
-              "shape": {"value": "circle"}
+              "shape": {
+                "value": "circle"
+              }
             }
           }
         },
@@ -511,21 +740,42 @@
           "name": "child_voronoi",
           "type": "path",
           "interactive": true,
-          "from": {"data": "child_marks"},
+          "from": {
+            "data": "child_marks"
+          },
           "encode": {
             "update": {
-              "fill": {"value": "transparent"},
-              "strokeWidth": {"value": 0.35},
-              "stroke": {"value": "transparent"},
-              "isVoronoi": {"value": true}
+              "fill": {
+                "value": "transparent"
+              },
+              "strokeWidth": {
+                "value": 0.35
+              },
+              "stroke": {
+                "value": "transparent"
+              },
+              "isVoronoi": {
+                "value": true
+              }
             }
           },
           "transform": [
             {
               "type": "voronoi",
-              "x": {"expr": "datum.datum.x || 0"},
-              "y": {"expr": "datum.datum.y || 0"},
-              "size": [{"signal": "child_width"}, {"signal": "child_height"}]
+              "x": {
+                "expr": "datum.datum.x || 0"
+              },
+              "y": {
+                "expr": "datum.datum.y || 0"
+              },
+              "size": [
+                {
+                  "signal": "child_width"
+                },
+                {
+                  "signal": "child_height"
+                }
+              ]
             }
           ]
         },
@@ -534,15 +784,34 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "fill": {
+                "value": "transparent"
+              }
+            },
             "update": {
-              "x": {"signal": "brush_x[0]"},
-              "y": {"value": 0},
-              "x2": {"signal": "brush_x[1]"},
-              "y2": {"field": {"group": "height"}},
+              "x": {
+                "signal": "brush_x[0]"
+              },
+              "y": {
+                "value": 0
+              },
+              "x2": {
+                "signal": "brush_x[1]"
+              },
+              "y2": {
+                "field": {
+                  "group": "height"
+                }
+              },
               "stroke": [
-                {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
-                {"value": null}
+                {
+                  "test": "brush_x[0] !== brush_x[1]",
+                  "value": "white"
+                },
+                {
+                  "value": null
+                }
               ]
             }
           }
@@ -554,7 +823,9 @@
           "orient": "bottom",
           "gridScale": "y",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {
+            "signal": "ceil(child_width/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -568,7 +839,9 @@
           "orient": "left",
           "gridScale": "x",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {
+            "signal": "ceil(child_height/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -584,18 +857,38 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "X"},
-      "domainRaw": {"signal": "grid[\"X\"]"},
-      "range": [0, {"signal": "child_width"}],
+      "domain": {
+        "data": "source_0",
+        "field": "X"
+      },
+      "domainRaw": {
+        "signal": "grid[\"X\"]"
+      },
+      "range": [
+        0,
+        {
+          "signal": "child_width"
+        }
+      ],
       "zero": false,
       "nice": true
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Y"},
-      "domainRaw": {"signal": "grid[\"Y\"]"},
-      "range": [{"signal": "child_height"}, 0],
+      "domain": {
+        "data": "source_0",
+        "field": "Y"
+      },
+      "domainRaw": {
+        "signal": "grid[\"Y\"]"
+      },
+      "range": [
+        {
+          "signal": "child_height"
+        },
+        0
+      ],
       "zero": false,
       "nice": true
     }

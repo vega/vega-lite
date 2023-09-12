@@ -1,26 +1,39 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Select multiple points with the shift key.",
-  "data": {"url": "data/cars.json"},
-  "params": [{
-    "name": "paintbrush",
-    "select": {
-      "type": "point",
-      "on": "mouseover",
-      "nearest": true
+  "data": {
+    "url": "data/cars.json"
+  },
+  "params": [
+    {
+      "name": "paintbrush",
+      "select": {
+        "type": "point",
+        "on": "pointerover",
+        "nearest": true
+      }
     }
-  }],
+  ],
   "mark": "circle",
   "encoding": {
-    "x": {"field": "Horsepower", "type": "quantitative"},
-    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+    "x": {
+      "field": "Horsepower",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "Miles_per_Gallon",
+      "type": "quantitative"
+    },
     "color": {
       "condition": {
         "param": "paintbrush",
-        "field": "Cylinders", "type": "ordinal"
+        "field": "Cylinders",
+        "type": "ordinal"
       },
       "value": "grey"
     },
-    "size": {"value": 75}
+    "size": {
+      "value": 75
+    }
   }
 }

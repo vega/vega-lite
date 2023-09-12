@@ -5,41 +5,81 @@
   "padding": 5,
   "width": 800,
   "height": 500,
-  "style": ["view", "cell"],
+  "style": [
+    "view",
+    "cell"
+  ],
   "data": [
     {
       "name": "year_store",
       "values": [
         {
           "unit": "layer_1_layer_1",
-          "fields": [{"type": "E", "field": "year"}],
-          "values": [1955]
+          "fields": [
+            {
+              "type": "E",
+              "field": "year"
+            }
+          ],
+          "values": [
+            1955
+          ]
         }
       ]
     },
-    {"name": "hovered_store"},
-    {"name": "clicked_store"},
+    {
+      "name": "hovered_store"
+    },
+    {
+      "name": "clicked_store"
+    },
     {
       "name": "source_0",
       "url": "data/gapminder.json",
-      "format": {"type": "json", "parse": {"country": "string"}}
+      "format": {
+        "type": "json",
+        "parse": {
+          "country": "string"
+        }
+      }
     },
     {
       "name": "source_1",
       "values": [
-        {"id": 0, "name": "South Asia"},
-        {"id": 1, "name": "Europe & Central Asia"},
-        {"id": 2, "name": "Sub-Saharan Africa"},
-        {"id": 3, "name": "America"},
-        {"id": 4, "name": "East Asia & Pacific"},
-        {"id": 5, "name": "Middle East & North Africa"}
+        {
+          "id": 0,
+          "name": "South Asia"
+        },
+        {
+          "id": 1,
+          "name": "Europe & Central Asia"
+        },
+        {
+          "id": 2,
+          "name": "Sub-Saharan Africa"
+        },
+        {
+          "id": 3,
+          "name": "America"
+        },
+        {
+          "id": 4,
+          "name": "East Asia & Pacific"
+        },
+        {
+          "id": 5,
+          "name": "Middle East & North Africa"
+        }
       ]
     },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "datum[\"country\"]===\"Afghanistan\""},
+        {
+          "type": "filter",
+          "expr": "datum[\"country\"]===\"Afghanistan\""
+        },
         {
           "type": "filter",
           "expr": "!length(data(\"year_store\")) || vlSelectionTest(\"year_store\", datum)"
@@ -54,8 +94,12 @@
           "type": "lookup",
           "from": "source_1",
           "key": "id",
-          "fields": ["cluster"],
-          "values": ["name"]
+          "fields": [
+            "cluster"
+          ],
+          "values": [
+            "name"
+          ]
         }
       ]
     },
@@ -111,7 +155,10 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -141,12 +188,22 @@
       "name": "year_tuple",
       "update": "year_year !== null ? {fields: year_tuple_fields, values: [year_year]} : null"
     },
-    {"name": "year_tuple_fields", "value": [{"type": "E", "field": "year"}]},
+    {
+      "name": "year_tuple_fields",
+      "value": [
+        {
+          "type": "E",
+          "field": "year"
+        }
+      ]
+    },
     {
       "name": "year_modify",
       "on": [
         {
-          "events": {"signal": "year_tuple"},
+          "events": {
+            "signal": "year_tuple"
+          },
           "update": "modify(\"year_store\", year_tuple, true)"
         }
       ]
@@ -155,22 +212,42 @@
       "name": "hovered_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "pointerover"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"layer_1_layer_1\", fields: hovered_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"country\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "null"
+        }
       ]
     },
     {
       "name": "hovered_tuple_fields",
-      "value": [{"type": "E", "field": "country"}]
+      "value": [
+        {
+          "type": "E",
+          "field": "country"
+        }
+      ]
     },
     {
       "name": "hovered_modify",
       "on": [
         {
-          "events": {"signal": "hovered_tuple"},
+          "events": {
+            "signal": "hovered_tuple"
+          },
           "update": "modify(\"hovered_store\", hovered_tuple, true)"
         }
       ]
@@ -179,33 +256,66 @@
       "name": "clicked_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "click"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "click"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"layer_1_layer_1\", fields: clicked_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"country\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "null"
+        }
       ]
     },
     {
       "name": "clicked_tuple_fields",
-      "value": [{"type": "E", "field": "country"}]
+      "value": [
+        {
+          "type": "E",
+          "field": "country"
+        }
+      ]
     },
     {
       "name": "clicked_toggle",
       "value": false,
       "on": [
         {
-          "events": [{"source": "scope", "type": "click"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "click"
+            }
+          ],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "false"
+        }
       ]
     },
     {
       "name": "clicked_modify",
       "on": [
         {
-          "events": {"signal": "clicked_tuple"},
+          "events": {
+            "signal": "clicked_tuple"
+          },
           "update": "modify(\"clicked_store\", clicked_toggle ? null : clicked_tuple, clicked_toggle ? null : true, clicked_toggle ? clicked_tuple : null)"
         }
       ]
@@ -215,24 +325,42 @@
     {
       "name": "layer_0_marks",
       "type": "text",
-      "style": ["text"],
+      "style": [
+        "text"
+      ],
       "interactive": false,
-      "from": {"data": "data_0"},
+      "from": {
+        "data": "data_0"
+      },
       "encode": {
         "update": {
-          "opacity": {"value": 0.06},
-          "fontSize": {"value": 100},
-          "fill": {"value": "black"},
+          "opacity": {
+            "value": 0.06
+          },
+          "fontSize": {
+            "value": 100
+          },
+          "fill": {
+            "value": "black"
+          },
           "description": {
             "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
-          "x": {"value": 420},
-          "y": {"value": 250},
+          "x": {
+            "value": 420
+          },
+          "y": {
+            "value": 250
+          },
           "text": {
             "signal": "isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]"
           },
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"}
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          }
         }
       }
     },
@@ -243,40 +371,75 @@
         "facet": {
           "name": "faceted_path_layer_1_layer_0_main",
           "data": "data_1",
-          "groupby": ["country"]
+          "groupby": [
+            "country"
+          ]
         }
       },
       "encode": {
         "update": {
-          "width": {"field": {"group": "width"}},
-          "height": {"field": {"group": "height"}}
+          "width": {
+            "field": {
+              "group": "width"
+            }
+          },
+          "height": {
+            "field": {
+              "group": "height"
+            }
+          }
         }
       },
       "marks": [
         {
           "name": "layer_1_layer_0_marks",
           "type": "line",
-          "style": ["line"],
-          "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
+          "style": [
+            "line"
+          ],
+          "sort": {
+            "field": [
+              "datum[\"year\"]"
+            ],
+            "order": [
+              "ascending"
+            ]
+          },
           "interactive": false,
-          "from": {"data": "faceted_path_layer_1_layer_0_main"},
+          "from": {
+            "data": "faceted_path_layer_1_layer_0_main"
+          },
           "encode": {
             "update": {
-              "strokeCap": {"value": "round"},
-              "stroke": {"value": "lightgray"},
+              "strokeCap": {
+                "value": "round"
+              },
+              "stroke": {
+                "value": "lightgray"
+              },
               "opacity": [
                 {
                   "test": "(length(data(\"hovered_store\")) && vlSelectionTest(\"hovered_store\", datum)) || (length(data(\"clicked_store\")) && vlSelectionTest(\"clicked_store\", datum))",
                   "value": 0.8
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "description": {
                 "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"])"
               },
-              "x": {"scale": "x", "field": "fertility"},
-              "y": {"scale": "y", "field": "life_expect"},
-              "strokeWidth": {"value": 4},
+              "x": {
+                "scale": "x",
+                "field": "fertility"
+              },
+              "y": {
+                "scale": "y",
+                "field": "life_expect"
+              },
+              "strokeWidth": {
+                "value": 4
+              },
               "defined": {
                 "signal": "isValid(datum[\"fertility\"]) && isFinite(+datum[\"fertility\"]) && isValid(datum[\"life_expect\"]) && isFinite(+datum[\"life_expect\"])"
               }
@@ -288,88 +451,168 @@
     {
       "name": "layer_1_layer_1_marks",
       "type": "symbol",
-      "style": ["circle"],
+      "style": [
+        "circle"
+      ],
       "interactive": true,
-      "from": {"data": "data_2"},
+      "from": {
+        "data": "data_2"
+      },
       "encode": {
         "update": {
-          "opacity": {"value": 0.9},
-          "size": {"value": 100},
-          "fill": {"scale": "color", "field": "name"},
-          "ariaRoleDescription": {"value": "circle"},
+          "opacity": {
+            "value": 0.9
+          },
+          "size": {
+            "value": 100
+          },
+          "fill": {
+            "scale": "color",
+            "field": "name"
+          },
+          "ariaRoleDescription": {
+            "value": "circle"
+          },
           "description": {
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; Region: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
           },
-          "x": {"scale": "x", "field": "fertility"},
-          "y": {"scale": "y", "field": "life_expect"},
-          "shape": {"value": "circle"}
+          "x": {
+            "scale": "x",
+            "field": "fertility"
+          },
+          "y": {
+            "scale": "y",
+            "field": "life_expect"
+          },
+          "shape": {
+            "value": "circle"
+          }
         }
       }
     },
     {
       "name": "layer_1_layer_2_marks",
       "type": "text",
-      "style": ["text"],
+      "style": [
+        "text"
+      ],
       "interactive": false,
-      "from": {"data": "data_3"},
+      "from": {
+        "data": "data_3"
+      },
       "encode": {
         "update": {
-          "fontSize": {"value": 12},
-          "fontWeight": {"value": "bold"},
-          "fill": {"scale": "color", "field": "name"},
+          "fontSize": {
+            "value": 12
+          },
+          "fontWeight": {
+            "value": "bold"
+          },
+          "fill": {
+            "scale": "color",
+            "field": "name"
+          },
           "description": {
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; Region: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"])"
           },
-          "x": {"scale": "x", "field": "fertility"},
-          "y": {"scale": "y", "field": "life_expect", "offset": -12},
+          "x": {
+            "scale": "x",
+            "field": "fertility"
+          },
+          "y": {
+            "scale": "y",
+            "field": "life_expect",
+            "offset": -12
+          },
           "text": {
             "signal": "isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]"
           },
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"}
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          }
         }
       }
     },
     {
       "name": "layer_1_layer_3_layer_0_marks",
       "type": "text",
-      "style": ["text"],
+      "style": [
+        "text"
+      ],
       "interactive": false,
-      "from": {"data": "data_4"},
+      "from": {
+        "data": "data_4"
+      },
       "encode": {
         "update": {
-          "fontSize": {"value": 12},
-          "fill": {"value": "gray"},
+          "fontSize": {
+            "value": 12
+          },
+          "fill": {
+            "value": "gray"
+          },
           "description": {
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
-          "x": {"scale": "x", "field": "fertility"},
-          "y": {"scale": "y", "field": "life_expect", "offset": -12},
+          "x": {
+            "scale": "x",
+            "field": "fertility"
+          },
+          "y": {
+            "scale": "y",
+            "field": "life_expect",
+            "offset": -12
+          },
           "text": {
             "signal": "isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]"
           },
-          "align": {"value": "center"},
-          "baseline": {"value": "middle"}
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          }
         }
       }
     },
     {
       "name": "layer_1_layer_3_layer_1_marks",
       "type": "symbol",
-      "style": ["circle"],
+      "style": [
+        "circle"
+      ],
       "interactive": false,
-      "from": {"data": "data_4"},
+      "from": {
+        "data": "data_4"
+      },
       "encode": {
         "update": {
-          "opacity": {"value": 0.7},
-          "fill": {"value": "gray"},
-          "ariaRoleDescription": {"value": "circle"},
+          "opacity": {
+            "value": 0.7
+          },
+          "fill": {
+            "value": "gray"
+          },
+          "ariaRoleDescription": {
+            "value": "circle"
+          },
           "description": {
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "fertility"},
-          "y": {"scale": "y", "field": "life_expect"},
-          "shape": {"value": "circle"}
+          "x": {
+            "scale": "x",
+            "field": "fertility"
+          },
+          "y": {
+            "scale": "y",
+            "field": "life_expect"
+          },
+          "shape": {
+            "value": "circle"
+          }
         }
       }
     }
@@ -378,15 +621,31 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": [0, 9],
-      "range": [0, {"signal": "width"}],
+      "domain": [
+        0,
+        9
+      ],
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
       "zero": true
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": [20, 85],
-      "range": [{"signal": "height"}, 0],
+      "domain": [
+        20,
+        85
+      ],
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
       "zero": false
     },
     {
@@ -394,8 +653,14 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_2", "field": "name"},
-          {"data": "data_3", "field": "name"}
+          {
+            "data": "data_2",
+            "field": "name"
+          },
+          {
+            "data": "data_3",
+            "field": "name"
+          }
         ],
         "sort": true
       },
@@ -456,7 +721,15 @@
       "title": "Region",
       "fill": "color",
       "symbolType": "circle",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.9}}}}
+      "encode": {
+        "symbols": {
+          "update": {
+            "opacity": {
+              "value": 0.9
+            }
+          }
+        }
+      }
     }
   ]
 }

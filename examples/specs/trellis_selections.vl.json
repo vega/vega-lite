@@ -1,17 +1,21 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Anscombe's Quartet",
-  "data": {"url": "data/anscombe.json"},
+  "data": {
+    "url": "data/anscombe.json"
+  },
   "mark": "circle",
   "params": [
     {
       "name": "brush",
       "select": {
         "type": "interval",
-        "encodings": ["x"],
+        "encodings": [
+          "x"
+        ],
         "resolve": "intersect",
-        "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-        "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
+        "on": "[pointerdown[event.shiftKey], pointerup] > pointermove",
+        "translate": "[pointerdown[event.shiftKey], pointerup] > pointermove"
       }
     },
     {
@@ -19,7 +23,7 @@
       "select": {
         "type": "interval",
         "resolve": "global",
-        "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+        "translate": "[pointerdown[!event.shiftKey], pointerup] > pointermove"
       },
       "bind": "scales"
     },
@@ -27,29 +31,42 @@
       "name": "xenc",
       "select": {
         "type": "point",
-        "fields": ["X"],
+        "fields": [
+          "X"
+        ],
         "resolve": "global",
-        "on": "mouseover",
+        "on": "pointerover",
         "nearest": true
       },
-      "bind": {"input": "number"}
+      "bind": {
+        "input": "number"
+      }
     }
   ],
   "encoding": {
-    "column": {"field": "Series"},
+    "column": {
+      "field": "Series"
+    },
     "x": {
       "field": "X",
       "type": "quantitative",
-      "scale": {"zero": false}
+      "scale": {
+        "zero": false
+      }
     },
     "y": {
       "field": "Y",
       "type": "quantitative",
-      "scale": {"zero": false}
+      "scale": {
+        "zero": false
+      }
     },
     "size": {
       "value": 100,
-      "condition": {"param": "brush", "value": 250}
+      "condition": {
+        "param": "brush",
+        "value": 250
+      }
     },
     "color": {
       "value": "steelblue",
@@ -58,6 +75,8 @@
         "value": "red"
       }
     },
-    "opacity": {"value": 1}
+    "opacity": {
+      "value": 1
+    }
   }
 }

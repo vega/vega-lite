@@ -35,7 +35,7 @@ describe('Interval Selections', () => {
         name: 'thr-ee',
         select: {
           type: 'interval',
-          on: '[mousedown, mouseup] > mousemove, [keydown, keyup] > keypress',
+          on: '[pointerdown, pointerup] > pointermove, [keydown, keyup] > keypress',
           clear: false,
           translate: false,
           zoom: false,
@@ -100,11 +100,11 @@ describe('Interval Selections', () => {
               value: [],
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[x(unit), x(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[one_x[0], clamp(x(unit), 0, width)]'
                 },
                 {
@@ -150,11 +150,11 @@ describe('Interval Selections', () => {
               value: [],
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[x(unit), x(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
+                  events: parseSelector('[pointerdown, pointerup] > pointermove', 'scope')[0],
                   update: '[thr_ee_x[0], clamp(x(unit), 0, width)]'
                 },
                 {
@@ -185,11 +185,11 @@ describe('Interval Selections', () => {
               value: [],
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[y(unit), y(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, mouseup] > mousemove', 'scope')[0],
+                  events: parseSelector('[pointerdown, pointerup] > pointermove', 'scope')[0],
                   update: '[thr_ee_y[0], clamp(y(unit), 0, height)]'
                 },
                 {
@@ -237,11 +237,11 @@ describe('Interval Selections', () => {
               init: '[scale("x", 50), scale("x", 70)]',
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[x(unit), x(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[four_x[0], clamp(x(unit), 0, width)]'
                 },
                 {
@@ -282,11 +282,11 @@ describe('Interval Selections', () => {
               init: '[scale("x", 50), scale("x", 60)]',
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[x(unit), x(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[five_x[0], clamp(x(unit), 0, width)]'
                 },
                 {
@@ -310,11 +310,11 @@ describe('Interval Selections', () => {
               init: '[scale("y", 23), scale("y", 54)]',
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[y(unit), y(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[five_y[0], clamp(y(unit), 0, height)]'
                 },
                 {
@@ -355,11 +355,11 @@ describe('Interval Selections', () => {
               init: '[scale("x", datetime(2000, 9, 5, 0, 0, 0, 0)), scale("x", datetime(2001, 0, 13, 0, 0, 0, 0))]',
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[x(unit), x(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[six_x[0], clamp(x(unit), 0, width)]'
                 },
                 {
@@ -897,11 +897,11 @@ describe('Interval Selections', () => {
               value: [],
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[y(unit), y(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[one_latitude_1[0], clamp(y(unit), 0, height)]'
                 }
               ]
@@ -911,11 +911,11 @@ describe('Interval Selections', () => {
               value: [],
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[x(unit), x(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[one_longitude_1[0], clamp(x(unit), 0, width)]'
                 }
               ]
@@ -931,11 +931,11 @@ describe('Interval Selections', () => {
               value: [],
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[x(unit), x(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[two_longitude_1[0], clamp(x(unit), 0, width)]'
                 }
               ]
@@ -955,11 +955,11 @@ describe('Interval Selections', () => {
               init: '[three_init[0][1], three_init[1][1]]',
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[y(unit), y(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[three_latitude_1[0], clamp(y(unit), 0, height)]'
                 }
               ]
@@ -969,11 +969,11 @@ describe('Interval Selections', () => {
               init: '[three_init[0][0], three_init[1][0]]',
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[x(unit), x(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[three_longitude_1[0], clamp(x(unit), 0, width)]'
                 }
               ]
@@ -997,11 +997,11 @@ describe('Interval Selections', () => {
               init: '[four_init[0][1], four_init[1][1]]',
               on: [
                 {
-                  events: parseSelector('mousedown', 'scope')[0],
+                  events: parseSelector('pointerdown', 'scope')[0],
                   update: '[y(unit), y(unit)]'
                 },
                 {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
                   update: '[four_latitude_1[0], clamp(y(unit), 0, height)]'
                 }
               ]
