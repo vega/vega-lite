@@ -9,7 +9,7 @@ describe('interval selections at runtime in unit views', () => {
   let testRender: (filename: string) => Promise<void>;
 
   beforeAll(async () => {
-    page = await (global as any).__BROWSER__.newPage();
+    page = await (global as any).__BROWSER_GLOBAL__.newPage();
     embed = embedFn(page);
     testRender = testRenderFn(page, `${type}/unit`);
     await page.goto('http://0.0.0.0:8000/test-runtime/');

@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {NonPositionScaleChannel} from '../../../channel';
 import {Value} from '../../../channeldef';
 import {VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../../vega.schema';

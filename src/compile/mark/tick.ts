@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {isNumber} from 'vega-util';
 import {getViewConfigDiscreteStep} from '../../config';
 import {isVgRangeStep} from '../../vega.schema';

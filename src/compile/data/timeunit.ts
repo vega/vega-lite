@@ -35,7 +35,10 @@ export class TimeUnitNode extends DataFlowNode {
     return new TimeUnitNode(null, duplicate(this.formula));
   }
 
-  constructor(parent: DataFlowNode, private formula: Dict<TimeUnitComponent>) {
+  constructor(
+    parent: DataFlowNode,
+    private formula: Dict<TimeUnitComponent>
+  ) {
     super(parent);
   }
 

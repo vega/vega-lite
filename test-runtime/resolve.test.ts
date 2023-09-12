@@ -24,7 +24,7 @@ for (const type of selectionTypes) {
     let embed: (specification: TopLevelSpec) => Promise<void>;
 
     beforeAll(async () => {
-      page = await (global as any).__BROWSER__.newPage();
+      page = await (global as any).__BROWSER_GLOBAL__.newPage();
       embed = embedFn(page);
       await page.goto('http://0.0.0.0:8000/test-runtime/');
     });
