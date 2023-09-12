@@ -8962,17 +8962,10 @@ vega-transforms@~4.10.2:
     vega-time "^2.1.1"
     vega-util "^1.17.1"
 
-<<<<<<< HEAD
 vega-typings@~0.24.2:
   version "0.24.2"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.24.2.tgz#7e1e87557a9bf09e934687197c5e964bd9b416ca"
   integrity "sha1-f6k+HszPLqHnEQJO9Fqj74S5rRw= sha512-fW02GElYoqweCCaPqH6iH44UZnzXiX9kbm1qyecjU3k5s0vtufLI7Yuz/a/uL37mEAqTMQplBBAlk0T9e2e1Dw=="
-=======
-vega-typings@~0.24.0:
-  version "0.24.2"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.24.2.tgz#7fa93e1ecccf2ea1e711024ef45aa3ef84b9ad1c"
-  integrity sha512-fW02GElYoqweCCaPqH6iH44UZnzXiX9kbm1qyecjU3k5s0vtufLI7Yuz/a/uL37mEAqTMQplBBAlk0T9e2e1Dw==
->>>>>>> 76e5460b7984c923975401f88b4b6012e837a8c7
   dependencies:
     "@types/geojson" "7946.0.4"
     vega-event-selector "^3.0.1"
@@ -9053,7 +9046,7 @@ vega@5.25.0:
     vega-statistics "~1.9.0"
     vega-time "~2.1.1"
     vega-transforms "~4.10.2"
-    vega-typings "~0.24.2"
+    vega-typings "~0.24.0"
     vega-util "~1.17.2"
     vega-view "~5.11.1"
     vega-view-transforms "~4.5.9"
