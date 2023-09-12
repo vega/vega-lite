@@ -1,0 +1,159 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "title": {
+    "text": "A Simple Bar Chart with Lines at Extents",
+    "frame": "group"
+  },
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a.b": "2022-01-01", "b": 28},
+        {"a.b": "2022-01-04", "b.b": 55},
+        {"a.b": "2022-01-07", "b": 43},
+        {"a.b": "2022-01-02", "b": 91},
+        {"a.b": "2022-01-05", "b.b": 81},
+        {"a.b": "2022-01-08", "b": 53},
+        {"a.b": "2022-01-03", "b": 19},
+        {"a.b": "2022-01-06", "b.b": 87},
+        {"a.b": "2022-01-09", "b": 52}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"a.b\"])", "as": "a.b"},
+        {
+          "type": "formula",
+          "expr": "timeOffset('date', datum['a.b'], 1)",
+          "as": "a.b_end"
+        },
+        {
+          "type": "stack",
+          "groupby": ["a\\.b"],
+          "field": "b",
+          "sort": {"field": [], "order": []},
+          "as": ["b_start", "b_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"]) && (isDate(datum[\"a.b\"]) || (isValid(datum[\"a.b\"]) && isFinite(+datum[\"a.b\"])))"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; a.b: \" + (timeFormat(datum[\"a.b\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+          },
+          "x": {"scale": "x", "field": "b_end"},
+          "x2": {"scale": "x", "field": "b_start"},
+          "y2": {
+            "scale": "y",
+            "field": "a\\.b",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"y\", datum[\"a.b_end\"]) - scale(\"y\", datum[\"a.b\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"y\", datum[\"a.b_end\"]) - scale(\"y\", datum[\"a.b\"])))) : -0.5)"
+            }
+          },
+          "y": {
+            "scale": "y",
+            "field": "a\\.b_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"y\", datum[\"a.b_end\"]) - scale(\"y\", datum[\"a.b\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"y\", datum[\"a.b_end\"]) - scale(\"y\", datum[\"a.b\"])))) : 0.5)"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["b_start", "b_end"]},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "utc",
+      "domain": {"data": "data_0", "fields": ["a\\.b", "a\\.b_end"]},
+      "range": [{"signal": "height"}, 0]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "b",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "a.b",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    }
+  ]
+}
