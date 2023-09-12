@@ -1,0 +1,27 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "A Simple Bar Chart with Lines at Extents",
+  "data": {
+    "values": [
+      {"a.b": "2022-01-01", "b": 28},
+      {"a.b": "2022-01-04", "b.b": 55},
+      {"a.b": "2022-01-07", "b": 43},
+      {"a.b": "2022-01-02", "b": 91},
+      {"a.b": "2022-01-05", "b.b": 81},
+      {"a.b": "2022-01-08", "b": 53},
+      {"a.b": "2022-01-03", "b": 19},
+      {"a.b": "2022-01-06", "b.b": 87},
+      {"a.b": "2022-01-09", "b": 52}
+    ]
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "a\\.b",
+      "type": "temporal",
+      "timeUnit": "binnedutcyearmonthdate",
+      "title": "a.b"
+    },
+    "x": {"field": "b", "type": "quantitative"}
+  }
+}

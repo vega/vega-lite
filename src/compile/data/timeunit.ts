@@ -170,7 +170,9 @@ export class TimeUnitNode extends DataFlowNode {
           as: [as, `${as}_end`]
         });
       } else if (f) {
-        const {field, timeUnit} = f;
+        const {field: escapedField, timeUnit} = f;
+        // since this is a expression, we want the unescaped field name
+        const field = escapedField.replaceAll('\\.', '.');
         const smallestUnit = getSmallestTimeUnitPart(timeUnit?.unit);
         const {part, step} = getDateTimePartAndStep(smallestUnit, timeUnit.step);
         transforms.push({
