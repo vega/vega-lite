@@ -7,40 +7,46 @@ import {BRUSH} from './interval';
 import {TUPLE_FIELDS} from './project';
 
 export const CURR = '_curr';
+export const ANIM_VALUE = 'anim_value';
+export const ANIM_CLOCK = 'anim_clock';
+export const EASED_ANIM_CLOCK = 'eased_anim_clock';
+export const MIN_EXTENT = 'min_extent';
+export const MAX_RANGE_EXTENT = 'max_range_extent';
+export const LAST_TICK = 'last_tick_at';
+export const THROTTLE = (1 / 60) * 1000; // 60 FPS
 
 const animationSignals = (selectionName: string, scaleName: string): Signal[] => {
   return [
     // timer signals
     {
-      name: 'anim_clock',
+      name: ANIM_CLOCK,
       init: '0',
       on: [
         {
-          events: {type: 'timer', throttle: 16.666666666666668},
-          update:
-            'true ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock'
+          events: {type: 'timer', throttle: THROTTLE},
+          update: `true ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`
         }
       ]
     },
     {
-      name: 'last_tick_at',
+      name: LAST_TICK,
       init: 'now()',
-      on: [{events: [{signal: 'anim_clock'}], update: 'now()'}]
+      on: [{events: [{signal: ANIM_CLOCK}], update: 'now()'}]
     },
     {
-      name: 'eased_anim_clock',
+      name: EASED_ANIM_CLOCK,
       // update: 'easeLinear(anim_clock / max_range_extent) * max_range_extent'
-      update: 'anim_clock' // TODO: replace with above once easing functions are implemented in vega-functions
+      update: ANIM_CLOCK // TODO: replace with above once easing functions are implemented in vega-functions
     },
 
     // scale signals
     // TODO(jzong): uncomment commented signals when implementing interpolation
     {name: `${selectionName}_domain`, init: `domain('${scaleName}')`},
-    {name: 'min_extent', init: `extent(${selectionName}_domain)[0]`},
+    {name: MIN_EXTENT, init: `extent(${selectionName}_domain)[0]`},
     // {name: 'max_extent', init: `extent(${selectionName}_domain)[1]`},
-    {name: 'max_range_extent', init: `extent(range('${scaleName}'))[1]`},
+    {name: MAX_RANGE_EXTENT, init: `extent(range('${scaleName}'))[1]`},
     // {name: 't_index', update: `indexof(${selectionName}_domain, anim_value)`},
-    {name: 'anim_value', update: `invert('${scaleName}', eased_anim_clock)`}
+    {name: ANIM_VALUE, update: `invert('${scaleName}', ${EASED_ANIM_CLOCK})`}
   ];
 };
 
@@ -76,7 +82,7 @@ const point: SelectionCompiler<'point'> = {
     if (selCmpt.project.hasSelectionId) {
       update += `${SELECTION_ID}: ${datum}[${stringValue(SELECTION_ID)}]`;
     } else if (isTimerSelection(selCmpt)) {
-      update += `fields: ${fieldsSg}, values: [anim_value ? anim_value : min_extent]`;
+      update += `fields: ${fieldsSg}, values: [${ANIM_VALUE} ? ${ANIM_VALUE} : ${MIN_EXTENT}]`;
     } else {
       const values = project.items
         .map(p => {
@@ -100,7 +106,7 @@ const point: SelectionCompiler<'point'> = {
           name: name + TUPLE,
           on: [
             {
-              events: [{signal: 'eased_anim_clock'}, {signal: 'anim_value'}],
+              events: [{signal: EASED_ANIM_CLOCK}, {signal: ANIM_VALUE}],
               update: `{${update}}`,
               force: true
             }
