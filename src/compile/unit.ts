@@ -37,7 +37,7 @@ import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
 import {stack, StackProperties} from '../stack';
 import {keys} from '../util';
-import {VgData, VgLayout} from '../vega.schema';
+import {VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {AxisInternalIndex} from './axis/component';
 import {parseUnitAxes} from './axis/parse';
@@ -262,6 +262,31 @@ export class UnitModel extends ModelWithField {
     return assembleLayoutSignals(this);
   }
 
+  /**
+   * Corrects the data references in marks after assemble.
+   */
+  public correctDataNames = (mark: VgMarkGroup) => {
+    // TODO: make this correct
+
+    // for normal data references
+    if (mark.from?.data) {
+      mark.from.data = this.lookupDataSource(mark.from.data);
+    }
+
+    // for access to facet data
+    if (mark.from?.facet?.data) {
+      mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
+    }
+
+    if ('time' in this.encoding) {
+      if (mark.from?.data) {
+        mark.from.data = mark.from.data + CURR;
+      }
+    }
+
+    return mark;
+  };
+
   public assembleMarks() {
     let marks = this.component.mark ?? [];
 
@@ -272,15 +297,7 @@ export class UnitModel extends ModelWithField {
       marks = assembleUnitSelectionMarks(this, marks);
     }
 
-    const marksWithCorrectedDataNames = marks.map(this.correctDataNames);
-    if ('time' in this.encoding) {
-      marksWithCorrectedDataNames.forEach(mark => {
-        if (mark.from?.data) {
-          mark.from.data = mark.from.data + CURR;
-        }
-      });
-    }
-    return marksWithCorrectedDataNames;
+    return marks.map(this.correctDataNames);
   }
   public assembleGroupStyle(): string | string[] {
     const {style} = this.view || {};
