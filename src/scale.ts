@@ -434,6 +434,22 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
    *
    */
   zero?: boolean;
+
+  /**
+   * Default framerate (frames per second) for time [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.
+   *
+   * __Default value:__ `2`
+   *
+   */
+  framesPerSecond?: number;
+
+  /**
+   * Default animation duration (in seconds) for time encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.
+   *
+   * __Default value:__ `5`
+   *
+   */
+  animationDuration?: number;
 }
 
 export const defaultScaleConfig: ScaleConfig<SignalRef> = {
@@ -462,7 +478,10 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
   quantileCount: 4,
   quantizeCount: 4,
 
-  zero: true
+  zero: true,
+
+  framesPerSecond: 2,
+  animationDuration: 5
 };
 
 export interface SchemeParams {
