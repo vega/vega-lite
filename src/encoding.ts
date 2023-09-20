@@ -327,7 +327,7 @@ export interface Encoding<F extends Field> {
   order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef;
 }
 
-export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> { }
+export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
 
 export function channelHasField<F extends Field>(
   encoding: EncodingWithFacet<F>,
