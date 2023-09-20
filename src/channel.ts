@@ -72,6 +72,8 @@ export const HREF = 'href' as const;
 export const URL = 'url' as const;
 export const DESCRIPTION = 'description' as const;
 
+// export const CURSOR = 'cursor' as const;
+
 const POSITION_CHANNEL_INDEX = {
   x: 1,
   y: 1,

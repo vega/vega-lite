@@ -12465,6 +12465,9 @@
           ],
           "description": "Clears the selection, emptying it of all values. This property can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable clear.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear` examples ](https://vega.github.io/vega-lite/docs/selection.html#clear) in the documentation."
         },
+        "cursor": {
+          "$ref": "#/definitions/Cursor"
+        },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.",
           "items": {
@@ -12493,6 +12496,13 @@
             }
           ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).\n\n__See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation."
+        },
+        "resize": {
+          "description": "When truth, allows a user to interactively resize an interval selection. Can be `true`, `false`, or a [Vega event streem definition] which must include a start and end event to trigger continuous resizing.\n\n__Default value:__ `true`, which corresponds to `[pointerdown, window:pointerup] > window:pointermove!`. This default allows users to clicks and drags on the edge of an interval selection to resize it.",
+          "type": [
+            "string",
+            "boolean"
+          ]
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
@@ -12540,6 +12550,9 @@
           ],
           "description": "Clears the selection, emptying it of all values. This property can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable clear.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear` examples ](https://vega.github.io/vega-lite/docs/selection.html#clear) in the documentation."
         },
+        "cursor": {
+          "$ref": "#/definitions/Cursor"
+        },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.",
           "items": {
@@ -12568,6 +12581,13 @@
             }
           ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).\n\n__See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation."
+        },
+        "resize": {
+          "description": "When truth, allows a user to interactively resize an interval selection. Can be `true`, `false`, or a [Vega event streem definition] which must include a start and end event to trigger continuous resizing.\n\n__Default value:__ `true`, which corresponds to `[pointerdown, window:pointerup] > window:pointermove!`. This default allows users to clicks and drags on the edge of an interval selection to resize it.",
+          "type": [
+            "string",
+            "boolean"
+          ]
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
@@ -19309,6 +19329,9 @@
           ],
           "description": "Clears the selection, emptying it of all values. This property can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable clear.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear` examples ](https://vega.github.io/vega-lite/docs/selection.html#clear) in the documentation."
         },
+        "cursor": {
+          "$ref": "#/definitions/Cursor"
+        },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.",
           "items": {
@@ -19376,6 +19399,9 @@
             }
           ],
           "description": "Clears the selection, emptying it of all values. This property can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable clear.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear` examples ](https://vega.github.io/vega-lite/docs/selection.html#clear) in the documentation."
+        },
+        "cursor": {
+          "$ref": "#/definitions/Cursor"
         },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.",

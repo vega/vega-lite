@@ -52,6 +52,7 @@ import {
   binRequiresRange,
   ChannelDef,
   ColorDef,
+  // Cursor,
   Field,
   FieldDef,
   FieldDefWithoutScale,
@@ -184,6 +185,11 @@ export interface Encoding<F extends Field> {
    * The inner radius in pixels of arc marks.
    */
   radius2?: Position2Def<F>;
+
+  /**
+   * The style of the current cursor.
+   */
+  // cursor?: Cursor;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
@@ -327,7 +333,7 @@ export interface Encoding<F extends Field> {
   order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef;
 }
 
-export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> { }
+export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
 
 export function channelHasField<F extends Field>(
   encoding: EncodingWithFacet<F>,
@@ -733,6 +739,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case THETA2:
       case RADIUS:
       case RADIUS2:
+      // case CURSOR:
       // falls through
 
       case LATITUDE:

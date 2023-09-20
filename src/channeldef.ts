@@ -178,7 +178,6 @@ export interface ConditionValueDefMixins<V extends Value = Value> {
  *   ...
  * }
  */
-
 export type FieldOrDatumDefWithCondition<F extends FieldDef<any, any> | DatumDef<any>, V extends Value = Value> = F &
   ConditionValueDefMixins<V | ExprRef | SignalRef>;
 
@@ -1027,6 +1026,8 @@ export function defaultType<T extends TypedFieldDef<Field>>(fieldDef: T, channel
 
   return 'nominal';
 }
+
+// export type cursor = Cursor;
 
 /**
  * Returns the fieldDef -- either from the outer channelDef or from the condition of channelDef.
