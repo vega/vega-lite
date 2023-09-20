@@ -70,6 +70,24 @@ describe('compile/data/timeunit', () => {
       ]);
     });
 
+    it('should return the proper field escaping with binnedyearmonth', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a\\.b', type: 'temporal', timeUnit: 'binnedyearmonth'}
+        }
+      });
+
+      expect(assembleFromEncoding(model)).toEqual([
+        {
+          type: 'formula',
+          expr: `timeOffset('month', datum['a.b'], 1)`,
+          as: 'a.b_end'
+        }
+      ]);
+    });
+
     it('should return a unit offset transforms for text with bandPosition', () => {
       const model = parseUnitModel({
         data: {values: []},
