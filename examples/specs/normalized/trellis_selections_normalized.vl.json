@@ -1,57 +1,26 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Anscombe's Quartet",
-  "data": {
-    "url": "data/anscombe.json"
-  },
-  "facet": {
-    "column": {
-      "field": "Series"
-    }
-  },
+  "data": {"url": "data/anscombe.json"},
+  "facet": {"column": {"field": "Series"}},
   "spec": {
     "mark": "circle",
     "encoding": {
-      "x": {
-        "field": "X",
-        "type": "quantitative",
-        "scale": {
-          "zero": false
-        }
-      },
-      "y": {
-        "field": "Y",
-        "type": "quantitative",
-        "scale": {
-          "zero": false
-        }
-      },
-      "size": {
-        "value": 100,
-        "condition": {
-          "param": "brush",
-          "value": 250
-        }
-      },
+      "x": {"field": "X", "type": "quantitative", "scale": {"zero": false}},
+      "y": {"field": "Y", "type": "quantitative", "scale": {"zero": false}},
+      "size": {"value": 100, "condition": {"param": "brush", "value": 250}},
       "color": {
         "value": "steelblue",
-        "condition": {
-          "param": "xenc",
-          "value": "red"
-        }
+        "condition": {"param": "xenc", "value": "red"}
       },
-      "opacity": {
-        "value": 1
-      }
+      "opacity": {"value": 1}
     },
     "params": [
       {
         "name": "brush",
         "select": {
           "type": "interval",
-          "encodings": [
-            "x"
-          ],
+          "encodings": ["x"],
           "resolve": "intersect",
           "on": "[pointerdown[event.shiftKey], pointerup] > pointermove",
           "translate": "[pointerdown[event.shiftKey], pointerup] > pointermove"
@@ -70,16 +39,12 @@
         "name": "xenc",
         "select": {
           "type": "point",
-          "fields": [
-            "X"
-          ],
+          "fields": ["X"],
           "resolve": "global",
           "on": "pointerover",
           "nearest": true
         },
-        "bind": {
-          "input": "number"
-        }
+        "bind": {"input": "number"}
       }
     ]
   }

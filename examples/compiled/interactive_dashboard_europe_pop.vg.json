@@ -3,9 +3,7 @@
   "background": "white",
   "padding": 5,
   "data": [
-    {
-      "name": "brush_store"
-    },
+    {"name": "brush_store"},
     {
       "name": "source_0",
       "values": [
@@ -317,14 +315,9 @@
       "transform": [
         {
           "type": "stack",
-          "groupby": [
-            "Country"
-          ],
+          "groupby": ["Country"],
           "field": "Population_ages_15_64_of_total",
-          "sort": {
-            "field": [],
-            "order": []
-          },
+          "sort": {"field": [], "order": []},
           "as": [
             "Population_ages_15_64_of_total_start",
             "Population_ages_15_64_of_total_end"
@@ -343,14 +336,9 @@
       "transform": [
         {
           "type": "stack",
-          "groupby": [
-            "Country"
-          ],
+          "groupby": ["Country"],
           "field": "Population_ages_65_and_above_of_total",
-          "sort": {
-            "field": [],
-            "order": []
-          },
+          "sort": {"field": [], "order": []},
           "as": [
             "Population_ages_65_and_above_of_total_start",
             "Population_ages_65_and_above_of_total_end"
@@ -375,38 +363,17 @@
     }
   ],
   "signals": [
-    {
-      "name": "concat_0_width",
-      "value": 200
-    },
-    {
-      "name": "concat_0_height",
-      "value": 700
-    },
-    {
-      "name": "concat_1_width",
-      "value": 200
-    },
-    {
-      "name": "concat_1_height",
-      "value": 700
-    },
-    {
-      "name": "concat_2_width",
-      "value": 260
-    },
-    {
-      "name": "concat_2_height",
-      "value": 260
-    },
+    {"name": "concat_0_width", "value": 200},
+    {"name": "concat_0_height", "value": 700},
+    {"name": "concat_1_width", "value": 200},
+    {"name": "concat_1_height", "value": 700},
+    {"name": "concat_2_width", "value": 260},
+    {"name": "concat_2_height", "value": 260},
     {
       "name": "unit",
       "value": {},
       "on": [
-        {
-          "events": "pointermove",
-          "update": "isTuple(group()) ? group() : unit"
-        }
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -414,11 +381,7 @@
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
     }
   ],
-  "layout": {
-    "padding": 20,
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -426,12 +389,8 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {
-            "signal": "concat_0_width"
-          },
-          "height": {
-            "signal": "concat_0_height"
-          }
+          "width": {"signal": "concat_0_width"},
+          "height": {"signal": "concat_0_height"}
         }
       },
       "signals": [
@@ -462,39 +421,22 @@
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {
-                    "source": "window",
-                    "type": "pointerup"
-                  }
+                  {"source": "window", "type": "pointerup"}
                 ]
               },
               "update": "[brush_y[0], clamp(y(unit), 0, concat_0_height)]"
             },
+            {"events": {"signal": "brush_scale_trigger"}, "update": "[0, 0]"},
             {
-              "events": {
-                "signal": "brush_scale_trigger"
-              },
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
-              "events": [
-                {
-                  "source": "view",
-                  "type": "dblclick"
-                }
-              ],
-              "update": "[0, 0]"
-            },
-            {
-              "events": {
-                "signal": "brush_translate_delta"
-              },
+              "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, concat_0_height)"
             },
             {
-              "events": {
-                "signal": "brush_zoom_delta"
-              },
+              "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_0_height)"
             }
           ]
@@ -503,9 +445,7 @@
           "name": "brush_Country",
           "on": [
             {
-              "events": {
-                "signal": "brush_y"
-              },
+              "events": {"signal": "brush_y"},
               "update": "brush_y[0] === brush_y[1] ? null : invert(\"concat_0_y\", brush_y)"
             }
           ]
@@ -515,11 +455,7 @@
           "value": {},
           "on": [
             {
-              "events": [
-                {
-                  "scale": "concat_0_y"
-                }
-              ],
+              "events": [{"scale": "concat_0_y"}],
               "update": "(!isArray(brush_Country) || (invert(\"concat_0_y\", brush_y)[0] === brush_Country[0] && invert(\"concat_0_y\", brush_y)[1] === brush_Country[1])) ? brush_scale_trigger : {}"
             }
           ]
@@ -528,24 +464,14 @@
           "name": "brush_tuple",
           "on": [
             {
-              "events": [
-                {
-                  "signal": "brush_Country"
-                }
-              ],
+              "events": [{"signal": "brush_Country"}],
               "update": "brush_Country ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Country]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "value": [
-            {
-              "field": "Country",
-              "channel": "y",
-              "type": "E"
-            }
-          ]
+          "value": [{"field": "Country", "channel": "y", "type": "E"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -579,10 +505,7 @@
                       "type": "pointerdown",
                       "markname": "brush_brush"
                     },
-                    {
-                      "source": "window",
-                      "type": "pointerup"
-                    }
+                    {"source": "window", "type": "pointerup"}
                   ]
                 }
               ],
@@ -627,9 +550,7 @@
           "name": "brush_modify",
           "on": [
             {
-              "events": {
-                "signal": "brush_tuple"
-              },
+              "events": {"signal": "brush_tuple"},
               "update": "modify(\"brush_store\", brush_tuple, true)"
             }
           ]
@@ -642,12 +563,8 @@
           "clip": true,
           "encode": {
             "enter": {
-              "fill": {
-                "value": "#333"
-              },
-              "fillOpacity": {
-                "value": 0.125
-              }
+              "fill": {"value": "#333"},
+              "fillOpacity": {"value": 0.125}
             },
             "update": {
               "x": [
@@ -655,38 +572,28 @@
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "value": 0
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_y[0]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                  "field": {
-                    "group": "width"
-                  }
+                  "field": {"group": "width"}
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_y[1]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ]
             }
           }
@@ -694,13 +601,9 @@
         {
           "name": "concat_0_marks",
           "type": "rect",
-          "style": [
-            "bar"
-          ],
+          "style": ["bar"],
           "interactive": true,
-          "from": {
-            "data": "data_1"
-          },
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -708,13 +611,9 @@
                   "test": "length(data(\"brush_store\")) && vlSelectionTest(\"brush_store\", datum)",
                   "value": "goldenrod"
                 },
-                {
-                  "value": "steelblue"
-                }
+                {"value": "steelblue"}
               ],
-              "ariaRoleDescription": {
-                "value": "bar"
-              },
+              "ariaRoleDescription": {"value": "bar"},
               "description": {
                 "signal": "\"Population_ages_15_64_of_total: \" + (format(datum[\"Population_ages_15_64_of_total\"], \"\")) + \"; Country: \" + (isValid(datum[\"Country\"]) ? datum[\"Country\"] : \"\"+datum[\"Country\"])"
               },
@@ -726,13 +625,8 @@
                 "scale": "concat_0_x",
                 "field": "Population_ages_15_64_of_total_start"
               },
-              "y": {
-                "scale": "concat_0_y",
-                "field": "Country"
-              },
-              "height": {
-                "signal": "max(0.25, bandwidth('concat_0_y'))"
-              }
+              "y": {"scale": "concat_0_y", "field": "Country"},
+              "height": {"signal": "max(0.25, bandwidth('concat_0_y'))"}
             }
           }
         },
@@ -741,58 +635,39 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "fill": {
-                "value": "transparent"
-              }
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "value": 0
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_y[0]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                  "field": {
-                    "group": "width"
-                  }
+                  "field": {"group": "width"}
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_y[1]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "stroke": [
-                {
-                  "test": "brush_y[0] !== brush_y[1]",
-                  "value": "white"
-                },
-                {
-                  "value": null
-                }
+                {"test": "brush_y[0] !== brush_y[1]", "value": "white"},
+                {"value": null}
               ]
             }
           }
@@ -804,9 +679,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(concat_0_width/40)"
-          },
+          "tickCount": {"signal": "ceil(concat_0_width/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -822,9 +695,7 @@
           "title": "Population_ages_15_64_of_total",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(concat_0_width/40)"
-          },
+          "tickCount": {"signal": "ceil(concat_0_width/40)"},
           "zindex": 0
         },
         {
@@ -842,12 +713,8 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {
-            "signal": "concat_1_width"
-          },
-          "height": {
-            "signal": "concat_1_height"
-          }
+          "width": {"signal": "concat_1_width"},
+          "height": {"signal": "concat_1_height"}
         }
       },
       "signals": [
@@ -878,39 +745,22 @@
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {
-                    "source": "window",
-                    "type": "pointerup"
-                  }
+                  {"source": "window", "type": "pointerup"}
                 ]
               },
               "update": "[brush_y[0], clamp(y(unit), 0, concat_1_height)]"
             },
+            {"events": {"signal": "brush_scale_trigger"}, "update": "[0, 0]"},
             {
-              "events": {
-                "signal": "brush_scale_trigger"
-              },
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
-              "events": [
-                {
-                  "source": "view",
-                  "type": "dblclick"
-                }
-              ],
-              "update": "[0, 0]"
-            },
-            {
-              "events": {
-                "signal": "brush_translate_delta"
-              },
+              "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, concat_1_height)"
             },
             {
-              "events": {
-                "signal": "brush_zoom_delta"
-              },
+              "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_1_height)"
             }
           ]
@@ -919,9 +769,7 @@
           "name": "brush_Country",
           "on": [
             {
-              "events": {
-                "signal": "brush_y"
-              },
+              "events": {"signal": "brush_y"},
               "update": "brush_y[0] === brush_y[1] ? null : invert(\"concat_1_y\", brush_y)"
             }
           ]
@@ -931,11 +779,7 @@
           "value": {},
           "on": [
             {
-              "events": [
-                {
-                  "scale": "concat_1_y"
-                }
-              ],
+              "events": [{"scale": "concat_1_y"}],
               "update": "(!isArray(brush_Country) || (invert(\"concat_1_y\", brush_y)[0] === brush_Country[0] && invert(\"concat_1_y\", brush_y)[1] === brush_Country[1])) ? brush_scale_trigger : {}"
             }
           ]
@@ -944,24 +788,14 @@
           "name": "brush_tuple",
           "on": [
             {
-              "events": [
-                {
-                  "signal": "brush_Country"
-                }
-              ],
+              "events": [{"signal": "brush_Country"}],
               "update": "brush_Country ? {unit: \"concat_1\", fields: brush_tuple_fields, values: [brush_Country]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "value": [
-            {
-              "field": "Country",
-              "channel": "y",
-              "type": "E"
-            }
-          ]
+          "value": [{"field": "Country", "channel": "y", "type": "E"}]
         },
         {
           "name": "brush_translate_anchor",
@@ -995,10 +829,7 @@
                       "type": "pointerdown",
                       "markname": "brush_brush"
                     },
-                    {
-                      "source": "window",
-                      "type": "pointerup"
-                    }
+                    {"source": "window", "type": "pointerup"}
                   ]
                 }
               ],
@@ -1043,9 +874,7 @@
           "name": "brush_modify",
           "on": [
             {
-              "events": {
-                "signal": "brush_tuple"
-              },
+              "events": {"signal": "brush_tuple"},
               "update": "modify(\"brush_store\", brush_tuple, true)"
             }
           ]
@@ -1058,12 +887,8 @@
           "clip": true,
           "encode": {
             "enter": {
-              "fill": {
-                "value": "#333"
-              },
-              "fillOpacity": {
-                "value": 0.125
-              }
+              "fill": {"value": "#333"},
+              "fillOpacity": {"value": 0.125}
             },
             "update": {
               "x": [
@@ -1071,38 +896,28 @@
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "value": 0
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_y[0]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
-                  "field": {
-                    "group": "width"
-                  }
+                  "field": {"group": "width"}
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_y[1]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ]
             }
           }
@@ -1110,13 +925,9 @@
         {
           "name": "concat_1_marks",
           "type": "rect",
-          "style": [
-            "bar"
-          ],
+          "style": ["bar"],
           "interactive": true,
-          "from": {
-            "data": "data_2"
-          },
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": [
@@ -1124,13 +935,9 @@
                   "test": "length(data(\"brush_store\")) && vlSelectionTest(\"brush_store\", datum)",
                   "value": "goldenrod"
                 },
-                {
-                  "value": "steelblue"
-                }
+                {"value": "steelblue"}
               ],
-              "ariaRoleDescription": {
-                "value": "bar"
-              },
+              "ariaRoleDescription": {"value": "bar"},
               "description": {
                 "signal": "\"Population_ages_65_and_above_of_total: \" + (format(datum[\"Population_ages_65_and_above_of_total\"], \"\")) + \"; Country: \" + (isValid(datum[\"Country\"]) ? datum[\"Country\"] : \"\"+datum[\"Country\"])"
               },
@@ -1142,13 +949,8 @@
                 "scale": "concat_1_x",
                 "field": "Population_ages_65_and_above_of_total_start"
               },
-              "y": {
-                "scale": "concat_1_y",
-                "field": "Country"
-              },
-              "height": {
-                "signal": "max(0.25, bandwidth('concat_1_y'))"
-              }
+              "y": {"scale": "concat_1_y", "field": "Country"},
+              "height": {"signal": "max(0.25, bandwidth('concat_1_y'))"}
             }
           }
         },
@@ -1157,58 +959,39 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "fill": {
-                "value": "transparent"
-              }
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "value": 0
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_y[0]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
-                  "field": {
-                    "group": "width"
-                  }
+                  "field": {"group": "width"}
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_y[1]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "stroke": [
-                {
-                  "test": "brush_y[0] !== brush_y[1]",
-                  "value": "white"
-                },
-                {
-                  "value": null
-                }
+                {"test": "brush_y[0] !== brush_y[1]", "value": "white"},
+                {"value": null}
               ]
             }
           }
@@ -1220,9 +1003,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(concat_1_width/40)"
-          },
+          "tickCount": {"signal": "ceil(concat_1_width/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -1238,9 +1019,7 @@
           "title": "Population_ages_65_and_above_of_total",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(concat_1_width/40)"
-          },
+          "tickCount": {"signal": "ceil(concat_1_width/40)"},
           "zindex": 0
         },
         {
@@ -1258,12 +1037,8 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {
-            "signal": "concat_2_width"
-          },
-          "height": {
-            "signal": "concat_2_height"
-          }
+          "width": {"signal": "concat_2_width"},
+          "height": {"signal": "concat_2_height"}
         }
       },
       "signals": [
@@ -1294,39 +1069,25 @@
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {
-                    "source": "window",
-                    "type": "pointerup"
-                  }
+                  {"source": "window", "type": "pointerup"}
                 ]
               },
               "update": "[brush_x[0], clamp(x(unit), 0, concat_2_width)]"
             },
             {
-              "events": {
-                "signal": "brush_scale_trigger"
-              },
+              "events": {"signal": "brush_scale_trigger"},
               "update": "[scale(\"concat_2_x\", brush_Population_ages_65_and_above_of_total[0]), scale(\"concat_2_x\", brush_Population_ages_65_and_above_of_total[1])]"
             },
             {
-              "events": [
-                {
-                  "source": "view",
-                  "type": "dblclick"
-                }
-              ],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
-              "events": {
-                "signal": "brush_translate_delta"
-              },
+              "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, concat_2_width)"
             },
             {
-              "events": {
-                "signal": "brush_zoom_delta"
-              },
+              "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, concat_2_width)"
             }
           ]
@@ -1335,9 +1096,7 @@
           "name": "brush_Population_ages_65_and_above_of_total",
           "on": [
             {
-              "events": {
-                "signal": "brush_x"
-              },
+              "events": {"signal": "brush_x"},
               "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_2_x\", brush_x)"
             }
           ]
@@ -1369,39 +1128,25 @@
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {
-                    "source": "window",
-                    "type": "pointerup"
-                  }
+                  {"source": "window", "type": "pointerup"}
                 ]
               },
               "update": "[brush_y[0], clamp(y(unit), 0, concat_2_height)]"
             },
             {
-              "events": {
-                "signal": "brush_scale_trigger"
-              },
+              "events": {"signal": "brush_scale_trigger"},
               "update": "[scale(\"concat_2_y\", brush_Population_ages_15_64_of_total[0]), scale(\"concat_2_y\", brush_Population_ages_15_64_of_total[1])]"
             },
             {
-              "events": [
-                {
-                  "source": "view",
-                  "type": "dblclick"
-                }
-              ],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
-              "events": {
-                "signal": "brush_translate_delta"
-              },
+              "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, concat_2_height)"
             },
             {
-              "events": {
-                "signal": "brush_zoom_delta"
-              },
+              "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_2_height)"
             }
           ]
@@ -1410,9 +1155,7 @@
           "name": "brush_Population_ages_15_64_of_total",
           "on": [
             {
-              "events": {
-                "signal": "brush_y"
-              },
+              "events": {"signal": "brush_y"},
               "update": "brush_y[0] === brush_y[1] ? null : invert(\"concat_2_y\", brush_y)"
             }
           ]
@@ -1422,14 +1165,7 @@
           "value": {},
           "on": [
             {
-              "events": [
-                {
-                  "scale": "concat_2_x"
-                },
-                {
-                  "scale": "concat_2_y"
-                }
-              ],
+              "events": [{"scale": "concat_2_x"}, {"scale": "concat_2_y"}],
               "update": "(!isArray(brush_Population_ages_65_and_above_of_total) || (+invert(\"concat_2_x\", brush_x)[0] === +brush_Population_ages_65_and_above_of_total[0] && +invert(\"concat_2_x\", brush_x)[1] === +brush_Population_ages_65_and_above_of_total[1])) && (!isArray(brush_Population_ages_15_64_of_total) || (+invert(\"concat_2_y\", brush_y)[0] === +brush_Population_ages_15_64_of_total[0] && +invert(\"concat_2_y\", brush_y)[1] === +brush_Population_ages_15_64_of_total[1])) ? brush_scale_trigger : {}"
             }
           ]
@@ -1494,10 +1230,7 @@
                       "type": "pointerdown",
                       "markname": "brush_brush"
                     },
-                    {
-                      "source": "window",
-                      "type": "pointerup"
-                    }
+                    {"source": "window", "type": "pointerup"}
                   ]
                 }
               ],
@@ -1542,9 +1275,7 @@
           "name": "brush_modify",
           "on": [
             {
-              "events": {
-                "signal": "brush_tuple"
-              },
+              "events": {"signal": "brush_tuple"},
               "update": "modify(\"brush_store\", brush_tuple, true)"
             }
           ]
@@ -1557,12 +1288,8 @@
           "clip": true,
           "encode": {
             "enter": {
-              "fill": {
-                "value": "#333"
-              },
-              "fillOpacity": {
-                "value": 0.125
-              }
+              "fill": {"value": "#333"},
+              "fillOpacity": {"value": 0.125}
             },
             "update": {
               "x": [
@@ -1570,36 +1297,28 @@
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                   "signal": "brush_x[0]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                   "signal": "brush_y[0]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                   "signal": "brush_x[1]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                   "signal": "brush_y[1]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ]
             }
           }
@@ -1607,33 +1326,21 @@
         {
           "name": "concat_2_marks",
           "type": "symbol",
-          "style": [
-            "point"
-          ],
+          "style": ["point"],
           "interactive": true,
-          "from": {
-            "data": "data_3"
-          },
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
-              "opacity": {
-                "value": 0.7
-              },
-              "fill": {
-                "value": "transparent"
-              },
+              "opacity": {"value": 0.7},
+              "fill": {"value": "transparent"},
               "stroke": [
                 {
                   "test": "length(data(\"brush_store\")) && vlSelectionTest(\"brush_store\", datum)",
                   "value": "goldenrod"
                 },
-                {
-                  "value": "steelblue"
-                }
+                {"value": "steelblue"}
               ],
-              "ariaRoleDescription": {
-                "value": "point"
-              },
+              "ariaRoleDescription": {"value": "point"},
               "description": {
                 "signal": "\"Population_ages_65_and_above_of_total: \" + (format(datum[\"Population_ages_65_and_above_of_total\"], \"\")) + \"; Population_ages_15_64_of_total: \" + (format(datum[\"Population_ages_15_64_of_total\"], \"\"))"
               },
@@ -1653,56 +1360,42 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "fill": {
-                "value": "transparent"
-              }
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                   "signal": "brush_x[0]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                   "signal": "brush_y[0]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                   "signal": "brush_x[1]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_2\"",
                   "signal": "brush_y[1]"
                 },
-                {
-                  "value": 0
-                }
+                {"value": 0}
               ],
               "stroke": [
                 {
                   "test": "brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]",
                   "value": "white"
                 },
-                {
-                  "value": null
-                }
+                {"value": null}
               ]
             }
           }
@@ -1714,9 +1407,7 @@
           "orient": "bottom",
           "gridScale": "concat_2_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(concat_2_width/40)"
-          },
+          "tickCount": {"signal": "ceil(concat_2_width/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -1730,9 +1421,7 @@
           "orient": "left",
           "gridScale": "concat_2_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(concat_2_height/40)"
-          },
+          "tickCount": {"signal": "ceil(concat_2_height/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -1748,9 +1437,7 @@
           "title": "Population_ages_65_and_above_of_total",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(concat_2_width/40)"
-          },
+          "tickCount": {"signal": "ceil(concat_2_width/40)"},
           "zindex": 0
         },
         {
@@ -1759,9 +1446,7 @@
           "grid": false,
           "title": "Population_ages_15_64_of_total",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(concat_2_height/40)"
-          },
+          "tickCount": {"signal": "ceil(concat_2_height/40)"},
           "zindex": 0
         }
       ]
@@ -1778,12 +1463,7 @@
           "Population_ages_15_64_of_total_end"
         ]
       },
-      "range": [
-        0,
-        {
-          "signal": "concat_0_width"
-        }
-      ],
+      "range": [0, {"signal": "concat_0_width"}],
       "nice": true,
       "zero": true
     },
@@ -1799,12 +1479,7 @@
           "order": "descending"
         }
       },
-      "range": [
-        0,
-        {
-          "signal": "concat_0_height"
-        }
-      ],
+      "range": [0, {"signal": "concat_0_height"}],
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     },
@@ -1818,12 +1493,7 @@
           "Population_ages_65_and_above_of_total_end"
         ]
       },
-      "range": [
-        0,
-        {
-          "signal": "concat_1_width"
-        }
-      ],
+      "range": [0, {"signal": "concat_1_width"}],
       "nice": true,
       "zero": true
     },
@@ -1839,12 +1509,7 @@
           "order": "descending"
         }
       },
-      "range": [
-        0,
-        {
-          "signal": "concat_1_height"
-        }
-      ],
+      "range": [0, {"signal": "concat_1_height"}],
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     },
@@ -1855,28 +1520,15 @@
         "data": "data_3",
         "field": "Population_ages_65_and_above_of_total"
       },
-      "range": [
-        0,
-        {
-          "signal": "concat_2_width"
-        }
-      ],
+      "range": [0, {"signal": "concat_2_width"}],
       "zero": false,
       "nice": true
     },
     {
       "name": "concat_2_y",
       "type": "linear",
-      "domain": {
-        "data": "data_3",
-        "field": "Population_ages_15_64_of_total"
-      },
-      "range": [
-        {
-          "signal": "concat_2_height"
-        },
-        0
-      ],
+      "domain": {"data": "data_3", "field": "Population_ages_15_64_of_total"},
+      "range": [{"signal": "concat_2_height"}, 0],
       "zero": false,
       "nice": true
     }
