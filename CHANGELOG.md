@@ -1,5 +1,18 @@
 
 
+# [5.15.0](https://github.com/vega/vega-lite/compare/v5.14.1...v5.15.0) (2023-09-13)
+
+
+### Bug Fixes
+
+* unescape paths in binned `timeUnits` to allow for fields with periods in name ([#9088](https://github.com/vega/vega-lite/issues/9088)) ([53ede0e](https://github.com/vega/vega-lite/commit/53ede0e9e0e3195eab3a2a6a105020a74b913cba))
+* update ts and fix typing issues ([#9066](https://github.com/vega/vega-lite/issues/9066)) ([b421a44](https://github.com/vega/vega-lite/commit/b421a445e68e43e563f02f1e6006e3f5d9434a2b))
+
+
+### Features
+
+* switch from clone to built in structured clone ([#9068](https://github.com/vega/vega-lite/issues/9068)) ([7874ea9](https://github.com/vega/vega-lite/commit/7874ea9396c2256bfd31307365da6fb5b6e66912))
+
 ## [5.14.1](https://github.com/vega/vega-lite/compare/v5.14.0...v5.14.1) (2023-07-20)
 
 
