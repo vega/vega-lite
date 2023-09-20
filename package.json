@@ -114,7 +114,7 @@
     "mkdirp": "^3.0.1",
     "pako": "^2.1.0",
     "prettier": "^3.0.2",
-    "puppeteer": "^15.0.0",
+    "puppeteer": "^21.3.1",
     "release-it": "^16.1.5",
     "rollup": "^3.28.1",
     "rollup-plugin-bundle-size": "^1.0.3",
