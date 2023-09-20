@@ -5,6 +5,7 @@ import {SELECTION_ID} from '../../selection';
 import {vals} from '../../util';
 import {BRUSH} from './interval';
 import {TUPLE_FIELDS} from './project';
+import {TIME} from '../../channel';
 
 export const CURR = '_curr';
 export const ANIM_VALUE = 'anim_value';
@@ -100,8 +101,7 @@ const point: SelectionCompiler<'point'> = {
 
     if (isTimerSelection(selCmpt)) {
       // timer event: selection is for animation
-      // TODO(jzong) scale name currently hardcoded to 'time'
-      return signals.concat(animationSignals(selCmpt.name, 'time'), [
+      return signals.concat(animationSignals(selCmpt.name, model.scaleName(TIME)), [
         {
           name: name + TUPLE,
           on: [
