@@ -1,9 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Drag out a rectangular brush to highlight points.",
-  "data": {
-    "url": "data/cars.json"
-  },
+  "data": {"url": "data/cars.json"},
   "layer": [
     {
       "params": [
@@ -17,41 +15,20 @@
         },
         {
           "name": "cyl",
-          "select": {
-            "type": "point",
-            "fields": [
-              "Cylinders"
-            ]
-          },
-          "bind": {
-            "input": "range",
-            "min": 3,
-            "max": 8,
-            "step": 1
-          }
+          "select": {"type": "point", "fields": ["Cylinders"]},
+          "bind": {"input": "range", "min": 3, "max": 8, "step": 1}
         }
       ],
       "mark": "point",
       "encoding": {
-        "x": {
-          "field": "Horsepower",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "Miles_per_Gallon",
-          "type": "quantitative"
-        },
+        "x": {"field": "Horsepower", "type": "quantitative"},
+        "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
         "color": {
-          "condition": {
-            "param": "brush",
-            "value": "grey"
-          },
+          "condition": {"param": "brush", "value": "grey"},
           "field": "Cylinders",
           "type": "ordinal"
         },
-        "size": {
-          "value": 100
-        }
+        "size": {"value": 100}
       }
     },
     {
@@ -67,20 +44,10 @@
         }
       ],
       "encoding": {
-        "x": {
-          "field": "Horsepower",
-          "type": "quantitative"
-        },
-        "y": {
-          "field": "Miles_per_Gallon",
-          "type": "quantitative"
-        },
+        "x": {"field": "Horsepower", "type": "quantitative"},
+        "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
         "color": {
-          "condition": {
-            "param": "brush",
-            "field": "Cylinders",
-            "type": "ordinal"
-          },
+          "condition": {"param": "brush", "field": "Cylinders", "type": "ordinal"},
           "value": "grey"
         },
         "size": {
