@@ -106,13 +106,13 @@ const interval: SelectionCompiler<'interval'> = {
         ...(init ? {init: `{${update}: ${assembleInit(init)}}`} : {}),
         ...(dataSignals.length
           ? {
-            on: [
-              {
-                events: [{signal: dataSignals.join(' || ')}], // Prevents double invocation, see https://github.com/vega/vega/issues/1672.
-                update: `${dataSignals.join(' && ')} ? {${update}: [${dataSignals}]} : null`
-              }
-            ]
-          }
+              on: [
+                {
+                  events: [{signal: dataSignals.join(' || ')}], // Prevents double invocation, see https://github.com/vega/vega/issues/1672.
+                  update: `${dataSignals.join(' && ')} ? {${update}: [${dataSignals}]} : null`
+                }
+              ]
+            }
           : {})
       });
     } else {
@@ -233,7 +233,7 @@ const interval: SelectionCompiler<'interval'> = {
 
     // Two brush marks ensure that fill colors and other aesthetic choices do
     // not interefere with the core marks, but that the brushed region can still
-    // be interacted with (e.g., ging it around).
+    // be interacted with (e.g., dragging it around).
     const {fill, fillOpacity, cursor, ...stroke} = selCmpt.mark;
     const vgStroke = keys(stroke).reduce((def, k) => {
       def[k] = [
@@ -323,18 +323,18 @@ function channelSignals(
     return hasScales
       ? [{name: dname, on: []}]
       : [
-        {name: vname, ...vinit, on: von},
-        {
-          name: dname,
-          ...(init ? {init: assembleInit(init)} : {}), // Cannot be `value` as `init` may require datetime exprs.
-          on: [
-            {
-              events: {signal: vname},
-              update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleName}, ${vname})`
-            }
-          ]
-        }
-      ];
+          {name: vname, ...vinit, on: von},
+          {
+            name: dname,
+            ...(init ? {init: assembleInit(init)} : {}), // Cannot be `value` as `init` may require datetime exprs.
+            on: [
+              {
+                events: {signal: vname},
+                update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleName}, ${vname})`
+              }
+            ]
+          }
+        ];
   } else {
     const initIdx = channel === X ? 0 : 1;
     const initSg = selCmpt.name + INIT;
