@@ -11,28 +11,15 @@
       "values": [
         {
           "unit": "layer_0",
-          "fields": [
-            {
-              "field": "date",
-              "channel": "x",
-              "type": "E"
-            }
-          ],
-          "values": [
-            1104566400000
-          ]
+          "fields": [{"field": "date", "channel": "x", "type": "E"}],
+          "values": [1104566400000]
         }
       ]
     },
     {
       "name": "source_0",
       "url": "data/stocks.csv",
-      "format": {
-        "type": "csv",
-        "parse": {
-          "date": "date"
-        }
-      }
+      "format": {"type": "csv", "parse": {"date": "date"}}
     },
     {
       "name": "data_0",
@@ -62,12 +49,8 @@
           "type": "lookup",
           "from": "data_1",
           "key": "symbol",
-          "fields": [
-            "symbol"
-          ],
-          "as": [
-            "index"
-          ]
+          "fields": ["symbol"],
+          "as": ["index"]
         },
         {
           "type": "formula",
@@ -103,14 +86,8 @@
         {
           "field": "date",
           "type": "timeunit",
-          "units": [
-            "year",
-            "month"
-          ],
-          "as": [
-            "yearmonth_date",
-            "yearmonth_date_end"
-          ]
+          "units": ["year", "month"],
+          "as": ["yearmonth_date", "yearmonth_date_end"]
         },
         {
           "type": "filter",
@@ -124,10 +101,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {
-          "events": "pointermove",
-          "update": "isTuple(group()) ? group() : unit"
-        }
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -148,26 +122,12 @@
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"layer_0\", fields: index_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         },
-        {
-          "events": [
-            {
-              "source": "view",
-              "type": "dblclick"
-            }
-          ],
-          "update": "null"
-        }
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
       "name": "index_tuple_fields",
-      "value": [
-        {
-          "field": "date",
-          "channel": "x",
-          "type": "E"
-        }
-      ]
+      "value": [{"field": "date", "channel": "x", "type": "E"}]
     },
     {
       "name": "index_toggle",
@@ -183,24 +143,14 @@
           ],
           "update": "event.shiftKey"
         },
-        {
-          "events": [
-            {
-              "source": "view",
-              "type": "dblclick"
-            }
-          ],
-          "update": "false"
-        }
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {
       "name": "index_modify",
       "on": [
         {
-          "events": {
-            "signal": "index_tuple"
-          },
+          "events": {"signal": "index_tuple"},
           "update": "modify(\"index_store\", index_toggle ? null : index_tuple, index_toggle ? null : true, index_toggle ? index_tuple : null)"
         }
       ]
@@ -210,38 +160,20 @@
     {
       "name": "layer_0_marks",
       "type": "symbol",
-      "style": [
-        "point"
-      ],
+      "style": ["point"],
       "interactive": true,
-      "from": {
-        "data": "data_0"
-      },
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "opacity": {
-            "value": 0
-          },
-          "fill": {
-            "value": "transparent"
-          },
-          "stroke": {
-            "value": "#4c78a8"
-          },
-          "ariaRoleDescription": {
-            "value": "point"
-          },
+          "opacity": {"value": 0},
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
           },
-          "x": {
-            "scale": "x",
-            "field": "date"
-          },
-          "y": {
-            "signal": "height",
-            "mult": 0.5
-          }
+          "x": {"scale": "x", "field": "date"},
+          "y": {"signal": "height", "mult": 0.5}
         }
       }
     },
@@ -249,42 +181,21 @@
       "name": "layer_0_voronoi",
       "type": "path",
       "interactive": true,
-      "from": {
-        "data": "layer_0_marks"
-      },
+      "from": {"data": "layer_0_marks"},
       "encode": {
         "update": {
-          "fill": {
-            "value": "transparent"
-          },
-          "strokeWidth": {
-            "value": 0.35
-          },
-          "stroke": {
-            "value": "transparent"
-          },
-          "isVoronoi": {
-            "value": true
-          }
+          "fill": {"value": "transparent"},
+          "strokeWidth": {"value": 0.35},
+          "stroke": {"value": "transparent"},
+          "isVoronoi": {"value": true}
         }
       },
       "transform": [
         {
           "type": "voronoi",
-          "x": {
-            "expr": "datum.datum.x || 0"
-          },
-          "y": {
-            "expr": "0"
-          },
-          "size": [
-            {
-              "signal": "width"
-            },
-            {
-              "signal": "height"
-            }
-          ]
+          "x": {"expr": "datum.datum.x || 0"},
+          "y": {"expr": "0"},
+          "size": [{"signal": "width"}, {"signal": "height"}]
         }
       ]
     },
@@ -295,56 +206,31 @@
         "facet": {
           "name": "faceted_path_layer_1_main",
           "data": "data_2",
-          "groupby": [
-            "symbol"
-          ]
+          "groupby": ["symbol"]
         }
       },
       "encode": {
         "update": {
-          "width": {
-            "field": {
-              "group": "width"
-            }
-          },
-          "height": {
-            "field": {
-              "group": "height"
-            }
-          }
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
         }
       },
       "marks": [
         {
           "name": "layer_1_marks",
           "type": "line",
-          "style": [
-            "line"
-          ],
-          "sort": {
-            "field": "datum[\"date\"]"
-          },
+          "style": ["line"],
+          "sort": {"field": "datum[\"date\"]"},
           "interactive": false,
-          "from": {
-            "data": "faceted_path_layer_1_main"
-          },
+          "from": {"data": "faceted_path_layer_1_main"},
           "encode": {
             "update": {
-              "stroke": {
-                "scale": "color",
-                "field": "symbol"
-              },
+              "stroke": {"scale": "color", "field": "symbol"},
               "description": {
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; indexed_price: \" + (format(datum[\"indexed_price\"], \"%\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
-              "x": {
-                "scale": "x",
-                "field": "date"
-              },
-              "y": {
-                "scale": "y",
-                "field": "indexed_price"
-              },
+              "x": {"scale": "x", "field": "date"},
+              "y": {"scale": "y", "field": "indexed_price"},
               "defined": {
                 "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"indexed_price\"]) && isFinite(+datum[\"indexed_price\"])"
               }
@@ -356,76 +242,42 @@
     {
       "name": "layer_2_layer_0_marks",
       "type": "rule",
-      "style": [
-        "rule"
-      ],
+      "style": ["rule"],
       "interactive": false,
-      "from": {
-        "data": "data_4"
-      },
+      "from": {"data": "data_4"},
       "encode": {
         "update": {
-          "strokeWidth": {
-            "value": 0.5
-          },
-          "stroke": {
-            "value": "firebrick"
-          },
+          "strokeWidth": {"value": 0.5},
+          "stroke": {"value": "firebrick"},
           "description": {
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
           },
-          "x": {
-            "scale": "x",
-            "field": "date"
-          },
-          "y": {
-            "value": 0
-          },
-          "y2": {
-            "field": {
-              "group": "height"
-            }
-          }
+          "x": {"scale": "x", "field": "date"},
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
         }
       }
     },
     {
       "name": "layer_2_layer_1_marks",
       "type": "text",
-      "style": [
-        "text"
-      ],
+      "style": ["text"],
       "interactive": false,
-      "from": {
-        "data": "data_5"
-      },
+      "from": {"data": "data_5"},
       "encode": {
         "update": {
-          "align": {
-            "value": "center"
-          },
-          "fontWeight": {
-            "value": 100
-          },
-          "fill": {
-            "value": "firebrick"
-          },
+          "align": {"value": "center"},
+          "fontWeight": {"value": 100},
+          "fill": {"value": "firebrick"},
           "description": {
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
-          "x": {
-            "scale": "x",
-            "field": "date"
-          },
-          "y": {
-            "value": 310
-          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"value": 310},
           "text": {
             "signal": "timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
           },
-          "baseline": {
-            "value": "middle"
-          }
+          "baseline": {"value": "middle"}
         }
       }
     }
@@ -436,55 +288,26 @@
       "type": "time",
       "domain": {
         "fields": [
-          {
-            "data": "data_0",
-            "field": "date"
-          },
-          {
-            "data": "data_2",
-            "field": "date"
-          },
-          {
-            "data": "data_4",
-            "field": "date"
-          },
-          {
-            "data": "data_5",
-            "field": "date"
-          }
+          {"data": "data_0", "field": "date"},
+          {"data": "data_2", "field": "date"},
+          {"data": "data_4", "field": "date"},
+          {"data": "data_5", "field": "date"}
         ]
       },
-      "range": [
-        0,
-        {
-          "signal": "width"
-        }
-      ]
+      "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "data": "data_2",
-        "field": "indexed_price"
-      },
-      "range": [
-        {
-          "signal": "height"
-        },
-        0
-      ],
+      "domain": {"data": "data_2", "field": "indexed_price"},
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "data": "data_2",
-        "field": "symbol",
-        "sort": true
-      },
+      "domain": {"data": "data_2", "field": "symbol", "sort": true},
       "range": "category"
     }
   ],
@@ -494,9 +317,7 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {
-        "signal": "ceil(height/40)"
-      },
+      "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
       "aria": false,
@@ -512,17 +333,9 @@
       "title": "indexed_price",
       "format": "%",
       "labelOverlap": true,
-      "tickCount": {
-        "signal": "ceil(height/40)"
-      },
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],
-  "legends": [
-    {
-      "stroke": "color",
-      "symbolType": "stroke",
-      "title": "symbol"
-    }
-  ]
+  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "symbol"}]
 }

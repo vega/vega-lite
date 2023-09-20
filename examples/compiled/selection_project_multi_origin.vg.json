@@ -6,15 +6,11 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {
-      "name": "pts_store"
-    },
+    {"name": "pts_store"},
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {
-        "type": "json"
-      },
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "filter",
@@ -28,10 +24,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {
-          "events": "pointermove",
-          "update": "isTuple(group()) ? group() : unit"
-        }
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -42,66 +35,30 @@
       "name": "pts_tuple",
       "on": [
         {
-          "events": [
-            {
-              "source": "scope",
-              "type": "click"
-            }
-          ],
+          "events": [{"source": "scope", "type": "click"}],
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Origin\"]]} : null",
           "force": true
         },
-        {
-          "events": [
-            {
-              "source": "view",
-              "type": "dblclick"
-            }
-          ],
-          "update": "null"
-        }
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
-    {
-      "name": "pts_tuple_fields",
-      "value": [
-        {
-          "type": "E",
-          "field": "Origin"
-        }
-      ]
-    },
+    {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "Origin"}]},
     {
       "name": "pts_toggle",
       "value": false,
       "on": [
         {
-          "events": [
-            {
-              "source": "scope",
-              "type": "click"
-            }
-          ],
+          "events": [{"source": "scope", "type": "click"}],
           "update": "event.shiftKey"
         },
-        {
-          "events": [
-            {
-              "source": "view",
-              "type": "dblclick"
-            }
-          ],
-          "update": "false"
-        }
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {
       "name": "pts_modify",
       "on": [
         {
-          "events": {
-            "signal": "pts_tuple"
-          },
+          "events": {"signal": "pts_tuple"},
           "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
         }
       ]
@@ -111,53 +68,33 @@
     {
       "name": "marks",
       "type": "symbol",
-      "style": [
-        "point"
-      ],
+      "style": ["point"],
       "interactive": true,
-      "from": {
-        "data": "source_0"
-      },
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "opacity": {
-            "value": 0.7
-          },
-          "fill": {
-            "value": "transparent"
-          },
+          "opacity": {"value": 0.7},
+          "fill": {"value": "transparent"},
           "stroke": [
             {
               "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
               "scale": "color",
               "field": "Cylinders"
             },
-            {
-              "value": "grey"
-            }
+            {"value": "grey"}
           ],
-          "ariaRoleDescription": {
-            "value": "point"
-          },
+          "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
-          "x": {
-            "scale": "x",
-            "field": "Horsepower"
-          },
-          "y": {
-            "scale": "y",
-            "field": "Miles_per_Gallon"
-          },
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
               "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
               "value": 200
             },
-            {
-              "value": 50
-            }
+            {"value": 50}
           ],
           "shape": [
             {
@@ -165,9 +102,7 @@
               "scale": "shape",
               "field": "Origin"
             },
-            {
-              "value": "circle"
-            }
+            {"value": "circle"}
           ]
         }
       }
@@ -177,61 +112,31 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "data": "source_0",
-        "field": "Horsepower"
-      },
-      "range": [
-        0,
-        {
-          "signal": "width"
-        }
-      ],
+      "domain": {"data": "source_0", "field": "Horsepower"},
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "data": "source_0",
-        "field": "Miles_per_Gallon"
-      },
-      "range": [
-        {
-          "signal": "height"
-        },
-        0
-      ],
+      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "data": "source_0",
-        "field": "Cylinders",
-        "sort": true
-      },
-      "range": {
-        "scheme": "yelloworangebrown"
-      },
+      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
+      "range": {"scheme": "yelloworangebrown"},
       "interpolate": "hcl"
     },
     {
       "name": "shape",
       "type": "ordinal",
-      "domain": {
-        "data": "source_0",
-        "field": "Origin",
-        "sort": true
-      },
-      "range": [
-        "triangle-left",
-        "triangle-right",
-        "triangle-up"
-      ]
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "range": ["triangle-left", "triangle-right", "triangle-up"]
     }
   ],
   "axes": [
@@ -240,9 +145,7 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {
-        "signal": "ceil(width/40)"
-      },
+      "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
       "aria": false,
@@ -256,9 +159,7 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {
-        "signal": "ceil(height/40)"
-      },
+      "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
       "aria": false,
@@ -274,9 +175,7 @@
       "title": "Horsepower",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {
-        "signal": "ceil(width/40)"
-      },
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     },
     {
@@ -285,9 +184,7 @@
       "grid": false,
       "title": "Miles_per_Gallon",
       "labelOverlap": true,
-      "tickCount": {
-        "signal": "ceil(height/40)"
-      },
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],
@@ -299,12 +196,8 @@
       "encode": {
         "symbols": {
           "update": {
-            "fill": {
-              "value": "transparent"
-            },
-            "opacity": {
-              "value": 0.7
-            }
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
           }
         }
       }
@@ -316,15 +209,9 @@
       "encode": {
         "symbols": {
           "update": {
-            "fill": {
-              "value": "transparent"
-            },
-            "stroke": {
-              "value": "grey"
-            },
-            "opacity": {
-              "value": 0.7
-            }
+            "fill": {"value": "transparent"},
+            "stroke": {"value": "grey"},
+            "opacity": {"value": 0.7}
           }
         }
       }
