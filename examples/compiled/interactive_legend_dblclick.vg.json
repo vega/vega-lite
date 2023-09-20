@@ -6,75 +6,39 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {
-      "name": "industry_store"
-    },
+    {"name": "industry_store"},
     {
       "name": "source_0",
       "url": "data/unemployment-across-industries.json",
-      "format": {
-        "type": "json",
-        "parse": {
-          "date": "date"
-        }
-      },
+      "format": {"type": "json", "parse": {"date": "date"}},
       "transform": [
         {
           "field": "date",
           "type": "timeunit",
-          "units": [
-            "year",
-            "month"
-          ],
-          "as": [
-            "yearmonth_date",
-            "yearmonth_date_end"
-          ]
+          "units": ["year", "month"],
+          "as": ["yearmonth_date", "yearmonth_date_end"]
         },
         {
           "type": "aggregate",
-          "groupby": [
-            "yearmonth_date",
-            "series"
-          ],
-          "ops": [
-            "sum"
-          ],
-          "fields": [
-            "count"
-          ],
-          "as": [
-            "sum_count"
-          ]
+          "groupby": ["yearmonth_date", "series"],
+          "ops": ["sum"],
+          "fields": ["count"],
+          "as": ["sum_count"]
         },
         {
           "type": "impute",
           "field": "sum_count",
-          "groupby": [
-            "series"
-          ],
+          "groupby": ["series"],
           "key": "yearmonth_date",
           "method": "value",
           "value": 0
         },
         {
           "type": "stack",
-          "groupby": [
-            "yearmonth_date"
-          ],
+          "groupby": ["yearmonth_date"],
           "field": "sum_count",
-          "sort": {
-            "field": [
-              "series"
-            ],
-            "order": [
-              "descending"
-            ]
-          },
-          "as": [
-            "sum_count_start",
-            "sum_count_end"
-          ],
+          "sort": {"field": ["series"], "order": ["descending"]},
+          "as": ["sum_count_start", "sum_count_end"],
           "offset": "center"
         }
       ]
@@ -85,10 +49,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {
-          "events": "pointermove",
-          "update": "isTuple(group()) ? group() : unit"
-        }
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -117,12 +78,7 @@
           "force": true
         },
         {
-          "events": [
-            {
-              "source": "view",
-              "type": "dblclick"
-            }
-          ],
+          "events": [{"source": "view", "type": "dblclick"}],
           "update": "!event.item || !datum ? null : industry_series_legend",
           "force": true
         }
@@ -138,26 +94,14 @@
     },
     {
       "name": "industry_tuple_fields",
-      "value": [
-        {
-          "type": "E",
-          "field": "series"
-        }
-      ]
+      "value": [{"type": "E", "field": "series"}]
     },
     {
       "name": "industry_toggle",
       "value": false,
       "on": [
         {
-          "events": {
-            "merge": [
-              {
-                "source": "view",
-                "type": "dblclick"
-              }
-            ]
-          },
+          "events": {"merge": [{"source": "view", "type": "dblclick"}]},
           "update": "event.shiftKey"
         }
       ]
@@ -166,9 +110,7 @@
       "name": "industry_modify",
       "on": [
         {
-          "events": {
-            "signal": "industry_tuple"
-          },
+          "events": {"signal": "industry_tuple"},
           "update": "modify(\"industry_store\", industry_toggle ? null : industry_tuple, industry_toggle ? null : true, industry_toggle ? industry_tuple : null)"
         }
       ]
@@ -182,72 +124,40 @@
         "facet": {
           "name": "faceted_path_main",
           "data": "source_0",
-          "groupby": [
-            "series"
-          ]
+          "groupby": ["series"]
         }
       },
       "encode": {
         "update": {
-          "width": {
-            "field": {
-              "group": "width"
-            }
-          },
-          "height": {
-            "field": {
-              "group": "height"
-            }
-          }
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
         }
       },
       "marks": [
         {
           "name": "marks",
           "type": "area",
-          "style": [
-            "area"
-          ],
-          "sort": {
-            "field": "datum[\"yearmonth_date\"]"
-          },
+          "style": ["area"],
+          "sort": {"field": "datum[\"yearmonth_date\"]"},
           "interactive": true,
-          "from": {
-            "data": "faceted_path_main"
-          },
+          "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {
-              "orient": {
-                "value": "vertical"
-              },
-              "fill": {
-                "scale": "color",
-                "field": "series"
-              },
+              "orient": {"value": "vertical"},
+              "fill": {"scale": "color", "field": "series"},
               "opacity": [
                 {
                   "test": "!length(data(\"industry_store\")) || vlSelectionTest(\"industry_store\", datum)",
                   "value": 1
                 },
-                {
-                  "value": 0.2
-                }
+                {"value": 0.2}
               ],
               "description": {
                 "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], '%Y')) + \"; Sum of count: \" + (format(datum[\"sum_count\"], \"\")) + \"; series: \" + (isValid(datum[\"series\"]) ? datum[\"series\"] : \"\"+datum[\"series\"])"
               },
-              "x": {
-                "scale": "x",
-                "field": "yearmonth_date"
-              },
-              "y": {
-                "scale": "y",
-                "field": "sum_count_end"
-              },
-              "y2": {
-                "scale": "y",
-                "field": "sum_count_start"
-              },
+              "x": {"scale": "x", "field": "yearmonth_date"},
+              "y": {"scale": "y", "field": "sum_count_end"},
+              "y2": {"scale": "y", "field": "sum_count_start"},
               "defined": {
                 "signal": "isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"]) && isValid(datum[\"sum_count\"]) && isFinite(+datum[\"sum_count\"])"
               }
@@ -261,47 +171,25 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "data": "source_0",
-        "field": "yearmonth_date"
-      },
-      "range": [
-        0,
-        {
-          "signal": "width"
-        }
-      ]
+      "domain": {"data": "source_0", "field": "yearmonth_date"},
+      "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
         "data": "source_0",
-        "fields": [
-          "sum_count_start",
-          "sum_count_end"
-        ]
+        "fields": ["sum_count_start", "sum_count_end"]
       },
-      "range": [
-        {
-          "signal": "height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "data": "source_0",
-        "field": "series",
-        "sort": true
-      },
-      "range": {
-        "scheme": "category20b"
-      }
+      "domain": {"data": "source_0", "field": "series", "sort": true},
+      "range": {"scheme": "category20b"}
     }
   ],
   "axes": [
@@ -310,9 +198,7 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {
-        "signal": "ceil(width/40)"
-      },
+      "tickCount": {"signal": "ceil(width/40)"},
       "tickMinStep": {
         "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
@@ -334,9 +220,7 @@
       "tickSize": 0,
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {
-        "signal": "ceil(width/40)"
-      },
+      "tickCount": {"signal": "ceil(width/40)"},
       "tickMinStep": {
         "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
@@ -358,9 +242,7 @@
                 "test": "(!length(data(\"industry_store\")) || (industry[\"series\"] && indexof(industry[\"series\"], datum.value) >= 0))",
                 "value": 1
               },
-              {
-                "value": 0.35
-              }
+              {"value": 0.35}
             ]
           }
         },
@@ -373,20 +255,14 @@
                 "test": "(!length(data(\"industry_store\")) || (industry[\"series\"] && indexof(industry[\"series\"], datum.value) >= 0))",
                 "value": 1
               },
-              {
-                "value": 0.35
-              }
+              {"value": 0.35}
             ]
           }
         },
         "entries": {
           "name": "series_legend_entries",
           "interactive": true,
-          "update": {
-            "fill": {
-              "value": "transparent"
-            }
-          }
+          "update": {"fill": {"value": "transparent"}}
         }
       }
     }

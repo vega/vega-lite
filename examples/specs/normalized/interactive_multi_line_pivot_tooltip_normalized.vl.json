@@ -1,8 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {
-    "url": "data/stocks.csv"
-  },
+  "data": {"url": "data/stocks.csv"},
   "width": 400,
   "height": 300,
   "layer": [
@@ -11,43 +9,18 @@
         {
           "mark": "line",
           "encoding": {
-            "x": {
-              "field": "date",
-              "type": "temporal"
-            },
-            "color": {
-              "field": "symbol",
-              "type": "nominal"
-            },
-            "y": {
-              "field": "price",
-              "type": "quantitative"
-            }
+            "x": {"field": "date", "type": "temporal"},
+            "color": {"field": "symbol", "type": "nominal"},
+            "y": {"field": "price", "type": "quantitative"}
           }
         },
         {
           "mark": "point",
-          "transform": [
-            {
-              "filter": {
-                "param": "hover",
-                "empty": false
-              }
-            }
-          ],
+          "transform": [{"filter": {"param": "hover", "empty": false}}],
           "encoding": {
-            "x": {
-              "field": "date",
-              "type": "temporal"
-            },
-            "color": {
-              "field": "symbol",
-              "type": "nominal"
-            },
-            "y": {
-              "field": "price",
-              "type": "quantitative"
-            }
+            "x": {"field": "date", "type": "temporal"},
+            "color": {"field": "symbol", "type": "nominal"},
+            "y": {"field": "price", "type": "quantitative"}
           }
         }
       ]
@@ -55,39 +28,17 @@
     {
       "mark": "rule",
       "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal"
-        },
+        "x": {"field": "date", "type": "temporal"},
         "opacity": {
-          "condition": {
-            "value": 0.3,
-            "param": "hover",
-            "empty": false
-          },
+          "condition": {"value": 0.3, "param": "hover", "empty": false},
           "value": 0
         },
         "tooltip": [
-          {
-            "field": "AAPL",
-            "type": "quantitative"
-          },
-          {
-            "field": "AMZN",
-            "type": "quantitative"
-          },
-          {
-            "field": "GOOG",
-            "type": "quantitative"
-          },
-          {
-            "field": "IBM",
-            "type": "quantitative"
-          },
-          {
-            "field": "MSFT",
-            "type": "quantitative"
-          }
+          {"field": "AAPL", "type": "quantitative"},
+          {"field": "AMZN", "type": "quantitative"},
+          {"field": "GOOG", "type": "quantitative"},
+          {"field": "IBM", "type": "quantitative"},
+          {"field": "MSFT", "type": "quantitative"}
         ]
       },
       "params": [
@@ -95,24 +46,14 @@
           "name": "hover",
           "select": {
             "type": "point",
-            "fields": [
-              "date"
-            ],
+            "fields": ["date"],
             "nearest": true,
             "on": "pointerover",
             "clear": "pointerout"
           }
         }
       ],
-      "transform": [
-        {
-          "pivot": "symbol",
-          "value": "price",
-          "groupby": [
-            "date"
-          ]
-        }
-      ]
+      "transform": [{"pivot": "symbol", "value": "price", "groupby": ["date"]}]
     }
   ]
 }
