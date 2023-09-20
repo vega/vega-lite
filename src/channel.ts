@@ -39,6 +39,7 @@ export const LATITUDE = 'latitude' as const;
 export const LONGITUDE = 'longitude' as const;
 export const LATITUDE2 = 'latitude2' as const;
 export const LONGITUDE2 = 'longitude2' as const;
+export const CURSOR = 'cursor' as const;
 
 // Mark property with scale
 export const COLOR = 'color' as const;
@@ -71,6 +72,8 @@ export const HREF = 'href' as const;
 
 export const URL = 'url' as const;
 export const DESCRIPTION = 'description' as const;
+
+
 
 const POSITION_CHANNEL_INDEX = {
   x: 1,
@@ -148,6 +151,7 @@ const UNIT_CHANNEL_INDEX: Flag<Channel> = {
 
   // channels without scales
   order: 1,
+  cursor: 1,
   text: 1,
   detail: 1,
   key: 1,
@@ -455,6 +459,7 @@ export function supportLegend(channel: NonPositionScaleChannel) {
     case COLOR:
     case FILL:
     case STROKE:
+    case CURSOR:
     case SIZE:
     case SHAPE:
     case OPACITY:
@@ -538,6 +543,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case FILLOPACITY:
     case STROKEOPACITY:
     case STROKEWIDTH:
+    case CURSOR:
 
     // falls through
 
@@ -641,6 +647,7 @@ export function rangeType(channel: ExtendedChannel): RangeType {
     // TEXT, TOOLTIP, URL, and HREF have no scale but have discrete output [falls through]
     case TEXT:
     case TOOLTIP:
+    case CURSOR:
     case HREF:
     case URL:
     case DESCRIPTION:

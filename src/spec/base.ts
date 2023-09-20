@@ -166,7 +166,7 @@ export interface BaseViewBackground<ES extends ExprRef | SignalRef>
   stroke?: Color | null | ES;
 
   /**
-   * The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
+   * The cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
    */
   cursor?: Cursor;
 }
@@ -317,9 +317,9 @@ export function extractCompositionLayout(
         layout[prop] = isNumber(spacing)
           ? spacing
           : {
-              row: spacing.row ?? spacingConfig,
-              column: spacing.column ?? spacingConfig
-            };
+            row: spacing.row ?? spacingConfig,
+            column: spacing.column ?? spacingConfig
+          };
       } else {
         (layout[prop] as any) = spec[prop];
       }
