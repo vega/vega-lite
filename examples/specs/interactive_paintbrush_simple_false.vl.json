@@ -1,33 +1,20 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {
-    "url": "data/cars.json"
-  },
+  "data": {"url": "data/cars.json"},
   "params": [
     {
       "name": "toggleOrigin",
-      "bind": {
-        "input": "checkbox"
-      }
+      "bind": {"input": "checkbox"}
     },
     {
       "name": "paintbrush",
-      "select": {
-        "type": "point",
-        "on": "pointerover"
-      }
+      "select": {"type": "point", "on": "pointerover"}
     }
   ],
   "mark": "point",
   "encoding": {
-    "x": {
-      "field": "Horsepower",
-      "type": "quantitative"
-    },
-    "y": {
-      "field": "Miles_per_Gallon",
-      "type": "quantitative"
-    },
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
     "color": {
       "condition": {
         "param": "toggleOrigin",

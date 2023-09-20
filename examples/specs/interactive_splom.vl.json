@@ -1,21 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "repeat": {
-    "row": [
-      "Horsepower",
-      "Acceleration",
-      "Miles_per_Gallon"
-    ],
-    "column": [
-      "Miles_per_Gallon",
-      "Acceleration",
-      "Horsepower"
-    ]
+    "row": ["Horsepower", "Acceleration", "Miles_per_Gallon"],
+    "column": ["Miles_per_Gallon", "Acceleration", "Horsepower"]
   },
   "spec": {
-    "data": {
-      "url": "data/cars.json"
-    },
+    "data": {"url": "data/cars.json"},
     "mark": "point",
     "params": [
       {
@@ -40,20 +30,11 @@
       }
     ],
     "encoding": {
-      "x": {
-        "field": {
-          "repeat": "column"
-        },
-        "type": "quantitative"
-      },
+      "x": {"field": {"repeat": "column"}, "type": "quantitative"},
       "y": {
-        "field": {
-          "repeat": "row"
-        },
+        "field": {"repeat": "row"},
         "type": "quantitative",
-        "axis": {
-          "minExtent": 30
-        }
+        "axis": {"minExtent": 30}
       },
       "color": {
         "condition": {

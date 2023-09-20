@@ -2,101 +2,54 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 600,
   "height": 300,
-  "data": {
-    "url": "data/stocks.csv"
-  },
+  "data": {"url": "data/stocks.csv"},
   "encoding": {
-    "x": {
-      "field": "date",
-      "type": "temporal"
-    }
+    "x": {"field": "date", "type": "temporal"}
   },
   "layer": [
     {
       "mark": "line",
       "encoding": {
-        "y": {
-          "field": "price",
-          "type": "quantitative"
-        },
-        "color": {
-          "field": "symbol",
-          "type": "nominal"
-        }
+        "y": {"field": "price", "type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"}
       }
     },
     {
-      "params": [
-        {
-          "name": "index",
-          "select": {
-            "type": "point",
-            "encodings": [
-              "x"
-            ],
-            "on": "pointermove",
-            "nearest": true
-          }
+      "params": [{
+        "name": "index",
+        "select": {
+          "type": "point",
+          "encodings": ["x"],
+          "on": "pointermove",
+          "nearest": true
         }
-      ],
-      "mark": {
-        "type": "point"
-      },
+      }],
+      "mark": {"type": "point"},
       "encoding": {
-        "y": {
-          "field": "price",
-          "type": "quantitative"
-        },
-        "opacity": {
-          "value": 0
-        }
+        "y": {"field": "price", "type": "quantitative"},
+        "opacity": {"value": 0}
       }
     },
     {
       "transform": [
-        {
-          "filter": {
-            "and": [
-              "index.date",
-              {
-                "param": "index"
-              }
-            ]
-          }
-        }
+        {"filter": {
+          "and": ["index.date", {"param": "index"}]
+        }}
       ],
       "mark": "rule"
     },
     {
       "transform": [
-        {
-          "filter": {
-            "and": [
-              "index.date",
-              {
-                "param": "index"
-              }
-            ]
-          }
-        }
+        {"filter": {
+          "and": ["index.date", {"param": "index"}]
+        }}
       ],
       "mark": "text",
       "encoding": {
-        "y": {
-          "value": 10
-        },
-        "text": {
-          "field": "date",
-          "type": "temporal"
-        }
+        "y": {"value": 10},
+        "text": {"field": "date", "type": "temporal"}
       }
     }
   ],
-  "config": {
-    "text": {
-      "align": "right",
-      "dx": -5,
-      "dy": 5
-    }
-  }
+  "config": {"text": {"align": "right", "dx": -5, "dy": 5}}
 }
