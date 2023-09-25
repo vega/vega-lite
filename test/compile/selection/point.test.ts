@@ -461,8 +461,7 @@ describe('Animated Selection', () => {
           on: [
             {
               events: {signal: 'avl_tuple'},
-              update:
-                'modify("avl_store", avl_toggle ? null : avl_tuple, avl_toggle ? null : true, avl_toggle ? avl_tuple : null)'
+              update: 'modify("avl_store", avl_tuple, true)'
             }
           ]
         }
