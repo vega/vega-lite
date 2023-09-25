@@ -1,16 +1,21 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
-    "url": "data/gapminder.json"
+    "url": "data/seattle-weather.csv"
   },
-  "mark": "point",
+  "mark": "tick",
+  "config": {
+    "tick": {
+      "thickness": 3
+    }
+  },
   "params": [
     {
-      "name": "avl",
+      "name": "date",
       "select": {
         "type": "point",
         "fields": [
-          "year"
+          "date"
         ],
         "on": "timer"
       }
@@ -19,24 +24,18 @@
   "transform": [
     {
       "filter": {
-        "param": "avl"
+        "param": "date"
       }
     }
   ],
   "encoding": {
-    "color": {
-      "field": "country"
-    },
-    "x": {
-      "field": "fertility",
-      "type": "quantitative"
-    },
     "y": {
-      "field": "life_expect",
+      "field": "precipitation",
       "type": "quantitative"
     },
     "time": {
-      "field": "year"
+      "field": "date",
+      "type": "ordinal"
     }
   }
 }
