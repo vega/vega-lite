@@ -9,7 +9,7 @@ import {SelectionCompiler} from '.';
 
 const clear: SelectionCompiler = {
   defined: selCmpt => {
-    return selCmpt.clear !== undefined && selCmpt.clear !== false;
+    return selCmpt.clear !== undefined && selCmpt.clear !== false && !isTimerSelection(selCmpt);
   },
 
   parse: (model, selCmpt) => {
@@ -51,9 +51,7 @@ const clear: SelectionCompiler = {
       }
     } else {
       let tIdx = signals.findIndex(n => n.name === selCmpt.name + TUPLE);
-      if (!isTimerSelection(selCmpt)) {
-        addClear(tIdx, 'null');
-      }
+      addClear(tIdx, 'null');
 
       if (toggle.defined(selCmpt)) {
         tIdx = signals.findIndex(n => n.name === selCmpt.name + TOGGLE);
