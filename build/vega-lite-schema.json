@@ -22075,6 +22075,10 @@
     "ScaleConfig": {
       "additionalProperties": false,
       "properties": {
+        "animationDuration": {
+          "description": "Default animation duration (in seconds) for time encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.\n\n__Default value:__ `5`",
+          "type": "number"
+        },
         "bandPaddingInner": {
           "anyOf": [
             {
@@ -22162,6 +22166,10 @@
           ],
           "description": "Default padding for continuous x/y scales.\n\n__Default:__ The bar width for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.",
           "minimum": 0
+        },
+        "framesPerSecond": {
+          "description": "Default framerate (frames per second) for time [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.\n\n__Default value:__ `2`",
+          "type": "number"
         },
         "invalid": {
           "$ref": "#/definitions/ScaleInvalidDataConfig",
@@ -22531,6 +22539,9 @@
         "theta": {
           "$ref": "#/definitions/ScaleInvalidDataShowAs<\"theta\">"
         },
+        "time": {
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"time\">"
+        },
         "x": {
           "$ref": "#/definitions/ScaleInvalidDataShowAs<\"x\">"
         },
@@ -22682,6 +22693,17 @@
       "anyOf": [
         {
           "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"theta\">"
+        },
+        {
+          "const": "zero-or-min",
+          "type": "string"
+        }
+      ]
+    },
+    "ScaleInvalidDataShowAs<\"time\">": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"time\">"
         },
         {
           "const": "zero-or-min",
@@ -22908,6 +22930,15 @@
           "description": "- For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)\n\n- For text marks, polar coordinate angle in radians.",
           "maximum": 360,
           "minimum": 0,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "ScaleInvalidDataShowAsValue<\"time\">": {
+      "additionalProperties": false,
+      "properties": {
+        "value": {
           "type": "number"
         }
       },
@@ -26705,6 +26736,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -29307,6 +29341,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
