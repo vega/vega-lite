@@ -21879,6 +21879,10 @@
     "ScaleConfig": {
       "additionalProperties": false,
       "properties": {
+        "animationDuration": {
+          "description": "Default animation duration (in seconds) for time encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.\n\n__Default value:__ `5`",
+          "type": "number"
+        },
         "bandPaddingInner": {
           "anyOf": [
             {
@@ -21966,6 +21970,10 @@
           ],
           "description": "Default padding for continuous x/y scales.\n\n__Default:__ The bar width for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.",
           "minimum": 0
+        },
+        "framesPerSecond": {
+          "description": "Default framerate (frames per second) for time [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.\n\n__Default value:__ `2`",
+          "type": "number"
         },
         "maxBandSize": {
           "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\n\nIf undefined (default), we will use the axis's size (width or height) - 1.",
