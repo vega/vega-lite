@@ -5,22 +5,15 @@ export const TOGGLE = '_toggle';
 
 const toggle: SelectionCompiler<'point'> = {
   defined: selCmpt => {
-    return selCmpt.type === 'point' && !!selCmpt.toggle;
+    return selCmpt.type === 'point' && !isTimerSelection(selCmpt) && !!selCmpt.toggle;
   },
 
   signals: (model, selCmpt, signals) => {
-    if (isTimerSelection(selCmpt)) {
-      return signals.concat({
-        name: selCmpt.name + TOGGLE,
-        value: false
-      });
-    } else {
-      return signals.concat({
-        name: selCmpt.name + TOGGLE,
-        value: false,
-        on: [{events: selCmpt.events, update: selCmpt.toggle}]
-      });
-    }
+    return signals.concat({
+      name: selCmpt.name + TOGGLE,
+      value: false,
+      on: [{events: selCmpt.events, update: selCmpt.toggle}]
+    });
   },
 
   modifyExpr: (model, selCmpt) => {
