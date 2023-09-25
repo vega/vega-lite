@@ -81,8 +81,6 @@ export interface BaseSelectionConfig<T extends SelectionType = SelectionType> {
    * __See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.
    */
   fields?: FieldName[];
-
-  cursor?: Cursor;
 }
 
 export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
@@ -164,17 +162,6 @@ export interface BrushConfig {
 }
 
 export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'> {
-  /**
-   * When truth, allows a user to interactively resize an interval selection.
-   * Can be `true`, `false`, or a [Vega event streem definition] which must
-   * include a start and end event to trigger continuous resizing.
-   *
-   * __Default value:__ `true`, which corresponds to `[pointerdown, window:pointerup] > window:pointermove!`.
-   * This default allows users to clicks and drags on the edge of an interval selection to resize it.
-   *
-   */
-  resize?: string | boolean;
-
   /**
    * When truthy, allows a user to interactively move an interval selection
    * back-and-forth. Can be `true`, `false` (to disable panning), or a
@@ -326,7 +313,6 @@ export const defaultConfig: SelectionConfig = {
   interval: {
     on: '[pointerdown, window:pointerup] > window:pointermove!',
     encodings: ['x', 'y'],
-    resize: '[pointerdown, window:pointerup] > window:pointermove!',
     translate: '[pointerdown, window:pointerup] > window:pointermove!',
     zoom: 'wheel!',
     mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
