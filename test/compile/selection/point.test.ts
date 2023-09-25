@@ -414,7 +414,7 @@ describe('Animated Selection', () => {
   });
 
   it('builds clock signals', () => {
-    const signals = assembleUnitSelectionSignals(model, []);
+    const signals = assembleTopLevelSignals(model, []);
     expect(signals).toEqual(
       expect.arrayContaining([
         {
