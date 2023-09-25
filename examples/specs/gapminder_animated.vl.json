@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/gapminder.json"
+  },
+  "mark": "point",
+  "params": [
+    {
+      "name": "avl",
+      "select": {
+        "type": "point",
+        "fields": [
+          "year"
+        ],
+        "on": "timer"
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": {
+        "param": "avl"
+      }
+    }
+  ],
+  "encoding": {
+    "color": {
+      "field": "country"
+    },
+    "x": {
+      "field": "fertility",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "life_expect",
+      "type": "quantitative"
+    },
+    "time": {
+      "field": "year"
+    }
+  }
+}
