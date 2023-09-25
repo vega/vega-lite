@@ -20,21 +20,6 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
   return [
     // timer signals
     {
-      name: ANIM_CLOCK,
-      init: '0',
-      on: [
-        {
-          events: {type: 'timer', throttle: THROTTLE},
-          update: `true ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`
-        }
-      ]
-    },
-    {
-      name: LAST_TICK,
-      init: 'now()',
-      on: [{events: [{signal: ANIM_CLOCK}], update: 'now()'}]
-    },
-    {
       name: EASED_ANIM_CLOCK,
       // update: 'easeLinear(anim_clock / max_range_extent) * max_range_extent'
       update: ANIM_CLOCK // TODO: replace with above once easing functions are implemented in vega-functions
@@ -53,6 +38,30 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
 
 const point: SelectionCompiler<'point'> = {
   defined: selCmpt => selCmpt.type === 'point',
+
+  topLevelSignals: (model, selCmpt, signals) => {
+    if (isTimerSelection(selCmpt)) {
+      signals = signals.concat([
+        {
+          name: ANIM_CLOCK,
+          init: '0',
+          on: [
+            {
+              events: {type: 'timer', throttle: THROTTLE},
+              update: `true ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`
+            }
+          ]
+        },
+        {
+          name: LAST_TICK,
+          init: 'now()',
+          on: [{events: [{signal: ANIM_CLOCK}], update: 'now()'}]
+        }
+      ]);
+    }
+
+    return signals;
+  },
 
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
