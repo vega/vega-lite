@@ -5,7 +5,7 @@
   "files.insertFinalNewline": true,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "files.exclude": {
     "coverage/**/*": true,
     "_site/**/*": true
