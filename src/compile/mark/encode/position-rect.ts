@@ -242,7 +242,7 @@ function getBinSpacing(
   channel: PositionChannel | PolarPositionChannel,
   spacing: number,
   reverse: boolean | SignalRef,
-  translate: number | SignalRef,
+  axisTranslate: number | SignalRef,
   offset: number | VgValueRef,
   minBandSize: number | SignalRef,
   bandSizeExpr: string
@@ -255,10 +255,10 @@ function getBinSpacing(
 
   const spacingOffset = isEnd ? -spacing / 2 : spacing / 2;
 
-  if (isSignalRef(reverse) || isSignalRef(offset) || isSignalRef(translate) || minBandSize) {
+  if (isSignalRef(reverse) || isSignalRef(offset) || isSignalRef(axisTranslate) || minBandSize) {
     const reverseExpr = signalOrStringValue(reverse);
     const offsetExpr = signalOrStringValue(offset);
-    const translateExpr = signalOrStringValue(translate);
+    const axisTranslateExpr = signalOrStringValue(axisTranslate);
     const minBandSizeExpr = signalOrStringValue(minBandSize);
 
     const sign = isEnd ? '' : '-';
@@ -267,7 +267,7 @@ function getBinSpacing(
       ? `(${bandSizeExpr} < ${minBandSizeExpr} ? ${sign}0.5 * (${minBandSizeExpr} - (${bandSizeExpr})) : ${spacingOffset})`
       : spacingOffset;
 
-    const t = translateExpr ? `${translateExpr} + ` : '';
+    const t = axisTranslateExpr ? `${axisTranslateExpr} + ` : '';
     const r = reverseExpr ? `(${reverseExpr} ? -1 : 1) * ` : '';
     const o = offsetExpr ? `(${offsetExpr} + ${spacingAndSizeOffset})` : spacingAndSizeOffset;
 
@@ -276,7 +276,7 @@ function getBinSpacing(
     };
   } else {
     offset = offset || 0;
-    return translate + (reverse ? -offset - spacingOffset : +offset + spacingOffset);
+    return axisTranslate + (reverse ? -offset - spacingOffset : +offset + spacingOffset);
   }
 }
 
@@ -325,7 +325,7 @@ function rectBinPosition({
     bandSizeExpr
   );
 
-  const bandPosition = isSignalRef(bandSize)
+  const bandPositionForBandSize = isSignalRef(bandSize)
     ? {signal: `(1-${bandSize.signal})/2`}
     : isRelativeBandSize(bandSize)
     ? (1 - bandSize.band) / 2
@@ -336,13 +336,15 @@ function rectBinPosition({
       [vgChannel2]: rectBinRef({
         fieldDef,
         scaleName,
-        bandPosition,
+        bandPosition: bandPositionForBandSize,
         offset: binSpacingOffset2
       }),
       [vgChannel]: rectBinRef({
         fieldDef,
         scaleName,
-        bandPosition: isSignalRef(bandPosition) ? {signal: `1-${bandPosition.signal}`} : 1 - bandPosition,
+        bandPosition: isSignalRef(bandPositionForBandSize)
+          ? {signal: `1-${bandPositionForBandSize.signal}`}
+          : 1 - bandPositionForBandSize,
         offset: binSpacingOffset
       })
     };
