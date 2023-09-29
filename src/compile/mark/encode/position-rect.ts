@@ -325,7 +325,7 @@ function rectBinPosition({
     bandSizeExpr
   );
 
-  const bandPosition = isSignalRef(bandSize)
+  const bandPositionForBandSize = isSignalRef(bandSize)
     ? {signal: `(1-${bandSize.signal})/2`}
     : isRelativeBandSize(bandSize)
     ? (1 - bandSize.band) / 2
@@ -336,13 +336,15 @@ function rectBinPosition({
       [vgChannel2]: rectBinRef({
         fieldDef,
         scaleName,
-        bandPosition,
+        bandPosition: bandPositionForBandSize,
         offset: binSpacingOffset2
       }),
       [vgChannel]: rectBinRef({
         fieldDef,
         scaleName,
-        bandPosition: isSignalRef(bandPosition) ? {signal: `1-${bandPosition.signal}`} : 1 - bandPosition,
+        bandPosition: isSignalRef(bandPositionForBandSize)
+          ? {signal: `1-${bandPositionForBandSize.signal}`}
+          : 1 - bandPositionForBandSize,
         offset: binSpacingOffset
       })
     };
