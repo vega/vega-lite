@@ -191,8 +191,8 @@ export function interpolatedSignalRef({
     ref.field = field;
   } else {
     const datum = isSignalRef(bandPosition)
-      ? `${bandPosition.signal} * ${start} + (1-${bandPosition.signal}) * ${end}`
-      : `${bandPosition} * ${start} + ${1 - bandPosition} * ${end}`;
+      ? `(1-${bandPosition.signal}) * ${start} + ${bandPosition.signal} * ${end}`
+      : `${1 - bandPosition} * ${start} + ${bandPosition} * ${end}`;
     ref.signal = `scale("${scaleName}", ${datum})`;
   }
 
