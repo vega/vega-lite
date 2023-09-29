@@ -32,13 +32,10 @@ function offsetAs(field: FieldName) {
 
 export class TimeUnitNode extends DataFlowNode {
   public clone() {
-    return new TimeUnitNode(null, duplicate(this.formula));
+    return new TimeUnitNode(null, duplicate(this.timeUnits));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private formula: Dict<TimeUnitComponent>
-  ) {
+  constructor(parent: DataFlowNode, private timeUnits: Dict<TimeUnitComponent>) {
     super(parent);
   }
 
@@ -101,13 +98,13 @@ export class TimeUnitNode extends DataFlowNode {
    * and removing `other`.
    */
   public merge(other: TimeUnitNode) {
-    this.formula = {...this.formula};
+    this.timeUnits = {...this.timeUnits};
 
     // if the same hash happen twice, merge
-    for (const key in other.formula) {
-      if (!this.formula[key]) {
+    for (const key in other.timeUnits) {
+      if (!this.timeUnits[key]) {
         // copy if it's not a duplicate
-        this.formula[key] = other.formula[key];
+        this.timeUnits[key] = other.timeUnits[key];
       }
     }
 
@@ -125,7 +122,7 @@ export class TimeUnitNode extends DataFlowNode {
   public removeFormulas(fields: Set<string>) {
     const newFormula = {};
 
-    for (const [key, timeUnitComponent] of entries(this.formula)) {
+    for (const [key, timeUnitComponent] of entries(this.timeUnits)) {
       const fieldAs = isTimeUnitTransformComponent(timeUnitComponent)
         ? timeUnitComponent.as
         : `${timeUnitComponent.field}_end`;
@@ -134,29 +131,29 @@ export class TimeUnitNode extends DataFlowNode {
       }
     }
 
-    this.formula = newFormula;
+    this.timeUnits = newFormula;
   }
 
   public producedFields() {
     return new Set(
-      vals(this.formula).map(f => {
+      vals(this.timeUnits).map(f => {
         return isTimeUnitTransformComponent(f) ? f.as : offsetAs(f.field);
       })
     );
   }
 
   public dependentFields() {
-    return new Set(vals(this.formula).map(f => f.field));
+    return new Set(vals(this.timeUnits).map(f => f.field));
   }
 
   public hash() {
-    return `TimeUnit ${hash(this.formula)}`;
+    return `TimeUnit ${hash(this.timeUnits)}`;
   }
 
   public assemble() {
     const transforms: (VgTimeUnitTransform | VgFormulaTransform)[] = [];
 
-    for (const f of vals(this.formula)) {
+    for (const f of vals(this.timeUnits)) {
       if (isTimeUnitTransformComponent(f)) {
         const {field, as, timeUnit} = f;
         const {unit, utc, ...params} = normalizeTimeUnit(timeUnit);
