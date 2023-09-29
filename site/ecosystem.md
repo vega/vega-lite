@@ -51,6 +51,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [ipyvega](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts in Jupyter Notebooks.
 - [VegaLite (Elixir bindings)](https://github.com/elixir-nx/vega_lite).
 - <span class="octicon octicon-star"></span> [VegaLite.jl](https://github.com/queryverse/VegaLite.jl) are Julia bindings to Vega and Vega-Lite.
+- [Deneb.jl](https://github.com/brucala/Deneb.jl) is a convenient Julia API for creating Vega-Lite visualizations.
 - [Vega-Lite "bindings" for R](https://github.com/hrbrmstr/vegalite), create Vega-Lite visualizations in R.
 - [vegaliteR](https://github.com/timelyportfolio/vegaliteR), vega-lite htmlwidget for R.
 - [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
