@@ -5593,15 +5593,15 @@ jest-config@^29.7.0:
     strip-json-comments "^3.1.1"
 
 jest-dev-server@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/jest-dev-server/-/jest-dev-server-9.0.0.tgz#91b8d1803b6bcce0903f7fa9bd5ee0002f53a26f"
-  integrity sha512-N43EDJLy3JBHZwtTxqHy+6lxu7Zw5PLD8Jzq2+ePV3v90hQc4UoUA/fnxoKdTCgZY3P1qPl6Zmj8m/886APxoQ==
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/jest-dev-server/-/jest-dev-server-9.0.1.tgz#75d50b946c94e278401158bcc9a29da23d21204d"
+  integrity sha512-eqpJKSvVl4M0ojHZUPNbka8yEzLNbIMiINXDsuMF3lYfIdRO2iPqy+ASR4wBQ6nUyR3OT24oKPWhpsfLhgAVyg==
   dependencies:
     chalk "^4.1.2"
     cwd "^0.10.0"
     find-process "^1.4.7"
     prompts "^2.4.2"
-    spawnd "^9.0.0"
+    spawnd "^9.0.1"
     tree-kill "^1.2.2"
     wait-on "^7.0.1"
 
@@ -7526,7 +7526,7 @@ signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3, signal-exit@^3.0.7:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
-signal-exit@^4.0.2:
+signal-exit@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-4.1.0.tgz#952188c1cbd546070e2dd20d0f41c0ae0530cb04"
   integrity sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==
@@ -7616,12 +7616,12 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.1:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
-spawnd@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/spawnd/-/spawnd-9.0.0.tgz#f41b60cd4618ad43d237a110ce391a2b3f93dd2b"
-  integrity sha512-YJRGf0loiLsHTQZztPSI5pb9RmlKE5y6Nvxko6dNtGrkra+1BaJ7PN86GQ1/2ldLZgMhMG9ITopkDJ+7lHkBYw==
+spawnd@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/spawnd/-/spawnd-9.0.1.tgz#43b39b4bf5bdf6b5e38fbb7fabb2fbd0385b23b9"
+  integrity sha512-vaMk8E9CpbjTYToBxLXowDeArGf1+yI7A6PU6Nr57b2g8BVY8nRi5vTBj3bMF8UkCrMdTMyf/Lh+lrcrW2z7pw==
   dependencies:
-    signal-exit "^4.0.2"
+    signal-exit "^4.1.0"
     tree-kill "^1.2.2"
 
 spdx-correct@^3.0.0:
