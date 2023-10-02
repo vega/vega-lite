@@ -9,10 +9,7 @@ import {deepEqual, duplicate, getFirstDefined, keys} from '../util';
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export class Split<T extends object> {
-  constructor(
-    public readonly explicit: Partial<T> = {},
-    public readonly implicit: Partial<T> = {}
-  ) {}
+  constructor(public readonly explicit: Partial<T> = {}, public readonly implicit: Partial<T> = {}) {}
 
   public clone() {
     return new Split(duplicate(this.explicit), duplicate(this.implicit));

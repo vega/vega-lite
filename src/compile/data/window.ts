@@ -16,10 +16,7 @@ export class WindowTransformNode extends DataFlowNode {
     return new WindowTransformNode(null, duplicate(this.transform));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private readonly transform: WindowTransform
-  ) {
+  constructor(parent: DataFlowNode, private readonly transform: WindowTransform) {
     super(parent);
   }
 

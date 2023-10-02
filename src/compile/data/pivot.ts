@@ -11,10 +11,7 @@ export class PivotTransformNode extends DataFlowNode {
     return new PivotTransformNode(null, duplicate(this.transform));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private transform: PivotTransform
-  ) {
+  constructor(parent: DataFlowNode, private transform: PivotTransform) {
     super(parent);
   }
 

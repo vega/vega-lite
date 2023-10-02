@@ -11,10 +11,7 @@ export class FoldTransformNode extends DataFlowNode {
     return new FoldTransformNode(null, duplicate(this.transform));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private transform: FoldTransform
-  ) {
+  constructor(parent: DataFlowNode, private transform: FoldTransform) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
     const specifiedAs = this.transform.as ?? [undefined, undefined];

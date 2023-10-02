@@ -13,10 +13,7 @@ export class FilterInvalidNode extends DataFlowNode {
     return new FilterInvalidNode(null, {...this.filter});
   }
 
-  constructor(
-    parent: DataFlowNode,
-    public readonly filter: Dict<TypedFieldDef<string>>
-  ) {
+  constructor(parent: DataFlowNode, public readonly filter: Dict<TypedFieldDef<string>>) {
     super(parent);
   }
 
@@ -28,8 +25,7 @@ export class FilterInvalidNode extends DataFlowNode {
       return null;
     }
 
-    const filter = model.reduceFieldDef(
-      (aggregator: Dict<TypedFieldDef<string>>, fieldDef, channel) => {
+    const filter = model.reduceFieldDef((aggregator: Dict<TypedFieldDef<string>>, fieldDef, channel) => {
         const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
         if (scaleComponent) {
           const scaleType = scaleComponent.get('type');
@@ -42,9 +38,7 @@ export class FilterInvalidNode extends DataFlowNode {
           }
         }
         return aggregator;
-      },
-      {} as Dict<TypedFieldDef<string>>
-    );
+      }, {} as Dict<TypedFieldDef<string>>);
 
     if (!keys(filter).length) {
       return null;

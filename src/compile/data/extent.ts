@@ -11,10 +11,7 @@ export class ExtentTransformNode extends DataFlowNode {
     return new ExtentTransformNode(null, duplicate(this.transform));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private transform: ExtentTransform
-  ) {
+  constructor(parent: DataFlowNode, private transform: ExtentTransform) {
     super(parent);
     this.transform = duplicate(transform);
   }

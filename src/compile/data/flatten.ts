@@ -11,10 +11,7 @@ export class FlattenTransformNode extends DataFlowNode {
     return new FlattenTransformNode(this.parent, duplicate(this.transform));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private transform: FlattenTransform
-  ) {
+  constructor(parent: DataFlowNode, private transform: FlattenTransform) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
     const {flatten, as = []} = this.transform;

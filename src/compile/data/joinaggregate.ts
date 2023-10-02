@@ -15,10 +15,7 @@ export class JoinAggregateTransformNode extends DataFlowNode {
     return new JoinAggregateTransformNode(null, duplicate(this.transform));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private readonly transform: JoinAggregateTransform
-  ) {
+  constructor(parent: DataFlowNode, private readonly transform: JoinAggregateTransform) {
     super(parent);
   }
 

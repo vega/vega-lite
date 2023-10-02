@@ -105,10 +105,7 @@ export class BinNode extends DataFlowNode {
     return new BinNode(null, duplicate(this.bins));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private bins: Dict<BinComponent>
-  ) {
+  constructor(parent: DataFlowNode, private bins: Dict<BinComponent>) {
     super(parent);
   }
 

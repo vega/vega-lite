@@ -11,10 +11,7 @@ export class SampleTransformNode extends DataFlowNode {
     return new SampleTransformNode(null, duplicate(this.transform));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private transform: SampleTransform
-  ) {
+  constructor(parent: DataFlowNode, private transform: SampleTransform) {
     super(parent);
   }
 

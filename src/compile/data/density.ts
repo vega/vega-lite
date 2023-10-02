@@ -11,10 +11,7 @@ export class DensityTransformNode extends DataFlowNode {
     return new DensityTransformNode(null, duplicate(this.transform));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private transform: DensityTransform
-  ) {
+  constructor(parent: DataFlowNode, private transform: DensityTransform) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
     const specifiedAs = this.transform.as ?? [undefined, undefined];

@@ -8,10 +8,7 @@ export class SequenceNode extends DataFlowNode {
     return new SequenceNode(null, this.params);
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private params: SequenceParams
-  ) {
+  constructor(parent: DataFlowNode, private params: SequenceParams) {
     super(parent);
   }
 

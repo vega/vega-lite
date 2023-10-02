@@ -68,11 +68,7 @@ export class AggregateNode extends DataFlowNode {
    * @param dimensions string set for dimensions
    * @param measures dictionary mapping field name => dict of aggregation functions and names to use
    */
-  constructor(
-    parent: DataFlowNode,
-    private dimensions: Set<string>,
-    private measures: Measures
-  ) {
+  constructor(parent: DataFlowNode, private dimensions: Set<string>, private measures: Measures) {
     super(parent);
   }
 
