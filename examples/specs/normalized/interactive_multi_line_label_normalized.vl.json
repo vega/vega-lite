@@ -20,7 +20,9 @@
               "name": "label",
               "select": {
                 "type": "point",
-                "encodings": ["x"],
+                "encodings": [
+                  "x"
+                ],
                 "nearest": true,
                 "on": "pointerover"
               }
@@ -28,11 +30,24 @@
           ],
           "mark": "point",
           "encoding": {
-            "x": {"field": "date", "type": "temporal"},
-            "y": {"field": "price", "type": "quantitative"},
-            "color": {"field": "symbol", "type": "nominal"},
+            "x": {
+              "field": "date",
+              "type": "temporal"
+            },
+            "y": {
+              "field": "price",
+              "type": "quantitative"
+            },
+            "color": {
+              "field": "symbol",
+              "type": "nominal"
+            },
             "opacity": {
-              "condition": {"param": "label", "empty": false, "value": 1},
+              "condition": {
+                "param": "label",
+                "empty": false,
+                "value": 1
+              },
               "value": 0
             }
           }
@@ -42,9 +57,16 @@
     {
       "layer": [
         {
-          "mark": {"type": "rule", "color": "gray"},
+          "mark": {
+            "type": "rule",
+            "color": "gray"
+          },
           "encoding": {
-            "x": {"type": "temporal", "field": "date", "aggregate": "min"}
+            "x": {
+              "type": "temporal",
+              "field": "date",
+              "aggregate": "min"
+            }
           }
         },
         {
@@ -59,24 +81,57 @@
                 "dy": -5
               },
               "encoding": {
-                "text": {"type": "quantitative", "field": "price"},
-                "x": {"type": "temporal", "field": "date"},
-                "y": {"type": "quantitative", "field": "price"}
+                "text": {
+                  "type": "quantitative",
+                  "field": "price"
+                },
+                "x": {
+                  "type": "temporal",
+                  "field": "date"
+                },
+                "y": {
+                  "type": "quantitative",
+                  "field": "price"
+                }
               }
             },
             {
-              "mark": {"type": "text", "align": "left", "dx": 5, "dy": -5},
+              "mark": {
+                "type": "text",
+                "align": "left",
+                "dx": 5,
+                "dy": -5
+              },
               "encoding": {
-                "text": {"type": "quantitative", "field": "price"},
-                "x": {"type": "temporal", "field": "date"},
-                "y": {"type": "quantitative", "field": "price"},
-                "color": {"type": "nominal", "field": "symbol"}
+                "text": {
+                  "type": "quantitative",
+                  "field": "price"
+                },
+                "x": {
+                  "type": "temporal",
+                  "field": "date"
+                },
+                "y": {
+                  "type": "quantitative",
+                  "field": "price"
+                },
+                "color": {
+                  "type": "nominal",
+                  "field": "symbol"
+                }
               }
             }
           ]
         }
       ],
-      "transform": [{"filter": {"param": "label", "empty": false}}]
+      "transform": [
+        {
+          "filter": {
+            "param": "label",
+            "empty": false
+          }
+        }
+      ]
     }
   ]
 }
