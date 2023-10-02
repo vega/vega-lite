@@ -1,5 +1,13 @@
 
 
+## [5.15.1](https://github.com/vega/vega-lite/compare/v5.15.0...v5.15.1) (2023-10-02)
+
+
+### Bug Fixes
+
+* correct the formula for interpolating between bin start and end (interpolatedSignalRef) ([#9111](https://github.com/vega/vega-lite/issues/9111)) ([d4b27bb](https://github.com/vega/vega-lite/commit/d4b27bba1439dccab3dbf54f7c1af64155d8c7d5))
+* use resolve "shared" instead of steps to fix artifacts in grouped density transform ([#9106](https://github.com/vega/vega-lite/issues/9106)) ([06e63e6](https://github.com/vega/vega-lite/commit/06e63e6bae3d4efa3d2041e6582415327ebdeb3b))
+
 # [5.15.0](https://github.com/vega/vega-lite/compare/v5.14.1...v5.15.0) (2023-09-13)
 
 
