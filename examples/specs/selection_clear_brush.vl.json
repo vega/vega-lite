@@ -4,7 +4,7 @@
   "params": [{
     "name": "brush",
     "value": {"x": [55, 160], "y": [13, 37]},
-    "select": {"type": "interval", "clear": "pointerup"}
+    "select": {"type": "interval", "clear": "mouseup"}
   }],
   "mark": "point",
   "encoding": {
