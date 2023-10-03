@@ -15,7 +15,11 @@
       "params": [
         {
           "name": "hover",
-          "select": {"type": "point", "on": "pointerover", "clear": "pointerout"}
+          "select": {
+            "type": "point",
+            "on": "pointerover",
+            "clear": "pointerout"
+          }
         }
       ],
       "mark": {"type": "circle", "tooltip": true},

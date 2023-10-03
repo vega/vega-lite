@@ -37,7 +37,10 @@ export class ScaleComponent extends Split<ScaleComponentProps> {
     if (this.get('zero') !== false) {
       return true;
     }
-    return some(this.get('domains'), d => isArray(d) && d.length === 2 && d[0] <= 0 && d[1] >= 0);
+    return some(
+      this.get('domains'),
+      d => isArray(d) && d.length === 2 && isNumber(d[0]) && d[0] <= 0 && isNumber(d[1]) && d[1] >= 0
+    );
   }
 }
 
