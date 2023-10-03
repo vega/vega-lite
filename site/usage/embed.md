@@ -67,7 +67,7 @@ Vega-Embed automatically adds links to export an image, view the source, and ope
 Here is the final HTML file in the easiest way to embed Vega-Lite (assuming that you use the [CDN approach](#cdn) from above). See the [output in your browser]({{site.baseurl}}/demo.html).
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Embedding Vega-Lite</title>

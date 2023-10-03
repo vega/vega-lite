@@ -4,10 +4,7 @@ body {
   width: 100%;
 }
 body {
-  font:
-    16px/1.5em 'Helvetica Neue',
-    Helvetica,
-    sans-serif;
+  font: 16px/1.5em 'Helvetica Neue', Helvetica, sans-serif;
   box-sizing: border-box;
   line-height: 1.5;
   color: #373a3c;

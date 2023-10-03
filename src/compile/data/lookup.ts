@@ -14,11 +14,7 @@ export class LookupNode extends DataFlowNode {
     return new LookupNode(null, duplicate(this.transform), this.secondary);
   }
 
-  constructor(
-    parent: DataFlowNode,
-    public readonly transform: LookupTransform,
-    public readonly secondary: string
-  ) {
+  constructor(parent: DataFlowNode, public readonly transform: LookupTransform, public readonly secondary: string) {
     super(parent);
   }
 
