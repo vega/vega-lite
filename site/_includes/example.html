@@ -2,12 +2,78 @@
 
 <div id="{{ id }}"></div>
 
+<style>
+/* Style the list */
+ul.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+/* Float the list items side by side */
+ul.tab li {float: left;}
+
+/* Style the links inside the list items */
+ul.tab li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of links on hover */
+ul.tab li a:hover {background-color: #ddd;}
+
+/* Create an active/current tablink class */
+ul.tab li a:focus, .active {background-color: #ccc;}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+</style>
+
+
 <script>
     window.onload = function() {
       const spec = {% include_relative {{ include.spec }}.vl.json %};
 
-      embedExample('#{{id}}', spec, false);
+        embedExample('#{{id}}', spec, false);
+        document.getElementById('Json-button').click()  
   }
+</script>
+
+<script>
+function openLanguage(evt, languageName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tabcontent.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    document.getElementById(languageName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
 </script>
 
 <a href="https://vega.github.io/editor/#/examples/vega-lite/{{ include.spec }}">
@@ -16,7 +82,23 @@
 
 <h3 id="spec">Vega-Lite JSON Specification</h3>
 
+
 {: .example-spec}
 ```json
-{% include_relative {{ include.spec }}.vl.json %}
+ {% include_relative {{ include.spec }}.vl.json %}
 ```
+
+
+<ul class="tab">
+  <li><a id="Json-button" href="#" class="tablinks" onclick="openLanguage(event, 'Json')">JSON</a></li>
+  <li><a href="#" class="tablinks" onclick="openLanguage(event, 'EDN')">EDN</a></li>
+</ul>
+
+<pre id="Json" class="tabcontent">
+
+{% include_relative {{ include.spec }}.vl.json %}
+  </pre>
+
+<pre id="EDN" class="tabcontent">
+{% include_relative {{ include.spec }}.vl.edn %}
+</pre>

@@ -19,3 +19,4 @@ test/log
 test/log/difflist.json
 yarn-debug.log*
 yarn-error.log*
+*.edn
