@@ -151,11 +151,7 @@
       "on": [
         {
           "events": [
-            {
-              "source": "scope",
-              "type": "pointerdown",
-              "markname": "brush_brush"
-            }
+            { "source": "scope", "type": "pointerdown", "markname": "brush_brush"}
           ],
           "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x)}"
         }
