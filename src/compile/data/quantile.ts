@@ -11,7 +11,10 @@ export class QuantileTransformNode extends DataFlowNode {
     return new QuantileTransformNode(null, duplicate(this.transform));
   }
 
-  constructor(parent: DataFlowNode, private transform: QuantileTransform) {
+  constructor(
+    parent: DataFlowNode,
+    private transform: QuantileTransform
+  ) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
     const specifiedAs = this.transform.as ?? [undefined, undefined];
