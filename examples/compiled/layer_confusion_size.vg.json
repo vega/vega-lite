@@ -1,0 +1,4968 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Confusion matrix from raw data, encoding count with size. (Figure 5 from @jhoffswell and @zcliu's ['Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices'](https://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf).)",
+  "background": "white",
+  "padding": 5,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Horizontal",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Horizontal"
+        },
+        {
+          "type_ORIG": "Navigational",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Other",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Other"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Calendar",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Other",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Other"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Calendar",
+          "type_PREDICT": "Calendar",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Other",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Horizontal",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Horizontal"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Calendar",
+          "type_PREDICT": "Calendar",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Navigational",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Calendar",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Navigational",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Horizontal",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Horizontal"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Attribute/Value",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Horizontal",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Horizontal"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Horizontal",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Horizontal"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Horizontal",
+          "type_PREDICT": "Horizontal",
+          "type_SIMPLE": "Horizontal"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Horizontal",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Horizontal"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Horizontal",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Horizontal"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Horizontal",
+          "type_PREDICT": "Horizontal",
+          "type_SIMPLE": "Horizontal"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Navigational",
+          "type_PREDICT": "Navigational",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Calendar",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Other",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Other"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Navigational",
+          "type_PREDICT": "Navigational",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Other",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Other"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Other",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Other"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Calendar",
+          "type_PREDICT": "Calendar",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Other", "type_PREDICT": "Other", "type_SIMPLE": "Other"},
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {"type_ORIG": "Form", "type_PREDICT": "Form", "type_SIMPLE": "Layout"},
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Other",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Horizontal",
+          "type_PREDICT": "Horizontal",
+          "type_SIMPLE": "Horizontal"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Enumeration",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Attribute/Value",
+          "type_PREDICT": "Attribute/Value",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Other",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Other"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Formatting",
+          "type_PREDICT": "Formatting",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Form",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Enumeration",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Matrix",
+          "type_PREDICT": "Matrix",
+          "type_SIMPLE": "Matrix"
+        },
+        {
+          "type_ORIG": "Not Applicable",
+          "type_PREDICT": "Not Applicable",
+          "type_SIMPLE": "Layout"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        },
+        {
+          "type_ORIG": "Vertical",
+          "type_PREDICT": "Vertical",
+          "type_SIMPLE": "Vertical"
+        }
+      ]
+    },
+    {"name": "source_1", "values": [{"type_PREDICT": ""}]},
+    {"name": "source_2", "values": [{"type_ORIG": ""}]},
+    {
+      "name": "source_3",
+      "values": [
+        {
+          "fn_xstart": "",
+          "fn_ystart": "Horizontal",
+          "fn_yend": "Calendar",
+          "fp_xstart": "Matrix",
+          "fp_xend": "Calendar",
+          "fp_ystart": "Navigational",
+          "fp_yend": "Form"
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["type_PREDICT", "type_ORIG"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 20},
+    {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"},
+    {"name": "y_step", "value": 20},
+    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
+  ],
+  "marks": [
+    {
+      "name": "layer_0_layer_0_marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#6EB4FD"},
+          "opacity": {"value": 0.9},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"Predicted Type\" + \": \" + (isValid(datum[\"type_PREDICT\"]) ? datum[\"type_PREDICT\"] : \"\"+datum[\"type_PREDICT\"]) + \"; \" + \"Labeled Type\" + \": \" + (isValid(datum[\"type_ORIG\"]) ? datum[\"type_ORIG\"] : \"\"+datum[\"type_ORIG\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "type_PREDICT", "band": 0.5},
+          "y": {"scale": "y", "field": "type_ORIG", "band": 0.5},
+          "size": {"scale": "size", "field": "__count"},
+          "shape": {"value": "circle"}
+        }
+      }
+    },
+    {
+      "name": "layer_0_layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "white"},
+          "description": {
+            "signal": "\"Predicted Type\" + \": \" + (isValid(datum[\"type_PREDICT\"]) ? datum[\"type_PREDICT\"] : \"\"+datum[\"type_PREDICT\"]) + \"; \" + \"Labeled Type\" + \": \" + (isValid(datum[\"type_ORIG\"]) ? datum[\"type_ORIG\"] : \"\"+datum[\"type_ORIG\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "type_PREDICT", "band": 0.5},
+          "y": {"scale": "y", "field": "type_ORIG", "band": 0.5},
+          "text": {"signal": "format(datum[\"__count\"], \"\")"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "source_1"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "black"},
+          "description": {
+            "signal": "\"type_PREDICT\" + \": \" + (isValid(datum[\"type_PREDICT\"]) ? datum[\"type_PREDICT\"] : \"\"+datum[\"type_PREDICT\"])"
+          },
+          "x": {"scale": "x", "field": "type_PREDICT", "band": 0.5},
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}},
+          "strokeWidth": {"value": 2}
+        }
+      }
+    },
+    {
+      "name": "layer_2_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "source_2"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "black"},
+          "description": {
+            "signal": "\"type_ORIG\" + \": \" + (isValid(datum[\"type_ORIG\"]) ? datum[\"type_ORIG\"] : \"\"+datum[\"type_ORIG\"])"
+          },
+          "x": {"field": {"group": "width"}},
+          "x2": {"value": 0},
+          "y": {"scale": "y", "field": "type_ORIG", "band": 0.5},
+          "strokeWidth": {"value": 2}
+        }
+      }
+    },
+    {
+      "name": "layer_3_layer_0_marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "source_3"},
+      "encode": {
+        "update": {
+          "fill": {"value": "white"},
+          "description": {
+            "signal": "\"fn_xstart\" + \": \" + (isValid(datum[\"fn_xstart\"]) ? datum[\"fn_xstart\"] : \"\"+datum[\"fn_xstart\"]) + \"; \" + \"fn_ystart\" + \": \" + (isValid(datum[\"fn_ystart\"]) ? datum[\"fn_ystart\"] : \"\"+datum[\"fn_ystart\"]) + \"; \" + \"fn_yend\" + \": \" + (isValid(datum[\"fn_yend\"]) ? datum[\"fn_yend\"] : \"\"+datum[\"fn_yend\"])"
+          },
+          "x": {"scale": "x", "field": "fn_xstart", "offset": 1, "band": 0.5},
+          "x2": {"field": {"group": "width"}},
+          "y": {"scale": "y", "field": "fn_ystart", "band": 0.5},
+          "y2": {"scale": "y", "field": "fn_yend", "offset": -1, "band": 0.5}
+        }
+      }
+    },
+    {
+      "name": "layer_3_layer_1_marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "source_3"},
+      "encode": {
+        "update": {
+          "fill": {"value": "white"},
+          "description": {
+            "signal": "\"fp_xstart\" + \": \" + (isValid(datum[\"fp_xstart\"]) ? datum[\"fp_xstart\"] : \"\"+datum[\"fp_xstart\"]) + \"; \" + \"fp_xend\" + \": \" + (isValid(datum[\"fp_xend\"]) ? datum[\"fp_xend\"] : \"\"+datum[\"fp_xend\"]) + \"; \" + \"fp_ystart\" + \": \" + (isValid(datum[\"fp_ystart\"]) ? datum[\"fp_ystart\"] : \"\"+datum[\"fp_ystart\"]) + \"; \" + \"fp_yend\" + \": \" + (isValid(datum[\"fp_yend\"]) ? datum[\"fp_yend\"] : \"\"+datum[\"fp_yend\"])"
+          },
+          "x": {"scale": "x", "field": "fp_xstart", "offset": 1, "band": 0.5},
+          "x2": {"scale": "x", "field": "fp_xend", "band": 0.5},
+          "y": {"scale": "y", "field": "fp_ystart", "band": 0.5},
+          "y2": {"scale": "y", "field": "fp_yend", "offset": -1, "band": 0.5}
+        }
+      }
+    },
+    {
+      "name": "layer_3_layer_2_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "source_3"},
+      "encode": {
+        "update": {
+          "align": {"value": "left"},
+          "text": {"value": "false negatives"},
+          "fill": {"value": "black"},
+          "x": {"value": 140},
+          "y": {"signal": "height", "mult": 0.5},
+          "baseline": {"value": "middle"}
+        }
+      }
+    },
+    {
+      "name": "layer_3_layer_3_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "source_3"},
+      "encode": {
+        "update": {
+          "align": {"value": "left"},
+          "text": {"value": "false positive"},
+          "fill": {"value": "black"},
+          "x": {"value": 40},
+          "y": {"value": 162},
+          "baseline": {"value": "middle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": [
+        "Vertical",
+        "Matrix",
+        "Enumeration",
+        "Attribute/Value",
+        "Other",
+        "Horizontal",
+        "Calendar",
+        "",
+        "Navigational",
+        "Form",
+        "Formatting",
+        "Not Applicable"
+      ],
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0,
+      "paddingOuter": 0
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": [
+        "Vertical",
+        "Matrix",
+        "Enumeration",
+        "Attribute/Value",
+        "Other",
+        "Horizontal",
+        "Calendar",
+        "",
+        "Navigational",
+        "Form",
+        "Formatting",
+        "Not Applicable"
+      ],
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0,
+      "paddingOuter": 0
+    },
+    {
+      "name": "size",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "__count"},
+      "range": [200, 1500],
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": true,
+      "gridScale": "y",
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "offset": 10,
+      "gridScale": "x",
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Predicted Type",
+      "labelAngle": 300,
+      "labelOverlap": false,
+      "labelAlign": "right",
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Labeled Type",
+      "offset": 10,
+      "titleAlign": "right",
+      "titleX": 0,
+      "titleY": -5,
+      "labelOverlap": true,
+      "titleAngle": 0,
+      "zindex": 0
+    }
+  ],
+  "config": {
+    "style": {"cell": {"stroke": null}, "rule": {"size": 2}},
+    "axis": {"domain": false, "ticks": false}
+  }
+}
