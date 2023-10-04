@@ -9,7 +9,7 @@
           "name": "grid",
           "select": {
             "type": "interval",
-            "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+            "translate": "[pointerdown[!event.shiftKey], pointerup] > pointermove"
           },
           "bind": "scales"
         },
@@ -38,8 +38,8 @@
           "name": "brush",
           "select": {
             "type": "interval",
-            "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-            "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
+            "on": "[pointerdown[event.shiftKey], pointerup] > pointermove",
+            "translate": "[pointerdown[event.shiftKey], pointerup] > pointermove"
           }
         }
       ],

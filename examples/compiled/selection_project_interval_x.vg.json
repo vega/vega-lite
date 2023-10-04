@@ -32,7 +32,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {"name": "pts", "update": "vlSelectionResolve(\"pts_store\", \"union\")"},
@@ -43,7 +43,7 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousedown",
+            "type": "pointerdown",
             "filter": ["!event.item || event.item.mark.name !== \"pts_brush\""]
           },
           "update": "[x(unit), x(unit)]"
@@ -51,17 +51,17 @@
         {
           "events": {
             "source": "window",
-            "type": "mousemove",
+            "type": "pointermove",
             "consume": true,
             "between": [
               {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.item || event.item.mark.name !== \"pts_brush\""
                 ]
               },
-              {"source": "window", "type": "mouseup"}
+              {"source": "window", "type": "pointerup"}
             ]
           },
           "update": "[pts_x[0], clamp(x(unit), 0, width)]"
@@ -119,7 +119,7 @@
       "on": [
         {
           "events": [
-            {"source": "scope", "type": "mousedown", "markname": "pts_brush"}
+            {"source": "scope", "type": "pointerdown", "markname": "pts_brush"}
           ],
           "update": "{x: x(unit), y: y(unit), extent_x: slice(pts_x)}"
         }
@@ -133,15 +133,15 @@
           "events": [
             {
               "source": "window",
-              "type": "mousemove",
+              "type": "pointermove",
               "consume": true,
               "between": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
+                  "type": "pointerdown",
                   "markname": "pts_brush"
                 },
-                {"source": "window", "type": "mouseup"}
+                {"source": "window", "type": "pointerup"}
               ]
             }
           ],

@@ -241,7 +241,7 @@ if (carousel) {
   [].forEach.call(slides, (slide: Element) => {
     const video = slide.querySelector('video');
     if (video) {
-      video.addEventListener('mouseover', () => {
+      video.addEventListener('pointerover', () => {
         (slide.querySelector('.example-vis') as any).style.visibility = 'visible';
         video.style.display = 'none';
         video.pause();

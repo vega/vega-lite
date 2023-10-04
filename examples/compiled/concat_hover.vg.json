@@ -42,7 +42,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -67,7 +67,7 @@
           "name": "hover_tuple",
           "on": [
             {
-              "events": [{"source": "scope", "type": "mouseover"}],
+              "events": [{"source": "scope", "type": "pointerover"}],
               "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"concat_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
               "force": true
             },
@@ -82,7 +82,7 @@
           "value": false,
           "on": [
             {
-              "events": [{"source": "scope", "type": "mouseover"}],
+              "events": [{"source": "scope", "type": "pointerover"}],
               "update": "event.shiftKey"
             },
             {
@@ -195,7 +195,7 @@
           "name": "hover_tuple",
           "on": [
             {
-              "events": [{"source": "scope", "type": "mouseover"}],
+              "events": [{"source": "scope", "type": "pointerover"}],
               "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"concat_1\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
               "force": true
             },
@@ -210,7 +210,7 @@
           "value": false,
           "on": [
             {
-              "events": [{"source": "scope", "type": "mouseover"}],
+              "events": [{"source": "scope", "type": "pointerover"}],
               "update": "event.shiftKey"
             },
             {

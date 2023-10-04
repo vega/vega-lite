@@ -4,7 +4,7 @@
   "data": {"url": "data/cars.json"},
   "params": [{
     "name": "paintbrush",
-    "select": {"type": "point", "on": "mouseover", "nearest": true}
+    "select": {"type": "point", "on": "pointerover", "nearest": true}
   }],
   "mark": "point",
   "encoding": {

@@ -20,7 +20,7 @@
         "select": {
           "type": "point",
           "encodings": ["x"],
-          "on": "mousemove",
+          "on": "pointermove",
           "nearest": true
         }
       }],

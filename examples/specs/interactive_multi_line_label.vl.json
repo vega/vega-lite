@@ -21,7 +21,7 @@
               "type": "point",
               "encodings": ["x"],
               "nearest": true,
-              "on": "mouseover"
+              "on": "pointerover"
             }
           }],
           "mark": "point",

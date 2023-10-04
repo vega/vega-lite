@@ -6,7 +6,7 @@
       "params": [
         {
           "name": "hover",
-          "select": {"type": "point", "on": "mouseover", "clear": "mouseout"}
+          "select": {"type": "point", "on": "pointerover", "clear": "pointerout"}
         }
       ],
       "mark": {"type": "bar", "color": "#eee", "tooltip": true},

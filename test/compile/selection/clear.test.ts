@@ -19,8 +19,8 @@ describe('Clear selection transform, point types', () => {
   model.parseScale();
   const selCmpts = (model.component.selection = parseUnitSelection(model, [
     {name: 'one', select: 'point'},
-    {name: 'three', select: {type: 'point', clear: 'mouseout'}},
-    {name: 'four', select: {type: 'point', clear: 'mouseout'}},
+    {name: 'three', select: {type: 'point', clear: 'pointerout'}},
+    {name: 'four', select: {type: 'point', clear: 'pointerout'}},
     {name: 'five', select: {type: 'point', clear: false}},
     {name: 'six', select: {type: 'point', clear: false}},
     {
@@ -81,7 +81,7 @@ describe('Clear selection transform, point types', () => {
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
             force: true
           },
-          {events: parseSelector('mouseout', 'view'), update: 'null'}
+          {events: parseSelector('pointerout', 'view'), update: 'null'}
         ]
       }
     ]);
@@ -98,7 +98,7 @@ describe('Clear selection transform, point types', () => {
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
             force: true
           },
-          {events: parseSelector('mouseout', 'view'), update: 'null'}
+          {events: parseSelector('pointerout', 'view'), update: 'null'}
         ]
       }
     ]);
@@ -200,11 +200,11 @@ describe('Clear selection transform, interval type', () => {
           value: [],
           on: [
             {
-              events: parseSelector('mousedown', 'scope')[0],
+              events: parseSelector('pointerdown', 'scope')[0],
               update: '[x(unit), x(unit)]'
             },
             {
-              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+              events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
               update: '[two_x[0], clamp(x(unit), 0, width)]'
             },
             {
@@ -222,11 +222,11 @@ describe('Clear selection transform, interval type', () => {
           value: [],
           on: [
             {
-              events: parseSelector('mousedown', 'scope')[0],
+              events: parseSelector('pointerdown', 'scope')[0],
               update: '[y(unit), y(unit)]'
             },
             {
-              events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+              events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
               update: '[two_y[0], clamp(y(unit), 0, height)]'
             },
             {

@@ -3,7 +3,7 @@
   "data": {"url": "data/cars.json"},
   "params": [{
     "name": "pts",
-    "select": {"type": "point", "on": "mouseover"}
+    "select": {"type": "point", "on": "pointerover"}
   }],
   "mark": "rect",
   "encoding": {

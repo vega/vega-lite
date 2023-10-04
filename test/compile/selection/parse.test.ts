@@ -35,7 +35,7 @@ describe('Selection', () => {
 
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('interval');
-    expect(component.two.translate).toBe('[mousedown, window:mouseup] > window:mousemove!');
+    expect(component.two.translate).toBe('[pointerdown, window:pointerup] > window:pointermove!');
     expect(component.two.zoom).toBe('wheel!');
     expect(component['two'].project.items).toEqual(
       expect.arrayContaining([
@@ -57,7 +57,7 @@ describe('Selection', () => {
     );
     expect(component['two'].events).toEqual(
       parseSelector(
-        '[mousedown[!event.item || event.item.mark.name !== "two_brush"], window:mouseup] > window:mousemove!',
+        '[pointerdown[!event.item || event.item.mark.name !== "two_brush"], window:pointerup] > window:pointermove!',
         'scope'
       )
     );
@@ -77,7 +77,7 @@ describe('Selection', () => {
         name: 'two',
         select: {
           type: 'point',
-          on: 'mouseover',
+          on: 'pointerover',
           toggle: 'event.ctrlKey',
           encodings: ['color']
         }
@@ -86,7 +86,7 @@ describe('Selection', () => {
         name: 'three',
         select: {
           type: 'interval',
-          on: '[mousedown[!event.shiftKey], mouseup] > mousemove',
+          on: '[pointerdown[!event.shiftKey], pointerup] > pointermove',
           encodings: ['y'],
           translate: false,
           zoom: 'wheel[event.altKey]'
@@ -111,7 +111,7 @@ describe('Selection', () => {
         {field: 'Origin', channel: 'color', index: 0, type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
       ])
     );
-    expect(component['two'].events).toEqual(parseSelector('mouseover', 'scope'));
+    expect(component['two'].events).toEqual(parseSelector('pointerover', 'scope'));
 
     expect(component.three.name).toBe('three');
     expect(component.three.type).toBe('interval');
@@ -129,15 +129,15 @@ describe('Selection', () => {
       ])
     );
     expect(component['three'].events).toEqual(
-      parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope')
+      parseSelector('[pointerdown[!event.shiftKey], pointerup] > pointermove', 'scope')
     );
   });
 
   it('respects selection configs', () => {
     model.config.selection = {
-      point: {on: 'mouseover', encodings: ['color'], toggle: 'event.ctrlKey'},
+      point: {on: 'pointerover', encodings: ['color'], toggle: 'event.ctrlKey'},
       interval: {
-        on: '[mousedown[!event.shiftKey], mouseup] > mousemove',
+        on: '[pointerdown[!event.shiftKey], pointerup] > pointermove',
         encodings: ['y'],
         zoom: 'wheel[event.altKey]'
       }
@@ -158,7 +158,7 @@ describe('Selection', () => {
         {field: 'Origin', channel: 'color', index: 0, type: 'E', signals: {data: 'one_Origin', visual: 'one_color'}}
       ])
     );
-    expect(component['one'].events).toEqual(parseSelector('mouseover', 'scope'));
+    expect(component['one'].events).toEqual(parseSelector('pointerover', 'scope'));
 
     expect(component.two.name).toBe('two');
     expect(component.two.type).toBe('interval');
@@ -176,7 +176,7 @@ describe('Selection', () => {
       ])
     );
     expect(component['two'].events).toEqual(
-      parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope')
+      parseSelector('[pointerdown[!event.shiftKey], pointerup] > pointermove', 'scope')
     );
   });
 
@@ -341,7 +341,7 @@ describe('Selection', () => {
               value: [{x: {year: 2005, month: 1, date: 1}}],
               select: {
                 type: 'point',
-                on: 'mouseover',
+                on: 'pointerover',
                 encodings: ['x'],
                 nearest: true
               }

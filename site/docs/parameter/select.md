@@ -82,7 +82,7 @@ The `on` property modifies the event that triggers the selection.
 
 For instance, a single rectangle in the heatmap below can now be selected on mouse hover instead.
 
-<div class="vl-example" data-name="selection_type_single_mouseover"></div>
+<div class="vl-example" data-name="selection_type_single_pointerover"></div>
 
 ### `clear`
 

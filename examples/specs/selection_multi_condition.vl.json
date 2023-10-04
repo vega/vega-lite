@@ -8,7 +8,7 @@
       "name": "hoverbrush",
       "select": {
         "type": "point",
-        "on": "mouseover", "nearest": true
+        "on": "pointerover", "nearest": true
       }
     }
   ],

@@ -8,7 +8,7 @@
     },
     {
       "name": "paintbrush",
-      "select": {"type": "point", "on": "mouseover"}
+      "select": {"type": "point", "on": "pointerover"}
     }
   ],
   "mark": "point",

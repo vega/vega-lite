@@ -48,8 +48,8 @@
             "type": "point",
             "fields": ["date"],
             "nearest": true,
-            "on": "mouseover",
-            "clear": "mouseout"
+            "on": "pointerover",
+            "clear": "pointerout"
           }
         }
       ],

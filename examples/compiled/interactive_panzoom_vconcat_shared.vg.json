@@ -33,7 +33,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -115,7 +115,7 @@
           "value": {},
           "on": [
             {
-              "events": [{"source": "scope", "type": "mousedown"}],
+              "events": [{"source": "scope", "type": "pointerdown"}],
               "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"concat_0_y\")}"
             }
           ]
@@ -128,11 +128,11 @@
               "events": [
                 {
                   "source": "window",
-                  "type": "mousemove",
+                  "type": "pointermove",
                   "consume": true,
                   "between": [
-                    {"source": "scope", "type": "mousedown"},
-                    {"source": "window", "type": "mouseup"}
+                    {"source": "scope", "type": "pointerdown"},
+                    {"source": "window", "type": "pointerup"}
                   ]
                 }
               ],
