@@ -88,10 +88,7 @@
           ],
           "update": "event.shiftKey"
         },
-        {
-          "events": [{"source": "view", "type": "pointerout"}],
-          "update": "false"
-        }
+        {"events": [{"source": "view", "type": "pointerout"}], "update": "false"}
       ]
     },
     {
