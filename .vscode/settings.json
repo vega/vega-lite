@@ -2,10 +2,10 @@
 {
   "editor.tabSize": 2,
   "editor.trimAutoWhitespace": true,
-  "files.insertFinalNewline": true,
+  "files.insertFinalNewline": false,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "files.exclude": {
     "coverage/**/*": true,
     "_site/**/*": true
@@ -17,7 +17,12 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
   "typescript.referencesCodeLens.enabled": true,
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
