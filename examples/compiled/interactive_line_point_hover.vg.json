@@ -59,10 +59,7 @@
           "events": [{"source": "scope", "type": "pointerover"}],
           "update": "event.shiftKey"
         },
-        {
-          "events": [{"source": "view", "type": "pointerout"}],
-          "update": "false"
-        }
+        {"events": [{"source": "view", "type": "pointerout"}], "update": "false"}
       ]
     },
     {
