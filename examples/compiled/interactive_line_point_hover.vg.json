@@ -9,13 +9,30 @@
   "data": [
     {
       "name": "hover_store",
-      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+      "transform": [
+        {
+          "type": "collect",
+          "sort": {
+            "field": "_vgsid_"
+          }
+        }
+      ]
     },
     {
       "name": "source_0",
       "url": "data/stocks.csv",
-      "format": {"type": "csv", "parse": {"date": "date"}},
-      "transform": [{"type": "identifier", "as": "_vgsid_"}]
+      "format": {
+        "type": "csv",
+        "parse": {
+          "date": "date"
+        }
+      },
+      "transform": [
+        {
+          "type": "identifier",
+          "as": "_vgsid_"
+        }
+      ]
     },
     {
       "name": "data_0",
@@ -33,7 +50,10 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -44,11 +64,24 @@
       "name": "hover_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "pointerover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "pointerover"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"layer_1\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
-        {"events": [{"source": "view", "type": "pointerout"}], "update": "null"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "pointerout"
+            }
+          ],
+          "update": "null"
+        }
       ]
     },
     {
@@ -56,11 +89,21 @@
       "value": false,
       "on": [
         {
-          "events": [{"source": "scope", "type": "pointerover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "pointerover"
+            }
+          ],
           "update": "event.shiftKey"
         },
         {
-          "events": [{"source": "view", "type": "pointerout"}],
+          "events": [
+            {
+              "source": "view",
+              "type": "pointerout"
+            }
+          ],
           "update": "false"
         }
       ]
@@ -69,7 +112,9 @@
       "name": "hover_modify",
       "on": [
         {
-          "events": {"signal": "hover_tuple"},
+          "events": {
+            "signal": "hover_tuple"
+          },
           "update": "modify(\"hover_store\", hover_toggle ? null : hover_tuple, hover_toggle ? null : true, hover_toggle ? hover_tuple : null)"
         }
       ]
@@ -83,31 +128,56 @@
         "facet": {
           "name": "faceted_path_layer_0_main",
           "data": "source_0",
-          "groupby": ["symbol"]
+          "groupby": [
+            "symbol"
+          ]
         }
       },
       "encode": {
         "update": {
-          "width": {"field": {"group": "width"}},
-          "height": {"field": {"group": "height"}}
+          "width": {
+            "field": {
+              "group": "width"
+            }
+          },
+          "height": {
+            "field": {
+              "group": "height"
+            }
+          }
         }
       },
       "marks": [
         {
           "name": "layer_0_marks",
           "type": "line",
-          "style": ["line"],
-          "sort": {"field": "datum[\"date\"]"},
+          "style": [
+            "line"
+          ],
+          "sort": {
+            "field": "datum[\"date\"]"
+          },
           "interactive": false,
-          "from": {"data": "faceted_path_layer_0_main"},
+          "from": {
+            "data": "faceted_path_layer_0_main"
+          },
           "encode": {
             "update": {
-              "stroke": {"scale": "color", "field": "symbol"},
+              "stroke": {
+                "scale": "color",
+                "field": "symbol"
+              },
               "description": {
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
-              "x": {"scale": "x", "field": "date"},
-              "y": {"scale": "y", "field": "price"},
+              "x": {
+                "scale": "x",
+                "field": "date"
+              },
+              "y": {
+                "scale": "y",
+                "field": "price"
+              },
               "defined": {
                 "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
               }
@@ -119,9 +189,13 @@
     {
       "name": "layer_1_marks",
       "type": "symbol",
-      "style": ["circle"],
+      "style": [
+        "circle"
+      ],
       "interactive": true,
-      "from": {"data": "data_0"},
+      "from": {
+        "data": "data_0"
+      },
       "encode": {
         "update": {
           "opacity": [
@@ -129,26 +203,43 @@
               "test": "length(data(\"hover_store\")) && vlSelectionIdTest(\"hover_store\", datum)",
               "value": 1
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]}"
           },
-          "fill": {"scale": "color", "field": "symbol"},
-          "ariaRoleDescription": {"value": "circle"},
+          "fill": {
+            "scale": "color",
+            "field": "symbol"
+          },
+          "ariaRoleDescription": {
+            "value": "circle"
+          },
           "description": {
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
-          "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "price"},
+          "x": {
+            "scale": "x",
+            "field": "date"
+          },
+          "y": {
+            "scale": "y",
+            "field": "price"
+          },
           "size": [
             {
               "test": "length(data(\"hover_store\")) && vlSelectionIdTest(\"hover_store\", datum)",
               "value": 48
             },
-            {"value": 100}
+            {
+              "value": 100
+            }
           ],
-          "shape": {"value": "circle"}
+          "shape": {
+            "value": "circle"
+          }
         }
       }
     }
@@ -159,22 +250,44 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "date"}
+          {
+            "data": "source_0",
+            "field": "date"
+          },
+          {
+            "data": "data_0",
+            "field": "date"
+          }
         ]
       },
-      "range": [0, {"signal": "width"}]
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ]
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "price"},
-          {"data": "data_0", "field": "price"}
+          {
+            "data": "source_0",
+            "field": "price"
+          },
+          {
+            "data": "data_0",
+            "field": "price"
+          }
         ]
       },
-      "range": [{"signal": "height"}, 0],
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     },
@@ -183,8 +296,14 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "symbol"},
-          {"data": "data_0", "field": "symbol"}
+          {
+            "data": "source_0",
+            "field": "symbol"
+          },
+          {
+            "data": "data_0",
+            "field": "symbol"
+          }
         ],
         "sort": true
       },
@@ -197,7 +316,9 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -211,7 +332,9 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -227,7 +350,9 @@
       "title": "date",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
       "zindex": 0
     },
     {
@@ -236,7 +361,9 @@
       "grid": false,
       "title": "price",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "zindex": 0
     }
   ],
@@ -246,7 +373,15 @@
       "symbolType": "circle",
       "title": "symbol",
       "fill": "color",
-      "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
+      "encode": {
+        "symbols": {
+          "update": {
+            "opacity": {
+              "value": 1
+            }
+          }
+        }
+      }
     }
   ]
 }

@@ -7,13 +7,27 @@
   "data": [
     {
       "name": "hover_store",
-      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+      "transform": [
+        {
+          "type": "collect",
+          "sort": {
+            "field": "_vgsid_"
+          }
+        }
+      ]
     },
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
-      "transform": [{"type": "identifier", "as": "_vgsid_"}]
+      "format": {
+        "type": "json"
+      },
+      "transform": [
+        {
+          "type": "identifier",
+          "as": "_vgsid_"
+        }
+      ]
     },
     {
       "name": "data_0",
@@ -67,12 +81,18 @@
     }
   ],
   "signals": [
-    {"name": "childWidth", "value": 200},
+    {
+      "name": "childWidth",
+      "value": 200
+    },
     {
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -80,7 +100,11 @@
       "update": "vlSelectionResolve(\"hover_store\", \"union\", true, true)"
     }
   ],
-  "layout": {"padding": 20, "bounds": "full", "align": "each"},
+  "layout": {
+    "padding": 20,
+    "bounds": "full",
+    "align": "each"
+  },
   "marks": [
     {
       "type": "group",
@@ -88,8 +112,12 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "width": {
+            "signal": "childWidth"
+          },
+          "height": {
+            "signal": "height"
+          }
         }
       },
       "signals": [
@@ -97,12 +125,22 @@
           "name": "hover_tuple",
           "on": [
             {
-              "events": [{"source": "scope", "type": "pointerover"}],
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "pointerover"
+                }
+              ],
               "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"concat_0_layer_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
               "force": true
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "null"
             }
           ]
@@ -112,11 +150,21 @@
           "value": false,
           "on": [
             {
-              "events": [{"source": "scope", "type": "pointerover"}],
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "pointerover"
+                }
+              ],
               "update": "event.shiftKey"
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "false"
             }
           ]
@@ -125,7 +173,9 @@
           "name": "hover_modify",
           "on": [
             {
-              "events": {"signal": "hover_tuple"},
+              "events": {
+                "signal": "hover_tuple"
+              },
               "update": "modify(\"hover_store\", hover_toggle ? null : hover_tuple, hover_toggle ? null : true, hover_toggle ? hover_tuple : null)"
             }
           ]
@@ -135,40 +185,76 @@
         {
           "name": "concat_0_layer_0_marks",
           "type": "symbol",
-          "style": ["point"],
+          "style": [
+            "point"
+          ],
           "interactive": true,
-          "from": {"data": "data_0"},
+          "from": {
+            "data": "data_0"
+          },
           "encode": {
             "update": {
-              "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"value": "#4c78a8"},
-              "ariaRoleDescription": {"value": "point"},
+              "opacity": {
+                "value": 0.7
+              },
+              "fill": {
+                "value": "transparent"
+              },
+              "stroke": {
+                "value": "#4c78a8"
+              },
+              "ariaRoleDescription": {
+                "value": "point"
+              },
               "description": {
                 "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"
               },
-              "x": {"scale": "concat_0_x", "field": "Horsepower"},
-              "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"}
+              "x": {
+                "scale": "concat_0_x",
+                "field": "Horsepower"
+              },
+              "y": {
+                "scale": "concat_0_y",
+                "field": "Miles_per_Gallon"
+              }
             }
           }
         },
         {
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
-          "style": ["point"],
+          "style": [
+            "point"
+          ],
           "interactive": false,
-          "from": {"data": "data_2"},
+          "from": {
+            "data": "data_2"
+          },
           "encode": {
             "update": {
-              "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"value": "goldenrod"},
-              "ariaRoleDescription": {"value": "point"},
+              "opacity": {
+                "value": 0.7
+              },
+              "fill": {
+                "value": "transparent"
+              },
+              "stroke": {
+                "value": "goldenrod"
+              },
+              "ariaRoleDescription": {
+                "value": "point"
+              },
               "description": {
                 "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"
               },
-              "x": {"scale": "concat_0_x", "field": "Horsepower"},
-              "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"}
+              "x": {
+                "scale": "concat_0_x",
+                "field": "Horsepower"
+              },
+              "y": {
+                "scale": "concat_0_y",
+                "field": "Miles_per_Gallon"
+              }
             }
           }
         }
@@ -179,7 +265,9 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {
+            "signal": "ceil(childWidth/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -193,7 +281,9 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {
+            "signal": "ceil(height/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -209,7 +299,9 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {
+            "signal": "ceil(childWidth/40)"
+          },
           "zindex": 0
         },
         {
@@ -218,7 +310,9 @@
           "grid": false,
           "title": "Miles_per_Gallon",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {
+            "signal": "ceil(height/40)"
+          },
           "zindex": 0
         }
       ]
@@ -229,8 +323,12 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "width": {
+            "signal": "childWidth"
+          },
+          "height": {
+            "signal": "height"
+          }
         }
       },
       "signals": [
@@ -238,12 +336,22 @@
           "name": "hover_tuple",
           "on": [
             {
-              "events": [{"source": "scope", "type": "pointerover"}],
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "pointerover"
+                }
+              ],
               "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"concat_1_layer_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
               "force": true
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "null"
             }
           ]
@@ -253,11 +361,21 @@
           "value": false,
           "on": [
             {
-              "events": [{"source": "scope", "type": "pointerover"}],
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "pointerover"
+                }
+              ],
               "update": "event.shiftKey"
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "false"
             }
           ]
@@ -266,7 +384,9 @@
           "name": "hover_modify",
           "on": [
             {
-              "events": {"signal": "hover_tuple"},
+              "events": {
+                "signal": "hover_tuple"
+              },
               "update": "modify(\"hover_store\", hover_toggle ? null : hover_tuple, hover_toggle ? null : true, hover_toggle ? hover_tuple : null)"
             }
           ]
@@ -276,40 +396,76 @@
         {
           "name": "concat_1_layer_0_marks",
           "type": "symbol",
-          "style": ["point"],
+          "style": [
+            "point"
+          ],
           "interactive": true,
-          "from": {"data": "data_4"},
+          "from": {
+            "data": "data_4"
+          },
           "encode": {
             "update": {
-              "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"value": "#4c78a8"},
-              "ariaRoleDescription": {"value": "point"},
+              "opacity": {
+                "value": 0.7
+              },
+              "fill": {
+                "value": "transparent"
+              },
+              "stroke": {
+                "value": "#4c78a8"
+              },
+              "ariaRoleDescription": {
+                "value": "point"
+              },
               "description": {
                 "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\"))"
               },
-              "x": {"scale": "concat_1_x", "field": "Horsepower"},
-              "y": {"scale": "concat_1_y", "field": "Acceleration"}
+              "x": {
+                "scale": "concat_1_x",
+                "field": "Horsepower"
+              },
+              "y": {
+                "scale": "concat_1_y",
+                "field": "Acceleration"
+              }
             }
           }
         },
         {
           "name": "concat_1_layer_1_marks",
           "type": "symbol",
-          "style": ["point"],
+          "style": [
+            "point"
+          ],
           "interactive": false,
-          "from": {"data": "data_3"},
+          "from": {
+            "data": "data_3"
+          },
           "encode": {
             "update": {
-              "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
-              "stroke": {"value": "goldenrod"},
-              "ariaRoleDescription": {"value": "point"},
+              "opacity": {
+                "value": 0.7
+              },
+              "fill": {
+                "value": "transparent"
+              },
+              "stroke": {
+                "value": "goldenrod"
+              },
+              "ariaRoleDescription": {
+                "value": "point"
+              },
               "description": {
                 "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\"))"
               },
-              "x": {"scale": "concat_1_x", "field": "Horsepower"},
-              "y": {"scale": "concat_1_y", "field": "Acceleration"}
+              "x": {
+                "scale": "concat_1_x",
+                "field": "Horsepower"
+              },
+              "y": {
+                "scale": "concat_1_y",
+                "field": "Acceleration"
+              }
             }
           }
         }
@@ -320,7 +476,9 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {
+            "signal": "ceil(childWidth/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -334,7 +492,9 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {
+            "signal": "ceil(height/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -350,7 +510,9 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {
+            "signal": "ceil(childWidth/40)"
+          },
           "zindex": 0
         },
         {
@@ -359,7 +521,9 @@
           "grid": false,
           "title": "Acceleration",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {
+            "signal": "ceil(height/40)"
+          },
           "zindex": 0
         }
       ]
@@ -371,11 +535,22 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Horsepower"},
-          {"data": "data_2", "field": "Horsepower"}
+          {
+            "data": "data_0",
+            "field": "Horsepower"
+          },
+          {
+            "data": "data_2",
+            "field": "Horsepower"
+          }
         ]
       },
-      "range": [0, {"signal": "childWidth"}],
+      "range": [
+        0,
+        {
+          "signal": "childWidth"
+        }
+      ],
       "nice": true,
       "zero": true
     },
@@ -384,11 +559,22 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Miles_per_Gallon"},
-          {"data": "data_2", "field": "Miles_per_Gallon"}
+          {
+            "data": "data_0",
+            "field": "Miles_per_Gallon"
+          },
+          {
+            "data": "data_2",
+            "field": "Miles_per_Gallon"
+          }
         ]
       },
-      "range": [{"signal": "height"}, 0],
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     },
@@ -397,11 +583,22 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_4", "field": "Horsepower"},
-          {"data": "data_3", "field": "Horsepower"}
+          {
+            "data": "data_4",
+            "field": "Horsepower"
+          },
+          {
+            "data": "data_3",
+            "field": "Horsepower"
+          }
         ]
       },
-      "range": [0, {"signal": "childWidth"}],
+      "range": [
+        0,
+        {
+          "signal": "childWidth"
+        }
+      ],
       "nice": true,
       "zero": true
     },
@@ -410,11 +607,22 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_4", "field": "Acceleration"},
-          {"data": "data_3", "field": "Acceleration"}
+          {
+            "data": "data_4",
+            "field": "Acceleration"
+          },
+          {
+            "data": "data_3",
+            "field": "Acceleration"
+          }
         ]
       },
-      "range": [{"signal": "height"}, 0],
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     }

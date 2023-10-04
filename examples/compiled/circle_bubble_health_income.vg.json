@@ -7,11 +7,15 @@
   "height": 300,
   "style": "cell",
   "data": [
-    {"name": "view_store"},
+    {
+      "name": "view_store"
+    },
     {
       "name": "source_0",
       "url": "data/gapminder-health-income.csv",
-      "format": {"type": "csv"},
+      "format": {
+        "type": "csv"
+      },
       "transform": [
         {
           "type": "filter",
@@ -25,20 +29,38 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
-    {"name": "view", "update": "vlSelectionResolve(\"view_store\", \"union\")"},
+    {
+      "name": "view",
+      "update": "vlSelectionResolve(\"view_store\", \"union\")"
+    },
     {
       "name": "view_income",
       "on": [
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"},
         {
-          "events": {"signal": "view_translate_delta"},
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "null"
+        },
+        {
+          "events": {
+            "signal": "view_translate_delta"
+          },
           "update": "panLog(view_translate_anchor.extent_x, -view_translate_delta.x / width)"
         },
         {
-          "events": {"signal": "view_zoom_delta"},
+          "events": {
+            "signal": "view_zoom_delta"
+          },
           "update": "zoomLog(domain(\"x\"), view_zoom_anchor.x, view_zoom_delta)"
         }
       ]
@@ -46,13 +68,25 @@
     {
       "name": "view_health",
       "on": [
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"},
         {
-          "events": {"signal": "view_translate_delta"},
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "null"
+        },
+        {
+          "events": {
+            "signal": "view_translate_delta"
+          },
           "update": "panLinear(view_translate_anchor.extent_y, view_translate_delta.y / height)"
         },
         {
-          "events": {"signal": "view_zoom_delta"},
+          "events": {
+            "signal": "view_zoom_delta"
+          },
           "update": "zoomLinear(domain(\"y\"), view_zoom_anchor.y, view_zoom_delta)"
         }
       ]
@@ -61,7 +95,11 @@
       "name": "view_tuple",
       "on": [
         {
-          "events": [{"signal": "view_income || view_health"}],
+          "events": [
+            {
+              "signal": "view_income || view_health"
+            }
+          ],
           "update": "view_income && view_health ? {unit: \"\", fields: view_tuple_fields, values: [view_income,view_health]} : null"
         }
       ]
@@ -69,8 +107,16 @@
     {
       "name": "view_tuple_fields",
       "value": [
-        {"field": "income", "channel": "x", "type": "R"},
-        {"field": "health", "channel": "y", "type": "R"}
+        {
+          "field": "income",
+          "channel": "x",
+          "type": "R"
+        },
+        {
+          "field": "health",
+          "channel": "y",
+          "type": "R"
+        }
       ]
     },
     {
@@ -78,7 +124,12 @@
       "value": {},
       "on": [
         {
-          "events": [{"source": "scope", "type": "pointerdown"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "pointerdown"
+            }
+          ],
           "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"y\")}"
         }
       ]
@@ -94,8 +145,14 @@
               "type": "pointermove",
               "consume": true,
               "between": [
-                {"source": "scope", "type": "pointerdown"},
-                {"source": "window", "type": "pointerup"}
+                {
+                  "source": "scope",
+                  "type": "pointerdown"
+                },
+                {
+                  "source": "window",
+                  "type": "pointerup"
+                }
               ]
             }
           ],
@@ -107,7 +164,13 @@
       "name": "view_zoom_anchor",
       "on": [
         {
-          "events": [{"source": "scope", "type": "wheel", "consume": true}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "wheel",
+              "consume": true
+            }
+          ],
           "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
         }
       ]
@@ -116,7 +179,13 @@
       "name": "view_zoom_delta",
       "on": [
         {
-          "events": [{"source": "scope", "type": "wheel", "consume": true}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "wheel",
+              "consume": true
+            }
+          ],
           "force": true,
           "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
         }
@@ -126,7 +195,9 @@
       "name": "view_modify",
       "on": [
         {
-          "events": {"signal": "view_tuple"},
+          "events": {
+            "signal": "view_tuple"
+          },
           "update": "modify(\"view_store\", view_tuple, true)"
         }
       ]
@@ -137,21 +208,42 @@
       "name": "marks",
       "type": "symbol",
       "clip": true,
-      "style": ["circle"],
+      "style": [
+        "circle"
+      ],
       "interactive": true,
-      "from": {"data": "source_0"},
+      "from": {
+        "data": "source_0"
+      },
       "encode": {
         "update": {
-          "opacity": {"value": 0.7},
-          "fill": {"value": "#000"},
-          "ariaRoleDescription": {"value": "circle"},
+          "opacity": {
+            "value": 0.7
+          },
+          "fill": {
+            "value": "#000"
+          },
+          "ariaRoleDescription": {
+            "value": "circle"
+          },
           "description": {
             "signal": "\"income: \" + (format(datum[\"income\"], \"\")) + \"; health: \" + (format(datum[\"health\"], \"\")) + \"; population: \" + (format(datum[\"population\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "income"},
-          "y": {"scale": "y", "field": "health"},
-          "size": {"scale": "size", "field": "population"},
-          "shape": {"value": "circle"}
+          "x": {
+            "scale": "x",
+            "field": "income"
+          },
+          "y": {
+            "scale": "y",
+            "field": "health"
+          },
+          "size": {
+            "scale": "size",
+            "field": "population"
+          },
+          "shape": {
+            "value": "circle"
+          }
         }
       }
     }
@@ -160,25 +252,51 @@
     {
       "name": "x",
       "type": "log",
-      "domain": {"data": "source_0", "field": "income"},
-      "domainRaw": {"signal": "view[\"income\"]"},
-      "range": [0, {"signal": "width"}],
+      "domain": {
+        "data": "source_0",
+        "field": "income"
+      },
+      "domainRaw": {
+        "signal": "view[\"income\"]"
+      },
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
       "nice": true
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "health"},
-      "domainRaw": {"signal": "view[\"health\"]"},
-      "range": [{"signal": "height"}, 0],
+      "domain": {
+        "data": "source_0",
+        "field": "health"
+      },
+      "domainRaw": {
+        "signal": "view[\"health\"]"
+      },
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
       "zero": false,
       "nice": true
     },
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "population"},
-      "range": [0, 361],
+      "domain": {
+        "data": "source_0",
+        "field": "population"
+      },
+      "range": [
+        0,
+        361
+      ],
       "zero": true
     }
   ],
@@ -201,7 +319,9 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -226,7 +346,9 @@
       "title": "health",
       "minExtent": 30,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "zindex": 0
     }
   ],
@@ -238,9 +360,15 @@
       "encode": {
         "symbols": {
           "update": {
-            "fill": {"value": "#000"},
-            "opacity": {"value": 0.7},
-            "stroke": {"value": "transparent"}
+            "fill": {
+              "value": "#000"
+            },
+            "opacity": {
+              "value": 0.7
+            },
+            "stroke": {
+              "value": "transparent"
+            }
           }
         }
       }

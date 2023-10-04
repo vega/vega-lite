@@ -8,14 +8,26 @@
   "data": [
     {
       "name": "paintbrush_store",
-      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+      "transform": [
+        {
+          "type": "collect",
+          "sort": {
+            "field": "_vgsid_"
+          }
+        }
+      ]
     },
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
+      "format": {
+        "type": "json"
+      },
       "transform": [
-        {"type": "identifier", "as": "_vgsid_"},
+        {
+          "type": "identifier",
+          "as": "_vgsid_"
+        },
         {
           "type": "filter",
           "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
@@ -28,23 +40,44 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
       "name": "paintbrush",
       "update": "vlSelectionResolve(\"paintbrush_store\", \"union\", true, true)"
     },
-    {"name": "toggleOrigin", "bind": {"input": "checkbox"}},
+    {
+      "name": "toggleOrigin",
+      "bind": {
+        "input": "checkbox"
+      }
+    },
     {
       "name": "paintbrush_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "pointerover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "pointerover"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "null"
+        }
       ]
     },
     {
@@ -52,17 +85,32 @@
       "value": false,
       "on": [
         {
-          "events": [{"source": "scope", "type": "pointerover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "pointerover"
+            }
+          ],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "false"
+        }
       ]
     },
     {
       "name": "paintbrush_modify",
       "on": [
         {
-          "events": {"signal": "paintbrush_tuple"},
+          "events": {
+            "signal": "paintbrush_tuple"
+          },
           "update": "modify(\"paintbrush_store\", paintbrush_toggle ? null : paintbrush_tuple, paintbrush_toggle ? null : true, paintbrush_toggle ? paintbrush_tuple : null)"
         }
       ]
@@ -72,29 +120,53 @@
     {
       "name": "marks",
       "type": "symbol",
-      "style": ["point"],
+      "style": [
+        "point"
+      ],
       "interactive": true,
-      "from": {"data": "source_0"},
+      "from": {
+        "data": "source_0"
+      },
       "encode": {
         "update": {
-          "opacity": {"value": 0.7},
-          "fill": {"value": "transparent"},
+          "opacity": {
+            "value": 0.7
+          },
+          "fill": {
+            "value": "transparent"
+          },
           "stroke": [
-            {"test": "!!toggleOrigin", "scale": "color", "field": "Origin"},
-            {"value": "steelblue"}
+            {
+              "test": "!!toggleOrigin",
+              "scale": "color",
+              "field": "Origin"
+            },
+            {
+              "value": "steelblue"
+            }
           ],
-          "ariaRoleDescription": {"value": "point"},
+          "ariaRoleDescription": {
+            "value": "point"
+          },
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
-          "x": {"scale": "x", "field": "Horsepower"},
-          "y": {"scale": "y", "field": "Miles_per_Gallon"},
+          "x": {
+            "scale": "x",
+            "field": "Horsepower"
+          },
+          "y": {
+            "scale": "y",
+            "field": "Miles_per_Gallon"
+          },
           "size": [
             {
               "test": "!length(data(\"paintbrush_store\")) || vlSelectionIdTest(\"paintbrush_store\", datum)",
               "value": 300
             },
-            {"value": 50}
+            {
+              "value": 50
+            }
           ]
         }
       }
@@ -104,23 +176,43 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
-      "range": [0, {"signal": "width"}],
+      "domain": {
+        "data": "source_0",
+        "field": "Horsepower"
+      },
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
       "nice": true,
       "zero": true
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
-      "range": [{"signal": "height"}, 0],
+      "domain": {
+        "data": "source_0",
+        "field": "Miles_per_Gallon"
+      },
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "domain": {
+        "data": "source_0",
+        "field": "Origin",
+        "sort": true
+      },
       "range": "category"
     }
   ],
@@ -130,7 +222,9 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -144,7 +238,9 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -160,7 +256,9 @@
       "title": "Horsepower",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
       "zindex": 0
     },
     {
@@ -169,7 +267,9 @@
       "grid": false,
       "title": "Miles_per_Gallon",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "zindex": 0
     }
   ],
@@ -181,8 +281,12 @@
       "encode": {
         "symbols": {
           "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
+            "fill": {
+              "value": "transparent"
+            },
+            "opacity": {
+              "value": 0.7
+            }
           }
         }
       }

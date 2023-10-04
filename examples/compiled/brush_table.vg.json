@@ -4,19 +4,34 @@
   "background": "white",
   "padding": 5,
   "data": [
-    {"name": "brush_store"},
+    {
+      "name": "brush_store"
+    },
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json"},
+      "format": {
+        "type": "json"
+      },
       "transform": [
         {
           "type": "window",
-          "params": [null],
-          "as": ["row_number"],
-          "ops": ["row_number"],
-          "fields": [null],
-          "sort": {"field": [], "order": []}
+          "params": [
+            null
+          ],
+          "as": [
+            "row_number"
+          ],
+          "ops": [
+            "row_number"
+          ],
+          "fields": [
+            null
+          ],
+          "sort": {
+            "field": [],
+            "order": []
+          }
         }
       ]
     },
@@ -40,31 +55,63 @@
         },
         {
           "type": "window",
-          "params": [null],
-          "as": ["rank"],
-          "ops": ["rank"],
-          "fields": [null],
-          "sort": {"field": [], "order": []}
+          "params": [
+            null
+          ],
+          "as": [
+            "rank"
+          ],
+          "ops": [
+            "rank"
+          ],
+          "fields": [
+            null
+          ],
+          "sort": {
+            "field": [],
+            "order": []
+          }
         },
-        {"type": "filter", "expr": "datum[\"rank\"]<20"}
+        {
+          "type": "filter",
+          "expr": "datum[\"rank\"]<20"
+        }
       ]
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 200},
-    {"name": "concat_0_height", "value": 200},
-    {"name": "concat_1_childWidth", "value": 50},
-    {"name": "concat_1_concat_0_y_step", "value": 20},
+    {
+      "name": "concat_0_width",
+      "value": 200
+    },
+    {
+      "name": "concat_0_height",
+      "value": 200
+    },
+    {
+      "name": "concat_1_childWidth",
+      "value": 50
+    },
+    {
+      "name": "concat_1_concat_0_y_step",
+      "value": 20
+    },
     {
       "name": "concat_1_concat_0_height",
       "update": "bandspace(domain('concat_1_concat_0_y').length, 1, 0.5) * concat_1_concat_0_y_step"
     },
-    {"name": "concat_1_concat_1_y_step", "value": 20},
+    {
+      "name": "concat_1_concat_1_y_step",
+      "value": 20
+    },
     {
       "name": "concat_1_concat_1_height",
       "update": "bandspace(domain('concat_1_concat_1_y').length, 1, 0.5) * concat_1_concat_1_y_step"
     },
-    {"name": "concat_1_concat_2_y_step", "value": 20},
+    {
+      "name": "concat_1_concat_2_y_step",
+      "value": 20
+    },
     {
       "name": "concat_1_concat_2_height",
       "update": "bandspace(domain('concat_1_concat_2_y').length, 1, 0.5) * concat_1_concat_2_y_step"
@@ -73,7 +120,10 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -81,7 +131,11 @@
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
     }
   ],
-  "layout": {"padding": 20, "bounds": "full", "align": "each"},
+  "layout": {
+    "padding": 20,
+    "bounds": "full",
+    "align": "each"
+  },
   "marks": [
     {
       "type": "group",
@@ -89,8 +143,12 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "concat_0_width"},
-          "height": {"signal": "concat_0_height"}
+          "width": {
+            "signal": "concat_0_width"
+          },
+          "height": {
+            "signal": "concat_0_height"
+          }
         }
       },
       "signals": [
@@ -121,25 +179,39 @@
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {"source": "window", "type": "pointerup"}
+                  {
+                    "source": "window",
+                    "type": "pointerup"
+                  }
                 ]
               },
               "update": "[brush_x[0], clamp(x(unit), 0, concat_0_width)]"
             },
             {
-              "events": {"signal": "brush_scale_trigger"},
+              "events": {
+                "signal": "brush_scale_trigger"
+              },
               "update": "[scale(\"concat_0_x\", brush_Horsepower[0]), scale(\"concat_0_x\", brush_Horsepower[1])]"
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "[0, 0]"
             },
             {
-              "events": {"signal": "brush_translate_delta"},
+              "events": {
+                "signal": "brush_translate_delta"
+              },
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, concat_0_width)"
             },
             {
-              "events": {"signal": "brush_zoom_delta"},
+              "events": {
+                "signal": "brush_zoom_delta"
+              },
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, concat_0_width)"
             }
           ]
@@ -148,7 +220,9 @@
           "name": "brush_Horsepower",
           "on": [
             {
-              "events": {"signal": "brush_x"},
+              "events": {
+                "signal": "brush_x"
+              },
               "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_0_x\", brush_x)"
             }
           ]
@@ -180,25 +254,39 @@
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {"source": "window", "type": "pointerup"}
+                  {
+                    "source": "window",
+                    "type": "pointerup"
+                  }
                 ]
               },
               "update": "[brush_y[0], clamp(y(unit), 0, concat_0_height)]"
             },
             {
-              "events": {"signal": "brush_scale_trigger"},
+              "events": {
+                "signal": "brush_scale_trigger"
+              },
               "update": "[scale(\"concat_0_y\", brush_Miles_per_Gallon[0]), scale(\"concat_0_y\", brush_Miles_per_Gallon[1])]"
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "[0, 0]"
             },
             {
-              "events": {"signal": "brush_translate_delta"},
+              "events": {
+                "signal": "brush_translate_delta"
+              },
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, concat_0_height)"
             },
             {
-              "events": {"signal": "brush_zoom_delta"},
+              "events": {
+                "signal": "brush_zoom_delta"
+              },
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_0_height)"
             }
           ]
@@ -207,7 +295,9 @@
           "name": "brush_Miles_per_Gallon",
           "on": [
             {
-              "events": {"signal": "brush_y"},
+              "events": {
+                "signal": "brush_y"
+              },
               "update": "brush_y[0] === brush_y[1] ? null : invert(\"concat_0_y\", brush_y)"
             }
           ]
@@ -217,7 +307,14 @@
           "value": {},
           "on": [
             {
-              "events": [{"scale": "concat_0_x"}, {"scale": "concat_0_y"}],
+              "events": [
+                {
+                  "scale": "concat_0_x"
+                },
+                {
+                  "scale": "concat_0_y"
+                }
+              ],
               "update": "(!isArray(brush_Horsepower) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_Horsepower[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_Horsepower[1])) && (!isArray(brush_Miles_per_Gallon) || (+invert(\"concat_0_y\", brush_y)[0] === +brush_Miles_per_Gallon[0] && +invert(\"concat_0_y\", brush_y)[1] === +brush_Miles_per_Gallon[1])) ? brush_scale_trigger : {}"
             }
           ]
@@ -227,7 +324,9 @@
           "on": [
             {
               "events": [
-                {"signal": "brush_Horsepower || brush_Miles_per_Gallon"}
+                {
+                  "signal": "brush_Horsepower || brush_Miles_per_Gallon"
+                }
               ],
               "update": "brush_Horsepower && brush_Miles_per_Gallon ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Horsepower,brush_Miles_per_Gallon]} : null"
             }
@@ -236,8 +335,16 @@
         {
           "name": "brush_tuple_fields",
           "value": [
-            {"field": "Horsepower", "channel": "x", "type": "R"},
-            {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+            {
+              "field": "Horsepower",
+              "channel": "x",
+              "type": "R"
+            },
+            {
+              "field": "Miles_per_Gallon",
+              "channel": "y",
+              "type": "R"
+            }
           ]
         },
         {
@@ -272,7 +379,10 @@
                       "type": "pointerdown",
                       "markname": "brush_brush"
                     },
-                    {"source": "window", "type": "pointerup"}
+                    {
+                      "source": "window",
+                      "type": "pointerup"
+                    }
                   ]
                 }
               ],
@@ -317,7 +427,9 @@
           "name": "brush_modify",
           "on": [
             {
-              "events": {"signal": "brush_tuple"},
+              "events": {
+                "signal": "brush_tuple"
+              },
               "update": "modify(\"brush_store\", brush_tuple, true)"
             }
           ]
@@ -330,8 +442,12 @@
           "clip": true,
           "encode": {
             "enter": {
-              "fill": {"value": "#333"},
-              "fillOpacity": {"value": 0.125}
+              "fill": {
+                "value": "#333"
+              },
+              "fillOpacity": {
+                "value": 0.125
+              }
             },
             "update": {
               "x": [
@@ -339,28 +455,36 @@
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_x[0]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_y[0]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_x[1]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_y[1]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ]
             }
           }
@@ -368,27 +492,45 @@
         {
           "name": "concat_0_marks",
           "type": "symbol",
-          "style": ["point"],
+          "style": [
+            "point"
+          ],
           "interactive": true,
-          "from": {"data": "data_0"},
+          "from": {
+            "data": "data_0"
+          },
           "encode": {
             "update": {
-              "opacity": {"value": 0.7},
-              "fill": {"value": "transparent"},
+              "opacity": {
+                "value": 0.7
+              },
+              "fill": {
+                "value": "transparent"
+              },
               "stroke": [
                 {
                   "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)",
                   "scale": "color",
                   "field": "Cylinders"
                 },
-                {"value": "grey"}
+                {
+                  "value": "grey"
+                }
               ],
-              "ariaRoleDescription": {"value": "point"},
+              "ariaRoleDescription": {
+                "value": "point"
+              },
               "description": {
                 "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
               },
-              "x": {"scale": "concat_0_x", "field": "Horsepower"},
-              "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"}
+              "x": {
+                "scale": "concat_0_x",
+                "field": "Horsepower"
+              },
+              "y": {
+                "scale": "concat_0_y",
+                "field": "Miles_per_Gallon"
+              }
             }
           }
         },
@@ -397,42 +539,56 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "fill": {
+                "value": "transparent"
+              }
+            },
             "update": {
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_x[0]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_y[0]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_x[1]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_y[1]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "stroke": [
                 {
                   "test": "brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]",
                   "value": "white"
                 },
-                {"value": null}
+                {
+                  "value": null
+                }
               ]
             }
           }
@@ -444,7 +600,9 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {
+            "signal": "ceil(concat_0_width/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -458,7 +616,9 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {
+            "signal": "ceil(concat_0_height/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -474,7 +634,9 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {
+            "signal": "ceil(concat_0_width/40)"
+          },
           "zindex": 0
         },
         {
@@ -483,7 +645,9 @@
           "grid": false,
           "title": "Miles_per_Gallon",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {
+            "signal": "ceil(concat_0_height/40)"
+          },
           "zindex": 0
         }
       ],
@@ -495,8 +659,12 @@
           "encode": {
             "symbols": {
               "update": {
-                "fill": {"value": "transparent"},
-                "opacity": {"value": 0.7}
+                "fill": {
+                  "value": "transparent"
+                },
+                "opacity": {
+                  "value": 0.7
+                }
               }
             }
           }
@@ -506,39 +674,66 @@
     {
       "type": "group",
       "name": "concat_1_group",
-      "layout": {"padding": 20, "bounds": "full", "align": "each"},
+      "layout": {
+        "padding": 20,
+        "bounds": "full",
+        "align": "each"
+      },
       "marks": [
         {
           "type": "group",
           "name": "concat_1_concat_0_group",
-          "title": {"text": "Horsepower", "frame": "group"},
+          "title": {
+            "text": "Horsepower",
+            "frame": "group"
+          },
           "style": "cell",
           "encode": {
             "update": {
-              "width": {"signal": "concat_1_childWidth"},
-              "height": {"signal": "concat_1_concat_0_height"}
+              "width": {
+                "signal": "concat_1_childWidth"
+              },
+              "height": {
+                "signal": "concat_1_concat_0_height"
+              }
             }
           },
           "marks": [
             {
               "name": "concat_1_concat_0_marks",
               "type": "text",
-              "style": ["text"],
+              "style": [
+                "text"
+              ],
               "interactive": false,
-              "from": {"data": "data_1"},
+              "from": {
+                "data": "data_1"
+              },
               "encode": {
                 "update": {
-                  "fill": {"value": "black"},
+                  "fill": {
+                    "value": "black"
+                  },
                   "description": {
                     "signal": "\"row_number: \" + (isValid(datum[\"row_number\"]) ? datum[\"row_number\"] : \"\"+datum[\"row_number\"]) + \"; Horsepower: \" + (isValid(datum[\"Horsepower\"]) ? datum[\"Horsepower\"] : \"\"+datum[\"Horsepower\"])"
                   },
-                  "x": {"signal": "concat_1_childWidth", "mult": 0.5},
-                  "y": {"scale": "concat_1_concat_0_y", "field": "row_number"},
+                  "x": {
+                    "signal": "concat_1_childWidth",
+                    "mult": 0.5
+                  },
+                  "y": {
+                    "scale": "concat_1_concat_0_y",
+                    "field": "row_number"
+                  },
                   "text": {
                     "signal": "isValid(datum[\"Horsepower\"]) ? datum[\"Horsepower\"] : \"\"+datum[\"Horsepower\"]"
                   },
-                  "align": {"value": "center"},
-                  "baseline": {"value": "middle"}
+                  "align": {
+                    "value": "center"
+                  },
+                  "baseline": {
+                    "value": "middle"
+                  }
                 }
               }
             }
@@ -547,34 +742,57 @@
         {
           "type": "group",
           "name": "concat_1_concat_1_group",
-          "title": {"text": "MPG", "frame": "group"},
+          "title": {
+            "text": "MPG",
+            "frame": "group"
+          },
           "style": "cell",
           "encode": {
             "update": {
-              "width": {"signal": "concat_1_childWidth"},
-              "height": {"signal": "concat_1_concat_1_height"}
+              "width": {
+                "signal": "concat_1_childWidth"
+              },
+              "height": {
+                "signal": "concat_1_concat_1_height"
+              }
             }
           },
           "marks": [
             {
               "name": "concat_1_concat_1_marks",
               "type": "text",
-              "style": ["text"],
+              "style": [
+                "text"
+              ],
               "interactive": false,
-              "from": {"data": "data_1"},
+              "from": {
+                "data": "data_1"
+              },
               "encode": {
                 "update": {
-                  "fill": {"value": "black"},
+                  "fill": {
+                    "value": "black"
+                  },
                   "description": {
                     "signal": "\"row_number: \" + (isValid(datum[\"row_number\"]) ? datum[\"row_number\"] : \"\"+datum[\"row_number\"]) + \"; Miles_per_Gallon: \" + (isValid(datum[\"Miles_per_Gallon\"]) ? datum[\"Miles_per_Gallon\"] : \"\"+datum[\"Miles_per_Gallon\"])"
                   },
-                  "x": {"signal": "concat_1_childWidth", "mult": 0.5},
-                  "y": {"scale": "concat_1_concat_1_y", "field": "row_number"},
+                  "x": {
+                    "signal": "concat_1_childWidth",
+                    "mult": 0.5
+                  },
+                  "y": {
+                    "scale": "concat_1_concat_1_y",
+                    "field": "row_number"
+                  },
                   "text": {
                     "signal": "isValid(datum[\"Miles_per_Gallon\"]) ? datum[\"Miles_per_Gallon\"] : \"\"+datum[\"Miles_per_Gallon\"]"
                   },
-                  "align": {"value": "center"},
-                  "baseline": {"value": "middle"}
+                  "align": {
+                    "value": "center"
+                  },
+                  "baseline": {
+                    "value": "middle"
+                  }
                 }
               }
             }
@@ -583,34 +801,57 @@
         {
           "type": "group",
           "name": "concat_1_concat_2_group",
-          "title": {"text": "Origin", "frame": "group"},
+          "title": {
+            "text": "Origin",
+            "frame": "group"
+          },
           "style": "cell",
           "encode": {
             "update": {
-              "width": {"signal": "concat_1_childWidth"},
-              "height": {"signal": "concat_1_concat_2_height"}
+              "width": {
+                "signal": "concat_1_childWidth"
+              },
+              "height": {
+                "signal": "concat_1_concat_2_height"
+              }
             }
           },
           "marks": [
             {
               "name": "concat_1_concat_2_marks",
               "type": "text",
-              "style": ["text"],
+              "style": [
+                "text"
+              ],
               "interactive": false,
-              "from": {"data": "data_1"},
+              "from": {
+                "data": "data_1"
+              },
               "encode": {
                 "update": {
-                  "fill": {"value": "black"},
+                  "fill": {
+                    "value": "black"
+                  },
                   "description": {
                     "signal": "\"row_number: \" + (isValid(datum[\"row_number\"]) ? datum[\"row_number\"] : \"\"+datum[\"row_number\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
                   },
-                  "x": {"signal": "concat_1_childWidth", "mult": 0.5},
-                  "y": {"scale": "concat_1_concat_2_y", "field": "row_number"},
+                  "x": {
+                    "signal": "concat_1_childWidth",
+                    "mult": 0.5
+                  },
+                  "y": {
+                    "scale": "concat_1_concat_2_y",
+                    "field": "row_number"
+                  },
                   "text": {
                     "signal": "isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]"
                   },
-                  "align": {"value": "center"},
-                  "baseline": {"value": "middle"}
+                  "align": {
+                    "value": "center"
+                  },
+                  "baseline": {
+                    "value": "middle"
+                  }
                 }
               }
             }
@@ -623,45 +864,89 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_0", "field": "Cylinders", "sort": true},
+      "domain": {
+        "data": "data_0",
+        "field": "Cylinders",
+        "sort": true
+      },
       "range": "ordinal",
       "interpolate": "hcl"
     },
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Horsepower"},
-      "range": [0, {"signal": "concat_0_width"}],
+      "domain": {
+        "data": "data_0",
+        "field": "Horsepower"
+      },
+      "range": [
+        0,
+        {
+          "signal": "concat_0_width"
+        }
+      ],
       "nice": true,
       "zero": true
     },
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
-      "range": [{"signal": "concat_0_height"}, 0],
+      "domain": {
+        "data": "data_0",
+        "field": "Miles_per_Gallon"
+      },
+      "range": [
+        {
+          "signal": "concat_0_height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     },
     {
       "name": "concat_1_concat_0_y",
       "type": "point",
-      "domain": {"data": "data_1", "field": "row_number", "sort": true},
-      "range": {"step": {"signal": "concat_1_concat_0_y_step"}},
+      "domain": {
+        "data": "data_1",
+        "field": "row_number",
+        "sort": true
+      },
+      "range": {
+        "step": {
+          "signal": "concat_1_concat_0_y_step"
+        }
+      },
       "padding": 0.5
     },
     {
       "name": "concat_1_concat_1_y",
       "type": "point",
-      "domain": {"data": "data_1", "field": "row_number", "sort": true},
-      "range": {"step": {"signal": "concat_1_concat_1_y_step"}},
+      "domain": {
+        "data": "data_1",
+        "field": "row_number",
+        "sort": true
+      },
+      "range": {
+        "step": {
+          "signal": "concat_1_concat_1_y_step"
+        }
+      },
       "padding": 0.5
     },
     {
       "name": "concat_1_concat_2_y",
       "type": "point",
-      "domain": {"data": "data_1", "field": "row_number", "sort": true},
-      "range": {"step": {"signal": "concat_1_concat_2_y_step"}},
+      "domain": {
+        "data": "data_1",
+        "field": "row_number",
+        "sort": true
+      },
+      "range": {
+        "step": {
+          "signal": "concat_1_concat_2_y_step"
+        }
+      },
       "padding": 0.5
     }
   ]

@@ -8,35 +8,72 @@
   "data": [
     {
       "name": "brush_store",
-      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}],
-      "values": [{"unit": "layer_1", "_vgsid_": [45, 51.5]}]
+      "transform": [
+        {
+          "type": "collect",
+          "sort": {
+            "field": "_vgsid_"
+          }
+        }
+      ],
+      "values": [
+        {
+          "unit": "layer_1",
+          "_vgsid_": [
+            45,
+            51.5
+          ]
+        }
+      ]
     },
     {
       "name": "source_0",
       "url": "data/us-10m.json",
-      "format": {"type": "topojson", "feature": "states"},
-      "transform": [{"type": "identifier", "as": "_vgsid_"}]
+      "format": {
+        "type": "topojson",
+        "feature": "states"
+      },
+      "transform": [
+        {
+          "type": "identifier",
+          "as": "_vgsid_"
+        }
+      ]
     },
     {
       "name": "source_1",
       "url": "data/airports.csv",
-      "format": {"type": "csv"},
+      "format": {
+        "type": "csv"
+      },
       "transform": [
-        {"type": "identifier", "as": "_vgsid_"},
+        {
+          "type": "identifier",
+          "as": "_vgsid_"
+        },
         {
           "type": "filter",
           "expr": "datum.state !== 'PR' && datum.state !== 'VI'"
         },
         {
           "type": "geojson",
-          "fields": ["longitude", "latitude"],
+          "fields": [
+            "longitude",
+            "latitude"
+          ],
           "signal": "layer_1_geojson_0"
         },
         {
           "type": "geopoint",
           "projection": "projection",
-          "fields": ["longitude", "latitude"],
-          "as": ["layer_1_x", "layer_1_y"]
+          "fields": [
+            "longitude",
+            "latitude"
+          ],
+          "as": [
+            "layer_1_x",
+            "layer_1_y"
+          ]
         }
       ]
     }
@@ -44,8 +81,12 @@
   "projections": [
     {
       "name": "projection",
-      "size": {"signal": "[width, height]"},
-      "fit": {"signal": "[data('source_0'), layer_1_geojson_0]"},
+      "size": {
+        "signal": "[width, height]"
+      },
+      "fit": {
+        "signal": "[data('source_0'), layer_1_geojson_0]"
+      },
       "type": "albersUsa"
     }
   ],
@@ -54,7 +95,10 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -106,21 +150,33 @@
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
               },
-              {"source": "window", "type": "pointerup"}
+              {
+                "source": "window",
+                "type": "pointerup"
+              }
             ]
           },
           "update": "[brush_latitude_1[0], clamp(y(unit), 0, height)]"
         },
         {
-          "events": [{"source": "view", "type": "dblclick"}],
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
           "update": "[0, 0]"
         },
         {
-          "events": {"signal": "brush_translate_delta"},
+          "events": {
+            "signal": "brush_translate_delta"
+          },
           "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, height)"
         },
         {
-          "events": {"signal": "brush_zoom_delta"},
+          "events": {
+            "signal": "brush_zoom_delta"
+          },
           "update": "clampRange(zoomLinear(brush_latitude_1, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
         }
       ]
@@ -130,8 +186,12 @@
       "on": [
         {
           "events": [
-            {"signal": "brush_latitude_1"},
-            {"signal": "geo_interval_init_tick"}
+            {
+              "signal": "brush_latitude_1"
+            },
+            {
+              "signal": "geo_interval_init_tick"
+            }
           ],
           "update": "vlSelectionTuples(intersect([[0, brush_latitude_1[0]],[width, brush_latitude_1[1]]], {markname: \"layer_1_marks\"}, unit.mark), {unit: \"layer_1\"})"
         }
@@ -169,7 +229,10 @@
                   "type": "pointerdown",
                   "markname": "brush_brush"
                 },
-                {"source": "window", "type": "pointerup"}
+                {
+                  "source": "window",
+                  "type": "pointerup"
+                }
               ]
             }
           ],
@@ -214,7 +277,9 @@
       "name": "brush_modify",
       "on": [
         {
-          "events": {"signal": "brush_tuple"},
+          "events": {
+            "signal": "brush_tuple"
+          },
           "update": "modify(\"brush_store\", brush_tuple, true)"
         }
       ]
@@ -226,35 +291,52 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "#333"}, "fillOpacity": {"value": 0.125}},
+        "enter": {
+          "fill": {
+            "value": "#333"
+          },
+          "fillOpacity": {
+            "value": 0.125
+          }
+        },
         "update": {
           "x": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
               "value": 0
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "y": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
               "signal": "brush_latitude_1[0]"
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "x2": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
-              "field": {"group": "width"}
+              "field": {
+                "group": "width"
+              }
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "y2": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
               "signal": "brush_latitude_1[1]"
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ]
         }
       }
@@ -262,42 +344,75 @@
     {
       "name": "layer_0_marks",
       "type": "shape",
-      "style": ["geoshape"],
+      "style": [
+        "geoshape"
+      ],
       "interactive": true,
-      "from": {"data": "source_0"},
+      "from": {
+        "data": "source_0"
+      },
       "encode": {
         "update": {
-          "fill": {"value": "lightgray"},
-          "stroke": {"value": "white"},
-          "ariaRoleDescription": {"value": "geoshape"}
+          "fill": {
+            "value": "lightgray"
+          },
+          "stroke": {
+            "value": "white"
+          },
+          "ariaRoleDescription": {
+            "value": "geoshape"
+          }
         }
       },
-      "transform": [{"type": "geoshape", "projection": "projection"}]
+      "transform": [
+        {
+          "type": "geoshape",
+          "projection": "projection"
+        }
+      ]
     },
     {
       "name": "layer_1_marks",
       "type": "symbol",
-      "style": ["circle"],
+      "style": [
+        "circle"
+      ],
       "interactive": true,
-      "from": {"data": "source_1"},
+      "from": {
+        "data": "source_1"
+      },
       "encode": {
         "update": {
-          "opacity": {"value": 0.7},
+          "opacity": {
+            "value": 0.7
+          },
           "fill": [
             {
               "test": "length(data(\"brush_store\")) && vlSelectionIdTest(\"brush_store\", datum)",
               "value": "goldenrod"
             },
-            {"value": "steelblue"}
+            {
+              "value": "steelblue"
+            }
           ],
-          "ariaRoleDescription": {"value": "circle"},
+          "ariaRoleDescription": {
+            "value": "circle"
+          },
           "description": {
             "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\"))"
           },
-          "x": {"field": "layer_1_x"},
-          "y": {"field": "layer_1_y"},
-          "size": {"value": 10},
-          "shape": {"value": "circle"}
+          "x": {
+            "field": "layer_1_x"
+          },
+          "y": {
+            "field": "layer_1_y"
+          },
+          "size": {
+            "value": 10
+          },
+          "shape": {
+            "value": "circle"
+          }
         }
       }
     },
@@ -306,42 +421,58 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "transparent"}},
+        "enter": {
+          "fill": {
+            "value": "transparent"
+          }
+        },
         "update": {
           "x": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
               "value": 0
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "y": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
               "signal": "brush_latitude_1[0]"
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "x2": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
-              "field": {"group": "width"}
+              "field": {
+                "group": "width"
+              }
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "y2": [
             {
               "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"layer_1\"",
               "signal": "brush_latitude_1[1]"
             },
-            {"value": 0}
+            {
+              "value": 0
+            }
           ],
           "stroke": [
             {
               "test": "brush_latitude_1[0] !== brush_latitude_1[1]",
               "value": "white"
             },
-            {"value": null}
+            {
+              "value": null
+            }
           ]
         }
       }

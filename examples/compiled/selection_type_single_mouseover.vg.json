@@ -5,7 +5,7 @@
   "style": "cell",
   "data": [
     {
-      "name": "highlight_store",
+      "name": "pts_store",
       "transform": [
         {
           "type": "collect",
@@ -17,65 +17,34 @@
     },
     {
       "name": "source_0",
-      "values": [
-        {
-          "actual": "A",
-          "predicted": "A",
-          "count": 13
-        },
-        {
-          "actual": "A",
-          "predicted": "B",
-          "count": 0
-        },
-        {
-          "actual": "A",
-          "predicted": "C",
-          "count": 0
-        },
-        {
-          "actual": "B",
-          "predicted": "A",
-          "count": 0
-        },
-        {
-          "actual": "B",
-          "predicted": "B",
-          "count": 10
-        },
-        {
-          "actual": "B",
-          "predicted": "C",
-          "count": 6
-        },
-        {
-          "actual": "C",
-          "predicted": "A",
-          "count": 0
-        },
-        {
-          "actual": "C",
-          "predicted": "B",
-          "count": 0
-        },
-        {
-          "actual": "C",
-          "predicted": "C",
-          "count": 9
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
+      "url": "data/cars.json",
+      "format": {
+        "type": "json"
+      },
       "transform": [
         {
           "type": "identifier",
           "as": "_vgsid_"
         },
         {
-          "type": "filter",
-          "expr": "isValid(datum[\"count\"]) && isFinite(+datum[\"count\"])"
+          "type": "aggregate",
+          "groupby": [
+            "Cylinders",
+            "Origin"
+          ],
+          "ops": [
+            "count"
+          ],
+          "fields": [
+            null
+          ],
+          "as": [
+            "__count"
+          ]
+        },
+        {
+          "type": "identifier",
+          "as": "_vgsid_"
         }
       ]
     }
@@ -83,7 +52,7 @@
   "signals": [
     {
       "name": "x_step",
-      "value": 40
+      "value": 20
     },
     {
       "name": "width",
@@ -91,7 +60,7 @@
     },
     {
       "name": "y_step",
-      "value": 40
+      "value": 20
     },
     {
       "name": "height",
@@ -108,17 +77,17 @@
       ]
     },
     {
-      "name": "highlight",
-      "update": "vlSelectionResolve(\"highlight_store\", \"union\", true, true)"
+      "name": "pts",
+      "update": "vlSelectionResolve(\"pts_store\", \"union\", true, true)"
     },
     {
-      "name": "highlight_tuple",
+      "name": "pts_tuple",
       "on": [
         {
           "events": [
             {
               "source": "scope",
-              "type": "click"
+              "type": "pointerover"
             }
           ],
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
@@ -136,14 +105,14 @@
       ]
     },
     {
-      "name": "highlight_toggle",
+      "name": "pts_toggle",
       "value": false,
       "on": [
         {
           "events": [
             {
               "source": "scope",
-              "type": "click"
+              "type": "pointerover"
             }
           ],
           "update": "event.shiftKey"
@@ -160,13 +129,13 @@
       ]
     },
     {
-      "name": "highlight_modify",
+      "name": "pts_modify",
       "on": [
         {
           "events": {
-            "signal": "highlight_tuple"
+            "signal": "pts_tuple"
           },
-          "update": "modify(\"highlight_store\", highlight_toggle ? null : highlight_tuple, highlight_toggle ? null : true, highlight_toggle ? highlight_tuple : null)"
+          "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
         }
       ]
     }
@@ -180,57 +149,33 @@
       ],
       "interactive": true,
       "from": {
-        "data": "data_0"
+        "data": "source_0"
       },
       "encode": {
         "update": {
-          "strokeWidth": {
-            "value": 2
-          },
-          "fill": {
-            "scale": "fill",
-            "field": "count"
-          },
-          "stroke": [
+          "fill": [
             {
-              "test": "length(data(\"highlight_store\")) && vlSelectionIdTest(\"highlight_store\", datum)",
-              "value": "black"
+              "test": "!length(data(\"pts_store\")) || vlSelectionIdTest(\"pts_store\", datum)",
+              "scale": "color",
+              "field": "__count"
             },
             {
-              "value": null
-            }
-          ],
-          "opacity": [
-            {
-              "test": "!length(data(\"highlight_store\")) || vlSelectionIdTest(\"highlight_store\", datum)",
-              "value": 1
-            },
-            {
-              "value": 0.5
-            }
-          ],
-          "zindex": [
-            {
-              "test": "!length(data(\"highlight_store\")) || vlSelectionIdTest(\"highlight_store\", datum)",
-              "value": 1
-            },
-            {
-              "value": 0
+              "value": "grey"
             }
           ],
           "description": {
-            "signal": "\"predicted: \" + (isValid(datum[\"predicted\"]) ? datum[\"predicted\"] : \"\"+datum[\"predicted\"]) + \"; actual: \" + (isValid(datum[\"actual\"]) ? datum[\"actual\"] : \"\"+datum[\"actual\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {
             "scale": "x",
-            "field": "predicted"
+            "field": "Cylinders"
           },
           "width": {
             "signal": "max(0.25, bandwidth('x'))"
           },
           "y": {
             "scale": "y",
-            "field": "actual"
+            "field": "Origin"
           },
           "height": {
             "signal": "max(0.25, bandwidth('y'))"
@@ -244,8 +189,8 @@
       "name": "x",
       "type": "band",
       "domain": {
-        "data": "data_0",
-        "field": "predicted",
+        "data": "source_0",
+        "field": "Cylinders",
         "sort": true
       },
       "range": {
@@ -260,8 +205,8 @@
       "name": "y",
       "type": "band",
       "domain": {
-        "data": "data_0",
-        "field": "actual",
+        "data": "source_0",
+        "field": "Origin",
         "sort": true
       },
       "range": {
@@ -273,11 +218,11 @@
       "paddingOuter": 0
     },
     {
-      "name": "fill",
+      "name": "color",
       "type": "linear",
       "domain": {
-        "data": "data_0",
-        "field": "count"
+        "data": "source_0",
+        "field": "__count"
       },
       "range": "heatmap",
       "interpolate": "hcl",
@@ -289,7 +234,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "predicted",
+      "title": "Cylinders",
       "labelAlign": "right",
       "labelAngle": 270,
       "labelBaseline": "middle",
@@ -299,36 +244,17 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "actual",
+      "title": "Origin",
       "zindex": 1
     }
   ],
   "legends": [
     {
-      "fill": "fill",
+      "fill": "color",
       "gradientLength": {
         "signal": "clamp(height, 64, 200)"
       },
-      "title": "count",
-      "encode": {
-        "gradient": {
-          "update": {
-            "opacity": {
-              "value": 1
-            }
-          }
-        }
-      }
+      "title": "Count of Records"
     }
-  ],
-  "config": {
-    "range": {
-      "ramp": {
-        "scheme": "yellowgreenblue"
-      }
-    },
-    "axis": {
-      "domain": false
-    }
-  }
+  ]
 }

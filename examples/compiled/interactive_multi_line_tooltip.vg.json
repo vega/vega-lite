@@ -8,19 +8,41 @@
   "data": [
     {
       "name": "hover_store",
-      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+      "transform": [
+        {
+          "type": "collect",
+          "sort": {
+            "field": "_vgsid_"
+          }
+        }
+      ]
     },
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
-      "format": {"type": "csv", "parse": {"date": "date"}},
+      "format": {
+        "type": "csv",
+        "parse": {
+          "date": "date"
+        }
+      },
       "transform": [
-        {"type": "identifier", "as": "_vgsid_"},
+        {
+          "type": "identifier",
+          "as": "_vgsid_"
+        },
         {
           "field": "date",
           "type": "timeunit",
-          "units": ["year", "month", "date"],
-          "as": ["yearmonthdate_date", "yearmonthdate_date_end"]
+          "units": [
+            "year",
+            "month",
+            "date"
+          ],
+          "as": [
+            "yearmonthdate_date",
+            "yearmonthdate_date_end"
+          ]
         }
       ]
     },
@@ -40,7 +62,10 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -51,11 +76,24 @@
       "name": "hover_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "pointerover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "pointerover"
+            }
+          ],
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"layer_2\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "null"
+        }
       ]
     },
     {
@@ -63,17 +101,32 @@
       "value": false,
       "on": [
         {
-          "events": [{"source": "scope", "type": "pointerover"}],
+          "events": [
+            {
+              "source": "scope",
+              "type": "pointerover"
+            }
+          ],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick"
+            }
+          ],
+          "update": "false"
+        }
       ]
     },
     {
       "name": "hover_modify",
       "on": [
         {
-          "events": {"signal": "hover_tuple"},
+          "events": {
+            "signal": "hover_tuple"
+          },
           "update": "modify(\"hover_store\", hover_toggle ? null : hover_tuple, hover_toggle ? null : true, hover_toggle ? hover_tuple : null)"
         }
       ]
@@ -83,21 +136,35 @@
     {
       "name": "layer_0_marks",
       "type": "line",
-      "style": ["line"],
-      "sort": {"field": "datum[\"yearmonthdate_date\"]"},
+      "style": [
+        "line"
+      ],
+      "sort": {
+        "field": "datum[\"yearmonthdate_date\"]"
+      },
       "interactive": true,
-      "from": {"data": "source_0"},
+      "from": {
+        "data": "source_0"
+      },
       "encode": {
         "update": {
-          "stroke": {"value": "orange"},
+          "stroke": {
+            "value": "orange"
+          },
           "tooltip": {
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
           },
           "description": {
             "signal": "\"date (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; temp_max: \" + (format(datum[\"temp_max\"], \"\")) + \"; temp_min: \" + (format(datum[\"temp_min\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "yearmonthdate_date"},
-          "y": {"scale": "y", "field": "temp_max"},
+          "x": {
+            "scale": "x",
+            "field": "yearmonthdate_date"
+          },
+          "y": {
+            "scale": "y",
+            "field": "temp_max"
+          },
           "defined": {
             "signal": "isValid(datum[\"yearmonthdate_date\"]) && isFinite(+datum[\"yearmonthdate_date\"]) && isValid(datum[\"temp_max\"]) && isFinite(+datum[\"temp_max\"])"
           }
@@ -107,21 +174,35 @@
     {
       "name": "layer_1_marks",
       "type": "line",
-      "style": ["line"],
-      "sort": {"field": "datum[\"yearmonthdate_date\"]"},
+      "style": [
+        "line"
+      ],
+      "sort": {
+        "field": "datum[\"yearmonthdate_date\"]"
+      },
       "interactive": true,
-      "from": {"data": "source_0"},
+      "from": {
+        "data": "source_0"
+      },
       "encode": {
         "update": {
-          "stroke": {"value": "red"},
+          "stroke": {
+            "value": "red"
+          },
           "tooltip": {
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
           },
           "description": {
             "signal": "\"date (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; temp_min: \" + (format(datum[\"temp_min\"], \"\")) + \"; temp_max: \" + (format(datum[\"temp_max\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "yearmonthdate_date"},
-          "y": {"scale": "y", "field": "temp_min"},
+          "x": {
+            "scale": "x",
+            "field": "yearmonthdate_date"
+          },
+          "y": {
+            "scale": "y",
+            "field": "temp_min"
+          },
           "defined": {
             "signal": "isValid(datum[\"yearmonthdate_date\"]) && isFinite(+datum[\"yearmonthdate_date\"]) && isValid(datum[\"temp_min\"]) && isFinite(+datum[\"temp_min\"])"
           }
@@ -131,9 +212,13 @@
     {
       "name": "layer_2_marks",
       "type": "rule",
-      "style": ["rule"],
+      "style": [
+        "rule"
+      ],
       "interactive": true,
-      "from": {"data": "data_0"},
+      "from": {
+        "data": "data_0"
+      },
       "encode": {
         "update": {
           "stroke": [
@@ -141,7 +226,9 @@
               "test": "length(data(\"hover_store\")) && vlSelectionIdTest(\"hover_store\", datum)",
               "value": "black"
             },
-            {"value": "transparent"}
+            {
+              "value": "transparent"
+            }
           ],
           "tooltip": {
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
@@ -149,9 +236,18 @@
           "description": {
             "signal": "\"date (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; temp_max: \" + (format(datum[\"temp_max\"], \"\")) + \"; temp_min: \" + (format(datum[\"temp_min\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "yearmonthdate_date"},
-          "y": {"value": 0},
-          "y2": {"field": {"group": "height"}}
+          "x": {
+            "scale": "x",
+            "field": "yearmonthdate_date"
+          },
+          "y": {
+            "value": 0
+          },
+          "y2": {
+            "field": {
+              "group": "height"
+            }
+          }
         }
       }
     }
@@ -162,17 +258,39 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "yearmonthdate_date"},
-          {"data": "data_0", "field": "yearmonthdate_date"}
+          {
+            "data": "source_0",
+            "field": "yearmonthdate_date"
+          },
+          {
+            "data": "data_0",
+            "field": "yearmonthdate_date"
+          }
         ]
       },
-      "range": [0, {"signal": "width"}]
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "fields": ["temp_max", "temp_min"]},
-      "range": [{"signal": "height"}, 0],
+      "domain": {
+        "data": "source_0",
+        "fields": [
+          "temp_max",
+          "temp_min"
+        ]
+      },
+      "range": [
+        {
+          "signal": "height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     }
@@ -183,7 +301,9 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
       "tickMinStep": {
         "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
@@ -200,7 +320,9 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "domain": false,
       "labels": false,
       "aria": false,
@@ -219,7 +341,9 @@
       },
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {
+        "signal": "ceil(width/40)"
+      },
       "tickMinStep": {
         "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
@@ -231,9 +355,15 @@
       "grid": false,
       "title": "temp_max, temp_min",
       "labelOverlap": true,
-      "tickCount": {"signal": "ceil(height/40)"},
+      "tickCount": {
+        "signal": "ceil(height/40)"
+      },
       "zindex": 0
     }
   ],
-  "config": {"axisY": {"minExtent": 30}}
+  "config": {
+    "axisY": {
+      "minExtent": 30
+    }
+  }
 }

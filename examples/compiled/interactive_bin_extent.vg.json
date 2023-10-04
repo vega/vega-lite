@@ -4,11 +4,18 @@
   "padding": 5,
   "width": 963,
   "data": [
-    {"name": "brush_store"},
+    {
+      "name": "brush_store"
+    },
     {
       "name": "source_0",
       "url": "data/flights-5k.json",
-      "format": {"type": "json", "parse": {"date": "date"}},
+      "format": {
+        "type": "json",
+        "parse": {
+          "date": "date"
+        }
+      },
       "transform": [
         {
           "type": "formula",
@@ -31,7 +38,9 @@
           "extent": {
             "signal": "concat_1_bin_maxbins_30_extent_param_brush_time_extent"
           },
-          "span": {"signal": "span(brush[\"time\"])"},
+          "span": {
+            "signal": "span(brush[\"time\"])"
+          },
           "maxbins": 30
         },
         {
@@ -42,9 +51,14 @@
         {
           "type": "bin",
           "field": "time",
-          "as": ["bin_maxbins_30_time", "bin_maxbins_30_time_end"],
+          "as": [
+            "bin_maxbins_30_time",
+            "bin_maxbins_30_time_end"
+          ],
           "signal": "concat_0_bin_maxbins_30_time_bins",
-          "extent": {"signal": "concat_0_bin_maxbins_30_time_extent"},
+          "extent": {
+            "signal": "concat_0_bin_maxbins_30_time_extent"
+          },
           "maxbins": 30
         }
       ]
@@ -59,9 +73,15 @@
             "bin_maxbins_30_extent_param_brush_time",
             "bin_maxbins_30_extent_param_brush_time_end"
           ],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
+          "ops": [
+            "count"
+          ],
+          "fields": [
+            null
+          ],
+          "as": [
+            "__count"
+          ]
         },
         {
           "type": "filter",
@@ -75,10 +95,19 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["bin_maxbins_30_time", "bin_maxbins_30_time_end"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
+          "groupby": [
+            "bin_maxbins_30_time",
+            "bin_maxbins_30_time_end"
+          ],
+          "ops": [
+            "count"
+          ],
+          "fields": [
+            null
+          ],
+          "as": [
+            "__count"
+          ]
         },
         {
           "type": "filter",
@@ -88,12 +117,18 @@
     }
   ],
   "signals": [
-    {"name": "childHeight", "value": 100},
+    {
+      "name": "childHeight",
+      "value": 100
+    },
     {
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -101,7 +136,12 @@
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
     }
   ],
-  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
+  "layout": {
+    "padding": 20,
+    "columns": 1,
+    "bounds": "full",
+    "align": "each"
+  },
   "marks": [
     {
       "type": "group",
@@ -109,8 +149,12 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "width"},
-          "height": {"signal": "childHeight"}
+          "width": {
+            "signal": "width"
+          },
+          "height": {
+            "signal": "childHeight"
+          }
         }
       },
       "signals": [
@@ -141,25 +185,39 @@
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {"source": "window", "type": "pointerup"}
+                  {
+                    "source": "window",
+                    "type": "pointerup"
+                  }
                 ]
               },
               "update": "[brush_x[0], clamp(x(unit), 0, width)]"
             },
             {
-              "events": {"signal": "brush_scale_trigger"},
+              "events": {
+                "signal": "brush_scale_trigger"
+              },
               "update": "[scale(\"concat_0_x\", brush_time[0]), scale(\"concat_0_x\", brush_time[1])]"
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "[0, 0]"
             },
             {
-              "events": {"signal": "brush_translate_delta"},
+              "events": {
+                "signal": "brush_translate_delta"
+              },
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
-              "events": {"signal": "brush_zoom_delta"},
+              "events": {
+                "signal": "brush_zoom_delta"
+              },
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
             }
           ]
@@ -168,7 +226,9 @@
           "name": "brush_time",
           "on": [
             {
-              "events": {"signal": "brush_x"},
+              "events": {
+                "signal": "brush_x"
+              },
               "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_0_x\", brush_x)"
             }
           ]
@@ -178,7 +238,11 @@
           "value": {},
           "on": [
             {
-              "events": [{"scale": "concat_0_x"}],
+              "events": [
+                {
+                  "scale": "concat_0_x"
+                }
+              ],
               "update": "(!isArray(brush_time) || (+invert(\"concat_0_x\", brush_x)[0] === +brush_time[0] && +invert(\"concat_0_x\", brush_x)[1] === +brush_time[1])) ? brush_scale_trigger : {}"
             }
           ]
@@ -187,14 +251,24 @@
           "name": "brush_tuple",
           "on": [
             {
-              "events": [{"signal": "brush_time"}],
+              "events": [
+                {
+                  "signal": "brush_time"
+                }
+              ],
               "update": "brush_time ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_time]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "value": [{"field": "time", "channel": "x", "type": "R"}]
+          "value": [
+            {
+              "field": "time",
+              "channel": "x",
+              "type": "R"
+            }
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -228,7 +302,10 @@
                       "type": "pointerdown",
                       "markname": "brush_brush"
                     },
-                    {"source": "window", "type": "pointerup"}
+                    {
+                      "source": "window",
+                      "type": "pointerup"
+                    }
                   ]
                 }
               ],
@@ -273,7 +350,9 @@
           "name": "brush_modify",
           "on": [
             {
-              "events": {"signal": "brush_tuple"},
+              "events": {
+                "signal": "brush_tuple"
+              },
               "update": "modify(\"brush_store\", brush_tuple, true)"
             }
           ]
@@ -286,8 +365,12 @@
           "clip": true,
           "encode": {
             "enter": {
-              "fill": {"value": "#333"},
-              "fillOpacity": {"value": 0.125}
+              "fill": {
+                "value": "#333"
+              },
+              "fillOpacity": {
+                "value": 0.125
+              }
             },
             "update": {
               "x": [
@@ -295,28 +378,38 @@
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_x[0]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "value": 0
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_x[1]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                  "field": {"group": "height"}
+                  "field": {
+                    "group": "height"
+                  }
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ]
             }
           }
@@ -324,13 +417,21 @@
         {
           "name": "concat_0_marks",
           "type": "rect",
-          "style": ["bar"],
+          "style": [
+            "bar"
+          ],
           "interactive": true,
-          "from": {"data": "data_1"},
+          "from": {
+            "data": "data_1"
+          },
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
-              "ariaRoleDescription": {"value": "bar"},
+              "fill": {
+                "value": "#4c78a8"
+              },
+              "ariaRoleDescription": {
+                "value": "bar"
+              },
               "description": {
                 "signal": "\"time (binned): \" + (!isValid(datum[\"bin_maxbins_30_time\"]) || !isFinite(+datum[\"bin_maxbins_30_time\"]) ? \"null\" : format(datum[\"bin_maxbins_30_time\"], \"\") + \" – \" + format(datum[\"bin_maxbins_30_time_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
@@ -348,8 +449,14 @@
                   "signal": "0.5 + (abs(scale(\"concat_0_x\", datum[\"bin_maxbins_30_time_end\"]) - scale(\"concat_0_x\", datum[\"bin_maxbins_30_time\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"concat_0_x\", datum[\"bin_maxbins_30_time_end\"]) - scale(\"concat_0_x\", datum[\"bin_maxbins_30_time\"])))) : -0.5)"
                 }
               },
-              "y": {"scale": "concat_0_y", "field": "__count"},
-              "y2": {"scale": "concat_0_y", "value": 0}
+              "y": {
+                "scale": "concat_0_y",
+                "field": "__count"
+              },
+              "y2": {
+                "scale": "concat_0_y",
+                "value": 0
+              }
             }
           }
         },
@@ -358,39 +465,58 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "fill": {
+                "value": "transparent"
+              }
+            },
             "update": {
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_x[0]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "value": 0
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
                   "signal": "brush_x[1]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_0\"",
-                  "field": {"group": "height"}
+                  "field": {
+                    "group": "height"
+                  }
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "stroke": [
-                {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
-                {"value": null}
+                {
+                  "test": "brush_x[0] !== brush_x[1]",
+                  "value": "white"
+                },
+                {
+                  "value": null
+                }
               ]
             }
           }
@@ -402,7 +528,9 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {
+            "signal": "ceil(childHeight/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -418,7 +546,9 @@
           "title": "time (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
+          "tickCount": {
+            "signal": "ceil(width/10)"
+          },
           "zindex": 0
         },
         {
@@ -427,7 +557,9 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {
+            "signal": "ceil(childHeight/40)"
+          },
           "zindex": 0
         }
       ]
@@ -438,8 +570,12 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "width"},
-          "height": {"signal": "childHeight"}
+          "width": {
+            "signal": "width"
+          },
+          "height": {
+            "signal": "childHeight"
+          }
         }
       },
       "marks": [
@@ -447,13 +583,21 @@
           "name": "concat_1_marks",
           "type": "rect",
           "clip": true,
-          "style": ["bar"],
+          "style": [
+            "bar"
+          ],
           "interactive": false,
-          "from": {"data": "data_0"},
+          "from": {
+            "data": "data_0"
+          },
           "encode": {
             "update": {
-              "fill": {"value": "#4c78a8"},
-              "ariaRoleDescription": {"value": "bar"},
+              "fill": {
+                "value": "#4c78a8"
+              },
+              "ariaRoleDescription": {
+                "value": "bar"
+              },
               "description": {
                 "signal": "\"time (binned): \" + (!isValid(datum[\"bin_maxbins_30_extent_param_brush_time\"]) || !isFinite(+datum[\"bin_maxbins_30_extent_param_brush_time\"]) ? \"null\" : format(datum[\"bin_maxbins_30_extent_param_brush_time\"], \"\") + \" – \" + format(datum[\"bin_maxbins_30_extent_param_brush_time_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
@@ -471,8 +615,14 @@
                   "signal": "0.5 + (abs(scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time_end\"]) - scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time_end\"]) - scale(\"concat_1_x\", datum[\"bin_maxbins_30_extent_param_brush_time\"])))) : -0.5)"
                 }
               },
-              "y": {"scale": "concat_1_y", "field": "__count"},
-              "y2": {"scale": "concat_1_y", "value": 0}
+              "y": {
+                "scale": "concat_1_y",
+                "field": "__count"
+              },
+              "y2": {
+                "scale": "concat_1_y",
+                "value": 0
+              }
             }
           }
         }
@@ -483,7 +633,9 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {
+            "signal": "ceil(childHeight/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -499,7 +651,9 @@
           "title": "time (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/10)"},
+          "tickCount": {
+            "signal": "ceil(width/10)"
+          },
           "zindex": 0
         },
         {
@@ -508,7 +662,9 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {
+            "signal": "ceil(childHeight/40)"
+          },
           "zindex": 0
         }
       ]
@@ -521,15 +677,30 @@
       "domain": {
         "signal": "[concat_0_bin_maxbins_30_time_bins.start, concat_0_bin_maxbins_30_time_bins.stop]"
       },
-      "range": [0, {"signal": "width"}],
-      "bins": {"signal": "concat_0_bin_maxbins_30_time_bins"},
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
+      "bins": {
+        "signal": "concat_0_bin_maxbins_30_time_bins"
+      },
       "zero": false
     },
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "__count"},
-      "range": [{"signal": "childHeight"}, 0],
+      "domain": {
+        "data": "data_1",
+        "field": "__count"
+      },
+      "range": [
+        {
+          "signal": "childHeight"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     },
@@ -539,8 +710,15 @@
       "domain": {
         "signal": "[concat_1_bin_maxbins_30_extent_param_brush_time_bins.start, concat_1_bin_maxbins_30_extent_param_brush_time_bins.stop]"
       },
-      "domainRaw": {"signal": "brush[\"time\"]"},
-      "range": [0, {"signal": "width"}],
+      "domainRaw": {
+        "signal": "brush[\"time\"]"
+      },
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ],
       "bins": {
         "signal": "concat_1_bin_maxbins_30_extent_param_brush_time_bins"
       },
@@ -549,8 +727,16 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "__count"},
-      "range": [{"signal": "childHeight"}, 0],
+      "domain": {
+        "data": "data_0",
+        "field": "__count"
+      },
+      "range": [
+        {
+          "signal": "childHeight"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     }

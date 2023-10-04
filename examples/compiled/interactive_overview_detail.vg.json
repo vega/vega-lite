@@ -4,11 +4,18 @@
   "padding": 5,
   "width": 480,
   "data": [
-    {"name": "brush_store"},
+    {
+      "name": "brush_store"
+    },
     {
       "name": "source_0",
       "url": "data/sp500.csv",
-      "format": {"type": "csv", "parse": {"date": "date"}}
+      "format": {
+        "type": "csv",
+        "parse": {
+          "date": "date"
+        }
+      }
     },
     {
       "name": "data_0",
@@ -24,10 +31,18 @@
         },
         {
           "type": "stack",
-          "groupby": ["date"],
+          "groupby": [
+            "date"
+          ],
           "field": "price",
-          "sort": {"field": [], "order": []},
-          "as": ["price_start", "price_end"],
+          "sort": {
+            "field": [],
+            "order": []
+          },
+          "as": [
+            "price_start",
+            "price_end"
+          ],
           "offset": "zero"
         }
       ]
@@ -46,23 +61,40 @@
         },
         {
           "type": "stack",
-          "groupby": ["date"],
+          "groupby": [
+            "date"
+          ],
           "field": "price",
-          "sort": {"field": [], "order": []},
-          "as": ["price_start", "price_end"],
+          "sort": {
+            "field": [],
+            "order": []
+          },
+          "as": [
+            "price_start",
+            "price_end"
+          ],
           "offset": "zero"
         }
       ]
     }
   ],
   "signals": [
-    {"name": "concat_0_height", "value": 200},
-    {"name": "concat_1_height", "value": 60},
+    {
+      "name": "concat_0_height",
+      "value": 200
+    },
+    {
+      "name": "concat_1_height",
+      "value": 60
+    },
     {
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+        {
+          "events": "pointermove",
+          "update": "isTuple(group()) ? group() : unit"
+        }
       ]
     },
     {
@@ -70,7 +102,12 @@
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
     }
   ],
-  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
+  "layout": {
+    "padding": 20,
+    "columns": 1,
+    "bounds": "full",
+    "align": "each"
+  },
   "marks": [
     {
       "type": "group",
@@ -78,8 +115,12 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "width"},
-          "height": {"signal": "concat_0_height"}
+          "width": {
+            "signal": "width"
+          },
+          "height": {
+            "signal": "concat_0_height"
+          }
         }
       },
       "marks": [
@@ -87,20 +128,39 @@
           "name": "concat_0_marks",
           "type": "area",
           "clip": true,
-          "style": ["area"],
-          "sort": {"field": "datum[\"date\"]"},
+          "style": [
+            "area"
+          ],
+          "sort": {
+            "field": "datum[\"date\"]"
+          },
           "interactive": false,
-          "from": {"data": "data_0"},
+          "from": {
+            "data": "data_0"
+          },
           "encode": {
             "update": {
-              "orient": {"value": "vertical"},
-              "fill": {"value": "#4c78a8"},
+              "orient": {
+                "value": "vertical"
+              },
+              "fill": {
+                "value": "#4c78a8"
+              },
               "description": {
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
               },
-              "x": {"scale": "concat_0_x", "field": "date"},
-              "y": {"scale": "concat_0_y", "field": "price_end"},
-              "y2": {"scale": "concat_0_y", "field": "price_start"},
+              "x": {
+                "scale": "concat_0_x",
+                "field": "date"
+              },
+              "y": {
+                "scale": "concat_0_y",
+                "field": "price_end"
+              },
+              "y2": {
+                "scale": "concat_0_y",
+                "field": "price_start"
+              },
               "defined": {
                 "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
               }
@@ -114,7 +174,9 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {
+            "signal": "ceil(width/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -128,7 +190,9 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {
+            "signal": "ceil(concat_0_height/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -143,7 +207,9 @@
           "grid": false,
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {
+            "signal": "ceil(width/40)"
+          },
           "zindex": 0
         },
         {
@@ -152,7 +218,9 @@
           "grid": false,
           "title": "price",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {
+            "signal": "ceil(concat_0_height/40)"
+          },
           "zindex": 0
         }
       ]
@@ -163,8 +231,12 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "width"},
-          "height": {"signal": "concat_1_height"}
+          "width": {
+            "signal": "width"
+          },
+          "height": {
+            "signal": "concat_1_height"
+          }
         }
       },
       "signals": [
@@ -195,25 +267,39 @@
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {"source": "window", "type": "pointerup"}
+                  {
+                    "source": "window",
+                    "type": "pointerup"
+                  }
                 ]
               },
               "update": "[brush_x[0], clamp(x(unit), 0, width)]"
             },
             {
-              "events": {"signal": "brush_scale_trigger"},
+              "events": {
+                "signal": "brush_scale_trigger"
+              },
               "update": "[scale(\"concat_1_x\", brush_date[0]), scale(\"concat_1_x\", brush_date[1])]"
             },
             {
-              "events": [{"source": "view", "type": "dblclick"}],
+              "events": [
+                {
+                  "source": "view",
+                  "type": "dblclick"
+                }
+              ],
               "update": "[0, 0]"
             },
             {
-              "events": {"signal": "brush_translate_delta"},
+              "events": {
+                "signal": "brush_translate_delta"
+              },
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
-              "events": {"signal": "brush_zoom_delta"},
+              "events": {
+                "signal": "brush_zoom_delta"
+              },
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
             }
           ]
@@ -222,7 +308,9 @@
           "name": "brush_date",
           "on": [
             {
-              "events": {"signal": "brush_x"},
+              "events": {
+                "signal": "brush_x"
+              },
               "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_1_x\", brush_x)"
             }
           ]
@@ -232,7 +320,11 @@
           "value": {},
           "on": [
             {
-              "events": [{"scale": "concat_1_x"}],
+              "events": [
+                {
+                  "scale": "concat_1_x"
+                }
+              ],
               "update": "(!isArray(brush_date) || (+invert(\"concat_1_x\", brush_x)[0] === +brush_date[0] && +invert(\"concat_1_x\", brush_x)[1] === +brush_date[1])) ? brush_scale_trigger : {}"
             }
           ]
@@ -241,14 +333,24 @@
           "name": "brush_tuple",
           "on": [
             {
-              "events": [{"signal": "brush_date"}],
+              "events": [
+                {
+                  "signal": "brush_date"
+                }
+              ],
               "update": "brush_date ? {unit: \"concat_1\", fields: brush_tuple_fields, values: [brush_date]} : null"
             }
           ]
         },
         {
           "name": "brush_tuple_fields",
-          "value": [{"field": "date", "channel": "x", "type": "R"}]
+          "value": [
+            {
+              "field": "date",
+              "channel": "x",
+              "type": "R"
+            }
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -282,7 +384,10 @@
                       "type": "pointerdown",
                       "markname": "brush_brush"
                     },
-                    {"source": "window", "type": "pointerup"}
+                    {
+                      "source": "window",
+                      "type": "pointerup"
+                    }
                   ]
                 }
               ],
@@ -327,7 +432,9 @@
           "name": "brush_modify",
           "on": [
             {
-              "events": {"signal": "brush_tuple"},
+              "events": {
+                "signal": "brush_tuple"
+              },
               "update": "modify(\"brush_store\", brush_tuple, true)"
             }
           ]
@@ -340,8 +447,12 @@
           "clip": true,
           "encode": {
             "enter": {
-              "fill": {"value": "#333"},
-              "fillOpacity": {"value": 0.125}
+              "fill": {
+                "value": "#333"
+              },
+              "fillOpacity": {
+                "value": 0.125
+              }
             },
             "update": {
               "x": [
@@ -349,28 +460,38 @@
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_x[0]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "value": 0
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_x[1]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
-                  "field": {"group": "height"}
+                  "field": {
+                    "group": "height"
+                  }
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ]
             }
           }
@@ -378,20 +499,39 @@
         {
           "name": "concat_1_marks",
           "type": "area",
-          "style": ["area"],
-          "sort": {"field": "datum[\"date\"]"},
+          "style": [
+            "area"
+          ],
+          "sort": {
+            "field": "datum[\"date\"]"
+          },
           "interactive": true,
-          "from": {"data": "data_1"},
+          "from": {
+            "data": "data_1"
+          },
           "encode": {
             "update": {
-              "orient": {"value": "vertical"},
-              "fill": {"value": "#4c78a8"},
+              "orient": {
+                "value": "vertical"
+              },
+              "fill": {
+                "value": "#4c78a8"
+              },
               "description": {
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
               },
-              "x": {"scale": "concat_1_x", "field": "date"},
-              "y": {"scale": "concat_1_y", "field": "price_end"},
-              "y2": {"scale": "concat_1_y", "field": "price_start"},
+              "x": {
+                "scale": "concat_1_x",
+                "field": "date"
+              },
+              "y": {
+                "scale": "concat_1_y",
+                "field": "price_end"
+              },
+              "y2": {
+                "scale": "concat_1_y",
+                "field": "price_start"
+              },
               "defined": {
                 "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
               }
@@ -403,39 +543,58 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "fill": {
+                "value": "transparent"
+              }
+            },
             "update": {
               "x": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_x[0]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "value": 0
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "x2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
                   "signal": "brush_x[1]"
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "y2": [
                 {
                   "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"concat_1\"",
-                  "field": {"group": "height"}
+                  "field": {
+                    "group": "height"
+                  }
                 },
-                {"value": 0}
+                {
+                  "value": 0
+                }
               ],
               "stroke": [
-                {"test": "brush_x[0] !== brush_x[1]", "value": "white"},
-                {"value": null}
+                {
+                  "test": "brush_x[0] !== brush_x[1]",
+                  "value": "white"
+                },
+                {
+                  "value": null
+                }
               ]
             }
           }
@@ -447,7 +606,9 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {
+            "signal": "ceil(width/40)"
+          },
           "domain": false,
           "labels": false,
           "aria": false,
@@ -463,7 +624,9 @@
           "title": "date",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {
+            "signal": "ceil(width/40)"
+          },
           "zindex": 0
         },
         {
@@ -482,29 +645,69 @@
     {
       "name": "concat_0_x",
       "type": "time",
-      "domain": {"data": "data_0", "field": "date"},
-      "domainRaw": {"signal": "brush[\"date\"]"},
-      "range": [0, {"signal": "width"}]
+      "domain": {
+        "data": "data_0",
+        "field": "date"
+      },
+      "domainRaw": {
+        "signal": "brush[\"date\"]"
+      },
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ]
     },
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "fields": ["price_start", "price_end"]},
-      "range": [{"signal": "concat_0_height"}, 0],
+      "domain": {
+        "data": "data_0",
+        "fields": [
+          "price_start",
+          "price_end"
+        ]
+      },
+      "range": [
+        {
+          "signal": "concat_0_height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     },
     {
       "name": "concat_1_x",
       "type": "time",
-      "domain": {"data": "data_1", "field": "date"},
-      "range": [0, {"signal": "width"}]
+      "domain": {
+        "data": "data_1",
+        "field": "date"
+      },
+      "range": [
+        0,
+        {
+          "signal": "width"
+        }
+      ]
     },
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_1", "fields": ["price_start", "price_end"]},
-      "range": [{"signal": "concat_1_height"}, 0],
+      "domain": {
+        "data": "data_1",
+        "fields": [
+          "price_start",
+          "price_end"
+        ]
+      },
+      "range": [
+        {
+          "signal": "concat_1_height"
+        },
+        0
+      ],
       "nice": true,
       "zero": true
     }
