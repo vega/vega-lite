@@ -1,6 +1,6 @@
 import {TimeUnitTransform as VgTimeUnitTransform} from 'vega';
 import {FormulaTransform as VgFormulaTransform} from 'vega';
-import {FieldName, vgField} from '../../channeldef';
+import {FieldName, getBandPosition, vgField} from '../../channeldef';
 import {
   TimeUnitParams,
   getDateTimePartAndStep,
@@ -14,8 +14,11 @@ import {Dict, duplicate, entries, hash, isEmpty, replacePathInField, vals} from 
 import {ModelWithField, isUnitModel} from '../model';
 import {DataFlowNode} from './dataflow';
 import {isRectBasedMark} from '../../mark';
+import {isXorY} from '../../channel';
 
-export type TimeUnitComponent = TimeUnitTransform | BinnedTimeUnitOffset;
+export type TimeUnitComponent = (TimeUnitTransform | BinnedTimeUnitOffset) & {
+  rectBandPosition?: number;
+};
 
 export interface BinnedTimeUnitOffset {
   timeUnit: TimeUnitParams;
@@ -35,25 +38,24 @@ export class TimeUnitNode extends DataFlowNode {
     return new TimeUnitNode(null, duplicate(this.timeUnits));
   }
 
-  constructor(
-    parent: DataFlowNode,
-    private timeUnits: Dict<TimeUnitComponent>
-  ) {
+  constructor(parent: DataFlowNode, private timeUnits: Dict<TimeUnitComponent>) {
     super(parent);
   }
 
   public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
-    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef) => {
+    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef, channel) => {
       const {field, timeUnit} = fieldDef;
 
       if (timeUnit) {
         let component: TimeUnitComponent | undefined;
+
         if (isBinnedTimeUnit(timeUnit)) {
           // For binned time unit, only produce end if the mark is a rect-based mark (rect, bar, image, arc), which needs "range".
 
           if (isUnitModel(model)) {
-            const {mark} = model;
-            if (isRectBasedMark(mark) || !!fieldDef.bandPosition) {
+            const {mark, markDef, config} = model;
+            const bandPosition = getBandPosition({fieldDef, markDef, config});
+            if (isRectBasedMark(mark) || !!bandPosition) {
               component = {
                 timeUnit: normalizeTimeUnit(timeUnit),
                 field
@@ -67,6 +69,15 @@ export class TimeUnitNode extends DataFlowNode {
             timeUnit
           };
         }
+
+        if (isUnitModel(model)) {
+          const {mark, markDef, config} = model;
+          const bandPosition = getBandPosition({fieldDef, markDef, config});
+          if (isRectBasedMark(mark) && isXorY(channel) && bandPosition !== 0.5) {
+            component.rectBandPosition = bandPosition;
+          }
+        }
+
         if (component) {
           timeUnitComponent[hash(component)] = component;
         }
@@ -157,9 +168,14 @@ export class TimeUnitNode extends DataFlowNode {
     const transforms: (VgTimeUnitTransform | VgFormulaTransform)[] = [];
 
     for (const f of vals(this.timeUnits)) {
+      const {rectBandPosition} = f;
+      const normalizedTimeUnit = normalizeTimeUnit(f.timeUnit);
+
       if (isTimeUnitTransformComponent(f)) {
-        const {field, as, timeUnit} = f;
-        const {unit, utc, ...params} = normalizeTimeUnit(timeUnit);
+        const {field, as} = f;
+        const {unit, utc, ...params} = normalizedTimeUnit;
+
+        const startEnd: [string, string] = [as, `${as}_end`];
 
         transforms.push({
           field: replacePathInField(field),
@@ -167,22 +183,76 @@ export class TimeUnitNode extends DataFlowNode {
           ...(unit ? {units: getTimeUnitParts(unit)} : {}),
           ...(utc ? {timezone: 'utc'} : {}),
           ...params,
-          as: [as, `${as}_end`]
+          as: startEnd
         });
+
+        transforms.push(...offsetedRectFormulas(startEnd, rectBandPosition, normalizedTimeUnit));
       } else if (f) {
-        const {field: escapedField, timeUnit} = f;
+        const {field: escapedField} = f;
         // since this is a expression, we want the unescaped field name
         const field = escapedField.replaceAll('\\.', '.');
-        const smallestUnit = getSmallestTimeUnitPart(timeUnit?.unit);
-        const {part, step} = getDateTimePartAndStep(smallestUnit, timeUnit.step);
+        const expr = offsetExpr({timeUnit: normalizedTimeUnit, field});
+        const endAs = offsetAs(field);
         transforms.push({
           type: 'formula',
-          expr: `timeOffset('${part}', datum['${field}'], ${step})`,
-          as: offsetAs(field)
+          expr,
+          as: endAs
         });
+
+        transforms.push(...offsetedRectFormulas([field, endAs], rectBandPosition, normalizedTimeUnit));
       }
     }
 
     return transforms;
   }
+}
+
+export const OFFSETTED_RECT_START_SUFFIX = 'offsetted_rect_start';
+export const OFFSETTED_RECT_END_SUFFIX = 'offsetted_rect_end';
+
+function offsetExpr({timeUnit, field, reverse}: {timeUnit: TimeUnitParams; field: string; reverse?: boolean}) {
+  const {unit, utc} = timeUnit;
+  const smallestUnit = getSmallestTimeUnitPart(unit);
+  const {part, step} = getDateTimePartAndStep(smallestUnit, timeUnit.step);
+  const offsetFn = utc ? 'utcOffset' : 'timeOffset';
+  const expr = `${offsetFn}('${part}', datum['${field}'], ${reverse ? -step : step})`;
+  return expr;
+}
+
+function offsetedRectFormulas(
+  [startField, endField]: [string, string],
+  rectBandPosition: number | undefined,
+  timeUnit: TimeUnitParams
+): VgFormulaTransform[] {
+  if (rectBandPosition !== undefined && rectBandPosition !== 0.5) {
+    const startExpr = `datum['${startField}']`;
+    const endExpr = `datum['${endField}']`;
+    return [
+      {
+        type: 'formula',
+        expr: interpolateExpr(
+          [
+            offsetExpr({
+              timeUnit,
+              field: startField,
+              reverse: true
+            }),
+            startExpr
+          ],
+          rectBandPosition + 0.5
+        ),
+        as: `${startField}_${OFFSETTED_RECT_START_SUFFIX}`
+      },
+      {
+        type: 'formula',
+        expr: interpolateExpr([startExpr, endExpr], rectBandPosition + 0.5),
+        as: `${startField}_${OFFSETTED_RECT_END_SUFFIX}`
+      }
+    ];
+  }
+  return [];
+}
+
+function interpolateExpr([start, end]: [string, string], fraction: number) {
+  return `${1 - fraction} * ${start} + ${fraction} * ${end}`;
 }
