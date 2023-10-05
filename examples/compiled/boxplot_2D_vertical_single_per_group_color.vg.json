@@ -61,6 +61,26 @@
     },
     {
       "name": "data_4",
+      "source": "data_3",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"lower_whisker_b\"]) && isFinite(+datum[\"lower_whisker_b\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_5",
+      "source": "data_3",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"upper_box_b\"]) && isFinite(+datum[\"upper_box_b\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_6",
       "source": "source_0",
       "transform": [
         {
@@ -69,6 +89,26 @@
           "ops": ["q1", "q3", "median", "min", "max"],
           "fields": ["b", "b", "b", "b", "b"],
           "as": ["lower_box_b", "upper_box_b", "mid_box_b", "min_b", "max_b"]
+        }
+      ]
+    },
+    {
+      "name": "data_7",
+      "source": "data_6",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"lower_box_b\"]) && isFinite(+datum[\"lower_box_b\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_8",
+      "source": "data_6",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mid_box_b\"]) && isFinite(+datum[\"mid_box_b\"])"
         }
       ]
     }
@@ -102,7 +142,7 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_3"},
+      "from": {"data": "data_4"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -110,20 +150,8 @@
             "signal": "{\"Upper Whisker of b\": format(datum[\"upper_whisker_b\"], \"\"), \"Lower Whisker of b\": format(datum[\"lower_whisker_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
           "x": {"scale": "x", "field": "a", "band": 0.5},
-          "y": [
-            {
-              "test": "!isValid(datum[\"lower_whisker_b\"]) || !isFinite(+datum[\"lower_whisker_b\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "lower_whisker_b"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"lower_box_b\"]) || !isFinite(+datum[\"lower_box_b\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "lower_box_b"}
-          ]
+          "y": {"scale": "y", "field": "lower_whisker_b"},
+          "y2": {"scale": "y", "field": "lower_box_b"}
         }
       }
     },
@@ -132,7 +160,7 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_3"},
+      "from": {"data": "data_5"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -140,20 +168,8 @@
             "signal": "{\"Upper Whisker of b\": format(datum[\"upper_whisker_b\"], \"\"), \"Lower Whisker of b\": format(datum[\"lower_whisker_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
           "x": {"scale": "x", "field": "a", "band": 0.5},
-          "y": [
-            {
-              "test": "!isValid(datum[\"upper_box_b\"]) || !isFinite(+datum[\"upper_box_b\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "upper_box_b"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"upper_whisker_b\"]) || !isFinite(+datum[\"upper_whisker_b\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "upper_whisker_b"}
-          ]
+          "y": {"scale": "y", "field": "upper_box_b"},
+          "y2": {"scale": "y", "field": "upper_whisker_b"}
         }
       }
     },
@@ -161,7 +177,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rect",
       "style": ["bar", "boxplot-box"],
-      "from": {"data": "data_4"},
+      "from": {"data": "data_7"},
       "encode": {
         "update": {
           "ariaRoleDescription": {"value": "box"},
@@ -174,20 +190,8 @@
           },
           "xc": {"scale": "x", "field": "a", "band": 0.5},
           "width": {"value": 14},
-          "y": [
-            {
-              "test": "!isValid(datum[\"lower_box_b\"]) || !isFinite(+datum[\"lower_box_b\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "lower_box_b"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"upper_box_b\"]) || !isFinite(+datum[\"upper_box_b\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "upper_box_b"}
-          ]
+          "y": {"scale": "y", "field": "lower_box_b"},
+          "y2": {"scale": "y", "field": "upper_box_b"}
         }
       }
     },
@@ -196,7 +200,7 @@
       "type": "rect",
       "style": ["tick", "boxplot-median"],
       "aria": false,
-      "from": {"data": "data_4"},
+      "from": {"data": "data_8"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -212,13 +216,7 @@
             "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
           "xc": {"scale": "x", "field": "a", "band": 0.5},
-          "yc": [
-            {
-              "test": "!isValid(datum[\"mid_box_b\"]) || !isFinite(+datum[\"mid_box_b\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "mid_box_b"}
-          ],
+          "yc": {"scale": "y", "field": "mid_box_b"},
           "width": {"value": 14},
           "height": {"value": 1}
         }
@@ -232,8 +230,10 @@
       "domain": {
         "fields": [
           {"data": "data_2", "field": "a"},
-          {"data": "data_3", "field": "a"},
-          {"data": "data_4", "field": "a"}
+          {"data": "data_4", "field": "a"},
+          {"data": "data_5", "field": "a"},
+          {"data": "data_7", "field": "a"},
+          {"data": "data_8", "field": "a"}
         ],
         "sort": true
       },
@@ -247,13 +247,13 @@
       "domain": {
         "fields": [
           {"data": "data_2", "field": "b"},
-          {"data": "data_3", "field": "lower_whisker_b"},
-          {"data": "data_3", "field": "lower_box_b"},
-          {"data": "data_3", "field": "upper_box_b"},
-          {"data": "data_3", "field": "upper_whisker_b"},
+          {"data": "data_4", "field": "lower_whisker_b"},
           {"data": "data_4", "field": "lower_box_b"},
-          {"data": "data_4", "field": "upper_box_b"},
-          {"data": "data_4", "field": "mid_box_b"}
+          {"data": "data_5", "field": "upper_box_b"},
+          {"data": "data_5", "field": "upper_whisker_b"},
+          {"data": "data_7", "field": "lower_box_b"},
+          {"data": "data_7", "field": "upper_box_b"},
+          {"data": "data_8", "field": "mid_box_b"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -266,7 +266,8 @@
       "domain": {
         "fields": [
           {"data": "data_2", "field": "a"},
-          {"data": "data_4", "field": "a"}
+          {"data": "data_7", "field": "a"},
+          {"data": "data_8", "field": "a"}
         ],
         "sort": true
       },

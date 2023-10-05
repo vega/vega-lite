@@ -45,12 +45,7 @@
           ],
           "layer": [
             {
-              "mark": {
-                "type": "rule",
-                "invalid": null,
-                "aria": false,
-                "style": "boxplot-rule"
-              },
+              "mark": {"type": "rule", "aria": false, "style": "boxplot-rule"},
               "encoding": {
                 "y": {
                   "field": "lower_whisker_b",
@@ -79,12 +74,7 @@
               }
             },
             {
-              "mark": {
-                "type": "rule",
-                "invalid": null,
-                "aria": false,
-                "style": "boxplot-rule"
-              },
+              "mark": {"type": "rule", "aria": false, "style": "boxplot-rule"},
               "encoding": {
                 "y": {
                   "field": "upper_box_b",
@@ -135,7 +125,6 @@
             "type": "bar",
             "size": 14,
             "orient": "vertical",
-            "invalid": null,
             "ariaRoleDescription": "box",
             "style": "boxplot-box"
           },
@@ -169,7 +158,6 @@
           "mark": {
             "color": "white",
             "type": "tick",
-            "invalid": null,
             "size": 14,
             "orient": "horizontal",
             "aria": false,

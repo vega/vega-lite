@@ -202,7 +202,13 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_2", "field": "Species", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_2", "field": "Species"},
+          {"data": "data_3", "field": "Species"}
+        ],
+        "sort": true
+      },
       "range": "category"
     }
   ],

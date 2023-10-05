@@ -321,7 +321,8 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "Origin"},
-          {"data": "data_6", "field": "Origin"}
+          {"data": "data_6", "field": "Origin"},
+          {"data": "data_7", "field": "Origin"}
         ],
         "sort": true
       },

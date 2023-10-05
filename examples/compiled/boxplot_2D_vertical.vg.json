@@ -284,7 +284,8 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "Species"},
-          {"data": "data_6", "field": "Species"}
+          {"data": "data_6", "field": "Species"},
+          {"data": "data_7", "field": "Species"}
         ],
         "sort": true
       },

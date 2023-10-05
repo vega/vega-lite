@@ -207,7 +207,10 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "white"},
+          "fill": [
+            {"test": "datum['lower_box_b'] >= datum['upper_box_b']"},
+            {"value": "white"}
+          ],
           "tooltip": {
             "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": format(datum[\"a\"], \"\")}"
           },
