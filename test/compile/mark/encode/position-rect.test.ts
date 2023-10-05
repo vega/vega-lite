@@ -1,3 +1,4 @@
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../../src/compile/data/timeunit';
 import {rectPosition} from '../../../../src/compile/mark/encode/position-rect';
 import * as log from '../../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
@@ -26,6 +27,25 @@ describe('compile/mark/encode/position-rect', () => {
       expect(props.x2['offset']).toEqual({
         signal: '0.5 + (r ? -1 : 1) * 0.5'
       });
+    });
+
+    it('produces correct x-mixins for timeUnit with bandPosition = 0', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {
+            timeUnit: 'yearmonth',
+            field: 'date',
+            type: 'temporal',
+            bandPosition: 0
+          }
+        }
+      });
+
+      const props = rectPosition(model, 'x');
+      expect(props.x['field']).toBe(`yearmonth_date_${OFFSETTED_RECT_END_SUFFIX}`);
+      expect(props.x2['field']).toBe(`yearmonth_date_${OFFSETTED_RECT_START_SUFFIX}`);
     });
 
     it('produces correct x-mixins for binned data with step and start field, without end field', () => {
