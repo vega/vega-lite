@@ -13,6 +13,7 @@ import {isBinning, isBinParams, isParameterExtent} from '../../bin';
 import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
 import {
   binRequiresRange,
+  getBandPosition,
   getFieldOrDatumDef,
   hasBandEnd,
   isDatumDef,
@@ -54,6 +55,8 @@ import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
+import {isRectBasedMark} from '../../mark';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../data/timeunit';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -240,7 +243,7 @@ function parseSingleChannelDomain(
   model: UnitModel,
   channel: ScaleChannel | 'x2' | 'y2'
 ): Explicit<VgNonUnionDomain[]> {
-  const {encoding} = model;
+  const {encoding, markDef, mark, config, stack} = model;
   const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleDatumDef<string> | ScaleFieldDef<string>;
 
   const {type} = fieldOrDatumDef;
@@ -258,7 +261,6 @@ function parseSingleChannelDomain(
     return makeExplicit(convertDomainIfItIsDateTime(domain, type, timeUnit));
   }
 
-  const stack = model.stack;
   if (stack && channel === stack.fieldChannel) {
     if (stack.offset === 'normalize') {
       return makeImplicit([[0, 1]]);
@@ -347,28 +349,27 @@ function parseSingleChannelDomain(
         ]);
       }
     }
-  } else if (
-    fieldDef.timeUnit &&
-    util.contains(['time', 'utc'], scaleType) &&
-    hasBandEnd(
-      fieldDef,
-      isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined,
-      model.markDef,
-      model.config
-    )
-  ) {
-    const data = model.requestDataName(DataSourceType.Main);
-    return makeImplicit([
-      {
-        data,
-        field: model.vgField(channel)
-      },
-      {
-        data,
-        field: model.vgField(channel, {suffix: 'end'})
-      }
-    ]);
-  } else if (sort) {
+  } else if (fieldDef.timeUnit && util.contains(['time', 'utc'], scaleType)) {
+    const fieldDef2 = encoding[getSecondaryRangeChannel(channel)];
+
+    if (hasBandEnd(fieldDef, fieldDef2, markDef, config)) {
+      const data = model.requestDataName(DataSourceType.Main);
+
+      const bandPosition = getBandPosition({fieldDef, fieldDef2, markDef, config});
+      const isRectWithOffset = isRectBasedMark(mark) && bandPosition !== 0.5;
+      return makeImplicit([
+        {
+          data,
+          field: model.vgField(channel, isRectWithOffset ? {suffix: OFFSETTED_RECT_START_SUFFIX} : {})
+        },
+        {
+          data,
+          field: model.vgField(channel, {suffix: isRectWithOffset ? OFFSETTED_RECT_END_SUFFIX : 'end'})
+        }
+      ]);
+    }
+  }
+  if (sort) {
     return makeImplicit([
       {
         // If sort by aggregation of a specified sort field, we need to use RAW table,
