@@ -1,0 +1,190 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "title": {
+    "text": "Daily Max Temperatures (C) in Seattle, WA",
+    "frame": "group"
+  },
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/seattle-weather.csv",
+      "format": {
+        "type": "csv",
+        "parse": {"date": "date", "temp_max": "number"}
+      },
+      "transform": [
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["date"],
+          "as": ["date_date", "date_date_end"]
+        },
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["month"],
+          "as": ["month_date", "month_date_end"]
+        },
+        {
+          "type": "aggregate",
+          "groupby": [
+            "date_date",
+            "date_date_end",
+            "month_date",
+            "month_date_end"
+          ],
+          "ops": ["max"],
+          "fields": ["temp_max"],
+          "as": ["max_temp_max"]
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"month_date\"]) || (isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]))) && isValid(datum[\"max_temp_max\"]) && isFinite(+datum[\"max_temp_max\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "max_temp_max"},
+          "description": {
+            "signal": "\"Day: \" + (timeFormat(datum[\"date_date\"], '%e')) + \"; Month: \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Max of temp_max: \" + (format(datum[\"max_temp_max\"], \"\"))"
+          },
+          "x2": {
+            "scale": "x",
+            "field": "date_date",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"date_date_end\"]) - scale(\"x\", datum[\"date_date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"date_date_end\"]) - scale(\"x\", datum[\"date_date\"])))) : 0)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "date_date_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"date_date_end\"]) - scale(\"x\", datum[\"date_date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"date_date_end\"]) - scale(\"x\", datum[\"date_date\"])))) : 0)"
+            }
+          },
+          "y2": {
+            "scale": "y",
+            "field": "month_date",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"y\", datum[\"month_date_end\"]) - scale(\"y\", datum[\"month_date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"y\", datum[\"month_date_end\"]) - scale(\"y\", datum[\"month_date\"])))) : 0)"
+            }
+          },
+          "y": {
+            "scale": "y",
+            "field": "month_date_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"y\", datum[\"month_date_end\"]) - scale(\"y\", datum[\"month_date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"y\", datum[\"month_date_end\"]) - scale(\"y\", datum[\"month_date\"])))) : 0)"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "fields": ["date_date", "date_date_end"]},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "time",
+      "domain": {
+        "data": "source_0",
+        "fields": ["month_date", "month_date_end"]
+      },
+      "range": [{"signal": "height"}, 0]
+    },
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "max_temp_max"},
+      "range": "heatmap",
+      "interpolate": "hcl",
+      "zero": false
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickMinStep": {
+        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Day",
+      "format": "%e",
+      "labelAngle": 0,
+      "labelBaseline": "top",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Month",
+      "format": {
+        "signal": "timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "labelOverlap": true,
+      "tickMinStep": {
+        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {"fill": "color", "gradientLength": {"signal": "clamp(height, 64, 200)"}}
+  ],
+  "config": {"axis": {"domain": false}, "style": {"cell": {"strokeWidth": 0}}}
+}
