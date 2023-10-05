@@ -38,7 +38,10 @@ export class TimeUnitNode extends DataFlowNode {
     return new TimeUnitNode(null, duplicate(this.timeUnits));
   }
 
-  constructor(parent: DataFlowNode, private timeUnits: Dict<TimeUnitComponent>) {
+  constructor(
+    parent: DataFlowNode,
+    private timeUnits: Dict<TimeUnitComponent>
+  ) {
     super(parent);
   }
 
