@@ -534,7 +534,7 @@ export function getBandPosition({
   if (isFieldDef(fieldDef)) {
     const {timeUnit, bin} = fieldDef;
     if (timeUnit && !fieldDef2) {
-      return isRectBasedMark(mark.type) ? 0 : getMarkConfig('timeUnitBandPosition', mark, config);
+      return getMarkConfig('timeUnitBandPosition', mark, config);
     } else if (isBinning(bin)) {
       return 0.5;
     }
