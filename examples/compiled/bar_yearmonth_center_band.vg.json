@@ -19,8 +19,23 @@
           "as": ["yearmonth_date", "yearmonth_date_end"]
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('month', datum['yearmonth_date'], -1) + 0.5 * datum['yearmonth_date']",
+          "as": "yearmonth_date_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['yearmonth_date'] + 0.5 * datum['yearmonth_date_end']",
+          "as": "yearmonth_date_offsetted_rect_end"
+        },
+        {
           "type": "aggregate",
-          "groupby": ["yearmonth_date", "yearmonth_date_end"],
+          "groupby": [
+            "yearmonth_date",
+            "yearmonth_date_end",
+            "yearmonth_date_offsetted_rect_start",
+            "yearmonth_date_offsetted_rect_end"
+          ],
           "ops": ["mean"],
           "fields": ["temp_max"],
           "as": ["mean_temp_max"]
@@ -47,14 +62,14 @@
           },
           "x2": {
             "scale": "x",
-            "field": "yearmonth_date",
+            "field": "yearmonth_date_offsetted_rect_start",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"yearmonth_date_end\"]) - scale(\"x\", datum[\"yearmonth_date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"yearmonth_date_end\"]) - scale(\"x\", datum[\"yearmonth_date\"])))) : 0.5)"
             }
           },
           "x": {
             "scale": "x",
-            "field": "yearmonth_date_end",
+            "field": "yearmonth_date_offsetted_rect_end",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"yearmonth_date_end\"]) - scale(\"x\", datum[\"yearmonth_date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"yearmonth_date_end\"]) - scale(\"x\", datum[\"yearmonth_date\"])))) : -0.5)"
             }
@@ -71,7 +86,10 @@
       "type": "time",
       "domain": {
         "data": "source_0",
-        "fields": ["yearmonth_date", "yearmonth_date_end"]
+        "fields": [
+          "yearmonth_date_offsetted_rect_start",
+          "yearmonth_date_offsetted_rect_end"
+        ]
       },
       "range": [0, {"signal": "width"}]
     },
