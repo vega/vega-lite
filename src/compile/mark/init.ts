@@ -73,9 +73,6 @@ function cursor(markDef: MarkDef<Mark, SignalRef>, encoding: Encoding<string>, c
   if (encoding.href || markDef.href || getMarkPropOrConfig('href', markDef, config)) {
     return 'pointer';
   }
-  else if (config.selection) {
-    return 'crosshair'
-  }
   return markDef.cursor;
 }
 
