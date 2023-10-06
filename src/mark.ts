@@ -657,14 +657,14 @@ export const defaultBarConfig: RectConfig<SignalRef> = {
   binSpacing: 1,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
   minBandSize: 0.25,
-  timeUnitBandPosition: 0.5
+  timeUnitBandPosition: 0
 };
 
 export const defaultRectConfig: RectConfig<SignalRef> = {
   binSpacing: 0,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
   minBandSize: 0.25,
-  timeUnitBandPosition: 0.5
+  timeUnitBandPosition: 0
 };
 
 export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, TickThicknessMixins {
