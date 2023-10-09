@@ -494,7 +494,7 @@ export interface DomainUnionWith {
    * Customized domain values to be union with the field's values or explicitly defined domain.
    * Should be an array of valid scale domain values.
    */
-  unionWith: number[] | string[] | boolean[] | DateTime[];
+  unionWith: (number | string | boolean | DateTime)[];
 }
 
 export function isDomainUnionWith(domain: Domain): domain is DomainUnionWith {

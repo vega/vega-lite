@@ -8330,33 +8330,24 @@
       "additionalProperties": false,
       "properties": {
         "unionWith": {
-          "anyOf": [
-            {
-              "items": {
+          "description": "Customized domain values to be union with the field's values or explicitly defined domain. Should be an array of valid scale domain values.",
+          "items": {
+            "anyOf": [
+              {
                 "type": "number"
               },
-              "type": "array"
-            },
-            {
-              "items": {
+              {
                 "type": "string"
               },
-              "type": "array"
-            },
-            {
-              "items": {
+              {
                 "type": "boolean"
               },
-              "type": "array"
-            },
-            {
-              "items": {
+              {
                 "$ref": "#/definitions/DateTime"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Customized domain values to be union with the field's values or explicitly defined domain. Should be an array of valid scale domain values."
+              }
+            ]
+          },
+          "type": "array"
         }
       },
       "required": [
