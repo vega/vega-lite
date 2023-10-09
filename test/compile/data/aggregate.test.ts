@@ -1,4 +1,5 @@
 import {AggregateNode} from '../../../src/compile/data/aggregate';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../src/compile/data/timeunit';
 import {AggregateTransform} from '../../../src/transform';
 import {internalField} from '../../../src/util';
 import {parseUnitModel} from '../../util';
@@ -80,6 +81,39 @@ describe('compile/data/aggregate', () => {
         ops: ['sum', 'count'],
         fields: ['Acceleration', null],
         as: ['sum_Acceleration', internalField('count')]
+      });
+    });
+
+    it('should produce the correct summary component for timeBinWithOffset', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          y: {
+            aggregate: 'sum',
+            field: 'Acceleration',
+            type: 'quantitative'
+          },
+          x: {
+            timeUnit: 'yearmonth',
+            field: 'date',
+            type: 'temporal',
+            bandPosition: 0
+          }
+        }
+      });
+
+      const agg = AggregateNode.makeFromEncoding(null, model);
+      expect(agg.assemble()).toEqual({
+        type: 'aggregate',
+        groupby: [
+          'yearmonth_date',
+          'yearmonth_date_end',
+          `yearmonth_date_${OFFSETTED_RECT_START_SUFFIX}`,
+          `yearmonth_date_${OFFSETTED_RECT_END_SUFFIX}`
+        ],
+        ops: ['sum'],
+        fields: ['Acceleration'],
+        as: ['sum_Acceleration']
       });
     });
 

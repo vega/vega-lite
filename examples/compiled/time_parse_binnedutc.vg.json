@@ -16,7 +16,7 @@
         {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
         {
           "type": "formula",
-          "expr": "timeOffset('hours', datum['date'], 1)",
+          "expr": "utcOffset('hours', datum['date'], 1)",
           "as": "date_end"
         }
       ]

@@ -27,7 +27,14 @@ import {
   Y,
   YOFFSET
 } from '../../channel';
-import {getFieldOrDatumDef, isFieldDef, isFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
+import {
+  getBandPosition,
+  getFieldOrDatumDef,
+  isFieldDef,
+  isFieldOrDatumDef,
+  ScaleDatumDef,
+  ScaleFieldDef
+} from '../../channeldef';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
 import {DataSourceType} from '../../data';
 import {channelHasFieldOrDatum} from '../../encoding';
@@ -370,6 +377,8 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
   const positionScaleType = positionScaleCmpt.get('type');
   const positionScaleName = model.scaleName(positionChannel);
 
+  const {markDef, config} = model;
+
   if (positionScaleType === 'band') {
     const size = getDiscretePositionSize(positionChannel, model.size, model.config.view);
 
@@ -388,9 +397,20 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
     if (isFieldDef(positionDef) && positionDef.timeUnit) {
       const duration = durationExpr(positionDef.timeUnit, expr => `scale('${positionScaleName}', ${expr})`);
       const padding = model.config.scale.bandWithNestedOffsetPaddingInner;
+      const bandPositionOffset =
+        getBandPosition({
+          fieldDef: positionDef,
+          markDef,
+          config
+        }) - 0.5;
+      const bandPositionOffsetExpr = bandPositionOffset !== 0 ? ` + ${bandPositionOffset}` : '';
       if (padding) {
-        const startRatio = isSignalRef(padding) ? `${padding.signal}/2` : `${padding / 2}`;
-        const endRatio = isSignalRef(padding) ? `(1 - ${padding.signal}/2)` : `${1 - padding / 2}`;
+        const startRatio = isSignalRef(padding)
+          ? `${padding.signal}/2` + bandPositionOffsetExpr
+          : `${padding / 2 + bandPositionOffset}`;
+        const endRatio = isSignalRef(padding)
+          ? `(1 - ${padding.signal}/2)` + bandPositionOffsetExpr
+          : `${1 - padding / 2 + bandPositionOffset}`;
         return [{signal: `${startRatio} * (${duration})`}, {signal: `${endRatio} * (${duration})`}];
       }
       return [0, {signal: duration}];

@@ -68,6 +68,12 @@ Using `timeUnit` with rect-based marks (including `bar`, `rect`, and `image`) wi
 
 You can also add `"binned"` prefix if your data has already been binned and want Vega-Lite to apply the right formatting, including the right bands for the interval, to your charts.
 
+By default, bar marks are placed from the beginning of a time interval (e.g., "month") to the end of the interval.
+
+Setting [`bandPosition`](bandposition.html) to `0` moves the bar to center-align with ticks.
+
+<div class="vl-example" data-name="bar_month_temporal_band_center"></div>
+
 <span class="vl-example" data-name="bar_binnedyearmonth"></span>
 
 ### Time Unit's Band
