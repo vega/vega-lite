@@ -1,4 +1,4 @@
-import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline, Cursor} from 'vega';
+import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
 import {Flag, keys} from './util';
@@ -282,9 +282,6 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
    * @minimum 0
    */
   outerRadius?: number | ES;
-
-
-  cursor?: Cursor;
 }
 
 export interface RectBinSpacingMixins {

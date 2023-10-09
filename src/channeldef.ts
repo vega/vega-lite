@@ -8,7 +8,7 @@ import {
   Channel,
   COLOR,
   COLUMN,
-  CURSOR,
+  // CURSOR,
   DESCRIPTION,
   DETAIL,
   ExtendedChannel,
@@ -1271,7 +1271,6 @@ export function channelCompatibility(
     case COLOR:
     case FILL:
     case STROKE:
-    case CURSOR:
     case TEXT:
     case DETAIL:
     case KEY:

@@ -4,7 +4,6 @@ import {isBinning} from '../../bin';
 import {
   ANGLE,
   COLOR,
-  CURSOR,
   FILL,
   FILLOPACITY,
   getOffsetScaleChannel,
@@ -320,7 +319,6 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
           return mark === 'rect' || mark === 'geoshape' ? 'heatmap' : 'ramp';
         }
       }
-    case CURSOR:
     case OPACITY:
     case FILLOPACITY:
     case STROKEOPACITY:

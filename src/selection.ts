@@ -198,12 +198,6 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
    * __See also:__ [`mark` examples](https://vega.github.io/vega-lite/docs/selection.html#mark) in the documentation.
    */
   mark?: BrushConfig;
-
-
-  /**
-   * The cursor used over the entire graph when an interval can be selected
- */
-  cursor?: Cursor;
 }
 
 export interface SelectionParameter<T extends SelectionType = SelectionType> {

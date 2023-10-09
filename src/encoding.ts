@@ -7,7 +7,7 @@ import {
   Channel,
   CHANNELS,
   COLOR,
-  CURSOR,
+  // CURSOR,
   DESCRIPTION,
   DETAIL,
   FILL,
@@ -330,11 +330,10 @@ export interface Encoding<F extends Field> {
   /**
    * TODO: Add description
    */
-  cursor?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[] | null;
-
+  // cursor?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[] | null;
 }
 
-export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> { }
+export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
 
 export function channelHasField<F extends Field>(
   encoding: EncodingWithFacet<F>,
@@ -747,7 +746,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case LATITUDE2:
       case LONGITUDE2:
       // TODO: case 'cursor':
-      case CURSOR:
+
       // text, shape, shouldn't be a part of line/trail/area [falls through]
       case TEXT:
       case SHAPE:

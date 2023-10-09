@@ -911,7 +911,6 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType, 
     case CHANNEL.FILL:
     case CHANNEL.STROKE:
       return scaleType !== 'band'; // band does not make sense with color
-    case CHANNEL.CURSOR:
     case CHANNEL.STROKEDASH:
     case CHANNEL.SHAPE:
       return scaleType === 'ordinal' || isContinuousToDiscrete(scaleType);
