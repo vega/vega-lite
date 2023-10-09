@@ -23,8 +23,23 @@
           "as": ["month_date", "month_date_end"]
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('month', datum['month_date'], -1) + 0.5 * datum['month_date']",
+          "as": "month_date_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['month_date'] + 0.5 * datum['month_date_end']",
+          "as": "month_date_offsetted_rect_end"
+        },
+        {
           "type": "aggregate",
-          "groupby": ["month_date", "month_date_end"],
+          "groupby": [
+            "month_date",
+            "month_date_end",
+            "month_date_offsetted_rect_start",
+            "month_date_offsetted_rect_end"
+          ],
           "ops": ["mean"],
           "fields": ["precipitation"],
           "as": ["mean_precipitation"]
@@ -50,6 +65,16 @@
           "type": "timeunit",
           "units": ["month"],
           "as": ["month_date", "month_date_end"]
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('month', datum['month_date'], -1) + 0.5 * datum['month_date']",
+          "as": "month_date_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['month_date'] + 0.5 * datum['month_date_end']",
+          "as": "month_date_offsetted_rect_end"
         },
         {
           "field": "date_end",
@@ -79,14 +104,14 @@
           },
           "x2": {
             "scale": "x",
-            "field": "month_date",
+            "field": "month_date_offsetted_rect_start",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])))) : 0.5)"
             }
           },
           "x": {
             "scale": "x",
-            "field": "month_date_end",
+            "field": "month_date_offsetted_rect_end",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"month_date_end\"]) - scale(\"x\", datum[\"month_date\"])))) : -0.5)"
             }
@@ -122,8 +147,8 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "month_date"},
-          {"data": "source_0", "field": "month_date_end"},
+          {"data": "source_0", "field": "month_date_offsetted_rect_start"},
+          {"data": "source_0", "field": "month_date_offsetted_rect_end"},
           {"data": "data_0", "field": "month_date"},
           {"data": "data_0", "field": "month_date_end"}
         ]

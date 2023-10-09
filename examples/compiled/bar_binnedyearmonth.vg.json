@@ -19,6 +19,16 @@
           "as": "date_end"
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('month', datum['date'], -1) + 0.5 * datum['date']",
+          "as": "date_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['date'] + 0.5 * datum['date_end']",
+          "as": "date_offsetted_rect_end"
+        },
+        {
           "type": "stack",
           "groupby": ["date"],
           "field": "price",
@@ -48,14 +58,14 @@
           },
           "x2": {
             "scale": "x",
-            "field": "date",
+            "field": "date_offsetted_rect_start",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])))) : 0.5)"
             }
           },
           "x": {
             "scale": "x",
-            "field": "date_end",
+            "field": "date_offsetted_rect_end",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])))) : -0.5)"
             }
@@ -70,7 +80,10 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "fields": ["date", "date_end"]},
+      "domain": {
+        "data": "source_0",
+        "fields": ["date_offsetted_rect_start", "date_offsetted_rect_end"]
+      },
       "range": [0, {"signal": "width"}]
     },
     {

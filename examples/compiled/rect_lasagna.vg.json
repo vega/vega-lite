@@ -19,6 +19,16 @@
           "as": ["yearmonthdate_date", "yearmonthdate_date_end"]
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('date', datum['yearmonthdate_date'], -1) + 0.5 * datum['yearmonthdate_date']",
+          "as": "yearmonthdate_date_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['yearmonthdate_date'] + 0.5 * datum['yearmonthdate_date_end']",
+          "as": "yearmonthdate_date_offsetted_rect_end"
+        },
+        {
           "type": "aggregate",
           "groupby": ["yearmonthdate_date", "symbol"],
           "ops": ["sum"],

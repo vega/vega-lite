@@ -17,6 +17,16 @@
           "as": ["month_date", "month_date_end"]
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('month', datum['month_date'], -1) + 0.5 * datum['month_date']",
+          "as": "month_date_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['month_date'] + 0.5 * datum['month_date_end']",
+          "as": "month_date_offsetted_rect_end"
+        },
+        {
           "type": "aggregate",
           "groupby": ["month_date", "weather"],
           "ops": ["count"],

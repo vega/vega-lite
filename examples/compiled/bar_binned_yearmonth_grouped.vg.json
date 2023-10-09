@@ -22,6 +22,16 @@
           "as": "date_end"
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('month', datum['date'], -1) + 0.5 * datum['date']",
+          "as": "date_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['date'] + 0.5 * datum['date_end']",
+          "as": "date_offsetted_rect_end"
+        },
+        {
           "type": "stack",
           "groupby": ["date", "symbol"],
           "field": "price",
@@ -65,7 +75,10 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "fields": ["date", "date_end"]},
+      "domain": {
+        "data": "source_0",
+        "fields": ["date_offsetted_rect_start", "date_offsetted_rect_end"]
+      },
       "range": [0, {"signal": "width"}]
     },
     {
@@ -82,10 +95,10 @@
       "domain": {"data": "source_0", "field": "symbol", "sort": true},
       "range": [
         {
-          "signal": "0.1 * (scale('x', datetime(2001, 1, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+          "signal": "-0.4 * (scale('x', datetime(2001, 1, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
         },
         {
-          "signal": "0.9 * (scale('x', datetime(2001, 1, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+          "signal": "0.4 * (scale('x', datetime(2001, 1, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
         }
       ]
     },

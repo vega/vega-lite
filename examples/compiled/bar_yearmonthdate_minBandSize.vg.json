@@ -18,8 +18,23 @@
           "as": ["yearmonthdate_date", "yearmonthdate_date_end"]
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('date', datum['yearmonthdate_date'], -1) + 0.5 * datum['yearmonthdate_date']",
+          "as": "yearmonthdate_date_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['yearmonthdate_date'] + 0.5 * datum['yearmonthdate_date_end']",
+          "as": "yearmonthdate_date_offsetted_rect_end"
+        },
+        {
           "type": "aggregate",
-          "groupby": ["yearmonthdate_date", "yearmonthdate_date_end"],
+          "groupby": [
+            "yearmonthdate_date",
+            "yearmonthdate_date_end",
+            "yearmonthdate_date_offsetted_rect_start",
+            "yearmonthdate_date_offsetted_rect_end"
+          ],
           "ops": ["mean"],
           "fields": ["temp_max"],
           "as": ["mean_temp_max"]
@@ -46,14 +61,14 @@
           },
           "x2": {
             "scale": "x",
-            "field": "yearmonthdate_date",
+            "field": "yearmonthdate_date_offsetted_rect_start",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"yearmonthdate_date_end\"]) - scale(\"x\", datum[\"yearmonthdate_date\"])) < 2 ? -0.5 * (2 - (abs(scale(\"x\", datum[\"yearmonthdate_date_end\"]) - scale(\"x\", datum[\"yearmonthdate_date\"])))) : 0.5)"
             }
           },
           "x": {
             "scale": "x",
-            "field": "yearmonthdate_date_end",
+            "field": "yearmonthdate_date_offsetted_rect_end",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"yearmonthdate_date_end\"]) - scale(\"x\", datum[\"yearmonthdate_date\"])) < 2 ? 0.5 * (2 - (abs(scale(\"x\", datum[\"yearmonthdate_date_end\"]) - scale(\"x\", datum[\"yearmonthdate_date\"])))) : -0.5)"
             }
@@ -70,7 +85,10 @@
       "type": "time",
       "domain": {
         "data": "source_0",
-        "fields": ["yearmonthdate_date", "yearmonthdate_date_end"]
+        "fields": [
+          "yearmonthdate_date_offsetted_rect_start",
+          "yearmonthdate_date_offsetted_rect_end"
+        ]
       },
       "range": [0, {"signal": "width"}]
     },

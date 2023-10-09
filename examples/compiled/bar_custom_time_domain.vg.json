@@ -27,6 +27,16 @@
           "as": ["hours_a", "hours_a_end"]
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('hours', datum['hours_a'], -1) + 0.5 * datum['hours_a']",
+          "as": "hours_a_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['hours_a'] + 0.5 * datum['hours_a_end']",
+          "as": "hours_a_offsetted_rect_end"
+        },
+        {
           "type": "stack",
           "groupby": ["hours_a"],
           "field": "b",
@@ -56,14 +66,14 @@
           },
           "x2": {
             "scale": "x",
-            "field": "hours_a",
+            "field": "hours_a_offsetted_rect_start",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"hours_a_end\"]) - scale(\"x\", datum[\"hours_a\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"hours_a_end\"]) - scale(\"x\", datum[\"hours_a\"])))) : 0.5)"
             }
           },
           "x": {
             "scale": "x",
-            "field": "hours_a_end",
+            "field": "hours_a_offsetted_rect_end",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"hours_a_end\"]) - scale(\"x\", datum[\"hours_a\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"hours_a_end\"]) - scale(\"x\", datum[\"hours_a\"])))) : -0.5)"
             }
