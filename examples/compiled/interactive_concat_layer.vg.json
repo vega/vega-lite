@@ -4,16 +4,8 @@
   "background": "white",
   "padding": 5,
   "data": [
-    {
-      "name": "pts_store"
-    },
-    {
-      "name": "source_0",
-      "url": "data/movies.json",
-      "format": {
-        "type": "json"
-      }
-    },
+    {"name": "pts_store"},
+    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
     {
       "name": "data_0",
       "source": "source_0",
@@ -72,15 +64,9 @@
             "bin_maxbins_10_Rotten Tomatoes Rating",
             "bin_maxbins_10_Rotten Tomatoes Rating_end"
           ],
-          "ops": [
-            "count"
-          ],
-          "fields": [
-            null
-          ],
-          "as": [
-            "__count"
-          ]
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
         },
         {
           "type": "filter",
@@ -100,15 +86,9 @@
             "bin_maxbins_10_Rotten Tomatoes Rating",
             "bin_maxbins_10_Rotten Tomatoes Rating_end"
           ],
-          "ops": [
-            "count"
-          ],
-          "fields": [
-            null
-          ],
-          "as": [
-            "__count"
-          ]
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
         },
         {
           "type": "filter",
@@ -122,47 +102,24 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": [
-            "Major Genre"
-          ],
-          "ops": [
-            "count"
-          ],
-          "fields": [
-            null
-          ],
-          "as": [
-            "__count"
-          ]
+          "groupby": ["Major Genre"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     }
   ],
   "signals": [
-    {
-      "name": "concat_0_width",
-      "value": 200
-    },
-    {
-      "name": "concat_0_height",
-      "value": 200
-    },
-    {
-      "name": "concat_1_width",
-      "value": 330
-    },
-    {
-      "name": "concat_1_height",
-      "value": 120
-    },
+    {"name": "concat_0_width", "value": 200},
+    {"name": "concat_0_height", "value": 200},
+    {"name": "concat_1_width", "value": 330},
+    {"name": "concat_1_height", "value": 120},
     {
       "name": "unit",
       "value": {},
       "on": [
-        {
-          "events": "pointermove",
-          "update": "isTuple(group()) ? group() : unit"
-        }
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -170,12 +127,7 @@
       "update": "vlSelectionResolve(\"pts_store\", \"union\", true, true)"
     }
   ],
-  "layout": {
-    "padding": 20,
-    "columns": 1,
-    "bounds": "full",
-    "align": "each"
-  },
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -183,31 +135,20 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {
-            "signal": "concat_0_width"
-          },
-          "height": {
-            "signal": "concat_0_height"
-          }
+          "width": {"signal": "concat_0_width"},
+          "height": {"signal": "concat_0_height"}
         }
       },
       "marks": [
         {
           "name": "concat_0_layer_0_marks",
           "type": "rect",
-          "style": [
-            "rect"
-          ],
+          "style": ["rect"],
           "interactive": false,
-          "from": {
-            "data": "data_2"
-          },
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
-              "fill": {
-                "scale": "color",
-                "field": "__count"
-              },
+              "fill": {"scale": "color", "field": "__count"},
               "description": {
                 "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Rotten Tomatoes Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
@@ -245,24 +186,14 @@
         {
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
-          "style": [
-            "point"
-          ],
+          "style": ["point"],
           "interactive": false,
-          "from": {
-            "data": "data_1"
-          },
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
-              "fill": {
-                "value": "transparent"
-              },
-              "stroke": {
-                "value": "#666"
-              },
-              "ariaRoleDescription": {
-                "value": "point"
-              },
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "#666"},
+              "ariaRoleDescription": {"value": "point"},
               "description": {
                 "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Rotten Tomatoes Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
@@ -272,10 +203,7 @@
               "y": {
                 "signal": "scale(\"concat_0_y\", 0.5 * datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"] + 0.5 * datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"])"
               },
-              "size": {
-                "scale": "size",
-                "field": "__count"
-              }
+              "size": {"scale": "size", "field": "__count"}
             }
           }
         }
@@ -288,9 +216,7 @@
           "title": "IMDB Rating (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(concat_0_width/10)"
-          },
+          "tickCount": {"signal": "ceil(concat_0_width/10)"},
           "zindex": 1
         },
         {
@@ -299,9 +225,7 @@
           "grid": false,
           "title": "Rotten Tomatoes Rating (binned)",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(concat_0_height/10)"
-          },
+          "tickCount": {"signal": "ceil(concat_0_height/10)"},
           "zindex": 1
         }
       ],
@@ -319,12 +243,8 @@
           "encode": {
             "symbols": {
               "update": {
-                "fill": {
-                  "value": "transparent"
-                },
-                "stroke": {
-                  "value": "#666"
-                }
+                "fill": {"value": "transparent"},
+                "stroke": {"value": "#666"}
               }
             }
           }
@@ -337,12 +257,8 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {
-            "signal": "concat_1_width"
-          },
-          "height": {
-            "signal": "concat_1_height"
-          }
+          "width": {"signal": "concat_1_width"},
+          "height": {"signal": "concat_1_height"}
         }
       },
       "signals": [
@@ -350,56 +266,30 @@
           "name": "pts_tuple",
           "on": [
             {
-              "events": [
-                {
-                  "source": "scope",
-                  "type": "click"
-                }
-              ],
+              "events": [{"source": "scope", "type": "click"}],
               "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"concat_1\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Major Genre\"]]} : null",
               "force": true
             },
             {
-              "events": [
-                {
-                  "source": "view",
-                  "type": "dblclick"
-                }
-              ],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             }
           ]
         },
         {
           "name": "pts_tuple_fields",
-          "value": [
-            {
-              "field": "Major Genre",
-              "channel": "x",
-              "type": "E"
-            }
-          ]
+          "value": [{"field": "Major Genre", "channel": "x", "type": "E"}]
         },
         {
           "name": "pts_toggle",
           "value": false,
           "on": [
             {
-              "events": [
-                {
-                  "source": "scope",
-                  "type": "click"
-                }
-              ],
+              "events": [{"source": "scope", "type": "click"}],
               "update": "event.shiftKey"
             },
             {
-              "events": [
-                {
-                  "source": "view",
-                  "type": "dblclick"
-                }
-              ],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "false"
             }
           ]
@@ -408,9 +298,7 @@
           "name": "pts_modify",
           "on": [
             {
-              "events": {
-                "signal": "pts_tuple"
-              },
+              "events": {"signal": "pts_tuple"},
               "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
             }
           ]
@@ -420,13 +308,9 @@
         {
           "name": "concat_1_marks",
           "type": "rect",
-          "style": [
-            "bar"
-          ],
+          "style": ["bar"],
           "interactive": true,
-          "from": {
-            "data": "data_3"
-          },
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": [
@@ -434,31 +318,16 @@
                   "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
                   "value": "steelblue"
                 },
-                {
-                  "value": "grey"
-                }
+                {"value": "grey"}
               ],
-              "ariaRoleDescription": {
-                "value": "bar"
-              },
+              "ariaRoleDescription": {"value": "bar"},
               "description": {
                 "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
-              "x": {
-                "scale": "concat_1_x",
-                "field": "Major Genre"
-              },
-              "width": {
-                "signal": "max(0.25, bandwidth('concat_1_x'))"
-              },
-              "y": {
-                "scale": "concat_1_y",
-                "field": "__count"
-              },
-              "y2": {
-                "scale": "concat_1_y",
-                "value": 0
-              }
+              "x": {"scale": "concat_1_x", "field": "Major Genre"},
+              "width": {"signal": "max(0.25, bandwidth('concat_1_x'))"},
+              "y": {"scale": "concat_1_y", "field": "__count"},
+              "y2": {"scale": "concat_1_y", "value": 0}
             }
           }
         }
@@ -469,9 +338,7 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(concat_1_height/40)"
-          },
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -496,9 +363,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(concat_1_height/40)"
-          },
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "zindex": 0
         }
       ]
@@ -508,10 +373,7 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": {
-        "data": "data_2",
-        "field": "__count"
-      },
+      "domain": {"data": "data_2", "field": "__count"},
       "range": "heatmap",
       "interpolate": "hcl",
       "zero": false
@@ -519,10 +381,7 @@
     {
       "name": "size",
       "type": "linear",
-      "domain": {
-        "data": "data_1",
-        "field": "__count"
-      },
+      "domain": {"data": "data_1", "field": "__count"},
       "range": [
         0,
         {
@@ -537,15 +396,8 @@
       "domain": {
         "signal": "[concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.start, concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.stop]"
       },
-      "range": [
-        0,
-        {
-          "signal": "concat_0_width"
-        }
-      ],
-      "bins": {
-        "signal": "concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins"
-      },
+      "range": [0, {"signal": "concat_0_width"}],
+      "bins": {"signal": "concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins"},
       "zero": false
     },
     {
@@ -554,12 +406,7 @@
       "domain": {
         "signal": "[concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start, concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop]"
       },
-      "range": [
-        {
-          "signal": "concat_0_height"
-        },
-        0
-      ],
+      "range": [{"signal": "concat_0_height"}, 0],
       "bins": {
         "signal": "concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins"
       },
@@ -568,33 +415,16 @@
     {
       "name": "concat_1_x",
       "type": "band",
-      "domain": {
-        "data": "data_3",
-        "field": "Major Genre",
-        "sort": true
-      },
-      "range": [
-        0,
-        {
-          "signal": "concat_1_width"
-        }
-      ],
+      "domain": {"data": "data_3", "field": "Major Genre", "sort": true},
+      "range": [0, {"signal": "concat_1_width"}],
       "paddingInner": 0.1,
       "paddingOuter": 0.05
     },
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {
-        "data": "data_3",
-        "field": "__count"
-      },
-      "range": [
-        {
-          "signal": "concat_1_height"
-        },
-        0
-      ],
+      "domain": {"data": "data_3", "field": "__count"},
+      "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true
     }
