@@ -83,18 +83,14 @@
           }
         ]
       },
-      "params": [
-        {
-          "name": "hover",
-          "select": {
-            "type": "point",
-            "fields": [
-              "date"
-            ],
-            "nearest": true,
-            "on": "pointerover",
-            "clear": "pointerout"
-          }
+      "params": [{
+        "name": "hover",
+        "select": {
+          "type": "point",
+          "fields": ["date"],
+          "nearest": true,
+          "on": "pointerover",
+          "clear": "pointerout"
         }
       ]
     }

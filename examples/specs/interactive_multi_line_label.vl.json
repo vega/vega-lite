@@ -23,20 +23,13 @@
       },
       "layer": [
         {
-          "mark": "line"
-        },
-        {
-          "params": [
-            {
-              "name": "label",
-              "select": {
-                "type": "point",
-                "encodings": [
-                  "x"
-                ],
-                "nearest": true,
-                "on": "pointerover"
-              }
+          "params": [{
+            "name": "label",
+            "select": {
+              "type": "point",
+              "encodings": ["x"],
+              "nearest": true,
+              "on": "pointerover"
             }
           ],
           "mark": "point",

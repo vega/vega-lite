@@ -1,27 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {
-    "url": "data/cars.json"
-  },
-  "params": [
-    {
+  "data": {"url": "data/cars.json"},
+  "params": [{
       "name": "brush",
-      "value": {
-        "x": [
-          55,
-          160
-        ],
-        "y": [
-          13,
-          37
-        ]
-      },
-      "select": {
-        "type": "interval",
-        "clear": "pointerup"
-      }
-    }
-  ],
+      "value": {"x": [55, 160], "y": [13, 37]},
+      "select": {"type": "interval", "clear": "pointerup"}
+    }],
   "mark": "point",
   "encoding": {
     "x": {

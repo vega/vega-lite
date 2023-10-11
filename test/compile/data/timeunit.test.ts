@@ -1,4 +1,4 @@
-import {TimeUnitNode} from '../../../src/compile/data/timeunit';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX, TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {ModelWithField} from '../../../src/compile/model';
 import {TimeUnitTransform} from '../../../src/transform';
 import {parseUnitModel} from '../../util';
@@ -52,6 +52,67 @@ describe('compile/data/timeunit', () => {
       ]);
     });
 
+    it('should return a unit transform for bar with bandPosition=0', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'month', bandPosition: 0}
+        }
+      });
+
+      expect(assembleFromEncoding(model)).toEqual([
+        {
+          type: 'timeunit',
+          field: 'a',
+          as: ['month_a', 'month_a_end'],
+          units: ['month']
+        },
+        {
+          type: 'formula',
+          expr: "0.5 * timeOffset('month', datum['month_a'], -1) + 0.5 * datum['month_a']",
+          as: `month_a_${OFFSETTED_RECT_START_SUFFIX}`
+        },
+
+        {
+          type: 'formula',
+          expr: "0.5 * datum['month_a'] + 0.5 * datum['month_a_end']",
+          as: `month_a_${OFFSETTED_RECT_END_SUFFIX}`
+        }
+      ]);
+    });
+
+    it('should return a timeunit transform with step for bar with bandPosition=0', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: {unit: 'month', step: 2}, bandPosition: 0}
+        }
+      });
+
+      expect(assembleFromEncoding(model)).toEqual([
+        {
+          type: 'timeunit',
+          field: 'a',
+          as: ['month_step_2_a', 'month_step_2_a_end'],
+          units: ['month'],
+          step: 2
+        },
+        {
+          type: 'formula',
+          expr: "0.5 * timeOffset('month', datum['month_step_2_a'], -2) + 0.5 * datum['month_step_2_a']",
+          as: `month_step_2_a_${OFFSETTED_RECT_START_SUFFIX}`
+        },
+
+        {
+          type: 'formula',
+          expr: "0.5 * datum['month_step_2_a'] + 0.5 * datum['month_step_2_a_end']",
+          as: `month_step_2_a_${OFFSETTED_RECT_END_SUFFIX}`
+        }
+      ]);
+    });
+
     it('should return a unit offset transforms for bar', () => {
       const model = parseUnitModel({
         data: {values: []},
@@ -66,6 +127,34 @@ describe('compile/data/timeunit', () => {
           type: 'formula',
           expr: `timeOffset('month', datum['a'], 1)`,
           as: 'a_end'
+        }
+      ]);
+    });
+
+    it('should return a unit offset transforms for bar with bandPosition = 0', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'binnedyearmonth', bandPosition: 0}
+        }
+      });
+
+      expect(assembleFromEncoding(model)).toEqual([
+        {
+          type: 'formula',
+          expr: `timeOffset('month', datum['a'], 1)`,
+          as: 'a_end'
+        },
+        {
+          type: 'formula',
+          expr: "0.5 * timeOffset('month', datum['a'], -1) + 0.5 * datum['a']",
+          as: `a_${OFFSETTED_RECT_START_SUFFIX}`
+        },
+        {
+          type: 'formula',
+          expr: "0.5 * datum['a'] + 0.5 * datum['a_end']",
+          as: `a_${OFFSETTED_RECT_END_SUFFIX}`
         }
       ]);
     });

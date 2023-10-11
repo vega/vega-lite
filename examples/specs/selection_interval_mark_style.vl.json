@@ -18,11 +18,7 @@
         "type": "interval",
         "on": "[pointerdown[event.shiftKey], pointerup] > pointermove",
         "translate": "[pointerdown[event.shiftKey], pointerup] > pointermove",
-        "mark": {
-          "fill": "#fdbb84",
-          "fillOpacity": 0.5,
-          "stroke": "#e34a33"
-        }
+        "mark": {"fill": "#fdbb84", "fillOpacity": 0.5, "stroke": "#e34a33"}
       }
     }
   ],

@@ -85,6 +85,10 @@
         "title": "Bar Chart showing Initials of Month Names"
       },
       {
+        "name": "bar_month_temporal_band_center",
+        "title": "Bar Chart with bars center-aligned with time unit ticks"
+      },
+      {
         "name": "bar_negative",
         "title": "Bar Chart with Negative Values and a Zero-Baseline"
       },

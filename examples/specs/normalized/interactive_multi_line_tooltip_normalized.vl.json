@@ -67,13 +67,7 @@
     {
       "mark": "rule",
       "params": [
-        {
-          "name": "hover",
-          "select": {
-            "type": "point",
-            "on": "pointerover"
-          }
-        }
+        {"name": "hover", "select": {"type": "point", "on": "pointerover"}}
       ],
       "encoding": {
         "x": {

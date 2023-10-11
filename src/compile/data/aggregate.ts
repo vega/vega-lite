@@ -5,9 +5,18 @@ import {
   getPositionChannelFromLatLong,
   getSecondaryRangeChannel,
   isGeoPositionChannel,
-  isScaleChannel
+  isScaleChannel,
+  isXorY
 } from '../../channel';
-import {binRequiresRange, FieldDef, hasBandEnd, isScaleFieldDef, isTypedFieldDef, vgField} from '../../channeldef';
+import {
+  binRequiresRange,
+  FieldDef,
+  getBandPosition,
+  hasBandEnd,
+  isScaleFieldDef,
+  isTypedFieldDef,
+  vgField
+} from '../../channeldef';
 import * as log from '../../log';
 import {isFieldRange} from '../../scale';
 import {AggregateTransform} from '../../transform';
@@ -15,6 +24,8 @@ import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../u
 import {isUnitModel, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
+import {isRectBasedMark} from '../../mark';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from './timeunit';
 
 type Measures = Dict<Partial<Record<AggregateOp, Set<string>>>>;
 
@@ -28,6 +39,15 @@ function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<st
   ) {
     dims.add(vgField(fieldDef, {}));
     dims.add(vgField(fieldDef, {suffix: 'end'}));
+
+    const {mark, markDef, config} = model;
+
+    const bandPosition = getBandPosition({fieldDef, markDef, config});
+
+    if (isRectBasedMark(mark) && bandPosition !== 0.5 && isXorY(channel)) {
+      dims.add(vgField(fieldDef, {suffix: OFFSETTED_RECT_START_SUFFIX}));
+      dims.add(vgField(fieldDef, {suffix: OFFSETTED_RECT_END_SUFFIX}));
+    }
 
     if (fieldDef.bin && binRequiresRange(fieldDef, channel)) {
       dims.add(vgField(fieldDef, {binSuffix: 'range'}));

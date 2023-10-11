@@ -10,18 +10,8 @@
       "params": [
         {
           "name": "hover",
-          "value": [
-            {
-              "symbol": "AAPL"
-            }
-          ],
-          "select": {
-            "type": "point",
-            "fields": [
-              "symbol"
-            ],
-            "on": "pointerover"
-          }
+          "value": [{"symbol": "AAPL"}],
+          "select": {"type": "point", "fields": ["symbol"], "on": "pointerover"}
         }
       ],
       "mark": {

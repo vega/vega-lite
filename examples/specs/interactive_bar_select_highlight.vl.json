@@ -44,10 +44,7 @@
   "params": [
     {
       "name": "highlight",
-      "select": {
-        "type": "point",
-        "on": "pointerover"
-      }
+      "select": {"type": "point", "on": "pointerover"}
     },
     {
       "name": "select",

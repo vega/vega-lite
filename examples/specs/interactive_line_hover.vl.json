@@ -37,30 +37,15 @@
       "value": 0.2
     }
   },
-  "layer": [
-    {
-      "description": "transparent layer to make it easier to trigger selection",
-      "params": [
-        {
-          "name": "hover",
-          "value": [
-            {
-              "symbol": "AAPL"
-            }
-          ],
-          "select": {
-            "type": "point",
-            "fields": [
-              "symbol"
-            ],
-            "on": "pointerover"
-          }
-        }
-      ],
-      "mark": {
-        "type": "line",
-        "strokeWidth": 8,
-        "stroke": "transparent"
+  "layer": [{
+    "description": "transparent layer to make it easier to trigger selection",
+    "params": [{
+      "name": "hover",
+      "value": [{"symbol": "AAPL"}],
+      "select": {
+        "type": "point",
+        "fields": ["symbol"],
+        "on": "pointerover"
       }
     },
     {

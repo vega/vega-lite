@@ -12,26 +12,14 @@
   "height": 300,
   "layer": [
     {
-      "params": [
-        {
-          "name": "index",
-          "value": [
-            {
-              "x": {
-                "year": 2005,
-                "month": 1,
-                "date": 1
-              }
-            }
-          ],
-          "select": {
-            "type": "point",
-            "encodings": [
-              "x"
-            ],
-            "on": "pointerover",
-            "nearest": true
-          }
+      "params": [{
+        "name": "index",
+        "value": [{"x": {"year": 2005, "month": 1, "date": 1}}],
+        "select": {
+          "type": "point",
+          "encodings": ["x"],
+          "on": "pointerover",
+          "nearest": true
         }
       ],
       "mark": "point",

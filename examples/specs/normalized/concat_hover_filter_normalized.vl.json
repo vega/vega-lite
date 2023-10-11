@@ -9,13 +9,7 @@
       "layer": [
         {
           "params": [
-            {
-              "name": "hover",
-              "select": {
-                "type": "point",
-                "on": "pointerover"
-              }
-            }
+            {"name": "hover", "select": {"type": "point", "on": "pointerover"}}
           ],
           "mark": "point",
           "encoding": {
@@ -59,13 +53,7 @@
       "layer": [
         {
           "params": [
-            {
-              "name": "hover",
-              "select": {
-                "type": "point",
-                "on": "pointerover"
-              }
-            }
+            {"name": "hover", "select": {"type": "point", "on": "pointerover"}}
           ],
           "mark": "point",
           "encoding": {

@@ -8,6 +8,7 @@ import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
 import {EncodingSortField} from '../../../src/sort';
 import {parseUnitModel} from '../../util';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../src/compile/data/timeunit';
 
 describe('compile/scale', () => {
   describe('parseDomainForChannel()', () => {
@@ -311,6 +312,43 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'y');
         expect(_domain).toEqual([{data: 'main', field: 'month_origin'}]);
+      });
+
+      it('should return the correct bar domain for month T', () => {
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            y: {
+              field: 'origin',
+              type: 'temporal',
+              timeUnit: 'month'
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'y');
+        expect(_domain).toEqual([
+          {data: 'main', field: 'month_origin'},
+          {data: 'main', field: 'month_origin_end'}
+        ]);
+      });
+
+      it('should return the correct bar domain for month T with bandPosition = 0', () => {
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            y: {
+              field: 'origin',
+              type: 'temporal',
+              timeUnit: 'month',
+              bandPosition: 0
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'y');
+        expect(_domain).toEqual([
+          {data: 'main', field: `month_origin_${OFFSETTED_RECT_START_SUFFIX}`},
+          {data: 'main', field: `month_origin_${OFFSETTED_RECT_END_SUFFIX}`}
+        ]);
       });
 
       it('should return the correct domain for month O', () => {

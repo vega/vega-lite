@@ -26,9 +26,7 @@
           ],
           "select": {
             "type": "point",
-            "encodings": [
-              "x"
-            ],
+            "encodings": ["x"],
             "on": "pointerover",
             "nearest": true
           }

@@ -112,8 +112,15 @@
             ]
           }
         },
-        {
-          "filter": "datum.state !== 'PR' && datum.state !== 'VI'"
+        {"filter": "datum.state !== 'PR' && datum.state !== 'VI'"}
+      ],
+      "params": [{
+        "name": "org",
+        "select": {
+          "type": "point",
+          "on": "pointerover",
+          "nearest": true,
+          "fields": ["origin"]
         }
       ],
       "params": [

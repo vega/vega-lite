@@ -26,17 +26,13 @@
       }
     },
     {
-      "params": [
-        {
-          "name": "index",
-          "select": {
-            "type": "point",
-            "encodings": [
-              "x"
-            ],
-            "on": "pointermove",
-            "nearest": true
-          }
+      "params": [{
+        "name": "index",
+        "select": {
+          "type": "point",
+          "encodings": ["x"],
+          "on": "pointermove",
+          "nearest": true
         }
       ],
       "mark": {

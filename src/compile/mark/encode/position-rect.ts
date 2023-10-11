@@ -11,7 +11,7 @@ import {
   PolarPositionChannel,
   PositionChannel
 } from '../../../channel';
-import {getBandSize, isFieldDef, isFieldOrDatumDef, TypedFieldDef, vgField} from '../../../channeldef';
+import {getBandPosition, getBandSize, isFieldDef, isFieldOrDatumDef, TypedFieldDef, vgField} from '../../../channeldef';
 import {Config, getViewConfigDiscreteStep} from '../../../config';
 import {Encoding} from '../../../encoding';
 import * as log from '../../../log';
@@ -30,6 +30,7 @@ import * as ref from './valueref';
 import {getOffsetScaleChannel} from '../../../channel';
 import {getFirstDefined} from '../../../util';
 import {Mark} from '../../../mark';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../data/timeunit';
 
 export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'radius'): VgEncodeEntry {
   const {config, encoding, markDef} = model;
@@ -331,13 +332,18 @@ function rectBinPosition({
     ? (1 - bandSize.band) / 2
     : 0.5;
 
+  const bandPosition = getBandPosition({fieldDef, fieldDef2, markDef, config});
+
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
+    const useRectOffsetField = fieldDef.timeUnit && bandPosition !== 0.5;
+
     return {
       [vgChannel2]: rectBinRef({
         fieldDef,
         scaleName,
         bandPosition: bandPositionForBandSize,
-        offset: binSpacingOffset2
+        offset: binSpacingOffset2,
+        useRectOffsetField
       }),
       [vgChannel]: rectBinRef({
         fieldDef,
@@ -345,7 +351,8 @@ function rectBinPosition({
         bandPosition: isSignalRef(bandPositionForBandSize)
           ? {signal: `1-${bandPositionForBandSize.signal}`}
           : 1 - bandPositionForBandSize,
-        offset: binSpacingOffset
+        offset: binSpacingOffset,
+        useRectOffsetField
       })
     };
   } else if (isBinned(fieldDef.bin)) {
@@ -373,21 +380,29 @@ function rectBinPosition({
 /**
  * Value Ref for binned fields
  */
-export function rectBinRef({
+function rectBinRef({
   fieldDef,
   scaleName,
   bandPosition,
-  offset
+  offset,
+  useRectOffsetField
 }: {
   fieldDef: TypedFieldDef<string>;
   scaleName: string;
   bandPosition: number | SignalRef;
   offset?: number | SignalRef;
+  useRectOffsetField: boolean;
 }) {
   return ref.interpolatedSignalRef({
     scaleName,
     fieldOrDatumDef: fieldDef,
     bandPosition,
-    offset
+    offset,
+    ...(useRectOffsetField
+      ? {
+          startSuffix: OFFSETTED_RECT_START_SUFFIX,
+          endSuffix: OFFSETTED_RECT_END_SUFFIX
+        }
+      : {})
   });
 }

@@ -23,51 +23,30 @@
       }
     ]
   },
-  "layer": [
-    {
-      "mark": {
-        "type": "line",
-        "color": "orange"
-      },
-      "encoding": {
-        "y": {
-          "field": "temp_max",
-          "type": "quantitative"
-        }
-      }
-    },
-    {
-      "mark": {
-        "type": "line",
-        "color": "red"
-      },
-      "encoding": {
-        "y": {
-          "field": "temp_min",
-          "type": "quantitative"
-        }
-      }
-    },
-    {
-      "mark": "rule",
-      "params": [
-        {
-          "name": "hover",
-          "select": {
-            "type": "point",
-            "on": "pointerover"
-          }
-        }
-      ],
-      "encoding": {
-        "color": {
-          "condition": {
-            "param": "hover",
-            "empty": false,
-            "value": "black"
-          },
-          "value": "transparent"
-        }
+  "layer": [{
+    "mark": {"type": "line", "color": "orange"},
+    "encoding": {
+      "y": {"field": "temp_max", "type": "quantitative"}
+    }
+  }, {
+    "mark": {"type": "line", "color": "red"},
+    "encoding": {
+      "y": {"field": "temp_min", "type": "quantitative"}
+    }
+  }, {
+    "mark": "rule",
+    "params": [{
+      "name": "hover",
+      "select": {"type": "point", "on": "pointerover"}
+    }],
+    "encoding": {
+      "color": {
+        "condition": {
+          "param": "hover",
+          "empty": false,
+          "value": "black"
+        },
+        "value": "transparent"
       }
     }
   ],

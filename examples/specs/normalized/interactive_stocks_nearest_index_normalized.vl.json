@@ -29,9 +29,7 @@
           "name": "index",
           "select": {
             "type": "point",
-            "encodings": [
-              "x"
-            ],
+            "encodings": ["x"],
             "on": "pointermove",
             "nearest": true
           }

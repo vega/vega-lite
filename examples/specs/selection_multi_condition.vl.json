@@ -13,8 +13,7 @@
       "name": "hoverbrush",
       "select": {
         "type": "point",
-        "on": "pointerover",
-        "nearest": true
+        "on": "pointerover", "nearest": true
       }
     }
   ],

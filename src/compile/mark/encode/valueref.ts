@@ -167,12 +167,14 @@ export function interpolatedSignalRef({
   fieldOrDatumDef2,
   offset,
   startSuffix,
+  endSuffix = 'end',
   bandPosition = 0.5
 }: {
   scaleName: string;
   fieldOrDatumDef: TypedFieldDef<string>;
   fieldOrDatumDef2?: SecondaryFieldDef<string>;
   startSuffix?: string;
+  endSuffix?: string;
   offset: number | SignalRef | VgValueRef;
   bandPosition: number | SignalRef;
 }): VgValueRef {
@@ -181,7 +183,7 @@ export function interpolatedSignalRef({
   const end =
     fieldOrDatumDef2 !== undefined
       ? vgField(fieldOrDatumDef2, {expr})
-      : vgField(fieldOrDatumDef, {suffix: 'end', expr});
+      : vgField(fieldOrDatumDef, {suffix: endSuffix, expr});
 
   const ref: VgValueRef = {};
 

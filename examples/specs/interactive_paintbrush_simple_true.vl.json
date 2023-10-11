@@ -12,10 +12,7 @@
     },
     {
       "name": "paintbrush",
-      "select": {
-        "type": "point",
-        "on": "pointerover"
-      }
+      "select": {"type": "point", "on": "pointerover"}
     }
   ],
   "mark": "point",

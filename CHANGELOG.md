@@ -1,5 +1,18 @@
 
 
+# [5.16.0](https://github.com/vega/vega-lite/compare/v5.15.1...v5.16.0) (2023-10-09)
+
+
+### Bug Fixes
+
+* correct types for domain unionWith ([#9131](https://github.com/vega/vega-lite/issues/9131)) ([6f66759](https://github.com/vega/vega-lite/commit/6f667590d2f78093d53e513a6e4ae119810e12df))
+
+
+### Features
+
+* make bar & rect marks support bandPosition (allow center-alignment with ticks) ([#9126](https://github.com/vega/vega-lite/issues/9126)) ([bd014eb](https://github.com/vega/vega-lite/commit/bd014eb168060ae7f925dc0a927e7ca333a96c7b))
+* swap 'mouse' events to 'pointer' events for mobile compatibility; update site and docs ([#9089](https://github.com/vega/vega-lite/issues/9089)) ([fa97659](https://github.com/vega/vega-lite/commit/fa97659e40ea340fa497783e4b32ef63ebe4bc3f))
+
 ## [5.15.1](https://github.com/vega/vega-lite/compare/v5.15.0...v5.15.1) (2023-10-02)
 
 
