@@ -1,8 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "xOffset without x will be replaced as x",
+  "description": "xOffset without x",
   "background": "white",
   "padding": 5,
+  "width": 20,
   "height": 200,
   "style": "cell",
   "data": [
@@ -26,9 +27,9 @@
       "transform": [
         {
           "type": "stack",
-          "groupby": ["group"],
+          "groupby": [],
           "field": "value",
-          "sort": {"field": [], "order": []},
+          "sort": {"field": ["group"], "order": ["descending"]},
           "as": ["value_start", "value_end"],
           "offset": "zero"
         },
@@ -37,13 +38,6 @@
           "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
         }
       ]
-    }
-  ],
-  "signals": [
-    {"name": "x_step", "value": 20},
-    {
-      "name": "width",
-      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
     }
   ],
   "marks": [
@@ -59,8 +53,8 @@
           "description": {
             "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
           },
-          "x": {"scale": "x", "field": "group"},
-          "width": {"signal": "max(0.25, bandwidth('x'))"},
+          "xc": {"signal": "width", "mult": 0.5, "offset": {"field": "group"}},
+          "width": {"signal": "0.9 * width"},
           "y": {"scale": "y", "field": "value_end"},
           "y2": {"scale": "y", "field": "value_start"}
         }
@@ -68,14 +62,6 @@
     }
   ],
   "scales": [
-    {
-      "name": "x",
-      "type": "band",
-      "domain": {"data": "data_0", "field": "group", "sort": true},
-      "range": {"step": {"signal": "x_step"}},
-      "paddingInner": 0.1,
-      "paddingOuter": 0.05
-    },
     {
       "name": "y",
       "type": "linear",
@@ -95,7 +81,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
@@ -104,16 +89,6 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
-      "zindex": 0
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": false,
-      "title": "group",
-      "labelAlign": "right",
-      "labelAngle": 270,
-      "labelBaseline": "middle",
       "zindex": 0
     },
     {
