@@ -221,10 +221,38 @@ function parseScheme(scheme: Scheme | SignalRef): RangeScheme {
   return {scheme};
 }
 
+function fullWidthOrHeightRange(
+  channel: 'x' | 'y',
+  model: UnitModel,
+  scaleType: ScaleType,
+  {center}: {center?: boolean} = {}
+) {
+  // If step is null, use zero to width or height.
+  // Note that we use SignalRefWrapper to account for potential merges and renames.
+  const sizeType = getSizeChannel(channel);
+  const sizeSignal = model.getName(sizeType);
+  const getSignalName = model.getSignalName.bind(model);
+
+  if (channel === Y && hasContinuousDomain(scaleType)) {
+    // For y continuous scale, we have to start from the height as the bottom part has the max value.
+    return center
+      ? [
+          SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal),
+          SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal)
+        ]
+      : [SignalRefWrapper.fromName(getSignalName, sizeSignal), 0];
+  } else {
+    return center
+      ? [
+          SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal),
+          SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal)
+        ]
+      : [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
+  }
+}
+
 function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
   const {size, config, mark, encoding} = model;
-
-  const getSignalName = model.getSignalName.bind(model);
 
   const {type} = getFieldOrDatumDef(encoding[channel]) as ScaleFieldDef<string> | ScaleDatumDef;
 
@@ -245,18 +273,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         }
       }
 
-      // If step is null, use zero to width or height.
-      // Note that we use SignalRefWrapper to account for potential merges and renames.
-
-      const sizeType = getSizeChannel(channel);
-      const sizeSignal = model.getName(sizeType);
-
-      if (channel === Y && hasContinuousDomain(scaleType)) {
-        // For y continuous scale, we have to start from the height as the bottom part has the max value.
-        return [SignalRefWrapper.fromName(getSignalName, sizeSignal), 0];
-      } else {
-        return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
-      }
+      return fullWidthOrHeightRange(channel, model, scaleType);
     }
 
     case XOFFSET:
@@ -374,6 +391,11 @@ function getOffsetStep(step: Step, offsetScaleType: ScaleType) {
 function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: ScaleType): VgRange {
   const positionChannel = channel === XOFFSET ? 'x' : 'y';
   const positionScaleCmpt = model.getScaleComponent(positionChannel);
+
+  if (!positionScaleCmpt) {
+    return fullWidthOrHeightRange(positionChannel, model, offsetScaleType, {center: true});
+  }
+
   const positionScaleType = positionScaleCmpt.get('type');
   const positionScaleName = model.scaleName(positionChannel);
 

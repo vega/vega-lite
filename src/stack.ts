@@ -176,16 +176,16 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
       groupbyChannels.push(dimensionChannel);
       groupbyFields.add(dimensionField);
     }
+  }
 
-    const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
-    const dimensionOffsetDef = encoding[dimensionOffsetChannel];
-    const dimensionOffsetField = isFieldDef(dimensionOffsetDef) ? vgField(dimensionOffsetDef, {}) : undefined;
+  const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
+  const dimensionOffsetDef = encoding[dimensionOffsetChannel];
+  const dimensionOffsetField = isFieldDef(dimensionOffsetDef) ? vgField(dimensionOffsetDef, {}) : undefined;
 
-    if (dimensionOffsetField && dimensionOffsetField !== stackedField) {
-      // avoid grouping by the stacked field
-      groupbyChannels.push(dimensionOffsetChannel);
-      groupbyFields.add(dimensionOffsetField);
-    }
+  if (dimensionOffsetField && dimensionOffsetField !== stackedField) {
+    // avoid grouping by the stacked field
+    groupbyChannels.push(dimensionOffsetChannel);
+    groupbyFields.add(dimensionOffsetField);
   }
 
   // If the dimension has offset, don't stack anymore
