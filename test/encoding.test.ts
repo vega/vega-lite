@@ -88,25 +88,6 @@ describe('encoding', () => {
     );
 
     it(
-      'replaces xOffset with x if there is no x',
-      log.wrap(logger => {
-        const encoding = initEncoding(
-          {
-            xOffset: {field: 'a', type: 'quantitative'}
-          },
-          'point',
-          false,
-          defaultConfig
-        );
-
-        expect(encoding).toEqual({
-          x: {field: 'a', type: 'quantitative'}
-        });
-        expect(logger.warns[0]).toEqual(log.message.replaceOffsetWithMainChannel('x'));
-      })
-    );
-
-    it(
       'drops xOffset if x is continuous',
       log.wrap(logger => {
         const encoding = initEncoding(
@@ -125,6 +106,7 @@ describe('encoding', () => {
         expect(logger.warns[0]).toEqual(log.message.offsetNestedInsideContinuousPositionScaleDropped('x'));
       })
     );
+
     it('does not drop xOffset if x is time with timeUnit', () => {
       const encoding = initEncoding(
         {

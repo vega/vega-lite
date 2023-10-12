@@ -29,6 +29,33 @@ describe('compile/mark/encode/position-rect', () => {
       });
     });
 
+    it('produces correct x-mixins for xOffset without x', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          xOffset: {
+            field: 'a',
+            type: 'nominal'
+          },
+          y: {
+            field: 'b',
+            type: 'quantitative'
+          }
+        }
+      });
+
+      const props = rectPosition(model, 'x');
+      expect(props.x).toEqual({
+        signal: 'width',
+        mult: 0.5,
+        offset: {scale: 'xOffset', field: 'a'}
+      });
+      expect(props.width).toEqual({
+        signal: `max(0.25, bandwidth('xOffset'))`
+      });
+    });
+
     it('produces correct x-mixins for timeUnit with bandPosition = 0', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         data: {values: []},

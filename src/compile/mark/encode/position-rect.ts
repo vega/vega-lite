@@ -166,7 +166,14 @@ function positionAndSize(
   const hasSizeFromMarkOrEncoding = !!sizeMixins;
 
   // Otherwise, apply default value
-  const bandSize = getBandSize({channel, fieldDef, markDef, config, scaleType: scale?.get('type'), useVlSizeChannel});
+  const bandSize = getBandSize({
+    channel,
+    fieldDef,
+    markDef,
+    config,
+    scaleType: (scale || offsetScale)?.get('type'),
+    useVlSizeChannel
+  });
 
   sizeMixins = sizeMixins || {
     [vgSizeChannel]: defaultSizeRef(
@@ -190,7 +197,9 @@ function positionAndSize(
    */
 
   const defaultBandAlign =
-    scale?.get('type') === 'band' && isRelativeBandSize(bandSize) && !hasSizeFromMarkOrEncoding ? 'top' : 'middle';
+    (scale || offsetScale)?.get('type') === 'band' && isRelativeBandSize(bandSize) && !hasSizeFromMarkOrEncoding
+      ? 'top'
+      : 'middle';
 
   const vgChannel = vgAlignedPositionChannel(channel, markDef, config, defaultBandAlign);
   const center = vgChannel === 'xc' || vgChannel === 'yc';

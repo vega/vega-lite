@@ -558,10 +558,6 @@ export function initEncoding(
             continue;
           }
         }
-      } else {
-        // no x/y, replace it with main channel
-        channel = mainChannel;
-        log.warn(log.message.replaceOffsetWithMainChannel(mainChannel));
       }
     }
 
