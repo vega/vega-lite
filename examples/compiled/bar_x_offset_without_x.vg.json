@@ -27,9 +27,9 @@
       "transform": [
         {
           "type": "stack",
-          "groupby": [],
+          "groupby": ["group"],
           "field": "value",
-          "sort": {"field": ["group"], "order": ["descending"]},
+          "sort": {"field": [], "order": []},
           "as": ["value_start", "value_end"],
           "offset": "zero"
         },
@@ -53,8 +53,12 @@
           "description": {
             "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
           },
-          "xc": {"signal": "width", "mult": 0.5, "offset": {"field": "group"}},
-          "width": {"signal": "0.9 * width"},
+          "x": {
+            "signal": "width",
+            "mult": 0.5,
+            "offset": {"scale": "xOffset", "field": "group"}
+          },
+          "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "y": {"scale": "y", "field": "value_end"},
           "y2": {"scale": "y", "field": "value_start"}
         }
@@ -69,6 +73,12 @@
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
+    },
+    {
+      "name": "xOffset",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "group", "sort": true},
+      "range": [{"signal": "-width/2"}, {"signal": "width/2"}]
     },
     {
       "name": "color",
