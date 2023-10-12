@@ -10,8 +10,8 @@
       "value": "grey"
     },
     "order": {
-      "value": 0,
-      "condition": {"param": "param_122", "value": 1, "empty": false}
+      "condition": {"param": "param_122", "value": 1, "empty": false},
+      "value": 0
     },
     "size": {
       "condition": {"param": "param_122", "value": 400, "empty": false},
