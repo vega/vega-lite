@@ -132,6 +132,48 @@ describe('compile/scale', () => {
         );
       });
 
+      it('should return [-width/2, width/2] for xOffset without x', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            xOffset: {field: 'xSub', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(
+          makeImplicit([
+            {
+              signal: '-width/2'
+            },
+            {
+              signal: 'width/2'
+            }
+          ])
+        );
+      });
+
+      it('should return [-height/2, height/2] for yOffset without y', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            yOffset: {field: 'xSub', type: 'nominal'},
+            x: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('yOffset', model)).toEqual(
+          makeImplicit([
+            {
+              signal: '-height/2'
+            },
+            {
+              signal: 'height/2'
+            }
+          ])
+        );
+      });
+
       it('should return padded duration range when there is a nested offset with year time scale and default padding', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'bar',
