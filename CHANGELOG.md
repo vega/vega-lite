@@ -1,5 +1,12 @@
 
 
+## [5.16.1](https://github.com/vega/vega-lite/compare/v5.16.0...v5.16.1) (2023-10-12)
+
+
+### Bug Fixes
+
+* support x/yOffset without x/y ([#9135](https://github.com/vega/vega-lite/issues/9135)) ([58294a7](https://github.com/vega/vega-lite/commit/58294a75745aaf160ad1034afd1a3a5d1a2ea81d))
+
 # [5.16.0](https://github.com/vega/vega-lite/compare/v5.15.1...v5.16.0) (2023-10-09)
 
 
