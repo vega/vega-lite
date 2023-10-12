@@ -1,0 +1,25 @@
+{
+  "data": {
+    "url": "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/cars.json"
+  },
+  "mark": {"type": "circle", "opacity": 1},
+  "encoding": {
+    "color": {
+      "condition": {"param": "param_122", "value": "coral", "empty": false},
+      "value": "grey"
+    },
+    "order": {
+      "value": 0,
+      "condition": {"param": "param_122", "value": 1, "empty": false}
+    },
+    "size": {
+      "condition": {"param": "param_122", "value": 400, "empty": false},
+      "value": 100
+    },
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+  },
+  "params": [
+    {"name": "param_122", "select": {"type": "point", "on": "mouseover"}}
+  ]
+}
