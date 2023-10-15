@@ -247,12 +247,12 @@ export type StyleConfigIndex<ES extends ExprRef | SignalRef> = Partial<Record<st
 
 export interface Config<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   extends TopLevelProperties<ES>,
-  VLOnlyConfig<ES>,
-  MarkConfigMixins<ES>,
-  CompositeMarkConfigMixins,
-  AxisConfigMixins<ES>,
-  HeaderConfigMixins<ES>,
-  CompositionConfigMixins {
+    VLOnlyConfig<ES>,
+    MarkConfigMixins<ES>,
+    CompositeMarkConfigMixins,
+    AxisConfigMixins<ES>,
+    HeaderConfigMixins<ES>,
+    CompositionConfigMixins {
   /**
    * An object hash that defines default range arrays or schemes for using with scales.
    * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).

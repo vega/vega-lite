@@ -171,12 +171,9 @@ export class TimeUnitNode extends DataFlowNode {
     const transforms: (VgTimeUnitTransform | VgFormulaTransform)[] = [];
 
     for (const f of vals(this.timeUnits)) {
-<<<<<<< HEAD
-=======
       const {rectBandPosition} = f;
       const normalizedTimeUnit = normalizeTimeUnit(f.timeUnit);
 
->>>>>>> 270bfeff3c190e85d2615c8a99b301dcdb1f0156
       if (isTimeUnitTransformComponent(f)) {
         const {field, as} = f;
         const {unit, utc, ...params} = normalizedTimeUnit;

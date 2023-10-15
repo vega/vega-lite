@@ -541,11 +541,11 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
    * 5) Domain can also takes an object defining a field or encoding of a parameter that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
    */
   domain?:
-  | (null | string | number | boolean | DateTime | ES)[]
-  | 'unaggregated'
-  | ParameterExtent
-  | DomainUnionWith
-  | ES;
+    | (null | string | number | boolean | DateTime | ES)[]
+    | 'unaggregated'
+    | ParameterExtent
+    | DomainUnionWith
+    | ES;
 
   /**
    * An expression for an array of raw values that, if non-null, directly overrides the _domain_ property.

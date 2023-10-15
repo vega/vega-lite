@@ -128,7 +128,7 @@ export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorM
 
 export interface MarkConfig<ES extends ExprRef | SignalRef>
   extends VLOnlyMarkConfig<ES>,
-  MapExcludeValueRefAndReplaceSignalWith<Omit<VgMarkConfig, 'tooltip' | 'fill' | 'stroke'>, ES> {
+    MapExcludeValueRefAndReplaceSignalWith<Omit<VgMarkConfig, 'tooltip' | 'fill' | 'stroke'>, ES> {
   // ========== Overriding Vega ==========
 
   /**
@@ -501,7 +501,7 @@ export interface PointOverlayMixins<ES extends ExprRef | SignalRef> {
   point?: boolean | OverlayMarkDef<ES> | 'transparent';
 }
 
-export interface LineConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, PointOverlayMixins<ES> { }
+export interface LineConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, PointOverlayMixins<ES> {}
 
 export interface LineOverlayMixins<ES extends ExprRef | SignalRef> {
   /**
@@ -518,8 +518,8 @@ export interface LineOverlayMixins<ES extends ExprRef | SignalRef> {
 
 export interface AreaConfig<ES extends ExprRef | SignalRef>
   extends MarkConfig<ES>,
-  PointOverlayMixins<ES>,
-  LineOverlayMixins<ES> { }
+    PointOverlayMixins<ES>,
+    LineOverlayMixins<ES> {}
 
 export interface TickThicknessMixins {
   /**
@@ -609,15 +609,15 @@ export interface RelativeBandSize {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   extends GenericMarkDef<M>,
-  Omit<
-    MarkConfig<ES> &
-    AreaConfig<ES> &
-    BarConfig<ES> & // always extends RectConfig
-    LineConfig<ES> &
-    TickConfig<ES>,
-    'startAngle' | 'endAngle' | 'width' | 'height'
-  >,
-  MarkDefMixins<ES> {
+    Omit<
+      MarkConfig<ES> &
+        AreaConfig<ES> &
+        BarConfig<ES> & // always extends RectConfig
+        LineConfig<ES> &
+        TickConfig<ES>,
+      'startAngle' | 'endAngle' | 'width' | 'height'
+    >,
+    MarkDefMixins<ES> {
   // Omit startAngle/endAngle since we use theta/theta2 from Vega-Lite schema to avoid confusion
   // We still support start/endAngle  only in config, just in case people use Vega config with Vega-Lite.
 

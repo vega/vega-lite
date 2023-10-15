@@ -317,9 +317,9 @@ export function extractCompositionLayout(
         layout[prop] = isNumber(spacing)
           ? spacing
           : {
-            row: spacing.row ?? spacingConfig,
-            column: spacing.column ?? spacingConfig
-          };
+              row: spacing.row ?? spacingConfig,
+              column: spacing.column ?? spacingConfig
+            };
       } else {
         (layout[prop] as any) = spec[prop];
       }
