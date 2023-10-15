@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "xOffset without x will be replaced as x",
+  "description": "xOffset without x",
   "data": {
     "values": [
       {"category":"A", "group": "x", "value":0.1},

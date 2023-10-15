@@ -154,10 +154,6 @@ export function offsetNestedInsideContinuousPositionScaleDropped(mainChannel: Po
   return `${mainChannel}Offset dropped because ${mainChannel} is continuous`;
 }
 
-export function replaceOffsetWithMainChannel(mainChannel: PositionScaleChannel) {
-  return `There is no ${mainChannel} encoding. Replacing ${mainChannel}Offset encoding as ${mainChannel}.`;
-}
-
 export function primitiveChannelDef(
   channel: ExtendedChannel,
   type: 'string' | 'number' | 'boolean',

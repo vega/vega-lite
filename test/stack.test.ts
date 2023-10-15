@@ -1,5 +1,5 @@
 import {NonArgAggregateOp} from '../src/aggregate';
-import {DETAIL, X, Y} from '../src/channel';
+import {DETAIL, X, Y, YOFFSET} from '../src/channel';
 import * as log from '../src/log';
 import {ARC, AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
 import {ScaleType} from '../src/scale';
@@ -324,6 +324,41 @@ describe('stack', () => {
         const _stack = stack(spec.mark, spec.encoding);
         expect(_stack.fieldChannel).toBe(X);
         expect(_stack.groupbyChannels).toEqual([Y]);
+      }
+    });
+
+    it('should be correct for grouped bar', () => {
+      for (const stackableMark of [BAR, AREA]) {
+        const spec: TopLevel<NormalizedUnitSpec> = {
+          data: {url: 'data/barley.json'},
+          mark: stackableMark,
+          encoding: {
+            x: {field: 'yield', type: 'quantitative'},
+            y: {field: 'variety', type: 'nominal'},
+            yOffset: {field: 'site', type: 'nominal'},
+            color: {field: 'site', type: 'nominal'}
+          }
+        };
+        const _stack = stack(spec.mark, spec.encoding);
+        expect(_stack.fieldChannel).toBe(X);
+        expect(_stack.groupbyChannels).toEqual([Y, YOFFSET]);
+      }
+    });
+
+    it('should be correct for grouped bar without nesting', () => {
+      for (const stackableMark of [BAR, AREA]) {
+        const spec: TopLevel<NormalizedUnitSpec> = {
+          data: {url: 'data/barley.json'},
+          mark: stackableMark,
+          encoding: {
+            x: {field: 'yield', type: 'quantitative'},
+            yOffset: {field: 'site', type: 'nominal'},
+            color: {field: 'site', type: 'nominal'}
+          }
+        };
+        const _stack = stack(spec.mark, spec.encoding);
+        expect(_stack.fieldChannel).toBe(X);
+        expect(_stack.groupbyChannels).toEqual([YOFFSET]);
       }
     });
 
