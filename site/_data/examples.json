@@ -912,8 +912,12 @@
         "title": "Overview and Detail"
       },
       {
+        "name": "interactive_crossfilter",
+        "title": "Crossfilter (Filter)"
+      },
+      {
         "name": "interactive_layered_crossfilter",
-        "title": "Crossfilter"
+        "title": "Crossfilter (Highlight)"
       },
       {
         "name": "interactive_splom",
