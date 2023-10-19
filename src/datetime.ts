@@ -227,7 +227,7 @@ function normalizeDay(d: string | number): number {
 function dateTimeParts(d: DateTime | DateTimeExpr, normalize: boolean) {
   const parts: (string | number)[] = [];
 
-  if (normalize && d.day !== undefined) {
+  if (normalize && d.day) {
     if (keys(d).length > 1) {
       log.warn(log.message.droppedDay(d));
       d = duplicate(d);
@@ -235,7 +235,7 @@ function dateTimeParts(d: DateTime | DateTimeExpr, normalize: boolean) {
     }
   }
 
-  if (d.year !== undefined) {
+  if (d.year) {
     parts.push(d.year);
   } else {
     // Just like Vega's timeunit transform, set default year to 2012, so domain conversion will be compatible with Vega
@@ -243,19 +243,19 @@ function dateTimeParts(d: DateTime | DateTimeExpr, normalize: boolean) {
     parts.push(2012);
   }
 
-  if (d.month !== undefined) {
+  if (d.month) {
     const month = normalize ? normalizeMonth(d.month) : d.month;
     parts.push(month);
-  } else if (d.quarter !== undefined) {
+  } else if (d.quarter) {
     const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
     parts.push(isNumber(quarter) ? quarter * 3 : `${quarter}*3`);
   } else {
     parts.push(0); // months start at zero in JS
   }
 
-  if (d.date !== undefined) {
+  if (d.date) {
     parts.push(d.date);
-  } else if (d.day !== undefined) {
+  } else if (d.day) {
     // HACK: Day only works as a standalone unit
     // This is only correct because we always set year to 2006 for day
     const day = normalize ? normalizeDay(d.day) : d.day;
