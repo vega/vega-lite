@@ -1,0 +1,49 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "params": [
+    {
+      "name": "Threshold",
+      "value": 5,
+      "bind": {"input": "range", "min": 1, "max": 10, "step": 1}
+    }
+  ],
+  "layer": [
+    {
+      "data": {"url": "data/movies.json"},
+      "mark": "circle",
+      "transform": [{"filter": "datum['IMDB Rating'] > Threshold"}],
+      "encoding": {
+        "x": {
+          "field": "IMDB Rating",
+          "type": "quantitative",
+          "axis": {"title": "IMDB Rating"}
+        },
+        "y": {
+          "field": "Rotten Tomatoes Rating",
+          "type": "quantitative",
+          "axis": {"title": "Rotten Tomatoes Rating"}
+        }
+      }
+    },
+    {
+      "data": {"url": "data/movies.json"},
+      "mark": "circle",
+      "encoding": {
+        "x": {"bin": {"maxbins": 10}, "field": "IMDB Rating"},
+        "y": {"bin": {"maxbins": 10}, "field": "Rotten Tomatoes Rating"},
+        "size": {"aggregate": "count"}
+      }
+    },
+    {
+      "data": {"values": [{"start": 0, "stop": 100}]},
+      "mark": {"type": "rule", "color": "gray"},
+      "encoding": {
+        "strokeWidth": {"value": 3},
+        "x": {"datum": {"expr": "Threshold"}, "type": "quantitative"},
+        "y": {"field": "start", "type": "quantitative"},
+        "x2": {"datum": {"expr": "Threshold"}},
+        "y2": {"field": "stop"}
+      }
+    }
+  ]
+}
