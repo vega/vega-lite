@@ -357,22 +357,6 @@ export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fiel
   return 'sort' in fieldDef;
 }
 
-// For now, just a simple filter only supports the most basic comparisons with literals, no logical compositions yet.
-// export interface TooltipFilter {
-//   operator: "==" | "!=" | "<" | "<=" | ">" | ">=",
-//   literal: String | Number | Boolean
-// };
-
-// export type FilteredFieldDef<
-//   F extends Field,
-//   T extends Type = StandardType,
-//   B extends Bin = boolean | BinParams | null
-// > = TypedFieldDef<F, T, B> & {filter?: TooltipFilter}
-
-// export function isFilteredFieldDef<F extends Field>(fieldDef: FieldDef<F>): fieldDef is FilteredFieldDef<F> {
-//   return "filter" in fieldDef;
-// }
-
 export type ScaleFieldDef<
   F extends Field,
   T extends Type = StandardType,
