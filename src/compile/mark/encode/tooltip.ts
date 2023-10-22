@@ -29,8 +29,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config, stack} = model;
   const channelDef = encoding.tooltip;
   if (isArray(channelDef)) {
-    var tooltip_to_return = tooltipRefForEncoding({tooltip: channelDef}, stack, config, opt)
-    return {tooltip: tooltip_to_return};
+    return {tooltip: tooltipRefForEncoding({tooltip: channelDef}, stack, config, opt)};
   } else {
     const datum = opt.reactiveGeom ? 'datum.datum' : 'datum';
     return wrapCondition(model, channelDef, 'tooltip', cDef => {
