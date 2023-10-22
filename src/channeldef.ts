@@ -132,9 +132,9 @@ export type ValueDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V ext
    * A field definition or one or more value definition(s) with a parameter predicate.
    */
   condition?:
-    | Conditional<F>
-    | Conditional<ValueDef<V | ExprRef | SignalRef>>
-    | Conditional<ValueDef<V | ExprRef | SignalRef>>[];
+  | Conditional<F>
+  | Conditional<ValueDef<V | ExprRef | SignalRef>>
+  | Conditional<ValueDef<V | ExprRef | SignalRef>>[];
 };
 
 export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
@@ -387,8 +387,8 @@ export interface DatumDef<
   F extends Field = string,
   V extends PrimitiveValue | DateTime | ExprRef | SignalRef = PrimitiveValue | DateTime | ExprRef | SignalRef
 > extends Partial<TypeMixins<Type>>,
-    BandMixins,
-    TitleMixins {
+  BandMixins,
+  TitleMixins {
   /**
    * A constant value in data domain.
    */
@@ -652,7 +652,23 @@ export function isOrderOnlyDef<F extends Field>(
 
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
 
-export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
+export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins { }
+
+export interface TooltipFilter {
+  operator: "==" | "!=" | "<" | "<=" | ">" | ">=",
+  literal: String | Number | Boolean
+};
+
+export interface TooltipFieldDef<F extends Field> extends StringFieldDef<F> {
+  filter?: TooltipFilter
+  sorted?: "ascending" | "descending"
+};
+
+export function isTooltipFieldDef<F extends Field>(fieldDef: FieldDef<F>): fieldDef is TooltipFieldDef<F> {
+  return "filter" in fieldDef || "sorted" in fieldDef;
+}
+
+
 
 export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];
@@ -1097,10 +1113,10 @@ export function initFieldOrDatumDef(
     const guideType = isPositionFieldOrDatumDef(fd)
       ? 'axis'
       : isMarkPropFieldOrDatumDef(fd)
-      ? 'legend'
-      : isFacetFieldDef(fd)
-      ? 'header'
-      : null;
+        ? 'legend'
+        : isFacetFieldDef(fd)
+          ? 'header'
+          : null;
     if (guideType && fd[guideType]) {
       const {format, formatType, ...newGuide} = fd[guideType];
       if (isCustomFormatType(formatType) && !config.customFormatTypes) {

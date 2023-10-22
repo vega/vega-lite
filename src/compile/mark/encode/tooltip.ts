@@ -7,8 +7,10 @@ import {
   getFormatMixins,
   hasConditionalFieldDef,
   isFieldDef,
+  isTooltipFieldDef,
   isTypedFieldDef,
   SecondaryFieldDef,
+  TooltipFilter,
   TypedFieldDef,
   vgField
 } from '../../../channeldef';
@@ -76,6 +78,7 @@ export function tooltipData(
   const toSkip = {};
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
   const tuples: {channel: Channel; key: string; value: string}[] = [];
+  var sort_tooltip: boolean = false;
 
   function add(fDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
@@ -83,9 +86,9 @@ export function tooltipData(
     const fieldDef: TypedFieldDef<string> = isTypedFieldDef(fDef)
       ? fDef
       : {
-          ...fDef,
-          type: (encoding[mainChannel] as TypedFieldDef<any>).type // for secondary field def, copy type from main channel
-        };
+        ...fDef,
+        type: (encoding[mainChannel] as TypedFieldDef<any>).type // for secondary field def, copy type from main channel
+      };
 
     const title = fieldDef.title || defaultTitle(fieldDef, formatConfig);
     const key = array(title).join(', ').replaceAll(/"/g, '\\"');
@@ -124,6 +127,20 @@ export function tooltipData(
 
     value ??= textRef(fieldDef, formatConfig, expr).signal;
 
+    // New feature: add filter for each tooltip field.
+    if (isTooltipFieldDef(fieldDef)) {
+      if ("filter" in fieldDef) {
+        const filter: TooltipFilter = fieldDef.filter;
+        const comp_value = filter.literal;
+        value = `${value} ${filter.operator} ${comp_value} ? ${value} : ${expr + '[""]'}`; // Trigeer 'undefined' when evaluating the tooltip value such that it is filtered out by vega-tooltip.
+      }
+
+      if ("sorted" in fieldDef && !sort_tooltip) {
+        tuples.push({channel, key: "tooltip_sort_placeholder", value: (fieldDef.sorted == "ascending" ? "0" : "1")}); // Encode ascending as "0", descending as "1"
+        sort_tooltip = true;
+      }
+    }
+
     tuples.push({channel, key, value});
   }
 
@@ -141,7 +158,6 @@ export function tooltipData(
       out[key] = value;
     }
   }
-
   return out;
 }
 
