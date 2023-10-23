@@ -27232,12 +27232,18 @@
       }
     },
     "TooltipSort": {
-      "value": {
-        "enum": [
-          "ascending",
-          "descending"
-        ]
-      }
+      "properties": {
+        "value": {
+          "enum": [
+            "ascending",
+            "descending"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ]
     },
     "TooltipFieldDef": {
       "additionalProperties": false,
