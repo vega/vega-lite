@@ -11,6 +11,7 @@ import {
   isTypedFieldDef,
   SecondaryFieldDef,
   TooltipFilter,
+  TooltipSort,
   TypedFieldDef,
   vgField
 } from '../../../channeldef';
@@ -29,7 +30,8 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config, stack} = model;
   const channelDef = encoding.tooltip;
   if (isArray(channelDef)) {
-    return {tooltip: tooltipRefForEncoding({tooltip: channelDef}, stack, config, opt)};
+    const sort_tooltip: TooltipSort | undefined = "sort_tooltip" in encoding ? encoding.sort_tooltip : undefined;
+    return {tooltip: tooltipRefForEncoding({tooltip: channelDef, sort_tooltip: sort_tooltip}, stack, config, opt)};
   } else {
     const datum = opt.reactiveGeom ? 'datum.datum' : 'datum';
     return wrapCondition(model, channelDef, 'tooltip', cDef => {
@@ -74,10 +76,13 @@ export function tooltipData(
   config: Config,
   {reactiveGeom}: {reactiveGeom?: boolean} = {}
 ) {
+
   const toSkip = {};
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
   const tuples: {channel: Channel; key: string; value: string}[] = [];
-  var sort_tooltip: boolean = false;
+  if (encoding.sort_tooltip != undefined && (encoding.sort_tooltip.value == "ascending" || encoding.sort_tooltip.value == "descending")) {
+    tuples.push({channel: "sort_tooltip", key: "tooltip_sort_placeholder", value: (encoding.sort_tooltip.value == "ascending" ? "0" : "1")}); // Encode ascending as "0", descending as "1"
+  }
 
   function add(fDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
@@ -128,16 +133,9 @@ export function tooltipData(
 
     // New feature: add filter for each tooltip field.
     if (isTooltipFieldDef(fieldDef)) {
-      if ("filter" in fieldDef) {
-        const filter: TooltipFilter = fieldDef.filter;
-        const comp_value = filter.literal;
-        value = `${value} ${filter.operator} ${comp_value} ? ${value} : ${expr + '[""]'}`; // Trigeer 'undefined' when evaluating the tooltip value such that it is filtered out by vega-tooltip.
-      }
-
-      if ("sorted" in fieldDef && !sort_tooltip) {
-        tuples.push({channel, key: "tooltip_sort_placeholder", value: (fieldDef.sorted == "ascending" ? "0" : "1")}); // Encode ascending as "0", descending as "1"
-        sort_tooltip = true;
-      }
+      const filter: TooltipFilter = fieldDef.filter;
+      const comp_value = filter.literal;
+      value = `${value} ${filter.operator} ${comp_value} ? ${value} : ${expr + '[""]'}`; // Trigeer 'undefined' when evaluating the tooltip value such that it is filtered out by vega-tooltip.
     }
 
     tuples.push({channel, key, value});

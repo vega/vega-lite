@@ -30,6 +30,7 @@ import {
   RADIUS2,
   SHAPE,
   SIZE,
+  SORT_TOOLTIP,
   STROKE,
   STROKEDASH,
   STROKEOPACITY,
@@ -83,6 +84,7 @@ import {
   TextDef,
   title,
   TooltipFieldDef,
+  TooltipSort,
   TypedFieldDef,
   vgField
 } from './channeldef';
@@ -323,6 +325,8 @@ export interface Encoding<F extends Field> {
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
   order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef;
+
+  sort_tooltip?: TooltipSort;
 }
 
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> { }
@@ -737,6 +741,8 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
 
       // tooltip fields should not be added to group by [falls through]
       case TOOLTIP:
+        return details;
+      case SORT_TOOLTIP:
         return details;
 
       case ORDER:

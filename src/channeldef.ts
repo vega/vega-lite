@@ -33,6 +33,7 @@ import {
   ROW,
   SHAPE,
   SIZE,
+  SORT_TOOLTIP,
   STROKE,
   STROKEDASH,
   STROKEOPACITY,
@@ -651,11 +652,14 @@ export interface TooltipFilter {
 
 export interface TooltipFieldDef<F extends Field> extends StringFieldDef<F> {
   filter?: TooltipFilter
-  sorted?: "ascending" | "descending"
 };
 
+export interface TooltipSort {
+  value: "ascending" | "descending"
+}
+
 export function isTooltipFieldDef<F extends Field>(fieldDef: FieldDef<F>): fieldDef is TooltipFieldDef<F> {
-  return "filter" in fieldDef || "sorted" in fieldDef;
+  return "filter" in fieldDef;
 }
 
 
@@ -1280,6 +1284,7 @@ export function channelCompatibility(
     case DETAIL:
     case KEY:
     case TOOLTIP:
+    case SORT_TOOLTIP:
     case HREF:
     case URL:
     case ANGLE:

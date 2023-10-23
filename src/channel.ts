@@ -67,6 +67,8 @@ export const DETAIL = 'detail' as const;
 export const KEY = 'key' as const;
 
 export const TOOLTIP = 'tooltip' as const;
+
+export const SORT_TOOLTIP = 'sort_tooltip' as const;
 export const HREF = 'href' as const;
 
 export const URL = 'url' as const;
@@ -154,7 +156,8 @@ const UNIT_CHANNEL_INDEX: Flag<Channel> = {
   tooltip: 1,
   href: 1,
   url: 1,
-  description: 1
+  description: 1,
+  sort_tooltip: 1
 };
 
 export type ColorChannel = 'color' | 'fill' | 'stroke';
@@ -431,6 +434,7 @@ const {
   // href has neither format, nor scale
   text: _t,
   tooltip: _tt,
+  sort_tooltip: _stt,
   href: _hr,
   url: _u,
   description: _al,
@@ -532,6 +536,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case DETAIL:
     case KEY:
     case TOOLTIP:
+    case SORT_TOOLTIP:
     case HREF:
     case ORDER: // TODO: revise (order might not support rect, which is not stackable?)
     case OPACITY:
@@ -641,6 +646,7 @@ export function rangeType(channel: ExtendedChannel): RangeType {
     // TEXT, TOOLTIP, URL, and HREF have no scale but have discrete output [falls through]
     case TEXT:
     case TOOLTIP:
+    case SORT_TOOLTIP:
     case HREF:
     case URL:
     case DESCRIPTION:

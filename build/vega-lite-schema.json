@@ -5064,6 +5064,10 @@
           ],
           "description": "The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite."
         },
+        "sort_tooltip": {
+          "$ref": "#/definitions/TooltipSort",
+          "description": "Parameter to control whether and how the tooltip is sorted. It's users' responsibilities to make sure to put non-sortable fields or the fields they do not want to sort at the beginning or the end of the tooltip array, otherwise the order will be messed up."
+        },
         "url": {
           "anyOf": [
             {
@@ -27227,6 +27231,14 @@
         ]
       }
     },
+    "TooltipSort": {
+      "value": {
+        "enum": [
+          "ascending",
+          "descending"
+        ]
+      }
+    },
     "TooltipFieldDef": {
       "additionalProperties": false,
       "properties": {
@@ -27306,13 +27318,6 @@
         "filter": {
           "$ref": "#/definitions/TooltipFilter",
           "description": "The tooltip filter object to control what values to show/hide in the tooltip."
-        },
-        "sorted": {
-          "enum": [
-            "ascending",
-            "descending"
-          ],
-          "description": "Parameter to control whether and how the tooltip is sorted. The first defined 'sorted' parameter that appears in the tooltip array controls the sorting order, and any defined parameters after that will simply be ignored. "
         }
       },
       "type": "object"
