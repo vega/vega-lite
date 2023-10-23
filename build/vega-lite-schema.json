@@ -5066,7 +5066,7 @@
         },
         "sort_tooltip": {
           "$ref": "#/definitions/TooltipSort",
-          "description": "Parameter to control whether and how the tooltip is sorted. It's users' responsibilities to make sure to put non-sortable fields or the fields they do not want to sort at the beginning or the end of the tooltip array, otherwise the order will be messed up."
+          "description": "Parameter to control whether and how the tooltip is sorted. 'ascending' or 'descending' only. It's users' responsibilities to make sure to put non-sortable fields or the fields they do not want to sort at the beginning or the end of the tooltip array, otherwise the order will be messed up."
         },
         "url": {
           "anyOf": [
@@ -27329,7 +27329,7 @@
         },
         "filter": {
           "$ref": "#/definitions/TooltipFilter",
-          "description": "The tooltip filter object to control what values to show/hide in the tooltip."
+          "description": "The tooltip filter object to control what values to show/hide in the tooltip, the operator should be one of '==', '!=', '<', '<=', '>', '>='. The literal (value to be compared with) should be one of type string, number or boolean."
         }
       },
       "type": "object"
