@@ -27207,29 +27207,35 @@
       "type": "object"
     },
     "TooltipFilter": {
-      "operator": {
-        "enum": [
-          "==",
-          "!=",
-          "<",
-          "<=",
-          ">",
-          ">="
-        ]
+      "properties": {
+        "operator": {
+          "enum": [
+            "==",
+            "!=",
+            "<",
+            "<=",
+            ">",
+            ">="
+          ]
+        },
+        "literal": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        }
       },
-      "literal": {
-        "anyOf": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "number"
-          },
-          {
-            "type": "boolean"
-          }
-        ]
-      }
+      "required": [
+        "operator",
+        "literal"
+      ]
     },
     "TooltipSort": {
       "properties": {
