@@ -413,7 +413,7 @@ The key channel can enable object constancy for transitions over dynamic data. W
 
 ## Order Channel
 
-`order` channel can define a data field (or a ordered list of data fields) that are used to sorts stacking order for stacked charts (see [an example in the `stack` page](stack.html#order)) and the order of data points in line marks for connected scatterplots (see [an example in the `line` page](line.html#connected-scatter-plot)).
+`order` channel can define a data field (or a ordered list of data fields) that are used to sorts stacking order for stacked charts (see [an example in the `stack` page](stack.html#order)), the order of data points in line marks for connected scatterplots (see [an example in the `line` page](line.html#connected-scatter-plot)), and which data points are plotted on top in a chart (the "zorder", see [an example in the gallery]({{ site.baseurl }}/examples/selection_type_point_zorder.html)).
 
 {% include table.html props="order" source="Encoding" %}
 

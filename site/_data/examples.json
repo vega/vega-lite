@@ -904,6 +904,11 @@
         "name": "param_search_input",
         "description": "Search to highlight the relevant car models. Regexes are supported so you can type e.g. `mazda|ford`",
         "title": "Search Input"
+      },
+      {
+        "name": "selection_type_point_zorder",
+        "description": "Show points on top when hovered over with the pointer",
+        "title": "Change zorder on hover"
       }
     ],
     "Interactive Multi-View Displays": [
@@ -912,8 +917,12 @@
         "title": "Overview and Detail"
       },
       {
+        "name": "interactive_crossfilter",
+        "title": "Crossfilter (Filter)"
+      },
+      {
         "name": "interactive_layered_crossfilter",
-        "title": "Crossfilter"
+        "title": "Crossfilter (Highlight)"
       },
       {
         "name": "interactive_splom",
