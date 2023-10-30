@@ -1,7 +1,11 @@
+import {default as clone_} from 'clone';
+import deepEqual_ from 'fast-deep-equal';
+import stableStringify from 'fast-json-stable-stringify';
 import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical';
 
-export const duplicate = structuredClone;
+export const deepEqual = deepEqual_;
+export const duplicate = clone_;
 
 export function never(message: string): never {
   throw new Error(message);
@@ -42,8 +46,13 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: readonl
  * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
 Set.prototype['toJSON'] = function () {
-  return `Set(${[...this].map(x => stringify(x)).join(',')})`;
+  return `Set(${[...this].map(x => stableStringify(x)).join(',')})`;
 };
+
+/**
+ * Converts any object to a string representation that can be consumed by humans.
+ */
+export const stringify = stableStringify;
 
 /**
  * Converts any object to a string of limited size, or a number.
@@ -53,7 +62,7 @@ export function hash(a: any): string | number {
     return a;
   }
 
-  const str = isString(a) ? a : stringify(a);
+  const str = isString(a) ? a : stableStringify(a);
 
   // short strings can be used as hash directly, longer strings are hashed to reduce memory usage
   if (str.length < 250) {
@@ -143,7 +152,7 @@ export function unique<T>(values: readonly T[], f: (item: T) => string | number)
 export type Dict<T> = Record<string, T>;
 
 /**
- * Returns true if the two dictionaries agree. Applies only to defined values.
+ * Returns true if the two dictionaries disagree. Applies only to defined values.
  */
 export function isEqual<T>(dict: Dict<T>, other: Dict<T>) {
   const dictKeys = keys(dict);
@@ -390,122 +399,4 @@ export function isNumeric(value: number | string): boolean {
     return true;
   }
   return !isNaN(value as any) && !isNaN(parseFloat(value));
-}
-
-const clonedProto = Object.getPrototypeOf(structuredClone({}));
-
-/**
- * Compares two values for equality, including arrays and objects.
- *
- * Adapted from https://github.com/epoberezkin/fast-deep-equal.
- */
-export function deepEqual(a: any, b: any) {
-  if (a === b) return true;
-
-  if (a && b && typeof a == 'object' && typeof b == 'object') {
-    // compare names to avoid issues with structured clone
-    if (a.constructor.name !== b.constructor.name) return false;
-
-    let length;
-    let i;
-
-    if (Array.isArray(a)) {
-      length = a.length;
-      if (length != b.length) return false;
-      for (i = length; i-- !== 0; ) if (!deepEqual(a[i], b[i])) return false;
-      return true;
-    }
-
-    if (a instanceof Map && b instanceof Map) {
-      if (a.size !== b.size) return false;
-      for (i of a.entries()) if (!b.has(i[0])) return false;
-      for (i of a.entries()) if (!deepEqual(i[1], b.get(i[0]))) return false;
-      return true;
-    }
-
-    if (a instanceof Set && b instanceof Set) {
-      if (a.size !== b.size) return false;
-      for (i of a.entries()) if (!b.has(i[0])) return false;
-      return true;
-    }
-
-    if (ArrayBuffer.isView(a) && ArrayBuffer.isView(b)) {
-      length = (a as any).length;
-      if (length != (b as any).length) return false;
-      for (i = length; i-- !== 0; ) if (a[i] !== b[i]) return false;
-      return true;
-    }
-
-    if (a.constructor === RegExp) return a.source === b.source && a.flags === b.flags;
-    // also compare to structured clone prototype
-    if (a.valueOf !== Object.prototype.valueOf && a.valueOf !== clonedProto.valueOf) return a.valueOf() === b.valueOf();
-    if (a.toString !== Object.prototype.toString && a.toString !== clonedProto.toString)
-      return a.toString() === b.toString();
-
-    const ks = Object.keys(a);
-    length = ks.length;
-    if (length !== Object.keys(b).length) return false;
-
-    for (i = length; i-- !== 0; ) if (!Object.prototype.hasOwnProperty.call(b, ks[i])) return false;
-
-    for (i = length; i-- !== 0; ) {
-      const key = ks[i];
-
-      if (!deepEqual(a[key], b[key])) return false;
-    }
-
-    return true;
-  }
-
-  // true if both NaN, false otherwise
-  return a !== a && b !== b;
-}
-
-/**
- * Converts any object to a string representation that can be consumed by humans.
- *
- * Adapted from https://github.com/epoberezkin/fast-json-stable-stringify
- */
-export function stringify(data: any) {
-  const seen: any[] = [];
-
-  return (function _stringify(node: any) {
-    if (node && node.toJSON && typeof node.toJSON === 'function') {
-      node = node.toJSON();
-    }
-
-    if (node === undefined) return undefined;
-    if (typeof node == 'number') return isFinite(node) ? '' + node : 'null';
-    if (typeof node !== 'object') return JSON.stringify(node);
-
-    let i, out;
-    if (Array.isArray(node)) {
-      out = '[';
-      for (i = 0; i < node.length; i++) {
-        if (i) out += ',';
-        out += _stringify(node[i]) || 'null';
-      }
-      return out + ']';
-    }
-
-    if (node === null) return 'null';
-
-    if (seen.includes(node)) {
-      throw new TypeError('Converting circular structure to JSON');
-    }
-
-    const seenIndex = seen.push(node) - 1;
-    const ks = Object.keys(node).sort();
-    out = '';
-    for (i = 0; i < ks.length; i++) {
-      const key = ks[i];
-      const value = _stringify(node[key]);
-
-      if (!value) continue;
-      if (out) out += ',';
-      out += JSON.stringify(key) + ':' + value;
-    }
-    seen.splice(seenIndex, 1);
-    return `{${out}}`;
-  })(data);
 }
