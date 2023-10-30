@@ -1,0 +1,1 @@
+{"version":3,"file":"parse.d.ts","sourceRoot":"","sources":["../../../../src/compile/axis/parse.ts"],"names":[],"mappings":"AAQA,OAAO,EAAC,UAAU,EAAC,MAAM,UAAU,CAAC;AAGpC,OAAO,EAAC,SAAS,EAAC,MAAM,SAAS,CAAC;AAClC,OAAO,EAAgB,kBAAkB,EAAgD,MAAM,aAAa,CAAC;AAM7G,wBAAgB,aAAa,CAAC,KAAK,EAAE,SAAS,GAAG,kBAAkB,CAOlE;AASD,wBAAgB,cAAc,CAAC,KAAK,EAAE,UAAU,QAsE/C"}
