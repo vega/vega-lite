@@ -1548,12 +1548,12 @@
     config-chain "^1.1.11"
 
 "@release-it/conventional-changelog@^7.0.0":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@release-it/conventional-changelog/-/conventional-changelog-7.0.1.tgz#582d8cd3fb4ba574cd84f51b63585ccb3b6b1d36"
-  integrity sha512-qvMSzyaTWVCgbAFJ4OYb2HC2S+h47hqua6A/aYe5surdp9dXu47POz22tJUMyKr4z66g+nh2TElFqaWrLmOC3Q==
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@release-it/conventional-changelog/-/conventional-changelog-7.0.2.tgz#0d4f3a8b3af0657607f14b8a9fedf4a6aa70b304"
+  integrity sha512-rsUKWNnU39xivgC2IanjRkEOPsTu2X2jgJGpNHF+mndpOUr1WAROmIaix1o3ne2zseT+GLyZII2NC8FgYaM7xA==
   dependencies:
     concat-stream "^2.0.0"
-    conventional-changelog "^5.0.0"
+    conventional-changelog "^5.1.0"
     conventional-recommended-bump "^8.0.0"
     semver "^7.5.4"
 
@@ -3250,7 +3250,7 @@ conventional-changelog-writer@^7.0.0:
     semver "^7.5.2"
     split2 "^4.0.0"
 
-conventional-changelog@^5.0.0, conventional-changelog@^5.1.0:
+conventional-changelog@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/conventional-changelog/-/conventional-changelog-5.1.0.tgz#04b36a5ad0518e0323e9d629e3b86e34f7abb7eb"
   integrity sha512-aWyE/P39wGYRPllcCEZDxTVEmhyLzTc9XA6z6rVfkuCD2UBnhV/sgSOKbQrEG5z9mEZJjnopjgQooTKxEg8mAg==
