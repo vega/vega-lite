@@ -116,7 +116,7 @@
     "prettier": "^3.0.2",
     "puppeteer": "^15.0.0",
     "release-it": "^16.1.5",
-    "rollup": "^3.28.1",
+    "rollup": "^4.2.0",
     "rollup-plugin-bundle-size": "^1.0.3",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "serve": "^14.2.1",
