@@ -8,20 +8,12 @@
   "layer": [
     {
       "encoding": {
-        "x": {
-          "field": "date",
-          "type": "temporal"
-        },
-        "y": {
-          "field": "price",
-          "type": "quantitative"
-        },
-        "color": {
-          "field": "symbol",
-          "type": "nominal"
-        }
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"}
       },
       "layer": [
+        {"mark": "line"},
         {
           "params": [{
             "name": "label",
@@ -31,7 +23,7 @@
               "nearest": true,
               "on": "pointerover"
             }
-          ],
+          }],
           "mark": "point",
           "encoding": {
             "opacity": {
@@ -47,42 +39,19 @@
       ]
     },
     {
-      "transform": [
-        {
-          "filter": {
-            "param": "label",
-            "empty": false
-          }
-        }
-      ],
+      "transform": [{"filter": {"param": "label", "empty": false}}],
       "layer": [
         {
-          "mark": {
-            "type": "rule",
-            "color": "gray"
-          },
+          "mark": {"type": "rule", "color": "gray"},
           "encoding": {
-            "x": {
-              "type": "temporal",
-              "field": "date",
-              "aggregate": "min"
-            }
+            "x": {"type": "temporal", "field": "date", "aggregate": "min"}
           }
         },
         {
           "encoding": {
-            "text": {
-              "type": "quantitative",
-              "field": "price"
-            },
-            "x": {
-              "type": "temporal",
-              "field": "date"
-            },
-            "y": {
-              "type": "quantitative",
-              "field": "price"
-            }
+            "text": {"type": "quantitative", "field": "price"},
+            "x": {"type": "temporal", "field": "date"},
+            "y": {"type": "quantitative", "field": "price"}
           },
           "layer": [
             {
@@ -96,17 +65,9 @@
               }
             },
             {
-              "mark": {
-                "type": "text",
-                "align": "left",
-                "dx": 5,
-                "dy": -5
-              },
+              "mark": {"type": "text", "align": "left", "dx": 5, "dy": -5},
               "encoding": {
-                "color": {
-                  "type": "nominal",
-                  "field": "symbol"
-                }
+                "color": {"type": "nominal", "field": "symbol"}
               }
             }
           ]

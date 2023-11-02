@@ -7,41 +7,22 @@
       "type": "interval",
       "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!"
     }
-  ],
-  "mark": {
-    "type": "circle",
-    "clip": true
-  },
+  }],
+  "mark": {"type": "circle", "clip": true},
   "encoding": {
     "x": {
-      "field": "Horsepower",
-      "type": "quantitative",
-      "scale": {
-        "domain": [
-          75,
-          150
-        ]
-      }
+      "field": "Horsepower", "type": "quantitative",
+      "scale": {"domain": [75, 150]}
     },
     "y": {
-      "field": "Miles_per_Gallon",
-      "type": "quantitative",
-      "scale": {
-        "domain": [
-          20,
-          40
-        ]
-      }
+      "field": "Miles_per_Gallon", "type": "quantitative",
+      "scale": {"domain": [20, 40]}
     },
-    "size": {
-      "field": "Cylinders",
-      "type": "quantitative"
-    },
+    "size": {"field": "Cylinders", "type": "quantitative"},
     "color": {
       "condition": {
         "param": "brush",
-        "field": "Origin",
-        "type": "nominal"
+        "field": "Origin", "type": "nominal"
       },
       "value": "grey"
     }
