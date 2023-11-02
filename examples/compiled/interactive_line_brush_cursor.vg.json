@@ -259,7 +259,7 @@
       "clip": true,
       "encode": {
         "enter": {
-          "cursor": {"value": "pointer"},
+          "cursor": {"value": "move"},
           "fill": {"value": "transparent"}
         },
         "update": {
