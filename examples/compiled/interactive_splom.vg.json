@@ -565,10 +565,7 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "cursor": {"value": "move"},
-              "fill": {"value": "transparent"}
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
@@ -1076,10 +1073,7 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "cursor": {"value": "move"},
-              "fill": {"value": "transparent"}
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
@@ -1499,10 +1493,7 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "cursor": {"value": "move"},
-              "fill": {"value": "transparent"}
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"value": 0},
@@ -2011,10 +2002,7 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "cursor": {"value": "move"},
-              "fill": {"value": "transparent"}
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
@@ -2436,10 +2424,7 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "cursor": {"value": "move"},
-              "fill": {"value": "transparent"}
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"value": 0},
@@ -2944,10 +2929,7 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "cursor": {"value": "move"},
-              "fill": {"value": "transparent"}
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
@@ -3371,10 +3353,7 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "cursor": {"value": "move"},
-              "fill": {"value": "transparent"}
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"value": 0},
@@ -3883,10 +3862,7 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "cursor": {"value": "move"},
-              "fill": {"value": "transparent"}
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
@@ -4398,10 +4374,7 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {
-              "cursor": {"value": "move"},
-              "fill": {"value": "transparent"}
-            },
+            "enter": {"fill": {"value": "transparent"}},
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
