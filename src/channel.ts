@@ -39,7 +39,6 @@ export const LATITUDE = 'latitude' as const;
 export const LONGITUDE = 'longitude' as const;
 export const LATITUDE2 = 'latitude2' as const;
 export const LONGITUDE2 = 'longitude2' as const;
-export const CURSOR = 'cursor' as const;
 
 // Mark property with scale
 export const COLOR = 'color' as const;
