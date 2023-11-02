@@ -580,7 +580,6 @@ describe('Interval Selections', () => {
           clip: true,
           encode: {
             enter: {
-              cursor: {value: 'move'},
               fill: {value: 'transparent'}
             },
             update: {
@@ -672,7 +671,6 @@ describe('Interval Selections', () => {
           clip: true,
           encode: {
             enter: {
-              cursor: {value: 'move'},
               fill: {value: 'transparent'}
             },
             update: {
