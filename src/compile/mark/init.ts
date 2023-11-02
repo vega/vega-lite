@@ -68,7 +68,7 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
 
   return markDef;
 }
-// TODO: ALLIE
+
 function cursor(markDef: MarkDef<Mark, SignalRef>, encoding: Encoding<string>, config: Config<SignalRef>) {
   if (encoding.href || markDef.href || getMarkPropOrConfig('href', markDef, config)) {
     return 'pointer';

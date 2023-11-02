@@ -7,7 +7,6 @@ import {
   Channel,
   CHANNELS,
   COLOR,
-  // CURSOR,
   DESCRIPTION,
   DETAIL,
   FILL,
@@ -326,11 +325,6 @@ export interface Encoding<F extends Field> {
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
   order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef;
-
-  /**
-   * TODO: Add description
-   */
-  // cursor?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[] | null;
 }
 
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}

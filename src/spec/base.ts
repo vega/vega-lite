@@ -166,7 +166,7 @@ export interface BaseViewBackground<ES extends ExprRef | SignalRef>
   stroke?: Color | null | ES;
 
   /**
-   * The cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
+   * The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
    */
   cursor?: Cursor;
 }

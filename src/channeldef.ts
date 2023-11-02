@@ -8,7 +8,6 @@ import {
   Channel,
   COLOR,
   COLUMN,
-  // CURSOR,
   DESCRIPTION,
   DETAIL,
   ExtendedChannel,
