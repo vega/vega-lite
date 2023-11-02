@@ -31208,7 +31208,7 @@
         },
         "cursor": {
           "$ref": "#/definitions/Cursor",
-          "description": "The cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+          "description": "The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "fill": {
           "anyOf": [
@@ -31392,7 +31392,7 @@
         },
         "cursor": {
           "$ref": "#/definitions/Cursor",
-          "description": "The cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+          "description": "The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
         },
         "discreteHeight": {
           "anyOf": [
