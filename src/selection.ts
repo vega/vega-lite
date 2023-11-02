@@ -220,10 +220,10 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/value.html) documentation.
    */
   value?: T extends 'point'
-    ? SelectionInit | SelectionInitMapping[]
-    : T extends 'interval'
-    ? SelectionInitIntervalMapping
-    : never;
+  ? SelectionInit | SelectionInitMapping[]
+  : T extends 'interval'
+  ? SelectionInitIntervalMapping
+  : never;
 
   /**
    * When set, a selection is populated by input elements (also known as dynamic query widgets)
@@ -254,29 +254,29 @@ export type TopLevelSelectionParameter = SelectionParameter & {
 
 export type ParameterExtent =
   | {
-      /**
-       * The name of a parameter.
-       */
-      param: ParameterName;
+    /**
+     * The name of a parameter.
+     */
+    param: ParameterName;
 
-      /**
-       * If a selection parameter is specified, the field name to extract selected values for
-       * when the selection is [projected](https://vega.github.io/vega-lite/docs/selection.html#project) over multiple fields or encodings.
-       */
-      field?: FieldName;
-    }
+    /**
+     * If a selection parameter is specified, the field name to extract selected values for
+     * when the selection is [projected](https://vega.github.io/vega-lite/docs/selection.html#project) over multiple fields or encodings.
+     */
+    field?: FieldName;
+  }
   | {
-      /**
-       * The name of a parameter.
-       */
-      param: ParameterName;
+    /**
+     * The name of a parameter.
+     */
+    param: ParameterName;
 
-      /**
-       * If a selection parameter is specified, the encoding channel to extract selected values for
-       * when a selection is [projected](https://vega.github.io/vega-lite/docs/selection.html#project) over multiple fields or encodings.
-       */
-      encoding?: SingleDefUnitChannel;
-    };
+    /**
+     * If a selection parameter is specified, the encoding channel to extract selected values for
+     * when a selection is [projected](https://vega.github.io/vega-lite/docs/selection.html#project) over multiple fields or encodings.
+     */
+    encoding?: SingleDefUnitChannel;
+  };
 
 export type PointSelectionConfigWithoutType = Omit<PointSelectionConfig, 'type'>;
 
@@ -314,7 +314,7 @@ export const defaultConfig: SelectionConfig = {
     encodings: ['x', 'y'],
     translate: '[pointerdown, window:pointerup] > window:pointermove!',
     zoom: 'wheel!',
-    mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white', cursor: 'move'},
+    mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
     resolve: 'global',
     clear: 'dblclick'
   }
