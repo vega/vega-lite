@@ -9,27 +9,18 @@
       "on": "pointerover",
       "nearest": true
     }
-  ],
+  }],
   "mark": "circle",
   "encoding": {
-    "x": {
-      "field": "Horsepower",
-      "type": "quantitative"
-    },
-    "y": {
-      "field": "Miles_per_Gallon",
-      "type": "quantitative"
-    },
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
     "color": {
       "condition": {
         "param": "paintbrush",
-        "field": "Cylinders",
-        "type": "ordinal"
+        "field": "Cylinders", "type": "ordinal"
       },
       "value": "grey"
     },
-    "size": {
-      "value": 75
-    }
+    "size": {"value": 75}
   }
 }

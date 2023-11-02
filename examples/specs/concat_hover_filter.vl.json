@@ -15,34 +15,17 @@
         }],
         "mark": "point"
       },
-      "layer": [
-        {
-          "params": [
-            {
-              "name": "hover",
-              "select": {
-                "type": "point",
-                "on": "pointerover"
-              }
-            }
-          ],
-          "mark": "point"
-        },
-        {
-          "mark": {
-            "type": "point",
-            "color": "goldenrod"
-          },
-          "transform": [
-            {
-              "filter": {
-                "param": "hover",
-                "empty": false
-              }
-            }
-          ]
-        }
-      ]
+      {
+        "mark": {"type": "point", "color": "goldenrod"},
+        "transform": [
+          {"filter": {"param": "hover", "empty": false}}
+        ]
+      }
+    ]
+  }, {
+    "encoding": {
+      "x": {"field": "Horsepower", "type": "quantitative"},
+      "y": {"field": "Acceleration", "type": "quantitative"}
     },
     "layer": [
       {
@@ -53,34 +36,12 @@
         }],
         "mark": "point"
       },
-      "layer": [
-        {
-          "params": [
-            {
-              "name": "hover",
-              "select": {
-                "type": "point",
-                "on": "pointerover"
-              }
-            }
-          ],
-          "mark": "point"
-        },
-        {
-          "mark": {
-            "type": "point",
-            "color": "goldenrod"
-          },
-          "transform": [
-            {
-              "filter": {
-                "param": "hover",
-                "empty": false
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
+      {
+        "mark": {"type": "point", "color": "goldenrod"},
+        "transform": [
+          {"filter": {"param": "hover", "empty": false}}
+        ]
+      }
+    ]
+  }]
 }

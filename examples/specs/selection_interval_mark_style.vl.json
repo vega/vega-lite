@@ -1,8 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": {
-    "url": "data/cars.json"
-  },
+  "data": {"url": "data/cars.json"},
   "params": [
     {
       "name": "alex",
@@ -24,14 +22,8 @@
   ],
   "mark": "rect",
   "encoding": {
-    "y": {
-      "field": "Origin"
-    },
-    "x": {
-      "field": "Cylinders"
-    },
-    "color": {
-      "aggregate": "count"
-    }
+    "y": {"field": "Origin"},
+    "x": {"field": "Cylinders"},
+    "color": {"aggregate": "count"}
   }
 }
