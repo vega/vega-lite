@@ -106,6 +106,8 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Scalene](https://github.com/plasma-umass/scalene): A CPU+GPU+memory profiler for Python.
 - [CSrankings](https://csrankings.org): a metrics-based ranking of top computer science institutions around the world.
 - [Kibana](https://github.com/elastic/kibana): a browser-based analytics and search dashboard for Elasticsearch that supports [authoring and embedding Vega and Vega-Lite visualizations](https://www.elastic.co/guide/en/kibana/current/vega.html).
+- [PyGWalker](https://github.com/Kanaries/pygwalker) A python library that turns your data into an interactive visual exploration app with one line of code.
+- [GWalkR](https://github.com/Kanaries/GWalkR) An R library that turns your dataframe into an interactive visual exploration app in RStudio.
 
 ## Tools for Embedding Vega-Lite Visualizations
 
