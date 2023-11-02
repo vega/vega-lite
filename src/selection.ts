@@ -238,10 +238,10 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
    * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
    */
   bind?: T extends 'point'
-    ? Binding | Record<string, Binding> | LegendBinding
-    : T extends 'interval'
-    ? 'scales'
-    : never;
+  ? Binding | Record<string, Binding> | LegendBinding
+  : T extends 'interval'
+  ? 'scales'
+  : never;
 }
 
 export type TopLevelSelectionParameter = SelectionParameter & {
