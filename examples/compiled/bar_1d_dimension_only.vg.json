@@ -23,14 +23,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "stack",
-          "groupby": [],
-          "field": "b",
-          "sort": {"field": [], "order": []},
-          "as": ["b_start", "b_end"],
-          "offset": "zero"
-        },
-        {
           "type": "filter",
           "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
         }
@@ -60,7 +52,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "fields": ["b_start", "b_end"]},
+      "domain": {"data": "data_0", "field": "b"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": false,
