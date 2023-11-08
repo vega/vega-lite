@@ -87,7 +87,7 @@ function potentialStackedChannel(
 ): 'x' | 'y' | 'theta' | 'radius' | undefined {
   const y = x === 'x' ? 'y' : 'radius';
 
-  const isCartesian = x === 'x';
+  const isCartesianBarOrArea = x === 'x' && ['bar', 'area'].includes(mark);
 
   const xDef = encoding[x];
   const yDef = encoding[y];
@@ -106,7 +106,7 @@ function potentialStackedChannel(
         return xAggregate ? x : y;
       }
 
-      if (isCartesian && ['bar', 'area'].includes(mark)) {
+      if (isCartesianBarOrArea) {
         if (orient === 'vertical') {
           return y;
         } else if (orient === 'horizontal') {
@@ -119,8 +119,14 @@ function potentialStackedChannel(
       return y;
     }
   } else if (isUnbinnedQuantitative(xDef)) {
+    if (isCartesianBarOrArea && orient === 'vertical') {
+      return undefined;
+    }
     return x;
   } else if (isUnbinnedQuantitative(yDef)) {
+    if (isCartesianBarOrArea && orient === 'horizontal') {
+      return undefined;
+    }
     return y;
   }
   return undefined;
