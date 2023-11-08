@@ -56,6 +56,30 @@ describe('stack', () => {
     }
   });
 
+  it("doesn't stacked the dimension field on a 1D vertical bar with dimension only", () => {
+    const spec: TopLevel<NormalizedUnitSpec> = {
+      data: {url: 'data/barley.json'},
+      mark: {type: 'bar', orient: 'vertical'},
+      encoding: {
+        x: {field: 'yield', type: 'quantitative'}
+      }
+    };
+    const stackProps = stack(spec.mark, spec.encoding);
+    expect(stackProps).toBeNull();
+  });
+
+  it("doesn't stacked the dimension field on a 1D horizontal bar with dimension only", () => {
+    const spec: TopLevel<NormalizedUnitSpec> = {
+      data: {url: 'data/barley.json'},
+      mark: {type: 'bar', orient: 'horizontal'},
+      encoding: {
+        y: {field: 'yield', type: 'quantitative'}
+      }
+    };
+    const stackProps = stack(spec.mark, spec.encoding);
+    expect(stackProps).toBeNull();
+  });
+
   it('should be disabled when stack is false', () => {
     for (const mark of STACKABLE_NON_POLAR_MARKS) {
       const spec: TopLevel<NormalizedUnitSpec> = {
