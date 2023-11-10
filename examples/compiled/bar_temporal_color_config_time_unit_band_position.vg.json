@@ -90,13 +90,7 @@
     {
       "name": "color",
       "type": "time",
-      "domain": {
-        "data": "source_0",
-        "fields": [
-          "year_date_offsetted_rect_start",
-          "year_date_offsetted_rect_end"
-        ]
-      },
+      "domain": {"data": "source_0", "fields": ["year_date", "year_date_end"]},
       "range": "ramp",
       "interpolate": "hcl"
     }
