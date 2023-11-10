@@ -1,5 +1,12 @@
 
 
+## [5.16.3](https://github.com/vega/vega-lite/compare/v5.16.2...v5.16.3) (2023-11-10)
+
+
+### Bug Fixes
+
+* make isRectWithOffset check consistent ([#9169](https://github.com/vega/vega-lite/issues/9169)) ([3e0f312](https://github.com/vega/vega-lite/commit/3e0f312f2f7f4e9ab4bc9c6ef1323c573edd3de0))
+
 ## [5.16.2](https://github.com/vega/vega-lite/compare/v5.16.1...v5.16.2) (2023-11-08)
 
 
