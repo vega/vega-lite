@@ -41,6 +41,7 @@ describe('compile/data/fold', () => {
       expect(density.assemble()).toEqual({
         type: 'kde',
         field: 'v',
+        resolve: 'independent',
         as: ['value', 'density']
       });
     });

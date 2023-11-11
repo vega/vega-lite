@@ -19,7 +19,7 @@ export class DensityTransformNode extends DataFlowNode {
     this.transform = duplicate(transform); // duplicate to prevent side effects
     const specifiedAs = this.transform.as ?? [undefined, undefined];
     this.transform.as = [specifiedAs[0] ?? 'value', specifiedAs[1] ?? 'density'];
-    const resolve = 'independent';
+    const resolve = this.transform.resolve ?? 'independent';
     this.transform.resolve = resolve;
   }
 
