@@ -27,7 +27,7 @@ describe('compile/data/fold', () => {
         extent: [0, 10],
         minsteps: 25,
         maxsteps: 200,
-        resolve: 'shared',
+        resolve: 'independent',
         as: ['x', 'y']
       });
     });
@@ -58,10 +58,11 @@ describe('compile/data/fold', () => {
       });
     });
 
-    it('should add resolve shared if we group', () => {
+    it('should only add resolve "shared" if we set it explicitly', () => {
       const transform: Transform = {
         density: 'v',
-        groupby: ['a']
+        groupby: ['a'],
+        resolve: 'shared',
       };
       const density = new DensityTransformNode(null, transform);
       expect(density.assemble()).toEqual({
