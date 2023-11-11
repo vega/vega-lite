@@ -10,9 +10,9 @@
     {
       "name": "source_0",
       "values": [
-        {"image": "data/ffox.png"},
-        {"image": "data/gimp.png"},
-        {"image": "data/7zip.png"}
+        {"image": "../data/ffox.png"},
+        {"image": "../data/gimp.png"},
+        {"image": "../data/7zip.png"}
       ]
     }
   ],
