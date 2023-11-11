@@ -55,6 +55,7 @@ describe('compile/data/fold', () => {
       expect(density.assemble()).toEqual({
         type: 'kde',
         field: 'v',
+        resolve: 'independent',
         as: ['A', 'density']
       });
     });
@@ -121,7 +122,7 @@ describe('compile/data/fold', () => {
         as: ['A', 'B']
       };
       const density = new DensityTransformNode(null, transform);
-      expect(density.hash()).toBe('DensityTransform {"as":["A","B"],"density":"v"}');
+      expect(density.hash()).toBe('DensityTransform {"as":["A","B"],"density":"v","resolve":"independent"}');
     });
   });
 
