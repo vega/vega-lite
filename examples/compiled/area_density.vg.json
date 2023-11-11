@@ -15,7 +15,8 @@
           "type": "kde",
           "field": "IMDB Rating",
           "bandwidth": 0.3,
-          "as": ["value", "density"]
+          "as": ["value", "density"],
+          "resolve": "independent"
         },
         {
           "type": "impute",
