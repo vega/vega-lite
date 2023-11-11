@@ -24,8 +24,7 @@
           "extent": [10, 500],
           "counts": true,
           "steps": 200,
-          "as": ["value", "density"],
-          "resolve": "shared"
+          "as": ["value", "density"]
         },
         {
           "type": "impute",
