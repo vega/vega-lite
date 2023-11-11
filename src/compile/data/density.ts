@@ -40,9 +40,7 @@ export class DensityTransformNode extends DataFlowNode {
       field: density,
       ...rest
     };
-    if (this.transform.groupby) {
-      result.resolve = 'shared';
-    }
+    result.resolve = this.transform.resolve;
     return result;
   }
 }
