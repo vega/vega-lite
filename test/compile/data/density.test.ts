@@ -62,7 +62,7 @@ describe('compile/data/fold', () => {
       const transform: Transform = {
         density: 'v',
         groupby: ['a'],
-        resolve: 'shared',
+        resolve: 'shared'
       };
       const density = new DensityTransformNode(null, transform);
       expect(density.assemble()).toEqual({
