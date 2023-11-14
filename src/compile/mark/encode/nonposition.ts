@@ -6,6 +6,7 @@ import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
 import {wrapCondition} from './conditional';
 import * as ref from './valueref';
+import {isRelativeBandSize} from '../../../mark';
 
 /**
  * Return encode for non-positional channels with scales. (Text doesn't have scale.)
@@ -24,11 +25,14 @@ export function nonPosition(
   let {defaultRef, defaultValue} = opt;
 
   if (defaultRef === undefined) {
-    // prettier-ignore
-    defaultValue ??= getMarkPropOrConfig(channel, markDef, config, {vgChannel, ignoreVgConfig: true});
+    const markPropOrConfig = getMarkPropOrConfig(channel, markDef, config, {vgChannel, ignoreVgConfig: true});
+    if (!isRelativeBandSize(markPropOrConfig)) {
+      // prettier-ignore
+      defaultValue ??= markPropOrConfig;
 
-    if (defaultValue !== undefined) {
-      defaultRef = signalOrValueRef(defaultValue);
+      if (defaultValue !== undefined) {
+        defaultRef = signalOrValueRef(defaultValue);
+      }
     }
   }
 

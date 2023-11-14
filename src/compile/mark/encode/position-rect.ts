@@ -18,7 +18,7 @@ import * as log from '../../../log';
 import {BandSize, isRelativeBandSize} from '../../../mark';
 import {hasDiscreteDomain} from '../../../scale';
 import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkConfig, getMarkPropOrConfig, signalOrStringValue, signalOrValueRef} from '../../common';
+import {getMarkConfig, getMarkPropOrConfig, signalOrStringValue} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
@@ -158,18 +158,17 @@ function positionAndSize(
       : (orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x');
 
   // Use size encoding / mark property / config if it exists
-  let sizeMixins;
-  if (encoding.size || markDef.size) {
+  let sizeEncodingMixins;
+
+  if (encoding.size) {
     if (useVlSizeChannel) {
-      sizeMixins = nonPosition('size', model, {
-        vgChannel: vgSizeChannel,
-        defaultRef: signalOrValueRef(markDef.size)
+      sizeEncodingMixins = nonPosition('size', model, {
+        vgChannel: vgSizeChannel
       });
     } else {
       log.warn(log.message.cannotApplySizeToNonOrientedMark(markDef.type));
     }
   }
-  const hasSizeFromMarkOrEncoding = !!sizeMixins;
 
   // Otherwise, apply default value
   const bandSize = getBandSize({
@@ -181,7 +180,7 @@ function positionAndSize(
     useVlSizeChannel
   });
 
-  sizeMixins = sizeMixins || {
+  const sizeMixins = sizeEncodingMixins || {
     [vgSizeChannel]: defaultSizeRef(
       vgSizeChannel,
       offsetScaleName || scaleName,
@@ -203,7 +202,7 @@ function positionAndSize(
    */
 
   const defaultBandAlign =
-    (scale || offsetScale)?.get('type') === 'band' && isRelativeBandSize(bandSize) && !hasSizeFromMarkOrEncoding
+    (scale || offsetScale)?.get('type') === 'band' && isRelativeBandSize(bandSize) && !!sizeEncodingMixins
       ? 'top'
       : 'middle';
 

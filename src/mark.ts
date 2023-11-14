@@ -1,4 +1,14 @@
-import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
+import {
+  Align,
+  Color,
+  Gradient,
+  MarkConfig as VgMarkConfig,
+  Orientation,
+  SignalRef,
+  TextBaseline,
+  LinearGradient,
+  RadialGradient
+} from 'vega';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
 import {Flag, keys} from './util';
@@ -128,7 +138,7 @@ export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorM
 
 export interface MarkConfig<ES extends ExprRef | SignalRef>
   extends VLOnlyMarkConfig<ES>,
-    MapExcludeValueRefAndReplaceSignalWith<Omit<VgMarkConfig, 'tooltip' | 'fill' | 'stroke'>, ES> {
+    MapExcludeValueRefAndReplaceSignalWith<Omit<VgMarkConfig, 'tooltip' | 'fill' | 'stroke' | 'size'>, ES> {
   // ========== Overriding Vega ==========
 
   /**
@@ -147,7 +157,7 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
   /**
    * Default size for marks.
    * - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.
-   * - For `bar`, this represents the band size of the bar, in pixels.
+   * - For `bar`, this represents the band size of the bar, in pixels, or relative band size (e.g., `{"band": 0.5}` is half of the band).
    * - For `text`, this represents the font size, in pixels.
    *
    * __Default value:__
@@ -158,7 +168,7 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
    *
    * @minimum 0
    */
-  size?: number | ES; // size works beyond symbol marks in VL
+  size?: number | ES | RelativeBandSize; // Unlike in VG where size is only for symbol marks (point in VL), size works beyond symbol marks in VL
 
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
@@ -468,7 +478,9 @@ export interface RelativeBandSize {
   band: number;
 }
 
-export function isRelativeBandSize(o: number | RelativeBandSize | ExprRef | SignalRef): o is RelativeBandSize {
+export function isRelativeBandSize(
+  o: number | RelativeBandSize | ExprRef | SignalRef | string | LinearGradient | RadialGradient | number[]
+): o is RelativeBandSize {
   return o && o['band'] != undefined;
 }
 
