@@ -1,4 +1,4 @@
-import {Orientation} from 'vega';
+import {ExprRef, Orientation, SignalRef} from 'vega';
 import {isNumber, isObject} from 'vega-util';
 import {getMarkPropOrConfig} from '../compile/common';
 import {Config} from '../config';
@@ -31,9 +31,9 @@ type BoxPlotPart = (typeof BOXPLOT_PARTS)[number];
 
 export type BoxPlotPartsMixins = PartsMixins<BoxPlotPart>;
 
-export interface BoxPlotConfig extends BoxPlotPartsMixins {
+export interface BoxPlotConfig<ES extends ExprRef | SignalRef> extends BoxPlotPartsMixins {
   /** Size of the box and median tick of a box plot */
-  size?: number;
+  size?: number | ES;
 
   /**
    * The extent of the whiskers. Available options include:
@@ -45,8 +45,8 @@ export interface BoxPlotConfig extends BoxPlotPartsMixins {
   extent?: 'min-max' | number;
 }
 
-export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
-  BoxPlotConfig &
+export type BoxPlotDef<ES extends ExprRef | SignalRef> = GenericCompositeMarkDef<BoxPlot> &
+  BoxPlotConfig<ES> &
   MarkInvalidMixins & {
     /**
      * Type of the mark. For box plots, this should always be `"boxplot"`.
@@ -62,11 +62,11 @@ export type BoxPlotDef = GenericCompositeMarkDef<BoxPlot> &
     orient?: Orientation;
   };
 
-export interface BoxPlotConfigMixins {
+export interface BoxPlotConfigMixins<ES extends ExprRef | SignalRef> {
   /**
    * Box Config
    */
-  boxplot?: BoxPlotConfig;
+  boxplot?: BoxPlotConfig<ES>;
 }
 
 export const boxPlotNormalizer = new CompositeMarkNormalizer(BOXPLOT, normalizeBoxPlot);
@@ -79,8 +79,8 @@ export function getBoxPlotType(extent: number | 'min-max') {
   return extent;
 }
 
-export function normalizeBoxPlot(
-  spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
+export function normalizeBoxPlot<ES extends ExprRef | SignalRef>(
+  spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef<ES>>,
   {config}: NormalizerParams
 ): NormalizedLayerSpec {
   // Need to initEncoding first so we can infer type
@@ -89,7 +89,7 @@ export function normalizeBoxPlot(
     encoding: normalizeEncoding(spec.encoding, config)
   };
   const {mark, encoding: _encoding, params, projection: _p, ...outerSpec} = spec;
-  const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};
+  const markDef: BoxPlotDef<ES> = isMarkDef(mark) ? mark : {type: mark};
 
   // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
   if (params) {

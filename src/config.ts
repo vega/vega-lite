@@ -327,7 +327,7 @@ export const defaultConfig: Config<SignalRef> = {
   trail: {},
 
   boxplot: {
-    size: 14,
+    size: 1,
     extent: 1.5,
     box: {},
     median: {color: 'white'},
