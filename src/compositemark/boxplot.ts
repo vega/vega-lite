@@ -45,7 +45,7 @@ export interface BoxPlotConfig<ES extends ExprRef | SignalRef> extends BoxPlotPa
   extent?: 'min-max' | number;
 }
 
-export type BoxPlotDef<ES extends ExprRef | SignalRef> = GenericCompositeMarkDef<BoxPlot> &
+export type BoxPlotDef<ES extends SignalRef = SignalRef> = GenericCompositeMarkDef<BoxPlot> &
   BoxPlotConfig<ES> &
   MarkInvalidMixins & {
     /**
@@ -79,7 +79,7 @@ export function getBoxPlotType(extent: number | 'min-max') {
   return extent;
 }
 
-export function normalizeBoxPlot<ES extends ExprRef | SignalRef>(
+export function normalizeBoxPlot<ES extends SignalRef>(
   spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef<ES>>,
   {config}: NormalizerParams
 ): NormalizedLayerSpec {

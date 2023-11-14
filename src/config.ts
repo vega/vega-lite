@@ -245,11 +245,11 @@ export type StyleConfigIndex<ES extends ExprRef | SignalRef> = Partial<Record<st
     'group-subtitle'?: MarkConfig<ES>;
   };
 
-export interface Config<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
+export interface Config<ES extends SignalRef = SignalRef>
   extends TopLevelProperties<ES>,
     VLOnlyConfig<ES>,
     MarkConfigMixins<ES>,
-    CompositeMarkConfigMixins,
+    CompositeMarkConfigMixins<ES>,
     AxisConfigMixins<ES>,
     HeaderConfigMixins<ES>,
     CompositionConfigMixins {
@@ -327,7 +327,7 @@ export const defaultConfig: Config<SignalRef> = {
   trail: {},
 
   boxplot: {
-    size: 1,
+    size: {signal: "0.75 * bandwidth('x')"},
     extent: 1.5,
     box: {},
     median: {color: 'white'},

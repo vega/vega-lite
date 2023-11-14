@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {Field} from '../channeldef';
 import {Encoding} from '../encoding';
 import {NormalizerParams} from '../normalize';
@@ -72,11 +73,14 @@ export function getAllCompositeMarks() {
   return keys(compositeMarkRegistry);
 }
 
-export type CompositeMarkDef = BoxPlotDef | ErrorBarDef | ErrorBandDef;
+export type CompositeMarkDef<ES extends SignalRef = SignalRef> = BoxPlotDef<ES> | ErrorBarDef | ErrorBandDef;
 
 export type CompositeAggregate = BoxPlot | ErrorBar | ErrorBand;
 
-export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins, ErrorBandConfigMixins {}
+export interface CompositeMarkConfigMixins<ES extends SignalRef>
+  extends BoxPlotConfigMixins<ES>,
+    ErrorBarConfigMixins,
+    ErrorBandConfigMixins {}
 
 add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
 add(ERRORBAR, normalizeErrorBar, ERRORBAR_PARTS);
