@@ -50,7 +50,7 @@ export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'tra
 }
 
 export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' | 'arc' {
-  return ['rect', 'bar', 'image', 'arc' /* arc is rect/interval in polar coordinate */].includes(m);
+  return ['rect', 'bar', 'image', 'arc', 'tick' /* arc is rect/interval in polar coordinate */].includes(m);
 }
 
 export const PRIMITIVE_MARKS = new Set(keys(Mark));
@@ -284,17 +284,6 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
   outerRadius?: number | ES;
 }
 
-export interface RectBinSpacingMixins {
-  /**
-   * Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).
-   *
-   * __Default value:__ `1`
-   *
-   * @minimum 0
-   */
-  binSpacing?: number;
-}
-
 export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
 export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any> {
@@ -333,14 +322,23 @@ const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig<any>> = {
 
 export const VL_ONLY_MARK_CONFIG_PROPERTIES = keys(VL_ONLY_MARK_CONFIG_INDEX);
 
+const VL_ONLY_BAND_SIZE_CONFIG_MIXINS_INDEX: Flag<keyof BandSizeConfigMixins<any>> = {
+  binSpacing: 1,
+  continuousBandSize: 1,
+  discreteBandSize: 1,
+  minBandSize: 1
+};
+
+const VL_ONLY_BAND_SIZE_CONFIG_MIXINS_PROPS = keys(VL_ONLY_BAND_SIZE_CONFIG_MIXINS_INDEX);
+
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in Mark]?: (keyof Required<MarkConfigMixins<any>>[k])[];
 } = {
   area: ['line', 'point'],
-  bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
-  rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
+  bar: VL_ONLY_BAND_SIZE_CONFIG_MIXINS_PROPS,
+  rect: VL_ONLY_BAND_SIZE_CONFIG_MIXINS_PROPS,
   line: ['point'],
-  tick: ['bandSize', 'thickness']
+  tick: ['bandSize', 'thickness', ...VL_ONLY_BAND_SIZE_CONFIG_MIXINS_PROPS]
 };
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
@@ -427,7 +425,9 @@ const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
 
 export const MARK_CONFIGS = keys(MARK_CONFIG_INDEX);
 
-export interface RectConfig<ES extends ExprRef | SignalRef> extends RectBinSpacingMixins, MarkConfig<ES> {
+export type RectConfig<ES extends ExprRef | SignalRef> = MarkConfig<ES> & BandSizeConfigMixins<ES>;
+
+interface BandSizeConfigMixins<ES extends ExprRef | SignalRef> {
   /**
    * The default size of the bars on continuous scales.
    *
@@ -448,6 +448,15 @@ export interface RectConfig<ES extends ExprRef | SignalRef> extends RectBinSpaci
    * __Default value:__ `0.25`
    */
   minBandSize?: number | ES;
+
+  /**
+   * Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).
+   *
+   * __Default value:__ `1`
+   *
+   * @minimum 0
+   */
+  binSpacing?: number;
 }
 
 export type BandSize = number | RelativeBandSize | SignalRef;
@@ -667,7 +676,10 @@ export const defaultRectConfig: RectConfig<SignalRef> = {
   timeUnitBandPosition: 0.5
 };
 
-export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, TickThicknessMixins {
+export interface TickConfig<ES extends ExprRef | SignalRef>
+  extends MarkConfig<ES>,
+    TickThicknessMixins,
+    BandSizeConfigMixins<ES> {
   /**
    * The width of the ticks.
    *
@@ -678,7 +690,10 @@ export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<E
 }
 
 export const defaultTickConfig: TickConfig<SignalRef> = {
-  thickness: 1
+  thickness: 1,
+  discreteBandSize: {band: 0.75},
+  timeUnitBandPosition: 0.5,
+  timeUnitBandSize: 0.75
 };
 
 export function getMarkType(m: string | GenericMarkDef<any>) {

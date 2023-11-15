@@ -50,7 +50,9 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
 
   const offsetScaleChannel = getOffsetChannel(channel);
 
-  const isBarBand = mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal');
+  const isBandChannel =
+    (mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal')) ||
+    (mark === 'tick' && (channel === 'x' ? orient === 'horizontal' : orient === 'vertical'));
 
   // x, x2, and width -- we must specify two of these in all conditions
   if (
@@ -66,7 +68,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
       channel,
       model
     });
-  } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !channelDef2) {
+  } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBandChannel) && !channelDef2) {
     return positionAndSize(channelDef, channel, model);
   } else {
     return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
@@ -136,7 +138,7 @@ function positionAndSize(
   channel: 'x' | 'y' | 'theta' | 'radius',
   model: UnitModel
 ) {
-  const {markDef, encoding, config, stack} = model;
+  const {mark, markDef, encoding, config, stack} = model;
   const orient = markDef.orient;
 
   const scaleName = model.scaleName(channel);
@@ -149,7 +151,11 @@ function positionAndSize(
   const offsetScale = model.getScaleComponent(getOffsetScaleChannel(channel));
 
   // use "size" channel for bars, if there is orient and the channel matches the right orientation
-  const useVlSizeChannel = (orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x');
+  const useVlSizeChannel =
+    mark === 'tick'
+      ? // tick's orientation is opposite to other marks
+        (orient === 'vertical' && channel === 'y') || (orient === 'horizontal' && channel === 'x')
+      : (orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x');
 
   // Use size encoding / mark property / config if it exists
   let sizeMixins;
