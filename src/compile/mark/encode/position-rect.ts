@@ -203,7 +203,16 @@ function positionAndSize(
 
   const vgChannel = vgAlignedPositionChannel(channel, markDef, config, defaultBandAlign);
   const center = vgChannel === 'xc' || vgChannel === 'yc';
-  const {offset, offsetType} = positionOffset({channel, markDef, encoding, model, bandPosition: center ? 0.5 : 0});
+
+  const bandPosition = center
+    ? 0.5
+    : isSignalRef(bandSize)
+    ? {signal: `(1-${bandSize})/2`}
+    : isRelativeBandSize(bandSize)
+    ? (1 - bandSize.band) / 2
+    : 0;
+
+  const {offset, offsetType} = positionOffset({channel, markDef, encoding, model, bandPosition});
 
   const posRef = ref.midPointRefWithPositionInvalidTest({
     channel,
@@ -215,15 +224,7 @@ function positionAndSize(
     stack,
     offset,
     defaultRef: pointPositionDefaultRef({model, defaultPos: 'mid', channel, scaleName, scale}),
-    bandPosition: center
-      ? offsetType === 'encoding'
-        ? 0
-        : 0.5
-      : isSignalRef(bandSize)
-      ? {signal: `(1-${bandSize})/2`}
-      : isRelativeBandSize(bandSize)
-      ? (1 - bandSize.band) / 2
-      : 0
+    bandPosition: offsetType === 'encoding' ? 0 : bandPosition
   });
 
   if (vgSizeChannel) {
