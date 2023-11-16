@@ -43,6 +43,45 @@ describe('Mark: Bar', () => {
     expect(props.height).toBeUndefined();
   });
 
+  it('draws vertical grouped bar, with relative band size from config correctly applied for x/width', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'bar',
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        xOffset: {field: 'SubOrigin', type: 'nominal'},
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
+      },
+      config: {
+        bar: {discreteBandSize: {band: 0.5}}
+      }
+    });
+    const props = bar.encodeEntry(model);
+    expect(props.x).toEqual({scale: 'x', field: 'Origin', offset: {scale: 'xOffset', field: 'SubOrigin', band: 0.25}});
+    expect(props.width).toEqual({signal: `max(0.25, 0.5 * bandwidth('xOffset'))`});
+    expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+    expect(props.y2).toEqual({scale: 'y', value: 0});
+    expect(props.height).toBeUndefined();
+  });
+
+  it('draws vertical grouped bar, with relative band size correctly applied for x/width', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'bar', width: {band: 0.5}},
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        xOffset: {field: 'SubOrigin', type: 'nominal'},
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
+      }
+    });
+    const props = bar.encodeEntry(model);
+    expect(props.x).toEqual({scale: 'x', field: 'Origin', offset: {scale: 'xOffset', field: 'SubOrigin', band: 0.25}});
+    expect(props.width).toEqual({signal: `max(0.25, 0.5 * bandwidth('xOffset'))`});
+    expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+    expect(props.y2).toEqual({scale: 'y', value: 0});
+    expect(props.height).toBeUndefined();
+  });
+
   it('should draw horizontal bar, with y from zero to field value and bar with quantitative x, x2, and y', () => {
     const x: PositionFieldDef<string> = {field: 'q_start', type: 'quantitative'};
     const x2: SecondaryFieldDef<string> = {field: 'q_end'};
