@@ -64,8 +64,7 @@
           "x": {
             "scale": "x",
             "field": "category",
-            "offset": {"scale": "xOffset", "field": "group"},
-            "band": 0.25
+            "offset": {"scale": "xOffset", "field": "group", "band": 0.25}
           },
           "width": {"signal": "max(0.25, 0.5 * bandwidth('xOffset'))"},
           "y": {"scale": "y", "field": "value_end"},
