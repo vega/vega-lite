@@ -60,7 +60,7 @@
             "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "a", "band": 0.5},
-          "width": {"value": {"band": 0.5}},
+          "width": {"signal": "max(0.25, 0.5 * bandwidth('x'))"},
           "y": {"scale": "y", "field": "b_end"},
           "y2": {"scale": "y", "field": "b_start"}
         }

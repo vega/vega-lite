@@ -120,9 +120,9 @@
           "description": {
             "signal": "\"predicted: \" + (isValid(datum[\"predicted\"]) ? datum[\"predicted\"] : \"\"+datum[\"predicted\"]) + \"; actual: \" + (isValid(datum[\"actual\"]) ? datum[\"actual\"] : \"\"+datum[\"actual\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "predicted"},
+          "xc": {"scale": "x", "field": "predicted", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
-          "y": {"scale": "y", "field": "actual"},
+          "yc": {"scale": "y", "field": "actual", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

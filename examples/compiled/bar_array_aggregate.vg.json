@@ -57,7 +57,7 @@
           "description": {
             "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; Average of b: \" + (format(datum[\"average_b\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "a"},
+          "xc": {"scale": "x", "field": "a", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "average_b"},
           "y2": {"scale": "y", "value": 0}

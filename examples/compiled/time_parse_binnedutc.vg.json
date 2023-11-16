@@ -44,7 +44,7 @@
           },
           "x": {"field": {"group": "width"}},
           "x2": {"value": 0},
-          "y": {"scale": "y", "field": "date"},
+          "yc": {"scale": "y", "field": "date", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

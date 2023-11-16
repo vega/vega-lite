@@ -168,9 +168,9 @@
               "description": {
                 "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
               },
-              "x": {"scale": "child_x", "field": "a"},
+              "xc": {"scale": "child_x", "field": "a", "band": 0.5},
               "width": {"signal": "max(0.25, bandwidth('child_x'))"},
-              "y": {"scale": "child_y", "field": "b"},
+              "yc": {"scale": "child_y", "field": "b", "band": 0.5},
               "height": {"signal": "max(0.25, bandwidth('child_y'))"}
             }
           }

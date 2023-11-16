@@ -128,7 +128,7 @@
               },
               "x": {"scale": "concat_0_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_0_x", "field": "sum_people_start"},
-              "y": {"scale": "concat_0_y", "field": "age"},
+              "yc": {"scale": "concat_0_y", "field": "age", "band": 0.5},
               "height": {"signal": "max(0.25, bandwidth('concat_0_y'))"}
             }
           }
@@ -207,7 +207,7 @@
               },
               "x": {"scale": "concat_2_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_2_x", "field": "sum_people_start"},
-              "y": {"scale": "concat_2_y", "field": "age"},
+              "yc": {"scale": "concat_2_y", "field": "age", "band": 0.5},
               "height": {"signal": "max(0.25, bandwidth('concat_2_y'))"}
             }
           }

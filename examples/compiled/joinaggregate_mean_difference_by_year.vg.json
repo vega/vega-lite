@@ -83,7 +83,7 @@
           },
           "x": {"scale": "x", "field": "IMDB Rating_end"},
           "x2": {"scale": "x", "field": "IMDB Rating_start"},
-          "y": {"scale": "y", "field": "Title"},
+          "yc": {"scale": "y", "field": "Title", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }
@@ -103,7 +103,7 @@
           },
           "width": {"value": 1},
           "xc": {"scale": "x", "field": "AverageYearRating"},
-          "y": {"scale": "y", "field": "Title", "band": 0.125},
+          "yc": {"scale": "y", "field": "Title", "band": 0.5},
           "height": {"signal": "0.75 * bandwidth('y')"}
         }
       }

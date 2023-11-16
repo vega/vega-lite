@@ -44,7 +44,7 @@
           "description": {
             "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Distinct of Name: \" + (format(datum[\"distinct_Name\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "Origin"},
+          "xc": {"scale": "x", "field": "Origin", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "distinct_Name"},
           "y2": {"scale": "y", "value": 0}

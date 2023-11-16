@@ -62,7 +62,7 @@
       },
       "encode": {
         "update": {
-          "y": {"scale": "y", "field": "month_date"},
+          "yc": {"scale": "y", "field": "month_date", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"},
           "cornerRadiusTopRight": {"value": 8},
           "cornerRadiusBottomRight": {"value": 8},

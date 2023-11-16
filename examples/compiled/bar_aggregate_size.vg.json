@@ -46,7 +46,7 @@
           "description": {
             "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people\"], \"\"))"
           },
-          "xc": {"scale": "x", "field": "age", "band": 0.5},
+          "x": {"scale": "x", "field": "age"},
           "width": {"value": 10},
           "y": {"scale": "y", "field": "sum_people"},
           "y2": {"scale": "y", "value": 0}
