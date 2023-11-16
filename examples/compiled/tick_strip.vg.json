@@ -20,10 +20,7 @@
   ],
   "signals": [
     {"name": "y_step", "value": 20},
-    {
-      "name": "height",
-      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
-    }
+    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
   ],
   "marks": [
     {
@@ -39,10 +36,10 @@
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
           },
+          "width": {"value": 1},
           "xc": {"scale": "x", "field": "Horsepower"},
-          "yc": {"scale": "y", "field": "Cylinders"},
-          "height": {"value": 15},
-          "width": {"value": 1}
+          "y": {"scale": "y", "field": "Cylinders", "band": 0.125},
+          "height": {"signal": "0.75 * bandwidth('y')"}
         }
       }
     }
@@ -58,10 +55,11 @@
     },
     {
       "name": "y",
-      "type": "point",
+      "type": "band",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
       "range": {"step": {"signal": "y_step"}},
-      "padding": 0.5
+      "paddingInner": 0,
+      "paddingOuter": 0
     }
   ],
   "axes": [

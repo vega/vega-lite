@@ -437,10 +437,10 @@
               "description": {
                 "signal": "\"markers[0]: \" + (format(datum[\"markers.0\"], \"\"))"
               },
+              "width": {"value": 2},
               "xc": {"scale": "child_x", "field": "markers\\.0"},
               "yc": {"signal": "child_height", "mult": 0.5},
-              "height": {"value": 15},
-              "width": {"value": 2}
+              "height": {"mult": 0.75, "field": {"group": "height"}}
             }
           }
         }
