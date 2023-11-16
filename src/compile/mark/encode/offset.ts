@@ -26,7 +26,7 @@ export function positionOffset({
   markDef: MarkDef<Mark, SignalRef>;
   encoding?: Encoding<string>;
   model?: UnitModel;
-  bandPosition?: number;
+  bandPosition?: number | SignalRef;
 }): Offset {
   const channel = `${baseChannel}Offset` as
     | 'xOffset'
