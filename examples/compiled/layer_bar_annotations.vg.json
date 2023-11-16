@@ -78,7 +78,7 @@
           "description": {
             "signal": "\"Day: \" + (isValid(datum[\"Day\"]) ? datum[\"Day\"] : \"\"+datum[\"Day\"]) + \"; Value: \" + (format(datum[\"Value\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "Day"},
+          "xc": {"scale": "x", "field": "Day", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "Value_end"},
           "y2": {"scale": "y", "field": "Value_start"}
@@ -97,7 +97,7 @@
           "description": {
             "signal": "\"Day: \" + (isValid(datum[\"Day\"]) ? datum[\"Day\"] : \"\"+datum[\"Day\"]) + \"; PM2.5 Value: \" + (format(datum[\"baseline\"], \"\")) + \"; Value: \" + (format(datum[\"Value\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "Day"},
+          "xc": {"scale": "x", "field": "Day", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "baseline"},
           "y2": {"scale": "y", "field": "Value"}

@@ -87,7 +87,7 @@
             "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"min_people\"], \"\"))"
           },
           "height": {"value": 1},
-          "xc": {"scale": "x", "field": "age", "band": 0.5},
+          "x": {"scale": "x", "field": "age", "band": 0.125},
           "width": {"value": 5},
           "yc": {"scale": "y", "field": "min_people"}
         }
@@ -106,7 +106,7 @@
             "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"max_people\"], \"\"))"
           },
           "height": {"value": 1},
-          "xc": {"scale": "x", "field": "age", "band": 0.5},
+          "x": {"scale": "x", "field": "age", "band": 0.125},
           "width": {"value": 5},
           "yc": {"scale": "y", "field": "max_people"}
         }

@@ -52,7 +52,7 @@
           "description": {
             "signal": "\"variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; site: \" + (isValid(datum[\"site\"]) ? datum[\"site\"] : \"\"+datum[\"site\"])"
           },
-          "x": {"scale": "x", "field": "variety"},
+          "xc": {"scale": "x", "field": "variety", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "sum_yield_end"},
           "y2": {"scale": "y", "field": "sum_yield_start"}

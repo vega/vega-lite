@@ -296,7 +296,7 @@
           "description": {
             "signal": "\"date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of precipitation: \" + (format(datum[\"mean_precipitation\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "month_date"},
+          "xc": {"scale": "x", "field": "month_date", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "mean_precipitation"},
           "y2": {"scale": "y", "value": 0}

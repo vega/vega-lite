@@ -47,7 +47,7 @@
           },
           "x": {"scale": "x", "field": "start"},
           "x2": {"scale": "x", "field": "end"},
-          "y": {"scale": "y", "field": "task"},
+          "yc": {"scale": "y", "field": "task", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

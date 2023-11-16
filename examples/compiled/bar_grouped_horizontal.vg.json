@@ -63,10 +63,10 @@
           },
           "x": {"scale": "x", "field": "value_end"},
           "x2": {"scale": "x", "field": "value_start"},
-          "y": {
+          "yc": {
             "scale": "y",
             "field": "category",
-            "offset": {"scale": "yOffset", "field": "group"}
+            "offset": {"scale": "yOffset", "field": "group", "band": 0.5}
           },
           "height": {"signal": "max(0.25, bandwidth('yOffset'))"}
         }

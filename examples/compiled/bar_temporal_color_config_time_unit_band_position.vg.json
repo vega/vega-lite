@@ -59,7 +59,7 @@
           "description": {
             "signal": "\"symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; Sum of price: \" + (format(datum[\"sum_price\"], \"\")) + \"; date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
-          "x": {"scale": "x", "field": "symbol"},
+          "xc": {"scale": "x", "field": "symbol", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "sum_price_end"},
           "y2": {"scale": "y", "field": "sum_price_start"}

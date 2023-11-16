@@ -70,7 +70,7 @@
           },
           "x": {"scale": "x", "field": "count_end"},
           "x2": {"scale": "x", "field": "count_start"},
-          "y": {"scale": "y", "field": "name"},
+          "yc": {"scale": "y", "field": "name", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

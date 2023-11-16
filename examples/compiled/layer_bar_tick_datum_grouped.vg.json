@@ -48,10 +48,10 @@
           "description": {
             "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Mean of Acceleration: \" + (format(datum[\"mean_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
-          "x": {
+          "xc": {
             "scale": "x",
             "field": "Cylinders",
-            "offset": {"scale": "xOffset", "field": "Origin"}
+            "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
           },
           "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "y": {"scale": "y", "field": "mean_Acceleration"},
@@ -73,11 +73,10 @@
             "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
           "height": {"value": 1},
-          "x": {
+          "xc": {
             "scale": "x",
             "field": "Cylinders",
-            "offset": {"scale": "xOffset", "field": "Origin"},
-            "band": 0.125
+            "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
           },
           "width": {"signal": "0.75 * bandwidth('xOffset')"},
           "yc": {"scale": "y", "value": 10}

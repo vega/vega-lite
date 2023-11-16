@@ -52,7 +52,7 @@
           "description": {
             "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; mean_acc: \" + (format(datum[\"mean_acc\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "Cylinders"},
+          "xc": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "mean_acc_end"},
           "y2": {"scale": "y", "field": "mean_acc_start"}
