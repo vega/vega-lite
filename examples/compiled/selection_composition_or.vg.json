@@ -584,9 +584,9 @@
           "description": {
             "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "Cylinders"},
+          "xc": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
-          "y": {"scale": "y", "field": "Origin"},
+          "yc": {"scale": "y", "field": "Origin", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

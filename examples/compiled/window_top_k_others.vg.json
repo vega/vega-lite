@@ -77,7 +77,7 @@
           },
           "x": {"scale": "x", "field": "mean_aggregate_gross"},
           "x2": {"scale": "x", "value": 0},
-          "y": {"scale": "y", "field": "ranked_director"},
+          "yc": {"scale": "y", "field": "ranked_director", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

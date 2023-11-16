@@ -191,7 +191,7 @@
               },
               "x": {"scale": "x", "field": "p_end"},
               "x2": {"scale": "x", "field": "p_start"},
-              "y": {"scale": "y", "field": "c"},
+              "yc": {"scale": "y", "field": "c", "band": 0.5},
               "height": {"signal": "max(0.25, bandwidth('y'))"}
             }
           }

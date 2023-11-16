@@ -111,7 +111,7 @@ describe('Mark: Tick', () => {
     });
 
     it('should scale on y', () => {
-      expect(props.yc).toEqual({scale: Y, field: 'Cylinders'});
+      expect(props.y).toEqual({scale: Y, field: 'Cylinders', band: 0.125});
     });
 
     it('width should be tick thickness with default orient vertical', () => {
@@ -119,7 +119,7 @@ describe('Mark: Tick', () => {
     });
 
     it('height should be matched to field with default orient vertical', () => {
-      expect(props.height).toEqual({value: 15});
+      expect(props.height).toEqual({signal: "0.75 * bandwidth('y')"});
     });
   });
 

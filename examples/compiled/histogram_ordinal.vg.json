@@ -65,7 +65,7 @@
           "description": {
             "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "bin_maxbins_10_IMDB Rating_range"},
+          "xc": {"scale": "x", "field": "bin_maxbins_10_IMDB Rating_range"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}

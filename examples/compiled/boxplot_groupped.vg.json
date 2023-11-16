@@ -244,14 +244,14 @@
           "tooltip": {
             "signal": "{\"Max of Acceleration\": format(datum[\"max_Acceleration\"], \"\"), \"Q3 of Acceleration\": format(datum[\"upper_box_Acceleration\"], \"\"), \"Median of Acceleration\": format(datum[\"mid_box_Acceleration\"], \"\"), \"Q1 of Acceleration\": format(datum[\"lower_box_Acceleration\"], \"\"), \"Min of Acceleration\": format(datum[\"min_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
           },
+          "height": {"value": 1},
           "xc": {
             "scale": "x",
             "field": "Cylinders",
             "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
           },
-          "yc": {"scale": "y", "field": "mid_box_Acceleration"},
           "width": {"value": 14},
-          "height": {"value": 1}
+          "yc": {"scale": "y", "field": "mid_box_Acceleration"}
         }
       }
     }

@@ -39,10 +39,10 @@
           "description": {
             "signal": "\"Mean of data: \" + (format(datum[\"mean_data\"], \"\"))"
           },
+          "height": {"value": 1},
           "xc": {"signal": "width", "mult": 0.5},
-          "yc": {"scale": "y", "field": "mean_data"},
-          "width": {"value": 15},
-          "height": {"value": 1}
+          "width": {"mult": 0.75, "field": {"group": "width"}},
+          "yc": {"scale": "y", "field": "mean_data"}
         }
       }
     }

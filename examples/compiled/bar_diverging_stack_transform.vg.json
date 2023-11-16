@@ -311,7 +311,7 @@
           },
           "x": {"scale": "x", "field": "nx"},
           "x2": {"scale": "x", "field": "nx2"},
-          "y": {"scale": "y", "field": "question"},
+          "yc": {"scale": "y", "field": "question", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

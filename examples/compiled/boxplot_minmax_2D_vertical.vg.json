@@ -149,10 +149,10 @@
           "tooltip": {
             "signal": "{\"Max of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
           },
+          "height": {"value": 1},
           "xc": {"scale": "x", "field": "Species", "band": 0.5},
-          "yc": {"scale": "y", "field": "mid_box_Body Mass (g)"},
           "width": {"value": 14},
-          "height": {"value": 1}
+          "yc": {"scale": "y", "field": "mid_box_Body Mass (g)"}
         }
       }
     }

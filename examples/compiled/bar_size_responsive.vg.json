@@ -46,7 +46,7 @@
           "description": {
             "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Number of Cars: \" + (format(datum[\"__count\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "Origin"},
+          "xc": {"scale": "x", "field": "Origin", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}

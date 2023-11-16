@@ -84,10 +84,10 @@
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
           },
+          "width": {"value": 1},
           "xc": {"scale": "x", "field": "lower_yield"},
           "yc": {"scale": "y", "field": "variety", "band": 0.5},
-          "height": {"value": 15},
-          "width": {"value": 1}
+          "height": {"signal": "0.75 * bandwidth('y')"}
         }
       }
     },
@@ -104,10 +104,10 @@
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
           },
+          "width": {"value": 1},
           "xc": {"scale": "x", "field": "upper_yield"},
           "yc": {"scale": "y", "field": "variety", "band": 0.5},
-          "height": {"value": 15},
-          "width": {"value": 1}
+          "height": {"signal": "0.75 * bandwidth('y')"}
         }
       }
     },

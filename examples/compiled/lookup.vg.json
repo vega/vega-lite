@@ -56,7 +56,7 @@
           "description": {
             "signal": "\"group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"]) + \"; Mean of age: \" + (format(datum[\"mean_age\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "group"},
+          "xc": {"scale": "x", "field": "group", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "mean_age"},
           "y2": {"scale": "y", "value": 0}

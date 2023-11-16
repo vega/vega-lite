@@ -60,9 +60,9 @@
           "description": {
             "signal": "\"Day: \" + (timeFormat(datum[\"date_date\"], '%e')) + \"; Month: \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Max of temp_max: \" + (format(datum[\"max_temp_max\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "date_date"},
+          "xc": {"scale": "x", "field": "date_date", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
-          "y": {"scale": "y", "field": "month_date"},
+          "yc": {"scale": "y", "field": "month_date", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

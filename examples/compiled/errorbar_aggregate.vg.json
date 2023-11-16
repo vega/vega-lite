@@ -86,10 +86,10 @@
           "description": {
             "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"min_people\"], \"\"))"
           },
-          "xc": {"scale": "x", "field": "age", "band": 0.5},
-          "yc": {"scale": "y", "field": "min_people"},
+          "height": {"value": 1},
+          "x": {"scale": "x", "field": "age", "band": 0.125},
           "width": {"value": 5},
-          "height": {"value": 1}
+          "yc": {"scale": "y", "field": "min_people"}
         }
       }
     },
@@ -105,10 +105,10 @@
           "description": {
             "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"max_people\"], \"\"))"
           },
-          "xc": {"scale": "x", "field": "age", "band": 0.5},
-          "yc": {"scale": "y", "field": "max_people"},
+          "height": {"value": 1},
+          "x": {"scale": "x", "field": "age", "band": 0.125},
           "width": {"value": 5},
-          "height": {"value": 1}
+          "yc": {"scale": "y", "field": "max_people"}
         }
       }
     },

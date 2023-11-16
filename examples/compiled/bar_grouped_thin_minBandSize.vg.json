@@ -40,10 +40,10 @@
           "description": {
             "signal": "\"Director: \" + (isValid(datum[\"Director\"]) ? datum[\"Director\"] : \"\"+datum[\"Director\"]) + \"; Mean of Rotten Tomatoes Rating: \" + (format(datum[\"mean_Rotten Tomatoes Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
           },
-          "x": {
+          "xc": {
             "scale": "x",
             "field": "Director",
-            "offset": {"scale": "xOffset", "field": "Title"}
+            "offset": {"scale": "xOffset", "field": "Title", "band": 0.5}
           },
           "width": {"signal": "max(4, bandwidth('xOffset'))"},
           "y": [

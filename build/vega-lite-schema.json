@@ -676,9 +676,12 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativeBandSize"
             }
           ],
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels, or relative band size (e.g., `{\"band\": 0.5}` is half of the band).\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0
         },
         "smooth": {
@@ -3531,9 +3534,12 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativeBandSize"
             }
           ],
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels, or relative band size (e.g., `{\"band\": 0.5}` is half of the band).\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0
         },
         "smooth": {
@@ -15203,9 +15209,12 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativeBandSize"
             }
           ],
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels, or relative band size (e.g., `{\"band\": 0.5}` is half of the band).\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0
         },
         "smooth": {
@@ -16343,9 +16352,12 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativeBandSize"
             }
           ],
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels, or relative band size (e.g., `{\"band\": 0.5}` is half of the band).\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0
         },
         "smooth": {
@@ -17239,9 +17251,12 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativeBandSize"
             }
           ],
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels, or relative band size (e.g., `{\"band\": 0.5}` is half of the band).\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0
         },
         "smooth": {
@@ -18731,9 +18746,12 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativeBandSize"
             }
           ],
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels, or relative band size (e.g., `{\"band\": 0.5}` is half of the band).\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0
         },
         "smooth": {
@@ -21016,9 +21034,12 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativeBandSize"
             }
           ],
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels, or relative band size (e.g., `{\"band\": 0.5}` is half of the band).\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0
         },
         "smooth": {
@@ -27803,6 +27824,11 @@
           ],
           "description": "For text marks, the vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, `\"line-bottom\"`, or an expression reference that provides one of the valid values. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone.\n\nFor range marks, the vertical alignment of the marks. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Note:__ Expression reference is *not* supported for range marks."
         },
+        "binSpacing": {
+          "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
+          "minimum": 0,
+          "type": "number"
+        },
         "blend": {
           "anyOf": [
             {
@@ -27827,6 +27853,11 @@
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
+        },
+        "continuousBandSize": {
+          "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `5`",
+          "minimum": 0,
+          "type": "number"
         },
         "cornerRadius": {
           "anyOf": [
@@ -27915,6 +27946,18 @@
               "$ref": "#/definitions/ExprRef"
             }
           ]
+        },
+        "discreteBandSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RelativeBandSize"
+            }
+          ],
+          "description": "The default size of the bars with discrete dimensions. If unspecified, the default size is  `step-2`, which provides 2 pixel offset between bars.",
+          "minimum": 0
         },
         "dx": {
           "anyOf": [
@@ -28128,6 +28171,17 @@
             }
           ]
         },
+        "minBandSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The minimum band size for bar and rectangle marks. __Default value:__ `0.25`"
+        },
         "opacity": {
           "anyOf": [
             {
@@ -28224,9 +28278,12 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativeBandSize"
             }
           ],
-          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
+          "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels, or relative band size (e.g., `{\"band\": 0.5}` is half of the band).\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0
         },
         "smooth": {
