@@ -50,7 +50,7 @@
             "field": "argmax_US Gross[\"Production Budget\"]"
           },
           "x2": {"scale": "x", "value": 0},
-          "y": {"scale": "y", "field": "Major Genre"},
+          "yc": {"scale": "y", "field": "Major Genre", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

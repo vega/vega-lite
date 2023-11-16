@@ -43,10 +43,14 @@
           "description": {
             "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Total Gross: \" + (format(datum[\"sum_Worldwide Gross\"], \"\"))"
           },
-          "x": {
+          "xc": {
             "scale": "x",
             "field": "Major Genre",
-            "offset": {"scale": "xOffset", "value": "Worldwide Gross"}
+            "offset": {
+              "scale": "xOffset",
+              "value": "Worldwide Gross",
+              "band": 0.5
+            }
           },
           "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "y": [
@@ -72,10 +76,10 @@
           "description": {
             "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Total Gross: \" + (format(datum[\"sum_US Gross\"], \"\"))"
           },
-          "x": {
+          "xc": {
             "scale": "x",
             "field": "Major Genre",
-            "offset": {"scale": "xOffset", "value": "US Gross"}
+            "offset": {"scale": "xOffset", "value": "US Gross", "band": 0.5}
           },
           "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "y": [

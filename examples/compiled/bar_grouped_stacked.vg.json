@@ -61,10 +61,10 @@
           "description": {
             "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Sum of Weight_in_lbs: \" + (format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
-          "x": {
+          "xc": {
             "scale": "x",
             "field": "Cylinders",
-            "offset": {"scale": "xOffset", "field": "Origin"}
+            "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
           },
           "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "y": {"scale": "y", "field": "sum_Weight_in_lbs_end"},

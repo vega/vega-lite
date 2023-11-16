@@ -1,4 +1,14 @@
-import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
+import {
+  Align,
+  Color,
+  Gradient,
+  MarkConfig as VgMarkConfig,
+  Orientation,
+  SignalRef,
+  TextBaseline,
+  LinearGradient,
+  RadialGradient
+} from 'vega';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
 import {Flag, keys} from './util';
@@ -50,7 +60,7 @@ export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'tra
 }
 
 export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' | 'arc' {
-  return ['rect', 'bar', 'image', 'arc' /* arc is rect/interval in polar coordinate */].includes(m);
+  return ['rect', 'bar', 'image', 'arc', 'tick' /* arc is rect/interval in polar coordinate */].includes(m);
 }
 
 export const PRIMITIVE_MARKS = new Set(keys(Mark));
@@ -128,7 +138,7 @@ export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorM
 
 export interface MarkConfig<ES extends ExprRef | SignalRef>
   extends VLOnlyMarkConfig<ES>,
-    MapExcludeValueRefAndReplaceSignalWith<Omit<VgMarkConfig, 'tooltip' | 'fill' | 'stroke'>, ES> {
+    MapExcludeValueRefAndReplaceSignalWith<Omit<VgMarkConfig, 'tooltip' | 'fill' | 'stroke' | 'size'>, ES> {
   // ========== Overriding Vega ==========
 
   /**
@@ -147,7 +157,7 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
   /**
    * Default size for marks.
    * - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.
-   * - For `bar`, this represents the band size of the bar, in pixels.
+   * - For `bar`, this represents the band size of the bar, in pixels, or relative band size (e.g., `{"band": 0.5}` is half of the band).
    * - For `text`, this represents the font size, in pixels.
    *
    * __Default value:__
@@ -158,7 +168,7 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
    *
    * @minimum 0
    */
-  size?: number | ES; // size works beyond symbol marks in VL
+  size?: number | ES | RelativeBandSize; // Unlike in VG where size is only for symbol marks (point in VL), size works beyond symbol marks in VL
 
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
@@ -284,17 +294,6 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
   outerRadius?: number | ES;
 }
 
-export interface RectBinSpacingMixins {
-  /**
-   * Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).
-   *
-   * __Default value:__ `1`
-   *
-   * @minimum 0
-   */
-  binSpacing?: number;
-}
-
 export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
 export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any> {
@@ -333,14 +332,23 @@ const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig<any>> = {
 
 export const VL_ONLY_MARK_CONFIG_PROPERTIES = keys(VL_ONLY_MARK_CONFIG_INDEX);
 
+const VL_ONLY_BAND_SIZE_CONFIG_MIXINS_INDEX: Flag<keyof BandSizeConfigMixins<any>> = {
+  binSpacing: 1,
+  continuousBandSize: 1,
+  discreteBandSize: 1,
+  minBandSize: 1
+};
+
+const VL_ONLY_BAND_SIZE_CONFIG_MIXINS_PROPS = keys(VL_ONLY_BAND_SIZE_CONFIG_MIXINS_INDEX);
+
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in Mark]?: (keyof Required<MarkConfigMixins<any>>[k])[];
 } = {
   area: ['line', 'point'],
-  bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
-  rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
+  bar: VL_ONLY_BAND_SIZE_CONFIG_MIXINS_PROPS,
+  rect: VL_ONLY_BAND_SIZE_CONFIG_MIXINS_PROPS,
   line: ['point'],
-  tick: ['bandSize', 'thickness']
+  tick: ['bandSize', 'thickness', ...VL_ONLY_BAND_SIZE_CONFIG_MIXINS_PROPS]
 };
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
@@ -427,7 +435,9 @@ const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
 
 export const MARK_CONFIGS = keys(MARK_CONFIG_INDEX);
 
-export interface RectConfig<ES extends ExprRef | SignalRef> extends RectBinSpacingMixins, MarkConfig<ES> {
+export type RectConfig<ES extends ExprRef | SignalRef> = MarkConfig<ES> & BandSizeConfigMixins<ES>;
+
+interface BandSizeConfigMixins<ES extends ExprRef | SignalRef> {
   /**
    * The default size of the bars on continuous scales.
    *
@@ -448,6 +458,15 @@ export interface RectConfig<ES extends ExprRef | SignalRef> extends RectBinSpaci
    * __Default value:__ `0.25`
    */
   minBandSize?: number | ES;
+
+  /**
+   * Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).
+   *
+   * __Default value:__ `1`
+   *
+   * @minimum 0
+   */
+  binSpacing?: number;
 }
 
 export type BandSize = number | RelativeBandSize | SignalRef;
@@ -459,7 +478,9 @@ export interface RelativeBandSize {
   band: number;
 }
 
-export function isRelativeBandSize(o: number | RelativeBandSize | ExprRef | SignalRef): o is RelativeBandSize {
+export function isRelativeBandSize(
+  o: number | RelativeBandSize | ExprRef | SignalRef | string | LinearGradient | RadialGradient | number[]
+): o is RelativeBandSize {
   return o && o['band'] != undefined;
 }
 
@@ -667,7 +688,10 @@ export const defaultRectConfig: RectConfig<SignalRef> = {
   timeUnitBandPosition: 0.5
 };
 
-export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, TickThicknessMixins {
+export interface TickConfig<ES extends ExprRef | SignalRef>
+  extends MarkConfig<ES>,
+    TickThicknessMixins,
+    BandSizeConfigMixins<ES> {
   /**
    * The width of the ticks.
    *
@@ -678,7 +702,10 @@ export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<E
 }
 
 export const defaultTickConfig: TickConfig<SignalRef> = {
-  thickness: 1
+  thickness: 1,
+  discreteBandSize: {band: 0.75},
+  timeUnitBandPosition: 0.5,
+  timeUnitBandSize: 0.75
 };
 
 export function getMarkType(m: string | GenericMarkDef<any>) {

@@ -116,7 +116,7 @@
               "description": {
                 "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
               },
-              "x": {"scale": "x", "field": "age"},
+              "xc": {"scale": "x", "field": "age", "band": 0.5},
               "width": {"signal": "max(0.25, bandwidth('x'))"},
               "y": {"scale": "y", "field": "sum_people_end"},
               "y2": {"scale": "y", "field": "sum_people_start"}

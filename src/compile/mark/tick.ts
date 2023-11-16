@@ -1,7 +1,3 @@
-import type {SignalRef} from 'vega';
-import {isNumber} from 'vega-util';
-import {getViewConfigDiscreteStep} from '../../config';
-import {isVgRangeStep} from '../../vega.schema';
 import {getMarkPropOrConfig, signalOrValueRef} from '../common';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
@@ -14,10 +10,9 @@ export const tick: MarkCompiler = {
     const {config, markDef} = model;
     const orient = markDef.orient;
 
-    const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
     const vgThicknessChannel = orient === 'horizontal' ? 'height' : 'width';
 
-    return {
+    const baseAndThickness = {
       ...encode.baseEncodeEntry(model, {
         align: 'ignore',
         baseline: 'ignore',
@@ -26,40 +21,22 @@ export const tick: MarkCompiler = {
         size: 'ignore',
         theta: 'ignore'
       }),
-
-      ...encode.pointPosition('x', model, {defaultPos: 'mid', vgChannel: 'xc'}),
-      ...encode.pointPosition('y', model, {defaultPos: 'mid', vgChannel: 'yc'}),
-
-      // size / thickness => width / height
-      ...encode.nonPosition('size', model, {
-        defaultValue: defaultSize(model),
-        vgChannel: vgSizeChannel
-      }),
       [vgThicknessChannel]: signalOrValueRef(getMarkPropOrConfig('thickness', markDef, config))
     };
+
+    if (orient === 'horizontal') {
+      return {
+        ...baseAndThickness,
+        ...encode.rectPosition(model, 'x'),
+        ...encode.pointPosition('y', model, {defaultPos: 'mid', vgChannel: 'yc'})
+      };
+    } else {
+      // vertical
+      return {
+        ...baseAndThickness,
+        ...encode.pointPosition('x', model, {defaultPos: 'mid', vgChannel: 'xc'}),
+        ...encode.rectPosition(model, 'y')
+      };
+    }
   }
 };
-
-function defaultSize(model: UnitModel): number | SignalRef {
-  const {config, markDef} = model;
-  const {orient} = markDef;
-
-  const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
-  const scale = model.getScaleComponent(orient === 'horizontal' ? 'x' : 'y');
-
-  const markPropOrConfig =
-    getMarkPropOrConfig('size', markDef, config, {vgChannel: vgSizeChannel}) ?? config.tick.bandSize;
-
-  if (markPropOrConfig !== undefined) {
-    return markPropOrConfig;
-  } else {
-    const scaleRange = scale ? scale.get('range') : undefined;
-    if (scaleRange && isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
-      return (scaleRange.step * 3) / 4;
-    }
-
-    const defaultViewStep = getViewConfigDiscreteStep(config.view, vgSizeChannel);
-
-    return (defaultViewStep * 3) / 4;
-  }
-}

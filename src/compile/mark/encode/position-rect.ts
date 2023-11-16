@@ -18,7 +18,7 @@ import * as log from '../../../log';
 import {BandSize, isRelativeBandSize} from '../../../mark';
 import {hasDiscreteDomain} from '../../../scale';
 import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkConfig, getMarkPropOrConfig, signalOrStringValue, signalOrValueRef} from '../../common';
+import {getMarkConfig, getMarkPropOrConfig, signalOrStringValue} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
@@ -50,7 +50,9 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
 
   const offsetScaleChannel = getOffsetChannel(channel);
 
-  const isBarBand = mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal');
+  const isBandChannel =
+    (mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal')) ||
+    (mark === 'tick' && (channel === 'x' ? orient === 'horizontal' : orient === 'vertical'));
 
   // x, x2, and width -- we must specify two of these in all conditions
   if (
@@ -66,7 +68,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
       channel,
       model
     });
-  } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !channelDef2) {
+  } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBandChannel) && !channelDef2) {
     return positionAndSize(channelDef, channel, model);
   } else {
     return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
@@ -136,7 +138,7 @@ function positionAndSize(
   channel: 'x' | 'y' | 'theta' | 'radius',
   model: UnitModel
 ) {
-  const {markDef, encoding, config, stack} = model;
+  const {mark, markDef, encoding, config, stack} = model;
   const orient = markDef.orient;
 
   const scaleName = model.scaleName(channel);
@@ -149,21 +151,24 @@ function positionAndSize(
   const offsetScale = model.getScaleComponent(getOffsetScaleChannel(channel));
 
   // use "size" channel for bars, if there is orient and the channel matches the right orientation
-  const useVlSizeChannel = (orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x');
+  const useVlSizeChannel =
+    mark === 'tick'
+      ? // tick's orientation is opposite to other marks
+        (orient === 'vertical' && channel === 'y') || (orient === 'horizontal' && channel === 'x')
+      : (orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x');
 
   // Use size encoding / mark property / config if it exists
-  let sizeMixins;
-  if (encoding.size || markDef.size) {
+  let sizeEncodingMixins;
+
+  if (encoding.size) {
     if (useVlSizeChannel) {
-      sizeMixins = nonPosition('size', model, {
-        vgChannel: vgSizeChannel,
-        defaultRef: signalOrValueRef(markDef.size)
+      sizeEncodingMixins = nonPosition('size', model, {
+        vgChannel: vgSizeChannel
       });
     } else {
       log.warn(log.message.cannotApplySizeToNonOrientedMark(markDef.type));
     }
   }
-  const hasSizeFromMarkOrEncoding = !!sizeMixins;
 
   // Otherwise, apply default value
   const bandSize = getBandSize({
@@ -175,7 +180,7 @@ function positionAndSize(
     useVlSizeChannel
   });
 
-  sizeMixins = sizeMixins || {
+  const sizeMixins = sizeEncodingMixins || {
     [vgSizeChannel]: defaultSizeRef(
       vgSizeChannel,
       offsetScaleName || scaleName,
@@ -197,13 +202,22 @@ function positionAndSize(
    */
 
   const defaultBandAlign =
-    (scale || offsetScale)?.get('type') === 'band' && isRelativeBandSize(bandSize) && !hasSizeFromMarkOrEncoding
+    (scale || offsetScale)?.get('type') === 'band' && isRelativeBandSize(bandSize) && !!sizeEncodingMixins
       ? 'top'
       : 'middle';
 
   const vgChannel = vgAlignedPositionChannel(channel, markDef, config, defaultBandAlign);
   const center = vgChannel === 'xc' || vgChannel === 'yc';
-  const {offset, offsetType} = positionOffset({channel, markDef, encoding, model, bandPosition: center ? 0.5 : 0});
+
+  const bandPosition = center
+    ? 0.5
+    : isSignalRef(bandSize)
+    ? {signal: `(1-${bandSize})/2`}
+    : isRelativeBandSize(bandSize)
+    ? (1 - bandSize.band) / 2
+    : 0;
+
+  const {offset, offsetType} = positionOffset({channel, markDef, encoding, model, bandPosition});
 
   const posRef = ref.midPointRefWithPositionInvalidTest({
     channel,
@@ -215,15 +229,7 @@ function positionAndSize(
     stack,
     offset,
     defaultRef: pointPositionDefaultRef({model, defaultPos: 'mid', channel, scaleName, scale}),
-    bandPosition: center
-      ? offsetType === 'encoding'
-        ? 0
-        : 0.5
-      : isSignalRef(bandSize)
-      ? {signal: `(1-${bandSize})/2`}
-      : isRelativeBandSize(bandSize)
-      ? (1 - bandSize.band) / 2
-      : 0
+    bandPosition: offsetType === 'encoding' ? 0 : bandPosition
   });
 
   if (vgSizeChannel) {

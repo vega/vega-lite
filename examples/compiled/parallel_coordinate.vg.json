@@ -151,10 +151,10 @@
           "description": {
             "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
           },
+          "height": {"value": 1},
           "xc": {"scale": "x", "field": "key", "band": 0.5},
-          "yc": {"value": 0},
           "width": {"value": 8},
-          "height": {"value": 1}
+          "yc": {"value": 0}
         }
       }
     },
@@ -188,10 +188,10 @@
           "description": {
             "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
           },
+          "height": {"value": 1},
           "xc": {"scale": "x", "field": "key", "band": 0.5},
-          "yc": {"value": 150},
           "width": {"value": 8},
-          "height": {"value": 1}
+          "yc": {"value": 150}
         }
       }
     },
@@ -225,10 +225,10 @@
           "description": {
             "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
           },
+          "height": {"value": 1},
           "xc": {"scale": "x", "field": "key", "band": 0.5},
-          "yc": {"value": 300},
           "width": {"value": 8},
-          "height": {"value": 1}
+          "yc": {"value": 300}
         }
       }
     }

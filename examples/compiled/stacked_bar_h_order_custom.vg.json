@@ -59,7 +59,7 @@
           },
           "x": {"scale": "x", "field": "sum_yield_end"},
           "x2": {"scale": "x", "field": "sum_yield_start"},
-          "y": {"scale": "y", "field": "variety"},
+          "yc": {"scale": "y", "field": "variety", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

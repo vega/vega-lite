@@ -58,10 +58,10 @@
           "description": {
             "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
           },
-          "x": {
+          "xc": {
             "scale": "x",
             "field": "category",
-            "offset": {"scale": "xOffset", "field": "group"}
+            "offset": {"scale": "xOffset", "field": "group", "band": 0.5}
           },
           "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "y": {"scale": "y", "field": "value_end"},

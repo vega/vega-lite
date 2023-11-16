@@ -31,7 +31,10 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "update": "20 * domain('xOffset').length / (1-0.2)"},
+    {
+      "name": "x_step",
+      "update": "20 * bandspace(domain('xOffset').length, 0, 0) / (1-0.2)"
+    },
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.2, 0.2) * x_step"
@@ -51,14 +54,14 @@
           "description": {
             "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
           },
+          "height": {"value": 1},
           "xc": {
             "scale": "x",
             "field": "category",
-            "offset": {"scale": "xOffset", "field": "group"}
+            "offset": {"scale": "xOffset", "field": "group", "band": 0.5}
           },
-          "yc": {"scale": "y", "field": "value"},
-          "width": {"value": 15},
-          "height": {"value": 1}
+          "width": {"signal": "0.75 * bandwidth('xOffset')"},
+          "yc": {"scale": "y", "field": "value"}
         }
       }
     }
@@ -82,10 +85,9 @@
     },
     {
       "name": "xOffset",
-      "type": "point",
+      "type": "band",
       "domain": {"data": "data_0", "field": "group", "sort": true},
-      "range": {"step": 20},
-      "paddingOuter": 0.5
+      "range": {"step": 20}
     },
     {
       "name": "color",

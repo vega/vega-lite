@@ -68,7 +68,7 @@
           },
           "x": {"scale": "x", "field": "PercentOfTotal_end"},
           "x2": {"scale": "x", "field": "PercentOfTotal_start"},
-          "y": {"scale": "y", "field": "Activity"},
+          "yc": {"scale": "y", "field": "Activity", "band": 0.5},
           "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }

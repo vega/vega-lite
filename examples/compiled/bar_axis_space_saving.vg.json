@@ -42,7 +42,7 @@
           },
           "x": {"scale": "x", "field": "__count"},
           "x2": {"scale": "x", "value": 0},
-          "y": {"scale": "y", "field": "Origin", "offset": 5, "band": 0.25},
+          "yc": {"scale": "y", "field": "Origin", "offset": 5, "band": 0.5},
           "height": {"signal": "max(0.25, 0.5 * bandwidth('y'))"}
         }
       }

@@ -54,7 +54,7 @@
           "description": {
             "signal": "\"Month of the year: \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Weather type: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"])"
           },
-          "x": {"scale": "x", "field": "month_date"},
+          "xc": {"scale": "x", "field": "month_date", "band": 0.5},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "__count_end"},
           "y2": {"scale": "y", "field": "__count_start"}
