@@ -219,16 +219,16 @@ export function isSecondaryRangeChannel(c: ExtendedChannel): c is SecondaryRange
 export type MainChannelOf<C extends ExtendedChannel> = C extends 'x2'
   ? 'x'
   : C extends 'y2'
-  ? 'y'
-  : C extends 'latitude2'
-  ? 'latitude'
-  : C extends 'longitude2'
-  ? 'longitude'
-  : C extends 'theta2'
-  ? 'theta'
-  : C extends 'radius2'
-  ? 'radius'
-  : C;
+    ? 'y'
+    : C extends 'latitude2'
+      ? 'latitude'
+      : C extends 'longitude2'
+        ? 'longitude'
+        : C extends 'theta2'
+          ? 'theta'
+          : C extends 'radius2'
+            ? 'radius'
+            : C;
 
 /**
  * Get the main channel for a range channel. E.g. `x` for `x2`.
@@ -254,16 +254,16 @@ export function getMainRangeChannel<C extends ExtendedChannel>(channel: C): Main
 export type SecondaryChannelOf<C extends Channel> = C extends 'x'
   ? 'x2'
   : C extends 'y'
-  ? 'y2'
-  : C extends 'latitude'
-  ? 'latitude2'
-  : C extends 'longitude'
-  ? 'longitude2'
-  : C extends 'theta'
-  ? 'theta2'
-  : C extends 'radius'
-  ? 'radius2'
-  : undefined;
+    ? 'y2'
+    : C extends 'latitude'
+      ? 'latitude2'
+      : C extends 'longitude'
+        ? 'longitude2'
+        : C extends 'theta'
+          ? 'theta2'
+          : C extends 'radius'
+            ? 'radius2'
+            : undefined;
 
 export function getVgPositionChannel(channel: PolarPositionChannel | PositionChannel) {
   if (isPolarPositionChannel(channel)) {
