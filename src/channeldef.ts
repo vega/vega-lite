@@ -1097,10 +1097,10 @@ export function initFieldOrDatumDef(
     const guideType = isPositionFieldOrDatumDef(fd)
       ? 'axis'
       : isMarkPropFieldOrDatumDef(fd)
-      ? 'legend'
-      : isFacetFieldDef(fd)
-      ? 'header'
-      : null;
+        ? 'legend'
+        : isFacetFieldDef(fd)
+          ? 'header'
+          : null;
     if (guideType && fd[guideType]) {
       const {format, formatType, ...newGuide} = fd[guideType];
       if (isCustomFormatType(formatType) && !config.customFormatTypes) {
