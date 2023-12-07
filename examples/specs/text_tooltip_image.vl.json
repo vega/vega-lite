@@ -10,26 +10,17 @@
         "image": "data/ffox.png"
       },
       {
-        "image": "../data/gimp.png"
+        "image": "data/gimp.png"
       },
       {
-        "image": "../data/7zip.png"
+        "image": "data/7zip.png"
       }
     ]
   },
   "mark": "text",
   "encoding": {
-    "text": {
-      "field": "image"
-    },
-    "y": {
-      "field": "image",
-      "axis": null
-    },
-    "tooltip": [
-      {
-        "field": "image"
-      }
-    ]
+    "text": {"field": "image"},
+    "y": {"field": "image", "axis": null},
+    "tooltip": [{"field": "image"}]
   }
 }
