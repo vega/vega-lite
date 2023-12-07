@@ -157,8 +157,8 @@ const project: SelectionCompiler = {
             hasContinuousDomain(model.getScaleComponent(channel).get('type'))
               ? 'R'
               : fieldDef.bin
-              ? 'R-RE'
-              : 'E';
+                ? 'R-RE'
+                : 'E';
 
           const p: SelectionProjection = {field, channel, type: tplType, index: proj.items.length};
           p.signals = {...signalName(p, 'data'), ...signalName(p, 'visual')};
