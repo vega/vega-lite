@@ -1,20 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "view": {
-    "stroke": null
-  },
+   "view": {"stroke": null},
   "description": "A simple chart with an image tooltip.",
   "data": {
     "values": [
-      {
-        "image": "data/ffox.png"
-      },
-      {
-        "image": "data/gimp.png"
-      },
-      {
-        "image": "data/7zip.png"
-      }
+      {"image": "data/ffox.png"},
+      {"image": "data/gimp.png"},
+      {"image": "data/7zip.png"}
     ]
   },
   "mark": "text",
