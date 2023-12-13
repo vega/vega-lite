@@ -220,10 +220,10 @@ function positionAndSize(
         ? 0
         : 0.5
       : isSignalRef(bandSize)
-      ? {signal: `(1-${bandSize})/2`}
-      : isRelativeBandSize(bandSize)
-      ? (1 - bandSize.band) / 2
-      : 0
+        ? {signal: `(1-${bandSize})/2`}
+        : isRelativeBandSize(bandSize)
+          ? (1 - bandSize.band) / 2
+          : 0
   });
 
   if (vgSizeChannel) {
@@ -338,8 +338,8 @@ function rectBinPosition({
   const bandPositionForBandSize = isSignalRef(bandSize)
     ? {signal: `(1-${bandSize.signal})/2`}
     : isRelativeBandSize(bandSize)
-    ? (1 - bandSize.band) / 2
-    : 0.5;
+      ? (1 - bandSize.band) / 2
+      : 0.5;
 
   const bandPosition = getBandPosition({fieldDef, fieldDef2, markDef, config});
 

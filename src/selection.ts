@@ -222,8 +222,8 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
   value?: T extends 'point'
     ? SelectionInit | SelectionInitMapping[]
     : T extends 'interval'
-    ? SelectionInitIntervalMapping
-    : never;
+      ? SelectionInitIntervalMapping
+      : never;
 
   /**
    * When set, a selection is populated by input elements (also known as dynamic query widgets)
@@ -240,8 +240,8 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
   bind?: T extends 'point'
     ? Binding | Record<string, Binding> | LegendBinding
     : T extends 'interval'
-    ? 'scales'
-    : never;
+      ? 'scales'
+      : never;
 }
 
 export type TopLevelSelectionParameter = SelectionParameter & {

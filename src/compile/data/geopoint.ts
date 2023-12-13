@@ -35,10 +35,10 @@ export class GeoPointNode extends DataFlowNode {
         return isFieldDef(def)
           ? def.field
           : isDatumDef(def)
-          ? {expr: `${def.datum}`}
-          : isValueDef(def)
-          ? {expr: `${def['value']}`}
-          : undefined;
+            ? {expr: `${def.datum}`}
+            : isValueDef(def)
+              ? {expr: `${def['value']}`}
+              : undefined;
       }) as [GeoPositionChannel, GeoPositionChannel];
 
       const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';

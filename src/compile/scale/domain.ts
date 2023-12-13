@@ -10,7 +10,7 @@ import {
   SHARED_DOMAIN_OPS
 } from '../../aggregate';
 import {isBinning, isBinParams, isParameterExtent} from '../../bin';
-import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
+import {getSecondaryRangeChannel, isScaleChannel, isXorY, ScaleChannel} from '../../channel';
 import {
   binRequiresRange,
   getBandPosition,
@@ -356,7 +356,7 @@ function parseSingleChannelDomain(
       const data = model.requestDataName(DataSourceType.Main);
 
       const bandPosition = getBandPosition({fieldDef, fieldDef2, markDef, config});
-      const isRectWithOffset = isRectBasedMark(mark) && bandPosition !== 0.5;
+      const isRectWithOffset = isRectBasedMark(mark) && bandPosition !== 0.5 && isXorY(channel);
       return makeImplicit([
         {
           data,

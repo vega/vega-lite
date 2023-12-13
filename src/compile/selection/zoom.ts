@@ -93,19 +93,19 @@ function onDelta(
     !boundScales || !scaleCmpt
       ? 'zoomLinear'
       : scaleType === 'log'
-      ? 'zoomLog'
-      : scaleType === 'symlog'
-      ? 'zoomSymlog'
-      : scaleType === 'pow'
-      ? 'zoomPow'
-      : 'zoomLinear';
+        ? 'zoomLog'
+        : scaleType === 'symlog'
+          ? 'zoomSymlog'
+          : scaleType === 'pow'
+            ? 'zoomPow'
+            : 'zoomLinear';
   const arg = !boundScales
     ? ''
     : scaleType === 'pow'
-    ? `, ${scaleCmpt.get('exponent') ?? 1}`
-    : scaleType === 'symlog'
-    ? `, ${scaleCmpt.get('constant') ?? 1}`
-    : '';
+      ? `, ${scaleCmpt.get('exponent') ?? 1}`
+      : scaleType === 'symlog'
+        ? `, ${scaleCmpt.get('constant') ?? 1}`
+        : '';
   const update = `${zoomFn}(${base}, ${anchor}, ${delta}${arg})`;
 
   signal.on.push({

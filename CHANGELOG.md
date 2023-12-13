@@ -1,5 +1,19 @@
 
 
+## [5.16.3](https://github.com/vega/vega-lite/compare/v5.16.2...v5.16.3) (2023-11-10)
+
+
+### Bug Fixes
+
+* make isRectWithOffset check consistent ([#9169](https://github.com/vega/vega-lite/issues/9169)) ([3e0f312](https://github.com/vega/vega-lite/commit/3e0f312f2f7f4e9ab4bc9c6ef1323c573edd3de0))
+
+## [5.16.2](https://github.com/vega/vega-lite/compare/v5.16.1...v5.16.2) (2023-11-08)
+
+
+### Bug Fixes
+
+* **#9167:** make 1D bars respect orient for stack calculation ([#9168](https://github.com/vega/vega-lite/issues/9168)) ([432f354](https://github.com/vega/vega-lite/commit/432f3548323d72505f18e30e1e23d83718d3ad20)), closes [#9167](https://github.com/vega/vega-lite/issues/9167) [#9167](https://github.com/vega/vega-lite/issues/9167)
+
 ## [5.16.1](https://github.com/vega/vega-lite/compare/v5.16.0...v5.16.1) (2023-10-12)
 
 

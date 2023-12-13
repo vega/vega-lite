@@ -39,7 +39,9 @@
         "valid",
         "values",
         "variance",
-        "variancep"
+        "variancep",
+        "exponential",
+        "exponentialb"
       ],
       "type": "string"
     },
@@ -17882,7 +17884,9 @@
         "valid",
         "values",
         "variance",
-        "variancep"
+        "variancep",
+        "exponential",
+        "exponentialb"
       ],
       "type": "string"
     },

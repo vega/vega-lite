@@ -9,6 +9,8 @@ const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   average: 1,
   count: 1,
   distinct: 1,
+  exponential: 1,
+  exponentialb: 1,
   product: 1,
   max: 1,
   mean: 1,
