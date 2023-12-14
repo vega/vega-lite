@@ -108,7 +108,7 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
   return view;
 }
 
-function getSpec(el: d3.BaseType) {
+async function getSpec(el: d3.BaseType) {
   const sel = select(el);
   const name = sel.attr('data-name');
   const figureOnly = !!sel.attr('figure-only');
@@ -116,16 +116,12 @@ function getSpec(el: d3.BaseType) {
     const dir = sel.attr('data-dir');
     const fullUrl = `${BASEURL}/examples/${dir ? `${dir}/` : ''}${name}.vl.json`;
 
-    fetch(fullUrl)
-      .then(response => {
-        response
-          .text()
-          .then(spec => {
-            renderExample(sel, spec, figureOnly);
-          })
-          .catch(console.error);
-      })
-      .catch(console.error);
+    try {
+      const spec = await (await fetch(fullUrl)).text();
+      renderExample(sel, spec, figureOnly);
+    } catch (e) {
+      console.error(e);
+    }
   } else {
     console.error('No "data-name" specified to import examples from');
   }
