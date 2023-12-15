@@ -498,8 +498,8 @@ export interface DensityTransform {
   as?: [FieldName, FieldName];
   /**
    * Indicates how parameters for multiple densities should be resolved.
-   * If "independent", each density may have its own domain extent and dynamic number of curve sample steps.
-   * If "shared", the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.
+   * If `"independent"`, each density may have its own domain extent and dynamic number of curve sample steps.
+   * If `"shared"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.
    *
    * __Default value:__ `"independent"`
    */
