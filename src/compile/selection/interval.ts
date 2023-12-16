@@ -51,7 +51,10 @@ const interval: SelectionCompiler<'interval'> = {
           filters.push(filterExpr);
         }
       }
-      selCmpt.mark.cursor = 'move';
+      if (selCmpt.mark.cursor == null) {
+        selCmpt.mark.cursor = 'move';
+      }
+
     }
   },
 

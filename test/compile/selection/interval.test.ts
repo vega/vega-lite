@@ -836,6 +836,223 @@ describe('Interval Selections', () => {
         }
       ]);
     });
+
+    const brushSelCmpts = parseUnitSelection(model, [
+      {
+        name: 'crosshair',
+        select: {type: 'interval', clear: false, translate: true, zoom: false, mark: {cursor: 'crosshair'}}
+      },
+      {
+        name: 'disabled',
+        select: {type: 'interval', clear: false, translate: false, zoom: false}
+      }]
+    );
+
+    it('should not override manual cursor assignment', () => {
+      const nameModel = parseUnitModel({
+        mark: 'circle',
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'}
+        }
+      });
+      nameModel.parseScale();
+
+      const marks: any[] = [{hello: 'world'}];
+
+
+      expect(interval.marks(nameModel, brushSelCmpts['crosshair'], marks)).toEqual([
+        {
+          name: 'crosshair_brush_bg',
+          type: 'rect',
+          clip: true,
+          encode: {
+            enter: {fill: {value: '#333'}, fillOpacity: {value: 0.125}},
+            update: {
+              x: [
+                {
+                  test: 'data("crosshair_store").length && data("crosshair_store")[0].unit === ""',
+                  signal: 'crosshair_x[0]'
+                },
+                {value: 0}
+              ],
+              y: [
+                {
+                  test: 'data("crosshair_store").length && data("crosshair_store")[0].unit === ""',
+                  signal: 'crosshair_y[0]'
+                },
+                {value: 0}
+              ],
+              x2: [
+                {
+                  test: 'data("crosshair_store").length && data("crosshair_store")[0].unit === ""',
+                  signal: 'crosshair_x[1]'
+                },
+                {value: 0}
+              ],
+              y2: [
+                {
+                  test: 'data("crosshair_store").length && data("crosshair_store")[0].unit === ""',
+                  signal: 'crosshair_y[1]'
+                },
+                {value: 0}
+              ]
+            }
+          }
+        },
+        {hello: 'world'},
+        {
+          name: 'crosshair_brush',
+          type: 'rect',
+          clip: true,
+          encode: {
+            enter: {cursor: {value: 'crosshair'}, fill: {value: 'transparent'}},
+            update: {
+              x: [
+                {
+                  test: 'data("crosshair_store").length && data("crosshair_store")[0].unit === ""',
+                  signal: 'crosshair_x[0]'
+                },
+                {value: 0}
+              ],
+              y: [
+                {
+                  test: 'data("crosshair_store").length && data("crosshair_store")[0].unit === ""',
+                  signal: 'crosshair_y[0]'
+                },
+                {value: 0}
+              ],
+              x2: [
+                {
+                  test: 'data("crosshair_store").length && data("crosshair_store")[0].unit === ""',
+                  signal: 'crosshair_x[1]'
+                },
+                {value: 0}
+              ],
+              y2: [
+                {
+                  test: 'data("crosshair_store").length && data("crosshair_store")[0].unit === ""',
+                  signal: 'crosshair_y[1]'
+                },
+                {value: 0}
+              ],
+              stroke: [
+                {
+                  test: 'crosshair_x[0] !== crosshair_x[1] && crosshair_y[0] !== crosshair_y[1]',
+                  value: 'white'
+                },
+                {value: null}
+              ]
+            }
+          }
+        }
+      ])
+    });
+
+    it('should not change brush cursor when translate is set to "false"', () => {
+      const nameModel = parseUnitModel({
+        mark: 'circle',
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'}
+        }
+      });
+      nameModel.parseScale();
+      const marks: any[] = [{hello: 'world'}];
+
+      expect(interval.marks(model, brushSelCmpts['disabled'], marks)).toEqual([
+        {
+          name: 'disabled_brush_bg',
+          type: 'rect',
+          clip: true,
+          encode: {
+            enter: {
+              fill: {value: '#333'},
+              fillOpacity: {value: 0.125}
+            },
+            update: {
+              x: [
+                {
+                  test: 'data("disabled_store").length && data("disabled_store")[0].unit === ""',
+                  signal: 'disabled_x[0]'
+                },
+                {value: 0}
+              ],
+              y: [
+                {
+                  test: 'data("disabled_store").length && data("disabled_store")[0].unit === ""',
+                  signal: 'disabled_y[0]'
+                },
+                {value: 0}
+              ],
+              x2: [
+                {
+                  test: 'data("disabled_store").length && data("disabled_store")[0].unit === ""',
+                  signal: 'disabled_x[1]'
+                },
+                {value: 0}
+              ],
+              y2: [
+                {
+                  test: 'data("disabled_store").length && data("disabled_store")[0].unit === ""',
+                  signal: 'disabled_y[1]'
+                },
+                {value: 0}
+              ],
+
+            }
+          }
+        },
+        {hello: 'world'},
+        {
+          name: 'disabled_brush',
+          type: 'rect',
+          clip: true,
+          encode: {
+            enter: {
+              fill: {value: 'transparent'}
+            },
+            update: {
+              x: [
+                {
+                  test: 'data("disabled_store").length && data("disabled_store")[0].unit === ""',
+                  signal: 'disabled_x[0]'
+                },
+                {value: 0}
+              ],
+              y: [
+                {
+                  test: 'data("disabled_store").length && data("disabled_store")[0].unit === ""',
+                  signal: 'disabled_y[0]'
+                },
+                {value: 0}
+              ],
+              x2: [
+                {
+                  test: 'data("disabled_store").length && data("disabled_store")[0].unit === ""',
+                  signal: 'disabled_x[1]'
+                },
+                {value: 0}
+              ],
+              y2: [
+                {
+                  test: 'data("disabled_store").length && data("disabled_store")[0].unit === ""',
+                  signal: 'disabled_y[1]'
+                },
+                {value: 0}
+              ],
+              stroke: [
+                {
+                  test: 'disabled_x[0] !== disabled_x[1] && disabled_y[0] !== disabled_y[1]',
+                  value: 'white'
+                },
+                {value: null}
+              ]
+            }
+          }
+        }
+      ]);
+    });
   });
 
   describe('Geo intervals', () => {
