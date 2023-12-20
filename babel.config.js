@@ -10,6 +10,5 @@ module.exports = {
       }
     ],
     '@babel/preset-typescript'
-  ],
-  plugins: ['@babel/proposal-class-properties']
+  ]
 };
