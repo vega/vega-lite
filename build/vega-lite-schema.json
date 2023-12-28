@@ -8144,7 +8144,7 @@
           "type": "number"
         },
         "resolve": {
-          "description": "Indicates how parameters for multiple densities should be resolved. If \"independent\", each density may have its own domain extent and dynamic number of curve sample steps. If \"shared\", the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`",
+          "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`",
           "enum": [
             "independent",
             "shared"
