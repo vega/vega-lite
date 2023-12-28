@@ -25,7 +25,7 @@
           "counts": true,
           "steps": 200,
           "as": ["value", "density"],
-          "resolve": "shared"
+          "resolve": "independent"
         },
         {
           "type": "impute",

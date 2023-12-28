@@ -16,7 +16,7 @@
           "field": "IMDB Rating",
           "bandwidth": 0.3,
           "as": ["value", "density"],
-          "resolve": "shared"
+          "resolve": "independent"
         },
         {
           "type": "impute",
