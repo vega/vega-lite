@@ -27,7 +27,7 @@ describe('compile/data/fold', () => {
         extent: [0, 10],
         minsteps: 25,
         maxsteps: 200,
-        resolve: 'independent',
+        resolve: 'shared',
         as: ['x', 'y']
       });
     });
@@ -41,7 +41,7 @@ describe('compile/data/fold', () => {
       expect(density.assemble()).toEqual({
         type: 'kde',
         field: 'v',
-        resolve: 'independent',
+        resolve: 'shared',
         as: ['value', 'density']
       });
     });
@@ -55,7 +55,7 @@ describe('compile/data/fold', () => {
       expect(density.assemble()).toEqual({
         type: 'kde',
         field: 'v',
-        resolve: 'independent',
+        resolve: 'shared',
         as: ['A', 'density']
       });
     });
@@ -122,7 +122,7 @@ describe('compile/data/fold', () => {
         as: ['A', 'B']
       };
       const density = new DensityTransformNode(null, transform);
-      expect(density.hash()).toBe('DensityTransform {"as":["A","B"],"density":"v","resolve":"independent"}');
+      expect(density.hash()).toBe('DensityTransform {"as":["A","B"],"density":"v","resolve":"shared"}');
     });
   });
 

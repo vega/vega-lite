@@ -501,7 +501,7 @@ export interface DensityTransform {
    * If `"independent"`, each density may have its own domain extent and dynamic number of curve sample steps.
    * If `"shared"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.
    *
-   * __Default value:__ `"independent"`
+   * __Default value:__ `"shared"`
    */
   resolve?: 'independent' | 'shared';
 }
