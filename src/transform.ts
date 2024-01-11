@@ -112,6 +112,11 @@ export interface AggregatedFieldDef {
   field?: FieldName;
 
   /**
+   * A parameter that can be passed to aggregation functions. The aggregation operation `"exponential"` requires it.
+   */
+  aggregate_param?: number;
+
+  /**
    * The output field names to use for each aggregated field.
    */
   as: FieldName;

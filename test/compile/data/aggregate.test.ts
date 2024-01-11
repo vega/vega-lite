@@ -49,9 +49,9 @@ describe('compile/data/aggregate', () => {
 
       const agg = AggregateNode.makeFromEncoding(null, model);
       expect(agg.hash()).toBe(
-        `Aggregate {"dimensions":"Set(\\"Origin\\")","measures":{"*":{"count":"Set(\\"${internalField(
+        `Aggregate {"dimensions":"Set(\\"Origin\\")","measures":{"*":{"count":{"aliases":"Set(\\"${internalField(
           'count'
-        )}\\")"},"Acceleration":{"sum":"Set(\\"sum_Acceleration\\")"}}}`
+        )}\\")"}},"Acceleration":{"sum":{"aliases":"Set(\\"sum_Acceleration\\")"}}}}`
       );
     });
   });
@@ -309,6 +309,26 @@ describe('compile/data/aggregate', () => {
         as: ['Displacement_mean', 'Displacement_max', 'Acceleration_sum']
       });
     });
+
+    it('should produce the correct summary component from transform array with aggregation_params', () => {
+      const t: AggregateTransform = {
+        aggregate: [
+          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'},
+          {op: 'exponential', field: 'Displacement', as: 'Displacement_exponential', aggregate_param: 0.3}
+        ],
+        groupby: ['Group']
+      };
+
+      const agg = AggregateNode.makeFromTransform(null, t);
+      expect(agg.assemble()).toEqual({
+        type: 'aggregate',
+        groupby: ['Group'],
+        ops: ['sum', 'exponential'],
+        fields: ['Acceleration', 'Displacement'],
+        as: ['Acceleration_sum', 'Displacement_exponential'],
+        aggregate_params: [null, 0.3]
+      });
+    });
   });
 
   describe('producedFields', () => {
@@ -336,8 +356,8 @@ describe('compile/data/aggregate', () => {
     });
     it('should merge AggregateNodes with same dimensions', () => {
       const parent = new PlaceholderDataFlowNode(null);
-      const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {a: {mean: new Set(['a_mean'])}});
-      const agg2 = new AggregateNode(parent, new Set(['a', 'b']), {b: {mean: new Set(['b_mean'])}});
+      const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {a: {mean: {aliases: new Set(['a_mean'])}}});
+      const agg2 = new AggregateNode(parent, new Set(['a', 'b']), {b: {mean: {aliases: new Set(['b_mean'])}}});
 
       expect(agg1.merge(agg2)).toBe(true);
       expect(agg1.producedFields()).toEqual(new Set(['a_mean', 'b_mean']));
@@ -346,7 +366,9 @@ describe('compile/data/aggregate', () => {
 
   describe('assemble()', () => {
     it('should escape nested accesses', () => {
-      const agg = new AggregateNode(null, new Set(['foo.bar']), {'foo.baz': {mean: new Set(['foo_baz_mean'])}});
+      const agg = new AggregateNode(null, new Set(['foo.bar']), {
+        'foo.baz': {mean: {aliases: new Set(['foo_baz_mean'])}}
+      });
       expect(agg.assemble()).toEqual({
         as: ['foo_baz_mean'],
         fields: ['foo\\.baz'],
