@@ -86,7 +86,7 @@ An `aggregate` transform in the [`transform`](transform.html) array has the foll
 
 ### Aggregated Field Definition for Aggregate Transform
 
-{% include table.html props="op,field,as" source="AggregatedFieldDef" %}
+{% include table.html props="op,field,as,aggregate_param" source="AggregatedFieldDef" %}
 
 Note: It is important you [`parse`](data.html#format) your data types explicitly, especially if you are likely to have `null` values in your dataset and automatic type inference will fail.
 
@@ -121,6 +121,7 @@ The supported **aggregation operations** are:
 | max | The maximum field value. |
 | argmin | An input data object containing the minimum field value. <br/> **Note:** When used inside encoding, `argmin` must be specified as an object. (See below for an example.) |
 | argmax | An input data object containing the maximum field value. <br/> **Note:** When used inside encoding, `argmax` must be specified as an object. (See below for an example.) |
+| exponential | The exponential moving average of field values. Set the required weight (a number between `0` and `1`) with [`aggregate_param`](#aggregate-op-def). <br/> **Note:** Cannot be used inside encoding. |
 
 {:#argmax}
 

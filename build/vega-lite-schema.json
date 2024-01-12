@@ -71,6 +71,10 @@
     "AggregatedFieldDef": {
       "additionalProperties": false,
       "properties": {
+        "aggregate_param": {
+          "description": "A parameter that can be passed to aggregation functions. The aggregation operation `\"exponential\"` requires it.",
+          "type": "number"
+        },
         "as": {
           "$ref": "#/definitions/FieldName",
           "description": "The output field names to use for each aggregated field."
