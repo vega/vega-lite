@@ -103,7 +103,7 @@
           },
           "xc": {"scale": "x", "field": "AverageYearRating"},
           "yc": {"scale": "y", "field": "Title", "band": 0.5},
-          "height": {"value": 15},
+          "height": {"scale": "y", "band": 1},
           "width": {"value": 1}
         }
       }
