@@ -83,6 +83,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 
 ## Tools that use Vega-Lite
 
+- [prolly-yes.com](https://prolly-yes.com) An online graphical interface for probability and statistics. Leverages Vega to create beautiful and intuitive visualizations.
 - [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
 - <span class="octicon octicon-star"></span> [PdVega](https://altair-viz.github.io/pdvega/), lets you create interactive Vega-Lite plots for Pandas. Uses [ipyvega](https://github.com/vega/ipyvega).
 - [Turi Create](https://github.com/apple/turicreate) Apple's tool to simplify the development of custom machine learning models.
