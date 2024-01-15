@@ -83,7 +83,6 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 
 ## Tools that use Vega-Lite
 
-- [prolly-yes.com](https://prolly-yes.com) An online graphical interface for probability and statistics. Leverages Vega to create beautiful and intuitive visualizations.
 - [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
 - <span class="octicon octicon-star"></span> [PdVega](https://altair-viz.github.io/pdvega/), lets you create interactive Vega-Lite plots for Pandas. Uses [ipyvega](https://github.com/vega/ipyvega).
 - [Turi Create](https://github.com/apple/turicreate) Apple's tool to simplify the development of custom machine learning models.
@@ -107,7 +106,8 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [MarkText](https://github.com/marktext/marktext): An open-source markdown editor that supports Vega-Lite.
 - [Scalene](https://github.com/plasma-umass/scalene): A CPU+GPU+memory profiler for Python.
 - [CSrankings](https://csrankings.org): a metrics-based ranking of top computer science institutions around the world.
-
+- [prolly-yes.com](https://probability.prolly-yes.com) An online graphical interface for probability distributions. Leverages Vega to create beautiful and intuitive visualizations.
+- 
 ## Tools for Embedding Vega-Lite Visualizations
 
 - <span class="octicon octicon-star"></span> [Vega-Embed](https://github.com/vega/vega-embed), a convenience wrapper for Vega and Vega-Lite.
