@@ -22,8 +22,24 @@
           "as": ["yearweek_Year", "yearweek_Year_end"]
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('date', datum['yearweek_Year'], -7) + 0.5 * datum['yearweek_Year']",
+          "as": "yearweek_Year_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['yearweek_Year'] + 0.5 * datum['yearweek_Year_end']",
+          "as": "yearweek_Year_offsetted_rect_end"
+        },
+        {
           "type": "aggregate",
-          "groupby": ["yearweek_Year", "yearweek_Year_end", "Origin"],
+          "groupby": [
+            "yearweek_Year",
+            "yearweek_Year_end",
+            "yearweek_Year_offsetted_rect_start",
+            "yearweek_Year_offsetted_rect_end",
+            "Origin"
+          ],
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
@@ -66,7 +82,10 @@
       "type": "time",
       "domain": {
         "data": "source_0",
-        "fields": ["yearweek_Year", "yearweek_Year_end"]
+        "fields": [
+          "yearweek_Year_offsetted_rect_start",
+          "yearweek_Year_offsetted_rect_end"
+        ]
       },
       "range": [0, {"signal": "width"}]
     },
@@ -84,10 +103,10 @@
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
       "range": [
         {
-          "signal": "0.1 * (scale('x', datetime(2001, 0, 8, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+          "signal": "-0.4 * (scale('x', datetime(2001, 0, 8, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
         },
         {
-          "signal": "0.9 * (scale('x', datetime(2001, 0, 8, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+          "signal": "0.4 * (scale('x', datetime(2001, 0, 8, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
         }
       ]
     },

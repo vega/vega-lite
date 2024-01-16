@@ -41,8 +41,23 @@
           "as": ["minutes_step_5_date", "minutes_step_5_date_end"]
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('minutes', datum['minutes_step_5_date'], -5) + 0.5 * datum['minutes_step_5_date']",
+          "as": "minutes_step_5_date_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['minutes_step_5_date'] + 0.5 * datum['minutes_step_5_date_end']",
+          "as": "minutes_step_5_date_offsetted_rect_end"
+        },
+        {
           "type": "aggregate",
-          "groupby": ["minutes_step_5_date", "minutes_step_5_date_end"],
+          "groupby": [
+            "minutes_step_5_date",
+            "minutes_step_5_date_end",
+            "minutes_step_5_date_offsetted_rect_start",
+            "minutes_step_5_date_offsetted_rect_end"
+          ],
           "ops": ["sum"],
           "fields": ["distance"],
           "as": ["sum_distance"]
@@ -69,14 +84,14 @@
           },
           "x2": {
             "scale": "x",
-            "field": "minutes_step_5_date",
+            "field": "minutes_step_5_date_offsetted_rect_start",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"minutes_step_5_date_end\"]) - scale(\"x\", datum[\"minutes_step_5_date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"minutes_step_5_date_end\"]) - scale(\"x\", datum[\"minutes_step_5_date\"])))) : 0.5)"
             }
           },
           "x": {
             "scale": "x",
-            "field": "minutes_step_5_date_end",
+            "field": "minutes_step_5_date_offsetted_rect_end",
             "offset": {
               "signal": "0.5 + (abs(scale(\"x\", datum[\"minutes_step_5_date_end\"]) - scale(\"x\", datum[\"minutes_step_5_date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"minutes_step_5_date_end\"]) - scale(\"x\", datum[\"minutes_step_5_date\"])))) : -0.5)"
             }
@@ -93,7 +108,10 @@
       "type": "time",
       "domain": {
         "data": "data_0",
-        "fields": ["minutes_step_5_date", "minutes_step_5_date_end"]
+        "fields": [
+          "minutes_step_5_date_offsetted_rect_start",
+          "minutes_step_5_date_offsetted_rect_end"
+        ]
       },
       "range": [0, {"signal": "width"}]
     },

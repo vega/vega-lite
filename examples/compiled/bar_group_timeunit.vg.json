@@ -18,8 +18,24 @@
           "as": ["year_Year", "year_Year_end"]
         },
         {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('year', datum['year_Year'], -1) + 0.5 * datum['year_Year']",
+          "as": "year_Year_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['year_Year'] + 0.5 * datum['year_Year_end']",
+          "as": "year_Year_offsetted_rect_end"
+        },
+        {
           "type": "aggregate",
-          "groupby": ["year_Year", "year_Year_end", "Origin"],
+          "groupby": [
+            "year_Year",
+            "year_Year_end",
+            "year_Year_offsetted_rect_start",
+            "year_Year_offsetted_rect_end",
+            "Origin"
+          ],
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
@@ -60,7 +76,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "fields": ["year_Year", "year_Year_end"]},
+      "domain": {
+        "data": "source_0",
+        "fields": [
+          "year_Year_offsetted_rect_start",
+          "year_Year_offsetted_rect_end"
+        ]
+      },
       "range": [0, {"signal": "width"}]
     },
     {
@@ -77,10 +99,10 @@
       "domain": {"data": "source_0", "field": "Origin", "sort": true},
       "range": [
         {
-          "signal": "0.1 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+          "signal": "-0.4 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
         },
         {
-          "signal": "0.9 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+          "signal": "0.4 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
         }
       ]
     },
