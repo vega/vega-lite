@@ -8,7 +8,7 @@
 
 You can find more details, [documentation](https://vega.github.io/vega-lite/docs/), [examples](https://vega.github.io/vega-lite/examples/), [usage instructions](https://vega.github.io/vega-lite/usage/embed.html), and [tutorials](https://vega.github.io/vega-lite/tutorials/getting_started.html) on the [Vega-Lite website](https://vega.github.io/vega-lite/).
 
-Try using Vega-Lite in the online [Vega Editor](https://vega.github.io/editor/#/custom/vega-lite).
+Try using Vega-Lite in the online [Vega Editor](https://vega.github.io/editor/#/examples/vega-lite/bar).
 
 Contributions are also welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines and our [Code of Conduct](https://vega.github.io/vega/about/code-of-conduct/).
 
