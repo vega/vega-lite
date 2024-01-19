@@ -207,8 +207,6 @@ Continuous scales map a continuous domain (numbers or dates) to a continuous out
 
 By default, Vega-Lite uses `"linear"` scales for quantitative fields and uses `"time"` scales for temporal fields for all [encoding channels](encoding.html#channel).
 
-Note that for Vega-Lite ≥ 5.0, Sequential scales ([`"sequential"`](https://vega.github.io/vega/docs/scales/#sequential)) are deprecated: specifications should now use a linear (or log, etc.) scale with a color-valued range, rather than a sequential scale.
-
 In addition to [`type`](#type), [`domain`](#domain), and [`range`](#range), continuous scales support the following properties:
 
 {% include table.html props="clamp,interpolate,nice,padding,zero" source="Scale" %}

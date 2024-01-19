@@ -82,6 +82,9 @@ export function selectionNotFound(name: string) {
 export const SCALE_BINDINGS_CONTINUOUS =
   'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
 
+export const SEQUENTIAL_SCALE_DEPRECATED =
+  'Sequntial scales are deprecated. The available quantitative scale type values are linear, log, pow, sqrt, symlog, time and utc';
+
 export const LEGEND_BINDINGS_MUST_HAVE_PROJECTION =
   'Legend bindings are only supported for selections over an individual field or encoding channel.';
 export function cannotLookupVariableParameter(name: string) {
@@ -179,9 +182,8 @@ export function missingFieldType(channel: Channel, newType: Type) {
 }
 export function droppingColor(type: 'encoding' | 'property', opt: {fill?: boolean; stroke?: boolean}) {
   const {fill, stroke} = opt;
-  return `Dropping color ${type} as the plot also has ${
-    fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'
-  }.`;
+  return `Dropping color ${type} as the plot also has ${fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'
+    }.`;
 }
 
 export function relativeBandSizeNotSupported(sizeChannel: 'width' | 'height') {
@@ -226,9 +228,8 @@ export function facetChannelDropped(channels: FacetChannel[]) {
 }
 
 export function discreteChannelCannotEncode(channel: Channel, type: Type) {
-  return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${
-    type === 'ordinal' ? 'order' : 'magnitude'
-  }.`;
+  return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${type === 'ordinal' ? 'order' : 'magnitude'
+    }.`;
 }
 
 // MARK
@@ -359,9 +360,8 @@ export function droppedDay(d: DateTime | DateTimeExpr) {
 }
 
 export function errorBarCenterAndExtentAreNotNeeded(center: ErrorBarCenter, extent: ErrorBarExtent) {
-  return `${extent ? 'extent ' : ''}${extent && center ? 'and ' : ''}${center ? 'center ' : ''}${
-    extent && center ? 'are ' : 'is '
-  }not needed when data are aggregated.`;
+  return `${extent ? 'extent ' : ''}${extent && center ? 'and ' : ''}${center ? 'center ' : ''}${extent && center ? 'are ' : 'is '
+    }not needed when data are aggregated.`;
 }
 
 export function errorBarCenterIsUsedWithWrongExtent(
