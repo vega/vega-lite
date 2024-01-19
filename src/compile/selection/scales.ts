@@ -28,8 +28,8 @@ const scaleBindings: SelectionCompiler<'interval'> = {
       const scale = model.getScaleComponent(channel);
       const scaleType = scale ? scale.get('type') : undefined;
 
-      if (scaleType == "sequential") {
-        log.warn(log.message.SEQUENTIAL_SCALE_DEPRECATED)
+      if (scaleType == 'sequential') {
+        log.warn(log.message.SEQUENTIAL_SCALE_DEPRECATED);
       }
 
       if (!scale || !hasContinuousDomain(scaleType)) {

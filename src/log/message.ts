@@ -182,8 +182,9 @@ export function missingFieldType(channel: Channel, newType: Type) {
 }
 export function droppingColor(type: 'encoding' | 'property', opt: {fill?: boolean; stroke?: boolean}) {
   const {fill, stroke} = opt;
-  return `Dropping color ${type} as the plot also has ${fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'
-    }.`;
+  return `Dropping color ${type} as the plot also has ${
+    fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'
+  }.`;
 }
 
 export function relativeBandSizeNotSupported(sizeChannel: 'width' | 'height') {
@@ -228,8 +229,9 @@ export function facetChannelDropped(channels: FacetChannel[]) {
 }
 
 export function discreteChannelCannotEncode(channel: Channel, type: Type) {
-  return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${type === 'ordinal' ? 'order' : 'magnitude'
-    }.`;
+  return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${
+    type === 'ordinal' ? 'order' : 'magnitude'
+  }.`;
 }
 
 // MARK
@@ -360,8 +362,9 @@ export function droppedDay(d: DateTime | DateTimeExpr) {
 }
 
 export function errorBarCenterAndExtentAreNotNeeded(center: ErrorBarCenter, extent: ErrorBarExtent) {
-  return `${extent ? 'extent ' : ''}${extent && center ? 'and ' : ''}${center ? 'center ' : ''}${extent && center ? 'are ' : 'is '
-    }not needed when data are aggregated.`;
+  return `${extent ? 'extent ' : ''}${extent && center ? 'and ' : ''}${center ? 'center ' : ''}${
+    extent && center ? 'are ' : 'is '
+  }not needed when data are aggregated.`;
 }
 
 export function errorBarCenterIsUsedWithWrongExtent(
