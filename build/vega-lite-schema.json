@@ -21929,6 +21929,12 @@
               "$ref": "#/definitions/ColorScheme"
             },
             {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
               "$ref": "#/definitions/SchemeParams"
             },
             {

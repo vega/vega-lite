@@ -211,7 +211,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
   return makeImplicit(d);
 }
 
-function parseScheme(scheme: Scheme | SignalRef): RangeScheme {
+function parseScheme(scheme: Scheme | SignalRef | string[]): RangeScheme {
   if (isExtendedScheme(scheme)) {
     return {
       scheme: scheme.name,
