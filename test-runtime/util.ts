@@ -269,12 +269,11 @@ export function pt(key: keyof typeof hits.discrete, idx: number, parent?: string
   return `${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
 }
 
-export function getDataset(name: string) {
-  return `getDataset(${stringValue(name)})`;
+export function getState(signals: string[], data: string[]) {
+  return `getState(${JSON.stringify(signals)}, ${JSON.stringify(data)})`;
 }
-
 export function getSignal(name: string) {
-  return `getSignal(${stringValue(name)})`;
+  return `getSignal('${name}')`;
 }
 
 export function sleep(milliseconds: number) {
