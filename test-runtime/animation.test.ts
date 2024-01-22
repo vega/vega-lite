@@ -1,5 +1,5 @@
 import {TopLevelSpec} from '../src';
-import {embedFn, getDataset, getSignal, sleep, testRenderFn} from './util';
+import {embedFn, getSignal, getState, sleep, testRenderFn} from './util';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 
 const gapminderSpec: TopLevelSpec = {
@@ -65,15 +65,16 @@ describe('time encoding animations', () => {
     for (let i = 1955; i <= 2005; i += 5) {
       await sleep(500);
 
-      const curr_dataset = (await page.evaluate(getDataset('source_0_curr'))) as object[];
-      const anim_value = await page.evaluate(getSignal('anim_value'));
+      const state = (await page.evaluate(getState(['anim_value'], ['source_0_curr']))) as {signals: any; data: any};
+      const anim_value = state.signals['anim_value'];
+      const curr_dataset = state.data['source_0_curr'] as object[];
+      await testRender(`gapminder_${anim_value}`);
 
       const time_field = gapminderSpec.encoding.time.field as string;
 
       const filteredDataset = curr_dataset.filter(d => d[time_field] === anim_value);
 
       expect(filteredDataset).toHaveLength(curr_dataset.length);
-      await testRender(`gapminder_${anim_value}`);
     }
   }, 10000);
 
@@ -99,8 +100,6 @@ describe('time encoding animations', () => {
     await sleep(max_range_extent);
 
     const anim_clock = await page.evaluate(getSignal('anim_clock'));
-
-    console.log(max_range_extent, anim_clock);
 
     expect(anim_clock).toBeLessThan(max_range_extent);
   }, 10000);
