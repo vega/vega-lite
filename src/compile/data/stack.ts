@@ -146,8 +146,10 @@ export class StackNode extends DataFlowNode {
       // FIXME is the default here correct for binned fields?
       sort = stackby.reduce(
         (s, field) => {
-          s.field.push(field);
-          s.order.push(sortOrder);
+          if (!s.field.includes(field)) {
+            s.field.push(field);
+            s.order.push(sortOrder);
+          }
           return s;
         },
         {field: [], order: []}

@@ -82,6 +82,9 @@ export function selectionNotFound(name: string) {
 export const SCALE_BINDINGS_CONTINUOUS =
   'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
 
+export const SEQUENTIAL_SCALE_DEPRECATED =
+  'Sequntial scales are deprecated. The available quantitative scale type values are linear, log, pow, sqrt, symlog, time and utc';
+
 export const LEGEND_BINDINGS_MUST_HAVE_PROJECTION =
   'Legend bindings are only supported for selections over an individual field or encoding channel.';
 export function cannotLookupVariableParameter(name: string) {
