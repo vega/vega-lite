@@ -277,7 +277,7 @@ export function getSignal(name: string) {
   return `getSignal(${stringValue(name)})`;
 }
 
-export function sleep(milliseconds) {
+export function sleep(milliseconds: number) {
   return new Promise(resolve => {
     setTimeout(resolve, milliseconds);
   });
