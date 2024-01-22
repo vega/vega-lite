@@ -3,14 +3,9 @@ name: Test
 on:
   workflow_dispatch:
   pull_request:
-    paths-ignore:
-      - 'site/**'
   push:
     branches:
       - main
-    paths-ignore:
-      - 'site/**'
-      - 'yarn.lock'
 
 jobs:
   test:
