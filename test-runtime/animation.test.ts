@@ -1,5 +1,5 @@
 import {TopLevelSpec} from '../src';
-import {embedFn, getDataset, getSignal, testRenderFn} from './util';
+import {embedFn, getDataset, getSignal, sleep, testRenderFn} from './util';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 
 const gapminderSpec: TopLevelSpec = {
@@ -62,6 +62,8 @@ describe('time encoding animations', () => {
   it('renders a frame that matches the anim value', async () => {
     await embed(gapminderSpec);
 
+    await sleep(1000);
+
     const curr_dataset = (await page.evaluate(getDataset('source_0_curr'))) as object[];
     const anim_value = await page.evaluate(getSignal('anim_value'));
 
@@ -70,6 +72,6 @@ describe('time encoding animations', () => {
     const filteredDataset = curr_dataset.filter(d => d[time_field] === anim_value);
 
     expect(filteredDataset).toHaveLength(curr_dataset.length);
-    await testRender(`gapminder`);
+    await testRender(`gapminder_${anim_value}`);
   });
 });
