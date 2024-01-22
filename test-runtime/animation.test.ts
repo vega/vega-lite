@@ -77,6 +77,20 @@ describe('time encoding animations', () => {
     }
   }, 10000);
 
+  it('anim_clock makes forward progress', async () => {
+    await embed(gapminderSpec);
+
+    let anim_clock = (await page.evaluate(getSignal('anim_clock'))) as number;
+    let prev_anim_clock = anim_clock;
+
+    for (let i = 0; i < 10; i++) {
+      await sleep(500);
+      anim_clock = (await page.evaluate(getSignal('anim_clock'))) as number;
+      expect(anim_clock).toBeGreaterThan(prev_anim_clock);
+      prev_anim_clock = anim_clock;
+    }
+  }, 10000);
+
   it('anim_clock loops', async () => {
     await embed(gapminderSpec);
 
