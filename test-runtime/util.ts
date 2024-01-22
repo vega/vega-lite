@@ -276,6 +276,12 @@ export function getSignal(name: string) {
   return `getSignal(${stringValue(name)})`;
 }
 
+export function sleep(milliseconds) {
+  return new Promise(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
 export function embedFn(page: Page) {
   return async (specification: TopLevelSpec) => {
     await page.evaluate(
