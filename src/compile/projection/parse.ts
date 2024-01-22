@@ -25,8 +25,8 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
     const projComp = new ProjectionComponent(
       model.projectionName(true),
       {
-        ...(replaceExprRef(model.config.projection) ?? {}),
-        ...(proj ?? {})
+        ...replaceExprRef(model.config.projection),
+        ...proj
       },
       size,
       data

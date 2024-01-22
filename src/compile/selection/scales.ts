@@ -80,7 +80,7 @@ const scaleBindings: SelectionCompiler<'interval'> = {
     // Nested signals need only push to top-level signals with multiview displays.
     if (model.parent && !isTopLevelLayer(model)) {
       for (const proj of selCmpt.scales) {
-        const signal: any = signals.filter(s => s.name === proj.signals.data)[0];
+        const signal: any = signals.find(s => s.name === proj.signals.data);
         signal.push = 'outer';
         delete signal.value;
         delete signal.update;
