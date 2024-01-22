@@ -31,7 +31,7 @@
       "select": {
         "type": "point",
         "fields": ["symbol"],
-        "on": "mouseover"
+        "on": "pointerover"
       }
     }],
     "mark": {"type": "line", "strokeWidth": 8, "stroke": "transparent"}

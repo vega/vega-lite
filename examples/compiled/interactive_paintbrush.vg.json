@@ -29,7 +29,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -41,7 +41,7 @@
       "on": [
         {
           "events": [
-            {"source": "scope", "type": "mouseover", "markname": "voronoi"}
+            {"source": "scope", "type": "pointerover", "markname": "voronoi"}
           ],
           "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
@@ -55,7 +55,7 @@
       "on": [
         {
           "events": [
-            {"source": "scope", "type": "mouseover", "markname": "voronoi"}
+            {"source": "scope", "type": "pointerover", "markname": "voronoi"}
           ],
           "update": "event.shiftKey"
         },

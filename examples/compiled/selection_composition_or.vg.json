@@ -33,7 +33,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {"name": "alex", "update": "vlSelectionResolve(\"alex_store\", \"union\")"},
@@ -48,7 +48,7 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousedown",
+            "type": "pointerdown",
             "filter": [
               "!event.shiftKey",
               "!event.item || event.item.mark.name !== \"alex_brush\""
@@ -59,17 +59,17 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousemove",
+            "type": "pointermove",
             "between": [
               {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.shiftKey",
                   "!event.item || event.item.mark.name !== \"alex_brush\""
                 ]
               },
-              {"source": "scope", "type": "mouseup"}
+              {"source": "scope", "type": "pointerup"}
             ]
           },
           "update": "[alex_x[0], clamp(x(unit), 0, width)]"
@@ -105,7 +105,7 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousedown",
+            "type": "pointerdown",
             "filter": [
               "!event.shiftKey",
               "!event.item || event.item.mark.name !== \"alex_brush\""
@@ -116,17 +116,17 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousemove",
+            "type": "pointermove",
             "between": [
               {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.shiftKey",
                   "!event.item || event.item.mark.name !== \"alex_brush\""
                 ]
               },
-              {"source": "scope", "type": "mouseup"}
+              {"source": "scope", "type": "pointerup"}
             ]
           },
           "update": "[alex_y[0], clamp(y(unit), 0, height)]"
@@ -189,7 +189,7 @@
           "events": [
             {
               "source": "scope",
-              "type": "mousedown",
+              "type": "pointerdown",
               "filter": ["!event.shiftKey"],
               "markname": "alex_brush"
             }
@@ -206,15 +206,15 @@
           "events": [
             {
               "source": "scope",
-              "type": "mousemove",
+              "type": "pointermove",
               "between": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
+                  "type": "pointerdown",
                   "filter": ["!event.shiftKey"],
                   "markname": "alex_brush"
                 },
-                {"source": "scope", "type": "mouseup"}
+                {"source": "scope", "type": "pointerup"}
               ]
             }
           ],
@@ -271,7 +271,7 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousedown",
+            "type": "pointerdown",
             "filter": [
               "event.shiftKey",
               "!event.item || event.item.mark.name !== \"morgan_brush\""
@@ -282,17 +282,17 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousemove",
+            "type": "pointermove",
             "between": [
               {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "event.shiftKey",
                   "!event.item || event.item.mark.name !== \"morgan_brush\""
                 ]
               },
-              {"source": "scope", "type": "mouseup"}
+              {"source": "scope", "type": "pointerup"}
             ]
           },
           "update": "[morgan_x[0], clamp(x(unit), 0, width)]"
@@ -328,7 +328,7 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousedown",
+            "type": "pointerdown",
             "filter": [
               "event.shiftKey",
               "!event.item || event.item.mark.name !== \"morgan_brush\""
@@ -339,17 +339,17 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousemove",
+            "type": "pointermove",
             "between": [
               {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "event.shiftKey",
                   "!event.item || event.item.mark.name !== \"morgan_brush\""
                 ]
               },
-              {"source": "scope", "type": "mouseup"}
+              {"source": "scope", "type": "pointerup"}
             ]
           },
           "update": "[morgan_y[0], clamp(y(unit), 0, height)]"
@@ -412,7 +412,7 @@
           "events": [
             {
               "source": "scope",
-              "type": "mousedown",
+              "type": "pointerdown",
               "filter": ["event.shiftKey"],
               "markname": "morgan_brush"
             }
@@ -429,15 +429,15 @@
           "events": [
             {
               "source": "scope",
-              "type": "mousemove",
+              "type": "pointermove",
               "between": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
+                  "type": "pointerdown",
                   "filter": ["event.shiftKey"],
                   "markname": "morgan_brush"
                 },
-                {"source": "scope", "type": "mouseup"}
+                {"source": "scope", "type": "pointerup"}
               ]
             }
           ],

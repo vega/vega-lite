@@ -1,7 +1,7 @@
 /**
  * Utility files for producing Vega ValueRef for marks
  */
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {isFunction, isString} from 'vega-util';
 import {isCountingAggregateOp} from '../../../aggregate';
 import {isBinned, isBinning} from '../../../bin';
@@ -167,32 +167,34 @@ export function interpolatedSignalRef({
   fieldOrDatumDef2,
   offset,
   startSuffix,
+  endSuffix = 'end',
   bandPosition = 0.5
 }: {
   scaleName: string;
   fieldOrDatumDef: TypedFieldDef<string>;
   fieldOrDatumDef2?: SecondaryFieldDef<string>;
   startSuffix?: string;
+  endSuffix?: string;
   offset: number | SignalRef | VgValueRef;
   bandPosition: number | SignalRef;
 }): VgValueRef {
-  const expr = 0 < bandPosition && bandPosition < 1 ? 'datum' : undefined;
+  const expr = !isSignalRef(bandPosition) && 0 < bandPosition && bandPosition < 1 ? 'datum' : undefined;
   const start = vgField(fieldOrDatumDef, {expr, suffix: startSuffix});
   const end =
     fieldOrDatumDef2 !== undefined
       ? vgField(fieldOrDatumDef2, {expr})
-      : vgField(fieldOrDatumDef, {suffix: 'end', expr});
+      : vgField(fieldOrDatumDef, {suffix: endSuffix, expr});
 
   const ref: VgValueRef = {};
 
   if (bandPosition === 0 || bandPosition === 1) {
     ref.scale = scaleName;
-    const val = bandPosition === 0 ? start : end;
-    ref.field = val;
+    const field = bandPosition === 0 ? start : end;
+    ref.field = field;
   } else {
     const datum = isSignalRef(bandPosition)
-      ? `${bandPosition.signal} * ${start} + (1-${bandPosition.signal}) * ${end}`
-      : `${bandPosition} * ${start} + ${1 - bandPosition} * ${end}`;
+      ? `(1-${bandPosition.signal}) * ${start} + ${bandPosition.signal} * ${end}`
+      : `${1 - bandPosition} * ${start} + ${bandPosition} * ${end}`;
     ref.signal = `scale("${scaleName}", ${datum})`;
   }
 
@@ -200,6 +202,12 @@ export function interpolatedSignalRef({
     ref.offset = offset;
   }
   return ref;
+}
+
+export function binSizeExpr({scaleName, fieldDef}: {scaleName: string; fieldDef: TypedFieldDef<string>}) {
+  const start = vgField(fieldDef, {expr: 'datum'});
+  const end = vgField(fieldDef, {expr: 'datum', suffix: 'end'});
+  return `abs(scale("${scaleName}", ${end}) - scale("${scaleName}", ${start}))`;
 }
 
 export interface MidPointParams {

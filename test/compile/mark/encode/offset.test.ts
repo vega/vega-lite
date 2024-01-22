@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {positionOffset} from '../../../../src/compile/mark/encode/offset';
 import {Mark, MarkDef} from '../../../../src/mark';
 

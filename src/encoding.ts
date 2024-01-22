@@ -97,6 +97,7 @@ import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type';
 import {keys, some} from './util';
 import {isSignalRef} from './vega.schema';
+import {isBinnedTimeUnit} from './timeunit';
 
 export interface Encoding<F extends Field> {
   /**
@@ -462,7 +463,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
             if (!isSecondaryRangeChannel(channel)) {
               newFieldDef['type'] = QUANTITATIVE;
             }
-          } else if (timeUnit) {
+          } else if (timeUnit && !isBinnedTimeUnit(timeUnit)) {
             timeUnits.push({
               timeUnit,
               field,
@@ -561,10 +562,6 @@ export function initEncoding(
             continue;
           }
         }
-      } else {
-        // no x/y, replace it with main channel
-        channel = mainChannel;
-        log.warn(log.message.replaceOffsetWithMainChannel(mainChannel));
       }
     }
 

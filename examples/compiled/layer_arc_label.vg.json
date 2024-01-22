@@ -44,10 +44,7 @@
           "type": "stack",
           "groupby": [],
           "field": "value",
-          "sort": {
-            "field": ["category", "category"],
-            "order": ["ascending", "ascending"]
-          },
+          "sort": {"field": ["category"], "order": ["ascending"]},
           "as": ["value_start", "value_end"],
           "offset": "zero"
         },

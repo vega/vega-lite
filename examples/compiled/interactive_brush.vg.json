@@ -37,7 +37,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -51,7 +51,7 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousedown",
+            "type": "pointerdown",
             "filter": [
               "!event.item || event.item.mark.name !== \"brush_brush\""
             ]
@@ -61,17 +61,17 @@
         {
           "events": {
             "source": "window",
-            "type": "mousemove",
+            "type": "pointermove",
             "consume": true,
             "between": [
               {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
               },
-              {"source": "window", "type": "mouseup"}
+              {"source": "window", "type": "pointerup"}
             ]
           },
           "update": "[brush_x[0], clamp(x(unit), 0, width)]"
@@ -111,7 +111,7 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousedown",
+            "type": "pointerdown",
             "filter": [
               "!event.item || event.item.mark.name !== \"brush_brush\""
             ]
@@ -121,17 +121,17 @@
         {
           "events": {
             "source": "window",
-            "type": "mousemove",
+            "type": "pointermove",
             "consume": true,
             "between": [
               {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
               },
-              {"source": "window", "type": "mouseup"}
+              {"source": "window", "type": "pointerup"}
             ]
           },
           "update": "[brush_y[0], clamp(y(unit), 0, height)]"
@@ -197,7 +197,11 @@
       "on": [
         {
           "events": [
-            {"source": "scope", "type": "mousedown", "markname": "brush_brush"}
+            {
+              "source": "scope",
+              "type": "pointerdown",
+              "markname": "brush_brush"
+            }
           ],
           "update": "{x: x(unit), y: y(unit), extent_x: slice(brush_x), extent_y: slice(brush_y)}"
         }
@@ -211,15 +215,15 @@
           "events": [
             {
               "source": "window",
-              "type": "mousemove",
+              "type": "pointermove",
               "consume": true,
               "between": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
+                  "type": "pointerdown",
                   "markname": "brush_brush"
                 },
-                {"source": "window", "type": "mouseup"}
+                {"source": "window", "type": "pointerup"}
               ]
             }
           ],

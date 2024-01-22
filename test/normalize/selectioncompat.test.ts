@@ -415,7 +415,7 @@ describe('SelectionCompatibilityNormalizer', () => {
               selection: {
                 hover: {
                   type: 'single',
-                  on: 'mouseover',
+                  on: 'pointerover',
                   empty: 'all',
                   fields: ['symbol'],
                   init: {symbol: 'AAPL'}
@@ -451,7 +451,7 @@ describe('SelectionCompatibilityNormalizer', () => {
                   value: {symbol: 'AAPL'},
                   select: {
                     type: 'point',
-                    on: 'mouseover',
+                    on: 'pointerover',
                     fields: ['symbol'],
                     toggle: false
                   }

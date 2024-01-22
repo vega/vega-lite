@@ -10,8 +10,8 @@
         "type": "interval",
         "encodings": ["x"],
         "resolve": "intersect",
-        "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-        "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
+        "on": "[pointerdown[event.shiftKey], pointerup] > pointermove",
+        "translate": "[pointerdown[event.shiftKey], pointerup] > pointermove"
       }
     },
     {
@@ -19,7 +19,7 @@
       "select": {
         "type": "interval",
         "resolve": "global",
-        "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+        "translate": "[pointerdown[!event.shiftKey], pointerup] > pointermove"
       },
       "bind": "scales"
     },
@@ -29,7 +29,7 @@
         "type": "point",
         "fields": ["X"],
         "resolve": "global",
-        "on": "mouseover",
+        "on": "pointerover",
         "nearest": true
       },
       "bind": {"input": "number"}

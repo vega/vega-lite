@@ -42,7 +42,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -56,7 +56,7 @@
           "events": [
             {
               "source": "scope",
-              "type": "mousemove",
+              "type": "pointermove",
               "markname": "layer_1_voronoi"
             }
           ],
@@ -78,7 +78,7 @@
           "events": [
             {
               "source": "scope",
-              "type": "mousemove",
+              "type": "pointermove",
               "markname": "layer_1_voronoi"
             }
           ],

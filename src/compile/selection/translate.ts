@@ -92,19 +92,19 @@ function onDelta(
     !boundScales || !scaleCmpt
       ? 'panLinear'
       : scaleType === 'log'
-      ? 'panLog'
-      : scaleType === 'symlog'
-      ? 'panSymlog'
-      : scaleType === 'pow'
-      ? 'panPow'
-      : 'panLinear';
+        ? 'panLog'
+        : scaleType === 'symlog'
+          ? 'panSymlog'
+          : scaleType === 'pow'
+            ? 'panPow'
+            : 'panLinear';
   const arg = !boundScales
     ? ''
     : scaleType === 'pow'
-    ? `, ${scaleCmpt.get('exponent') ?? 1}`
-    : scaleType === 'symlog'
-    ? `, ${scaleCmpt.get('constant') ?? 1}`
-    : '';
+      ? `, ${scaleCmpt.get('exponent') ?? 1}`
+      : scaleType === 'symlog'
+        ? `, ${scaleCmpt.get('constant') ?? 1}`
+        : '';
   const update = `${panFn}(${extent}, ${offset}${arg})`;
 
   signal.on.push({

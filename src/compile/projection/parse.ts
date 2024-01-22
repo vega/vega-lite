@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {hasOwnProperty} from 'vega-util';
 import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {getFieldOrDatumDef} from '../../channeldef';
@@ -25,8 +25,8 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
     const projComp = new ProjectionComponent(
       model.projectionName(true),
       {
-        ...(replaceExprRef(model.config.projection) ?? {}),
-        ...(proj ?? {})
+        ...replaceExprRef(model.config.projection),
+        ...proj
       },
       size,
       data

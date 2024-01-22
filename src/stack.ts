@@ -87,7 +87,7 @@ function potentialStackedChannel(
 ): 'x' | 'y' | 'theta' | 'radius' | undefined {
   const y = x === 'x' ? 'y' : 'radius';
 
-  const isCartesian = x === 'x';
+  const isCartesianBarOrArea = x === 'x' && ['bar', 'area'].includes(mark);
 
   const xDef = encoding[x];
   const yDef = encoding[y];
@@ -106,7 +106,7 @@ function potentialStackedChannel(
         return xAggregate ? x : y;
       }
 
-      if (isCartesian && mark === 'bar') {
+      if (isCartesianBarOrArea) {
         if (orient === 'vertical') {
           return y;
         } else if (orient === 'horizontal') {
@@ -119,8 +119,14 @@ function potentialStackedChannel(
       return y;
     }
   } else if (isUnbinnedQuantitative(xDef)) {
+    if (isCartesianBarOrArea && orient === 'vertical') {
+      return undefined;
+    }
     return x;
   } else if (isUnbinnedQuantitative(yDef)) {
+    if (isCartesianBarOrArea && orient === 'horizontal') {
+      return undefined;
+    }
     return y;
   }
   return undefined;
@@ -176,16 +182,16 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
       groupbyChannels.push(dimensionChannel);
       groupbyFields.add(dimensionField);
     }
+  }
 
-    const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
-    const dimensionOffsetDef = encoding[dimensionOffsetChannel];
-    const dimensionOffsetField = isFieldDef(dimensionOffsetDef) ? vgField(dimensionOffsetDef, {}) : undefined;
+  const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
+  const dimensionOffsetDef = encoding[dimensionOffsetChannel];
+  const dimensionOffsetField = isFieldDef(dimensionOffsetDef) ? vgField(dimensionOffsetDef, {}) : undefined;
 
-    if (dimensionOffsetField && dimensionOffsetField !== stackedField) {
-      // avoid grouping by the stacked field
-      groupbyChannels.push(dimensionOffsetChannel);
-      groupbyFields.add(dimensionOffsetField);
-    }
+  if (dimensionOffsetField && dimensionOffsetField !== stackedField) {
+    // avoid grouping by the stacked field
+    groupbyChannels.push(dimensionOffsetChannel);
+    groupbyFields.add(dimensionOffsetField);
   }
 
   // If the dimension has offset, don't stack anymore

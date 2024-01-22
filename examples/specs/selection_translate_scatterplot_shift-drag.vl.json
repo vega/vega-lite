@@ -5,7 +5,7 @@
     "name": "grid",
     "select": {
       "type": "interval",
-      "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!"
+      "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!"
     },
     "bind": "scales"
   }],

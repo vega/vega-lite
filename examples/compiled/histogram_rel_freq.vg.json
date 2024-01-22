@@ -74,8 +74,20 @@
           "description": {
             "signal": "\"Horsepower: \" + (!isValid(datum[\"bin_Horsepwoer\"]) || !isFinite(+datum[\"bin_Horsepwoer\"]) ? \"null\" : format(datum[\"bin_Horsepwoer\"], \"\") + \" – \" + format(datum[\"bin_Horsepwoer_end\"], \"\")) + \"; Relative Frequency: \" + (format(datum[\"PercentOfTotal\"], \".1~%\"))"
           },
-          "x2": {"scale": "x", "field": "bin_Horsepwoer", "offset": 1},
-          "x": {"scale": "x", "field": "bin_Horsepwoer_end"},
+          "x2": {
+            "scale": "x",
+            "field": "bin_Horsepwoer",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_Horsepwoer_end\"]) - scale(\"x\", datum[\"bin_Horsepwoer\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_Horsepwoer_end\"]) - scale(\"x\", datum[\"bin_Horsepwoer\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "bin_Horsepwoer_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_Horsepwoer_end\"]) - scale(\"x\", datum[\"bin_Horsepwoer\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_Horsepwoer_end\"]) - scale(\"x\", datum[\"bin_Horsepwoer\"])))) : -0.5)"
+            }
+          },
           "y": {"scale": "y", "field": "PercentOfTotal_end"},
           "y2": {"scale": "y", "field": "PercentOfTotal_start"}
         }

@@ -15,7 +15,7 @@
           "groupby": ["Species"],
           "extent": [2500, 6500],
           "as": ["value", "density"],
-          "steps": 200
+          "resolve": "shared"
         },
         {
           "type": "impute",

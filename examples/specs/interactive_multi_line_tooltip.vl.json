@@ -23,7 +23,7 @@
     "mark": "rule",
     "params": [{
       "name": "hover",
-      "select": {"type": "point", "on": "mouseover"}
+      "select": {"type": "point", "on": "pointerover"}
     }],
     "encoding": {
       "color": {

@@ -7,7 +7,7 @@ import {LogicalComposition, normalizeLogicalComposition} from './logical';
 import {ParameterName} from './parameter';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
-import {TimeUnit, TimeUnitParams} from './timeunit';
+import {TimeUnit, TimeUnitTransformParams} from './timeunit';
 
 export interface FilterTransform {
   /**
@@ -73,7 +73,7 @@ export interface TimeUnitTransform {
   /**
    * The timeUnit.
    */
-  timeUnit: TimeUnit | TimeUnitParams;
+  timeUnit: TimeUnit | TimeUnitTransformParams;
 
   /**
    * The data field to apply time unit.
@@ -390,6 +390,18 @@ export interface FoldTransform {
   as?: [FieldName, FieldName];
 }
 
+export interface ExtentTransform {
+  /**
+   * The field of which to get the extent.
+   */
+  extent: FieldName;
+
+  /**
+   * The output parameter produced by the extent transform.
+   */
+  param: ParameterName;
+}
+
 export interface PivotTransform {
   /**
    * The data field to pivot on. The unique values of this field become new field names in the output stream.
@@ -657,11 +669,15 @@ export function isFold(t: Transform): t is FoldTransform {
   return 'fold' in t;
 }
 
+export function isExtent(t: Transform): t is ExtentTransform {
+  return 'extent' in t && !('density' in t);
+}
 export type Transform =
   | AggregateTransform
   | BinTransform
   | CalculateTransform
   | DensityTransform
+  | ExtentTransform
   | FilterTransform
   | FlattenTransform
   | FoldTransform

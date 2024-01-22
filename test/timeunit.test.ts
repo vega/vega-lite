@@ -1,4 +1,13 @@
-import {containsTimeUnit, fieldExpr, formatExpression, TIMEUNIT_PARTS} from '../src/timeunit';
+import {keys} from '../src';
+import {
+  BINNED_TIMEUNIT_INDEX,
+  containsTimeUnit,
+  fieldExpr,
+  formatExpression,
+  isBinnedTimeUnit,
+  LOCAL_MULTI_TIMEUNIT_INDEX,
+  TIMEUNIT_PARTS
+} from '../src/timeunit';
 
 describe('timeUnit', () => {
   describe('containsTimeUnit', () => {
@@ -124,6 +133,16 @@ describe('timeUnit', () => {
       expect(formatExpression('utcyearmonth', 'datum.x', true)).toBe(
         'utcFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
       );
+    });
+  });
+
+  describe('isBinnedTimeUnit', () => {
+    it.each(keys(BINNED_TIMEUNIT_INDEX))('return true for binned time unit strings', unit => {
+      expect(isBinnedTimeUnit(unit)).toBe(true);
+    });
+
+    it.each(keys(LOCAL_MULTI_TIMEUNIT_INDEX))('return true for binned time unit params', unit => {
+      expect(isBinnedTimeUnit({unit, binned: true})).toBe(true);
     });
   });
 });

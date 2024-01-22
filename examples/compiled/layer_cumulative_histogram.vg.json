@@ -93,8 +93,20 @@
           "description": {
             "signal": "\"IMDB Rating: \" + (!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_IMDB_Rating_end\"], \"\")) + \"; Cumulative Count: \" + (format(datum[\"Cumulative Count\"], \"\"))"
           },
-          "x2": {"scale": "x", "field": "bin_IMDB_Rating", "offset": 1},
-          "x": {"scale": "x", "field": "bin_IMDB_Rating_end"},
+          "x2": {
+            "scale": "x",
+            "field": "bin_IMDB_Rating",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_IMDB_Rating_end\"]) - scale(\"x\", datum[\"bin_IMDB_Rating\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_IMDB_Rating_end\"]) - scale(\"x\", datum[\"bin_IMDB_Rating\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "bin_IMDB_Rating_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_IMDB_Rating_end\"]) - scale(\"x\", datum[\"bin_IMDB_Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_IMDB_Rating_end\"]) - scale(\"x\", datum[\"bin_IMDB_Rating\"])))) : -0.5)"
+            }
+          },
           "y": {"scale": "y", "field": "Cumulative Count_end"},
           "y2": {"scale": "y", "field": "Cumulative Count_start"}
         }
@@ -113,8 +125,20 @@
           "description": {
             "signal": "\"IMDB Rating: \" + (!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_IMDB_Rating_end\"], \"\")) + \"; count: \" + (format(datum[\"count\"], \"\"))"
           },
-          "x2": {"scale": "x", "field": "bin_IMDB_Rating", "offset": 1},
-          "x": {"scale": "x", "field": "bin_IMDB_Rating_end"},
+          "x2": {
+            "scale": "x",
+            "field": "bin_IMDB_Rating",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_IMDB_Rating_end\"]) - scale(\"x\", datum[\"bin_IMDB_Rating\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_IMDB_Rating_end\"]) - scale(\"x\", datum[\"bin_IMDB_Rating\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "bin_IMDB_Rating_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_IMDB_Rating_end\"]) - scale(\"x\", datum[\"bin_IMDB_Rating\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_IMDB_Rating_end\"]) - scale(\"x\", datum[\"bin_IMDB_Rating\"])))) : -0.5)"
+            }
+          },
           "y": {"scale": "y", "field": "count_end"},
           "y2": {"scale": "y", "field": "count_start"}
         }

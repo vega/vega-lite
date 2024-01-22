@@ -152,6 +152,19 @@ describe('compile/mark/encode/tooltip', () => {
         signal: '{"baz": isValid(datum["Foobar"]) ? datum["Foobar"] : ""+datum["Foobar"]}'
       });
     });
+
+    it('generates correct keys and values for channels with title with quotes', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: true},
+        encoding: {
+          color: {field: 'Foobar', type: 'nominal', title: '"baz"'}
+        }
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({
+        signal: '{"\\"baz\\"": isValid(datum["Foobar"]) ? datum["Foobar"] : ""+datum["Foobar"]}'
+      });
+    });
   });
 
   describe('tooltipForEncoding', () => {

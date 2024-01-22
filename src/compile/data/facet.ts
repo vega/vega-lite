@@ -63,8 +63,8 @@ export class FacetNode extends DataFlowNode {
           ...(isSortField(sort)
             ? {sortField: sort}
             : isArray(sort)
-            ? {sortIndexField: sortArrayIndexField(fieldDef, channel)}
-            : {})
+              ? {sortIndexField: sortArrayIndexField(fieldDef, channel)}
+              : {})
         };
       }
     }
@@ -231,8 +231,8 @@ export class FacetNode extends DataFlowNode {
               ? {signal: `ceil(${cardinality} / ${columns})`}
               : 1
             : columns
-            ? {signal: `min(${cardinality}, ${columns})`}
-            : {signal: cardinality};
+              ? {signal: `min(${cardinality}, ${columns})`}
+              : {signal: cardinality};
 
         data.push({
           name: `${this.facet.name}_${headerChannel}`,

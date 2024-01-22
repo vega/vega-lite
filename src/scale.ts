@@ -9,6 +9,7 @@ import {
   TimeIntervalStep
 } from 'vega';
 import {isString} from 'vega-util';
+import type {ColorScheme} from 'vega-typings';
 import * as CHANNEL from './channel';
 import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';
@@ -477,7 +478,7 @@ export interface SchemeParams {
    *
    * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
-  name: string | SignalRef;
+  name: ColorScheme | SignalRef;
 
   /**
    * The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
@@ -512,7 +513,7 @@ export interface DomainUnionWith {
    * Customized domain values to be union with the field's values or explicitly defined domain.
    * Should be an array of valid scale domain values.
    */
-  unionWith: number[] | string[] | boolean[] | DateTime[];
+  unionWith: (number | string | boolean | DateTime)[];
 }
 
 export function isDomainUnionWith(domain: Domain): domain is DomainUnionWith {
@@ -564,6 +565,13 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
     | ParameterExtent
     | DomainUnionWith
     | ES;
+
+  /**
+   * An expression for an array of raw values that, if non-null, directly overrides the _domain_ property.
+   * This is useful for supporting interactions such as panning or zooming a scale.
+   * The scale may be initially determined using a data-driven domain, then modified in response to user input by setting the rawDomain value.
+   */
+  domainRaw?: ES;
 
   /**
    * Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.
@@ -622,7 +630,7 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
    *
    * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
-  scheme?: string | SchemeParams | ES;
+  scheme?: ColorScheme | SchemeParams | ES;
 
   /**
    * The alignment of the steps within the scale range.
@@ -747,6 +755,7 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale<any>> = {
   domainMax: 1,
   domainMin: 1,
   domainMid: 1,
+  domainRaw: 1,
   align: 1,
   range: 1,
   rangeMax: 1,
@@ -804,6 +813,7 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'domainMax':
     case 'domainMid':
     case 'domainMin':
+    case 'domainRaw':
     case 'clamp':
       return isContinuousToContinuous(scaleType);
     case 'nice':
@@ -849,6 +859,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'domain':
     case 'domainMax':
     case 'domainMin':
+    case 'domainRaw':
     case 'range':
     case 'base':
     case 'exponent':

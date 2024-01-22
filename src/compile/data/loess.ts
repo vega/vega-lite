@@ -11,7 +11,10 @@ export class LoessTransformNode extends DataFlowNode {
     return new LoessTransformNode(null, duplicate(this.transform));
   }
 
-  constructor(parent: DataFlowNode, private transform: LoessTransform) {
+  constructor(
+    parent: DataFlowNode,
+    private transform: LoessTransform
+  ) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
     const specifiedAs = this.transform.as ?? [undefined, undefined];

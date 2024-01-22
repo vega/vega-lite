@@ -68,7 +68,7 @@ describe('Interactive Legends', () => {
     {
       name: 'two',
       select: {type: 'point', fields: ['Origin']},
-      bind: {legend: 'dblclick, mouseover'}
+      bind: {legend: 'dblclick, pointerover'}
     },
     {
       name: 'four',
@@ -78,12 +78,12 @@ describe('Interactive Legends', () => {
     {
       name: 'seven',
       select: {type: 'point', fields: ['Origin'], on: 'click'},
-      bind: {legend: 'mouseover'}
+      bind: {legend: 'pointerover'}
     },
     {
       name: 'eight',
       select: {type: 'point', encodings: ['color'], on: 'click', clear: 'dblclick'},
-      bind: {legend: 'mouseover'}
+      bind: {legend: 'pointerover'}
     },
     {
       name: 'nine',
@@ -162,7 +162,7 @@ describe('Interactive Legends', () => {
                 },
                 {
                   source: 'view',
-                  type: 'mouseover',
+                  type: 'pointerover',
                   markname: 'Origin_legend_symbols'
                 },
                 {
@@ -172,7 +172,7 @@ describe('Interactive Legends', () => {
                 },
                 {
                   source: 'view',
-                  type: 'mouseover',
+                  type: 'pointerover',
                   markname: 'Origin_legend_labels'
                 },
                 {
@@ -182,7 +182,7 @@ describe('Interactive Legends', () => {
                 },
                 {
                   source: 'view',
-                  type: 'mouseover',
+                  type: 'pointerover',
                   markname: 'Origin_legend_entries'
                 }
               ],
@@ -197,7 +197,7 @@ describe('Interactive Legends', () => {
                 },
                 {
                   source: 'view',
-                  type: 'mouseover'
+                  type: 'pointerover'
                 }
               ],
               update: '!event.item || !datum ? null : two_Origin_legend',
@@ -250,17 +250,17 @@ describe('Interactive Legends', () => {
               events: [
                 {
                   source: 'view',
-                  type: 'mouseover',
+                  type: 'pointerover',
                   markname: 'Origin_legend_symbols'
                 },
                 {
                   source: 'view',
-                  type: 'mouseover',
+                  type: 'pointerover',
                   markname: 'Origin_legend_labels'
                 },
                 {
                   source: 'view',
-                  type: 'mouseover',
+                  type: 'pointerover',
                   markname: 'Origin_legend_entries'
                 }
               ],
@@ -271,7 +271,7 @@ describe('Interactive Legends', () => {
               events: [
                 {
                   source: 'view',
-                  type: 'mouseover'
+                  type: 'pointerover'
                 }
               ],
               update: '!event.item || !datum ? null : seven_Origin_legend',
@@ -287,17 +287,17 @@ describe('Interactive Legends', () => {
               events: [
                 {
                   source: 'view',
-                  type: 'mouseover',
+                  type: 'pointerover',
                   markname: 'Origin_legend_symbols'
                 },
                 {
                   source: 'view',
-                  type: 'mouseover',
+                  type: 'pointerover',
                   markname: 'Origin_legend_labels'
                 },
                 {
                   source: 'view',
-                  type: 'mouseover',
+                  type: 'pointerover',
                   markname: 'Origin_legend_entries'
                 }
               ],
@@ -308,7 +308,7 @@ describe('Interactive Legends', () => {
               events: [
                 {
                   source: 'view',
-                  type: 'mouseover'
+                  type: 'pointerover'
                 }
               ],
               update: '!event.item || !datum ? null : eight_Origin_legend',

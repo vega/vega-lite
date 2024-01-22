@@ -27,6 +27,7 @@ describe('compile/data/fold', () => {
         extent: [0, 10],
         minsteps: 25,
         maxsteps: 200,
+        resolve: 'shared',
         as: ['x', 'y']
       });
     });
@@ -57,7 +58,7 @@ describe('compile/data/fold', () => {
       });
     });
 
-    it('should add steps if we group', () => {
+    it('should add resolve shared if we group', () => {
       const transform: Transform = {
         density: 'v',
         groupby: ['a']
@@ -67,7 +68,7 @@ describe('compile/data/fold', () => {
         type: 'kde',
         groupby: ['a'],
         field: 'v',
-        steps: 200,
+        resolve: 'shared',
         as: ['value', 'density']
       });
     });

@@ -1,5 +1,5 @@
 import {NonArgAggregateOp} from '../src/aggregate';
-import {DETAIL, X, Y} from '../src/channel';
+import {DETAIL, X, Y, YOFFSET} from '../src/channel';
 import * as log from '../src/log';
 import {ARC, AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
 import {ScaleType} from '../src/scale';
@@ -54,6 +54,30 @@ describe('stack', () => {
       const stackProps = stack(spec.mark, spec.encoding);
       expect(stackProps).toBeNull();
     }
+  });
+
+  it("doesn't stacked the dimension field on a 1D vertical bar with dimension only", () => {
+    const spec: TopLevel<NormalizedUnitSpec> = {
+      data: {url: 'data/barley.json'},
+      mark: {type: 'bar', orient: 'vertical'},
+      encoding: {
+        x: {field: 'yield', type: 'quantitative'}
+      }
+    };
+    const stackProps = stack(spec.mark, spec.encoding);
+    expect(stackProps).toBeNull();
+  });
+
+  it("doesn't stacked the dimension field on a 1D horizontal bar with dimension only", () => {
+    const spec: TopLevel<NormalizedUnitSpec> = {
+      data: {url: 'data/barley.json'},
+      mark: {type: 'bar', orient: 'horizontal'},
+      encoding: {
+        y: {field: 'yield', type: 'quantitative'}
+      }
+    };
+    const stackProps = stack(spec.mark, spec.encoding);
+    expect(stackProps).toBeNull();
   });
 
   it('should be disabled when stack is false', () => {
@@ -324,6 +348,56 @@ describe('stack', () => {
         const _stack = stack(spec.mark, spec.encoding);
         expect(_stack.fieldChannel).toBe(X);
         expect(_stack.groupbyChannels).toEqual([Y]);
+      }
+    });
+
+    it('should be correct for grouped bar', () => {
+      for (const stackableMark of [BAR, AREA]) {
+        const spec: TopLevel<NormalizedUnitSpec> = {
+          data: {url: 'data/barley.json'},
+          mark: stackableMark,
+          encoding: {
+            x: {field: 'yield', type: 'quantitative'},
+            y: {field: 'variety', type: 'nominal'},
+            yOffset: {field: 'site', type: 'nominal'},
+            color: {field: 'site', type: 'nominal'}
+          }
+        };
+        const _stack = stack(spec.mark, spec.encoding);
+        expect(_stack.fieldChannel).toBe(X);
+        expect(_stack.groupbyChannels).toEqual([Y, YOFFSET]);
+      }
+    });
+
+    it('should be correct for grouped bar without nesting', () => {
+      for (const stackableMark of [BAR, AREA]) {
+        const spec: TopLevel<NormalizedUnitSpec> = {
+          data: {url: 'data/barley.json'},
+          mark: stackableMark,
+          encoding: {
+            x: {field: 'yield', type: 'quantitative'},
+            yOffset: {field: 'site', type: 'nominal'},
+            color: {field: 'site', type: 'nominal'}
+          }
+        };
+        const _stack = stack(spec.mark, spec.encoding);
+        expect(_stack.fieldChannel).toBe(X);
+        expect(_stack.groupbyChannels).toEqual([YOFFSET]);
+      }
+    });
+
+    it('should stack even for two plain quantitatives with the orient on the axes', () => {
+      for (const mark of [BAR, AREA]) {
+        const spec: TopLevel<NormalizedUnitSpec> = {
+          data: {url: 'data/movies.json'},
+          mark: {type: mark, orient: 'vertical'}, // orient also can be inferred by init.ts
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+            y: {field: 'Rotten Tomatoes Rating', type: 'quantitative'}
+          }
+        };
+        const stackProps = stack(spec.mark, spec.encoding);
+        expect(stackProps.fieldChannel).toBe(Y);
       }
     });
 

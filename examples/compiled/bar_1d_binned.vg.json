@@ -51,9 +51,17 @@
           "x2": {
             "scale": "x",
             "field": "bin_maxbins_100_minstep_1_delay",
-            "offset": 1
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_maxbins_100_minstep_1_delay_end\"]) - scale(\"x\", datum[\"bin_maxbins_100_minstep_1_delay\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_maxbins_100_minstep_1_delay_end\"]) - scale(\"x\", datum[\"bin_maxbins_100_minstep_1_delay\"])))) : 0.5)"
+            }
           },
-          "x": {"scale": "x", "field": "bin_maxbins_100_minstep_1_delay_end"},
+          "x": {
+            "scale": "x",
+            "field": "bin_maxbins_100_minstep_1_delay_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"bin_maxbins_100_minstep_1_delay_end\"]) - scale(\"x\", datum[\"bin_maxbins_100_minstep_1_delay\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"bin_maxbins_100_minstep_1_delay_end\"]) - scale(\"x\", datum[\"bin_maxbins_100_minstep_1_delay\"])))) : -0.5)"
+            }
+          },
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
         }

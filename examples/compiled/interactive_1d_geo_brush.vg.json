@@ -54,7 +54,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -86,7 +86,7 @@
         {
           "events": {
             "source": "scope",
-            "type": "mousedown",
+            "type": "pointerdown",
             "filter": [
               "!event.item || event.item.mark.name !== \"brush_brush\""
             ]
@@ -96,17 +96,17 @@
         {
           "events": {
             "source": "window",
-            "type": "mousemove",
+            "type": "pointermove",
             "consume": true,
             "between": [
               {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
               },
-              {"source": "window", "type": "mouseup"}
+              {"source": "window", "type": "pointerup"}
             ]
           },
           "update": "[brush_latitude_1[0], clamp(y(unit), 0, height)]"
@@ -143,7 +143,11 @@
       "on": [
         {
           "events": [
-            {"source": "scope", "type": "mousedown", "markname": "brush_brush"}
+            {
+              "source": "scope",
+              "type": "pointerdown",
+              "markname": "brush_brush"
+            }
           ],
           "update": "{x: x(unit), y: y(unit), extent_y: slice(brush_latitude_1)}"
         }
@@ -157,15 +161,15 @@
           "events": [
             {
               "source": "window",
-              "type": "mousemove",
+              "type": "pointermove",
               "consume": true,
               "between": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
+                  "type": "pointerdown",
                   "markname": "brush_brush"
                 },
-                {"source": "window", "type": "mouseup"}
+                {"source": "window", "type": "pointerup"}
               ]
             }
           ],

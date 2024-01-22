@@ -97,7 +97,7 @@
                 "type": "point",
                 "fields": ["country"],
                 "toggle": false,
-                "on": "mouseover"
+                "on": "pointerover"
               }
             },
             {

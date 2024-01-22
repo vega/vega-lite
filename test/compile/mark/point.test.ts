@@ -121,7 +121,7 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     expect(props.x).toEqual({
-      signal: 'scale("x", 0.6 * datum["bin_maxbins_10_a"] + 0.4 * datum["bin_maxbins_10_a_end"])'
+      signal: 'scale("x", 0.4 * datum["bin_maxbins_10_a"] + 0.6 * datum["bin_maxbins_10_a_end"])'
     });
   });
   it('interpolates x timeUnit with timeUnitBand = 0.5', () => {

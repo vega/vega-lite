@@ -54,7 +54,7 @@
           "name": "org",
           "select": {
             "type": "point",
-            "on": "mouseover",
+            "on": "pointerover",
             "nearest": true,
             "fields": ["origin"]
           }

@@ -373,7 +373,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -401,7 +401,7 @@
             {
               "events": {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
@@ -411,17 +411,17 @@
             {
               "events": {
                 "source": "window",
-                "type": "mousemove",
+                "type": "pointermove",
                 "consume": true,
                 "between": [
                   {
                     "source": "scope",
-                    "type": "mousedown",
+                    "type": "pointerdown",
                     "filter": [
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {"source": "window", "type": "mouseup"}
+                  {"source": "window", "type": "pointerup"}
                 ]
               },
               "update": "[brush_y[0], clamp(y(unit), 0, concat_0_height)]"
@@ -481,7 +481,7 @@
               "events": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
+                  "type": "pointerdown",
                   "markname": "brush_brush"
                 }
               ],
@@ -497,15 +497,15 @@
               "events": [
                 {
                   "source": "window",
-                  "type": "mousemove",
+                  "type": "pointermove",
                   "consume": true,
                   "between": [
                     {
                       "source": "scope",
-                      "type": "mousedown",
+                      "type": "pointerdown",
                       "markname": "brush_brush"
                     },
-                    {"source": "window", "type": "mouseup"}
+                    {"source": "window", "type": "pointerup"}
                   ]
                 }
               ],
@@ -725,7 +725,7 @@
             {
               "events": {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
@@ -735,17 +735,17 @@
             {
               "events": {
                 "source": "window",
-                "type": "mousemove",
+                "type": "pointermove",
                 "consume": true,
                 "between": [
                   {
                     "source": "scope",
-                    "type": "mousedown",
+                    "type": "pointerdown",
                     "filter": [
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {"source": "window", "type": "mouseup"}
+                  {"source": "window", "type": "pointerup"}
                 ]
               },
               "update": "[brush_y[0], clamp(y(unit), 0, concat_1_height)]"
@@ -805,7 +805,7 @@
               "events": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
+                  "type": "pointerdown",
                   "markname": "brush_brush"
                 }
               ],
@@ -821,15 +821,15 @@
               "events": [
                 {
                   "source": "window",
-                  "type": "mousemove",
+                  "type": "pointermove",
                   "consume": true,
                   "between": [
                     {
                       "source": "scope",
-                      "type": "mousedown",
+                      "type": "pointerdown",
                       "markname": "brush_brush"
                     },
-                    {"source": "window", "type": "mouseup"}
+                    {"source": "window", "type": "pointerup"}
                   ]
                 }
               ],
@@ -1049,7 +1049,7 @@
             {
               "events": {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
@@ -1059,17 +1059,17 @@
             {
               "events": {
                 "source": "window",
-                "type": "mousemove",
+                "type": "pointermove",
                 "consume": true,
                 "between": [
                   {
                     "source": "scope",
-                    "type": "mousedown",
+                    "type": "pointerdown",
                     "filter": [
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {"source": "window", "type": "mouseup"}
+                  {"source": "window", "type": "pointerup"}
                 ]
               },
               "update": "[brush_x[0], clamp(x(unit), 0, concat_2_width)]"
@@ -1108,7 +1108,7 @@
             {
               "events": {
                 "source": "scope",
-                "type": "mousedown",
+                "type": "pointerdown",
                 "filter": [
                   "!event.item || event.item.mark.name !== \"brush_brush\""
                 ]
@@ -1118,17 +1118,17 @@
             {
               "events": {
                 "source": "window",
-                "type": "mousemove",
+                "type": "pointermove",
                 "consume": true,
                 "between": [
                   {
                     "source": "scope",
-                    "type": "mousedown",
+                    "type": "pointerdown",
                     "filter": [
                       "!event.item || event.item.mark.name !== \"brush_brush\""
                     ]
                   },
-                  {"source": "window", "type": "mouseup"}
+                  {"source": "window", "type": "pointerup"}
                 ]
               },
               "update": "[brush_y[0], clamp(y(unit), 0, concat_2_height)]"
@@ -1206,7 +1206,7 @@
               "events": [
                 {
                   "source": "scope",
-                  "type": "mousedown",
+                  "type": "pointerdown",
                   "markname": "brush_brush"
                 }
               ],
@@ -1222,15 +1222,15 @@
               "events": [
                 {
                   "source": "window",
-                  "type": "mousemove",
+                  "type": "pointermove",
                   "consume": true,
                   "between": [
                     {
                       "source": "scope",
-                      "type": "mousedown",
+                      "type": "pointerdown",
                       "markname": "brush_brush"
                     },
-                    {"source": "window", "type": "mouseup"}
+                    {"source": "window", "type": "pointerup"}
                   ]
                 }
               ],

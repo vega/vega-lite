@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {ROW} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
 import {assembleLabelTitle} from '../../src/compile/header/assemble';

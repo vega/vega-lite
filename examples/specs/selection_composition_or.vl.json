@@ -6,16 +6,16 @@
       "name": "alex",
       "select": {
         "type": "interval",
-        "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
-        "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+        "on": "[pointerdown[!event.shiftKey], pointerup] > pointermove",
+        "translate": "[pointerdown[!event.shiftKey], pointerup] > pointermove"
       }
     },
     {
       "name": "morgan",
       "select": {
         "type": "interval",
-        "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-        "translate": "[mousedown[event.shiftKey], mouseup] > mousemove",
+        "on": "[pointerdown[event.shiftKey], pointerup] > pointermove",
+        "translate": "[pointerdown[event.shiftKey], pointerup] > pointermove",
         "mark": {"fill": "#fdbb84", "fillOpacity": 0.5, "stroke": "#e34a33"}
       }
     }

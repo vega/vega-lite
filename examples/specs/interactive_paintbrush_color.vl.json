@@ -6,7 +6,7 @@
     "name": "paintbrush",
     "select": {
       "type": "point",
-      "on": "mouseover"
+      "on": "pointerover"
     }
   }],
   "mark": "circle",

@@ -32,7 +32,7 @@ describe('Multi Selection', () => {
         encodings: ['y', 'color'],
         nearest: true,
         clear: false,
-        on: 'mouseover',
+        on: 'pointerover',
         toggle: false,
         resolve: 'intersect'
       }
@@ -260,7 +260,7 @@ describe('Multi Selection', () => {
         {
           name: 'unit',
           value: {},
-          on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
+          on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}]
         }
       ])
     );

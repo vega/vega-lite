@@ -496,7 +496,7 @@ describe('Axis', () => {
       expect(axisComponents.y[0].get('title')).toEqual([{aggregate: 'mean', field: 'a'}]);
     });
 
-    it('correctly combines different title', () => {
+    it('correctly combines different titles', () => {
       const model = parseLayerModel({
         data: {url: 'data/cars.json'},
         layer: [
@@ -536,7 +536,7 @@ describe('Axis', () => {
       ]);
     });
 
-    it('correctly combines different title with null', () => {
+    it('correctly combines different titles with null', () => {
       const model = parseLayerModel({
         data: {url: 'data/cars.json'},
         layer: [

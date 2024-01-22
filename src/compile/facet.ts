@@ -30,7 +30,7 @@ export function facetSortFieldName(
   sort: EncodingSortField<string>,
   opt?: FieldRefOption
 ) {
-  return vgField(sort, {suffix: `by_${vgField(fieldDef)}`, ...(opt ?? {})});
+  return vgField(sort, {suffix: `by_${vgField(fieldDef)}`, ...opt});
 }
 
 export class FacetModel extends ModelWithField {

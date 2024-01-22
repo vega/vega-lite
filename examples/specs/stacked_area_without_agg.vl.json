@@ -1,0 +1,19 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {"a": 1, "b": 2, "c": "c1"},
+      {"a": 2, "b": 3, "c": "c1"},
+      {"a": 3, "b": 1, "c": "c1"},
+      {"a": 1, "b": 2, "c": "c2"},
+      {"a": 3, "b": 1, "c": "c2"},
+      {"a": 2, "b": 2, "c": "c2"}
+    ]
+  },
+  "mark": {"type": "area", "line": true},
+  "encoding": {
+    "x": {"field": "a", "type": "quantitative"},
+    "y": {"field": "b", "type": "quantitative"},
+    "color": {"field": "c"}
+  }
+}

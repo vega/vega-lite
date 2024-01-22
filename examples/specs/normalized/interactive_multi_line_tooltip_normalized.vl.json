@@ -29,7 +29,7 @@
     {
       "mark": "rule",
       "params": [
-        {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
+        {"name": "hover", "select": {"type": "point", "on": "pointerover"}}
       ],
       "encoding": {
         "x": {"timeUnit": "yearmonthdate", "field": "date"},

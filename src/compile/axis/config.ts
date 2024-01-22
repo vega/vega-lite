@@ -55,12 +55,12 @@ export function getAxisConfigs(
     scaleType === 'band'
       ? ['axisDiscrete', 'axisBand']
       : scaleType === 'point'
-      ? ['axisDiscrete', 'axisPoint']
-      : isQuantitative(scaleType)
-      ? ['axisQuantitative']
-      : scaleType === 'time' || scaleType === 'utc'
-      ? ['axisTemporal']
-      : [];
+        ? ['axisDiscrete', 'axisPoint']
+        : isQuantitative(scaleType)
+          ? ['axisQuantitative']
+          : scaleType === 'time' || scaleType === 'utc'
+            ? ['axisTemporal']
+            : [];
 
   const axisChannel = channel === 'x' ? 'axisX' : 'axisY';
   const axisOrient = isSignalRef(orient) ? 'axisOrient' : `axis${titleCase(orient)}`; // axisTop, axisBottom, ...

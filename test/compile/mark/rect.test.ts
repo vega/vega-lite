@@ -210,7 +210,8 @@ describe('Mark: Rect', () => {
       encoding: {
         y,
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+      },
+      config: {rect: {minBandSize: null}}
     });
     const props = rect.encodeEntry(model);
 
@@ -229,7 +230,8 @@ describe('Mark: Rect', () => {
       encoding: {
         x,
         y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+      },
+      config: {rect: {minBandSize: null}}
     });
     const props = rect.encodeEntry(model);
 
@@ -300,7 +302,8 @@ describe('Mark: Rect', () => {
           field: 'count',
           type: 'quantitative'
         }
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = rect.encodeEntry(model);
 
@@ -332,7 +335,8 @@ describe('Mark: Rect', () => {
           field: 'count',
           type: 'quantitative'
         }
-      }
+      },
+      config: {bar: {minBandSize: null}}
     });
     const props = rect.encodeEntry(model);
 

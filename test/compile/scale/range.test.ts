@@ -132,7 +132,49 @@ describe('compile/scale', () => {
         );
       });
 
-      it('should return padded duration range when there is a nested offset with year time scale and no padding', () => {
+      it('should return [-width/2, width/2] for xOffset without x', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            xOffset: {field: 'xSub', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(
+          makeImplicit([
+            {
+              signal: '-width/2'
+            },
+            {
+              signal: 'width/2'
+            }
+          ])
+        );
+      });
+
+      it('should return [-height/2, height/2] for yOffset without y', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            yOffset: {field: 'xSub', type: 'nominal'},
+            x: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('yOffset', model)).toEqual(
+          makeImplicit([
+            {
+              signal: '-height/2'
+            },
+            {
+              signal: 'height/2'
+            }
+          ])
+        );
+      });
+
+      it('should return padded duration range when there is a nested offset with year time scale and default padding', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'bar',
           encoding: {
@@ -155,8 +197,31 @@ describe('compile/scale', () => {
           ])
         );
       });
+      it('should return padded duration range when there is a nested offset with year time scale, default padding, and bandPosition=0', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'temporal', timeUnit: 'year', bandPosition: 0},
+            xOffset: {field: 'xSub', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
 
-      it('should return padded duration range signal when there is a nested offset with year time scale and no padding', () => {
+        expect(parseRangeForChannel('xOffset', model)).toEqual(
+          makeImplicit([
+            {
+              signal:
+                "-0.4 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+            },
+            {
+              signal:
+                "0.4 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+            }
+          ])
+        );
+      });
+
+      it('should return padded duration range signal when there is a nested offset with year time scale and default padding', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'bar',
           encoding: {
@@ -349,11 +414,11 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'quantitative', scale: {scheme: {name: 'warm', extent: [0.2, 1]}}}
+            color: {field: 'x', type: 'quantitative', scale: {scheme: {name: 'warmgreys', extent: [0.2, 1]}}}
           }
         });
 
-        expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: 'warm', extent: [0.2, 1]}));
+        expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: 'warmgreys', extent: [0.2, 1]}));
       });
 
       it('should support custom range.', () => {

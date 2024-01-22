@@ -13,8 +13,8 @@
         "select": {
           "type": "interval",
           "resolve": "union",
-          "on": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
-          "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!",
+          "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+          "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
           "zoom": "wheel![event.shiftKey]"
         }
       },
@@ -23,7 +23,7 @@
         "select": {
           "type": "interval",
           "resolve": "global",
-          "translate": "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!",
+          "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
           "zoom": "wheel![!event.shiftKey]"
         },
         "bind": "scales"

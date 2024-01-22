@@ -1,0 +1,143 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Stock prices of 5 Tech Companies over Time.",
+  "background": "white",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["year"],
+          "as": ["year_date", "year_date_end"]
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["symbol", "year_date", "year_date_end"],
+          "ops": ["sum"],
+          "fields": ["price"],
+          "as": ["sum_price"]
+        },
+        {
+          "type": "stack",
+          "groupby": ["symbol"],
+          "field": "sum_price",
+          "sort": {"field": ["year_date"], "order": ["descending"]},
+          "as": ["sum_price_start", "sum_price_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_price\"]) && isFinite(+datum[\"sum_price\"]) && (isDate(datum[\"year_date\"]) || (isValid(datum[\"year_date\"]) && isFinite(+datum[\"year_date\"])))"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 20},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "year_date"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; Sum of price: \" + (format(datum[\"sum_price\"], \"\")) + \"; date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+          },
+          "x": {"scale": "x", "field": "symbol"},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
+          "y": {"scale": "y", "field": "sum_price_end"},
+          "y2": {"scale": "y", "field": "sum_price_start"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "symbol", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["sum_price_start", "sum_price_end"]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "time",
+      "domain": {"data": "source_0", "fields": ["year_date", "year_date_end"]},
+      "range": "ramp",
+      "interpolate": "hcl"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "symbol",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Sum of price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "date (year)"
+    }
+  ]
+}

@@ -9,7 +9,7 @@
         {
           "name": "hover",
           "value": [{"symbol": "AAPL"}],
-          "select": {"type": "point", "fields": ["symbol"], "on": "mouseover"}
+          "select": {"type": "point", "fields": ["symbol"], "on": "pointerover"}
         }
       ],
       "mark": {"type": "line", "strokeWidth": 8, "stroke": "transparent"},

@@ -4,7 +4,7 @@ import {stringValue} from 'vega-util';
 import {getAxisConfigs} from '../../../src/compile/axis/config';
 import * as properties from '../../../src/compile/axis/properties';
 import {defaultLabelAlign, defaultLabelBaseline, getLabelAngle} from '../../../src/compile/axis/properties';
-import {TimeUnit, TimeUnitParams} from '../../../src/timeunit';
+import {TimeUnit, TimeUnitTransformParams} from '../../../src/timeunit';
 import {normalizeAngle} from '../../../src/util';
 import {isSignalRef} from '../../../src/vega.schema';
 import {range} from '../../util';
@@ -115,7 +115,7 @@ describe('compile/axis/properties', () => {
       expect(tickMinStep).toBe(1);
     });
 
-    const TIMEUNIT_CASES: {timeUnit: TimeUnit | TimeUnitParams; signal: string}[] = [
+    const TIMEUNIT_CASES: {timeUnit: TimeUnit | TimeUnitTransformParams; signal: string}[] = [
       {
         timeUnit: 'year',
         signal: 'datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)'

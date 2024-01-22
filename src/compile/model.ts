@@ -337,7 +337,7 @@ export abstract class Model {
         return {
           width: this.getSizeSignalRef('width'),
           height: this.getSizeSignalRef('height'),
-          ...(encodeEntry ?? {})
+          ...encodeEntry
         };
       }
     }

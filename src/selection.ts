@@ -73,9 +73,7 @@ export interface BaseSelectionConfig<T extends SelectionType = SelectionType> {
    * __See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.
    */
   encodings?: SingleDefUnitChannel[];
-}
 
-export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
   /**
    * An array of field names whose values must match for a data tuple to
    * fall within the selection.
@@ -83,7 +81,9 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
    * __See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.
    */
   fields?: FieldName[];
+}
 
+export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
   /**
    * Controls whether data values should be toggled (inserted or removed from a point selection)
    * or only ever inserted into point selections.
@@ -169,7 +169,7 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
    * which must include a start and end event to trigger continuous panning.
    * Discrete panning (e.g., pressing the left/right arrow keys) will be supported in future versions.
    *
-   * __Default value:__ `true`, which corresponds to `[mousedown, window:mouseup] > window:mousemove!`.
+   * __Default value:__ `true`, which corresponds to `[pointerdown, window:pointerup] > window:pointermove!`.
    * This default allows users to clicks and drags within an interval selection to reposition it.
    *
    * __See also:__ [`translate` examples](https://vega.github.io/vega-lite/docs/selection.html#translate) in the documentation.
@@ -222,8 +222,8 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
   value?: T extends 'point'
     ? SelectionInit | SelectionInitMapping[]
     : T extends 'interval'
-    ? SelectionInitIntervalMapping
-    : never;
+      ? SelectionInitIntervalMapping
+      : never;
 
   /**
    * When set, a selection is populated by input elements (also known as dynamic query widgets)
@@ -240,8 +240,8 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
   bind?: T extends 'point'
     ? Binding | Record<string, Binding> | LegendBinding
     : T extends 'interval'
-    ? 'scales'
-    : never;
+      ? 'scales'
+      : never;
 }
 
 export type TopLevelSelectionParameter = SelectionParameter & {
@@ -310,9 +310,9 @@ export const defaultConfig: SelectionConfig = {
     clear: 'dblclick'
   },
   interval: {
-    on: '[mousedown, window:mouseup] > window:mousemove!',
+    on: '[pointerdown, window:pointerup] > window:pointermove!',
     encodings: ['x', 'y'],
-    translate: '[mousedown, window:mouseup] > window:mousemove!',
+    translate: '[pointerdown, window:pointerup] > window:pointermove!',
     zoom: 'wheel!',
     mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
     resolve: 'global',

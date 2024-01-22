@@ -46,7 +46,7 @@ function getModel(
       name: 'five',
       select: {
         type: 'interval',
-        translate: '[mousedown, mouseup] > mousemove, [keydown, keyup] > touchmove'
+        translate: '[pointerdown, pointerup] > pointermove, [keydown, keyup] > touchmove'
       }
     },
     {
@@ -92,7 +92,7 @@ describe('Translate Selection Transform', () => {
             value: {},
             on: [
               {
-                events: parseSelector('@four_brush:mousedown', 'scope'),
+                events: parseSelector('@four_brush:pointerdown', 'scope'),
                 update: '{x: x(unit), y: y(unit), extent_x: slice(four_x), extent_y: slice(four_y)}'
               }
             ]
@@ -102,7 +102,7 @@ describe('Translate Selection Transform', () => {
             value: {},
             on: [
               {
-                events: parseSelector('[@four_brush:mousedown, window:mouseup] > window:mousemove!', 'scope'),
+                events: parseSelector('[@four_brush:pointerdown, window:pointerup] > window:pointermove!', 'scope'),
                 update: '{x: four_translate_anchor.x - x(unit), y: four_translate_anchor.y - y(unit)}'
               }
             ]
@@ -121,7 +121,7 @@ describe('Translate Selection Transform', () => {
             value: {},
             on: [
               {
-                events: parseSelector('@five_brush:mousedown, @five_brush:keydown', 'scope'),
+                events: parseSelector('@five_brush:pointerdown, @five_brush:keydown', 'scope'),
                 update: '{x: x(unit), y: y(unit), extent_x: slice(five_x), extent_y: slice(five_y)}'
               }
             ]
@@ -132,7 +132,7 @@ describe('Translate Selection Transform', () => {
             on: [
               {
                 events: parseSelector(
-                  '[@five_brush:mousedown, mouseup] > mousemove, [@five_brush:keydown, keyup] > touchmove',
+                  '[@five_brush:pointerdown, pointerup] > pointermove, [@five_brush:keydown, keyup] > touchmove',
                   'scope'
                 ),
                 update: '{x: five_translate_anchor.x - x(unit), y: five_translate_anchor.y - y(unit)}'
@@ -153,7 +153,7 @@ describe('Translate Selection Transform', () => {
             value: {},
             on: [
               {
-                events: parseSelector('mousedown', 'scope'),
+                events: parseSelector('pointerdown', 'scope'),
                 update: '{x: x(unit), y: y(unit), extent_x: domain("x"), extent_y: domain("y")}'
               }
             ]
@@ -163,7 +163,7 @@ describe('Translate Selection Transform', () => {
             value: {},
             on: [
               {
-                events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'),
+                events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope'),
                 update: '{x: six_translate_anchor.x - x(unit), y: six_translate_anchor.y - y(unit)}'
               }
             ]

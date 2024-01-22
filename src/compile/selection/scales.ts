@@ -28,6 +28,10 @@ const scaleBindings: SelectionCompiler<'interval'> = {
       const scale = model.getScaleComponent(channel);
       const scaleType = scale ? scale.get('type') : undefined;
 
+      if (scaleType == 'sequential') {
+        log.warn(log.message.SEQUENTIAL_SCALE_DEPRECATED);
+      }
+
       if (!scale || !hasContinuousDomain(scaleType)) {
         log.warn(log.message.SCALE_BINDINGS_CONTINUOUS);
         continue;
@@ -76,7 +80,7 @@ const scaleBindings: SelectionCompiler<'interval'> = {
     // Nested signals need only push to top-level signals with multiview displays.
     if (model.parent && !isTopLevelLayer(model)) {
       for (const proj of selCmpt.scales) {
-        const signal: any = signals.filter(s => s.name === proj.signals.data)[0];
+        const signal: any = signals.find(s => s.name === proj.signals.data);
         signal.push = 'outer';
         delete signal.value;
         delete signal.update;

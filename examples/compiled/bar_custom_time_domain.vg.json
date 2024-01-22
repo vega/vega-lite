@@ -54,8 +54,20 @@
           "description": {
             "signal": "\"a (hours): \" + (timeFormat(datum[\"hours_a\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
-          "x2": {"scale": "x", "field": "hours_a", "offset": 1},
-          "x": {"scale": "x", "field": "hours_a_end"},
+          "x2": {
+            "scale": "x",
+            "field": "hours_a",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"hours_a_end\"]) - scale(\"x\", datum[\"hours_a\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"hours_a_end\"]) - scale(\"x\", datum[\"hours_a\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "hours_a_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"hours_a_end\"]) - scale(\"x\", datum[\"hours_a\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"hours_a_end\"]) - scale(\"x\", datum[\"hours_a\"])))) : -0.5)"
+            }
+          },
           "y": {"scale": "y", "field": "b_end"},
           "y2": {"scale": "y", "field": "b_start"}
         }

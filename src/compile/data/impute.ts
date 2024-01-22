@@ -16,7 +16,10 @@ export class ImputeNode extends DataFlowNode {
     return new ImputeNode(null, duplicate(this.transform));
   }
 
-  constructor(parent: DataFlowNode, private readonly transform: ImputeTransform) {
+  constructor(
+    parent: DataFlowNode,
+    private readonly transform: ImputeTransform
+  ) {
     super(parent);
   }
 

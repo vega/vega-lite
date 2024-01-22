@@ -8,22 +8,22 @@
     "color": {"field": "symbol", "type": "nominal"}
   },
   "layer": [{
-    "mark": "line"
-  }, {
-    "params": [{
-      "name": "hover",
-      "select": {"type": "point", "on": "mouseover", "clear": "mouseout"}
-    }],
-    "mark": {"type": "circle", "tooltip": true},
-    "encoding": {
-      "opacity": {
-        "condition": {"test": {"param": "hover", "empty": false}, "value": 1},
-        "value": 0
-      },
-      "size": {
-        "condition": {"test": {"param": "hover", "empty": false}, "value": 48},
-        "value": 100
+      "mark": "line"
+    }, {
+      "params": [{
+          "name": "hover",
+          "select": {"type": "point", "on": "pointerover", "clear": "pointerout"}
+        }],
+      "mark": {"type": "circle", "tooltip": true},
+      "encoding": {
+        "opacity": {
+          "condition": {"test": {"param": "hover", "empty": false}, "value": 1},
+          "value": 0
+        },
+        "size": {
+          "condition": {"test": {"param": "hover", "empty": false}, "value": 48},
+          "value": 100
+        }
       }
-    }
-  }]
+    }]
 }

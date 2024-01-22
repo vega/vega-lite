@@ -81,10 +81,11 @@ For more information, read our [introduction article to Vega-Lite v2 on Medium](
 ## Additional Links
 
 - Award winning [research paper](https://idl.cs.washington.edu/papers/vega-lite) and [video of our OpenVis Conf talk](https://www.youtube.com/watch?v=9uaHRWj04D4) on the design of Vega-Lite
+- [The about page for the Vega project](https://vega.github.io/vega/about/)
 - Listen to a Data Stories episode about [Declarative Visualization with Vega-Lite and Altair](http://datastori.es/121-declarative-visualization-with-vega-lite-and-altair-with-dominik-moritz-jacob-vanderplas-kanit-ham-wongsuphasawat/)
 - [JSON schema](http://json-schema.org/) specification for [Vega-Lite](https://github.com/vega/schema) ([latest](https://vega.github.io/schema/vega-lite/v5.json))
 - Ask questions about Vega-Lite on [Stack Overflow](https://stackoverflow.com/tags/vega-lite) or [Slack](https://bit.ly/join-vega-slack-2022)
-- Fork our [Vega-Lite Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9), or [Observable Notebook](https://beta.observablehq.com/@domoritz/vega-lite-demo).
+- Fork our [Observable Notebook](https://beta.observablehq.com/@domoritz/vega-lite-demo).
 
 ## Users
 
@@ -110,4 +111,4 @@ Vega-Lite is used by thousands of data enthusiasts, developers, journalists, dat
 
 The development of Vega-Lite is led by the alumni and members of the [University of Washington Interactive Data Lab](https://idl.cs.washington.edu) (UW IDL), including [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw) (now at Databricks), [Dominik Moritz](https://twitter.com/domoritz) (now at CMU / Apple), [Arvind Satyanarayan](https://twitter.com/arvindsatya1) (now at MIT), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) (UW IDL).
 
-Vega-Lite gets significant contributions from its community--in particular [Will Strimling](https://willium.com), [Yuhan (Zoe) Lu](https://github.com/YuhanLu), [Souvik Sen](https://github.com/invokesus), [Chanwut Kittivorawong](https://github.com/chanwutk), [Matthew Chun](https://github.com/mattwchun), [Akshat Shrivastava](https://github.com/AkshatSh), [Saba Noorassa](https://github.com/Saba9), [Sira Horradarn](https://github.com/sirahd), [Donghao Ren](https://github.com/donghaoren), and [Halden Lin](https://github.com/haldenl). Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
+Vega-Lite gets significant contributions from its community. Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.

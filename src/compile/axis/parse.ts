@@ -93,10 +93,10 @@ export function parseLayerAxes(model: LayerModel) {
       delete child.component.axes[channel];
     }
 
-    // Suppress grid lines for dual axis charts (https://github.com/vega/vega-lite/issues/4676)
+    // Show gridlines for first axis only for dual-axis chart
     if (resolve.axis[channel] === 'independent' && axes[channel] && axes[channel].length > 1) {
-      for (const axisCmpt of axes[channel]) {
-        if (!!axisCmpt.get('grid') && !axisCmpt.explicit.grid) {
+      for (const [index, axisCmpt] of (axes[channel] || []).entries()) {
+        if (index > 0 && !!axisCmpt.get('grid') && !axisCmpt.explicit.grid) {
           axisCmpt.implicit.grid = false;
         }
       }

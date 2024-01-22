@@ -39,7 +39,9 @@
         "valid",
         "values",
         "variance",
-        "variancep"
+        "variancep",
+        "exponential",
+        "exponentialb"
       ],
       "type": "string"
     },
@@ -3434,6 +3436,17 @@
             }
           ]
         },
+        "minBandSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The minimum band size for bar and rectangle marks. __Default value:__ `0.25`"
+        },
         "opacity": {
           "anyOf": [
             {
@@ -4431,6 +4444,48 @@
         },
         {
           "$ref": "#/definitions/BindDirect"
+        }
+      ]
+    },
+    "BinnedTimeUnit": {
+      "anyOf": [
+        {
+          "enum": [
+            "binnedyear",
+            "binnedyearquarter",
+            "binnedyearquartermonth",
+            "binnedyearmonth",
+            "binnedyearmonthdate",
+            "binnedyearmonthdatehours",
+            "binnedyearmonthdatehoursminutes",
+            "binnedyearmonthdatehoursminutesseconds",
+            "binnedyearweek",
+            "binnedyearweekday",
+            "binnedyearweekdayhours",
+            "binnedyearweekdayhoursminutes",
+            "binnedyearweekdayhoursminutesseconds",
+            "binnedyeardayofyear"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "binnedutcyear",
+            "binnedutcyearquarter",
+            "binnedutcyearquartermonth",
+            "binnedutcyearmonth",
+            "binnedutcyearmonthdate",
+            "binnedutcyearmonthdatehours",
+            "binnedutcyearmonthdatehoursminutes",
+            "binnedutcyearmonthdatehoursminutesseconds",
+            "binnedutcyearweek",
+            "binnedutcyearweekday",
+            "binnedutcyearweekdayhours",
+            "binnedutcyearweekdayhoursminutes",
+            "binnedutcyearweekdayhoursminutesseconds",
+            "binnedutcyeardayofyear"
+          ],
+          "type": "string"
         }
       ]
     },
@@ -5918,6 +5973,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -6096,6 +6154,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -6263,6 +6324,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -6939,6 +7003,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -7109,6 +7176,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -7268,6 +7338,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -8282,33 +8355,24 @@
       "additionalProperties": false,
       "properties": {
         "unionWith": {
-          "anyOf": [
-            {
-              "items": {
+          "description": "Customized domain values to be union with the field's values or explicitly defined domain. Should be an array of valid scale domain values.",
+          "items": {
+            "anyOf": [
+              {
                 "type": "number"
               },
-              "type": "array"
-            },
-            {
-              "items": {
+              {
                 "type": "string"
               },
-              "type": "array"
-            },
-            {
-              "items": {
+              {
                 "type": "boolean"
               },
-              "type": "array"
-            },
-            {
-              "items": {
+              {
                 "$ref": "#/definitions/DateTime"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "Customized domain values to be union with the field's values or explicitly defined domain. Should be an array of valid scale domain values."
+              }
+            ]
+          },
+          "type": "array"
         }
       },
       "required": [
@@ -8743,6 +8807,11 @@
         "mouseover",
         "mouseup",
         "mousewheel",
+        "pointerdown",
+        "pointermove",
+        "pointerout",
+        "pointerover",
+        "pointerup",
         "timer",
         "touchend",
         "touchmove",
@@ -8764,6 +8833,24 @@
       },
       "required": [
         "expr"
+      ],
+      "type": "object"
+    },
+    "ExtentTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "extent": {
+          "$ref": "#/definitions/FieldName",
+          "description": "The field of which to get the extent."
+        },
+        "param": {
+          "$ref": "#/definitions/ParameterName",
+          "description": "The output parameter produced by the extent transform."
+        }
+      },
+      "required": [
+        "extent",
+        "param"
       ],
       "type": "object"
     },
@@ -8877,6 +8964,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -8963,6 +9053,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -9552,6 +9645,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -9592,6 +9688,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -9636,6 +9735,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -9678,6 +9780,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -9718,6 +9823,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -9775,6 +9883,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -10103,6 +10214,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -10202,6 +10316,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -10305,6 +10422,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -10404,6 +10524,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -10574,6 +10697,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -10668,6 +10794,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -10745,6 +10874,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -10768,6 +10900,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -12356,6 +12491,13 @@
           },
           "type": "array"
         },
+        "fields": {
+          "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.",
+          "items": {
+            "$ref": "#/definitions/FieldName"
+          },
+          "type": "array"
+        },
         "mark": {
           "$ref": "#/definitions/BrushConfig",
           "description": "An interval selection also adds a rectangle mark to depict the extents of the interval. The `mark` property can be used to customize the appearance of the mark.\n\n__See also:__ [`mark` examples](https://vega.github.io/vega-lite/docs/selection.html#mark) in the documentation."
@@ -12376,7 +12518,7 @@
           "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\nOne of:\n- `\"global\"` -- only one brush exists for the entire SPLOM. When the user begins to drag, any previous brushes are cleared, and a new one is constructed.\n- `\"union\"` -- each cell contains its own brush, and points are highlighted if they lie within _any_ of these individual brushes.\n- `\"intersect\"` -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.\n\n__Default value:__ `global`.\n\n__See also:__ [`resolve` examples](https://vega.github.io/vega-lite/docs/selection.html#resolve) in the documentation."
         },
         "translate": {
-          "description": "When truthy, allows a user to interactively move an interval selection back-and-forth. Can be `true`, `false` (to disable panning), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/) which must include a start and end event to trigger continuous panning. Discrete panning (e.g., pressing the left/right arrow keys) will be supported in future versions.\n\n__Default value:__ `true`, which corresponds to `[mousedown, window:mouseup] > window:mousemove!`. This default allows users to clicks and drags within an interval selection to reposition it.\n\n__See also:__ [`translate` examples](https://vega.github.io/vega-lite/docs/selection.html#translate) in the documentation.",
+          "description": "When truthy, allows a user to interactively move an interval selection back-and-forth. Can be `true`, `false` (to disable panning), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/) which must include a start and end event to trigger continuous panning. Discrete panning (e.g., pressing the left/right arrow keys) will be supported in future versions.\n\n__Default value:__ `true`, which corresponds to `[pointerdown, window:pointerup] > window:pointermove!`. This default allows users to clicks and drags within an interval selection to reposition it.\n\n__See also:__ [`translate` examples](https://vega.github.io/vega-lite/docs/selection.html#translate) in the documentation.",
           "type": [
             "string",
             "boolean"
@@ -12424,6 +12566,13 @@
           },
           "type": "array"
         },
+        "fields": {
+          "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.",
+          "items": {
+            "$ref": "#/definitions/FieldName"
+          },
+          "type": "array"
+        },
         "mark": {
           "$ref": "#/definitions/BrushConfig",
           "description": "An interval selection also adds a rectangle mark to depict the extents of the interval. The `mark` property can be used to customize the appearance of the mark.\n\n__See also:__ [`mark` examples](https://vega.github.io/vega-lite/docs/selection.html#mark) in the documentation."
@@ -12444,7 +12593,7 @@
           "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\nOne of:\n- `\"global\"` -- only one brush exists for the entire SPLOM. When the user begins to drag, any previous brushes are cleared, and a new one is constructed.\n- `\"union\"` -- each cell contains its own brush, and points are highlighted if they lie within _any_ of these individual brushes.\n- `\"intersect\"` -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.\n\n__Default value:__ `global`.\n\n__See also:__ [`resolve` examples](https://vega.github.io/vega-lite/docs/selection.html#resolve) in the documentation."
         },
         "translate": {
-          "description": "When truthy, allows a user to interactively move an interval selection back-and-forth. Can be `true`, `false` (to disable panning), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/) which must include a start and end event to trigger continuous panning. Discrete panning (e.g., pressing the left/right arrow keys) will be supported in future versions.\n\n__Default value:__ `true`, which corresponds to `[mousedown, window:mouseup] > window:mousemove!`. This default allows users to clicks and drags within an interval selection to reposition it.\n\n__See also:__ [`translate` examples](https://vega.github.io/vega-lite/docs/selection.html#translate) in the documentation.",
+          "description": "When truthy, allows a user to interactively move an interval selection back-and-forth. Can be `true`, `false` (to disable panning), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/) which must include a start and end event to trigger continuous panning. Discrete panning (e.g., pressing the left/right arrow keys) will be supported in future versions.\n\n__Default value:__ `true`, which corresponds to `[pointerdown, window:pointerup] > window:pointermove!`. This default allows users to clicks and drags within an interval selection to reposition it.\n\n__See also:__ [`translate` examples](https://vega.github.io/vega-lite/docs/selection.html#translate) in the documentation.",
           "type": [
             "string",
             "boolean"
@@ -12581,6 +12730,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -15480,7 +15632,7 @@
         "monthdatehoursminutes",
         "monthdatehoursminutesseconds",
         "weekday",
-        "weeksdayhours",
+        "weekdayhours",
         "weekdayhoursminutes",
         "weekdayhoursminutesseconds",
         "dayhours",
@@ -16994,6 +17146,17 @@
             }
           ]
         },
+        "minBandSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The minimum band size for bar and rectangle marks. __Default value:__ `0.25`"
+        },
         "opacity": {
           "anyOf": [
             {
@@ -17780,7 +17943,9 @@
         "valid",
         "values",
         "variance",
-        "variancep"
+        "variancep",
+        "exponential",
+        "exponentialb"
       ],
       "type": "string"
     },
@@ -18012,6 +18177,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -19643,6 +19811,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -19734,6 +19905,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -20808,6 +20982,17 @@
             }
           ]
         },
+        "minBandSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The minimum band size for bar and rectangle marks. __Default value:__ `0.25`"
+        },
         "opacity": {
           "anyOf": [
             {
@@ -21475,6 +21660,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -21643,6 +21831,10 @@
             }
           ],
           "description": "Sets the minimum value in the scale domain, overriding the domain property. This property is only intended for use with scales having continuous domains."
+        },
+        "domainRaw": {
+          "$ref": "#/definitions/ExprRef",
+          "description": "An expression for an array of raw values that, if non-null, directly overrides the _domain_ property. This is useful for supporting interactions such as panning or zooming a scale. The scale may be initially determined using a data-driven domain, then modified in response to user input by setting the rawDomain value."
         },
         "exponent": {
           "anyOf": [
@@ -21813,7 +22005,7 @@
         "scheme": {
           "anyOf": [
             {
-              "type": "string"
+              "$ref": "#/definitions/ColorScheme"
             },
             {
               "$ref": "#/definitions/SchemeParams"
@@ -22225,6 +22417,9 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
               "$ref": "#/definitions/TimeUnitParams"
             }
           ],
@@ -22377,8 +22572,8 @@
           "type": "array"
         },
         "name": {
-          "description": "A color scheme name for ordinal scales (e.g., `\"category10\"` or `\"blues\"`).\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
-          "type": "string"
+          "$ref": "#/definitions/ColorScheme",
+          "description": "A color scheme name for ordinal scales (e.g., `\"category10\"` or `\"blues\"`).\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference."
         }
       },
       "required": [
@@ -22412,6 +22607,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -22951,6 +23149,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23110,6 +23311,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23249,6 +23453,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -23418,6 +23625,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23583,6 +23793,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23718,6 +23931,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23796,6 +24012,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -23861,6 +24080,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -23938,6 +24160,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -24026,6 +24251,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -24101,6 +24329,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -24261,6 +24492,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -24411,6 +24645,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -24504,6 +24741,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -24662,6 +24902,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -24826,6 +25069,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -24983,6 +25229,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -25150,6 +25399,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -25312,6 +25564,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -25471,6 +25726,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -25623,6 +25881,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -25753,6 +26014,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -25846,6 +26110,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -26080,6 +26347,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26226,6 +26496,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26321,6 +26594,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26390,6 +26666,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26438,6 +26717,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -26530,6 +26812,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -26677,6 +26962,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26772,6 +27060,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26841,6 +27132,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -26889,6 +27183,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -26981,6 +27278,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/BinnedTimeUnit"
                 },
                 {
                   "$ref": "#/definitions/TimeUnitParams"
@@ -27393,6 +27693,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
@@ -28593,7 +28896,12 @@
     },
     "TimeUnitParams": {
       "additionalProperties": false,
+      "description": "Time Unit Params for encoding predicate, which can specified if the data is  already \"binned\".",
       "properties": {
+        "binned": {
+          "description": "Whether the data has already been binned to this time unit. If true, Vega-Lite will only format the data, marks, and guides, without applying the timeUnit transform to re-bin the data again.",
+          "type": "boolean"
+        },
         "maxbins": {
           "description": "If no `unit` is specified, maxbins is used to infer time units.",
           "type": "number"
@@ -28630,7 +28938,7 @@
               "$ref": "#/definitions/TimeUnit"
             },
             {
-              "$ref": "#/definitions/TimeUnitParams"
+              "$ref": "#/definitions/TimeUnitTransformParams"
             }
           ],
           "description": "The timeUnit."
@@ -28641,6 +28949,28 @@
         "field",
         "as"
       ],
+      "type": "object"
+    },
+    "TimeUnitTransformParams": {
+      "additionalProperties": false,
+      "properties": {
+        "maxbins": {
+          "description": "If no `unit` is specified, maxbins is used to infer time units.",
+          "type": "number"
+        },
+        "step": {
+          "description": "The number of steps between bins, in terms of the least significant unit provided.",
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/definitions/TimeUnit",
+          "description": "Defines how date-time values should be binned."
+        },
+        "utc": {
+          "description": "True to use UTC timezone. Equivalent to using a `utc` prefixed `TimeUnit`.",
+          "type": "boolean"
+        }
+      },
       "type": "object"
     },
     "TitleAnchor": {
@@ -30451,6 +30781,9 @@
           "$ref": "#/definitions/DensityTransform"
         },
         {
+          "$ref": "#/definitions/ExtentTransform"
+        },
+        {
           "$ref": "#/definitions/FilterTransform"
         },
         {
@@ -30553,6 +30886,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"

@@ -16,6 +16,7 @@ import {
   isBin,
   isCalculate,
   isDensity,
+  isExtent,
   isFilter,
   isFlatten,
   isFold,
@@ -40,6 +41,7 @@ import {BinNode} from './bin';
 import {CalculateNode} from './calculate';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {DensityTransformNode} from './density';
+import {ExtentTransformNode} from './extent';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {FilterInvalidNode} from './filterinvalid';
@@ -202,6 +204,9 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       derivedType = 'derived';
     } else if (isFold(t)) {
       transformNode = head = new FoldTransformNode(head, t);
+      derivedType = 'derived';
+    } else if (isExtent(t)) {
+      transformNode = head = new ExtentTransformNode(head, t);
       derivedType = 'derived';
     } else if (isFlatten(t)) {
       transformNode = head = new FlattenTransformNode(head, t);

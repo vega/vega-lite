@@ -25,7 +25,7 @@ describe('Toggle Selection Transform', () => {
         type: 'point',
         encodings: ['y', 'color'],
         resolve: 'union',
-        on: 'mouseover',
+        on: 'pointerover',
         clear: false,
         toggle: 'event.ctrlKey'
       }

@@ -28,7 +28,14 @@ import {
   YOFFSET,
   TIME
 } from '../../channel';
-import {getFieldOrDatumDef, isFieldDef, isFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
+import {
+  getBandPosition,
+  getFieldOrDatumDef,
+  isFieldDef,
+  isFieldOrDatumDef,
+  ScaleDatumDef,
+  ScaleFieldDef
+} from '../../channeldef';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
 import {DataSourceType} from '../../data';
 import {channelHasFieldOrDatum} from '../../encoding';
@@ -215,10 +222,38 @@ function parseScheme(scheme: Scheme | SignalRef): RangeScheme {
   return {scheme};
 }
 
+function fullWidthOrHeightRange(
+  channel: 'x' | 'y',
+  model: UnitModel,
+  scaleType: ScaleType,
+  {center}: {center?: boolean} = {}
+) {
+  // If step is null, use zero to width or height.
+  // Note that we use SignalRefWrapper to account for potential merges and renames.
+  const sizeType = getSizeChannel(channel);
+  const sizeSignal = model.getName(sizeType);
+  const getSignalName = model.getSignalName.bind(model);
+
+  if (channel === Y && hasContinuousDomain(scaleType)) {
+    // For y continuous scale, we have to start from the height as the bottom part has the max value.
+    return center
+      ? [
+          SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal),
+          SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal)
+        ]
+      : [SignalRefWrapper.fromName(getSignalName, sizeSignal), 0];
+  } else {
+    return center
+      ? [
+          SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal),
+          SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal)
+        ]
+      : [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
+  }
+}
+
 function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
   const {size, config, mark, encoding} = model;
-
-  const getSignalName = model.getSignalName.bind(model);
 
   const {type} = getFieldOrDatumDef(encoding[channel]) as ScaleFieldDef<string> | ScaleDatumDef;
 
@@ -239,18 +274,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         }
       }
 
-      // If step is null, use zero to width or height.
-      // Note that we use SignalRefWrapper to account for potential merges and renames.
-
-      const sizeType = getSizeChannel(channel);
-      const sizeSignal = model.getName(sizeType);
-
-      if (channel === Y && hasContinuousDomain(scaleType)) {
-        // For y continuous scale, we have to start from the height as the bottom part has the max value.
-        return [SignalRefWrapper.fromName(getSignalName, sizeSignal), 0];
-      } else {
-        return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
-      }
+      return fullWidthOrHeightRange(channel, model, scaleType);
     }
 
     case XOFFSET:
@@ -375,8 +399,15 @@ function getOffsetStep(step: Step, offsetScaleType: ScaleType) {
 function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: ScaleType): VgRange {
   const positionChannel = channel === XOFFSET ? 'x' : 'y';
   const positionScaleCmpt = model.getScaleComponent(positionChannel);
+
+  if (!positionScaleCmpt) {
+    return fullWidthOrHeightRange(positionChannel, model, offsetScaleType, {center: true});
+  }
+
   const positionScaleType = positionScaleCmpt.get('type');
   const positionScaleName = model.scaleName(positionChannel);
+
+  const {markDef, config} = model;
 
   if (positionScaleType === 'band') {
     const size = getDiscretePositionSize(positionChannel, model.size, model.config.view);
@@ -396,9 +427,20 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
     if (isFieldDef(positionDef) && positionDef.timeUnit) {
       const duration = durationExpr(positionDef.timeUnit, expr => `scale('${positionScaleName}', ${expr})`);
       const padding = model.config.scale.bandWithNestedOffsetPaddingInner;
+      const bandPositionOffset =
+        getBandPosition({
+          fieldDef: positionDef,
+          markDef,
+          config
+        }) - 0.5;
+      const bandPositionOffsetExpr = bandPositionOffset !== 0 ? ` + ${bandPositionOffset}` : '';
       if (padding) {
-        const startRatio = isSignalRef(padding) ? `${padding.signal}/2` : `${padding / 2}`;
-        const endRatio = isSignalRef(padding) ? `(1 - ${padding.signal}/2)` : `${1 - padding / 2}`;
+        const startRatio = isSignalRef(padding)
+          ? `${padding.signal}/2` + bandPositionOffsetExpr
+          : `${padding / 2 + bandPositionOffset}`;
+        const endRatio = isSignalRef(padding)
+          ? `(1 - ${padding.signal}/2)` + bandPositionOffsetExpr
+          : `${1 - padding / 2 + bandPositionOffset}`;
         return [{signal: `${startRatio} * (${duration})`}, {signal: `${endRatio} * (${duration})`}];
       }
       return [0, {signal: duration}];

@@ -12,7 +12,7 @@
           "select": {
             "type": "point",
             "encodings": ["x"],
-            "on": "mouseover",
+            "on": "pointerover",
             "nearest": true
           }
         }
