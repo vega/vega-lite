@@ -103,6 +103,14 @@
         });
         return (await view.runAsync()).data('sel_store');
       }
+
+      async function getDataset(name) {
+        return (await view.runAsync()).data(name);
+      }
+
+      async function getSignal(name) {
+        return (await view.runAsync()).signal(name);
+      }
     </script>
   </body>
 </html>

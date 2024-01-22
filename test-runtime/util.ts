@@ -269,6 +269,14 @@ export function pt(key: keyof typeof hits.discrete, idx: number, parent?: string
   return `${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
 }
 
+export function getDataset(name: string) {
+  return `getDataset(${stringValue(name)})`;
+}
+
+export function getSignal(name: string) {
+  return `getSignal(${stringValue(name)})`;
+}
+
 export function embedFn(page: Page) {
   return async (specification: TopLevelSpec) => {
     await page.evaluate(
