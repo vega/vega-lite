@@ -120,6 +120,7 @@ async function getSpec(el: d3.BaseType) {
       const spec = await (await fetch(fullUrl)).text();
       renderExample(sel, spec, figureOnly);
     } catch (e) {
+      sel.text(`Could not load spec: ${e}`);
       console.error(e);
     }
   } else {
