@@ -59,19 +59,35 @@ describe('time encoding animations', () => {
     await page.close();
   });
 
-  it('renders a frame that matches the anim value', async () => {
+  it('renders a frame that matches each anim value', async () => {
     await embed(gapminderSpec);
 
-    await sleep(1000);
+    for (let i = 1955; i <= 2005; i += 5) {
+      await sleep(500);
 
-    const curr_dataset = (await page.evaluate(getDataset('source_0_curr'))) as object[];
-    const anim_value = await page.evaluate(getSignal('anim_value'));
+      const curr_dataset = (await page.evaluate(getDataset('source_0_curr'))) as object[];
+      const anim_value = await page.evaluate(getSignal('anim_value'));
 
-    const time_field = gapminderSpec.encoding.time.field as string;
+      const time_field = gapminderSpec.encoding.time.field as string;
 
-    const filteredDataset = curr_dataset.filter(d => d[time_field] === anim_value);
+      const filteredDataset = curr_dataset.filter(d => d[time_field] === anim_value);
 
-    expect(filteredDataset).toHaveLength(curr_dataset.length);
-    await testRender(`gapminder_${anim_value}`);
-  });
+      expect(filteredDataset).toHaveLength(curr_dataset.length);
+      await testRender(`gapminder_${anim_value}`);
+    }
+  }, 10000);
+
+  it('anim_clock loops', async () => {
+    await embed(gapminderSpec);
+
+    const max_range_extent = (await page.evaluate(getSignal('max_range_extent'))) as number;
+
+    await sleep(max_range_extent);
+
+    const anim_clock = await page.evaluate(getSignal('anim_clock'));
+
+    console.log(max_range_extent, anim_clock);
+
+    expect(anim_clock).toBeLessThan(max_range_extent);
+  }, 10000);
 });
