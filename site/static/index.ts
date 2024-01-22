@@ -51,8 +51,7 @@ selectAll('h2, h3, h4, h5, h6').each(function (this: d3.BaseType) {
 
 /* Documentation */
 function renderExample($target: Selection<any, any, any, any>, specText: string, figureOnly: boolean) {
-  $target.classed('example', true);
-  $target.text('');
+  $target.classed('example', true).text('');
 
   const vis = $target.append('div').attr('class', 'example-vis');
 
@@ -120,7 +119,7 @@ async function getSpec(el: d3.BaseType) {
       const spec = await (await fetch(fullUrl)).text();
       renderExample(sel, spec, figureOnly);
     } catch (e) {
-      sel.text(`Could not load spec: ${e}`);
+      sel.html(`Could not load spec: ${e}. Please report this issue on <a href="https://github.com/vega/vega-lite/issues/new/choose">GitHub</a>.`).classed('error', true);
       console.error(e);
     }
   } else {
