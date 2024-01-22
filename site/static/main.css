@@ -40,7 +40,7 @@ footer {
   min-height: 40px;
 }
 
-footer>div {
+footer > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -358,7 +358,7 @@ nav a:hover {
   margin-top: 0.3em;
 }
 
-nav>.dropdown {
+nav > .dropdown {
   flex: 0 0 auto;
   margin: 0 20px 0px -20px;
   cursor: pointer;
@@ -442,7 +442,7 @@ footer .edit-page {
   align-items: stretch;
 }
 
-.lead-columns>span:first-child {
+.lead-columns > span:first-child {
   margin-right: 60px;
 }
 
@@ -799,19 +799,19 @@ nav .dropdown-content a {
   padding-left: 20px;
 }
 
-nav>.dropdown:hover .dropdown-content {
+nav > .dropdown:hover .dropdown-content {
   display: block;
   box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.2);
 }
 
-nav>.dropdown:hover a {
+nav > .dropdown:hover a {
   background-color: #e2e2e2;
   color: #666;
   position: relative;
   z-index: 10;
 }
 
-nav>.dropdown:hover a:hover {
+nav > .dropdown:hover a:hover {
   color: #000;
 }
 

@@ -119,7 +119,11 @@ async function getSpec(el: d3.BaseType) {
       const spec = await (await fetch(fullUrl)).text();
       renderExample(sel, spec, figureOnly);
     } catch (e) {
-      sel.html(`Could not load spec: ${e}. Please report this issue on <a href="https://github.com/vega/vega-lite/issues/new/choose">GitHub</a>.`).classed('error', true);
+      sel
+        .html(
+          `Could not load spec: ${e}. Please report this issue on <a href="https://github.com/vega/vega-lite/issues/new/choose">GitHub</a>.`
+        )
+        .classed('error', true);
       console.error(e);
     }
   } else {
