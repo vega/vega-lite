@@ -121,6 +121,10 @@
       async function getSignal(signal) {
         return (await view.runAsync()).signal(signal);
       }
+
+      async function setSignal(name, value) {
+        return (await view.signal(name, value).runAsync());
+      }
     </script>
   </body>
 </html>
