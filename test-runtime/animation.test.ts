@@ -92,7 +92,7 @@ describe('time encoding animations', () => {
     let prev_anim_clock = anim_clock;
 
     for (let i = 0; i < 10; i++) {
-      await sleep(500);
+      await sleep(100);
       anim_clock = (await page.evaluate(getSignal('anim_clock'))) as number;
       expect(anim_clock).toBeGreaterThan(prev_anim_clock);
       prev_anim_clock = anim_clock;
