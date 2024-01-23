@@ -1,5 +1,5 @@
 import {TopLevelSpec} from '../src';
-import {embedFn, getSignal, getState, sleep, testRenderFn} from './util';
+import {embedFn, getSignal, getState, setSignal, sleep, testRenderFn} from './util';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 
 const gapminderSpec: TopLevelSpec = {
@@ -59,22 +59,29 @@ describe('time encoding animations', () => {
     await page.close();
   });
 
-  it('renders a frame that matches each anim value', async () => {
+  it('renders a frame for each anim_value', async () => {
     await embed(gapminderSpec);
 
-    for (let i = 1955; i <= 2005; i += 5) {
-      await sleep(500);
+    await page.evaluate(setSignal('is_playing', false));
+
+    const domain = [1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005];
+
+    for (let i = 0; i < domain.length; i++) {
+      await page.evaluate(setSignal('anim_clock', i * 500));
+      await sleep(100);
 
       const state = (await page.evaluate(getState(['anim_value'], ['source_0_curr']))) as {signals: any; data: any};
       const anim_value = state.signals['anim_value'];
+
+      expect(anim_value).toBe(domain[i]);
+
       const curr_dataset = state.data['source_0_curr'] as object[];
-      await testRender(`gapminder_${anim_value}`);
-
       const time_field = gapminderSpec.encoding.time.field as string;
-
       const filteredDataset = curr_dataset.filter(d => d[time_field] === anim_value);
 
       expect(filteredDataset).toHaveLength(curr_dataset.length);
+
+      await testRender(`gapminder_${anim_value}`);
     }
   }, 10000);
 
