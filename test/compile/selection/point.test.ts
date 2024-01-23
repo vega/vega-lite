@@ -425,14 +425,14 @@ describe('Animated Selection', () => {
             {
               events: {type: 'timer', throttle: 16.666666666666668},
               update:
-                'true ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock'
+                'is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock'
             }
           ]
         },
         {
           name: 'last_tick_at',
           init: 'now()',
-          on: [{events: [{signal: 'anim_clock'}], update: 'now()'}]
+          on: [{events: [{signal: 'anim_clock'}, {signal: 'is_playing'}], update: 'now()'}]
         }
       ])
     );
@@ -481,7 +481,7 @@ describe('Animated Selection', () => {
         {
           name: 'unit',
           value: {},
-          on: [{events: 'mousemove', update: 'isTuple(group()) ? group() : unit'}]
+          on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}]
         }
       ])
     );
