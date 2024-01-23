@@ -14,6 +14,7 @@ export const EASED_ANIM_CLOCK = 'eased_anim_clock';
 export const MIN_EXTENT = 'min_extent';
 export const MAX_RANGE_EXTENT = 'max_range_extent';
 export const LAST_TICK = 'last_tick_at';
+export const IS_PLAYING = 'is_playing';
 export const THROTTLE = (1 / 60) * 1000; // 60 FPS
 
 const animationSignals = (selectionName: string, scaleName: string): Signal[] => {
@@ -48,14 +49,18 @@ const point: SelectionCompiler<'point'> = {
           on: [
             {
               events: {type: 'timer', throttle: THROTTLE},
-              update: `true ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`
+              update: `${IS_PLAYING} ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`
             }
           ]
         },
         {
           name: LAST_TICK,
           init: 'now()',
-          on: [{events: [{signal: ANIM_CLOCK}], update: 'now()'}]
+          on: [{events: [{signal: ANIM_CLOCK}, {signal: IS_PLAYING}], update: 'now()'}]
+        },
+        {
+          name: IS_PLAYING,
+          init: 'true'
         }
       ]);
     }
