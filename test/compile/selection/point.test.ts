@@ -387,7 +387,8 @@ describe('Animated Selection', () => {
         type: 'quantitative'
       },
       time: {
-        field: 'year'
+        field: 'year',
+        type: 'ordinal'
       }
     }
   });
