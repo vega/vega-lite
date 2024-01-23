@@ -276,6 +276,10 @@ export function getSignal(name: string) {
   return `getSignal('${name}')`;
 }
 
+export function setSignal(name: string, value: any) {
+  return `setSignal(${stringValue(name)}, ${value})`;
+}
+
 export function sleep(milliseconds: number) {
   return new Promise(resolve => {
     setTimeout(resolve, milliseconds);
