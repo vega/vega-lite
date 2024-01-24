@@ -63,6 +63,7 @@ import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
 import {durationExpr} from '../../timeunit';
+import {isFacetModel} from '../model';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
@@ -237,16 +238,16 @@ function fullWidthOrHeightRange(
     // For y continuous scale, we have to start from the height as the bottom part has the max value.
     return center
       ? [
-          SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal),
-          SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal)
-        ]
+        SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal),
+        SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal)
+      ]
       : [SignalRefWrapper.fromName(getSignalName, sizeSignal), 0];
   } else {
     return center
       ? [
-          SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal),
-          SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal)
-        ]
+        SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal),
+        SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal)
+      ]
       : [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
   }
 }
@@ -306,11 +307,12 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
 
     case RADIUS: {
       // max radius = half od min(width,height)
+
       return [
         0,
         new SignalRefWrapper(() => {
-          const w = model.getSignalName('width');
-          const h = model.getSignalName('height');
+          const w = isFacetModel(model.parent) ? model.getSignalName('child_width') : model.getSignalName('width');
+          const h = isFacetModel(model.parent) ? model.getSignalName('child_height') : model.getSignalName('height');
           return `min(${w},${h})/2`;
         })
       ];
