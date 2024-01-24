@@ -238,16 +238,16 @@ function fullWidthOrHeightRange(
     // For y continuous scale, we have to start from the height as the bottom part has the max value.
     return center
       ? [
-        SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal),
-        SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal)
-      ]
+          SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal),
+          SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal)
+        ]
       : [SignalRefWrapper.fromName(getSignalName, sizeSignal), 0];
   } else {
     return center
       ? [
-        SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal),
-        SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal)
-      ]
+          SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal),
+          SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal)
+        ]
       : [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
   }
 }
