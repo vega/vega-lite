@@ -26212,6 +26212,9 @@
                   "$ref": "#/definitions/TimeUnit"
                 },
                 {
+                  "$ref": "#/definitions/BinnedTimeUnit"
+                },
+                {
                   "$ref": "#/definitions/TimeUnitParams"
                 }
               ],
@@ -28781,6 +28784,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
             },
             {
               "$ref": "#/definitions/TimeUnitParams"
