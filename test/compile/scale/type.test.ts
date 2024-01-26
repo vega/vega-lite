@@ -159,6 +159,13 @@ describe('compile/scale', () => {
           });
         });
       });
+
+      describe('time (animation)', () => {
+        it('should return band scale for nominal/ordinal data by default.', () => {
+          expect(scaleType({}, 'time', {type: 'nominal'}, 'point')).toEqual(ScaleType.BAND);
+          expect(scaleType({}, 'time', {type: 'ordinal'}, 'point')).toEqual(ScaleType.BAND);
+        });
+      });
     });
 
     describe('temporal', () => {
