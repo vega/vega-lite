@@ -192,6 +192,12 @@ describe('compile/scale', () => {
           expect(scaleType({}, Y, {type: 'temporal', field: 'x', timeUnit}, 'point')).toEqual(ScaleType.UTC);
         }
       });
+
+      describe('time (animation)', () => {
+        it('should return linear scale for temporal data by default.', () => {
+          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
+        });
+      });
     });
     describe('quantitative', () => {
       it('should return linear scale for quantitative color field by default.', () => {
@@ -230,6 +236,12 @@ describe('compile/scale', () => {
 
       it('should return linear scale for quantitative x and y.', () => {
         expect(scaleType({}, 'x', {type: 'quantitative', field: 'x', bin: true}, 'point')).toEqual(ScaleType.LINEAR);
+      });
+
+      describe('time (animation)', () => {
+        it('should return linear scale for temporal data by default.', () => {
+          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
+        });
       });
     });
 
