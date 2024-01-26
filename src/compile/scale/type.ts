@@ -117,8 +117,7 @@ function defaultType(
       } else if (isFieldDef(fieldDef) && fieldDef.timeUnit && normalizeTimeUnit(fieldDef.timeUnit).utc) {
         return 'utc';
       } else if (isTime(channel)) {
-        // return 'linear';
-        return 'band'; // TODO(jzong): when interpolation is implemented, this should be 'linear'
+        return 'linear';
       }
 
       return 'time';
@@ -135,8 +134,7 @@ function defaultType(
         // TODO: consider using quantize (equivalent to binning) once we have it
         return 'ordinal';
       } else if (isTime(channel)) {
-        // return 'linear';
-        return 'band'; // TODO(jzong): when interpolation is implemented, this should be 'linear'
+        return 'linear';
       }
 
       return 'linear';
