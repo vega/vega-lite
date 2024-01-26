@@ -266,8 +266,6 @@ export class UnitModel extends ModelWithField {
    * Corrects the data references in marks after assemble.
    */
   public correctDataNames = (mark: VgMarkGroup) => {
-    // TODO: make this correct
-
     // for normal data references
     if (mark.from?.data) {
       mark.from.data = this.lookupDataSource(mark.from.data);
