@@ -288,11 +288,15 @@ export function accessPathWithDatum(path: string, datum = 'datum') {
  * @param datum The string to use for `datum`.
  */
 export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'datum.datum' = 'datum') {
-  return `${datum}[${stringValue(splitAccessPath(path).join('.'))}]`;
+  return `${datum}[${doubleQuotes2Single(stringValue(splitAccessPath(path).join('.')))}]`;
 }
 
 function escapePathAccess(string: string) {
   return string.replace(/(\[|\]|\.|'|")/g, '\\$1');
+}
+
+function doubleQuotes2Single(string: string) {
+  return string.replace(/"/g, "'");
 }
 
 /**
@@ -476,7 +480,7 @@ export function stringify(data: any) {
 
     if (node === undefined) return undefined;
     if (typeof node == 'number') return isFinite(node) ? '' + node : 'null';
-    if (typeof node !== 'object') return JSON.stringify(node);
+    if (typeof node !== 'object') return doubleQuotes2Single(JSON.stringify(node));
 
     let i, out;
     if (Array.isArray(node)) {
@@ -503,7 +507,7 @@ export function stringify(data: any) {
 
       if (!value) continue;
       if (out) out += ',';
-      out += JSON.stringify(key) + ':' + value;
+      out += doubleQuotes2Single(JSON.stringify(key)) + ':' + value;
     }
     seen.splice(seenIndex, 1);
     return `{${out}}`;
