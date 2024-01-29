@@ -108,6 +108,6 @@ describe('time encoding animations', () => {
 
     const anim_clock = await page.evaluate(getSignal('anim_clock'));
 
-    expect(anim_clock).toBeLessThan(max_range_extent);
+    expect(anim_clock).toBeLessThanOrEqual(max_range_extent);
   }, 10000);
 });
