@@ -195,7 +195,8 @@ describe('compile/scale', () => {
 
       describe('time (animation)', () => {
         it('should return linear scale for temporal data by default.', () => {
-          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
+          // expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
+          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.BAND); // TODO(jzong) change to linear when interpolation implemented
         });
       });
     });
@@ -240,7 +241,8 @@ describe('compile/scale', () => {
 
       describe('time (animation)', () => {
         it('should return linear scale for temporal data by default.', () => {
-          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
+          // expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
+          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.BAND); // TODO(jzong) change to linear when interpolation implemented
         });
       });
     });
