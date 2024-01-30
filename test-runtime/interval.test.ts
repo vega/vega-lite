@@ -163,7 +163,7 @@ describe('interval selections at runtime in unit views', () => {
 
     extents = [
       [1325464128000, 1325635200000],
-      [1325464128000, 1325635200000]
+      [1325723328000, 1325808864000]
     ];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = toNumber(await page.evaluate(brush('drag', i)));
