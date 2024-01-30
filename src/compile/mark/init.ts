@@ -56,7 +56,8 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
 
   // set opacity and filled if not specified in mark config
   const specifiedOpacity = getMarkPropOrConfig('opacity', markDef, config);
-  if (specifiedOpacity === undefined) {
+  const specifiedfillOpacity = getMarkPropOrConfig('fillOpacity', markDef, config);
+  if (specifiedOpacity === undefined && specifiedfillOpacity === undefined) {
     markDef.opacity = opacity(markDef.type, encoding);
   }
 
