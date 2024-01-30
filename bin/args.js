@@ -1,4 +1,4 @@
-import yargs from 'yargs';
+import yargs from 'yargs/yargs';
 
 export default type => {
   const helpText = `${type === 'vega' ? 'Compile' : 'Render'} a Vega-Lite specification to ${
@@ -12,7 +12,7 @@ To load data, you may need to set a base directory:
   For web retrieval, use '-b http://host/data/'.
   For files, use '-b file:///dir/data/' (absolute) or '-b data/' (relative).`;
 
-  const args = yargs.usage(helpText).demand(0);
+  const args = yargs(process.argv.slice(2)).usage(helpText).demand(0);
 
   args
     .string('b')

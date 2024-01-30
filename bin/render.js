@@ -4,7 +4,7 @@ import vega from 'vega';
 import path from 'path';
 import args from './args.js';
 import read from './read.js';
-import vegaLite from '..';
+import * as vegaLite from '../build/src/index.js';
 
 function load(file) {
   return require(path.resolve(file));
@@ -17,7 +17,7 @@ const Levels = {
   debug: vega.Debug
 };
 
-module.exports = (type, callback, opt) => {
+export default (type, callback, opt) => {
   // parse command line arguments
   const arg = args(type);
 
