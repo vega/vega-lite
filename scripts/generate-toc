@@ -2,8 +2,12 @@
 'use strict';
 
 import fs from 'fs';
+import {dirname} from 'path';
+import {fileURLToPath} from 'url';
 import {load} from 'cheerio';
 import yamlFront from 'yaml-front-matter';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const URL = '{{site.baseurl}}/docs/';
 
