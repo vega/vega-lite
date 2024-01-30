@@ -20,6 +20,7 @@
   "jsdelivr": "build/vega-lite.min.js",
   "module": "build/src/index",
   "types": "build/src/index.d.ts",
+  "type": "module",
   "bin": {
     "vl2pdf": "./bin/vl2pdf",
     "vl2png": "./bin/vl2png",

@@ -1,12 +1,12 @@
-const {readFile} = require('fs').promises;
-const os = require('os');
-const path = require('path');
-const puppeteer = require('puppeteer');
-const NodeEnvironment = require('jest-environment-node').TestEnvironment;
+import {readFile} from 'fs/promises';
+import os from 'os';
+import path from 'path';
+import {connect} from 'puppeteer';
+import NodeEnvironment from 'jest-environment-node';
 
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup');
 
-class PuppeteerEnvironment extends NodeEnvironment {
+export default class PuppeteerEnvironment extends NodeEnvironment.TestEnvironment {
   constructor(config) {
     super(config);
   }
@@ -20,7 +20,7 @@ class PuppeteerEnvironment extends NodeEnvironment {
     }
 
     // connect to puppeteer
-    this.global.__BROWSER_GLOBAL__ = await puppeteer.connect({
+    this.global.__BROWSER_GLOBAL__ = await connect({
       browserWSEndpoint: wsEndpoint
     });
   }
@@ -36,5 +36,3 @@ class PuppeteerEnvironment extends NodeEnvironment {
     return super.getVmContext();
   }
 }
-
-module.exports = PuppeteerEnvironment;
