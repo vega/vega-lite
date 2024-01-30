@@ -13,5 +13,8 @@ export default {
         useESM: true
       }
     ]
+  },
+  moduleNameMapper: {
+    '(.+)\\.js': '$1'
   }
 };
