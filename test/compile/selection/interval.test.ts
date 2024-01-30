@@ -794,7 +794,7 @@ describe('Interval Selections', () => {
           type: 'rect',
           clip: true,
           encode: {
-            enter: {fill: {value: 'transparent'}},
+            enter: {cursor: {value: 'move'}, fill: {value: 'transparent'}},
             update: {
               x: [
                 {
@@ -835,6 +835,47 @@ describe('Interval Selections', () => {
           }
         }
       ]);
+    });
+
+    const brushSelCmpts = parseUnitSelection(model, [
+      {
+        name: 'crosshair',
+        select: {type: 'interval', clear: false, translate: true, zoom: false, mark: {cursor: 'crosshair'}}
+      },
+      {
+        name: 'disabled',
+        select: {type: 'interval', clear: false, translate: false, zoom: false}
+      }
+    ]);
+
+    it('should not override manual cursor assignment', () => {
+      const nameModel = parseUnitModel({
+        mark: 'circle',
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'}
+        }
+      });
+      nameModel.parseScale();
+
+      expect(interval.marks(nameModel, brushSelCmpts['crosshair'], [])[1].encode.enter.cursor).toEqual({
+        value: 'crosshair'
+      });
+    });
+
+    it('should not change brush cursor when translate is set to "false"', () => {
+      const nameModel = parseUnitModel({
+        mark: 'circle',
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'}
+        }
+      });
+      nameModel.parseScale();
+
+      expect(interval.marks(model, brushSelCmpts['disabled'], [])[1].encode.enter).toEqual({
+        fill: {value: 'transparent'}
+      });
     });
   });
 
