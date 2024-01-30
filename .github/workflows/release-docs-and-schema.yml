@@ -63,7 +63,7 @@ jobs:
           cache: 'yarn'
 
       - name: Setup Pages
-        uses: actions/configure-pages@v3
+        uses: actions/configure-pages@v4
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
@@ -77,7 +77,7 @@ jobs:
           source: ./site
           destination: ./_site
 
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: './_site'
 
@@ -95,4 +95,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4

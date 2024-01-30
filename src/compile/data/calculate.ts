@@ -74,5 +74,5 @@ export class CalculateNode extends DataFlowNode {
 }
 
 export function sortArrayIndexField(fieldDef: TypedFieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption) {
-  return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', ...(opt ?? {})});
+  return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', ...opt});
 }
