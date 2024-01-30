@@ -6,20 +6,30 @@
       "name": "vscode-jest-tests",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/jest/bin/jest",
-      "args": [
-        "--runInBand"
-      ],
+      "args": ["--runInBand"],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "disableOptimisticBPs": true
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "name": "Runtime Tests",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/jest/bin/jest",
+      "env": {
+        "NODE_OPTIONS": "--experimental-vm-modules",
+        "TZ": "America/Los_Angeles"
+      },
+      "args": ["--runInBand", "--config", "test-runtime/jest-config.json"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     },
     {
       "type": "node",
       "request": "attach",
       "name": "Attach",
-      "port": 9229,
-      "protocol": "inspector"
+      "port": 9229
     }
   ]
 }
