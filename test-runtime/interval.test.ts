@@ -147,8 +147,8 @@ describe('interval selections at runtime in unit views', () => {
 
     await embed(spec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
     let extents = [
-      [1485969714000, 1493634384000],
-      [1496346498000, 1504364922000]
+      [1485958914000, 1493623584000],
+      [1496335698000, 1504354122000]
     ];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = toNumber(await page.evaluate(brush('drag', i)));
@@ -162,8 +162,8 @@ describe('interval selections at runtime in unit views', () => {
     await embed(spec('unit', 1, {type, encodings: ['x']}, {values, x: {type: 'temporal', timeUnit: 'day'}}));
 
     extents = [
-      [1325492928000, 1325664000000],
-      [1325752128000, 1325837664000]
+      [1325482128000, 1325653200000],
+      [1325741328000, 1325826864000]
     ];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = toNumber(await page.evaluate(brush('drag', i)));
