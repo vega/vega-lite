@@ -9,10 +9,10 @@
  * redundant Vega output specs.
  */
 
-const fs = require('fs');
-const vl = require('../build/vega-lite');
-const stableStringify = require('fast-json-stable-stringify');
-const compactStringify = require('json-stringify-pretty-compact');
+import fs from 'fs';
+import vl from '../build/vega-lite/src/index.js';
+import stableStringify from 'fast-json-stable-stringify';
+import compactStringify from 'json-stringify-pretty-compact';
 
 const DIR = __dirname + '/..';
 const SPECS = '/examples/specs';
