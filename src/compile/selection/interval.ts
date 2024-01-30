@@ -54,7 +54,6 @@ const interval: SelectionCompiler<'interval'> = {
       if (selCmpt.mark.cursor == null) {
         selCmpt.mark.cursor = 'move';
       }
-
     }
   },
 

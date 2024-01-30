@@ -845,8 +845,8 @@ describe('Interval Selections', () => {
       {
         name: 'disabled',
         select: {type: 'interval', clear: false, translate: false, zoom: false}
-      }]
-    );
+      }
+    ]);
 
     it('should not override manual cursor assignment', () => {
       const nameModel = parseUnitModel({
@@ -859,7 +859,6 @@ describe('Interval Selections', () => {
       nameModel.parseScale();
 
       const marks: any[] = [{hello: 'world'}];
-
 
       expect(interval.marks(nameModel, brushSelCmpts['crosshair'], marks)).toEqual([
         {
@@ -946,7 +945,7 @@ describe('Interval Selections', () => {
             }
           }
         }
-      ])
+      ]);
     });
 
     it('should not change brush cursor when translate is set to "false"', () => {
@@ -998,8 +997,7 @@ describe('Interval Selections', () => {
                   signal: 'disabled_y[1]'
                 },
                 {value: 0}
-              ],
-
+              ]
             }
           }
         },
