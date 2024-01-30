@@ -311,8 +311,8 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       return [
         0,
         new SignalRefWrapper(() => {
-          const w = isFacetModel(model.parent) ? model.getSignalName('child_width') : model.getSignalName('width');
-          const h = isFacetModel(model.parent) ? model.getSignalName('child_height') : model.getSignalName('height');
+          const w = model.getSignalName(isFacetModel(model.parent) ? 'child_width' : 'width');
+          const h = model.getSignalName(isFacetModel(model.parent) ?'child_height' : 'height');
           return `min(${w},${h})/2`;
         })
       ];
