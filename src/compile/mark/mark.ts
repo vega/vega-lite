@@ -335,8 +335,8 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
       },
       ...(postEncodingTransform
         ? {
-          transform: postEncodingTransform
-        }
+            transform: postEncodingTransform
+          }
         : {})
     }
   ];
@@ -376,7 +376,7 @@ function interactiveFlag(model: UnitModel) {
   }
   return parentCount
     ? {
-      interactive: unitCount > 0 || model.mark === 'geoshape' || !!model.encoding.tooltip || !!model.markDef.tooltip
-    }
+        interactive: unitCount > 0 || model.mark === 'geoshape' || !!model.encoding.tooltip || !!model.markDef.tooltip
+      }
     : null;
 }
