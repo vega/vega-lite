@@ -51,9 +51,6 @@ const interval: SelectionCompiler<'interval'> = {
           filters.push(filterExpr);
         }
       }
-      if (selCmpt.mark.cursor == null) {
-        selCmpt.mark.cursor = 'move';
-      }
     }
   },
 
@@ -251,6 +248,9 @@ const interval: SelectionCompiler<'interval'> = {
       return def;
     }, {});
 
+    // Set cursor to move unless the brush cannot be translated
+    const vgCursor = cursor ?? (selCmpt.translate ? 'move' : null);
+
     return [
       {
         name: `${name + BRUSH}_bg`,
@@ -271,7 +271,7 @@ const interval: SelectionCompiler<'interval'> = {
         clip: true,
         encode: {
           enter: {
-            ...(cursor ? {cursor: {value: cursor}} : {}),
+            ...(vgCursor ? {cursor: {value: vgCursor}} : {}),
             fill: {value: 'transparent'}
           },
           update: {...update, ...vgStroke}
