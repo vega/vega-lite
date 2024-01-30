@@ -1,5 +1,5 @@
 // Only used for jest
-module.exports = {
+export default {
   presets: [
     [
       '@babel/preset-env',
