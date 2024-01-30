@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 // Render a Vega-Lite specification to SVG
-const {writeFile} = require('fs');
-const render = require('./render');
+import {writeFile} from 'fs';
+import render from './render';
 
 const svgHeader =
   '<?xml version="1.0" encoding="utf-8"?>\n' +

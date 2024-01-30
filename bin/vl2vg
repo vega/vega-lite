@@ -2,11 +2,11 @@
 
 // Compile a Vega-Lite spec to Vega
 
-const {createWriteStream} = require('fs');
-const vegaLite = require('..');
-const compactStringify = require('json-stringify-pretty-compact');
-const read = require('./read');
-const args = require('./args');
+import {createWriteStream} from 'fs';
+import vegaLite from '..';
+import compactStringify from 'json-stringify-pretty-compact';
+import read from './read';
+import args from './args';
 
 const arg = args('vega');
 
