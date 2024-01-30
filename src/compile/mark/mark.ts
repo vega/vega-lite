@@ -366,7 +366,7 @@ function projectionClip(model: UnitModel) {
  * Only output interactive flags if we have selections defined somewhere in our model hierarchy.
  */
 function interactiveFlag(model: UnitModel) {
-  if (!model.component.selection || keys(model.component.selection).length === 0) return null;
+  if (!model.component.selection) return null;
   const unitCount = keys(model.component.selection).length;
   let parentCount = unitCount;
   let parent = model.parent;
@@ -374,14 +374,9 @@ function interactiveFlag(model: UnitModel) {
     parentCount = keys(parent.component.selection).length;
     parent = parent.parent;
   }
-  console.log(parentCount
-    ? {
-      interactive: unitCount > 0 || model.mark === 'geoshape' || !!model.encoding.tooltip
-    }
-    : null)
   return parentCount
     ? {
-      interactive: unitCount > 0 || model.mark === 'geoshape' || !!model.encoding.tooltip
+      interactive: unitCount > 0 || model.mark === 'geoshape' || !!model.encoding.tooltip || !!model.markDef.tooltip
     }
     : null;
 }
