@@ -10,7 +10,7 @@
  */
 
 import fs from 'fs';
-import vl from '../build/vega-lite/src/index.js';
+import vl from '../build/src/index.js';
 import stableStringify from 'fast-json-stable-stringify';
 import compactStringify from 'json-stringify-pretty-compact';
 
