@@ -1,6 +1,6 @@
 import {BaseProjection, SignalRef, Vector2} from 'vega';
-import {ExprRef} from './expr';
-import {MapExcludeValueRefAndReplaceSignalWith, ProjectionType} from './vega.schema';
+import {ExprRef} from './expr.js';
+import {MapExcludeValueRefAndReplaceSignalWith, ProjectionType} from './vega.schema.js';
 
 export interface Projection<ES extends ExprRef | SignalRef>
   extends MapExcludeValueRefAndReplaceSignalWith<BaseProjection, ES> {

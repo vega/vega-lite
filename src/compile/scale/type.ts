@@ -1,4 +1,4 @@
-import {isBinning} from '../../bin';
+import {isBinning} from '../../bin.js';
 import {
   getSizeChannel,
   isColorChannel,
@@ -7,14 +7,14 @@ import {
   isXorYOffset,
   rangeType,
   ScaleChannel
-} from '../../channel';
-import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
-import * as log from '../../log';
-import {isRelativeBandSize, MarkDef} from '../../mark';
-import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale';
-import {normalizeTimeUnit} from '../../timeunit';
-import * as util from '../../util';
-import {POLAR_POSITION_SCALE_CHANNEL_INDEX} from './../../channel';
+} from '../../channel.js';
+import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef.js';
+import * as log from '../../log/index.js';
+import {isRelativeBandSize, MarkDef} from '../../mark.js';
+import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale.js';
+import {normalizeTimeUnit} from '../../timeunit.js';
+import * as util from '../../util.js';
+import {POLAR_POSITION_SCALE_CHANNEL_INDEX} from './../../channel.js';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 

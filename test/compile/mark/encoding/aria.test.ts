@@ -1,5 +1,5 @@
-import {aria} from '../../../../src/compile/mark/encode';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {aria} from '../../../../src/compile/mark/encode/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encoding/aria', () => {
   it('aria should be added to bar mark', () => {

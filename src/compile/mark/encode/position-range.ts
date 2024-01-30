@@ -1,15 +1,15 @@
 import type {SignalRef} from 'vega';
-import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel';
-import {isFieldOrDatumDef} from '../../../channeldef';
-import * as log from '../../../log';
-import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark';
-import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkStyleConfig} from '../../common';
-import {UnitModel} from '../../unit';
-import {positionOffset} from './offset';
-import {vgAlignedPositionChannel} from './position-align';
-import {pointPosition, pointPositionDefaultRef} from './position-point';
-import * as ref from './valueref';
+import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel.js';
+import {isFieldOrDatumDef} from '../../../channeldef.js';
+import * as log from '../../../log/index.js';
+import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark.js';
+import {VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
+import {getMarkStyleConfig} from '../../common.js';
+import {UnitModel} from '../../unit.js';
+import {positionOffset} from './offset.js';
+import {vgAlignedPositionChannel} from './position-align.js';
+import {pointPosition, pointPositionDefaultRef} from './position-point.js';
+import * as ref from './valueref.js';
 
 /**
  * Utility for area/rule position, which can be either point or range.

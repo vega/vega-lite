@@ -1,6 +1,6 @@
-import {SELECTION_ID} from '../../selection';
+import {SELECTION_ID} from '../../selection.js';
 import {IdentifierTransform as VgIdentifierTransform} from 'vega';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode} from './dataflow.js';
 
 export class IdentifierNode extends DataFlowNode {
   public clone() {

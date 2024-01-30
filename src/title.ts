@@ -1,9 +1,9 @@
 import {BaseTitle, SignalRef, Text, TextEncodeEntry, TitleAnchor} from 'vega';
 import {isArray, isString} from 'vega-util';
-import {ExprRef} from './expr';
-import {MarkConfig} from './mark';
-import {pick} from './util';
-import {MapExcludeValueRefAndReplaceSignalWith, MappedExcludeValueRef} from './vega.schema';
+import {ExprRef} from './expr.js';
+import {MarkConfig} from './mark.js';
+import {pick} from './util.js';
+import {MapExcludeValueRefAndReplaceSignalWith, MappedExcludeValueRef} from './vega.schema.js';
 
 export type BaseTitleNoValueRefs<ES extends ExprRef | SignalRef> = MapExcludeValueRefAndReplaceSignalWith<
   Omit<BaseTitle, 'align' | 'baseline'>,

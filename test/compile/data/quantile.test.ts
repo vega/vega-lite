@@ -1,6 +1,6 @@
-import {QuantileTransformNode} from '../../../src/compile/data/quantile';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {QuantileTransformNode} from '../../../src/compile/data/quantile.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/fold', () => {
   describe('assemble', () => {

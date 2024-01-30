@@ -1,5 +1,5 @@
-import {FlattenTransformNode} from '../../../src/compile/data/flatten';
-import {Transform} from '../../../src/transform';
+import {FlattenTransformNode} from '../../../src/compile/data/flatten.js';
+import {Transform} from '../../../src/transform.js';
 
 describe('compile/data/flatten', () => {
   describe('FlattenTransformNode', () => {

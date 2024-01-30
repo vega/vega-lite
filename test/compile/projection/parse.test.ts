@@ -1,4 +1,4 @@
-import {parseLayerModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {parseLayerModel, parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('src/compile/projection/parse', () => {
   describe('parseUnitProjection', () => {

@@ -1,5 +1,5 @@
-import {arc} from '../../../src/compile/mark/arc';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {arc} from '../../../src/compile/mark/arc.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Arc', () => {
   describe('with theta in mark def', () => {

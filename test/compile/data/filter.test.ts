@@ -1,10 +1,10 @@
-import {AncestorParse} from '../../../src/compile/data';
-import {FilterNode} from '../../../src/compile/data/filter';
-import {ParseNode} from '../../../src/compile/data/formatparse';
-import {parseTransformArray} from '../../../src/compile/data/parse';
-import {Dict} from '../../../src/util';
-import {parseUnitModel} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {AncestorParse} from '../../../src/compile/data/index.js';
+import {FilterNode} from '../../../src/compile/data/filter.js';
+import {ParseNode} from '../../../src/compile/data/formatparse.js';
+import {parseTransformArray} from '../../../src/compile/data/parse.js';
+import {Dict} from '../../../src/util.js';
+import {parseUnitModel} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/filter', () => {
   it('should create parse for filtered fields', () => {

@@ -1,10 +1,10 @@
 import {parseSelector} from 'vega-event-selector';
-import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import translate from '../../../src/compile/selection/translate';
-import {Scale} from '../../../src/scale';
-import {Sort} from '../../../src/sort';
-import {parseUnitModel} from '../../util';
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import translate from '../../../src/compile/selection/translate.js';
+import {Scale} from '../../../src/scale.js';
+import {Sort} from '../../../src/sort.js';
+import {parseUnitModel} from '../../util.js';
 
 function getModel(
   xscale: Scale = {type: 'linear'},

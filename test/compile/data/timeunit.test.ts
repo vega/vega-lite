@@ -1,8 +1,12 @@
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX, TimeUnitNode} from '../../../src/compile/data/timeunit';
-import {ModelWithField} from '../../../src/compile/model';
-import {TimeUnitTransform} from '../../../src/transform';
-import {parseUnitModel} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {
+  OFFSETTED_RECT_END_SUFFIX,
+  OFFSETTED_RECT_START_SUFFIX,
+  TimeUnitNode
+} from '../../../src/compile/data/timeunit.js';
+import {ModelWithField} from '../../../src/compile/model.js';
+import {TimeUnitTransform} from '../../../src/transform.js';
+import {parseUnitModel} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 function assembleFromEncoding(model: ModelWithField) {
   return TimeUnitNode.makeFromEncoding(null, model)?.assemble();

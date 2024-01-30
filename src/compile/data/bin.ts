@@ -1,16 +1,16 @@
 import {BinTransform as VgBinTransform, Transforms as VgTransform} from 'vega';
 import {isString} from 'vega-util';
-import {BinParams, binToString, isBinning, isParameterExtent} from '../../bin';
-import {Channel} from '../../channel';
-import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
-import {Config} from '../../config';
-import {BinTransform} from '../../transform';
-import {Dict, duplicate, hash, isEmpty, keys, replacePathInField, unique, vals} from '../../util';
-import {binFormatExpression} from '../format';
-import {isUnitModel, Model, ModelWithField} from '../model';
-import {parseSelectionExtent} from '../selection/parse';
-import {NonPositionScaleChannel, PositionChannel} from './../../channel';
-import {DataFlowNode} from './dataflow';
+import {BinParams, binToString, isBinning, isParameterExtent} from '../../bin.js';
+import {Channel} from '../../channel.js';
+import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef.js';
+import {Config} from '../../config.js';
+import {BinTransform} from '../../transform.js';
+import {Dict, duplicate, hash, isEmpty, keys, replacePathInField, unique, vals} from '../../util.js';
+import {binFormatExpression} from '../format.js';
+import {isUnitModel, Model, ModelWithField} from '../model.js';
+import {parseSelectionExtent} from '../selection/parse.js';
+import {NonPositionScaleChannel, PositionChannel} from './../../channel.js';
+import {DataFlowNode} from './dataflow.js';
 
 function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, channel: Channel, config: Config) {
   if (binRequiresRange(fieldDef, channel)) {

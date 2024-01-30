@@ -13,11 +13,11 @@ import {
   isSortableFieldDef,
   ScaleFieldDef,
   ValueDef
-} from '../channeldef';
-import {Encoding} from '../encoding';
-import * as log from '../log';
-import {isSortField} from '../sort';
-import {FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
+} from '../channeldef.js';
+import {Encoding} from '../encoding.js';
+import * as log from '../log/index.js';
+import {isSortField} from '../sort.js';
+import {FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet.js';
 
 export interface RepeaterValue {
   row?: string;

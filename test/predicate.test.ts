@@ -1,4 +1,4 @@
-import {expression} from '../src/compile/predicate';
+import {expression} from '../src/compile/predicate.js';
 import {
   fieldFilterExpression,
   FieldValidPredicate,
@@ -8,8 +8,8 @@ import {
   isFieldRangePredicate,
   isFieldValidPredicate,
   Predicate
-} from '../src/predicate';
-import {without} from './util';
+} from '../src/predicate.js';
+import {without} from './util.js';
 
 describe('filter', () => {
   const equalFilter = {field: 'color', equal: 'red'};

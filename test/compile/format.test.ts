@@ -1,4 +1,4 @@
-import {PositionDatumDef, vgField} from '../../src/channeldef';
+import {PositionDatumDef, vgField} from '../../src/channeldef.js';
 import {
   formatSignalRef,
   guideFormat,
@@ -6,9 +6,9 @@ import {
   numberFormat,
   timeFormatExpression,
   timeFormat
-} from '../../src/compile/format';
-import {defaultConfig} from '../../src/config';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
+} from '../../src/compile/format.js';
+import {defaultConfig} from '../../src/config.js';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type.js';
 
 describe('Format', () => {
   describe('timeFormatExpression()', () => {

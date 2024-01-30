@@ -1,11 +1,11 @@
 import type {SignalRef} from 'vega';
 import {isNumber} from 'vega-util';
-import {getViewConfigDiscreteStep} from '../../config';
-import {isVgRangeStep} from '../../vega.schema';
-import {getMarkPropOrConfig, signalOrValueRef} from '../common';
-import {UnitModel} from '../unit';
-import {MarkCompiler} from './base';
-import * as encode from './encode';
+import {getViewConfigDiscreteStep} from '../../config.js';
+import {isVgRangeStep} from '../../vega.schema.js';
+import {getMarkPropOrConfig, signalOrValueRef} from '../common.js';
+import {UnitModel} from '../unit.js';
+import {MarkCompiler} from './base.js';
+import * as encode from './encode/index.js';
 
 export const tick: MarkCompiler = {
   vgMark: 'rect',

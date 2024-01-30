@@ -1,12 +1,12 @@
 import {Transforms as VgTransform, Vector2} from 'vega';
 import {isString} from 'vega-util';
-import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
-import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef';
-import {GEOJSON} from '../../type';
-import {duplicate, hash} from '../../util';
-import {VgExprRef} from '../../vega.schema';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
+import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel.js';
+import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef.js';
+import {GEOJSON} from '../../type.js';
+import {duplicate, hash} from '../../util.js';
+import {VgExprRef} from '../../vega.schema.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
 
 export class GeoJSONNode extends DataFlowNode {
   public clone() {

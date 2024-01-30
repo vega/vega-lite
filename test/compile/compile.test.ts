@@ -1,5 +1,5 @@
-import {compile} from '../../src/compile/compile';
-import * as log from '../../src/log';
+import {compile} from '../../src/compile/compile.js';
+import * as log from '../../src/log/index.js';
 
 describe('compile/compile', () => {
   it('should throw error for invalid spec', () => {

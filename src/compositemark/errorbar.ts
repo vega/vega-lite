@@ -1,5 +1,5 @@
 import {AggregateOp, Orientation, SignalRef, Text} from 'vega';
-import {PositionChannel} from '../channel';
+import {PositionChannel} from '../channel.js';
 import {
   Field,
   isContinuousFieldOrDatumDef,
@@ -8,21 +8,21 @@ import {
   SecondaryFieldDef,
   title,
   ValueDef
-} from '../channeldef';
-import {Config} from '../config';
-import {Data} from '../data';
-import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';
-import {ExprRef} from '../expr';
-import * as log from '../log';
-import {isMarkDef, MarkDef} from '../mark';
-import {NormalizerParams} from '../normalize';
-import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
-import {Step} from '../spec/base';
-import {NormalizedUnitSpec} from '../spec/unit';
-import {TitleParams} from '../title';
-import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
-import {replaceAll, titleCase} from '../util';
-import {CompositeMarkNormalizer} from './base';
+} from '../channeldef.js';
+import {Config} from '../config.js';
+import {Data} from '../data.js';
+import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding.js';
+import {ExprRef} from '../expr.js';
+import * as log from '../log/index.js';
+import {isMarkDef, MarkDef} from '../mark.js';
+import {NormalizerParams} from '../normalize/index.js';
+import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
+import {Step} from '../spec/base.js';
+import {NormalizedUnitSpec} from '../spec/unit.js';
+import {TitleParams} from '../title.js';
+import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform.js';
+import {replaceAll, titleCase} from '../util.js';
+import {CompositeMarkNormalizer} from './base.js';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
@@ -31,8 +31,8 @@ import {
   getCompositeMarkTooltip,
   makeCompositeAggregatePartFactory,
   PartsMixins
-} from './common';
-import {ErrorBand, ErrorBandDef} from './errorband';
+} from './common.js';
+import {ErrorBand, ErrorBandDef} from './errorband.js';
 
 export const ERRORBAR = 'errorbar' as const;
 export type ErrorBar = typeof ERRORBAR;

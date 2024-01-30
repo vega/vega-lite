@@ -1,7 +1,7 @@
-import {JoinAggregateTransformNode} from '../../../src/compile/data/joinaggregate';
-import {makeJoinAggregateFromFacet} from '../../../src/compile/data/joinaggregatefacet';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {JoinAggregateTransformNode} from '../../../src/compile/data/joinaggregate.js';
+import {makeJoinAggregateFromFacet} from '../../../src/compile/data/joinaggregatefacet.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/joinaggregate', () => {
   it('creates correct joinaggregate nodes for calculating sort field of crossed facet', () => {

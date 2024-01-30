@@ -7,10 +7,10 @@ import {
   isNamedData,
   isSphereGenerator,
   isUrlData
-} from '../../data';
-import {contains, isEmpty, omit} from '../../util';
-import {VgData} from '../../vega.schema';
-import {DataFlowNode} from './dataflow';
+} from '../../data.js';
+import {contains, isEmpty, omit} from '../../util.js';
+import {VgData} from '../../vega.schema.js';
+import {DataFlowNode} from './dataflow.js';
 
 export class SourceNode extends DataFlowNode {
   private _data: Partial<VgData>;

@@ -1,6 +1,6 @@
-import {RegressionTransformNode} from '../../../src/compile/data/regression';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {RegressionTransformNode} from '../../../src/compile/data/regression.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/fold', () => {
   describe('assemble', () => {

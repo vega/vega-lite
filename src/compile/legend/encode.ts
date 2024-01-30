@@ -1,6 +1,6 @@
 import {ColorValueRef, EncodeEntry, Gradient, LegendEncode, LegendType, SignalRef, SymbolEncodeEntry} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
-import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel';
+import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel.js';
 import {
   Conditional,
   DatumDef,
@@ -10,16 +10,16 @@ import {
   TypedFieldDef,
   Value,
   ValueDef
-} from '../../channeldef';
-import {Encoding} from '../../encoding';
-import {FILL_STROKE_CONFIG} from '../../mark';
-import {getFirstDefined, isEmpty, varName} from '../../util';
-import {applyMarkConfig, signalOrValueRef} from '../common';
-import {formatCustomType, isCustomFormatType} from '../format';
-import * as mixins from '../mark/encode';
-import {STORE} from '../selection';
-import {UnitModel} from '../unit';
-import {LegendComponent} from './component';
+} from '../../channeldef.js';
+import {Encoding} from '../../encoding.js';
+import {FILL_STROKE_CONFIG} from '../../mark.js';
+import {getFirstDefined, isEmpty, varName} from '../../util.js';
+import {applyMarkConfig, signalOrValueRef} from '../common.js';
+import {formatCustomType, isCustomFormatType} from '../format.js';
+import * as mixins from '../mark/encode/index.js';
+import {STORE} from '../selection/index.js';
+import {UnitModel} from '../unit.js';
+import {LegendComponent} from './component.js';
 
 export interface LegendEncodeParams {
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef;

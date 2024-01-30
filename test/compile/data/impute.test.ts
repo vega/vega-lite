@@ -1,7 +1,7 @@
-import {ImputeNode} from '../../../src/compile/data/impute';
-import {Transform} from '../../../src/transform';
-import {parseUnitModelWithScale} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {ImputeNode} from '../../../src/compile/data/impute.js';
+import {Transform} from '../../../src/transform.js';
+import {parseUnitModelWithScale} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/impute', () => {
   describe('Impute Transform', () => {

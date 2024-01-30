@@ -1,11 +1,11 @@
 import {NewSignal, PushSignal} from 'vega';
-import {X} from '../../../src/channel';
-import {Model} from '../../../src/compile/model';
-import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
-import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {UnitModel} from '../../../src/compile/unit';
-import * as log from '../../../src/log';
-import {parseConcatModel, parseModel, parseUnitModelWithScaleAndSelection} from '../../util';
+import {X} from '../../../src/channel.js';
+import {Model} from '../../../src/compile/model.js';
+import {assembleScalesForModel} from '../../../src/compile/scale/assemble.js';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import * as log from '../../../src/log/index.js';
+import {parseConcatModel, parseModel, parseUnitModelWithScaleAndSelection} from '../../util.js';
 
 describe('Selection + Scales', () => {
   describe('selectionExtent', () => {

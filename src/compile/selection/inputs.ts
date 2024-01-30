@@ -1,11 +1,10 @@
 import {stringValue} from 'vega-util';
-import {disableDirectManipulation, TUPLE} from '.';
-import {varName} from '../../util';
-import {assembleInit} from './assemble';
-import nearest from './nearest';
-import {TUPLE_FIELDS} from './project';
-import {SelectionCompiler} from '.';
-import {isLegendBinding} from '../../selection';
+import {disableDirectManipulation, TUPLE, SelectionCompiler} from './index.js';
+import {varName} from '../../util.js';
+import {assembleInit} from './assemble.js';
+import nearest from './nearest.js';
+import {TUPLE_FIELDS} from './project.js';
+import {isLegendBinding} from '../../selection.js';
 import {NewSignal} from 'vega';
 
 const inputBindings: SelectionCompiler<'point'> = {

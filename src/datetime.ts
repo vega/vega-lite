@@ -1,9 +1,9 @@
 // DateTime definition object
 
 import {isNumber, isObject} from 'vega-util';
-import * as log from './log';
-import {TIMEUNIT_PARTS} from './timeunit';
-import {duplicate, isNumeric, keys} from './util';
+import * as log from './log/index.js';
+import {TIMEUNIT_PARTS} from './timeunit.js';
+import {duplicate, isNumeric, keys} from './util.js';
 
 /**
  * @minimum 1

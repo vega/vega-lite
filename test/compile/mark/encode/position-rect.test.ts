@@ -1,7 +1,7 @@
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../../src/compile/data/timeunit';
-import {rectPosition} from '../../../../src/compile/mark/encode/position-rect';
-import * as log from '../../../../src/log';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../../src/compile/data/timeunit.js';
+import {rectPosition} from '../../../../src/compile/mark/encode/position-rect.js';
+import * as log from '../../../../src/log/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/position-rect', () => {
   describe('rectPosition', () => {

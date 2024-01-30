@@ -1,7 +1,7 @@
-import {CalculateNode} from '../../../src/compile/data/calculate';
-import {ModelWithField} from '../../../src/compile/model';
-import {parseUnitModel} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {CalculateNode} from '../../../src/compile/data/calculate.js';
+import {ModelWithField} from '../../../src/compile/model.js';
+import {parseUnitModel} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 function assembleFromSortArray(model: ModelWithField) {
   const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;

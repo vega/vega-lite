@@ -1,7 +1,7 @@
 import {KDETransform as VgKDETransform} from 'vega';
-import {DensityTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {DensityTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for density transform nodes

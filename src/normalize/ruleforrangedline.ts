@@ -1,13 +1,13 @@
 import {isObject} from 'vega-util';
-import {isBinned} from '../bin';
-import {getMainRangeChannel, SECONDARY_RANGE_CHANNEL} from '../channel';
-import {Field, isDatumDef, isFieldDef} from '../channeldef';
-import {Encoding} from '../encoding';
-import * as log from '../log';
-import {isMarkDef} from '../mark';
-import {GenericSpec} from '../spec';
-import {GenericUnitSpec, isUnitSpec} from '../spec/unit';
-import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base';
+import {isBinned} from '../bin.js';
+import {getMainRangeChannel, SECONDARY_RANGE_CHANNEL} from '../channel.js';
+import {Field, isDatumDef, isFieldDef} from '../channeldef.js';
+import {Encoding} from '../encoding.js';
+import * as log from '../log/index.js';
+import {isMarkDef} from '../mark.js';
+import {GenericSpec} from '../spec/index.js';
+import {GenericUnitSpec, isUnitSpec} from '../spec/unit.js';
+import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base.js';
 
 interface EncodingX2Mixins {
   x2: Encoding<Field>['x2'];

@@ -1,10 +1,10 @@
-import {DataComponent} from '.';
-import * as log from '../../log';
-import {Model} from '../model';
-import {DataFlowNode} from './dataflow';
-import {Optimizer} from './optimizer';
-import * as optimizers from './optimizers';
-import {moveFacetDown} from './subtree';
+import {DataComponent} from './index.js';
+import * as log from '../../log/index.js';
+import {Model} from '../model.js';
+import {DataFlowNode} from './dataflow.js';
+import {Optimizer} from './optimizer.js';
+import * as optimizers from './optimizers.js';
+import {moveFacetDown} from './subtree.js';
 
 export const FACET_SCALE_PREFIX = 'scale_';
 export const MAX_OPTIMIZATION_RUNS = 5;

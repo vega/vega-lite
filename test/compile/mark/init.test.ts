@@ -1,7 +1,7 @@
-import {initMarkdef} from '../../../src/compile/mark/init';
-import {defaultConfig} from '../../../src/config';
-import {CIRCLE, GEOSHAPE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
-import {parseUnitModelWithScaleAndLayoutSize, without} from '../../util';
+import {initMarkdef} from '../../../src/compile/mark/init.js';
+import {defaultConfig} from '../../../src/config.js';
+import {CIRCLE, GEOSHAPE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark.js';
+import {parseUnitModelWithScaleAndLayoutSize, without} from '../../util.js';
 
 describe('compile/mark/init', () => {
   describe('initMarkDef', () => {

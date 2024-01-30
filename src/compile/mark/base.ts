@@ -1,6 +1,6 @@
 import {Mark} from 'vega';
-import {VgEncodeEntry, VgPostEncodingTransform} from '../../vega.schema';
-import {UnitModel} from '../unit';
+import {VgEncodeEntry, VgPostEncodingTransform} from '../../vega.schema.js';
+import {UnitModel} from '../unit.js';
 
 /**
  * Abstract interface for compiling a Vega-Lite primitive mark type.

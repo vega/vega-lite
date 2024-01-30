@@ -1,5 +1,5 @@
-import {sizeSignals} from '../../../src/compile/layoutsize/assemble';
-import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {sizeSignals} from '../../../src/compile/layoutsize/assemble.js';
+import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('compile/layout', () => {
   describe('sizeExpr', () => {

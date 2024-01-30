@@ -1,9 +1,9 @@
-import {X, Y} from '../../../src/channel';
-import {BIN_RANGE_DELIMITER} from '../../../src/compile/common';
-import {text} from '../../../src/compile/mark/text';
-import {UnitModel} from '../../../src/compile/unit';
-import {NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../../src/spec';
-import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {X, Y} from '../../../src/channel.js';
+import {BIN_RANGE_DELIMITER} from '../../../src/compile/common.js';
+import {text} from '../../../src/compile/mark/text.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import {NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../../src/spec/index.js';
+import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Text', () => {
   describe('with stacked x', () => {

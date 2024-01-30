@@ -1,4 +1,4 @@
-import {parseLayerModel} from '../util';
+import {parseLayerModel} from '../util.js';
 
 describe('Layer', () => {
   describe('parseScale', () => {

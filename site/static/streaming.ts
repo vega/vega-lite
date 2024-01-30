@@ -1,5 +1,5 @@
-import {embedExample} from '.';
-import {TopLevelSpec} from '../../src';
+import {embedExample} from './index.js';
+import {TopLevelSpec} from '../../src/index.js';
 
 export function runStreamingExample(eleId: string) {
   const vlSpec: TopLevelSpec = {

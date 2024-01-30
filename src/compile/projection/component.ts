@@ -1,6 +1,6 @@
 import {Projection as VgProjection, SignalRef} from 'vega';
-import {Projection} from '../../projection';
-import {Split} from '../split';
+import {Projection} from '../../projection.js';
+import {Split} from '../split.js';
 
 export class ProjectionComponent extends Split<VgProjection> {
   public merged = false;

@@ -1,6 +1,6 @@
-import {assembleProjectionForModel} from '../../../src/compile/projection/assemble';
-import {isSignalRef} from '../../../src/vega.schema';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {assembleProjectionForModel} from '../../../src/compile/projection/assemble.js';
+import {isSignalRef} from '../../../src/vega.schema.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('compile/projection/assemble', () => {
   describe('assembleProjectionForModel', () => {

@@ -1,10 +1,10 @@
 import {array} from 'vega-util';
-import {ChannelDef, ConditionalPredicate, isConditionalDef, isConditionalParameter} from '../../../channeldef';
-import {GuideEncodingConditionalValueDef} from '../../../guide';
-import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {expression} from '../../predicate';
-import {parseSelectionPredicate} from '../../selection/parse';
-import {UnitModel} from '../../unit';
+import {ChannelDef, ConditionalPredicate, isConditionalDef, isConditionalParameter} from '../../../channeldef.js';
+import {GuideEncodingConditionalValueDef} from '../../../guide.js';
+import {VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
+import {expression} from '../../predicate.js';
+import {parseSelectionPredicate} from '../../selection/parse.js';
+import {UnitModel} from '../../unit.js';
 
 /**
  * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition

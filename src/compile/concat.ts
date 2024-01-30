@@ -1,14 +1,14 @@
 import {NewSignal, SignalRef} from 'vega';
-import {Config} from '../config';
-import * as log from '../log';
-import {isHConcatSpec, isVConcatSpec, NormalizedConcatSpec, NormalizedSpec} from '../spec';
-import {keys} from '../util';
-import {VgData, VgLayout} from '../vega.schema';
-import {buildModel} from './buildmodel';
-import {parseData} from './data/parse';
-import {assembleLayoutSignals} from './layoutsize/assemble';
-import {parseConcatLayoutSize} from './layoutsize/parse';
-import {Model} from './model';
+import {Config} from '../config.js';
+import * as log from '../log/index.js';
+import {isHConcatSpec, isVConcatSpec, NormalizedConcatSpec, NormalizedSpec} from '../spec/index.js';
+import {keys} from '../util.js';
+import {VgData, VgLayout} from '../vega.schema.js';
+import {buildModel} from './buildmodel.js';
+import {parseData} from './data/parse.js';
+import {assembleLayoutSignals} from './layoutsize/assemble.js';
+import {parseConcatLayoutSize} from './layoutsize/parse.js';
+import {Model} from './model.js';
 
 export class ConcatModel extends Model {
   public readonly children: Model[];

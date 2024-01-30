@@ -1,16 +1,16 @@
 import type {SignalRef} from 'vega';
-import {FieldName} from '../channeldef';
-import {Config} from '../config';
-import {Encoding} from '../encoding';
-import {ParameterPredicate} from '../predicate';
-import {ExprRef} from '../expr';
-import {Projection} from '../projection';
-import {TopLevelSelectionParameter} from '../selection';
-import {GenericSpec, NormalizedSpec} from '../spec';
-import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
-import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/unit';
-import {Dict} from '../util';
-import {RepeaterValue} from './repeater';
+import {FieldName} from '../channeldef.js';
+import {Config} from '../config.js';
+import {Encoding} from '../encoding.js';
+import {ParameterPredicate} from '../predicate.js';
+import {ExprRef} from '../expr.js';
+import {Projection} from '../projection.js';
+import {TopLevelSelectionParameter} from '../selection.js';
+import {GenericSpec, NormalizedSpec} from '../spec/index.js';
+import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer.js';
+import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/unit.js';
+import {Dict} from '../util.js';
+import {RepeaterValue} from './repeater.js';
 
 export type Normalize<S extends GenericSpec<any, any, any, any>, NS extends NormalizedSpec> = (
   spec: S,

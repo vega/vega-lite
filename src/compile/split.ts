@@ -1,5 +1,5 @@
-import * as log from '../log';
-import {deepEqual, duplicate, getFirstDefined, keys} from '../util';
+import * as log from '../log/index.js';
+import {deepEqual, duplicate, getFirstDefined, keys} from '../util.js';
 
 /**
  * Generic class for storing properties that are explicitly specified

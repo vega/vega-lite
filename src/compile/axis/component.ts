@@ -5,11 +5,11 @@ import {
   AxisPropsWithCondition,
   COMMON_AXIS_PROPERTIES_INDEX,
   ConditionalAxisProp
-} from '../../axis';
-import {FieldDefBase} from '../../channeldef';
-import {duplicate, Flag, keys} from '../../util';
-import {isSignalRef} from '../../vega.schema';
-import {Split} from '../split';
+} from '../../axis.js';
+import {FieldDefBase} from '../../channeldef.js';
+import {duplicate, Flag, keys} from '../../util.js';
+import {isSignalRef} from '../../vega.schema.js';
+import {Split} from '../split.js';
 
 function isFalseOrNull(v: any) {
   return v === false || v === null;

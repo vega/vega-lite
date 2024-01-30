@@ -1,9 +1,9 @@
-import * as log from '../../../log';
-import {contains} from '../../../util';
-import {VgEncodeEntry} from '../../../vega.schema';
-import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
-import {UnitModel} from '../../unit';
-import {nonPosition} from './nonposition';
+import * as log from '../../../log/index.js';
+import {contains} from '../../../util.js';
+import {VgEncodeEntry} from '../../../vega.schema.js';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
+import {UnitModel} from '../../unit.js';
+import {nonPosition} from './nonposition.js';
 
 export function color(model: UnitModel, opt: {filled: boolean | undefined} = {filled: undefined}): VgEncodeEntry {
   const {markDef, encoding, config} = model;

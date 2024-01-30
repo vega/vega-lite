@@ -1,7 +1,7 @@
-import {SelectionType, SELECTION_ID} from '../src/selection';
-import {embedFn, fill, hits as hitsMaster, pt, spec, testRenderFn} from './util';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
-import {TopLevelSpec} from '../src';
+import {SelectionType, SELECTION_ID} from '../src/selection.js';
+import {embedFn, fill, hits as hitsMaster, pt, spec, testRenderFn} from './util.js';
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
+import {TopLevelSpec} from '../src/index.js';
 
 describe(`point selections at runtime in unit views`, () => {
   let page: Page;

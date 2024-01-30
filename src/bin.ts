@@ -13,10 +13,10 @@ import {
   STROKEDASH,
   STROKEOPACITY,
   STROKEWIDTH
-} from './channel';
-import {normalizeBin} from './channeldef';
-import {ParameterExtent} from './selection';
-import {entries, keys, varName} from './util';
+} from './channel.js';
+import {normalizeBin} from './channeldef.js';
+import {ParameterExtent} from './selection.js';
+import {entries, keys, varName} from './util.js';
 
 export interface BaseBin {
   /**

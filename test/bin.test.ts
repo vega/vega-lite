@@ -1,4 +1,4 @@
-import {autoMaxBins, binToString, isBinParams} from '../src/bin';
+import {autoMaxBins, binToString, isBinParams} from '../src/bin.js';
 import {
   COLOR,
   COLUMN,
@@ -11,7 +11,7 @@ import {
   STROKE,
   STROKEOPACITY,
   STROKEWIDTH
-} from '../src/channel';
+} from '../src/channel.js';
 
 describe('autoMaxBins', () => {
   it('should assign generate correct defaults for different channels', () => {

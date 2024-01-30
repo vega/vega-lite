@@ -1,11 +1,11 @@
 import {GeoPointTransform as VgGeoPointTransform, Vector2} from 'vega';
 import {isString} from 'vega-util';
-import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel';
-import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef';
-import {duplicate, hash} from '../../util';
-import {VgExprRef} from '../../vega.schema';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
+import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel.js';
+import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef.js';
+import {duplicate, hash} from '../../util.js';
+import {VgExprRef} from '../../vega.schema.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
 
 export class GeoPointNode extends DataFlowNode {
   public clone() {

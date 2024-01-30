@@ -1,5 +1,5 @@
-import {TUPLE, unitName} from '.';
-import {SelectionCompiler} from '.';
+import {TUPLE, unitName} from './index.js';
+import {SelectionCompiler} from './index.js';
 
 export const TOGGLE = '_toggle';
 

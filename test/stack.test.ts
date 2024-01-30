@@ -1,10 +1,10 @@
-import {NonArgAggregateOp} from '../src/aggregate';
-import {DETAIL, X, Y, YOFFSET} from '../src/channel';
-import * as log from '../src/log';
-import {ARC, AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
-import {ScaleType} from '../src/scale';
-import {NormalizedUnitSpec, TopLevel} from '../src/spec';
-import {stack, STACKABLE_MARKS, StackOffset, STACK_BY_DEFAULT_MARKS} from '../src/stack';
+import {NonArgAggregateOp} from '../src/aggregate.js';
+import {DETAIL, X, Y, YOFFSET} from '../src/channel.js';
+import * as log from '../src/log/index.js';
+import {ARC, AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark.js';
+import {ScaleType} from '../src/scale.js';
+import {NormalizedUnitSpec, TopLevel} from '../src/spec/index.js';
+import {stack, STACKABLE_MARKS, StackOffset, STACK_BY_DEFAULT_MARKS} from '../src/stack.js';
 
 describe('stack', () => {
   const NON_STACKABLE_NON_POLAR_MARKS = [RECT];

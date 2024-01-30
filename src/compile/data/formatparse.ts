@@ -1,20 +1,20 @@
 import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega';
 import {isNumber, isString} from 'vega-util';
-import {AncestorParse} from '.';
-import {isMinMaxOp} from '../../aggregate';
-import {getMainRangeChannel, SingleDefChannel} from '../../channel';
+import {AncestorParse} from './index.js';
+import {isMinMaxOp} from '../../aggregate.js';
+import {getMainRangeChannel, SingleDefChannel} from '../../channel.js';
 import {
   isFieldDef,
   isFieldOrDatumDefForTimeFormat,
   isScaleFieldDef,
   isTypedFieldDef,
   TypedFieldDef
-} from '../../channeldef';
-import {isGenerator, Parse} from '../../data';
-import {DateTime, isDateTime} from '../../datetime';
-import * as log from '../../log';
-import {forEachLeaf} from '../../logical';
-import {isPathMark} from '../../mark';
+} from '../../channeldef.js';
+import {isGenerator, Parse} from '../../data.js';
+import {DateTime, isDateTime} from '../../datetime.js';
+import * as log from '../../log/index.js';
+import {forEachLeaf} from '../../logical.js';
+import {isPathMark} from '../../mark.js';
 import {
   isFieldEqualPredicate,
   isFieldGTEPredicate,
@@ -24,14 +24,14 @@ import {
   isFieldOneOfPredicate,
   isFieldPredicate,
   isFieldRangePredicate
-} from '../../predicate';
-import {isSortField} from '../../sort';
-import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, Dict, duplicate, hash, keys, removePathFromField} from '../../util';
-import {signalRefOrValue} from '../common';
-import {isFacetModel, isUnitModel, Model} from '../model';
-import {Split} from '../split';
-import {DataFlowNode} from './dataflow';
+} from '../../predicate.js';
+import {isSortField} from '../../sort.js';
+import {FilterTransform} from '../../transform.js';
+import {accessPathDepth, accessPathWithDatum, Dict, duplicate, hash, keys, removePathFromField} from '../../util.js';
+import {signalRefOrValue} from '../common.js';
+import {isFacetModel, isUnitModel, Model} from '../model.js';
+import {Split} from '../split.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * Remove quotes from a string.

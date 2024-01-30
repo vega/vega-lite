@@ -1,11 +1,11 @@
 import {Update} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {isString} from 'vega-util';
-import {TUPLE} from '.';
-import {varName} from '../../util';
-import inputBindings from './inputs';
-import toggle, {TOGGLE} from './toggle';
-import {SelectionCompiler} from '.';
+import {TUPLE} from './index.js';
+import {varName} from '../../util.js';
+import inputBindings from './inputs.js';
+import toggle, {TOGGLE} from './toggle.js';
+import {SelectionCompiler} from './index.js';
 
 const clear: SelectionCompiler = {
   defined: selCmpt => {

@@ -1,16 +1,16 @@
 import {isObject, MergedStream, NewSignal, Stream} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {array, isString} from 'vega-util';
-import {disableDirectManipulation, TUPLE} from '.';
-import {NonPositionScaleChannel} from '../../channel';
-import * as log from '../../log';
-import {isLegendBinding, isLegendStreamBinding, SELECTION_ID} from '../../selection';
-import {duplicate, vals, varName} from '../../util';
-import {LegendComponent} from '../legend/component';
-import {UnitModel} from '../unit';
-import {TUPLE_FIELDS} from './project';
-import {TOGGLE} from './toggle';
-import {SelectionCompiler} from '.';
+import {disableDirectManipulation, TUPLE} from './index.js';
+import {NonPositionScaleChannel} from '../../channel.js';
+import * as log from '../../log/index.js';
+import {isLegendBinding, isLegendStreamBinding, SELECTION_ID} from '../../selection.js';
+import {duplicate, vals, varName} from '../../util.js';
+import {LegendComponent} from '../legend/component.js';
+import {UnitModel} from '../unit.js';
+import {TUPLE_FIELDS} from './project.js';
+import {TOGGLE} from './toggle.js';
+import {SelectionCompiler} from './index.js';
 
 const legendBindings: SelectionCompiler<'point'> = {
   defined: selCmpt => {

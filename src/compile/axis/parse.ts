@@ -1,20 +1,20 @@
 import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
-import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
-import {PositionScaleChannel, POSITION_SCALE_CHANNELS} from '../../channel';
-import {getFieldOrDatumDef, PositionDatumDef, PositionFieldDef} from '../../channeldef';
-import {getFirstDefined, isEmpty, keys, normalizeAngle} from '../../util';
-import {isSignalRef} from '../../vega.schema';
-import {mergeTitleComponent} from '../common';
-import {guideEncodeEntry} from '../guide';
-import {LayerModel} from '../layer';
-import {parseGuideResolve} from '../resolve';
-import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
-import {UnitModel} from '../unit';
-import {AxisComponent, AxisComponentIndex, AxisComponentProps, AXIS_COMPONENT_PROPERTIES} from './component';
-import {getAxisConfig, getAxisConfigs} from './config';
-import * as encode from './encode';
-import {AxisRuleParams, axisRules, defaultOrient, getFieldDefTitle, getLabelAngle} from './properties';
-import {guideFormat, guideFormatType} from '../format';
+import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis.js';
+import {PositionScaleChannel, POSITION_SCALE_CHANNELS} from '../../channel.js';
+import {getFieldOrDatumDef, PositionDatumDef, PositionFieldDef} from '../../channeldef.js';
+import {getFirstDefined, isEmpty, keys, normalizeAngle} from '../../util.js';
+import {isSignalRef} from '../../vega.schema.js';
+import {mergeTitleComponent} from '../common.js';
+import {guideEncodeEntry} from '../guide.js';
+import {LayerModel} from '../layer.js';
+import {parseGuideResolve} from '../resolve.js';
+import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split.js';
+import {UnitModel} from '../unit.js';
+import {AxisComponent, AxisComponentIndex, AxisComponentProps, AXIS_COMPONENT_PROPERTIES} from './component.js';
+import {getAxisConfig, getAxisConfigs} from './config.js';
+import * as encode from './encode.js';
+import {AxisRuleParams, axisRules, defaultOrient, getFieldDefTitle, getLabelAngle} from './properties.js';
+import {guideFormat, guideFormatType} from '../format.js';
 
 export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
   return POSITION_SCALE_CHANNELS.reduce((axis, channel) => {

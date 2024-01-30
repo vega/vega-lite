@@ -1,7 +1,7 @@
 import {isArray, isString} from 'vega';
-import {Field} from '../channeldef';
-import {VariableParameter} from '../parameter';
-import {isSelectionParameter, SelectionParameter} from '../selection';
+import {Field} from '../channeldef.js';
+import {VariableParameter} from '../parameter.js';
+import {isSelectionParameter, SelectionParameter} from '../selection.js';
 import {
   BaseSpec,
   isUnitSpec,
@@ -10,9 +10,9 @@ import {
   NormalizedUnitSpec,
   TopLevel,
   UnitSpec
-} from '../spec';
-import {SpecMapper} from '../spec/map';
-import {NormalizerParams} from './base';
+} from '../spec/index.js';
+import {SpecMapper} from '../spec/map.js';
+import {NormalizerParams} from './base.js';
 
 export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, NormalizedUnitSpec> {
   public map(spec: TopLevel<NormalizedSpec>, normParams: NormalizerParams): TopLevel<NormalizedSpec> {

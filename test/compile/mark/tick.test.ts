@@ -4,9 +4,9 @@
 //
 // After finishing all test, make sure all lines in mark-tick.ts is tested
 // (except the scaffold labels() method)
-import {SIZE, X, Y} from '../../../src/channel';
-import {tick} from '../../../src/compile/mark/tick';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {SIZE, X, Y} from '../../../src/channel.js';
+import {tick} from '../../../src/compile/mark/tick.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Tick', () => {
   describe('with stacked x', () => {

@@ -1,12 +1,12 @@
 import type {SignalRef} from 'vega';
-import {ROW} from '../../src/channel';
-import {FacetModel} from '../../src/compile/facet';
-import {assembleLabelTitle} from '../../src/compile/header/assemble';
-import * as log from '../../src/log';
-import {DEFAULT_SPACING} from '../../src/spec/base';
-import {FacetFieldDef, FacetMapping} from '../../src/spec/facet';
-import {ORDINAL} from '../../src/type';
-import {parseFacetModel, parseFacetModelWithScale} from '../util';
+import {ROW} from '../../src/channel.js';
+import {FacetModel} from '../../src/compile/facet.js';
+import {assembleLabelTitle} from '../../src/compile/header/assemble.js';
+import * as log from '../../src/log/index.js';
+import {DEFAULT_SPACING} from '../../src/spec/base.js';
+import {FacetFieldDef, FacetMapping} from '../../src/spec/facet.js';
+import {ORDINAL} from '../../src/type.js';
+import {parseFacetModel, parseFacetModelWithScale} from '../util.js';
 
 describe('FacetModel', () => {
   describe('initFacet', () => {

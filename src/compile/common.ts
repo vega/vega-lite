@@ -1,6 +1,6 @@
 import {ExprRef, SignalRef, Text} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
-import {AxisConfig, ConditionalAxisProperty} from '../axis';
+import {AxisConfig, ConditionalAxisProperty} from '../axis.js';
 import {
   ConditionalPredicate,
   DatumDef,
@@ -11,17 +11,17 @@ import {
   Value,
   ValueDef,
   vgField
-} from '../channeldef';
-import {Config, StyleConfigIndex} from '../config';
-import {isExprRef} from '../expr';
-import {Mark, MarkConfig, MarkDef} from '../mark';
-import {SortFields} from '../sort';
-import {isText} from '../title';
-import {deepEqual, getFirstDefined} from '../util';
-import {isSignalRef, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../vega.schema';
-import {AxisComponentProps} from './axis/component';
-import {Explicit} from './split';
-import {UnitModel} from './unit';
+} from '../channeldef.js';
+import {Config, StyleConfigIndex} from '../config.js';
+import {isExprRef} from '../expr.js';
+import {Mark, MarkConfig, MarkDef} from '../mark.js';
+import {SortFields} from '../sort.js';
+import {isText} from '../title.js';
+import {deepEqual, getFirstDefined} from '../util.js';
+import {isSignalRef, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../vega.schema.js';
+import {AxisComponentProps} from './axis/component.js';
+import {Explicit} from './split.js';
+import {UnitModel} from './unit.js';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 

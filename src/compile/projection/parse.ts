@@ -1,15 +1,15 @@
 import type {SignalRef} from 'vega';
 import {hasOwnProperty} from 'vega-util';
-import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
-import {getFieldOrDatumDef} from '../../channeldef';
-import {DataSourceType} from '../../data';
-import {replaceExprRef} from '../../expr';
-import {PROJECTION_PROPERTIES} from '../../projection';
-import {GEOJSON} from '../../type';
-import {deepEqual, duplicate, every} from '../../util';
-import {isUnitModel, Model} from '../model';
-import {UnitModel} from '../unit';
-import {ProjectionComponent} from './component';
+import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel.js';
+import {getFieldOrDatumDef} from '../../channeldef.js';
+import {DataSourceType} from '../../data.js';
+import {replaceExprRef} from '../../expr.js';
+import {PROJECTION_PROPERTIES} from '../../projection.js';
+import {GEOJSON} from '../../type.js';
+import {deepEqual, duplicate, every} from '../../util.js';
+import {isUnitModel, Model} from '../model.js';
+import {UnitModel} from '../unit.js';
+import {ProjectionComponent} from './component.js';
 
 export function parseProjection(model: Model) {
   model.component.projection = isUnitModel(model) ? parseUnitProjection(model) : parseNonUnitProjections(model);

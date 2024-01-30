@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {array, isArray} from 'vega-util';
-import {isArgmaxDef, isArgminDef} from './aggregate';
-import {isBinned, isBinning} from './bin';
+import {isArgmaxDef, isArgminDef} from './aggregate.js';
+import {isBinned, isBinning} from './bin.js';
 import {
   ANGLE,
   Channel,
@@ -47,7 +47,7 @@ import {
   Y,
   Y2,
   YOFFSET
-} from './channel';
+} from './channel.js';
 import {
   binRequiresRange,
   ChannelDef,
@@ -86,16 +86,16 @@ import {
   title,
   TypedFieldDef,
   vgField
-} from './channeldef';
-import {Config} from './config';
-import * as log from './log';
-import {Mark} from './mark';
-import {EncodingFacetMapping} from './spec/facet';
-import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
-import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type';
-import {keys, some} from './util';
-import {isSignalRef} from './vega.schema';
-import {isBinnedTimeUnit} from './timeunit';
+} from './channeldef.js';
+import {Config} from './config.js';
+import * as log from './log/index.js';
+import {Mark} from './mark.js';
+import {EncodingFacetMapping} from './spec/facet.js';
+import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform.js';
+import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type.js';
+import {keys, some} from './util.js';
+import {isSignalRef} from './vega.schema.js';
+import {isBinnedTimeUnit} from './timeunit.js';
 
 export interface Encoding<F extends Field> {
   /**

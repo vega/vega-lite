@@ -42,10 +42,10 @@ import type {
   UnionSortField as VgUnionSortField
 } from 'vega';
 import {isArray} from 'vega-util';
-import {Value} from './channeldef';
-import {ExprRef} from './expr';
-import {SortOrder} from './sort';
-import {Dict, Flag, keys} from './util';
+import {Value} from './channeldef.js';
+import {ExprRef} from './expr.js';
+import {SortOrder} from './sort.js';
+import {Dict, Flag, keys} from './util.js';
 
 export type {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 

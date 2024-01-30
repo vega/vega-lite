@@ -1,6 +1,6 @@
 import {array, isBoolean} from 'vega-util';
-import {Aggregate, SUM_OPS} from './aggregate';
-import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel';
+import {Aggregate, SUM_OPS} from './aggregate.js';
+import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel.js';
 import {
   channelDefType,
   FieldName,
@@ -12,10 +12,10 @@ import {
   PositionFieldDef,
   TypedFieldDef,
   vgField
-} from './channeldef';
-import {CompositeAggregate} from './compositemark';
-import {channelHasField, Encoding, isAggregate} from './encoding';
-import * as log from './log';
+} from './channeldef.js';
+import {CompositeAggregate} from './compositemark/index.js';
+import {channelHasField, Encoding, isAggregate} from './encoding.js';
+import * as log from './log/index.js';
 import {
   ARC,
   AREA,
@@ -31,8 +31,8 @@ import {
   SQUARE,
   TEXT,
   TICK
-} from './mark';
-import {ScaleType} from './scale';
+} from './mark.js';
+import {ScaleType} from './scale.js';
 
 const STACK_OFFSET_INDEX = {
   zero: 1,

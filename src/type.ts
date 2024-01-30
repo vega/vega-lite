@@ -1,4 +1,4 @@
-import {keys} from './util';
+import {keys} from './util.js';
 
 /**
  * Data type based on level of measurement

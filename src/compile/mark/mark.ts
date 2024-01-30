@@ -1,25 +1,25 @@
 import {isArray} from 'vega-util';
-import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
-import {DataSourceType} from '../../data';
-import {isAggregate, pathGroupingFields} from '../../encoding';
-import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
-import {isSortByEncoding, isSortField} from '../../sort';
-import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util';
-import {VgCompare, VgEncodeEntry, VG_CORNERRADIUS_CHANNELS} from '../../vega.schema';
-import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortParams} from '../common';
-import {UnitModel} from '../unit';
-import {arc} from './arc';
-import {area} from './area';
-import {bar} from './bar';
-import {MarkCompiler} from './base';
-import {geoshape} from './geoshape';
-import {image} from './image';
-import {line, trail} from './line';
-import {circle, point, square} from './point';
-import {rect} from './rect';
-import {rule} from './rule';
-import {text} from './text';
-import {tick} from './tick';
+import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef.js';
+import {DataSourceType} from '../../data.js';
+import {isAggregate, pathGroupingFields} from '../../encoding.js';
+import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark.js';
+import {isSortByEncoding, isSortField} from '../../sort.js';
+import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util.js';
+import {VgCompare, VgEncodeEntry, VG_CORNERRADIUS_CHANNELS} from '../../vega.schema.js';
+import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortParams} from '../common.js';
+import {UnitModel} from '../unit.js';
+import {arc} from './arc.js';
+import {area} from './area.js';
+import {bar} from './bar.js';
+import {MarkCompiler} from './base.js';
+import {geoshape} from './geoshape.js';
+import {image} from './image.js';
+import {line, trail} from './line.js';
+import {circle, point, square} from './point.js';
+import {rect} from './rect.js';
+import {rule} from './rule.js';
+import {text} from './text.js';
+import {tick} from './tick.js';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,

@@ -1,9 +1,9 @@
-import {COLOR, X, Y} from '../../../src/channel';
-import {area} from '../../../src/compile/mark/area';
-import {Encoding} from '../../../src/encoding';
-import {NormalizedUnitSpec} from '../../../src/spec';
-import {internalField} from '../../../src/util';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {COLOR, X, Y} from '../../../src/channel.js';
+import {area} from '../../../src/compile/mark/area.js';
+import {Encoding} from '../../../src/encoding.js';
+import {NormalizedUnitSpec} from '../../../src/spec/index.js';
+import {internalField} from '../../../src/util.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Area', () => {
   function verticalArea(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {

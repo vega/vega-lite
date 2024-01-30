@@ -1,19 +1,19 @@
 import {Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {array} from 'vega-util';
-import {Config} from '../config';
-import * as log from '../log';
-import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
-import {keys} from '../util';
-import {VgData, VgLayout} from '../vega.schema';
-import {assembleAxisSignals} from './axis/assemble';
-import {parseLayerAxes} from './axis/parse';
-import {parseData} from './data/parse';
-import {assembleLayoutSignals} from './layoutsize/assemble';
-import {parseLayerLayoutSize} from './layoutsize/parse';
-import {assembleLegends} from './legend/assemble';
-import {Model} from './model';
-import {assembleLayerSelectionMarks} from './selection/assemble';
-import {UnitModel} from './unit';
+import {Config} from '../config.js';
+import * as log from '../log/index.js';
+import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec/index.js';
+import {keys} from '../util.js';
+import {VgData, VgLayout} from '../vega.schema.js';
+import {assembleAxisSignals} from './axis/assemble.js';
+import {parseLayerAxes} from './axis/parse.js';
+import {parseData} from './data/parse.js';
+import {assembleLayoutSignals} from './layoutsize/assemble.js';
+import {parseLayerLayoutSize} from './layoutsize/parse.js';
+import {assembleLegends} from './legend/assemble.js';
+import {Model} from './model.js';
+import {assembleLayerSelectionMarks} from './selection/assemble.js';
+import {UnitModel} from './unit.js';
 
 export class LayerModel extends Model {
   // HACK: This should be (LayerModel | UnitModel)[], but setting the correct type leads to weird error.

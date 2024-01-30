@@ -1,19 +1,19 @@
 import {Signal, SignalRef} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
-import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers} from '.';
-import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
-import {hasContinuousDomain} from '../../scale';
-import {SelectionInit, SelectionInitInterval, ParameterExtent, SELECTION_ID} from '../../selection';
-import {keys, replacePathInField, stringify, vals} from '../../util';
-import {VgData, VgDomain} from '../../vega.schema';
-import {FacetModel} from '../facet';
-import {LayerModel} from '../layer';
-import {isUnitModel, Model} from '../model';
-import {ScaleComponent} from '../scale/component';
-import {UnitModel} from '../unit';
-import {parseSelectionExtent} from './parse';
-import {SelectionProjection} from './project';
+import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers} from './index.js';
+import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime.js';
+import {hasContinuousDomain} from '../../scale.js';
+import {SelectionInit, SelectionInitInterval, ParameterExtent, SELECTION_ID} from '../../selection.js';
+import {keys, replacePathInField, stringify, vals} from '../../util.js';
+import {VgData, VgDomain} from '../../vega.schema.js';
+import {FacetModel} from '../facet.js';
+import {LayerModel} from '../layer.js';
+import {isUnitModel, Model} from '../model.js';
+import {ScaleComponent} from '../scale/component.js';
+import {UnitModel} from '../unit.js';
+import {parseSelectionExtent} from './parse.js';
+import {SelectionProjection} from './project.js';
 
 export function assembleProjection(proj: SelectionProjection) {
   const {signals, hasLegend, index, ...rest} = proj;

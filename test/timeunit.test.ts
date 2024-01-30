@@ -1,4 +1,4 @@
-import {keys} from '../src';
+import {keys} from '../src/index.js';
 import {
   BINNED_TIMEUNIT_INDEX,
   containsTimeUnit,
@@ -7,7 +7,7 @@ import {
   isBinnedTimeUnit,
   LOCAL_MULTI_TIMEUNIT_INDEX,
   TIMEUNIT_PARTS
-} from '../src/timeunit';
+} from '../src/timeunit.js';
 
 describe('timeUnit', () => {
   describe('containsTimeUnit', () => {

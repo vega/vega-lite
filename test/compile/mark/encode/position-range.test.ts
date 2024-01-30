@@ -1,6 +1,6 @@
-import {getSizeChannel, X, Y} from '../../../../src/channel';
-import {rangePosition} from '../../../../src/compile/mark/encode';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {getSizeChannel, X, Y} from '../../../../src/channel.js';
+import {rangePosition} from '../../../../src/compile/mark/encode/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/position-range', () => {
   it('should return correct position for lat/lng with size', () => {

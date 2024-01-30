@@ -1,7 +1,7 @@
-import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import toggle from '../../../src/compile/selection/toggle';
-import {parseUnitModel} from '../../util';
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import toggle from '../../../src/compile/selection/toggle.js';
+import {parseUnitModel} from '../../util.js';
 
 describe('Toggle Selection Transform', () => {
   const model = parseUnitModel({

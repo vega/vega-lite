@@ -6,15 +6,15 @@ import {
   defaultHeaderGuideAlign,
   defaultHeaderGuideBaseline,
   getLayoutTitleBand
-} from '../../../src/compile/header/assemble';
-import {HEADER_CHANNELS} from '../../../src/compile/header/component';
+} from '../../../src/compile/header/assemble.js';
+import {HEADER_CHANNELS} from '../../../src/compile/header/component.js';
 import {
   HEADER_LABEL_PROPERTIES,
   HEADER_LABEL_PROPERTIES_MAP,
   HEADER_TITLE_PROPERTIES,
   HEADER_TITLE_PROPERTIES_MAP
-} from '../../../src/header';
-import {parseFacetModel} from '../../util';
+} from '../../../src/header.js';
+import {parseFacetModel} from '../../util.js';
 
 describe('compile/header/index', () => {
   describe('defaultHeaderGuideAlign', () => {

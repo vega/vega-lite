@@ -1,5 +1,5 @@
-import {FacetNode} from '../../../src/compile/data/facet';
-import {parseFacetModelWithScale} from '../../util';
+import {FacetNode} from '../../../src/compile/data/facet.js';
+import {parseFacetModelWithScale} from '../../util.js';
 
 describe('compile/data/facet', () => {
   describe('assemble', () => {

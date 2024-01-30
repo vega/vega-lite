@@ -2,8 +2,8 @@
  * Constants and utilities for data.
  */
 import {Vector2} from 'vega';
-import {FieldName} from './channeldef';
-import {VgData} from './vega.schema';
+import {FieldName} from './channeldef.js';
+import {VgData} from './vega.schema.js';
 
 export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
 

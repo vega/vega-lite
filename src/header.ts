@@ -1,8 +1,8 @@
 import {Align, Color, FontStyle, FontWeight, Orient, SignalRef, TextBaseline, TitleAnchor, TitleConfig} from 'vega';
-import {FormatMixins} from './channeldef';
-import {ExprRef} from './expr';
-import {Guide, VlOnlyGuideConfig} from './guide';
-import {Flag, keys} from './util';
+import {FormatMixins} from './channeldef.js';
+import {ExprRef} from './expr.js';
+import {Guide, VlOnlyGuideConfig} from './guide.js';
+import {Flag, keys} from './util.js';
 
 export const HEADER_TITLE_PROPERTIES_MAP: Partial<Record<keyof CoreHeader<any>, keyof TitleConfig>> = {
   titleAlign: 'align',

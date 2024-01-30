@@ -1,7 +1,7 @@
-import {PositionFieldDef} from '../../../src/channeldef';
-import {rect} from '../../../src/compile/mark/rect';
-import * as log from '../../../src/log';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {PositionFieldDef} from '../../../src/channeldef.js';
+import {rect} from '../../../src/compile/mark/rect.js';
+import * as log from '../../../src/log/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Rect', () => {
   describe('simple with width and height', () => {

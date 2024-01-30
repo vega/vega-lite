@@ -2,13 +2,13 @@
  * Utility files for producing Vega ValueRef for marks
  */
 import type {SignalRef} from 'vega';
-import {PolarPositionChannel, PositionChannel} from '../../../channel';
-import {Encoding} from '../../../encoding';
-import {Mark, MarkDef} from '../../../mark';
-import {VgValueRef} from '../../../vega.schema';
-import {signalOrValueRef} from '../../common';
-import {UnitModel} from '../../unit';
-import {midPoint} from './valueref';
+import {PolarPositionChannel, PositionChannel} from '../../../channel.js';
+import {Encoding} from '../../../encoding.js';
+import {Mark, MarkDef} from '../../../mark.js';
+import {VgValueRef} from '../../../vega.schema.js';
+import {signalOrValueRef} from '../../common.js';
+import {UnitModel} from '../../unit.js';
+import {midPoint} from './valueref.js';
 
 export interface Offset {
   offsetType?: 'visual' | 'encoding';

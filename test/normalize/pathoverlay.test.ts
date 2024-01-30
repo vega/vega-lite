@@ -1,9 +1,9 @@
-import {normalize} from '../../src/normalize';
-import {PathOverlayNormalizer} from '../../src/normalize/pathoverlay';
-import {TopLevelSpec} from '../../src/spec';
-import {DataMixins} from '../../src/spec/base';
-import {TopLevel} from '../../src/spec/toplevel';
-import {NormalizedUnitSpec} from '../../src/spec/unit';
+import {normalize} from '../../src/normalize/index.js';
+import {PathOverlayNormalizer} from '../../src/normalize/pathoverlay.js';
+import {TopLevelSpec} from '../../src/spec/index.js';
+import {DataMixins} from '../../src/spec/base.js';
+import {TopLevel} from '../../src/spec/toplevel.js';
+import {NormalizedUnitSpec} from '../../src/spec/unit.js';
 
 describe('PathOverlayNormalizer', () => {
   const pathOverlayNormalizer = new PathOverlayNormalizer();

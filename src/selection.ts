@@ -1,10 +1,10 @@
 import {Binding, Color, Cursor, Stream, Vector2} from 'vega';
 import {isObject} from 'vega-util';
-import {SingleDefUnitChannel} from './channel';
-import {FieldName, PrimitiveValue} from './channeldef';
-import {DateTime} from './datetime';
-import {ParameterName} from './parameter';
-import {Dict} from './util';
+import {SingleDefUnitChannel} from './channel.js';
+import {FieldName, PrimitiveValue} from './channeldef.js';
+import {DateTime} from './datetime.js';
+import {ParameterName} from './parameter.js';
+import {Dict} from './util.js';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'point' | 'interval';

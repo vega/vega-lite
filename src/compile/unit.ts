@@ -1,6 +1,6 @@
 import {NewSignal, SignalRef} from 'vega';
 import {isArray} from 'vega-util';
-import {Axis, AxisInternal, isConditionalAxisValue} from '../axis';
+import {Axis, AxisInternal, isConditionalAxisValue} from '../axis.js';
 import {
   Channel,
   GEOPOSITION_CHANNELS,
@@ -14,7 +14,7 @@ import {
   supportLegend,
   X,
   Y
-} from '../channel';
+} from '../channel.js';
 import {
   getFieldDef,
   getFieldOrDatumDef,
@@ -22,42 +22,42 @@ import {
   isTypedFieldDef,
   MarkPropFieldOrDatumDef,
   PositionFieldDef
-} from '../channeldef';
-import {Config} from '../config';
-import {isGraticuleGenerator} from '../data';
-import * as vlEncoding from '../encoding';
-import {Encoding, initEncoding} from '../encoding';
-import {ExprRef, replaceExprRef} from '../expr';
-import {LegendInternal} from '../legend';
-import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
-import {Projection} from '../projection';
-import {Domain, Scale} from '../scale';
-import {isSelectionParameter, SelectionParameter} from '../selection';
-import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
-import {isFrameMixins} from '../spec/base';
-import {stack, StackProperties} from '../stack';
-import {keys} from '../util';
-import {VgData, VgLayout} from '../vega.schema';
-import {assembleAxisSignals} from './axis/assemble';
-import {AxisInternalIndex} from './axis/component';
-import {parseUnitAxes} from './axis/parse';
-import {signalOrValueRefWithCondition, signalRefOrValue} from './common';
-import {parseData} from './data/parse';
-import {assembleLayoutSignals} from './layoutsize/assemble';
-import {initLayoutSize} from './layoutsize/init';
-import {parseUnitLayoutSize} from './layoutsize/parse';
-import {LegendInternalIndex} from './legend/component';
-import {defaultFilled, initMarkdef} from './mark/init';
-import {parseMarkGroups} from './mark/mark';
-import {isLayerModel, Model, ModelWithField} from './model';
-import {ScaleIndex} from './scale/component';
+} from '../channeldef.js';
+import {Config} from '../config.js';
+import {isGraticuleGenerator} from '../data.js';
+import * as vlEncoding from '../encoding.js';
+import {Encoding, initEncoding} from '../encoding.js';
+import {ExprRef, replaceExprRef} from '../expr.js';
+import {LegendInternal} from '../legend.js';
+import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark.js';
+import {Projection} from '../projection.js';
+import {Domain, Scale} from '../scale.js';
+import {isSelectionParameter, SelectionParameter} from '../selection.js';
+import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec/index.js';
+import {isFrameMixins} from '../spec/base.js';
+import {stack, StackProperties} from '../stack.js';
+import {keys} from '../util.js';
+import {VgData, VgLayout} from '../vega.schema.js';
+import {assembleAxisSignals} from './axis/assemble.js';
+import {AxisInternalIndex} from './axis/component.js';
+import {parseUnitAxes} from './axis/parse.js';
+import {signalOrValueRefWithCondition, signalRefOrValue} from './common.js';
+import {parseData} from './data/parse.js';
+import {assembleLayoutSignals} from './layoutsize/assemble.js';
+import {initLayoutSize} from './layoutsize/init.js';
+import {parseUnitLayoutSize} from './layoutsize/parse.js';
+import {LegendInternalIndex} from './legend/component.js';
+import {defaultFilled, initMarkdef} from './mark/init.js';
+import {parseMarkGroups} from './mark/mark.js';
+import {isLayerModel, Model, ModelWithField} from './model.js';
+import {ScaleIndex} from './scale/component.js';
 import {
   assembleTopLevelSignals,
   assembleUnitSelectionData,
   assembleUnitSelectionMarks,
   assembleUnitSelectionSignals
-} from './selection/assemble';
-import {parseUnitSelection} from './selection/parse';
+} from './selection/assemble.js';
+import {parseUnitSelection} from './selection/parse.js';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.

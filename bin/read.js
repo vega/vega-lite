@@ -1,8 +1,8 @@
 // from vega-cli
 
-const {createReadStream} = require('fs');
+import {createReadStream} from 'fs';
 
-module.exports = file => {
+export default file => {
   return new Promise((resolve, reject) => {
     const input = file ? createReadStream(file) : process.stdin;
     let text = '';

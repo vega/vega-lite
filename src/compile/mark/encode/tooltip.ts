@@ -1,6 +1,6 @@
 import {array, isArray, isObject, isString} from 'vega-util';
-import {isBinned} from '../../../bin';
-import {getMainRangeChannel, isXorY, Channel, THETA, RADIUS} from '../../../channel';
+import {isBinned} from '../../../bin.js';
+import {getMainRangeChannel, isXorY, Channel, THETA, RADIUS} from '../../../channel.js';
 import {
   defaultTitle,
   getFieldDef,
@@ -11,17 +11,17 @@ import {
   SecondaryFieldDef,
   TypedFieldDef,
   vgField
-} from '../../../channeldef';
-import {Config} from '../../../config';
-import {Encoding, forEach} from '../../../encoding';
-import {StackProperties} from '../../../stack';
-import {entries} from '../../../util';
-import {isSignalRef} from '../../../vega.schema';
-import {getMarkPropOrConfig} from '../../common';
-import {binFormatExpression, formatSignalRef} from '../../format';
-import {UnitModel} from '../../unit';
-import {wrapCondition} from './conditional';
-import {textRef} from './text';
+} from '../../../channeldef.js';
+import {Config} from '../../../config.js';
+import {Encoding, forEach} from '../../../encoding.js';
+import {StackProperties} from '../../../stack.js';
+import {entries} from '../../../util.js';
+import {isSignalRef} from '../../../vega.schema.js';
+import {getMarkPropOrConfig} from '../../common.js';
+import {binFormatExpression, formatSignalRef} from '../../format.js';
+import {UnitModel} from '../../unit.js';
+import {wrapCondition} from './conditional.js';
+import {textRef} from './text.js';
 
 export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config, stack} = model;

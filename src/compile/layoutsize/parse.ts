@@ -1,14 +1,14 @@
-import {getPositionScaleChannel, getSizeChannel, POSITION_SCALE_CHANNELS} from '../../channel';
-import {getViewConfigContinuousSize, getViewConfigDiscreteSize} from '../../config';
-import {hasDiscreteDomain} from '../../scale';
-import {isStep} from '../../spec/base';
-import {isVgRangeStep} from '../../vega.schema';
-import {ConcatModel} from '../concat';
-import {Model} from '../model';
-import {defaultScaleResolve} from '../resolve';
-import {Explicit, mergeValuesWithExplicit} from '../split';
-import {UnitModel} from '../unit';
-import {getSizeTypeFromLayoutSizeType, LayoutSize, LayoutSizeIndex, LayoutSizeType} from './component';
+import {getPositionScaleChannel, getSizeChannel, POSITION_SCALE_CHANNELS} from '../../channel.js';
+import {getViewConfigContinuousSize, getViewConfigDiscreteSize} from '../../config.js';
+import {hasDiscreteDomain} from '../../scale.js';
+import {isStep} from '../../spec/base.js';
+import {isVgRangeStep} from '../../vega.schema.js';
+import {ConcatModel} from '../concat.js';
+import {Model} from '../model.js';
+import {defaultScaleResolve} from '../resolve.js';
+import {Explicit, mergeValuesWithExplicit} from '../split.js';
+import {UnitModel} from '../unit.js';
+import {getSizeTypeFromLayoutSizeType, LayoutSize, LayoutSizeIndex, LayoutSizeType} from './component.js';
 
 export function parseLayerLayoutSize(model: Model) {
   parseChildrenLayoutSize(model);

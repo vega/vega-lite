@@ -1,8 +1,8 @@
-import {Config} from '../../config';
-import {VgEncodeEntry} from '../../vega.schema';
-import {UnitModel} from '../unit';
-import {MarkCompiler} from './base';
-import * as encode from './encode';
+import {Config} from '../../config.js';
+import {VgEncodeEntry} from '../../vega.schema.js';
+import {UnitModel} from '../unit.js';
+import {MarkCompiler} from './base.js';
+import * as encode from './encode/index.js';
 
 function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config} = model;

@@ -4,25 +4,25 @@
 
 import {SignalRef, TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
-import {FacetChannel, FACET_CHANNELS} from '../../channel';
-import {vgField} from '../../channeldef';
-import {Config} from '../../config';
+import {FacetChannel, FACET_CHANNELS} from '../../channel.js';
+import {vgField} from '../../channeldef.js';
+import {Config} from '../../config.js';
 import {
   CoreHeader,
   HEADER_LABEL_PROPERTIES,
   HEADER_LABEL_PROPERTIES_MAP,
   HEADER_TITLE_PROPERTIES,
   HEADER_TITLE_PROPERTIES_MAP
-} from '../../header';
-import {isSortField} from '../../sort';
-import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
-import {contains, isEmpty, normalizeAngle, replaceAll} from '../../util';
-import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
-import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
-import {sortArrayIndexField} from '../data/calculate';
-import {formatSignalRef} from '../format';
-import {isFacetModel, Model} from '../model';
-import {getHeaderChannel, getHeaderProperties, getHeaderProperty} from './common';
+} from '../../header.js';
+import {isSortField} from '../../sort.js';
+import {FacetFieldDef, isFacetMapping} from '../../spec/facet.js';
+import {contains, isEmpty, normalizeAngle, replaceAll} from '../../util.js';
+import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema.js';
+import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties.js';
+import {sortArrayIndexField} from '../data/calculate.js';
+import {formatSignalRef} from '../format.js';
+import {isFacetModel, Model} from '../model.js';
+import {getHeaderChannel, getHeaderProperties, getHeaderProperty} from './common.js';
 import {
   HeaderChannel,
   HeaderComponent,
@@ -30,7 +30,7 @@ import {
   HEADER_TYPES,
   LayoutHeaderComponent,
   LayoutHeaderComponentIndex
-} from './component';
+} from './component.js';
 
 // TODO: rename to assembleHeaderTitleGroup
 export function assembleTitleGroup(model: Model, channel: FacetChannel) {

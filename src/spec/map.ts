@@ -1,6 +1,6 @@
-import {GenericSpec} from '.';
-import * as log from '../log';
-import {Field, FieldName} from '../channeldef';
+import {GenericSpec} from './index.js';
+import * as log from '../log/index.js';
+import {Field, FieldName} from '../channeldef.js';
 import {
   GenericConcatSpec,
   GenericHConcatSpec,
@@ -8,11 +8,11 @@ import {
   isConcatSpec,
   isHConcatSpec,
   isVConcatSpec
-} from './concat';
-import {GenericFacetSpec, isFacetSpec} from './facet';
-import {GenericLayerSpec, isLayerSpec} from './layer';
-import {isRepeatSpec, RepeatSpec} from './repeat';
-import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
+} from './concat.js';
+import {GenericFacetSpec, isFacetSpec} from './facet.js';
+import {GenericLayerSpec, isLayerSpec} from './layer.js';
+import {isRepeatSpec, RepeatSpec} from './repeat.js';
+import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit.js';
 
 export abstract class SpecMapper<
   P,

@@ -1,6 +1,6 @@
 import type {SignalRef} from 'vega';
-import {COUNTING_OPS} from '../src/aggregate';
-import {CHANNELS} from '../src/channel';
+import {COUNTING_OPS} from '../src/aggregate.js';
+import {CHANNELS} from '../src/channel.js';
 import {
   channelCompatibility,
   defaultTitle,
@@ -9,11 +9,11 @@ import {
   initChannelDef,
   TypedFieldDef,
   vgField
-} from '../src/channeldef';
-import {defaultConfig} from '../src/config';
-import * as log from '../src/log';
-import {FacetFieldDef} from '../src/spec/facet';
-import {QUANTITATIVE, TEMPORAL} from '../src/type';
+} from '../src/channeldef.js';
+import {defaultConfig} from '../src/config.js';
+import * as log from '../src/log/index.js';
+import {FacetFieldDef} from '../src/spec/facet.js';
+import {QUANTITATIVE, TEMPORAL} from '../src/type.js';
 
 describe('fieldDef', () => {
   describe('vgField()', () => {

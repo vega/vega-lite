@@ -1,13 +1,13 @@
 import {Color, InitSignal, Locale, NewSignal, RangeConfig, RangeScheme, SignalRef, writeConfig} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
-import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis';
-import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common';
-import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
-import {ExprRef, replaceExprRef} from './expr';
-import {VL_ONLY_LEGEND_CONFIG} from './guide';
-import {HeaderConfigMixins, HEADER_CONFIGS} from './header';
-import {defaultLegendConfig, LegendConfig} from './legend';
-import * as mark from './mark';
+import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis.js';
+import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common.js';
+import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark/index.js';
+import {ExprRef, replaceExprRef} from './expr.js';
+import {VL_ONLY_LEGEND_CONFIG} from './guide.js';
+import {HeaderConfigMixins, HEADER_CONFIGS} from './header.js';
+import {defaultLegendConfig, LegendConfig} from './legend.js';
+import * as mark from './mark.js';
 import {
   AnyMarkConfig,
   Mark,
@@ -17,15 +17,15 @@ import {
   PRIMITIVE_MARKS,
   VL_ONLY_MARK_CONFIG_PROPERTIES,
   VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
-} from './mark';
-import {assembleParameterSignals} from './parameter';
-import {ProjectionConfig} from './projection';
-import {defaultScaleConfig, ScaleConfig} from './scale';
-import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
-import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base';
-import {TopLevelProperties} from './spec/toplevel';
-import {extractTitleConfig, TitleConfig} from './title';
-import {duplicate, getFirstDefined, isEmpty, keys, omit} from './util';
+} from './mark.js';
+import {assembleParameterSignals} from './parameter.js';
+import {ProjectionConfig} from './projection.js';
+import {defaultScaleConfig, ScaleConfig} from './scale.js';
+import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection.js';
+import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base.js';
+import {TopLevelProperties} from './spec/toplevel.js';
+import {extractTitleConfig, TitleConfig} from './title.js';
+import {duplicate, getFirstDefined, isEmpty, keys, omit} from './util.js';
 
 export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBackground<ES> {
   /**

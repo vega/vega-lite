@@ -1,11 +1,11 @@
 import type {SignalRef} from 'vega';
-import {Config} from '../../config';
-import {Encoding} from '../../encoding';
-import {MarkDef} from '../../mark';
-import {getMarkPropOrConfig} from '../common';
-import {UnitModel} from '../unit';
-import {MarkCompiler} from './base';
-import * as encode from './encode';
+import {Config} from '../../config.js';
+import {Encoding} from '../../encoding.js';
+import {MarkDef} from '../../mark.js';
+import {getMarkPropOrConfig} from '../common.js';
+import {UnitModel} from '../unit.js';
+import {MarkCompiler} from './base.js';
+import * as encode from './encode/index.js';
 
 export const text: MarkCompiler = {
   vgMark: 'text',

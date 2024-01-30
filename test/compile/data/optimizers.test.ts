@@ -1,11 +1,11 @@
-import {ParseNode} from '../../../src/compile/data/formatparse';
-import {ImputeNode} from '../../../src/compile/data/impute';
-import {MergeIdenticalNodes, MergeParse, MergeTimeUnits} from '../../../src/compile/data/optimizers';
-import {TimeUnitComponent, TimeUnitNode} from '../../../src/compile/data/timeunit';
-import {Transform} from '../../../src/transform';
-import {hash} from '../../../src/util';
-import {FilterNode} from '../../../src/compile/data/filter';
-import {PlaceholderDataFlowNode} from './util';
+import {ParseNode} from '../../../src/compile/data/formatparse.js';
+import {ImputeNode} from '../../../src/compile/data/impute.js';
+import {MergeIdenticalNodes, MergeParse, MergeTimeUnits} from '../../../src/compile/data/optimizers.js';
+import {TimeUnitComponent, TimeUnitNode} from '../../../src/compile/data/timeunit.js';
+import {Transform} from '../../../src/transform.js';
+import {hash} from '../../../src/util.js';
+import {FilterNode} from '../../../src/compile/data/filter.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/optimizer', () => {
   describe('mergeIdenticalNodes', () => {

@@ -1,13 +1,13 @@
 import {stringValue} from 'vega-util';
-import {VL_SELECTION_RESOLVE} from '.';
-import {isScaleChannel, ScaleChannel} from '../../channel';
-import * as log from '../../log';
-import {hasContinuousDomain} from '../../scale';
-import {isLayerModel, Model} from '../model';
-import {UnitModel} from '../unit';
-import {SelectionProjection} from './project';
-import {SelectionCompiler} from '.';
-import {replacePathInField} from '../../util';
+import {VL_SELECTION_RESOLVE} from './index.js';
+import {isScaleChannel, ScaleChannel} from '../../channel.js';
+import * as log from '../../log/index.js';
+import {hasContinuousDomain} from '../../scale.js';
+import {isLayerModel, Model} from '../model.js';
+import {UnitModel} from '../unit.js';
+import {SelectionProjection} from './project.js';
+import {SelectionCompiler} from './index.js';
+import {replacePathInField} from '../../util.js';
 import {NewSignal} from 'vega';
 
 const scaleBindings: SelectionCompiler<'interval'> = {

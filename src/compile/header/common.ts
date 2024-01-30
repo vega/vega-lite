@@ -1,9 +1,9 @@
 import {Orient, SignalRef} from 'vega';
-import {FacetChannel} from '../../channel';
-import {Config} from '../../config';
-import {Header} from '../../header';
-import {contains, getFirstDefined} from '../../util';
-import {HeaderChannel} from './component';
+import {FacetChannel} from '../../channel.js';
+import {Config} from '../../config.js';
+import {Header} from '../../header.js';
+import {contains, getFirstDefined} from '../../util.js';
+import {HeaderChannel} from './component.js';
 
 /**
  * Get header channel, which can be different from facet channel when orient is specified or when the facet channel is facet.

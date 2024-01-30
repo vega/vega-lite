@@ -1,6 +1,6 @@
-import {defaultScaleResolve, parseGuideResolve} from '../../src/compile/resolve';
-import * as log from '../../src/log';
-import {parseConcatModel, parseFacetModel, parseLayerModel, parseModel} from '../util';
+import {defaultScaleResolve, parseGuideResolve} from '../../src/compile/resolve.js';
+import * as log from '../../src/log/index.js';
+import {parseConcatModel, parseFacetModel, parseLayerModel, parseModel} from '../util.js';
 
 describe('compile/resolve', () => {
   describe('defaultScaleResolve', () => {

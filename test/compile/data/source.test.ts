@@ -1,5 +1,5 @@
-import {SourceNode} from '../../../src/compile/data/source';
-import {Data} from '../../../src/data';
+import {SourceNode} from '../../../src/compile/data/source.js';
+import {Data} from '../../../src/data.js';
 
 function parse(data: Data) {
   return new SourceNode(data);

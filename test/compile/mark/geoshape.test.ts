@@ -1,5 +1,5 @@
-import {geoshape} from '../../../src/compile/mark/geoshape';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {geoshape} from '../../../src/compile/mark/geoshape.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Geoshape', () => {
   describe('encode', () => {

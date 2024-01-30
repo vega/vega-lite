@@ -8,9 +8,9 @@ import {
   MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX,
   NonArgAggregateOp,
   SHARED_DOMAIN_OPS
-} from '../../aggregate';
-import {isBinning, isBinParams, isParameterExtent} from '../../bin';
-import {getSecondaryRangeChannel, isScaleChannel, isXorY, ScaleChannel} from '../../channel';
+} from '../../aggregate.js';
+import {isBinning, isBinParams, isParameterExtent} from '../../bin.js';
+import {getSecondaryRangeChannel, isScaleChannel, isXorY, ScaleChannel} from '../../channel.js';
 import {
   binRequiresRange,
   getBandPosition,
@@ -23,18 +23,18 @@ import {
   TypedFieldDef,
   valueExpr,
   vgField
-} from '../../channeldef';
-import {CompositeAggregate} from '../../compositemark';
-import {DataSourceType} from '../../data';
-import {DateTime} from '../../datetime';
-import {ExprRef} from '../../expr';
-import * as log from '../../log';
-import {Domain, hasDiscreteDomain, isDomainUnionWith, isParameterDomain, ScaleConfig, ScaleType} from '../../scale';
-import {ParameterExtent} from '../../selection';
-import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
-import {normalizeTimeUnit, TimeUnit, TimeUnitTransformParams} from '../../timeunit';
-import {Type} from '../../type';
-import * as util from '../../util';
+} from '../../channeldef.js';
+import {CompositeAggregate} from '../../compositemark/index.js';
+import {DataSourceType} from '../../data.js';
+import {DateTime} from '../../datetime.js';
+import {ExprRef} from '../../expr.js';
+import * as log from '../../log/index.js';
+import {Domain, hasDiscreteDomain, isDomainUnionWith, isParameterDomain, ScaleConfig, ScaleType} from '../../scale.js';
+import {ParameterExtent} from '../../selection.js';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort.js';
+import {normalizeTimeUnit, TimeUnit, TimeUnitTransformParams} from '../../timeunit.js';
+import {Type} from '../../type.js';
+import * as util from '../../util.js';
 import {
   isDataRefDomain,
   isDataRefUnionedDomain,
@@ -46,17 +46,17 @@ import {
   VgScaleDataRefWithSort,
   VgSortField,
   VgUnionSortField
-} from '../../vega.schema';
-import {getBinSignalName} from '../data/bin';
-import {sortArrayIndexField} from '../data/calculate';
-import {FACET_SCALE_PREFIX} from '../data/optimize';
-import {isFacetModel, isUnitModel, Model} from '../model';
-import {SignalRefWrapper} from '../signal';
-import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
-import {UnitModel} from '../unit';
-import {ScaleComponent, ScaleComponentIndex} from './component';
-import {isRectBasedMark} from '../../mark';
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../data/timeunit';
+} from '../../vega.schema.js';
+import {getBinSignalName} from '../data/bin.js';
+import {sortArrayIndexField} from '../data/calculate.js';
+import {FACET_SCALE_PREFIX} from '../data/optimize.js';
+import {isFacetModel, isUnitModel, Model} from '../model.js';
+import {SignalRefWrapper} from '../signal.js';
+import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split.js';
+import {UnitModel} from '../unit.js';
+import {ScaleComponent, ScaleComponentIndex} from './component.js';
+import {isRectBasedMark} from '../../mark.js';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../data/timeunit.js';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {

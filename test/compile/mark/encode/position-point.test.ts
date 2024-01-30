@@ -1,6 +1,6 @@
-import {X, Y} from '../../../../src/channel';
-import {pointPosition} from '../../../../src/compile/mark/encode';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {X, Y} from '../../../../src/channel.js';
+import {pointPosition} from '../../../../src/compile/mark/encode/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/position-point', () => {
   it('should return correctly for lat/lng', () => {

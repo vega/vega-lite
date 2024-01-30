@@ -1,7 +1,7 @@
-import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel';
-import {channelDefType, getFieldOrDatumDef, isFieldDef, isPositionFieldOrDatumDef} from '../../channeldef';
-import {formatCustomType, isCustomFormatType} from '../format';
-import {UnitModel} from '../unit';
+import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel.js';
+import {channelDefType, getFieldOrDatumDef, isFieldDef, isPositionFieldOrDatumDef} from '../../channeldef.js';
+import {formatCustomType, isCustomFormatType} from '../format.js';
+import {UnitModel} from '../unit.js';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
   const {encoding, config} = model;

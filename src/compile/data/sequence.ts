@@ -1,7 +1,7 @@
-import {SequenceParams} from '../../data';
-import {hash} from '../../util';
+import {SequenceParams} from '../../data.js';
+import {hash} from '../../util.js';
 import {SequenceTransform as VgSequenceTransform} from 'vega';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode} from './dataflow.js';
 
 export class SequenceNode extends DataFlowNode {
   public clone() {

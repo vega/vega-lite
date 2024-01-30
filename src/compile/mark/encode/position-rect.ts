@@ -1,6 +1,6 @@
 import type {SignalRef} from 'vega';
 import {isArray, isNumber} from 'vega-util';
-import {isBinned, isBinning, isBinParams} from '../../../bin';
+import {isBinned, isBinning, isBinParams} from '../../../bin.js';
 import {
   getOffsetChannel,
   getSecondaryRangeChannel,
@@ -10,27 +10,34 @@ import {
   isXorY,
   PolarPositionChannel,
   PositionChannel
-} from '../../../channel';
-import {getBandPosition, getBandSize, isFieldDef, isFieldOrDatumDef, TypedFieldDef, vgField} from '../../../channeldef';
-import {Config, getViewConfigDiscreteStep} from '../../../config';
-import {Encoding} from '../../../encoding';
-import * as log from '../../../log';
-import {BandSize, isRelativeBandSize} from '../../../mark';
-import {hasDiscreteDomain} from '../../../scale';
-import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkConfig, getMarkPropOrConfig, signalOrStringValue, signalOrValueRef} from '../../common';
-import {ScaleComponent} from '../../scale/component';
-import {UnitModel} from '../../unit';
-import {nonPosition} from './nonposition';
-import {positionOffset} from './offset';
-import {vgAlignedPositionChannel} from './position-align';
-import {pointPositionDefaultRef} from './position-point';
-import {rangePosition} from './position-range';
-import * as ref from './valueref';
-import {getOffsetScaleChannel} from '../../../channel';
-import {getFirstDefined} from '../../../util';
-import {Mark} from '../../../mark';
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../data/timeunit';
+} from '../../../channel.js';
+import {
+  getBandPosition,
+  getBandSize,
+  isFieldDef,
+  isFieldOrDatumDef,
+  TypedFieldDef,
+  vgField
+} from '../../../channeldef.js';
+import {Config, getViewConfigDiscreteStep} from '../../../config.js';
+import {Encoding} from '../../../encoding.js';
+import * as log from '../../../log/index.js';
+import {BandSize, isRelativeBandSize} from '../../../mark.js';
+import {hasDiscreteDomain} from '../../../scale.js';
+import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
+import {getMarkConfig, getMarkPropOrConfig, signalOrStringValue, signalOrValueRef} from '../../common.js';
+import {ScaleComponent} from '../../scale/component.js';
+import {UnitModel} from '../../unit.js';
+import {nonPosition} from './nonposition.js';
+import {positionOffset} from './offset.js';
+import {vgAlignedPositionChannel} from './position-align.js';
+import {pointPositionDefaultRef} from './position-point.js';
+import {rangePosition} from './position-range.js';
+import * as ref from './valueref.js';
+import {getOffsetScaleChannel} from '../../../channel.js';
+import {getFirstDefined} from '../../../util.js';
+import {Mark} from '../../../mark.js';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../data/timeunit.js';
 
 export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'radius'): VgEncodeEntry {
   const {config, encoding, markDef} = model;

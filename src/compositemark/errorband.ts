@@ -1,13 +1,13 @@
 import {Interpolate, Orientation} from 'vega';
-import {Field} from '../channeldef';
-import {Encoding, normalizeEncoding} from '../encoding';
-import * as log from '../log';
-import {MarkDef} from '../mark';
-import {NormalizerParams} from '../normalize';
-import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
-import {CompositeMarkNormalizer} from './base';
-import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
-import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar';
+import {Field} from '../channeldef.js';
+import {Encoding, normalizeEncoding} from '../encoding.js';
+import * as log from '../log/index.js';
+import {MarkDef} from '../mark.js';
+import {NormalizerParams} from '../normalize/index.js';
+import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
+import {CompositeMarkNormalizer} from './base.js';
+import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common.js';
+import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar.js';
 
 export type ErrorBandUnitSpec<
   EE = undefined // extra encoding parameter (for faceted composite unit spec)

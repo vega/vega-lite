@@ -17,57 +17,57 @@ import {
   isScaleChannel,
   ScaleChannel,
   SingleDefChannel
-} from '../channel';
-import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef';
-import {Config} from '../config';
-import {Data, DataSourceType} from '../data';
-import {forEach, reduce} from '../encoding';
-import {ExprRef, replaceExprRef} from '../expr';
-import * as log from '../log';
-import {Resolve} from '../resolve';
-import {hasDiscreteDomain} from '../scale';
-import {isFacetSpec} from '../spec';
+} from '../channel.js';
+import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef.js';
+import {Config} from '../config.js';
+import {Data, DataSourceType} from '../data.js';
+import {forEach, reduce} from '../encoding.js';
+import {ExprRef, replaceExprRef} from '../expr.js';
+import * as log from '../log/index.js';
+import {Resolve} from '../resolve.js';
+import {hasDiscreteDomain} from '../scale.js';
+import {isFacetSpec} from '../spec/index.js';
 import {
   extractCompositionLayout,
   GenericCompositionLayoutWithColumns,
   LayoutSizeMixins,
   SpecType,
   ViewBackground
-} from '../spec/base';
-import {NormalizedSpec} from '../spec/index';
-import {extractTitleConfig, isText, TitleParams} from '../title';
-import {normalizeTransform, Transform} from '../transform';
-import {contains, Dict, duplicate, isEmpty, keys, varName} from '../util';
-import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
-import {assembleAxes} from './axis/assemble';
-import {AxisComponentIndex} from './axis/component';
-import {signalOrValueRef} from './common';
-import {ConcatModel} from './concat';
-import {DataComponent} from './data';
-import {FacetModel} from './facet';
-import {assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup} from './header/assemble';
-import {HEADER_CHANNELS, LayoutHeaderComponent} from './header/component';
-import {LayerModel} from './layer';
-import {sizeExpr} from './layoutsize/assemble';
+} from '../spec/base.js';
+import {NormalizedSpec} from '../spec/index.js';
+import {extractTitleConfig, isText, TitleParams} from '../title.js';
+import {normalizeTransform, Transform} from '../transform.js';
+import {contains, Dict, duplicate, isEmpty, keys, varName} from '../util.js';
+import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema.js';
+import {assembleAxes} from './axis/assemble.js';
+import {AxisComponentIndex} from './axis/component.js';
+import {signalOrValueRef} from './common.js';
+import {ConcatModel} from './concat.js';
+import {DataComponent} from './data/index.js';
+import {FacetModel} from './facet.js';
+import {assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup} from './header/assemble.js';
+import {HEADER_CHANNELS, LayoutHeaderComponent} from './header/component.js';
+import {LayerModel} from './layer.js';
+import {sizeExpr} from './layoutsize/assemble.js';
 import {
   getSizeTypeFromLayoutSizeType,
   LayoutSizeComponent,
   LayoutSizeIndex,
   LayoutSizeType
-} from './layoutsize/component';
-import {assembleLegends} from './legend/assemble';
-import {LegendComponentIndex} from './legend/component';
-import {parseLegend} from './legend/parse';
-import {assembleProjections} from './projection/assemble';
-import {ProjectionComponent} from './projection/component';
-import {parseProjection} from './projection/parse';
-import {assembleScales} from './scale/assemble';
-import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-import {assembleDomain, getFieldFromDomain} from './scale/domain';
-import {parseScales} from './scale/parse';
-import {SelectionComponent} from './selection';
-import {Split} from './split';
-import {UnitModel} from './unit';
+} from './layoutsize/component.js';
+import {assembleLegends} from './legend/assemble.js';
+import {LegendComponentIndex} from './legend/component.js';
+import {parseLegend} from './legend/parse.js';
+import {assembleProjections} from './projection/assemble.js';
+import {ProjectionComponent} from './projection/component.js';
+import {parseProjection} from './projection/parse.js';
+import {assembleScales} from './scale/assemble.js';
+import {ScaleComponent, ScaleComponentIndex} from './scale/component.js';
+import {assembleDomain, getFieldFromDomain} from './scale/domain.js';
+import {parseScales} from './scale/parse.js';
+import {SelectionComponent} from './selection/index.js';
+import {Split} from './split.js';
+import {UnitModel} from './unit.js';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the

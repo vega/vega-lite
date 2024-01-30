@@ -1,6 +1,6 @@
-import {FoldTransformNode} from '../../../src/compile/data/fold';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {FoldTransformNode} from '../../../src/compile/data/fold.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/fold', () => {
   describe('assemble', () => {

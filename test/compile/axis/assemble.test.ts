@@ -1,7 +1,7 @@
-import {assembleAxis} from '../../../src/compile/axis/assemble';
-import {AxisComponent} from '../../../src/compile/axis/component';
-import {defaultConfig} from '../../../src/config';
-import {parseUnitModelWithScale} from '../../util';
+import {assembleAxis} from '../../../src/compile/axis/assemble.js';
+import {AxisComponent} from '../../../src/compile/axis/component.js';
+import {defaultConfig} from '../../../src/config.js';
+import {parseUnitModelWithScale} from '../../util.js';
 
 describe('compile/axis/assemble', () => {
   describe('assembleAxis()', () => {

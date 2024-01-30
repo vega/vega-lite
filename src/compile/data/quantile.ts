@@ -1,7 +1,7 @@
 import {QuantileTransform as VgQuantileTransform} from 'vega';
-import {QuantileTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {QuantileTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for quantile transform nodes

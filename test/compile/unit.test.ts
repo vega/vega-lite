@@ -1,8 +1,8 @@
-import {DETAIL, SHAPE, X} from '../../src/channel';
-import * as log from '../../src/log';
-import {BAR} from '../../src/mark';
-import {QUANTITATIVE} from '../../src/type';
-import {parseUnitModel} from '../util';
+import {DETAIL, SHAPE, X} from '../../src/channel.js';
+import * as log from '../../src/log/index.js';
+import {BAR} from '../../src/mark.js';
+import {QUANTITATIVE} from '../../src/type.js';
+import {parseUnitModel} from '../util.js';
 
 describe('UnitModel', () => {
   describe('initEncoding', () => {

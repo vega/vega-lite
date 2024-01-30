@@ -1,6 +1,9 @@
-import Ajv from 'ajv';
+import _Ajv from 'ajv';
 import {inspect} from 'util';
 import specSchema from '../build/vega-lite-schema.json';
+
+// https://github.com/ajv-validator/ajv/issues/2132
+const Ajv = _Ajv as unknown as typeof _Ajv.default;
 
 describe('Schema', () => {
   it('should be valid', () => {

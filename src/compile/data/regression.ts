@@ -1,7 +1,7 @@
 import {RegressionTransform as VgRegressionTransform} from 'vega';
-import {RegressionTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {RegressionTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for regression transform nodes

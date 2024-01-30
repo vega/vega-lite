@@ -1,15 +1,15 @@
 import type {SignalRef} from 'vega';
 import {isObject} from 'vega-util';
-import {Config} from '../config';
-import {Encoding, normalizeEncoding} from '../encoding';
-import {ExprRef} from '../expr';
-import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark';
-import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
-import {isUnitSpec} from '../spec/unit';
-import {stack} from '../stack';
-import {keys, omit, pick} from '../util';
-import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base';
-import {initMarkdef} from '../compile/mark/init';
+import {Config} from '../config.js';
+import {Encoding, normalizeEncoding} from '../encoding.js';
+import {ExprRef} from '../expr.js';
+import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark.js';
+import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/index.js';
+import {isUnitSpec} from '../spec/unit.js';
+import {stack} from '../stack.js';
+import {keys, omit, pick} from '../util.js';
+import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base.js';
+import {initMarkdef} from '../compile/mark/init.js';
 
 type UnitSpecWithPathOverlay = GenericUnitSpec<Encoding<string>, Mark | MarkDef<'line' | 'area' | 'rule' | 'trail'>>;
 

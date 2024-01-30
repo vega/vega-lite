@@ -1,13 +1,19 @@
 import type {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
-import {FieldName, valueExpr, vgField} from './channeldef';
-import {DateTime} from './datetime';
-import {ExprRef} from './expr';
-import {LogicalComposition} from './logical';
-import {ParameterName} from './parameter';
-import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams, BinnedTimeUnit} from './timeunit';
-import {stringify} from './util';
-import {isSignalRef} from './vega.schema';
+import {FieldName, valueExpr, vgField} from './channeldef.js';
+import {DateTime} from './datetime.js';
+import {ExprRef} from './expr.js';
+import {LogicalComposition} from './logical.js';
+import {ParameterName} from './parameter.js';
+import {
+  fieldExpr as timeUnitFieldExpr,
+  normalizeTimeUnit,
+  TimeUnit,
+  TimeUnitParams,
+  BinnedTimeUnit
+} from './timeunit.js';
+import {stringify} from './util.js';
+import {isSignalRef} from './vega.schema.js';
 
 export type Predicate =
   // a) FieldPredicate (but we don't type FieldFilter here so the schema has no nesting

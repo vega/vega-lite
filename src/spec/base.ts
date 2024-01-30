@@ -1,18 +1,18 @@
 import {Color, Cursor, SignalRef, Text} from 'vega';
 import {isNumber, isObject} from 'vega-util';
-import {NormalizedSpec} from '.';
-import {Data} from '../data';
-import {ExprRef} from '../expr';
-import {MarkConfig} from '../mark';
-import {Resolve} from '../resolve';
-import {TitleParams} from '../title';
-import {Transform} from '../transform';
-import {Flag, keys} from '../util';
-import {LayoutAlign, RowCol} from '../vega.schema';
-import {isConcatSpec, isVConcatSpec} from './concat';
-import {isFacetMapping, isFacetSpec} from './facet';
+import {NormalizedSpec} from './index.js';
+import {Data} from '../data.js';
+import {ExprRef} from '../expr.js';
+import {MarkConfig} from '../mark.js';
+import {Resolve} from '../resolve.js';
+import {TitleParams} from '../title.js';
+import {Transform} from '../transform.js';
+import {Flag, keys} from '../util.js';
+import {LayoutAlign, RowCol} from '../vega.schema.js';
+import {isConcatSpec, isVConcatSpec} from './concat.js';
+import {isFacetMapping, isFacetSpec} from './facet.js';
 
-export type {TopLevel} from './toplevel';
+export type {TopLevel} from './toplevel.js';
 
 /**
  * Common properties for all types of specification

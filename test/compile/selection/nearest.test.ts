@@ -1,11 +1,11 @@
-import {tooltip} from '../../../src/compile/mark/encode';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import nearest from '../../../src/compile/selection/nearest';
-import * as log from '../../../src/log';
-import {duplicate} from '../../../src/util';
-import {VgEncodeEntry} from '../../../src/vega.schema';
-import {parseUnitModel} from '../../util';
-import {SelectionComponent} from '../../../src/compile/selection';
+import {tooltip} from '../../../src/compile/mark/encode/index.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import nearest from '../../../src/compile/selection/nearest.js';
+import * as log from '../../../src/log/index.js';
+import {duplicate} from '../../../src/util.js';
+import {VgEncodeEntry} from '../../../src/vega.schema.js';
+import {parseUnitModel} from '../../util.js';
+import {SelectionComponent} from '../../../src/compile/selection/index.js';
 
 function getModel(markType: any) {
   const model = parseUnitModel({

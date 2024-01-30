@@ -1,6 +1,6 @@
 import {RangeScheme, SignalRef} from 'vega';
 import {isArray, isNumber, isObject} from 'vega-util';
-import {isBinning} from '../../bin';
+import {isBinning} from '../../bin.js';
 import {
   ANGLE,
   COLOR,
@@ -26,7 +26,7 @@ import {
   XOFFSET,
   Y,
   YOFFSET
-} from '../../channel';
+} from '../../channel.js';
 import {
   getBandPosition,
   getFieldOrDatumDef,
@@ -34,12 +34,12 @@ import {
   isFieldOrDatumDef,
   ScaleDatumDef,
   ScaleFieldDef
-} from '../../channeldef';
-import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
-import {DataSourceType} from '../../data';
-import {channelHasFieldOrDatum} from '../../encoding';
-import * as log from '../../log';
-import {Mark} from '../../mark';
+} from '../../channeldef.js';
+import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config.js';
+import {DataSourceType} from '../../data.js';
+import {channelHasFieldOrDatum} from '../../encoding.js';
+import * as log from '../../log/index.js';
+import {Mark} from '../../mark.js';
 import {
   channelScalePropertyIncompatability,
   Domain,
@@ -51,19 +51,19 @@ import {
   ScaleType,
   scaleTypeSupportProperty,
   Scheme
-} from '../../scale';
-import {getStepFor, isStep, LayoutSizeMixins, Step} from '../../spec/base';
-import {isDiscrete} from '../../type';
-import * as util from '../../util';
-import {isSignalRef, VgRange} from '../../vega.schema';
-import {exprFromSignalRefOrValue, signalOrStringValue} from '../common';
-import {getBinSignalName} from '../data/bin';
-import {SignalRefWrapper} from '../signal';
-import {Explicit, makeExplicit, makeImplicit} from '../split';
-import {UnitModel} from '../unit';
-import {ScaleComponentIndex} from './component';
-import {durationExpr} from '../../timeunit';
-import {isFacetModel} from '../model';
+} from '../../scale.js';
+import {getStepFor, isStep, LayoutSizeMixins, Step} from '../../spec/base.js';
+import {isDiscrete} from '../../type.js';
+import * as util from '../../util.js';
+import {isSignalRef, VgRange} from '../../vega.schema.js';
+import {exprFromSignalRefOrValue, signalOrStringValue} from '../common.js';
+import {getBinSignalName} from '../data/bin.js';
+import {SignalRefWrapper} from '../signal.js';
+import {Explicit, makeExplicit, makeImplicit} from '../split.js';
+import {UnitModel} from '../unit.js';
+import {ScaleComponentIndex} from './component.js';
+import {durationExpr} from '../../timeunit.js';
+import {isFacetModel} from '../model.js';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 

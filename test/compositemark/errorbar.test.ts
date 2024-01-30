@@ -1,15 +1,15 @@
 import {AggregateOp} from 'vega';
-import {FieldName} from '../../src/channeldef';
-import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
-import {defaultConfig} from '../../src/config';
-import * as log from '../../src/log';
-import {isMarkDef} from '../../src/mark';
-import {normalize} from '../../src/normalize';
-import {isLayerSpec, isUnitSpec} from '../../src/spec';
-import {TopLevelUnitSpec} from '../../src/spec/unit';
-import {isAggregate, isCalculate, Transform} from '../../src/transform';
-import {some} from '../../src/util';
-import {assertIsLayerSpec, assertIsUnitSpec} from '../util';
+import {FieldName} from '../../src/channeldef.js';
+import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar.js';
+import {defaultConfig} from '../../src/config.js';
+import * as log from '../../src/log/index.js';
+import {isMarkDef} from '../../src/mark.js';
+import {normalize} from '../../src/normalize/index.js';
+import {isLayerSpec, isUnitSpec} from '../../src/spec/index.js';
+import {TopLevelUnitSpec} from '../../src/spec/unit.js';
+import {isAggregate, isCalculate, Transform} from '../../src/transform.js';
+import {some} from '../../src/util.js';
+import {assertIsLayerSpec, assertIsUnitSpec} from '../util.js';
 
 describe('normalizeErrorBar with raw data input', () => {
   it('should produce correct layered specs for mean point and vertical error bar', () => {

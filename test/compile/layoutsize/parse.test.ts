@@ -1,4 +1,4 @@
-import {parseModelWithScaleAndLayoutSize, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {parseModelWithScaleAndLayoutSize, parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('compile/layout', () => {
   describe('parseUnitLayoutSize', () => {

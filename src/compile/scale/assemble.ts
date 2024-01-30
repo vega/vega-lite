@@ -1,10 +1,10 @@
 import {isObject} from 'vega-util';
-import {isXorY, ScaleChannel} from '../../channel';
-import {keys} from '../../util';
-import {isDataRefDomain, isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
-import {isConcatModel, isLayerModel, Model} from '../model';
-import {assembleSelectionScaleDomain} from '../selection/assemble';
-import {assembleDomain} from './domain';
+import {isXorY, ScaleChannel} from '../../channel.js';
+import {keys} from '../../util.js';
+import {isDataRefDomain, isVgRangeStep, VgRange, VgScale} from '../../vega.schema.js';
+import {isConcatModel, isLayerModel, Model} from '../model.js';
+import {assembleSelectionScaleDomain} from '../selection/assemble.js';
+import {assembleDomain} from './domain.js';
 
 export function assembleScales(model: Model): VgScale[] {
   if (isLayerModel(model) || isConcatModel(model)) {

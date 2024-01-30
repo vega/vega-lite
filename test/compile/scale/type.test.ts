@@ -1,9 +1,9 @@
-import {RADIUS, rangeType, ScaleChannel, SCALE_CHANNELS, THETA, X, Y} from '../../../src/channel';
-import {DatumDef, TypedFieldDef} from '../../../src/channeldef';
-import {scaleType as _scaleType} from '../../../src/compile/scale/type';
-import * as log from '../../../src/log';
-import {ARC, BAR, Mark, PRIMITIVE_MARKS, RECT, RULE} from '../../../src/mark';
-import {Scale, ScaleType} from '../../../src/scale';
+import {RADIUS, rangeType, ScaleChannel, SCALE_CHANNELS, THETA, X, Y} from '../../../src/channel.js';
+import {DatumDef, TypedFieldDef} from '../../../src/channeldef.js';
+import {scaleType as _scaleType} from '../../../src/compile/scale/type.js';
+import * as log from '../../../src/log/index.js';
+import {ARC, BAR, Mark, PRIMITIVE_MARKS, RECT, RULE} from '../../../src/mark.js';
+import {Scale, ScaleType} from '../../../src/scale.js';
 import {
   isUTCTimeUnit,
   LOCAL_MULTI_TIMEUNIT_INDEX,
@@ -11,10 +11,10 @@ import {
   TimeUnit,
   UTC_MULTI_TIMEUNIT_INDEX,
   UTC_SINGLE_TIMEUNIT_INDEX
-} from '../../../src/timeunit';
-import {NOMINAL, ORDINAL} from '../../../src/type';
-import * as util from '../../../src/util';
-import {Flag, keys} from '../../../src/util';
+} from '../../../src/timeunit.js';
+import {NOMINAL, ORDINAL} from '../../../src/type.js';
+import * as util from '../../../src/util.js';
+import {Flag, keys} from '../../../src/util.js';
 
 const TIMEUNIT_INDEX: Flag<TimeUnit> = {
   ...LOCAL_SINGLE_TIMEUNIT_INDEX,

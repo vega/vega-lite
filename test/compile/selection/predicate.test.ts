@@ -1,7 +1,7 @@
-import {nonPosition} from '../../../src/compile/mark/encode';
-import {expression} from '../../../src/compile/predicate';
-import {parseSelectionPredicate as predicate, parseUnitSelection} from '../../../src/compile/selection/parse';
-import {parseUnitModel} from '../../util';
+import {nonPosition} from '../../../src/compile/mark/encode/index.js';
+import {expression} from '../../../src/compile/predicate.js';
+import {parseSelectionPredicate as predicate, parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import {parseUnitModel} from '../../util.js';
 
 describe('Selection Predicate', () => {
   const model = parseUnitModel({

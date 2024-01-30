@@ -2,7 +2,7 @@
  * Collection of all Vega-Lite Error Messages
  */
 import {AggregateOp, SignalRef} from 'vega';
-import {Aggregate} from '../aggregate';
+import {Aggregate} from '../aggregate.js';
 import {
   Channel,
   ExtendedChannel,
@@ -11,20 +11,20 @@ import {
   OffsetScaleChannel,
   PositionScaleChannel,
   ScaleChannel
-} from '../channel';
-import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef';
-import {SplitParentProperty} from '../compile/split';
-import {CompositeMark} from '../compositemark';
-import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
-import {DateTime, DateTimeExpr} from '../datetime';
-import {ExprRef} from '../expr';
-import {Mark} from '../mark';
-import {Projection} from '../projection';
-import {ScaleType} from '../scale';
-import {GenericSpec} from '../spec';
-import {Type} from '../type';
-import {stringify} from '../util';
-import {VgSortField} from '../vega.schema';
+} from '../channel.js';
+import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef.js';
+import {SplitParentProperty} from '../compile/split.js';
+import {CompositeMark} from '../compositemark/index.js';
+import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar.js';
+import {DateTime, DateTimeExpr} from '../datetime.js';
+import {ExprRef} from '../expr.js';
+import {Mark} from '../mark.js';
+import {Projection} from '../projection.js';
+import {ScaleType} from '../scale.js';
+import {GenericSpec} from '../spec/index.js';
+import {Type} from '../type.js';
+import {stringify} from '../util.js';
+import {VgSortField} from '../vega.schema.js';
 
 export function invalidSpec(spec: GenericSpec<any, any, any, any>) {
   return `Invalid specification ${stringify(

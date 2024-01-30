@@ -1,9 +1,9 @@
-import {AggregateNode} from '../../../src/compile/data/aggregate';
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../src/compile/data/timeunit';
-import {AggregateTransform} from '../../../src/transform';
-import {internalField} from '../../../src/util';
-import {parseUnitModel} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {AggregateNode} from '../../../src/compile/data/aggregate.js';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../src/compile/data/timeunit.js';
+import {AggregateTransform} from '../../../src/transform.js';
+import {internalField} from '../../../src/util.js';
+import {parseUnitModel} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/aggregate', () => {
   describe('clone', () => {

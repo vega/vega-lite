@@ -2,7 +2,7 @@
 
 // Render a Vega-Lite specification to PDF, using node canvas
 import {createWriteStream} from 'fs';
-import render from './render';
+import render from './render.js';
 
 render(
   'pdf',

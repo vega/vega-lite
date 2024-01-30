@@ -1,8 +1,8 @@
-import {StackNode} from '../../../src/compile/data/stack';
-import {UnitModel} from '../../../src/compile/unit';
-import {Transform} from '../../../src/transform';
-import {parseUnitModelWithScale} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {StackNode} from '../../../src/compile/data/stack.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import {Transform} from '../../../src/transform.js';
+import {parseUnitModelWithScale} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 function parse(model: UnitModel) {
   return StackNode.makeFromEncoding(null, model).stack;

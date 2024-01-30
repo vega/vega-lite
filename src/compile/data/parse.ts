@@ -1,4 +1,4 @@
-import {AncestorParse, DataComponent} from '.';
+import {AncestorParse, DataComponent} from './index.js';
 import {
   Data,
   isGenerator,
@@ -9,8 +9,8 @@ import {
   isUrlData,
   DataSourceType,
   ParseValue
-} from '../../data';
-import * as log from '../../log';
+} from '../../data.js';
+import * as log from '../../log/index.js';
 import {
   isAggregate,
   isBin,
@@ -31,46 +31,46 @@ import {
   isStack,
   isTimeUnit,
   isWindow
-} from '../../transform';
-import {deepEqual, mergeDeep} from '../../util';
-import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
-import {requiresSelectionId} from '../selection';
-import {materializeSelections} from '../selection/parse';
-import {AggregateNode} from './aggregate';
-import {BinNode} from './bin';
-import {CalculateNode} from './calculate';
-import {DataFlowNode, OutputNode} from './dataflow';
-import {DensityTransformNode} from './density';
-import {ExtentTransformNode} from './extent';
-import {FacetNode} from './facet';
-import {FilterNode} from './filter';
-import {FilterInvalidNode} from './filterinvalid';
-import {FlattenTransformNode} from './flatten';
-import {FoldTransformNode} from './fold';
+} from '../../transform.js';
+import {deepEqual, mergeDeep} from '../../util.js';
+import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model.js';
+import {requiresSelectionId} from '../selection/index.js';
+import {materializeSelections} from '../selection/parse.js';
+import {AggregateNode} from './aggregate.js';
+import {BinNode} from './bin.js';
+import {CalculateNode} from './calculate.js';
+import {DataFlowNode, OutputNode} from './dataflow.js';
+import {DensityTransformNode} from './density.js';
+import {ExtentTransformNode} from './extent.js';
+import {FacetNode} from './facet.js';
+import {FilterNode} from './filter.js';
+import {FilterInvalidNode} from './filterinvalid.js';
+import {FlattenTransformNode} from './flatten.js';
+import {FoldTransformNode} from './fold.js';
 import {
   getImplicitFromEncoding,
   getImplicitFromFilterTransform,
   getImplicitFromSelection,
   ParseNode
-} from './formatparse';
-import {GeoJSONNode} from './geojson';
-import {GeoPointNode} from './geopoint';
-import {GraticuleNode} from './graticule';
-import {IdentifierNode} from './identifier';
-import {ImputeNode} from './impute';
-import {JoinAggregateTransformNode} from './joinaggregate';
-import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
-import {LoessTransformNode} from './loess';
-import {LookupNode} from './lookup';
-import {PivotTransformNode} from './pivot';
-import {QuantileTransformNode} from './quantile';
-import {RegressionTransformNode} from './regression';
-import {SampleTransformNode} from './sample';
-import {SequenceNode} from './sequence';
-import {SourceNode} from './source';
-import {StackNode} from './stack';
-import {TimeUnitNode} from './timeunit';
-import {WindowTransformNode} from './window';
+} from './formatparse.js';
+import {GeoJSONNode} from './geojson.js';
+import {GeoPointNode} from './geopoint.js';
+import {GraticuleNode} from './graticule.js';
+import {IdentifierNode} from './identifier.js';
+import {ImputeNode} from './impute.js';
+import {JoinAggregateTransformNode} from './joinaggregate.js';
+import {makeJoinAggregateFromFacet} from './joinaggregatefacet.js';
+import {LoessTransformNode} from './loess.js';
+import {LookupNode} from './lookup.js';
+import {PivotTransformNode} from './pivot.js';
+import {QuantileTransformNode} from './quantile.js';
+import {RegressionTransformNode} from './regression.js';
+import {SampleTransformNode} from './sample.js';
+import {SequenceNode} from './sequence.js';
+import {SourceNode} from './source.js';
+import {StackNode} from './stack.js';
+import {TimeUnitNode} from './timeunit.js';
+import {WindowTransformNode} from './window.js';
 
 export function findSource(data: Data, sources: SourceNode[]) {
   for (const other of sources) {

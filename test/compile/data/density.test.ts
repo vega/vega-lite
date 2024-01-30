@@ -1,6 +1,6 @@
-import {DensityTransformNode} from '../../../src/compile/data/density';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {DensityTransformNode} from '../../../src/compile/data/density.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/fold', () => {
   describe('assemble', () => {

@@ -16,9 +16,9 @@ import xml from 'highlight.js/lib/languages/xml';
 import compactStringify from 'json-stringify-pretty-compact';
 import * as vega from 'vega';
 import {Handler} from 'vega-tooltip';
-import {compile, TopLevelSpec} from '../../src';
-import {post} from './post';
-import {runStreamingExample} from './streaming';
+import {compile, TopLevelSpec} from '../../src/index.js';
+import {post} from './post.js';
+import {runStreamingExample} from './streaming.js';
 
 window['runStreamingExample'] = runStreamingExample;
 window['embedExample'] = embedExample;

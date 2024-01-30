@@ -1,6 +1,6 @@
-import {DataSourceType} from '../../data';
-import * as log from '../../log';
-import {Dict, uniqueId} from '../../util';
+import {DataSourceType} from '../../data.js';
+import * as log from '../../log/index.js';
+import {Dict, uniqueId} from '../../util.js';
 
 /**
  * A node in the dataflow tree.

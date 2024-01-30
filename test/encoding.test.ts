@@ -9,9 +9,9 @@ import {
   UNIT_CHANNELS,
   X2,
   Y2
-} from '../src/channel';
-import {isPositionFieldOrDatumDef} from '../src/channeldef';
-import {defaultConfig} from '../src/config';
+} from '../src/channel.js';
+import {isPositionFieldOrDatumDef} from '../src/channeldef.js';
+import {defaultConfig} from '../src/config.js';
 import {
   Encoding,
   extractTransformsFromEncoding,
@@ -19,10 +19,10 @@ import {
   initEncoding,
   markChannelCompatible,
   pathGroupingFields
-} from '../src/encoding';
-import * as log from '../src/log';
-import {CIRCLE, POINT, SQUARE, TICK} from '../src/mark';
-import {internalField} from '../src/util';
+} from '../src/encoding.js';
+import * as log from '../src/log/index.js';
+import {CIRCLE, POINT, SQUARE, TICK} from '../src/mark.js';
+import {internalField} from '../src/util.js';
 
 describe('encoding', () => {
   describe('initEncoding', () => {

@@ -4,12 +4,12 @@ import {
   SignalRef,
   WindowTransform as VgWindowTransform
 } from 'vega';
-import {isFieldDef} from '../../channeldef';
-import {pathGroupingFields} from '../../encoding';
-import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
+import {isFieldDef} from '../../channeldef.js';
+import {pathGroupingFields} from '../../encoding.js';
+import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
 
 export class ImputeNode extends DataFlowNode {
   public clone() {

@@ -10,9 +10,9 @@ import {
   spec,
   testRenderFn,
   unitNameRegex
-} from './util';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
-import {TopLevelSpec} from '../src';
+} from './util.js';
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
+import {TopLevelSpec} from '../src/index.js';
 
 for (const type of selectionTypes) {
   const isInterval = type === 'interval';

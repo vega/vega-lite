@@ -1,8 +1,8 @@
 import {FieldRef, GeoPointTransform as VgGeoPointTransform, Vector2} from 'vega';
-import {GeoPointNode} from '../../../src/compile/data/geopoint';
-import {contains, every} from '../../../src/util';
-import {parseUnitModel} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {GeoPointNode} from '../../../src/compile/data/geopoint.js';
+import {contains, every} from '../../../src/util.js';
+import {parseUnitModel} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/geopoint', () => {
   describe('geojson', () => {

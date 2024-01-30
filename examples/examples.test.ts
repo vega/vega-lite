@@ -1,15 +1,19 @@
-import Ajv, {ErrorObject} from 'ajv';
-import addFormats from 'ajv-formats';
+import _Ajv, {ErrorObject} from 'ajv';
+import _addFormats from 'ajv-formats';
 import draft6Schema from 'ajv/lib/refs/json-schema-draft-06.json';
 import fs from 'fs';
 import path from 'path';
 import {Spec as VgSpec} from 'vega';
 import vgSchema from 'vega/build/vega-schema.json';
 import vlSchema from '../build/vega-lite-schema.json';
-import {compile} from '../src/compile/compile';
-import * as log from '../src/log';
-import {TopLevelSpec} from '../src/spec';
-import {duplicate} from '../src/util';
+import {compile} from '../src/compile/compile.js';
+import * as log from '../src/log/index.js';
+import {TopLevelSpec} from '../src/spec/index.js';
+import {duplicate} from '../src/util.js';
+
+// https://github.com/ajv-validator/ajv/issues/2132
+const Ajv = _Ajv as unknown as typeof _Ajv.default;
+const addFormats = _addFormats as unknown as typeof _addFormats.default;
 
 // import {inspect} from 'util';
 

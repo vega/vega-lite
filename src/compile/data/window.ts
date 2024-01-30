@@ -1,12 +1,12 @@
 import {AggregateOp, WindowTransform as VgWindowTransform} from 'vega';
-import {isAggregateOp} from '../../aggregate';
-import {vgField} from '../../channeldef';
-import {SortOrder} from '../../sort';
-import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {VgComparator, VgJoinAggregateTransform} from '../../vega.schema';
-import {unique} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {isAggregateOp} from '../../aggregate.js';
+import {vgField} from '../../channeldef.js';
+import {SortOrder} from '../../sort.js';
+import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {VgComparator, VgJoinAggregateTransform} from '../../vega.schema.js';
+import {unique} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for the window transform nodes

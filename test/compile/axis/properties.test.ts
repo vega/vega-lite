@@ -1,13 +1,13 @@
 import {AxisOrient, Orient, SignalRef} from 'vega';
 import {codegenExpression, parseExpression} from 'vega-expression';
 import {stringValue} from 'vega-util';
-import {getAxisConfigs} from '../../../src/compile/axis/config';
-import * as properties from '../../../src/compile/axis/properties';
-import {defaultLabelAlign, defaultLabelBaseline, getLabelAngle} from '../../../src/compile/axis/properties';
-import {TimeUnit, TimeUnitTransformParams} from '../../../src/timeunit';
-import {normalizeAngle} from '../../../src/util';
-import {isSignalRef} from '../../../src/vega.schema';
-import {range} from '../../util';
+import {getAxisConfigs} from '../../../src/compile/axis/config.js';
+import * as properties from '../../../src/compile/axis/properties.js';
+import {defaultLabelAlign, defaultLabelBaseline, getLabelAngle} from '../../../src/compile/axis/properties.js';
+import {TimeUnit, TimeUnitTransformParams} from '../../../src/timeunit.js';
+import {normalizeAngle} from '../../../src/util.js';
+import {isSignalRef} from '../../../src/vega.schema.js';
+import {range} from '../../util.js';
 
 describe('compile/axis/properties', () => {
   function evalValueOrSignal(valueOrSignalRef: string | SignalRef, o: Orient) {

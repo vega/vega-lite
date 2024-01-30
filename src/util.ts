@@ -1,5 +1,5 @@
 import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig} from 'vega-util';
-import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical';
+import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical.js';
 
 export const duplicate = structuredClone;
 

@@ -1,12 +1,12 @@
 import {NewSignal} from 'vega';
 import {parseSelector} from 'vega-event-selector';
-import {SelectionComponent} from '.';
-import {ScaleChannel, X, Y} from '../../channel';
-import {UnitModel} from '../unit';
-import {BRUSH as INTERVAL_BRUSH} from './interval';
-import {SelectionProjection} from './project';
-import scalesCompiler, {domain} from './scales';
-import {SelectionCompiler} from '.';
+import {SelectionComponent} from './index.js';
+import {ScaleChannel, X, Y} from '../../channel.js';
+import {UnitModel} from '../unit.js';
+import {BRUSH as INTERVAL_BRUSH} from './interval.js';
+import {SelectionProjection} from './project.js';
+import scalesCompiler, {domain} from './scales.js';
+import {SelectionCompiler} from './index.js';
 
 const ANCHOR = '_translate_anchor';
 const DELTA = '_translate_delta';

@@ -1,9 +1,9 @@
-import {COLOR, SIZE} from '../../../src/channel';
-import {LegendComponent} from '../../../src/compile/legend/component';
-import * as encode from '../../../src/compile/legend/encode';
-import {getLegendType} from '../../../src/compile/legend/properties';
-import {Encoding} from '../../../src/encoding';
-import {parseUnitModelWithScale} from '../../util';
+import {COLOR, SIZE} from '../../../src/channel.js';
+import {LegendComponent} from '../../../src/compile/legend/component.js';
+import * as encode from '../../../src/compile/legend/encode.js';
+import {getLegendType} from '../../../src/compile/legend/properties.js';
+import {Encoding} from '../../../src/encoding.js';
+import {parseUnitModelWithScale} from '../../util.js';
 
 describe('compile/legend', () => {
   const symbolLegend = new LegendComponent({type: 'symbol'});

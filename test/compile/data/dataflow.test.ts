@@ -1,7 +1,7 @@
-import {OutputNode} from '../../../src/compile/data/dataflow';
-import {DataSourceType} from '../../../src/data';
-import * as log from '../../../src/log';
-import {PlaceholderDataFlowNode} from './util';
+import {OutputNode} from '../../../src/compile/data/dataflow.js';
+import {DataSourceType} from '../../../src/data.js';
+import * as log from '../../../src/log/index.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/dataflow', () => {
   describe('DataFlowNode', () => {

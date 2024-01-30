@@ -1,9 +1,9 @@
 import {parseSelector} from 'vega-event-selector';
-import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import zoom from '../../../src/compile/selection/zoom';
-import {Scale} from '../../../src/scale';
-import {parseUnitModel} from '../../util';
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import zoom from '../../../src/compile/selection/zoom.js';
+import {Scale} from '../../../src/scale.js';
+import {parseUnitModel} from '../../util.js';
 
 function getModel(xscale: Scale = {type: 'linear'}, yscale: Scale = {type: 'linear'}) {
   const model = parseUnitModel({

@@ -1,6 +1,6 @@
-import {assembleScaleRange, assembleScales} from '../../../src/compile/scale/assemble';
-import {SignalRefWrapper} from '../../../src/compile/signal';
-import {parseConcatModel, parseFacetModelWithScale, parseLayerModel, parseUnitModelWithScale} from '../../util';
+import {assembleScaleRange, assembleScales} from '../../../src/compile/scale/assemble.js';
+import {SignalRefWrapper} from '../../../src/compile/signal.js';
+import {parseConcatModel, parseFacetModelWithScale, parseLayerModel, parseUnitModelWithScale} from '../../util.js';
 
 describe('compile/scale/assemble', () => {
   describe('assembleScales', () => {

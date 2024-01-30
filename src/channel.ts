@@ -3,11 +3,11 @@
  * such as 'x', 'y', 'color'.
  */
 
-import {RangeType} from './compile/scale/type';
-import {Encoding} from './encoding';
-import {Mark} from './mark';
-import {EncodingFacetMapping} from './spec/facet';
-import {Flag, keys} from './util';
+import {RangeType} from './compile/scale/type.js';
+import {Encoding} from './encoding.js';
+import {Mark} from './mark.js';
+import {EncodingFacetMapping} from './spec/facet.js';
+import {Flag, keys} from './util.js';
 
 export type Channel = keyof Encoding<any>;
 export type ExtendedChannel = Channel | FacetChannel;

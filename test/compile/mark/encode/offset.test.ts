@@ -1,6 +1,6 @@
 import type {SignalRef} from 'vega';
-import {positionOffset} from '../../../../src/compile/mark/encode/offset';
-import {Mark, MarkDef} from '../../../../src/mark';
+import {positionOffset} from '../../../../src/compile/mark/encode/offset.js';
+import {Mark, MarkDef} from '../../../../src/mark.js';
 
 describe('compile/mark/encode/offset', () => {
   describe('positionOffset', () => {

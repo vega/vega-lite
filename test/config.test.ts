@@ -7,9 +7,9 @@ import {
   initConfig,
   isVgScheme,
   stripAndRedirectConfig
-} from '../src/config';
-import {PRIMITIVE_MARKS} from '../src/mark';
-import {duplicate} from '../src/util';
+} from '../src/config.js';
+import {PRIMITIVE_MARKS} from '../src/mark.js';
+import {duplicate} from '../src/util.js';
 
 describe('config', () => {
   describe('initConfig', () => {

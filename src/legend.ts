@@ -7,11 +7,11 @@ import {
   Orientation,
   SignalRef
 } from 'vega';
-import {DateTime} from './datetime';
-import {ExprRef} from './expr';
-import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, keys} from './util';
-import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
+import {DateTime} from './datetime.js';
+import {ExprRef} from './expr.js';
+import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide.js';
+import {Flag, keys} from './util.js';
+import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema.js';
 
 export const LEGEND_SCALE_CHANNELS = [
   'size',

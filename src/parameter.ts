@@ -1,5 +1,5 @@
 import {Binding, Expr, InitSignal, NewSignal} from 'vega';
-import {isSelectionParameter, TopLevelSelectionParameter} from './selection';
+import {isSelectionParameter, TopLevelSelectionParameter} from './selection.js';
 
 export type ParameterName = string;
 

@@ -1,14 +1,14 @@
 import type {SignalRef} from 'vega';
-import {ScaleChannel} from '../../../src/channel';
-import {PositionFieldDef} from '../../../src/channeldef';
-import {domainSort, mergeDomains, parseDomainForChannel} from '../../../src/compile/scale/domain';
-import {parseScaleCore} from '../../../src/compile/scale/parse';
-import {UnitModel} from '../../../src/compile/unit';
-import * as log from '../../../src/log';
-import {ScaleType} from '../../../src/scale';
-import {EncodingSortField} from '../../../src/sort';
-import {parseUnitModel} from '../../util';
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../src/compile/data/timeunit';
+import {ScaleChannel} from '../../../src/channel.js';
+import {PositionFieldDef} from '../../../src/channeldef.js';
+import {domainSort, mergeDomains, parseDomainForChannel} from '../../../src/compile/scale/domain.js';
+import {parseScaleCore} from '../../../src/compile/scale/parse.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import * as log from '../../../src/log/index.js';
+import {ScaleType} from '../../../src/scale.js';
+import {EncodingSortField} from '../../../src/sort.js';
+import {parseUnitModel} from '../../util.js';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../src/compile/data/timeunit.js';
 
 describe('compile/scale', () => {
   describe('parseDomainForChannel()', () => {

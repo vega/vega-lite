@@ -1,6 +1,6 @@
-import {NameMap} from '../../src/compile/model';
-import {DataSourceType} from '../../src/data';
-import {parseFacetModelWithScale, parseModel} from '../util';
+import {NameMap} from '../../src/compile/model.js';
+import {DataSourceType} from '../../src/data.js';
+import {parseFacetModelWithScale, parseModel} from '../util.js';
 
 describe('Model', () => {
   describe('NameMap', () => {

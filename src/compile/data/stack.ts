@@ -1,13 +1,13 @@
 import {Transforms as VgTransform} from 'vega';
 import {isArray, isString} from 'vega-util';
-import {FieldDef, FieldName, getFieldDef, isFieldDef, isOrderOnlyDef, vgField} from '../../channeldef';
-import {SortFields, SortOrder} from '../../sort';
-import {StackOffset} from '../../stack';
-import {StackTransform} from '../../transform';
-import {duplicate, getFirstDefined, hash} from '../../util';
-import {sortParams} from '../common';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
+import {FieldDef, FieldName, getFieldDef, isFieldDef, isOrderOnlyDef, vgField} from '../../channeldef.js';
+import {SortFields, SortOrder} from '../../sort.js';
+import {StackOffset} from '../../stack.js';
+import {StackTransform} from '../../transform.js';
+import {duplicate, getFirstDefined, hash} from '../../util.js';
+import {sortParams} from '../common.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce((fields, by) => {

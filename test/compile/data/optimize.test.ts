@@ -1,8 +1,8 @@
-import {OutputNode} from '../../../src/compile/data/dataflow';
-import {ParseNode} from '../../../src/compile/data/formatparse';
-import {optimizeDataflow} from '../../../src/compile/data/optimize';
-import {SourceNode} from '../../../src/compile/data/source';
-import {parseLayerModel} from '../../util';
+import {OutputNode} from '../../../src/compile/data/dataflow.js';
+import {ParseNode} from '../../../src/compile/data/formatparse.js';
+import {optimizeDataflow} from '../../../src/compile/data/optimize.js';
+import {SourceNode} from '../../../src/compile/data/source.js';
+import {parseLayerModel} from '../../util.js';
 
 describe('compile/data/optimize', () => {
   describe('optimizeDataFlow', () => {

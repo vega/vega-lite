@@ -1,11 +1,11 @@
 import {AggregateOp} from 'vega';
-import {vgField} from '../../channeldef';
-import {JoinAggregateTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {VgJoinAggregateTransform} from '../../vega.schema';
-import {JoinAggregateFieldDef} from '../../transform';
-import {unique} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {vgField} from '../../channeldef.js';
+import {JoinAggregateTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {VgJoinAggregateTransform} from '../../vega.schema.js';
+import {JoinAggregateFieldDef} from '../../transform.js';
+import {unique} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for the join aggregate transform nodes.

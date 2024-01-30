@@ -1,7 +1,7 @@
-import {COLOR, X, Y} from '../../../src/channel';
-import {line} from '../../../src/compile/mark/line';
-import * as log from '../../../src/log';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {COLOR, X, Y} from '../../../src/channel.js';
+import {line} from '../../../src/compile/mark/line.js';
+import * as log from '../../../src/log/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Line', () => {
   describe('with x, y', () => {

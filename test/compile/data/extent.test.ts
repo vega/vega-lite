@@ -1,6 +1,6 @@
-import {ExtentTransformNode} from '../../../src/compile/data/extent';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {ExtentTransformNode} from '../../../src/compile/data/extent.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/extent', () => {
   describe('assemble', () => {

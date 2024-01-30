@@ -1,8 +1,8 @@
-import {FacetModel} from '../../../src/compile/facet';
-import {unitName} from '../../../src/compile/selection';
-import {assembleFacetSignals} from '../../../src/compile/selection/assemble';
-import {UnitModel} from '../../../src/compile/unit';
-import {parseModel} from '../../util';
+import {FacetModel} from '../../../src/compile/facet.js';
+import {unitName} from '../../../src/compile/selection/index.js';
+import {assembleFacetSignals} from '../../../src/compile/selection/assemble.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import {parseModel} from '../../util.js';
 
 describe('Faceted Selections', () => {
   const model = parseModel({

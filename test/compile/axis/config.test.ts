@@ -1,4 +1,4 @@
-import {getAxisConfigs} from '../../../src/compile/axis/config';
+import {getAxisConfigs} from '../../../src/compile/axis/config.js';
 
 describe('getAxisConfigs', () => {
   it('correctly get axis types for orient signal', () => {

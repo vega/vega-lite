@@ -1,6 +1,6 @@
 import {Binding, isString, Signal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
-import {FACET_CHANNELS} from '../../channel';
+import {FACET_CHANNELS} from '../../channel.js';
 import {
   BrushConfig,
   LegendBinding,
@@ -8,26 +8,26 @@ import {
   SelectionInitInterval,
   SelectionResolution,
   SelectionType
-} from '../../selection';
-import {Dict, vals} from '../../util';
-import {OutputNode} from '../data/dataflow';
-import {FacetModel} from '../facet';
-import {isFacetModel, Model} from '../model';
-import {UnitModel} from '../unit';
-import interval from './interval';
-import point from './point';
-import {SelectionProjection, SelectionProjectionComponent} from './project';
-import {SelectionParameter} from '../../selection';
-import clear from './clear';
-import inputs from './inputs';
-import nearest from './nearest';
-import project from './project';
-import scales from './scales';
-import legends from './legends';
-import toggle from './toggle';
-import translate from './translate';
-import zoom from './zoom';
-import {ParameterName} from '../../parameter';
+} from '../../selection.js';
+import {Dict, vals} from '../../util.js';
+import {OutputNode} from '../data/dataflow.js';
+import {FacetModel} from '../facet.js';
+import {isFacetModel, Model} from '../model.js';
+import {UnitModel} from '../unit.js';
+import interval from './interval.js';
+import point from './point.js';
+import {SelectionProjection, SelectionProjectionComponent} from './project.js';
+import {SelectionParameter} from '../../selection.js';
+import clear from './clear.js';
+import inputs from './inputs.js';
+import nearest from './nearest.js';
+import project from './project.js';
+import scales from './scales.js';
+import legends from './legends.js';
+import toggle from './toggle.js';
+import translate from './translate.js';
+import zoom from './zoom.js';
+import {ParameterName} from '../../parameter.js';
 
 export const STORE = '_store';
 export const TUPLE = '_tuple';

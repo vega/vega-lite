@@ -1,12 +1,12 @@
 import {ScaleType, SignalRef} from 'vega';
 import {array} from 'vega-util';
-import {AxisConfig} from '../../axis';
-import {PositionScaleChannel} from '../../channel';
-import {Config, StyleConfigIndex} from '../../config';
-import {isQuantitative} from '../../scale';
-import {keys, titleCase} from '../../util';
-import {isSignalRef} from '../../vega.schema';
-import {getStyleConfig, signalOrStringValue} from '../common';
+import {AxisConfig} from '../../axis.js';
+import {PositionScaleChannel} from '../../channel.js';
+import {Config, StyleConfigIndex} from '../../config.js';
+import {isQuantitative} from '../../scale.js';
+import {keys, titleCase} from '../../util.js';
+import {isSignalRef} from '../../vega.schema.js';
+import {getStyleConfig, signalOrStringValue} from '../common.js';
 
 function getAxisConfigFromConfigTypes(
   configTypes: string[],

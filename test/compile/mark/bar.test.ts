@@ -1,8 +1,8 @@
-import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef';
-import {bar} from '../../../src/compile/mark/bar';
-import {DEFAULT_STEP} from '../../../src/config';
-import {defaultBarConfig} from '../../../src/mark';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef.js';
+import {bar} from '../../../src/compile/mark/bar.js';
+import {DEFAULT_STEP} from '../../../src/config.js';
+import {defaultBarConfig} from '../../../src/mark.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Bar', () => {
   describe('simple vertical', () => {

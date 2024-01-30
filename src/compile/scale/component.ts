@@ -1,11 +1,11 @@
 import type {SignalRef} from 'vega';
 import {isArray, isNumber} from 'vega-util';
-import {ScaleChannel} from '../../channel';
-import {Scale, ScaleType} from '../../scale';
-import {ParameterExtent} from '../../selection';
-import {some} from '../../util';
-import {VgNonUnionDomain, VgScale} from '../../vega.schema';
-import {Explicit, Split} from '../split';
+import {ScaleChannel} from '../../channel.js';
+import {Scale, ScaleType} from '../../scale.js';
+import {ParameterExtent} from '../../selection.js';
+import {some} from '../../util.js';
+import {VgNonUnionDomain, VgScale} from '../../vega.schema.js';
+import {Explicit, Split} from '../split.js';
 
 /**
  * All VgDomain property except domain.

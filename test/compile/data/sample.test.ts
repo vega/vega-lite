@@ -1,6 +1,6 @@
-import {SampleTransformNode} from '../../../src/compile/data/sample';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {SampleTransformNode} from '../../../src/compile/data/sample.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 const transform: Transform = {
   sample: 500

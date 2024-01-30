@@ -1,6 +1,6 @@
-import {SecondaryFieldDef, TypedFieldDef} from '../../../../src/channeldef';
-import {midPoint, wrapPositionInvalidTest} from '../../../../src/compile/mark/encode/valueref';
-import {defaultConfig} from '../../../../src/config';
+import {SecondaryFieldDef, TypedFieldDef} from '../../../../src/channeldef.js';
+import {midPoint, wrapPositionInvalidTest} from '../../../../src/compile/mark/encode/valueref.js';
+import {defaultConfig} from '../../../../src/config.js';
 
 describe('compile/mark/encode/valueref', () => {
   describe('midPoint()', () => {

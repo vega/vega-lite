@@ -1,7 +1,7 @@
-import {normalize} from '../../src';
-import {NormalizerParams} from '../../src/normalize';
-import {SelectionCompatibilityNormalizer} from '../../src/normalize/selectioncompat';
-import {NormalizedUnitSpec} from '../../src/spec';
+import {normalize} from '../../src/index.js';
+import {NormalizerParams} from '../../src/normalize/index.js';
+import {SelectionCompatibilityNormalizer} from '../../src/normalize/selectioncompat.js';
+import {NormalizedUnitSpec} from '../../src/spec/index.js';
 
 const normParams: NormalizerParams = {config: {}, emptySelections: {}, selectionPredicates: {}};
 const selectionCompatNormalizer = new SelectionCompatibilityNormalizer();

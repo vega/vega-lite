@@ -1,10 +1,10 @@
-import {AggregateNode} from '../../../src/compile/data/aggregate';
-import {assembleRootData} from '../../../src/compile/data/assemble';
-import {OutputNode} from '../../../src/compile/data/dataflow';
-import {SourceNode} from '../../../src/compile/data/source';
-import {WindowTransformNode} from '../../../src/compile/data/window';
-import {Transform} from '../../../src/transform';
-import {DataSourceType} from '../../../src/data';
+import {AggregateNode} from '../../../src/compile/data/aggregate.js';
+import {assembleRootData} from '../../../src/compile/data/assemble.js';
+import {OutputNode} from '../../../src/compile/data/dataflow.js';
+import {SourceNode} from '../../../src/compile/data/source.js';
+import {WindowTransformNode} from '../../../src/compile/data/window.js';
+import {Transform} from '../../../src/transform.js';
+import {DataSourceType} from '../../../src/data.js';
 
 describe('compile/data/assemble', () => {
   describe('assembleData', () => {

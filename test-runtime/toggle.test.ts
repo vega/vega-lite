@@ -1,8 +1,8 @@
 import {stringValue} from 'vega-util';
-import {TopLevelSpec} from '../src';
-import {SelectionType} from '../src/selection';
-import {compositeTypes, embedFn, parentSelector, spec, testRenderFn} from './util';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {TopLevelSpec} from '../src/index.js';
+import {SelectionType} from '../src/selection.js';
+import {compositeTypes, embedFn, parentSelector, spec, testRenderFn} from './util.js';
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 
 const hits = {
   qq: [8, 19, 13, 21],

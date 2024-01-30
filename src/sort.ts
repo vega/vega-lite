@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
-import {NonArgAggregateOp} from './aggregate';
-import {FieldName} from './channeldef';
-import {DateTime} from './datetime';
+import {NonArgAggregateOp} from './aggregate.js';
+import {FieldName} from './channeldef.js';
+import {DateTime} from './datetime.js';
 
 export type SortOrder = 'ascending' | 'descending';
 

@@ -1,4 +1,4 @@
-import {parseUnitModelWithScale} from '../../util';
+import {parseUnitModelWithScale} from '../../util.js';
 
 describe('legend/assemble', () => {
   it('correctly applies labelExpr.', () => {

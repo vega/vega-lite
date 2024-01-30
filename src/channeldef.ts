@@ -1,8 +1,8 @@
 import {Gradient, ScaleType, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
-import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
-import {Axis} from './axis';
-import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
+import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate.js';
+import {Axis} from './axis.js';
+import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin.js';
 import {
   ANGLE,
   Channel,
@@ -48,25 +48,25 @@ import {
   Y,
   Y2,
   YOFFSET
-} from './channel';
-import {getMarkConfig, getMarkPropOrConfig} from './compile/common';
-import {isCustomFormatType} from './compile/format';
-import {CompositeAggregate} from './compositemark';
-import {Config} from './config';
-import {DateTime, dateTimeToExpr, isDateTime} from './datetime';
-import {Encoding} from './encoding';
-import {ExprRef, isExprRef} from './expr';
-import {Guide, GuideEncodingConditionalValueDef, TitleMixins} from './guide';
-import {ImputeParams} from './impute';
-import {Legend} from './legend';
-import * as log from './log';
-import {LogicalComposition} from './logical';
-import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark';
-import {ParameterPredicate, Predicate} from './predicate';
-import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale';
-import {isSortByChannel, Sort, SortOrder} from './sort';
-import {isFacetFieldDef} from './spec/facet';
-import {StackOffset} from './stack';
+} from './channel.js';
+import {getMarkConfig, getMarkPropOrConfig} from './compile/common.js';
+import {isCustomFormatType} from './compile/format.js';
+import {CompositeAggregate} from './compositemark/index.js';
+import {Config} from './config.js';
+import {DateTime, dateTimeToExpr, isDateTime} from './datetime.js';
+import {Encoding} from './encoding.js';
+import {ExprRef, isExprRef} from './expr.js';
+import {Guide, GuideEncodingConditionalValueDef, TitleMixins} from './guide.js';
+import {ImputeParams} from './impute.js';
+import {Legend} from './legend.js';
+import * as log from './log/index.js';
+import {LogicalComposition} from './logical.js';
+import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark.js';
+import {ParameterPredicate, Predicate} from './predicate.js';
+import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale.js';
+import {isSortByChannel, Sort, SortOrder} from './sort.js';
+import {isFacetFieldDef} from './spec/facet.js';
+import {StackOffset} from './stack.js';
 import {
   BinnedTimeUnit,
   getTimeUnitParts,
@@ -76,9 +76,9 @@ import {
   TimeUnit,
   TimeUnitParams,
   timeUnitToString
-} from './timeunit';
-import {AggregatedFieldDef, WindowFieldDef} from './transform';
-import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
+} from './timeunit.js';
+import {AggregatedFieldDef, WindowFieldDef} from './transform.js';
+import {getFullName, QUANTITATIVE, StandardType, Type} from './type.js';
 import {
   Dict,
   flatAccessWithDatum,
@@ -89,8 +89,8 @@ import {
   replacePathInField,
   stringify,
   titleCase
-} from './util';
-import {isSignalRef} from './vega.schema';
+} from './util.js';
+import {isSignalRef} from './vega.schema.js';
 
 export type PrimitiveValue = number | string | boolean | null;
 

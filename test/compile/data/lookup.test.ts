@@ -1,9 +1,9 @@
-import {AncestorParse} from '../../../src/compile/data';
-import {LookupNode} from '../../../src/compile/data/lookup';
-import {parseTransformArray} from '../../../src/compile/data/parse';
-import * as log from '../../../src/log';
-import {parseUnitModel} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {AncestorParse} from '../../../src/compile/data/index.js';
+import {LookupNode} from '../../../src/compile/data/lookup.js';
+import {parseTransformArray} from '../../../src/compile/data/parse.js';
+import * as log from '../../../src/log/index.js';
+import {parseUnitModel} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/lookup', () => {
   it('should parse lookup from array', () => {

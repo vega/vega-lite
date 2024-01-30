@@ -1,7 +1,7 @@
 import {SignalRef, Text} from 'vega';
-import {ConditionValueDefMixins, FormatMixins, ValueDef} from './channeldef';
-import {LegendConfig} from './legend';
-import {VgEncodeChannel} from './vega.schema';
+import {ConditionValueDefMixins, FormatMixins, ValueDef} from './channeldef.js';
+import {LegendConfig} from './legend.js';
+import {VgEncodeChannel} from './vega.schema.js';
 
 export interface TitleMixins {
   /**

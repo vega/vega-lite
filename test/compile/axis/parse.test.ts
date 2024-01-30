@@ -1,6 +1,6 @@
-import {Y} from '../../../src/channel';
-import {parseLayerAxes, parseUnitAxes} from '../../../src/compile/axis/parse';
-import {parseLayerModel, parseUnitModelWithScale} from '../../util';
+import {Y} from '../../../src/channel.js';
+import {parseLayerAxes, parseUnitAxes} from '../../../src/compile/axis/parse.js';
+import {parseLayerModel, parseUnitModelWithScale} from '../../util.js';
 
 describe('Axis', () => {
   // TODO: move this to model.test.ts

@@ -1,10 +1,10 @@
 import {Stream} from 'vega';
 import {stringValue} from 'vega-util';
-import {SelectionCompiler, TUPLE, unitName} from '.';
-import {SELECTION_ID} from '../../selection';
-import {vals} from '../../util';
-import {BRUSH} from './interval';
-import {TUPLE_FIELDS} from './project';
+import {SelectionCompiler, TUPLE, unitName} from './index.js';
+import {SELECTION_ID} from '../../selection.js';
+import {vals} from '../../util.js';
+import {BRUSH} from './interval.js';
+import {TUPLE_FIELDS} from './project.js';
 
 const point: SelectionCompiler<'point'> = {
   defined: selCmpt => selCmpt.type === 'point',

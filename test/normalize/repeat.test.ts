@@ -1,5 +1,5 @@
-import * as log from '../../src/log';
-import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from '../../src/normalize/repeater';
+import * as log from '../../src/log/index.js';
+import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from '../../src/normalize/repeater.js';
 
 describe('Repeat', () => {
   describe('replaceRepeaterInEncoding', () => {

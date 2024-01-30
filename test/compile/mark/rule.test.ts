@@ -1,6 +1,6 @@
-import {COLOR, X, Y} from '../../../src/channel';
-import {rule} from '../../../src/compile/mark/rule';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {COLOR, X, Y} from '../../../src/channel.js';
+import {rule} from '../../../src/compile/mark/rule.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Rule', () => {
   describe('without encoding', () => {

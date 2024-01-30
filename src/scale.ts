@@ -10,14 +10,14 @@ import {
 } from 'vega';
 import {isString} from 'vega-util';
 import type {ColorScheme} from 'vega-typings';
-import * as CHANNEL from './channel';
-import {Channel, isColorChannel} from './channel';
-import {DateTime} from './datetime';
-import {ExprRef} from './expr';
-import * as log from './log';
-import {ParameterExtent} from './selection';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
-import {contains, Flag, keys} from './util';
+import * as CHANNEL from './channel.js';
+import {Channel, isColorChannel} from './channel.js';
+import {DateTime} from './datetime.js';
+import {ExprRef} from './expr.js';
+import * as log from './log/index.js';
+import {ParameterExtent} from './selection.js';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type.js';
+import {contains, Flag, keys} from './util.js';
 
 export const ScaleType = {
   // Continuous - Quantitative

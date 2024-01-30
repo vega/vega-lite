@@ -1,6 +1,6 @@
-import {color} from '../../../../src/compile/mark/encode';
-import * as log from '../../../../src/log';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {color} from '../../../../src/compile/mark/encode/index.js';
+import * as log from '../../../../src/log/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/color', () => {
   it('color should be mapped to fill for bar', () => {

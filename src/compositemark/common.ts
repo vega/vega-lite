@@ -1,6 +1,6 @@
 import {Orientation, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isString} from 'vega-util';
-import {CompositeMark, CompositeMarkDef} from '.';
+import {CompositeMark, CompositeMarkDef} from './index.js';
 import {
   Field,
   FieldDefBase,
@@ -12,15 +12,15 @@ import {
   StringFieldDef,
   StringFieldDefWithCondition,
   StringValueDefWithCondition
-} from '../channeldef';
-import {Encoding, fieldDefs} from '../encoding';
-import {ExprRef} from '../expr';
-import * as log from '../log';
-import {ColorMixins, GenericMarkDef, isMarkDef, Mark, AnyMarkConfig, MarkDef} from '../mark';
-import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
-import {getFirstDefined, hash, unique} from '../util';
-import {isSignalRef} from '../vega.schema';
-import {toStringFieldDef} from './../channeldef';
+} from '../channeldef.js';
+import {Encoding, fieldDefs} from '../encoding.js';
+import {ExprRef} from '../expr.js';
+import * as log from '../log/index.js';
+import {ColorMixins, GenericMarkDef, isMarkDef, Mark, AnyMarkConfig, MarkDef} from '../mark.js';
+import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/index.js';
+import {getFirstDefined, hash, unique} from '../util.js';
+import {isSignalRef} from '../vega.schema.js';
+import {toStringFieldDef} from './../channeldef.js';
 
 // Parts mixins can be any mark type. We could make a more specific type for each part.
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | AnyMarkConfig<ExprRef | SignalRef>>>;

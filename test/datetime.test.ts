@@ -1,5 +1,5 @@
-import {DateTime, dateTimeToExpr, dateTimeToTimestamp, isDateTime} from '../src/datetime';
-import * as log from '../src/log';
+import {DateTime, dateTimeToExpr, dateTimeToTimestamp, isDateTime} from '../src/datetime.js';
+import * as log from '../src/log/index.js';
 
 describe('datetime', () => {
   describe('isDateTime', () => {

@@ -1,16 +1,16 @@
 import {Axis as VgAxis, AxisEncode, NewSignal, SignalRef, Text} from 'vega';
 import {array, isArray} from 'vega-util';
-import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
-import {POSITION_SCALE_CHANNELS} from '../../channel';
-import {defaultTitle, FieldDefBase} from '../../channeldef';
-import {Config} from '../../config';
-import {isText} from '../../title';
-import {contains, getFirstDefined, isEmpty, replaceAll} from '../../util';
-import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
-import {exprFromValueRefOrSignalRef} from '../common';
-import {Model} from '../model';
-import {expression} from '../predicate';
-import {AxisComponent, AxisComponentIndex} from './component';
+import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis.js';
+import {POSITION_SCALE_CHANNELS} from '../../channel.js';
+import {defaultTitle, FieldDefBase} from '../../channeldef.js';
+import {Config} from '../../config.js';
+import {isText} from '../../title.js';
+import {contains, getFirstDefined, isEmpty, replaceAll} from '../../util.js';
+import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema.js';
+import {exprFromValueRefOrSignalRef} from '../common.js';
+import {Model} from '../model.js';
+import {expression} from '../predicate.js';
+import {AxisComponent, AxisComponentIndex} from './component.js';
 
 function assembleTitle(title: Text | FieldDefBase<string>[] | SignalRef, config: Config): Text | SignalRef {
   if (!title) {

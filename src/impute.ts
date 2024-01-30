@@ -1,4 +1,4 @@
-import {ImputeSequence} from './transform';
+import {ImputeSequence} from './transform.js';
 import {ImputeMethod} from 'vega';
 
 export interface ImputeParams {

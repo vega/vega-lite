@@ -1,8 +1,8 @@
 import {parseSelector} from 'vega-event-selector';
-import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import interval, {GEO_INIT_TICK} from '../../../src/compile/selection/interval';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import interval, {GEO_INIT_TICK} from '../../../src/compile/selection/interval.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import {parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Interval Selections', () => {
   describe('Scaled intervals', () => {

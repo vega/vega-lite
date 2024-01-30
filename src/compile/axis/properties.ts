@@ -1,8 +1,8 @@
 import {Align, AxisOrient, Orient, SignalRef} from 'vega';
 import {isArray, isObject} from 'vega-util';
-import {AxisInternal} from '../../axis';
-import {isBinned, isBinning} from '../../bin';
-import {PositionScaleChannel, X} from '../../channel';
+import {AxisInternal} from '../../axis.js';
+import {isBinned, isBinning} from '../../bin.js';
+import {PositionScaleChannel, X} from '../../channel.js';
 import {
   DatumDef,
   isDiscrete,
@@ -12,21 +12,21 @@ import {
   toFieldDefBase,
   TypedFieldDef,
   valueArray
-} from '../../channeldef';
-import {Config, StyleConfigIndex} from '../../config';
-import {Mark} from '../../mark';
-import {hasDiscreteDomain} from '../../scale';
-import {Sort} from '../../sort';
-import {durationExpr, normalizeTimeUnit} from '../../timeunit';
-import {NOMINAL, ORDINAL, Type} from '../../type';
-import {contains, normalizeAngle} from '../../util';
-import {isSignalRef} from '../../vega.schema';
-import {mergeTitle, mergeTitleFieldDefs} from '../common';
-import {guideFormatType} from '../format';
-import {UnitModel} from '../unit';
-import {ScaleType} from './../../scale';
-import {AxisComponentProps} from './component';
-import {AxisConfigs, getAxisConfig} from './config';
+} from '../../channeldef.js';
+import {Config, StyleConfigIndex} from '../../config.js';
+import {Mark} from '../../mark.js';
+import {hasDiscreteDomain} from '../../scale.js';
+import {Sort} from '../../sort.js';
+import {durationExpr, normalizeTimeUnit} from '../../timeunit.js';
+import {NOMINAL, ORDINAL, Type} from '../../type.js';
+import {contains, normalizeAngle} from '../../util.js';
+import {isSignalRef} from '../../vega.schema.js';
+import {mergeTitle, mergeTitleFieldDefs} from '../common.js';
+import {guideFormatType} from '../format.js';
+import {UnitModel} from '../unit.js';
+import {ScaleType} from './../../scale.js';
+import {AxisComponentProps} from './component.js';
+import {AxisConfigs, getAxisConfig} from './config.js';
 
 export interface AxisRuleParams {
   fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>;

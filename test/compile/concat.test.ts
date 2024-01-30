@@ -1,6 +1,6 @@
-import * as log from '../../src/log';
-import {DEFAULT_SPACING} from '../../src/spec/base';
-import {parseConcatModel} from '../util';
+import * as log from '../../src/log/index.js';
+import {DEFAULT_SPACING} from '../../src/spec/base.js';
+import {parseConcatModel} from '../util.js';
 
 describe('ConcatModel', () => {
   describe('concat', () => {

@@ -1,5 +1,5 @@
-import {nonPosition} from '../../../../src/compile/mark/encode';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {nonPosition} from '../../../../src/compile/mark/encode/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/nonPosition', () => {
   it('respects default value for a particular channel', () => {

@@ -1,11 +1,11 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
-import {Config} from '../../config';
-import {LEGEND_SCALE_CHANNELS} from '../../legend';
-import {keys, replaceAll, stringify, vals} from '../../util';
-import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
-import {Model} from '../model';
-import {LegendComponent} from './component';
-import {mergeLegendComponent} from './parse';
+import {Config} from '../../config.js';
+import {LEGEND_SCALE_CHANNELS} from '../../legend.js';
+import {keys, replaceAll, stringify, vals} from '../../util.js';
+import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema.js';
+import {Model} from '../model.js';
+import {LegendComponent} from './component.js';
+import {mergeLegendComponent} from './parse.js';
 
 function setLegendEncode(
   legend: VgLegend,

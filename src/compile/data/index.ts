@@ -1,9 +1,9 @@
-import {Parse} from '../../data';
-import {Dict} from '../../util';
-import {Split} from '../split';
-import {OutputNode} from './dataflow';
-import {FacetNode} from './facet';
-import {SourceNode} from './source';
+import {Parse} from '../../data.js';
+import {Dict} from '../../util.js';
+import {Split} from '../split.js';
+import {OutputNode} from './dataflow.js';
+import {FacetNode} from './facet.js';
+import {SourceNode} from './source.js';
 
 export interface DataComponent {
   /**

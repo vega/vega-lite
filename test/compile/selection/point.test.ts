@@ -3,10 +3,10 @@ import {
   assembleUnitSelectionMarks,
   assembleUnitSelectionSignals,
   assembleTopLevelSignals
-} from '../../../src/compile/selection/assemble';
-import point from '../../../src/compile/selection/point';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {parseUnitModelWithScale} from '../../util';
+} from '../../../src/compile/selection/assemble.js';
+import point from '../../../src/compile/selection/point.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import {parseUnitModelWithScale} from '../../util.js';
 
 describe('Multi Selection', () => {
   const model = parseUnitModelWithScale({

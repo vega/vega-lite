@@ -1,6 +1,6 @@
-import {assembleRootData} from '../../../src/compile/data/assemble';
-import {SequenceNode} from '../../../src/compile/data/sequence';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {assembleRootData} from '../../../src/compile/data/assemble.js';
+import {SequenceNode} from '../../../src/compile/data/sequence.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('compile/data/sequence', () => {
   describe('assemble', () => {

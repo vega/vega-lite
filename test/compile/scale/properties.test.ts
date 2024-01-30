@@ -1,7 +1,7 @@
-import {NONPOSITION_SCALE_CHANNELS, OFFSET_SCALE_CHANNELS} from '../../../src/channel';
-import * as rules from '../../../src/compile/scale/properties';
-import {AREA, BAR, LINE} from '../../../src/mark';
-import {ScaleType} from '../../../src/scale';
+import {NONPOSITION_SCALE_CHANNELS, OFFSET_SCALE_CHANNELS} from '../../../src/channel.js';
+import * as rules from '../../../src/compile/scale/properties.js';
+import {AREA, BAR, LINE} from '../../../src/mark.js';
+import {ScaleType} from '../../../src/scale.js';
 
 describe('compile/scale', () => {
   describe('nice', () => {

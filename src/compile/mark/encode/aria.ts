@@ -1,10 +1,10 @@
-import {entries, isEmpty} from '../../../util';
-import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
-import {VG_MARK_INDEX} from './../../../vega.schema';
-import {UnitModel} from './../../unit';
-import {wrapCondition} from './conditional';
-import {textRef} from './text';
-import {tooltipData} from './tooltip';
+import {entries, isEmpty} from '../../../util.js';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
+import {VG_MARK_INDEX} from './../../../vega.schema.js';
+import {UnitModel} from './../../unit.js';
+import {wrapCondition} from './conditional.js';
+import {textRef} from './text.js';
+import {tooltipData} from './tooltip.js';
 
 export function aria(model: UnitModel) {
   const {markDef, config} = model;

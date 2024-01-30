@@ -6,16 +6,16 @@ import {
   isXorY,
   PolarPositionChannel,
   PositionChannel
-} from '../../../channel';
-import {isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef';
-import {ScaleType} from '../../../scale';
-import {contains} from '../../../util';
-import {VgValueRef} from '../../../vega.schema';
-import {getMarkPropOrConfig} from '../../common';
-import {ScaleComponent} from '../../scale/component';
-import {UnitModel} from '../../unit';
-import {positionOffset} from './offset';
-import * as ref from './valueref';
+} from '../../../channel.js';
+import {isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef.js';
+import {ScaleType} from '../../../scale.js';
+import {contains} from '../../../util.js';
+import {VgValueRef} from '../../../vega.schema.js';
+import {getMarkPropOrConfig} from '../../common.js';
+import {ScaleComponent} from '../../scale/component.js';
+import {UnitModel} from '../../unit.js';
+import {positionOffset} from './offset.js';
+import * as ref from './valueref.js';
 
 /**
  * Return encode for point (non-band) position channels.

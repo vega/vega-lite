@@ -1,6 +1,6 @@
-import * as selection from '../../../src/compile/selection';
-import {UnitModel} from '../../../src/compile/unit';
-import {parseLayerModel} from '../../util';
+import * as selection from '../../../src/compile/selection/index.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import {parseLayerModel} from '../../util.js';
 
 describe('Layered Selections', () => {
   const layers = parseLayerModel({

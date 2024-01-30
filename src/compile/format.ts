@@ -1,6 +1,6 @@
 import type {SignalRef} from 'vega';
 import {isString} from 'vega-util';
-import {isBinning} from '../bin';
+import {isBinning} from '../bin.js';
 import {
   channelDefType,
   DatumDef,
@@ -10,16 +10,16 @@ import {
   isPositionFieldOrDatumDef,
   isScaleFieldDef,
   vgField
-} from '../channeldef';
-import {Config} from '../config';
-import {fieldValidPredicate} from '../predicate';
-import {ScaleType} from '../scale';
-import {formatExpression, normalizeTimeUnit, timeUnitSpecifierExpression} from '../timeunit';
-import {QUANTITATIVE, Type} from '../type';
-import {Dict, stringify} from '../util';
-import {isSignalRef} from '../vega.schema';
-import {TimeUnit} from './../timeunit';
-import {datumDefToExpr} from './mark/encode/valueref';
+} from '../channeldef.js';
+import {Config} from '../config.js';
+import {fieldValidPredicate} from '../predicate.js';
+import {ScaleType} from '../scale.js';
+import {formatExpression, normalizeTimeUnit, timeUnitSpecifierExpression} from '../timeunit.js';
+import {QUANTITATIVE, Type} from '../type.js';
+import {Dict, stringify} from '../util.js';
+import {isSignalRef} from '../vega.schema.js';
+import {TimeUnit} from './../timeunit.js';
+import {datumDefToExpr} from './mark/encode/valueref.js';
 
 export function isCustomFormatType(formatType: string) {
   return formatType && formatType !== 'number' && formatType !== 'time';

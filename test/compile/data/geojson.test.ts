@@ -1,8 +1,8 @@
 import {FieldRef, GeoJSONTransform, Vector2} from 'vega';
-import {GeoJSONNode} from '../../../src/compile/data/geojson';
-import {contains, every} from '../../../src/util';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {GeoJSONNode} from '../../../src/compile/data/geojson.js';
+import {contains, every} from '../../../src/util.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/geojson', () => {
   it('should make transform and assemble correctly', () => {

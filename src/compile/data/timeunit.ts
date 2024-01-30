@@ -1,6 +1,6 @@
 import {TimeUnitTransform as VgTimeUnitTransform} from 'vega';
 import {FormulaTransform as VgFormulaTransform} from 'vega';
-import {FieldName, getBandPosition, vgField} from '../../channeldef';
+import {FieldName, getBandPosition, vgField} from '../../channeldef.js';
 import {
   TimeUnitParams,
   getDateTimePartAndStep,
@@ -8,13 +8,13 @@ import {
   getTimeUnitParts,
   isBinnedTimeUnit,
   normalizeTimeUnit
-} from '../../timeunit';
-import {TimeUnitTransform} from '../../transform';
-import {Dict, duplicate, entries, hash, isEmpty, replacePathInField, vals} from '../../util';
-import {ModelWithField, isUnitModel} from '../model';
-import {DataFlowNode} from './dataflow';
-import {isRectBasedMark} from '../../mark';
-import {isXorY} from '../../channel';
+} from '../../timeunit.js';
+import {TimeUnitTransform} from '../../transform.js';
+import {Dict, duplicate, entries, hash, isEmpty, replacePathInField, vals} from '../../util.js';
+import {ModelWithField, isUnitModel} from '../model.js';
+import {DataFlowNode} from './dataflow.js';
+import {isRectBasedMark} from '../../mark.js';
+import {isXorY} from '../../channel.js';
 
 export type TimeUnitComponent = (TimeUnitTransform | BinnedTimeUnitOffset) & {
   rectBandPosition?: number;

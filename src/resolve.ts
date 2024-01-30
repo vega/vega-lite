@@ -1,4 +1,4 @@
-import {NonPositionScaleChannel, PositionScaleChannel, ScaleChannel} from './channel';
+import {NonPositionScaleChannel, PositionScaleChannel, ScaleChannel} from './channel.js';
 
 export type ResolveMode = 'independent' | 'shared';
 

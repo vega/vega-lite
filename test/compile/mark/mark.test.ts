@@ -1,6 +1,6 @@
-import {getSort, parseMarkGroups} from '../../../src/compile/mark/mark';
-import {UnitModel} from '../../../src/compile/unit';
-import {GEOSHAPE} from '../../../src/mark';
+import {getSort, parseMarkGroups} from '../../../src/compile/mark/mark.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import {GEOSHAPE} from '../../../src/mark.js';
 import {
   parseFacetModel,
   parseUnitModel,
@@ -8,7 +8,7 @@ import {
   parseUnitModelWithScaleAndLayoutSize,
   parseConcatModel,
   parseUnitModelWithScaleAndSelection
-} from '../../util';
+} from '../../util.js';
 
 describe('Mark', () => {
   describe('parseMarkGroup', () => {

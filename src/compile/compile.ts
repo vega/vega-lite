@@ -1,12 +1,12 @@
 import {AutoSizeType, LoggerInterface, Spec as VgSpec} from 'vega';
 import {isString, mergeConfig} from 'vega-util';
-import {getPositionScaleChannel} from '../channel';
-import * as vlFieldDef from '../channeldef';
-import {Config, initConfig, stripAndRedirectConfig} from '../config';
-import * as log from '../log';
-import {normalize} from '../normalize';
-import {assembleParameterSignals} from '../parameter';
-import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
+import {getPositionScaleChannel} from '../channel.js';
+import * as vlFieldDef from '../channeldef.js';
+import {Config, initConfig, stripAndRedirectConfig} from '../config.js';
+import * as log from '../log/index.js';
+import {normalize} from '../normalize/index.js';
+import {assembleParameterSignals} from '../parameter.js';
+import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec/index.js';
 import {
   AutoSizeParams,
   Datasets,
@@ -14,12 +14,12 @@ import {
   getFitType,
   isFitType,
   TopLevelProperties
-} from '../spec/toplevel';
-import {Dict, keys} from '../util';
-import {buildModel} from './buildmodel';
-import {assembleRootData} from './data/assemble';
-import {optimizeDataflow} from './data/optimize';
-import {Model} from './model';
+} from '../spec/toplevel.js';
+import {Dict, keys} from '../util.js';
+import {buildModel} from './buildmodel.js';
+import {assembleRootData} from './data/assemble.js';
+import {optimizeDataflow} from './data/optimize.js';
+import {Model} from './model.js';
 
 export interface CompileOptions {
   /**

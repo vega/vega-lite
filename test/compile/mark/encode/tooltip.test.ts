@@ -1,7 +1,7 @@
-import {BIN_RANGE_DELIMITER} from '../../../../src/compile/common';
-import {tooltip, tooltipRefForEncoding} from '../../../../src/compile/mark/encode';
-import {defaultConfig} from '../../../../src/config';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {BIN_RANGE_DELIMITER} from '../../../../src/compile/common.js';
+import {tooltip, tooltipRefForEncoding} from '../../../../src/compile/mark/encode/index.js';
+import {defaultConfig} from '../../../../src/config.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/tooltip', () => {
   describe('tooltip', () => {

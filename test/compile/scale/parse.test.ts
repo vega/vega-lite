@@ -1,7 +1,7 @@
-import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse';
-import * as log from '../../../src/log';
-import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
-import {parseModel, parseModelWithScale, parseUnitModelWithScale, without} from '../../util';
+import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse.js';
+import * as log from '../../../src/log/index.js';
+import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale.js';
+import {parseModel, parseModelWithScale, parseUnitModelWithScale, without} from '../../util.js';
 
 describe('src/compile', () => {
   it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES without type, domain, and range properties', () => {

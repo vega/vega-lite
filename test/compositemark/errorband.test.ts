@@ -1,9 +1,9 @@
-import * as log from '../../src/log';
-import {isMarkDef} from '../../src/mark';
-import {normalize} from '../../src/normalize';
-import {isLayerSpec, isUnitSpec} from '../../src/spec';
-import {every, some} from '../../src/util';
-import {defaultConfig} from '.././../src/config';
+import * as log from '../../src/log/index.js';
+import {isMarkDef} from '../../src/mark.js';
+import {normalize} from '../../src/normalize/index.js';
+import {isLayerSpec, isUnitSpec} from '../../src/spec/index.js';
+import {every, some} from '../../src/util.js';
+import {defaultConfig} from '.././../src/config.js';
 
 describe('normalizeErrorBand', () => {
   it('should produce correct layered specs for mean point and vertical error band', () => {

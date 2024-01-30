@@ -1,6 +1,6 @@
-import {normalize} from '../../src';
-import {TopLevelSelectionsNormalizer} from '../../src/normalize/toplevelselection';
-import {GenericVConcatSpec, NormalizedSpec, NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../src/spec';
+import {normalize} from '../../src/index.js';
+import {TopLevelSelectionsNormalizer} from '../../src/normalize/toplevelselection.js';
+import {GenericVConcatSpec, NormalizedSpec, NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../src/spec/index.js';
 
 const selectionNormalizer = new TopLevelSelectionsNormalizer();
 const unit: NormalizedUnitSpec = {

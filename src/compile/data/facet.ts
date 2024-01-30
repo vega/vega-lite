@@ -1,19 +1,19 @@
 import {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
-import {isBinning} from '../../bin';
-import {COLUMN, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../../channel';
-import {vgField} from '../../channeldef';
-import * as log from '../../log';
-import {hasDiscreteDomain} from '../../scale';
-import {DEFAULT_SORT_OP, EncodingSortField, isSortField} from '../../sort';
-import {hash} from '../../util';
-import {isVgRangeStep, VgData} from '../../vega.schema';
-import {FacetModel} from '../facet';
-import {HEADER_CHANNELS, HEADER_TYPES} from '../header/component';
-import {Model} from '../model';
-import {assembleDomain, getFieldFromDomain} from '../scale/domain';
-import {sortArrayIndexField} from './calculate';
-import {DataFlowNode} from './dataflow';
+import {isBinning} from '../../bin.js';
+import {COLUMN, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../../channel.js';
+import {vgField} from '../../channeldef.js';
+import * as log from '../../log/index.js';
+import {hasDiscreteDomain} from '../../scale.js';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortField} from '../../sort.js';
+import {hash} from '../../util.js';
+import {isVgRangeStep, VgData} from '../../vega.schema.js';
+import {FacetModel} from '../facet.js';
+import {HEADER_CHANNELS, HEADER_TYPES} from '../header/component.js';
+import {Model} from '../model.js';
+import {assembleDomain, getFieldFromDomain} from '../scale/domain.js';
+import {sortArrayIndexField} from './calculate.js';
+import {DataFlowNode} from './dataflow.js';
 
 interface ChildIndependentFieldsWithStep {
   x?: string;

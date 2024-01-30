@@ -1,8 +1,8 @@
 import type {SignalRef} from 'vega';
 import {isString} from 'vega-util';
-import {Field} from '../channeldef';
-import {Config, initConfig} from '../config';
-import * as log from '../log';
+import {Field} from '../channeldef.js';
+import {Config, initConfig} from '../config.js';
+import * as log from '../log/index.js';
 import {
   FacetedUnitSpec,
   isLayerSpec,
@@ -12,13 +12,13 @@ import {
   NormalizedSpec,
   RepeatSpec,
   TopLevelSpec
-} from '../spec';
-import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel';
-import {deepEqual} from '../util';
-import {NormalizerParams} from './base';
-import {CoreNormalizer} from './core';
-import {SelectionCompatibilityNormalizer} from './selectioncompat';
-import {TopLevelSelectionsNormalizer} from './toplevelselection';
+} from '../spec/index.js';
+import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel.js';
+import {deepEqual} from '../util.js';
+import {NormalizerParams} from './base.js';
+import {CoreNormalizer} from './core.js';
+import {SelectionCompatibilityNormalizer} from './selectioncompat.js';
+import {TopLevelSelectionsNormalizer} from './toplevelselection.js';
 
 export function normalize(
   spec: TopLevelSpec & LayoutSizeMixins,

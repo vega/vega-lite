@@ -1,8 +1,8 @@
 import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
-import {CompositeMark, CompositeMarkDef} from './compositemark';
-import {ExprRef} from './expr';
-import {Flag, keys} from './util';
-import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
+import {CompositeMark, CompositeMarkDef} from './compositemark/index.js';
+import {ExprRef} from './expr.js';
+import {Flag, keys} from './util.js';
+import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema.js';
 
 /**
  * All types of primitive marks.

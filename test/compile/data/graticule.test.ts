@@ -1,7 +1,7 @@
-import {GraticuleParams} from '../../../src/data';
-import {assembleRootData} from '../../../src/compile/data/assemble';
-import {GraticuleNode} from '../../../src/compile/data/graticule';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {GraticuleParams} from '../../../src/data.js';
+import {assembleRootData} from '../../../src/compile/data/assemble.js';
+import {GraticuleNode} from '../../../src/compile/data/graticule.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('compile/data/graticule', () => {
   describe('GraticuleNode', () => {

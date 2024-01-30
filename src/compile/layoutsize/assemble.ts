@@ -1,12 +1,12 @@
 import {InitSignal, NewSignal} from 'vega';
-import {getViewConfigContinuousSize} from '../../config';
-import {hasDiscreteDomain} from '../../scale';
-import {getFirstDefined} from '../../util';
-import {isSignalRef, isVgRangeStep, VgRangeStep} from '../../vega.schema';
-import {signalOrStringValue} from '../common';
-import {isFacetModel, Model} from '../model';
-import {ScaleComponent} from '../scale/component';
-import {LayoutSizeType} from './component';
+import {getViewConfigContinuousSize} from '../../config.js';
+import {hasDiscreteDomain} from '../../scale.js';
+import {getFirstDefined} from '../../util.js';
+import {isSignalRef, isVgRangeStep, VgRangeStep} from '../../vega.schema.js';
+import {signalOrStringValue} from '../common.js';
+import {isFacetModel, Model} from '../model.js';
+import {ScaleComponent} from '../scale/component.js';
+import {LayoutSizeType} from './component.js';
 
 export function assembleLayoutSignals(model: Model): NewSignal[] {
   return [

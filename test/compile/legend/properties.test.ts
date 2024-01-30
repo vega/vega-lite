@@ -1,5 +1,5 @@
 import {LegendOrient} from 'vega';
-import * as properties from '../../../src/compile/legend/properties';
+import * as properties from '../../../src/compile/legend/properties.js';
 
 describe('compile/legend', () => {
   describe('defaultDirection()', () => {

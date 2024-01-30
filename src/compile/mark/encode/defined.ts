@@ -1,12 +1,12 @@
-import {POSITION_SCALE_CHANNELS} from '../../../channel';
-import {ScaleChannel} from '../../../channel';
-import {Value} from '../../../channeldef';
-import {hasContinuousDomain} from '../../../scale';
-import {Dict, keys} from '../../../util';
-import {VgEncodeEntry} from '../../../vega.schema';
-import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
-import {UnitModel} from '../../unit';
-import {fieldInvalidPredicate} from './valueref';
+import {POSITION_SCALE_CHANNELS} from '../../../channel.js';
+import {ScaleChannel} from '../../../channel.js';
+import {Value} from '../../../channeldef.js';
+import {hasContinuousDomain} from '../../../scale.js';
+import {Dict, keys} from '../../../util.js';
+import {VgEncodeEntry} from '../../../vega.schema.js';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
+import {UnitModel} from '../../unit.js';
+import {fieldInvalidPredicate} from './valueref.js';
 
 export function defined(model: UnitModel): VgEncodeEntry {
   const {config, markDef} = model;

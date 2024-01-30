@@ -1,6 +1,6 @@
 import {isObject, isString} from 'vega-util';
-import {DateTime, DateTimeExpr, dateTimeExprToExpr, dateTimeToExpr} from './datetime';
-import {accessPathWithDatum, keys, stringify, varName} from './util';
+import {DateTime, DateTimeExpr, dateTimeExprToExpr, dateTimeToExpr} from './datetime.js';
+import {accessPathWithDatum, keys, stringify, varName} from './util.js';
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 export const LOCAL_SINGLE_TIMEUNIT_INDEX = {

@@ -1,15 +1,15 @@
 import {Orientation} from 'vega';
 import {isNumber, isObject} from 'vega-util';
-import {getMarkPropOrConfig} from '../compile/common';
-import {Config} from '../config';
-import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';
-import * as log from '../log';
-import {isMarkDef, MarkDef, MarkInvalidMixins} from '../mark';
-import {NormalizerParams} from '../normalize';
-import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
-import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
-import {isEmpty, omit} from '../util';
-import {CompositeMarkNormalizer} from './base';
+import {getMarkPropOrConfig} from '../compile/common.js';
+import {Config} from '../config.js';
+import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding.js';
+import * as log from '../log/index.js';
+import {isMarkDef, MarkDef, MarkInvalidMixins} from '../mark.js';
+import {NormalizerParams} from '../normalize/index.js';
+import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec/index.js';
+import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform.js';
+import {isEmpty, omit} from '../util.js';
+import {CompositeMarkNormalizer} from './base.js';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
@@ -20,7 +20,7 @@ import {
   makeCompositeAggregatePartFactory,
   partLayerMixins,
   PartsMixins
-} from './common';
+} from './common.js';
 
 export const BOXPLOT = 'boxplot' as const;
 export type BoxPlot = typeof BOXPLOT;

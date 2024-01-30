@@ -3,13 +3,13 @@ import {
   interpolateRange,
   MAX_SIZE_RANGE_STEP_RATIO,
   parseRangeForChannel
-} from '../../../src/compile/scale/range';
-import {makeExplicit, makeImplicit} from '../../../src/compile/split';
-import {Config, defaultConfig, DEFAULT_STEP} from '../../../src/config';
-import * as log from '../../../src/log';
-import {Mark} from '../../../src/mark';
-import {QUANTITATIVE_SCALES, ScaleType} from '../../../src/scale';
-import {parseUnitModelWithScaleExceptRange} from '../../util';
+} from '../../../src/compile/scale/range.js';
+import {makeExplicit, makeImplicit} from '../../../src/compile/split.js';
+import {Config, defaultConfig, DEFAULT_STEP} from '../../../src/config.js';
+import * as log from '../../../src/log/index.js';
+import {Mark} from '../../../src/mark.js';
+import {QUANTITATIVE_SCALES, ScaleType} from '../../../src/scale.js';
+import {parseUnitModelWithScaleExceptRange} from '../../util.js';
 
 describe('compile/scale', () => {
   describe('parseRange()', () => {

@@ -1,5 +1,5 @@
-import * as encode from '../../../src/compile/axis/encode';
-import {parseUnitModelWithScale} from '../../util';
+import * as encode from '../../../src/compile/axis/encode.js';
+import {parseUnitModelWithScale} from '../../util.js';
 
 describe('compile/axis/encode', () => {
   describe('encode.labels()', () => {

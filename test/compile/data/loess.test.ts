@@ -1,6 +1,6 @@
-import {LoessTransformNode} from '../../../src/compile/data/loess';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {LoessTransformNode} from '../../../src/compile/data/loess.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/fold', () => {
   describe('assemble', () => {

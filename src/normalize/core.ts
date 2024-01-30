@@ -1,18 +1,18 @@
 import type {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
-import {COLUMN, FACET, ROW} from '../channel';
-import {Field, FieldName, hasConditionalFieldOrDatumDef, isFieldOrDatumDef, isValueDef} from '../channeldef';
-import {SharedCompositeEncoding} from '../compositemark';
-import {boxPlotNormalizer} from '../compositemark/boxplot';
-import {errorBandNormalizer} from '../compositemark/errorband';
-import {errorBarNormalizer} from '../compositemark/errorbar';
-import {channelHasField, Encoding} from '../encoding';
-import {ExprRef} from '../expr';
-import * as log from '../log';
-import {Projection} from '../projection';
-import {FacetedUnitSpec, GenericSpec, LayerSpec, UnitSpec} from '../spec';
-import {GenericCompositionLayoutWithColumns} from '../spec/base';
-import {GenericConcatSpec} from '../spec/concat';
+import {COLUMN, FACET, ROW} from '../channel.js';
+import {Field, FieldName, hasConditionalFieldOrDatumDef, isFieldOrDatumDef, isValueDef} from '../channeldef.js';
+import {SharedCompositeEncoding} from '../compositemark/index.js';
+import {boxPlotNormalizer} from '../compositemark/boxplot.js';
+import {errorBandNormalizer} from '../compositemark/errorband.js';
+import {errorBarNormalizer} from '../compositemark/errorbar.js';
+import {channelHasField, Encoding} from '../encoding.js';
+import {ExprRef} from '../expr.js';
+import * as log from '../log/index.js';
+import {Projection} from '../projection.js';
+import {FacetedUnitSpec, GenericSpec, LayerSpec, UnitSpec} from '../spec/index.js';
+import {GenericCompositionLayoutWithColumns} from '../spec/base.js';
+import {GenericConcatSpec} from '../spec/concat.js';
 import {
   FacetEncodingFieldDef,
   FacetFieldDef,
@@ -20,18 +20,18 @@ import {
   GenericFacetSpec,
   isFacetMapping,
   NormalizedFacetSpec
-} from '../spec/facet';
-import {NormalizedSpec} from '../spec/index';
-import {NormalizedLayerSpec} from '../spec/layer';
-import {SpecMapper} from '../spec/map';
-import {isLayerRepeatSpec, LayerRepeatSpec, NonLayerRepeatSpec, RepeatSpec} from '../spec/repeat';
-import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
-import {isEmpty, keys, omit, varName} from '../util';
-import {isSignalRef} from '../vega.schema';
-import {NonFacetUnitNormalizer, NormalizerParams} from './base';
-import {PathOverlayNormalizer} from './pathoverlay';
-import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from './repeater';
-import {RuleForRangedLineNormalizer} from './ruleforrangedline';
+} from '../spec/facet.js';
+import {NormalizedSpec} from '../spec/index.js';
+import {NormalizedLayerSpec} from '../spec/layer.js';
+import {SpecMapper} from '../spec/map.js';
+import {isLayerRepeatSpec, LayerRepeatSpec, NonLayerRepeatSpec, RepeatSpec} from '../spec/repeat.js';
+import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit.js';
+import {isEmpty, keys, omit, varName} from '../util.js';
+import {isSignalRef} from '../vega.schema.js';
+import {NonFacetUnitNormalizer, NormalizerParams} from './base.js';
+import {PathOverlayNormalizer} from './pathoverlay.js';
+import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from './repeater.js';
+import {RuleForRangedLineNormalizer} from './ruleforrangedline.js';
 
 export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec<Field>, LayerSpec<Field>> {
   private nonFacetUnitNormalizers: NonFacetUnitNormalizer<any>[] = [

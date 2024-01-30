@@ -1,8 +1,8 @@
-import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid';
-import {UnitModel} from '../../../src/compile/unit';
-import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
-import {mergeDeep} from '../../../src/util';
-import {parseUnitModelWithScale} from '../../util';
+import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import {NormalizedUnitSpec, TopLevel} from '../../../src/spec/index.js';
+import {mergeDeep} from '../../../src/util.js';
+import {parseUnitModelWithScale} from '../../util.js';
 
 function parse(model: UnitModel) {
   return FilterInvalidNode.make(null, model);

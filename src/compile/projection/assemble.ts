@@ -1,7 +1,7 @@
 import {Projection as VgProjection, SignalRef} from 'vega';
-import {contains} from '../../util';
-import {isSignalRef} from '../../vega.schema';
-import {isConcatModel, isLayerModel, Model} from '../model';
+import {contains} from '../../util.js';
+import {isSignalRef} from '../../vega.schema.js';
+import {isConcatModel, isLayerModel, Model} from '../model.js';
 
 export function assembleProjections(model: Model): VgProjection[] {
   if (isLayerModel(model) || isConcatModel(model)) {

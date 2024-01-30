@@ -1,12 +1,12 @@
-import {assembleRootData} from '../../../src/compile/data/assemble';
-import {optimizeDataflow} from '../../../src/compile/data/optimize';
-import {TimeUnitNode} from '../../../src/compile/data/timeunit';
-import {Model} from '../../../src/compile/model';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {Config} from '../../../src/config';
-import {NormalizedUnitSpec} from '../../../src/spec';
-import {parseModel, parseUnitModel} from '../../util';
-import {deepEqual} from '../../../src/util';
+import {assembleRootData} from '../../../src/compile/data/assemble.js';
+import {optimizeDataflow} from '../../../src/compile/data/optimize.js';
+import {TimeUnitNode} from '../../../src/compile/data/timeunit.js';
+import {Model} from '../../../src/compile/model.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import {Config} from '../../../src/config.js';
+import {NormalizedUnitSpec} from '../../../src/spec/index.js';
+import {parseModel, parseUnitModel} from '../../util.js';
+import {deepEqual} from '../../../src/util.js';
 
 function getData(model: Model) {
   optimizeDataflow(model.component.data, null);

@@ -3,9 +3,9 @@
  */
 import type {SignalRef} from 'vega';
 import {isFunction, isString} from 'vega-util';
-import {isCountingAggregateOp} from '../../../aggregate';
-import {isBinned, isBinning} from '../../../bin';
-import {Channel, getMainRangeChannel, PolarPositionChannel, PositionChannel, X, X2, Y2} from '../../../channel';
+import {isCountingAggregateOp} from '../../../aggregate.js';
+import {isBinned, isBinning} from '../../../bin.js';
+import {Channel, getMainRangeChannel, PolarPositionChannel, PositionChannel, X, X2, Y2} from '../../../channel.js';
 import {
   binRequiresRange,
   ChannelDef,
@@ -25,20 +25,20 @@ import {
   TypedFieldDef,
   Value,
   vgField
-} from '../../../channeldef';
-import {Config} from '../../../config';
-import {dateTimeToExpr, isDateTime} from '../../../datetime';
-import {isExprRef} from '../../../expr';
-import * as log from '../../../log';
-import {isPathMark, Mark, MarkDef} from '../../../mark';
-import {fieldValidPredicate} from '../../../predicate';
-import {hasDiscreteDomain, isContinuousToContinuous} from '../../../scale';
-import {StackProperties} from '../../../stack';
-import {TEMPORAL} from '../../../type';
-import {contains, stringify} from '../../../util';
-import {isSignalRef, VgValueRef} from '../../../vega.schema';
-import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
-import {ScaleComponent} from '../../scale/component';
+} from '../../../channeldef.js';
+import {Config} from '../../../config.js';
+import {dateTimeToExpr, isDateTime} from '../../../datetime.js';
+import {isExprRef} from '../../../expr.js';
+import * as log from '../../../log/index.js';
+import {isPathMark, Mark, MarkDef} from '../../../mark.js';
+import {fieldValidPredicate} from '../../../predicate.js';
+import {hasDiscreteDomain, isContinuousToContinuous} from '../../../scale.js';
+import {StackProperties} from '../../../stack.js';
+import {TEMPORAL} from '../../../type.js';
+import {contains, stringify} from '../../../util.js';
+import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
+import {ScaleComponent} from '../../scale/component.js';
 
 export function midPointRefWithPositionInvalidTest(
   params: MidPointParams & {

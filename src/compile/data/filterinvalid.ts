@@ -1,12 +1,12 @@
 import {FilterTransform as VgFilterTransform} from 'vega';
-import {isScaleChannel} from '../../channel';
-import {TypedFieldDef, vgField as fieldRef} from '../../channeldef';
-import {isPathMark} from '../../mark';
-import {hasContinuousDomain} from '../../scale';
-import {Dict, hash, keys} from '../../util';
-import {getMarkPropOrConfig} from '../common';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
+import {isScaleChannel} from '../../channel.js';
+import {TypedFieldDef, vgField as fieldRef} from '../../channeldef.js';
+import {isPathMark} from '../../mark.js';
+import {hasContinuousDomain} from '../../scale.js';
+import {Dict, hash, keys} from '../../util.js';
+import {getMarkPropOrConfig} from '../common.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
 
 export class FilterInvalidNode extends DataFlowNode {
   public clone() {

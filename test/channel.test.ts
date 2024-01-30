@@ -6,8 +6,8 @@ import {
   SCALE_CHANNELS,
   SINGLE_DEF_CHANNELS,
   UNIT_CHANNELS
-} from '../src/channel';
-import {without} from './util';
+} from '../src/channel.js';
+import {without} from './util.js';
 
 describe('channel', () => {
   describe('UNIT_CHANNELS', () => {

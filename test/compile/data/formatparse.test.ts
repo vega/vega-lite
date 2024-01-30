@@ -1,10 +1,10 @@
-import {AncestorParse} from '../../../src/compile/data';
-import {PlaceholderDataFlowNode} from './util';
-import {ParseNode, getImplicitFromEncoding, getImplicitFromSelection} from '../../../src/compile/data/formatparse';
-import {parseTransformArray} from '../../../src/compile/data/parse';
-import {ModelWithField} from '../../../src/compile/model';
-import * as log from '../../../src/log';
-import {parseFacetModel, parseUnitModel} from '../../util';
+import {AncestorParse} from '../../../src/compile/data/index.js';
+import {PlaceholderDataFlowNode} from './util.js';
+import {ParseNode, getImplicitFromEncoding, getImplicitFromSelection} from '../../../src/compile/data/formatparse.js';
+import {parseTransformArray} from '../../../src/compile/data/parse.js';
+import {ModelWithField} from '../../../src/compile/model.js';
+import * as log from '../../../src/log/index.js';
+import {parseFacetModel, parseUnitModel} from '../../util.js';
 
 describe('compile/data/formatparse', () => {
   describe('makeWithAncestors', () => {

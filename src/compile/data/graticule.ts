@@ -1,7 +1,7 @@
 import {GraticuleTransform as VgGraticuleTransform} from 'vega';
-import {GraticuleParams} from '../../data';
-import {hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {GraticuleParams} from '../../data.js';
+import {hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 export class GraticuleNode extends DataFlowNode {
   public clone() {

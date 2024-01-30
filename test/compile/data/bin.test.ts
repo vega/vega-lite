@@ -1,10 +1,10 @@
 import {BinTransform as VgBinTransform} from 'vega';
-import {BIN_RANGE_DELIMITER} from '../../../src/compile/common';
-import {BinNode, getBinSignalName} from '../../../src/compile/data/bin';
-import {Model, ModelWithField} from '../../../src/compile/model';
-import {BinTransform} from '../../../src/transform';
-import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {BIN_RANGE_DELIMITER} from '../../../src/compile/common.js';
+import {BinNode, getBinSignalName} from '../../../src/compile/data/bin.js';
+import {Model, ModelWithField} from '../../../src/compile/model.js';
+import {BinTransform} from '../../../src/transform.js';
+import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 function assembleFromEncoding(model: ModelWithField) {
   return BinNode.makeFromEncoding(null, model).assemble();

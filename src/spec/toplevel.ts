@@ -1,13 +1,13 @@
 import {Color, SignalRef} from 'vega';
-import {BaseSpec} from '.';
-import {getPositionScaleChannel} from '../channel';
-import {signalRefOrValue} from '../compile/common';
-import {Config} from '../config';
-import {InlineDataset} from '../data';
-import {ExprRef} from '../expr';
-import {VariableParameter} from '../parameter';
-import {TopLevelSelectionParameter} from '../selection';
-import {Dict} from '../util';
+import {BaseSpec} from './index.js';
+import {getPositionScaleChannel} from '../channel.js';
+import {signalRefOrValue} from '../compile/common.js';
+import {Config} from '../config.js';
+import {InlineDataset} from '../data.js';
+import {ExprRef} from '../expr.js';
+import {VariableParameter} from '../parameter.js';
+import {TopLevelSelectionParameter} from '../selection.js';
+import {Dict} from '../util.js';
 
 /**
  * @minimum 0

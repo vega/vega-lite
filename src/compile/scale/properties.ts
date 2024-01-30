@@ -1,6 +1,6 @@
 import {SignalRef, TimeInterval} from 'vega';
 import {isArray, isNumber} from 'vega-util';
-import {isBinned, isBinning, isBinParams} from '../../bin';
+import {isBinned, isBinning, isBinParams} from '../../bin.js';
 import {
   COLOR,
   FILL,
@@ -11,7 +11,7 @@ import {
   POSITION_SCALE_CHANNELS,
   ScaleChannel,
   STROKE
-} from '../../channel';
+} from '../../channel.js';
 import {
   getFieldDef,
   getFieldOrDatumDef,
@@ -20,12 +20,12 @@ import {
   ScaleFieldDef,
   TypedFieldDef,
   valueExpr
-} from '../../channeldef';
-import {Config} from '../../config';
-import {isDateTime} from '../../datetime';
-import {channelHasNestedOffsetScale} from '../../encoding';
-import * as log from '../../log';
-import {Mark, MarkDef, RectConfig} from '../../mark';
+} from '../../channeldef.js';
+import {Config} from '../../config.js';
+import {isDateTime} from '../../datetime.js';
+import {channelHasNestedOffsetScale} from '../../encoding.js';
+import * as log from '../../log/index.js';
+import {Mark, MarkDef, RectConfig} from '../../mark.js';
 import {
   channelScalePropertyIncompatability,
   Domain,
@@ -36,19 +36,19 @@ import {
   ScaleConfig,
   ScaleType,
   scaleTypeSupportProperty
-} from '../../scale';
-import {Sort} from '../../sort';
-import {Type} from '../../type';
-import * as util from '../../util';
-import {contains, getFirstDefined, keys} from '../../util';
-import {isSignalRef, VgScale} from '../../vega.schema';
-import {getBinSignalName} from '../data/bin';
-import {isUnitModel, Model} from '../model';
-import {SignalRefWrapper} from '../signal';
-import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
-import {UnitModel} from '../unit';
-import {ScaleComponentIndex, ScaleComponentProps} from './component';
-import {parseUnitScaleRange} from './range';
+} from '../../scale.js';
+import {Sort} from '../../sort.js';
+import {Type} from '../../type.js';
+import * as util from '../../util.js';
+import {contains, getFirstDefined, keys} from '../../util.js';
+import {isSignalRef, VgScale} from '../../vega.schema.js';
+import {getBinSignalName} from '../data/bin.js';
+import {isUnitModel, Model} from '../model.js';
+import {SignalRefWrapper} from '../signal.js';
+import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split.js';
+import {UnitModel} from '../unit.js';
+import {ScaleComponentIndex, ScaleComponentProps} from './component.js';
+import {parseUnitScaleRange} from './range.js';
 
 export function parseScaleProperty(model: Model, property: Exclude<keyof (Scale | ScaleComponentProps), 'range'>) {
   if (isUnitModel(model)) {

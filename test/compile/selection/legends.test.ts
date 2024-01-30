@@ -1,8 +1,8 @@
-import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import legends from '../../../src/compile/selection/legends';
-import * as log from '../../../src/log';
-import {parseUnitModel} from '../../util';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import legends from '../../../src/compile/selection/legends.js';
+import * as log from '../../../src/log/index.js';
+import {parseUnitModel} from '../../util.js';
 
 describe('Interactive Legends', () => {
   it(

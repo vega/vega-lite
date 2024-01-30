@@ -1,9 +1,9 @@
 import {parseSelector} from 'vega-event-selector';
-import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import inputs from '../../../src/compile/selection/inputs';
-import * as log from '../../../src/log';
-import {parseUnitModel} from '../../util';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import inputs from '../../../src/compile/selection/inputs.js';
+import * as log from '../../../src/log/index.js';
+import {parseUnitModel} from '../../util.js';
 
 describe('Inputs Selection Transform', () => {
   const model = parseUnitModel({

@@ -18,7 +18,7 @@
   "main": "build/vega-lite.js",
   "unpkg": "build/vega-lite.min.js",
   "jsdelivr": "build/vega-lite.min.js",
-  "module": "build/src/index",
+  "module": "build/src/index.js",
   "types": "build/src/index.d.ts",
   "type": "module",
   "bin": {
@@ -26,6 +26,13 @@
     "vl2png": "./bin/vl2png",
     "vl2svg": "./bin/vl2svg",
     "vl2vg": "./bin/vl2vg"
+  },
+  "exports": {
+    ".": {
+      "import": "./build/src/index.js",
+      "require": "./build/vega-lite.js"
+    },
+    "./*": "./*.js"
   },
   "files": [
     "bin",
@@ -81,6 +88,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",
+    "@babel/plugin-syntax-import-attributes": "^7.23.3",
     "@babel/preset-env": "^7.23.9",
     "@babel/preset-typescript": "^7.23.3",
     "@release-it/conventional-changelog": "^8.0.1",

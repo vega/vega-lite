@@ -1,6 +1,6 @@
-import {WindowTransformNode} from '../../../src/compile/data/window';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {WindowTransformNode} from '../../../src/compile/data/window.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/window', () => {
   it('should return a proper vg transform', () => {

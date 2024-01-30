@@ -1,7 +1,7 @@
-import {PivotTransform} from '../../transform';
-import {duplicate, hash, unique} from '../../util';
+import {PivotTransform} from '../../transform.js';
+import {duplicate, hash, unique} from '../../util.js';
 import {PivotTransform as VgPivotTransform} from 'vega';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for pivot transform nodes.

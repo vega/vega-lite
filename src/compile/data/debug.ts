@@ -1,8 +1,8 @@
-import {entries, uniqueId} from '../../util';
-import {DataFlowNode, OutputNode} from './dataflow';
-import {SourceNode} from './source';
+import {entries, uniqueId} from '../../util.js';
+import {DataFlowNode, OutputNode} from './dataflow.js';
+import {SourceNode} from './source.js';
 import pako from 'pako';
-import {checkLinks} from './optimize';
+import {checkLinks} from './optimize.js';
 
 /**
  * Print debug information for dataflow tree.

@@ -1,7 +1,7 @@
 import {LoessTransform as VgLoessTransform} from 'vega';
-import {LoessTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {LoessTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for loess transform nodes

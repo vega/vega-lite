@@ -3,10 +3,10 @@
 // Compile a Vega-Lite spec to Vega
 
 import {createWriteStream} from 'fs';
-import vegaLite from '..';
+import * as vegaLite from '../build/src/index.js';
 import compactStringify from 'json-stringify-pretty-compact';
-import read from './read';
-import args from './args';
+import read from './read.js';
+import args from './args.js';
 
 const arg = args('vega');
 

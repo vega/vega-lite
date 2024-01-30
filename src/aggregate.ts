@@ -1,7 +1,7 @@
 import {AggregateOp} from 'vega';
 import {isString} from 'vega-util';
-import {FieldName} from './channeldef';
-import {contains, Flag} from './util';
+import {FieldName} from './channeldef.js';
+import {contains, Flag} from './util.js';
 
 const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   argmax: 1,

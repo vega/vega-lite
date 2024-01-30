@@ -1,5 +1,5 @@
 import {AggregateOp, AggregateTransform as VgAggregateTransform} from 'vega';
-import {isArgmaxDef, isArgminDef} from '../../aggregate';
+import {isArgmaxDef, isArgminDef} from '../../aggregate.js';
 import {
   Channel,
   getPositionChannelFromLatLong,
@@ -7,7 +7,7 @@ import {
   isGeoPositionChannel,
   isScaleChannel,
   isXorY
-} from '../../channel';
+} from '../../channel.js';
 import {
   binRequiresRange,
   FieldDef,
@@ -16,16 +16,16 @@ import {
   isScaleFieldDef,
   isTypedFieldDef,
   vgField
-} from '../../channeldef';
-import * as log from '../../log';
-import {isFieldRange} from '../../scale';
-import {AggregateTransform} from '../../transform';
-import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';
-import {isUnitModel, ModelWithField} from '../model';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
-import {isRectBasedMark} from '../../mark';
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from './timeunit';
+} from '../../channeldef.js';
+import * as log from '../../log/index.js';
+import {isFieldRange} from '../../scale.js';
+import {AggregateTransform} from '../../transform.js';
+import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util.js';
+import {isUnitModel, ModelWithField} from '../model.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
+import {isRectBasedMark} from '../../mark.js';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from './timeunit.js';
 
 type Measures = Dict<Partial<Record<AggregateOp, Set<string>>>>;
 

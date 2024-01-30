@@ -1,13 +1,13 @@
 import {LookupTransform as VgLookupTransform} from 'vega';
 import {array, isString} from 'vega-util';
-import * as log from '../../log';
-import {isLookupData, isLookupSelection, LookupTransform} from '../../transform';
-import {duplicate, hash, varName} from '../../util';
-import {Model} from '../model';
-import {DataFlowNode, OutputNode} from './dataflow';
-import {findSource} from './parse';
-import {SourceNode} from './source';
-import {DataSourceType} from '../../data';
+import * as log from '../../log/index.js';
+import {isLookupData, isLookupSelection, LookupTransform} from '../../transform.js';
+import {duplicate, hash, varName} from '../../util.js';
+import {Model} from '../model.js';
+import {DataFlowNode, OutputNode} from './dataflow.js';
+import {findSource} from './parse.js';
+import {SourceNode} from './source.js';
+import {DataSourceType} from '../../data.js';
 
 export class LookupNode extends DataFlowNode {
   public clone() {

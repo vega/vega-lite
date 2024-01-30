@@ -1,11 +1,11 @@
-import {COLOR, SHAPE, SIZE, X, Y} from '../../../src/channel';
-import {circle, point, square} from '../../../src/compile/mark/point';
-import {Config} from '../../../src/config';
-import {Encoding} from '../../../src/encoding';
-import {defaultMarkConfig} from '../../../src/mark';
-import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
-import {internalField} from '../../../src/util';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {COLOR, SHAPE, SIZE, X, Y} from '../../../src/channel.js';
+import {circle, point, square} from '../../../src/compile/mark/point.js';
+import {Config} from '../../../src/config.js';
+import {Encoding} from '../../../src/encoding.js';
+import {defaultMarkConfig} from '../../../src/mark.js';
+import {NormalizedUnitSpec, TopLevel} from '../../../src/spec/index.js';
+import {internalField} from '../../../src/util.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Point', () => {
   function pointXY(moreEncoding: Encoding<string> = {}, config: Config = {}): TopLevel<NormalizedUnitSpec> {

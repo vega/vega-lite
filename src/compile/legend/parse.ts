@@ -1,20 +1,27 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
-import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel';
-import {DatumDef, FieldDef, getFieldOrDatumDef, isFieldDef, MarkPropDatumDef, MarkPropFieldDef} from '../../channeldef';
-import {LegendInternal, LEGEND_SCALE_CHANNELS} from '../../legend';
-import {normalizeTimeUnit} from '../../timeunit';
-import {GEOJSON} from '../../type';
-import {deleteNestedProperty, isEmpty, keys, varName} from '../../util';
-import {mergeTitleComponent} from '../common';
-import {guideEncodeEntry} from '../guide';
-import {isUnitModel, Model} from '../model';
-import {parseGuideResolve} from '../resolve';
-import {parseInteractiveLegend} from '../selection/legends';
-import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
-import {UnitModel} from '../unit';
-import {LegendComponent, LegendComponentIndex, LegendComponentProps, LEGEND_COMPONENT_PROPERTIES} from './component';
-import {LegendEncodeParams, legendEncodeRules} from './encode';
-import {getDirection, getLegendType, LegendRuleParams, legendRules} from './properties';
+import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel.js';
+import {
+  DatumDef,
+  FieldDef,
+  getFieldOrDatumDef,
+  isFieldDef,
+  MarkPropDatumDef,
+  MarkPropFieldDef
+} from '../../channeldef.js';
+import {LegendInternal, LEGEND_SCALE_CHANNELS} from '../../legend.js';
+import {normalizeTimeUnit} from '../../timeunit.js';
+import {GEOJSON} from '../../type.js';
+import {deleteNestedProperty, isEmpty, keys, varName} from '../../util.js';
+import {mergeTitleComponent} from '../common.js';
+import {guideEncodeEntry} from '../guide.js';
+import {isUnitModel, Model} from '../model.js';
+import {parseGuideResolve} from '../resolve.js';
+import {parseInteractiveLegend} from '../selection/legends.js';
+import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split.js';
+import {UnitModel} from '../unit.js';
+import {LegendComponent, LegendComponentIndex, LegendComponentProps, LEGEND_COMPONENT_PROPERTIES} from './component.js';
+import {LegendEncodeParams, legendEncodeRules} from './encode.js';
+import {getDirection, getLegendType, LegendRuleParams, legendRules} from './properties.js';
 
 export function parseLegend(model: Model) {
   const legendComponent = isUnitModel(model) ? parseUnitLegend(model) : parseNonUnitLegend(model);
