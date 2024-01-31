@@ -13,6 +13,10 @@ import fs from 'fs';
 import * as vl from '../build/src/index.js';
 import stableStringify from 'fast-json-stable-stringify';
 import compactStringify from 'json-stringify-pretty-compact';
+import {dirname} from 'path';
+import {fileURLToPath} from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const DIR = __dirname + '/..';
 const SPECS = '/examples/specs';
