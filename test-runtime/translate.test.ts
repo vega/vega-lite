@@ -1,6 +1,5 @@
-/* eslint-disable jest/expect-expect */
+/* eslint-disable jest/valid-expect */
 
-import {assert} from 'chai';
 import {
   bound,
   brush,
@@ -34,7 +33,7 @@ describe('Translate interval selections at runtime', () => {
 
   const hits = hitsMaster.interval;
 
-  for (const bind of [bound, unbound]) {
+  for (const bind of [bound, unbound] as const) {
     describe(`${bind} intervals`, () => {
       beforeAll(() => {
         testRender = testRenderFn(page, `interval/translate/${bind}`);
@@ -45,14 +44,14 @@ describe('Translate interval selections at runtime', () => {
 
       const assertExtent = {
         [unbound]: {
-          x: ['isAbove', 'isBelow'],
-          y: ['isBelow', 'isAbove']
+          x: ['toBeGreaterThan', 'toBeLessThan'],
+          y: ['toBeLessThan', 'toBeGreaterThan']
         },
         [bound]: {
-          x: ['isBelow', 'isAbove'],
-          y: ['isAbove', 'isBelow']
+          x: ['toBeLessThan', 'toBeGreaterThan'],
+          y: ['toBeGreaterThan', 'toBeLessThan']
         }
-      };
+      } as const;
 
       it('should move back-and-forth', async () => {
         for (let i = 0; i < hits.translate.length; i++) {
@@ -60,10 +59,10 @@ describe('Translate interval selections at runtime', () => {
           const drag = (await page.evaluate(brush('drag', i)))[0];
           await testRender(`${i}-0`);
           const translate = (await page.evaluate(brush('translate', i, null, bind === unbound)))[0];
-          assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
-          assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
-          assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
-          assert[assertExtent[bind].y[i]](translate.values[1][1], drag.values[1][1]);
+          expect(translate.values[0][0])[assertExtent[bind].x[i]](drag.values[0][0]);
+          expect(translate.values[0][1])[assertExtent[bind].x[i]](drag.values[0][1]);
+          expect(translate.values[1][0])[assertExtent[bind].y[i]](drag.values[1][0]);
+          expect(translate.values[1][1])[assertExtent[bind].y[i]](drag.values[1][1]);
           await testRender(`${i}-1`);
         }
       });
@@ -85,8 +84,8 @@ describe('Translate interval selections at runtime', () => {
           const drag = (await page.evaluate(brush('bins', i)))[0];
           await testRender(`bins_${i}-0`);
           const translate = (await page.evaluate(brush('bins_translate', i, null, bind === unbound)))[0];
-          assert[assertExtent[bind].y[i]](translate.values[0][0], drag.values[0][0]);
-          assert[assertExtent[bind].y[i]](translate.values[0][1], drag.values[0][1]);
+          expect(translate.values[0][0])[assertExtent[bind].y[i]](drag.values[0][0]);
+          expect(translate.values[0][1])[assertExtent[bind].y[i]](drag.values[0][1]);
           await testRender(`bins_${i}-1`);
         }
       });
@@ -101,8 +100,8 @@ describe('Translate interval selections at runtime', () => {
           const drag = toNumber(await page.evaluate(brush('drag', i)));
           await testRender(`temporal_${i}-0`);
           const translate = toNumber(await page.evaluate(brush('translate', i, null, bind === unbound)));
-          assert[assertExtent[bind].x[i]](translate[0], drag[0]);
-          assert[assertExtent[bind].x[i]](translate[1], drag[1]);
+          expect(translate[0])[assertExtent[bind].x[i]](drag[0]);
+          expect(translate[1])[assertExtent[bind].x[i]](drag[1]);
           await testRender(`temporal_${i}-1`);
         }
       });
@@ -123,10 +122,10 @@ describe('Translate interval selections at runtime', () => {
           const drag = (await page.evaluate(brush('drag', i)))[0];
           await testRender(`logpow_${i}-0`);
           const translate = (await page.evaluate(brush('translate', i, null, bind === unbound)))[0];
-          assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
-          assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
-          assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
-          assert[assertExtent[bind].y[i]](translate.values[1][1], drag.values[1][1]);
+          expect(translate.values[0][0])[assertExtent[bind].x[i]](drag.values[0][0]);
+          expect(translate.values[0][1])[assertExtent[bind].x[i]](drag.values[0][1]);
+          expect(translate.values[1][0])[assertExtent[bind].y[i]](drag.values[1][0]);
+          expect(translate.values[1][1])[assertExtent[bind].y[i]](drag.values[1][1]);
           await testRender(`logpow_${i}-1`);
         }
       });
@@ -148,10 +147,10 @@ describe('Translate interval selections at runtime', () => {
             const drag = (await page.evaluate(brush('drag', i)))[0];
             await testRender(`ord_${i}-0`);
             const translate = (await page.evaluate(brush('translate', i, null, true)))[0];
-            assert[assertExtent[bind].x[i]](translate.values[0][0], drag.values[0][0]);
-            assert[assertExtent[bind].x[i]](translate.values[0][1], drag.values[0][1]);
-            assert[assertExtent[bind].y[i]](translate.values[1][0], drag.values[1][0]);
-            assert[assertExtent[bind].y[i]](translate.values[1][1], drag.values[1][1]);
+            expect(translate.values[0][0])[assertExtent[bind].x[i]](drag.values[0][0]);
+            expect(translate.values[0][1])[assertExtent[bind].x[i]](drag.values[0][1]);
+            expect(translate.values[1][0])[assertExtent[bind].y[i]](drag.values[1][0]);
+            expect(translate.values[1][1])[assertExtent[bind].y[i]](drag.values[1][1]);
             await testRender(`ord_${i}-1`);
           }
         });
@@ -159,12 +158,12 @@ describe('Translate interval selections at runtime', () => {
         for (const specType of compositeTypes) {
           const assertExtents = {
             repeat: {
-              x: ['isBelow', 'isBelow', 'isBelow'],
-              y: ['isAbove', 'isAbove', 'isAbove']
+              x: ['toBeLessThan', 'toBeLessThan', 'toBeLessThan'],
+              y: ['toBeGreaterThan', 'toBeGreaterThan', 'toBeGreaterThan']
             },
             facet: {
-              x: ['isBelow', 'isBelow', 'isBelow'],
-              y: ['isBelow', 'isAbove', 'isBelow']
+              x: ['toBeLessThan', 'toBeLessThan', 'toBeLessThan'],
+              y: ['toBeLessThan', 'toBeGreaterThan', 'toBeLessThan']
             }
           };
           it(`should work with shared scales in ${specType} views`, async () => {
@@ -174,10 +173,10 @@ describe('Translate interval selections at runtime', () => {
               const xscale = await page.evaluate('view._runtime.scales.x.value.domain()');
               const yscale = await page.evaluate('view._runtime.scales.y.value.domain()');
               const drag = (await page.evaluate(brush(specType, i, parent)))[0];
-              assert[assertExtents[specType].x[i]](drag.values[0][0], xscale[0], `iter: ${i}`);
-              assert[assertExtents[specType].x[i]](drag.values[0][1], xscale[1], `iter: ${i}`);
-              assert[assertExtents[specType].y[i]](drag.values[1][0], yscale[0], `iter: ${i}`);
-              assert[assertExtents[specType].y[i]](drag.values[1][1], yscale[1], `iter: ${i}`);
+              expect(drag.values[0][0])[assertExtents[specType].x[i]](xscale[0]);
+              expect(drag.values[0][1])[assertExtents[specType].x[i]](xscale[1]);
+              expect(drag.values[1][0])[assertExtents[specType].y[i]](yscale[0]);
+              expect(drag.values[1][1])[assertExtents[specType].y[i]](yscale[1]);
               await testRender(`${specType}_${i}`);
             }
           });
