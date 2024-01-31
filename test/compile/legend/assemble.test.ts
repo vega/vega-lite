@@ -48,7 +48,7 @@ describe('legend/assemble', () => {
 
     const legends = model.assembleLegends();
     expect(legends[0].encode.labels.update.text).toEqual({
-      signal: 'myFormat(datum.value, {"a":"b"})[0]'
+      signal: "myFormat(datum.value, {'a':'b'})[0]"
     });
   });
 

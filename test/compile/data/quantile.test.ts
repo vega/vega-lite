@@ -93,7 +93,7 @@ describe('compile/data/fold', () => {
         as: ['A', 'B']
       };
       const quantile = new QuantileTransformNode(null, transform);
-      expect(quantile.hash()).toBe('QuantileTransform {"as":["A","B"],"quantile":"x"}');
+      expect(quantile.hash()).toBe("QuantileTransform {'as':['A','B'],'quantile':'x'}");
     });
   });
 

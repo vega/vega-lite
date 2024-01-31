@@ -99,7 +99,7 @@ describe('compile/header/index', () => {
       model.parseAxesAndHeaders();
 
       const rowHeaderGroups = assembleHeaderGroups(model, 'row');
-      expect(rowHeaderGroups[0].sort.field).toBe('datum["min_d"]');
+      expect(rowHeaderGroups[0].sort.field).toBe("datum['min_d']");
     });
   });
 
@@ -320,7 +320,7 @@ describe('compile/header/index', () => {
         }
       );
 
-      expect(title.text).toEqual({signal: 'parent["foo"][0]'});
+      expect(title.text).toEqual({signal: "parent['foo'][0]"});
     });
   });
 });

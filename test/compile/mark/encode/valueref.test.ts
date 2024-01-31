@@ -70,7 +70,7 @@ describe('compile/mark/encode/valueref', () => {
         scale: undefined,
         defaultRef
       });
-      expect(ref).toEqual({signal: 'scale("x", 0.5 * datum["bin_start"] + 0.5 * datum["bin_end"])'});
+      expect(ref).toEqual({signal: "scale('x', 0.5 * datum['bin_start'] + 0.5 * datum['bin_end'])"});
     });
   });
 

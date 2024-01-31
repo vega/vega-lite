@@ -70,7 +70,7 @@ describe('compile/data/pivot', () => {
       value: 'b'
     };
     const pivot = new PivotTransformNode(null, transform);
-    expect(pivot.hash()).toBe('PivotTransform {"pivot":"a","value":"b"}');
+    expect(pivot.hash()).toBe("PivotTransform {'pivot':'a','value':'b'}");
   });
 
   describe('clone', () => {

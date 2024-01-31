@@ -119,7 +119,7 @@ describe('compile/data/fold', () => {
         as: ['A', 'B']
       };
       const density = new DensityTransformNode(null, transform);
-      expect(density.hash()).toBe('DensityTransform {"as":["A","B"],"density":"v"}');
+      expect(density.hash()).toBe("DensityTransform {'as':['A','B'],'density':'v'}");
     });
   });
 

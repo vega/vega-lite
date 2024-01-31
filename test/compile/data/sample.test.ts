@@ -25,7 +25,7 @@ describe('compile/data/sample', () => {
     describe('producedFields', () => {
       it('should generate the correct hash', () => {
         const sample = new SampleTransformNode(null, transform);
-        expect(sample.hash()).toBe('SampleTransform {"sample":500}');
+        expect(sample.hash()).toBe("SampleTransform {'sample':500}");
       });
 
       it('should produce different hashes for different samples', () => {

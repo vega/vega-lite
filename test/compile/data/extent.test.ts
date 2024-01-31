@@ -36,7 +36,7 @@ describe('compile/data/extent', () => {
         param: 'A'
       };
       const extent = new ExtentTransformNode(null, transform);
-      expect(extent.hash()).toBe('ExtentTransform {"extent":"a","param":"A"}');
+      expect(extent.hash()).toBe("ExtentTransform {'extent':'a','param':'A'}");
     });
   });
 

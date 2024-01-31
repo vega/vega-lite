@@ -35,7 +35,7 @@ describe('compile/axis/encode', () => {
         config: {customFormatTypes: true}
       });
       const labels = encode.labels(model, 'x', {});
-      expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
+      expect(labels.text.signal).toBe("customNumberFormat(datum.value, 'abc')");
     });
 
     it('applies custom format type without format', () => {
@@ -59,7 +59,7 @@ describe('compile/axis/encode', () => {
         config: {customFormatTypes: true, numberFormat: 'abc', numberFormatType: 'customNumberFormat'}
       });
       const labels = encode.labels(model, 'x', {});
-      expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
+      expect(labels.text.signal).toBe("customNumberFormat(datum.value, 'abc')");
     });
 
     it('applies custom format type from a normalized stack', () => {
@@ -75,7 +75,7 @@ describe('compile/axis/encode', () => {
         }
       });
       const labels = encode.labels(model, 'x', {});
-      expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
+      expect(labels.text.signal).toBe("customNumberFormat(datum.value, 'abc')");
     });
 
     it('applies custom timeFormatType from config', () => {
@@ -87,7 +87,7 @@ describe('compile/axis/encode', () => {
         config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customTimeFormat'}
       });
       const labels = encode.labels(model, 'x', {});
-      expect(labels.text.signal).toBe('customTimeFormat(datum.value, "abc")');
+      expect(labels.text.signal).toBe("customTimeFormat(datum.value, 'abc')");
     });
 
     it('prefers timeUnit over timeFormatType from config', () => {

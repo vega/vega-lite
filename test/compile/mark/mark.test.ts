@@ -336,7 +336,7 @@ describe('Mark', () => {
         }
       });
       expect(getSort(model)).toEqual({
-        field: ['datum["year"]'],
+        field: ["datum['year']"],
         order: ['ascending']
       });
     });
@@ -375,7 +375,7 @@ describe('Mark', () => {
         }
       });
       expect(getSort(model)).toEqual({
-        field: 'datum["bin_maxbins_10_IMDB_Rating"]'
+        field: "datum['bin_maxbins_10_IMDB_Rating']"
       });
     });
 
@@ -416,7 +416,7 @@ describe('Mark', () => {
         }
       });
       expect(getSort(model)).toEqual({
-        field: 'datum["x_Name_sort_index"]'
+        field: "datum['x_Name_sort_index']"
       });
     });
 
@@ -434,7 +434,7 @@ describe('Mark', () => {
         }
       });
       expect(getSort(model)).toEqual({
-        field: 'datum["Score"]'
+        field: "datum['Score']"
       });
     });
 

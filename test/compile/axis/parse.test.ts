@@ -406,7 +406,7 @@ describe('Axis', () => {
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].get('format')).toEqual({
-        signal: 'timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+        signal: "timeUnitSpecifier(['quarter'], {'year-month':'%b %Y ','year-month-date':'%b %d, %Y '})"
       });
     });
 
@@ -446,7 +446,7 @@ describe('Axis', () => {
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].get('format')).toEqual({
-        signal: 'timeUnitSpecifier(["year","quarter","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+        signal: "timeUnitSpecifier(['year','quarter','month'], {'year-month':'%b %Y ','year-month-date':'%b %d, %Y '})"
       });
     });
   });

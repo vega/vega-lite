@@ -11,7 +11,7 @@ describe('SignalRefWrapper', () => {
   });
 
   it('should serialize correctly', () => {
-    expect(stringify(s)).toBe('{"signal":"hello world"}');
+    expect(stringify(s)).toBe("{'signal':'hello world'}");
   });
 
   it('should look like a signal', () => {

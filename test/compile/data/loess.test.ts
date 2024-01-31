@@ -104,7 +104,7 @@ describe('compile/data/fold', () => {
         as: ['A', 'B']
       };
       const loess = new LoessTransformNode(null, transform);
-      expect(loess.hash()).toBe('LoessTransform {"as":["A","B"],"loess":"y","on":"x"}');
+      expect(loess.hash()).toBe("LoessTransform {'as':['A','B'],'loess':'y','on':'x'}");
     });
   });
 
