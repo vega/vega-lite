@@ -176,7 +176,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
             (isArray(repeat)
               ? `${varName(repeatValue)}`
               : (repeat.row ? `row_${varName(rowValue)}` : '') +
-              (repeat.column ? `column_${varName(columnValue)}` : ''));
+                (repeat.column ? `column_${varName(columnValue)}` : ''));
 
           const child = this.map(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
           child.name = childName;
@@ -213,9 +213,9 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
   }
   private isEmpty(obj: any) {
     if (obj == null) {
-      return true
+      return true;
     }
-    return Object.keys(obj).length === 0
+    return Object.keys(obj).length === 0;
   }
 
   private mapUnitWithParentEncodingOrProjection(
@@ -241,9 +241,9 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           ...params,
           config: config,
           repeater: params.repeater
-        })
-    }
-    else {
+        }
+      );
+    } else {
       return this.mapUnit(
         {
           ...spec,
@@ -254,7 +254,6 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           config
         }
       );
-
     }
   }
 
