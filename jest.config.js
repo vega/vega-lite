@@ -5,11 +5,14 @@ const config = {
   coverageDirectory: './coverage/',
   collectCoverage: false,
   setupFiles: ['./test/jest.overrides.ts'],
-  globals: {
-    'ts-jest': {
-      diagnostics: false,
-      useESM: true
-    }
+  transform: {
+    '^.+\\.ts$': [
+      'ts-jest',
+      {
+        diagnostics: false,
+        useESM: true
+      }
+    ]
   }
 };
 
