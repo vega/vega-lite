@@ -68,7 +68,6 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       ...(spec.name ? {name: [params.repeaterPrefix, spec.name].filter(n => n).join('_')} : {}),
       ...(encoding ? {encoding} : {})
     };
-
     if (parentEncoding || parentProjection) {
       return this.mapUnitWithParentEncodingOrProjection(specWithReplacedEncoding, params);
     }
@@ -177,7 +176,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
             (isArray(repeat)
               ? `${varName(repeatValue)}`
               : (repeat.row ? `row_${varName(rowValue)}` : '') +
-                (repeat.column ? `column_${varName(columnValue)}` : ''));
+              (repeat.column ? `column_${varName(columnValue)}` : ''));
 
           const child = this.map(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
           child.name = childName;
@@ -225,14 +224,32 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       encoding: replaceRepeaterInEncoding(encoding, params.repeater)
     });
 
-    return this.mapUnit(
-      {
-        ...spec,
-        ...(mergedProjection ? {projection: mergedProjection} : {}),
-        ...(mergedEncoding ? {encoding: mergedEncoding} : {})
-      },
-      {config}
-    );
+    if (isEmpty(encoding) && !isEmpty(params.repeater)) {
+      return this.mapUnit(
+        {
+          ...spec,
+          ...(mergedProjection ? {projection: mergedProjection} : {}),
+          ...(mergedEncoding ? {encoding: mergedEncoding} : {})
+        },
+        {
+          ...params,
+          config: config,
+          repeater: params.repeater
+        })
+    }
+    else {
+      return this.mapUnit(
+        {
+          ...spec,
+          ...(mergedProjection ? {projection: mergedProjection} : {}),
+          ...(mergedEncoding ? {encoding: mergedEncoding} : {})
+        },
+        {
+          config
+        }
+      );
+
+    }
   }
 
   private mapFacetedUnit(spec: FacetedUnitSpec<Field>, normParams: NormalizerParams): NormalizedFacetSpec {
