@@ -211,6 +211,12 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
     return super.mapFacet(spec, params);
   }
+  private isEmpty(obj: any) {
+    if (obj == null) {
+      return true
+    }
+    return Object.keys(obj).length === 0
+  }
 
   private mapUnitWithParentEncodingOrProjection(
     spec: FacetedUnitSpec<Field>,
@@ -224,7 +230,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       encoding: replaceRepeaterInEncoding(encoding, params.repeater)
     });
 
-    if (isEmpty(encoding) && !isEmpty(params.repeater)) {
+    if (this.isEmpty(encoding) && !this.isEmpty(params.repeater)) {
       return this.mapUnit(
         {
           ...spec,
