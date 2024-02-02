@@ -51,7 +51,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
   const offsetScaleChannel = getOffsetChannel(channel);
 
   const isBarBand = mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal');
-  const isImage = mark === 'image'
+  const isImage = mark === 'image';
   // x, x2, and width -- we must specify two of these in all conditions
   if (
     isFieldDef(channelDef) &&
@@ -60,14 +60,16 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
     !encoding[offsetScaleChannel] &&
     !hasDiscreteDomain(scaleType)
   ) {
-
     return rectBinPosition({
       fieldDef: channelDef,
       fieldDef2: channelDef2,
       channel,
       model
     });
-  } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarBand || isImage) && !channelDef2) {
+  } else if (
+    ((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarBand || isImage) &&
+    !channelDef2
+  ) {
     return positionAndSize(channelDef, channel, model);
   } else {
     return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
@@ -242,9 +244,9 @@ function positionAndSize(
       [vgChannel2]: isArray(posRef)
         ? [posRef[0], {...posRef[1], offset: sizeOffset}]
         : {
-          ...posRef,
-          offset: sizeOffset
-        }
+            ...posRef,
+            offset: sizeOffset
+          }
     };
   }
 }
@@ -410,9 +412,9 @@ function rectBinRef({
     offset,
     ...(useRectOffsetField
       ? {
-        startSuffix: OFFSETTED_RECT_START_SUFFIX,
-        endSuffix: OFFSETTED_RECT_END_SUFFIX
-      }
+          startSuffix: OFFSETTED_RECT_START_SUFFIX,
+          endSuffix: OFFSETTED_RECT_END_SUFFIX
+        }
       : {})
   });
 }
