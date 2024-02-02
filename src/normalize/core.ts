@@ -176,7 +176,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
             (isArray(repeat)
               ? `${varName(repeatValue)}`
               : (repeat.row ? `row_${varName(rowValue)}` : '') +
-                (repeat.column ? `column_${varName(columnValue)}` : ''));
+              (repeat.column ? `column_${varName(columnValue)}` : ''));
 
           const child = this.map(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
           child.name = childName;
@@ -212,12 +212,6 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     return super.mapFacet(spec, params);
   }
   //
-  private isEmpty(obj: any) {
-    if (obj == null) {
-      return true;
-    }
-    return Object.keys(obj).length === 0;
-  }
 
   private mapUnitWithParentEncodingOrProjection(
     spec: FacetedUnitSpec<Field>,
@@ -236,15 +230,15 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
         ...(mergedProjection ? {projection: mergedProjection} : {}),
         ...(mergedEncoding ? {encoding: mergedEncoding} : {})
       },
-      this.isEmpty(encoding) && !this.isEmpty(params.repeater)
+      emptyFlag(encoding) && !emptyFlag(params.repeater)
         ? {
-            ...params,
-            config: config,
-            repeater: params.repeater
-          }
+          ...params,
+          config: config,
+          repeater: params.repeater
+        }
         : {
-            config
-          }
+          config
+        }
     );
   }
 
@@ -410,4 +404,11 @@ function mergeProjection<ES extends ExprRef | SignalRef>(opt: {
     log.warn(log.message.projectionOverridden({parentProjection, projection}));
   }
   return projection ?? parentProjection;
+}
+
+function emptyFlag(obj: any) {
+  if (obj == null) {
+    return true;
+  }
+  return Object.keys(obj).length === 0;
 }
