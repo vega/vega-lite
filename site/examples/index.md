@@ -33,6 +33,7 @@ This page shows example specifications for different types of graphics. To see e
 
 Here we list great examples of Vega-Lite visualizations that were created by the community. Please help us expand this gallery by [forking our example block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and sending us a [pull request](https://github.com/vega/vega-lite/edit/master/site/examples/index.md) with your example added to this list.
 
+- Many [advanced Vega and Vega-Lite visualisations](https://github.com/PBI-David/Deneb-Showcase) by Davide Bacci which can also be used in PowerBI using the Deneb addin.
 - Many visualizations in the book [Making Data Visual](https://makingdatavisual.github.io/figurelist.html) by Danyel Fisher and Miriah Meyer are made with Vega-Lite
 - [Grouped Bar Chart](https://bl.ocks.org/domoritz/f5abc519dd990bfcbc3f20f634658364) by @churtado
 - [Bar Chart with Negative Values](https://bl.ocks.org/digi0ps/3691287ab4033509e988d67c932fca47) by @digi0ps
