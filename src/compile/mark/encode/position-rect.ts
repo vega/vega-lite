@@ -241,9 +241,9 @@ function positionAndSize(
       [vgChannel2]: isArray(posRef)
         ? [posRef[0], {...posRef[1], offset: sizeOffset}]
         : {
-            ...posRef,
-            offset: sizeOffset
-          }
+          ...posRef,
+          offset: sizeOffset
+        }
     };
   }
 }
@@ -409,9 +409,9 @@ function rectBinRef({
     offset,
     ...(useRectOffsetField
       ? {
-          startSuffix: OFFSETTED_RECT_START_SUFFIX,
-          endSuffix: OFFSETTED_RECT_END_SUFFIX
-        }
+        startSuffix: OFFSETTED_RECT_START_SUFFIX,
+        endSuffix: OFFSETTED_RECT_END_SUFFIX
+      }
       : {})
   });
 }

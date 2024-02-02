@@ -1,0 +1,31 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "layer": [
+    {
+      "mark": {"type": "image" },
+      "encoding": {
+        "x": {"field": "title", "type": "nominal"},
+        "url": {"field": "img", "type": "nominal"},
+        "y": {"field": "score", "type": "quantitative"},
+        "tooltip": {"field": "title"}
+      }
+    },
+    {
+      "mark": {"type": "point"},
+      "encoding": {
+        "x": {"field": "title", "type": "nominal"},
+        "y": {"field": "score", "type": "quantitative"},
+        "tooltip": {"field": "title"}
+      }
+    }
+  ],
+  "data": {
+    "values": [
+      {
+        "title": "Minecraft",
+        "score": 4.5664163,
+        "img": "https://play-lh.googleusercontent.com/yAtZnNL-9Eb5VYSsCaOC7KAsOVIJcY8mpKa0MoF-0HCL6b0OrFcBizURHywpuip-D6Y=w832-h470"
+      }
+    ]
+  }
+}
