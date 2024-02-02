@@ -176,7 +176,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
             (isArray(repeat)
               ? `${varName(repeatValue)}`
               : (repeat.row ? `row_${varName(rowValue)}` : '') +
-              (repeat.column ? `column_${varName(columnValue)}` : ''));
+                (repeat.column ? `column_${varName(columnValue)}` : ''));
 
           const child = this.map(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
           child.name = childName;
@@ -232,13 +232,13 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       },
       emptyFlag(encoding) && !emptyFlag(params.repeater)
         ? {
-          ...params,
-          config: config,
-          repeater: params.repeater
-        }
+            ...params,
+            config: config,
+            repeater: params.repeater
+          }
         : {
-          config
-        }
+            config
+          }
     );
   }
 
