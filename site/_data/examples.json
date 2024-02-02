@@ -520,6 +520,10 @@
       {
         "name": "layer_point_line_loess",
         "title": "Loess Regression"
+      },
+      {
+        "name": "line_dynamic_axis",
+        "title": "Dynamic Minimum and Maximum Y Axis"
       }
     ]
   },
