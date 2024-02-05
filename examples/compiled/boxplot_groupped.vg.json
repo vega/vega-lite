@@ -240,7 +240,14 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "white"},
+          "fill": [
+            {
+              "test": "datum['lower_box_Acceleration'] >= datum['upper_box_Acceleration']",
+              "scale": "color",
+              "field": "Origin"
+            },
+            {"value": "white"}
+          ],
           "tooltip": {
             "signal": "{\"Max of Acceleration\": format(datum[\"max_Acceleration\"], \"\"), \"Q3 of Acceleration\": format(datum[\"upper_box_Acceleration\"], \"\"), \"Median of Acceleration\": format(datum[\"mid_box_Acceleration\"], \"\"), \"Q1 of Acceleration\": format(datum[\"lower_box_Acceleration\"], \"\"), \"Min of Acceleration\": format(datum[\"min_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
           },
@@ -314,7 +321,8 @@
       "domain": {
         "fields": [
           {"data": "data_1", "field": "Origin"},
-          {"data": "data_6", "field": "Origin"}
+          {"data": "data_6", "field": "Origin"},
+          {"data": "data_7", "field": "Origin"}
         ],
         "sort": true
       },

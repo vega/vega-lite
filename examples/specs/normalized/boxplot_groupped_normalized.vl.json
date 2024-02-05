@@ -222,6 +222,13 @@
             },
             "x": {"field": "Cylinders", "type": "nominal"},
             "xOffset": {"field": "Origin", "type": "nominal"},
+            "color": {
+              "condition": {
+                "test": "datum['lower_box_Acceleration'] >= datum['upper_box_Acceleration']",
+                "field": "Origin",
+                "type": "nominal"
+              }
+            },
             "tooltip": [
               {
                 "field": "max_Acceleration",
