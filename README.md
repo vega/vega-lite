@@ -12,7 +12,7 @@ Try using Vega-Lite in the online [Vega Editor](https://vega.github.io/editor/#/
 
 Contributions are also welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines and our [Code of Conduct](https://vega.github.io/vega/about/code-of-conduct/).
 
-Read about future plans in [our roadmap](https://github.com/vega/roadmap/projects/1).
+Read about future plans in [our roadmap](https://github.com/vega/roadmap/projects/).
 
 ## Team
 
