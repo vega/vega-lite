@@ -3,13 +3,13 @@
  "description": "Vega-Lite computes the minimum and maximum axes values automatically but this can be made more dynamic by using params to produce axes which are +/- 20% of the minimum and maximum values in the dataset.",
   "data": {
     "values": [
-      {"x": 1, "y": 10},
-      {"x": 2, "y": 10},
-      {"x": 3, "y": 10},
-      {"x": 4, "y": 10},
-      {"x": 5, "y": 10},
-      {"x": 6, "y": 10},
-      {"x": 7, "y": 10}
+       {"x": 1, "y": 11},
+       {"x": 2, "y": 10},
+       {"x": 3, "y": 11.23},
+       {"x": 4, "y": 10},
+       {"x": 5, "y": 9.5},
+       {"x": 6, "y": 10},
+       {"x": 7, "y": 10}
     ]
   },
   "params": [
