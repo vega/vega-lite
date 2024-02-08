@@ -12,13 +12,13 @@
       {"x": 7, "y": 10}
     ]
   },
+  "params": [
+    {"name": "extents", "expr": "extent(pluck(data('source_0'), 'y'))"},
+    {"name": "min", "expr": "extents[0] * 0.8"},
+    {"name": "max", "expr": "extents[1] * 1.2"}
+  ],
   "layer": [
     {
-      "params": [
-        {"name": "extents", "expr": "extent(pluck(data('source_0'), 'y'))"},
-        {"name": "min", "expr": "extents[0] * 0.8"},
-        {"name": "max", "expr": "extents[1] * 1.2"}
-      ],
       "mark": "line",
       "encoding": {
         "x": {"field": "x", "type": "quantitative"},
