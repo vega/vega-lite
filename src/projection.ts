@@ -1,4 +1,4 @@
-import {BaseProjection, SignalRef, Vector2} from 'vega';
+import {BaseProjection, Fit, SignalRef, Vector2} from 'vega';
 import {ExprRef} from './expr';
 import {MapExcludeValueRefAndReplaceSignalWith, ProjectionType} from './vega.schema';
 
@@ -20,6 +20,11 @@ export interface Projection<ES extends ExprRef | SignalRef>
    * The projection’s translation offset as a two-element array `[tx, ty]`.
    */
   translate?: Vector2<number> | ES; // TODO: figure what's VL default value
+
+  /**
+   * GeoJSON data to which the projection should attempt to automatically fit the `translate` and `scale` parameters. If object-valued, this parameter should be a GeoJSON Feature or FeatureCollection. If array-valued, each array member may be a GeoJSON Feature, FeatureCollection, or a sub-array of GeoJSON Features.
+   */
+  fit?: Fit | Fit[] | ES; // Re-declare to override docs
 }
 
 /**
