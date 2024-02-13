@@ -268,6 +268,26 @@ describe('compile/data/aggregate', () => {
         as: ['argmin_a', 'argmax_c']
       });
     });
+
+    it('should produce the correct summary component for exponential', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {aggregate: {exponential: 0.25}, field: 'Displacement', type: 'quantitative'},
+          y: {aggregate: 'sum', field: 'Acceleration', type: 'quantitative'}
+        }
+      });
+
+      const agg = AggregateNode.makeFromEncoding(null, model);
+      expect(agg.assemble()).toEqual({
+        type: 'aggregate',
+        groupby: [],
+        ops: ['exponential', 'sum'],
+        fields: ['Displacement', 'Acceleration'],
+        as: ['exponential_Displacement', 'sum_Acceleration'],
+        aggregate_params: [0.25, null]
+      });
+    });
   });
 
   describe('makeFromTransform', () => {
@@ -310,11 +330,11 @@ describe('compile/data/aggregate', () => {
       });
     });
 
-    it('should produce the correct summary component from transform array with aggregation_params', () => {
+    it('should produce the correct summary component from transform array with exponential', () => {
       const t: AggregateTransform = {
         aggregate: [
           {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'},
-          {op: 'exponential', field: 'Displacement', as: 'Displacement_exponential', aggregate_param: 0.3}
+          {op: {exponential: 0.3}, field: 'Displacement', as: 'Displacement_exponential'}
         ],
         groupby: ['Group']
       };
@@ -361,6 +381,25 @@ describe('compile/data/aggregate', () => {
 
       expect(agg1.merge(agg2)).toBe(true);
       expect(agg1.producedFields()).toEqual(new Set(['a_mean', 'b_mean']));
+    });
+    it('should merge AggregateNodes without losing aggregateParam', () => {
+      const parent = new PlaceholderDataFlowNode(null);
+      const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {
+        a: {sum: {aliases: new Set(['a_sum'])}}
+      });
+      const agg2 = new AggregateNode(parent, new Set(['a', 'b']), {
+        b: {exponential: {aliases: new Set(['b_exponential']), aggregateParam: 0.5}}
+      });
+
+      expect(agg1.merge(agg2)).toBe(true);
+      expect(agg1.assemble()).toEqual({
+        ops: ['sum', 'exponential'],
+        type: 'aggregate',
+        as: ['a_sum', 'b_exponential'],
+        fields: ['a', 'b'],
+        groupby: ['a', 'b'],
+        aggregate_params: [null, 0.5]
+      });
     });
   });
 

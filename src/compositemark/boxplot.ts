@@ -7,7 +7,13 @@ import * as log from '../log';
 import {isMarkDef, MarkDef, MarkInvalidMixins} from '../mark';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
-import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
+import {
+  AggregatedFieldDef,
+  CalculateTransform,
+  JoinAggregateTransform,
+  NonArgAggregateFieldOp,
+  Transform
+} from '../transform';
 import {isEmpty, omit} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
@@ -21,6 +27,7 @@ import {
   partLayerMixins,
   PartsMixins
 } from './common';
+import {FieldName} from '../channeldef';
 
 export const BOXPLOT = 'boxplot' as const;
 export type BoxPlot = typeof BOXPLOT;
@@ -333,7 +340,9 @@ export function normalizeBoxPlot(
   };
 }
 
-function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
+function boxParamsQuartiles(
+  continousAxisField: string
+): {op: NonArgAggregateFieldOp; field: FieldName; as: FieldName}[] {
   return [
     {
       op: 'q1',

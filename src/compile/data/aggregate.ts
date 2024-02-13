@@ -1,5 +1,5 @@
 import {AggregateOp, AggregateTransform as VgAggregateTransform} from 'vega';
-import {isArgmaxDef, isArgminDef} from '../../aggregate';
+import {isArgmaxDef, isArgminDef, isExponentialDef} from '../../aggregate';
 import {
   Channel,
   getPositionChannelFromLatLong,
@@ -27,7 +27,7 @@ import {DataFlowNode} from './dataflow';
 import {isRectBasedMark} from '../../mark';
 import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from './timeunit';
 
-type Measures = Dict<Partial<Record<AggregateOp, {aliases: Set<string>; aggregate_param?: number}>>>;
+type Measures = Dict<Partial<Record<AggregateOp, {aliases: Set<string>; aggregateParam?: number}>>>;
 
 function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>, model: ModelWithField) {
   const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
@@ -74,6 +74,11 @@ function mergeMeasures(parentMeasures: Measures, childMeasures: Measures) {
         parentMeasures[field][op] = {
           aliases: new Set([...(parentMeasures[field][op]?.aliases ?? []), ...ops[op].aliases])
         };
+
+        const childAggregateParam = childMeasures[field][op].aggregateParam;
+        if (childAggregateParam) {
+          parentMeasures[field][op].aggregateParam = childAggregateParam;
+        }
       } else {
         parentMeasures[field] = {[op]: ops[op]};
       }
@@ -130,6 +135,11 @@ export class AggregateNode extends DataFlowNode {
             const argField = aggregate[op];
             meas[argField] ??= {};
             meas[argField][op] = {aliases: new Set([vgField({op, field: argField}, {forAs: true})])};
+          } else if (isExponentialDef(aggregate)) {
+            const op = 'exponential';
+            const aggregateParam = aggregate[op];
+            meas[field] ??= {};
+            meas[field][op] = {aliases: new Set([vgField(fieldDef, {forAs: true})]), aggregateParam: aggregateParam};
           } else {
             meas[field] ??= {};
             meas[field][aggregate] = {aliases: new Set([vgField(fieldDef, {forAs: true})])};
@@ -159,17 +169,24 @@ export class AggregateNode extends DataFlowNode {
     const meas: Measures = {};
 
     for (const s of t.aggregate) {
-      const {op, field, as, aggregate_param} = s;
+      const {op, field, as} = s;
       if (op) {
+        const aliases = new Set([as ? as : vgField(s, {forAs: true})]);
         if (op === 'count') {
           meas['*'] ??= {};
-          meas['*']['count'] = {aliases: new Set([as ? as : vgField(s, {forAs: true})])};
+          meas['*']['count'] = {aliases};
         } else {
-          meas[field] ??= {};
-          meas[field][op] = {aliases: new Set([as ? as : vgField(s, {forAs: true})])};
-
-          if (aggregate_param) {
-            meas[field][op].aggregate_param = aggregate_param;
+          if (isExponentialDef(op)) {
+            const opName = 'exponential';
+            const aggregateParam = op[opName];
+            meas[field] ??= {};
+            meas[field][opName] = {
+              aliases,
+              aggregateParam
+            };
+          } else {
+            meas[field] ??= {};
+            meas[field][op] = {aliases};
           }
         }
       }
@@ -236,7 +253,7 @@ export class AggregateNode extends DataFlowNode {
           as.push(alias);
           ops.push(op);
           fields.push(field === '*' ? null : replacePathInField(field));
-          aggregateParams.push(this.measures[field][op].aggregate_param || null);
+          aggregateParams.push(this.measures[field][op].aggregateParam || null);
         }
       }
     }

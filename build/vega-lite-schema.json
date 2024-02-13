@@ -12,6 +12,19 @@
         },
         {
           "$ref": "#/definitions/ArgminDef"
+        },
+        {
+          "$ref": "#/definitions/ExponentialDef"
+        }
+      ]
+    },
+    "AggregateFieldOp": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/NonArgAggregateFieldOp"
+        },
+        {
+          "$ref": "#/definitions/ExponentialDef"
         }
       ]
     },
@@ -71,10 +84,6 @@
     "AggregatedFieldDef": {
       "additionalProperties": false,
       "properties": {
-        "aggregate_param": {
-          "description": "A parameter that can be passed to aggregation functions. The aggregation operation `\"exponential\"` requires it.",
-          "type": "number"
-        },
         "as": {
           "$ref": "#/definitions/FieldName",
           "description": "The output field names to use for each aggregated field."
@@ -84,7 +93,7 @@
           "description": "The data field for which to compute aggregate function. This is required for all aggregation operations except `\"count\"`."
         },
         "op": {
-          "$ref": "#/definitions/AggregateOp",
+          "$ref": "#/definitions/AggregateFieldOp",
           "description": "The aggregation operation to apply to the fields (e.g., `\"sum\"`, `\"average\"`, or `\"count\"`). See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops) for more information."
         }
       },
@@ -8800,6 +8809,18 @@
         "wheel"
       ],
       "type": "string"
+    },
+    "ExponentialDef": {
+      "additionalProperties": false,
+      "properties": {
+        "exponential": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "exponential"
+      ],
+      "type": "object"
     },
     "Expr": {
       "type": "string"
@@ -17866,6 +17887,35 @@
       ],
       "type": "object"
     },
+    "NonArgAggregateFieldOp": {
+      "enum": [
+        "argmax",
+        "argmin",
+        "average",
+        "count",
+        "distinct",
+        "max",
+        "mean",
+        "median",
+        "min",
+        "missing",
+        "product",
+        "q1",
+        "q3",
+        "ci0",
+        "ci1",
+        "stderr",
+        "stdev",
+        "stdevp",
+        "sum",
+        "valid",
+        "values",
+        "variance",
+        "variancep",
+        "exponentialb"
+      ],
+      "type": "string"
+    },
     "NonArgAggregateOp": {
       "enum": [
         "average",
@@ -17889,7 +17939,6 @@
         "values",
         "variance",
         "variancep",
-        "exponential",
         "exponentialb"
       ],
       "type": "string"

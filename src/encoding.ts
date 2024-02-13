@@ -1,6 +1,5 @@
-import {AggregateOp} from 'vega';
 import {array, isArray} from 'vega-util';
-import {isArgmaxDef, isArgminDef} from './aggregate';
+import {isArgmaxDef, isArgminDef, isExponentialDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
 import {
   ANGLE,
@@ -91,7 +90,7 @@ import {Config} from './config';
 import * as log from './log';
 import {Mark} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
-import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
+import {AggregatedFieldDef, BinTransform, AggregateFieldOp, TimeUnitTransform} from './transform';
 import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type';
 import {keys, some} from './util';
 import {isSignalRef} from './vega.schema';
@@ -415,7 +414,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
         };
 
         if (aggOp) {
-          let op: AggregateOp;
+          let op: AggregateFieldOp;
 
           if (isArgmaxDef(aggOp)) {
             op = 'argmax';
@@ -425,6 +424,9 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
             op = 'argmin';
             newField = vgField({op: 'argmin', field: aggOp.argmin}, {forAs: true});
             newFieldDef.field = `${newField}.${field}`;
+          } else if (isExponentialDef(aggOp)) {
+            const exponentialValue = aggOp['exponential'];
+            op = {exponential: exponentialValue};
           } else if (aggOp !== 'boxplot' && aggOp !== 'errorbar' && aggOp !== 'errorband') {
             op = aggOp;
           }

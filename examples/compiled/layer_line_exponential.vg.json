@@ -1,0 +1,137 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 400,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"price": 9.2, "year": 2020},
+        {"price": 10.76, "year": 2020},
+        {"price": 36.88, "year": 2021},
+        {"price": 3.44, "year": 2021},
+        {"price": 10.55, "year": 2022},
+        {"price": 9.65, "year": 2022},
+        {"price": 7.15, "year": 2023},
+        {"price": 15, "year": 2023},
+        {"price": 10.19, "year": 2024},
+        {"price": 8.86, "year": 2024}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["year"],
+          "ops": ["exponential", "mean"],
+          "fields": ["price", "price"],
+          "as": ["exponential_price", "mean_price"],
+          "aggregate_params": [0.5, null]
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"year\"]"},
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Avg Price: \" + (format(datum[\"mean_price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "year"},
+          "y": {"scale": "y", "field": "mean_price"},
+          "defined": {
+            "signal": "isValid(datum[\"mean_price\"]) && isFinite(+datum[\"mean_price\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"year\"]"},
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.5},
+          "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Exponential of price: \" + (format(datum[\"exponential_price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "year"},
+          "y": {"scale": "y", "field": "exponential_price"},
+          "defined": {
+            "signal": "isValid(datum[\"exponential_price\"]) && isFinite(+datum[\"exponential_price\"])"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {"data": "data_0", "field": "year", "sort": true},
+      "range": [0, {"signal": "width"}],
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "data_0",
+        "fields": ["mean_price", "exponential_price"]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "year",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Avg Price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

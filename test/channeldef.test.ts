@@ -39,6 +39,12 @@ describe('fieldDef', () => {
       );
     });
 
+    it('should support exponential operations', () => {
+      expect(vgField({aggregate: {exponential: 0.23}, field: 'a'}, {expr: 'datum'})).toBe('datum["exponential_a"]');
+
+      expect(vgField({op: {exponential: 0.54}, field: 'a', as: 'b'})).toBe('exponential_a');
+    });
+
     it('should support prefix and field names with space', () => {
       expect(vgField({field: 'foo bar'}, {prefix: 'prefix'})).toBe('prefix_foo bar');
     });

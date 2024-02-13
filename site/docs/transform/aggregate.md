@@ -86,7 +86,7 @@ An `aggregate` transform in the [`transform`](transform.html) array has the foll
 
 ### Aggregated Field Definition for Aggregate Transform
 
-{% include table.html props="op,field,as,aggregate_param" source="AggregatedFieldDef" %}
+{% include table.html props="op,field,as" source="AggregatedFieldDef" %}
 
 Note: It is important you [`parse`](data.html#format) your data types explicitly, especially if you are likely to have `null` values in your dataset and automatic type inference will fail.
 
@@ -121,7 +121,7 @@ The supported **aggregation operations** are:
 | max | The maximum field value. |
 | argmin | An input data object containing the minimum field value. <br/> **Note:** When used inside encoding, `argmin` must be specified as an object. (See below for an example.) |
 | argmax | An input data object containing the maximum field value. <br/> **Note:** When used inside encoding, `argmax` must be specified as an object. (See below for an example.) |
-| exponential | The exponential moving average of field values. Set the required weight (a number between `0` and `1`) with [`aggregate_param`](#aggregate-op-def). <br/> **Note:** Cannot be used inside encoding. |
+| exponential | The exponential moving average of field values. <br/> **Note:** `exponential` must be specified as an object. (See below for an example.) |
 
 {:#argmax}
 
@@ -142,3 +142,11 @@ This is equivalent to specifying argmax in an aggregate transform and encode its
 `argmax` can be useful for getting the last value in a line for label placement.
 
 <span class="vl-example" data-name="line_color_label"></span>
+
+## Exponential
+
+You can use the exponential aggregate to get the exponential moving average of a field, which forms a smooth alternative to a simple moving average. It is commonly used when you want to more heavily weigh recent values, but don't want a discontinuous drop-off when numbers drop out of an averaging window.
+
+The exponential operation can be specified by setting it to an object with `exponential` describing the weight (a number between 0 and 1) to use in the transformation.
+
+<div class="vl-example" data-name="layer_line_exponential"></div>

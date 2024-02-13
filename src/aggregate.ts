@@ -45,9 +45,13 @@ export interface ArgmaxDef {
   argmax: FieldName;
 }
 
-export type NonArgAggregateOp = Exclude<AggregateOp, 'argmin' | 'argmax'>;
+export interface ExponentialDef {
+  exponential: number;
+}
 
-export type Aggregate = NonArgAggregateOp | ArgmaxDef | ArgminDef;
+export type NonArgAggregateOp = Exclude<AggregateOp, 'argmin' | 'argmax' | 'exponential'>;
+
+export type Aggregate = NonArgAggregateOp | ArgmaxDef | ArgminDef | ExponentialDef;
 
 export function isArgminDef(a: Aggregate | string): a is ArgminDef {
   return !!a && !!a['argmin'];
@@ -57,7 +61,11 @@ export function isArgmaxDef(a: Aggregate | string): a is ArgmaxDef {
   return !!a && !!a['argmax'];
 }
 
-export function isAggregateOp(a: string | ArgminDef | ArgmaxDef): a is AggregateOp {
+export function isExponentialDef(a: Aggregate | string): a is ExponentialDef {
+  return !!a && !!a['exponential'];
+}
+
+export function isAggregateOp(a: string | ArgminDef | ArgmaxDef | ExponentialDef): a is AggregateOp {
   return isString(a) && !!AGGREGATE_OP_INDEX[a];
 }
 

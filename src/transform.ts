@@ -8,6 +8,7 @@ import {ParameterName} from './parameter';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
 import {TimeUnit, TimeUnitTransformParams} from './timeunit';
+import {ExponentialDef} from './aggregate';
 
 export interface FilterTransform {
   /**
@@ -98,23 +99,22 @@ export interface AggregateTransform {
   groupby?: FieldName[];
 }
 
+export type NonArgAggregateFieldOp = Exclude<AggregateOp, 'exponential'>;
+
+export type AggregateFieldOp = NonArgAggregateFieldOp | ExponentialDef;
+
 export interface AggregatedFieldDef {
   /**
    * The aggregation operation to apply to the fields (e.g., `"sum"`, `"average"`, or `"count"`).
    * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)
    * for more information.
    */
-  op: AggregateOp;
+  op: AggregateFieldOp;
 
   /**
    * The data field for which to compute aggregate function. This is required for all aggregation operations except `"count"`.
    */
   field?: FieldName;
-
-  /**
-   * A parameter that can be passed to aggregation functions. The aggregation operation `"exponential"` requires it.
-   */
-  aggregate_param?: number;
 
   /**
    * The output field names to use for each aggregated field.

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 400,
+  "data": {
+    "values": [
+      {"price": 9.2, "year": 2020},
+      {"price": 10.76, "year": 2020},
+      {"price": 36.88, "year": 2021},
+      {"price": 3.44, "year": 2021},
+      {"price": 10.55, "year": 2022},
+      {"price": 9.65, "year": 2022},
+      {"price": 7.15, "year": 2023},
+      {"price": 15.0, "year": 2023},
+      {"price": 10.19, "year": 2024},
+      {"price": 8.86, "year": 2024}
+    ]
+  },
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "field": "year"
+        },
+        "y": {
+          "field": "price",
+          "aggregate": "mean",
+          "type": "quantitative",
+          "title": "Avg Price"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "line",
+        "opacity": 0.5
+      },
+      "encoding": {
+        "x": {
+          "field": "year"
+        },
+        "y": {
+          "field": "price",
+          "aggregate": {
+            "exponential": 0.5
+          },
+          "type": "quantitative"
+        }
+      }
+    }
+  ]
+}
