@@ -481,7 +481,7 @@ export type Domain =
 
 export type Scheme = string | SchemeParams;
 
-export function isExtendedScheme(scheme: Scheme | SignalRef): scheme is SchemeParams {
+export function isExtendedScheme(scheme: Scheme | SignalRef | string[]): scheme is SchemeParams {
   return !isString(scheme) && !!scheme['name'];
 }
 
@@ -611,7 +611,7 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
    *
    * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
-  scheme?: ColorScheme | SchemeParams | ES;
+  scheme?: ColorScheme | string[] | SchemeParams | ES;
 
   /**
    * The alignment of the steps within the scale range.
