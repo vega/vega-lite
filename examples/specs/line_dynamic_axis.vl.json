@@ -1,0 +1,29 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+ "description": "Vega-Lite computes the minimum and maximum axes values automatically but this can be made more dynamic by using params to produce axes which are +/- 20% of the minimum and maximum values in the dataset.",
+  "data": {
+    "values": [
+       {"x": 1, "y": 11},
+       {"x": 2, "y": 10},
+       {"x": 3, "y": 11.23},
+       {"x": 4, "y": 10},
+       {"x": 5, "y": 9.5},
+       {"x": 6, "y": 10},
+       {"x": 7, "y": 10}
+    ]
+  },
+  "params": [
+    {"name": "extents", "expr": "extent(pluck(data('source_0'), 'y'))"},
+    {"name": "min", "expr": "extents[0] * 0.8"},
+    {"name": "max", "expr": "extents[1] * 1.2"}
+  ],
+  "mark": {"type": "line", "point": true},
+  "encoding": {
+    "x": {"field": "x", "type": "quantitative"},
+    "y": {
+      "field": "y",
+      "type": "quantitative",
+      "scale": {"domain": {"expr": "[min,max]"}}
+    }
+  }
+}
