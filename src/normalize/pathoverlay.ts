@@ -102,7 +102,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
 
   public run(spec: UnitSpecWithPathOverlay, normParams: NormalizerParams, normalize: NormalizeLayerOrUnit) {
     const {config} = normParams;
-    const {params, projection, mark, name, encoding: e, ...outerSpec} = spec;
+    const {projection, mark, name, encoding: e, ...outerSpec} = spec;
 
     // Need to call normalizeEncoding because we need the inferred types to correctly determine stack
     const encoding = normalizeEncoding(e, config);
@@ -116,7 +116,6 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     const layer: NormalizedUnitSpec[] = [
       {
         name,
-        ...(params ? {params} : {}),
         mark: dropLineAndPoint({
           // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
           ...(markDef.type === 'area' && markDef.opacity === undefined && markDef.fillOpacity === undefined
