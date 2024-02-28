@@ -554,7 +554,7 @@ export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
   /**
    * Whether a mark be clipped to the enclosing group’s width and height.
    */
-  clip?: boolean;
+  clip?: boolean | ES;
 
   // Offset properties should not be a part of config
 

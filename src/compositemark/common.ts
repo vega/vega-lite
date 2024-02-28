@@ -38,7 +38,7 @@ export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
     /**
      * Whether a composite mark be clipped to the enclosing group’s width and height.
      */
-    clip?: boolean;
+    clip?: boolean | SignalRef;
   };
 
 export interface CompositeMarkTooltipSummary {

@@ -27,6 +27,22 @@ describe('common', () => {
     }
   });
 
+  it('should output a signal for clip when set on a mark def', () => {
+    const outputSpec = normalize({
+      data: {url: 'data/barley.json'},
+      mark: {type: 'errorbar', ticks: true, clip: {signal: 'true'}},
+      encoding: {x: {field: 'yield', type: 'quantitative'}}
+    });
+
+    const layer = isLayerSpec(outputSpec) && outputSpec.layer;
+    expect(layer).toBeTruthy();
+    for (const unitSpec of layer) {
+      const markDef: MarkDef = isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark;
+      expect(markDef).toBeTruthy();
+      expect(markDef.clip).toEqual({signal: 'true'});
+    }
+  });
+
   it('should keep color encoding', () => {
     const outputSpec = normalize({
       data: {url: 'data/barley.json'},
