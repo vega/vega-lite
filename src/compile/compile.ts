@@ -70,6 +70,8 @@ export interface CompileOptions {
  * @returns         An object containing the compiled Vega spec and normalized Vega-Lite spec.
  */
 export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
+  console.log('Check if this is the preview site!', inputSpec);
+
   // 0. Augment opt with default opts
   if (opt.logger) {
     // set the singleton logger to the provided logger

@@ -1,4 +1,4 @@
-# .github/workflows/preview.yml
+# .github/workflows/deployment-preview.yml
 name: Deploy PR previews
 
 on:
@@ -8,6 +8,7 @@ on:
       - reopened
       - synchronize
       - closed
+      # TODO: should this be rerun on new commits?
 
 concurrency: preview-${{ github.ref }}
 
@@ -27,23 +28,47 @@ jobs:
           cache: 'yarn'
           node-version: latest
 
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7' # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
       - name: Install NPM dependencies
         run: yarn --frozen-lockfile
 
       - name: Prebuild website
         run: yarn presite
 
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./site
-          destination: ./_site
+      - name: Main site build script. Might need to bundle install
+        shell: bash
+        run: |
+          # Install bundle dependencies first
+          pushd site && bundle install && popd
+          # yarn build uses the wrong shell for some reason?
+          pushd site && bundle exec jekyll build && popd
+          # yarn build:jekyll
+
+      # - name: Build with Jekyll
+      #   uses: actions/jekyll-build-pages@v1
+      #   with:
+      #     source: site
+      #     destination: _site
       # End copy from a section of release-docs-and-schema.yml
+
+      # https://github.com/actions/upload-pages-artifact?tab=readme-ov-file#file-permissions
+      # - name: Fix permissions
+      #   run: |
+      #     chmod -c -R +r "_site/" | while read line; do
+      #       echo "::warning title=Invalid file permissions automatically fixed::$line"
+      #     done
 
       - name: Deploy preview and post github comment
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: ./_site/
+          source-dir: site/_site
+          deploy-repository: vega/vega-lite-pr-previews
+          # TODO: ask Dom to create a token for this
+          token: ${{ secrets.PREVIEW_TOKEN }}
 
   cleanup-preview-docs:
     if: github.event.action == 'closed'
@@ -52,4 +77,4 @@ jobs:
       - name: Cleanup pr-preview
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: ./_site/
+          source-dir: site/_site
