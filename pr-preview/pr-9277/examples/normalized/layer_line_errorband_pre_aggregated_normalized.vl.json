@@ -1,0 +1,56 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {"ci1": 23.5007, "ci0": 19.6912, "center": 21.5735, "Year": 189302400000},
+      {"ci1": 25.8214, "ci0": 20.8554, "center": 23.375, "Year": 220924800000},
+      {"ci1": 26.4472, "ci0": 21.9749, "center": 24.0611, "Year": 252460800000},
+      {"ci1": 27.7074, "ci0": 22.6203, "center": 25.0931, "Year": 283996800000}
+    ]
+  },
+  "layer": [
+    {
+      "transform": [
+        {"timeUnit": {"unit": "year"}, "field": "Year", "as": "year_Year"},
+        {"calculate": "datum[\"ci0\"]", "as": "upper_ci1"},
+        {"calculate": "datum[\"ci1\"]", "as": "lower_ci1"}
+      ],
+      "layer": [
+        {
+          "mark": {
+            "opacity": 0.3,
+            "type": "area",
+            "ariaRoleDescription": "errorband",
+            "style": "errorband-band"
+          },
+          "encoding": {
+            "y": {
+              "field": "lower_ci1",
+              "type": "quantitative",
+              "title": "Mean of Miles per Gallon (95% CIs)",
+              "scale": {"zero": false}
+            },
+            "y2": {"field": "upper_ci1"},
+            "x": {
+              "title": "Year (year)",
+              "type": "temporal",
+              "field": "year_Year"
+            },
+            "tooltip": [
+              {"field": "upper_ci1", "type": "quantitative", "title": "ci0"},
+              {"field": "lower_ci1", "type": "quantitative", "title": "ci1"},
+              {"title": "Year (year)", "type": "temporal", "field": "year_Year"}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "mark": "line",
+      "encoding": {
+        "y": {"field": "center", "type": "quantitative"},
+        "x": {"field": "Year", "timeUnit": "year"}
+      }
+    }
+  ]
+}

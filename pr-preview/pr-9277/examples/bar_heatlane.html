@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Heat Lane Chart | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Heat Lane Chart" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Heat lane chart based on https://www.smashingmagazine.com/2022/07/accessibility-first-approach-chart-visual-design/" />
+<meta property="og:description" content="Heat lane chart based on https://www.smashingmagazine.com/2022/07/accessibility-first-approach-chart-visual-design/" />
+<link rel="canonical" href="https://vega.github.io/vega-lite/examples/bar_heatlane.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/examples/bar_heatlane.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta property="og:image" content="https://vega.github.io/vega-lite/examples/bar_heatlane.png" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://vega.github.io/vega-lite/examples/bar_heatlane.png" />
+<meta property="twitter:title" content="Heat Lane Chart" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Heat lane chart based on https://www.smashingmagazine.com/2022/07/accessibility-first-approach-chart-visual-design/","headline":"Heat Lane Chart","image":"https://vega.github.io/vega-lite/examples/bar_heatlane.png","url":"https://vega.github.io/vega-lite/examples/bar_heatlane.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+          <a href="https://vega.github.io/vega-lite-api/">Vega-Lite API</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" aria-current="page">Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/examples/vega-lite/bar">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="examples">
+    <div class="page-centered page-content">
+  
+  <h1>Heat Lane Chart</h1>
+   <p>Heat lane chart based on https://www.smashingmagazine.com/2022/07/accessibility-first-approach-chart-visual-design/</p>
+
+<div id="bar_heatlane"></div>
+
+<script>
+    window.onload = function() {
+      const spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Heat lane chart based on https://www.smashingmagazine.com/2022/07/accessibility-first-approach-chart-visual-design/",
+  "data": {"url": "data/cars.json"},
+  "height": 150,
+  "width": 400,
+  "title": "Heat Lane of Horsepower",
+  "transform": [
+    {
+      "bin": true,
+      "field": "Horsepower",
+      "as": ["bin_Horsepower_start", "bin_Horsepower_end"]
+    },
+    {
+      "aggregate": [{"op": "count", "as": "count"}],
+      "groupby": ["bin_Horsepower_start", "bin_Horsepower_end"]
+    },
+    {"bin": true, "field": "count", "as": ["bin_count_start", "bin_count_end"]},
+    {"calculate": "-datum.bin_count_end/2", "as": "y2"},
+    {"calculate": "datum.bin_count_end/2", "as": "y"},
+    {
+      "joinaggregate": [
+        {"field": "bin_count_end", "op": "max", "as": "max_bin_count_end"}
+      ]
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "bin_Horsepower_start",
+      "type": "quantitative",
+      "title": "Horsepower",
+      "axis": {"grid": false}
+    },
+    "x2": {"field": "bin_Horsepower_end"},
+    "y": {"field": "y", "axis": null},
+    "y2": {"field": "y2"}
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "xOffset": 2,
+        "x2Offset": -2,
+        "cornerRadius": 3
+      },
+      "encoding": {
+        "color": {
+          "field": "max_bin_count_end",
+          "type": "ordinal",
+          "title": "count",
+          "scale": {"scheme": "lighttealblue"}
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "bar",
+        "xOffset": 2,
+        "x2Offset": -2,
+        "yOffset": -3,
+        "y2Offset": 3
+      },
+      "encoding": {
+        "color": {"field": "bin_count_end", "type": "ordinal", "title": "count"}
+      }
+    }
+  ]
+}
+;
+
+      embedExample('#bar_heatlane', spec, false);
+  }
+</script>
+
+<p><a href="https://vega.github.io/editor/#/examples/vega-lite/bar_heatlane">
+  View this example in the online editor
+</a></p>
+
+<h3 id="spec">Vega-Lite JSON Specification</h3>
+
+<pre class="example-spec"><code class="language-json">{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Heat lane chart based on https://www.smashingmagazine.com/2022/07/accessibility-first-approach-chart-visual-design/",
+  "data": {"url": "data/cars.json"},
+  "height": 150,
+  "width": 400,
+  "title": "Heat Lane of Horsepower",
+  "transform": [
+    {
+      "bin": true,
+      "field": "Horsepower",
+      "as": ["bin_Horsepower_start", "bin_Horsepower_end"]
+    },
+    {
+      "aggregate": [{"op": "count", "as": "count"}],
+      "groupby": ["bin_Horsepower_start", "bin_Horsepower_end"]
+    },
+    {"bin": true, "field": "count", "as": ["bin_count_start", "bin_count_end"]},
+    {"calculate": "-datum.bin_count_end/2", "as": "y2"},
+    {"calculate": "datum.bin_count_end/2", "as": "y"},
+    {
+      "joinaggregate": [
+        {"field": "bin_count_end", "op": "max", "as": "max_bin_count_end"}
+      ]
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "bin_Horsepower_start",
+      "type": "quantitative",
+      "title": "Horsepower",
+      "axis": {"grid": false}
+    },
+    "x2": {"field": "bin_Horsepower_end"},
+    "y": {"field": "y", "axis": null},
+    "y2": {"field": "y2"}
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "xOffset": 2,
+        "x2Offset": -2,
+        "cornerRadius": 3
+      },
+      "encoding": {
+        "color": {
+          "field": "max_bin_count_end",
+          "type": "ordinal",
+          "title": "count",
+          "scale": {"scheme": "lighttealblue"}
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "bar",
+        "xOffset": 2,
+        "x2Offset": -2,
+        "yOffset": -3,
+        "y2Offset": 3
+      },
+      "encoding": {
+        "color": {"field": "bin_count_end", "type": "ordinal", "title": "count"}
+      }
+    }
+  ]
+}
+
+</code></pre>
+
+
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/next/site/_data/examples.json">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+  </body>
+</html>

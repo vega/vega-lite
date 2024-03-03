@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A scatterplot showing average horsepower and displacement for cars from different origins.",
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"aggregate": "mean", "field": "Horsepower"},
+    "y": {"aggregate": "mean", "field": "Displacement"},
+    "detail": {"field": "Origin"}
+  }
+}

@@ -1,0 +1,259 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A vertical box plot showing median, min, and max body mass of penguins.",
+  "data": {"url": "data/cars.json"},
+  "layer": [
+    {
+      "transform": [
+        {
+          "joinaggregate": [
+            {
+              "op": "q1",
+              "field": "Acceleration",
+              "as": "lower_box_Acceleration"
+            },
+            {
+              "op": "q3",
+              "field": "Acceleration",
+              "as": "upper_box_Acceleration"
+            }
+          ],
+          "groupby": ["Cylinders", "Origin", "Origin"]
+        }
+      ],
+      "layer": [
+        {
+          "transform": [
+            {
+              "filter": "(datum[\"Acceleration\"] < datum[\"lower_box_Acceleration\"] - 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"])) || (datum[\"Acceleration\"] > datum[\"upper_box_Acceleration\"] + 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"]))"
+            }
+          ],
+          "mark": {"type": "point", "style": "boxplot-outliers"},
+          "encoding": {
+            "y": {
+              "field": "Acceleration",
+              "type": "quantitative",
+              "title": "Acceleration"
+            },
+            "x": {"field": "Cylinders", "type": "nominal"},
+            "xOffset": {"field": "Origin", "type": "nominal"},
+            "color": {"field": "Origin", "type": "nominal"}
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "(datum[\"lower_box_Acceleration\"] - 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"]) <= datum[\"Acceleration\"]) && (datum[\"Acceleration\"] <= datum[\"upper_box_Acceleration\"] + 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"]))"
+            },
+            {
+              "aggregate": [
+                {
+                  "op": "min",
+                  "field": "Acceleration",
+                  "as": "lower_whisker_Acceleration"
+                },
+                {
+                  "op": "max",
+                  "field": "Acceleration",
+                  "as": "upper_whisker_Acceleration"
+                },
+                {
+                  "op": "min",
+                  "field": "lower_box_Acceleration",
+                  "as": "lower_box_Acceleration"
+                },
+                {
+                  "op": "max",
+                  "field": "upper_box_Acceleration",
+                  "as": "upper_box_Acceleration"
+                }
+              ],
+              "groupby": ["Cylinders", "Origin", "Origin"]
+            }
+          ],
+          "layer": [
+            {
+              "mark": {"type": "rule", "aria": false, "style": "boxplot-rule"},
+              "encoding": {
+                "y": {
+                  "field": "lower_whisker_Acceleration",
+                  "type": "quantitative",
+                  "title": "Acceleration"
+                },
+                "y2": {"field": "lower_box_Acceleration"},
+                "x": {"field": "Cylinders", "type": "nominal"},
+                "xOffset": {"field": "Origin", "type": "nominal"},
+                "tooltip": [
+                  {
+                    "field": "upper_whisker_Acceleration",
+                    "type": "quantitative",
+                    "title": "Upper Whisker of Acceleration"
+                  },
+                  {
+                    "field": "lower_whisker_Acceleration",
+                    "type": "quantitative",
+                    "title": "Lower Whisker of Acceleration"
+                  },
+                  {"field": "Cylinders", "type": "nominal"},
+                  {"field": "Origin", "type": "nominal"}
+                ]
+              }
+            },
+            {
+              "mark": {"type": "rule", "aria": false, "style": "boxplot-rule"},
+              "encoding": {
+                "y": {
+                  "field": "upper_box_Acceleration",
+                  "type": "quantitative",
+                  "title": "Acceleration"
+                },
+                "y2": {"field": "upper_whisker_Acceleration"},
+                "x": {"field": "Cylinders", "type": "nominal"},
+                "xOffset": {"field": "Origin", "type": "nominal"},
+                "tooltip": [
+                  {
+                    "field": "upper_whisker_Acceleration",
+                    "type": "quantitative",
+                    "title": "Upper Whisker of Acceleration"
+                  },
+                  {
+                    "field": "lower_whisker_Acceleration",
+                    "type": "quantitative",
+                    "title": "Lower Whisker of Acceleration"
+                  },
+                  {"field": "Cylinders", "type": "nominal"},
+                  {"field": "Origin", "type": "nominal"}
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "q1",
+              "field": "Acceleration",
+              "as": "lower_box_Acceleration"
+            },
+            {
+              "op": "q3",
+              "field": "Acceleration",
+              "as": "upper_box_Acceleration"
+            },
+            {
+              "op": "median",
+              "field": "Acceleration",
+              "as": "mid_box_Acceleration"
+            },
+            {"op": "min", "field": "Acceleration", "as": "min_Acceleration"},
+            {"op": "max", "field": "Acceleration", "as": "max_Acceleration"}
+          ],
+          "groupby": ["Cylinders", "Origin", "Origin"]
+        }
+      ],
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "size": 14,
+            "orient": "vertical",
+            "ariaRoleDescription": "box",
+            "style": "boxplot-box"
+          },
+          "encoding": {
+            "y": {
+              "field": "lower_box_Acceleration",
+              "type": "quantitative",
+              "title": "Acceleration"
+            },
+            "y2": {"field": "upper_box_Acceleration"},
+            "x": {"field": "Cylinders", "type": "nominal"},
+            "color": {"field": "Origin", "type": "nominal"},
+            "xOffset": {"field": "Origin", "type": "nominal"},
+            "tooltip": [
+              {
+                "field": "max_Acceleration",
+                "type": "quantitative",
+                "title": "Max of Acceleration"
+              },
+              {
+                "field": "upper_box_Acceleration",
+                "type": "quantitative",
+                "title": "Q3 of Acceleration"
+              },
+              {
+                "field": "mid_box_Acceleration",
+                "type": "quantitative",
+                "title": "Median of Acceleration"
+              },
+              {
+                "field": "lower_box_Acceleration",
+                "type": "quantitative",
+                "title": "Q1 of Acceleration"
+              },
+              {
+                "field": "min_Acceleration",
+                "type": "quantitative",
+                "title": "Min of Acceleration"
+              },
+              {"field": "Cylinders", "type": "nominal"},
+              {"field": "Origin", "type": "nominal"}
+            ]
+          }
+        },
+        {
+          "mark": {
+            "color": "white",
+            "type": "tick",
+            "size": 14,
+            "orient": "horizontal",
+            "aria": false,
+            "style": "boxplot-median"
+          },
+          "encoding": {
+            "y": {
+              "field": "mid_box_Acceleration",
+              "type": "quantitative",
+              "title": "Acceleration"
+            },
+            "x": {"field": "Cylinders", "type": "nominal"},
+            "xOffset": {"field": "Origin", "type": "nominal"},
+            "tooltip": [
+              {
+                "field": "max_Acceleration",
+                "type": "quantitative",
+                "title": "Max of Acceleration"
+              },
+              {
+                "field": "upper_box_Acceleration",
+                "type": "quantitative",
+                "title": "Q3 of Acceleration"
+              },
+              {
+                "field": "mid_box_Acceleration",
+                "type": "quantitative",
+                "title": "Median of Acceleration"
+              },
+              {
+                "field": "lower_box_Acceleration",
+                "type": "quantitative",
+                "title": "Q1 of Acceleration"
+              },
+              {
+                "field": "min_Acceleration",
+                "type": "quantitative",
+                "title": "Min of Acceleration"
+              },
+              {"field": "Cylinders", "type": "nominal"},
+              {"field": "Origin", "type": "nominal"}
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

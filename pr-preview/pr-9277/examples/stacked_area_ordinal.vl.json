@@ -1,0 +1,13 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/cars.json"},
+  "mark": {
+    "type": "area",
+    "interpolate": "monotone"
+  },
+  "encoding": {
+    "x": {"timeUnit": "year", "field": "Year"},
+    "y": {"aggregate": "sum", "field": "Weight_in_lbs"},
+    "color": {"field": "Cylinders", "type": "ordinal"}
+  }
+}

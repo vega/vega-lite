@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Dynamic Behaviors with Parameters | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Dynamic Behaviors with Parameters" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/parameter.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/parameter.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Dynamic Behaviors with Parameters" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","headline":"Dynamic Behaviors with Parameters","url":"https://vega.github.io/vega-lite/docs/parameter.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+          <a href="https://vega.github.io/vega-lite-api/">Vega-Lite API</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" aria-current="page">Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/examples/vega-lite/bar">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="docs">
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/extent.html" title="">Extent
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/quantile.html" title="">Quantile
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/arc.html" title="">Arc
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bandposition.html" title="">Band Position
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/datum.html" title="">Datum
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a aria-current="page"
+          href="/vega-lite/docs/parameter.html" title="">Parameter
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/param-value.html" title="">Value
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a aria-current="page"
+            href="/vega-lite/docs/parameter.html#expr" title="">Expr
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection.html" title="">Select
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Property Types
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/datetime.html" title="">Date Time
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/gradient.html" title="">Gradient
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/predicate.html" title="">Predicate
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Dynamic Behaviors with Parameters</h1>
+    <span class="edit-page">
+  <a href="https://github.com/vega/vega-lite/edit/next/site/docs/parameter/parameter.md">Edit this page</a>
+</span>
+<pre><code class="language-js">// A Single View Specification
+{
+  ...,
+  "params": [  // An array of named parameters.
+    {"name": ..., ...}
+  ],
+  "mark": ...,
+  "encoding": ...,
+  ...
+}
+</code></pre>
+
+<p>Parameters are the basic building block in Vega-Lite’s <em>grammar of interaction.</em> Parameters can either be simple variables or more complex <em>selections</em> that map user input (e.g., mouse clicks and drags) to data queries. Parameters can be used throughout the remainder of the chart specification to determine encoding rules, filter data points, determine data extents, or in expression strings. They can also optionally be bound to input widgets (e.g., sliders or drop down menus).</p>
+
+<!--prettier-ignore-start-->
+<h2 class="no_toc" id="documentation-overview">Documentation Overview</h2>
+
+<ul id="markdown-toc">
+  <li><a href="#defining-a-parameter" id="markdown-toc-defining-a-parameter">Defining a Parameter</a>    <ul>
+      <li><a href="#variable-parameters" id="markdown-toc-variable-parameters">Variable Parameters</a>        <ul>
+          <li><a href="#expr" id="markdown-toc-expr">Expression</a></li>
+          <li><a href="#built-in-variable-parameters" id="markdown-toc-built-in-variable-parameters">Built-In Variable Parameters</a></li>
+        </ul>
+      </li>
+      <li><a href="#select" id="markdown-toc-select">Selection Parameters</a></li>
+    </ul>
+  </li>
+  <li><a href="#using-parameters" id="markdown-toc-using-parameters">Using Parameters</a>    <ul>
+      <li><a href="#in-expression-strings" id="markdown-toc-in-expression-strings">In Expression Strings</a></li>
+      <li><a href="#as-predicates" id="markdown-toc-as-predicates">As Predicates</a></li>
+      <li><a href="#data-extents" id="markdown-toc-data-extents">Data Extents</a></li>
+    </ul>
+  </li>
+  <li><a href="#config" id="markdown-toc-config">Selection Configuration</a></li>
+</ul>
+
+<!--prettier-ignore-end-->
+
+<h2 id="defining-a-parameter">Defining a Parameter</h2>
+
+<p>Both variable and selection parameters support the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th class="table-column-type">Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>name</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> A unique name for the variable parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or “$”, or “_”) and may not start with a digit. Reserved keywords that may not be used as parameter names are “datum”, “event”, “item”, and “parent”.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>value</td>
+        <td><a href="types.html#any">Any</a>
+</td>
+        <td>
+  
+    <p>The <a href="http://vega.github.io/vega-lite/docs/value.html">initial value</a> of the parameter.</p>
+
+<p><strong>Default value:</strong> <code>undefined</code></p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>bind</td>
+        <td><a href="bind.html">Binding</a>
+</td>
+        <td>
+  
+    <p>Binds the parameter to an external input element such as a slider, selection list or radio button group.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="variable-parameters">Variable Parameters</h3>
+
+<p>Variables are the simplest form a parameter can take. Variable parameters allow for a value to be defined once and then reused throughout the rest of the specification. For example, here we define a <code>cornerRadius</code> parameter:</p>
+
+<div class="vl-example" data-name="bar_params"></div>
+
+<p>As the name suggests, variable values can be modified dynamically, either by <a href="bind.html">binding the variable</a> to input widgets (e.g., sliders or drop down menus), or by modifying the underlying signal in a <a href="https://vega.github.io/vega/docs/api/view/#signals">Vega view API</a>. For example, here we include widgets to customize bar mark’s corner radius:</p>
+
+<div class="vl-example" data-name="bar_params_bound"></div>
+
+<h4 id="expr">Expression</h4>
+
+<p>Besides setting the initial <code>value</code>, you can also create a parameter using an expression (<code>expr</code>).</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th class="table-column-type">Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>expr</td>
+        <td><a href="types.html#expression">Expr</a>
+</td>
+        <td>
+  
+    <p>An expression for the value of the parameter. This expression may include other parameters, in which case the parameter will automatically update in response to upstream parameter changes.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For example, here we make the inner bars in a bullet chart depends on the chart height.</p>
+
+<div class="vl-example" data-name="bar_bullet_expr_bind"></div>
+
+<p><strong>Note:</strong> Height is a built-in parameter, as described in the next section.</p>
+
+<h4 id="built-in-variable-parameters">Built-In Variable Parameters</h4>
+
+<p>A few parameter names are automatically processed and/or reserved:</p>
+
+<ul>
+  <li>Parameters for the specification <code>width</code>, <code>height</code>, <code>padding</code>, <code>autosize</code>, and <code>background</code> properties are automatically defined. Specifications may include definitions for these parameters in the top-level parameters array, in which case the definitions will be merged with any top-level specification property values, with precedence given to properties defined in the parameters array.</li>
+  <li>The parameters names <code>datum</code>, <code>item</code>, <code>event</code>, <code>parent</code> are reserved for top-level variables within expressions. Specifications may not define parameters named <code>datum</code>, <code>item</code>, <code>event</code>, or <code>parent</code>.</li>
+  <li>If you define a parameter named <code>cursor</code>, its value will automatically drive the CSS mouse cursor for the Vega-Lite view. For more details about <code>cursor</code> parameter, see the Vega documentation for <a href="https://vega.github.io/vega/docs/signals/#the-cursor-signal">the underlying <code>cursor</code> signal</a>.</li>
+</ul>
+
+<h3 id="select">Selection Parameters</h3>
+
+<p>Selection parameters, on the other hand, define <em>data queries</em> that are driven by direct manipulation user input (e.g., mouse clicks or drags). A parameter becomes a selection when the <code>select</code> property is specified. This property identifies properties of a selection including its <em>type</em> (<code>point</code> or <code>interval</code>), which determines the default events that trigger a selection and the resultant data query.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th class="table-column-type">Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>select</td>
+        <td>String | <a href="selection.html#point">PointSelection</a> | <a href="selection.html#interval">IntervalSelection</a>
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:</p>
+
+<ul>
+  <li><code>"point"</code> – to select multiple discrete data values; the first value is selected on <code>click</code> and additional values toggled on shift-click.</li>
+  <li><code>"interval"</code> – to select a continuous range of data values on <code>drag</code>.</li>
+</ul>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>For example, try the two types against the example selection (named <code>pts</code>) below: <select onchange="changeSpec('selection_type', 'selection_type_' + this.value)"><option>point</option><option>interval</option></select>.</p>
+
+<div id="selection_type" class="vl-example" data-name="selection_type_point"></div>
+
+<p>While selection types provide useful defaults, you can set <code>select</code> to be a <a href="selection.html">selection definition</a> to override default selection behaviors and customize the interaction design. See the <a href="selection.html">selection</a> documentation for more information about the selection definition.</p>
+
+<h2 id="using-parameters">Using Parameters</h2>
+
+<h3 id="in-expression-strings">In Expression Strings</h3>
+
+<p>Parameter names can be used directly in expression strings. For selection parameters, the parameter name references an object with properties corresponding to the data fields that participate in the selection (specified either by the <a href="#selection-props"><code>encodings</code></a> or <a href="#selection-props"><code>fields</code></a> property).</p>
+
+<p>For instance, in the example below, the opacity of the point marks is driven by a <a href="bind.html">bound</a> variable parameter, and their size is determined by a clicked point’s <code>Miles_per_Gallon</code>.</p>
+
+<div class="vl-example" data-name="param_expr"></div>
+
+<h3 id="as-predicates">As Predicates</h3>
+
+<p><a href="predicate.html">Predicates</a> are functions that return a boolean <code>true</code> or <code>false</code> value. While predicates can be explicitly written as expression strings (for example, <code>opacityVar == 25</code> or <code>sel.Miles_per_Gallon &gt; 75</code>), it is often more convenient to treat a parameter as a predicate directly. When variable parameters are used as predicates, their values are coerced to booleans following <a href="https://www.w3schools.com/js/js_type_conversion.asp">JavaScript’s conventions</a>. For selection parameters, the predicate evaluates to <code>true</code> when the corresponding data point lies within the selection, and <code>false</code> otherwise.</p>
+
+<p>For instance, in the example below, we use a variable parameter to toggle the color of points in the scatterplot and a selection parameter to resize points on hover. Notice: by default, empty selections are considered to contain all data values (and thus all points are large at the start, or when the mouse cursor moves into empty space). We can toggle this behavior by setting the optional <code>empty</code> property on the predicate: <select onchange="changeSpec('interactive_paintbrush_simple', 'interactive_paintbrush_simple_' + this.value)"><option value="true" selected="true">true (default)</option><option>false</option></select>.</p>
+
+<div class="vl-example" id="interactive_paintbrush_simple" data-name="interactive_paintbrush_simple_true"></div>
+
+<p>See the <a href="condition.html"><code>condition</code></a> documentation for more information.</p>
+
+<p>As another example of using parameters as predicates, consider how we might use one view to filter the data shown in another view. Below, we show two scatterplots concatenated vertically. An interval selection (named <code>brush</code>) is defined in the first plot and is used to filter the points in the second. Thus, the <code>Acceleration x Displacement</code> scatterplot only visualizes points that fall within the brushed region.</p>
+
+<div class="vl-example" data-name="selection_filter"></div>
+
+<h3 id="data-extents">Data Extents</h3>
+
+<p>Selection parameters can additionally be used to define two types of data extents: binning logic or scale domains. Let’s look at two examples of an interaction technique called overview+detail.</p>
+
+<p>In the specification below, the bottom plot contains an interval selection named <code>brush</code>, which is used in the top plot to interactive re-bin data and “zoom” into the brushed region.</p>
+
+<div class="vl-example" data-name="interactive_bin_extent_bottom"></div>
+
+<p>The specification below has a similar setup. However, in this case, the <code>brush</code> in the bottom view drives the <code>domain</code> of the top plot’s x-scale, to make it show only the selected interval.</p>
+
+<div class="vl-example" data-name="interactive_overview_detail"></div>
+
+<p>An alternate way to construct either of these examples would be to <em>first</em> filter out the input data using the selection like so:</p>
+
+<pre><code class="language-js">{
+  "vconcat": [{
+    "transform": [{"filter": {"param": "brush"}}],
+    ...
+  }]
+}
+</code></pre>
+
+<p>However, setting the data extents (rather than filtering data out) yields superior interactive performance. Rather than testing whether each data value falls within the selection or not, the data extents (either the bin extents or scale domains) are changed directly to the brush extents.</p>
+
+<p>If the selection is <a href="selection.html#project">projected</a> over <em>multiple</em> fields or encodings, one must be given as part of the data extent definition. Vega-Lite automatically infers this property if the selection is only projected over a single field or encoding. Thus, with the above example, the scale domain can be specified more explicitly as:</p>
+
+<ul>
+  <li><code>"scale": {"domain": {"param": "brush", "encoding": "x"}}</code> or</li>
+  <li><code>"scale": {"domain": {"param": "brush", "field": "date"}}</code></li>
+</ul>
+
+<p><em>Note:</em> Bin extents can be explicitly specified using a similar syntax. For a selection to manipulate the scales of its own view, use the <a href="bind.html#scale-binding">bind</a> operator instead.</p>
+
+<h2 id="config">Selection Configuration</h2>
+
+<pre><code class="language-js">// Top-level View Specification
+{
+  ...,
+  "config": {          // Configuration Object
+    "selection": { ... },   // - Selection Configuration
+    ...
+  }
+}
+</code></pre>
+
+<p>The <code>selection</code> property of the <a href="config.html"><code>config</code></a> object determines the default properties and transformations applied to the two types of selection parameters. The selection config can contain the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th class="table-column-type">Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>point</td>
+        <td><a href="selection.html#point">PointSelection</a>
+</td>
+        <td>
+  
+    <p>The default definition for a <a href="https://vega.github.io/vega-lite/docs/parameter.html#select"><code>point</code></a> selection. All properties and transformations  for a point selection definition (except <code>type</code>) may be specified here.</p>
+
+<p>For instance, setting <code>point</code> to <code>{"on": "dblclick"}</code> populates point selections on double-click by default.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>interval</td>
+        <td><a href="selection.html#interval">IntervalSelection</a>
+</td>
+        <td>
+  
+    <p>The default definition for an <a href="https://vega.github.io/vega-lite/docs/parameter.html#select"><code>interval</code></a> selection. All properties and transformations for an interval selection definition (except <code>type</code>) may be specified here.</p>
+
+<p>For instance, setting <code>interval</code> to <code>{"translate": false}</code> disables the ability to move interval selections by default.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/next/site/docs/parameter/parameter.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+  </body>
+</html>

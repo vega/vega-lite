@@ -1,0 +1,181 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A layered bar chart with floating bars representing weekly weather data",
+  "config": {"style": {"hilo": {"size": 20}}},
+  "title": {
+    "text": ["Weekly Weather", "Observations and Predictions"],
+    "frame": "group"
+  },
+  "data": {"url": "data/weather.json"},
+  "width": 250,
+  "height": 200,
+  "layer": [
+    {
+      "mark": {"type": "bar", "size": 20, "color": "#ccc"},
+      "encoding": {
+        "x": {
+          "field": "id",
+          "type": "ordinal",
+          "axis": {
+            "domain": false,
+            "ticks": false,
+            "labels": false,
+            "title": null,
+            "titlePadding": 25,
+            "orient": "top"
+          }
+        },
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "record.low"
+        },
+        "y2": {"field": "record.high"}
+      }
+    },
+    {
+      "mark": {"type": "bar", "size": 20, "color": "#999"},
+      "encoding": {
+        "x": {
+          "field": "id",
+          "type": "ordinal",
+          "axis": {
+            "domain": false,
+            "ticks": false,
+            "labels": false,
+            "title": null,
+            "titlePadding": 25,
+            "orient": "top"
+          }
+        },
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "normal.low"
+        },
+        "y2": {"field": "normal.high"}
+      }
+    },
+    {
+      "mark": {"type": "bar", "size": 12, "color": "#000"},
+      "encoding": {
+        "x": {
+          "field": "id",
+          "type": "ordinal",
+          "axis": {
+            "domain": false,
+            "ticks": false,
+            "labels": false,
+            "title": null,
+            "titlePadding": 25,
+            "orient": "top"
+          }
+        },
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "actual.low"
+        },
+        "y2": {"field": "actual.high"}
+      }
+    },
+    {
+      "mark": {"type": "bar", "size": 12, "color": "#000"},
+      "encoding": {
+        "x": {
+          "field": "id",
+          "type": "ordinal",
+          "axis": {
+            "domain": false,
+            "ticks": false,
+            "labels": false,
+            "title": null,
+            "titlePadding": 25,
+            "orient": "top"
+          }
+        },
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "forecast.low.low"
+        },
+        "y2": {"field": "forecast.low.high"}
+      }
+    },
+    {
+      "mark": {"type": "bar", "size": 3, "color": "#000"},
+      "encoding": {
+        "x": {
+          "field": "id",
+          "type": "ordinal",
+          "axis": {
+            "domain": false,
+            "ticks": false,
+            "labels": false,
+            "title": null,
+            "titlePadding": 25,
+            "orient": "top"
+          }
+        },
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "forecast.low.high"
+        },
+        "y2": {"field": "forecast.high.low"}
+      }
+    },
+    {
+      "mark": {"type": "bar", "size": 12, "color": "#000"},
+      "encoding": {
+        "x": {
+          "field": "id",
+          "type": "ordinal",
+          "axis": {
+            "domain": false,
+            "ticks": false,
+            "labels": false,
+            "title": null,
+            "titlePadding": 25,
+            "orient": "top"
+          }
+        },
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "forecast.high.low"
+        },
+        "y2": {"field": "forecast.high.high"}
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "y": -5
+      },
+      "encoding": {
+        "x": {
+          "field": "id",
+          "type": "ordinal",
+          "axis": {
+            "domain": false,
+            "ticks": false,
+            "labels": false,
+            "title": null,
+            "titlePadding": 25,
+            "orient": "top"
+          }
+        },
+        "text": {"field": "day"}
+      }
+    }
+  ]
+}

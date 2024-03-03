@@ -1,0 +1,19 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Testing global number formatting config",
+  "width": 150,
+  "height": 150,
+  "data": {"url": "data/cars.json"},
+  "mark": {"type": "bar", "tooltip": true},
+  "encoding": {
+    "x": {"field": "Year", "type": "temporal"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative", "aggregate": "average"}
+  },
+  "config": {
+    "tooltipFormat": {
+      "numberFormat": ".8f"
+    },
+    "numberFormat": "d",
+    "customFormatTypes": true
+  }
+}

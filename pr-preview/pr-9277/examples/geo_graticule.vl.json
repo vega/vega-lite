@@ -1,0 +1,14 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 200,
+  "height": 200,
+  "data": {
+    "graticule": true
+  },
+  "projection": {
+    "type": "orthographic"
+  },
+  "mark": {
+    "type": "geoshape"
+  }
+}

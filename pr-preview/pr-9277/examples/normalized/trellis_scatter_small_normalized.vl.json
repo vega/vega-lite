@@ -1,0 +1,14 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/movies.json"},
+  "facet": {"column": {"field": "MPAA Rating"}},
+  "spec": {
+    "width": 75,
+    "height": 75,
+    "mark": "point",
+    "encoding": {
+      "x": {"field": "Worldwide Gross", "type": "quantitative"},
+      "y": {"field": "US DVD Sales", "type": "quantitative"}
+    }
+  }
+}

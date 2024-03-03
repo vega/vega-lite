@@ -1,0 +1,13 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/cars.json"},
+  "mark": "tick",
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {
+      "field": "Cylinders",
+      "type": "ordinal",
+      "axis": {"grid": true, "tickBand": "extent"}
+    }
+  }
+}

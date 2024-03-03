@@ -1,0 +1,12 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/cars.json"
+  },
+  "mark": "errorband",
+  "encoding": {
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+    "x": {"timeUnit": "year", "field": "Year"},
+    "tooltip": {"field": "Miles_per_Gallon", "type": "quantitative"}
+  }
+}

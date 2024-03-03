@@ -1,0 +1,31 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Stock price over time with color legend orient = left.",
+  "data": {"url": "data/stocks.csv"},
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"},
+        "color": {
+          "field": "symbol",
+          "type": "nominal",
+          "legend": {"orient": "left"}
+        }
+      }
+    },
+    {
+      "mark": {"type": "point", "filled": true},
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"},
+        "color": {
+          "field": "symbol",
+          "type": "nominal",
+          "legend": {"orient": "left"}
+        }
+      }
+    }
+  ]
+}

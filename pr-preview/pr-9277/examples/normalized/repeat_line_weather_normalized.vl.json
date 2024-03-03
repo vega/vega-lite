@@ -1,0 +1,35 @@
+{
+  "data": {"url": "data/weather.csv"},
+  "align": "all",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "",
+  "concat": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "timeUnit": "month"},
+        "y": {"field": "temp_max", "aggregate": "mean"},
+        "color": {"field": "location"}
+      },
+      "name": "child__temp_max"
+    },
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "timeUnit": "month"},
+        "y": {"field": "precipitation", "aggregate": "mean"},
+        "color": {"field": "location"}
+      },
+      "name": "child__precipitation"
+    },
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "timeUnit": "month"},
+        "y": {"field": "wind", "aggregate": "mean"},
+        "color": {"field": "location"}
+      },
+      "name": "child__wind"
+    }
+  ]
+}

@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Time Unit | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Time Unit" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/docs/timeunit.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/docs/timeunit.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Time Unit" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","headline":"Time Unit","url":"https://vega.github.io/vega-lite/docs/timeunit.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+          <a href="https://vega.github.io/vega-lite-api/">Vega-Lite API</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/examples/vega-lite/bar">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section>
+    
+
+
+
+<div class="page-centered page-main">
+  
+  <aside class="page-sidebar">
+    <ul class="sidebar-nav">
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/" title="">Overview
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/spec.html" title="">View Specification
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/title.html" title="">Title
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/size.html" title="">Width / Height
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/data.html" title="">Data / Datasets
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/transform.html" title="">Transform
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/calculate.html" title="">Calculate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/density.html" title="">Density
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/extent.html" title="">Extent
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/filter.html" title="">Filter
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/flatten.html" title="">Flatten
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/fold.html" title="">Fold
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/joinaggregate.html" title="">Join Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/loess.html" title="">Loess
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/lookup.html" title="">Lookup
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/pivot.html" title="">Pivot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/quantile.html" title="">Quantile
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/regression.html" title="">Regression
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sample.html" title="">Sample
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a aria-current="page"
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/window.html" title="">Window
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/mark.html" title="">Mark
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/arc.html" title="">Arc
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/area.html" title="">Area
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bar.html" title="">Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/boxplot.html" title="">Box Plot
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/circle.html" title="">Circle
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorband.html" title="">Error Band
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/errorbar.html" title="">Error Bar
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/geoshape.html" title="">Geoshape
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/image.html" title="">Image
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/line.html" title="">Line
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/point.html" title="">Point
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rect.html" title="">Rect
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/rule.html" title="">Rule
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/square.html" title="">Square
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/text.html" title="">Text
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/tick.html" title="">Tick
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/trail.html" title="">Trail
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/encoding.html" title="">Encoding
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/aggregate.html" title="">Aggregate
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/axis.html" title="">Axis
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bandposition.html" title="">Band Position
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bin.html" title="">Bin
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/condition.html" title="">Condition
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/datum.html" title="">Datum
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/field.html" title="">Field
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/format.html" title="">Format
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/header.html" title="">Header
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/impute.html" title="">Impute
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/legend.html" title="">Legend
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/scale.html" title="">Scale
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/stack.html" title="">Stack
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/sort.html" title="">Sort
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a aria-current="page"
+            href="/vega-lite/docs/timeunit.html" title="">Time Unit
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/type.html" title="">Type
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/value.html" title="">Value
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/projection.html" title="">Projection
+      </a></li>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/composition.html" title="">View Composition
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/facet.html" title="">Facet
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/layer.html" title="">Layer
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/concat.html" title="">Concat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/repeat.html" title="">Repeat
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/resolve.html" title="">Resolve
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/parameter.html" title="">Parameter
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/param-value.html" title="">Value
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/parameter.html#expr" title="">Expr
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/bind.html" title="">Bind
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/selection.html" title="">Select
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/config.html" title="">Config
+      </a></li>
+      
+      
+      
+      
+      <br>
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/types.html" title="">Property Types
+      </a></li>
+      
+      <ul class="sub-sub-nav">
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/datetime.html" title="">Date Time
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/gradient.html" title="">Gradient
+        </a></li>
+        
+        <li class="sidebar-nav-item sub-item"><a 
+            href="/vega-lite/docs/predicate.html" title="">Predicate
+        </a></li>
+        
+      </ul>
+      
+      
+      
+      
+      <li class="sidebar-nav-item"><a 
+          href="/vega-lite/docs/tooltip.html" title="">Tooltip
+      </a></li>
+      
+      
+      
+    </nav>
+  </aside>
+  
+
+  <section class="page-content">
+    <h1>Time Unit</h1>
+    <span class="edit-page">
+  <a href="https://github.com/vega/vega-lite/edit/next/site/docs/transform/timeunit.md">Edit this page</a>
+</span>
+<p>Time unit is used to discretize times in Vega-Lite. It can be used (1) with the <code>timeUnit</code> property of <a href="#encoding">encoding field definitions</a>, (2) as <a href="#transform">a standalone transform</a>, or (3) with the <code>timeUnit</code> property of a <a href="predicate.html#field-predicate">field predicate</a>.</p>
+
+<p>Vega-Lite supports the following time units:</p>
+
+<ul>
+  <li><code>"year"</code> - <a href="https://en.wikipedia.org/wiki/Gregorian_calendar">Gregorian</a> calendar years.</li>
+  <li><code>"quarter"</code> - Three-month intervals, starting in one of January, April, July, and October.</li>
+  <li><code>"month"</code> - Calendar months (January, February, <em>etc.</em>).</li>
+  <li><code>"date"</code> - Calendar day of the month (January 1, January 2, <em>etc.</em>).</li>
+  <li><code>"week"</code> - Sunday-based weeks. Days before the first Sunday of the year are considered to be in week 0, the first Sunday of the year is the start of week 1, the second Sunday week 2, <em>etc.</em>.</li>
+  <li><code>"day"</code> - Day of the week (Sunday, Monday, <em>etc.</em>).</li>
+  <li><code>"dayofyear"</code> - Day of the year (1, 2, …, 365, <em>etc.</em>).</li>
+  <li><code>"hours"</code> - Hours of the day (12:00am, 1:00am, <em>etc.</em>).</li>
+  <li><code>"minutes"</code> - Minutes in an hour (12:00, 12:01, <em>etc.</em>).</li>
+  <li><code>"seconds"</code> - Seconds in a minute (12:00:00, 12:00:01, <em>etc.</em>).</li>
+  <li><code>"milliseconds"</code> - Milliseconds in a second.</li>
+</ul>
+
+<p>Vega-Lite time units can also be a string of consecutive time units to indicate desired intervals of time. For example, <code>yearmonthdate</code> indicates chronological time sensitive to year, month, and date (but not to hours, minutes, or seconds). The specifier <code>monthdate</code> is sensitive to month and date, but not year, which can be useful for binning time values to look at seasonal patterns only.</p>
+
+<ul>
+  <li>By default, all time units represent date time using local time.</li>
+  <li>To use UTC time, you can add the <code>utc</code> prefix (e.g., <code>"utcyear"</code>, <code>"utcyearmonth"</code>).</li>
+  <li>For timeUnit in encoding, you can also add <code>"binned"</code> prefix (e.g., <code>"binnedyearmonth"</code> or <code>"binnedutcyearmonth"</code>) for Chronological time units (i.e., units that are truncated date times, as opposed to circle time units, which bin data to parts of date times).</li>
+</ul>
+
+<!--prettier-ignore-start-->
+<h2 class="no_toc" id="documentation-overview">Documentation Overview</h2>
+
+<ul id="markdown-toc">
+  <li><a href="#encoding" id="markdown-toc-encoding">Time Unit in Encoding Field Definition</a>    <ul>
+      <li><a href="#time-units-band" id="markdown-toc-time-units-band">Time Unit’s Band</a></li>
+      <li><a href="#time-unit-with-ordinal-fields" id="markdown-toc-time-unit-with-ordinal-fields">Time Unit with Ordinal Fields</a></li>
+    </ul>
+  </li>
+  <li><a href="#transform" id="markdown-toc-transform">Time Unit Transform</a></li>
+  <li><a href="#utc" id="markdown-toc-utc">UTC time</a>    <ul>
+      <li><a href="#input" id="markdown-toc-input">Input</a></li>
+      <li><a href="#output" id="markdown-toc-output">Output</a></li>
+    </ul>
+  </li>
+  <li><a href="#params" id="markdown-toc-params">Time Unit Parameters</a>    <ul>
+      <li><a href="#example-customizing-step" id="markdown-toc-example-customizing-step">Example: Customizing Step</a></li>
+    </ul>
+  </li>
+</ul>
+
+<!--prettier-ignore-end-->
+
+<h2 id="encoding">Time Unit in Encoding Field Definition</h2>
+
+<pre><code class="language-js">// A Single View or a Layer Specification
+{
+  ...,
+  "mark/layer": ...,
+  "encoding": {
+    "x": {
+      "timeUnit": ...,               // time unit
+      "field": ...,
+      "type": "temporal",
+      ...
+    },
+    "y": ...,
+    ...
+  },
+  ...
+}
+</code></pre>
+
+<p>A field definition can include a <code>timeUnit</code> property. For example, the chart below shows temperature in Seattle aggregated by month.</p>
+
+<p><span class="vl-example" data-name="line_month"></span></p>
+
+<p>Using <code>timeUnit</code> with rect-based marks (including <code>bar</code>, <code>rect</code>, and <code>image</code>) will treat time units as intervals.</p>
+
+<p><span class="vl-example" data-name="bar_month_temporal"></span></p>
+
+<p>You can also add <code>"binned"</code> prefix if your data has already been binned and want Vega-Lite to apply the right formatting, including the right bands for the interval, to your charts.</p>
+
+<p>By default, bar marks are placed from the beginning of a time interval (e.g., “month”) to the end of the interval.</p>
+
+<p>Setting <a href="bandposition.html"><code>bandPosition</code></a> to <code>0</code> moves the bar to center-align with ticks.</p>
+
+<div class="vl-example" data-name="bar_month_temporal_band_center"></div>
+
+<p><span class="vl-example" data-name="bar_binnedyearmonth"></span></p>
+
+<h3 id="time-units-band">Time Unit’s Band</h3>
+
+<p>By default, Vega-Lite encodes fields with timeUnit using the initial position of a time unit (which is equivalent to having <code>band</code> = 0). However, one can set the <code>band</code> property to be <code>0.5</code> to use place each data point in the middle of each time unit band.</p>
+
+<p><span class="vl-example" data-name="line_month_center_band"></span></p>
+
+<h3 id="time-unit-with-ordinal-fields">Time Unit with Ordinal Fields</h3>
+
+<p id="ordinal">By default, fields with time units have “temporal” type and thus use time scales. However, time units can be also used with a discrete scale. For example, you can cast the field to have an <code>"ordinal"</code> type.</p>
+
+<p><span class="vl-example" data-name="bar_month"></span></p>
+
+<h2 id="transform">Time Unit Transform</h2>
+
+<pre><code class="language-js">// Any View Specification
+{
+  ...,
+  "transform": [
+    {"timeUnit": ..., "field": ..., "as": ...} // TimeUnit Transform
+     ...
+  ],
+  ...
+}
+</code></pre>
+
+<p>A <code>timeUnit</code> transform in the <code>transform</code> array has the following properties:</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th class="table-column-type">Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>timeUnit</td>
+        <td><a href="timeunit.html">TimeUnit</a> | TimeUnitTransformParams
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The timeUnit.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>field</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The data field to apply time unit.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>as</td>
+        <td>String
+</td>
+        <td>
+  
+    <p><strong><em>Required.</em></strong> The output field to write the timeUnit value.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<p>In the example below, we use the time unit transform to extract the month component of the dates. We can then visualize the hottest temperature. Note that Vega-Lite will not automatically format the axis if the <code>timeUnit</code> is applied outside <code>encoding</code> so we have to format it manually. For this reason, you should prefer time units as part of encoding definitions.</p>
+
+<p><span class="vl-example" data-name="line_timeunit_transform"></span></p>
+
+<h2 id="utc">UTC time</h2>
+
+<h3 id="input">Input</h3>
+
+<p>To parse data in local time or UTC time, there are three cases:</p>
+
+<ol>
+  <li>Times are parsed as UTC time if the date strings are in <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse">ISO format</a>. Note that in JavaScript date strings without time are interpreted as UTC but date strings with time and without timezone as local.</li>
+</ol>
+
+<p><span class="vl-example" data-name="time_parse_utc"></span></p>
+
+<p>If you don’t want to re-bin the data, you can also add <code>"binned"</code> prefix.</p>
+
+<p><span class="vl-example" data-name="time_parse_binnedutc"></span></p>
+
+<ol>
+  <li>If that is not the case, by default, times are assumed to be local.</li>
+</ol>
+
+<p><span class="vl-example" data-name="time_parse_local"></span></p>
+
+<ol>
+  <li>To parse inline data or url data without ISO format as UTC time, we need to specify the <code>format</code> to be <code>utc</code> with time format:</li>
+</ol>
+
+<p><span class="vl-example" data-name="time_parse_utc_format"></span></p>
+
+<h3 id="output">Output</h3>
+
+<p>By default, Vega-Lite will output data in local time (even when input is parsed as UTC time). To output data in UTC time, we can specify either a UTC time unit or scale:</p>
+
+<ol>
+  <li>UTC time unit when input data is in local time.</li>
+</ol>
+
+<p><span class="vl-example" data-name="time_output_utc_timeunit"></span></p>
+
+<ol>
+  <li>UTC scale type when you have input data in UTC time.</li>
+</ol>
+
+<p><span class="vl-example" data-name="time_output_utc_scale"></span></p>
+
+<h2 id="params">Time Unit Parameters</h2>
+
+<p>To customize time unit properties, you can set <code>timeUnit</code> to be a time unit definition object. It can have the following properties.</p>
+
+<table class="doc-table">
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th class="table-column-type">Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    
+    
+    
+      
+      
+      <tr>
+        <td>unit</td>
+        <td><a href="timeunit.html">TimeUnit</a>
+</td>
+        <td>
+  
+    <p>Defines how date-time values should be binned.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>maxbins</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>If no <code>unit</code> is specified, maxbins is used to infer time units.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>step</td>
+        <td>Number
+</td>
+        <td>
+  
+    <p>The number of steps between bins, in terms of the least significant unit provided.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>utc</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>True to use UTC timezone. Equivalent to using a <code>utc</code> prefixed <code>TimeUnit</code>.</p>
+
+  
+
+</td>
+      </tr>
+    
+      
+      
+      <tr>
+        <td>binned</td>
+        <td>Boolean
+</td>
+        <td>
+  
+    <p>Whether the data has already been binned to this time unit. If true, Vega-Lite will only format the data, marks, and guides, without applying the timeUnit transform to re-bin the data again.</p>
+
+  
+
+</td>
+      </tr>
+    
+  </tbody>
+</table>
+
+<h3 id="example-customizing-step">Example: Customizing Step</h3>
+
+<p>The <code>step</code> parameter can be used to specify a bin size with respect to the smallest denominator in the time unit provided. The following example shows sum of distance traveled for each 5-minute interval.</p>
+
+<p><span class="vl-example" data-name="time_custom_step"></span></p>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/next/site/docs/transform/timeunit.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+  </body>
+</html>

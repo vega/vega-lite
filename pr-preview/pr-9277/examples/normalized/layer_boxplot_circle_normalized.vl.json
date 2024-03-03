@@ -1,0 +1,212 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 500,
+  "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000 and all raw data on the top.",
+  "data": {"url": "data/population.json"},
+  "layer": [
+    {
+      "layer": [
+        {
+          "transform": [
+            {
+              "joinaggregate": [
+                {"op": "q1", "field": "people", "as": "lower_box_people"},
+                {"op": "q3", "field": "people", "as": "upper_box_people"}
+              ],
+              "groupby": ["age"]
+            },
+            {
+              "filter": "(datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]) <= datum[\"people\"]) && (datum[\"people\"] <= datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
+            },
+            {
+              "aggregate": [
+                {"op": "min", "field": "people", "as": "lower_whisker_people"},
+                {"op": "max", "field": "people", "as": "upper_whisker_people"},
+                {
+                  "op": "min",
+                  "field": "lower_box_people",
+                  "as": "lower_box_people"
+                },
+                {
+                  "op": "max",
+                  "field": "upper_box_people",
+                  "as": "upper_box_people"
+                }
+              ],
+              "groupby": ["age"]
+            }
+          ],
+          "layer": [
+            {
+              "mark": {"type": "rule", "aria": false, "style": "boxplot-rule"},
+              "encoding": {
+                "x": {
+                  "field": "lower_whisker_people",
+                  "type": "quantitative",
+                  "title": "population"
+                },
+                "x2": {"field": "lower_box_people"},
+                "y": {"field": "age", "type": "ordinal"},
+                "tooltip": [
+                  {
+                    "field": "upper_whisker_people",
+                    "type": "quantitative",
+                    "title": "Upper Whisker of population"
+                  },
+                  {
+                    "field": "lower_whisker_people",
+                    "type": "quantitative",
+                    "title": "Lower Whisker of population"
+                  },
+                  {"field": "age", "type": "ordinal"}
+                ]
+              }
+            },
+            {
+              "mark": {"type": "rule", "aria": false, "style": "boxplot-rule"},
+              "encoding": {
+                "x": {
+                  "field": "upper_box_people",
+                  "type": "quantitative",
+                  "title": "population"
+                },
+                "x2": {"field": "upper_whisker_people"},
+                "y": {"field": "age", "type": "ordinal"},
+                "tooltip": [
+                  {
+                    "field": "upper_whisker_people",
+                    "type": "quantitative",
+                    "title": "Upper Whisker of population"
+                  },
+                  {
+                    "field": "lower_whisker_people",
+                    "type": "quantitative",
+                    "title": "Lower Whisker of population"
+                  },
+                  {"field": "age", "type": "ordinal"}
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "transform": [
+            {
+              "aggregate": [
+                {"op": "q1", "field": "people", "as": "lower_box_people"},
+                {"op": "q3", "field": "people", "as": "upper_box_people"},
+                {"op": "median", "field": "people", "as": "mid_box_people"},
+                {"op": "min", "field": "people", "as": "min_people"},
+                {"op": "max", "field": "people", "as": "max_people"}
+              ],
+              "groupby": ["age"]
+            }
+          ],
+          "layer": [
+            {
+              "mark": {
+                "type": "bar",
+                "size": 14,
+                "orient": "horizontal",
+                "ariaRoleDescription": "box",
+                "style": "boxplot-box"
+              },
+              "encoding": {
+                "x": {
+                  "field": "lower_box_people",
+                  "type": "quantitative",
+                  "title": "population"
+                },
+                "x2": {"field": "upper_box_people"},
+                "y": {"field": "age", "type": "ordinal"},
+                "tooltip": [
+                  {
+                    "field": "max_people",
+                    "type": "quantitative",
+                    "title": "Max of population"
+                  },
+                  {
+                    "field": "upper_box_people",
+                    "type": "quantitative",
+                    "title": "Q3 of population"
+                  },
+                  {
+                    "field": "mid_box_people",
+                    "type": "quantitative",
+                    "title": "Median of population"
+                  },
+                  {
+                    "field": "lower_box_people",
+                    "type": "quantitative",
+                    "title": "Q1 of population"
+                  },
+                  {
+                    "field": "min_people",
+                    "type": "quantitative",
+                    "title": "Min of population"
+                  },
+                  {"field": "age", "type": "ordinal"}
+                ]
+              }
+            },
+            {
+              "mark": {
+                "color": "white",
+                "type": "tick",
+                "size": 14,
+                "orient": "vertical",
+                "aria": false,
+                "style": "boxplot-median"
+              },
+              "encoding": {
+                "x": {
+                  "field": "mid_box_people",
+                  "type": "quantitative",
+                  "title": "population"
+                },
+                "y": {"field": "age", "type": "ordinal"},
+                "tooltip": [
+                  {
+                    "field": "max_people",
+                    "type": "quantitative",
+                    "title": "Max of population"
+                  },
+                  {
+                    "field": "upper_box_people",
+                    "type": "quantitative",
+                    "title": "Q3 of population"
+                  },
+                  {
+                    "field": "mid_box_people",
+                    "type": "quantitative",
+                    "title": "Median of population"
+                  },
+                  {
+                    "field": "lower_box_people",
+                    "type": "quantitative",
+                    "title": "Q1 of population"
+                  },
+                  {
+                    "field": "min_people",
+                    "type": "quantitative",
+                    "title": "Min of population"
+                  },
+                  {"field": "age", "type": "ordinal"}
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mark": "circle",
+      "encoding": {
+        "y": {"field": "age", "type": "ordinal"},
+        "x": {"field": "people", "type": "quantitative", "title": "population"},
+        "color": {"value": "black"},
+        "opacity": {"value": 0.2}
+      }
+    }
+  ]
+}

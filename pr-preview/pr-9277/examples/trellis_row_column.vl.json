@@ -1,0 +1,13 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "row": {"field": "Cylinders"},
+    "column": {"field": "Origin"},
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
+    "color": {"field": "Cylinders", "type": "nominal"},
+    "shape": {"field": "Origin", "type": "nominal"}
+  }
+}

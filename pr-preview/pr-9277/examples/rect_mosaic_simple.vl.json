@@ -1,0 +1,105 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/cars.json"
+  },
+  "transform": [
+    {
+      "aggregate": [
+        {
+          "op": "count",
+          "as": "count_*"
+        }
+      ],
+      "groupby": [
+        "Origin",
+        "Cylinders"
+      ]
+    },
+    {
+      "stack": "count_*",
+      "groupby": [],
+      "as": [
+        "stack_count_Origin1",
+        "stack_count_Origin2"
+      ],
+      "offset": "normalize",
+      "sort": [
+        {
+          "field": "Origin",
+          "order": "ascending"
+        }
+      ]
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "min",
+          "field": "stack_count_Origin1",
+          "as": "x"
+        },
+        {
+          "op": "max",
+          "field": "stack_count_Origin2",
+          "as": "x2"
+        }
+      ],
+      "groupby": [
+        "Origin"
+      ]
+    },
+    {
+      "stack": "count_*",
+      "groupby": [
+        "Origin"
+      ],
+      "as": [
+        "y",
+        "y2"
+      ],
+      "offset": "normalize",
+      "sort": [
+        {
+          "field": "Cylinders",
+          "order": "ascending"
+        }
+      ]
+    }
+  ],
+  "mark": {
+    "type": "rect"
+  },
+  "encoding": {
+    "x": {
+      "field": "x",
+      "type": "quantitative",
+      "axis": null
+    },
+    "x2": {"field": "x2"},
+    "y": {
+      "field": "y",
+      "type": "quantitative",
+      "axis": null
+    },
+    "y2": {"field": "y2"},
+    "color": {
+      "field": "Origin",
+      "type": "nominal"
+    },
+    "opacity": {
+      "field": "Cylinders",
+      "type": "quantitative",
+      "legend": null
+    },
+    "tooltip": [
+      {
+        "field": "Origin",
+        "type": "nominal"
+      },
+      {
+        "field": "Cylinders",
+        "type": "quantitative"
+      }
+    ]
+  }
+}

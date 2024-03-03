@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A vertical box plot showing median, min, and max body mass of penguins.",
+  "data": {"url": "data/cars.json"},
+  "mark": {
+    "type": "boxplot"
+  },
+  "encoding": {
+    "x": {"field": "Cylinders", "type": "nominal"},
+    "color": {"field": "Origin", "type": "nominal"},
+    "xOffset": {"field": "Origin", "type": "nominal"},
+    "y": {
+      "field": "Acceleration",
+      "type": "quantitative"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/movies.json"},
+  "transform": [{
+    "aggregate":[{"op": "count", "field": "*", "as": "count"}],
+    "groupby": ["IMDB Rating"]
+  },
+  {
+    "sort": [{"field": "IMDB Rating"}],
+    "window": [{"op": "sum", "field": "count", "as": "Cumulative Count"}],
+    "frame": [null, 0]
+  }],
+  "mark": "area",
+  "encoding": {
+    "x": {
+      "field": "IMDB Rating",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "Cumulative Count",
+      "type": "quantitative"
+    }
+  }
+}

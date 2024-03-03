@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Embedding Vega-Lite | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Embedding Vega-Lite" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<meta property="og:description" content="Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/usage/embed.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/usage/embed.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Embedding Vega-Lite" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Vega-Lite - a high-level grammar for statistical graphics. Vega-Lite provides a higher-level grammar for visual analysis, comparable to ggplot or Tableau, that generates complete Vega specifications. Vega-Lite specifications consist of simple mappings of variables in a data set to visual encoding channels such as x, y, color, and size. These mappings are then translated into detailed visualization specifications in the form of Vega specification language. Vega-Lite produces default values for visualization components (e.g., scales, axes, and legends) in the output Vega specification using a rule-based approach, but users can explicit specify these properties to override default values.","headline":"Embedding Vega-Lite","url":"https://vega.github.io/vega-lite/usage/embed.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+          <a href="https://vega.github.io/vega-lite-api/">Vega-Lite API</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" >Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" aria-current="page">Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/examples/vega-lite/bar">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="usage">
+    
+
+
+<div class="sub-nav">
+  <nav class="page-centered">
+    
+    <a aria-current="page"
+        href="/vega-lite/usage/embed.html" title="">Embed
+    </a>
+    
+    <a 
+        href="/vega-lite/usage/compile.html" title="">Compile
+    </a>
+    
+    <a 
+        href="/vega-lite/usage/typescript.html" title="">TypeScript
+    </a>
+    
+    <a 
+        href="/vega-lite/usage/debugging.html" title="">Debugging
+    </a>
+    
+  </nav>
+</div>
+
+
+<div class="page-centered page-main">
+  
+
+  <section class="page-content">
+    <h1>Embedding Vega-Lite</h1>
+    <p><em>Fork our <a href="https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9">Vega-Lite Block</a> if you want to quickly publish a Vega-Lite visualization on the web.</em></p>
+
+<p>The easiest way to use Vega-Lite on your own web page is with <a href="https://github.com/vega/vega-embed">Vega-Embed</a>, a library we built to make the process as painless as possible.</p>
+
+<h2 id="get-vega-lite-and-other-dependencies">Get Vega-Lite and other dependencies</h2>
+
+<p>To embed a Vega-Lite specification on your web page first load the required libraries. You can get Vega, Vega-Lite, and Vega-Embed via a CDN, NPM, or manually download them.</p>
+
+<h3 id="cdn">CDN</h3>
+
+<p>For production deployments you will likely want to serve your own files or use a <a href="https://en.wikipedia.org/wiki/Content_delivery_network">content delivery network (CDN)</a>. Vega-Lite releases are hosted on <a href="https://www.jsdelivr.com/package/npm/vega-lite">jsDelivr</a>:</p>
+
+<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/vega@5.27.0"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.3"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/vega-embed@6.24.0"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>If you want to automatically use the latest versions of Vega-Lite, Vega, and Vega-Embed, you can specify only the major version.</p>
+
+<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/vega@5"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/vega-lite@5"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/vega-embed@6"&gt;&lt;/script&gt;
+</code></pre>
+
+<h3 id="npm">NPM</h3>
+
+<p>If you prefer to host the dependencies yourself, we suggest that you use npm to install the libraries (<a href="https://www.npmjs.com/package/vega">Vega</a>, <a href="https://www.npmjs.com/package/vega-lite">Vega-Lite</a>, and <a href="https://www.npmjs.com/package/vega-embed">Vega-Embed</a>) to get the latest stable version. To install with npm, simply install it as you would any other npm module.</p>
+
+<pre><code class="language-sh">npm install vega
+npm install vega-lite
+npm install vega-embed
+</code></pre>
+
+<p>You can learn more about NPM on the <a href="https://docs.npmjs.com/getting-started/what-is-npm">official website</a>.</p>
+
+<h3 id="download">Download</h3>
+
+<p>Alternatively, you can <a href="https://github.com/vega/vega-lite/releases/latest">download the latest Vega-Lite release</a> and add it to your project manually. In this case, you will also have to download <a href="https://github.com/vega/vega/releases/latest">Vega</a>, and <a href="https://github.com/vega/vega-embed/releases/latest">Vega-Embed</a>.</p>
+
+<h2 id="start-using-vega-lite-with-vega-embed">Start using Vega-Lite with Vega-Embed</h2>
+
+<p>The next step after getting the libraries is to create a DOM element that the visualization will be attached to.</p>
+
+<pre><code class="language-html">&lt;div id="vis"&gt;&lt;/div&gt;
+</code></pre>
+
+<p>Then use Vega-Embed’s provided function to embed your spec.</p>
+
+<pre><code class="language-js">// More argument info at https://github.com/vega/vega-embed
+vegaEmbed('#vis', yourVlSpec);
+</code></pre>
+
+<p>Vega-Embed automatically adds links to export an image, view the source, and open the specification in the online editor. These links can be individually disabled. For more information, read the <a href="https://github.com/vega/vega-embed">Vega-Embed documentation</a>.</p>
+
+<p>Here is the final HTML file in the easiest way to embed Vega-Lite (assuming that you use the <a href="#cdn">CDN approach</a> from above). See the <a href="/vega-lite/demo.html">output in your browser</a>.</p>
+
+<pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Embedding Vega-Lite&lt;/title&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/vega@5.27.0"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/vega-lite@5.16.3"&gt;&lt;/script&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/vega-embed@6.24.0"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id="vis"&gt;&lt;/div&gt;
+
+    &lt;script type="text/javascript"&gt;
+      var yourVlSpec = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        description: 'A simple bar chart with embedded data.',
+        data: {
+          values: [
+            {a: 'A', b: 28},
+            {a: 'B', b: 55},
+            {a: 'C', b: 43},
+            {a: 'D', b: 91},
+            {a: 'E', b: 81},
+            {a: 'F', b: 53},
+            {a: 'G', b: 19},
+            {a: 'H', b: 87},
+            {a: 'I', b: 52}
+          ]
+        },
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'ordinal'},
+          y: {field: 'b', type: 'quantitative'}
+        }
+      };
+      vegaEmbed('#vis', yourVlSpec);
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+
+  </section>
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/next/site/usage/embed.md">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/movies.json"
+  },
+  "repeat": {
+    "layer": ["US Gross", "Worldwide Gross"]
+  },
+  "spec": {
+    "width": 200,
+    "mark": "line",
+    "encoding": {
+      "x": {
+        "bin": true,
+        "field": "IMDB Rating",
+        "type": "quantitative"
+      },
+      "y": {
+        "aggregate": "mean",
+        "field": {"repeat": "layer"},
+        "type": "quantitative",
+        "title": "Mean of US and Worldwide Gross"
+      },
+      "color": {
+        "datum": {"repeat": "layer"},
+        "type": "nominal"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/barley.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "variety"},
+    "y": {"aggregate": "sum", "field": "yield"},
+    "color": {"field": "site"}
+  }
+}

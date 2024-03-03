@@ -1,0 +1,72 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A histogram for a data source that provides non-linear bins. Thanks to [@Saba9](https://github.com/Saba9) who helps create this example.",
+  "data": {
+    "values": [
+      {
+        "startTime": "0",
+        "endTime": "8.33",
+        "residency": 0
+      },
+      {
+        "startTime": "8.33",
+        "endTime": "12.50",
+        "residency": 0
+      },
+      {
+        "startTime": "12.50",
+        "endTime": "16.67",
+        "residency": 31.17
+      },
+      {
+        "startTime": "16.67",
+        "endTime": "33.33",
+        "residency": 38.96
+      },
+      {
+        "startTime": "33.33",
+        "endTime": "50.00",
+        "residency": 6.49
+      },
+      {
+        "startTime": "50.00",
+        "endTime": "66.67",
+        "residency": 2.9
+      },
+      {
+        "startTime": "66.67",
+        "endTime": "83.33",
+        "residency": 2.6
+      },
+      {
+        "startTime": "83.33",
+        "endTime": "∞",
+        "residency": 16.88
+      }
+    ]
+  },
+  "title": "Distribution of Frame Render Time (fps)",
+  "width": {"step": 40},
+  "height": 100,
+  "mark": {"type": "bar", "cornerRadiusEnd": 0, "orient": "vertical"},
+  "encoding": {
+    "x": {
+      "title": "",
+      "field": "startTime",
+      "type": "ordinal",
+      "scale": {"type": "point", "padding": 0},
+      "axis": {"labelAngle": 0, "labelExpr": "datum.value === '∞' ? '0' : format(1000/datum.value, 'd')"},
+      "sort": null
+    },
+    "x2": {"field": "endTime"},
+    "y": {
+      "title": "",
+      "field": "residency",
+      "type": "quantitative",
+      "scale": {"domain": [0, 100]},
+      "axis": {
+        "labelExpr": "datum.label + '%'"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": "a\n1\n2\n3\n4",
+    "format": {
+      "type": "csv"
+    }
+  },
+  "mark": "point",
+  "encoding": {
+    "y": {"field": "a", "type": "quantitative"}
+  }
+}

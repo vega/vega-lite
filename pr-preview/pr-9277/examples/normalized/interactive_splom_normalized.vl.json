@@ -1,0 +1,350 @@
+{
+  "data": {"url": "data/cars.json"},
+  "align": "all",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "columns": 3,
+  "concat": [
+    {
+      "mark": "point",
+      "params": [
+        {
+          "name": "brush",
+          "select": {
+            "type": "interval",
+            "resolve": "union",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![event.shiftKey]"
+          }
+        },
+        {
+          "name": "grid",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![!event.shiftKey]"
+          },
+          "bind": "scales"
+        }
+      ],
+      "encoding": {
+        "x": {"field": "Miles_per_Gallon", "type": "quantitative"},
+        "y": {
+          "field": "Horsepower",
+          "type": "quantitative",
+          "axis": {"minExtent": 30}
+        },
+        "color": {
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "value": "grey"
+        }
+      },
+      "name": "child__row_Horsepowercolumn_Miles_per_Gallon"
+    },
+    {
+      "mark": "point",
+      "params": [
+        {
+          "name": "brush",
+          "select": {
+            "type": "interval",
+            "resolve": "union",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![event.shiftKey]"
+          }
+        },
+        {
+          "name": "grid",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![!event.shiftKey]"
+          },
+          "bind": "scales"
+        }
+      ],
+      "encoding": {
+        "x": {"field": "Acceleration", "type": "quantitative"},
+        "y": {
+          "field": "Horsepower",
+          "type": "quantitative",
+          "axis": {"minExtent": 30}
+        },
+        "color": {
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "value": "grey"
+        }
+      },
+      "name": "child__row_Horsepowercolumn_Acceleration"
+    },
+    {
+      "mark": "point",
+      "params": [
+        {
+          "name": "brush",
+          "select": {
+            "type": "interval",
+            "resolve": "union",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![event.shiftKey]"
+          }
+        },
+        {
+          "name": "grid",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![!event.shiftKey]"
+          },
+          "bind": "scales"
+        }
+      ],
+      "encoding": {
+        "x": {"field": "Horsepower", "type": "quantitative"},
+        "y": {
+          "field": "Horsepower",
+          "type": "quantitative",
+          "axis": {"minExtent": 30}
+        },
+        "color": {
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "value": "grey"
+        }
+      },
+      "name": "child__row_Horsepowercolumn_Horsepower"
+    },
+    {
+      "mark": "point",
+      "params": [
+        {
+          "name": "brush",
+          "select": {
+            "type": "interval",
+            "resolve": "union",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![event.shiftKey]"
+          }
+        },
+        {
+          "name": "grid",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![!event.shiftKey]"
+          },
+          "bind": "scales"
+        }
+      ],
+      "encoding": {
+        "x": {"field": "Miles_per_Gallon", "type": "quantitative"},
+        "y": {
+          "field": "Acceleration",
+          "type": "quantitative",
+          "axis": {"minExtent": 30}
+        },
+        "color": {
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "value": "grey"
+        }
+      },
+      "name": "child__row_Accelerationcolumn_Miles_per_Gallon"
+    },
+    {
+      "mark": "point",
+      "params": [
+        {
+          "name": "brush",
+          "select": {
+            "type": "interval",
+            "resolve": "union",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![event.shiftKey]"
+          }
+        },
+        {
+          "name": "grid",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![!event.shiftKey]"
+          },
+          "bind": "scales"
+        }
+      ],
+      "encoding": {
+        "x": {"field": "Acceleration", "type": "quantitative"},
+        "y": {
+          "field": "Acceleration",
+          "type": "quantitative",
+          "axis": {"minExtent": 30}
+        },
+        "color": {
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "value": "grey"
+        }
+      },
+      "name": "child__row_Accelerationcolumn_Acceleration"
+    },
+    {
+      "mark": "point",
+      "params": [
+        {
+          "name": "brush",
+          "select": {
+            "type": "interval",
+            "resolve": "union",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![event.shiftKey]"
+          }
+        },
+        {
+          "name": "grid",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![!event.shiftKey]"
+          },
+          "bind": "scales"
+        }
+      ],
+      "encoding": {
+        "x": {"field": "Horsepower", "type": "quantitative"},
+        "y": {
+          "field": "Acceleration",
+          "type": "quantitative",
+          "axis": {"minExtent": 30}
+        },
+        "color": {
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "value": "grey"
+        }
+      },
+      "name": "child__row_Accelerationcolumn_Horsepower"
+    },
+    {
+      "mark": "point",
+      "params": [
+        {
+          "name": "brush",
+          "select": {
+            "type": "interval",
+            "resolve": "union",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![event.shiftKey]"
+          }
+        },
+        {
+          "name": "grid",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![!event.shiftKey]"
+          },
+          "bind": "scales"
+        }
+      ],
+      "encoding": {
+        "x": {"field": "Miles_per_Gallon", "type": "quantitative"},
+        "y": {
+          "field": "Miles_per_Gallon",
+          "type": "quantitative",
+          "axis": {"minExtent": 30}
+        },
+        "color": {
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "value": "grey"
+        }
+      },
+      "name": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon"
+    },
+    {
+      "mark": "point",
+      "params": [
+        {
+          "name": "brush",
+          "select": {
+            "type": "interval",
+            "resolve": "union",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![event.shiftKey]"
+          }
+        },
+        {
+          "name": "grid",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![!event.shiftKey]"
+          },
+          "bind": "scales"
+        }
+      ],
+      "encoding": {
+        "x": {"field": "Acceleration", "type": "quantitative"},
+        "y": {
+          "field": "Miles_per_Gallon",
+          "type": "quantitative",
+          "axis": {"minExtent": 30}
+        },
+        "color": {
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "value": "grey"
+        }
+      },
+      "name": "child__row_Miles_per_Galloncolumn_Acceleration"
+    },
+    {
+      "mark": "point",
+      "params": [
+        {
+          "name": "brush",
+          "select": {
+            "type": "interval",
+            "resolve": "union",
+            "on": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![event.shiftKey]"
+          }
+        },
+        {
+          "name": "grid",
+          "select": {
+            "type": "interval",
+            "resolve": "global",
+            "translate": "[pointerdown[!event.shiftKey], window:pointerup] > window:pointermove!",
+            "zoom": "wheel![!event.shiftKey]"
+          },
+          "bind": "scales"
+        }
+      ],
+      "encoding": {
+        "x": {"field": "Horsepower", "type": "quantitative"},
+        "y": {
+          "field": "Miles_per_Gallon",
+          "type": "quantitative",
+          "axis": {"minExtent": 30}
+        },
+        "color": {
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
+          "value": "grey"
+        }
+      },
+      "name": "child__row_Miles_per_Galloncolumn_Horsepower"
+    }
+  ]
+}

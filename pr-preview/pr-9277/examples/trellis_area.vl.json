@@ -1,0 +1,33 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Stock prices of four large companies as a small multiples of area charts.",
+  "transform": [{"filter": "datum.symbol !== 'GOOG'"}],
+  "width": 300,
+  "height": 40,
+  "data": {"url": "data/stocks.csv"},
+  "mark": "area",
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "temporal",
+      "title": "Time",
+      "axis": {"grid": false}
+    },
+    "y": {
+      "field": "price",
+      "type": "quantitative",
+      "title": "Price",
+      "axis": {"grid": false}
+    },
+    "color": {
+      "field": "symbol",
+      "type": "nominal",
+      "legend": null
+    },
+    "row": {
+      "field": "symbol",
+      "type": "nominal",
+      "title": "Symbol"
+    }
+  }
+}

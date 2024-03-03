@@ -1,0 +1,115 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "vconcat": [
+    {
+      "width": 500,
+      "height": 300,
+      "projection": {
+        "type": "albersUsa"
+      },
+      "layer": [
+        {
+          "data": {
+            "url": "data/us-10m.json",
+            "format": {
+              "type": "topojson",
+              "feature": "states"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "fill": "lightgray",
+            "stroke": "white"
+          }
+        },
+        {
+          "data": {"url": "data/flights-airport.csv"},
+          "transform": [
+            {"aggregate": [{"op": "count", "as": "routes"}], "groupby": ["origin"]},
+            {
+              "lookup": "origin",
+              "from": {
+                "data": {"url": "data/airports.csv"},
+                "key": "iata",
+                "fields": ["state", "latitude", "longitude"]
+              }
+            },
+            {"filter": "datum.state !== 'PR' && datum.state !== 'VI'"}
+          ],
+          "params": [
+            {
+              "name": "brush",
+              "select": "interval",
+              "value": {"latitude": [30, 40], "longitude": [-86, -118]}
+            }
+          ],
+          "mark": "circle",
+          "encoding": {
+            "longitude": {
+              "field": "longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "latitude",
+              "type": "quantitative"
+            },
+            "size": {
+              "field": "routes",
+              "type": "quantitative",
+              "scale": {"rangeMax": 500},
+              "legend": null
+            },
+            "color": {
+              "condition": {
+                "param": "brush", "empty": false,
+                "value": "goldenrod"
+              },
+              "value": "steelblue"}
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "data/flights-2k.json",
+        "format": {"parse": {"date": "date"}}
+      },
+      "transform": [
+        {
+          "lookup": "origin",
+          "from": {"param": "brush", "key": "origin"}
+        }
+      ],
+      "repeat": {"column": ["distance", "delay"]},
+      "spec": {
+        "layer": [
+          {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": {"repeat": "column"},
+                "bin": {"maxbins": 20}
+              },
+              "y": {"aggregate": "count"},
+              "color": {"value": "steelblue"}
+            }
+          },
+          {
+            "transform": [{
+              "filter": "data('brush_store').length && isValid(datum.brush)"
+            }],
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": {"repeat": "column"},
+                "bin": {"maxbins": 20}
+              },
+              "y": {"aggregate": "count"},
+              "color": {"value": "goldenrod"}
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

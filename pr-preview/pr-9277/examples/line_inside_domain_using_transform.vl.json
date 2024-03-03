@@ -1,0 +1,27 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {"wavelength": 250, "power": 1},
+      {"wavelength": 300, "power": 2},
+      {"wavelength": 420, "power": 4},
+      {"wavelength": 450, "power": 1.8},
+      {"wavelength": 500, "power": 1.1}
+    ]
+  },
+  "transform": [{
+    "filter": {"field": "wavelength", "range": [300, 450]}
+  }],
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "wavelength",
+      "type": "quantitative",
+      "scale": {"domain": [300,450]}
+    },
+    "y": {
+      "field": "power",
+      "type": "quantitative"
+    }
+  }
+}

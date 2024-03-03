@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>An interactive scatter plot of global health statistics by country and year. | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="An interactive scatter plot of global health statistics by country and year." />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Similar to the Vega version at https://vega.github.io/vega/examples/global-development/." />
+<meta property="og:description" content="Similar to the Vega version at https://vega.github.io/vega/examples/global-development/." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/examples/interactive_global_development.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/examples/interactive_global_development.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta property="og:image" content="https://vega.github.io/vega-lite/examples/interactive_global_development.png" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://vega.github.io/vega-lite/examples/interactive_global_development.png" />
+<meta property="twitter:title" content="An interactive scatter plot of global health statistics by country and year." />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Similar to the Vega version at https://vega.github.io/vega/examples/global-development/.","headline":"An interactive scatter plot of global health statistics by country and year.","image":"https://vega.github.io/vega-lite/examples/interactive_global_development.png","url":"https://vega.github.io/vega-lite/examples/interactive_global_development.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+          <a href="https://vega.github.io/vega-lite-api/">Vega-Lite API</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" aria-current="page">Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/examples/vega-lite/bar">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="examples">
+    <div class="page-centered page-content">
+  
+  <h1>An interactive scatter plot of global health statistics by country and year.</h1>
+   <p>Similar to the Vega version at https://vega.github.io/vega/examples/global-development/.</p>
+
+<div id="interactive_global_development"></div>
+
+<script>
+    window.onload = function() {
+      const spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "An interactive scatter plot of global health statistics by country and year.",
+  "data": {"url": "data/gapminder.json"},
+  "width": 800,
+  "height": 500,
+  "layer": [
+    {
+      "transform": [
+        {"filter": {"field": "country", "equal": "Afghanistan"}},
+        {"filter": {"param": "year"}}
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 100,
+        "x": 420,
+        "y": 250,
+        "opacity": 0.06
+      },
+      "encoding": {"text": {"field": "year"}}
+    },
+    {
+      "transform": [
+        {
+          "lookup": "cluster",
+          "from": {
+            "key": "id",
+            "fields": ["name"],
+            "data": {
+              "values": [
+                {"id": 0, "name": "South Asia"},
+                {"id": 1, "name": "Europe & Central Asia"},
+                {"id": 2, "name": "Sub-Saharan Africa"},
+                {"id": 3, "name": "America"},
+                {"id": 4, "name": "East Asia & Pacific"},
+                {"id": 5, "name": "Middle East & North Africa"}
+              ]
+            }
+          }
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "fertility",
+          "type": "quantitative",
+          "scale": {"domain": [0, 9]},
+          "axis": {"tickCount": 5, "title": "Fertility"}
+        },
+        "y": {
+          "field": "life_expect",
+          "type": "quantitative",
+          "scale": {"domain": [20, 85]},
+          "axis": {"tickCount": 5, "title": "Life Expectancy"}
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "line",
+            "size": 4,
+            "color": "lightgray",
+            "strokeCap": "round"
+          },
+          "encoding": {
+            "detail": {"field": "country"},
+            "order": {"field": "year"},
+            "opacity": {
+              "condition": {
+                "test": {"or": [
+                  {"param": "hovered", "empty": false},
+                  {"param": "clicked", "empty": false}
+                ]},
+                "value": 0.8
+              },
+              "value": 0
+            }
+          }
+        },
+        {
+          "params": [
+            {
+              "name": "year",
+              "value": [{"year": 1955}],
+              "select": {
+                "type": "point",
+                "fields": ["year"]
+              },
+              "bind": {
+                "name": "Year",
+                "input": "range",
+                "min": 1955, "max": 2005, "step": 5
+              }
+            },
+            {
+              "name": "hovered",
+              "select": {
+                "type": "point",
+                "fields": ["country"],
+                "toggle": false,
+                "on": "pointerover"
+              }
+            },
+            {
+              "name": "clicked",
+              "select": {"type": "point", "fields": ["country"]}
+            }
+          ],
+          "transform": [{"filter": {"param": "year"}}],
+          "mark": {"type": "circle", "size": 100, "opacity": 0.9},
+          "encoding": {"color": {"field": "name", "title": "Region"}}
+        },
+        {
+          "transform": [
+            {
+              "filter": {
+                "and": [
+                  {"param": "year"},
+                  {"or": [
+                    {"param": "clicked", "empty": false},
+                    {"param": "hovered", "empty": false}
+                  ]}
+                ]
+              }
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "yOffset": -12,
+            "fontSize": 12,
+            "fontWeight": "bold"
+          },
+          "encoding": {
+            "text": {"field": "country"},
+            "color": {"field": "name", "title": "Region"}
+          }
+        },
+        {
+          "transform": [
+            {"filter": {"param": "hovered", "empty": false}},
+            {"filter": {"not": {"param": "year"}}}
+          ],
+          "layer": [
+            {
+              "mark": {
+                "type": "text",
+                "yOffset": -12,
+                "fontSize": 12,
+                "color": "gray"
+              },
+              "encoding": {"text": {"field": "year"}}
+            },
+            {"mark": {"type": "circle", "color": "gray"}}
+          ]
+        }
+      ]
+    }
+  ]
+}
+;
+
+      embedExample('#interactive_global_development', spec, false);
+  }
+</script>
+
+<p><a href="https://vega.github.io/editor/#/examples/vega-lite/interactive_global_development">
+  View this example in the online editor
+</a></p>
+
+<h3 id="spec">Vega-Lite JSON Specification</h3>
+
+<pre class="example-spec"><code class="language-json">{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "An interactive scatter plot of global health statistics by country and year.",
+  "data": {"url": "data/gapminder.json"},
+  "width": 800,
+  "height": 500,
+  "layer": [
+    {
+      "transform": [
+        {"filter": {"field": "country", "equal": "Afghanistan"}},
+        {"filter": {"param": "year"}}
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 100,
+        "x": 420,
+        "y": 250,
+        "opacity": 0.06
+      },
+      "encoding": {"text": {"field": "year"}}
+    },
+    {
+      "transform": [
+        {
+          "lookup": "cluster",
+          "from": {
+            "key": "id",
+            "fields": ["name"],
+            "data": {
+              "values": [
+                {"id": 0, "name": "South Asia"},
+                {"id": 1, "name": "Europe &amp; Central Asia"},
+                {"id": 2, "name": "Sub-Saharan Africa"},
+                {"id": 3, "name": "America"},
+                {"id": 4, "name": "East Asia &amp; Pacific"},
+                {"id": 5, "name": "Middle East &amp; North Africa"}
+              ]
+            }
+          }
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "fertility",
+          "type": "quantitative",
+          "scale": {"domain": [0, 9]},
+          "axis": {"tickCount": 5, "title": "Fertility"}
+        },
+        "y": {
+          "field": "life_expect",
+          "type": "quantitative",
+          "scale": {"domain": [20, 85]},
+          "axis": {"tickCount": 5, "title": "Life Expectancy"}
+        }
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "line",
+            "size": 4,
+            "color": "lightgray",
+            "strokeCap": "round"
+          },
+          "encoding": {
+            "detail": {"field": "country"},
+            "order": {"field": "year"},
+            "opacity": {
+              "condition": {
+                "test": {"or": [
+                  {"param": "hovered", "empty": false},
+                  {"param": "clicked", "empty": false}
+                ]},
+                "value": 0.8
+              },
+              "value": 0
+            }
+          }
+        },
+        {
+          "params": [
+            {
+              "name": "year",
+              "value": [{"year": 1955}],
+              "select": {
+                "type": "point",
+                "fields": ["year"]
+              },
+              "bind": {
+                "name": "Year",
+                "input": "range",
+                "min": 1955, "max": 2005, "step": 5
+              }
+            },
+            {
+              "name": "hovered",
+              "select": {
+                "type": "point",
+                "fields": ["country"],
+                "toggle": false,
+                "on": "pointerover"
+              }
+            },
+            {
+              "name": "clicked",
+              "select": {"type": "point", "fields": ["country"]}
+            }
+          ],
+          "transform": [{"filter": {"param": "year"}}],
+          "mark": {"type": "circle", "size": 100, "opacity": 0.9},
+          "encoding": {"color": {"field": "name", "title": "Region"}}
+        },
+        {
+          "transform": [
+            {
+              "filter": {
+                "and": [
+                  {"param": "year"},
+                  {"or": [
+                    {"param": "clicked", "empty": false},
+                    {"param": "hovered", "empty": false}
+                  ]}
+                ]
+              }
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "yOffset": -12,
+            "fontSize": 12,
+            "fontWeight": "bold"
+          },
+          "encoding": {
+            "text": {"field": "country"},
+            "color": {"field": "name", "title": "Region"}
+          }
+        },
+        {
+          "transform": [
+            {"filter": {"param": "hovered", "empty": false}},
+            {"filter": {"not": {"param": "year"}}}
+          ],
+          "layer": [
+            {
+              "mark": {
+                "type": "text",
+                "yOffset": -12,
+                "fontSize": 12,
+                "color": "gray"
+              },
+              "encoding": {"text": {"field": "year"}}
+            },
+            {"mark": {"type": "circle", "color": "gray"}}
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+</code></pre>
+
+
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/next/site/_data/examples.json">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+  </body>
+</html>

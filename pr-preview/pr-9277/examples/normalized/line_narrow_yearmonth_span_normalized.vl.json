@@ -1,0 +1,35 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Google's stock price first half of 2006.",
+  "data": {"url": "data/stocks.csv"},
+  "width": 500,
+  "transform": [
+    {"filter": "datum.symbol==='GOOG'"},
+    {"filter": {"field": "date", "timeUnit": "year", "equal": 2006}},
+    {"filter": {"field": "date", "timeUnit": "month", "range": [1, 6]}}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "line", "tooltip": true},
+      "encoding": {
+        "x": {
+          "field": "date",
+          "timeUnit": {"unit": "yearmonth"},
+          "type": "temporal"
+        },
+        "y": {"aggregate": "average", "field": "price", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": {"type": "point", "opacity": 1, "filled": true, "tooltip": true},
+      "encoding": {
+        "x": {
+          "field": "date",
+          "timeUnit": {"unit": "yearmonth"},
+          "type": "temporal"
+        },
+        "y": {"aggregate": "average", "field": "price", "type": "quantitative"}
+      }
+    }
+  ]
+}

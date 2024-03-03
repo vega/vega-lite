@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <link rel="shortcut icon" href="https://vega.github.io/favicon.ico" />
+
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Bar Chart showing Initials of Month Names | Vega-Lite</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Bar Chart showing Initials of Month Names" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Using labelExpr to show only initial letters of month names." />
+<meta property="og:description" content="Using labelExpr to show only initial letters of month names." />
+<link rel="canonical" href="https://vega.github.io/vega-lite/examples/bar_month_temporal_initial.html" />
+<meta property="og:url" content="https://vega.github.io/vega-lite/examples/bar_month_temporal_initial.html" />
+<meta property="og:site_name" content="Vega-Lite" />
+<meta property="og:image" content="https://vega.github.io/vega-lite/examples/bar_month_temporal_initial.png" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://vega.github.io/vega-lite/examples/bar_month_temporal_initial.png" />
+<meta property="twitter:title" content="Bar Chart showing Initials of Month Names" />
+<meta name="twitter:site" content="@vega_vis" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Using labelExpr to show only initial letters of month names.","headline":"Bar Chart showing Initials of Month Names","image":"https://vega.github.io/vega-lite/examples/bar_month_temporal_initial.png","url":"https://vega.github.io/vega-lite/examples/bar_month_temporal_initial.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+    <script>
+      const BASEURL = window.location.origin + '/vega-lite';
+    </script>
+
+    <link rel="stylesheet" href="/vega-lite/static/github.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/octicons@4.4.0/build/font/octicons.min.css" />
+    <link rel="stylesheet" href="/vega-lite/static/main.css" />
+  </head>
+  <body>
+    <div class="fill">
+  <header>
+    <nav class="page-centered">
+      <div class="dropdown">
+        <a class="vl-title" href="/vega-lite/">Vega-Lite</a>
+        <div class="dropdown-content">
+          <a href="https://vega.github.io/vega/">Vega</a>
+          <a href="https://altair-viz.github.io/">Altair</a>
+          <a href="https://vega.github.io/vega-lite-api/">Vega-Lite API</a>
+        </div>
+      </div>
+      <div class="vl-links">
+        <div class="primary-links">
+          <a href="/vega-lite/examples/" aria-current="page">Examples</a>
+          <a href="/vega-lite/tutorials/getting_started.html" >Tutorials</a>
+          <a href="/vega-lite/docs/" >Documentation</a>
+          <a href="/vega-lite/usage/embed.html" >Usage</a>
+          <a href="/vega-lite/ecosystem.html" >Ecosystem</a>
+        </div>
+        <div class="secondary-links">
+          <a href="https://www.github.com/vega/vega-lite">GitHub</a>
+          <a href="https://vega.github.io/editor/#/examples/vega-lite/bar">Try Online</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <section class="examples">
+    <div class="page-centered page-content">
+  
+  <h1>Bar Chart showing Initials of Month Names</h1>
+   <p>Using <code>labelExpr</code> to show only initial letters of month names.</p>
+
+<div id="bar_month_temporal_initial"></div>
+
+<script>
+    window.onload = function() {
+      const spec = {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Using `labelExpr` to show only initial letters of month names.",
+  "data": {"url": "data/seattle-weather.csv"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "timeUnit": "month",
+      "field": "date",
+      "axis": {
+        "labelAlign": "left",
+        "labelExpr": "datum.label[0]"
+      }
+    },
+    "y": {"aggregate": "mean", "field": "precipitation"}
+  }
+}
+;
+
+      embedExample('#bar_month_temporal_initial', spec, false);
+  }
+</script>
+
+<p><a href="https://vega.github.io/editor/#/examples/vega-lite/bar_month_temporal_initial">
+  View this example in the online editor
+</a></p>
+
+<h3 id="spec">Vega-Lite JSON Specification</h3>
+
+<pre class="example-spec"><code class="language-json">{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Using `labelExpr` to show only initial letters of month names.",
+  "data": {"url": "data/seattle-weather.csv"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "timeUnit": "month",
+      "field": "date",
+      "axis": {
+        "labelAlign": "left",
+        "labelExpr": "datum.label[0]"
+      }
+    },
+    "y": {"aggregate": "mean", "field": "precipitation"}
+  }
+}
+
+</code></pre>
+
+
+</div>
+
+  </section>
+</div>
+
+<footer>
+  <div class="page-centered">
+   <span class="edit-page">
+      <a href="https://github.com/vega/vega-lite/edit/next/site/_data/examples.json">Edit this page</a> and submit a pull request!
+    </span>
+
+    <a href="http://idl.cs.washington.edu" title="UW Interactive Data Lab" class="idl-logo"><img src="/vega-lite/static/idl-logo.png"/></a>
+  </div>
+</footer>
+
+    <script src="/vega-lite/static/bundle.js"></script>
+  </body>
+</html>

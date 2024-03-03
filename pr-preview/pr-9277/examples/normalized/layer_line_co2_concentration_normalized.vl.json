@@ -1,0 +1,99 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/co2-concentration.csv",
+    "format": {"parse": {"Date": "utc:'%Y-%m-%d'"}}
+  },
+  "width": 800,
+  "height": 500,
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "type": "quantitative",
+          "title": "Year into Decade",
+          "axis": {"tickCount": 11},
+          "field": "scaled_date"
+        },
+        "y": {
+          "title": "CO2 concentration in ppm",
+          "type": "quantitative",
+          "scale": {"zero": false},
+          "field": "CO2"
+        },
+        "color": {
+          "field": "decade",
+          "type": "ordinal",
+          "scale": {"scheme": "magma"},
+          "legend": null
+        }
+      }
+    },
+    {
+      "mark": {"type": "text", "baseline": "top", "aria": false},
+      "encoding": {
+        "x": {
+          "type": "quantitative",
+          "title": "Year into Decade",
+          "axis": {"tickCount": 11},
+          "aggregate": "min",
+          "field": "scaled_date"
+        },
+        "y": {
+          "title": "CO2 concentration in ppm",
+          "type": "quantitative",
+          "scale": {"zero": false},
+          "aggregate": {"argmin": "scaled_date"},
+          "field": "CO2"
+        },
+        "color": {
+          "field": "decade",
+          "type": "ordinal",
+          "scale": {"scheme": "magma"},
+          "legend": null
+        },
+        "text": {"aggregate": {"argmin": "scaled_date"}, "field": "year"}
+      }
+    },
+    {
+      "mark": {"type": "text", "aria": false},
+      "encoding": {
+        "x": {
+          "type": "quantitative",
+          "title": "Year into Decade",
+          "axis": {"tickCount": 11},
+          "aggregate": "max",
+          "field": "scaled_date"
+        },
+        "y": {
+          "title": "CO2 concentration in ppm",
+          "type": "quantitative",
+          "scale": {"zero": false},
+          "aggregate": {"argmax": "scaled_date"},
+          "field": "CO2"
+        },
+        "color": {
+          "field": "decade",
+          "type": "ordinal",
+          "scale": {"scheme": "magma"},
+          "legend": null
+        },
+        "text": {"aggregate": {"argmax": "scaled_date"}, "field": "year"}
+      }
+    }
+  ],
+  "config": {"text": {"align": "left", "dx": 3, "dy": 1}},
+  "transform": [
+    {"calculate": "year(datum.Date)", "as": "year"},
+    {"calculate": "floor(datum.year / 10)", "as": "decade"},
+    {
+      "calculate": "(datum.year % 10) + (month(datum.Date)/12)",
+      "as": "scaled_date"
+    },
+    {
+      "calculate": "datum.first_date === datum.scaled_date ? 'first' : datum.last_date === datum.scaled_date ? 'last' : null",
+      "as": "end"
+    }
+  ]
+}

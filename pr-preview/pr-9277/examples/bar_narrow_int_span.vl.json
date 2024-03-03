@@ -1,0 +1,20 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A simple bar chart with integer axis.",
+  "data": {
+    "values": [
+      {"a": 0, "b": 28},
+      {"a": 1, "b": 38},
+      {"a": 2, "b": 35}
+    ]
+  },
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "a",
+      "type": "quantitative",
+      "axis": {"format": "d"}
+    },
+    "y": {"field": "b", "type": "quantitative"}
+  }
+}

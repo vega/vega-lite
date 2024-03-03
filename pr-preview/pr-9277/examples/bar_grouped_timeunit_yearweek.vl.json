@@ -1,0 +1,14 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 400,
+  "height": 250,
+  "transform": [{"filter": {"timeUnit": "year", "field": "Year", "range": [1970, 1971]}}],
+  "data": {"url": "data/cars.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {"timeUnit": "yearweek", "field": "Year", "type": "temporal"},
+    "xOffset": {"field": "Origin"},
+    "color": {"field": "Origin"},
+    "y": {"aggregate": "count", "title": "Number of Cars"}
+  }
+}
