@@ -1,0 +1,55 @@
+# .github/workflows/preview.yml
+name: Deploy PR previews
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+concurrency: preview-${{ github.ref }}
+
+jobs:
+  # TODO: do we still want to run these on dependabot/non-human branches?
+  deploy-preview-docs:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Copied from a section of release-docs-and-schema.yml
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          cache: 'yarn'
+          node-version: latest
+
+      - name: Install NPM dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Prebuild website
+        run: yarn presite
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./site
+          destination: ./_site
+      # End copy from a section of release-docs-and-schema.yml
+
+      - name: Deploy preview and post github comment
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./_site/
+
+  cleanup-preview-docs:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Cleanup pr-preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./_site/
