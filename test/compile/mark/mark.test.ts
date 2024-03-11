@@ -546,7 +546,7 @@ describe('Mark', () => {
       expect(markGroup[0].clip).toEqual({signal: "datum['foo'] > 10"});
     });
 
-    it('should pass clip as a boolean if clip is a boolean', () => {
+    it('should pass clip as a boolean if clip is true', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {
           type: 'bar',
@@ -559,6 +559,21 @@ describe('Mark', () => {
 
       const markGroup = parseMarkGroups(model);
       expect(markGroup[0].clip).toBe(true);
+    });
+
+    it('should not have clip defined if clip is false', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          clip: false
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'}
+        }
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].clip).toBeUndefined();
     });
   });
 });

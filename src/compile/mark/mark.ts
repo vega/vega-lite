@@ -5,7 +5,7 @@ import {isAggregate, pathGroupingFields} from '../../encoding';
 import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortByEncoding, isSortField} from '../../sort';
 import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util';
-import {VgCompare, VgEncodeEntry, VG_CORNERRADIUS_CHANNELS, isSignalRef} from '../../vega.schema';
+import {VgCompare, VgEncodeEntry, VG_CORNERRADIUS_CHANNELS} from '../../vega.schema';
 import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {arc} from './arc';
@@ -308,8 +308,7 @@ export function getSort(model: UnitModel): VgCompare {
 function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix: ''}) {
   const {mark, markDef, encoding, config} = model;
 
-  const clipDef = getFirstDefined(markDef.clip, scaleClip(model), projectionClip(model));
-  const clip = isSignalRef(clipDef) ? clipDef : clipDef ? true : undefined;
+  const clip = getFirstDefined(markDef.clip, scaleClip(model), projectionClip(model));
   const style = getStyles(markDef);
   const key = encoding.key;
   const sort = getSort(model);
