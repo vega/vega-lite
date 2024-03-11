@@ -514,4 +514,66 @@ describe('Mark', () => {
       expect(mark[0].clip).toBe(true);
     });
   });
+
+  describe('signal clipping', () => {
+    it('should pass clip as a signal if clip is an expression', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          clip: {expr: "datum['foo'] > 10"}
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'}
+        }
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].clip).toEqual({signal: "datum['foo'] > 10"});
+    });
+
+    it('should pass clip as a signal if clip is a signal', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          clip: {signal: "datum['foo'] > 10"}
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'}
+        }
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].clip).toEqual({signal: "datum['foo'] > 10"});
+    });
+
+    it('should pass clip as a boolean if clip is true', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          clip: true
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'}
+        }
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].clip).toBe(true);
+    });
+
+    it('should not have clip defined if clip is false', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          clip: false
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'}
+        }
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].clip).toBeUndefined();
+    });
+  });
 });
