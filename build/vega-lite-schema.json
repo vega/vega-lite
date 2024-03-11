@@ -16749,8 +16749,15 @@
           ]
         },
         "clip": {
-          "description": "Whether a mark be clipped to the enclosing group’s width and height.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Whether a mark be clipped to the enclosing group’s width and height."
         },
         "color": {
           "anyOf": [
@@ -18300,8 +18307,15 @@
           ]
         },
         "clip": {
-          "description": "Whether a mark be clipped to the enclosing group’s width and height.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Whether a mark be clipped to the enclosing group’s width and height."
         },
         "color": {
           "anyOf": [
