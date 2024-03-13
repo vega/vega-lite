@@ -1,0 +1,32 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "data": {
+    "url": "https://cdn.jsdelivr.net/npm/vega-datasets@2.2/data/world-110m.json",
+    "format": {"type": "topojson", "feature": "land"}
+  },
+  "projection": {
+    "fit": {
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [[[-3, 52], [4, 52], [4, 45], [-3, 45], [-3, 52]]],
+            "type": "Polygon"
+          },
+          "properties": {},
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [[[-3, 59], [4, 59], [4, 52], [-3, 52], [-3, 59]]],
+            "type": "Polygon"
+          },
+          "properties": {},
+          "type": "Feature"
+        }
+      ],
+      "type": "FeatureCollection"
+    }
+  },
+  "mark": {"type": "geoshape", "clip": true}
+}
