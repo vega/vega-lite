@@ -89,6 +89,76 @@ describe('normalizeBoxMinMax', () => {
     ]);
   });
 
+  it('should produce correct transform with values that include periods in field names', () => {
+    const output = normalize(
+      {
+        description: 'A box plot showing median, min, and max in the US population distribution of age groups in 2000.',
+        data: {
+          values: [
+            {'foo.bar': 10},
+            {'foo.bar': 20},
+            {'foo.bar': 30},
+            {'foo.bar': 40},
+            {'foo.bar': 50},
+            {'foo.bar': 60},
+            {'foo.bar': 70},
+            {'foo.bar': 80},
+            {'foo.bar': 90},
+            {'foo.bar': 100}
+          ]
+        },
+        mark: {
+          type: 'boxplot',
+          extent: 'min-max',
+          size: 5
+        },
+        encoding: {
+          x: {field: 'one\\.two', type: 'quantitative'},
+          y: {
+            field: 'three\\.four',
+            type: 'quantitative',
+            axis: {title: 'Population'}
+          },
+          color: {value: 'skyblue'}
+        }
+      },
+      defaultConfig
+    );
+
+    expect(output.transform).toEqual([
+      {
+        aggregate: [
+          {
+            op: 'q1',
+            field: 'three\\.four',
+            as: 'lower_box_three.four'
+          },
+          {
+            op: 'q3',
+            field: 'three\\.four',
+            as: 'upper_box_three.four'
+          },
+          {
+            op: 'median',
+            field: 'three\\.four',
+            as: 'mid_box_three.four'
+          },
+          {
+            op: 'min',
+            field: 'three\\.four',
+            as: 'lower_whisker_three.four'
+          },
+          {
+            op: 'max',
+            field: 'three\\.four',
+            as: 'upper_whisker_three.four'
+          }
+        ],
+        groupby: ['one\\.two'] // should group by age
+      }
+    ]);
+  });
+
   it('should produce an error if neither the x axis or y axis is specified', () => {
     expect(() => {
       normalize(

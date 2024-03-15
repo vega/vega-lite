@@ -8,7 +8,7 @@ import {isMarkDef, MarkDef, MarkInvalidMixins} from '../mark';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
-import {isEmpty, omit} from '../util';
+import {isEmpty, omit, removePathFromField} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -119,6 +119,8 @@ export function normalizeBoxPlot(
     boxOrient,
     customTooltipWithoutAggregatedField
   } = boxParams(spec, extent, config);
+
+  const aliasedFieldName = removePathFromField(continuousAxisChannelDef.field);
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
 
@@ -258,23 +260,23 @@ export function normalizeBoxPlot(
           {
             op: 'min',
             field: continuousAxisChannelDef.field,
-            as: `lower_whisker_${continuousAxisChannelDef.field}`
+            as: `lower_whisker_${aliasedFieldName}`
           },
           {
             op: 'max',
             field: continuousAxisChannelDef.field,
-            as: `upper_whisker_${continuousAxisChannelDef.field}`
+            as: `upper_whisker_${aliasedFieldName}`
           },
           // preserve lower_box / upper_box
           {
             op: 'min',
             field: `lower_box_${continuousAxisChannelDef.field}`,
-            as: `lower_box_${continuousAxisChannelDef.field}`
+            as: `lower_box_${aliasedFieldName}`
           },
           {
             op: 'max',
             field: `upper_box_${continuousAxisChannelDef.field}`,
-            as: `upper_box_${continuousAxisChannelDef.field}`
+            as: `upper_box_${aliasedFieldName}`
           },
           ...aggregate
         ],
@@ -334,16 +336,17 @@ export function normalizeBoxPlot(
 }
 
 function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
+  const aliasedFieldName = removePathFromField(continousAxisField);
   return [
     {
       op: 'q1',
       field: continousAxisField,
-      as: `lower_box_${continousAxisField}`
+      as: `lower_box_${aliasedFieldName}`
     },
     {
       op: 'q3',
       field: continousAxisField,
-      as: `upper_box_${continousAxisField}`
+      as: `upper_box_${aliasedFieldName}`
     }
   ];
 }
@@ -356,6 +359,7 @@ function boxParams(
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
   const continuousFieldName: string = continuousAxisChannelDef.field;
+  const aliasedFieldName = removePathFromField(continuousFieldName);
 
   const boxPlotType = getBoxPlotType(extent);
 
@@ -364,17 +368,17 @@ function boxParams(
     {
       op: 'median',
       field: continuousFieldName,
-      as: `mid_box_${continuousFieldName}`
+      as: `mid_box_${aliasedFieldName}`
     },
     {
       op: 'min',
       field: continuousFieldName,
-      as: (boxPlotType === 'min-max' ? 'lower_whisker_' : 'min_') + continuousFieldName
+      as: (boxPlotType === 'min-max' ? 'lower_whisker_' : 'min_') + aliasedFieldName
     },
     {
       op: 'max',
       field: continuousFieldName,
-      as: (boxPlotType === 'min-max' ? 'upper_whisker_' : 'max_') + continuousFieldName
+      as: (boxPlotType === 'min-max' ? 'upper_whisker_' : 'max_') + aliasedFieldName
     }
   ];
 
@@ -385,15 +389,15 @@ function boxParams(
           // This is for the  original k-IQR, which we do not expose
           {
             calculate: `datum["upper_box_${continuousFieldName}"] - datum["lower_box_${continuousFieldName}"]`,
-            as: `iqr_${continuousFieldName}`
+            as: `iqr_${aliasedFieldName}`
           },
           {
             calculate: `min(datum["upper_box_${continuousFieldName}"] + datum["iqr_${continuousFieldName}"] * ${extent}, datum["max_${continuousFieldName}"])`,
-            as: `upper_whisker_${continuousFieldName}`
+            as: `upper_whisker_${aliasedFieldName}`
           },
           {
             calculate: `max(datum["lower_box_${continuousFieldName}"] - datum["iqr_${continuousFieldName}"] * ${extent}, datum["min_${continuousFieldName}"])`,
-            as: `lower_whisker_${continuousFieldName}`
+            as: `lower_whisker_${aliasedFieldName}`
           }
         ];
 
