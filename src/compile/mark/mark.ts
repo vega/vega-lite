@@ -323,7 +323,7 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
     {
       name: model.getName('marks'),
       type: markCompiler[mark].vgMark,
-      ...(clip ? {clip: true} : {}),
+      ...(clip ? {clip} : {}),
       ...(style ? {style} : {}),
       ...(key ? {key: key.field} : {}),
       ...(sort ? {sort} : {}),
@@ -376,7 +376,7 @@ function interactiveFlag(model: UnitModel) {
   }
   return parentCount
     ? {
-        interactive: unitCount > 0 || model.mark === 'geoshape' || !!model.encoding.tooltip
+        interactive: unitCount > 0 || model.mark === 'geoshape' || !!model.encoding.tooltip || !!model.markDef.tooltip
       }
     : null;
 }

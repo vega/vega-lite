@@ -1,5 +1,27 @@
 
 
+# [5.17.0](https://github.com/vega/vega-lite/compare/v5.16.3...v5.17.0) (2024-03-12)
+
+
+### Bug Fixes
+
+* add markDef.tooltip for interactive check ([#9237](https://github.com/vega/vega-lite/issues/9237)) ([3891832](https://github.com/vega/vega-lite/commit/3891832bc50e8d94cbdc0756b4ef26f860477866)), closes [#9190](https://github.com/vega/vega-lite/issues/9190) [/github.com/vega/vega-lite/blob/ffec017f638103c37d0dbe72cac7d44f4f44b9d6/src/compile/mark/mark.ts#L377-L381](https://github.com//github.com/vega/vega-lite/blob/ffec017f638103c37d0dbe72cac7d44f4f44b9d6/src/compile/mark/mark.ts/issues/L377-L381)
+* duplicate sorting in stack ([#9213](https://github.com/vega/vega-lite/issues/9213)) ([3e35dc2](https://github.com/vega/vega-lite/commit/3e35dc22ec50489fc46eb875a9cbfdfd2c4e28f2)), closes [#8033](https://github.com/vega/vega-lite/issues/8033)
+* fix typo in time unit 'weekdayhours' ([#9206](https://github.com/vega/vega-lite/issues/9206)) ([12788a5](https://github.com/vega/vega-lite/commit/12788a59a4c8313f56c0558163c26b3dce07756d))
+* mark sequential scales as deprecated ([#9212](https://github.com/vega/vega-lite/issues/9212)) ([93a44db](https://github.com/vega/vega-lite/commit/93a44db5757787044942c3f09964524183797463)), closes [#9017](https://github.com/vega/vega-lite/issues/9017)
+* remove default opacity if fillOpacity is set ([#9238](https://github.com/vega/vega-lite/issues/9238)) ([98ba02d](https://github.com/vega/vega-lite/commit/98ba02d7624fcdf9dd90661fca2f3ffd1f11e7ff)), closes [#9137](https://github.com/vega/vega-lite/issues/9137) [#9163](https://github.com/vega/vega-lite/issues/9163)
+* revert [#9253](https://github.com/vega/vega-lite/issues/9253) ([#9267](https://github.com/vega/vega-lite/issues/9267)) ([9da3ecb](https://github.com/vega/vega-lite/commit/9da3ecbd35b76f99c202518e67e76e9c9c9cca04))
+* support arrays in color schemes ([#9262](https://github.com/vega/vega-lite/issues/9262)) ([d86c90e](https://github.com/vega/vega-lite/commit/d86c90eb80eb736faca18a009e096d9d5450b5e1)), closes [#9022](https://github.com/vega/vega-lite/issues/9022)
+* update deps and resolve issue with images in docs ([#9210](https://github.com/vega/vega-lite/issues/9210)) ([fc94297](https://github.com/vega/vega-lite/commit/fc942975c125ebcc9d7cd6b2439adb88a1fa9f9a))
+* use child signal for radius if faceted ([#9232](https://github.com/vega/vega-lite/issues/9232)) ([e11af45](https://github.com/vega/vega-lite/commit/e11af455edfd11d992838a51cf842a20a6cd0069)), closes [#8754](https://github.com/vega/vega-lite/issues/8754) [/github.com/vega/vega-lite/blob/c33f46bad7f80f779e463a8a36481f888f18e222/src/compile/scale/range.ts#L311-L314](https://github.com//github.com/vega/vega-lite/blob/c33f46bad7f80f779e463a8a36481f888f18e222/src/compile/scale/range.ts/issues/L311-L314)
+
+
+### Features
+
+* 'move' cursor added over brush mark ([#9164](https://github.com/vega/vega-lite/issues/9164)) ([ffec017](https://github.com/vega/vega-lite/commit/ffec017f638103c37d0dbe72cac7d44f4f44b9d6))
+* add support for signals in mark clip ([#9282](https://github.com/vega/vega-lite/issues/9282)) ([bf14024](https://github.com/vega/vega-lite/commit/bf140243e51cb45a516a9fef77f93790ddb8389b))
+* update Vega and other deps ([#9182](https://github.com/vega/vega-lite/issues/9182)) ([e3a6232](https://github.com/vega/vega-lite/commit/e3a6232e0fee0802edbbc5cf4180c359ea72f1bf))
+
 ## [5.16.3](https://github.com/vega/vega-lite/compare/v5.16.2...v5.16.3) (2023-11-10)
 
 

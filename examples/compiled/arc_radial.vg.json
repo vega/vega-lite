@@ -34,10 +34,7 @@
           "type": "stack",
           "groupby": [],
           "field": "data",
-          "sort": {
-            "field": ["data", "data"],
-            "order": ["ascending", "ascending"]
-          },
+          "sort": {"field": ["data"], "order": ["ascending"]},
           "as": ["data_start", "data_end"],
           "offset": "zero"
         },

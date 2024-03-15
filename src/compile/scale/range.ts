@@ -63,6 +63,7 @@ import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
 import {durationExpr} from '../../timeunit';
+import {isFacetModel} from '../model';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
@@ -211,7 +212,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
   return makeImplicit(d);
 }
 
-function parseScheme(scheme: Scheme | SignalRef): RangeScheme {
+function parseScheme(scheme: Scheme | SignalRef | string[]): RangeScheme {
   if (isExtendedScheme(scheme)) {
     return {
       scheme: scheme.name,
@@ -306,11 +307,12 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
 
     case RADIUS: {
       // max radius = half od min(width,height)
+
       return [
         0,
         new SignalRefWrapper(() => {
-          const w = model.getSignalName('width');
-          const h = model.getSignalName('height');
+          const w = model.getSignalName(isFacetModel(model.parent) ? 'child_width' : 'width');
+          const h = model.getSignalName(isFacetModel(model.parent) ? 'child_height' : 'height');
           return `min(${w},${h})/2`;
         })
       ];

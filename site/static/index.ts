@@ -51,8 +51,7 @@ selectAll('h2, h3, h4, h5, h6').each(function (this: d3.BaseType) {
 
 /* Documentation */
 function renderExample($target: Selection<any, any, any, any>, specText: string, figureOnly: boolean) {
-  $target.classed('example', true);
-  $target.text('');
+  $target.classed('example', true).text('');
 
   const vis = $target.append('div').attr('class', 'example-vis');
 
@@ -108,7 +107,7 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
   return view;
 }
 
-function getSpec(el: d3.BaseType) {
+async function getSpec(el: d3.BaseType) {
   const sel = select(el);
   const name = sel.attr('data-name');
   const figureOnly = !!sel.attr('figure-only');
@@ -116,16 +115,17 @@ function getSpec(el: d3.BaseType) {
     const dir = sel.attr('data-dir');
     const fullUrl = `${BASEURL}/examples/${dir ? `${dir}/` : ''}${name}.vl.json`;
 
-    fetch(fullUrl)
-      .then(response => {
-        response
-          .text()
-          .then(spec => {
-            renderExample(sel, spec, figureOnly);
-          })
-          .catch(console.error);
-      })
-      .catch(console.error);
+    try {
+      const spec = await (await fetch(fullUrl)).text();
+      renderExample(sel, spec, figureOnly);
+    } catch (e) {
+      sel
+        .html(
+          `Could not load spec: ${e}. Please report this issue on <a href="https://github.com/vega/vega-lite/issues/new/choose">GitHub</a>.`
+        )
+        .classed('error', true);
+      console.error(e);
+    }
   } else {
     console.error('No "data-name" specified to import examples from');
   }

@@ -1,6 +1,5 @@
 /* eslint-disable jest/expect-expect */
 
-import {assert} from 'chai';
 import {
   bound,
   brush,
@@ -42,7 +41,7 @@ describe('Zoom interval selections at runtime', () => {
     await page.close();
   });
 
-  for (const bind of [bound, unbound]) {
+  for (const bind of [bound, unbound] as const) {
     describe(`Zoom ${bind} interval selections at runtime`, () => {
       beforeAll(() => {
         testRender = testRenderFn(page, `interval/zoom/${bind}`);
@@ -53,9 +52,9 @@ describe('Zoom interval selections at runtime', () => {
       const cmp = (a: number, b: number) => a - b;
 
       const assertExtent = {
-        in: ['isAtLeast', 'isAtMost'],
-        out: ['isAtMost', 'isAtLeast']
-      };
+        in: ['toBeGreaterThanOrEqual', 'toBeLessThanOrEqual'],
+        out: ['toBeLessThanOrEqual', 'toBeGreaterThanOrEqual']
+      } as const;
 
       async function setup(brushKey: string, idx: number, encodings: string[], parent?: string) {
         const inOut: InOut = idx % 2 ? 'out' : 'in';
@@ -84,10 +83,10 @@ describe('Zoom interval selections at runtime', () => {
           const xnew = zoomed.values[0].sort(cmp);
           const ynew = zoomed.values[1].sort(cmp);
           await testRender(`${inOut}-1`);
-          assert[assertExtent[inOut][0]](xnew[0], xold[0]);
-          assert[assertExtent[inOut][1]](xnew[1], xold[1]);
-          assert[assertExtent[inOut][0]](ynew[0], yold[0]);
-          assert[assertExtent[inOut][1]](ynew[1], yold[1]);
+          expect(xnew[0])[assertExtent[inOut][0]](xold[0]);
+          expect(xnew[1])[assertExtent[inOut][1]](xold[1]);
+          expect(ynew[0])[assertExtent[inOut][0]](yold[0]);
+          expect(ynew[1])[assertExtent[inOut][1]](yold[1]);
         }
       });
 
@@ -112,8 +111,8 @@ describe('Zoom interval selections at runtime', () => {
 
           const zoomed = (await page.evaluate(zoom('bins', i, inOut, null, bind === unbound)))[0];
           const ynew = zoomed.values[0].sort(cmp);
-          assert[assertExtent[inOut][0]](ynew[0], yold[0]);
-          assert[assertExtent[inOut][1]](ynew[1], yold[1]);
+          expect(ynew[0])[assertExtent[inOut][0]](yold[0]);
+          expect(ynew[1])[assertExtent[inOut][1]](yold[1]);
           await testRender(`bins_${inOut}-1`);
         }
       });
@@ -129,8 +128,8 @@ describe('Zoom interval selections at runtime', () => {
 
           const zoomed = (await page.evaluate(zoom('zoom', i, inOut, null, bind === unbound)))[0];
           const xnew = zoomed.values[0].sort(cmp);
-          assert[assertExtent[inOut][0]](+xnew[0], +new Date(xold[0]));
-          assert[assertExtent[inOut][1]](+xnew[1], +new Date(xold[1]));
+          expect(+xnew[0])[assertExtent[inOut][0]](+new Date(xold[0]));
+          expect(+xnew[1])[assertExtent[inOut][1]](+new Date(xold[1]));
           await testRender(`temporal_${inOut}-1`);
         }
       });
@@ -154,10 +153,10 @@ describe('Zoom interval selections at runtime', () => {
           const zoomed = (await page.evaluate(zoom('zoom', i, inOut, null, bind === unbound)))[0];
           const xnew = zoomed.values[0].sort(cmp);
           const ynew = zoomed.values[1].sort(cmp);
-          assert[assertExtent[inOut][0]](xnew[0], xold[0]);
-          assert[assertExtent[inOut][1]](xnew[1], xold[1]);
-          assert[assertExtent[inOut][0]](ynew[0], yold[0]);
-          assert[assertExtent[inOut][1]](ynew[1], yold[1]);
+          expect(xnew[0])[assertExtent[inOut][0]](xold[0]);
+          expect(xnew[1])[assertExtent[inOut][1]](xold[1]);
+          expect(ynew[0])[assertExtent[inOut][0]](yold[0]);
+          expect(ynew[1])[assertExtent[inOut][1]](yold[1]);
           await testRender(`logpow_${inOut}-1`);
         }
       });
@@ -201,13 +200,13 @@ describe('Zoom interval selections at runtime', () => {
               await embed(spec(specType, 0, {type, ...binding}, {resolve: {scale: {x: 'shared', y: 'shared'}}}));
               const parent = parentSelector(specType, i);
               const {inOut, xold, yold} = await setup(specType, i, ['x', 'y'], parent);
-              const zoomed = (await page.evaluate(zoom('bins', i, inOut, null, bind === unbound)))[0];
+              const zoomed = (await page.evaluate(zoom('bins', i, inOut, null, false /* bind === unbound */)))[0];
               const xnew = zoomed.values[0].sort(cmp);
               const ynew = zoomed.values[1].sort(cmp);
-              assert[assertExtent[inOut][0]](xnew[0], xold[0]);
-              assert[assertExtent[inOut][1]](xnew[1], xold[1]);
-              assert[assertExtent[inOut][0]](ynew[0], yold[0]);
-              assert[assertExtent[inOut][1]](ynew[1], yold[1]);
+              expect(xnew[0])[assertExtent[inOut][0]](xold[0]);
+              expect(xnew[1])[assertExtent[inOut][1]](xold[1]);
+              expect(ynew[0])[assertExtent[inOut][0]](yold[0]);
+              expect(ynew[1])[assertExtent[inOut][1]](yold[1]);
               await testRender(`${specType}_${inOut}`);
             }
           });

@@ -8,17 +8,17 @@
 
 You can find more details, [documentation](https://vega.github.io/vega-lite/docs/), [examples](https://vega.github.io/vega-lite/examples/), [usage instructions](https://vega.github.io/vega-lite/usage/embed.html), and [tutorials](https://vega.github.io/vega-lite/tutorials/getting_started.html) on the [Vega-Lite website](https://vega.github.io/vega-lite/).
 
-Try using Vega-Lite in the online [Vega Editor](https://vega.github.io/editor/#/custom/vega-lite).
+Try using Vega-Lite in the online [Vega Editor](https://vega.github.io/editor/#/examples/vega-lite/bar).
 
 Contributions are also welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and development guidelines and our [Code of Conduct](https://vega.github.io/vega/about/code-of-conduct/).
 
-Read about future plans in [our roadmap](https://github.com/vega/roadmap/projects/1).
+Read about future plans in [our roadmap](https://github.com/vega/roadmap/projects/).
 
 ## Team
 
 The development of Vega-Lite is led by the alumni and members of the [University of Washington Interactive Data Lab](https://idl.cs.washington.edu) (UW IDL), including [Kanit "Ham" Wongsuphasawat](https://twitter.com/kanitw) (now at Databricks), [Dominik Moritz](https://twitter.com/domoritz) (now at CMU and Apple), [Arvind Satyanarayan](https://twitter.com/arvindsatya1) (now at MIT), and [Jeffrey Heer](https://twitter.com/jeffrey_heer) (UW IDL).
 
-Vega-Lite gets significant contributions from its community--in particular [Will Strimling](https://willium.com), [Yuhan (Zoe) Lu](https://github.com/YuhanLu), [Souvik Sen](https://github.com/invokesus), [Chanwut Kittivorawong](https://github.com/chanwutk), [Matthew Chun](https://github.com/mattwchun), [Akshat Shrivastava](https://github.com/AkshatSh), [Saba Noorassa](https://github.com/Saba9), [Sira Horradarn](https://github.com/sirahd), [Donghao Ren](https://github.com/donghaoren), and [Halden Lin](https://github.com/haldenl). Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
+Vega-Lite gets significant contributions from its community. Please see the [contributors page](https://github.com/vega/vega-lite/graphs/contributors) for the full list of contributors.
 
 ## Citing Vega-Lite
 

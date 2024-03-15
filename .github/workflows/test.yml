@@ -3,14 +3,9 @@ name: Test
 on:
   workflow_dispatch:
   pull_request:
-    paths-ignore:
-      - 'site/**'
   push:
     branches:
       - main
-    paths-ignore:
-      - 'site/**'
-      - 'yarn.lock'
 
 jobs:
   test:
@@ -24,6 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'yarn'
+          node-version: latest
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
@@ -48,6 +44,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'yarn'
+          node-version: latest
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
@@ -71,7 +68,9 @@ jobs:
         run: yarn jest test/ --collectCoverage=true
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3.1.4
+        uses: codecov/codecov-action@v4.1.0
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   test-cli:
     name: CLI
@@ -87,6 +86,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'yarn'
+          node-version: latest
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
