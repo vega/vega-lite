@@ -154,7 +154,7 @@ describe('normalizeBoxMinMax', () => {
             as: 'upper_whisker_three.four'
           }
         ],
-        groupby: ['one\\.two'] // field refernece should be escaped
+        groupby: ['one\\.two'] // field reference should be escaped
       }
     ]);
   });
