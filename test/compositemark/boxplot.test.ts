@@ -131,7 +131,7 @@ describe('normalizeBoxMinMax', () => {
           {
             op: 'q1',
             field: 'three\\.four',
-            as: 'lower_box_three.four'
+            as: 'lower_box_three.four' // aliases should be unescaped
           },
           {
             op: 'q3',
@@ -154,7 +154,7 @@ describe('normalizeBoxMinMax', () => {
             as: 'upper_whisker_three.four'
           }
         ],
-        groupby: ['one\\.two'] // should group by age
+        groupby: ['one\\.two'] // field refernece should be escaped
       }
     ]);
   });
