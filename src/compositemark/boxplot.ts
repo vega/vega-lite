@@ -388,15 +388,15 @@ function boxParams(
       : [
           // This is for the  original k-IQR, which we do not expose
           {
-            calculate: `datum["upper_box_${continuousFieldName}"] - datum["lower_box_${continuousFieldName}"]`,
+            calculate: `datum["upper_box_${aliasedFieldName}"] - datum["lower_box_${aliasedFieldName}"]`,
             as: `iqr_${aliasedFieldName}`
           },
           {
-            calculate: `min(datum["upper_box_${continuousFieldName}"] + datum["iqr_${continuousFieldName}"] * ${extent}, datum["max_${continuousFieldName}"])`,
+            calculate: `min(datum["upper_box_${aliasedFieldName}"] + datum["iqr_${aliasedFieldName}"] * ${extent}, datum["max_${aliasedFieldName}"])`,
             as: `upper_whisker_${aliasedFieldName}`
           },
           {
-            calculate: `max(datum["lower_box_${continuousFieldName}"] - datum["iqr_${continuousFieldName}"] * ${extent}, datum["min_${continuousFieldName}"])`,
+            calculate: `max(datum["lower_box_${aliasedFieldName}"] - datum["iqr_${aliasedFieldName}"] * ${extent}, datum["min_${aliasedFieldName}"])`,
             as: `lower_whisker_${aliasedFieldName}`
           }
         ];
