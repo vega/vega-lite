@@ -60,18 +60,18 @@ describe('compile/data/fold', () => {
       });
     });
 
-    it('should only add resolve "shared" if we set it explicitly', () => {
+    it('should add resolve "independent" if we set it explicitly', () => {
       const transform: Transform = {
         density: 'v',
         groupby: ['a'],
-        resolve: 'shared'
+        resolve: 'independent'
       };
       const density = new DensityTransformNode(null, transform);
       expect(density.assemble()).toEqual({
         type: 'kde',
         groupby: ['a'],
         field: 'v',
-        resolve: 'shared',
+        resolve: 'independent',
         as: ['value', 'density']
       });
     });
