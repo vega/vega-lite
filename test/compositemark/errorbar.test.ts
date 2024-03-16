@@ -1,4 +1,3 @@
-import {AggregateOp} from 'vega';
 import {FieldName} from '../../src/channeldef';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
 import {defaultConfig} from '../../src/config';
@@ -7,7 +6,7 @@ import {isMarkDef} from '../../src/mark';
 import {normalize} from '../../src/normalize';
 import {isLayerSpec, isUnitSpec} from '../../src/spec';
 import {TopLevelUnitSpec} from '../../src/spec/unit';
-import {isAggregate, isCalculate, Transform} from '../../src/transform';
+import {AggregateFieldOp, isAggregate, isCalculate, Transform} from '../../src/transform';
 import {some} from '../../src/util';
 import {assertIsLayerSpec, assertIsUnitSpec} from '../util';
 
@@ -597,7 +596,7 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
   }
 });
 
-function isPartOfExtent(extent: ErrorBarExtent, op: AggregateOp) {
+function isPartOfExtent(extent: ErrorBarExtent, op: AggregateFieldOp) {
   if (extent === 'ci') {
     return op === 'ci0' || op === 'ci1';
   } else if (extent === 'iqr') {
