@@ -69,7 +69,11 @@
       }
     },
     {
-      "mark": {"type": "text", "dy": -4, "baseline": "bottom"},
+      "mark": {
+        "type": "text",
+        "dy": {"expr": "datum.amount >= 0 ? -4 : 4"},
+        "baseline": {"expr": "datum.amount >= 0 ? 'bottom' : 'top'"}
+      },
       "encoding": {
         "x": {
           "field": "label",
@@ -77,21 +81,8 @@
           "sort": null,
           "axis": {"labelAngle": 0, "title": "Months"}
         },
-        "y": {"field": "sum_inc", "type": "quantitative"},
-        "text": {"field": "sum_inc", "type": "nominal"}
-      }
-    },
-    {
-      "mark": {"type": "text", "dy": 4, "baseline": "top"},
-      "encoding": {
-        "x": {
-          "field": "label",
-          "type": "ordinal",
-          "sort": null,
-          "axis": {"labelAngle": 0, "title": "Months"}
-        },
-        "y": {"field": "sum_dec", "type": "quantitative"},
-        "text": {"field": "sum_dec", "type": "nominal"}
+        "y": {"field": "sum", "type": "quantitative"},
+        "text": {"field": "sum", "type": "nominal"}
       }
     },
     {
@@ -137,14 +128,6 @@
       "calculate": "(datum.label !== 'Begin' && datum.label !== 'End' && datum.amount > 0 ? '+' : '') + datum.amount",
       "as": "text_amount"
     },
-    {"calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center"},
-    {
-      "calculate": "datum.sum < datum.previous_sum ? datum.sum : ''",
-      "as": "sum_dec"
-    },
-    {
-      "calculate": "datum.sum > datum.previous_sum ? datum.sum : ''",
-      "as": "sum_inc"
-    }
+    {"calculate": "(datum.sum + datum.previous_sum) / 2", "as": "center"}
   ]
 }
