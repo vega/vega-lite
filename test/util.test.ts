@@ -45,11 +45,11 @@ describe('util', () => {
     });
 
     it('stringifies strings', () => {
-      expect(stringify('foo')).toBe('"foo"');
+      expect(stringify('foo')).toBe("'foo'");
     });
 
     it('stringifies objects', () => {
-      expect(stringify({foo: 42})).toBe('{"foo":42}');
+      expect(stringify({foo: 42})).toBe("{'foo':42}");
     });
   });
 
@@ -67,7 +67,7 @@ describe('util', () => {
     });
 
     it('hashes objects', () => {
-      expect(hash({foo: 42})).toBe('{"foo":42}');
+      expect(hash({foo: 42})).toBe("{'foo':42}");
     });
   });
 
@@ -142,19 +142,19 @@ describe('util', () => {
 
   describe('flatAccessWithDatum', () => {
     it('should parse foo.bar', () => {
-      expect(flatAccessWithDatum('foo.bar')).toBe('datum["foo.bar"]');
+      expect(flatAccessWithDatum('foo.bar')).toBe("datum['foo.bar']");
     });
 
     it('should return string value of field name', () => {
-      expect(flatAccessWithDatum('foo["bar"].baz')).toBe('datum["foo.bar.baz"]');
+      expect(flatAccessWithDatum('foo["bar"].baz')).toBe("datum['foo.bar.baz']");
     });
 
     it('should support custom datum', () => {
-      expect(flatAccessWithDatum('foo', 'parent')).toBe('parent["foo"]');
+      expect(flatAccessWithDatum('foo', 'parent')).toBe("parent['foo']");
     });
 
     it('should support escaped brackets', () => {
-      expect(flatAccessWithDatum('y\\[foo\\]')).toBe('datum["y[foo]"]');
+      expect(flatAccessWithDatum('y\\[foo\\]')).toBe("datum['y[foo]']");
     });
   });
 

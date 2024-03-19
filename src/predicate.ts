@@ -209,23 +209,26 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
     : rawFieldExpr;
 
   if (isFieldEqualPredicate(predicate)) {
-    return `${fieldExpr}===${predicateValueExpr(predicate.equal, unit)}`;
+    const equal = predicate.equal;
+    return `${fieldExpr} === ${predicateValueExpr(equal, unit)}`;
   } else if (isFieldLTPredicate(predicate)) {
     const upper = predicate.lt;
-    return `${fieldExpr}<${predicateValueExpr(upper, unit)}`;
+    return `${fieldExpr} < ${predicateValueExpr(upper, unit)}`;
   } else if (isFieldGTPredicate(predicate)) {
     const lower = predicate.gt;
-    return `${fieldExpr}>${predicateValueExpr(lower, unit)}`;
+    return `${fieldExpr} > ${predicateValueExpr(lower, unit)}`;
   } else if (isFieldLTEPredicate(predicate)) {
     const upper = predicate.lte;
-    return `${fieldExpr}<=${predicateValueExpr(upper, unit)}`;
+    return `${fieldExpr} <= ${predicateValueExpr(upper, unit)}`;
   } else if (isFieldGTEPredicate(predicate)) {
     const lower = predicate.gte;
-    return `${fieldExpr}>=${predicateValueExpr(lower, unit)}`;
+    return `${fieldExpr} >= ${predicateValueExpr(lower, unit)}`;
   } else if (isFieldOneOfPredicate(predicate)) {
-    return `indexof([${predicateValuesExpr(predicate.oneOf, unit).join(',')}], ${fieldExpr}) !== -1`;
+    const oneOf = predicate.oneOf;
+    return `indexof([${predicateValuesExpr(oneOf, unit).join(',')}], ${fieldExpr}) !== -1`;
   } else if (isFieldValidPredicate(predicate)) {
-    return fieldValidPredicate(fieldExpr, predicate.valid);
+    const valid = predicate.valid;
+    return fieldValidPredicate(fieldExpr, valid);
   } else if (isFieldRangePredicate(predicate)) {
     const {range} = predicate;
     const lower = isSignalRef(range) ? {signal: `${range.signal}[0]`} : range[0];

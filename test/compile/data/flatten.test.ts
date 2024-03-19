@@ -78,7 +78,7 @@ describe('compile/data/flatten', () => {
           flatten: ['a', 'b']
         };
         const flatten = new FlattenTransformNode(null, transform);
-        expect(flatten.hash()).toBe('FlattenTransform {"as":["a","b"],"flatten":["a","b"]}');
+        expect(flatten.hash()).toBe("FlattenTransform {'as':['a','b'],'flatten':['a','b']}");
       });
     });
   });

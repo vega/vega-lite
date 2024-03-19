@@ -121,7 +121,7 @@ describe('compile/axis/assemble', () => {
 
     const axes = model.assembleAxes();
     expect(axes[1].encode.labels.update.text).toEqual({
-      signal: 'myFormat(datum.value, {"a":"b"})[0]'
+      signal: "myFormat(datum.value, {'a':'b'})[0]"
     });
   });
 });

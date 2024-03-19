@@ -665,8 +665,8 @@ describe('compile/scale', () => {
         const _domain = testParseDomainForChannel(model, 'y');
 
         expect(_domain).toEqual([
-          {signal: `{data: datetime("Jan 1, 2007")}`},
-          {signal: `{data: datetime("Jan 1, 2009")}`}
+          {signal: `{data: datetime('Jan 1, 2007')}`},
+          {signal: `{data: datetime('Jan 1, 2009')}`}
         ]);
       });
 
@@ -685,8 +685,8 @@ describe('compile/scale', () => {
         const _domain = testParseDomainForChannel(model, 'y');
 
         expect(_domain).toEqual([
-          {signal: `{data: datetime("Jan 1, 2007")}`},
-          {signal: `{data: datetime("Jan 1, 2009")}`}
+          {signal: `{data: datetime('Jan 1, 2007')}`},
+          {signal: `{data: datetime('Jan 1, 2009')}`}
         ]);
       });
 

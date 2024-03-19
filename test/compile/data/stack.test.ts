@@ -202,7 +202,7 @@ describe('compile/data/stack', () => {
       expect(assemble(model)).toEqual([
         {
           type: 'formula',
-          expr: '0.5*datum["bin_maxbins_10_b"]+0.5*datum["bin_maxbins_10_b_end"]',
+          expr: "0.5*datum['bin_maxbins_10_b']+0.5*datum['bin_maxbins_10_b_end']",
           as: 'bin_maxbins_10_b_mid'
         },
         {
@@ -350,7 +350,7 @@ describe('compile/data/stack', () => {
       });
       const stack = StackNode.makeFromEncoding(null, model);
       expect(stack.hash()).toBe(
-        'Stack {"as":["sum_a_start","sum_a_end"],"dimensionFieldDefs":[{"field":"b","type":"nominal"}],"facetby":[],"impute":false,"offset":"zero","sort":{"field":["c"],"order":["ascending"]},"stackField":"sum_a","stackby":["c"]}'
+        "Stack {'as':['sum_a_start','sum_a_end'],'dimensionFieldDefs':[{'field':'b','type':'nominal'}],'facetby':[],'impute':false,'offset':'zero','sort':{'field':['c'],'order':['ascending']},'stackField':'sum_a','stackby':['c']}"
       );
     });
 

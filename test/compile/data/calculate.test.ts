@@ -28,7 +28,7 @@ describe('compile/data/calculate', () => {
       const nodes = assembleFromSortArray(model);
       expect(nodes).toEqual({
         type: 'formula',
-        expr: 'datum["a"]==="B" ? 0 : datum["a"]==="A" ? 1 : datum["a"]==="C" ? 2 : 3',
+        expr: "datum['a'] === 'B' ? 0 : datum[\'a\'] === 'A' ? 1 : datum['a'] === 'C' ? 2 : 3",
         as: 'x_a_sort_index'
       });
     });
@@ -64,7 +64,7 @@ describe('compile/data/calculate', () => {
       });
       const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
       expect(node.hash()).toBe(
-        'Calculate {"as":"x_a_sort_index","calculate":"datum[\\"a\\"]===\\"B\\" ? 0 : datum[\\"a\\"]===\\"A\\" ? 1 : datum[\\"a\\"]===\\"C\\" ? 2 : 3"}'
+        "Calculate {'as':'x_a_sort_index','calculate':'datum[\'a\'] === \\'B\\' ? 0 : datum[\'a\'] === \\'A\\' ? 1 : datum[\'a\'] === \\'C\\' ? 2 : 3'}"
       );
     });
   });

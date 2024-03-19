@@ -22,20 +22,20 @@ describe('fieldDef', () => {
     });
 
     it('should access flattened fields in expression', () => {
-      expect(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'})).toBe('datum["foo.bar.baz"]');
+      expect(vgField({field: 'foo.bar\\.baz'}, {expr: 'datum'})).toBe("datum['foo.bar.baz']");
     });
 
     it('should access argmin/argmax fields in expression', () => {
-      expect(vgField({aggregate: {argmin: 'b'}, field: 'a'})).toBe('argmin_b["a"]');
-      expect(vgField({aggregate: {argmax: 'b'}, field: 'a'})).toBe('argmax_b["a"]');
+      expect(vgField({aggregate: {argmin: 'b'}, field: 'a'})).toBe("argmin_b['a']");
+      expect(vgField({aggregate: {argmax: 'b'}, field: 'a'})).toBe("argmax_b['a']");
     });
 
     it('should support argmin/argmax field names with space', () => {
       expect(vgField({aggregate: {argmin: 'foo bar'}, field: 'bar baz'}, {expr: 'datum'})).toBe(
-        'datum["argmin_foo bar"]["bar baz"]'
+        "datum['argmin_foo bar']['bar baz']"
       );
       expect(vgField({aggregate: {argmax: 'foo bar'}, field: 'bar baz'}, {expr: 'datum'})).toBe(
-        'datum["argmax_foo bar"]["bar baz"]'
+        "datum['argmax_foo bar']['bar baz']"
       );
     });
 
@@ -48,7 +48,7 @@ describe('fieldDef', () => {
     });
 
     it('should support fields with space in datum', () => {
-      expect(vgField({field: 'foo bar'}, {expr: 'datum'})).toBe('datum["foo bar"]');
+      expect(vgField({field: 'foo bar'}, {expr: 'datum'})).toBe("datum['foo bar']");
     });
   });
 

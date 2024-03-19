@@ -210,7 +210,7 @@ describe('compile/data/impute', () => {
         value: 200
       };
       const impute = new ImputeNode(null, transform);
-      expect(impute.hash()).toBe('Impute {"impute":"y","key":"x","method":"value","value":200}');
+      expect(impute.hash()).toBe("Impute {'impute':'y','key':'x','method':'value','value':200}");
     });
   });
 

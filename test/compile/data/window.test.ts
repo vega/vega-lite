@@ -190,7 +190,7 @@ describe('compile/data/window', () => {
     const window = new WindowTransformNode(null, transform);
     const hash = window.hash();
     expect(hash).toBe(
-      'WindowTransform {"frame":[null,0],"groupby":["f"],"ignorePeers":false,"sort":[{"field":"f","order":"ascending"}],"window":[{"as":"ordered_row_number","op":"row_number"}]}'
+      "WindowTransform {'frame':[null,0],'groupby':['f'],'ignorePeers':false,'sort':[{'field':'f','order':'ascending'}],'window':[{'as':'ordered_row_number','op':'row_number'}]}"
     );
   });
 });

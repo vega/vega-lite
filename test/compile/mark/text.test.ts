@@ -149,7 +149,7 @@ describe('Mark: Text', () => {
     });
 
     it('should map to text without template', () => {
-      expect(props.text).toEqual({signal: `isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"]`});
+      expect(props.text).toEqual({signal: `isValid(datum['Origin']) ? datum['Origin'] : ''+datum['Origin']`});
     });
   });
 
@@ -237,14 +237,14 @@ describe('Mark: Text', () => {
 
     it('should map text to expression', () => {
       expect(props.text).toEqual({
-        signal: `format(datum["mean_Acceleration"], "")`
+        signal: `format(datum['mean_Acceleration'], '')`
       });
     });
 
     it('should map color to fill', () => {
       expect(props.fill).toEqual([
         {
-          test: '!isValid(datum["mean_Acceleration"]) || !isFinite(+datum["mean_Acceleration"])',
+          test: "!isValid(datum['mean_Acceleration']) || !isFinite(+datum['mean_Acceleration'])",
           value: null
         },
         {

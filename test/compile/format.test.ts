@@ -20,7 +20,7 @@ describe('Format', () => {
         rawTimeFormat: defaultConfig.timeFormat
       });
       expect(expression).toBe(
-        'timeFormat(datum["month_a"], timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        "timeFormat(datum['month_a'], timeUnitSpecifier(['month'], {'year-month':'%b %Y ','year-month-date':'%b %d, %Y '}))"
       );
     });
 
@@ -32,7 +32,7 @@ describe('Format', () => {
         format: '%Y',
         rawTimeFormat: defaultConfig.timeFormat
       });
-      expect(expression).toBe(`timeFormat(datum["yearmonth_a"], '%Y')`);
+      expect(expression).toBe(`timeFormat(datum['yearmonth_a'], '%Y')`);
     });
 
     it('should get the right time expression for quarter', () => {
@@ -43,7 +43,7 @@ describe('Format', () => {
         rawTimeFormat: defaultConfig.timeFormat
       });
       expect(expression).toBe(
-        'timeFormat(datum["quarter_a"], timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        "timeFormat(datum['quarter_a'], timeUnitSpecifier(['quarter'], {'year-month':'%b %Y ','year-month-date':'%b %d, %Y '}))"
       );
     });
 
@@ -54,7 +54,7 @@ describe('Format', () => {
         rawTimeFormat: defaultConfig.timeFormat
       });
       expect(expression).toBe(
-        'timeFormat(datum["data"], timeUnitSpecifier(["year","quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        "timeFormat(datum['data'], timeUnitSpecifier(['year','quarter'], {'year-month':'%b %Y ','year-month-date':'%b %d, %Y '}))"
       );
     });
 
@@ -67,7 +67,7 @@ describe('Format', () => {
         rawTimeFormat: defaultConfig.timeFormat,
         isUTCScale: true
       });
-      expect(expression).toBe(`utcFormat(datum["yearmonth_a"], '%Y')`);
+      expect(expression).toBe(`utcFormat(datum['yearmonth_a'], '%Y')`);
     });
 
     it('should get the right time expression for with a custom timeFormatType', () => {
@@ -77,7 +77,7 @@ describe('Format', () => {
         format: '%Y',
         formatType: 'customFormat'
       });
-      expect(expression).toBe(`customFormat(datum["a"], '%Y')`);
+      expect(expression).toBe(`customFormat(datum['a'], '%Y')`);
     });
 
     it('should prefer timeUnit over timeFormatType', () => {
@@ -88,7 +88,7 @@ describe('Format', () => {
         timeUnit: 'date',
         formatType: 'customFormat'
       });
-      expect(expression).toBe(`timeFormat(datum["date_a"], '%Y')`);
+      expect(expression).toBe(`timeFormat(datum['date_a'], '%Y')`);
     });
   });
 
@@ -101,7 +101,7 @@ describe('Format', () => {
     it('returns the the formatted timeUnitExpression', () => {
       const formatted = timeFormat({timeUnit: 'date', config: {}});
       expect(formatted).toEqual({
-        signal: 'timeUnitSpecifier(["date"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+        signal: "timeUnitSpecifier(['date'], {'year-month':'%b %Y ','year-month-date':'%b %d, %Y '})"
       });
     });
 
@@ -167,7 +167,7 @@ describe('Format', () => {
           config: {}
         })
       ).toEqual({
-        signal: 'format(parent["foo"], ".2f")'
+        signal: "format(parent['foo'], '.2f')"
       });
     });
 
@@ -182,7 +182,7 @@ describe('Format', () => {
         })
       ).toEqual({
         signal:
-          '!isValid(parent["bin_maxbins_10_foo"]) || !isFinite(+parent["bin_maxbins_10_foo"]) ? "null" : format(parent["bin_maxbins_10_foo"], "abc") + " – " + format(parent["bin_maxbins_10_foo_end"], "abc")'
+          "!isValid(parent['bin_maxbins_10_foo']) || !isFinite(+parent['bin_maxbins_10_foo']) ? 'null' : format(parent['bin_maxbins_10_foo'], 'abc') + ' – ' + format(parent['bin_maxbins_10_foo_end'], 'abc')"
       });
     });
 
@@ -196,7 +196,7 @@ describe('Format', () => {
           config: {}
         })
       ).toEqual({
-        signal: 'format(200, ".2f")'
+        signal: "format(200, '.2f')"
       });
     });
 
@@ -238,7 +238,7 @@ describe('Format', () => {
           config: {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true}
         })
       ).toEqual({
-        signal: 'customFormatter(parent["date"], "abc")'
+        signal: "customFormatter(parent['date'], 'abc')"
       });
     });
 
@@ -278,7 +278,7 @@ describe('Format', () => {
           }
         })
       ).toEqual({
-        signal: 'customFormatter(200, "abc")'
+        signal: "customFormatter(200, 'abc')"
       });
     });
   });
@@ -335,7 +335,7 @@ describe('Format', () => {
         false
       );
       expect(format).toEqual({
-        signal: 'timeUnitSpecifier(["hours"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+        signal: "timeUnitSpecifier(['hours'], {'year-month':'%b %Y ','year-month-date':'%b %d, %Y '})"
       });
     });
 

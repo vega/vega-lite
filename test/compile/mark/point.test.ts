@@ -104,7 +104,7 @@ describe('Mark: Point', () => {
 
     const props = point.encodeEntry(model);
 
-    expect(props.x).toEqual({signal: 'scale("x", 0.5 * datum["a_start"] + 0.5 * datum["a_end"])'});
+    expect(props.x).toEqual({signal: "scale('x', 0.5 * datum['a_start'] + 0.5 * datum['a_end'])"});
   });
 
   it('interpolates binned x with band = 0.6', () => {
@@ -121,7 +121,7 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     expect(props.x).toEqual({
-      signal: 'scale("x", 0.4 * datum["bin_maxbins_10_a"] + 0.6 * datum["bin_maxbins_10_a_end"])'
+      signal: "scale('x', 0.4 * datum['bin_maxbins_10_a'] + 0.6 * datum['bin_maxbins_10_a_end'])"
     });
   });
   it('interpolates x timeUnit with timeUnitBand = 0.5', () => {
@@ -139,7 +139,7 @@ describe('Mark: Point', () => {
     });
 
     const props = point.encodeEntry(model);
-    expect(props.x).toEqual({signal: 'scale("x", 0.5 * datum["year_a"] + 0.5 * datum["year_a_end"])'});
+    expect(props.x).toEqual({signal: "scale('x', 0.5 * datum['year_a'] + 0.5 * datum['year_a_end'])"});
   });
 
   it('interpolates nominal x on a band scale with band = 0.6', () => {
@@ -238,7 +238,7 @@ describe('Mark: Point', () => {
 
     it('should test for invalid values on y', () => {
       expect(props.y).toEqual([
-        {field: {group: 'height'}, test: '!isValid(datum["yield"]) || !isFinite(+datum["yield"])'},
+        {field: {group: 'height'}, test: "!isValid(datum['yield']) || !isFinite(+datum['yield'])"},
         {scale: Y, field: 'yield'}
       ]);
     });
