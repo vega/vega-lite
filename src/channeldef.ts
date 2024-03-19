@@ -400,10 +400,10 @@ export interface DatumDef<
 
 export interface FormatMixins {
   /**
-   * When used with the default `"number"` and `"time"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.
+   * When used with the default `"number"`, `"time"`, or `"utc"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.
    *
    * - If the format type is `"number"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).
-   * - If the format type is `"time"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).
+   * - If the format type is `"time"` or `"utc"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).
    *
    * See the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.
    *
@@ -414,13 +414,13 @@ export interface FormatMixins {
   format?: string | Dict<unknown>;
 
   /**
-   * The format type for labels. One of `"number"`, `"time"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).
+   * The format type for labels. One of `"number"`, `"time"`, `"utc"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).
    *
    * __Default value:__
    * - `"time"` for temporal fields and ordinal and nominal fields with `timeUnit`.
    * - `"number"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.
    */
-  formatType?: 'number' | 'time' | string;
+  formatType?: 'number' | 'time' | 'utc' | string;
 }
 
 export type StringDatumDef<F extends Field = string> = DatumDef<F> & FormatMixins;
@@ -1338,7 +1338,7 @@ export function channelCompatibility(
  */
 export function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef: FieldDef<string> | DatumDef): boolean {
   const {formatType} = getFormatMixins(fieldOrDatumDef);
-  return formatType === 'time' || (!formatType && isTimeFieldDef(fieldOrDatumDef));
+  return formatType === 'time' || formatType === 'utc' || (!formatType && isTimeFieldDef(fieldOrDatumDef));
 }
 
 /**
