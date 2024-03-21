@@ -6,7 +6,9 @@ import {
 } from '../../../src/compile/selection/assemble';
 import point from '../../../src/compile/selection/point';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {parseUnitModelWithScale} from '../../util';
+import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
+import {assembleRootData} from '../../../src/compile/data/assemble';
+import {optimizeDataflow} from '../../../src/compile/data/optimize';
 
 describe('Multi Selection', () => {
   const model = parseUnitModelWithScale({
@@ -346,5 +348,159 @@ describe('Multi Selection', () => {
     const marks: any[] = [];
     model.component.selection = {one: selCmpts['one']};
     expect(assembleUnitSelectionMarks(model, marks)).toEqual(marks);
+  });
+});
+
+describe('Animated Selection', () => {
+  const model = parseUnitModelWithScaleAndSelection({
+    data: {
+      url: 'data/gapminder.json'
+    },
+    params: [
+      {
+        name: 'avl',
+        select: {
+          type: 'point',
+          fields: ['year'],
+          on: 'timer'
+        }
+      }
+    ],
+    transform: [
+      {
+        filter: {
+          param: 'avl'
+        }
+      }
+    ],
+    mark: 'point',
+    encoding: {
+      color: {
+        field: 'country'
+      },
+      x: {
+        field: 'fertility',
+        type: 'quantitative'
+      },
+      y: {
+        field: 'life_expect',
+        type: 'quantitative'
+      },
+      time: {
+        field: 'year',
+        type: 'ordinal'
+      }
+    }
+  });
+
+  model.parseData();
+  optimizeDataflow(model.component.data, model);
+
+  it('builds tuple signals', () => {
+    const signals = assembleUnitSelectionSignals(model, []);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'avl_tuple',
+          on: [
+            {
+              events: [{signal: 'eased_anim_clock'}, {signal: 'anim_value'}],
+              update: '{unit: "", fields: avl_tuple_fields, values: [anim_value ? anim_value : min_extent]}',
+              force: true
+            }
+          ]
+        }
+      ])
+    );
+  });
+
+  it('builds clock signals', () => {
+    const signals = assembleTopLevelSignals(model, []);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'anim_clock',
+          init: '0',
+          on: [
+            {
+              events: {type: 'timer', throttle: 16.666666666666668},
+              update:
+                'is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock'
+            }
+          ]
+        },
+        {
+          name: 'last_tick_at',
+          init: 'now()',
+          on: [{events: [{signal: 'anim_clock'}, {signal: 'is_playing'}], update: 'now()'}]
+        }
+      ])
+    );
+  });
+
+  it('builds scale signals', () => {
+    const signals = assembleUnitSelectionSignals(model, []);
+    // TODO(jzong): uncomment commented signals when implementing interpolation
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {name: 'avl_domain', init: "domain('time')"},
+        {name: 'min_extent', init: 'extent(avl_domain)[0]'},
+        // {name: 'max_extent', init: 'extent(avl_domain)[1]'},
+        {name: 'max_range_extent', init: "extent(range('time'))[1]"},
+        // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
+        {name: 'anim_value', update: "invert('time', eased_anim_clock)"}
+      ])
+    );
+  });
+
+  it('builds modify signals', () => {
+    const signals = assembleUnitSelectionSignals(model, []);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'avl_modify',
+          on: [
+            {
+              events: {signal: 'avl_tuple'},
+              update: 'modify("avl_store", avl_tuple, true)'
+            }
+          ]
+        }
+      ])
+    );
+  });
+
+  it('builds top-level signals', () => {
+    const signals = assembleTopLevelSignals(model, []);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'avl',
+          update: 'vlSelectionResolve("avl_store", "union", true, true)'
+        },
+        {
+          name: 'unit',
+          value: {},
+          on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}]
+        }
+      ])
+    );
+  });
+
+  it('builds animation frame datasets', () => {
+    expect(assembleUnitSelectionData(model, assembleRootData(model.component.data, {}))).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'source_0_curr',
+          source: 'source_0',
+          transform: [
+            {
+              type: 'filter',
+              expr: '!length(data("avl_store")) || vlSelectionTest("avl_store", datum)'
+            }
+          ]
+        }
+      ])
+    );
   });
 });

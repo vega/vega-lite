@@ -1,11 +1,11 @@
-import {TUPLE, unitName} from '.';
+import {TUPLE, isTimerSelection, unitName} from '.';
 import {SelectionCompiler} from '.';
 
 export const TOGGLE = '_toggle';
 
 const toggle: SelectionCompiler<'point'> = {
   defined: selCmpt => {
-    return selCmpt.type === 'point' && !!selCmpt.toggle;
+    return selCmpt.type === 'point' && !isTimerSelection(selCmpt) && !!selCmpt.toggle;
   },
 
   signals: (model, selCmpt, signals) => {
