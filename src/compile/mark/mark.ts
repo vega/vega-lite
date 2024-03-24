@@ -323,7 +323,7 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
     {
       name: model.getName('marks'),
       type: markCompiler[mark].vgMark,
-      ...(clip ? {clip: true} : {}),
+      ...(clip ? {clip} : {}),
       ...(style ? {style} : {}),
       ...(key ? {key: key.field} : {}),
       ...(sort ? {sort} : {}),
