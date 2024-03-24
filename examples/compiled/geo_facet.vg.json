@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Faceting folded column data (this could also be done using `repeat` without the transform fold.",
   "background": "white",
   "padding": 5,
   "data": [
