@@ -1,4 +1,6 @@
 {
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Faceting folded column data (this could also be done using `repeat` without the transform fold.",
   "data": {
     "url": "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/us-10m.json",
     "format": {"feature": "states", "type": "topojson"}
