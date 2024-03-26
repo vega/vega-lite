@@ -21,7 +21,7 @@ The density transform performs one-dimensional [kernel density estimation](https
 
 ## Density Transform Definition
 
-{% include table.html props="density,groupby,cumulative,counts,bandwidth,extent,minsteps,maxsteps,steps,as" source="DensityTransform" %}
+{% include table.html props="density,groupby,cumulative,counts,bandwidth,extent,minsteps,maxsteps,resolve,steps,as" source="DensityTransform" %}
 
 ## Usage
 
