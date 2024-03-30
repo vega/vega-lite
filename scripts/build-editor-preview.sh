@@ -33,4 +33,4 @@ cat <<EOF > public/spec/vega/index.json
 EOF
 
 # TBD if some vendor files are needed
-yarn build:only
+yarn run vite build --base /
