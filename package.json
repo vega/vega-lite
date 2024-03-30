@@ -50,6 +50,7 @@
     "clean": "yarn clean:build && del-cli 'site/data/*' 'examples/compiled/*.png' && find site/examples ! -name 'index.md' ! -name 'data' -type f -delete",
     "clean:build": "del-cli 'build/*' !build/vega-lite-schema.json",
     "data": "rsync -r node_modules/vega-datasets/data/* site/data",
+    "build-editor-preview": "yarn --frozen-lockfile && yarn build && yarn link && git clone <git@github.com>:vega/editor.git && cd editor && yarn --frozen-lockfile && yarn link vega-lite && yarn build",
     "schema": "mkdir -p build && ts-json-schema-generator -f tsconfig.json -p src/index.ts -t TopLevelSpec --no-type-check --no-ref-encode > build/vega-lite-schema.json && yarn renameschema && cp build/vega-lite-schema.json site/_data/",
     "renameschema": "scripts/rename-schema.sh",
     "presite": "yarn data && yarn schema && yarn build:site && yarn build:versions && scripts/create-example-pages.sh",
