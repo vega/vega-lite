@@ -12,14 +12,25 @@ git clone https://github.com/vega/editor.git
 
 #
 cd editor
-yarn --frozen-lockfile
+yarn --frozen-lockfile --ignore-scripts
 yarn link vega-lite
 
+# TODO: load in real files if we can get rsync installed in the runner someday?
+# Put index.json files in public/spec/vega-lite and public/spec/vega
+echo "Creating stub index.json for each vega library"
 
-# TODO: load in real files if RSYNC is installable?
+mkdir -p public/spec/vega-lite
+mkdir -p public/spec/vega
+touch public/spec/vega-lite/index.json
+touch public/spec/vega/index.json
 
+cat <<EOF > public/spec/vega-lite/index.json
+{}
+EOF
 
+cat <<EOF > public/spec/vega/index.json
+{}
+EOF
 
-
-# TODO : need to create some vendor files?
+# TBD if some vendor files are needed
 yarn build:only
