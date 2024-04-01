@@ -8297,12 +8297,12 @@ vega-canvas@^1.2.6, vega-canvas@^1.2.7:
   integrity sha512-OkJ9CACVcN9R5Pi9uF6MZBF06pO6qFpDYHWSKBJsdHP5o724KrsgR6UvbnXFH82FdsiTOff/HqjuaG8C7FL+9Q==
 
 vega-cli@^5.27.0:
-  version "5.27.0"
-  resolved "https://registry.yarnpkg.com/vega-cli/-/vega-cli-5.27.0.tgz#a35b48b97ae7ce23e8aa4de0ad330f65db07f530"
-  integrity sha512-ZOQAG545RuP+Bba4udBapaFbSvPMHvfstkC9OLHOcfqjUPrx4XU/HffsiX6D1WrBP+5OoOzvLpNg4u9Agi7uag==
+  version "5.28.0"
+  resolved "https://registry.yarnpkg.com/vega-cli/-/vega-cli-5.28.0.tgz#aeac433233f707fc1e5e3af8f445c9a13ac8553a"
+  integrity sha512-Rb0qwuLV71pkIXVdt78yTJh+KT9Q1avhdWIOwrrc/OHWwRowWlvtoc3pJBHXlGooDqj8gbMkU+MXR3ez2H8glQ==
   dependencies:
     canvas "^2.11.2"
-    vega "5.27.0"
+    vega "5.28.0"
     yargs "17"
 
 vega-crossfilter@~4.1.1:
@@ -8452,10 +8452,10 @@ vega-loader@^4.5.1, vega-loader@~4.5.1:
     vega-format "^1.1.1"
     vega-util "^1.17.1"
 
-vega-parser@~6.2.1:
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-6.2.1.tgz#102299993ef6c9562c6e3388925cb8a2663176ac"
-  integrity sha512-F79bQXt6fMkACR+TfFl7ueehKO26yCR/3iRZxhU7/pgHerx/d8K8pf2onMguu3NAN4eitT+PPuTgkDZtcqo9Qg==
+vega-parser@~6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/vega-parser/-/vega-parser-6.3.0.tgz#64233674dba48b68494e7d95dd15b4c27ef15993"
+  integrity sha512-swS5RuP2imRarMpGWaAZusoKkXc4Z5WxWx349pkqxIAf4F7H8Ya9nThEkSWsFozd75O9nWh0QLifds8Xb7KjUg==
   dependencies:
     vega-dataflow "^5.7.5"
     vega-event-selector "^3.0.1"
@@ -8636,10 +8636,10 @@ vega-wordcloud@~4.1.4:
     vega-statistics "^1.8.1"
     vega-util "^1.17.1"
 
-vega@5.27.0:
-  version "5.27.0"
-  resolved "https://registry.yarnpkg.com/vega/-/vega-5.27.0.tgz#013d567038d9551af8d841588450c06899b785fd"
-  integrity sha512-iYMQZYb2nlJBLCsUZ88pvun2sTcFcLE7GKJWisndLo+KYNMQIRePQ7X2FRuy8yvRRNxfO8XhjImh4OwxZvyYVA==
+vega@5.28.0:
+  version "5.28.0"
+  resolved "https://registry.yarnpkg.com/vega/-/vega-5.28.0.tgz#9c6509b7e3ccb9b610660a43303e165c8e258012"
+  integrity sha512-5EDVhjBUgcVdrA6LZDBLah/nuk4FRUwZqTgP/Yi32qeRCoiN0xkptQ5Sbmj6XfH7wu1SdbAbsCm1Zls+9NC/8Q==
   dependencies:
     vega-crossfilter "~4.1.1"
     vega-dataflow "~5.7.5"
@@ -8653,7 +8653,7 @@ vega@5.27.0:
     vega-hierarchy "~4.1.1"
     vega-label "~1.2.1"
     vega-loader "~4.5.1"
-    vega-parser "~6.2.1"
+    vega-parser "~6.3.0"
     vega-projection "~1.6.0"
     vega-regression "~1.2.0"
     vega-runtime "~6.1.4"
