@@ -5606,16 +5606,16 @@ jest-config@^29.7.0:
     slash "^3.0.0"
     strip-json-comments "^3.1.1"
 
-jest-dev-server@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/jest-dev-server/-/jest-dev-server-9.0.2.tgz#9a1ab8a8eefe76e5115c9266944b7390cd1495b3"
-  integrity sha512-Zc/JB0IlNNrpXkhBw+h86cGrde/Mey52KvF+FER2eyrtYJTHObOwW7Iarxm3rPyTKby5+3Y2QZtl8pRz/5GCxg==
+jest-dev-server@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/jest-dev-server/-/jest-dev-server-10.0.0.tgz#a2f3ccd0b9c9e8a493ab73908bc082bedc6b86eb"
+  integrity sha512-FtyBBDxrAIfTX3hyKSOwj5KU6Z7fFLew5pQYOFpwyf+qpPpULL8aYxtsFkbkAwcs+Mb7qhcNbVLeiWsLOd7CKw==
   dependencies:
     chalk "^4.1.2"
     cwd "^0.10.0"
     find-process "^1.4.7"
     prompts "^2.4.2"
-    spawnd "^9.0.2"
+    spawnd "^10.0.0"
     tree-kill "^1.2.2"
     wait-on "^7.2.0"
 
@@ -7639,10 +7639,10 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.1:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
-spawnd@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/spawnd/-/spawnd-9.0.2.tgz#7799635d183b27552e90ca639876dac10d45f7f7"
-  integrity sha512-nl8DVHEDQ57IcKakzpjanspVChkMpGLuVwMR/eOn9cXE55Qr6luD2Kn06sA0ootRMdgrU4tInN6lA6ohTNvysw==
+spawnd@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/spawnd/-/spawnd-10.0.0.tgz#cf1b222831272f4bef7e2abc9f98cd31c380a4dc"
+  integrity sha512-6GKcakMTryb5b1SWCvdubCDHEsR2k+5VZUD5G19umZRarkvj1RyCGyizcqhjewI7cqZo8fTVD8HpnDZbVOLMtg==
   dependencies:
     signal-exit "^4.1.0"
     tree-kill "^1.2.2"
