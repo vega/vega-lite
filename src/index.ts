@@ -6,5 +6,3 @@ export type {Config} from './config';
 export {normalize} from './normalize';
 export type {TopLevelSpec} from './spec';
 export * from './util';
-
-console.log('Hello, this is proof of a dev build');
