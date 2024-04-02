@@ -8,7 +8,7 @@ import {Resolve} from '../resolve';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
 import {Flag, keys} from '../util';
-import {LayoutAlign, RowCol} from '../vega.schema';
+import {LayoutAlign, RowCol, SubstituteType} from '../vega.schema';
 import {isConcatSpec, isVConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
 
@@ -285,7 +285,7 @@ const COMPOSITION_LAYOUT_PROPERTIES = keys(COMPOSITION_LAYOUT_INDEX);
 export type SpecType = 'unit' | 'facet' | 'layer' | 'concat';
 
 export function extractCompositionLayout(
-  spec: NormalizedSpec,
+  spec: SubstituteType<NormalizedSpec, ExprRef, SignalRef>,
   specType: keyof CompositionConfigMixins,
   config: CompositionConfigMixins
 ): GenericCompositionLayoutWithColumns {

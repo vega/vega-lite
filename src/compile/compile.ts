@@ -20,6 +20,7 @@ import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
+import {deepReplaceExprRef} from '../expr';
 
 export interface CompileOptions {
   /**
@@ -89,7 +90,8 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
 
     // - Decompose all extended unit specs into composition of unit spec. For example, a box plot get expanded into multiple layers of bars, ticks, and rules. The shorthand row/column channel is also expanded to a facet spec.
     // - Normalize autosize and width or height spec
-    const spec = normalize(inputSpec, config);
+    const normalized = normalize(inputSpec, config);
+    const spec = deepReplaceExprRef(normalized) as any;
 
     // 3. Build Model: normalized spec -> Model (a tree structure)
 
@@ -128,7 +130,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
 
     return {
       spec: vgSpec,
-      normalized: spec
+      normalized
     };
   } finally {
     // Reset the singleton logger if a logger is provided

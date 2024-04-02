@@ -1,11 +1,10 @@
 import {Color, InitSignal, Locale, NewSignal, RangeConfig, RangeScheme, SignalRef, writeConfig} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
-import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis';
-import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common';
+import {Axis, AxisConfigMixins, isConditionalAxisValue} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
-import {ExprRef, replaceExprRef} from './expr';
+import {ExprRef, deepReplaceExprRef} from './expr';
 import {VL_ONLY_LEGEND_CONFIG} from './guide';
-import {HeaderConfigMixins, HEADER_CONFIGS} from './header';
+import {HeaderConfigMixins} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import * as mark from './mark';
 import {
@@ -13,7 +12,6 @@ import {
   Mark,
   MarkConfig,
   MarkConfigMixins,
-  MARK_CONFIGS,
   PRIMITIVE_MARKS,
   VL_ONLY_MARK_CONFIG_PROPERTIES,
   VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
@@ -25,7 +23,7 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
-import {duplicate, getFirstDefined, isEmpty, keys, omit} from './util';
+import {duplicate, getFirstDefined, isEmpty} from './util';
 
 export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBackground<ES> {
   /**
@@ -93,7 +91,7 @@ export function getViewConfigDiscreteSize<ES extends ExprRef | SignalRef>(
 
 export const DEFAULT_STEP = 20;
 
-export const defaultViewConfig: ViewConfig<SignalRef> = {
+export const defaultViewConfig: ViewConfig<never> = {
   continuousWidth: 200,
   continuousHeight: 200,
   step: DEFAULT_STEP
@@ -272,7 +270,7 @@ export interface Config<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   /**
    * Projection configuration, which determines default properties for all [projections](https://vega.github.io/vega-lite/docs/projection.html). For a full list of projection configuration options, please see the [corresponding section of the projection documentation](https://vega.github.io/vega-lite/docs/projection.html#config).
    */
-  projection?: ProjectionConfig;
+  projection?: ProjectionConfig<ES>;
 
   /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def). The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config). */
   style?: StyleConfigIndex<ES>;
@@ -300,7 +298,7 @@ export interface Config<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   signals?: (InitSignal | NewSignal)[];
 }
 
-export const defaultConfig: Config<SignalRef> = {
+export const defaultConfig: Config<never> = {
   background: 'white',
 
   padding: 5,
@@ -420,7 +418,7 @@ export const DEFAULT_COLOR = {
   gray15: '#fff'
 };
 
-export function colorSignalConfig(color: boolean | ColorConfig = {}): Config {
+export function colorSignalConfig(color: boolean | ColorConfig = {}): Config<SignalRef> {
   return {
     signals: [
       {
@@ -472,7 +470,7 @@ export function colorSignalConfig(color: boolean | ColorConfig = {}): Config {
   };
 }
 
-export function fontSizeSignalConfig(fontSize: boolean | FontSizeConfig): Config {
+export function fontSizeSignalConfig(fontSize: boolean | FontSizeConfig): Config<SignalRef> {
   return {
     signals: [
       {
@@ -500,7 +498,7 @@ export function fontSizeSignalConfig(fontSize: boolean | FontSizeConfig): Config
   };
 }
 
-export function fontConfig(font: string): Config {
+export function fontConfig(font: string): Config<never> {
   return {
     text: {font},
     style: {
@@ -512,49 +510,14 @@ export function fontConfig(font: string): Config {
   };
 }
 
-function getAxisConfigInternal(axisConfig: AxisConfig<ExprRef | SignalRef>) {
-  const props = keys(axisConfig || {});
-  const axisConfigInternal: AxisConfig<SignalRef> = {};
-  for (const prop of props) {
-    const val = axisConfig[prop];
-    axisConfigInternal[prop as any] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
-      ? signalOrValueRefWithCondition<any>(val)
-      : signalRefOrValue(val);
-  }
-  return axisConfigInternal;
-}
-
-function getStyleConfigInternal(styleConfig: StyleConfigIndex<ExprRef | SignalRef>) {
-  const props = keys(styleConfig);
-
-  const styleConfigInternal: StyleConfigIndex<SignalRef> = {};
-  for (const prop of props) {
-    // We need to cast to cheat a bit here since styleConfig can be either mark config or axis config
-    styleConfigInternal[prop as any] = getAxisConfigInternal(styleConfig[prop] as any);
-  }
-  return styleConfigInternal;
-}
-
-const configPropsWithExpr = [
-  ...MARK_CONFIGS,
-  ...AXIS_CONFIGS,
-  ...HEADER_CONFIGS,
-  'background',
-  'padding',
-  'legend',
-  'lineBreak',
-  'scale',
-  'style',
-  'title',
-  'view'
-] as const;
-
 /**
  * Merge specified config with default config and config for the `color` flag,
  * then replace all expressions with signals
  */
-export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
-  const {color, font, fontSize, selection, ...restConfig} = specifiedConfig;
+export function initConfig(specifiedConfig: Config<ExprRef | SignalRef> = {}): Config<SignalRef> {
+  // TODO: we are using initConfig in the normalizer and in the compiler and therefore run deepReplaceExprRef multiple times on the config
+  const {color, font, fontSize, selection, ...restConfig} = deepReplaceExprRef(specifiedConfig) as Config<SignalRef>;
+
   const mergedConfig = mergeConfig(
     {},
     duplicate(defaultConfig),
@@ -569,54 +532,7 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
     writeConfig(mergedConfig, 'selection', selection, true);
   }
 
-  const outputConfig: Config<SignalRef> = omit(mergedConfig, configPropsWithExpr);
-
-  for (const prop of ['background', 'lineBreak', 'padding']) {
-    if (mergedConfig[prop]) {
-      outputConfig[prop] = signalRefOrValue(mergedConfig[prop]);
-    }
-  }
-
-  for (const markConfigType of mark.MARK_CONFIGS) {
-    if (mergedConfig[markConfigType]) {
-      // FIXME: outputConfig[markConfigType] expects that types are replaced recursively but replaceExprRef only replaces one level deep
-      outputConfig[markConfigType] = replaceExprRef(mergedConfig[markConfigType]) as any;
-    }
-  }
-
-  for (const axisConfigType of AXIS_CONFIGS) {
-    if (mergedConfig[axisConfigType]) {
-      outputConfig[axisConfigType] = getAxisConfigInternal(mergedConfig[axisConfigType]);
-    }
-  }
-
-  for (const headerConfigType of HEADER_CONFIGS) {
-    if (mergedConfig[headerConfigType]) {
-      outputConfig[headerConfigType] = replaceExprRef(mergedConfig[headerConfigType]);
-    }
-  }
-
-  if (mergedConfig.legend) {
-    outputConfig.legend = replaceExprRef(mergedConfig.legend);
-  }
-
-  if (mergedConfig.scale) {
-    outputConfig.scale = replaceExprRef(mergedConfig.scale);
-  }
-
-  if (mergedConfig.style) {
-    outputConfig.style = getStyleConfigInternal(mergedConfig.style);
-  }
-
-  if (mergedConfig.title) {
-    outputConfig.title = replaceExprRef(mergedConfig.title);
-  }
-
-  if (mergedConfig.view) {
-    outputConfig.view = replaceExprRef(mergedConfig.view);
-  }
-
-  return outputConfig;
+  return mergedConfig;
 }
 
 const MARK_STYLES = new Set(['view', ...PRIMITIVE_MARKS]) as ReadonlySet<'view' | Mark>;

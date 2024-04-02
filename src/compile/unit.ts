@@ -1,5 +1,4 @@
 import {NewSignal, SignalRef} from 'vega';
-import {isArray} from 'vega-util';
 import {Axis, AxisInternal, isConditionalAxisValue} from '../axis';
 import {
   Channel,
@@ -27,7 +26,7 @@ import {Config} from '../config';
 import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, initEncoding} from '../encoding';
-import {ExprRef, replaceExprRef} from '../expr';
+import {ExprRef} from '../expr';
 import {LegendInternal} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
@@ -37,7 +36,7 @@ import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
 import {stack, StackProperties} from '../stack';
 import {keys} from '../util';
-import {VgData, VgLayout} from '../vega.schema';
+import {SubstituteType, VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {AxisInternalIndex} from './axis/component';
 import {parseUnitAxes} from './axis/parse';
@@ -74,13 +73,13 @@ export class UnitModel extends ModelWithField {
 
   protected specifiedLegends: LegendInternalIndex = {};
 
-  public specifiedProjection: Projection<ExprRef | SignalRef> = {};
+  public specifiedProjection: Projection<SignalRef> = {};
 
   public readonly selection: SelectionParameter[] = [];
   public children: Model[] = [];
 
   constructor(
-    spec: NormalizedUnitSpec,
+    spec: SubstituteType<NormalizedUnitSpec, ExprRef, SignalRef>,
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {},
@@ -154,23 +153,11 @@ export class UnitModel extends ModelWithField {
         | PositionFieldDef<string>
         | MarkPropFieldOrDatumDef<string>;
       if (fieldOrDatumDef) {
-        scales[channel] = this.initScale(fieldOrDatumDef.scale ?? {});
+        // TODO: remove as Scale<SignalRef> when we have better types for scale
+        scales[channel] = fieldOrDatumDef.scale as Scale<SignalRef>;
       }
       return scales;
     }, {} as ScaleIndex);
-  }
-
-  private initScale(scale: Scale<ExprRef | SignalRef>): Scale<SignalRef> {
-    const {domain, range} = scale;
-    // TODO: we could simplify this function if we had a recursive replace function
-    const scaleInternal = replaceExprRef(scale);
-    if (isArray(domain)) {
-      scaleInternal.domain = domain.map(signalRefOrValue);
-    }
-    if (isArray(range)) {
-      scaleInternal.range = range.map(signalRefOrValue);
-    }
-    return scaleInternal as Scale<SignalRef>;
   }
 
   private initAxes(encoding: Encoding<string>): AxisInternalIndex {
@@ -212,9 +199,7 @@ export class UnitModel extends ModelWithField {
 
       if (fieldOrDatumDef && supportLegend(channel)) {
         const legend = fieldOrDatumDef.legend;
-        _legend[channel] = legend
-          ? replaceExprRef(legend) // convert truthy value to object
-          : legend;
+        _legend[channel] = legend;
       }
 
       return _legend;

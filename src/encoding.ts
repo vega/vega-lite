@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp, ExprRef, SignalRef} from 'vega';
 import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
@@ -94,7 +94,7 @@ import {EncodingFacetMapping} from './spec/facet';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type';
 import {keys, some} from './util';
-import {isSignalRef} from './vega.schema';
+import {SubstituteType, isSignalRef} from './vega.schema';
 import {isBinnedTimeUnit} from './timeunit';
 
 export interface Encoding<F extends Field> {
@@ -507,7 +507,11 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
   };
 }
 
-export function markChannelCompatible(encoding: Encoding<string>, channel: Channel, mark: Mark) {
+export function markChannelCompatible(
+  encoding: SubstituteType<Encoding<string>, ExprRef, SignalRef>,
+  channel: Channel,
+  mark: Mark
+) {
   const markSupported = supportMark(channel, mark);
   if (!markSupported) {
     return false;
@@ -526,7 +530,7 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
 }
 
 export function initEncoding(
-  encoding: Encoding<string>,
+  encoding: SubstituteType<Encoding<string>, ExprRef, SignalRef>,
   mark: Mark,
   filled: boolean,
   config: Config

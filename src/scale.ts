@@ -426,7 +426,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   zero?: boolean;
 }
 
-export const defaultScaleConfig: ScaleConfig<SignalRef> = {
+export const defaultScaleConfig: ScaleConfig<never> = {
   pointPadding: 0.5,
 
   barBandPaddingInner: 0.1,
