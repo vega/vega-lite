@@ -136,7 +136,7 @@ export function normalizeBoxPlot(
 
   const makeBoxPlotExtent = makeBoxPlotPart(encodingWithoutSizeColorAndContinuousAxis);
   const makeBoxPlotBox = makeBoxPlotPart(encodingWithoutContinuousAxis);
-  const defaultBoxColor = isObject(config.boxplot.box) ? config.boxplot.box.color : config.mark.color || '#4c78a8';
+  const defaultBoxColor = (isObject(config.boxplot.box) ? config.boxplot.box.color : config.mark.color) || '#4c78a8';
   const makeBoxPlotMidTick = makeBoxPlotPart({
     ...encodingWithoutSizeColorAndContinuousAxis,
     ...(size ? {size} : {}),
