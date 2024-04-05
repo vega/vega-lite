@@ -188,7 +188,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": [
-            {"test": "datum['lower_box_people'] >= datum['upper_box_people']"},
+            {
+              "test": "datum['lower_box_people'] >= datum['upper_box_people']",
+              "value": "#4c78a8"
+            },
             {"value": "white"}
           ],
           "tooltip": {

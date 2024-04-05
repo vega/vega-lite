@@ -208,7 +208,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": [
-            {"test": "datum['lower_box_b'] >= datum['upper_box_b']"},
+            {
+              "test": "datum['lower_box_b'] >= datum['upper_box_b']",
+              "value": "#4c78a8"
+            },
             {"value": "white"}
           ],
           "tooltip": {

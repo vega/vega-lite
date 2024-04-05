@@ -167,7 +167,8 @@
                 "y": {"field": "age", "type": "ordinal"},
                 "color": {
                   "condition": {
-                    "test": "datum['lower_box_people'] >= datum['upper_box_people']"
+                    "test": "datum['lower_box_people'] >= datum['upper_box_people']",
+                    "value": "#4c78a8"
                   }
                 },
                 "tooltip": [

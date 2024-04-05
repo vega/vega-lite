@@ -221,7 +221,8 @@
           "opacity": {"value": 0.7},
           "fill": [
             {
-              "test": "datum['lower_box_Body Mass (g)'] >= datum['upper_box_Body Mass (g)']"
+              "test": "datum['lower_box_Body Mass (g)'] >= datum['upper_box_Body Mass (g)']",
+              "value": "#4c78a8"
             },
             {"value": "white"}
           ],
