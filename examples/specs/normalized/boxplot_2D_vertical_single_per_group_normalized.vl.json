@@ -1,14 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A simple bar chart with embedded data.",
   "data": {
-    "values": [
-      {"a": "null", "b": 28},
-      {"a": 33, "b": 55},
-      {"a": 33, "b": 43},
-      {"a": "null", "b": 91},
-      {"a": "null", "b": 81},
-      {"a": "null", "b": 53}
-    ]
+    "values": [{"a": "A", "b": 28}, {"a": "A", "b": 30}, {"a": "B", "b": 55}]
   },
   "layer": [
     {
@@ -31,11 +25,7 @@
           "mark": {"type": "point", "style": "boxplot-outliers"},
           "encoding": {
             "y": {"field": "b", "type": "quantitative", "title": "b"},
-            "x": {
-              "field": "a",
-              "type": "quantitative",
-              "axis": {"labelAngle": 0}
-            }
+            "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}}
           }
         },
         {
@@ -55,12 +45,7 @@
           ],
           "layer": [
             {
-              "mark": {
-                "type": "rule",
-                "invalid": "filter",
-                "aria": false,
-                "style": "boxplot-rule"
-              },
+              "mark": {"type": "rule", "aria": false, "style": "boxplot-rule"},
               "encoding": {
                 "y": {
                   "field": "lower_whisker_b",
@@ -70,7 +55,7 @@
                 "y2": {"field": "lower_box_b"},
                 "x": {
                   "field": "a",
-                  "type": "quantitative",
+                  "type": "nominal",
                   "axis": {"labelAngle": 0}
                 },
                 "tooltip": [
@@ -84,17 +69,12 @@
                     "type": "quantitative",
                     "title": "Lower Whisker of b"
                   },
-                  {"field": "a", "type": "quantitative"}
+                  {"field": "a", "type": "nominal"}
                 ]
               }
             },
             {
-              "mark": {
-                "type": "rule",
-                "invalid": "filter",
-                "aria": false,
-                "style": "boxplot-rule"
-              },
+              "mark": {"type": "rule", "aria": false, "style": "boxplot-rule"},
               "encoding": {
                 "y": {
                   "field": "upper_box_b",
@@ -104,7 +84,7 @@
                 "y2": {"field": "upper_whisker_b"},
                 "x": {
                   "field": "a",
-                  "type": "quantitative",
+                  "type": "nominal",
                   "axis": {"labelAngle": 0}
                 },
                 "tooltip": [
@@ -118,7 +98,7 @@
                     "type": "quantitative",
                     "title": "Lower Whisker of b"
                   },
-                  {"field": "a", "type": "quantitative"}
+                  {"field": "a", "type": "nominal"}
                 ]
               }
             }
@@ -145,18 +125,13 @@
             "type": "bar",
             "size": 14,
             "orient": "vertical",
-            "invalid": "filter",
             "ariaRoleDescription": "box",
             "style": "boxplot-box"
           },
           "encoding": {
             "y": {"field": "lower_box_b", "type": "quantitative", "title": "b"},
             "y2": {"field": "upper_box_b"},
-            "x": {
-              "field": "a",
-              "type": "quantitative",
-              "axis": {"labelAngle": 0}
-            },
+            "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}},
             "tooltip": [
               {"field": "max_b", "type": "quantitative", "title": "Max of b"},
               {
@@ -175,7 +150,7 @@
                 "title": "Q1 of b"
               },
               {"field": "min_b", "type": "quantitative", "title": "Min of b"},
-              {"field": "a", "type": "quantitative"}
+              {"field": "a", "type": "nominal"}
             ]
           }
         },
@@ -183,7 +158,6 @@
           "mark": {
             "color": "white",
             "type": "tick",
-            "invalid": "filter",
             "size": 14,
             "orient": "horizontal",
             "aria": false,
@@ -191,11 +165,7 @@
           },
           "encoding": {
             "y": {"field": "mid_box_b", "type": "quantitative", "title": "b"},
-            "x": {
-              "field": "a",
-              "type": "quantitative",
-              "axis": {"labelAngle": 0}
-            },
+            "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}},
             "color": {
               "condition": {
                 "test": "datum['lower_box_b'] >= datum['upper_box_b']",
@@ -220,7 +190,7 @@
                 "title": "Q1 of b"
               },
               {"field": "min_b", "type": "quantitative", "title": "Min of b"},
-              {"field": "a", "type": "quantitative"}
+              {"field": "a", "type": "nominal"}
             ]
           }
         }
