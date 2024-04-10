@@ -25,7 +25,7 @@ export interface Projection<ES extends ExprRef | SignalRef>
 /**
  * Any property of Projection can be in config
  */
-export type ProjectionConfig = Projection<ExprRef>;
+export type ProjectionConfig<ES extends ExprRef | SignalRef = ExprRef> = Projection<ES>;
 
 export const PROJECTION_PROPERTIES: (keyof Projection<ExprRef>)[] = [
   'type',

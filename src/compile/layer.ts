@@ -1,10 +1,10 @@
-import {Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
+import {Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle, ExprRef} from 'vega';
 import {array} from 'vega-util';
 import {Config} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
 import {keys} from '../util';
-import {VgData, VgLayout} from '../vega.schema';
+import {SubstituteType, VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {parseLayerAxes} from './axis/parse';
 import {parseData} from './data/parse';
@@ -21,7 +21,7 @@ export class LayerModel extends Model {
   public readonly children: Model[];
 
   constructor(
-    spec: NormalizedLayerSpec,
+    spec: SubstituteType<NormalizedLayerSpec, ExprRef, SignalRef>,
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins,
@@ -39,7 +39,7 @@ export class LayerModel extends Model {
       if (isLayerSpec(layer)) {
         return new LayerModel(layer, this, this.getName(`layer_${i}`), layoutSize, config);
       } else if (isUnitSpec(layer)) {
-        return new UnitModel(layer, this, this.getName(`layer_${i}`), layoutSize, config);
+        return new UnitModel(layer, this, this.getName(`layer_${i}`), layoutSize, config) as UnitModel;
       }
 
       throw new Error(log.message.invalidSpec(layer));
