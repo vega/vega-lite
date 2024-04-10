@@ -192,6 +192,12 @@
               "title": "Mean of Body Mass (g)",
               "type": "quantitative",
               "field": "mean_Body Mass (g)"
+            },
+            "color": {
+              "condition": {
+                "test": "datum['lower_box_Body Mass (g)'] >= datum['upper_box_Body Mass (g)']",
+                "value": "#4c78a8"
+              }
             }
           }
         }
