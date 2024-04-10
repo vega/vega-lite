@@ -123,7 +123,7 @@ export function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinPara
   return isObject(bin);
 }
 
-export function isParameterExtent(extent: BinExtent): extent is ParameterExtent {
+export function isParameterExtent(extent: unknown): extent is ParameterExtent {
   return extent?.['param'];
 }
 
