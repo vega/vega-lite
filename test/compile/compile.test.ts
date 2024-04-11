@@ -573,3 +573,17 @@ describe('compile/compile', () => {
     expect(spec.autosize['resize']).toBeTruthy();
   });
 });
+
+it('should generate right cursor', () => {
+  const {spec} = compile({
+    data: {url: 'data/population.json'},
+    params: [{name: 'select', select: 'point'}],
+    mark: 'bar',
+    encoding: {
+      x: {field: 'a', type: 'ordinal'},
+      y: {field: 'b', type: 'quantitative'}
+    }
+  });
+
+  expect(spec.marks[0].encode.update.cursor).toEqual({value: 'pointer'});
+});

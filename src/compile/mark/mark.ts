@@ -313,6 +313,7 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
   const key = encoding.key;
   const sort = getSort(model);
   const interactive = interactiveFlag(model);
+  interactive ? (model.markDef.cursor ??= 'pointer') : {};
   const aria = getMarkPropOrConfig('aria', markDef, config);
 
   const postEncodingTransform = markCompiler[mark].postEncodingTransform
