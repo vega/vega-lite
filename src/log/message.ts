@@ -344,8 +344,8 @@ export function cannotStackRangedMark(channel: Channel) {
   return `Cannot stack "${channel}" if there is already "${channel}2".`;
 }
 
-export function cannotStackNonLinearScale(scaleType: ScaleType) {
-  return `Cannot stack non-linear scale (${scaleType}).`;
+export function stackNonLinearScale(scaleType: ScaleType) {
+  return `Stack is applied to a non-linear scale (${scaleType}).`;
 }
 
 export function stackNonSummativeAggregate(aggregate: Aggregate | string) {

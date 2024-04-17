@@ -245,7 +245,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   // warn when stacking non-linear
   if (stackedFieldDef?.scale?.type && stackedFieldDef?.scale?.type !== ScaleType.LINEAR) {
     if (stackedFieldDef?.stack) {
-      log.warn(log.message.cannotStackNonLinearScale(stackedFieldDef.scale.type));
+      log.warn(log.message.stackNonLinearScale(stackedFieldDef.scale.type));
     }
     return null;
   }
