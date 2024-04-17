@@ -247,7 +247,6 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     if (stackedFieldDef?.stack) {
       log.warn(log.message.stackNonLinearScale(stackedFieldDef.scale.type));
     }
-    return null;
   }
 
   // Check if it is a ranged mark
