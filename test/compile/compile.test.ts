@@ -1,3 +1,4 @@
+import {AggregateTransform, FieldRef} from 'vega';
 import {compile} from '../../src/compile/compile';
 import * as log from '../../src/log';
 
@@ -574,16 +575,16 @@ describe('compile/compile', () => {
   });
 });
 
-it('should generate right cursor', () => {
+it('should generate right tooltip', () => {
   const {spec} = compile({
     data: {url: 'data/population.json'},
-    params: [{name: 'select', select: 'point'}],
-    mark: 'bar',
+    mark: 'errorband',
     encoding: {
-      x: {field: 'a', type: 'ordinal'},
-      y: {field: 'b', type: 'quantitative'}
+      x: {field: 'age', type: 'ordinal'},
+      y: {field: 'people', type: 'quantitative'},
+      tooltip: {field: 'people', aggregate: 'mean'}
     }
   });
 
-  expect(spec.marks[0].encode.update.cursor).toEqual({value: 'pointer'});
+  expect(((spec.data[0].transform[0] as AggregateTransform).as as FieldRef[]).includes('mean_people')).toBeTruthy();
 });
