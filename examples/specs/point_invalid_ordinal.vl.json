@@ -40,9 +40,9 @@
       }
     ]
   },
-  "mark": "line",
+  "mark": "point",
   "encoding": {
-    "x": {"field": "x", "type": "quantitative"},
+    "x": {"field": "x", "type": "ordinal"},
     "y": {"field": "y", "type": "quantitative"}
   }
 }
