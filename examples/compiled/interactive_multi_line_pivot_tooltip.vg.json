@@ -131,6 +131,7 @@
           "from": {"data": "faceted_path_layer_0_layer_0_main"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
@@ -154,6 +155,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "point"},
@@ -173,6 +175,7 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
+          "cursor": {"value": "pointer"},
           "stroke": {"value": "black"},
           "opacity": [
             {

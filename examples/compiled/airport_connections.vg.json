@@ -185,6 +185,7 @@
           "fill": {"value": "#ddd"},
           "stroke": {"value": "#fff"},
           "strokeWidth": {"value": 1},
+          "cursor": {"value": "pointer"},
           "ariaRoleDescription": {"value": "geoshape"}
         }
       },
@@ -199,6 +200,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.35},
+          "cursor": {"value": "pointer"},
           "stroke": {"value": "#000"},
           "description": {
             "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; lon2: \" + (format(datum[\"lon2\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\")) + \"; lat2: \" + (format(datum[\"lat2\"], \"\"))"
@@ -220,6 +222,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {

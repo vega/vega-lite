@@ -166,6 +166,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
@@ -225,6 +226,7 @@
           "from": {"data": "faceted_path_layer_1_main"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; indexed_price: \" + (format(datum[\"indexed_price\"], \"%\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
@@ -248,6 +250,7 @@
       "encode": {
         "update": {
           "strokeWidth": {"value": 0.5},
+          "cursor": {"value": "pointer"},
           "stroke": {"value": "firebrick"},
           "description": {
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
@@ -268,6 +271,7 @@
         "update": {
           "align": {"value": "center"},
           "fontWeight": {"value": 100},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "firebrick"},
           "description": {
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"

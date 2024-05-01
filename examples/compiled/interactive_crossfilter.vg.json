@@ -366,6 +366,7 @@
           "from": {"data": "data_3"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -675,6 +676,7 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -984,6 +986,7 @@
           "from": {"data": "data_0"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {

@@ -151,6 +151,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": [
                 {
                   "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
@@ -258,6 +259,7 @@
               "from": {"data": "faceted_path_concat_1_main"},
               "encode": {
                 "update": {
+                  "cursor": {"value": "pointer"},
                   "stroke": {"value": "steelblue"},
                   "description": {
                     "signal": "\"lc.time: \" + (format(datum[\"lc.time\"], \"\")) + \"; lc.mag: \" + (format(datum[\"lc.mag\"], \"\")) + \"; id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"

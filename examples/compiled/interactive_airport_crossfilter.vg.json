@@ -482,6 +482,7 @@
             "update": {
               "fill": {"value": "lightgray"},
               "stroke": {"value": "white"},
+              "cursor": {"value": "pointer"},
               "ariaRoleDescription": {"value": "geoshape"}
             }
           },
@@ -496,6 +497,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": [
                 {
                   "test": "length(data(\"brush_store\")) && vlSelectionIdTest(\"brush_store\", datum)",
@@ -588,6 +590,7 @@
               "from": {"data": "data_4"},
               "encode": {
                 "update": {
+                  "cursor": {"value": "pointer"},
                   "fill": {"value": "steelblue"},
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
@@ -623,6 +626,7 @@
               "from": {"data": "data_3"},
               "encode": {
                 "update": {
+                  "cursor": {"value": "pointer"},
                   "fill": {"value": "goldenrod"},
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
@@ -706,6 +710,7 @@
               "from": {"data": "data_5"},
               "encode": {
                 "update": {
+                  "cursor": {"value": "pointer"},
                   "fill": {"value": "steelblue"},
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
@@ -738,6 +743,7 @@
               "from": {"data": "data_2"},
               "encode": {
                 "update": {
+                  "cursor": {"value": "pointer"},
                   "fill": {"value": "goldenrod"},
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {

@@ -106,6 +106,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
+          "cursor": {"value": "pointer"},
           "fill": [
             {
               "test": "!length(data(\"CylYr_store\")) || vlSelectionTest(\"CylYr_store\", datum)",
@@ -133,6 +134,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
+          "cursor": {"value": "pointer"},
           "fill": {"scale": "color", "field": "Origin"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {

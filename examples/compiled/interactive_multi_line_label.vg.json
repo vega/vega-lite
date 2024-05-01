@@ -147,6 +147,7 @@
           "from": {"data": "faceted_path_layer_0_layer_0_main"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
@@ -176,6 +177,7 @@
             },
             {"value": 0}
           ],
+          "cursor": {"value": "pointer"},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "point"},
@@ -217,6 +219,7 @@
       "from": {"data": "data_2"},
       "encode": {
         "update": {
+          "cursor": {"value": "pointer"},
           "stroke": {"value": "gray"},
           "description": {
             "signal": "\"Min of date: \" + (timeFormat(datum[\"min_date\"], '%b %d, %Y'))"
@@ -240,6 +243,7 @@
           "align": {"value": "left"},
           "dx": {"value": 5},
           "dy": {"value": -5},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "black"},
           "description": {
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
@@ -262,6 +266,7 @@
           "align": {"value": "left"},
           "dx": {"value": 5},
           "dy": {"value": -5},
+          "cursor": {"value": "pointer"},
           "fill": {"scale": "color", "field": "symbol"},
           "description": {
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"

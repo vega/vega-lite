@@ -115,6 +115,7 @@
             "update": {
               "stroke": {"value": "transparent"},
               "strokeWidth": {"value": 8},
+              "cursor": {"value": "pointer"},
               "opacity": [
                 {
                   "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
@@ -161,6 +162,7 @@
           "from": {"data": "faceted_path_layer_1_main"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "stroke": [
                 {
                   "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
@@ -197,6 +199,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
+          "cursor": {"value": "pointer"},
           "fill": [
             {
               "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
@@ -232,6 +235,7 @@
         "update": {
           "align": {"value": "left"},
           "dx": {"value": 4},
+          "cursor": {"value": "pointer"},
           "fill": [
             {
               "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",

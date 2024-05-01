@@ -251,6 +251,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
@@ -453,6 +454,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
@@ -634,6 +636,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
@@ -838,6 +841,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
@@ -1019,6 +1023,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
@@ -1221,6 +1226,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
@@ -1402,6 +1408,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
@@ -1606,6 +1613,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
@@ -1810,6 +1818,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},

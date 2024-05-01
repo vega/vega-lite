@@ -284,6 +284,7 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
+          "cursor": {"value": "pointer"},
           "fill": {"value": "#4c78a8"},
           "opacity": [
             {
@@ -311,6 +312,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
+          "cursor": {"value": "pointer"},
           "stroke": {"value": "firebrick"},
           "description": {
             "signal": "\"Mean of precipitation: \" + (format(datum[\"mean_precipitation\"], \"\"))"

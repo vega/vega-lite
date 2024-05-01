@@ -148,6 +148,7 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"scale": "color", "field": "__count"},
               "description": {
                 "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Rotten Tomatoes Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
@@ -191,6 +192,7 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": {"value": "#666"},
               "ariaRoleDescription": {"value": "point"},
@@ -313,6 +315,7 @@
           "from": {"data": "data_3"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": [
                 {
                   "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",

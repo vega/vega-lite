@@ -423,6 +423,7 @@
           "from": {"data": "data_6"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#ddd"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -455,6 +456,7 @@
           "from": {"data": "data_5"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -787,6 +789,7 @@
           "from": {"data": "data_7"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#ddd"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -819,6 +822,7 @@
           "from": {"data": "data_4"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -1151,6 +1155,7 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#ddd"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -1183,6 +1188,7 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {

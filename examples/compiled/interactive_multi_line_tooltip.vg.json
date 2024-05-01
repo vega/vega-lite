@@ -89,6 +89,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "cursor": {"value": "pointer"},
           "stroke": {"value": "orange"},
           "tooltip": {
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
@@ -113,6 +114,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "cursor": {"value": "pointer"},
           "stroke": {"value": "red"},
           "tooltip": {
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
@@ -136,6 +138,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
+          "cursor": {"value": "pointer"},
           "stroke": [
             {
               "test": "length(data(\"hover_store\")) && vlSelectionIdTest(\"hover_store\", datum)",

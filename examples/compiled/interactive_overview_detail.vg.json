@@ -94,6 +94,7 @@
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#4c78a8"},
               "description": {
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
@@ -385,6 +386,7 @@
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#4c78a8"},
               "description": {
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"

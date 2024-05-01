@@ -483,6 +483,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 1},
+              "cursor": {"value": "pointer"},
               "fill": [
                 {
                   "test": "!length(data(\"xenc_store\")) || vlSelectionTest(\"xenc_store\", datum)",

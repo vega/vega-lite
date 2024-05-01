@@ -277,6 +277,7 @@
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "#4c78a8"},
           "description": {
             "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of count: \" + (format(datum[\"sum_count\"], \"\"))"
@@ -300,6 +301,7 @@
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "goldenrod"},
           "description": {
             "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of count: \" + (format(datum[\"sum_count\"], \"\"))"

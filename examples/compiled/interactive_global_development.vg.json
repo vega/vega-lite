@@ -222,6 +222,7 @@
         "update": {
           "opacity": {"value": 0.06},
           "fontSize": {"value": 100},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "black"},
           "description": {
             "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
@@ -263,6 +264,7 @@
           "encode": {
             "update": {
               "strokeCap": {"value": "round"},
+              "cursor": {"value": "pointer"},
               "stroke": {"value": "lightgray"},
               "opacity": [
                 {
@@ -295,6 +297,7 @@
         "update": {
           "opacity": {"value": 0.9},
           "size": {"value": 100},
+          "cursor": {"value": "pointer"},
           "fill": {"scale": "color", "field": "name"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
@@ -316,6 +319,7 @@
         "update": {
           "fontSize": {"value": 12},
           "fontWeight": {"value": "bold"},
+          "cursor": {"value": "pointer"},
           "fill": {"scale": "color", "field": "name"},
           "description": {
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; Region: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"])"
@@ -339,6 +343,7 @@
       "encode": {
         "update": {
           "fontSize": {"value": 12},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "gray"},
           "description": {
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
@@ -362,6 +367,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "gray"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {

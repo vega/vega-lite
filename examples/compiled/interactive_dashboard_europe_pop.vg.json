@@ -606,6 +606,7 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": [
                 {
                   "test": "length(data(\"brush_store\")) && vlSelectionTest(\"brush_store\", datum)",
@@ -933,6 +934,7 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": [
                 {
                   "test": "length(data(\"brush_store\")) && vlSelectionTest(\"brush_store\", datum)",
@@ -1338,6 +1340,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": {"value": "transparent"},
               "stroke": [
                 {
