@@ -1,21 +1,14 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A simple bar chart with embedded data.",
   "background": "white",
   "padding": 5,
-  "width": 200,
   "height": 200,
   "style": "cell",
   "data": [
     {
       "name": "source_0",
-      "values": [
-        {"a": "null", "b": 28},
-        {"a": 33, "b": 55},
-        {"a": 33, "b": 43},
-        {"a": "null", "b": 91},
-        {"a": "null", "b": 81},
-        {"a": "null", "b": 53}
-      ]
+      "values": [{"a": "A", "b": 28}, {"a": "A", "b": 30}, {"a": "B", "b": 55}]
     },
     {
       "name": "data_1",
@@ -40,7 +33,7 @@
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
+          "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
         }
       ]
     },
@@ -72,7 +65,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"lower_whisker_b\"]) && isFinite(+datum[\"lower_whisker_b\"])"
+          "expr": "isValid(datum[\"lower_whisker_b\"]) && isFinite(+datum[\"lower_whisker_b\"])"
         }
       ]
     },
@@ -82,7 +75,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"upper_box_b\"]) && isFinite(+datum[\"upper_box_b\"])"
+          "expr": "isValid(datum[\"upper_box_b\"]) && isFinite(+datum[\"upper_box_b\"])"
         }
       ]
     },
@@ -105,7 +98,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"lower_box_b\"]) && isFinite(+datum[\"lower_box_b\"])"
+          "expr": "isValid(datum[\"lower_box_b\"]) && isFinite(+datum[\"lower_box_b\"])"
         }
       ]
     },
@@ -115,10 +108,14 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"mid_box_b\"]) && isFinite(+datum[\"mid_box_b\"])"
+          "expr": "isValid(datum[\"mid_box_b\"]) && isFinite(+datum[\"mid_box_b\"])"
         }
       ]
     }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 20},
+    {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"}
   ],
   "marks": [
     {
@@ -133,9 +130,9 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "a"},
+          "x": {"scale": "x", "field": "a", "band": 0.5},
           "y": {"scale": "y", "field": "b"}
         }
       }
@@ -150,9 +147,9 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Upper Whisker of b\": format(datum[\"upper_whisker_b\"], \"\"), \"Lower Whisker of b\": format(datum[\"lower_whisker_b\"], \"\"), \"a\": format(datum[\"a\"], \"\")}"
+            "signal": "{\"Upper Whisker of b\": format(datum[\"upper_whisker_b\"], \"\"), \"Lower Whisker of b\": format(datum[\"lower_whisker_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
-          "x": {"scale": "x", "field": "a"},
+          "x": {"scale": "x", "field": "a", "band": 0.5},
           "y": {"scale": "y", "field": "lower_whisker_b"},
           "y2": {"scale": "y", "field": "lower_box_b"}
         }
@@ -168,9 +165,9 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Upper Whisker of b\": format(datum[\"upper_whisker_b\"], \"\"), \"Lower Whisker of b\": format(datum[\"lower_whisker_b\"], \"\"), \"a\": format(datum[\"a\"], \"\")}"
+            "signal": "{\"Upper Whisker of b\": format(datum[\"upper_whisker_b\"], \"\"), \"Lower Whisker of b\": format(datum[\"lower_whisker_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
-          "x": {"scale": "x", "field": "a"},
+          "x": {"scale": "x", "field": "a", "band": 0.5},
           "y": {"scale": "y", "field": "upper_box_b"},
           "y2": {"scale": "y", "field": "upper_whisker_b"}
         }
@@ -186,12 +183,12 @@
           "ariaRoleDescription": {"value": "box"},
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": format(datum[\"a\"], \"\")}"
+            "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
           "description": {
-            "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"lower_box_b\"], \"\")) + \"; upper_box_b: \" + (format(datum[\"upper_box_b\"], \"\")) + \"; Max of b: \" + (format(datum[\"max_b\"], \"\")) + \"; Q3 of b: \" + (format(datum[\"upper_box_b\"], \"\")) + \"; Median of b: \" + (format(datum[\"mid_box_b\"], \"\")) + \"; Q1 of b: \" + (format(datum[\"lower_box_b\"], \"\")) + \"; Min of b: \" + (format(datum[\"min_b\"], \"\"))"
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"lower_box_b\"], \"\")) + \"; upper_box_b: \" + (format(datum[\"upper_box_b\"], \"\")) + \"; Max of b: \" + (format(datum[\"max_b\"], \"\")) + \"; Q3 of b: \" + (format(datum[\"upper_box_b\"], \"\")) + \"; Median of b: \" + (format(datum[\"mid_box_b\"], \"\")) + \"; Q1 of b: \" + (format(datum[\"lower_box_b\"], \"\")) + \"; Min of b: \" + (format(datum[\"min_b\"], \"\"))"
           },
-          "xc": {"scale": "x", "field": "a"},
+          "xc": {"scale": "x", "field": "a", "band": 0.5},
           "width": {"value": 14},
           "y": {"scale": "y", "field": "lower_box_b"},
           "y2": {"scale": "y", "field": "upper_box_b"}
@@ -215,9 +212,9 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": format(datum[\"a\"], \"\")}"
+            "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
-          "xc": {"scale": "x", "field": "a"},
+          "xc": {"scale": "x", "field": "a", "band": 0.5},
           "yc": {"scale": "y", "field": "mid_box_b"},
           "width": {"value": 14},
           "height": {"value": 1}
@@ -228,7 +225,7 @@
   "scales": [
     {
       "name": "x",
-      "type": "linear",
+      "type": "band",
       "domain": {
         "fields": [
           {"data": "data_2", "field": "a"},
@@ -236,12 +233,12 @@
           {"data": "data_5", "field": "a"},
           {"data": "data_7", "field": "a"},
           {"data": "data_8", "field": "a"}
-        ]
+        ],
+        "sort": true
       },
-      "range": [0, {"signal": "width"}],
-      "nice": true,
-      "zero": true,
-      "padding": 5
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "y",
@@ -265,20 +262,6 @@
   ],
   "axes": [
     {
-      "scale": "x",
-      "orient": "bottom",
-      "gridScale": "y",
-      "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
-      "domain": false,
-      "labels": false,
-      "aria": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
-      "zindex": 0
-    },
-    {
       "scale": "y",
       "orient": "left",
       "gridScale": "x",
@@ -299,9 +282,6 @@
       "title": "a",
       "labelAngle": 0,
       "labelBaseline": "top",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     },
     {

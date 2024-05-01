@@ -269,6 +269,12 @@
               "title": "Body Mass (g)",
               "scale": {"zero": false}
             },
+            "color": {
+              "condition": {
+                "test": "datum['lower_box_Body Mass (g)'] >= datum['upper_box_Body Mass (g)']",
+                "value": "#4c78a8"
+              }
+            },
             "tooltip": [
               {
                 "field": "max_Body Mass (g)",

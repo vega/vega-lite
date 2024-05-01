@@ -136,7 +136,17 @@ export function normalizeBoxPlot(
 
   const makeBoxPlotExtent = makeBoxPlotPart(encodingWithoutSizeColorAndContinuousAxis);
   const makeBoxPlotBox = makeBoxPlotPart(encodingWithoutContinuousAxis);
-  const makeBoxPlotMidTick = makeBoxPlotPart({...encodingWithoutSizeColorAndContinuousAxis, ...(size ? {size} : {})});
+  const defaultBoxColor = (isObject(config.boxplot.box) ? config.boxplot.box.color : config.mark.color) || '#4c78a8';
+  const makeBoxPlotMidTick = makeBoxPlotPart({
+    ...encodingWithoutSizeColorAndContinuousAxis,
+    ...(size ? {size} : {}),
+    color: {
+      condition: {
+        test: `datum['lower_box_${continuousAxisChannelDef.field}'] >= datum['upper_box_${continuousAxisChannelDef.field}']`,
+        ...(color || {value: defaultBoxColor})
+      }
+    }
+  });
 
   const fiveSummaryTooltipEncoding: Encoding<string> = getCompositeMarkTooltip(
     [

@@ -496,6 +496,14 @@ export interface DensityTransform {
    * __Default value:__ `["value", "density"]`
    */
   as?: [FieldName, FieldName];
+  /**
+   * Indicates how parameters for multiple densities should be resolved.
+   * If `"independent"`, each density may have its own domain extent and dynamic number of curve sample steps.
+   * If `"shared"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.
+   *
+   * __Default value:__ `"shared"`
+   */
+  resolve?: 'independent' | 'shared';
 }
 
 export function isDensity(t: Transform): t is DensityTransform {
@@ -670,7 +678,7 @@ export function isFold(t: Transform): t is FoldTransform {
 }
 
 export function isExtent(t: Transform): t is ExtentTransform {
-  return 'extent' in t && !('density' in t);
+  return 'extent' in t && !('density' in t) && !('regression' in t);
 }
 export type Transform =
   | AggregateTransform
