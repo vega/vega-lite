@@ -30,7 +30,7 @@ import {Config} from '../../../config';
 import {dateTimeToExpr, isDateTime} from '../../../datetime';
 import {isExprRef} from '../../../expr';
 import * as log from '../../../log';
-import {isPathMark, Mark, MarkDef} from '../../../mark';
+import {Mark, MarkDef} from '../../../mark';
 import {fieldValidPredicate} from '../../../predicate';
 import {hasDiscreteDomain, isContinuousToContinuous} from '../../../scale';
 import {StackProperties} from '../../../stack';
@@ -81,14 +81,9 @@ export function wrapPositionInvalidTest({
   ref: VgValueRef;
   config: Config<SignalRef>;
 }): VgValueRef | VgValueRef[] {
-  if (isPathMark(markDef.type)) {
-    // path mark already use defined to skip points, no need to do it here.
-    return ref;
-  }
-
   const invalid = getMarkPropOrConfig('invalid', markDef, config);
   if (invalid === null) {
-    // if there is no invalid filter, don't do the invalid test
+    // if there is no invalid filter, do the invalid test
     return [fieldInvalidTestValueRef(fieldDef, channel), ref];
   }
   return ref;
