@@ -58,7 +58,13 @@
           "description": {
             "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; y: \" + (format(datum[\"y\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "x"},
+          "x": [
+            {
+              "test": "!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "x"}
+          ],
           "y": {"scale": "y", "field": "y_end"},
           "y2": {"scale": "y", "field": "y_start"}
         }
