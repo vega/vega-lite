@@ -32,7 +32,7 @@ import {
   isTimeUnit,
   isWindow
 } from '../../transform';
-import {deepEqual, mergeDeep} from '../../util';
+import {Dict, deepEqual, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection';
 import {materializeSelections} from '../selection/parse';
@@ -369,10 +369,7 @@ export function parseData(model: Model): DataComponent {
   }
 
   // add an output node pre aggregation
-  const rawName = model.getDataName(DataSourceType.Raw);
-  const raw = new OutputNode(head, rawName, DataSourceType.Raw, outputNodeRefCounts);
-  outputNodes[rawName] = raw;
-  head = raw;
+  const raw = (head = makeOutputNode(DataSourceType.Raw, model, head));
 
   if (isUnitModel(model)) {
     const agg = AggregateNode.makeFromEncoding(head, model);
@@ -392,10 +389,7 @@ export function parseData(model: Model): DataComponent {
   }
 
   // output node for marks
-  const mainName = model.getDataName(DataSourceType.Main);
-  const main = new OutputNode(head, mainName, DataSourceType.Main, outputNodeRefCounts);
-  outputNodes[mainName] = main;
-  head = main;
+  const main = (head = makeOutputNode(DataSourceType.Main, model, head));
 
   if (isUnitModel(model)) {
     materializeSelections(model, main);
@@ -423,4 +417,12 @@ export function parseData(model: Model): DataComponent {
     facetRoot,
     ancestorParse
   };
+}
+
+function makeOutputNode(dataSourceType: DataSourceType, model: Model, head: DataFlowNode) {
+  const {outputNodes, outputNodeRefCounts} = model.component.data;
+  const name = model.getDataName(dataSourceType);
+  const node = new OutputNode(head, name, dataSourceType, outputNodeRefCounts);
+  outputNodes[name] = node;
+  return node;
 }
