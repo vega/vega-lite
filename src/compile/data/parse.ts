@@ -32,7 +32,7 @@ import {
   isTimeUnit,
   isWindow
 } from '../../transform';
-import {Dict, deepEqual, mergeDeep} from '../../util';
+import {deepEqual, mergeDeep} from '../../util';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection';
 import {materializeSelections} from '../selection/parse';
