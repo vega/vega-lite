@@ -371,32 +371,30 @@ describe('Selection', () => {
     lookupModel.parseData();
     optimizeDataflow(lookupModel.component.data, lookupModel);
 
-    expect(assembleRootData(lookupModel.component.data, {})).toEqual(
-      expect.arrayContaining([
+    const data = assembleRootData(lookupModel.component.data, {});
+    expect(data[2]).toEqual({
+      name: 'data_1',
+      source: 'data_0',
+      transform: [
         {
-          name: 'data_1',
-          source: 'data_0',
-          transform: [
-            {
-              type: 'filter',
-              expr: '!length(data("index_store")) || vlSelectionTest("index_store", datum)'
-            }
-          ]
-        },
-        {
-          name: 'data_2',
-          source: 'source_0',
-          transform: [
-            {
-              type: 'lookup',
-              from: 'data_1',
-              key: 'symbol',
-              fields: ['symbol'],
-              as: ['index']
-            }
-          ]
+          type: 'filter',
+          expr: '!length(data("index_store")) || vlSelectionTest("index_store", datum)'
         }
-      ])
-    );
+      ]
+    });
+
+    expect(data[3]).toEqual({
+      name: 'data_2',
+      source: 'source_0',
+      transform: [
+        {
+          type: 'lookup',
+          from: 'data_1',
+          key: 'symbol',
+          fields: ['symbol'],
+          as: ['index']
+        }
+      ]
+    });
   });
 });

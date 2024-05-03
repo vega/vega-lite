@@ -55,8 +55,10 @@ import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
-import {isRectBasedMark} from '../../mark';
+import {isPathMark, isRectBasedMark} from '../../mark';
 import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../data/timeunit';
+import {getScaleDataSourceForHandlingInvalidValues} from '../invalid/datasources';
+import {getMarkConfig} from '../common';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -249,6 +251,11 @@ function parseSingleChannelDomain(
   const {type} = fieldOrDatumDef;
   const timeUnit = fieldOrDatumDef['timeUnit'];
 
+  const dataSourceTypeForScaleDomain = getScaleDataSourceForHandlingInvalidValues({
+    invalid: getMarkConfig('invalid', markDef, config),
+    isPath: isPathMark(mark)
+  });
+
   if (isDomainUnionWith(domain)) {
     const defaultDomain = parseSingleChannelDomain(scaleType, undefined, model, channel);
 
@@ -266,7 +273,7 @@ function parseSingleChannelDomain(
       return makeImplicit([[0, 1]]);
     }
 
-    const data = model.requestDataName(DataSourceType.Main);
+    const data = model.requestDataName(dataSourceTypeForScaleDomain);
     return makeImplicit([
       {
         data,
@@ -289,15 +296,14 @@ function parseSingleChannelDomain(
 
   const fieldDef = fieldOrDatumDef; // now we can be sure it's a fieldDef
   if (domain === 'unaggregated') {
-    const data = model.requestDataName(DataSourceType.Main);
     const {field} = fieldOrDatumDef;
     return makeImplicit([
       {
-        data,
+        data: model.requestDataName(dataSourceTypeForScaleDomain),
         field: vgField({field, aggregate: 'min'})
       },
       {
-        data,
+        data: model.requestDataName(dataSourceTypeForScaleDomain),
         field: vgField({field, aggregate: 'max'})
       }
     ]);
@@ -315,7 +321,7 @@ function parseSingleChannelDomain(
           // If sort by aggregation of a specified sort field, we need to use RAW table,
           // so we can aggregate values for the scale independently from the main aggregation.
           data: util.isBoolean(sort)
-            ? model.requestDataName(DataSourceType.Main)
+            ? model.requestDataName(dataSourceTypeForScaleDomain)
             : model.requestDataName(DataSourceType.Raw),
           // Use range if we added it and the scale does not support computing a range as a signal.
           field: model.vgField(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
@@ -343,7 +349,7 @@ function parseSingleChannelDomain(
       } else {
         return makeImplicit([
           {
-            data: model.requestDataName(DataSourceType.Main),
+            data: model.requestDataName(dataSourceTypeForScaleDomain),
             field: model.vgField(channel, {})
           }
         ]);
@@ -353,7 +359,7 @@ function parseSingleChannelDomain(
     const fieldDef2 = encoding[getSecondaryRangeChannel(channel)];
 
     if (hasBandEnd(fieldDef, fieldDef2, markDef, config)) {
-      const data = model.requestDataName(DataSourceType.Main);
+      const data = model.requestDataName(dataSourceTypeForScaleDomain);
 
       const bandPosition = getBandPosition({fieldDef, fieldDef2, markDef, config});
       const isRectWithOffset = isRectBasedMark(mark) && bandPosition !== 0.5 && isXorY(channel);
@@ -375,7 +381,7 @@ function parseSingleChannelDomain(
         // If sort by aggregation of a specified sort field, we need to use RAW table,
         // so we can aggregate values for the scale independently from the main aggregation.
         data: util.isBoolean(sort)
-          ? model.requestDataName(DataSourceType.Main)
+          ? model.requestDataName(dataSourceTypeForScaleDomain)
           : model.requestDataName(DataSourceType.Raw),
         field: model.vgField(channel),
         sort
@@ -384,7 +390,7 @@ function parseSingleChannelDomain(
   } else {
     return makeImplicit([
       {
-        data: model.requestDataName(DataSourceType.Main),
+        data: model.requestDataName(dataSourceTypeForScaleDomain),
         field: model.vgField(channel)
       }
     ]);

@@ -3,7 +3,7 @@ import {isArray, isNumber} from 'vega-util';
 import {ScaleChannel} from '../../channel';
 import {Scale, ScaleType} from '../../scale';
 import {ParameterExtent} from '../../selection';
-import {some} from '../../util';
+import {contains, some} from '../../util';
 import {VgNonUnionDomain, VgScale} from '../../vega.schema';
 import {Explicit, Split} from '../split';
 
@@ -34,6 +34,13 @@ export class ScaleComponent extends Split<ScaleComponentProps> {
    * Whether the scale definitely includes zero in the domain
    */
   public domainDefinitelyIncludesZero() {
+    if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], this.get('type'))) {
+      // Log scales cannot have zero.
+      // Zero in time scale is arbitrary, and does not affect ratio.
+      // (Time is an interval level of measurement, not ratio).
+      // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
+      return false;
+    }
     if (this.get('zero') !== false) {
       return true;
     }

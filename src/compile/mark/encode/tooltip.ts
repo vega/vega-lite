@@ -30,7 +30,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
     return {tooltip: tooltipRefForEncoding({tooltip: channelDef}, stack, config, opt)};
   } else {
     const datum = opt.reactiveGeom ? 'datum.datum' : 'datum';
-    return wrapCondition(model, channelDef, 'tooltip', cDef => {
+    const mainRefFn = (cDef: Encoding<string>['tooltip']) => {
       // use valueRef based on channelDef first
       const tooltipRefFromChannelDef = textRef(cDef, config, datum);
       if (tooltipRefFromChannelDef) {
@@ -62,6 +62,14 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
       }
 
       return undefined;
+    };
+
+    return wrapCondition({
+      model,
+      channelDef,
+      vgChannel: 'tooltip',
+      mainRefFn,
+      invalidValueRef: undefined // tooltip encoding doesn't have continuous scales and thus can't have invalid values
     });
   }
 }

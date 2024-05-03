@@ -8,14 +8,13 @@ import {
   PositionChannel
 } from '../../../channel';
 import {isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef';
-import {ScaleType} from '../../../scale';
-import {contains} from '../../../util';
 import {VgValueRef} from '../../../vega.schema';
 import {getMarkPropOrConfig} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {positionOffset} from './offset';
 import * as ref from './valueref';
+import {zeroOrMinOrMax} from './zeroOrMinOrMax';
 
 /**
  * Return encode for point (non-band) position channels.
@@ -142,43 +141,14 @@ export function pointPositionDefaultRef({
 
     switch (defaultPos) {
       case 'zeroOrMin':
+        return zeroOrMinOrMax({scaleName, scale, mode: 'zeroOrMin', mainChannel});
       case 'zeroOrMax':
-        if (scaleName) {
-          const scaleType = scale.get('type');
-          if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scaleType)) {
-            // Log scales cannot have zero.
-            // Zero in time scale is arbitrary, and does not affect ratio.
-            // (Time is an interval level of measurement, not ratio).
-            // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
-          } else {
-            if (scale.domainDefinitelyIncludesZero()) {
-              return {
-                scale: scaleName,
-                value: 0
-              };
-            }
-          }
-        }
-
-        if (defaultPos === 'zeroOrMin') {
-          return mainChannel === 'y' ? {field: {group: 'height'}} : {value: 0};
-        } else {
-          // zeroOrMax
-          switch (mainChannel) {
-            case 'radius':
-              // max of radius is min(width, height) / 2
-              return {
-                signal: `min(${model.width.signal},${model.height.signal})/2`
-              };
-            case 'theta':
-              return {signal: '2*PI'};
-            case 'x':
-              return {field: {group: 'width'}};
-            case 'y':
-              return {value: 0};
-          }
-        }
-        break;
+        return zeroOrMinOrMax({
+          scaleName,
+          scale,
+          mode: {zeroOrMax: {widthSignal: model.width.signal, heightSignal: model.height.signal}},
+          mainChannel
+        });
       case 'mid': {
         const sizeRef = model[getSizeChannel(channel)];
         return {...sizeRef, mult: 0.5};

@@ -13,6 +13,9 @@
       {"a": 10, "b": null}
     ]
   },
+  "config": {
+    "mark": {"invalid": "break-paths-keep-domains"}
+  },
   "vconcat": [{
     "title": "Quantitative X",
     "hconcat": [{

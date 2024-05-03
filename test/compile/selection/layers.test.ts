@@ -43,7 +43,7 @@ describe('Layered Selections', () => {
         }
       }
     ],
-    config: {mark: {tooltip: null, invalid: 'hide'}}
+    config: {mark: {tooltip: null, invalid: 'break-paths-keep-domains'}}
   });
 
   layers.parse();
@@ -85,16 +85,10 @@ describe('Layered Selections', () => {
               signal:
                 '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
             },
-            fill: [
-              {
-                test: '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
-                value: null
-              },
-              {
-                scale: 'color',
-                field: 'Origin'
-              }
-            ],
+            fill: {
+              scale: 'color',
+              field: 'Origin'
+            },
             shape: {
               value: 'circle'
             },
@@ -133,16 +127,10 @@ describe('Layered Selections', () => {
               signal:
                 '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
             },
-            fill: [
-              {
-                test: '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
-                value: null
-              },
-              {
-                scale: 'color',
-                field: 'Origin'
-              }
-            ],
+            fill: {
+              scale: 'color',
+              field: 'Origin'
+            },
             shape: {
               value: 'square'
             },
@@ -176,25 +164,13 @@ describe('Layered Selections', () => {
               signal:
                 '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
             },
-            fill: [
-              {
-                test: '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
-                value: null
-              },
-              {
-                value: 'transparent'
-              }
-            ],
-            stroke: [
-              {
-                test: '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
-                value: null
-              },
-              {
-                scale: 'color',
-                field: 'Origin'
-              }
-            ],
+            fill: {
+              value: 'transparent'
+            },
+            stroke: {
+              scale: 'color',
+              field: 'Origin'
+            },
             x: {
               scale: 'x',
               field: 'Horsepower'

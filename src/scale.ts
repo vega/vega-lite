@@ -8,12 +8,13 @@ import {
   TimeInterval,
   TimeIntervalStep
 } from 'vega';
-import {isString} from 'vega-util';
 import type {ColorScheme} from 'vega-typings';
+import {isString} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import {ExprRef} from './expr';
+import {ScaleInvalidDataConfigMixins} from './invalid';
 import * as log from './log';
 import {ParameterExtent} from './selection';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
@@ -180,7 +181,7 @@ export function isContinuousToDiscrete(type: ScaleType): type is 'quantile' | 'q
   return CONTINUOUS_TO_DISCRETE_SCALES.has(type);
 }
 
-export interface ScaleConfig<ES extends ExprRef | SignalRef> {
+export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvalidDataConfigMixins {
   /**
    * If true, rounds numeric output values to integers.
    * This can be helpful for snapping to the pixel grid.
@@ -333,7 +334,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   maxFontSize?: number;
 
   /**
-   * The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false
+   * The default min value for mapping quantitative fields to text's size/fontSize scale with zero=false
    *
    * __Default value:__ `8`
    *
