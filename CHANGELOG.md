@@ -1,5 +1,14 @@
 
 
+## [5.18.1](https://github.com/vega/vega-lite/compare/v5.18.0...v5.18.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* Allow non-linear scale for stacked bars ([#9315](https://github.com/vega/vega-lite/issues/9315)) ([716fe73](https://github.com/vega/vega-lite/commit/716fe734df2b4bd00fe78d7789ac43f5b035e4ed))
+* correctly place unfiltered null values for line ([#9326](https://github.com/vega/vega-lite/issues/9326)) ([#9334](https://github.com/vega/vega-lite/issues/9334)) ([b617c84](https://github.com/vega/vega-lite/commit/b617c84d6fca636ff1469b7db5a40e7393354e5c))
+* extent name collision in transforms ([#9312](https://github.com/vega/vega-lite/issues/9312)) ([8b3b30b](https://github.com/vega/vega-lite/commit/8b3b30b352ce0e50fe5422cd4d24323a5a5ec9b4))
+
 # [5.18.0](https://github.com/vega/vega-lite/compare/v5.17.0...v5.18.0) (2024-04-09)
 
 
