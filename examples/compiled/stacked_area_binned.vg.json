@@ -40,7 +40,7 @@
         },
         {
           "type": "formula",
-          "expr": "0.5*datum[\"bin_maxbins_10_IMDB Rating\"]+0.5*datum[\"bin_maxbins_10_IMDB Rating_end\"]",
+          "expr": "isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? 0.5*datum[\"bin_maxbins_10_IMDB Rating\"]+0.5*datum[\"bin_maxbins_10_IMDB Rating_end\"] : datum[\"bin_maxbins_10_IMDB Rating\"]",
           "as": "bin_maxbins_10_IMDB Rating_mid"
         },
         {
