@@ -75,10 +75,9 @@ export class FilterInvalidNode extends DataFlowNode {
 
       if (fieldDef !== null) {
         if (fieldDef.type === 'temporal') {
-          vegaFilters.push(`(isDate(${ref}) || (isValid(${ref}) && isFinite(+${ref})))`);
+          vegaFilters.push(`(isDate(${ref}) || (${isValidFiniteNumberExpr(ref)}))`);
         } else if (fieldDef.type === 'quantitative') {
-          vegaFilters.push(`isValid(${ref})`);
-          vegaFilters.push(`isFinite(+${ref})`);
+          vegaFilters.push(isValidFiniteNumberExpr(ref));
         } else {
           // should never get here
         }
@@ -93,4 +92,8 @@ export class FilterInvalidNode extends DataFlowNode {
         }
       : null;
   }
+}
+
+export function isValidFiniteNumberExpr(ref: string) {
+  return `isValid(${ref}) && isFinite(+${ref})`;
 }
