@@ -73,7 +73,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "speed"},
-      "range": [9, 500],
+      "range": [4, 500],
       "zero": true
     },
     {

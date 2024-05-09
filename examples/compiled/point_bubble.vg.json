@@ -62,7 +62,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Acceleration"},
-      "range": [9, 361],
+      "range": [4, 361],
       "zero": true
     }
   ],

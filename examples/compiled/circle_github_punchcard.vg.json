@@ -103,7 +103,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "data_0", "field": "sum_count"},
-      "range": [9, 361],
+      "range": [4, 361],
       "zero": true
     }
   ],

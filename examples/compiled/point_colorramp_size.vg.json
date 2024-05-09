@@ -69,7 +69,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
-      "range": [9, 361],
+      "range": [4, 361],
       "zero": true
     }
   ],
