@@ -8,6 +8,7 @@ import {getScaleInvalidDataMode} from '../../invalid/ScaleInvalidDataMode';
 import {ScaleComponent} from '../../scale/component';
 import {zeroOrMinOrMax} from './zeroOrMinOrMax';
 import {MidPointParams} from './valueref';
+import {Config} from '../../../config';
 
 export function getConditionalValueRefForIncludingInvalidValue<
   C extends PositionScaleChannel | PolarPositionScaleChannel | NonPositionScaleChannel
@@ -38,7 +39,7 @@ export function getConditionalValueRefForIncludingInvalidValue<
     const includeAs: ScaleInvalidDataIncludeAs<C> = config.scale.invalid?.[scaleChannel] ?? 'zero-or-min';
     return {
       test: fieldValidPredicate(vgField(fieldDef, {expr: 'datum'}), false),
-      ...refForInvalidValues(scaleChannel, includeAs, scale, scaleName)
+      ...refForInvalidValues(scaleChannel, includeAs, scale, scaleName, config)
     };
   }
   return undefined;
@@ -48,7 +49,8 @@ function refForInvalidValues<C extends PositionScaleChannel | PolarPositionScale
   channel: C,
   includeAs: ScaleInvalidDataIncludeAs<C>,
   scale: ScaleComponent,
-  scaleName: string
+  scaleName: string,
+  config: Config
 ): VgValueRef {
   if (isScaleInvalidDataIncludeAsValue(includeAs)) {
     const {value} = includeAs;
@@ -59,6 +61,7 @@ function refForInvalidValues<C extends PositionScaleChannel | PolarPositionScale
     mainChannel: channel,
     scale,
     scaleName,
-    mode: includeAs === 'zero-or-min' ? 'zeroOrMin' : 'min'
+    mode: includeAs === 'zero-or-min' ? 'zeroOrMin' : 'min',
+    config
   });
 }

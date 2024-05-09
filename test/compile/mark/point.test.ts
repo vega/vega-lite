@@ -238,7 +238,7 @@ describe('Mark: Point', () => {
 
     it('should test for invalid values on y', () => {
       expect(props.y).toEqual([
-        {field: {group: 'height'}, test: '!isValid(datum["yield"]) || !isFinite(+datum["yield"])'},
+        {scale: 'y', value: 0, test: '!isValid(datum["yield"]) || !isFinite(+datum["yield"])'},
         {scale: Y, field: 'yield'}
       ]);
     });

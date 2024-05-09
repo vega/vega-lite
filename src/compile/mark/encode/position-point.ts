@@ -141,13 +141,14 @@ export function pointPositionDefaultRef({
 
     switch (defaultPos) {
       case 'zeroOrMin':
-        return zeroOrMinOrMax({scaleName, scale, mode: 'zeroOrMin', mainChannel});
+        return zeroOrMinOrMax({scaleName, scale, mode: 'zeroOrMin', mainChannel, config});
       case 'zeroOrMax':
         return zeroOrMinOrMax({
           scaleName,
           scale,
           mode: {zeroOrMax: {widthSignal: model.width.signal, heightSignal: model.height.signal}},
-          mainChannel
+          mainChannel,
+          config
         });
       case 'mid': {
         const sizeRef = model[getSizeChannel(channel)];
