@@ -27,7 +27,7 @@
       "name": "child__layer_AAPL_layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -48,7 +48,7 @@
       "name": "child__layer_AAPL_layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -68,7 +68,7 @@
       "name": "child__layer_AMZN_layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -89,7 +89,7 @@
       "name": "child__layer_AMZN_layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -109,7 +109,7 @@
       "name": "child__layer_GOOG_layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -130,7 +130,7 @@
       "name": "child__layer_GOOG_layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -150,7 +150,7 @@
       "name": "child__layer_IBM_layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -171,7 +171,7 @@
       "name": "child__layer_IBM_layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -191,7 +191,7 @@
       "name": "child__layer_MSFT_layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -212,7 +212,7 @@
       "name": "child__layer_MSFT_layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

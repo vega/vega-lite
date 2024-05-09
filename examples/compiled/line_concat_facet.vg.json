@@ -152,7 +152,7 @@
               "name": "concat_0_child_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "concat_0_facet"},
               "encode": {
                 "update": {
@@ -203,7 +203,7 @@
           "name": "concat_1_marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"month_date\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "data_0"},
           "encode": {
             "update": {

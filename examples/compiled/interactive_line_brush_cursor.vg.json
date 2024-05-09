@@ -236,7 +236,7 @@
       "name": "marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "interactive": true,
       "from": {"data": "source_0"},
       "encode": {

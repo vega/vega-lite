@@ -31,7 +31,7 @@
       "name": "marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"x\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {
