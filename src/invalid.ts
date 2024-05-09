@@ -22,8 +22,8 @@ export interface MarkInvalidMixins {
    * All *scale* domains will *include* these filtered data points.
    *
    * - `"include"` or `null` —
-   * Include all data points in the marks and scale domains.  Each scale will use the output for invalid values defined in `config.scale.invalid`
-   * or, if unspecified, by default invalid values will produce the same visual values as the scale's min value.
+   * Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid`
+   * or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).
    *
    * - `"break-paths-and-keep-path-domains"` (default) —
    * This is equivalent to `"break-path-keep-domains"` for path-based marks (line/area/trail)

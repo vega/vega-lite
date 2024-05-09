@@ -64,7 +64,6 @@ Break path marks (for line, area, trail) at invalid values. For non-path marks, 
 
 <div class="vl-example example-only" data-name="test_invalid_break_paths"></div>
 
-
 #### `"break-paths-keep-domains"`
 
 This option is like `"break-paths"`, except that all _scale_ domains will instead _include_ these filtered data points.
@@ -73,7 +72,9 @@ This option is like `"break-paths"`, except that all _scale_ domains will instea
 
 #### `include`
 
-Include all data points in the marks and scale domains. By default, invalid values will output the same visual values as min values in the scales.
+Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid`
+
+- or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).
 
 <div class="vl-example example-only" data-name="test_invalid_include"></div>
 

@@ -40,7 +40,7 @@ export function getConditionalValueRefForIncludingInvalidValue<
   });
 
   if (fieldDef && invalidDataMode === 'include') {
-    const includeAs: ScaleInvalidDataIncludeAs<C> = config.scale.invalid?.[scaleChannel] || 'min';
+    const includeAs: ScaleInvalidDataIncludeAs<C> = config.scale.invalid?.[scaleChannel] ?? 'zero-or-min';
     return {
       test: fieldInvalidPredicate(fieldDef, {invalid: true}),
       ...refForInvalidValues(scaleChannel, includeAs, scale, scaleName)
