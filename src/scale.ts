@@ -315,7 +315,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   maxBandSize?: number;
 
   /**
-   * The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false.
+   * The default min value for mapping quantitative fields to bar and tick's size/bandSize scale.
    *
    * __Default value:__ `2`
    *
@@ -333,7 +333,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   maxFontSize?: number;
 
   /**
-   * The default min value for mapping quantitative fields to tick's size/fontSize scale with zero=false
+   * The default min value for mapping quantitative fields to tick's size/fontSize scale.
    *
    * __Default value:__ `8`
    *
@@ -362,7 +362,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   maxOpacity?: number;
 
   /**
-   * Default minimum value for point size scale with zero=false.
+   * Default minimum value for point size scale.
    *
    * __Default value:__ `9`
    *
@@ -377,7 +377,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   maxSize?: number;
 
   /**
-   * Default minimum strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks with zero=false.
+   * Default minimum strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks.
    *
    * __Default value:__ `1`
    *
@@ -443,7 +443,7 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
   maxOpacity: 0.8,
 
   // FIXME: revise if these *can* become ratios of width/height step
-  minSize: 9, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
+  minSize: 4, // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
 
   minStrokeWidth: 1,
   maxStrokeWidth: 4,
