@@ -202,7 +202,7 @@ describe('compile/data/stack', () => {
       expect(assemble(model)).toEqual([
         {
           type: 'formula',
-          expr: '0.5*datum["bin_maxbins_10_b"]+0.5*datum["bin_maxbins_10_b_end"]',
+          expr: 'isValid(datum["bin_maxbins_10_b"]) && isFinite(+datum["bin_maxbins_10_b"]) ? 0.5*datum["bin_maxbins_10_b"]+0.5*datum["bin_maxbins_10_b_end"] : datum["bin_maxbins_10_b"]',
           as: 'bin_maxbins_10_b_mid'
         },
         {

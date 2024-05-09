@@ -8,6 +8,7 @@ import {duplicate, getFirstDefined, hash} from '../../util';
 import {sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
+import {isValidFiniteNumberExpr} from './filterinvalid';
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce((fields, by) => {
@@ -240,7 +241,7 @@ export class StackNode extends DataFlowNode {
           const binEnd = vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'});
           transform.push({
             type: 'formula',
-            expr: `${bandPosition}*${binStart}+${1 - bandPosition}*${binEnd}`,
+            expr: `${isValidFiniteNumberExpr(binStart)} ? ${bandPosition}*${binStart}+${1 - bandPosition}*${binEnd} : ${binStart}`,
             as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
           });
         }

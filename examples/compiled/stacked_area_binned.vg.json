@@ -1,0 +1,173 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/movies.json",
+      "format": {"type": "json", "parse": {"IMDB Rating": "number"}},
+      "transform": [
+        {
+          "type": "extent",
+          "field": "IMDB Rating",
+          "signal": "bin_maxbins_10_IMDB_Rating_extent"
+        },
+        {
+          "type": "bin",
+          "field": "IMDB Rating",
+          "as": [
+            "bin_maxbins_10_IMDB Rating",
+            "bin_maxbins_10_IMDB Rating_end"
+          ],
+          "signal": "bin_maxbins_10_IMDB_Rating_bins",
+          "extent": {"signal": "bin_maxbins_10_IMDB_Rating_extent"},
+          "maxbins": 10
+        },
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_10_IMDB Rating",
+            "bin_maxbins_10_IMDB Rating_end",
+            "Major Genre"
+          ],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        },
+        {
+          "type": "formula",
+          "expr": "isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? 0.5*datum[\"bin_maxbins_10_IMDB Rating\"]+0.5*datum[\"bin_maxbins_10_IMDB Rating_end\"] : datum[\"bin_maxbins_10_IMDB Rating\"]",
+          "as": "bin_maxbins_10_IMDB Rating_mid"
+        },
+        {
+          "type": "impute",
+          "field": "__count",
+          "groupby": ["Major Genre"],
+          "key": "bin_maxbins_10_IMDB Rating_mid",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["bin_maxbins_10_IMDB Rating_mid"],
+          "field": "__count",
+          "sort": {"field": ["Major Genre"], "order": ["descending"]},
+          "as": ["__count_start", "__count_end"],
+          "offset": "zero"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "source_0",
+          "groupby": ["Major Genre"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "area",
+          "style": ["area"],
+          "sort": {"field": "datum[\"bin_maxbins_10_IMDB Rating_mid\"]"},
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "orient": {"value": "vertical"},
+              "fill": {"scale": "color", "field": "Major Genre"},
+              "description": {
+                "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"])"
+              },
+              "x": {"scale": "x", "field": "bin_maxbins_10_IMDB Rating_mid"},
+              "y": {"scale": "y", "field": "__count_end"},
+              "y2": {"scale": "y", "field": "__count_start"},
+              "defined": {
+                "signal": "isValid(datum[\"bin_maxbins_10_IMDB Rating_mid\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB Rating_mid\"]) && isValid(datum[\"__count\"]) && isFinite(+datum[\"__count\"])"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "signal": "[bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop]"
+      },
+      "range": [0, {"signal": "width"}],
+      "bins": {"signal": "bin_maxbins_10_IMDB_Rating_bins"},
+      "zero": false
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["__count_start", "__count_end"]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Major Genre", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "IMDB Rating (binned)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/10)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Count of Records",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "Major Genre"}]
+}
