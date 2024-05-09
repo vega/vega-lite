@@ -159,7 +159,10 @@
                   },
                   "x": {"scale": "x", "field": "year"},
                   "y": {"scale": "y", "field": "variety"},
-                  "size": {"scale": "size", "field": "yield"}
+                  "size": {"scale": "size", "field": "yield"},
+                  "defined": {
+                    "signal": "isValid(datum[\"delta\"]) && isFinite(+datum[\"delta\"]) && isValid(datum[\"yield\"]) && isFinite(+datum[\"yield\"])"
+                  }
                 }
               }
             }

@@ -29,31 +29,17 @@
       "source": "data_0",
       "transform": [
         {
-          "type": "filter",
-          "expr": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "data_0",
-      "transform": [
-        {
           "type": "stack",
           "groupby": ["a"],
           "field": "b",
           "sort": {"field": [], "order": []},
           "as": ["b_start", "b_end"],
           "offset": "zero"
-        },
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
         }
       ]
     },
     {
-      "name": "data_4",
+      "name": "data_3",
       "source": "data_0",
       "transform": [
         {
@@ -75,17 +61,7 @@
       ]
     },
     {
-      "name": "data_5",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_6",
+      "name": "data_4",
       "source": "data_0",
       "transform": [
         {
@@ -95,15 +71,11 @@
           "sort": {"field": [], "order": []},
           "as": ["b_start", "b_end"],
           "offset": "zero"
-        },
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
         }
       ]
     },
     {
-      "name": "data_7",
+      "name": "data_5",
       "source": "data_0",
       "transform": [
         {
@@ -153,7 +125,7 @@
               "name": "concat_0_concat_0_marks",
               "type": "symbol",
               "style": ["point"],
-              "from": {"data": "data_2"},
+              "from": {"data": "data_0"},
               "encode": {
                 "update": {
                   "opacity": {"value": 0.7},
@@ -163,8 +135,20 @@
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
-                  "x": {"scale": "concat_0_concat_0_x", "field": "a"},
-                  "y": {"scale": "concat_0_concat_0_y", "field": "b"}
+                  "x": [
+                    {
+                      "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
+                      "value": 0
+                    },
+                    {"scale": "concat_0_concat_0_x", "field": "a"}
+                  ],
+                  "y": [
+                    {
+                      "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
+                      "field": {"group": "height"}
+                    },
+                    {"scale": "concat_0_concat_0_y", "field": "b"}
+                  ]
                 }
               }
             }
@@ -234,7 +218,7 @@
               "name": "concat_0_concat_1_marks",
               "type": "rect",
               "style": ["bar"],
-              "from": {"data": "data_3"},
+              "from": {"data": "data_2"},
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
@@ -242,7 +226,13 @@
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
-                  "xc": {"scale": "concat_0_concat_1_x", "field": "a"},
+                  "xc": [
+                    {
+                      "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
+                      "value": 0
+                    },
+                    {"scale": "concat_0_concat_1_x", "field": "a"}
+                  ],
                   "width": {"value": 5},
                   "y": {"scale": "concat_0_concat_1_y", "field": "b_end"},
                   "y2": {"scale": "concat_0_concat_1_y", "field": "b_start"}
@@ -315,7 +305,7 @@
               "name": "concat_0_concat_2_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "x"},
+              "sort": {"field": "datum[\"a\"]"},
               "from": {"data": "data_0"},
               "encode": {
                 "update": {
@@ -323,11 +313,20 @@
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
-                  "x": {"scale": "concat_0_concat_2_x", "field": "a"},
-                  "y": {"scale": "concat_0_concat_2_y", "field": "b"},
-                  "defined": {
-                    "signal": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
-                  }
+                  "x": [
+                    {
+                      "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
+                      "value": 0
+                    },
+                    {"scale": "concat_0_concat_2_x", "field": "a"}
+                  ],
+                  "y": [
+                    {
+                      "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
+                      "field": {"group": "height"}
+                    },
+                    {"scale": "concat_0_concat_2_y", "field": "b"}
+                  ]
                 }
               }
             },
@@ -335,7 +334,7 @@
               "name": "concat_0_concat_2_layer_1_marks",
               "type": "symbol",
               "style": ["point"],
-              "from": {"data": "data_2"},
+              "from": {"data": "data_0"},
               "encode": {
                 "update": {
                   "opacity": {"value": 1},
@@ -344,8 +343,20 @@
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
-                  "x": {"scale": "concat_0_concat_2_x", "field": "a"},
-                  "y": {"scale": "concat_0_concat_2_y", "field": "b"}
+                  "x": [
+                    {
+                      "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
+                      "value": 0
+                    },
+                    {"scale": "concat_0_concat_2_x", "field": "a"}
+                  ],
+                  "y": [
+                    {
+                      "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
+                      "field": {"group": "height"}
+                    },
+                    {"scale": "concat_0_concat_2_y", "field": "b"}
+                  ]
                 }
               }
             }
@@ -415,8 +426,8 @@
               "name": "concat_0_concat_3_marks",
               "type": "area",
               "style": ["area"],
-              "sort": {"field": "x"},
-              "from": {"data": "data_4"},
+              "sort": {"field": "datum[\"a\"]"},
+              "from": {"data": "data_3"},
               "encode": {
                 "update": {
                   "orient": {"value": "vertical"},
@@ -424,12 +435,15 @@
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
-                  "x": {"scale": "concat_0_concat_3_x", "field": "a"},
+                  "x": [
+                    {
+                      "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
+                      "value": 0
+                    },
+                    {"scale": "concat_0_concat_3_x", "field": "a"}
+                  ],
                   "y": {"scale": "concat_0_concat_3_y", "field": "b_end"},
-                  "y2": {"scale": "concat_0_concat_3_y", "field": "b_start"},
-                  "defined": {
-                    "signal": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
-                  }
+                  "y2": {"scale": "concat_0_concat_3_y", "field": "b_start"}
                 }
               }
             }
@@ -507,7 +521,7 @@
               "name": "concat_1_concat_0_marks",
               "type": "symbol",
               "style": ["point"],
-              "from": {"data": "data_5"},
+              "from": {"data": "data_0"},
               "encode": {
                 "update": {
                   "opacity": {"value": 0.7},
@@ -518,7 +532,13 @@
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_1_concat_0_x", "field": "a"},
-                  "y": {"scale": "concat_1_concat_0_y", "field": "b"}
+                  "y": [
+                    {
+                      "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
+                      "field": {"group": "height"}
+                    },
+                    {"scale": "concat_1_concat_0_y", "field": "b"}
+                  ]
                 }
               }
             }
@@ -574,7 +594,7 @@
               "name": "concat_1_concat_1_marks",
               "type": "rect",
               "style": ["bar"],
-              "from": {"data": "data_6"},
+              "from": {"data": "data_4"},
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
@@ -643,7 +663,7 @@
               "name": "concat_1_concat_2_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "x"},
+              "sort": {"field": "datum[\"a\"]"},
               "from": {"data": "data_0"},
               "encode": {
                 "update": {
@@ -652,10 +672,13 @@
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_1_concat_2_x", "field": "a"},
-                  "y": {"scale": "concat_1_concat_2_y", "field": "b"},
-                  "defined": {
-                    "signal": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
-                  }
+                  "y": [
+                    {
+                      "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
+                      "field": {"group": "height"}
+                    },
+                    {"scale": "concat_1_concat_2_y", "field": "b"}
+                  ]
                 }
               }
             },
@@ -663,7 +686,7 @@
               "name": "concat_1_concat_2_layer_1_marks",
               "type": "symbol",
               "style": ["point"],
-              "from": {"data": "data_5"},
+              "from": {"data": "data_0"},
               "encode": {
                 "update": {
                   "opacity": {"value": 1},
@@ -673,7 +696,13 @@
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_1_concat_2_x", "field": "a"},
-                  "y": {"scale": "concat_1_concat_2_y", "field": "b"}
+                  "y": [
+                    {
+                      "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
+                      "field": {"group": "height"}
+                    },
+                    {"scale": "concat_1_concat_2_y", "field": "b"}
+                  ]
                 }
               }
             }
@@ -729,8 +758,8 @@
               "name": "concat_1_concat_3_marks",
               "type": "area",
               "style": ["area"],
-              "sort": {"field": "x"},
-              "from": {"data": "data_7"},
+              "sort": {"field": "datum[\"a\"]"},
+              "from": {"data": "data_5"},
               "encode": {
                 "update": {
                   "orient": {"value": "vertical"},
@@ -740,10 +769,7 @@
                   },
                   "x": {"scale": "concat_1_concat_3_x", "field": "a"},
                   "y": {"scale": "concat_1_concat_3_y", "field": "b_end"},
-                  "y2": {"scale": "concat_1_concat_3_y", "field": "b_start"},
-                  "defined": {
-                    "signal": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
-                  }
+                  "y2": {"scale": "concat_1_concat_3_y", "field": "b_start"}
                 }
               }
             }
@@ -791,7 +817,7 @@
     {
       "name": "concat_0_concat_0_x",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "a"},
+      "domain": {"data": "data_0", "field": "a"},
       "range": [0, {"signal": "concat_0_childWidth"}],
       "nice": true,
       "zero": true
@@ -799,7 +825,7 @@
     {
       "name": "concat_0_concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "b"},
+      "domain": {"data": "data_0", "field": "b"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -807,7 +833,7 @@
     {
       "name": "concat_0_concat_1_x",
       "type": "linear",
-      "domain": {"data": "data_3", "field": "a"},
+      "domain": {"data": "data_2", "field": "a"},
       "range": [0, {"signal": "concat_0_childWidth"}],
       "nice": true,
       "zero": false,
@@ -816,7 +842,7 @@
     {
       "name": "concat_0_concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_3", "fields": ["b_start", "b_end"]},
+      "domain": {"data": "data_2", "fields": ["b_start", "b_end"]},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -824,12 +850,7 @@
     {
       "name": "concat_0_concat_2_x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "a"},
-          {"data": "data_2", "field": "a"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "a"},
       "range": [0, {"signal": "concat_0_childWidth"}],
       "nice": true,
       "zero": false
@@ -837,12 +858,7 @@
     {
       "name": "concat_0_concat_2_y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "b"},
-          {"data": "data_2", "field": "b"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "b"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -850,7 +866,7 @@
     {
       "name": "concat_0_concat_3_x",
       "type": "linear",
-      "domain": {"data": "data_4", "field": "a"},
+      "domain": {"data": "data_3", "field": "a"},
       "range": [0, {"signal": "concat_0_childWidth"}],
       "nice": true,
       "zero": false
@@ -858,7 +874,7 @@
     {
       "name": "concat_0_concat_3_y",
       "type": "linear",
-      "domain": {"data": "data_4", "fields": ["b_start", "b_end"]},
+      "domain": {"data": "data_3", "fields": ["b_start", "b_end"]},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -866,14 +882,14 @@
     {
       "name": "concat_1_concat_0_x",
       "type": "point",
-      "domain": {"data": "data_5", "field": "a", "sort": true},
+      "domain": {"data": "data_0", "field": "a", "sort": true},
       "range": [0, {"signal": "concat_1_childWidth"}],
       "padding": 0.5
     },
     {
       "name": "concat_1_concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_5", "field": "b"},
+      "domain": {"data": "data_0", "field": "b"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -881,7 +897,7 @@
     {
       "name": "concat_1_concat_1_x",
       "type": "band",
-      "domain": {"data": "data_6", "field": "a", "sort": true},
+      "domain": {"data": "data_4", "field": "a", "sort": true},
       "range": [0, {"signal": "concat_1_childWidth"}],
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -889,7 +905,7 @@
     {
       "name": "concat_1_concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_6", "fields": ["b_start", "b_end"]},
+      "domain": {"data": "data_4", "fields": ["b_start", "b_end"]},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -897,25 +913,14 @@
     {
       "name": "concat_1_concat_2_x",
       "type": "point",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "a"},
-          {"data": "data_5", "field": "a"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_0", "field": "a", "sort": true},
       "range": [0, {"signal": "concat_1_childWidth"}],
       "padding": 0.5
     },
     {
       "name": "concat_1_concat_2_y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "b"},
-          {"data": "data_5", "field": "b"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "b"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -923,14 +928,14 @@
     {
       "name": "concat_1_concat_3_x",
       "type": "point",
-      "domain": {"data": "data_7", "field": "a", "sort": true},
+      "domain": {"data": "data_5", "field": "a", "sort": true},
       "range": [0, {"signal": "concat_1_childWidth"}],
       "padding": 0.5
     },
     {
       "name": "concat_1_concat_3_y",
       "type": "linear",
-      "domain": {"data": "data_7", "fields": ["b_start", "b_end"]},
+      "domain": {"data": "data_5", "fields": ["b_start", "b_end"]},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true

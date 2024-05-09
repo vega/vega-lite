@@ -97,7 +97,7 @@
               "y": {"scale": "y", "field": "__count_end"},
               "y2": {"scale": "y", "field": "__count_start"},
               "defined": {
-                "signal": "isValid(datum[\"bin_maxbins_10_IMDB Rating_mid\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB Rating_mid\"]) && isValid(datum[\"__count\"]) && isFinite(+datum[\"__count\"])"
+                "signal": "isValid(datum[\"bin_maxbins_10_IMDB Rating_mid\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB Rating_mid\"])"
               }
             }
           }

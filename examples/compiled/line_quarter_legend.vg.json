@@ -67,7 +67,7 @@
               "x": {"scale": "x", "field": "year_date"},
               "y": {"scale": "y", "field": "mean_price"},
               "defined": {
-                "signal": "isValid(datum[\"year_date\"]) && isFinite(+datum[\"year_date\"]) && isValid(datum[\"mean_price\"]) && isFinite(+datum[\"mean_price\"])"
+                "signal": "isValid(datum[\"year_date\"]) && isFinite(+datum[\"year_date\"]) && isValid(datum[\"mean_price\"]) && isFinite(+datum[\"mean_price\"]) && isValid(datum[\"quarter_date\"]) && isFinite(+datum[\"quarter_date\"])"
               }
             }
           }
