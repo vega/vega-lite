@@ -259,7 +259,7 @@
       "domain": {
         "signal": "[child_bin_maxbins_6_Displacement_bins.start, child_bin_maxbins_6_Displacement_bins.stop]"
       },
-      "range": [0, 361],
+      "range": [9, 361],
       "bins": {"signal": "child_bin_maxbins_6_Displacement_bins"},
       "zero": true
     }

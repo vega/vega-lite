@@ -365,7 +365,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "data_1", "field": "__count"},
-      "range": [0, 361],
+      "range": [9, 361],
       "zero": true
     }
   ],

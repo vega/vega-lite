@@ -82,7 +82,7 @@
       "domain": {
         "signal": "[bin_maxbins_6_Acceleration_bins.start, bin_maxbins_6_Acceleration_bins.stop]"
       },
-      "range": [0, 361],
+      "range": [9, 361],
       "bins": {"signal": "bin_maxbins_6_Acceleration_bins"},
       "zero": true
     }

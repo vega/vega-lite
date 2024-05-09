@@ -178,7 +178,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "population"},
-      "range": [0, 361],
+      "range": [9, 361],
       "zero": true
     }
   ],

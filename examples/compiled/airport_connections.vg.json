@@ -260,7 +260,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "data_1", "field": "routes"},
-      "range": [0, 1000],
+      "range": [9, 1000],
       "zero": true
     }
   ]
