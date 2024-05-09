@@ -32,6 +32,7 @@
           "x": [
             {
               "test": "!isValid(datum[\"IMDB Rating\"]) || !isFinite(+datum[\"IMDB Rating\"])",
+              "scale": "x",
               "value": 0
             },
             {"scale": "x", "field": "IMDB Rating"}
@@ -39,7 +40,8 @@
           "y": [
             {
               "test": "!isValid(datum[\"Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"Rotten Tomatoes Rating\"])",
-              "field": {"group": "height"}
+              "scale": "y",
+              "value": 0
             },
             {"scale": "y", "field": "Rotten Tomatoes Rating"}
           ]

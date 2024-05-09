@@ -150,6 +150,7 @@
                   "x": [
                     {
                       "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
+                      "scale": "concat_0_concat_0_x",
                       "value": 0
                     },
                     {"scale": "concat_0_concat_0_x", "field": "a"}
@@ -157,7 +158,8 @@
                   "y": [
                     {
                       "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
-                      "field": {"group": "height"}
+                      "scale": "concat_0_concat_0_y",
+                      "value": 0
                     },
                     {"scale": "concat_0_concat_0_y", "field": "b"}
                   ]
@@ -366,7 +368,8 @@
                       "y": [
                         {
                           "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
-                          "field": {"group": "height"}
+                          "scale": "concat_0_concat_2_y",
+                          "value": 0
                         },
                         {"scale": "concat_0_concat_2_y", "field": "b"}
                       ]
@@ -404,7 +407,8 @@
                   "y": [
                     {
                       "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
-                      "field": {"group": "height"}
+                      "scale": "concat_0_concat_2_y",
+                      "value": 0
                     },
                     {"scale": "concat_0_concat_2_y", "field": "b"}
                   ]
@@ -622,7 +626,8 @@
                   "y": [
                     {
                       "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
-                      "field": {"group": "height"}
+                      "scale": "concat_1_concat_0_y",
+                      "value": 0
                     },
                     {"scale": "concat_1_concat_0_y", "field": "b"}
                   ]
@@ -793,7 +798,8 @@
                       "y": [
                         {
                           "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
-                          "field": {"group": "height"}
+                          "scale": "concat_1_concat_2_y",
+                          "value": 0
                         },
                         {"scale": "concat_1_concat_2_y", "field": "b"}
                       ]
@@ -825,7 +831,8 @@
                   "y": [
                     {
                       "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
-                      "field": {"group": "height"}
+                      "scale": "concat_1_concat_2_y",
+                      "value": 0
                     },
                     {"scale": "concat_1_concat_2_y", "field": "b"}
                   ]

@@ -51,7 +51,8 @@
           "y": [
             {
               "test": "!isValid(datum[\"y\"]) || !isFinite(+datum[\"y\"])",
-              "field": {"group": "height"}
+              "scale": "y",
+              "value": 0
             },
             {"scale": "y", "field": "y"}
           ]
