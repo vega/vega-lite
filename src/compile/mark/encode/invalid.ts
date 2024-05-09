@@ -1,7 +1,6 @@
-import {isString} from 'vega-util';
 import {isCountingAggregateOp} from '../../../aggregate';
 import {NonPositionScaleChannel, PolarPositionScaleChannel, PositionScaleChannel} from '../../../channel';
-import {FieldDef, FieldName, getFieldDef, vgField} from '../../../channeldef';
+import {getFieldDef, vgField} from '../../../channeldef';
 import {ScaleInvalidDataIncludeAs, isScaleInvalidDataIncludeAsValue} from '../../../invalid';
 import {fieldValidPredicate} from '../../../predicate';
 import {VgValueRef, isSignalRef} from '../../../vega.schema';
@@ -9,10 +8,6 @@ import {getScaleInvalidDataMode} from '../../invalid/ScaleInvalidDataMode';
 import {ScaleComponent} from '../../scale/component';
 import {zeroOrMinOrMax} from './zeroOrMinOrMax';
 import {MidPointParams} from './valueref';
-
-export function fieldInvalidPredicate(field: FieldName | FieldDef<string>, {invalid = true}: {invalid: boolean}) {
-  return fieldValidPredicate(isString(field) ? field : vgField(field, {expr: 'datum'}), !invalid);
-}
 
 export function getConditionalValueRefForIncludingInvalidValue<
   C extends PositionScaleChannel | PolarPositionScaleChannel | NonPositionScaleChannel
@@ -42,7 +37,7 @@ export function getConditionalValueRefForIncludingInvalidValue<
   if (fieldDef && invalidDataMode === 'include') {
     const includeAs: ScaleInvalidDataIncludeAs<C> = config.scale.invalid?.[scaleChannel] ?? 'zero-or-min';
     return {
-      test: fieldInvalidPredicate(fieldDef, {invalid: true}),
+      test: fieldValidPredicate(vgField(fieldDef, {expr: 'datum'}), false),
       ...refForInvalidValues(scaleChannel, includeAs, scale, scaleName)
     };
   }

@@ -1,11 +1,11 @@
 import {isCountingAggregateOp} from '../../../aggregate';
 import {isScaleChannel} from '../../../channel';
 import {Value} from '../../../channeldef';
+import {fieldValidPredicate} from '../../../predicate';
 import {VgEncodeEntry} from '../../../vega.schema';
 import {signalOrValueRef} from '../../common';
 import {getScaleInvalidDataMode, shouldBreakPath} from '../../invalid/ScaleInvalidDataMode';
 import {UnitModel} from '../../unit';
-import {fieldInvalidPredicate} from './invalid';
 
 /**
  * Create Vega's "defined" encoding to break paths in a path mark for invalid values.
@@ -41,7 +41,7 @@ export function defined(model: UnitModel): VgEncodeEntry {
 
   // If the set is not empty, return a defined signal.
   if (fieldsToBreakPath.size > 0) {
-    const signal = [...fieldsToBreakPath].map(field => fieldInvalidPredicate(field, {invalid: false})).join(' && ');
+    const signal = [...fieldsToBreakPath].map(field => fieldValidPredicate(field, true)).join(' && ');
     return {defined: {signal}};
   }
   return undefined;
