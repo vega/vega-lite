@@ -60,7 +60,7 @@
               "name": "child__temp_max_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "faceted_path_child__temp_max_main"},
               "encode": {
                 "update": {
@@ -168,7 +168,7 @@
               "name": "child__precipitation_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "faceted_path_child__precipitation_main"},
               "encode": {
                 "update": {
@@ -282,7 +282,7 @@
               "name": "child__wind_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "faceted_path_child__wind_main"},
               "encode": {
                 "update": {

@@ -40,7 +40,7 @@
       "name": "layer_0_marks",
       "type": "area",
       "style": ["area", "errorband-band"],
-      "sort": {"field": "datum[\"year_Year\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -67,7 +67,7 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line", "errorband-borders"],
-      "sort": {"field": "datum[\"year_Year\"]"},
+      "sort": {"field": "x"},
       "aria": false,
       "from": {"data": "source_0"},
       "encode": {
@@ -88,7 +88,7 @@
       "name": "layer_2_marks",
       "type": "line",
       "style": ["line", "errorband-borders"],
-      "sort": {"field": "datum[\"year_Year\"]"},
+      "sort": {"field": "x"},
       "aria": false,
       "from": {"data": "source_0"},
       "encode": {

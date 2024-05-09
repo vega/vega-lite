@@ -102,7 +102,7 @@
               "name": "child__column_temp_max_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]"},
+              "sort": {"field": "x"},
               "from": {
                 "data": "faceted_path_child__column_temp_max_layer_0_main"
               },
@@ -150,7 +150,7 @@
               "name": "child__column_temp_max_layer_1_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]"},
+              "sort": {"field": "x"},
               "from": {
                 "data": "faceted_path_child__column_temp_max_layer_1_main"
               },
@@ -250,7 +250,7 @@
               "name": "child__column_precipitation_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]"},
+              "sort": {"field": "x"},
               "from": {
                 "data": "faceted_path_child__column_precipitation_layer_0_main"
               },
@@ -298,7 +298,7 @@
               "name": "child__column_precipitation_layer_1_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]"},
+              "sort": {"field": "x"},
               "from": {
                 "data": "faceted_path_child__column_precipitation_layer_1_main"
               },
@@ -398,7 +398,7 @@
               "name": "child__column_wind_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "faceted_path_child__column_wind_layer_0_main"},
               "encode": {
                 "update": {
@@ -438,7 +438,7 @@
               "name": "child__column_wind_layer_1_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"month_date\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "faceted_path_child__column_wind_layer_1_main"},
               "encode": {
                 "update": {

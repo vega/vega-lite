@@ -159,7 +159,7 @@
           "name": "child_marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"monthdate_date\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "facet"},
           "encode": {
             "update": {

@@ -91,7 +91,7 @@
       "type": "area",
       "clip": true,
       "style": ["area"],
-      "sort": {"field": "datum[\"x\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "data_1"},
       "encode": {
         "update": {
@@ -115,7 +115,7 @@
       "type": "area",
       "clip": true,
       "style": ["area"],
-      "sort": {"field": "datum[\"x\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "data_2"},
       "encode": {
         "update": {
