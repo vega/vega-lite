@@ -15,7 +15,7 @@
     ]
   },
   "config": {
-    "mark": {"invalid": "filter"},
+    "mark": {"invalid": "filter", "tooltip": true},
     "scale": {"invalid": {"opacity": {"value": 0.1}}}
   },
   "hconcat": [

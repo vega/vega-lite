@@ -51,6 +51,9 @@
                 },
                 {"scale": "color", "field": "c"}
               ],
+              "tooltip": {
+                "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+              },
               "ariaRoleDescription": {"value": "point"},
               "description": {
                 "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
@@ -147,6 +150,9 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"value": "#4c78a8"},
+              "tooltip": {
+                "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+              },
               "ariaRoleDescription": {"value": "point"},
               "description": {
                 "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
@@ -288,5 +294,6 @@
       "symbolType": "circle",
       "size": "size"
     }
-  ]
+  ],
+  "config": {"mark": {"tooltip": true}}
 }

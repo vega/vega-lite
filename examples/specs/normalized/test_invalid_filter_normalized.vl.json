@@ -13,7 +13,7 @@
       {"a": 10, "b": null}
     ]
   },
-  "config": {"mark": {"invalid": "filter"}},
+  "config": {"mark": {"invalid": "filter", "tooltip": true}},
   "vconcat": [
     {
       "title": "Quantitative X",

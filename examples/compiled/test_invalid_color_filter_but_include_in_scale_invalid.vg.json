@@ -179,6 +179,9 @@
                     },
                     {"scale": "color", "field": "c"}
                   ],
+                  "tooltip": {
+                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
@@ -264,6 +267,9 @@
                     },
                     {"scale": "color", "field": "c"}
                   ],
+                  "tooltip": {
+                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
@@ -371,6 +377,9 @@
                         },
                         {"scale": "color", "field": "c"}
                       ],
+                      "tooltip": {
+                        "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                      },
                       "description": {
                         "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
                       },
@@ -396,6 +405,9 @@
                     },
                     {"scale": "color", "field": "c"}
                   ],
+                  "tooltip": {
+                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
@@ -500,6 +512,9 @@
                         },
                         {"scale": "color", "field": "c"}
                       ],
+                      "tooltip": {
+                        "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                      },
                       "description": {
                         "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
                       },
@@ -602,6 +617,9 @@
                     },
                     {"scale": "color", "field": "c"}
                   ],
+                  "tooltip": {
+                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
@@ -673,6 +691,9 @@
                     },
                     {"scale": "color", "field": "c"}
                   ],
+                  "tooltip": {
+                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
@@ -768,6 +789,9 @@
                         },
                         {"scale": "color", "field": "c"}
                       ],
+                      "tooltip": {
+                        "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                      },
                       "description": {
                         "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
                       },
@@ -793,6 +817,9 @@
                     },
                     {"scale": "color", "field": "c"}
                   ],
+                  "tooltip": {
+                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
@@ -883,6 +910,9 @@
                         },
                         {"scale": "color", "field": "c"}
                       ],
+                      "tooltip": {
+                        "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                      },
                       "description": {
                         "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
                       },
@@ -1087,5 +1117,6 @@
       "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}},
       "fill": "color"
     }
-  ]
+  ],
+  "config": {"mark": {"tooltip": true}}
 }

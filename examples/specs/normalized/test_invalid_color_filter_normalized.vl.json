@@ -14,7 +14,7 @@
       {"a": 3, "b": 49, "c": null}
     ]
   },
-  "config": {"mark": {"invalid": "filter"}},
+  "config": {"mark": {"invalid": "filter", "tooltip": true}},
   "hconcat": [
     {
       "title": "Quantitative X",

@@ -131,6 +131,9 @@
                   "opacity": {"value": 0.7},
                   "fill": {"value": "transparent"},
                   "stroke": {"value": "#4c78a8"},
+                  "tooltip": {
+                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
@@ -224,6 +227,9 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
+                  "tooltip": {
+                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
@@ -312,6 +318,9 @@
               "encode": {
                 "update": {
                   "stroke": {"value": "#4c78a8"},
+                  "tooltip": {
+                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\")}"
+                  },
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
@@ -342,6 +351,9 @@
                 "update": {
                   "opacity": {"value": 1},
                   "fill": {"value": "#4c78a8"},
+                  "tooltip": {
+                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
@@ -436,6 +448,9 @@
                 "update": {
                   "orient": {"value": "vertical"},
                   "fill": {"value": "#4c78a8"},
+                  "tooltip": {
+                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\")}"
+                  },
                   "description": {
                     "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
@@ -531,6 +546,9 @@
                   "opacity": {"value": 0.7},
                   "fill": {"value": "transparent"},
                   "stroke": {"value": "#4c78a8"},
+                  "tooltip": {
+                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
@@ -603,6 +621,9 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
+                  "tooltip": {
+                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
@@ -673,6 +694,9 @@
               "encode": {
                 "update": {
                   "stroke": {"value": "#4c78a8"},
+                  "tooltip": {
+                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+                  },
                   "description": {
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
@@ -697,6 +721,9 @@
                 "update": {
                   "opacity": {"value": 1},
                   "fill": {"value": "#4c78a8"},
+                  "tooltip": {
+                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+                  },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
@@ -771,6 +798,9 @@
                 "update": {
                   "orient": {"value": "vertical"},
                   "fill": {"value": "#4c78a8"},
+                  "tooltip": {
+                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+                  },
                   "description": {
                     "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
@@ -947,5 +977,6 @@
       "nice": true,
       "zero": true
     }
-  ]
+  ],
+  "config": {"mark": {"tooltip": true}}
 }
