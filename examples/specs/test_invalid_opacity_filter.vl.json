@@ -15,7 +15,7 @@
     ]
   },
   "config": {
-    "mark": {"invalid": "filter"}
+    "mark": {"invalid": "filter", "tooltip": true}
   },
   "hconcat": [{
     "title": "Quantitative X",

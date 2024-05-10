@@ -14,7 +14,7 @@
     ]
   },
   "config": {
-    "mark": {"invalid": "break-paths"}
+    "mark": {"invalid": "break-paths", "tooltip": true}
   },
   "vconcat": [{
     "title": "Quantitative X",

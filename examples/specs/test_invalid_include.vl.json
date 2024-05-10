@@ -14,7 +14,7 @@
     ]
   },
   "config": {
-    "mark": {"invalid": "include"}
+    "mark": {"invalid": "include", "tooltip": true}
   },
   "vconcat": [{
     "title": "Quantitative X",

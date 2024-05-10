@@ -13,6 +13,7 @@
       {"a": 10, "b": null}
     ]
   },
+  "config": {"mark": {"tooltip": true}},
   "vconcat": [{
     "title": "Quantitative X",
     "hconcat": [{

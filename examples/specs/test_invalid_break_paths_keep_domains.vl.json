@@ -14,7 +14,7 @@
     ]
   },
   "config": {
-    "mark": {"invalid": "break-paths-keep-domains"}
+    "mark": {"invalid": "break-paths-keep-domains", "tooltip": true}
   },
   "vconcat": [{
     "title": "Quantitative X",
