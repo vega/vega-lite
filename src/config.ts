@@ -601,7 +601,11 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
   }
 
   if (mergedConfig.scale) {
-    outputConfig.scale = replaceExprRef(mergedConfig.scale);
+    const {invalid, ...otherScaleConfig} = mergedConfig.scale;
+    outputConfig.scale = {
+      ...replaceExprRef(otherScaleConfig),
+      invalid: replaceExprRef(invalid, {level: 1})
+    };
   }
 
   if (mergedConfig.style) {

@@ -13,11 +13,45 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
     'break-paths-and-keep-path-domains'
   ];
 
-  // TODO: add test for non-continuous scales, count
-
   describe.each([...PRIMITIVE_MARKS])('For all marks (%s)', mark => {
+    it.each(ALL_MARK_INVALID_MODE)('should return always valid for count', invalid => {
+      expect(
+        getScaleInvalidDataMode({
+          markDef: {type: mark, invalid},
+          scaleChannel: 'color',
+          scaleType: 'linear',
+          isCountAggregate: true,
+          config: {
+            ...defaultConfig,
+            scale: {
+              ...defaultConfig.scale,
+              invalid: {color: {value: 'red'}}
+            }
+          }
+        })
+      ).toBe('always-valid');
+    });
+
+    it.each(ALL_MARK_INVALID_MODE)('should return always valid for count', invalid => {
+      expect(
+        getScaleInvalidDataMode({
+          markDef: {type: mark, invalid},
+          scaleChannel: 'color',
+          scaleType: 'band',
+          isCountAggregate: true,
+          config: {
+            ...defaultConfig,
+            scale: {
+              ...defaultConfig.scale,
+              invalid: {color: {value: 'red'}}
+            }
+          }
+        })
+      ).toBe('always-valid');
+    });
+
     it.each(ALL_MARK_INVALID_MODE)(
-      'should return the specified invalid output color for all invalid mode (%s)',
+      'should return "include" for all invalid mode (%s) if invalid output color is specified',
       invalid => {
         expect(
           getScaleInvalidDataMode({
@@ -37,26 +71,29 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
       }
     );
 
-    it.each(ALL_MARK_INVALID_MODE)('should return the specified invalid output size', invalid => {
-      expect(
-        getScaleInvalidDataMode({
-          markDef: {type: mark, invalid},
-          scaleChannel: 'size',
-          scaleType: 'linear',
-          isCountAggregate: false,
-          config: {
-            ...defaultConfig,
-            scale: {
-              ...defaultConfig.scale,
-              invalid: {size: {value: 4}}
+    it.each(ALL_MARK_INVALID_MODE)(
+      'should return "include" for all invalid mode (%s) if invalid output size is specified',
+      invalid => {
+        expect(
+          getScaleInvalidDataMode({
+            markDef: {type: mark, invalid},
+            scaleChannel: 'size',
+            scaleType: 'linear',
+            isCountAggregate: false,
+            config: {
+              ...defaultConfig,
+              scale: {
+                ...defaultConfig.scale,
+                invalid: {size: {value: 4}}
+              }
             }
-          }
-        })
-      ).toBe('include');
-    });
+          })
+        ).toBe('include');
+      }
+    );
 
     describe.each(POSITION_SCALE_CHANNELS)('for all position scale channel (%s)', channel => {
-      it('should return {include: min} by default for include mode if scale invalid config is not specified', () => {
+      it('should return include by default for include mode if scale invalid config is not specified', () => {
         expect(
           getScaleInvalidDataMode({
             markDef: {type: mark, invalid: 'include'},
@@ -76,7 +113,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
     });
 
     describe.each(NONPOSITION_SCALE_CHANNELS)('for all non-position scale channel (%s)', channel => {
-      it('should return {include: zero-or-min} by default for include mode if scale invalid config is not specified', () => {
+      it('should return include by default for include mode if scale invalid config is not specified', () => {
         expect(
           getScaleInvalidDataMode({
             markDef: {type: mark, invalid: 'include'},
