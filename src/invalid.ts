@@ -49,7 +49,7 @@ export interface ScaleInvalidDataConfigMixins {
   /**
    * An object that defines scale outputs per channel for invalid values (nulls and NaNs on a continuous scale).
    * - The keys in this object are the scale channels.
-   * - The values is either `"zero-or-min"`or a value definition `{value: ...}`.
+   * - The values is either `"zero-or-min"` (use zero if the scale includes zero or min value otherwise) or a value definition `{value: ...}`.
    *
    * _Example:_ Setting this `config.scale.invalid` property to `{color: {value: '#aaa'}}`
    * will make the visualization color all invalid values with '#aaa'.
@@ -63,10 +63,7 @@ export type ScaleInvalidDataConfig = {
   [c in ScaleChannel]?: ScaleInvalidDataIncludeAs<c>;
 };
 
-export type ScaleInvalidDataIncludeAs<C extends ScaleChannel> =
-  | ScaleInvalidDataIncludeAsValue<C>
-  | 'zero-or-min'
-  | 'min';
+export type ScaleInvalidDataIncludeAs<C extends ScaleChannel> = ScaleInvalidDataIncludeAsValue<C> | 'zero-or-min';
 
 export type ScaleInvalidDataIncludeAsValue<C extends ScaleChannel> = {
   value: MarkDef<Mark, SignalRef>[C];

@@ -61,7 +61,7 @@ function refForInvalidValues<C extends PositionScaleChannel | PolarPositionScale
     mainChannel: channel,
     scale,
     scaleName,
-    mode: includeAs === 'zero-or-min' ? 'zeroOrMin' : 'min',
+    mode: 'zeroOrMin',
     config
   });
 }

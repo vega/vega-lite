@@ -12,7 +12,7 @@ export function zeroOrMinOrMax({
 }: {
   scaleName: string;
   scale: ScaleComponent;
-  mode: 'min' | 'zeroOrMin' | {zeroOrMax: {widthSignal: string; heightSignal: string}};
+  mode: 'zeroOrMin' | {zeroOrMax: {widthSignal: string; heightSignal: string}};
   mainChannel: PositionScaleChannel | PolarPositionScaleChannel | NonPositionScaleChannel;
   config: Config;
 }): VgValueRef {
@@ -23,29 +23,24 @@ export function zeroOrMinOrMax({
   if (scale && scaleName) {
     // If there is a scale (and hence its name)
     const domainHasZero = scale.domainHasZero();
-    if (mode === 'min') {
-      return {signal: `scale('${scaleName}', ${min})`}; // encode the scale domain min
-    } else {
-      // zeroOrMin or zeroOrMax mode
-      if (domainHasZero === 'definitely') {
-        return {
-          scale: scaleName,
-          value: 0
-        };
-      } else if (domainHasZero === 'maybe') {
-        if (mode === 'zeroOrMin') {
-          return {signal: `scale('${scaleName}', inrange(0, ${domain}) ? 0 : ${min})`}; // encode the scale domain min
-        } else {
-          return {signal: `scale('${scaleName}', inrange(0, ${domain}) ? 0 : ${max})`}; // encode the scale domain max
-        }
+    // zeroOrMin or zeroOrMax mode
+    if (domainHasZero === 'definitely') {
+      return {
+        scale: scaleName,
+        value: 0
+      };
+    } else if (domainHasZero === 'maybe') {
+      if (mode === 'zeroOrMin') {
+        return {signal: `scale('${scaleName}', inrange(0, ${domain}) ? 0 : ${min})`}; // encode the scale domain min
+      } else {
+        return {signal: `scale('${scaleName}', inrange(0, ${domain}) ? 0 : ${max})`}; // encode the scale domain max
       }
     }
   }
 
-  const isMin = mode === 'zeroOrMin' || mode === 'min';
   switch (mainChannel) {
     case 'radius': {
-      if (mode === 'min' || mode === 'zeroOrMin') {
+      if (mode === 'zeroOrMin') {
         return {value: 0}; // min value
       }
       const {widthSignal, heightSignal} = mode.zeroOrMax;
@@ -56,11 +51,11 @@ export function zeroOrMinOrMax({
     }
     case 'theta':
     case 'angle':
-      return isMin ? {value: 0} : {signal: '2*PI'};
+      return mode === 'zeroOrMin' ? {value: 0} : {signal: '2*PI'};
     case 'x':
-      return isMin ? {value: 0} : {field: {group: 'width'}};
+      return mode === 'zeroOrMin' ? {value: 0} : {field: {group: 'width'}};
     case 'y':
-      return isMin ? {field: {group: 'height'}} : {value: 0};
+      return mode === 'zeroOrMin' ? {field: {group: 'height'}} : {value: 0};
     case 'color':
     case 'fill':
     case 'stroke':
@@ -68,11 +63,11 @@ export function zeroOrMinOrMax({
     case 'opacity':
     case 'fillOpacity':
     case 'strokeOpacity':
-      return {value: config.scale[isMin ? 'minOpacity' : 'maxOpacity']};
+      return {value: config.scale[mode === 'zeroOrMin' ? 'minOpacity' : 'maxOpacity']};
     case 'strokeWidth':
-      return {value: config.scale[isMin ? 'minStrokeWidth' : 'maxStrokeWidth']};
+      return {value: config.scale[mode === 'zeroOrMin' ? 'minStrokeWidth' : 'maxStrokeWidth']};
     case 'size':
-      return {value: config.scale[isMin ? 'minSize' : 'maxSize']};
+      return {value: config.scale[mode === 'zeroOrMin' ? 'minSize' : 'maxSize']};
     case 'strokeDash':
     case 'shape':
       return {value: null};
