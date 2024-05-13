@@ -333,7 +333,7 @@
               "name": "concat_0_concat_2_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"a\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "data_0"},
               "encode": {
                 "update": {
@@ -439,7 +439,7 @@
               "name": "concat_0_concat_3_marks",
               "type": "area",
               "style": ["area"],
-              "sort": {"field": "datum[\"a\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "data_5"},
               "encode": {
                 "update": {
@@ -676,7 +676,7 @@
               "name": "concat_1_concat_2_layer_0_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"a\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "data_0"},
               "encode": {
                 "update": {
@@ -768,7 +768,7 @@
               "name": "concat_1_concat_3_marks",
               "type": "area",
               "style": ["area"],
-              "sort": {"field": "datum[\"a\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "data_9"},
               "encode": {
                 "update": {

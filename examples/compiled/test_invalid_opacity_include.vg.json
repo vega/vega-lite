@@ -137,7 +137,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('opacity', domain('opacity')[0])"
+                      "value": 0.3
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -242,7 +242,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('opacity', domain('opacity')[0])"
+                      "value": 0.3
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -349,7 +349,7 @@
                   "name": "concat_0_concat_2_layer_0_marks",
                   "type": "line",
                   "style": ["line"],
-                  "sort": {"field": "datum[\"a\"]"},
+                  "sort": {"field": "x"},
                   "from": {
                     "data": "faceted_path_concat_0_concat_2_layer_0_main"
                   },
@@ -359,7 +359,7 @@
                       "opacity": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "signal": "scale('opacity', domain('opacity')[0])"
+                          "value": 0.3
                         },
                         {"scale": "opacity", "field": "c"}
                       ],
@@ -399,7 +399,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('opacity', domain('opacity')[0])"
+                      "value": 0.3
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -512,7 +512,7 @@
                   "name": "concat_0_concat_3_marks",
                   "type": "area",
                   "style": ["area"],
-                  "sort": {"field": "datum[\"a\"]"},
+                  "sort": {"field": "x"},
                   "from": {"data": "faceted_path_concat_0_concat_3_main"},
                   "encode": {
                     "update": {
@@ -521,7 +521,7 @@
                       "opacity": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "signal": "scale('opacity', domain('opacity')[0])"
+                          "value": 0.3
                         },
                         {"scale": "opacity", "field": "c"}
                       ],
@@ -630,7 +630,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('opacity', domain('opacity')[0])"
+                      "value": 0.3
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -714,7 +714,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('opacity', domain('opacity')[0])"
+                      "value": 0.3
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -803,7 +803,7 @@
                   "name": "concat_1_concat_2_layer_0_marks",
                   "type": "line",
                   "style": ["line"],
-                  "sort": {"field": "datum[\"a\"]"},
+                  "sort": {"field": "x"},
                   "from": {
                     "data": "faceted_path_concat_1_concat_2_layer_0_main"
                   },
@@ -813,7 +813,7 @@
                       "opacity": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "signal": "scale('opacity', domain('opacity')[0])"
+                          "value": 0.3
                         },
                         {"scale": "opacity", "field": "c"}
                       ],
@@ -847,7 +847,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('opacity', domain('opacity')[0])"
+                      "value": 0.3
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -940,7 +940,7 @@
                   "name": "concat_1_concat_3_marks",
                   "type": "area",
                   "style": ["area"],
-                  "sort": {"field": "datum[\"a\"]"},
+                  "sort": {"field": "x"},
                   "from": {"data": "faceted_path_concat_1_concat_3_main"},
                   "encode": {
                     "update": {
@@ -949,7 +949,7 @@
                       "opacity": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "signal": "scale('opacity', domain('opacity')[0])"
+                          "value": 0.3
                         },
                         {"scale": "opacity", "field": "c"}
                       ],

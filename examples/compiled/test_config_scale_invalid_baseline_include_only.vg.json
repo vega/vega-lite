@@ -47,7 +47,7 @@
               "stroke": [
                 {
                   "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                  "signal": "scale('color', domain('color')[0])"
+                  "value": "#aaa"
                 },
                 {"scale": "color", "field": "c"}
               ],

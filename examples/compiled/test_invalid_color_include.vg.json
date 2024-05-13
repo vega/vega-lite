@@ -139,7 +139,7 @@
                   "stroke": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('color', domain('color')[0])"
+                      "value": "#aaa"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -241,7 +241,7 @@
                   "fill": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('color', domain('color')[0])"
+                      "value": "#aaa"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -348,7 +348,7 @@
                   "name": "concat_0_concat_2_layer_0_marks",
                   "type": "line",
                   "style": ["line"],
-                  "sort": {"field": "datum[\"a\"]"},
+                  "sort": {"field": "x"},
                   "from": {
                     "data": "faceted_path_concat_0_concat_2_layer_0_main"
                   },
@@ -357,7 +357,7 @@
                       "stroke": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "signal": "scale('color', domain('color')[0])"
+                          "value": "#aaa"
                         },
                         {"scale": "color", "field": "c"}
                       ],
@@ -398,7 +398,7 @@
                   "fill": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('color', domain('color')[0])"
+                      "value": "#aaa"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -510,7 +510,7 @@
                   "name": "concat_0_concat_3_marks",
                   "type": "area",
                   "style": ["area"],
-                  "sort": {"field": "datum[\"a\"]"},
+                  "sort": {"field": "x"},
                   "from": {"data": "faceted_path_concat_0_concat_3_main"},
                   "encode": {
                     "update": {
@@ -518,7 +518,7 @@
                       "fill": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "signal": "scale('color', domain('color')[0])"
+                          "value": "#aaa"
                         },
                         {"scale": "color", "field": "c"}
                       ],
@@ -629,7 +629,7 @@
                   "stroke": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('color', domain('color')[0])"
+                      "value": "#aaa"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -710,7 +710,7 @@
                   "fill": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('color', domain('color')[0])"
+                      "value": "#aaa"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -799,7 +799,7 @@
                   "name": "concat_1_concat_2_layer_0_marks",
                   "type": "line",
                   "style": ["line"],
-                  "sort": {"field": "datum[\"a\"]"},
+                  "sort": {"field": "x"},
                   "from": {
                     "data": "faceted_path_concat_1_concat_2_layer_0_main"
                   },
@@ -808,7 +808,7 @@
                       "stroke": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "signal": "scale('color', domain('color')[0])"
+                          "value": "#aaa"
                         },
                         {"scale": "color", "field": "c"}
                       ],
@@ -843,7 +843,7 @@
                   "fill": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "signal": "scale('color', domain('color')[0])"
+                      "value": "#aaa"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -935,7 +935,7 @@
                   "name": "concat_1_concat_3_marks",
                   "type": "area",
                   "style": ["area"],
-                  "sort": {"field": "datum[\"a\"]"},
+                  "sort": {"field": "x"},
                   "from": {"data": "faceted_path_concat_1_concat_3_main"},
                   "encode": {
                     "update": {
@@ -943,7 +943,7 @@
                       "fill": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "signal": "scale('color', domain('color')[0])"
+                          "value": "#aaa"
                         },
                         {"scale": "color", "field": "c"}
                       ],
