@@ -313,7 +313,21 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
   const key = encoding.key;
   const sort = getSort(model);
   const interactive = interactiveFlag(model);
-  interactive ? (model.markDef.cursor ??= 'pointer') : {};
+
+  let isPoint = false;
+  let isBind = false;
+  if (model.component.selection) {
+    for (const k of keys(model.component.selection)) {
+      if (model.component.selection[k].bind) {
+        isBind = true;
+      }
+      if (model.component.selection[k].type == 'point') {
+        isPoint = true;
+      }
+    }
+  }
+  interactive && isPoint && !isBind ? (model.markDef.cursor ??= 'pointer') : {};
+
   const aria = getMarkPropOrConfig('aria', markDef, config);
 
   const postEncodingTransform = markCompiler[mark].postEncodingTransform

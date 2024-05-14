@@ -81,9 +81,6 @@ describe('Layered Selections', () => {
             ariaRoleDescription: {
               value: 'circle'
             },
-            cursor: {
-              value: 'pointer'
-            },
             description: {
               signal:
                 '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
@@ -132,9 +129,6 @@ describe('Layered Selections', () => {
             ariaRoleDescription: {
               value: 'square'
             },
-            cursor: {
-              value: 'pointer'
-            },
             description: {
               signal:
                 '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
@@ -177,9 +171,6 @@ describe('Layered Selections', () => {
             },
             ariaRoleDescription: {
               value: 'point'
-            },
-            cursor: {
-              value: 'pointer'
             },
             description: {
               signal:
