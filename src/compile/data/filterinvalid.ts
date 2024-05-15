@@ -28,7 +28,7 @@ export class FilterInvalidNode extends DataFlowNode {
     const {config, markDef} = model;
 
     const {marks, scales} = dataSourcesForHandlingInvalidValues;
-    if (marks === 'pre-filter' && scales === 'pre-filter') {
+    if (marks === 'include-invalid-values' && scales === 'include-invalid-values') {
       // If neither marks nor scale domains need data source to filter null values, then don't add the filter.
       return null;
     }

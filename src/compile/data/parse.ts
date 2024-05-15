@@ -410,12 +410,12 @@ export function parseData(model: Model): DataComponent {
       isPath: isPathMark(mark)
     }));
 
-    if (marks !== scales && scales === 'pre-filter') {
+    if (marks !== scales && scales === 'include-invalid-values') {
       // Create a seperate preFilterInvalid dataSource if scales need pre-filter data but marks needs post-filter.
       preFilterInvalid = head = makeOutputNode(DataSourceType.PreFilterInvalid, model, head);
     }
 
-    if (marks === 'post-filter') {
+    if (marks === 'exclude-invalid-values') {
       head = FilterInvalidNode.make(head, model, dataSourcesForHandlingInvalidValues) ?? head;
     }
   }
@@ -426,7 +426,7 @@ export function parseData(model: Model): DataComponent {
   let postFilterInvalid: OutputNode | undefined;
   if (isUnitModel(model) && dataSourcesForHandlingInvalidValues) {
     const {marks, scales} = dataSourcesForHandlingInvalidValues;
-    if (marks === 'pre-filter' && scales === 'post-filter') {
+    if (marks === 'include-invalid-values' && scales === 'exclude-invalid-values') {
       // Create a seperate postFilterInvalid dataSource if scales need post-filter data but marks needs pre-filter.
       head = FilterInvalidNode.make(head, model, dataSourcesForHandlingInvalidValues) ?? head;
 

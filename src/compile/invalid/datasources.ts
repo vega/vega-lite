@@ -3,7 +3,7 @@ import {MarkInvalidDataMode} from '../../invalid';
 import {DataSourceType} from '../../data';
 import {normalizeInvalidDataMode} from './normalizeInvalidDataMode';
 
-type PreOrPostFilteringInvalidValues = 'pre-filter' | 'post-filter';
+type PreOrPostFilteringInvalidValues = 'include-invalid-values' | 'exclude-invalid-values';
 
 export interface DataSourcesForHandlingInvalidValues {
   marks: PreOrPostFilteringInvalidValues;
@@ -24,28 +24,28 @@ export function getDataSourcesForHandlingInvalidValues({
     case 'filter':
       // Both marks and scales use post-filter data
       return {
-        marks: 'post-filter',
-        scales: 'post-filter'
+        marks: 'exclude-invalid-values',
+        scales: 'exclude-invalid-values'
       };
     case 'break-paths-keep-domains':
       return {
         // Path-based marks use pre-filter data so we know to skip these invalid points in the path.
         // For non-path based marks, we skip by not showing them at all.
-        marks: isPath ? 'pre-filter' : 'post-filter',
-        scales: 'pre-filter'
+        marks: isPath ? 'include-invalid-values' : 'exclude-invalid-values',
+        scales: 'include-invalid-values'
       };
     case 'break-paths':
       // For path marks, the marks will use unfiltered data (and skip points). But we need a separate data sources to feed the domain.
       // For non-path marks, we can use the filtered data for both marks and scales.
       return {
-        marks: isPath ? 'pre-filter' : 'post-filter',
+        marks: isPath ? 'include-invalid-values' : 'exclude-invalid-values',
         // Unlike 'break-paths-keep-domains', 'break-paths' uses post-filter data to feed scale.
-        scales: 'post-filter'
+        scales: 'exclude-invalid-values'
       };
     case 'include':
       return {
-        marks: 'pre-filter',
-        scales: 'pre-filter'
+        marks: 'include-invalid-values',
+        scales: 'include-invalid-values'
       };
   }
 }
@@ -59,5 +59,5 @@ export function getScaleDataSourceForHandlingInvalidValues(
     return DataSourceType.Main;
   }
   // If marks and scales use differetnt data, return the pre/post-filter data source accordingly.
-  return scales === 'pre-filter' ? DataSourceType.PreFilterInvalid : DataSourceType.PostFilterInvalid;
+  return scales === 'include-invalid-values' ? DataSourceType.PreFilterInvalid : DataSourceType.PostFilterInvalid;
 }
