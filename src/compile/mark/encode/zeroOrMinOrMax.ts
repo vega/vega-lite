@@ -70,6 +70,8 @@ export function zeroOrMinOrMax({
       return {value: config.scale[mode === 'zeroOrMin' ? 'minSize' : 'maxSize']};
     case 'strokeDash':
     case 'shape':
+      // Vega-Lite don't allow strokeDash and shape to be used with continuous scale.
+      // So it should never reach here. Here we just return null so Typescript doesn't complain.
       return {value: null};
   }
 }
