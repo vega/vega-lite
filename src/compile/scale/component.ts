@@ -47,7 +47,7 @@ export class ScaleComponent extends Split<ScaleComponentProps> {
     if (
       scaleZero === true ||
       // If zero is undefined, linear/sqrt/pow scales have zero by default.
-      (scaleType === undefined && contains([ScaleType.LINEAR, ScaleType.SQRT, ScaleType.POW], scaleType))
+      (scaleZero === undefined && contains([ScaleType.LINEAR, ScaleType.SQRT, ScaleType.POW], scaleType))
     ) {
       return 'definitely';
     }
@@ -55,10 +55,14 @@ export class ScaleComponent extends Split<ScaleComponentProps> {
     const domains = this.get('domains');
 
     if (domains.length > 0) {
-      const hasDomainWithZero = some(
-        domains,
-        d => isArray(d) && d.length === 2 && isNumber(d[0]) && d[0] <= 0 && isNumber(d[1]) && d[1] >= 0
-      );
+      const hasDomainWithZero = some(domains, d => {
+        if (isArray(d)) {
+          const first = d[0];
+          const last = d[d.length - 1];
+          return isNumber(first) && first <= 0 && isNumber(last) && last >= 0;
+        }
+        return false;
+      });
       return hasDomainWithZero ? 'definitely' : 'definitely-not';
     }
     return 'maybe';
