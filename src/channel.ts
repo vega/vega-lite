@@ -480,7 +480,7 @@ const SCALE_CHANNEL_INDEX = {
 export const SCALE_CHANNELS = keys(SCALE_CHANNEL_INDEX);
 export type ScaleChannel = (typeof SCALE_CHANNELS)[number];
 
-export function isScaleChannel(channel: Channel | ExtendedChannel): channel is ScaleChannel {
+export function isScaleChannel(channel: ExtendedChannel): channel is ScaleChannel {
   return !!SCALE_CHANNEL_INDEX[channel];
 }
 
