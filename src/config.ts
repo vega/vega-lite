@@ -602,9 +602,10 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   if (mergedConfig.scale) {
     const {invalid, ...otherScaleConfig} = mergedConfig.scale;
+    const newScaleInvalid = replaceExprRef(invalid, {level: 1});
     outputConfig.scale = {
       ...replaceExprRef(otherScaleConfig),
-      invalid: replaceExprRef(invalid, {level: 1})
+      ...(keys(newScaleInvalid).length > 0 ? {invalid: newScaleInvalid} : {})
     };
   }
 

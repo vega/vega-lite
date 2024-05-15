@@ -47,11 +47,11 @@ describe('compile/data/filterinvalid', () => {
       });
     });
 
-    it('should add no null filter if when invalid is null', () => {
+    it('should add no null filter if when invalid is show', () => {
       const model = parseUnitModelWithScale(
         mergeDeep<TopLevel<NormalizedUnitSpec>>(spec, {
           config: {
-            mark: {invalid: null}
+            mark: {invalid: 'show'}
           }
         })
       );
