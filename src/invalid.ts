@@ -29,8 +29,9 @@ export interface MarkInvalidMixins {
    * This is equivalent to `"break-path-keep-domains"` for path-based marks (line/area/trail)
    * and `"filter"` for other marks.
    *
-   * __Note__: If any scale has an output for invalid values defined in `config.scale.invalid`,
+   * __Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`,
    * all values for the scales will be considered "valid" since they can produce a reasonable output for the scales.
+   * Thus, fields for such channels will not be filtered and will not cause path breaks.
    */
   invalid?: MarkInvalidDataMode | null;
 }
