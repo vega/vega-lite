@@ -34,12 +34,12 @@ export function getDataSourcesForHandlingInvalidValues({
         marks: isPath ? 'include-invalid-values' : 'exclude-invalid-values',
         scales: 'include-invalid-values'
       };
-    case 'break-paths':
+    case 'break-paths-filter-domains':
       // For path marks, the marks will use unfiltered data (and skip points). But we need a separate data sources to feed the domain.
       // For non-path marks, we can use the filtered data for both marks and scales.
       return {
         marks: isPath ? 'include-invalid-values' : 'exclude-invalid-values',
-        // Unlike 'break-paths-keep-domains', 'break-paths' uses post-filter data to feed scale.
+        // Unlike 'break-paths-keep-domains', 'break-paths-filter-domains' uses post-filter data to feed scale.
         scales: 'exclude-invalid-values'
       };
     case 'include':

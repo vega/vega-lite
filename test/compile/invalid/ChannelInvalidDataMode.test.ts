@@ -7,7 +7,7 @@ import {PATH_MARKS, PRIMITIVE_MARKS} from '../../../src/mark';
 describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode()', () => {
   const ALL_MARK_INVALID_MODE: MarkInvalidDataMode[] = [
     'filter',
-    'break-paths',
+    'break-paths-filter-domains',
     'break-paths-keep-domains',
     'include',
     'break-paths-and-keep-path-domains'
@@ -133,7 +133,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
     });
 
     describe.each(SCALE_CHANNELS)('for all scale channel (%s)', channel => {
-      const OTHER_MODES: MarkInvalidDataMode[] = ['break-paths', 'break-paths-keep-domains', 'filter'];
+      const OTHER_MODES: MarkInvalidDataMode[] = ['break-paths-filter-domains', 'break-paths-keep-domains', 'filter'];
 
       it.each(OTHER_MODES)('should return the mode (%s)', mode => {
         expect(

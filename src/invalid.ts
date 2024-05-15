@@ -10,10 +10,10 @@ export interface MarkInvalidMixins {
   /**
    * Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.
    *
-   * -  `"filter"` — *Exclude* all invalid values from the visualization's *marks* and *scales*.
-   * For path marks (for line, area, trail), this option will create paths that connect valid points, as if the points with invalid values do not exist.
+   * - `"filter"` — *Exclude* all invalid values from the visualization's *marks* and *scales*.
+   * For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.
    *
-   * - `"break-paths"` —
+   * - `"break-paths-filter-domains"` —
    * Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `"filter"`.
    * All *scale* domains will *exclude* these filtered data points.
    *
@@ -37,7 +37,7 @@ export interface MarkInvalidMixins {
 
 export type MarkInvalidDataMode =
   | 'filter'
-  | 'break-paths'
+  | 'break-paths-filter-domains'
   | 'break-paths-keep-domains'
   | 'break-paths-and-keep-path-domains'
   | 'include';

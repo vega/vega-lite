@@ -47,5 +47,5 @@ export function getScaleInvalidDataMode<C extends ScaleChannel>({
   return invalidMode;
 }
 export function shouldBreakPath(mode: ScaleInvalidDataMode): boolean {
-  return mode === 'break-paths' || mode === 'break-paths-keep-domains';
+  return mode === 'break-paths-filter-domains' || mode === 'break-paths-keep-domains';
 }
