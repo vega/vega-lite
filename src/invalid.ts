@@ -21,8 +21,8 @@ export interface MarkInvalidMixins {
    * Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks.
    * All *scale* domains will *include* these filtered data points.
    *
-   * - `"include"` or `null` —
-   * Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid`
+   * - `"show"` or `null` —
+   * Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid`
    * or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).
    *
    * - `"break-paths-and-keep-path-domains"` (default) —
@@ -40,7 +40,7 @@ export type MarkInvalidDataMode =
   | 'break-paths-filter-domains'
   | 'break-paths-keep-domains'
   | 'break-paths-and-keep-path-domains'
-  | 'include';
+  | 'show';
 
 /**
  * Mixins for Vega-Lite Spec's config.scale
@@ -60,17 +60,17 @@ export interface ScaleInvalidDataConfigMixins {
 }
 
 export type ScaleInvalidDataConfig = {
-  [c in ScaleChannel]?: ScaleInvalidDataIncludeAs<c>;
+  [c in ScaleChannel]?: ScaleInvalidDataShowAs<c>;
 };
 
-export type ScaleInvalidDataIncludeAs<C extends ScaleChannel> = ScaleInvalidDataIncludeAsValue<C> | 'zero-or-min';
+export type ScaleInvalidDataShowAs<C extends ScaleChannel> = ScaleInvalidDataShowAsValue<C> | 'zero-or-min';
 
-export type ScaleInvalidDataIncludeAsValue<C extends ScaleChannel> = {
+export type ScaleInvalidDataShowAsValue<C extends ScaleChannel> = {
   value: MarkDef<Mark, SignalRef>[C];
 };
 
 export function isScaleInvalidDataIncludeAsValue<C extends ScaleChannel>(
-  invalidDataMode: ScaleInvalidDataIncludeAs<C>
-): invalidDataMode is ScaleInvalidDataIncludeAsValue<C> {
+  invalidDataMode: ScaleInvalidDataShowAs<C>
+): invalidDataMode is ScaleInvalidDataShowAsValue<C> {
   return isObject(invalidDataMode) && 'value' in invalidDataMode;
 }

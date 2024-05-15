@@ -1,7 +1,7 @@
 import {isCountingAggregateOp} from '../../../aggregate';
 import {NonPositionScaleChannel, PolarPositionScaleChannel, PositionScaleChannel} from '../../../channel';
 import {getFieldDef, vgField} from '../../../channeldef';
-import {ScaleInvalidDataIncludeAs, isScaleInvalidDataIncludeAsValue} from '../../../invalid';
+import {ScaleInvalidDataShowAs, isScaleInvalidDataIncludeAsValue} from '../../../invalid';
 import {fieldValidPredicate} from '../../../predicate';
 import {VgValueRef, isSignalRef} from '../../../vega.schema';
 import {getScaleInvalidDataMode} from '../../invalid/ScaleInvalidDataMode';
@@ -35,8 +35,8 @@ export function getConditionalValueRefForIncludingInvalidValue<
     isCountAggregate
   });
 
-  if (fieldDef && invalidDataMode === 'include') {
-    const includeAs: ScaleInvalidDataIncludeAs<C> = config.scale.invalid?.[scaleChannel] ?? 'zero-or-min';
+  if (fieldDef && invalidDataMode === 'show') {
+    const includeAs: ScaleInvalidDataShowAs<C> = config.scale.invalid?.[scaleChannel] ?? 'zero-or-min';
     return {
       test: fieldValidPredicate(vgField(fieldDef, {expr: 'datum'}), false),
       ...refForInvalidValues(scaleChannel, includeAs, scale, scaleName, config)
@@ -47,7 +47,7 @@ export function getConditionalValueRefForIncludingInvalidValue<
 
 function refForInvalidValues<C extends PositionScaleChannel | PolarPositionScaleChannel | NonPositionScaleChannel>(
   channel: C,
-  includeAs: ScaleInvalidDataIncludeAs<C>,
+  includeAs: ScaleInvalidDataShowAs<C>,
   scale: ScaleComponent,
   scaleName: string,
   config: Config

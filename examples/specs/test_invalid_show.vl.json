@@ -3,30 +3,28 @@
   "description": "Testing invalid",
   "data": {
     "values": [
-      {"a": 1, "b": 15, "c": 1},
-      {"a": 2, "b": 25, "c": 1},
-      {"a": 3, "b": 20, "c": 1},
-      {"a": 1, "b": 12, "c": 2},
-      {"a": 2, "b": 21, "c": 2},
-      {"a": 3, "b": 29, "c": 2},
-      {"a": 1, "b": 8, "c": null},
-      {"a": 2, "b": 31, "c": null},
-      {"a": 3, "b": 49, "c": null}
+      {"a": null, "b": 100},
+      {"a": -10, "b": null},
+      {"a": -5, "b": -25},
+      {"a": -1, "b": -20},
+      {"a": 0, "b": null},
+      {"a": 1, "b": 30},
+      {"a": 5, "b": 40},
+      {"a": 10, "b": null}
     ]
   },
   "config": {
-    "mark": {"invalid": "include", "tooltip": true}
+    "mark": {"invalid": "show", "tooltip": true}
   },
-  "hconcat": [{
+  "vconcat": [{
     "title": "Quantitative X",
-    "vconcat": [{
+    "hconcat": [{
       "width": 100,
       "height": 100,
       "mark": "point",
       "encoding": {
         "x": {"field": "a", "type": "quantitative"},
-        "y": {"field": "b", "type": "quantitative"},
-        "opacity": {"field": "c", "type": "quantitative"}
+        "y": {"field": "b", "type": "quantitative"}
       }
     }, {
       "width": 100,
@@ -34,8 +32,7 @@
       "mark": "bar",
       "encoding": {
         "x": {"field": "a", "type": "quantitative"},
-        "y": {"field": "b", "type": "quantitative"},
-        "opacity": {"field": "c", "type": "quantitative"}
+        "y": {"field": "b", "type": "quantitative"}
       }
     }, {
       "width": 100,
@@ -43,8 +40,7 @@
       "mark": {"type": "line", "point": true},
       "encoding": {
         "x": {"field": "a", "type": "quantitative"},
-        "y": {"field": "b", "type": "quantitative"},
-        "opacity": {"field": "c", "type": "quantitative"}
+        "y": {"field": "b", "type": "quantitative"}
       }
     }, {
       "width": 100,
@@ -52,20 +48,18 @@
       "mark": "area",
       "encoding": {
         "x": {"field": "a", "type": "quantitative"},
-        "y": {"field": "b", "type": "quantitative"},
-        "opacity": {"field": "c", "type": "quantitative"}
+        "y": {"field": "b", "type": "quantitative"}
       }
     }]
   },{
     "title": "Ordinal X",
-    "vconcat": [{
+    "hconcat": [{
       "width": 100,
       "height": 100,
       "mark": "point",
       "encoding": {
         "x": {"field": "a", "type": "ordinal"},
-        "y": {"field": "b", "type": "quantitative"},
-        "opacity": {"field": "c", "type": "quantitative"}
+        "y": {"field": "b", "type": "quantitative"}
       }
     }, {
       "width": 100,
@@ -73,8 +67,7 @@
       "mark": "bar",
       "encoding": {
         "x": {"field": "a", "type": "ordinal"},
-        "y": {"field": "b", "type": "quantitative"},
-        "opacity": {"field": "c", "type": "quantitative"}
+        "y": {"field": "b", "type": "quantitative"}
       }
     }, {
       "width": 100,
@@ -82,8 +75,7 @@
       "mark": {"type": "line", "point": true},
       "encoding": {
         "x": {"field": "a", "type": "ordinal"},
-        "y": {"field": "b", "type": "quantitative"},
-        "opacity": {"field": "c", "type": "quantitative"}
+        "y": {"field": "b", "type": "quantitative"}
       }
     }, {
       "width": 100,
@@ -91,8 +83,7 @@
       "mark": "area",
       "encoding": {
         "x": {"field": "a", "type": "ordinal"},
-        "y": {"field": "b", "type": "quantitative"},
-        "opacity": {"field": "c", "type": "quantitative"}
+        "y": {"field": "b", "type": "quantitative"}
       }
     }]
   }]

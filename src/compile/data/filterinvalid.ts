@@ -49,7 +49,7 @@ export class FilterInvalidNode extends DataFlowNode {
           });
 
           // If the invalid data mode is include or always-valid, we don't need to filter invalid values as the scale can handle invalid values.
-          if (invalidDataMode !== 'include' && invalidDataMode !== 'always-valid') {
+          if (invalidDataMode !== 'show' && invalidDataMode !== 'always-valid') {
             aggregator[fieldDef.field] = fieldDef as any; // we know that the fieldDef is a typed field def
           }
         }

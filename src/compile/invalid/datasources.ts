@@ -42,7 +42,7 @@ export function getDataSourcesForHandlingInvalidValues({
         // Unlike 'break-paths-keep-domains', 'break-paths-filter-domains' uses post-filter data to feed scale.
         scales: 'exclude-invalid-values'
       };
-    case 'include':
+    case 'show':
       return {
         marks: 'include-invalid-values',
         scales: 'include-invalid-values'

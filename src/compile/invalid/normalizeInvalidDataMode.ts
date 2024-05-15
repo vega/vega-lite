@@ -9,7 +9,7 @@ export function normalizeInvalidDataMode(
   if (mode === undefined || mode === 'break-paths-and-keep-path-domains') {
     return isPath ? 'break-paths-keep-domains' : 'filter';
   } else if (mode === null) {
-    return 'include';
+    return 'show';
   }
   return mode;
 }

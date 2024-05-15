@@ -96,8 +96,8 @@ You can use `config.scale.invalid` to defines scale outputs per channel for inva
 
 A visualization with `"filter"` invalid data mode will not filter (not exclude) color and size encoding if `config.scale.invalid.color` and `config.scale.invalid.size` are specified.
 
-<div class="vl-example" data-name="test_config_scale_invalid"></div>
+<div class="vl-example" data-name="test_invalid_color_size_config_scale"></div>
 
 Compare this with a similar spec, but without `config.scale.invalid`.
 
-<div class="vl-example" data-name="test_config_scale_invalid_baseline_filter_only"></div>
+<div class="vl-example" data-name="test_invalid_color_size_mark_filter_only"></div>

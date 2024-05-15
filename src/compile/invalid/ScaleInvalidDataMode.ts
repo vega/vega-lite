@@ -41,7 +41,7 @@ export function getScaleInvalidDataMode<C extends ScaleChannel>({
   const scaleOutputForInvalid = config.scale?.invalid?.[scaleChannel];
   if (scaleOutputForInvalid !== undefined) {
     // Regardless of the current invalid mode, if the channel has a default value, we consider the field valid.
-    return 'include';
+    return 'show';
   }
 
   return invalidMode;

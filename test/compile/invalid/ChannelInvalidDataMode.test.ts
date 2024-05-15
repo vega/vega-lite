@@ -9,7 +9,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
     'filter',
     'break-paths-filter-domains',
     'break-paths-keep-domains',
-    'include',
+    'show',
     'break-paths-and-keep-path-domains'
   ];
 
@@ -67,7 +67,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               }
             }
           })
-        ).toBe('include');
+        ).toBe('show');
       }
     );
 
@@ -88,7 +88,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               }
             }
           })
-        ).toBe('include');
+        ).toBe('show');
       }
     );
 
@@ -96,7 +96,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
       it('should return include by default for include mode if scale invalid config is not specified', () => {
         expect(
           getScaleInvalidDataMode({
-            markDef: {type: mark, invalid: 'include'},
+            markDef: {type: mark, invalid: 'show'},
             scaleChannel: channel,
             scaleType: 'linear',
             isCountAggregate: false,
@@ -108,15 +108,15 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               }
             }
           })
-        ).toBe('include');
+        ).toBe('show');
       });
     });
 
     describe.each(NONPOSITION_SCALE_CHANNELS)('for all non-position scale channel (%s)', channel => {
-      it('should return include by default for include mode if scale invalid config is not specified', () => {
+      it('should return show by default for show mode if scale invalid config is not specified', () => {
         expect(
           getScaleInvalidDataMode({
-            markDef: {type: mark, invalid: 'include'},
+            markDef: {type: mark, invalid: 'show'},
             scaleChannel: channel,
             scaleType: 'linear',
             isCountAggregate: false,
@@ -128,7 +128,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               }
             }
           })
-        ).toBe('include');
+        ).toBe('show');
       });
     });
 

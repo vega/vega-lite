@@ -15,7 +15,7 @@
     ]
   },
   "config": {
-    "mark": {"invalid": "include", "tooltip": true}
+    "mark": {"invalid": "show", "tooltip": true}
   },
   "concat": [{
     "title": "Color",
