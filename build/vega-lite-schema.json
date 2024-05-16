@@ -521,7 +521,7 @@
               "type": "null"
             }
           ],
-          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n-  `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the points with invalid values do not exist.\n\n- `\"break-paths\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-keep-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"include\"` or `null` — Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-keep-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales."
+          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n- `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.\n\n- `\"break-paths-filter-domains\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-show-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"show\"` or `null` — Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-show-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales. Thus, fields for such channels will not be filtered and will not cause path breaks."
         },
         "limit": {
           "anyOf": [
@@ -3391,7 +3391,7 @@
               "type": "null"
             }
           ],
-          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n-  `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the points with invalid values do not exist.\n\n- `\"break-paths\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-keep-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"include\"` or `null` — Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-keep-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales."
+          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n- `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.\n\n- `\"break-paths-filter-domains\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-show-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"show\"` or `null` — Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-show-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales. Thus, fields for such channels will not be filtered and will not cause path breaks."
         },
         "limit": {
           "anyOf": [
@@ -4621,7 +4621,7 @@
               "type": "null"
             }
           ],
-          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n-  `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the points with invalid values do not exist.\n\n- `\"break-paths\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-keep-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"include\"` or `null` — Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-keep-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales."
+          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n- `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.\n\n- `\"break-paths-filter-domains\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-show-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"show\"` or `null` — Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-show-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales. Thus, fields for such channels will not be filtered and will not cause path breaks."
         },
         "median": {
           "anyOf": [
@@ -15067,7 +15067,7 @@
               "type": "null"
             }
           ],
-          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n-  `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the points with invalid values do not exist.\n\n- `\"break-paths\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-keep-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"include\"` or `null` — Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-keep-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales."
+          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n- `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.\n\n- `\"break-paths-filter-domains\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-show-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"show\"` or `null` — Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-show-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales. Thus, fields for such channels will not be filtered and will not cause path breaks."
         },
         "limit": {
           "anyOf": [
@@ -16222,7 +16222,7 @@
               "type": "null"
             }
           ],
-          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n-  `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the points with invalid values do not exist.\n\n- `\"break-paths\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-keep-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"include\"` or `null` — Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-keep-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales."
+          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n- `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.\n\n- `\"break-paths-filter-domains\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-show-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"show\"` or `null` — Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-show-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales. Thus, fields for such channels will not be filtered and will not cause path breaks."
         },
         "limit": {
           "anyOf": [
@@ -17066,7 +17066,7 @@
               "type": "null"
             }
           ],
-          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n-  `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the points with invalid values do not exist.\n\n- `\"break-paths\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-keep-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"include\"` or `null` — Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-keep-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales."
+          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n- `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.\n\n- `\"break-paths-filter-domains\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-show-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"show\"` or `null` — Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-show-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales. Thus, fields for such channels will not be filtered and will not cause path breaks."
         },
         "limit": {
           "anyOf": [
@@ -17643,10 +17643,10 @@
     "MarkInvalidDataMode": {
       "enum": [
         "filter",
-        "break-paths",
-        "break-paths-keep-domains",
-        "break-paths-and-keep-path-domains",
-        "include"
+        "break-paths-filter-domains",
+        "break-paths-show-domains",
+        "break-paths-and-show-path-domains",
+        "show"
       ],
       "type": "string"
     },
@@ -18614,7 +18614,7 @@
               "type": "null"
             }
           ],
-          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n-  `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the points with invalid values do not exist.\n\n- `\"break-paths\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-keep-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"include\"` or `null` — Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-keep-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales."
+          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n- `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.\n\n- `\"break-paths-filter-domains\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-show-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"show\"` or `null` — Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-show-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales. Thus, fields for such channels will not be filtered and will not cause path breaks."
         },
         "limit": {
           "anyOf": [
@@ -20910,7 +20910,7 @@
               "type": "null"
             }
           ],
-          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n-  `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the points with invalid values do not exist.\n\n- `\"break-paths\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-keep-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"include\"` or `null` — Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-keep-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales."
+          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n- `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.\n\n- `\"break-paths-filter-domains\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-show-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"show\"` or `null` — Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-show-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales. Thus, fields for such channels will not be filtered and will not cause path breaks."
         },
         "limit": {
           "anyOf": [
@@ -22114,7 +22114,7 @@
         },
         "invalid": {
           "$ref": "#/definitions/ScaleInvalidDataConfig",
-          "description": "An object that defines scale outputs per channel for invalid values (nulls and NaNs on a continuous scale).\n- The keys in this object are the scale channels.\n- The values is either `\"zero-or-min\"`or a value definition `{value: ...}`.\n\n_Example:_ Setting this `config.scale.invalid` property to `{color: {value: '#aaa'}}` will make the visualization color all invalid values with '#aaa'.\n\nSee [https://vega.github.io/vega-lite/docs/invalid-data.html](Invalid Data Docs) for more details."
+          "description": "An object that defines scale outputs per channel for invalid values (nulls and NaNs on a continuous scale).\n- The keys in this object are the scale channels.\n- The values is either `\"zero-or-min\"` (use zero if the scale includes zero or min value otherwise) or a value definition `{value: ...}`.\n\n_Example:_ Setting this `config.scale.invalid` property to `{color: {value: '#aaa'}}` will make the visualization color all invalid values with '#aaa'.\n\nSee [https://vega.github.io/vega-lite/docs/invalid-data.html](Invalid Data Docs) for more details."
         },
         "maxBandSize": {
           "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\n\nIf undefined (default), we will use the axis's size (width or height) - 1.",
@@ -22429,315 +22429,247 @@
       "additionalProperties": false,
       "properties": {
         "angle": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"angle\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"angle\">"
         },
         "color": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"color\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"color\">"
         },
         "fill": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"fill\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"fill\">"
         },
         "fillOpacity": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"fillOpacity\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"fillOpacity\">"
         },
         "opacity": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"opacity\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"opacity\">"
         },
         "radius": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"radius\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"radius\">"
         },
         "shape": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"shape\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"shape\">"
         },
         "size": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"size\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"size\">"
         },
         "stroke": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"stroke\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"stroke\">"
         },
         "strokeDash": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"strokeDash\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"strokeDash\">"
         },
         "strokeOpacity": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"strokeOpacity\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"strokeOpacity\">"
         },
         "strokeWidth": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"strokeWidth\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"strokeWidth\">"
         },
         "theta": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"theta\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"theta\">"
         },
         "x": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"x\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"x\">"
         },
         "xOffset": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"xOffset\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"xOffset\">"
         },
         "y": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"y\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"y\">"
         },
         "yOffset": {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAs<\"yOffset\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAs<\"yOffset\">"
         }
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAs<\"angle\">": {
+    "ScaleInvalidDataShowAs<\"angle\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"angle\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"angle\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"color\">": {
+    "ScaleInvalidDataShowAs<\"color\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"color\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"color\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"fill\">": {
+    "ScaleInvalidDataShowAs<\"fill\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"fill\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"fill\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"fillOpacity\">": {
+    "ScaleInvalidDataShowAs<\"fillOpacity\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"fillOpacity\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"fillOpacity\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"opacity\">": {
+    "ScaleInvalidDataShowAs<\"opacity\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"opacity\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"opacity\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"radius\">": {
+    "ScaleInvalidDataShowAs<\"radius\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"radius\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"radius\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"shape\">": {
+    "ScaleInvalidDataShowAs<\"shape\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"shape\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"shape\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"size\">": {
+    "ScaleInvalidDataShowAs<\"size\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"size\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"size\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"stroke\">": {
+    "ScaleInvalidDataShowAs<\"stroke\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"stroke\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"stroke\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"strokeDash\">": {
+    "ScaleInvalidDataShowAs<\"strokeDash\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"strokeDash\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"strokeDash\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"strokeOpacity\">": {
+    "ScaleInvalidDataShowAs<\"strokeOpacity\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"strokeOpacity\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"strokeOpacity\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"strokeWidth\">": {
+    "ScaleInvalidDataShowAs<\"strokeWidth\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"strokeWidth\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"strokeWidth\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"theta\">": {
+    "ScaleInvalidDataShowAs<\"theta\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"theta\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"theta\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"x\">": {
+    "ScaleInvalidDataShowAs<\"x\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"x\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"x\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"xOffset\">": {
+    "ScaleInvalidDataShowAs<\"xOffset\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"xOffset\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"xOffset\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"y\">": {
+    "ScaleInvalidDataShowAs<\"y\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"y\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"y\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAs<\"yOffset\">": {
+    "ScaleInvalidDataShowAs<\"yOffset\">": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ScaleInvalidDataIncludeAsValue<\"yOffset\">"
+          "$ref": "#/definitions/ScaleInvalidDataShowAsValue<\"yOffset\">"
         },
         {
           "const": "zero-or-min",
           "type": "string"
-        },
-        {
-          "const": "min",
-          "type": "string"
         }
       ]
     },
-    "ScaleInvalidDataIncludeAsValue<\"angle\">": {
+    "ScaleInvalidDataShowAsValue<\"angle\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22749,7 +22681,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"color\">": {
+    "ScaleInvalidDataShowAsValue<\"color\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22766,7 +22698,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"fill\">": {
+    "ScaleInvalidDataShowAsValue<\"fill\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22786,7 +22718,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"fillOpacity\">": {
+    "ScaleInvalidDataShowAsValue<\"fillOpacity\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22798,7 +22730,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"opacity\">": {
+    "ScaleInvalidDataShowAsValue<\"opacity\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22810,7 +22742,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"radius\">": {
+    "ScaleInvalidDataShowAsValue<\"radius\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22821,7 +22753,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"shape\">": {
+    "ScaleInvalidDataShowAsValue<\"shape\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22838,7 +22770,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"size\">": {
+    "ScaleInvalidDataShowAsValue<\"size\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22849,7 +22781,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"stroke\">": {
+    "ScaleInvalidDataShowAsValue<\"stroke\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22869,7 +22801,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"strokeDash\">": {
+    "ScaleInvalidDataShowAsValue<\"strokeDash\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22882,7 +22814,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"strokeOpacity\">": {
+    "ScaleInvalidDataShowAsValue<\"strokeOpacity\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22894,7 +22826,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"strokeWidth\">": {
+    "ScaleInvalidDataShowAsValue<\"strokeWidth\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22905,7 +22837,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"theta\">": {
+    "ScaleInvalidDataShowAsValue<\"theta\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22917,7 +22849,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"x\">": {
+    "ScaleInvalidDataShowAsValue<\"x\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22935,7 +22867,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"xOffset\">": {
+    "ScaleInvalidDataShowAsValue<\"xOffset\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22945,7 +22877,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"y\">": {
+    "ScaleInvalidDataShowAsValue<\"y\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -22963,7 +22895,7 @@
       },
       "type": "object"
     },
-    "ScaleInvalidDataIncludeAsValue<\"yOffset\">": {
+    "ScaleInvalidDataShowAsValue<\"yOffset\">": {
       "additionalProperties": false,
       "properties": {
         "value": {
@@ -28681,7 +28613,7 @@
               "type": "null"
             }
           ],
-          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n-  `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the points with invalid values do not exist.\n\n- `\"break-paths\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-keep-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"include\"` or `null` — Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-keep-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales."
+          "description": "Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.\n\n- `\"filter\"` — *Exclude* all invalid values from the visualization's *marks* and *scales*. For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.\n\n- `\"break-paths-filter-domains\"` — Break path marks (for line, area, trail) at invalid values.  For non-path marks, this is equivalent to `\"filter\"`. All *scale* domains will *exclude* these filtered data points.\n\n- `\"break-paths-show-domains\"` — Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks. All *scale* domains will *include* these filtered data points.\n\n- `\"show\"` or `null` — Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).\n\n- `\"break-paths-and-show-path-domains\"` (default) — This is equivalent to `\"break-path-keep-domains\"` for path-based marks (line/area/trail) and `\"filter\"` for other marks.\n\n__Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`, all values for the scales will be considered \"valid\" since they can produce a reasonable output for the scales. Thus, fields for such channels will not be filtered and will not cause path breaks."
         },
         "limit": {
           "anyOf": [
