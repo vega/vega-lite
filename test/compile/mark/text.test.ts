@@ -215,7 +215,7 @@ describe('Mark: Text', () => {
       },
       data: {url: 'data/cars.json'},
       config: {
-        mark: {invalid: 'break-paths-keep-domains'}
+        mark: {invalid: 'break-paths-show-domains'}
       }
     };
     const model = parseModelWithScale(spec);

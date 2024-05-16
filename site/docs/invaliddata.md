@@ -62,27 +62,27 @@ For path marks (for line, area, trail), this option will create paths that conne
 
 Break path marks (for line, area, trail) at invalid values. For non-path marks, this is equivalent to `"filter"`. All _scale_ domains will _exclude_ these filtered data points.
 
-<div class="vl-example example-only" data-name="test_invalid_break_paths"></div>
+<div class="vl-example example-only" data-name="test_invalid_break_paths_filter_domains"></div>
 
-#### `"break-paths-keep-domains"`
+#### `"break-paths-show-domains"`
 
 This option is like `"break-paths"`, except that all _scale_ domains will instead _include_ these filtered data points.
 
-<div class="vl-example example-only" data-name="test_invalid_break_paths_keep_domains"></div>
+<div class="vl-example example-only" data-name="test_invalid_break_paths_show_domains"></div>
 
-#### `include`
+#### `"show"`
 
 Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid`
 
 - or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).
 
-<div class="vl-example example-only" data-name="test_invalid_include"></div>
+<div class="vl-example example-only" data-name="test_invalid_show"></div>
 
-#### `break-paths-and-keep-path-domains` (Default)
+#### `"break-paths-and-show-path-domains"` (Default)
 
-For historical reasons, Vega-Lite 5 currently uses `"break-paths-and-keep-path-domains"` as the default invalid data mode (to avoid breaking changes). This is equivalent to `"break-path-keep-domains"` for path-based marks (line/area/trail) and `"filter"` for other marks.
+For historical reasons, Vega-Lite 5 currently uses `"break-paths-and-show-path-domains"` as the default invalid data mode (to avoid breaking changes). This is equivalent to `"break-path-keep-domains"` for path-based marks (line/area/trail) and `"filter"` for other marks.
 
-<div class="vl-example example-only" data-name="test_invalid_break_paths_and_keep_path_domains"></div>
+<div class="vl-example example-only" data-name="test_invalid_break_paths_and_show_path_domains"></div>
 
 ## Scale Output for Invalid Values
 
@@ -98,6 +98,6 @@ A visualization with `"filter"` invalid data mode will not filter (not exclude) 
 
 <div class="vl-example" data-name="test_invalid_color_size_config_scale"></div>
 
-Compare this with a similar spec, but without `config.scale.invalid`.
+Compare this with a similar spec, but without `config.scale.invalid`:
 
 <div class="vl-example" data-name="test_invalid_color_size_mark_filter_only"></div>

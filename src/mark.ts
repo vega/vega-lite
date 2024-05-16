@@ -338,7 +338,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
   color: '#4c78a8',
-  invalid: 'break-paths-and-keep-path-domains',
+  invalid: 'break-paths-and-show-path-domains',
   timeUnitBandSize: 1
 };
 

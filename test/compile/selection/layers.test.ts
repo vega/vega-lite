@@ -43,7 +43,7 @@ describe('Layered Selections', () => {
         }
       }
     ],
-    config: {mark: {tooltip: null, invalid: 'break-paths-keep-domains'}}
+    config: {mark: {tooltip: null, invalid: 'break-paths-show-domains'}}
   });
 
   layers.parse();

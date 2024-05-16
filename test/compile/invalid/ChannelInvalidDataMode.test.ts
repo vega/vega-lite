@@ -8,9 +8,9 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
   const ALL_MARK_INVALID_MODE: MarkInvalidDataMode[] = [
     'filter',
     'break-paths-filter-domains',
-    'break-paths-keep-domains',
+    'break-paths-show-domains',
     'show',
-    'break-paths-and-keep-path-domains'
+    'break-paths-and-show-path-domains'
   ];
 
   describe.each([...PRIMITIVE_MARKS])('For all marks (%s)', mark => {
@@ -133,7 +133,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
     });
 
     describe.each(SCALE_CHANNELS)('for all scale channel (%s)', channel => {
-      const OTHER_MODES: MarkInvalidDataMode[] = ['break-paths-filter-domains', 'break-paths-keep-domains', 'filter'];
+      const OTHER_MODES: MarkInvalidDataMode[] = ['break-paths-filter-domains', 'break-paths-show-domains', 'filter'];
 
       it.each(OTHER_MODES)('should return the mode (%s)', mode => {
         expect(
@@ -160,7 +160,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
       it('should return the mode (%s)', () => {
         expect(
           getScaleInvalidDataMode({
-            markDef: {type: mark, invalid: 'break-paths-and-keep-path-domains'},
+            markDef: {type: mark, invalid: 'break-paths-and-show-path-domains'},
             scaleChannel: channel,
             scaleType: 'linear',
             isCountAggregate: false,
@@ -172,7 +172,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               }
             }
           })
-        ).toBe('break-paths-keep-domains');
+        ).toBe('break-paths-show-domains');
       });
     });
   });
@@ -182,7 +182,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
       it('should return the mode (%s)', () => {
         expect(
           getScaleInvalidDataMode({
-            markDef: {type: mark, invalid: 'break-paths-and-keep-path-domains'},
+            markDef: {type: mark, invalid: 'break-paths-and-show-path-domains'},
             scaleChannel: channel,
             scaleType: 'linear',
             isCountAggregate: false,
@@ -194,7 +194,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               }
             }
           })
-        ).toBe('break-paths-keep-domains');
+        ).toBe('break-paths-show-domains');
       });
     });
   });
