@@ -13,7 +13,9 @@
       {"a": 10, "b": null}
     ]
   },
-  "config": {"mark": {"invalid": "break-paths-filter-domains", "tooltip": true}},
+  "config": {
+    "mark": {"invalid": "break-paths-filter-domains", "tooltip": true}
+  },
   "vconcat": [
     {
       "title": "Quantitative X",
