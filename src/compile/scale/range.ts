@@ -283,8 +283,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
 
     case SIZE: {
       // TODO: support custom rangeMin, rangeMax
-      const zero = model.component.scales[channel].get('zero');
-      const rangeMin = sizeRangeMin(mark, zero, config);
+      const rangeMin = sizeRangeMin(mark, config);
       const rangeMax = sizeRangeMax(mark, size, model, config);
       if (isContinuousToDiscrete(scaleType)) {
         return interpolateRange(
@@ -504,14 +503,7 @@ export function interpolateRange(
   }
 }
 
-function sizeRangeMin(mark: Mark, zero: boolean | SignalRef, config: Config): number | SignalRef {
-  if (zero) {
-    if (isSignalRef(zero)) {
-      return {signal: `${zero.signal} ? 0 : ${sizeRangeMin(mark, false, config)}`};
-    } else {
-      return 0;
-    }
-  }
+function sizeRangeMin(mark: Mark, config: Config): number | SignalRef {
   switch (mark) {
     case 'bar':
     case 'tick':

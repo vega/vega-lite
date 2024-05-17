@@ -807,7 +807,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_1", "field": "routes"},
-      "range": [0, 500],
+      "range": [4, 500],
       "zero": true
     },
     {

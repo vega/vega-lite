@@ -402,7 +402,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Cylinders"},
-      "range": [0, 361],
+      "range": [4, 361],
       "zero": true
     }
   ],

@@ -22122,7 +22122,7 @@
           "type": "number"
         },
         "maxFontSize": {
-          "description": "The default max value for mapping quantitative fields to text's size/fontSize.\n\n__Default value:__ `40`",
+          "description": "The default max value for mapping quantitative fields to text's size/fontSize scale.\n\n__Default value:__ `40`",
           "minimum": 0,
           "type": "number"
         },
@@ -22143,12 +22143,12 @@
           "type": "number"
         },
         "minBandSize": {
-          "description": "The default min value for mapping quantitative fields to bar and tick's size/bandSize scale with zero=false.\n\n__Default value:__ `2`",
+          "description": "The default min value for mapping quantitative fields to bar and tick's size/bandSize scale.\n\n__Default value:__ `2`",
           "minimum": 0,
           "type": "number"
         },
         "minFontSize": {
-          "description": "The default min value for mapping quantitative fields to text's size/fontSize scale with zero=false\n\n__Default value:__ `8`",
+          "description": "The default min value for mapping quantitative fields to text's size/fontSize scale.\n\n__Default value:__ `8`",
           "minimum": 0,
           "type": "number"
         },
@@ -22159,12 +22159,12 @@
           "type": "number"
         },
         "minSize": {
-          "description": "Default minimum value for point size scale with zero=false.\n\n__Default value:__ `9`",
+          "description": "Default minimum value for point size scale.\n\n__Default value:__ `9`",
           "minimum": 0,
           "type": "number"
         },
         "minStrokeWidth": {
-          "description": "Default minimum strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks with zero=false.\n\n__Default value:__ `1`",
+          "description": "Default minimum strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks.\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
         },

@@ -8,7 +8,7 @@ import {makeExplicit, makeImplicit} from '../../../src/compile/split';
 import {Config, defaultConfig, DEFAULT_STEP} from '../../../src/config';
 import * as log from '../../../src/log';
 import {Mark} from '../../../src/mark';
-import {QUANTITATIVE_SCALES, ScaleType} from '../../../src/scale';
+import {defaultScaleConfig, QUANTITATIVE_SCALES, ScaleType} from '../../../src/scale';
 import {parseUnitModelWithScaleExceptRange} from '../../util';
 
 describe('compile/scale', () => {
@@ -595,7 +595,7 @@ describe('compile/scale', () => {
           expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([2, 9]));
         });
 
-        it('returns formula signal if zero is signal', () => {
+        it('returns [minBandSize, maxBandSize] if zero is signal', () => {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'bar',
             encoding: {
@@ -606,7 +606,7 @@ describe('compile/scale', () => {
             }
           });
 
-          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([{signal: 'a ? 0 : 2'}, 9]));
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([2, 9]));
         });
 
         it('should return [continuousBandSize, xRangeStep-1] when zero is excluded by default since min/maxSize config are not specified', () => {
@@ -698,7 +698,7 @@ describe('compile/scale', () => {
           }
         });
 
-        it('should return [0, maxSize] when zero is included', () => {
+        it('should return [minSize, maxSize] when zero is included', () => {
           for (const mark of ['point', 'square', 'circle'] as Mark[]) {
             const model = parseUnitModelWithScaleExceptRange({
               mark,
@@ -713,11 +713,11 @@ describe('compile/scale', () => {
               }
             });
 
-            expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, 25]));
+            expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([5, 25]));
           }
         });
 
-        it('should return [0, (minBandSize-2)^2] if both x and y are discrete and size is quantitative (thus use zero=true, by default)', () => {
+        it('should return [minSize, (minBandSize-2)^2] if both x and y are discrete and size is quantitative (thus use zero=true, by default)', () => {
           for (const mark of ['point', 'square', 'circle'] as Mark[]) {
             const model = parseUnitModelWithScaleExceptRange({
               width: {step: 11},
@@ -730,12 +730,15 @@ describe('compile/scale', () => {
               }
             });
             expect(parseRangeForChannel('size', model)).toEqual(
-              makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11])
+              makeImplicit([
+                defaultScaleConfig.minSize,
+                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11
+              ])
             );
           }
         });
 
-        it('should return [9, (minBandSize-2)^2] if both x and y are discrete and size is not quantitative (thus use zero=false, by default)', () => {
+        it('should return [minSize, (minBandSize-2)^2] if both x and y are discrete and size is not quantitative (thus use zero=false, by default)', () => {
           for (const mark of ['point', 'square', 'circle'] as Mark[]) {
             const model = parseUnitModelWithScaleExceptRange({
               width: {step: 11},
@@ -748,12 +751,15 @@ describe('compile/scale', () => {
               }
             });
             expect(parseRangeForChannel('size', model)).toEqual(
-              makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11])
+              makeImplicit([
+                defaultScaleConfig.minSize,
+                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11
+              ])
             );
           }
         });
 
-        it('should return [9, (minBandSize-2)^2] if both x and y are discrete and size is quantitative but use zero=false', () => {
+        it('should return [minSize, (minBandSize-2)^2] if both x and y are discrete and size is quantitative but use zero=false', () => {
           for (const mark of ['point', 'square', 'circle'] as Mark[]) {
             const model = parseUnitModelWithScaleExceptRange({
               width: {step: 11},
@@ -766,12 +772,15 @@ describe('compile/scale', () => {
               }
             });
             expect(parseRangeForChannel('size', model)).toEqual(
-              makeImplicit([9, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11])
+              makeImplicit([
+                defaultScaleConfig.minSize,
+                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11
+              ])
             );
           }
         });
 
-        it('should return [0, (xRangeStep-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=true, by default)', () => {
+        it('should return [minSize, (xRangeStep-2)^2] if x is discrete and y is continuous and size is quantitative (thus use zero=true, by default)', () => {
           for (const mark of ['point', 'square', 'circle'] as Mark[]) {
             const model = parseUnitModelWithScaleExceptRange({
               width: {step: 11},
@@ -783,7 +792,10 @@ describe('compile/scale', () => {
               }
             });
             expect(parseRangeForChannel('size', model)).toEqual(
-              makeImplicit([0, MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11])
+              makeImplicit([
+                defaultScaleConfig.minSize,
+                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11
+              ])
             );
           }
         });
@@ -801,7 +813,7 @@ describe('compile/scale', () => {
             });
             expect(parseRangeForChannel('size', model)).toEqual(
               makeImplicit([
-                0,
+                defaultScaleConfig.minSize,
                 {
                   signal:
                     'pow(0.95 * min(11, height / ((bin_maxbins_10_y_bins.stop - bin_maxbins_10_y_bins.start) / bin_maxbins_10_y_bins.step)), 2)'
@@ -821,7 +833,7 @@ describe('compile/scale', () => {
               }
             });
             expect(parseRangeForChannel('size', model)).toEqual(
-              makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))'})
+              makeImplicit({signal: 'sequence(4, 361 + (361 - 4) / (4 - 1), (361 - 4) / (4 - 1))'})
             );
           });
         });
@@ -836,7 +848,7 @@ describe('compile/scale', () => {
               }
             });
             expect(parseRangeForChannel('size', model)).toEqual(
-              makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))'})
+              makeImplicit({signal: 'sequence(4, 361 + (361 - 4) / (3 - 1), (361 - 4) / (3 - 1))'})
             );
             expect(localLogger.warns[0]).toEqual(log.message.domainRequiredForThresholdScale('size'));
           })
