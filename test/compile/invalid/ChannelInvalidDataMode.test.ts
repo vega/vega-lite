@@ -10,7 +10,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
     'break-paths-filter-domains',
     'break-paths-show-domains',
     'show',
-    'break-paths-and-show-path-domains'
+    'break-paths-show-path-domains'
   ];
 
   describe.each([...PRIMITIVE_MARKS])('For all marks (%s)', mark => {
@@ -160,7 +160,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
       it('should return the mode (%s)', () => {
         expect(
           getScaleInvalidDataMode({
-            markDef: {type: mark, invalid: 'break-paths-and-show-path-domains'},
+            markDef: {type: mark, invalid: 'break-paths-show-path-domains'},
             scaleChannel: channel,
             scaleType: 'linear',
             isCountAggregate: false,
@@ -182,7 +182,7 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
       it('should return the mode (%s)', () => {
         expect(
           getScaleInvalidDataMode({
-            markDef: {type: mark, invalid: 'break-paths-and-show-path-domains'},
+            markDef: {type: mark, invalid: 'break-paths-show-path-domains'},
             scaleChannel: channel,
             scaleType: 'linear',
             isCountAggregate: false,

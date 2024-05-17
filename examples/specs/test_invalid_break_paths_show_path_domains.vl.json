@@ -14,7 +14,7 @@
     ]
   },
   "config": {
-    "mark": {"invalid": "break-paths-and-show-path-domains", "tooltip": true}
+    "mark": {"invalid": "break-paths-show-path-domains", "tooltip": true}
   },
   "vconcat": [{
     "title": "Quantitative X",

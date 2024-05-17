@@ -19,15 +19,15 @@ export interface MarkInvalidMixins {
    *
    * - `"break-paths-show-domains"` —
    * Break paths (for line, area, trail) at invalid values.  Hide invalid values for non-path marks.
-   * All *scale* domains will *include* these filtered data points.
+   * All *scale* domains will *include* these filtered data points (for both path and non-path marks).
    *
    * - `"show"` or `null` —
    * Show all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid`
    * or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).
    *
-   * - `"break-paths-and-show-path-domains"` (default) —
-   * This is equivalent to `"break-path-keep-domains"` for path-based marks (line/area/trail)
-   * and `"filter"` for other marks.
+   * - `"break-paths-show-path-domains"` (default) —
+   * This is equivalent to `"break-paths-show-domains"` for path-based marks (line/area/trail)
+   * and `"filter"` for non-path marks.
    *
    * __Note__: If any channel's scale has an output for invalid values defined in `config.scale.invalid`,
    * all values for the scales will be considered "valid" since they can produce a reasonable output for the scales.
@@ -40,7 +40,7 @@ export type MarkInvalidDataMode =
   | 'filter'
   | 'break-paths-filter-domains'
   | 'break-paths-show-domains'
-  | 'break-paths-and-show-path-domains'
+  | 'break-paths-show-path-domains'
   | 'show';
 
 /**

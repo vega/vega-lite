@@ -8,9 +8,9 @@ import {getMarkPropOrConfig} from '../common';
 import {normalizeInvalidDataMode} from './normalizeInvalidDataMode';
 
 export type ScaleInvalidDataMode =
-  // remove 'break-paths-and-show-path-domains' from MarkInvalidDataMode
+  // remove 'break-paths-show-path-domains' from MarkInvalidDataMode
   // because it is a macro for '"filter"' or `"break-path-keep-domains`
-  | Omit<MarkInvalidDataMode, 'break-paths-and-show-path-domains'>
+  | Omit<MarkInvalidDataMode, 'break-paths-show-path-domains'>
 
   // Add always-valid because at scale level, categorical scales can handle any values and thus is always valid.
   | 'always-valid';

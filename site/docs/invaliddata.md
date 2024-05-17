@@ -78,9 +78,9 @@ Include all data points in the marks and scale domains. Each scale will use the 
 
 <div class="vl-example example-only" data-name="test_invalid_show"></div>
 
-#### `"break-paths-and-show-path-domains"` (Default)
+#### `"break-paths-show-path-domains"` (Default)
 
-For historical reasons, Vega-Lite 5 currently uses `"break-paths-and-show-path-domains"` as the default invalid data mode (to avoid breaking changes). This is equivalent to `"break-path-keep-domains"` for path-based marks (line/area/trail) and `"filter"` for other marks.
+For historical reasons, Vega-Lite 5 currently uses `"break-paths-show-path-domains"` as the default invalid data mode (to avoid breaking changes). This is equivalent to `"break-path-keep-domains"` for path-based marks (line/area/trail) and `"filter"` for other marks.
 
 <div class="vl-example example-only" data-name="test_invalid_break_paths_and_show_path_domains"></div>
 
