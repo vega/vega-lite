@@ -17,10 +17,11 @@ export function zeroOrMinOrMax({
   config: Config;
 }): VgValueRef {
   const domain = `domain('${scaleName}')`;
-  const min = `${domain}[0]`;
-  const max = `peek(${domain})`; // peek = the last item of the array
 
   if (scale && scaleName) {
+    const min = `${domain}[0]`;
+    const max = `peek(${domain})`; // peek = the last item of the array
+
     // If there is a scale (and hence its name)
     const domainHasZero = scale.domainHasZero();
     // zeroOrMin or zeroOrMax mode
@@ -35,6 +36,8 @@ export function zeroOrMinOrMax({
       } else {
         return {signal: `scale('${scaleName}', inrange(0, ${domain}) ? 0 : ${max})`}; // encode the scale domain max
       }
+    } else if (domainHasZero === 'definitely-not') {
+      return {signal: `scale('${scaleName}', ${mode === 'zeroOrMin' ? min : max})`};
     }
   }
 

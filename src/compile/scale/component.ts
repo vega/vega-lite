@@ -3,7 +3,7 @@ import {isArray, isNumber} from 'vega-util';
 import {ScaleChannel} from '../../channel';
 import {Scale, ScaleType} from '../../scale';
 import {ParameterExtent} from '../../selection';
-import {contains, some} from '../../util';
+import {contains} from '../../util';
 import {VgNonUnionDomain, VgScale} from '../../vega.schema';
 import {Explicit, Split} from '../split';
 
@@ -55,15 +55,30 @@ export class ScaleComponent extends Split<ScaleComponentProps> {
     const domains = this.get('domains');
 
     if (domains.length > 0) {
-      const hasDomainWithZero = some(domains, d => {
+      let hasExplicitDomainWithZero = false;
+      let hasExplicitDomainWithoutZero = false;
+      let hasDomainBasedOnField = false;
+      for (const d of domains) {
         if (isArray(d)) {
           const first = d[0];
           const last = d[d.length - 1];
-          return isNumber(first) && first <= 0 && isNumber(last) && last >= 0;
+          if (isNumber(first) && isNumber(last)) {
+            if (first <= 0 && last >= 0) {
+              hasExplicitDomainWithZero = true;
+              continue;
+            } else {
+              hasExplicitDomainWithoutZero = true;
+              continue;
+            }
+          }
         }
-        return false;
-      });
-      return hasDomainWithZero ? 'definitely' : 'definitely-not';
+        hasDomainBasedOnField = true;
+      }
+      if (hasExplicitDomainWithZero) {
+        return 'definitely';
+      } else if (hasExplicitDomainWithoutZero && !hasDomainBasedOnField) {
+        return 'definitely-not';
+      }
     }
     return 'maybe';
   }

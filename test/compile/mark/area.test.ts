@@ -29,8 +29,8 @@ describe('Mark: Area', () => {
     });
     const props = area.encodeEntry(model);
 
-    it('should end on axis', () => {
-      expect(props.y2).toEqual({field: {group: 'height'}});
+    it("should end on axis's min", () => {
+      expect(props.y2).toEqual({signal: "scale('y', domain('y')[0])"});
     });
 
     it('should has no height', () => {
@@ -70,8 +70,8 @@ describe('Mark: Area', () => {
     });
     const props = area.encodeEntry(model);
 
-    it('should end on axis', () => {
-      expect(props.y2).toEqual({field: {group: 'height'}});
+    it("should end on axis's min or zero", () => {
+      expect(props.y2).toEqual({signal: `scale('y', inrange(0, domain('y')) ? 0 : domain('y')[0])`});
     });
 
     it('should has no height', () => {
@@ -177,8 +177,8 @@ describe('Mark: Area', () => {
 
     const props = area.encodeEntry(model);
 
-    it('should end on axis', () => {
-      expect(props.x2).toEqual({value: 0});
+    it("should end on axis's min", () => {
+      expect(props.x2).toEqual({signal: `scale('x', domain('x')[0])`});
     });
 
     it('should have no width', () => {
@@ -198,8 +198,8 @@ describe('Mark: Area', () => {
 
     const props = area.encodeEntry(model);
 
-    it('should end on axis', () => {
-      expect(props.x2).toEqual({value: 0});
+    it("should end on axis's min or zero", () => {
+      expect(props.x2).toEqual({signal: "scale('x', inrange(0, domain('x')) ? 0 : domain('x')[0])"});
     });
 
     it('should have no width', () => {
