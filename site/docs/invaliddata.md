@@ -7,8 +7,7 @@ permalink: /docs/invalid-data.html
 
 This page discusses modes in Vega-Lite for handling invalid data (`null` and `NaN` in continuous scales).
 
-The main configurations are [`mark.invalid`](#mark) and [`config.scale.invalid`](#scale).
-In addition, you can use [other Vega-Lite features including  conditional encodings, layering, or window transform to handle invalid and missing data](#other).
+The main configurations are [`mark.invalid`](#mark) and [`config.scale.invalid`](#scale). In addition, you can use [other Vega-Lite features including conditional encodings, layering, or window transform to handle invalid and missing data](#other).
 
 Note: Vega-Lite does _not_ consider `null` and `NaN` in categorical scales and text encodings as invalid data:
 
@@ -105,14 +104,13 @@ Compare this with a similar spec, but without `config.scale.invalid`:
 
 <div class="vl-example" data-name="test_invalid_color_size_mark_filter_only"></div>
 
-
 ## Other solutions
+
 {:#other}
 
-Note that `mark.invalid` and `config.scale.invalid` are options for handling invalid data *without* changing data or marks.
+Note that `mark.invalid` and `config.scale.invalid` are options for handling invalid data _without_ changing data or marks.
 
 However, you may use other Vega-Lite features to encode invalid data.
-
 
 ### Example: Conditional Encoding
 
@@ -120,15 +118,12 @@ If you do not use color encoding, you may use conditional color encoding to use 
 
 <div class="vl-example" data-name="point_invalid_color"></div>
 
-
 ### Example: Layering
 
 You may also use different marks (such as bars) to encode null data.
 
 <div class="vl-example" data-name="layer_null_data"></div>
 
-
 ### Example: Using window transform to impute missing values
-
 
 <div class="vl-example" data-name="window_impute_null"></div>
