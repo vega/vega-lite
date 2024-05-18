@@ -137,7 +137,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": 0.3
+                      "signal": "scale('opacity', inrange(0, domain('opacity')) ? 0 : domain('opacity')[0])"
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -242,7 +242,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": 0.3
+                      "signal": "scale('opacity', inrange(0, domain('opacity')) ? 0 : domain('opacity')[0])"
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -256,7 +256,7 @@
                   "xc": [
                     {
                       "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
-                      "value": 0
+                      "signal": "scale('concat_0_concat_1_x', inrange(0, domain('concat_0_concat_1_x')) ? 0 : domain('concat_0_concat_1_x')[0])"
                     },
                     {"scale": "concat_0_concat_1_x", "field": "a"}
                   ],
@@ -359,7 +359,7 @@
                       "opacity": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "value": 0.3
+                          "signal": "scale('opacity', inrange(0, domain('opacity')) ? 0 : domain('opacity')[0])"
                         },
                         {"scale": "opacity", "field": "c"}
                       ],
@@ -372,7 +372,7 @@
                       "x": [
                         {
                           "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
-                          "value": 0
+                          "signal": "scale('concat_0_concat_2_x', inrange(0, domain('concat_0_concat_2_x')) ? 0 : domain('concat_0_concat_2_x')[0])"
                         },
                         {"scale": "concat_0_concat_2_x", "field": "a"}
                       ],
@@ -399,7 +399,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": 0.3
+                      "signal": "scale('opacity', inrange(0, domain('opacity')) ? 0 : domain('opacity')[0])"
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -414,7 +414,7 @@
                   "x": [
                     {
                       "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
-                      "value": 0
+                      "signal": "scale('concat_0_concat_2_x', inrange(0, domain('concat_0_concat_2_x')) ? 0 : domain('concat_0_concat_2_x')[0])"
                     },
                     {"scale": "concat_0_concat_2_x", "field": "a"}
                   ],
@@ -521,7 +521,7 @@
                       "opacity": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "value": 0.3
+                          "signal": "scale('opacity', inrange(0, domain('opacity')) ? 0 : domain('opacity')[0])"
                         },
                         {"scale": "opacity", "field": "c"}
                       ],
@@ -534,7 +534,7 @@
                       "x": [
                         {
                           "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
-                          "value": 0
+                          "signal": "scale('concat_0_concat_3_x', inrange(0, domain('concat_0_concat_3_x')) ? 0 : domain('concat_0_concat_3_x')[0])"
                         },
                         {"scale": "concat_0_concat_3_x", "field": "a"}
                       ],
@@ -630,7 +630,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": 0.3
+                      "signal": "scale('opacity', inrange(0, domain('opacity')) ? 0 : domain('opacity')[0])"
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -714,7 +714,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": 0.3
+                      "signal": "scale('opacity', inrange(0, domain('opacity')) ? 0 : domain('opacity')[0])"
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -813,7 +813,7 @@
                       "opacity": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "value": 0.3
+                          "signal": "scale('opacity', inrange(0, domain('opacity')) ? 0 : domain('opacity')[0])"
                         },
                         {"scale": "opacity", "field": "c"}
                       ],
@@ -847,7 +847,7 @@
                   "opacity": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": 0.3
+                      "signal": "scale('opacity', inrange(0, domain('opacity')) ? 0 : domain('opacity')[0])"
                     },
                     {"scale": "opacity", "field": "c"}
                   ],
@@ -949,7 +949,7 @@
                       "opacity": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "value": 0.3
+                          "signal": "scale('opacity', inrange(0, domain('opacity')) ? 0 : domain('opacity')[0])"
                         },
                         {"scale": "opacity", "field": "c"}
                       ],

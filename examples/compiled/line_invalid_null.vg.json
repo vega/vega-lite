@@ -44,7 +44,7 @@
           "x": [
             {
               "test": "!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"])",
-              "value": 0
+              "signal": "scale('x', inrange(0, domain('x')) ? 0 : domain('x')[0])"
             },
             {"scale": "x", "field": "x"}
           ],

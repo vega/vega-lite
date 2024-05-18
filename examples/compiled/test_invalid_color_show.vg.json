@@ -139,7 +139,7 @@
                   "stroke": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": "#aaa"
+                      "signal": "scale('color', inrange(0, domain('color')) ? 0 : domain('color')[0])"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -241,7 +241,7 @@
                   "fill": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": "#aaa"
+                      "signal": "scale('color', inrange(0, domain('color')) ? 0 : domain('color')[0])"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -255,7 +255,7 @@
                   "xc": [
                     {
                       "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
-                      "value": 0
+                      "signal": "scale('concat_0_concat_1_x', inrange(0, domain('concat_0_concat_1_x')) ? 0 : domain('concat_0_concat_1_x')[0])"
                     },
                     {"scale": "concat_0_concat_1_x", "field": "a"}
                   ],
@@ -357,7 +357,7 @@
                       "stroke": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "value": "#aaa"
+                          "signal": "scale('color', inrange(0, domain('color')) ? 0 : domain('color')[0])"
                         },
                         {"scale": "color", "field": "c"}
                       ],
@@ -370,7 +370,7 @@
                       "x": [
                         {
                           "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
-                          "value": 0
+                          "signal": "scale('concat_0_concat_2_x', inrange(0, domain('concat_0_concat_2_x')) ? 0 : domain('concat_0_concat_2_x')[0])"
                         },
                         {"scale": "concat_0_concat_2_x", "field": "a"}
                       ],
@@ -398,7 +398,7 @@
                   "fill": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": "#aaa"
+                      "signal": "scale('color', inrange(0, domain('color')) ? 0 : domain('color')[0])"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -412,7 +412,7 @@
                   "x": [
                     {
                       "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
-                      "value": 0
+                      "signal": "scale('concat_0_concat_2_x', inrange(0, domain('concat_0_concat_2_x')) ? 0 : domain('concat_0_concat_2_x')[0])"
                     },
                     {"scale": "concat_0_concat_2_x", "field": "a"}
                   ],
@@ -518,7 +518,7 @@
                       "fill": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "value": "#aaa"
+                          "signal": "scale('color', inrange(0, domain('color')) ? 0 : domain('color')[0])"
                         },
                         {"scale": "color", "field": "c"}
                       ],
@@ -531,7 +531,7 @@
                       "x": [
                         {
                           "test": "!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"])",
-                          "value": 0
+                          "signal": "scale('concat_0_concat_3_x', inrange(0, domain('concat_0_concat_3_x')) ? 0 : domain('concat_0_concat_3_x')[0])"
                         },
                         {"scale": "concat_0_concat_3_x", "field": "a"}
                       ],
@@ -629,7 +629,7 @@
                   "stroke": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": "#aaa"
+                      "signal": "scale('color', inrange(0, domain('color')) ? 0 : domain('color')[0])"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -710,7 +710,7 @@
                   "fill": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": "#aaa"
+                      "signal": "scale('color', inrange(0, domain('color')) ? 0 : domain('color')[0])"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -808,7 +808,7 @@
                       "stroke": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "value": "#aaa"
+                          "signal": "scale('color', inrange(0, domain('color')) ? 0 : domain('color')[0])"
                         },
                         {"scale": "color", "field": "c"}
                       ],
@@ -843,7 +843,7 @@
                   "fill": [
                     {
                       "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                      "value": "#aaa"
+                      "signal": "scale('color', inrange(0, domain('color')) ? 0 : domain('color')[0])"
                     },
                     {"scale": "color", "field": "c"}
                   ],
@@ -943,7 +943,7 @@
                       "fill": [
                         {
                           "test": "!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"])",
-                          "value": "#aaa"
+                          "signal": "scale('color', inrange(0, domain('color')) ? 0 : domain('color')[0])"
                         },
                         {"scale": "color", "field": "c"}
                       ],
