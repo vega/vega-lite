@@ -16,8 +16,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
       text: formatCustomType({
         fieldOrDatumDef,
         field: 'datum.value',
-        format,
-        formatType,
+        formatMixins: {format, formatType},
         config
       }),
       ...specifiedLabelsSpec
@@ -33,8 +32,10 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
           text: formatCustomType({
             fieldOrDatumDef,
             field: 'datum.value',
-            format: config.normalizedNumberFormat,
-            formatType: config.normalizedNumberFormatType,
+            formatMixins: {
+              format: config.normalizedNumberFormat,
+              formatType: config.normalizedNumberFormatType
+            },
             config
           }),
           ...specifiedLabelsSpec
@@ -44,8 +45,10 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
           text: formatCustomType({
             fieldOrDatumDef,
             field: 'datum.value',
-            format: config.numberFormat,
-            formatType: config.numberFormatType,
+            formatMixins: {
+              format: config.numberFormat,
+              formatType: config.numberFormatType
+            },
             config
           }),
           ...specifiedLabelsSpec
@@ -62,8 +65,10 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
         text: formatCustomType({
           fieldOrDatumDef,
           field: 'datum.value',
-          format: config.timeFormat,
-          formatType: config.timeFormatType,
+          formatMixins: {
+            format: config.timeFormat,
+            formatType: config.timeFormatType
+          },
           config
         }),
         ...specifiedLabelsSpec
