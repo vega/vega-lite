@@ -385,4 +385,4 @@
     - [Documentation Overview]({{site.baseurl}}/docs/invalid-data.html#documentation-overview)
     - [Mark Invalid Mode]({{site.baseurl}}/docs/invalid-data.html#mark-invalid-mode)
     - [Scale Output for Invalid Values]({{site.baseurl}}/docs/invalid-data.html#scale-output-for-invalid-values)
-    - [Other solutions]({{site.baseurl}}/docs/invalid-data.html#other)
+    - [Other solutions]({{site.baseurl}}/docs/invalid-data.html#other-solutions)
