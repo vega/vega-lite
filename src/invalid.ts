@@ -8,7 +8,7 @@ import {isObject} from 'vega-util';
  */
 export interface MarkInvalidMixins {
   /**
-   * Invalid data mode for marks, which defines how the visualization should represent invalid values (`null` and `NaN` in continuous scales without defined output for invalid values) in the marks and their scale domains.
+   * Invalid data mode, which defines how the marks and corresponding scales should represent invalid values (`null` and `NaN` in continuous scales *without* defined output for invalid values).
    *
    * - `"filter"` — *Exclude* all invalid values from the visualization's *marks* and *scales*.
    * For path marks (for line, area, trail), this option will create paths that connect valid points, as if the data rows with invalid values do not exist.
