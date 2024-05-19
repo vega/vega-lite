@@ -5,16 +5,19 @@ import {
   getVgPositionChannel,
   isXorY,
   PolarPositionChannel,
-  PositionChannel
+  PolarPositionScaleChannel,
+  PositionChannel,
+  PositionScaleChannel
 } from '../../../channel';
 import {isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef';
+import {Config} from '../../../config';
 import {VgValueRef} from '../../../vega.schema';
 import {getMarkPropOrConfig} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {positionOffset} from './offset';
 import * as ref from './valueref';
-import {zeroOrMinOrMax} from './zeroOrMinOrMax';
+import {scaledZeroOrMinOrMax, ScaledZeroOrMinOrMaxProps} from './scaledZeroOrMinOrMax';
 
 /**
  * Return encode for point (non-band) position channels.
@@ -141,9 +144,9 @@ export function pointPositionDefaultRef({
 
     switch (defaultPos) {
       case 'zeroOrMin':
-        return zeroOrMinOrMax({scaleName, scale, mode: 'zeroOrMin', mainChannel, config});
+        return zeroOrMinOrMaxPosition({scaleName, scale, mode: 'zeroOrMin', mainChannel, config});
       case 'zeroOrMax':
-        return zeroOrMinOrMax({
+        return zeroOrMinOrMaxPosition({
           scaleName,
           scale,
           mode: {zeroOrMax: {widthSignal: model.width.signal, heightSignal: model.height.signal}},
@@ -158,4 +161,39 @@ export function pointPositionDefaultRef({
     // defaultPos === null
     return undefined;
   };
+}
+
+function zeroOrMinOrMaxPosition({
+  mainChannel,
+  config,
+  ...otherProps
+}: ScaledZeroOrMinOrMaxProps & {
+  mainChannel: PositionScaleChannel | PolarPositionScaleChannel;
+  config: Config;
+}): VgValueRef {
+  const scaledValueRef = scaledZeroOrMinOrMax(otherProps);
+  const {mode} = otherProps;
+
+  if (scaledValueRef) {
+    return scaledValueRef;
+  }
+
+  switch (mainChannel) {
+    case 'radius': {
+      if (mode === 'zeroOrMin') {
+        return {value: 0}; // min value
+      }
+      const {widthSignal, heightSignal} = mode.zeroOrMax;
+      // max of radius is min(width, height) / 2
+      return {
+        signal: `min(${widthSignal},${heightSignal})/2`
+      };
+    }
+    case 'theta':
+      return mode === 'zeroOrMin' ? {value: 0} : {signal: '2*PI'};
+    case 'x':
+      return mode === 'zeroOrMin' ? {value: 0} : {field: {group: 'width'}};
+    case 'y':
+      return mode === 'zeroOrMin' ? {field: {group: 'height'}} : {value: 0};
+  }
 }

@@ -6,9 +6,8 @@ import {fieldValidPredicate} from '../../../predicate';
 import {VgValueRef, isSignalRef} from '../../../vega.schema';
 import {getScaleInvalidDataMode} from '../../invalid/ScaleInvalidDataMode';
 import {ScaleComponent} from '../../scale/component';
-import {zeroOrMinOrMax} from './zeroOrMinOrMax';
+import {scaledZeroOrMinOrMax} from './scaledZeroOrMinOrMax';
 import {MidPointParams} from './valueref';
-import {Config} from '../../../config';
 
 export function getConditionalValueRefForIncludingInvalidValue<
   C extends PositionScaleChannel | PolarPositionScaleChannel | NonPositionScaleChannel
@@ -39,29 +38,25 @@ export function getConditionalValueRefForIncludingInvalidValue<
     const includeAs: ScaleInvalidDataShowAs<C> = config.scale.invalid?.[scaleChannel] ?? 'zero-or-min';
     return {
       test: fieldValidPredicate(vgField(fieldDef, {expr: 'datum'}), false),
-      ...refForInvalidValues(scaleChannel, includeAs, scale, scaleName, config)
+      ...refForInvalidValues(includeAs, scale, scaleName)
     };
   }
   return undefined;
 }
 
 function refForInvalidValues<C extends PositionScaleChannel | PolarPositionScaleChannel | NonPositionScaleChannel>(
-  channel: C,
   includeAs: ScaleInvalidDataShowAs<C>,
   scale: ScaleComponent,
-  scaleName: string,
-  config: Config
+  scaleName: string
 ): VgValueRef {
   if (isScaleInvalidDataIncludeAsValue(includeAs)) {
     const {value} = includeAs;
     return isSignalRef(value) ? {signal: value.signal} : {value};
   }
 
-  return zeroOrMinOrMax({
-    mainChannel: channel,
+  return scaledZeroOrMinOrMax({
     scale,
     scaleName,
-    mode: 'zeroOrMin',
-    config
+    mode: 'zeroOrMin'
   });
 }
