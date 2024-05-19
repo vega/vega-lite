@@ -74,9 +74,8 @@ This option is like `"break-paths"`, except that all _scale_ domains will instea
 
 #### `"show"`
 
-Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid`
-
-- or, if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).
+Include all data points in the marks and scale domains. Each scale will use the output for invalid values defined in `config.scale.invalid` or,
+if unspecified, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).
 
 <div class="vl-example example-only" data-name="test_invalid_show"></div>
 
