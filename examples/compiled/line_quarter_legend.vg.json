@@ -62,7 +62,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "quarter_date"},
               "description": {
-                "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; date (quarter): \" + (timeFormat(datum[\"quarter_date\"], timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+                "signal": "\"date (year): \" + (!isValid(datum[\"year_date\"]) || !isFinite(+datum[\"year_date\"]) ? \"\" + datum[\"year_date\"] : timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (!isValid(datum[\"mean_price\"]) || !isFinite(+datum[\"mean_price\"]) ? \"\" + datum[\"mean_price\"] : format(datum[\"mean_price\"], \"\")) + \"; date (quarter): \" + (!isValid(datum[\"quarter_date\"]) || !isFinite(+datum[\"quarter_date\"]) ? \"\" + datum[\"quarter_date\"] : timeFormat(datum[\"quarter_date\"], timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
               },
               "x": {"scale": "x", "field": "year_date"},
               "y": {"scale": "y", "field": "mean_price"},

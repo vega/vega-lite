@@ -497,7 +497,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "system"},
               "description": {
-                "signal": "\"Trial: \" + (format(datum[\"row\"], \"\")) + \"; Frames Per Second (fps): \" + (format(datum[\"fps\"], \"\")) + \"; System: \" + (isValid(datum[\"system\"]) ? datum[\"system\"] : \"\"+datum[\"system\"])"
+                "signal": "\"Trial: \" + (!isValid(datum[\"row\"]) || !isFinite(+datum[\"row\"]) ? \"\" + datum[\"row\"] : format(datum[\"row\"], \"\")) + \"; Frames Per Second (fps): \" + (!isValid(datum[\"fps\"]) || !isFinite(+datum[\"fps\"]) ? \"\" + datum[\"fps\"] : format(datum[\"fps\"], \"\")) + \"; System: \" + (\"\" + datum[\"system\"])"
               },
               "x": {"scale": "x", "field": "row"},
               "y": {"scale": "y", "field": "fps"},
@@ -537,7 +537,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "system"},
               "description": {
-                "signal": "\"Trial: \" + (format(datum[\"row\"], \"\")) + \"; Frames Per Second (fps): \" + (format(datum[\"fps\"], \"\")) + \"; System: \" + (isValid(datum[\"system\"]) ? datum[\"system\"] : \"\"+datum[\"system\"])"
+                "signal": "\"Trial: \" + (!isValid(datum[\"row\"]) || !isFinite(+datum[\"row\"]) ? \"\" + datum[\"row\"] : format(datum[\"row\"], \"\")) + \"; Frames Per Second (fps): \" + (!isValid(datum[\"fps\"]) || !isFinite(+datum[\"fps\"]) ? \"\" + datum[\"fps\"] : format(datum[\"fps\"], \"\")) + \"; System: \" + (\"\" + datum[\"system\"])"
               },
               "x": {"scale": "x", "field": "row"},
               "y": {"scale": "y", "field": "fps"},

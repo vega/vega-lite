@@ -127,7 +127,7 @@
         "update": {
           "fill": {"scale": "color", "field": "event"},
           "description": {
-            "signal": "\"start (year): \" + (timeFormat(datum[\"year_start\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; end (year): \" + (timeFormat(datum[\"year_end\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; event: \" + (isValid(datum[\"event\"]) ? datum[\"event\"] : \"\"+datum[\"event\"])"
+            "signal": "\"start (year): \" + (!isValid(datum[\"year_start\"]) || !isFinite(+datum[\"year_start\"]) ? \"\" + datum[\"year_start\"] : timeFormat(datum[\"year_start\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; end (year): \" + (!isValid(datum[\"year_end\"]) || !isFinite(+datum[\"year_end\"]) ? \"\" + datum[\"year_end\"] : timeFormat(datum[\"year_end\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; event: \" + (\"\" + datum[\"event\"])"
           },
           "x": {"scale": "x", "field": "year_start"},
           "x2": {"scale": "x", "field": "year_end"},
@@ -146,7 +146,7 @@
         "update": {
           "stroke": {"value": "#333"},
           "description": {
-            "signal": "\"year (year): \" + (timeFormat(datum[\"year_year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; population: \" + (format(datum[\"population\"], \"\"))"
+            "signal": "\"year (year): \" + (!isValid(datum[\"year_year\"]) || !isFinite(+datum[\"year_year\"]) ? \"\" + datum[\"year_year\"] : timeFormat(datum[\"year_year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; population: \" + (!isValid(datum[\"population\"]) || !isFinite(+datum[\"population\"]) ? \"\" + datum[\"population\"] : format(datum[\"population\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_year"},
           "y": {"scale": "y", "field": "population"},
@@ -168,7 +168,7 @@
           "stroke": {"value": "#333"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"year (year): \" + (timeFormat(datum[\"year_year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; population: \" + (format(datum[\"population\"], \"\"))"
+            "signal": "\"year (year): \" + (!isValid(datum[\"year_year\"]) || !isFinite(+datum[\"year_year\"]) ? \"\" + datum[\"year_year\"] : timeFormat(datum[\"year_year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; population: \" + (!isValid(datum[\"population\"]) || !isFinite(+datum[\"population\"]) ? \"\" + datum[\"population\"] : format(datum[\"population\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_year"},
           "y": {"scale": "y", "field": "population"}

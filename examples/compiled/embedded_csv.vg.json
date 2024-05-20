@@ -30,7 +30,9 @@
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
-          "description": {"signal": "\"a: \" + (format(datum[\"a\"], \"\"))"},
+          "description": {
+            "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\"))"
+          },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "a"}
         }

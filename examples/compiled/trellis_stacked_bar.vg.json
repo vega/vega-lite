@@ -79,9 +79,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"year\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"year\"]) ? parent[\"year\"] : \"\"+parent[\"year\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"year\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -133,7 +131,7 @@
               "fill": {"scale": "color", "field": "site"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; site: \" + (isValid(datum[\"site\"]) ? datum[\"site\"] : \"\"+datum[\"site\"])"
+                "signal": "\"Sum of yield: \" + (!isValid(datum[\"sum_yield\"]) || !isFinite(+datum[\"sum_yield\"]) ? \"\" + datum[\"sum_yield\"] : format(datum[\"sum_yield\"], \"\")) + \"; variety: \" + (\"\" + datum[\"variety\"]) + \"; site: \" + (\"\" + datum[\"site\"])"
               },
               "x": {"scale": "x", "field": "sum_yield_end"},
               "x2": {"scale": "x", "field": "sum_yield_start"},

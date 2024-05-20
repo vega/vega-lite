@@ -83,7 +83,7 @@
       "sort": {"field": "datum[\"year_date\"]", "order": "ascending"},
       "title": {
         "text": {
-          "signal": "timeFormat(parent[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+          "signal": "!isValid(parent[\"year_date\"]) || !isFinite(+parent[\"year_date\"]) ? \"\" + parent[\"year_date\"] : timeFormat(parent[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
         },
         "style": "guide-label",
         "frame": "group",
@@ -158,7 +158,7 @@
                 "update": {
                   "stroke": {"scale": "color", "field": "symbol"},
                   "description": {
-                    "signal": "\"date (quarter): \" + (timeFormat(datum[\"quarter_date\"], timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                    "signal": "\"date (quarter): \" + (!isValid(datum[\"quarter_date\"]) || !isFinite(+datum[\"quarter_date\"]) ? \"\" + datum[\"quarter_date\"] : timeFormat(datum[\"quarter_date\"], timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (!isValid(datum[\"mean_price\"]) || !isFinite(+datum[\"mean_price\"]) ? \"\" + datum[\"mean_price\"] : format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (\"\" + datum[\"symbol\"])"
                   },
                   "x": {"scale": "x", "field": "quarter_date"},
                   "y": {"scale": "y", "field": "mean_price"},

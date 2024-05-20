@@ -59,10 +59,10 @@
           "fill": {"scale": "color", "field": "Origin"},
           "opacity": {"scale": "opacity", "field": "Cylinders"},
           "tooltip": {
-            "signal": "{\"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
+            "signal": "{\"Origin\": \"\" + datum[\"Origin\"], \"Cylinders\": !isValid(datum[\"Cylinders\"]) || !isFinite(+datum[\"Cylinders\"]) ? \"\" + datum[\"Cylinders\"] : format(datum[\"Cylinders\"], \"\")}"
           },
           "description": {
-            "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; y: \" + (format(datum[\"y\"], \"\")) + \"; x2: \" + (format(datum[\"x2\"], \"\")) + \"; y2: \" + (format(datum[\"y2\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Cylinders: \" + (format(datum[\"Cylinders\"], \"\"))"
+            "signal": "\"x: \" + (!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"]) ? \"\" + datum[\"x\"] : format(datum[\"x\"], \"\")) + \"; y: \" + (!isValid(datum[\"y\"]) || !isFinite(+datum[\"y\"]) ? \"\" + datum[\"y\"] : format(datum[\"y\"], \"\")) + \"; x2: \" + (!isValid(datum[\"x2\"]) || !isFinite(+datum[\"x2\"]) ? \"\" + datum[\"x2\"] : format(datum[\"x2\"], \"\")) + \"; y2: \" + (!isValid(datum[\"y2\"]) || !isFinite(+datum[\"y2\"]) ? \"\" + datum[\"y2\"] : format(datum[\"y2\"], \"\")) + \"; Origin: \" + (\"\" + datum[\"Origin\"]) + \"; Cylinders: \" + (!isValid(datum[\"Cylinders\"]) || !isFinite(+datum[\"Cylinders\"]) ? \"\" + datum[\"Cylinders\"] : format(datum[\"Cylinders\"], \"\"))"
           },
           "x": {"scale": "x", "field": "x"},
           "x2": {"scale": "x", "field": "x2"},

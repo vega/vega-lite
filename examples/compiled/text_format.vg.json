@@ -37,11 +37,13 @@
         "update": {
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Mean of Horsepower: \" + (format(datum[\"mean_Horsepower\"], \".2f\"))"
+            "signal": "\"Origin: \" + (\"\" + datum[\"Origin\"]) + \"; Mean of Horsepower: \" + (!isValid(datum[\"mean_Horsepower\"]) || !isFinite(+datum[\"mean_Horsepower\"]) ? \"\" + datum[\"mean_Horsepower\"] : format(datum[\"mean_Horsepower\"], \".2f\"))"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "Origin"},
-          "text": {"signal": "format(datum[\"mean_Horsepower\"], \".2f\")"},
+          "text": {
+            "signal": "!isValid(datum[\"mean_Horsepower\"]) || !isFinite(+datum[\"mean_Horsepower\"]) ? \"\" + datum[\"mean_Horsepower\"] : format(datum[\"mean_Horsepower\"], \".2f\")"
+          },
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }

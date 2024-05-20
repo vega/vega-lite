@@ -65,7 +65,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"date (minutes): \" + (timeFormat(datum[\"minutes_step_5_date\"], timeUnitSpecifier([\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of distance: \" + (format(datum[\"sum_distance\"], \"\"))"
+            "signal": "\"date (minutes): \" + (!isValid(datum[\"minutes_step_5_date\"]) || !isFinite(+datum[\"minutes_step_5_date\"]) ? \"\" + datum[\"minutes_step_5_date\"] : timeFormat(datum[\"minutes_step_5_date\"], timeUnitSpecifier([\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of distance: \" + (!isValid(datum[\"sum_distance\"]) || !isFinite(+datum[\"sum_distance\"]) ? \"\" + datum[\"sum_distance\"] : format(datum[\"sum_distance\"], \"\"))"
           },
           "x2": {
             "scale": "x",

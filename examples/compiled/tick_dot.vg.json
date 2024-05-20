@@ -30,7 +30,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"precipitation: \" + (format(datum[\"precipitation\"], \"\"))"
+            "signal": "\"precipitation: \" + (!isValid(datum[\"precipitation\"]) || !isFinite(+datum[\"precipitation\"]) ? \"\" + datum[\"precipitation\"] : format(datum[\"precipitation\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "precipitation"},
           "yc": {"signal": "height", "mult": 0.5},

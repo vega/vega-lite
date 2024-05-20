@@ -74,7 +74,7 @@
           "fill": {"scale": "color", "field": "group"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
+            "signal": "\"category: \" + (\"\" + datum[\"category\"]) + \"; value: \" + (!isValid(datum[\"value\"]) || !isFinite(+datum[\"value\"]) ? \"\" + datum[\"value\"] : format(datum[\"value\"], \"\")) + \"; group: \" + (\"\" + datum[\"group\"])"
           },
           "x": {
             "scale": "x",
@@ -98,7 +98,7 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; half: \" + (format(datum[\"half\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
+            "signal": "\"category: \" + (\"\" + datum[\"category\"]) + \"; half: \" + (!isValid(datum[\"half\"]) || !isFinite(+datum[\"half\"]) ? \"\" + datum[\"half\"] : format(datum[\"half\"], \"\")) + \"; group: \" + (\"\" + datum[\"group\"])"
           },
           "x": {
             "scale": "x",

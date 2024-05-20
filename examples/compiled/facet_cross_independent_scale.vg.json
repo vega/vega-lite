@@ -87,9 +87,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"r\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"r\"]) ? parent[\"r\"] : \"\"+parent[\"r\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"r\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -110,9 +108,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"c\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"c\"]) ? parent[\"c\"] : \"\"+parent[\"c\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"c\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -166,7 +162,7 @@
             "update": {
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
+                "signal": "\"a: \" + (\"\" + datum[\"a\"]) + \"; b: \" + (\"\" + datum[\"b\"])"
               },
               "x": {"scale": "child_x", "field": "a"},
               "width": {"signal": "max(0.25, bandwidth('child_x'))"},

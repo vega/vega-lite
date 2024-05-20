@@ -50,7 +50,7 @@
           "fill": {"scale": "color", "field": "site"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; site: \" + (isValid(datum[\"site\"]) ? datum[\"site\"] : \"\"+datum[\"site\"])"
+            "signal": "\"variety: \" + (\"\" + datum[\"variety\"]) + \"; Sum of yield: \" + (!isValid(datum[\"sum_yield\"]) || !isFinite(+datum[\"sum_yield\"]) ? \"\" + datum[\"sum_yield\"] : format(datum[\"sum_yield\"], \"\")) + \"; site: \" + (\"\" + datum[\"site\"])"
           },
           "x": {"scale": "x", "field": "variety"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

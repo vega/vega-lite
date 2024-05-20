@@ -44,7 +44,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"a (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_a\"], '%d %b')) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a (year-month-date): \" + (!isValid(datum[\"yearmonthdate_a\"]) || !isFinite(+datum[\"yearmonthdate_a\"]) ? \"\" + datum[\"yearmonthdate_a\"] : timeFormat(datum[\"yearmonthdate_a\"], '%d %b')) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
           },
           "x": [
             {
@@ -74,7 +74,7 @@
           "baseline": {"value": "bottom"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"a (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_a\"], '%d %b')) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a (year-month-date): \" + (!isValid(datum[\"yearmonthdate_a\"]) || !isFinite(+datum[\"yearmonthdate_a\"]) ? \"\" + datum[\"yearmonthdate_a\"] : timeFormat(datum[\"yearmonthdate_a\"], '%d %b')) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
           },
           "x": [
             {
@@ -91,7 +91,9 @@
             },
             {"scale": "y", "field": "b"}
           ],
-          "text": {"signal": "format(datum[\"b\"], \"\")"},
+          "text": {
+            "signal": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")"
+          },
           "align": {"value": "center"}
         }
       }

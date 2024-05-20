@@ -148,7 +148,7 @@
           "stroke": {"scale": "color", "field": "Species"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\"))"
+            "signal": "\"Species: \" + (\"\" + datum[\"Species\"]) + \"; Body Mass (g): \" + (!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Species", "band": 0.5},
           "y": {"scale": "y", "field": "Body Mass (g)"}
@@ -165,7 +165,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Upper Whisker of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Lower Whisker of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
+            "signal": "{\"Upper Whisker of Body Mass (g)\": !isValid(datum[\"upper_whisker_Body Mass (g)\"]) || !isFinite(+datum[\"upper_whisker_Body Mass (g)\"]) ? \"\" + datum[\"upper_whisker_Body Mass (g)\"] : format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Lower Whisker of Body Mass (g)\": !isValid(datum[\"lower_whisker_Body Mass (g)\"]) || !isFinite(+datum[\"lower_whisker_Body Mass (g)\"]) ? \"\" + datum[\"lower_whisker_Body Mass (g)\"] : format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": \"\" + datum[\"Species\"]}"
           },
           "x": {"scale": "x", "field": "Species", "band": 0.5},
           "y": {"scale": "y", "field": "lower_whisker_Body Mass (g)"},
@@ -183,7 +183,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Upper Whisker of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Lower Whisker of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
+            "signal": "{\"Upper Whisker of Body Mass (g)\": !isValid(datum[\"upper_whisker_Body Mass (g)\"]) || !isFinite(+datum[\"upper_whisker_Body Mass (g)\"]) ? \"\" + datum[\"upper_whisker_Body Mass (g)\"] : format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Lower Whisker of Body Mass (g)\": !isValid(datum[\"lower_whisker_Body Mass (g)\"]) || !isFinite(+datum[\"lower_whisker_Body Mass (g)\"]) ? \"\" + datum[\"lower_whisker_Body Mass (g)\"] : format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": \"\" + datum[\"Species\"]}"
           },
           "x": {"scale": "x", "field": "Species", "band": 0.5},
           "y": {"scale": "y", "field": "upper_box_Body Mass (g)"},
@@ -201,10 +201,10 @@
           "ariaRoleDescription": {"value": "box"},
           "fill": {"scale": "color", "field": "Species"},
           "tooltip": {
-            "signal": "{\"Max of Body Mass (g)\": format(datum[\"max_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"min_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
+            "signal": "{\"Max of Body Mass (g)\": !isValid(datum[\"max_Body Mass (g)\"]) || !isFinite(+datum[\"max_Body Mass (g)\"]) ? \"\" + datum[\"max_Body Mass (g)\"] : format(datum[\"max_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": !isValid(datum[\"upper_box_Body Mass (g)\"]) || !isFinite(+datum[\"upper_box_Body Mass (g)\"]) ? \"\" + datum[\"upper_box_Body Mass (g)\"] : format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": !isValid(datum[\"mid_box_Body Mass (g)\"]) || !isFinite(+datum[\"mid_box_Body Mass (g)\"]) ? \"\" + datum[\"mid_box_Body Mass (g)\"] : format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": !isValid(datum[\"lower_box_Body Mass (g)\"]) || !isFinite(+datum[\"lower_box_Body Mass (g)\"]) ? \"\" + datum[\"lower_box_Body Mass (g)\"] : format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": !isValid(datum[\"min_Body Mass (g)\"]) || !isFinite(+datum[\"min_Body Mass (g)\"]) ? \"\" + datum[\"min_Body Mass (g)\"] : format(datum[\"min_Body Mass (g)\"], \"\"), \"Species\": \"\" + datum[\"Species\"]}"
           },
           "description": {
-            "signal": "\"Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; Body Mass (g): \" + (format(datum[\"lower_box_Body Mass (g)\"], \"\")) + \"; upper_box_Body Mass (g): \" + (format(datum[\"upper_box_Body Mass (g)\"], \"\")) + \"; Max of Body Mass (g): \" + (format(datum[\"max_Body Mass (g)\"], \"\")) + \"; Q3 of Body Mass (g): \" + (format(datum[\"upper_box_Body Mass (g)\"], \"\")) + \"; Median of Body Mass (g): \" + (format(datum[\"mid_box_Body Mass (g)\"], \"\")) + \"; Q1 of Body Mass (g): \" + (format(datum[\"lower_box_Body Mass (g)\"], \"\")) + \"; Min of Body Mass (g): \" + (format(datum[\"min_Body Mass (g)\"], \"\"))"
+            "signal": "\"Species: \" + (\"\" + datum[\"Species\"]) + \"; Body Mass (g): \" + (!isValid(datum[\"lower_box_Body Mass (g)\"]) || !isFinite(+datum[\"lower_box_Body Mass (g)\"]) ? \"\" + datum[\"lower_box_Body Mass (g)\"] : format(datum[\"lower_box_Body Mass (g)\"], \"\")) + \"; upper_box_Body Mass (g): \" + (!isValid(datum[\"upper_box_Body Mass (g)\"]) || !isFinite(+datum[\"upper_box_Body Mass (g)\"]) ? \"\" + datum[\"upper_box_Body Mass (g)\"] : format(datum[\"upper_box_Body Mass (g)\"], \"\")) + \"; Max of Body Mass (g): \" + (!isValid(datum[\"max_Body Mass (g)\"]) || !isFinite(+datum[\"max_Body Mass (g)\"]) ? \"\" + datum[\"max_Body Mass (g)\"] : format(datum[\"max_Body Mass (g)\"], \"\")) + \"; Q3 of Body Mass (g): \" + (!isValid(datum[\"upper_box_Body Mass (g)\"]) || !isFinite(+datum[\"upper_box_Body Mass (g)\"]) ? \"\" + datum[\"upper_box_Body Mass (g)\"] : format(datum[\"upper_box_Body Mass (g)\"], \"\")) + \"; Median of Body Mass (g): \" + (!isValid(datum[\"mid_box_Body Mass (g)\"]) || !isFinite(+datum[\"mid_box_Body Mass (g)\"]) ? \"\" + datum[\"mid_box_Body Mass (g)\"] : format(datum[\"mid_box_Body Mass (g)\"], \"\")) + \"; Q1 of Body Mass (g): \" + (!isValid(datum[\"lower_box_Body Mass (g)\"]) || !isFinite(+datum[\"lower_box_Body Mass (g)\"]) ? \"\" + datum[\"lower_box_Body Mass (g)\"] : format(datum[\"lower_box_Body Mass (g)\"], \"\")) + \"; Min of Body Mass (g): \" + (!isValid(datum[\"min_Body Mass (g)\"]) || !isFinite(+datum[\"min_Body Mass (g)\"]) ? \"\" + datum[\"min_Body Mass (g)\"] : format(datum[\"min_Body Mass (g)\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "Species", "band": 0.5},
           "width": {"value": 14},
@@ -231,7 +231,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"Max of Body Mass (g)\": format(datum[\"max_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"min_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
+            "signal": "{\"Max of Body Mass (g)\": !isValid(datum[\"max_Body Mass (g)\"]) || !isFinite(+datum[\"max_Body Mass (g)\"]) ? \"\" + datum[\"max_Body Mass (g)\"] : format(datum[\"max_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": !isValid(datum[\"upper_box_Body Mass (g)\"]) || !isFinite(+datum[\"upper_box_Body Mass (g)\"]) ? \"\" + datum[\"upper_box_Body Mass (g)\"] : format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": !isValid(datum[\"mid_box_Body Mass (g)\"]) || !isFinite(+datum[\"mid_box_Body Mass (g)\"]) ? \"\" + datum[\"mid_box_Body Mass (g)\"] : format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": !isValid(datum[\"lower_box_Body Mass (g)\"]) || !isFinite(+datum[\"lower_box_Body Mass (g)\"]) ? \"\" + datum[\"lower_box_Body Mass (g)\"] : format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": !isValid(datum[\"min_Body Mass (g)\"]) || !isFinite(+datum[\"min_Body Mass (g)\"]) ? \"\" + datum[\"min_Body Mass (g)\"] : format(datum[\"min_Body Mass (g)\"], \"\"), \"Species\": \"\" + datum[\"Species\"]}"
           },
           "xc": {"scale": "x", "field": "Species", "band": 0.5},
           "yc": {"scale": "y", "field": "mid_box_Body Mass (g)"},

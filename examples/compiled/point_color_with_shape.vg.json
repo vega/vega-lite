@@ -32,7 +32,7 @@
           "stroke": {"scale": "color", "field": "Species"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+            "signal": "\"Flipper Length (mm): \" + (!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"]) ? \"\" + datum[\"Flipper Length (mm)\"] : format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
           },
           "x": {"scale": "x", "field": "Flipper Length (mm)"},
           "y": {"scale": "y", "field": "Body Mass (g)"},

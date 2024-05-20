@@ -201,7 +201,7 @@
           "opacity": {"value": 0.35},
           "stroke": {"value": "#000"},
           "description": {
-            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; lon2: \" + (format(datum[\"lon2\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\")) + \"; lat2: \" + (format(datum[\"lat2\"], \"\"))"
+            "signal": "\"longitude: \" + (!isValid(datum[\"longitude\"]) || !isFinite(+datum[\"longitude\"]) ? \"\" + datum[\"longitude\"] : format(datum[\"longitude\"], \"\")) + \"; lon2: \" + (!isValid(datum[\"lon2\"]) || !isFinite(+datum[\"lon2\"]) ? \"\" + datum[\"lon2\"] : format(datum[\"lon2\"], \"\")) + \"; latitude: \" + (!isValid(datum[\"latitude\"]) || !isFinite(+datum[\"latitude\"]) ? \"\" + datum[\"latitude\"] : format(datum[\"latitude\"], \"\")) + \"; lat2: \" + (!isValid(datum[\"lat2\"]) || !isFinite(+datum[\"lat2\"]) ? \"\" + datum[\"lat2\"] : format(datum[\"lat2\"], \"\"))"
           },
           "x": {"field": "layer_1_x"},
           "x2": {"field": "layer_1_x2"},
@@ -223,7 +223,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\")) + \"; routes: \" + (format(datum[\"routes\"], \"\"))"
+            "signal": "\"longitude: \" + (!isValid(datum[\"longitude\"]) || !isFinite(+datum[\"longitude\"]) ? \"\" + datum[\"longitude\"] : format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (!isValid(datum[\"latitude\"]) || !isFinite(+datum[\"latitude\"]) ? \"\" + datum[\"latitude\"] : format(datum[\"latitude\"], \"\")) + \"; routes: \" + (!isValid(datum[\"routes\"]) || !isFinite(+datum[\"routes\"]) ? \"\" + datum[\"routes\"] : format(datum[\"routes\"], \"\"))"
           },
           "x": {"field": "layer_2_x"},
           "y": {"field": "layer_2_y"},

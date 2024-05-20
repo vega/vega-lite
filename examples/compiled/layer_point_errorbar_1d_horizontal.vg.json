@@ -62,10 +62,10 @@
           "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\")}"
+            "signal": "{\"Mean of yield\": !isValid(datum[\"center_yield\"]) || !isFinite(+datum[\"center_yield\"]) ? \"\" + datum[\"center_yield\"] : format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": !isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"]) ? \"\" + datum[\"upper_yield\"] : format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": !isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"]) ? \"\" + datum[\"lower_yield\"] : format(datum[\"lower_yield\"], \"\")}"
           },
           "description": {
-            "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Mean of yield: \" + (format(datum[\"center_yield\"], \"\")) + \"; Mean + stderr of yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Mean - stderr of yield: \" + (format(datum[\"lower_yield\"], \"\"))"
+            "signal": "\"yield: \" + (!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"]) ? \"\" + datum[\"lower_yield\"] : format(datum[\"lower_yield\"], \"\")) + \"; upper_yield: \" + (!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"]) ? \"\" + datum[\"upper_yield\"] : format(datum[\"upper_yield\"], \"\")) + \"; Mean of yield: \" + (!isValid(datum[\"center_yield\"]) || !isFinite(+datum[\"center_yield\"]) ? \"\" + datum[\"center_yield\"] : format(datum[\"center_yield\"], \"\")) + \"; Mean + stderr of yield: \" + (!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"]) ? \"\" + datum[\"upper_yield\"] : format(datum[\"upper_yield\"], \"\")) + \"; Mean - stderr of yield: \" + (!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"]) ? \"\" + datum[\"lower_yield\"] : format(datum[\"lower_yield\"], \"\"))"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "x2": {"scale": "x", "field": "upper_yield"},
@@ -83,7 +83,7 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Mean of yield: \" + (format(datum[\"mean_yield\"], \"\"))"
+            "signal": "\"Mean of yield: \" + (!isValid(datum[\"mean_yield\"]) || !isFinite(+datum[\"mean_yield\"]) ? \"\" + datum[\"mean_yield\"] : format(datum[\"mean_yield\"], \"\"))"
           },
           "x": {"scale": "x", "field": "mean_yield"},
           "y": {"signal": "height", "mult": 0.5}

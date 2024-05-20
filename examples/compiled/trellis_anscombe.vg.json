@@ -63,9 +63,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"Series\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"Series\"]) ? parent[\"Series\"] : \"\"+parent[\"Series\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"Series\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -118,7 +116,7 @@
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"X: \" + (format(datum[\"X\"], \"\")) + \"; Y: \" + (format(datum[\"Y\"], \"\"))"
+                "signal": "\"X: \" + (!isValid(datum[\"X\"]) || !isFinite(+datum[\"X\"]) ? \"\" + datum[\"X\"] : format(datum[\"X\"], \"\")) + \"; Y: \" + (!isValid(datum[\"Y\"]) || !isFinite(+datum[\"Y\"]) ? \"\" + datum[\"Y\"] : format(datum[\"Y\"], \"\"))"
               },
               "x": {"scale": "x", "field": "X"},
               "y": {"scale": "y", "field": "Y"},

@@ -57,11 +57,11 @@
       "encode": {
         "update": {
           "tooltip": {
-            "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Average of price\": format(datum[\"average_price\"], \"\")}"
+            "signal": "{\"date (year-month)\": !isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"]) ? \"\" + datum[\"yearmonth_date\"] : timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Average of price\": !isValid(datum[\"average_price\"]) || !isFinite(+datum[\"average_price\"]) ? \"\" + datum[\"average_price\"] : format(datum[\"average_price\"], \"\")}"
           },
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (format(datum[\"average_price\"], \"\"))"
+            "signal": "\"date (year-month): \" + (!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"]) ? \"\" + datum[\"yearmonth_date\"] : timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (!isValid(datum[\"average_price\"]) || !isFinite(+datum[\"average_price\"]) ? \"\" + datum[\"average_price\"] : format(datum[\"average_price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonth_date"},
           "y": {"scale": "y", "field": "average_price"},
@@ -80,12 +80,12 @@
         "update": {
           "opacity": {"value": 1},
           "tooltip": {
-            "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Average of price\": format(datum[\"average_price\"], \"\")}"
+            "signal": "{\"date (year-month)\": !isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"]) ? \"\" + datum[\"yearmonth_date\"] : timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Average of price\": !isValid(datum[\"average_price\"]) || !isFinite(+datum[\"average_price\"]) ? \"\" + datum[\"average_price\"] : format(datum[\"average_price\"], \"\")}"
           },
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (format(datum[\"average_price\"], \"\"))"
+            "signal": "\"date (year-month): \" + (!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"]) ? \"\" + datum[\"yearmonth_date\"] : timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (!isValid(datum[\"average_price\"]) || !isFinite(+datum[\"average_price\"]) ? \"\" + datum[\"average_price\"] : format(datum[\"average_price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonth_date"},
           "y": {"scale": "y", "field": "average_price"}

@@ -47,7 +47,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; Max Temperature: \" + (format(datum[\"temp_max\"], \"\"))"
+            "signal": "\"Date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; Max Temperature: \" + (!isValid(datum[\"temp_max\"]) || !isFinite(+datum[\"temp_max\"]) ? \"\" + datum[\"temp_max\"] : format(datum[\"temp_max\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "temp_max"}
@@ -64,7 +64,7 @@
         "update": {
           "stroke": {"value": "red"},
           "description": {
-            "signal": "\"Date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; Rolling Mean of Max Temperature: \" + (format(datum[\"rolling_mean\"], \"\"))"
+            "signal": "\"Date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; Rolling Mean of Max Temperature: \" + (!isValid(datum[\"rolling_mean\"]) || !isFinite(+datum[\"rolling_mean\"]) ? \"\" + datum[\"rolling_mean\"] : format(datum[\"rolling_mean\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "rolling_mean"},

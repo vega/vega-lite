@@ -107,7 +107,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\")) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "a"},
           "y": {"scale": "y", "field": "b"}
@@ -133,13 +133,11 @@
           "fontStyle": {"signal": "fontStyle"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"])"
+            "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\")) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")) + \"; label: \" + (\"\" + datum[\"label\"])"
           },
           "x": {"scale": "x", "field": "a", "offset": {"signal": "xOffset"}},
           "y": {"scale": "y", "field": "b", "offset": {"signal": "yOffset"}},
-          "text": {
-            "signal": "isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]"
-          }
+          "text": {"signal": "\"\" + datum[\"label\"]"}
         }
       }
     }

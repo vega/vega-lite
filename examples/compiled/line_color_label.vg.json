@@ -59,7 +59,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"price\"]) || !isFinite(+datum[\"price\"]) ? \"\" + datum[\"price\"] : format(datum[\"price\"], \"\")) + \"; symbol: \" + (\"\" + datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -81,7 +81,7 @@
           "fill": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"Max of date: \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; price for max date: \" + (format(datum[\"argmax_date\"][\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"Max of date: \" + (!isValid(datum[\"max_date\"]) || !isFinite(+datum[\"max_date\"]) ? \"\" + datum[\"max_date\"] : timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; price for max date: \" + (!isValid(datum[\"argmax_date\"][\"price\"]) || !isFinite(+datum[\"argmax_date\"][\"price\"]) ? \"\" + datum[\"argmax_date\"][\"price\"] : format(datum[\"argmax_date\"][\"price\"], \"\")) + \"; symbol: \" + (\"\" + datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "max_date"},
           "y": {"scale": "y", "field": "argmax_date[\"price\"]"},
@@ -100,13 +100,11 @@
           "dx": {"value": 4},
           "fill": {"scale": "color", "field": "symbol"},
           "description": {
-            "signal": "\"Max of date: \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; price for max date: \" + (format(datum[\"argmax_date\"][\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"Max of date: \" + (!isValid(datum[\"max_date\"]) || !isFinite(+datum[\"max_date\"]) ? \"\" + datum[\"max_date\"] : timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; price for max date: \" + (!isValid(datum[\"argmax_date\"][\"price\"]) || !isFinite(+datum[\"argmax_date\"][\"price\"]) ? \"\" + datum[\"argmax_date\"][\"price\"] : format(datum[\"argmax_date\"][\"price\"], \"\")) + \"; symbol: \" + (\"\" + datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "max_date"},
           "y": {"scale": "y", "field": "argmax_date[\"price\"]"},
-          "text": {
-            "signal": "isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"symbol\"]"},
           "baseline": {"value": "middle"}
         }
       }

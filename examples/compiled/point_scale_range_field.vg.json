@@ -34,7 +34,7 @@
           "fill": {"scale": "color", "field": "l"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"y: \" + (isValid(datum[\"y\"]) ? datum[\"y\"] : \"\"+datum[\"y\"]) + \"; l: \" + (isValid(datum[\"l\"]) ? datum[\"l\"] : \"\"+datum[\"l\"])"
+            "signal": "\"y: \" + (\"\" + datum[\"y\"]) + \"; l: \" + (\"\" + datum[\"l\"])"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "y"},

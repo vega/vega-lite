@@ -64,7 +64,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"% of total Time: \" + (format(datum[\"PercentOfTotal\"], \"\")) + \"; Activity: \" + (isValid(datum[\"Activity\"]) ? datum[\"Activity\"] : \"\"+datum[\"Activity\"])"
+            "signal": "\"% of total Time: \" + (!isValid(datum[\"PercentOfTotal\"]) || !isFinite(+datum[\"PercentOfTotal\"]) ? \"\" + datum[\"PercentOfTotal\"] : format(datum[\"PercentOfTotal\"], \"\")) + \"; Activity: \" + (\"\" + datum[\"Activity\"])"
           },
           "x": {"scale": "x", "field": "PercentOfTotal_end"},
           "x2": {"scale": "x", "field": "PercentOfTotal_start"},

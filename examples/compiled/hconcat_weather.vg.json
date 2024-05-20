@@ -114,7 +114,7 @@
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of precipitation: \" + (format(datum[\"mean_precipitation\"], \"\"))"
+                "signal": "\"date (month): \" + (!isValid(datum[\"month_date\"]) || !isFinite(+datum[\"month_date\"]) ? \"\" + datum[\"month_date\"] : timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of precipitation: \" + (!isValid(datum[\"mean_precipitation\"]) || !isFinite(+datum[\"mean_precipitation\"]) ? \"\" + datum[\"mean_precipitation\"] : format(datum[\"mean_precipitation\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "month_date"},
               "width": {"signal": "max(0.25, bandwidth('concat_0_x'))"},
@@ -187,7 +187,7 @@
               "stroke": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"temp_min (binned): \" + (!isValid(datum[\"bin_maxbins_10_temp_min\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_min\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_min\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_temp_min_end\"], \"\")) + \"; temp_max (binned): \" + (!isValid(datum[\"bin_maxbins_10_temp_max\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_max\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_max\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_temp_max_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+                "signal": "\"temp_min (binned): \" + (!isValid(datum[\"bin_maxbins_10_temp_min\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_min\"]) ? \"\" + datum[\"bin_maxbins_10_temp_min\"] : format(datum[\"bin_maxbins_10_temp_min\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_temp_min_end\"], \"\")) + \"; temp_max (binned): \" + (!isValid(datum[\"bin_maxbins_10_temp_max\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_max\"]) ? \"\" + datum[\"bin_maxbins_10_temp_max\"] : format(datum[\"bin_maxbins_10_temp_max\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_temp_max_end\"], \"\")) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
               },
               "x": {
                 "signal": "scale(\"concat_1_x\", 0.5 * datum[\"bin_maxbins_10_temp_min\"] + 0.5 * datum[\"bin_maxbins_10_temp_min_end\"])"

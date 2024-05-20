@@ -65,7 +65,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"])"
+            "signal": "\"b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")) + \"; a: \" + (\"\" + datum[\"a\"])"
           },
           "x": {"scale": "x", "field": "b_end"},
           "x2": {"scale": "x", "field": "b_start"},

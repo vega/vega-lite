@@ -37,7 +37,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"sum_people\"], \"\"))"
+            "signal": "\"population: \" + (!isValid(datum[\"sum_people\"]) || !isFinite(+datum[\"sum_people\"]) ? \"\" + datum[\"sum_people\"] : format(datum[\"sum_people\"], \"\"))"
           },
           "x": {"scale": "x", "field": "sum_people"},
           "x2": {"scale": "x", "value": 0},

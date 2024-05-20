@@ -93,9 +93,7 @@
       "name": "cell",
       "type": "group",
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"MPAA Rating\"]) ? parent[\"MPAA Rating\"] : \"\"+parent[\"MPAA Rating\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"MPAA Rating\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -128,7 +126,7 @@
               "stroke": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Worldwide Gross: \" + (format(datum[\"Worldwide Gross\"], \"\")) + \"; US DVD Sales: \" + (format(datum[\"US DVD Sales\"], \"\"))"
+                "signal": "\"Worldwide Gross: \" + (!isValid(datum[\"Worldwide Gross\"]) || !isFinite(+datum[\"Worldwide Gross\"]) ? \"\" + datum[\"Worldwide Gross\"] : format(datum[\"Worldwide Gross\"], \"\")) + \"; US DVD Sales: \" + (!isValid(datum[\"US DVD Sales\"]) || !isFinite(+datum[\"US DVD Sales\"]) ? \"\" + datum[\"US DVD Sales\"] : format(datum[\"US DVD Sales\"], \"\"))"
               },
               "x": {"scale": "x", "field": "Worldwide Gross"},
               "y": {"scale": "y", "field": "US DVD Sales"}

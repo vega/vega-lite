@@ -112,7 +112,7 @@
           "fill": {"value": "gray"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\"))"
+            "signal": "\"longitude: \" + (!isValid(datum[\"longitude\"]) || !isFinite(+datum[\"longitude\"]) ? \"\" + datum[\"longitude\"] : format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (!isValid(datum[\"latitude\"]) || !isFinite(+datum[\"latitude\"]) ? \"\" + datum[\"latitude\"] : format(datum[\"latitude\"], \"\"))"
           },
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
@@ -130,7 +130,7 @@
         "update": {
           "stroke": {"value": "black"},
           "description": {
-            "signal": "\"origin_longitude: \" + (format(datum[\"origin_longitude\"], \"\")) + \"; dest_longitude: \" + (format(datum[\"dest_longitude\"], \"\")) + \"; origin_latitude: \" + (format(datum[\"origin_latitude\"], \"\")) + \"; dest_latitude: \" + (format(datum[\"dest_latitude\"], \"\"))"
+            "signal": "\"origin_longitude: \" + (!isValid(datum[\"origin_longitude\"]) || !isFinite(+datum[\"origin_longitude\"]) ? \"\" + datum[\"origin_longitude\"] : format(datum[\"origin_longitude\"], \"\")) + \"; dest_longitude: \" + (!isValid(datum[\"dest_longitude\"]) || !isFinite(+datum[\"dest_longitude\"]) ? \"\" + datum[\"dest_longitude\"] : format(datum[\"dest_longitude\"], \"\")) + \"; origin_latitude: \" + (!isValid(datum[\"origin_latitude\"]) || !isFinite(+datum[\"origin_latitude\"]) ? \"\" + datum[\"origin_latitude\"] : format(datum[\"origin_latitude\"], \"\")) + \"; dest_latitude: \" + (!isValid(datum[\"dest_latitude\"]) || !isFinite(+datum[\"dest_latitude\"]) ? \"\" + datum[\"dest_latitude\"] : format(datum[\"dest_latitude\"], \"\"))"
           },
           "x": {"field": "layer_2_x"},
           "x2": {"field": "layer_2_x2"},

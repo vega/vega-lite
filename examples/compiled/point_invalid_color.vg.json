@@ -27,7 +27,7 @@
           ],
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Rotten Tomatoes Rating: \" + (format(datum[\"Rotten Tomatoes Rating\"], \"\"))"
+            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"IMDB Rating\"]) || !isFinite(+datum[\"IMDB Rating\"]) ? \"\" + datum[\"IMDB Rating\"] : format(datum[\"IMDB Rating\"], \"\")) + \"; Rotten Tomatoes Rating: \" + (!isValid(datum[\"Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"Rotten Tomatoes Rating\"]) ? \"\" + datum[\"Rotten Tomatoes Rating\"] : format(datum[\"Rotten Tomatoes Rating\"], \"\"))"
           },
           "x": [
             {

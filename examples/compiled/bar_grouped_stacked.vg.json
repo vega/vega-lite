@@ -59,7 +59,7 @@
           "fill": {"scale": "color", "field": "year_Year"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Sum of Weight_in_lbs: \" + (format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"Cylinders: \" + (\"\" + datum[\"Cylinders\"]) + \"; Sum of Weight_in_lbs: \" + (!isValid(datum[\"sum_Weight_in_lbs\"]) || !isFinite(+datum[\"sum_Weight_in_lbs\"]) ? \"\" + datum[\"sum_Weight_in_lbs\"] : format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; Origin: \" + (\"\" + datum[\"Origin\"]) + \"; Year (year): \" + (!isValid(datum[\"year_Year\"]) || !isFinite(+datum[\"year_Year\"]) ? \"\" + datum[\"year_Year\"] : timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
           "x": {
             "scale": "x",

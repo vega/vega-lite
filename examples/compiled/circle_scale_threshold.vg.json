@@ -48,9 +48,7 @@
           "opacity": {"value": 0.7},
           "fill": {"scale": "color", "field": "b"},
           "ariaRoleDescription": {"value": "circle"},
-          "description": {
-            "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
-          },
+          "description": {"signal": "\"b: \" + (\"\" + datum[\"b\"])"},
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "b"},
           "size": {"scale": "size", "field": "b"},

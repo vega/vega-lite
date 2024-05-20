@@ -51,7 +51,7 @@
           "fill": {"scale": "color", "field": "group"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
+            "signal": "\"value: \" + (!isValid(datum[\"value\"]) || !isFinite(+datum[\"value\"]) ? \"\" + datum[\"value\"] : format(datum[\"value\"], \"\")) + \"; group: \" + (\"\" + datum[\"group\"])"
           },
           "x": {
             "signal": "width",

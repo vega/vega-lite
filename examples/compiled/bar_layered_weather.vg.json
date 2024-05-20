@@ -140,7 +140,7 @@
           "fill": {"value": "#ccc"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; record.low: \" + (format(datum[\"record.low\"], \"\")) + \"; record.high: \" + (format(datum[\"record.high\"], \"\"))"
+            "signal": "\"id: \" + (\"\" + datum[\"id\"]) + \"; record.low: \" + (!isValid(datum[\"record.low\"]) || !isFinite(+datum[\"record.low\"]) ? \"\" + datum[\"record.low\"] : format(datum[\"record.low\"], \"\")) + \"; record.high: \" + (!isValid(datum[\"record.high\"]) || !isFinite(+datum[\"record.high\"]) ? \"\" + datum[\"record.high\"] : format(datum[\"record.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
@@ -159,7 +159,7 @@
           "fill": {"value": "#999"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; normal.low: \" + (format(datum[\"normal.low\"], \"\")) + \"; normal.high: \" + (format(datum[\"normal.high\"], \"\"))"
+            "signal": "\"id: \" + (\"\" + datum[\"id\"]) + \"; normal.low: \" + (!isValid(datum[\"normal.low\"]) || !isFinite(+datum[\"normal.low\"]) ? \"\" + datum[\"normal.low\"] : format(datum[\"normal.low\"], \"\")) + \"; normal.high: \" + (!isValid(datum[\"normal.high\"]) || !isFinite(+datum[\"normal.high\"]) ? \"\" + datum[\"normal.high\"] : format(datum[\"normal.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
@@ -178,7 +178,7 @@
           "fill": {"value": "#000"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; actual.low: \" + (format(datum[\"actual.low\"], \"\")) + \"; actual.high: \" + (format(datum[\"actual.high\"], \"\"))"
+            "signal": "\"id: \" + (\"\" + datum[\"id\"]) + \"; actual.low: \" + (!isValid(datum[\"actual.low\"]) || !isFinite(+datum[\"actual.low\"]) ? \"\" + datum[\"actual.low\"] : format(datum[\"actual.low\"], \"\")) + \"; actual.high: \" + (!isValid(datum[\"actual.high\"]) || !isFinite(+datum[\"actual.high\"]) ? \"\" + datum[\"actual.high\"] : format(datum[\"actual.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
@@ -197,7 +197,7 @@
           "fill": {"value": "#000"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; forecast.low.low: \" + (format(datum[\"forecast.low.low\"], \"\")) + \"; forecast.low.high: \" + (format(datum[\"forecast.low.high\"], \"\"))"
+            "signal": "\"id: \" + (\"\" + datum[\"id\"]) + \"; forecast.low.low: \" + (!isValid(datum[\"forecast.low.low\"]) || !isFinite(+datum[\"forecast.low.low\"]) ? \"\" + datum[\"forecast.low.low\"] : format(datum[\"forecast.low.low\"], \"\")) + \"; forecast.low.high: \" + (!isValid(datum[\"forecast.low.high\"]) || !isFinite(+datum[\"forecast.low.high\"]) ? \"\" + datum[\"forecast.low.high\"] : format(datum[\"forecast.low.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
@@ -216,7 +216,7 @@
           "fill": {"value": "#000"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; forecast.low.high: \" + (format(datum[\"forecast.low.high\"], \"\")) + \"; forecast.high.low: \" + (format(datum[\"forecast.high.low\"], \"\"))"
+            "signal": "\"id: \" + (\"\" + datum[\"id\"]) + \"; forecast.low.high: \" + (!isValid(datum[\"forecast.low.high\"]) || !isFinite(+datum[\"forecast.low.high\"]) ? \"\" + datum[\"forecast.low.high\"] : format(datum[\"forecast.low.high\"], \"\")) + \"; forecast.high.low: \" + (!isValid(datum[\"forecast.high.low\"]) || !isFinite(+datum[\"forecast.high.low\"]) ? \"\" + datum[\"forecast.high.low\"] : format(datum[\"forecast.high.low\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 3},
@@ -235,7 +235,7 @@
           "fill": {"value": "#000"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; forecast.high.low: \" + (format(datum[\"forecast.high.low\"], \"\")) + \"; forecast.high.high: \" + (format(datum[\"forecast.high.high\"], \"\"))"
+            "signal": "\"id: \" + (\"\" + datum[\"id\"]) + \"; forecast.high.low: \" + (!isValid(datum[\"forecast.high.low\"]) || !isFinite(+datum[\"forecast.high.low\"]) ? \"\" + datum[\"forecast.high.low\"] : format(datum[\"forecast.high.low\"], \"\")) + \"; forecast.high.high: \" + (!isValid(datum[\"forecast.high.high\"]) || !isFinite(+datum[\"forecast.high.high\"]) ? \"\" + datum[\"forecast.high.high\"] : format(datum[\"forecast.high.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
@@ -255,13 +255,11 @@
           "baseline": {"value": "bottom"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; day: \" + (isValid(datum[\"day\"]) ? datum[\"day\"] : \"\"+datum[\"day\"])"
+            "signal": "\"id: \" + (\"\" + datum[\"id\"]) + \"; day: \" + (\"\" + datum[\"day\"])"
           },
           "x": {"scale": "x", "field": "id", "band": 0.5},
           "y": {"value": -5},
-          "text": {
-            "signal": "isValid(datum[\"day\"]) ? datum[\"day\"] : \"\"+datum[\"day\"]"
-          }
+          "text": {"signal": "\"\" + datum[\"day\"]"}
         }
       }
     }

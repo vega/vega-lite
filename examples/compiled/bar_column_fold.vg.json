@@ -81,9 +81,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"key\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"key\"]) ? parent[\"key\"] : \"\"+parent[\"key\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"key\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -135,7 +133,7 @@
               "fill": {"scale": "color", "field": "country"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; value: \" + (format(datum[\"value\"], \"\"))"
+                "signal": "\"country: \" + (\"\" + datum[\"country\"]) + \"; value: \" + (!isValid(datum[\"value\"]) || !isFinite(+datum[\"value\"]) ? \"\" + datum[\"value\"] : format(datum[\"value\"], \"\"))"
               },
               "x": {"scale": "x", "field": "country"},
               "width": {"signal": "max(0.25, bandwidth('x'))"},

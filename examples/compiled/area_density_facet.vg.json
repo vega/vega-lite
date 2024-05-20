@@ -71,9 +71,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"Species\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"Species\"]) ? parent[\"Species\"] : \"\"+parent[\"Species\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"Species\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -136,7 +134,7 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"Body Mass (g): \" + (format(datum[\"value\"], \"\")) + \"; density: \" + (format(datum[\"density\"], \"\"))"
+                "signal": "\"Body Mass (g): \" + (!isValid(datum[\"value\"]) || !isFinite(+datum[\"value\"]) ? \"\" + datum[\"value\"] : format(datum[\"value\"], \"\")) + \"; density: \" + (!isValid(datum[\"density\"]) || !isFinite(+datum[\"density\"]) ? \"\" + datum[\"density\"] : format(datum[\"density\"], \"\"))"
               },
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density_end"},

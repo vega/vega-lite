@@ -84,7 +84,7 @@
           "tension": {"signal": "tension"},
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"u: \" + (format(datum[\"u\"], \"\")) + \"; v: \" + (format(datum[\"v\"], \"\"))"
+            "signal": "\"u: \" + (!isValid(datum[\"u\"]) || !isFinite(+datum[\"u\"]) ? \"\" + datum[\"u\"] : format(datum[\"u\"], \"\")) + \"; v: \" + (!isValid(datum[\"v\"]) || !isFinite(+datum[\"v\"]) ? \"\" + datum[\"v\"] : format(datum[\"v\"], \"\"))"
           },
           "x": {"scale": "x", "field": "u"},
           "y": {"scale": "y", "field": "v"},

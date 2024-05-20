@@ -39,7 +39,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; random: \" + (format(datum[\"random\"], \"\"))"
+            "signal": "\"Horsepower: \" + (!isValid(datum[\"Horsepower\"]) || !isFinite(+datum[\"Horsepower\"]) ? \"\" + datum[\"Horsepower\"] : format(datum[\"Horsepower\"], \"\")) + \"; Cylinders: \" + (\"\" + datum[\"Cylinders\"]) + \"; random: \" + (!isValid(datum[\"random\"]) || !isFinite(+datum[\"random\"]) ? \"\" + datum[\"random\"] : format(datum[\"random\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {

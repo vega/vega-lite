@@ -74,7 +74,7 @@
           "fill": {"scale": "color", "field": "group"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
+            "signal": "\"category: \" + (\"\" + datum[\"category\"]) + \"; value: \" + (!isValid(datum[\"value\"]) || !isFinite(+datum[\"value\"]) ? \"\" + datum[\"value\"] : format(datum[\"value\"], \"\")) + \"; group: \" + (\"\" + datum[\"group\"])"
           },
           "x": {
             "scale": "x",
@@ -97,7 +97,7 @@
           "dy": {"value": -8},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
+            "signal": "\"category: \" + (\"\" + datum[\"category\"]) + \"; value: \" + (!isValid(datum[\"value\"]) || !isFinite(+datum[\"value\"]) ? \"\" + datum[\"value\"] : format(datum[\"value\"], \"\")) + \"; group: \" + (\"\" + datum[\"group\"])"
           },
           "x": {
             "scale": "x",
@@ -105,7 +105,9 @@
             "offset": {"scale": "xOffset", "field": "group", "band": 0.5}
           },
           "y": {"scale": "y", "field": "value"},
-          "text": {"signal": "format(datum[\"value\"], \"\")"},
+          "text": {
+            "signal": "!isValid(datum[\"value\"]) || !isFinite(+datum[\"value\"]) ? \"\" + datum[\"value\"] : format(datum[\"value\"], \"\")"
+          },
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }

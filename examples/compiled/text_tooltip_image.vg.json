@@ -32,17 +32,11 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"image\": isValid(datum[\"image\"]) ? datum[\"image\"] : \"\"+datum[\"image\"]}"
-          },
-          "description": {
-            "signal": "\"image: \" + (isValid(datum[\"image\"]) ? datum[\"image\"] : \"\"+datum[\"image\"])"
-          },
+          "tooltip": {"signal": "{\"image\": \"\" + datum[\"image\"]}"},
+          "description": {"signal": "\"image: \" + (\"\" + datum[\"image\"])"},
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "image"},
-          "text": {
-            "signal": "isValid(datum[\"image\"]) ? datum[\"image\"] : \"\"+datum[\"image\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"image\"]"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }

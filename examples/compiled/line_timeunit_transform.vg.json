@@ -42,7 +42,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"month: \" + (timeFormat(datum[\"month\"], '%b')) + \"; Max of temp_max: \" + (format(datum[\"max_temp_max\"], \"\"))"
+            "signal": "\"month: \" + (!isValid(datum[\"month\"]) || !isFinite(+datum[\"month\"]) ? \"\" + datum[\"month\"] : timeFormat(datum[\"month\"], '%b')) + \"; Max of temp_max: \" + (!isValid(datum[\"max_temp_max\"]) || !isFinite(+datum[\"max_temp_max\"]) ? \"\" + datum[\"max_temp_max\"] : format(datum[\"max_temp_max\"], \"\"))"
           },
           "x": {"scale": "x", "field": "month"},
           "y": {"scale": "y", "field": "max_temp_max"},

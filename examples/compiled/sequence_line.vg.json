@@ -26,7 +26,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; sin(x): \" + (format(datum[\"sin(x)\"], \"\"))"
+            "signal": "\"x: \" + (!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"]) ? \"\" + datum[\"x\"] : format(datum[\"x\"], \"\")) + \"; sin(x): \" + (!isValid(datum[\"sin(x)\"]) || !isFinite(+datum[\"sin(x)\"]) ? \"\" + datum[\"sin(x)\"] : format(datum[\"sin(x)\"], \"\"))"
           },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "sin(x)"},
