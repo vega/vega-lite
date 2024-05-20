@@ -82,7 +82,7 @@ Include all data points in the marks and scale domains. Each scale will use the 
 
 For historical reasons, Vega-Lite 5 currently uses `"break-paths-show-path-domains"` as the default invalid data mode (to avoid breaking changes). This is equivalent to `"break-path-keep-domains"` for path-based marks (line/area/trail) and `"filter"` for other marks.
 
-<div class="vl-example example-only" data-name="test_invalid_break_paths_and_show_path_domains"></div>
+<div class="vl-example example-only" data-name="test_invalid_break_paths_show_path_domains"></div>
 
 ## Scale Output for Invalid Values
 
@@ -92,7 +92,7 @@ You can use `config.scale.invalid` to defines scale outputs per channel for inva
 
 {% include table.html props="invalid" source="ScaleConfig" %}
 
-### Example: Output Color and Size
+### Example: Output Color and Size with "Filter" Mode
 
 A visualization with `"filter"` invalid data mode will not filter (not exclude) color and size encoding if `config.scale.invalid.color` and `config.scale.invalid.size` are specified.
 
@@ -102,13 +102,23 @@ Compare this with a similar spec, but without `config.scale.invalid`:
 
 <div class="vl-example" data-name="test_invalid_color_size_mark_filter_only"></div>
 
+### Example: Output Color with "Show" Mode
+
+As discussed earlier, by default invalid values will produce the same visual values as zero (if the scale includes zero) or the minimum value (if the scale does not include zero).
+
+<div class="vl-example" data-name="bar_invalid_color_show"></div>
+
+However, you may use `config.scale.invalid` to override the output for invalid data values:
+
+<div class="vl-example" data-name="bar_invalid_color_show_override"></div>
+
 ## Other solutions
 
 {:#other}
 
 Note that `mark.invalid` and `config.scale.invalid` are options for handling invalid data _without_ changing data or marks.
 
-However, you may use other Vega-Lite features to encode invalid data.
+However, you may use other Vega-Lite features such as conditional encoding, layering, and window transforms to encode invalid data.
 
 ### Example: Conditional Encoding
 
