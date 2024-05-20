@@ -25,7 +25,7 @@ import {forEach, reduce} from '../encoding';
 import {ExprRef, replaceExprRef} from '../expr';
 import * as log from '../log';
 import {Resolve} from '../resolve';
-import {hasDiscreteDomain} from '../scale';
+import {ScaleType, hasDiscreteDomain} from '../scale';
 import {isFacetSpec} from '../spec';
 import {
   extractCompositionLayout,
@@ -633,6 +633,11 @@ export abstract class Model {
       return localScaleComponent;
     }
     return this.parent ? this.parent.getScaleComponent(channel) : undefined;
+  }
+
+  public getScaleType(channel: ScaleChannel): ScaleType {
+    const scaleComponent = this.getScaleComponent(channel);
+    return scaleComponent ? scaleComponent.get('type') : undefined;
   }
 
   /**

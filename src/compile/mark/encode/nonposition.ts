@@ -6,6 +6,7 @@ import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
 import {wrapCondition} from './conditional';
 import * as ref from './valueref';
+import {getConditionalValueRefForIncludingInvalidValue} from './invalid';
 
 /**
  * Return encode for non-positional channels with scales. (Text doesn't have scale.)
@@ -33,17 +34,34 @@ export function nonPosition(
   }
 
   const channelDef = encoding[channel];
+  const commonProps = {
+    markDef,
+    config,
+    scaleName: model.scaleName(channel),
+    scale: model.getScaleComponent(channel)
+  };
 
-  return wrapCondition(model, channelDef, vgChannel ?? channel, cDef => {
+  const invalidValueRef = getConditionalValueRefForIncludingInvalidValue({
+    ...commonProps,
+    scaleChannel: channel,
+    channelDef
+  });
+
+  const mainRefFn = (cDef: typeof channelDef) => {
     return ref.midPoint({
+      ...commonProps,
       channel,
       channelDef: cDef,
-      markDef,
-      config,
-      scaleName: model.scaleName(channel),
-      scale: model.getScaleComponent(channel),
       stack: null, // No need to provide stack for non-position as it does not affect mid point
       defaultRef
     });
+  };
+
+  return wrapCondition({
+    model,
+    channelDef,
+    vgChannel: vgChannel ?? channel,
+    invalidValueRef,
+    mainRefFn
   });
 }

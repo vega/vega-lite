@@ -1,11 +1,16 @@
 import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid';
+import {getDataSourcesForHandlingInvalidValues} from '../../../src/compile/invalid/datasources';
 import {UnitModel} from '../../../src/compile/unit';
 import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
 import {mergeDeep} from '../../../src/util';
 import {parseUnitModelWithScale} from '../../util';
 
 function parse(model: UnitModel) {
-  return FilterInvalidNode.make(null, model);
+  const dataSourcesForHandlingInvalidValues = getDataSourcesForHandlingInvalidValues({
+    invalid: 'filter',
+    isPath: false
+  });
+  return FilterInvalidNode.make(null, model, dataSourcesForHandlingInvalidValues);
 }
 
 describe('compile/data/filterinvalid', () => {
@@ -42,11 +47,11 @@ describe('compile/data/filterinvalid', () => {
       });
     });
 
-    it('should add no null filter if when invalid is null', () => {
+    it('should add no null filter if when invalid is show', () => {
       const model = parseUnitModelWithScale(
         mergeDeep<TopLevel<NormalizedUnitSpec>>(spec, {
           config: {
-            mark: {invalid: null}
+            mark: {invalid: 'show'}
           }
         })
       );

@@ -1,0 +1,201 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a": "Jan 1, 2000", "b": 28},
+        {"a": "Jan 2, 2000", "b": 55},
+        {"a": "Jan 3, 2000", "b": null},
+        {"a": "Jan 4, 2000", "b": 55},
+        {"a": "Jan 5, 2000", "b": 43},
+        {"a": "Jan 6, 2000", "b": null},
+        {"a": "Jan 7, 2000", "b": 55},
+        {"a": "Jan 8, 2000", "b": 43}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"a\"])", "as": "a"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "field": "a",
+          "type": "timeunit",
+          "units": ["year", "month", "date"],
+          "as": ["yearmonthdate_a", "yearmonthdate_a_end"]
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {"type": "filter", "expr": "datum.b === null"},
+        {
+          "field": "a",
+          "type": "timeunit",
+          "units": ["year", "month", "date"],
+          "as": ["yearmonthdate_a", "yearmonthdate_a_end"]
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * timeOffset('date', datum['yearmonthdate_a'], -1) + 0.5 * datum['yearmonthdate_a']",
+          "as": "yearmonthdate_a_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['yearmonthdate_a'] + 0.5 * datum['yearmonthdate_a_end']",
+          "as": "yearmonthdate_a_offsetted_rect_end"
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"yearmonthdate_a\"]) || (isValid(datum[\"yearmonthdate_a\"]) && isFinite(+datum[\"yearmonthdate_a\"])))"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "x"},
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"a (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_a\"], '%d %b')) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "yearmonthdate_a"},
+          "y": {"scale": "y", "field": "b"},
+          "defined": {
+            "signal": "isValid(datum[\"yearmonthdate_a\"]) && isFinite(+datum[\"yearmonthdate_a\"]) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.2},
+          "fill": {"value": "red"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"a (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_a\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+          },
+          "x2": {
+            "scale": "x",
+            "field": "yearmonthdate_a_offsetted_rect_start",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"yearmonthdate_a_end\"]) - scale(\"x\", datum[\"yearmonthdate_a\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"yearmonthdate_a_end\"]) - scale(\"x\", datum[\"yearmonthdate_a\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "yearmonthdate_a_offsetted_rect_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"yearmonthdate_a_end\"]) - scale(\"x\", datum[\"yearmonthdate_a\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"yearmonthdate_a_end\"]) - scale(\"x\", datum[\"yearmonthdate_a\"])))) : -0.5)"
+            }
+          },
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "yearmonthdate_a"},
+          {"data": "data_2", "field": "yearmonthdate_a_offsetted_rect_start"},
+          {"data": "data_2", "field": "yearmonthdate_a_offsetted_rect_end"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_1", "field": "b"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "a (year-month-date)",
+      "format": "%d %b",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "b",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

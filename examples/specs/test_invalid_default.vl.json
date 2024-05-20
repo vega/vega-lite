@@ -3,19 +3,20 @@
   "description": "Testing invalid",
   "data": {
     "values": [
-      {"a": null, "b": 1000},
+      {"a": null, "b": 100},
       {"a": -10, "b": null},
-      {"a": -5, "b": 25},
-      {"a": -1, "b": 20},
+      {"a": -5, "b": -25},
+      {"a": -1, "b": -20},
       {"a": 0, "b": null},
       {"a": 1, "b": 30},
       {"a": 5, "b": 40},
       {"a": 10, "b": null}
     ]
   },
-  "hconcat": [{
+  "config": {"mark": {"tooltip": true}},
+  "vconcat": [{
     "title": "Quantitative X",
-    "vconcat": [{
+    "hconcat": [{
       "width": 100,
       "height": 100,
       "mark": "point",
@@ -34,7 +35,7 @@
     }, {
       "width": 100,
       "height": 100,
-      "mark": "line",
+      "mark": {"type": "line", "point": true},
       "encoding": {
         "x": {"field": "a", "type": "quantitative"},
         "y": {"field": "b", "type": "quantitative"}
@@ -50,7 +51,7 @@
     }]
   },{
     "title": "Ordinal X",
-    "vconcat": [{
+    "hconcat": [{
       "width": 100,
       "height": 100,
       "mark": "point",
@@ -69,7 +70,7 @@
     }, {
       "width": 100,
       "height": 100,
-      "mark": "line",
+      "mark": {"type": "line", "point": true},
       "encoding": {
         "x": {"field": "a", "type": "ordinal"},
         "y": {"field": "b", "type": "quantitative"}

@@ -215,7 +215,7 @@ describe('Mark: Text', () => {
       },
       data: {url: 'data/cars.json'},
       config: {
-        mark: {invalid: 'hide'}
+        mark: {invalid: 'break-paths-show-domains'}
       }
     };
     const model = parseModelWithScale(spec);
@@ -242,16 +242,10 @@ describe('Mark: Text', () => {
     });
 
     it('should map color to fill', () => {
-      expect(props.fill).toEqual([
-        {
-          test: '!isValid(datum["mean_Acceleration"]) || !isFinite(+datum["mean_Acceleration"])',
-          value: null
-        },
-        {
-          scale: 'color',
-          field: 'mean_Acceleration'
-        }
-      ]);
+      expect(props.fill).toEqual({
+        scale: 'color',
+        field: 'mean_Acceleration'
+      });
     });
 
     it('should map size to fontSize', () => {

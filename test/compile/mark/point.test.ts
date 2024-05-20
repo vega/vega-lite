@@ -238,7 +238,7 @@ describe('Mark: Point', () => {
 
     it('should test for invalid values on y', () => {
       expect(props.y).toEqual([
-        {field: {group: 'height'}, test: '!isValid(datum["yield"]) || !isFinite(+datum["yield"])'},
+        {scale: 'y', value: 0, test: '!isValid(datum["yield"]) || !isFinite(+datum["yield"])'},
         {scale: Y, field: 'yield'}
       ]);
     });
@@ -287,6 +287,26 @@ describe('Mark: Point', () => {
 
     it('should have scale for color', () => {
       expect(props.stroke).toEqual({scale: COLOR, field: 'yield'});
+    });
+  });
+  describe('with x, y, color with invalid color specified', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize(
+      pointXY(
+        {
+          color: {field: 'yield', type: 'quantitative'}
+        },
+        {
+          scale: {invalid: {color: {value: 'red'}}}
+        }
+      )
+    );
+    const props = point.encodeEntry(model);
+
+    it('should have scale for color', () => {
+      expect(props.stroke).toEqual([
+        {test: '!isValid(datum["yield"]) || !isFinite(+datum["yield"])', value: 'red'},
+        {scale: COLOR, field: 'yield'}
+      ]);
     });
   });
 

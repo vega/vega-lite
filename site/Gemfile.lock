@@ -33,10 +33,8 @@ GEM
       ffi (>= 1.15.0)
     eventmachine (1.2.7)
     execjs (2.9.1)
-    faraday (2.9.0)
-      faraday-net_http (>= 2.0, < 3.2)
-    faraday-net_http (3.1.0)
-      net-http
+    faraday (2.0.0)
+      ruby2_keywords (>= 0.0.4)
     ffi (1.16.3)
     forwardable-extended (2.6.0)
     gemoji (4.1.0)
@@ -220,13 +218,11 @@ GEM
       jekyll-seo-tag (~> 2.1)
     minitest (5.22.2)
     mutex_m (0.2.0)
-    net-http (0.4.1)
-      uri
-    nokogiri (1.16.5-arm64-darwin)
+    nokogiri (1.15.6-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.16.5-x86_64-darwin)
+    nokogiri (1.15.6-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.16.5-x86_64-linux)
+    nokogiri (1.15.6-x86_64-linux)
       racc (~> 1.4)
     octokit (4.25.1)
       faraday (>= 1, < 3)
@@ -241,6 +237,7 @@ GEM
     rexml (3.2.8)
       strscan (>= 3.0.9)
     rouge (3.30.0)
+    ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     safe_yaml (1.0.5)
     sass (3.7.4)
@@ -264,7 +261,6 @@ GEM
       unf_ext
     unf_ext (0.0.9.1)
     unicode-display_width (1.8.0)
-    uri (0.13.0)
     webrick (1.8.1)
 
 PLATFORMS
@@ -281,4 +277,4 @@ DEPENDENCIES
   webrick (~> 1.7)
 
 BUNDLED WITH
-   2.2.32
+   2.4.22
