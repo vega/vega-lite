@@ -15,7 +15,7 @@ import {getBandPosition, getBandSize, isFieldDef, isFieldOrDatumDef, TypedFieldD
 import {Config, getViewConfigDiscreteStep} from '../../../config';
 import {Encoding} from '../../../encoding';
 import * as log from '../../../log';
-import {BandSize, isRelativeBandSize} from '../../../mark';
+import {BandSize, isRelativeBandSize, isRelativePointSize} from '../../../mark';
 import {hasDiscreteDomain} from '../../../scale';
 import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {getMarkConfig, getMarkPropOrConfig, signalOrStringValue, signalOrValueRef} from '../../common';
@@ -151,13 +151,15 @@ function positionAndSize(
   // use "size" channel for bars, if there is orient and the channel matches the right orientation
   const useVlSizeChannel = (orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x');
 
+  const markSize = !isRelativePointSize(markDef.size) ? markDef.size : undefined;
+
   // Use size encoding / mark property / config if it exists
   let sizeMixins;
-  if (encoding.size || markDef.size) {
+  if (encoding.size || markSize) {
     if (useVlSizeChannel) {
       sizeMixins = nonPosition('size', model, {
         vgChannel: vgSizeChannel,
-        defaultRef: signalOrValueRef(markDef.size)
+        defaultRef: signalOrValueRef(markSize)
       });
     } else {
       log.warn(log.message.cannotApplySizeToNonOrientedMark(markDef.type));

@@ -121,7 +121,7 @@ export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorM
 
 export interface MarkConfig<ES extends ExprRef | SignalRef>
   extends VLOnlyMarkConfig<ES>,
-    MapExcludeValueRefAndReplaceSignalWith<Omit<VgMarkConfig, 'tooltip' | 'fill' | 'stroke'>, ES> {
+    MapExcludeValueRefAndReplaceSignalWith<Omit<VgMarkConfig, 'tooltip' | 'fill' | 'stroke' | 'size'>, ES> {
   // ========== Overriding Vega ==========
 
   /**
@@ -151,7 +151,7 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
    *
    * @minimum 0
    */
-  size?: number | ES; // size works beyond symbol marks in VL
+  size?: number | ES | RelativePointSize<ES>; // size works beyond symbol marks in VL
 
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
@@ -275,6 +275,21 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
    * @minimum 0
    */
   outerRadius?: number | ES;
+}
+
+export interface RelativePointSize<ES extends ExprRef | SignalRef> {
+  /**
+   * Relative point/circle/square mark size, as a multiple of the geometric mean of width and height (sqrt(width * height)).
+   *
+   * We use geometric mean because it offers an intuitive sense of the rectangle's size that is less skewed by extreme aspect ratios (i.e., very long and narrow or very short and wide rectangles). It provides a kind of "central" value for understanding the scale of the rectangle.
+   */
+  relative: number | ES;
+}
+
+export function isRelativePointSize<ES extends ExprRef | SignalRef>(
+  size: string | number | RelativePointSize<ES> | ES | RelativeBandSize | Gradient
+): size is RelativePointSize<ES> {
+  return size && (size as RelativePointSize<ES>).relative != undefined;
 }
 
 export interface RectBinSpacingMixins {

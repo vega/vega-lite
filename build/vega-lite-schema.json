@@ -678,6 +678,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
             }
           ],
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
@@ -3533,6 +3536,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
             }
           ],
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
@@ -15213,6 +15219,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
             }
           ],
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
@@ -16353,6 +16362,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
             }
           ],
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
@@ -17256,6 +17268,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
             }
           ],
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
@@ -18767,6 +18782,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
             }
           ],
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
@@ -21052,6 +21070,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
             }
           ],
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
@@ -21425,6 +21446,26 @@
       },
       "required": [
         "band"
+      ],
+      "type": "object"
+    },
+    "RelativePointSize": {
+      "additionalProperties": false,
+      "properties": {
+        "relative": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Relative point/circle/square mark size, as a multiple of the geometric mean of width and height (sqrt(width * height)).\n\nWe use geometric mean because it offers an intuitive sense of the rectangle's size that is less skewed by extreme aspect ratios (i.e., very long and narrow or very short and wide rectangles). It provides a kind of \"central\" value for understanding the scale of the rectangle."
+        }
+      },
+      "required": [
+        "relative"
       ],
       "type": "object"
     },
@@ -21915,6 +21956,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
             }
           ],
           "description": "Sets the maximum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges."
@@ -21929,6 +21973,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
             }
           ],
           "description": "Sets the minimum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges."
@@ -22133,9 +22180,19 @@
           "type": "number"
         },
         "maxSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
+            }
+          ],
           "description": "Default max value for point size scale.",
-          "minimum": 0,
-          "type": "number"
+          "minimum": 0
         },
         "maxStrokeWidth": {
           "description": "Default max strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks.\n\n__Default value:__ `4`",
@@ -22159,9 +22216,19 @@
           "type": "number"
         },
         "minSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
+            }
+          ],
           "description": "Default minimum value for point size scale.\n\n__Default value:__ `9`",
-          "minimum": 0,
-          "type": "number"
+          "minimum": 0
         },
         "minStrokeWidth": {
           "description": "Default minimum strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks.\n\n__Default value:__ `1`",
@@ -28744,6 +28811,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/RelativePointSize"
             }
           ],
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
