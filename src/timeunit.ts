@@ -177,7 +177,7 @@ export const UTC_MULTI_TIMEUNIT_INDEX = {
   utcmonthdatehoursminutesseconds: 1,
 
   utcweekday: 1,
-  utcweeksdayhours: 1,
+  utcweekdayhours: 1,
   utcweekdayhoursminutes: 1,
   utcweekdayhoursminutesseconds: 1,
 
