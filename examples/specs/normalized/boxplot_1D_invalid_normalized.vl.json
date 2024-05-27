@@ -196,6 +196,12 @@
               "type": "quantitative",
               "axis": {"labelAngle": 0}
             },
+            "color": {
+              "condition": {
+                "test": "datum['lower_box_b'] >= datum['upper_box_b']",
+                "value": "#4c78a8"
+              }
+            },
             "tooltip": [
               {"field": "max_b", "type": "quantitative", "title": "Max of b"},
               {

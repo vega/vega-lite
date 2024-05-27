@@ -10,7 +10,9 @@ import {
   DataSourceType,
   ParseValue
 } from '../../data';
+import {getDataSourcesForHandlingInvalidValues, DataSourcesForHandlingInvalidValues} from '../invalid/datasources';
 import * as log from '../../log';
+import {isPathMark} from '../../mark';
 import {
   isAggregate,
   isBin,
@@ -33,6 +35,7 @@ import {
   isWindow
 } from '../../transform';
 import {deepEqual, mergeDeep} from '../../util';
+import {getMarkPropOrConfig} from '../common';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection';
 import {materializeSelections} from '../selection/parse';
@@ -285,12 +288,24 @@ Formula From Sort Array
   Stack (in `encoding`)
          |
          v
-  Invalid Filter
++- - - - - - - - - - -+
+|   PreFilterInvalid  | - - - -> scale domains
+|(when scales need it)|
++- - - - - - - - - - -+
+         |
+         v
+  Invalid Filter (if the main data source needs it)
          |
          v
    +----------+
-   |   Main   |
+   |   Main   | - - - -> scale domains
    +----------+
+         |
+         v
++- - - - - - - - - - -+
+|   PostFilterInvalid | - - - -> scale domains
+|(when scales need it)|
++- - - - - - - - - - -+
          |
          v
      +-------+
@@ -369,10 +384,7 @@ export function parseData(model: Model): DataComponent {
   }
 
   // add an output node pre aggregation
-  const rawName = model.getDataName(DataSourceType.Raw);
-  const raw = new OutputNode(head, rawName, DataSourceType.Raw, outputNodeRefCounts);
-  outputNodes[rawName] = raw;
-  head = raw;
+  const raw = (head = makeOutputNode(DataSourceType.Raw, model, head));
 
   if (isUnitModel(model)) {
     const agg = AggregateNode.makeFromEncoding(head, model);
@@ -387,15 +399,40 @@ export function parseData(model: Model): DataComponent {
     head = StackNode.makeFromEncoding(head, model) ?? head;
   }
 
+  let preFilterInvalid: OutputNode | undefined;
+  let dataSourcesForHandlingInvalidValues: DataSourcesForHandlingInvalidValues | undefined;
   if (isUnitModel(model)) {
-    head = FilterInvalidNode.make(head, model) ?? head;
+    const {markDef, mark, config} = model;
+    const invalid = getMarkPropOrConfig('invalid', markDef, config);
+
+    const {marks, scales} = (dataSourcesForHandlingInvalidValues = getDataSourcesForHandlingInvalidValues({
+      invalid,
+      isPath: isPathMark(mark)
+    }));
+
+    if (marks !== scales && scales === 'include-invalid-values') {
+      // Create a seperate preFilterInvalid dataSource if scales need pre-filter data but marks needs post-filter.
+      preFilterInvalid = head = makeOutputNode(DataSourceType.PreFilterInvalid, model, head);
+    }
+
+    if (marks === 'exclude-invalid-values') {
+      head = FilterInvalidNode.make(head, model, dataSourcesForHandlingInvalidValues) ?? head;
+    }
   }
 
-  // output node for marks
-  const mainName = model.getDataName(DataSourceType.Main);
-  const main = new OutputNode(head, mainName, DataSourceType.Main, outputNodeRefCounts);
-  outputNodes[mainName] = main;
-  head = main;
+  // output "main" node for marks
+  const main = (head = makeOutputNode(DataSourceType.Main, model, head));
+
+  let postFilterInvalid: OutputNode | undefined;
+  if (isUnitModel(model) && dataSourcesForHandlingInvalidValues) {
+    const {marks, scales} = dataSourcesForHandlingInvalidValues;
+    if (marks === 'include-invalid-values' && scales === 'exclude-invalid-values') {
+      // Create a seperate postFilterInvalid dataSource if scales need post-filter data but marks needs pre-filter.
+      head = FilterInvalidNode.make(head, model, dataSourcesForHandlingInvalidValues) ?? head;
+
+      postFilterInvalid = head = makeOutputNode(DataSourceType.PostFilterInvalid, model, head);
+    }
+  }
 
   if (isUnitModel(model)) {
     materializeSelections(model, main);
@@ -421,6 +458,16 @@ export function parseData(model: Model): DataComponent {
     raw,
     main,
     facetRoot,
-    ancestorParse
+    ancestorParse,
+    preFilterInvalid,
+    postFilterInvalid
   };
+}
+
+function makeOutputNode(dataSourceType: DataSourceType, model: Model, head: DataFlowNode) {
+  const {outputNodes, outputNodeRefCounts} = model.component.data;
+  const name = model.getDataName(dataSourceType);
+  const node = new OutputNode(head, name, dataSourceType, outputNodeRefCounts);
+  outputNodes[name] = node;
+  return node;
 }

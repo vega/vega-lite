@@ -1,12 +1,12 @@
 import {FilterTransform as VgFilterTransform} from 'vega';
 import {isScaleChannel} from '../../channel';
 import {TypedFieldDef, vgField as fieldRef} from '../../channeldef';
-import {isPathMark} from '../../mark';
-import {hasContinuousDomain} from '../../scale';
 import {Dict, hash, keys} from '../../util';
-import {getMarkPropOrConfig} from '../common';
+import {getScaleInvalidDataMode} from '../invalid/ScaleInvalidDataMode';
+import {DataSourcesForHandlingInvalidValues} from '../invalid/datasources';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
+import {isCountingAggregateOp} from '../../aggregate';
 
 export class FilterInvalidNode extends DataFlowNode {
   public clone() {
@@ -20,27 +20,40 @@ export class FilterInvalidNode extends DataFlowNode {
     super(parent);
   }
 
-  public static make(parent: DataFlowNode, model: UnitModel): FilterInvalidNode {
-    const {config, mark, markDef} = model;
+  public static make(
+    parent: DataFlowNode,
+    model: UnitModel,
+    dataSourcesForHandlingInvalidValues: DataSourcesForHandlingInvalidValues
+  ): FilterInvalidNode {
+    const {config, markDef} = model;
 
-    const invalid = getMarkPropOrConfig('invalid', markDef, config);
-    if (invalid !== 'filter') {
+    const {marks, scales} = dataSourcesForHandlingInvalidValues;
+    if (marks === 'include-invalid-values' && scales === 'include-invalid-values') {
+      // If neither marks nor scale domains need data source to filter null values, then don't add the filter.
       return null;
     }
 
     const filter = model.reduceFieldDef(
       (aggregator: Dict<TypedFieldDef<string>>, fieldDef, channel) => {
         const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
+
         if (scaleComponent) {
           const scaleType = scaleComponent.get('type');
+          const {aggregate} = fieldDef;
+          const invalidDataMode = getScaleInvalidDataMode({
+            scaleChannel: channel,
+            markDef,
+            config,
+            scaleType,
+            isCountAggregate: isCountingAggregateOp(aggregate)
+          });
 
-          // While discrete domain scales can handle invalid values, continuous scales can't.
-          // Thus, for non-path marks, we have to filter null for scales with continuous domains.
-          // (For path marks, we will use "defined" property and skip these values instead.)
-          if (hasContinuousDomain(scaleType) && fieldDef.aggregate !== 'count' && !isPathMark(mark)) {
+          // If the invalid data mode is include or always-valid, we don't need to filter invalid values as the scale can handle invalid values.
+          if (invalidDataMode !== 'show' && invalidDataMode !== 'always-valid') {
             aggregator[fieldDef.field] = fieldDef as any; // we know that the fieldDef is a typed field def
           }
         }
+
         return aggregator;
       },
       {} as Dict<TypedFieldDef<string>>
@@ -75,10 +88,9 @@ export class FilterInvalidNode extends DataFlowNode {
 
       if (fieldDef !== null) {
         if (fieldDef.type === 'temporal') {
-          vegaFilters.push(`(isDate(${ref}) || (isValid(${ref}) && isFinite(+${ref})))`);
+          vegaFilters.push(`(isDate(${ref}) || (${isValidFiniteNumberExpr(ref)}))`);
         } else if (fieldDef.type === 'quantitative') {
-          vegaFilters.push(`isValid(${ref})`);
-          vegaFilters.push(`isFinite(+${ref})`);
+          vegaFilters.push(isValidFiniteNumberExpr(ref));
         } else {
           // should never get here
         }
@@ -93,4 +105,8 @@ export class FilterInvalidNode extends DataFlowNode {
         }
       : null;
   }
+}
+
+export function isValidFiniteNumberExpr(ref: string) {
+  return `isValid(${ref}) && isFinite(+${ref})`;
 }

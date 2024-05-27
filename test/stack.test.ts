@@ -256,9 +256,9 @@ describe('stack', () => {
   });
 
   it(
-    'should always warn if the aggregated axis has non-linear scale',
+    'should always return stack and only warn for non-undefined stack if the aggregated axis has non-linear scale',
     log.wrap(localLogger => {
-      for (const s of ['center', 'zero', 'normalize'] as const) {
+      for (const s of [undefined, 'center', 'zero', 'normalize'] as const) {
         for (const scaleType of [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT]) {
           const marks = s === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
           for (const mark of marks) {
@@ -271,35 +271,19 @@ describe('stack', () => {
                 color: {field: 'site', type: 'nominal'}
               }
             };
-            expect(stack(spec.mark, spec.encoding)).toBeNull();
-
+            expect(stack(spec.mark, spec.encoding)).toBeTruthy();
             const warns = localLogger.warns;
-            expect(warns[warns.length - 1]).toEqual(log.message.cannotStackNonLinearScale(scaleType));
+
+            if (s !== undefined) {
+              expect(warns[warns.length - 1]).toEqual(log.message.stackNonLinearScale(scaleType));
+            } else {
+              expect(warns).toHaveLength(0);
+            }
           }
         }
       }
     })
   );
-
-  it('returns null if the aggregated axis has non-linear scale', () => {
-    for (const stacked of [undefined, 'center', 'zero', 'normalize'] as const) {
-      for (const scaleType of [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT]) {
-        const marks = stacked === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
-        for (const mark of marks) {
-          const spec: TopLevel<NormalizedUnitSpec> = {
-            data: {url: 'data/barley.json'},
-            mark,
-            encoding: {
-              x: {field: 'a', type: 'quantitative', aggregate: 'sum', scale: {type: scaleType}},
-              y: {field: 'variety', type: 'nominal'},
-              color: {field: 'site', type: 'nominal'}
-            }
-          };
-          expect(stack(spec.mark, spec.encoding)).toBeNull();
-        }
-      }
-    }
-  });
 
   it(
     'should throw warning if the aggregated axis has a non-summative aggregate',

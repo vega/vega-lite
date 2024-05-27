@@ -9,7 +9,13 @@ import {wrapCondition} from './conditional';
 
 export function text(model: UnitModel, channel: 'text' | 'href' | 'url' | 'description' = 'text') {
   const channelDef = model.encoding[channel];
-  return wrapCondition(model, channelDef, channel, cDef => textRef(cDef, model.config));
+  return wrapCondition({
+    model,
+    channelDef,
+    vgChannel: channel,
+    mainRefFn: cDef => textRef(cDef, model.config),
+    invalidValueRef: undefined // text encoding doesn't have continuous scales and thus can't have invalid values
+  });
 }
 
 export function textRef(

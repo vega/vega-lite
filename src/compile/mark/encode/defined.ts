@@ -1,49 +1,48 @@
-import {POSITION_SCALE_CHANNELS} from '../../../channel';
-import {ScaleChannel} from '../../../channel';
+import {isCountingAggregateOp} from '../../../aggregate';
+import {isScaleChannel} from '../../../channel';
 import {Value} from '../../../channeldef';
-import {hasContinuousDomain} from '../../../scale';
-import {Dict, keys} from '../../../util';
+import {fieldValidPredicate} from '../../../predicate';
 import {VgEncodeEntry} from '../../../vega.schema';
-import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
+import {signalOrValueRef} from '../../common';
+import {getScaleInvalidDataMode, shouldBreakPath} from '../../invalid/ScaleInvalidDataMode';
 import {UnitModel} from '../../unit';
-import {fieldInvalidPredicate} from './valueref';
 
+/**
+ * Create Vega's "defined" encoding to break paths in a path mark for invalid values.
+ */
 export function defined(model: UnitModel): VgEncodeEntry {
   const {config, markDef} = model;
 
-  const invalid = getMarkPropOrConfig('invalid', markDef, config);
-  if (invalid) {
-    const signal = allFieldsInvalidPredicate(model, {channels: POSITION_SCALE_CHANNELS});
+  // For each channel (x/y), add fields to break path to a set first.
+  const fieldsToBreakPath = new Set<string>();
 
-    if (signal) {
-      return {defined: {signal}};
+  model.forEachFieldDef((fieldDef, channel) => {
+    let scaleType;
+    if (!isScaleChannel(channel) || !(scaleType = model.getScaleType(channel))) {
+      // Skip if the channel is not a scale channel or does not have a scale
+      return;
     }
-  }
-  return {};
-}
 
-function allFieldsInvalidPredicate(
-  model: UnitModel,
-  {invalid = false, channels}: {invalid?: boolean; channels: ScaleChannel[]}
-) {
-  const filterIndex = channels.reduce((aggregator: Dict<true>, channel) => {
-    const scaleComponent = model.getScaleComponent(channel);
-    if (scaleComponent) {
-      const scaleType = scaleComponent.get('type');
+    const isCountAggregate = isCountingAggregateOp(fieldDef.aggregate);
+    const invalidDataMode = getScaleInvalidDataMode({
+      scaleChannel: channel,
+      markDef,
+      config,
+      scaleType,
+      isCountAggregate
+    });
+    if (shouldBreakPath(invalidDataMode)) {
       const field = model.vgField(channel, {expr: 'datum', binSuffix: model.stack?.impute ? 'mid' : undefined});
-
-      // While discrete domain scales can handle invalid values, continuous scales can't.
-      if (field && hasContinuousDomain(scaleType)) {
-        aggregator[field] = true;
+      if (field) {
+        fieldsToBreakPath.add(field);
       }
     }
-    return aggregator;
-  }, {});
+  });
 
-  const fields = keys(filterIndex);
-  if (fields.length > 0) {
-    const op = invalid ? '||' : '&&';
-    return fields.map(field => fieldInvalidPredicate(field, invalid)).join(` ${op} `);
+  // If the set is not empty, return a defined signal.
+  if (fieldsToBreakPath.size > 0) {
+    const signal = [...fieldsToBreakPath].map(field => fieldValidPredicate(field, true)).join(' && ');
+    return {defined: {signal}};
   }
   return undefined;
 }

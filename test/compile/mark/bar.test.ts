@@ -119,11 +119,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
-    expect(props.y2).toEqual({field: {group: 'height'}});
+    expect(props.y2).toEqual({signal: `scale('y', domain('y')[0])`});
     expect(props.height).toBeUndefined();
   });
 
-  it('should draw vertical bar, with y from "group: height" to field value when zero=false for y-scale', () => {
+  it('should draw vertical bar, with y from zeroOrMin to field value when zero=false for y-scale', () => {
     const y: PositionFieldDef<string> = {
       type: 'quantitative',
       field: 'Acceleration',
@@ -141,11 +141,33 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
-    expect(props.y2).toEqual({field: {group: 'height'}});
+    expect(props.y2).toEqual({signal: `scale('y', inrange(0, domain('y')) ? 0 : domain('y')[0])`});
     expect(props.height).toBeUndefined();
   });
 
-  it('should draw vertical bar, with y from "group: height" to field value when y-scale type is log', () => {
+  it('should draw vertical bar, with y from min to field value when explicit domain does not include zero for y-scale', () => {
+    const y: PositionFieldDef<string> = {
+      type: 'quantitative',
+      field: 'Acceleration',
+      aggregate: 'mean',
+      scale: {domain: [1, 5]}
+    };
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'bar',
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        y
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+    expect(props.y2).toEqual({signal: `scale('y', domain('y')[0])`});
+    expect(props.height).toBeUndefined();
+  });
+
+  it("should draw vertical bar, with y from axis's min to field value when y-scale type is log", () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
       mark: 'bar',
@@ -157,7 +179,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
-    expect(props.y2).toEqual({field: {group: 'height'}});
+    expect(props.y2).toEqual({signal: `scale('y', domain('y')[0])`});
     expect(props.height).toBeUndefined();
   });
 
@@ -625,8 +647,8 @@ describe('Mark: Bar', () => {
     });
     const props = bar.encodeEntry(model);
 
-    it('should end on axis and has no height', () => {
-      expect(props.y2).toEqual({field: {group: 'height'}});
+    it("should end on axis's min and has no height", () => {
+      expect(props.y2).toEqual({signal: "scale('y', domain('y')[0])"});
       expect(props.height).toBeUndefined();
     });
   });
@@ -643,8 +665,8 @@ describe('Mark: Bar', () => {
 
     const props = bar.encodeEntry(model);
 
-    it('should end on axis and has no width', () => {
-      expect(props.x2).toEqual({value: 0});
+    it("should end on axis's min and has no width", () => {
+      expect(props.x2).toEqual({signal: `scale('x', domain('x')[0])`});
       expect(props.width).toBeUndefined();
     });
   });
@@ -704,8 +726,8 @@ describe('Mark: Bar', () => {
     });
     const props = bar.encodeEntry(model);
 
-    it('should end on axis nad have no height', () => {
-      expect(props.y2).toEqual({field: {group: 'height'}});
+    it("should end on axis's or zero", () => {
+      expect(props.y2).toEqual({signal: `scale('y', inrange(0, domain('y')) ? 0 : domain('y')[0])`});
       expect(props.height).toBeUndefined();
     });
   });
@@ -721,8 +743,8 @@ describe('Mark: Bar', () => {
     });
 
     const props = bar.encodeEntry(model);
-    it('should end on axis and have no width', () => {
-      expect(props.x2).toEqual({value: 0});
+    it("should end on axis's or zero and have no width", () => {
+      expect(props.x2).toEqual({signal: `scale('x', inrange(0, domain('x')) ? 0 : domain('x')[0])`});
       expect(props.width).toBeUndefined();
     });
   });

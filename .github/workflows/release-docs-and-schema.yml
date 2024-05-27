@@ -26,7 +26,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'yarn'
-          node-version: latest
+          node-version: 21
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
@@ -62,10 +62,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           cache: 'yarn'
-          node-version: latest
+          node-version: 21
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile

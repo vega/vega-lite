@@ -45,7 +45,13 @@ export function description(model: UnitModel) {
   const channelDef = encoding.description;
 
   if (channelDef) {
-    return wrapCondition(model, channelDef, 'description', cDef => textRef(cDef, model.config));
+    return wrapCondition({
+      model,
+      channelDef,
+      vgChannel: 'description',
+      mainRefFn: cDef => textRef(cDef, model.config),
+      invalidValueRef: undefined // aria encoding doesn't have continuous scales and thus can't have invalid values
+    });
   }
 
   // Use default from mark def or config if defined.

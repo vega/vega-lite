@@ -1,5 +1,28 @@
 
 
+## [5.18.1](https://github.com/vega/vega-lite/compare/v5.18.0...v5.18.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* Allow non-linear scale for stacked bars ([#9315](https://github.com/vega/vega-lite/issues/9315)) ([716fe73](https://github.com/vega/vega-lite/commit/716fe734df2b4bd00fe78d7789ac43f5b035e4ed))
+* correctly place unfiltered null values for line ([#9326](https://github.com/vega/vega-lite/issues/9326)) ([#9334](https://github.com/vega/vega-lite/issues/9334)) ([b617c84](https://github.com/vega/vega-lite/commit/b617c84d6fca636ff1469b7db5a40e7393354e5c))
+* extent name collision in transforms ([#9312](https://github.com/vega/vega-lite/issues/9312)) ([8b3b30b](https://github.com/vega/vega-lite/commit/8b3b30b352ce0e50fe5422cd4d24323a5a5ec9b4))
+
+# [5.18.0](https://github.com/vega/vega-lite/compare/v5.17.0...v5.18.0) (2024-04-09)
+
+
+### Bug Fixes
+
+* **#8338,#8126:** make boxplot work with single value per group ([#8339](https://github.com/vega/vega-lite/issues/8339)) ([4e55836](https://github.com/vega/vega-lite/commit/4e558369eecc5d84fbccd0fd2bc84be19f5f5e35)), closes [#8338](https://github.com/vega/vega-lite/issues/8338) [#8126](https://github.com/vega/vega-lite/issues/8126) [#8338](https://github.com/vega/vega-lite/issues/8338) [#8126](https://github.com/vega/vega-lite/issues/8126)
+* describe how to set a custom scheme by setting the range, reverts [#9262](https://github.com/vega/vega-lite/issues/9262) ([#9266](https://github.com/vega/vega-lite/issues/9266)) ([e6af641](https://github.com/vega/vega-lite/commit/e6af6414431ade1f52359ad682ffc1f4f4a667c3)), closes [#9022](https://github.com/vega/vega-lite/issues/9022)
+* generate unescaped boxplot calculated field aliases ([#9284](https://github.com/vega/vega-lite/issues/9284)) ([44fbceb](https://github.com/vega/vega-lite/commit/44fbceb0120ee54a8989cb1537537757adac8c58))
+
+
+### Features
+
+* add explicit option to control how densities are resolved, change how densities are resolved by default ([#9172](https://github.com/vega/vega-lite/issues/9172)) ([bf0b8d3](https://github.com/vega/vega-lite/commit/bf0b8d3e2c80dc1d28cd3c6c4e764ea2ed714d6c))
+
 # [5.17.0](https://github.com/vega/vega-lite/compare/v5.16.3...v5.17.0) (2024-03-12)
 
 

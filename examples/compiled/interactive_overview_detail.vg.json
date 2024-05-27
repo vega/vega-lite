@@ -88,7 +88,7 @@
           "type": "area",
           "clip": true,
           "style": ["area"],
-          "sort": {"field": "datum[\"date\"]"},
+          "sort": {"field": "x"},
           "interactive": false,
           "from": {"data": "data_0"},
           "encode": {
@@ -379,7 +379,7 @@
           "name": "concat_1_marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"date\"]"},
+          "sort": {"field": "x"},
           "interactive": true,
           "from": {"data": "data_1"},
           "encode": {

@@ -16,10 +16,6 @@
           "ops": ["distinct"],
           "fields": ["Name"],
           "as": ["distinct_Name"]
-        },
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"distinct_Name\"]) && isFinite(+datum[\"distinct_Name\"])"
         }
       ]
     }

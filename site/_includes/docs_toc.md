@@ -381,3 +381,8 @@
     - [Tooltip image]({{site.baseurl}}/docs/tooltip.html#tooltip-image)
     - [Disable tooltips]({{site.baseurl}}/docs/tooltip.html#disable-tooltips)
     - [Vega Tooltip plugin]({{site.baseurl}}/docs/tooltip.html#plugin)
+- [Invalid Data]({{site.baseurl}}/docs/invalid-data.html)
+    - [Documentation Overview]({{site.baseurl}}/docs/invalid-data.html#documentation-overview)
+    - [Mark Invalid Mode]({{site.baseurl}}/docs/invalid-data.html#mark-invalid-mode)
+    - [Scale Output for Invalid Values]({{site.baseurl}}/docs/invalid-data.html#scale-output-for-invalid-values)
+    - [Other solutions]({{site.baseurl}}/docs/invalid-data.html#other-solutions)

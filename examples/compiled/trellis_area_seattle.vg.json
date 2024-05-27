@@ -159,7 +159,7 @@
           "name": "child_marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"monthdate_date\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "facet"},
           "encode": {
             "update": {
@@ -170,7 +170,9 @@
               },
               "x": {"scale": "x", "field": "monthdate_date"},
               "y": {"scale": "y", "field": "mean_temperature"},
-              "y2": {"field": {"group": "height"}},
+              "y2": {
+                "signal": "scale('y', inrange(0, domain('y')) ? 0 : domain('y')[0])"
+              },
               "defined": {
                 "signal": "isValid(datum[\"monthdate_date\"]) && isFinite(+datum[\"monthdate_date\"]) && isValid(datum[\"mean_temperature\"]) && isFinite(+datum[\"mean_temperature\"])"
               }

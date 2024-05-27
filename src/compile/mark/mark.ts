@@ -1,11 +1,10 @@
 import {isArray} from 'vega-util';
 import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
 import {DataSourceType} from '../../data';
-import {isAggregate, pathGroupingFields} from '../../encoding';
-import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
-import {isSortByEncoding, isSortField} from '../../sort';
+import {pathGroupingFields} from '../../encoding';
+import {AREA, BAR, LINE, Mark, TRAIL, isPathMark} from '../../mark';
 import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util';
-import {VgCompare, VgEncodeEntry, VG_CORNERRADIUS_CHANNELS} from '../../vega.schema';
+import {VG_CORNERRADIUS_CHANNELS, VgCompare, VgEncodeEntry} from '../../vega.schema';
 import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {arc} from './arc';
@@ -264,43 +263,8 @@ export function getSort(model: UnitModel): VgCompare {
     const dimensionChannel = markDef.orient === 'horizontal' ? 'y' : 'x';
     const dimensionChannelDef = encoding[dimensionChannel];
     if (isFieldDef(dimensionChannelDef)) {
-      const s = dimensionChannelDef.sort;
-
-      if (isArray(s)) {
-        return {
-          field: vgField(dimensionChannelDef, {prefix: dimensionChannel, suffix: 'sort_index', expr: 'datum'})
-        };
-      } else if (isSortField(s)) {
-        return {
-          field: vgField(
-            {
-              // FIXME: this op might not already exist?
-              // FIXME: what if dimensionChannel (x or y) contains custom domain?
-              aggregate: isAggregate(model.encoding) ? s.op : undefined,
-              field: s.field
-            },
-            {expr: 'datum'}
-          )
-        };
-      } else if (isSortByEncoding(s)) {
-        const fieldDefToSort = model.fieldDef(s.encoding);
-        return {
-          field: vgField(fieldDefToSort, {expr: 'datum'}),
-          order: s.order
-        };
-      } else if (s === null) {
-        return undefined;
-      } else {
-        return {
-          field: vgField(dimensionChannelDef, {
-            // For stack with imputation, we only have bin_mid
-            binSuffix: model.stack?.impute ? 'mid' : undefined,
-            expr: 'datum'
-          })
-        };
-      }
+      return {field: dimensionChannel};
     }
-    return undefined;
   }
   return undefined;
 }

@@ -375,11 +375,11 @@ describe('Mark', () => {
         }
       });
       expect(getSort(model)).toEqual({
-        field: 'datum["bin_maxbins_10_IMDB_Rating"]'
+        field: 'x'
       });
     });
 
-    it('have no sort if the dimension field has sort:null', () => {
+    it('have order by x if the dimension field has sort:null', () => {
       const model = parseUnitModelWithScale({
         data: {url: 'data/movies.json'},
         mark: 'line',
@@ -399,7 +399,9 @@ describe('Mark', () => {
           }
         }
       });
-      expect(getSort(model)).toBeUndefined();
+      expect(getSort(model)).toEqual({
+        field: 'x'
+      });
     });
 
     it("should order by x's custom sort order by default if x is the dimension", () => {
@@ -416,7 +418,7 @@ describe('Mark', () => {
         }
       });
       expect(getSort(model)).toEqual({
-        field: 'datum["x_Name_sort_index"]'
+        field: 'x'
       });
     });
 
@@ -434,7 +436,7 @@ describe('Mark', () => {
         }
       });
       expect(getSort(model)).toEqual({
-        field: 'datum["Score"]'
+        field: 'x'
       });
     });
 

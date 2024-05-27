@@ -454,6 +454,10 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 
 {% include table.html props="maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth" source="ScaleConfig" %}
 
+#### Scale Output for Invalid Values
+
+{% include table.html props="invalid" source="ScaleConfig" %}
+
 #### Other
 
 {% include table.html props="clamp,round,xReverse,useUnaggregatedDomain,zero" source="ScaleConfig" %}

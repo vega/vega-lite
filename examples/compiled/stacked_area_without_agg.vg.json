@@ -63,7 +63,7 @@
           "name": "layer_0_marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"a\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_layer_0_main"},
           "encode": {
             "update": {
@@ -105,7 +105,7 @@
           "name": "layer_1_marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"a\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_layer_1_main"},
           "encode": {
             "update": {

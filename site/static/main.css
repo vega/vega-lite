@@ -687,6 +687,9 @@ footer .edit-page {
   display: none;
 }
 
+.code-only .example-vis {
+  display: none;
+}
 .example .example-code {
   flex: 1.618 1 0;
   margin: 0;

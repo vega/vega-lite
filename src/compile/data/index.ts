@@ -28,6 +28,16 @@ export interface DataComponent {
   raw?: OutputNode;
 
   /**
+   * The output node for scale domain before filter invalid.
+   */
+  preFilterInvalid?: OutputNode;
+
+  /**
+   * The output node for scale domain after filter invalid.
+   */
+  postFilterInvalid?: OutputNode;
+
+  /**
    * The main output node.
    */
   main?: OutputNode;

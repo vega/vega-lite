@@ -220,7 +220,13 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "white"},
+          "fill": [
+            {
+              "test": "datum['lower_box_Body Mass (g)'] >= datum['upper_box_Body Mass (g)']",
+              "value": "#4c78a8"
+            },
+            {"value": "white"}
+          ],
           "tooltip": {"signal": "format(datum[\"mean_Body Mass (g)\"], \"\")"},
           "xc": {"scale": "x", "field": "mid_box_Body Mass (g)"},
           "yc": {"scale": "y", "field": "Species", "band": 0.5},

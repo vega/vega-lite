@@ -4,7 +4,8 @@ import {getMarkPropOrConfig} from '../compile/common';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';
 import * as log from '../log';
-import {isMarkDef, MarkDef, MarkInvalidMixins} from '../mark';
+import {isMarkDef, MarkDef} from '../mark';
+import {MarkInvalidMixins} from '../invalid';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
@@ -136,7 +137,17 @@ export function normalizeBoxPlot(
 
   const makeBoxPlotExtent = makeBoxPlotPart(encodingWithoutSizeColorAndContinuousAxis);
   const makeBoxPlotBox = makeBoxPlotPart(encodingWithoutContinuousAxis);
-  const makeBoxPlotMidTick = makeBoxPlotPart({...encodingWithoutSizeColorAndContinuousAxis, ...(size ? {size} : {})});
+  const defaultBoxColor = (isObject(config.boxplot.box) ? config.boxplot.box.color : config.mark.color) || '#4c78a8';
+  const makeBoxPlotMidTick = makeBoxPlotPart({
+    ...encodingWithoutSizeColorAndContinuousAxis,
+    ...(size ? {size} : {}),
+    color: {
+      condition: {
+        test: `datum['lower_box_${continuousAxisChannelDef.field}'] >= datum['upper_box_${continuousAxisChannelDef.field}']`,
+        ...(color || {value: defaultBoxColor})
+      }
+    }
+  });
 
   const fiveSummaryTooltipEncoding: Encoding<string> = getCompositeMarkTooltip(
     [

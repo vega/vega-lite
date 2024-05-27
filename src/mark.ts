@@ -3,6 +3,7 @@ import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
 import {Flag, keys} from './util';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
+import {MarkInvalidMixins} from './invalid';
 
 /**
  * All types of primitive marks.
@@ -45,7 +46,11 @@ export function isMark(m: string): m is Mark {
   return m in Mark;
 }
 
-export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'trail' {
+export const PATH_MARKS = ['line', 'area', 'trail'] as const;
+
+export type PathMark = (typeof PATH_MARKS)[number];
+
+export function isPathMark(m: Mark | CompositeMark): m is PathMark {
   return ['line', 'area', 'trail'].includes(m);
 }
 
@@ -70,18 +75,6 @@ export interface ColorMixins<ES extends ExprRef | SignalRef> {
 
 export interface TooltipContent {
   content: 'encoding' | 'data';
-}
-
-/** @hidden */
-export type Hide = 'hide';
-
-export interface MarkInvalidMixins {
-  /**
-   * Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`).
-   * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
-   * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
-   */
-  invalid?: 'filter' | Hide | null;
 }
 
 export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorMixins<ES>, MarkInvalidMixins {
@@ -345,7 +338,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
   color: '#4c78a8',
-  invalid: 'filter',
+  invalid: 'break-paths-show-path-domains',
   timeUnitBandSize: 1
 };
 

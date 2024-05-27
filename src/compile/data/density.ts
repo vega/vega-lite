@@ -19,6 +19,8 @@ export class DensityTransformNode extends DataFlowNode {
     this.transform = duplicate(transform); // duplicate to prevent side effects
     const specifiedAs = this.transform.as ?? [undefined, undefined];
     this.transform.as = [specifiedAs[0] ?? 'value', specifiedAs[1] ?? 'density'];
+    const resolve = this.transform.resolve ?? 'shared';
+    this.transform.resolve = resolve;
   }
 
   public dependentFields() {
@@ -40,9 +42,7 @@ export class DensityTransformNode extends DataFlowNode {
       field: density,
       ...rest
     };
-    if (this.transform.groupby) {
-      result.resolve = 'shared';
-    }
+    result.resolve = this.transform.resolve;
     return result;
   }
 }

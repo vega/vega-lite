@@ -138,7 +138,7 @@
           "name": "marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"yearmonth_date\"]"},
+          "sort": {"field": "x"},
           "interactive": true,
           "from": {"data": "faceted_path_main"},
           "encode": {

@@ -35,7 +35,7 @@
           "name": "layer_0_marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"date\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_layer_0_main"},
           "encode": {
             "update": {

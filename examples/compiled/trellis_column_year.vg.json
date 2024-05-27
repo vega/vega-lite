@@ -152,7 +152,7 @@
               "name": "child_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"quarter_date\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "faceted_path_child_main"},
               "encode": {
                 "update": {

@@ -168,7 +168,7 @@
               "name": "child_marks",
               "type": "area",
               "style": ["area"],
-              "sort": {"field": "datum[\"date\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "faceted_path_child_main"},
               "encode": {
                 "update": {

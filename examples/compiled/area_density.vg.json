@@ -15,7 +15,8 @@
           "type": "kde",
           "field": "IMDB Rating",
           "bandwidth": 0.3,
-          "as": ["value", "density"]
+          "as": ["value", "density"],
+          "resolve": "shared"
         },
         {
           "type": "impute",
@@ -41,7 +42,7 @@
       "name": "marks",
       "type": "area",
       "style": ["area"],
-      "sort": {"field": "datum[\"value\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

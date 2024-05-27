@@ -47,7 +47,7 @@
       "name": "child__layer_US_Gross_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"bin_maxbins_10_IMDB Rating\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -69,7 +69,7 @@
       "name": "child__layer_Worldwide_Gross_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"bin_maxbins_10_IMDB Rating\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {

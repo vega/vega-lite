@@ -1,0 +1,137 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Testing invalid",
+  "data": {
+    "values": [
+      {"a": 1, "b": 15, "c": 1},
+      {"a": 2, "b": 25, "c": 1},
+      {"a": 3, "b": 20, "c": 1},
+      {"a": 1, "b": 12, "c": 2},
+      {"a": 2, "b": 21, "c": 2},
+      {"a": 3, "b": 29, "c": 2},
+      {"a": 1, "b": 8, "c": null},
+      {"a": 2, "b": 31, "c": null},
+      {"a": 3, "b": 49, "c": null}
+    ]
+  },
+  "config": {
+    "mark": {"invalid": "filter", "tooltip": true},
+    "scale": {"invalid": {"color": {"value": "red"}}}
+  },
+  "hconcat": [
+    {
+      "title": "Quantitative X",
+      "vconcat": [
+        {
+          "width": 100,
+          "height": 100,
+          "mark": "point",
+          "encoding": {
+            "x": {"field": "a", "type": "quantitative"},
+            "y": {"field": "b", "type": "quantitative"},
+            "color": {"field": "c", "type": "quantitative"}
+          }
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "mark": "bar",
+          "encoding": {
+            "x": {"field": "a", "type": "quantitative"},
+            "y": {"field": "b", "type": "quantitative"},
+            "color": {"field": "c", "type": "quantitative"}
+          }
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "layer": [
+            {
+              "mark": "line",
+              "encoding": {
+                "x": {"field": "a", "type": "quantitative"},
+                "y": {"field": "b", "type": "quantitative"},
+                "color": {"field": "c", "type": "quantitative"}
+              }
+            },
+            {
+              "mark": {"type": "point", "opacity": 1, "filled": true},
+              "encoding": {
+                "x": {"field": "a", "type": "quantitative"},
+                "y": {"field": "b", "type": "quantitative"},
+                "color": {"field": "c", "type": "quantitative"}
+              }
+            }
+          ]
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "mark": "area",
+          "encoding": {
+            "x": {"field": "a", "type": "quantitative"},
+            "y": {"field": "b", "type": "quantitative"},
+            "color": {"field": "c", "type": "quantitative"}
+          }
+        }
+      ]
+    },
+    {
+      "title": "Ordinal X",
+      "vconcat": [
+        {
+          "width": 100,
+          "height": 100,
+          "mark": "point",
+          "encoding": {
+            "x": {"field": "a", "type": "ordinal"},
+            "y": {"field": "b", "type": "quantitative"},
+            "color": {"field": "c", "type": "quantitative"}
+          }
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "mark": "bar",
+          "encoding": {
+            "x": {"field": "a", "type": "ordinal"},
+            "y": {"field": "b", "type": "quantitative"},
+            "color": {"field": "c", "type": "quantitative"}
+          }
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "layer": [
+            {
+              "mark": "line",
+              "encoding": {
+                "x": {"field": "a", "type": "ordinal"},
+                "y": {"field": "b", "type": "quantitative"},
+                "color": {"field": "c", "type": "quantitative"}
+              }
+            },
+            {
+              "mark": {"type": "point", "opacity": 1, "filled": true},
+              "encoding": {
+                "x": {"field": "a", "type": "ordinal"},
+                "y": {"field": "b", "type": "quantitative"},
+                "color": {"field": "c", "type": "quantitative"}
+              }
+            }
+          ]
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "mark": "area",
+          "encoding": {
+            "x": {"field": "a", "type": "ordinal"},
+            "y": {"field": "b", "type": "quantitative"},
+            "color": {"field": "c", "type": "quantitative"}
+          }
+        }
+      ]
+    }
+  ]
+}
