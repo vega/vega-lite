@@ -314,19 +314,10 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
   const sort = getSort(model);
   const interactive = interactiveFlag(model);
 
-  let isPoint = false;
-  let isBind = false;
-  if (model.component.selection) {
-    for (const k of keys(model.component.selection)) {
-      if (model.component.selection[k].bind) {
-        isBind = true;
-      }
-      if (model.component.selection[k].type == 'point') {
-        isPoint = true;
-      }
-    }
+  // set pointer cursor for point selections that are not bound
+  if (interactive && Object.values(model.component.selection).some(s => s.type === 'point' && !s.bind)) {
+    model.markDef.cursor ??= 'pointer';
   }
-  interactive && isPoint && !isBind ? (model.markDef.cursor ??= 'pointer') : {};
 
   const aria = getMarkPropOrConfig('aria', markDef, config);
 

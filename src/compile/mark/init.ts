@@ -61,7 +61,8 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
     markDef.opacity = opacity(markDef.type, encoding);
   }
 
-  // set cursor, which should be pointer if href channel is present unless otherwise specified
+  // Set cursor, which should be pointer if href channel is present unless otherwise specified.
+  // We will also set the cursor in parse via getMarkGroup since we need access to the selections.
   const specifiedCursor = getMarkPropOrConfig('cursor', markDef, config);
   if (specifiedCursor === undefined) {
     markDef.cursor = cursor(markDef, encoding, config);
