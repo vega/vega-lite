@@ -77,6 +77,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
+          "cursor": {"value": "pointer"},
           "fill": [
             {
               "test": "!length(data(\"paintbrush_store\")) || vlSelectionIdTest(\"paintbrush_store\", datum)",

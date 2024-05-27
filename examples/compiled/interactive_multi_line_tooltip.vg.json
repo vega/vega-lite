@@ -136,6 +136,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
+          "cursor": {"value": "pointer"},
           "stroke": [
             {
               "test": "length(data(\"hover_store\")) && vlSelectionIdTest(\"hover_store\", datum)",

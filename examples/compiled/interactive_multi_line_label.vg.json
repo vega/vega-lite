@@ -176,6 +176,7 @@
             },
             {"value": 0}
           ],
+          "cursor": {"value": "pointer"},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "point"},

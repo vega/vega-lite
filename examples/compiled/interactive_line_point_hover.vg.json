@@ -131,6 +131,7 @@
             },
             {"value": 0}
           ],
+          "cursor": {"value": "pointer"},
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]}"
           },
