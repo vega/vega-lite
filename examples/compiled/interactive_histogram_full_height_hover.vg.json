@@ -122,7 +122,6 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "cursor": {"value": "pointer"},
           "tooltip": {
             "signal": "{\"IMDB Rating (binned)\": !isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },

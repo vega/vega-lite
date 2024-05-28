@@ -115,7 +115,6 @@
             "update": {
               "stroke": {"value": "transparent"},
               "strokeWidth": {"value": 8},
-              "cursor": {"value": "pointer"},
               "opacity": [
                 {
                   "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",

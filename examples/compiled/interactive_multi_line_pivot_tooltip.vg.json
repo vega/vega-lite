@@ -173,7 +173,6 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "cursor": {"value": "pointer"},
           "stroke": {"value": "black"},
           "opacity": [
             {
