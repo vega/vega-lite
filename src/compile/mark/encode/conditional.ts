@@ -58,7 +58,10 @@ export function wrapCondition<CD extends ChannelDef | GuideEncodingConditionalVa
     valueRefs.push(mainValueRef);
   }
 
-  if (valueRefs.length > 1) {
+  if (
+    valueRefs.length > 1 ||
+    (valueRefs.length === 1 && Boolean(valueRefs[0].test)) // We must use array form valueRefs if test exists, otherwise Vega won't execute the test.
+  ) {
     return {[vgChannel]: valueRefs};
   } else if (valueRefs.length === 1) {
     return {[vgChannel]: valueRefs[0]};
