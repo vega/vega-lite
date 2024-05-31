@@ -1,0 +1,54 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 400,
+  "height": 400,
+  "layer": [
+      {
+          "mark": {
+              "type": "bar"
+          },
+          "encoding": {
+              "x": {
+                  "field": "C2",
+                  "type": "nominal"
+              },
+              "y": {
+                  "field": "Q1_Null",
+                  "type": "quantitative"
+              },
+              "opacity": {
+                  "condition": [
+                      {
+                          "test": "false",
+                          "value": 0.2
+                      }
+                  ]
+              }
+          }
+      }
+  ],
+  "data": {
+      "values": [
+          {
+              "Q1_Null": null,
+              "C2": "a1"
+          },
+          {
+              "Q1_Null": null,
+              "C2": "b1"
+          },
+          {
+              "Q1_Null": 82.3,
+              "C2": "c1"
+          },
+          {
+              "Q1_Null": 41.1,
+              "C2": "a2"
+          },
+          {
+              "Q1_Null": 31.1,
+              "C2": "a2"
+          }
+      ]
+  }
+}
