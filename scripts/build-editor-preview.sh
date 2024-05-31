@@ -31,5 +31,6 @@ cat <<EOF > public/spec/vega/index.json
 EOF
 
 # Build the editor site in the dist folder
-# Disable sourcemaps as they exceed 25 MB in size
-yarn run build:only --public-url / --no-source-maps
+# Disable minification to make it easier to debug, and because sourcemaps
+# exceed 25 MB limit on cloudflare
+yarn run build:only --public-url / --no-optimize --no-source-maps
