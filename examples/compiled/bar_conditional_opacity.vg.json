@@ -44,7 +44,7 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "opacity": {"test": "false", "value": 0.2},
+          "opacity": [{"test": "false", "value": 0.2}],
           "ariaRoleDescription": {"value": "bar"},
           "description": {
             "signal": "\"C2: \" + (isValid(datum[\"C2\"]) ? datum[\"C2\"] : \"\"+datum[\"C2\"]) + \"; Q1_Null: \" + (format(datum[\"Q1_Null\"], \"\"))"
