@@ -31,4 +31,5 @@ cat <<EOF > public/spec/vega/index.json
 EOF
 
 # Build the editor site in the dist folder
-yarn run build:only --public-url /
+# Disable sourcemaps as they exceed 25 MB in size
+yarn run build:only --public-url / --no-source-maps
