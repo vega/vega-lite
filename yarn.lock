@@ -8551,7 +8551,7 @@ vega-canvas@^1.2.6, vega-canvas@^1.2.7:
   resolved "https://registry.yarnpkg.com/vega-canvas/-/vega-canvas-1.2.7.tgz#cf62169518f5dcd91d24ad352998c2248f8974fb"
   integrity sha512-OkJ9CACVcN9R5Pi9uF6MZBF06pO6qFpDYHWSKBJsdHP5o724KrsgR6UvbnXFH82FdsiTOff/HqjuaG8C7FL+9Q==
 
-vega-cli@^5.29.0:
+vega-cli@^5.28.0:
   version "5.29.0"
   resolved "https://registry.yarnpkg.com/vega-cli/-/vega-cli-5.29.0.tgz#d6b2e6ecf84ce84caad689acba3b60799353187d"
   integrity sha512-ndiQEjHrV0DkT7nWEroQerAuZwNZC3c9SZlmVh8a19vY9s/GsPfNdOq2apAN44mtruMtD3tzgajLLxEii7/wEA==
