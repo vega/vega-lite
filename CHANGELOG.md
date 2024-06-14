@@ -1,5 +1,20 @@
 
 
+# [5.19.0](https://github.com/vega/vega-lite/compare/v5.18.1...v5.19.0) (2024-06-14)
+
+
+### Bug Fixes
+
+* **#3488:** don't use zero as min for size scale by default so no points will be ever hidden ([#9347](https://github.com/vega/vega-lite/issues/9347)) ([7db657a](https://github.com/vega/vega-lite/commit/7db657a23fca5ee849320e3ee8f3dcc13998f6a6)), closes [#3488](https://github.com/vega/vega-lite/issues/3488) [#3488](https://github.com/vega/vega-lite/issues/3488)
+* **#9343:** binned stacked area now correctly filter null values ([#9344](https://github.com/vega/vega-lite/issues/9344)) ([7cd3829](https://github.com/vega/vega-lite/commit/7cd3829dc2b297be5f954d2f6c685541435f8776)), closes [#9343](https://github.com/vega/vega-lite/issues/9343)
+* fix typo in time unit 'utcweekdayhours' ([b32c73c](https://github.com/vega/vega-lite/commit/b32c73caf650a31319e634d3d98cc3c911e46031))
+* use array for single item valueRefs in conditional if test exists ([#9361](https://github.com/vega/vega-lite/issues/9361)) ([64201d6](https://github.com/vega/vega-lite/commit/64201d6d2a53364e6c214b07950b6ce77d174d5c)), closes [/github.com/vega/vega-lite/pull/9342/files#diff-f26cb911cd80159bbd659afb430b97fa7227afb4cc15e43565f2ca74c3361d22R64](https://github.com//github.com/vega/vega-lite/pull/9342/files/issues/diff-f26cb911cd80159bbd659afb430b97fa7227afb4cc15e43565f2ca74c3361d22R64)
+
+
+### Features
+
+* more options and examples for how marks and scales represent invalid data (e.g., nulls, NaNs) ([#9342](https://github.com/vega/vega-lite/issues/9342)) ([502db1d](https://github.com/vega/vega-lite/commit/502db1d848ea0ea93a90d45995ad50fea353950a)), closes [#8254](https://github.com/vega/vega-lite/issues/8254)
+
 ## [5.18.1](https://github.com/vega/vega-lite/compare/v5.18.0...v5.18.1) (2024-05-07)
 
 

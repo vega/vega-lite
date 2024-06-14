@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Dominik Moritz, Kanit \"Ham\" Wongsuphasawat, Arvind Satyanarayan, Jeffrey Heer",
-  "version": "5.18.1",
+  "version": "5.19.0",
   "collaborators": [
     "Kanit Wongsuphasawat (http://kanitw.yellowpigz.com)",
     "Dominik Moritz (https://www.domoritz.de)",
@@ -10,7 +10,11 @@
   ],
   "homepage": "https://vega.github.io/vega-lite/",
   "description": "Vega-Lite is a concise high-level language for interactive visualization.",
-  "keywords": ["vega", "chart", "visualization"],
+  "keywords": [
+    "vega",
+    "chart",
+    "visualization"
+  ],
   "main": "build/vega-lite.js",
   "unpkg": "build/vega-lite.min.js",
   "jsdelivr": "build/vega-lite.min.js",
@@ -22,7 +26,13 @@
     "vl2svg": "./bin/vl2svg",
     "vl2vg": "./bin/vl2vg"
   },
-  "files": ["bin", "build", "src", "vega-lite*", "tsconfig.json"],
+  "files": [
+    "bin",
+    "build",
+    "src",
+    "vega-lite*",
+    "tsconfig.json"
+  ],
   "scripts": {
     "changelog": "conventional-changelog -p angular -r 2",
     "prebuild": "yarn clean:build",
