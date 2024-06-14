@@ -10,11 +10,7 @@
   ],
   "homepage": "https://vega.github.io/vega-lite/",
   "description": "Vega-Lite is a concise high-level language for interactive visualization.",
-  "keywords": [
-    "vega",
-    "chart",
-    "visualization"
-  ],
+  "keywords": ["vega", "chart", "visualization"],
   "main": "build/vega-lite.js",
   "unpkg": "build/vega-lite.min.js",
   "jsdelivr": "build/vega-lite.min.js",
@@ -26,13 +22,7 @@
     "vl2svg": "./bin/vl2svg",
     "vl2vg": "./bin/vl2vg"
   },
-  "files": [
-    "bin",
-    "build",
-    "src",
-    "vega-lite*",
-    "tsconfig.json"
-  ],
+  "files": ["bin", "build", "src", "vega-lite*", "tsconfig.json"],
   "scripts": {
     "changelog": "conventional-changelog -p angular -r 2",
     "prebuild": "yarn clean:build",
@@ -112,7 +102,7 @@
     "pako": "^2.1.0",
     "prettier": "^3.3.2",
     "puppeteer": "^15.0.0",
-    "release-it": "^17.2.1",
+    "release-it": "17.2.1",
     "rollup": "^4.18.0",
     "rollup-plugin-bundle-size": "^1.0.3",
     "serve": "^14.2.3",
