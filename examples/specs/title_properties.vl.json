@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "hconcat": [{
+    "height": 70,
+    "width": 70,
+    "title": {"text" : "Aligned title", "align" : "right", "fontSize" : 15},
+    "data": {"values": [{}]},
+    "mark": "arc"
+  },{
+    "height": 70,
+    "width": 70,
+    "title": {"text" : "Angled title", "angle" : 70, "fontSize" : 15},
+    "data": {"values": [{}]},
+    "mark": "arc"
+  },{
+    "height": 70,
+    "width": 70,
+    "title": {"text" : "Baseline title", "baseline" : "bottom", "fontSize" : 15},
+    "data": {"values": [{}]},
+    "mark": "arc"
+  },{
+    "height": 70,
+    "width": 70,
+    "title": {"text" : "Color title", "color" : "red", "fontSize" : 15},
+    "data": {"values": [{}]},
+    "mark": "arc"
+  },{
+    "height": 70,
+    "width": 70,
+    "title": {"text" : "dx/dy title", "dx" : 20, "dy" : 11, "fontSize" : 15},
+    "data": {"values": [{}]},
+    "mark": "arc"
+  },{
+    "height": 70,
+    "width": 70,
+    "title": {"text" : "Font changes title", "fontSize" : 8, "font" : "cursive"},
+    "data": {"values": [{}]},
+    "mark": "arc"
+  },{
+    "height": 70,
+    "width": 70,
+    "title": {"text" : "Limit title", "limit" : 60, "fontSize" : 15},
+    "data": {"values": [{}]},
+    "mark": "arc"
+  },{
+    "height": 70,
+    "width": 70,
+    "title": {"text" : "Oriented title", "orient" : "bottom", "fontSize" : 15},
+    "data": {"values": [{}]},
+    "mark": "arc"
+  },{
+    "height": 70,
+    "width": 70,
+    "title": {"text" : "Subtitle title", "subtitle" : "subtitle", "fontSize" : 15},
+    "data": {"values": [{}]},
+    "mark": "arc"
+  }]
+}

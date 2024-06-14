@@ -13,6 +13,10 @@ For example, the following bar chart is titled "A Simple Bar Chart".
 
 {:#props}
 
+We can customize other properties such as `align`, `angle`, `baseline`, `color`, etc...
+
+<span class="vl-example" data-name="title_properties"></span>
+
 ## Title Properties Object
 
 A `title` properties object can contain the following properties:
