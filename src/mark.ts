@@ -333,6 +333,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
   rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
   line: ['point'],
+  geoshape: ['tile'],
   tick: ['bandSize', 'thickness']
 };
 
@@ -349,7 +350,8 @@ export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
   | BarConfig<ES>
   | RectConfig<ES>
   | LineConfig<ES>
-  | TickConfig<ES>;
+  | TickConfig<ES>
+  | GeoshapeConfig<ES>;
 
 export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Mark Config */
@@ -397,7 +399,7 @@ export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   trail?: LineConfig<ES>;
 
   /** Geoshape-Specific Config */
-  geoshape?: MarkConfig<ES>;
+  geoshape?: GeoshapeConfig<ES>;
 }
 
 const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
@@ -494,7 +496,22 @@ export interface PointOverlayMixins<ES extends ExprRef | SignalRef> {
   point?: boolean | OverlayMarkDef<ES> | 'transparent';
 }
 
+export interface TileOverlayMixins<ES extends ExprRef | SignalRef> {
+  /**
+   * A flag for overlaying tiles on top of geoshape marks, or an object defining the properties of the overlayed tiles.
+   *
+   * - If this property is an empty object (`{}`) or `true`, tiles with default properties will be used.
+   *
+   * - If this property is `false`, no tiles would be automatically added to geoshape marks.
+   *
+   * __Default value:__ `false`.
+   */
+  tile?: boolean | OverlayMarkDef<ES>;
+}
+
 export interface LineConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, PointOverlayMixins<ES> {}
+
+export interface GeoshapeConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, TileOverlayMixins<ES> {}
 
 export interface LineOverlayMixins<ES extends ExprRef | SignalRef> {
   /**
@@ -607,6 +624,7 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
         AreaConfig<ES> &
         BarConfig<ES> & // always extends RectConfig
         LineConfig<ES> &
+        GeoshapeConfig<ES> &
         TickConfig<ES>,
       'startAngle' | 'endAngle' | 'width' | 'height'
     >,

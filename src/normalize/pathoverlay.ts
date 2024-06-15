@@ -3,7 +3,7 @@ import {isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
 import {ExprRef} from '../expr';
-import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark';
+import {AreaConfig, isMarkDef, LineConfig, GeoshapeConfig, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {isUnitSpec} from '../spec/unit';
 import {stack} from '../stack';
@@ -13,19 +13,19 @@ import {initMarkdef} from '../compile/mark/init';
 
 type UnitSpecWithPathOverlay = GenericUnitSpec<Encoding<string>, Mark | MarkDef<'line' | 'area' | 'rule' | 'trail'>>;
 
-function dropLineAndPoint(markDef: MarkDef): MarkDef | Mark {
-  const {point: _point, line: _line, ...mark} = markDef;
+function dropLineAndPointAndTile(markDef: MarkDef): MarkDef | Mark {
+  const {point: _point, line: _line, tile: _tile, ...mark} = markDef;
 
   return keys(mark).length > 1 ? mark : mark.type;
 }
 
-function dropLineAndPointFromConfig(config: Config<SignalRef>) {
-  for (const mark of ['line', 'area', 'rule', 'trail'] as const) {
+function dropLineAndPointAndTileFromConfig(config: Config<SignalRef>) {
+  for (const mark of ['line', 'area', 'rule', 'trail', 'geoshape'] as const) {
     if (config[mark]) {
       config = {
         ...config,
         // TODO: remove as any
-        [mark]: omit(config[mark], ['point', 'line'] as any)
+        [mark]: omit(config[mark], ['point', 'line', 'tile'] as any)
       };
     }
   }
@@ -52,6 +52,26 @@ function getPointOverlay(
       return isObject(markConfig.point) ? markConfig.point : {};
     }
     // markDef.point is defined as falsy
+    return undefined;
+  }
+}
+
+function getTileOverlay(
+  markDef: MarkDef,
+  markConfig: GeoshapeConfig<ExprRef | SignalRef> = {}
+): MarkConfig<ExprRef | SignalRef> {
+  if (markDef.tile) {
+    return isObject(markDef.tile) ? markDef.tile : {};
+  } else if (markDef.tile !== undefined) {
+    // false or null
+    return null;
+  } else {
+    // undefined (not disabled)
+    if (markConfig.tile) {
+      // enable tile overlay if config[mark].tile is truthy
+      return isObject(markConfig.tile) ? markConfig.tile : {};
+    }
+    // markDef.tile is defined as falsy
     return undefined;
   }
 }
@@ -89,6 +109,8 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
         case 'rule':
         case 'trail':
           return !!getPointOverlay(markDef, config[markDef.type], encoding);
+        case 'geoshape':
+          return !!getTileOverlay(markDef, config[markDef.type]);
         case 'area':
           return (
             // false / null are also included as we want to remove the properties
@@ -104,20 +126,30 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     const {config} = normParams;
     const {params, projection, mark, name, encoding: e, ...outerSpec} = spec;
 
+    // Encoding can be undefined
+    const enc = e === undefined ? {} : e;
     // Need to call normalizeEncoding because we need the inferred types to correctly determine stack
-    const encoding = normalizeEncoding(e, config);
+    const encoding = normalizeEncoding(enc, config);
 
     const markDef: MarkDef = isMarkDef(mark) ? mark : {type: mark};
 
     const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
 
     const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
+    const tileOverlay = getTileOverlay(markDef, config[markDef.type]);
+
+    // In case of a geoshape mark with a tile overlay, we push down the data to the first layer,
+    // i.e. the geoshape layer, and remove the data from the outer spec. This allows us to
+    // use a different dataset for the tile layer.
+    const pushDownData: boolean = markDef.type === 'geoshape' && tileOverlay && isObject(outerSpec.data);
 
     const layer: NormalizedUnitSpec[] = [
       {
         name,
         ...(params ? {params} : {}),
-        mark: dropLineAndPoint({
+        ...(markDef.type === 'geoshape' && tileOverlay && isObject(projection) ? {projection} : {}),
+        ...(pushDownData ? {data: outerSpec.data} : {}),
+        mark: dropLineAndPointAndTile({
           // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
           ...(markDef.type === 'area' && markDef.opacity === undefined && markDef.fillOpacity === undefined
             ? {opacity: 0.7}
@@ -177,14 +209,125 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
       });
     }
 
+    let outerParams = {};
+    if (tileOverlay) {
+      // Right now, we assume that the following properties are present in projections.
+      // Should be fixed with some graceful failure or fallback values
+      const prScale = projection.scale;
+      // Use unshift to insert layer at the beginning of the array so that
+      // the geoshape layer will be plotted on top of the tiles.
+      layer.unshift({
+        mark: {
+          type: 'image',
+          clip: true,
+          height: {expr: 'tile_size'},
+          width: {expr: 'tile_size'},
+          ...tileOverlay
+        },
+        encoding: {
+          url: {field: 'url', type: 'nominal'},
+          x: {field: 'x', scale: null, type: 'quantitative'},
+          y: {field: 'y', scale: null, type: 'quantitative'}
+        },
+        data: {
+          sequence: {
+            start: 0,
+            stop: 4,
+            as: 'a'
+          },
+          name: 'tile_list'
+        },
+        transform: [
+          {calculate: 'sequence(0, 4)', as: 'b'},
+          {flatten: ['b']},
+          {
+            calculate:
+              "base_tile_url + zoom_ceil + '/' + (datum.a + dii_floor + tiles_count) % tiles_count + '/' + ((datum.b + djj_floor)) + '.png'",
+            as: 'url'
+          },
+          {
+            calculate: 'datum.a * tile_size + dx + tile_size / 2',
+            as: 'x'
+          },
+          {
+            calculate: 'datum.b * tile_size + dy + tile_size / 2',
+            as: 'y'
+          }
+        ]
+      });
+      outerParams = {
+        params: [
+          {
+            name: 'base_tile_size',
+            value: 256
+          },
+          {
+            name: 'base_tile_url',
+            value: 'https://tile.openstreetmap.org/'
+          },
+          {
+            name: 'prScale',
+            // Using expr in case it is an expression and not just a number.
+            // Convert to String in case it is just a number.
+            expr: String(prScale)
+          },
+          {
+            name: 'zoom_level',
+            expr: 'log((2 * PI * prScale) / base_tile_size) / log(2)'
+          },
+          {
+            name: 'zoom_ceil',
+            expr: 'ceil(zoom_level)'
+          },
+          {
+            name: 'tiles_count',
+            expr: 'pow(2, zoom_ceil)'
+          },
+          {
+            name: 'tile_size',
+            expr: 'base_tile_size * pow(2, zoom_level - zoom_ceil)'
+          },
+          {
+            name: 'base_point',
+            expr: "invert('projection', [0, 0])"
+          },
+          {
+            name: 'dii',
+            expr: '(base_point[0] + 180) / 360 * tiles_count'
+          },
+          {
+            name: 'dii_floor',
+            expr: 'floor(dii)'
+          },
+          {
+            name: 'dx',
+            expr: '(dii_floor - dii) * tile_size'
+          },
+          {
+            name: 'djj',
+            expr: '(1 - log(tan(base_point[1] * PI / 180) + 1 / cos(base_point[1] * PI / 180)) / PI) / 2 * tiles_count'
+          },
+          {
+            name: 'djj_floor',
+            expr: 'floor(djj)'
+          },
+          {
+            name: 'dy',
+            expr: 'round((djj_floor - djj) * tile_size)'
+          }
+        ]
+      };
+    }
+
     return normalize(
       {
-        ...outerSpec,
-        layer
+        ...(pushDownData ? omit(outerSpec, ['data']) : outerSpec),
+        layer,
+        ...outerParams
       },
       {
         ...normParams,
-        config: dropLineAndPointFromConfig(config)
+        config: dropLineAndPointAndTileFromConfig(config)
       }
     );
   }
