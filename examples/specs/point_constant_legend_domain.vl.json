@@ -5,14 +5,14 @@
   },
   "params": [
     {
-      "name": "param_3",
+      "name": "color_selection",
       "select": {"type": "point", "encodings": ["color"]},
       "bind": "legend"
     },
-    {"name": "param4", "expr": "domain('color')"},
-    {"name": "color_domain", "react": false, "expr": "param4"}
+    {"name": "computed_domain", "expr": "domain('color')"},
+    {"name": "color_domain", "react": false, "expr": "computed_domain"}
   ],
-  "transform": [{"filter": {"param": "param_3"}}],
+  "transform": [{"filter": {"param": "color_selection"}}],
   "mark": {"type": "point", "filled": true},
   "encoding": {
     "color": {
