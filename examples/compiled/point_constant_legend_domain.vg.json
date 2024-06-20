@@ -6,7 +6,7 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "param_3_store"},
+    {"name": "color_selection_store"},
     {
       "name": "source_0",
       "url": "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/cars.json",
@@ -14,7 +14,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!length(data(\"param_3_store\")) || vlSelectionTest(\"param_3_store\", datum)"
+          "expr": "!length(data(\"color_selection_store\")) || vlSelectionTest(\"color_selection_store\", datum)"
         },
         {
           "type": "filter",
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "name": "param_3_Origin_legend",
+      "name": "color_selection_Origin_legend",
       "value": null,
       "on": [
         {
@@ -58,27 +58,27 @@
         },
         {
           "events": [{"source": "view", "type": "click"}],
-          "update": "!event.item || !datum ? null : param_3_Origin_legend",
+          "update": "!event.item || !datum ? null : color_selection_Origin_legend",
           "force": true
         }
       ]
     },
     {
-      "name": "param_3",
-      "update": "vlSelectionResolve(\"param_3_store\", \"union\", true, true)"
+      "name": "color_selection",
+      "update": "vlSelectionResolve(\"color_selection_store\", \"union\", true, true)"
     },
-    {"name": "param4", "update": "domain('color')"},
-    {"name": "color_domain", "react": false, "update": "param4"},
+    {"name": "computed_domain", "update": "domain('color')"},
+    {"name": "color_domain", "react": false, "update": "computed_domain"},
     {
-      "name": "param_3_tuple",
-      "update": "param_3_Origin_legend !== null ? {fields: param_3_tuple_fields, values: [param_3_Origin_legend]} : null"
+      "name": "color_selection_tuple",
+      "update": "color_selection_Origin_legend !== null ? {fields: color_selection_tuple_fields, values: [color_selection_Origin_legend]} : null"
     },
     {
-      "name": "param_3_tuple_fields",
+      "name": "color_selection_tuple_fields",
       "value": [{"field": "Origin", "channel": "color", "type": "E"}]
     },
     {
-      "name": "param_3_toggle",
+      "name": "color_selection_toggle",
       "value": false,
       "on": [
         {
@@ -88,11 +88,11 @@
       ]
     },
     {
-      "name": "param_3_modify",
+      "name": "color_selection_modify",
       "on": [
         {
-          "events": {"signal": "param_3_tuple"},
-          "update": "modify(\"param_3_store\", param_3_toggle ? null : param_3_tuple, param_3_toggle ? null : true, param_3_toggle ? param_3_tuple : null)"
+          "events": {"signal": "color_selection_tuple"},
+          "update": "modify(\"color_selection_store\", color_selection_toggle ? null : color_selection_tuple, color_selection_toggle ? null : true, color_selection_toggle ? color_selection_tuple : null)"
         }
       ]
     }
@@ -203,7 +203,7 @@
           "update": {
             "opacity": [
               {
-                "test": "(!length(data(\"param_3_store\")) || (param_3[\"Origin\"] && indexof(param_3[\"Origin\"], datum.value) >= 0))",
+                "test": "(!length(data(\"color_selection_store\")) || (color_selection[\"Origin\"] && indexof(color_selection[\"Origin\"], datum.value) >= 0))",
                 "value": 1
               },
               {"value": 0.35}
@@ -216,7 +216,7 @@
           "update": {
             "opacity": [
               {
-                "test": "(!length(data(\"param_3_store\")) || (param_3[\"Origin\"] && indexof(param_3[\"Origin\"], datum.value) >= 0))",
+                "test": "(!length(data(\"color_selection_store\")) || (color_selection[\"Origin\"] && indexof(color_selection[\"Origin\"], datum.value) >= 0))",
                 "value": 0.7
               },
               {"value": 0.35}
