@@ -31631,6 +31631,10 @@
           "$ref": "#/definitions/ParameterName",
           "description": "A unique name for the variable parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\"."
         },
+        "react": {
+          "description": "A boolean flag (default `true`) indicating if the update expression should be automatically re-evaluated when any upstream signal dependencies update. If `false`, the update expression will not register any dependencies on other signals, even for initialization.\n\n __Default value:__ `true`",
+          "type": "boolean"
+        },
         "value": {
           "description": "The [initial value](http://vega.github.io/vega-lite/docs/value.html) of the parameter.\n\n__Default value:__ `undefined`"
         }
