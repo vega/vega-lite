@@ -1,0 +1,26 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/cars.json"
+  },
+  "params": [
+    {
+      "name": "param_3",
+      "select": {"type": "point", "encodings": ["color"]},
+      "bind": "legend"
+    },
+    {"name": "param4", "expr": "domain('color')"},
+    {"name": "color_domain", "react": false, "expr": "param4"}
+  ],
+  "transform": [{"filter": {"param": "param_3"}}],
+  "mark": {"type": "point", "filled": true},
+  "encoding": {
+    "color": {
+      "field": "Origin",
+      "type": "nominal",
+      "scale": {"domain": {"expr": "color_domain"}}
+    },
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+  }
+}
