@@ -115,7 +115,7 @@ Now you should be able to build and test the code.
 
 3. To manually test your changes locally, you should have a local instance of [Vega Editor](https://github.com/vega/editor) cloned and link Vega-Lite to the editor (See [Vega Editor's README](https://github.com/vega/editor#local-testing--debugging) for instructions).
 
-4. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/), [bundler](http://bundler.io/) and [Jekyll](https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/).
+4. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/) and [bundler](http://bundler.io/).
 
 For ruby, Mac users can use [homebrew](http://brew.sh) to add it:
 
