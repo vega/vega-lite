@@ -356,6 +356,7 @@ describe('Format', () => {
     it('should return existing format type', () => {
       expect(guideFormatType('number', {field: ' foo', type: 'quantitative'}, 'ordinal')).toBe('number');
       expect(guideFormatType('time', {field: ' foo', type: 'quantitative'}, 'ordinal')).toBe('time');
+      expect(guideFormatType('utc', {field: ' foo', type: 'quantitative'}, 'ordinal')).toBe('utc');
     });
 
     it('should return utc for utc time units', () => {
