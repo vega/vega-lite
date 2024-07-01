@@ -303,6 +303,7 @@
           "from": {"data": "data_3"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": [
                 {
                   "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
