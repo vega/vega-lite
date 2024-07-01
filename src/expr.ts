@@ -1,3 +1,4 @@
+import {isObject, isString} from 'vega-util';
 import {signalRefOrValue} from './compile/common';
 import {Dict, keys} from './util';
 import {MappedExclude} from './vega.schema';
@@ -10,7 +11,7 @@ export interface ExprRef {
 }
 
 export function isExprRef(o: any): o is ExprRef {
-  return !!o?.expr;
+  return o && isObject(o) && keys(o).length === 1 && isString((o as ExprRef)?.expr);
 }
 
 export function replaceExprRef<T extends Dict<any>>(index: T, {level}: {level: number} = {level: 0}) {

@@ -61,7 +61,7 @@ import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalComposition} from './logical';
-import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark';
+import {isRectBasedMark, isRelativePointSize, Mark, MarkDef, RelativeBandSize} from './mark';
 import {ParameterPredicate, Predicate} from './predicate';
 import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
@@ -565,7 +565,7 @@ export function getBandSize({
     vgChannel: sizeChannel
   });
 
-  if (size !== undefined) {
+  if (size !== undefined && !isRelativePointSize(size)) {
     return size;
   }
 

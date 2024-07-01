@@ -7,6 +7,9 @@ import {UnitModel} from '../../unit';
 import {wrapCondition} from './conditional';
 import * as ref from './valueref';
 import {getConditionalValueRefForIncludingInvalidValue} from './invalid';
+import {isRelativePointSize} from '../../../mark';
+import {isArray, isObject} from 'vega-util';
+import {relativePointSize} from './relativePointSize';
 
 /**
  * Return encode for non-positional channels with scales. (Text doesn't have scale.)
@@ -26,7 +29,20 @@ export function nonPosition(
 
   if (defaultRef === undefined) {
     // prettier-ignore
-    defaultValue ??= getMarkPropOrConfig(channel, markDef, config, {vgChannel, ignoreVgConfig: true});
+    const markPropOrConfig = getMarkPropOrConfig(channel, markDef, config, {vgChannel, ignoreVgConfig: true});
+
+    if (isObject(markPropOrConfig) && !isArray(markPropOrConfig) && isRelativePointSize(markPropOrConfig)) {
+      // If the prop is relative point size
+      if (channel === 'size' && vgChannel === undefined) {
+        // and the channel is size encoding for Vega-Lite's point/circle/square mark (aka symbol in Vega)
+
+        defaultValue = {
+          signal: relativePointSize({size: markPropOrConfig, model}).signal
+        };
+      }
+    } else {
+      defaultValue ??= markPropOrConfig;
+    }
 
     if (defaultValue !== undefined) {
       defaultRef = signalOrValueRef(defaultValue);

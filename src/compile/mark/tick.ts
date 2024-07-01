@@ -6,6 +6,7 @@ import {getMarkPropOrConfig, signalOrValueRef} from '../common';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as encode from './encode';
+import {isRelativePointSize} from '../../mark';
 
 export const tick: MarkCompiler = {
   vgMark: 'rect',
@@ -50,7 +51,7 @@ function defaultSize(model: UnitModel): number | SignalRef {
   const markPropOrConfig =
     getMarkPropOrConfig('size', markDef, config, {vgChannel: vgSizeChannel}) ?? config.tick.bandSize;
 
-  if (markPropOrConfig !== undefined) {
+  if (markPropOrConfig !== undefined && !isRelativePointSize(markPropOrConfig)) {
     return markPropOrConfig;
   } else {
     const scaleRange = scale ? scale.get('range') : undefined;
