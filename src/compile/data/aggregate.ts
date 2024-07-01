@@ -164,7 +164,8 @@ export class AggregateNode extends DataFlowNode {
           meas['*']['count'] = new Set([as ? as : vgField(s, {forAs: true})]);
         } else {
           meas[field] ??= {};
-          meas[field][op] = new Set([as ? as : vgField(s, {forAs: true})]);
+          meas[field][op] ??= new Set();
+          meas[field][op].add(as ? as : vgField(s, {forAs: true}));
         }
       }
     }
