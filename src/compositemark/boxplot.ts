@@ -310,7 +310,6 @@ export function normalizeBoxPlot(
       [continuousAxis]: {
         field: continuousAxisChannelDef.field,
         type: continuousAxisChannelDef.type,
-        ...(title !== undefined ? {title} : {}),
         ...(scale !== undefined ? {scale} : {}),
         // add axis without title since we already added the title above
         ...(isEmpty(axisWithoutTitle) ? {} : {axis: axisWithoutTitle})
@@ -326,7 +325,12 @@ export function normalizeBoxPlot(
   if (outlierLayersMixins) {
     filteredLayersMixins = {
       transform: filteredLayersMixinsTransforms,
-      layer: [outlierLayersMixins, filteredWhiskerSpec]
+      layer: [outlierLayersMixins, filteredWhiskerSpec],
+      encoding: {
+        [continuousAxis]: {
+          ...(title !== undefined ? {title} : {})
+        }
+      }
     };
   } else {
     filteredLayersMixins = filteredWhiskerSpec;

@@ -1,5 +1,6 @@
 import {Field} from '../channeldef';
 import {SharedCompositeEncoding} from '../compositemark';
+import {Encoding} from '../encoding';
 import {ExprRef} from '../expr';
 import {Projection} from '../projection';
 import {BaseSpec, FrameMixins, ResolveMixins} from './base';
@@ -15,6 +16,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
    * __Note__: Specifications inside `layer` cannot use `row` and `column` channels as layering facet specifications is not allowed. Instead, use the [facet operator](https://vega.github.io/vega-lite/docs/facet.html) and place a layer inside a facet.
    */
   layer: (GenericLayerSpec<U> | U)[];
+  encoding?: Encoding<any>;
 }
 
 /**
