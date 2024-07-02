@@ -32,7 +32,7 @@ export {isUnitSpec} from './unit';
  */
 export type GenericSpec<
   U extends GenericUnitSpec<Encoding<F>, any>,
-  L extends GenericLayerSpec<U>,
+  L extends GenericLayerSpec<U> | LayerSpec<F>,
   R extends RepeatSpec,
   F extends Field
 > =

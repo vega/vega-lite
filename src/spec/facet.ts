@@ -6,7 +6,7 @@ import {Header} from '../header';
 import {EncodingSortField, SortArray, SortOrder} from '../sort';
 import {StandardType} from '../type';
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
-import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
+import {GenericLayerSpec, LayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 export interface FacetFieldDef<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
@@ -113,8 +113,11 @@ export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<F>): cha
 /**
  * Base interface for a facet specification.
  */
-export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>, F extends Field>
-  extends BaseSpec,
+export interface GenericFacetSpec<
+  U extends GenericUnitSpec<any, any>,
+  L extends GenericLayerSpec<any> | LayerSpec<F>,
+  F extends Field
+> extends BaseSpec,
     GenericCompositionLayoutWithColumns,
     ResolveMixins {
   /**
