@@ -168,11 +168,11 @@
                   "fill": {"value": "transparent"},
                   "stroke": {"value": "#4c78a8"},
                   "tooltip": {
-                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\")}"
+                    "signal": "{\"a\": !isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\"), \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
                   },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
-                    "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\")) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_0_concat_0_x", "field": "a"},
                   "y": {"scale": "concat_0_concat_0_y", "field": "b"}
@@ -250,11 +250,11 @@
                 "update": {
                   "fill": {"value": "#4c78a8"},
                   "tooltip": {
-                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\")}"
+                    "signal": "{\"a\": !isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\"), \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
                   },
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
-                    "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\")) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
                   },
                   "xc": {"scale": "concat_0_concat_1_x", "field": "a"},
                   "width": {"value": 5},
@@ -335,10 +335,10 @@
                 "update": {
                   "stroke": {"value": "#4c78a8"},
                   "tooltip": {
-                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\")}"
+                    "signal": "{\"a\": !isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\"), \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
                   },
                   "description": {
-                    "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\")) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_0_concat_2_x", "field": "a"},
                   "y": {"scale": "concat_0_concat_2_y", "field": "b"}
@@ -355,11 +355,11 @@
                   "opacity": {"value": 1},
                   "fill": {"value": "#4c78a8"},
                   "tooltip": {
-                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\")}"
+                    "signal": "{\"a\": !isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\"), \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
                   },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
-                    "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\")) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_0_concat_2_x", "field": "a"},
                   "y": {"scale": "concat_0_concat_2_y", "field": "b"}
@@ -439,10 +439,10 @@
                   "orient": {"value": "vertical"},
                   "fill": {"value": "#4c78a8"},
                   "tooltip": {
-                    "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\")}"
+                    "signal": "{\"a\": !isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\"), \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
                   },
                   "description": {
-                    "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\")) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_0_concat_3_x", "field": "a"},
                   "y": {"scale": "concat_0_concat_3_y", "field": "b_end"},
@@ -531,11 +531,11 @@
                   "fill": {"value": "transparent"},
                   "stroke": {"value": "#4c78a8"},
                   "tooltip": {
-                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+                    "signal": "{\"a\": \"\" + datum[\"a\"], \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
                   },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
-                    "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (\"\" + datum[\"a\"]) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_1_concat_0_x", "field": "a"},
                   "y": {"scale": "concat_1_concat_0_y", "field": "b"}
@@ -599,11 +599,11 @@
                 "update": {
                   "fill": {"value": "#4c78a8"},
                   "tooltip": {
-                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+                    "signal": "{\"a\": \"\" + datum[\"a\"], \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
                   },
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
-                    "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (\"\" + datum[\"a\"]) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_1_concat_1_x", "field": "a"},
                   "width": {
@@ -672,10 +672,10 @@
                 "update": {
                   "stroke": {"value": "#4c78a8"},
                   "tooltip": {
-                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+                    "signal": "{\"a\": \"\" + datum[\"a\"], \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
                   },
                   "description": {
-                    "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (\"\" + datum[\"a\"]) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_1_concat_2_x", "field": "a"},
                   "y": {"scale": "concat_1_concat_2_y", "field": "b"}
@@ -692,11 +692,11 @@
                   "opacity": {"value": 1},
                   "fill": {"value": "#4c78a8"},
                   "tooltip": {
-                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+                    "signal": "{\"a\": \"\" + datum[\"a\"], \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
                   },
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
-                    "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (\"\" + datum[\"a\"]) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_1_concat_2_x", "field": "a"},
                   "y": {"scale": "concat_1_concat_2_y", "field": "b"}
@@ -762,10 +762,10 @@
                   "orient": {"value": "vertical"},
                   "fill": {"value": "#4c78a8"},
                   "tooltip": {
-                    "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+                    "signal": "{\"a\": \"\" + datum[\"a\"], \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
                   },
                   "description": {
-                    "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (\"\" + datum[\"a\"]) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
                   },
                   "x": {"scale": "concat_1_concat_3_x", "field": "a"},
                   "y": {"scale": "concat_1_concat_3_y", "field": "b_end"},

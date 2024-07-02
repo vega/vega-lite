@@ -39,7 +39,9 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
-          "description": {"signal": "\"b: \" + (format(datum[\"b\"], \"\"))"},
+          "description": {
+            "signal": "\"b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
+          },
           "x": {"field": {"group": "width"}},
           "x2": {"value": 0},
           "yc": {"scale": "y", "field": "b"},

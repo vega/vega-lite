@@ -76,7 +76,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "c"},
               "description": {
-                "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"])"
+                "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\")) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")) + \"; c: \" + (\"\" + datum[\"c\"])"
               },
               "x": {"scale": "x", "field": "a"},
               "y": {"scale": "y", "field": "b"},

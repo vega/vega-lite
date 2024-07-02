@@ -61,7 +61,7 @@
               "stroke": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"unif: \" + (format(datum[\"unif\"], \"\")) + \"; v: \" + (format(datum[\"v\"], \"\"))"
+                "signal": "\"unif: \" + (!isValid(datum[\"unif\"]) || !isFinite(+datum[\"unif\"]) ? \"\" + datum[\"unif\"] : format(datum[\"unif\"], \"\")) + \"; v: \" + (!isValid(datum[\"v\"]) || !isFinite(+datum[\"v\"]) ? \"\" + datum[\"v\"] : format(datum[\"v\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "unif"},
               "y": {"scale": "concat_0_y", "field": "v"}
@@ -142,7 +142,7 @@
               "stroke": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"norm: \" + (format(datum[\"norm\"], \"\")) + \"; v: \" + (format(datum[\"v\"], \"\"))"
+                "signal": "\"norm: \" + (!isValid(datum[\"norm\"]) || !isFinite(+datum[\"norm\"]) ? \"\" + datum[\"norm\"] : format(datum[\"norm\"], \"\")) + \"; v: \" + (!isValid(datum[\"v\"]) || !isFinite(+datum[\"v\"]) ? \"\" + datum[\"v\"] : format(datum[\"v\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "norm"},
               "y": {"scale": "concat_1_y", "field": "v"}

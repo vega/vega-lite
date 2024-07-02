@@ -128,7 +128,7 @@
           "stroke": {"value": "#999"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"year: \" + (!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"]) ? \"null\" : format(datum[\"year\"], \"d\") + \" – \" + format(datum[\"year_end\"], \"d\")) + \"; wheat: \" + (format(datum[\"wheat\"], \"\"))"
+            "signal": "\"year: \" + (!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"]) ? \"\" + datum[\"year\"] : format(datum[\"year\"], \"d\") + \" – \" + format(datum[\"year_end\"], \"d\")) + \"; wheat: \" + (!isValid(datum[\"wheat\"]) || !isFinite(+datum[\"wheat\"]) ? \"\" + datum[\"wheat\"] : format(datum[\"wheat\"], \"\"))"
           },
           "x2": {
             "scale": "x",
@@ -160,7 +160,7 @@
           "stroke": {"value": "#000"},
           "strokeWidth": {"value": 0.6},
           "description": {
-            "signal": "\"year: \" + (format(datum[\"year\"], \"d\"))"
+            "signal": "\"year: \" + (!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"]) ? \"\" + datum[\"year\"] : format(datum[\"year\"], \"d\"))"
           },
           "x": {"scale": "x", "field": "year"},
           "y": {"value": 0},
@@ -180,7 +180,7 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#a4cedb"},
           "description": {
-            "signal": "\"year: \" + (format(datum[\"year\"], \"d\")) + \"; wages: \" + (format(datum[\"wages\"], \"\"))"
+            "signal": "\"year: \" + (!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"]) ? \"\" + datum[\"year\"] : format(datum[\"year\"], \"d\")) + \"; wages: \" + (!isValid(datum[\"wages\"]) || !isFinite(+datum[\"wages\"]) ? \"\" + datum[\"wages\"] : format(datum[\"wages\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages_end"},
@@ -202,7 +202,7 @@
           "opacity": {"value": 0.7},
           "stroke": {"value": "#000"},
           "description": {
-            "signal": "\"year: \" + (format(datum[\"year\"], \"d\")) + \"; wages: \" + (format(datum[\"wages\"], \"\"))"
+            "signal": "\"year: \" + (!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"]) ? \"\" + datum[\"year\"] : format(datum[\"year\"], \"d\")) + \"; wages: \" + (!isValid(datum[\"wages\"]) || !isFinite(+datum[\"wages\"]) ? \"\" + datum[\"wages\"] : format(datum[\"wages\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages"},
@@ -222,7 +222,7 @@
         "update": {
           "stroke": {"value": "#EE8182"},
           "description": {
-            "signal": "\"year: \" + (format(datum[\"year\"], \"d\")) + \"; wages: \" + (format(datum[\"wages\"], \"\"))"
+            "signal": "\"year: \" + (!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"]) ? \"\" + datum[\"year\"] : format(datum[\"year\"], \"d\")) + \"; wages: \" + (!isValid(datum[\"wages\"]) || !isFinite(+datum[\"wages\"]) ? \"\" + datum[\"wages\"] : format(datum[\"wages\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages", "offset": -2},
@@ -242,7 +242,7 @@
           "stroke": {"value": "#000"},
           "fill": {"scale": "fill", "field": "commonwealth"},
           "description": {
-            "signal": "\"start: \" + (format(datum[\"start\"], \"d\")) + \"; y: \" + (format(datum[\"y\"], \"\")) + \"; end: \" + (format(datum[\"end\"], \"\")) + \"; offset: \" + (format(datum[\"offset\"], \"\")) + \"; commonwealth: \" + (isValid(datum[\"commonwealth\"]) ? datum[\"commonwealth\"] : \"\"+datum[\"commonwealth\"])"
+            "signal": "\"start: \" + (!isValid(datum[\"start\"]) || !isFinite(+datum[\"start\"]) ? \"\" + datum[\"start\"] : format(datum[\"start\"], \"d\")) + \"; y: \" + (!isValid(datum[\"y\"]) || !isFinite(+datum[\"y\"]) ? \"\" + datum[\"y\"] : format(datum[\"y\"], \"\")) + \"; end: \" + (!isValid(datum[\"end\"]) || !isFinite(+datum[\"end\"]) ? \"\" + datum[\"end\"] : format(datum[\"end\"], \"\")) + \"; offset: \" + (!isValid(datum[\"offset\"]) || !isFinite(+datum[\"offset\"]) ? \"\" + datum[\"offset\"] : format(datum[\"offset\"], \"\")) + \"; commonwealth: \" + (\"\" + datum[\"commonwealth\"])"
           },
           "x": {"scale": "x", "field": "start"},
           "x2": {"scale": "x", "field": "end"},
@@ -263,13 +263,11 @@
           "fontStyle": {"value": "italic"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"x: \" + (format(datum[\"x\"], \"d\")) + \"; off2: \" + (format(datum[\"off2\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
+            "signal": "\"x: \" + (!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"]) ? \"\" + datum[\"x\"] : format(datum[\"x\"], \"d\")) + \"; off2: \" + (!isValid(datum[\"off2\"]) || !isFinite(+datum[\"off2\"]) ? \"\" + datum[\"off2\"] : format(datum[\"off2\"], \"\")) + \"; name: \" + (\"\" + datum[\"name\"])"
           },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "off2", "offset": 16},
-          "text": {
-            "signal": "isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"name\"]"},
           "align": {"value": "center"}
         }
       }

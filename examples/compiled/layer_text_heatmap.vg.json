@@ -45,7 +45,7 @@
         "update": {
           "fill": {"scale": "color", "field": "num_cars"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Count of Records: \" + (format(datum[\"num_cars\"], \"\"))"
+            "signal": "\"Cylinders: \" + (\"\" + datum[\"Cylinders\"]) + \"; Origin: \" + (\"\" + datum[\"Origin\"]) + \"; Count of Records: \" + (!isValid(datum[\"num_cars\"]) || !isFinite(+datum[\"num_cars\"]) ? \"\" + datum[\"num_cars\"] : format(datum[\"num_cars\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
@@ -66,11 +66,13 @@
             {"value": "white"}
           ],
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; num_cars: \" + (format(datum[\"num_cars\"], \"\"))"
+            "signal": "\"Cylinders: \" + (\"\" + datum[\"Cylinders\"]) + \"; Origin: \" + (\"\" + datum[\"Origin\"]) + \"; num_cars: \" + (!isValid(datum[\"num_cars\"]) || !isFinite(+datum[\"num_cars\"]) ? \"\" + datum[\"num_cars\"] : format(datum[\"num_cars\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},
-          "text": {"signal": "format(datum[\"num_cars\"], \"\")"},
+          "text": {
+            "signal": "!isValid(datum[\"num_cars\"]) || !isFinite(+datum[\"num_cars\"]) ? \"\" + datum[\"num_cars\"] : format(datum[\"num_cars\"], \"\")"
+          },
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }

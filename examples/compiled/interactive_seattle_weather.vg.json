@@ -319,7 +319,7 @@
               ],
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Date: \" + (timeFormat(datum[\"monthdate_date\"], '%b')) + \"; Maximum Daily Temperature (C): \" + (format(datum[\"temp_max\"], \"\")) + \"; Weather: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"]) + \"; Precipitation: \" + (format(datum[\"precipitation\"], \"\"))"
+                "signal": "\"Date: \" + (!isValid(datum[\"monthdate_date\"]) || !isFinite(+datum[\"monthdate_date\"]) ? \"\" + datum[\"monthdate_date\"] : timeFormat(datum[\"monthdate_date\"], '%b')) + \"; Maximum Daily Temperature (C): \" + (!isValid(datum[\"temp_max\"]) || !isFinite(+datum[\"temp_max\"]) ? \"\" + datum[\"temp_max\"] : format(datum[\"temp_max\"], \"\")) + \"; Weather: \" + (\"\" + datum[\"weather\"]) + \"; Precipitation: \" + (!isValid(datum[\"precipitation\"]) || !isFinite(+datum[\"precipitation\"]) ? \"\" + datum[\"precipitation\"] : format(datum[\"precipitation\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "monthdate_date"},
               "y": {"scale": "concat_0_y", "field": "temp_max"},
@@ -502,7 +502,7 @@
               ],
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Weather: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"]) + \"; weather: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"])"
+                "signal": "\"Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\")) + \"; Weather: \" + (\"\" + datum[\"weather\"]) + \"; weather: \" + (\"\" + datum[\"weather\"])"
               },
               "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},

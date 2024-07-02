@@ -46,7 +46,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"delay (binned): \" + (!isValid(datum[\"bin_maxbins_100_minstep_1_delay\"]) || !isFinite(+datum[\"bin_maxbins_100_minstep_1_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_100_minstep_1_delay\"], \"d\") + \" – \" + format(datum[\"bin_maxbins_100_minstep_1_delay_end\"], \"d\"))"
+            "signal": "\"delay (binned): \" + (!isValid(datum[\"bin_maxbins_100_minstep_1_delay\"]) || !isFinite(+datum[\"bin_maxbins_100_minstep_1_delay\"]) ? \"\" + datum[\"bin_maxbins_100_minstep_1_delay\"] : format(datum[\"bin_maxbins_100_minstep_1_delay\"], \"d\") + \" – \" + format(datum[\"bin_maxbins_100_minstep_1_delay_end\"], \"d\"))"
           },
           "x2": {
             "scale": "x",

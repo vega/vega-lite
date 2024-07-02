@@ -46,7 +46,7 @@
             {"value": "#ae1325"}
           ],
           "description": {
-            "signal": "\"Date in 2009: \" + (timeFormat(datum[\"date\"], '%m/%d')) + \"; low: \" + (format(datum[\"low\"], \"\")) + \"; high: \" + (format(datum[\"high\"], \"\"))"
+            "signal": "\"Date in 2009: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%m/%d')) + \"; low: \" + (!isValid(datum[\"low\"]) || !isFinite(+datum[\"low\"]) ? \"\" + datum[\"low\"] : format(datum[\"low\"], \"\")) + \"; high: \" + (!isValid(datum[\"high\"]) || !isFinite(+datum[\"high\"]) ? \"\" + datum[\"high\"] : format(datum[\"high\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "low"},
@@ -67,7 +67,7 @@
           ],
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Date in 2009: \" + (timeFormat(datum[\"date\"], '%m/%d')) + \"; open: \" + (format(datum[\"open\"], \"\")) + \"; close: \" + (format(datum[\"close\"], \"\"))"
+            "signal": "\"Date in 2009: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%m/%d')) + \"; open: \" + (!isValid(datum[\"open\"]) || !isFinite(+datum[\"open\"]) ? \"\" + datum[\"open\"] : format(datum[\"open\"], \"\")) + \"; close: \" + (!isValid(datum[\"close\"]) || !isFinite(+datum[\"close\"]) ? \"\" + datum[\"close\"] : format(datum[\"close\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "date"},
           "width": {"value": 5},

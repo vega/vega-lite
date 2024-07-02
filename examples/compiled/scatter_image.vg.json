@@ -34,15 +34,13 @@
       "encode": {
         "update": {
           "description": {
-            "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; y: \" + (format(datum[\"y\"], \"\")) + \"; img: \" + (isValid(datum[\"img\"]) ? datum[\"img\"] : \"\"+datum[\"img\"])"
+            "signal": "\"x: \" + (!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"]) ? \"\" + datum[\"x\"] : format(datum[\"x\"], \"\")) + \"; y: \" + (!isValid(datum[\"y\"]) || !isFinite(+datum[\"y\"]) ? \"\" + datum[\"y\"] : format(datum[\"y\"], \"\")) + \"; img: \" + (\"\" + datum[\"img\"])"
           },
           "xc": {"scale": "x", "field": "x"},
           "width": {"value": 50},
           "yc": {"scale": "y", "field": "y"},
           "height": {"value": 50},
-          "url": {
-            "signal": "isValid(datum[\"img\"]) ? datum[\"img\"] : \"\"+datum[\"img\"]"
-          }
+          "url": {"signal": "\"\" + datum[\"img\"]"}
         }
       }
     }

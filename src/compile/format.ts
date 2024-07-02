@@ -5,6 +5,7 @@ import {
   channelDefType,
   DatumDef,
   FieldDef,
+  FormatMixins,
   isFieldDef,
   isFieldOrDatumDefForTimeFormat,
   isPositionFieldOrDatumDef,
@@ -21,7 +22,9 @@ import {isSignalRef} from '../vega.schema';
 import {TimeUnit} from './../timeunit';
 import {datumDefToExpr} from './mark/encode/valueref';
 
-export function isCustomFormatType(formatType: string) {
+export type CustomFormatType = Exclude<string, 'number' | 'time'>;
+
+export function isCustomFormatType(formatType: string): formatType is CustomFormatType {
   return formatType && formatType !== 'number' && formatType !== 'time';
 }
 
@@ -33,24 +36,23 @@ export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
 export function formatSignalRef({
   fieldOrDatumDef,
-  format,
-  formatType,
+  formatMixins,
   expr,
   normalizeStack,
   config
 }: {
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>;
-  format: string | Dict<unknown>;
-  formatType: string;
+  formatMixins: FormatMixins;
   expr?: 'datum' | 'parent' | 'datum.datum';
   normalizeStack?: boolean;
   config: Config;
 }) {
+  const {formatType} = formatMixins;
+  let {format} = formatMixins;
   if (isCustomFormatType(formatType)) {
     return formatCustomType({
       fieldOrDatumDef,
-      format,
-      formatType,
+      formatMixins: {...formatMixins, formatType},
       expr,
       config
     });
@@ -64,16 +66,20 @@ export function formatSignalRef({
       if (normalizeStack && config.normalizedNumberFormatType)
         return formatCustomType({
           fieldOrDatumDef,
-          format: config.normalizedNumberFormat,
-          formatType: config.normalizedNumberFormatType,
+          formatMixins: {
+            format: config.normalizedNumberFormat,
+            formatType: config.normalizedNumberFormatType
+          },
           expr,
           config
         });
       if (config.numberFormatType) {
         return formatCustomType({
           fieldOrDatumDef,
-          format: config.numberFormat,
-          formatType: config.numberFormatType,
+          formatMixins: {
+            format: config.numberFormat,
+            formatType: config.numberFormatType
+          },
           expr,
           config
         });
@@ -87,8 +93,7 @@ export function formatSignalRef({
     ) {
       return formatCustomType({
         fieldOrDatumDef,
-        format: config.timeFormat,
-        formatType: config.timeFormatType,
+        formatMixins,
         expr,
         config
       });
@@ -96,13 +101,18 @@ export function formatSignalRef({
   }
 
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
-    const signal = timeFormatExpression({
+    const mainFormatExpr = timeFormatExpression({
       field,
       timeUnit: isFieldDef(fieldOrDatumDef) ? normalizeTimeUnit(fieldOrDatumDef.timeUnit)?.unit : undefined,
       format,
       formatType: config.timeFormatType,
       rawTimeFormat: config.timeFormat,
       isUTCScale: isScaleFieldDef(fieldOrDatumDef) && fieldOrDatumDef.scale?.type === ScaleType.UTC
+    });
+
+    const signal = wrapFormatExprToHandleInvalidValues({
+      mainFormatExpr,
+      fieldExpr: field
     });
     return signal ? {signal} : undefined;
   }
@@ -111,15 +121,21 @@ export function formatSignalRef({
   if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
     const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
     return {
-      signal: binFormatExpression(field, endField, format, formatType, config)
+      signal: binFormatExpression(field, endField, {format, formatType}, config)
     };
   } else if (format || channelDefType(fieldOrDatumDef) === 'quantitative') {
-    return {
-      signal: `${formatExpr(field, format)}`
-    };
+    const signal = wrapFormatExprToHandleInvalidValues({
+      mainFormatExpr: builtInFormatExpr(field, format),
+      fieldExpr: field
+    });
+    return {signal};
   } else {
-    return {signal: `isValid(${field}) ? ${field} : ""+${field}`};
+    return {signal: toStringExpr(field)};
   }
+}
+
+function toStringExpr(expr: string) {
+  return `"" + ${expr}`;
 }
 
 function fieldToFormat(
@@ -143,16 +159,14 @@ function fieldToFormat(
 
 export function formatCustomType({
   fieldOrDatumDef,
-  format,
-  formatType,
   expr,
   normalizeStack,
   config,
+  formatMixins,
   field
 }: {
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>;
-  format: string | Dict<unknown>;
-  formatType: string;
+  formatMixins: FormatMixins<CustomFormatType>;
   expr?: 'datum' | 'parent' | 'datum.datum';
   normalizeStack?: boolean;
   config: Config;
@@ -167,10 +181,15 @@ export function formatCustomType({
   ) {
     const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
     return {
-      signal: binFormatExpression(field, endField, format, formatType, config)
+      signal: binFormatExpression(field, endField, formatMixins, config)
     };
   }
-  return {signal: customFormatExpr(formatType, field, format)};
+  const {format, formatType} = formatMixins;
+  const signal = wrapFormatExprToHandleInvalidValues({
+    mainFormatExpr: customFormatExpr(formatType, field, format),
+    fieldExpr: field
+  });
+  return {signal};
 }
 
 export function guideFormat(
@@ -289,31 +308,54 @@ export function timeFormat({
   return omitTimeFormatConfig ? undefined : config.timeFormat;
 }
 
-function formatExpr(field: string, format: string) {
+function builtInFormatExpr(field: string, format: string) {
   return `format(${field}, "${format || ''}")`;
 }
 
-function binNumberFormatExpr(field: string, format: string | Dict<unknown>, formatType: string, config: Config) {
+/**
+ * return format expr for number bin's start/end
+ */
+function binExtentFormatExpr(field: string, format: string | Dict<unknown>, formatType: string, config: Config) {
   if (isCustomFormatType(formatType)) {
     return customFormatExpr(formatType, field, format);
   }
+  format = (isString(format) ? format : undefined) ?? config.numberFormat;
+  return builtInFormatExpr(field, format);
+}
 
-  return formatExpr(field, (isString(format) ? format : undefined) ?? config.numberFormat);
+function wrapFormatExprToHandleInvalidValues({
+  fieldExpr,
+  mainFormatExpr
+}: {
+  mainFormatExpr: string;
+  fieldExpr: string;
+}): string {
+  return `${fieldValidPredicate(fieldExpr, false)} ? ${toStringExpr(fieldExpr)} : ${mainFormatExpr}`;
 }
 
 export function binFormatExpression(
   startField: string,
   endField: string,
-  format: string | Dict<unknown>,
-  formatType: string,
+  {format, formatType}: FormatMixins,
   config: Config
 ): string {
   if (format === undefined && formatType === undefined && config.customFormatTypes && config.numberFormatType) {
-    return binFormatExpression(startField, endField, config.numberFormat, config.numberFormatType, config);
+    return binFormatExpression(
+      startField,
+      endField,
+      {
+        format: config.numberFormat,
+        formatType: config.numberFormatType
+      },
+      config
+    );
   }
-  const start = binNumberFormatExpr(startField, format, formatType, config);
-  const end = binNumberFormatExpr(endField, format, formatType, config);
-  return `${fieldValidPredicate(startField, false)} ? "null" : ${start} + "${BIN_RANGE_DELIMITER}" + ${end}`;
+  const start = binExtentFormatExpr(startField, format, formatType, config);
+  const end = binExtentFormatExpr(endField, format, formatType, config);
+  return wrapFormatExprToHandleInvalidValues({
+    fieldExpr: startField,
+    mainFormatExpr: `${start} + "${BIN_RANGE_DELIMITER}" + ${end}`
+  });
 }
 
 /**

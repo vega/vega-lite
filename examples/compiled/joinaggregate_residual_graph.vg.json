@@ -48,7 +48,7 @@
           "stroke": {"scale": "color", "field": "RatingDelta"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Release Date: \" + (timeFormat(datum[\"Release Date\"], '%b %d, %Y')) + \"; Rating Delta: \" + (format(datum[\"RatingDelta\"], \"\"))"
+            "signal": "\"Release Date: \" + (!isValid(datum[\"Release Date\"]) || !isFinite(+datum[\"Release Date\"]) ? \"\" + datum[\"Release Date\"] : timeFormat(datum[\"Release Date\"], '%b %d, %Y')) + \"; Rating Delta: \" + (!isValid(datum[\"RatingDelta\"]) || !isFinite(+datum[\"RatingDelta\"]) ? \"\" + datum[\"RatingDelta\"] : format(datum[\"RatingDelta\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Release Date"},
           "y": {"scale": "y", "field": "RatingDelta"}

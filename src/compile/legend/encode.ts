@@ -156,8 +156,7 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
     text = formatCustomType({
       fieldOrDatumDef,
       field: 'datum.value',
-      format,
-      formatType,
+      formatMixins: {format, formatType},
       config
     });
   } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
@@ -165,8 +164,10 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
       text = formatCustomType({
         fieldOrDatumDef,
         field: 'datum.value',
-        format: config.numberFormat,
-        formatType: config.numberFormatType,
+        formatMixins: {
+          format: config.numberFormat,
+          formatType: config.numberFormatType
+        },
         config
       });
     } else if (
@@ -178,8 +179,10 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
       text = formatCustomType({
         fieldOrDatumDef,
         field: 'datum.value',
-        format: config.timeFormat,
-        formatType: config.timeFormatType,
+        formatMixins: {
+          format: config.timeFormat,
+          formatType: config.timeFormatType
+        },
         config
       });
     }

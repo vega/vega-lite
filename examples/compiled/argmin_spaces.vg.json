@@ -81,11 +81,11 @@
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Fighter Name\": isValid(datum[\"Fighter Name\"]) ? datum[\"Fighter Name\"] : \"\"+datum[\"Fighter Name\"], \"Min of Place Rank\": format(datum[\"min_Place Rank\"], \"\"), \"Fighting Style for min Place Rank\": isValid(datum[\"argmin_Place Rank\"][\"Fighting Style\"]) ? datum[\"argmin_Place Rank\"][\"Fighting Style\"] : \"\"+datum[\"argmin_Place Rank\"][\"Fighting Style\"]}"
+            "signal": "{\"Fighter Name\": \"\" + datum[\"Fighter Name\"], \"Min of Place Rank\": !isValid(datum[\"min_Place Rank\"]) || !isFinite(+datum[\"min_Place Rank\"]) ? \"\" + datum[\"min_Place Rank\"] : format(datum[\"min_Place Rank\"], \"\"), \"Fighting Style for min Place Rank\": \"\" + datum[\"argmin_Place Rank\"][\"Fighting Style\"]}"
           },
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Min of Place Rank: \" + (format(datum[\"min_Place Rank\"], \"\")) + \"; Fighter Name: \" + (isValid(datum[\"Fighter Name\"]) ? datum[\"Fighter Name\"] : \"\"+datum[\"Fighter Name\"]) + \"; Fighting Style for min Place Rank: \" + (isValid(datum[\"argmin_Place Rank\"][\"Fighting Style\"]) ? datum[\"argmin_Place Rank\"][\"Fighting Style\"] : \"\"+datum[\"argmin_Place Rank\"][\"Fighting Style\"])"
+            "signal": "\"Min of Place Rank: \" + (!isValid(datum[\"min_Place Rank\"]) || !isFinite(+datum[\"min_Place Rank\"]) ? \"\" + datum[\"min_Place Rank\"] : format(datum[\"min_Place Rank\"], \"\")) + \"; Fighter Name: \" + (\"\" + datum[\"Fighter Name\"]) + \"; Fighting Style for min Place Rank: \" + (\"\" + datum[\"argmin_Place Rank\"][\"Fighting Style\"])"
           },
           "x": {"scale": "x", "field": "min_Place Rank"},
           "y": {"scale": "y", "field": "Fighter Name"}

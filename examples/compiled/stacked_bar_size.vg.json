@@ -53,7 +53,7 @@
           "opacity": {"value": 0.5},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; weather: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"])"
+            "signal": "\"date (month): \" + (!isValid(datum[\"month_date\"]) || !isFinite(+datum[\"month_date\"]) ? \"\" + datum[\"month_date\"] : timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\")) + \"; weather: \" + (\"\" + datum[\"weather\"])"
           },
           "xc": {"scale": "x", "field": "month_date", "band": 0.5},
           "width": {"scale": "size", "field": "weather"},

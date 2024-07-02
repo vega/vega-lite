@@ -43,7 +43,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; y: \" + (format(datum[\"y\"], \"\"))"
+            "signal": "\"x: \" + (!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"]) ? \"\" + datum[\"x\"] : format(datum[\"x\"], \"\")) + \"; y: \" + (!isValid(datum[\"y\"]) || !isFinite(+datum[\"y\"]) ? \"\" + datum[\"y\"] : format(datum[\"y\"], \"\"))"
           },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "y"}

@@ -48,11 +48,9 @@
         "update": {
           "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
-          "tooltip": {
-            "signal": "isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]"
-          },
+          "tooltip": {"signal": "\"\" + datum[\"variety\"]"},
           "description": {
-            "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\"))"
+            "signal": "\"yield: \" + (!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"]) ? \"\" + datum[\"lower_yield\"] : format(datum[\"lower_yield\"], \"\")) + \"; variety: \" + (\"\" + datum[\"variety\"]) + \"; upper_yield: \" + (!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"]) ? \"\" + datum[\"upper_yield\"] : format(datum[\"upper_yield\"], \"\"))"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "x2": {"scale": "x", "field": "upper_yield"},

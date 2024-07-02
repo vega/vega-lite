@@ -575,7 +575,7 @@
         "update": {
           "fill": {"scale": "color", "field": "__count"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"Cylinders: \" + (\"\" + datum[\"Cylinders\"]) + \"; Origin: \" + (\"\" + datum[\"Origin\"]) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

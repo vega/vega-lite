@@ -70,7 +70,7 @@
         "update": {
           "stroke": {"value": "#ccc"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"key: \" + (\"\" + datum[\"key\"]) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 0},
@@ -106,10 +106,10 @@
               "stroke": {"scale": "color", "field": "Species"},
               "opacity": {"value": 0.3},
               "tooltip": {
-                "signal": "{\"Beak Length (mm)\": format(datum[\"Beak Length (mm)\"], \"\"), \"Beak Depth (mm)\": format(datum[\"Beak Depth (mm)\"], \"\"), \"Flipper Length (mm)\": format(datum[\"Flipper Length (mm)\"], \"\"), \"Body Mass (g)\": format(datum[\"Body Mass (g)\"], \"\")}"
+                "signal": "{\"Beak Length (mm)\": !isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"]) ? \"\" + datum[\"Beak Length (mm)\"] : format(datum[\"Beak Length (mm)\"], \"\"), \"Beak Depth (mm)\": !isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"]) ? \"\" + datum[\"Beak Depth (mm)\"] : format(datum[\"Beak Depth (mm)\"], \"\"), \"Flipper Length (mm)\": !isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"]) ? \"\" + datum[\"Flipper Length (mm)\"] : format(datum[\"Flipper Length (mm)\"], \"\"), \"Body Mass (g)\": !isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\")}"
               },
               "description": {
-                "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; norm_val: \" + (format(datum[\"norm_val\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; index: \" + (isValid(datum[\"index\"]) ? datum[\"index\"] : \"\"+datum[\"index\"]) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\"))"
+                "signal": "\"key: \" + (\"\" + datum[\"key\"]) + \"; norm_val: \" + (!isValid(datum[\"norm_val\"]) || !isFinite(+datum[\"norm_val\"]) ? \"\" + datum[\"norm_val\"] : format(datum[\"norm_val\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"]) + \"; index: \" + (\"\" + datum[\"index\"]) + \"; Beak Length (mm): \" + (!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"]) ? \"\" + datum[\"Beak Length (mm)\"] : format(datum[\"Beak Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"]) ? \"\" + datum[\"Beak Depth (mm)\"] : format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"]) ? \"\" + datum[\"Flipper Length (mm)\"] : format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\"))"
               },
               "x": {"scale": "x", "field": "key", "band": 0.5},
               "y": {"scale": "y", "field": "norm_val"},
@@ -130,11 +130,13 @@
         "update": {
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Max of max: \" + (format(datum[\"max_max\"], \"\"))"
+            "signal": "\"key: \" + (\"\" + datum[\"key\"]) + \"; Max of max: \" + (!isValid(datum[\"max_max\"]) || !isFinite(+datum[\"max_max\"]) ? \"\" + datum[\"max_max\"] : format(datum[\"max_max\"], \"\"))"
           },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 0},
-          "text": {"signal": "format(datum[\"max_max\"], \"\")"}
+          "text": {
+            "signal": "!isValid(datum[\"max_max\"]) || !isFinite(+datum[\"max_max\"]) ? \"\" + datum[\"max_max\"] : format(datum[\"max_max\"], \"\")"
+          }
         }
       }
     },
@@ -148,9 +150,7 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "#ccc"},
           "ariaRoleDescription": {"value": "tick"},
-          "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
-          },
+          "description": {"signal": "\"key: \" + (\"\" + datum[\"key\"])"},
           "xc": {"scale": "x", "field": "key", "band": 0.5},
           "yc": {"value": 0},
           "width": {"value": 8},
@@ -167,11 +167,13 @@
         "update": {
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Min of mid: \" + (format(datum[\"min_mid\"], \"\"))"
+            "signal": "\"key: \" + (\"\" + datum[\"key\"]) + \"; Min of mid: \" + (!isValid(datum[\"min_mid\"]) || !isFinite(+datum[\"min_mid\"]) ? \"\" + datum[\"min_mid\"] : format(datum[\"min_mid\"], \"\"))"
           },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 150},
-          "text": {"signal": "format(datum[\"min_mid\"], \"\")"}
+          "text": {
+            "signal": "!isValid(datum[\"min_mid\"]) || !isFinite(+datum[\"min_mid\"]) ? \"\" + datum[\"min_mid\"] : format(datum[\"min_mid\"], \"\")"
+          }
         }
       }
     },
@@ -185,9 +187,7 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "#ccc"},
           "ariaRoleDescription": {"value": "tick"},
-          "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
-          },
+          "description": {"signal": "\"key: \" + (\"\" + datum[\"key\"])"},
           "xc": {"scale": "x", "field": "key", "band": 0.5},
           "yc": {"value": 150},
           "width": {"value": 8},
@@ -204,11 +204,13 @@
         "update": {
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Min of min: \" + (format(datum[\"min_min\"], \"\"))"
+            "signal": "\"key: \" + (\"\" + datum[\"key\"]) + \"; Min of min: \" + (!isValid(datum[\"min_min\"]) || !isFinite(+datum[\"min_min\"]) ? \"\" + datum[\"min_min\"] : format(datum[\"min_min\"], \"\"))"
           },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 300},
-          "text": {"signal": "format(datum[\"min_min\"], \"\")"}
+          "text": {
+            "signal": "!isValid(datum[\"min_min\"]) || !isFinite(+datum[\"min_min\"]) ? \"\" + datum[\"min_min\"] : format(datum[\"min_min\"], \"\")"
+          }
         }
       }
     },
@@ -222,9 +224,7 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "#ccc"},
           "ariaRoleDescription": {"value": "tick"},
-          "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
-          },
+          "description": {"signal": "\"key: \" + (\"\" + datum[\"key\"])"},
           "xc": {"scale": "x", "field": "key", "band": 0.5},
           "yc": {"value": 300},
           "width": {"value": 8},

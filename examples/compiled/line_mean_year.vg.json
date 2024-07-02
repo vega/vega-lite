@@ -38,7 +38,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of temp_max: \" + (format(datum[\"mean_temp_max\"], \"\"))"
+            "signal": "\"date (year): \" + (!isValid(datum[\"year_date\"]) || !isFinite(+datum[\"year_date\"]) ? \"\" + datum[\"year_date\"] : timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of temp_max: \" + (!isValid(datum[\"mean_temp_max\"]) || !isFinite(+datum[\"mean_temp_max\"]) ? \"\" + datum[\"mean_temp_max\"] : format(datum[\"mean_temp_max\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_date"},
           "y": {"scale": "y", "field": "mean_temp_max"},

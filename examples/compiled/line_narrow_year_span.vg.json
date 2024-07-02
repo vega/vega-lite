@@ -44,7 +44,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (format(datum[\"average_price\"], \"\"))"
+            "signal": "\"date (year): \" + (!isValid(datum[\"year_date\"]) || !isFinite(+datum[\"year_date\"]) ? \"\" + datum[\"year_date\"] : timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (!isValid(datum[\"average_price\"]) || !isFinite(+datum[\"average_price\"]) ? \"\" + datum[\"average_price\"] : format(datum[\"average_price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_date"},
           "y": {"scale": "y", "field": "average_price"},

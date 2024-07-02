@@ -73,7 +73,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"distance (binned): \" + (!isValid(datum[\"bin_maxbins_10_distance\"]) || !isFinite(+datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"distance (binned): \" + (!isValid(datum[\"bin_maxbins_10_distance\"]) || !isFinite(+datum[\"bin_maxbins_10_distance\"]) ? \"\" + datum[\"bin_maxbins_10_distance\"] : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\")) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
           },
           "x2": {
             "scale": "x",
@@ -104,7 +104,7 @@
           "fill": {"value": "goldenrod"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"distance (binned): \" + (!isValid(datum[\"bin_maxbins_10_distance\"]) || !isFinite(+datum[\"bin_maxbins_10_distance\"]) ? \"null\" : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"distance (binned): \" + (!isValid(datum[\"bin_maxbins_10_distance\"]) || !isFinite(+datum[\"bin_maxbins_10_distance\"]) ? \"\" + datum[\"bin_maxbins_10_distance\"] : format(datum[\"bin_maxbins_10_distance\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_distance_end\"], \"\")) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
           },
           "x2": {
             "scale": "x",

@@ -342,7 +342,7 @@
               "stroke": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"
+                "signal": "\"Horsepower: \" + (!isValid(datum[\"Horsepower\"]) || !isFinite(+datum[\"Horsepower\"]) ? \"\" + datum[\"Horsepower\"] : format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (!isValid(datum[\"Miles_per_Gallon\"]) || !isFinite(+datum[\"Miles_per_Gallon\"]) ? \"\" + datum[\"Miles_per_Gallon\"] : format(datum[\"Miles_per_Gallon\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "Horsepower"},
               "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"}
@@ -472,7 +472,7 @@
               "stroke": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Displacement: \" + (format(datum[\"Displacement\"], \"\"))"
+                "signal": "\"Acceleration: \" + (!isValid(datum[\"Acceleration\"]) || !isFinite(+datum[\"Acceleration\"]) ? \"\" + datum[\"Acceleration\"] : format(datum[\"Acceleration\"], \"\")) + \"; Displacement: \" + (!isValid(datum[\"Displacement\"]) || !isFinite(+datum[\"Displacement\"]) ? \"\" + datum[\"Displacement\"] : format(datum[\"Displacement\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "Acceleration"},
               "y": {"scale": "concat_1_y", "field": "Displacement"}

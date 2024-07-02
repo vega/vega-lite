@@ -87,7 +87,7 @@
           "fill": {"value": "orange"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"lon: \" + (format(datum[\"lon\"], \"\")) + \"; lat: \" + (format(datum[\"lat\"], \"\"))"
+            "signal": "\"lon: \" + (!isValid(datum[\"lon\"]) || !isFinite(+datum[\"lon\"]) ? \"\" + datum[\"lon\"] : format(datum[\"lon\"], \"\")) + \"; lat: \" + (!isValid(datum[\"lat\"]) || !isFinite(+datum[\"lat\"]) ? \"\" + datum[\"lat\"] : format(datum[\"lat\"], \"\"))"
           },
           "x": {"field": "layer_1_layer_0_x"},
           "y": {"field": "layer_1_layer_0_y"},
@@ -105,13 +105,11 @@
           "dy": {"value": -10},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"lon: \" + (format(datum[\"lon\"], \"\")) + \"; lat: \" + (format(datum[\"lat\"], \"\")) + \"; city: \" + (isValid(datum[\"city\"]) ? datum[\"city\"] : \"\"+datum[\"city\"])"
+            "signal": "\"lon: \" + (!isValid(datum[\"lon\"]) || !isFinite(+datum[\"lon\"]) ? \"\" + datum[\"lon\"] : format(datum[\"lon\"], \"\")) + \"; lat: \" + (!isValid(datum[\"lat\"]) || !isFinite(+datum[\"lat\"]) ? \"\" + datum[\"lat\"] : format(datum[\"lat\"], \"\")) + \"; city: \" + (\"\" + datum[\"city\"])"
           },
           "x": {"field": "layer_1_layer_1_x"},
           "y": {"field": "layer_1_layer_1_y"},
-          "text": {
-            "signal": "isValid(datum[\"city\"]) ? datum[\"city\"] : \"\"+datum[\"city\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"city\"]"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }

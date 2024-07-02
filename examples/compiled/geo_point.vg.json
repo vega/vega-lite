@@ -45,7 +45,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\"))"
+            "signal": "\"longitude: \" + (!isValid(datum[\"longitude\"]) || !isFinite(+datum[\"longitude\"]) ? \"\" + datum[\"longitude\"] : format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (!isValid(datum[\"latitude\"]) || !isFinite(+datum[\"latitude\"]) ? \"\" + datum[\"latitude\"] : format(datum[\"latitude\"], \"\"))"
           },
           "x": {"field": "x"},
           "y": {"field": "y"},

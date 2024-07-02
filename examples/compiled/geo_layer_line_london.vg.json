@@ -76,13 +76,11 @@
           "fill": {"value": "black"},
           "opacity": {"value": 0.6},
           "description": {
-            "signal": "\"cx: \" + (format(datum[\"cx\"], \"\")) + \"; cy: \" + (format(datum[\"cy\"], \"\")) + \"; bLabel: \" + (isValid(datum[\"bLabel\"]) ? datum[\"bLabel\"] : \"\"+datum[\"bLabel\"])"
+            "signal": "\"cx: \" + (!isValid(datum[\"cx\"]) || !isFinite(+datum[\"cx\"]) ? \"\" + datum[\"cx\"] : format(datum[\"cx\"], \"\")) + \"; cy: \" + (!isValid(datum[\"cy\"]) || !isFinite(+datum[\"cy\"]) ? \"\" + datum[\"cy\"] : format(datum[\"cy\"], \"\")) + \"; bLabel: \" + (\"\" + datum[\"bLabel\"])"
           },
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
-          "text": {
-            "signal": "isValid(datum[\"bLabel\"]) ? datum[\"bLabel\"] : \"\"+datum[\"bLabel\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"bLabel\"]"},
           "fontSize": {"value": 8},
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
@@ -100,9 +98,7 @@
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "id"},
           "ariaRoleDescription": {"value": "geoshape"},
-          "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
-          }
+          "description": {"signal": "\"id: \" + (\"\" + datum[\"id\"])"}
         }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]

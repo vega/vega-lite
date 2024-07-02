@@ -41,7 +41,7 @@
           "orient": {"value": "horizontal"},
           "fill": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"Sum of Weight_in_lbs: \" + (format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"Sum of Weight_in_lbs: \" + (!isValid(datum[\"sum_Weight_in_lbs\"]) || !isFinite(+datum[\"sum_Weight_in_lbs\"]) ? \"\" + datum[\"sum_Weight_in_lbs\"] : format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; Year (year): \" + (!isValid(datum[\"year_Year\"]) || !isFinite(+datum[\"year_Year\"]) ? \"\" + datum[\"year_Year\"] : timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
           "x": {"scale": "x", "field": "sum_Weight_in_lbs"},
           "x2": {"scale": "x", "value": 0},

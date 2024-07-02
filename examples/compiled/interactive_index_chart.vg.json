@@ -170,7 +170,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y'))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"signal": "height", "mult": 0.5}
@@ -227,7 +227,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; indexed_price: \" + (format(datum[\"indexed_price\"], \"%\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; indexed_price: \" + (!isValid(datum[\"indexed_price\"]) || !isFinite(+datum[\"indexed_price\"]) ? \"\" + datum[\"indexed_price\"] : format(datum[\"indexed_price\"], \"%\")) + \"; symbol: \" + (\"\" + datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "indexed_price"},
@@ -250,7 +250,7 @@
           "strokeWidth": {"value": 0.5},
           "stroke": {"value": "firebrick"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y'))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 0},
@@ -270,12 +270,12 @@
           "fontWeight": {"value": 100},
           "fill": {"value": "firebrick"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; date (year-month): \" + (!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"]) ? \"\" + datum[\"yearmonth_date\"] : timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 310},
           "text": {
-            "signal": "timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            "signal": "!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"]) ? \"\" + datum[\"yearmonth_date\"] : timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
           },
           "baseline": {"value": "middle"}
         }

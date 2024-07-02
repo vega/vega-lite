@@ -96,7 +96,7 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+                "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"price\"]) || !isFinite(+datum[\"price\"]) ? \"\" + datum[\"price\"] : format(datum[\"price\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "date"},
               "y": {"scale": "concat_0_y", "field": "price_end"},
@@ -387,7 +387,7 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+                "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"price\"]) || !isFinite(+datum[\"price\"]) ? \"\" + datum[\"price\"] : format(datum[\"price\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "date"},
               "y": {"scale": "concat_1_y", "field": "price_end"},

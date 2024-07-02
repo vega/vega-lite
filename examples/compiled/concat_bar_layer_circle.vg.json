@@ -152,7 +152,7 @@
               "opacity": {"value": 0.4},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Rotten Tomatoes Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"], \"\")) + \"; All Movies Count: \" + (format(datum[\"__count\"], \"\"))"
+                "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"\" + datum[\"bin_maxbins_10_IMDB Rating\"] : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Rotten Tomatoes Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) ? \"\" + datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"] : format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"], \"\")) + \"; All Movies Count: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
               },
               "x": {
                 "signal": "scale(\"concat_0_x\", 0.5 * datum[\"bin_maxbins_10_IMDB Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB Rating_end\"])"
@@ -176,7 +176,7 @@
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Rotten Tomatoes Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"], \"\")) + \"; Selected Category Count: \" + (format(datum[\"__count\"], \"\"))"
+                "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"\" + datum[\"bin_maxbins_10_IMDB Rating\"] : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Rotten Tomatoes Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) ? \"\" + datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"] : format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Rotten Tomatoes Rating_end\"], \"\")) + \"; Selected Category Count: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
               },
               "x": {
                 "signal": "scale(\"concat_0_x\", 0.5 * datum[\"bin_maxbins_10_IMDB Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB Rating_end\"])"
@@ -312,7 +312,7 @@
               ],
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+                "signal": "\"Major Genre: \" + (\"\" + datum[\"Major Genre\"]) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "Major Genre"},
               "width": {"signal": "max(0.25, bandwidth('concat_1_x'))"},

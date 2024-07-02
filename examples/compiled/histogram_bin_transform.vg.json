@@ -49,7 +49,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"binned rating\"]) || !isFinite(+datum[\"binned rating\"]) ? \"null\" : format(datum[\"binned rating\"], \"\") + \" – \" + format(datum[\"binned rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"binned rating\"]) || !isFinite(+datum[\"binned rating\"]) ? \"\" + datum[\"binned rating\"] : format(datum[\"binned rating\"], \"\") + \" – \" + format(datum[\"binned rating_end\"], \"\")) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
           },
           "x2": {
             "scale": "x",

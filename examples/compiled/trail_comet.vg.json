@@ -81,9 +81,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"site\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"site\"]) ? parent[\"site\"] : \"\"+parent[\"site\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"site\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -152,10 +150,10 @@
                 "update": {
                   "fill": {"scale": "color", "field": "delta"},
                   "tooltip": {
-                    "signal": "{\"year\": format(datum[\"year\"], \"\"), \"yield\": isValid(datum[\"yield\"]) ? datum[\"yield\"] : \"\"+datum[\"yield\"]}"
+                    "signal": "{\"year\": !isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"]) ? \"\" + datum[\"year\"] : format(datum[\"year\"], \"\"), \"yield\": \"\" + datum[\"yield\"]}"
                   },
                   "description": {
-                    "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; Yield Delta (%): \" + (format(datum[\"delta\"], \"\")) + \"; Barley Yield (bushels/acre): \" + (format(datum[\"yield\"], \"\")) + \"; yield: \" + (isValid(datum[\"yield\"]) ? datum[\"yield\"] : \"\"+datum[\"yield\"])"
+                    "signal": "\"year: \" + (\"\" + datum[\"year\"]) + \"; Variety: \" + (\"\" + datum[\"variety\"]) + \"; Yield Delta (%): \" + (!isValid(datum[\"delta\"]) || !isFinite(+datum[\"delta\"]) ? \"\" + datum[\"delta\"] : format(datum[\"delta\"], \"\")) + \"; Barley Yield (bushels/acre): \" + (!isValid(datum[\"yield\"]) || !isFinite(+datum[\"yield\"]) ? \"\" + datum[\"yield\"] : format(datum[\"yield\"], \"\")) + \"; yield: \" + (\"\" + datum[\"yield\"])"
                   },
                   "x": {"scale": "x", "field": "year"},
                   "y": {"scale": "y", "field": "variety"},

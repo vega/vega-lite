@@ -72,9 +72,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"group\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"group\"]) ? parent[\"group\"] : \"\"+parent[\"group\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"group\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -107,7 +105,7 @@
               "fill": {"scale": "color", "field": "pct"},
               "ariaRoleDescription": {"value": "geoshape"},
               "description": {
-                "signal": "\"pct: \" + (format(datum[\"pct\"], \"\")) + \"; geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"])"
+                "signal": "\"pct: \" + (!isValid(datum[\"pct\"]) || !isFinite(+datum[\"pct\"]) ? \"\" + datum[\"pct\"] : format(datum[\"pct\"], \"\")) + \"; geo: \" + (\"\" + datum[\"geo\"])"
               }
             }
           },

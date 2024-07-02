@@ -43,7 +43,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Production Budget for max US Gross: \" + (format(datum[\"argmax_US Gross\"][\"Production Budget\"], \"\")) + \"; Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"])"
+            "signal": "\"Production Budget for max US Gross: \" + (!isValid(datum[\"argmax_US Gross\"][\"Production Budget\"]) || !isFinite(+datum[\"argmax_US Gross\"][\"Production Budget\"]) ? \"\" + datum[\"argmax_US Gross\"][\"Production Budget\"] : format(datum[\"argmax_US Gross\"][\"Production Budget\"], \"\")) + \"; Major Genre: \" + (\"\" + datum[\"Major Genre\"])"
           },
           "x": {
             "scale": "x",

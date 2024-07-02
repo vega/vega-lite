@@ -58,7 +58,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"data: \" + (isValid(datum[\"data\"]) ? datum[\"data\"] : \"\"+datum[\"data\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
+            "signal": "\"data: \" + (\"\" + datum[\"data\"]) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\")) + \"; id: \" + (\"\" + datum[\"id\"])"
           },
           "x": {"scale": "x", "field": "data"},
           "y": {

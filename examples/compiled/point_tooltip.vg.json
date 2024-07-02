@@ -30,12 +30,10 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "tooltip": {
-            "signal": "isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]"
-          },
+          "tooltip": {"signal": "\"\" + datum[\"Origin\"]"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+            "signal": "\"Horsepower: \" + (!isValid(datum[\"Horsepower\"]) || !isFinite(+datum[\"Horsepower\"]) ? \"\" + datum[\"Horsepower\"] : format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (!isValid(datum[\"Miles_per_Gallon\"]) || !isFinite(+datum[\"Miles_per_Gallon\"]) ? \"\" + datum[\"Miles_per_Gallon\"] : format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (\"\" + datum[\"Origin\"])"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"}

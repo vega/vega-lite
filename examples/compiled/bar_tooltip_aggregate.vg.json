@@ -34,10 +34,12 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {"signal": "format(datum[\"mean_data\"], \"\")"},
+          "tooltip": {
+            "signal": "!isValid(datum[\"mean_data\"]) || !isFinite(+datum[\"mean_data\"]) ? \"\" + datum[\"mean_data\"] : format(datum[\"mean_data\"], \"\")"
+          },
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"Mean of data: \" + (format(datum[\"mean_data\"], \"\"))"
+            "signal": "\"Mean of data: \" + (!isValid(datum[\"mean_data\"]) || !isFinite(+datum[\"mean_data\"]) ? \"\" + datum[\"mean_data\"] : format(datum[\"mean_data\"], \"\"))"
           },
           "xc": {"signal": "width", "mult": 0.5},
           "yc": {"scale": "y", "field": "mean_data"},

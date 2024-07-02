@@ -93,9 +93,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"category\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"category\"]) ? parent[\"category\"] : \"\"+parent[\"category\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"category\"]"},
         "style": "guide-label",
         "frame": "group",
         "orient": "bottom",
@@ -128,7 +126,7 @@
               "fill": {"scale": "color", "field": "group"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"]) + \"; value: \" + (format(datum[\"value\"], \"\"))"
+                "signal": "\"group: \" + (\"\" + datum[\"group\"]) + \"; value: \" + (!isValid(datum[\"value\"]) || !isFinite(+datum[\"value\"]) ? \"\" + datum[\"value\"] : format(datum[\"value\"], \"\"))"
               },
               "x": {"scale": "x", "field": "group"},
               "width": {"signal": "max(0.25, bandwidth('x'))"},

@@ -45,7 +45,7 @@
           "outerRadius": {"value": 80},
           "fill": {"scale": "color", "field": "category"},
           "description": {
-            "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; order: \" + (isValid(datum[\"order\"]) ? datum[\"order\"] : \"\"+datum[\"order\"])"
+            "signal": "\"value: \" + (!isValid(datum[\"value\"]) || !isFinite(+datum[\"value\"]) ? \"\" + datum[\"value\"] : format(datum[\"value\"], \"\")) + \"; category: \" + (\"\" + datum[\"category\"]) + \"; order: \" + (\"\" + datum[\"order\"])"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},

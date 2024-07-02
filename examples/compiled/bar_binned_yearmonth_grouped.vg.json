@@ -47,7 +47,7 @@
           "fill": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; price: \" + (!isValid(datum[\"price\"]) || !isFinite(+datum[\"price\"]) ? \"\" + datum[\"price\"] : format(datum[\"price\"], \"\")) + \"; symbol: \" + (\"\" + datum[\"symbol\"])"
           },
           "xc": {
             "scale": "x",

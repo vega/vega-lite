@@ -62,11 +62,11 @@
                 {"scale": "color", "field": "c"}
               ],
               "tooltip": {
-                "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                "signal": "{\"a\": !isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\"), \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"), \"c\": !isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"]) ? \"\" + datum[\"c\"] : format(datum[\"c\"], \"\")}"
               },
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
+                "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\")) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")) + \"; c: \" + (!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"]) ? \"\" + datum[\"c\"] : format(datum[\"c\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "a"},
               "y": {"scale": "concat_0_y", "field": "b"}
@@ -147,11 +147,11 @@
               "fill": {"value": "transparent"},
               "stroke": {"value": "#4c78a8"},
               "tooltip": {
-                "signal": "{\"a\": format(datum[\"a\"], \"\"), \"b\": format(datum[\"b\"], \"\"), \"c\": format(datum[\"c\"], \"\")}"
+                "signal": "{\"a\": !isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\"), \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"), \"c\": !isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"]) ? \"\" + datum[\"c\"] : format(datum[\"c\"], \"\")}"
               },
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (format(datum[\"c\"], \"\"))"
+                "signal": "\"a: \" + (!isValid(datum[\"a\"]) || !isFinite(+datum[\"a\"]) ? \"\" + datum[\"a\"] : format(datum[\"a\"], \"\")) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")) + \"; c: \" + (!isValid(datum[\"c\"]) || !isFinite(+datum[\"c\"]) ? \"\" + datum[\"c\"] : format(datum[\"c\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "a"},
               "y": {"scale": "concat_1_y", "field": "b"},

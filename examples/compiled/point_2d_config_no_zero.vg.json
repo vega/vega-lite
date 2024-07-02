@@ -32,7 +32,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"
+            "signal": "\"Horsepower: \" + (!isValid(datum[\"Horsepower\"]) || !isFinite(+datum[\"Horsepower\"]) ? \"\" + datum[\"Horsepower\"] : format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (!isValid(datum[\"Miles_per_Gallon\"]) || !isFinite(+datum[\"Miles_per_Gallon\"]) ? \"\" + datum[\"Miles_per_Gallon\"] : format(datum[\"Miles_per_Gallon\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"}

@@ -113,12 +113,10 @@
         "update": {
           "opacity": {"value": 0.25},
           "fill": {"value": "red"},
-          "tooltip": {
-            "signal": "{\"magnitude\": isValid(datum[\"magnitude\"]) ? datum[\"magnitude\"] : \"\"+datum[\"magnitude\"]}"
-          },
+          "tooltip": {"signal": "{\"magnitude\": \"\" + datum[\"magnitude\"]}"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\")) + \"; magnitude: \" + (format(datum[\"magnitude\"], \"\"))"
+            "signal": "\"longitude: \" + (!isValid(datum[\"longitude\"]) || !isFinite(+datum[\"longitude\"]) ? \"\" + datum[\"longitude\"] : format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (!isValid(datum[\"latitude\"]) || !isFinite(+datum[\"latitude\"]) ? \"\" + datum[\"latitude\"] : format(datum[\"latitude\"], \"\")) + \"; magnitude: \" + (!isValid(datum[\"magnitude\"]) || !isFinite(+datum[\"magnitude\"]) ? \"\" + datum[\"magnitude\"] : format(datum[\"magnitude\"], \"\"))"
           },
           "x": {"field": "layer_2_x"},
           "y": {"field": "layer_2_y"},

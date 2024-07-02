@@ -77,7 +77,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"a (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_a\"], '%d %b')) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a (year-month-date): \" + (!isValid(datum[\"yearmonthdate_a\"]) || !isFinite(+datum[\"yearmonthdate_a\"]) ? \"\" + datum[\"yearmonthdate_a\"] : timeFormat(datum[\"yearmonthdate_a\"], '%d %b')) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonthdate_a"},
           "y": {"scale": "y", "field": "b"},
@@ -98,7 +98,7 @@
           "fill": {"value": "red"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"a (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_a\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"a (year-month-date): \" + (!isValid(datum[\"yearmonthdate_a\"]) || !isFinite(+datum[\"yearmonthdate_a\"]) ? \"\" + datum[\"yearmonthdate_a\"] : timeFormat(datum[\"yearmonthdate_a\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
           "x2": {
             "scale": "x",

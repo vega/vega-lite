@@ -41,7 +41,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Max of temp_max: \" + (format(datum[\"max_temp_max\"], \"\"))"
+            "signal": "\"date (year-month): \" + (!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"]) ? \"\" + datum[\"yearmonth_date\"] : timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Max of temp_max: \" + (!isValid(datum[\"max_temp_max\"]) || !isFinite(+datum[\"max_temp_max\"]) ? \"\" + datum[\"max_temp_max\"] : format(datum[\"max_temp_max\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonth_date"},
           "y": {"scale": "y", "field": "max_temp_max"},

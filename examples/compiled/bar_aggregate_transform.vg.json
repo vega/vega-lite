@@ -50,7 +50,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; mean_acc: \" + (format(datum[\"mean_acc\"], \"\"))"
+            "signal": "\"Cylinders: \" + (\"\" + datum[\"Cylinders\"]) + \"; mean_acc: \" + (!isValid(datum[\"mean_acc\"]) || !isFinite(+datum[\"mean_acc\"]) ? \"\" + datum[\"mean_acc\"] : format(datum[\"mean_acc\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

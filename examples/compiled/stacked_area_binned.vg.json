@@ -91,7 +91,7 @@
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "Major Genre"},
               "description": {
-                "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"])"
+                "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"\" + datum[\"bin_maxbins_10_IMDB Rating\"] : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\")) + \"; Major Genre: \" + (\"\" + datum[\"Major Genre\"])"
               },
               "x": {"scale": "x", "field": "bin_maxbins_10_IMDB Rating_mid"},
               "y": {"scale": "y", "field": "__count_end"},

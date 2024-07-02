@@ -121,7 +121,7 @@
           ],
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; Amount: \" + (format(datum[\"previous_sum\"], \"\")) + \"; sum: \" + (format(datum[\"sum\"], \"\"))"
+            "signal": "\"label: \" + (\"\" + datum[\"label\"]) + \"; Amount: \" + (!isValid(datum[\"previous_sum\"]) || !isFinite(+datum[\"previous_sum\"]) ? \"\" + datum[\"previous_sum\"] : format(datum[\"previous_sum\"], \"\")) + \"; sum: \" + (!isValid(datum[\"sum\"]) || !isFinite(+datum[\"sum\"]) ? \"\" + datum[\"sum\"] : format(datum[\"sum\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "label", "band": 0.5},
           "width": {"value": 45},
@@ -141,7 +141,7 @@
           "strokeWidth": {"value": 2},
           "stroke": {"value": "#404040"},
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\")) + \"; lead: \" + (isValid(datum[\"lead\"]) ? datum[\"lead\"] : \"\"+datum[\"lead\"])"
+            "signal": "\"label: \" + (\"\" + datum[\"label\"]) + \"; sum: \" + (!isValid(datum[\"sum\"]) || !isFinite(+datum[\"sum\"]) ? \"\" + datum[\"sum\"] : format(datum[\"sum\"], \"\")) + \"; lead: \" + (\"\" + datum[\"lead\"])"
           },
           "x": {"scale": "x", "field": "label", "offset": -22.5, "band": 0.5},
           "x2": {"scale": "x", "field": "lead", "offset": 22.5, "band": 0.5},
@@ -160,13 +160,11 @@
           "dy": {"signal": "datum.amount >= 0 ? -4 : 4"},
           "fill": {"value": "#404040"},
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\"))"
+            "signal": "\"label: \" + (\"\" + datum[\"label\"]) + \"; sum: \" + (!isValid(datum[\"sum\"]) || !isFinite(+datum[\"sum\"]) ? \"\" + datum[\"sum\"] : format(datum[\"sum\"], \"\"))"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "sum"},
-          "text": {
-            "signal": "isValid(datum[\"sum\"]) ? datum[\"sum\"] : \"\"+datum[\"sum\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"sum\"]"},
           "align": {"value": "center"}
         }
       }
@@ -188,13 +186,11 @@
             {"value": "white"}
           ],
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; center: \" + (format(datum[\"center\"], \"\")) + \"; text_amount: \" + (isValid(datum[\"text_amount\"]) ? datum[\"text_amount\"] : \"\"+datum[\"text_amount\"])"
+            "signal": "\"label: \" + (\"\" + datum[\"label\"]) + \"; center: \" + (!isValid(datum[\"center\"]) || !isFinite(+datum[\"center\"]) ? \"\" + datum[\"center\"] : format(datum[\"center\"], \"\")) + \"; text_amount: \" + (\"\" + datum[\"text_amount\"])"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "center"},
-          "text": {
-            "signal": "isValid(datum[\"text_amount\"]) ? datum[\"text_amount\"] : \"\"+datum[\"text_amount\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"text_amount\"]"},
           "align": {"value": "center"}
         }
       }

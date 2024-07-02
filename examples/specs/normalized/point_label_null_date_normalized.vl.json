@@ -1,0 +1,45 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "values": [
+      {"a": "Jan 1, 2000", "b": 28},
+      {"a": "Jan 2, 2000", "b": 55},
+      {"a": "Jan 3, 2000", "b": null},
+      {"a": "Jan 4, 2000", "b": 65},
+      {"a": "Jan 5, 2000", "b": 43},
+      {"a": null, "b": 50}
+    ]
+  },
+  "layer": [
+    {
+      "mark": {"type": "point", "invalid": "show", "tooltip": true},
+      "encoding": {
+        "x": {
+          "timeUnit": "yearmonthdate",
+          "field": "a",
+          "type": "temporal",
+          "axis": {"format": "%d %b"}
+        },
+        "y": {"field": "b", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": {"type": "text", "invalid": "show", "baseline": "bottom"},
+      "encoding": {
+        "x": {
+          "timeUnit": "yearmonthdate",
+          "field": "a",
+          "type": "temporal",
+          "axis": {"format": "%d %b"}
+        },
+        "y": {"field": "b", "type": "quantitative"},
+        "text": {
+          "timeUnit": "yearmonthdate",
+          "field": "a",
+          "type": "temporal",
+          "axis": {"format": "%d %b"}
+        }
+      }
+    }
+  ]
+}

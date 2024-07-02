@@ -65,7 +65,7 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Barley Yield: \" + (format(datum[\"mean_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
+            "signal": "\"Barley Yield: \" + (!isValid(datum[\"mean_yield\"]) || !isFinite(+datum[\"mean_yield\"]) ? \"\" + datum[\"mean_yield\"] : format(datum[\"mean_yield\"], \"\")) + \"; variety: \" + (\"\" + datum[\"variety\"])"
           },
           "x": {"scale": "x", "field": "mean_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5}
@@ -82,10 +82,10 @@
           "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Mean of Barley Yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stdev of Barley Yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stdev of Barley Yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
+            "signal": "{\"Mean of Barley Yield\": !isValid(datum[\"center_yield\"]) || !isFinite(+datum[\"center_yield\"]) ? \"\" + datum[\"center_yield\"] : format(datum[\"center_yield\"], \"\"), \"Mean + stdev of Barley Yield\": !isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"]) ? \"\" + datum[\"upper_yield\"] : format(datum[\"upper_yield\"], \"\"), \"Mean - stdev of Barley Yield\": !isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"]) ? \"\" + datum[\"lower_yield\"] : format(datum[\"lower_yield\"], \"\"), \"variety\": \"\" + datum[\"variety\"]}"
           },
           "description": {
-            "signal": "\"Barley Yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Mean of Barley Yield: \" + (format(datum[\"center_yield\"], \"\")) + \"; Mean + stdev of Barley Yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Mean - stdev of Barley Yield: \" + (format(datum[\"lower_yield\"], \"\"))"
+            "signal": "\"Barley Yield: \" + (!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"]) ? \"\" + datum[\"lower_yield\"] : format(datum[\"lower_yield\"], \"\")) + \"; variety: \" + (\"\" + datum[\"variety\"]) + \"; upper_yield: \" + (!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"]) ? \"\" + datum[\"upper_yield\"] : format(datum[\"upper_yield\"], \"\")) + \"; Mean of Barley Yield: \" + (!isValid(datum[\"center_yield\"]) || !isFinite(+datum[\"center_yield\"]) ? \"\" + datum[\"center_yield\"] : format(datum[\"center_yield\"], \"\")) + \"; Mean + stdev of Barley Yield: \" + (!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"]) ? \"\" + datum[\"upper_yield\"] : format(datum[\"upper_yield\"], \"\")) + \"; Mean - stdev of Barley Yield: \" + (!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"]) ? \"\" + datum[\"lower_yield\"] : format(datum[\"lower_yield\"], \"\"))"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "x2": {"scale": "x", "field": "upper_yield"},

@@ -29,8 +29,8 @@ export function textRef(
       return signalOrValueRef(channelDef.value);
     }
     if (isFieldOrDatumDef(channelDef)) {
-      const {format, formatType} = getFormatMixins(channelDef);
-      return formatSignalRef({fieldOrDatumDef: channelDef, format, formatType, expr, config});
+      const formatMixins = getFormatMixins(channelDef);
+      return formatSignalRef({fieldOrDatumDef: channelDef, formatMixins, expr, config});
     }
   }
   return undefined;

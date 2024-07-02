@@ -52,7 +52,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"a (hours): \" + (timeFormat(datum[\"hours_a\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a (hours): \" + (!isValid(datum[\"hours_a\"]) || !isFinite(+datum[\"hours_a\"]) ? \"\" + datum[\"hours_a\"] : timeFormat(datum[\"hours_a\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
           },
           "x2": {
             "scale": "x",

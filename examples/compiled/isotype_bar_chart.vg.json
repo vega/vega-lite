@@ -64,9 +64,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"country\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"country\"]) ? parent[\"country\"] : \"\"+parent[\"country\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"country\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -100,7 +98,7 @@
               "fill": {"scale": "color", "field": "animal"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"col: \" + (isValid(datum[\"col\"]) ? datum[\"col\"] : \"\"+datum[\"col\"]) + \"; animal: \" + (isValid(datum[\"animal\"]) ? datum[\"animal\"] : \"\"+datum[\"animal\"])"
+                "signal": "\"col: \" + (\"\" + datum[\"col\"]) + \"; animal: \" + (\"\" + datum[\"animal\"])"
               },
               "x": {"scale": "x", "field": "col"},
               "y": {"scale": "y", "field": "animal"},

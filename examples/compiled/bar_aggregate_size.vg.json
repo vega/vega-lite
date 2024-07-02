@@ -44,7 +44,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people\"], \"\"))"
+            "signal": "\"age: \" + (\"\" + datum[\"age\"]) + \"; population: \" + (!isValid(datum[\"sum_people\"]) || !isFinite(+datum[\"sum_people\"]) ? \"\" + datum[\"sum_people\"] : format(datum[\"sum_people\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "width": {"value": 10},

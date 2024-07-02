@@ -124,7 +124,7 @@
               "fill": {"scale": "color", "field": "gender"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"population: \" + (format(datum[\"sum_people\"], \"s\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                "signal": "\"population: \" + (!isValid(datum[\"sum_people\"]) || !isFinite(+datum[\"sum_people\"]) ? \"\" + datum[\"sum_people\"] : format(datum[\"sum_people\"], \"s\")) + \"; age: \" + (\"\" + datum[\"age\"]) + \"; gender: \" + (\"\" + datum[\"gender\"])"
               },
               "x": {"scale": "concat_0_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_0_x", "field": "sum_people_start"},
@@ -169,12 +169,12 @@
             "update": {
               "align": {"value": "center"},
               "fill": {"value": "black"},
-              "description": {
-                "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
-              },
+              "description": {"signal": "\"age: \" + (\"\" + datum[\"age\"])"},
               "x": {"signal": "concat_1_width", "mult": 0.5},
               "y": {"scale": "concat_1_y", "field": "age"},
-              "text": {"signal": "format(datum[\"age\"], \"\")"},
+              "text": {
+                "signal": "!isValid(datum[\"age\"]) || !isFinite(+datum[\"age\"]) ? \"\" + datum[\"age\"] : format(datum[\"age\"], \"\")"
+              },
               "baseline": {"value": "middle"}
             }
           }
@@ -203,7 +203,7 @@
               "fill": {"scale": "color", "field": "gender"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"population: \" + (format(datum[\"sum_people\"], \"s\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                "signal": "\"population: \" + (!isValid(datum[\"sum_people\"]) || !isFinite(+datum[\"sum_people\"]) ? \"\" + datum[\"sum_people\"] : format(datum[\"sum_people\"], \"s\")) + \"; age: \" + (\"\" + datum[\"age\"]) + \"; gender: \" + (\"\" + datum[\"gender\"])"
               },
               "x": {"scale": "concat_2_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_2_x", "field": "sum_people_start"},

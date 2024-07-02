@@ -117,9 +117,7 @@
       "name": "trellis_barley_cell",
       "type": "group",
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"site\"]) ? parent[\"site\"] : \"\"+parent[\"site\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"site\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -178,7 +176,7 @@
               "stroke": {"scale": "trellis_barley_color", "field": "year"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Median of yield: \" + (format(datum[\"median_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+                "signal": "\"Median of yield: \" + (!isValid(datum[\"median_yield\"]) || !isFinite(+datum[\"median_yield\"]) ? \"\" + datum[\"median_yield\"] : format(datum[\"median_yield\"], \"\")) + \"; variety: \" + (\"\" + datum[\"variety\"]) + \"; year: \" + (\"\" + datum[\"year\"])"
               },
               "x": {"scale": "trellis_barley_x", "field": "median_yield"},
               "y": {"scale": "trellis_barley_y", "field": "variety"}

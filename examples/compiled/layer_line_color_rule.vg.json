@@ -58,7 +58,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"price\"]) || !isFinite(+datum[\"price\"]) ? \"\" + datum[\"price\"] : format(datum[\"price\"], \"\")) + \"; symbol: \" + (\"\" + datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -79,7 +79,7 @@
         "update": {
           "stroke": {"scale": "color", "field": "symbol"},
           "description": {
-            "signal": "\"Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"Mean of price: \" + (!isValid(datum[\"mean_price\"]) || !isFinite(+datum[\"mean_price\"]) ? \"\" + datum[\"mean_price\"] : format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (\"\" + datum[\"symbol\"])"
           },
           "x": {"field": {"group": "width"}},
           "x2": {"value": 0},

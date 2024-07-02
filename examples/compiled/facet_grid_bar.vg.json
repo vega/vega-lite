@@ -105,9 +105,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"a\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"a\"]) ? parent[\"a\"] : \"\"+parent[\"a\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"a\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -125,9 +123,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"b\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"b\"]) ? parent[\"b\"] : \"\"+parent[\"b\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"b\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -187,7 +183,7 @@
               "fill": {"scale": "color", "field": "c"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"p: \" + (format(datum[\"p\"], \"%\")) + \"; c: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"]) + \"; settings: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"])"
+                "signal": "\"p: \" + (!isValid(datum[\"p\"]) || !isFinite(+datum[\"p\"]) ? \"\" + datum[\"p\"] : format(datum[\"p\"], \"%\")) + \"; c: \" + (\"\" + datum[\"c\"]) + \"; settings: \" + (\"\" + datum[\"c\"])"
               },
               "x": {"scale": "x", "field": "p_end"},
               "x2": {"scale": "x", "field": "p_start"},

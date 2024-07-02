@@ -80,7 +80,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"time (hours): \" + (timeFormat(datum[\"hours_time\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; time (day): \" + (timeFormat(datum[\"day_time\"], timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of count: \" + (format(datum[\"sum_count\"], \"\"))"
+            "signal": "\"time (hours): \" + (!isValid(datum[\"hours_time\"]) || !isFinite(+datum[\"hours_time\"]) ? \"\" + datum[\"hours_time\"] : timeFormat(datum[\"hours_time\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; time (day): \" + (!isValid(datum[\"day_time\"]) || !isFinite(+datum[\"day_time\"]) ? \"\" + datum[\"day_time\"] : timeFormat(datum[\"day_time\"], timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of count: \" + (!isValid(datum[\"sum_count\"]) || !isFinite(+datum[\"sum_count\"]) ? \"\" + datum[\"sum_count\"] : format(datum[\"sum_count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "hours_time"},
           "y": {"scale": "y", "field": "day_time"},

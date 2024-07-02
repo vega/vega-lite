@@ -91,7 +91,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_IMDB_Rating_end\"], \"\")) + \"; Cumulative Count: \" + (format(datum[\"Cumulative Count\"], \"\"))"
+            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"]) ? \"\" + datum[\"bin_IMDB_Rating\"] : format(datum[\"bin_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_IMDB_Rating_end\"], \"\")) + \"; Cumulative Count: \" + (!isValid(datum[\"Cumulative Count\"]) || !isFinite(+datum[\"Cumulative Count\"]) ? \"\" + datum[\"Cumulative Count\"] : format(datum[\"Cumulative Count\"], \"\"))"
           },
           "x2": {
             "scale": "x",
@@ -123,7 +123,7 @@
           "fill": {"value": "yellow"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_IMDB_Rating_end\"], \"\")) + \"; count: \" + (format(datum[\"count\"], \"\"))"
+            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"]) ? \"\" + datum[\"bin_IMDB_Rating\"] : format(datum[\"bin_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_IMDB_Rating_end\"], \"\")) + \"; count: \" + (!isValid(datum[\"count\"]) || !isFinite(+datum[\"count\"]) ? \"\" + datum[\"count\"] : format(datum[\"count\"], \"\"))"
           },
           "x2": {
             "scale": "x",

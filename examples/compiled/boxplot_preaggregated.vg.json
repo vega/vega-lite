@@ -94,7 +94,7 @@
         "update": {
           "stroke": {"value": "black"},
           "description": {
-            "signal": "\"lower: \" + (format(datum[\"lower\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; upper: \" + (format(datum[\"upper\"], \"\"))"
+            "signal": "\"lower: \" + (!isValid(datum[\"lower\"]) || !isFinite(+datum[\"lower\"]) ? \"\" + datum[\"lower\"] : format(datum[\"lower\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"]) + \"; upper: \" + (!isValid(datum[\"upper\"]) || !isFinite(+datum[\"upper\"]) ? \"\" + datum[\"upper\"] : format(datum[\"upper\"], \"\"))"
           },
           "x": {"scale": "x", "field": "lower"},
           "x2": {"scale": "x", "field": "upper"},
@@ -112,7 +112,7 @@
           "fill": {"scale": "color", "field": "Species"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"q1: \" + (format(datum[\"q1\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; q3: \" + (format(datum[\"q3\"], \"\"))"
+            "signal": "\"q1: \" + (!isValid(datum[\"q1\"]) || !isFinite(+datum[\"q1\"]) ? \"\" + datum[\"q1\"] : format(datum[\"q1\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"]) + \"; q3: \" + (!isValid(datum[\"q3\"]) || !isFinite(+datum[\"q3\"]) ? \"\" + datum[\"q3\"] : format(datum[\"q3\"], \"\"))"
           },
           "x": {"scale": "x", "field": "q1"},
           "x2": {"scale": "x", "field": "q3"},
@@ -132,7 +132,7 @@
           "fill": {"value": "white"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"median: \" + (format(datum[\"median\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+            "signal": "\"median: \" + (!isValid(datum[\"median\"]) || !isFinite(+datum[\"median\"]) ? \"\" + datum[\"median\"] : format(datum[\"median\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
           },
           "xc": {"scale": "x", "field": "median"},
           "yc": {"scale": "y", "field": "Species", "band": 0.5},
@@ -153,7 +153,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"outliers: \" + (format(datum[\"outliers\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+            "signal": "\"outliers: \" + (!isValid(datum[\"outliers\"]) || !isFinite(+datum[\"outliers\"]) ? \"\" + datum[\"outliers\"] : format(datum[\"outliers\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
           },
           "x": {"scale": "x", "field": "outliers"},
           "y": {"scale": "y", "field": "Species", "band": 0.5}

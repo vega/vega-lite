@@ -74,9 +74,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"Origin\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"Origin\"]) ? parent[\"Origin\"] : \"\"+parent[\"Origin\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"Origin\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -138,7 +136,7 @@
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Horsepower (binned): \" + (!isValid(datum[\"bin_maxbins_15_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" – \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+                "signal": "\"Horsepower (binned): \" + (!isValid(datum[\"bin_maxbins_15_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_15_Horsepower\"]) ? \"\" + datum[\"bin_maxbins_15_Horsepower\"] : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" – \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\")) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
               },
               "x2": {
                 "scale": "x",

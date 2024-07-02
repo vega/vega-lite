@@ -61,9 +61,7 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"Cylinders\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"Cylinders\"]) ? parent[\"Cylinders\"] : \"\"+parent[\"Cylinders\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"Cylinders\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -89,9 +87,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"Origin\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"Origin\"]) ? parent[\"Origin\"] : \"\"+parent[\"Origin\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"Origin\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -153,7 +149,7 @@
               "stroke": {"scale": "color", "field": "Cylinders"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+                "signal": "\"Horsepower: \" + (!isValid(datum[\"Horsepower\"]) || !isFinite(+datum[\"Horsepower\"]) ? \"\" + datum[\"Horsepower\"] : format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (!isValid(datum[\"Miles_per_Gallon\"]) || !isFinite(+datum[\"Miles_per_Gallon\"]) ? \"\" + datum[\"Miles_per_Gallon\"] : format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Cylinders: \" + (\"\" + datum[\"Cylinders\"]) + \"; Origin: \" + (\"\" + datum[\"Origin\"])"
               },
               "x": {"scale": "x", "field": "Horsepower"},
               "y": {"scale": "y", "field": "Miles_per_Gallon"},

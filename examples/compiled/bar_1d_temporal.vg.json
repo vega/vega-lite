@@ -29,7 +29,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y'))"
+            "signal": "\"Year: \" + (!isValid(datum[\"Year\"]) || !isFinite(+datum[\"Year\"]) ? \"\" + datum[\"Year\"] : timeFormat(datum[\"Year\"], '%b %d, %Y'))"
           },
           "xc": {"scale": "x", "field": "Year"},
           "width": {"value": 5},

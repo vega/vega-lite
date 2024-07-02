@@ -68,7 +68,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"x1: \" + (format(datum[\"x1\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; x2: \" + (format(datum[\"x2\"], \"\"))"
+            "signal": "\"x1: \" + (!isValid(datum[\"x1\"]) || !isFinite(+datum[\"x1\"]) ? \"\" + datum[\"x1\"] : format(datum[\"x1\"], \"\")) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\")) + \"; x2: \" + (!isValid(datum[\"x2\"]) || !isFinite(+datum[\"x2\"]) ? \"\" + datum[\"x2\"] : format(datum[\"x2\"], \"\"))"
           },
           "x": {"scale": "x", "field": "x1"},
           "x2": {"scale": "x", "field": "x2"},

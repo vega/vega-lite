@@ -161,8 +161,10 @@ describe('Format', () => {
       expect(
         formatSignalRef({
           fieldOrDatumDef: {field: 'foo', type: 'ordinal'},
-          format: '.2f',
-          formatType: undefined,
+          formatMixins: {
+            format: '.2f',
+            formatType: undefined
+          },
           expr: 'parent',
           config: {}
         })
@@ -175,8 +177,10 @@ describe('Format', () => {
       expect(
         formatSignalRef({
           fieldOrDatumDef: {bin: true, field: 'foo', type: 'quantitative'},
-          format: undefined,
-          formatType: undefined,
+          formatMixins: {
+            format: undefined,
+            formatType: undefined
+          },
           expr: 'parent',
           config: {numberFormat: 'abc', numberFormatType: 'customFormatter'}
         })
@@ -190,13 +194,15 @@ describe('Format', () => {
       expect(
         formatSignalRef({
           fieldOrDatumDef: {datum: 200, type: 'quantitative'},
-          format: '.2f',
-          formatType: undefined,
+          formatMixins: {
+            format: '.2f',
+            formatType: undefined
+          },
           expr: 'parent',
           config: {}
         })
       ).toEqual({
-        signal: 'format(200, ".2f")'
+        signal: '!isValid(200) || !isFinite(+200) ? toString(200) : format(200, ".2f")'
       });
     });
 
@@ -204,8 +210,10 @@ describe('Format', () => {
       expect(
         formatSignalRef({
           fieldOrDatumDef: {datum: 200, type: 'quantitative'},
-          format: 'abc',
-          formatType: 'customFormatter',
+          formatMixins: {
+            format: 'abc',
+            formatType: 'customFormatter'
+          },
           expr: 'parent',
           config: {}
         })
@@ -218,8 +226,10 @@ describe('Format', () => {
       expect(
         formatSignalRef({
           fieldOrDatumDef: {datum: 200, type: 'quantitative'},
-          format: undefined,
-          formatType: undefined,
+          formatMixins: {
+            format: undefined,
+            formatType: undefined
+          },
           expr: 'parent',
           config: {numberFormat: 'abc', numberFormatType: 'customFormatter', customFormatTypes: true}
         })
@@ -232,8 +242,10 @@ describe('Format', () => {
       expect(
         formatSignalRef({
           fieldOrDatumDef: {field: 'date', type: 'temporal'},
-          format: undefined,
-          formatType: undefined,
+          formatMixins: {
+            format: undefined,
+            formatType: undefined
+          },
           expr: 'parent',
           config: {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true}
         })
@@ -246,8 +258,7 @@ describe('Format', () => {
       expect(
         formatSignalRef({
           fieldOrDatumDef: {datum: 200, type: 'quantitative'},
-          format: undefined,
-          formatType: undefined,
+          formatMixins: {},
           expr: 'parent',
           normalizeStack: true,
           config: {
@@ -265,8 +276,7 @@ describe('Format', () => {
       expect(
         formatSignalRef({
           fieldOrDatumDef: {datum: 200, type: 'quantitative'},
-          format: undefined,
-          formatType: undefined,
+          formatMixins: {},
           expr: 'parent',
           normalizeStack: true,
           config: {

@@ -138,7 +138,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Body Mass (g): \" + (!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\")) + \"; Beak Length (mm): \" + (!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"]) ? \"\" + datum[\"Beak Length (mm)\"] : format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__x",
@@ -225,7 +225,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Flipper Length (mm): \" + (!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"]) ? \"\" + datum[\"Flipper Length (mm)\"] : format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Beak Length (mm): \" + (!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"]) ? \"\" + datum[\"Beak Length (mm)\"] : format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__x",
@@ -312,7 +312,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Beak Depth (mm): \" + (!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"]) ? \"\" + datum[\"Beak Depth (mm)\"] : format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Beak Length (mm): \" + (!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"]) ? \"\" + datum[\"Beak Length (mm)\"] : format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__x",
@@ -399,7 +399,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Beak Length (mm): \" + (!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"]) ? \"\" + datum[\"Beak Length (mm)\"] : format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__x",
@@ -486,7 +486,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Body Mass (g): \" + (!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\")) + \"; Beak Depth (mm): \" + (!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"]) ? \"\" + datum[\"Beak Depth (mm)\"] : format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__x",
@@ -573,7 +573,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Flipper Length (mm): \" + (!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"]) ? \"\" + datum[\"Flipper Length (mm)\"] : format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"]) ? \"\" + datum[\"Beak Depth (mm)\"] : format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__x",
@@ -660,7 +660,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Beak Depth (mm): \" + (!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"]) ? \"\" + datum[\"Beak Depth (mm)\"] : format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__x",
@@ -747,7 +747,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Beak Length (mm): \" + (!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"]) ? \"\" + datum[\"Beak Length (mm)\"] : format(datum[\"Beak Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"]) ? \"\" + datum[\"Beak Depth (mm)\"] : format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__x",
@@ -834,7 +834,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Body Mass (g): \" + (!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\")) + \"; Flipper Length (mm): \" + (!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"]) ? \"\" + datum[\"Flipper Length (mm)\"] : format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__x",
@@ -921,7 +921,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Flipper Length (mm): \" + (!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"]) ? \"\" + datum[\"Flipper Length (mm)\"] : format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__x",
@@ -1008,7 +1008,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Beak Depth (mm): \" + (!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"]) ? \"\" + datum[\"Beak Depth (mm)\"] : format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"]) ? \"\" + datum[\"Flipper Length (mm)\"] : format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__x",
@@ -1095,7 +1095,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Beak Length (mm): \" + (!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"]) ? \"\" + datum[\"Beak Length (mm)\"] : format(datum[\"Beak Length (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"]) ? \"\" + datum[\"Flipper Length (mm)\"] : format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__x",
@@ -1182,7 +1182,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Body Mass (g): \" + (!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Body_Mass__g_column_Body_Mass__g__x",
@@ -1269,7 +1269,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Flipper Length (mm): \" + (!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"]) ? \"\" + datum[\"Flipper Length (mm)\"] : format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__x",
@@ -1356,7 +1356,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Beak Depth (mm): \" + (!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"]) ? \"\" + datum[\"Beak Depth (mm)\"] : format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Body Mass (g): \" + (!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__x",
@@ -1443,7 +1443,7 @@
               "stroke": {"scale": "color", "field": "Species"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Beak Length (mm): \" + (!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"]) ? \"\" + datum[\"Beak Length (mm)\"] : format(datum[\"Beak Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"]) ? \"\" + datum[\"Body Mass (g)\"] : format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (\"\" + datum[\"Species\"])"
               },
               "x": {
                 "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__x",

@@ -43,7 +43,7 @@
           "stroke": {"scale": "color", "field": "yearmonth_date"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Mean of temp_max: \" + (format(datum[\"mean_temp_max\"], \"\")) + \"; date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"Mean of temp_max: \" + (!isValid(datum[\"mean_temp_max\"]) || !isFinite(+datum[\"mean_temp_max\"]) ? \"\" + datum[\"mean_temp_max\"] : format(datum[\"mean_temp_max\"], \"\")) + \"; date (year-month): \" + (!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"]) ? \"\" + datum[\"yearmonth_date\"] : timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
           "x": {"scale": "x", "field": "mean_temp_max"},
           "y": {"signal": "height", "mult": 0.5}

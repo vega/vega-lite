@@ -53,7 +53,7 @@
         "update": {
           "stroke": {"scale": "color", "value": "US Gross"},
           "description": {
-            "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Mean of US and Worldwide Gross: \" + (format(datum[\"mean_US Gross\"], \"\"))"
+            "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"\" + datum[\"bin_maxbins_10_IMDB Rating\"] : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Mean of US and Worldwide Gross: \" + (!isValid(datum[\"mean_US Gross\"]) || !isFinite(+datum[\"mean_US Gross\"]) ? \"\" + datum[\"mean_US Gross\"] : format(datum[\"mean_US Gross\"], \"\"))"
           },
           "x": {
             "signal": "scale(\"x\", 0.5 * datum[\"bin_maxbins_10_IMDB Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB Rating_end\"])"
@@ -75,7 +75,7 @@
         "update": {
           "stroke": {"scale": "color", "value": "Worldwide Gross"},
           "description": {
-            "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Mean of US and Worldwide Gross: \" + (format(datum[\"mean_Worldwide Gross\"], \"\"))"
+            "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"\" + datum[\"bin_maxbins_10_IMDB Rating\"] : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Mean of US and Worldwide Gross: \" + (!isValid(datum[\"mean_Worldwide Gross\"]) || !isFinite(+datum[\"mean_Worldwide Gross\"]) ? \"\" + datum[\"mean_Worldwide Gross\"] : format(datum[\"mean_Worldwide Gross\"], \"\"))"
           },
           "x": {
             "signal": "scale(\"x\", 0.5 * datum[\"bin_maxbins_10_IMDB Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB Rating_end\"])"

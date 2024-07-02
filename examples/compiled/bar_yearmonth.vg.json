@@ -43,7 +43,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of temp_max: \" + (format(datum[\"mean_temp_max\"], \"\"))"
+            "signal": "\"date (year-month): \" + (!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"]) ? \"\" + datum[\"yearmonth_date\"] : timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of temp_max: \" + (!isValid(datum[\"mean_temp_max\"]) || !isFinite(+datum[\"mean_temp_max\"]) ? \"\" + datum[\"mean_temp_max\"] : format(datum[\"mean_temp_max\"], \"\"))"
           },
           "x2": {
             "scale": "x",

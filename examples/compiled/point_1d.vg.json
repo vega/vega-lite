@@ -31,7 +31,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\"))"
+            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"IMDB Rating\"]) || !isFinite(+datum[\"IMDB Rating\"]) ? \"\" + datum[\"IMDB Rating\"] : format(datum[\"IMDB Rating\"], \"\"))"
           },
           "x": {"scale": "x", "field": "IMDB Rating"},
           "y": {"signal": "height", "mult": 0.5}

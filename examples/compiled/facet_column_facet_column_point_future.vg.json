@@ -50,9 +50,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"Origin\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"Origin\"]) ? parent[\"Origin\"] : \"\"+parent[\"Origin\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"Origin\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -108,9 +106,7 @@
           "from": {"data": "child_column_domain"},
           "sort": {"field": "datum[\"Cylinders\"]", "order": "ascending"},
           "title": {
-            "text": {
-              "signal": "isValid(parent[\"Cylinders\"]) ? parent[\"Cylinders\"] : \"\"+parent[\"Cylinders\"]"
-            },
+            "text": {"signal": "\"\" + parent[\"Cylinders\"]"},
             "style": "guide-label",
             "frame": "group",
             "offset": 10
@@ -180,7 +176,7 @@
                   "stroke": {"value": "#4c78a8"},
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
-                    "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\"))"
+                    "signal": "\"Horsepower: \" + (!isValid(datum[\"Horsepower\"]) || !isFinite(+datum[\"Horsepower\"]) ? \"\" + datum[\"Horsepower\"] : format(datum[\"Horsepower\"], \"\")) + \"; Acceleration: \" + (!isValid(datum[\"Acceleration\"]) || !isFinite(+datum[\"Acceleration\"]) ? \"\" + datum[\"Acceleration\"] : format(datum[\"Acceleration\"], \"\"))"
                   },
                   "x": {"scale": "x", "field": "Horsepower"},
                   "y": {"scale": "y", "field": "Acceleration"}

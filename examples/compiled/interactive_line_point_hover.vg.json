@@ -104,7 +104,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"price\"]) || !isFinite(+datum[\"price\"]) ? \"\" + datum[\"price\"] : format(datum[\"price\"], \"\")) + \"; symbol: \" + (\"\" + datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -132,12 +132,12 @@
             {"value": 0}
           ],
           "tooltip": {
-            "signal": "{\"date\": timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": format(datum[\"price\"], \"\"), \"symbol\": isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]}"
+            "signal": "{\"date\": !isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y'), \"price\": !isValid(datum[\"price\"]) || !isFinite(+datum[\"price\"]) ? \"\" + datum[\"price\"] : format(datum[\"price\"], \"\"), \"symbol\": \"\" + datum[\"symbol\"]}"
           },
           "fill": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"price\"]) || !isFinite(+datum[\"price\"]) ? \"\" + datum[\"price\"] : format(datum[\"price\"], \"\")) + \"; symbol: \" + (\"\" + datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
