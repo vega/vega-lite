@@ -313,7 +313,7 @@ function rectBinPosition({
   const axis = model.component.axes[channel]?.[0];
   const axisTranslate = axis?.get('translate') ?? 0.5; // vega default is 0.5
 
-  const spacing = isXorY(channel) ? getMarkPropOrConfig('binSpacing', markDef, config) ?? 0 : 0;
+  const spacing = isXorY(channel) ? (getMarkPropOrConfig('binSpacing', markDef, config) ?? 0) : 0;
 
   const channel2 = getSecondaryRangeChannel(channel);
   const vgChannel = getVgPositionChannel(channel);

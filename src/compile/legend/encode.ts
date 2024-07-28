@@ -58,7 +58,7 @@ export function symbols(
   const symbolFillColor = legendCmpt.get('symbolFillColor') ?? config.legend.symbolFillColor;
   const symbolStrokeColor = legendCmpt.get('symbolStrokeColor') ?? config.legend.symbolStrokeColor;
 
-  const opacity = symbolOpacity === undefined ? getMaxValue(encoding.opacity) ?? markDef.opacity : undefined;
+  const opacity = symbolOpacity === undefined ? (getMaxValue(encoding.opacity) ?? markDef.opacity) : undefined;
 
   if (out.fill) {
     // for fill legend, we don't want any fill in symbol

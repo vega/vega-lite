@@ -83,7 +83,7 @@ export function dotString(roots: readonly DataFlowNode[]) {
       label: getLabel(node),
       hash:
         node instanceof SourceNode
-          ? node.data.url ?? node.data.name ?? node.debugName
+          ? (node.data.url ?? node.data.name ?? node.debugName)
           : String(node.hash()).replace(/"/g, '')
     };
 
