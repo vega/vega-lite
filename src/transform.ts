@@ -8,6 +8,7 @@ import {ParameterName} from './parameter';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
 import {TimeUnit, TimeUnitTransformParams} from './timeunit';
+import {hasKey} from './util';
 
 export interface FilterTransform {
   /**
@@ -259,7 +260,7 @@ export interface ImputeSequence {
 }
 
 export function isImputeSequence(t: ImputeSequence | any[] | undefined): t is ImputeSequence {
-  return t?.['stop'] !== undefined;
+  return hasKey(t, 'stop');
 }
 
 export interface ImputeTransform extends ImputeParams {
@@ -366,15 +367,15 @@ export interface LookupTransform {
 }
 
 export function isLookup(t: Transform): t is LookupTransform {
-  return 'lookup' in t;
+  return hasKey(t, 'lookup');
 }
 
 export function isLookupData(from: LookupData | LookupSelection): from is LookupData {
-  return 'data' in from;
+  return hasKey(from, 'data');
 }
 
 export function isLookupSelection(from: LookupData | LookupSelection): from is LookupSelection {
-  return 'param' in from;
+  return hasKey(from, 'param');
 }
 
 export interface FoldTransform {

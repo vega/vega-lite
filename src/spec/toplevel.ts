@@ -122,7 +122,7 @@ export function extractTopLevelProperties(t: TopLevelProperties, includeParams: 
   const o: TopLevelProperties<SignalRef> = {};
   for (const p of TOP_LEVEL_PROPERTIES) {
     if (t && t[p] !== undefined) {
-      o[p as any] = signalRefOrValue(t[p]);
+      (o as any)[p] = signalRefOrValue(t[p]);
     }
   }
   if (includeParams) {

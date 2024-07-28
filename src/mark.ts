@@ -1,7 +1,7 @@
 import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
-import {Flag, keys} from './util';
+import {Flag, hasKey, keys} from './util';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
 import {MarkInvalidMixins} from './invalid';
 
@@ -291,7 +291,7 @@ export interface RectBinSpacingMixins {
 export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
 export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any> {
-  return mark['type'];
+  return hasKey(mark, 'type');
 }
 
 export function isPrimitiveMark(mark: AnyMark): mark is Mark {
@@ -453,7 +453,7 @@ export interface RelativeBandSize {
 }
 
 export function isRelativeBandSize(o: number | RelativeBandSize | ExprRef | SignalRef): o is RelativeBandSize {
-  return o && o['band'] != undefined;
+  return o && hasKey(o, 'band');
 }
 
 export const BAR_CORNER_RADIUS_INDEX: Partial<

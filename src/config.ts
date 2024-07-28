@@ -25,7 +25,7 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
-import {duplicate, getFirstDefined, isEmpty, keys, omit} from './util';
+import {duplicate, getFirstDefined, hasKey, isEmpty, keys, omit} from './util';
 
 export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBackground<ES> {
   /**
@@ -72,7 +72,7 @@ export function getViewConfigContinuousSize<ES extends ExprRef | SignalRef>(
   viewConfig: ViewConfig<ES>,
   channel: 'width' | 'height'
 ) {
-  return viewConfig[channel] ?? viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight']; // get width/height for backwards compatibility
+  return (viewConfig as any)[channel] ?? viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight']; // get width/height for backwards compatibility
 }
 
 export function getViewConfigDiscreteStep<ES extends ExprRef | SignalRef>(
@@ -87,7 +87,7 @@ export function getViewConfigDiscreteSize<ES extends ExprRef | SignalRef>(
   viewConfig: ViewConfig<ES>,
   channel: 'width' | 'height'
 ) {
-  const size = viewConfig[channel] ?? viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight']; // get width/height for backwards compatibility
+  const size = (viewConfig as any)[channel] ?? viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight']; // get width/height for backwards compatibility
   return getFirstDefined(size, {step: viewConfig.step});
 }
 
@@ -100,7 +100,7 @@ export const defaultViewConfig: ViewConfig<SignalRef> = {
 };
 
 export function isVgScheme(rangeScheme: string[] | RangeScheme): rangeScheme is RangeScheme {
-  return rangeScheme && !!rangeScheme['scheme'];
+  return rangeScheme && hasKey(rangeScheme, 'scheme');
 }
 
 export type ColorConfig = Record<string, Color>;
@@ -517,7 +517,7 @@ function getAxisConfigInternal(axisConfig: AxisConfig<ExprRef | SignalRef>) {
   const axisConfigInternal: AxisConfig<SignalRef> = {};
   for (const prop of props) {
     const val = axisConfig[prop];
-    axisConfigInternal[prop as any] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
+    (axisConfigInternal as any)[prop] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
       ? signalOrValueRefWithCondition<any>(val)
       : signalRefOrValue(val);
   }
@@ -571,11 +571,9 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   const outputConfig: Config<SignalRef> = omit(mergedConfig, configPropsWithExpr);
 
-  for (const prop of ['background', 'lineBreak', 'padding']) {
-    if (mergedConfig[prop]) {
-      outputConfig[prop] = signalRefOrValue(mergedConfig[prop]);
-    }
-  }
+  outputConfig['background'] = signalRefOrValue(mergedConfig['background']);
+  outputConfig['lineBreak'] = signalRefOrValue(mergedConfig['lineBreak']);
+  outputConfig['padding'] = signalRefOrValue(mergedConfig['padding']);
 
   for (const markConfigType of mark.MARK_CONFIGS) {
     if (mergedConfig[markConfigType]) {
@@ -678,8 +676,8 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
   if (config.axis) {
     // delete condition axis config
     for (const prop in config.axis) {
-      if (isConditionalAxisValue(config.axis[prop])) {
-        delete config.axis[prop];
+      if (isConditionalAxisValue(config.axis[prop as keyof AxisConfig<SignalRef>])) {
+        delete config.axis[prop as keyof AxisConfig<SignalRef>];
       }
     }
   }
@@ -709,14 +707,14 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
   for (const markType of MARK_STYLES) {
     // Remove Vega-Lite-only mark config
     for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
-      delete config[markType][prop];
+      delete (config as any)[markType][prop];
     }
 
     // Remove Vega-Lite only mark-specific config
     const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[markType];
     if (vlOnlyMarkSpecificConfigs) {
       for (const prop of vlOnlyMarkSpecificConfigs) {
-        delete config[markType][prop];
+        delete (config as any)[markType][prop];
       }
     }
 
@@ -728,15 +726,16 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
 
   for (const m of getAllCompositeMarks()) {
     // Clean up the composite mark config as we don't need them in the output specs anymore
-    delete config[m];
+    delete (config as any)[m];
   }
 
   redirectTitleConfig(config);
 
   // Remove empty config objects.
   for (const prop in config) {
-    if (isObject(config[prop]) && isEmpty(config[prop])) {
-      delete config[prop];
+    const p = prop as keyof typeof config;
+    if (isObject(config[p]) && isEmpty(config[p])) {
+      delete config[p];
     }
   }
 
@@ -781,7 +780,9 @@ function redirectConfigToStyleConfig(
   toProp?: string,
   compositeMarkPart?: string
 ) {
-  const propConfig: MarkConfig<SignalRef> = compositeMarkPart ? config[prop][compositeMarkPart] : config[prop];
+  const propConfig: MarkConfig<SignalRef> = compositeMarkPart
+    ? (config as any)[prop][compositeMarkPart]
+    : config[prop as keyof Config<any>];
 
   if (prop === 'view') {
     toProp = 'cell'; // View's default style is "cell"
@@ -799,6 +800,6 @@ function redirectConfigToStyleConfig(
 
   if (!compositeMarkPart) {
     // For composite mark, so don't delete the whole config yet as we have to do multiple redirections.
-    delete config[prop];
+    delete config[prop as keyof Config<any>];
   }
 }

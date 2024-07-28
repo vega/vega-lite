@@ -13,7 +13,6 @@
     "strictNullChecks": false,
     "preserveConstEnums": true,
     "resolveJsonModule": true,
-    "suppressImplicitAnyIndexErrors": true,
     "isolatedModules": true,
     "lib": ["ESNext.Array", "DOM", "DOM.Iterable", "ES2021.String"],
     "ignoreDeprecations": "5.0",

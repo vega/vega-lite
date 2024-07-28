@@ -1,4 +1,4 @@
-import {Gradient, ScaleType, SignalRef, Text} from 'vega';
+import {Gradient, hasOwnProperty, ScaleType, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -83,6 +83,7 @@ import {
   Dict,
   flatAccessWithDatum,
   getFirstDefined,
+  hasKey,
   internalField,
   omit,
   removePathFromField,
@@ -157,7 +158,7 @@ export type ConditionalPredicate<CD extends ConditionalTemplate> = {
 export type ConditionalParameter<CD extends ConditionalTemplate> = ParameterPredicate & CD;
 
 export function isConditionalParameter<T extends ConditionalTemplate>(c: Conditional<T>): c is ConditionalParameter<T> {
-  return c['param'];
+  return hasKey(c, 'param');
 }
 
 export interface ConditionValueDefMixins<V extends Value = Value> {
