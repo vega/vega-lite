@@ -1,3 +1,4 @@
+import {AggregateTransform} from 'vega';
 import {compile} from '../../src/compile/compile';
 import * as log from '../../src/log';
 
@@ -572,4 +573,22 @@ describe('compile/compile', () => {
 
     expect(spec.autosize['resize']).toBeTruthy();
   });
+});
+
+it('should generate right tooltip', () => {
+  const {spec} = compile({
+    data: {url: 'data/population.json'},
+    mark: 'errorband',
+    encoding: {
+      x: {field: 'age', type: 'ordinal'},
+      y: {field: 'people', type: 'quantitative'},
+      tooltip: {field: 'people', aggregate: 'mean'}
+    }
+  });
+
+  expect((spec.data[0].transform[0] as AggregateTransform).as as string[]).toEqual([
+    'mean_people',
+    'center_people',
+    'extent_people'
+  ]);
 });
