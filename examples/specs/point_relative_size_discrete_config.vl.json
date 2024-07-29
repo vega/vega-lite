@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 300,
+  "height": 200,
+  "data": {"url": "data/cars.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Cylinders", "type": "nominal"},
+    "size": {"field": "Acceleration", "type": "quantitative"}
+  },
+  "config": {
+    "scale": {"maxSize": {"relative": 0.4}}
+  }
+}

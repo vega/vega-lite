@@ -1,6 +1,6 @@
 import {SignalRef} from 'vega';
 import {ScaleChannel} from './channel';
-import {Mark, MarkDef} from './mark';
+import {Mark, MarkDef, RelativePointSize} from './mark';
 import {isObject} from 'vega-util';
 
 /**
@@ -67,7 +67,7 @@ export type ScaleInvalidDataConfig = {
 export type ScaleInvalidDataShowAs<C extends ScaleChannel> = ScaleInvalidDataShowAsValue<C> | 'zero-or-min';
 
 export type ScaleInvalidDataShowAsValue<C extends ScaleChannel> = {
-  value: MarkDef<Mark, SignalRef>[C];
+  value: Exclude<MarkDef<Mark, SignalRef>[C], RelativePointSize<SignalRef>>;
 };
 
 export function isScaleInvalidDataIncludeAsValue<C extends ScaleChannel>(

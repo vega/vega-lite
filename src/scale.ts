@@ -19,6 +19,7 @@ import * as log from './log';
 import {ParameterExtent} from './selection';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
 import {contains, Flag, keys} from './util';
+import {RelativePointSize} from './mark';
 
 export const ScaleType = {
   // Continuous - Quantitative
@@ -369,13 +370,13 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
    *
    * @minimum 0
    */
-  minSize?: number;
+  minSize?: number | ES | RelativePointSize<ES>;
 
   /**
    * Default max value for point size scale.
    * @minimum 0
    */
-  maxSize?: number;
+  maxSize?: number | ES | RelativePointSize<ES>;
 
   /**
    * Default minimum strokeWidth for the scale of strokeWidth for rule and line marks and of size for trail marks.
@@ -596,12 +597,12 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
   /**
    * Sets the maximum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges.
    */
-  rangeMax?: number | string | ES;
+  rangeMax?: number | string | ES | RelativePointSize<ES>;
 
   /**
    * Sets the minimum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges.
    */
-  rangeMin?: number | string | ES;
+  rangeMin?: number | string | ES | RelativePointSize<ES>;
 
   // ordinal
 

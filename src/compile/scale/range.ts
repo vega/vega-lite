@@ -1,6 +1,5 @@
 import {RangeScheme, SignalRef} from 'vega';
 import {isArray, isNumber, isObject} from 'vega-util';
-import {isBinning} from '../../bin';
 import {
   ANGLE,
   COLOR,
@@ -39,7 +38,7 @@ import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig
 import {DataSourceType} from '../../data';
 import {channelHasFieldOrDatum} from '../../encoding';
 import * as log from '../../log';
-import {Mark} from '../../mark';
+import {Mark, isRelativePointSize} from '../../mark';
 import {
   channelScalePropertyIncompatability,
   Domain,
@@ -57,13 +56,14 @@ import {isDiscrete} from '../../type';
 import * as util from '../../util';
 import {isSignalRef, VgRange} from '../../vega.schema';
 import {exprFromSignalRefOrValue, signalOrStringValue} from '../common';
-import {getBinSignalName} from '../data/bin';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
 import {durationExpr} from '../../timeunit';
 import {isFacetModel} from '../model';
+import {relativePointSize} from '../mark/encode/relativePointSize';
+import {getBinStepSignal} from '../mark/encode/relativePointSize';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
@@ -81,34 +81,6 @@ export function parseUnitScaleRange(model: UnitModel) {
 
     localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
   }
-}
-
-function getBinStepSignal(model: UnitModel, channel: 'x' | 'y'): SignalRefWrapper {
-  const fieldDef = model.fieldDef(channel);
-
-  if (fieldDef?.bin) {
-    const {bin, field} = fieldDef;
-    const sizeType = getSizeChannel(channel);
-    const sizeSignal = model.getName(sizeType);
-
-    if (isObject(bin) && bin.binned && bin.step !== undefined) {
-      return new SignalRefWrapper(() => {
-        const scaleName = model.scaleName(channel);
-        const binCount = `(domain("${scaleName}")[1] - domain("${scaleName}")[0]) / ${bin.step}`;
-        return `${model.getSignalName(sizeSignal)} / (${binCount})`;
-      });
-    } else if (isBinning(bin)) {
-      const binSignal = getBinSignalName(model, field, bin);
-
-      // TODO: extract this to be range step signal
-      return new SignalRefWrapper(() => {
-        const updatedName = model.getSignalName(binSignal);
-        const binCount = `(${updatedName}.stop - ${updatedName}.start) / ${updatedName}.step`;
-        return `${model.getSignalName(sizeSignal)} / (${binCount})`;
-      });
-    }
-  }
-  return undefined;
 }
 
 /**
@@ -206,7 +178,10 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
     isArray(d) &&
     d.length === 2
   ) {
-    return makeExplicit([rangeMin ?? d[0], rangeMax ?? d[1]]);
+    const normalizedRangeMin = isRelativePointSize(rangeMin) ? relativePointSize({size: rangeMin, model}) : rangeMin;
+    const normalizedRangeMax = isRelativePointSize(rangeMax) ? relativePointSize({size: rangeMax, model}) : rangeMax;
+
+    return makeExplicit([normalizedRangeMin ?? d[0], normalizedRangeMax ?? d[1]]);
   }
 
   return makeImplicit(d);
@@ -283,8 +258,8 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
 
     case SIZE: {
       // TODO: support custom rangeMin, rangeMax
-      const rangeMin = sizeRangeMin(mark, config);
-      const rangeMax = sizeRangeMax(mark, size, model, config);
+      const rangeMin = sizeRangeMin(mark, model);
+      const rangeMax = sizeRangeMax(mark, model, config);
       if (isContinuousToDiscrete(scaleType)) {
         return interpolateRange(
           rangeMin,
@@ -503,7 +478,8 @@ export function interpolateRange(
   }
 }
 
-function sizeRangeMin(mark: Mark, config: Config): number | SignalRef {
+function sizeRangeMin(mark: Mark, model: UnitModel): number | SignalRef {
+  const {config} = model;
   switch (mark) {
     case 'bar':
     case 'tick':
@@ -516,8 +492,10 @@ function sizeRangeMin(mark: Mark, config: Config): number | SignalRef {
       return config.scale.minFontSize;
     case 'point':
     case 'square':
-    case 'circle':
-      return config.scale.minSize;
+    case 'circle': {
+      const {minSize} = config.scale;
+      return isRelativePointSize(minSize) ? relativePointSize({size: minSize, model}) : minSize;
+    }
   }
   /* istanbul ignore next: should never reach here */
   // sizeRangeMin not implemented for the mark
@@ -526,12 +504,8 @@ function sizeRangeMin(mark: Mark, config: Config): number | SignalRef {
 
 export const MAX_SIZE_RANGE_STEP_RATIO = 0.95;
 
-function sizeRangeMax(
-  mark: Mark,
-  size: LayoutSizeMixins,
-  model: UnitModel,
-  config: Config<SignalRef>
-): number | SignalRef {
+function sizeRangeMax(mark: Mark, model: UnitModel, config: Config<SignalRef>): number | SignalRef {
+  const {size} = model;
   const xyStepSignals = {
     x: getBinStepSignal(model, 'x'),
     y: getBinStepSignal(model, 'y')
@@ -560,8 +534,9 @@ function sizeRangeMax(
     case 'point':
     case 'square':
     case 'circle': {
-      if (config.scale.maxSize) {
-        return config.scale.maxSize;
+      const {maxSize} = config.scale;
+      if (maxSize) {
+        return isRelativePointSize(maxSize) ? relativePointSize({size: maxSize, model}) : maxSize;
       }
 
       const pointStep = minXYStep(size, xyStepSignals, config.view);

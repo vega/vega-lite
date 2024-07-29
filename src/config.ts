@@ -420,7 +420,7 @@ export const DEFAULT_COLOR = {
   gray15: '#fff'
 };
 
-export function colorSignalConfig(color: boolean | ColorConfig = {}): Config {
+export function colorSignalConfig(color: boolean | ColorConfig = {}): Config<SignalRef> {
   return {
     signals: [
       {
@@ -472,7 +472,7 @@ export function colorSignalConfig(color: boolean | ColorConfig = {}): Config {
   };
 }
 
-export function fontSizeSignalConfig(fontSize: boolean | FontSizeConfig): Config {
+export function fontSizeSignalConfig(fontSize: boolean | FontSizeConfig): Config<SignalRef> {
   return {
     signals: [
       {
@@ -500,7 +500,7 @@ export function fontSizeSignalConfig(fontSize: boolean | FontSizeConfig): Config
   };
 }
 
-export function fontConfig(font: string): Config {
+export function fontConfig(font: string): Config<SignalRef> {
   return {
     text: {font},
     style: {
@@ -601,10 +601,16 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
   }
 
   if (mergedConfig.scale) {
-    const {invalid, ...otherScaleConfig} = mergedConfig.scale;
+    const {invalid, minSize, maxSize, ...otherScaleConfig} = mergedConfig.scale;
     const newScaleInvalid = replaceExprRef(invalid, {level: 1});
+
+    const minSizeMixins = minSize ? {minSize: replaceExprInSize(minSize)} : {};
+    const maxSizeMixins = maxSize ? {maxSize: replaceExprInSize(maxSize)} : {};
+
     outputConfig.scale = {
       ...replaceExprRef(otherScaleConfig),
+      ...minSizeMixins,
+      ...maxSizeMixins,
       ...(keys(newScaleInvalid).length > 0 ? {invalid: newScaleInvalid} : {})
     };
   }
@@ -622,6 +628,12 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
   }
 
   return outputConfig;
+}
+
+function replaceExprInSize(
+  size: number | SignalRef | ExprRef | mark.RelativePointSize<SignalRef | ExprRef>
+): number | SignalRef | mark.RelativePointSize<SignalRef> {
+  return mark.isRelativePointSize(size) ? {relative: signalRefOrValue(size.relative)} : signalRefOrValue(size);
 }
 
 const MARK_STYLES = new Set(['view', ...PRIMITIVE_MARKS]) as ReadonlySet<'view' | Mark>;
