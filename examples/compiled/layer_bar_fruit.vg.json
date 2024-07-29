@@ -66,7 +66,7 @@
           "fill": {"scale": "color", "field": "count"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"count: \" + (format(datum[\"count\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; Number of fruit: \" + (format(datum[\"count\"], \"\"))"
+            "signal": "\"count: \" + (!isValid(datum[\"count\"]) || !isFinite(+datum[\"count\"]) ? \"\" + datum[\"count\"] : format(datum[\"count\"], \"\")) + \"; name: \" + (\"\" + datum[\"name\"]) + \"; Number of fruit: \" + (!isValid(datum[\"count\"]) || !isFinite(+datum[\"count\"]) ? \"\" + datum[\"count\"] : format(datum[\"count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "count_end"},
           "x2": {"scale": "x", "field": "count_start"},
@@ -90,7 +90,9 @@
           ],
           "x": {"scale": "x", "field": "count", "offset": -4},
           "y": {"scale": "y", "field": "name", "band": 0.5},
-          "text": {"signal": "format(datum[\"count\"], \"\")"},
+          "text": {
+            "signal": "!isValid(datum[\"count\"]) || !isFinite(+datum[\"count\"]) ? \"\" + datum[\"count\"] : format(datum[\"count\"], \"\")"
+          },
           "baseline": {"value": "middle"}
         }
       }

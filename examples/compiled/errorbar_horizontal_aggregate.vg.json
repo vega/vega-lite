@@ -66,7 +66,7 @@
         "update": {
           "stroke": {"value": "black"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"min_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; Max of people: \" + (format(datum[\"max_people\"], \"\"))"
+            "signal": "\"population: \" + (!isValid(datum[\"min_people\"]) || !isFinite(+datum[\"min_people\"]) ? \"\" + datum[\"min_people\"] : format(datum[\"min_people\"], \"\")) + \"; age: \" + (\"\" + datum[\"age\"]) + \"; Max of people: \" + (!isValid(datum[\"max_people\"]) || !isFinite(+datum[\"max_people\"]) ? \"\" + datum[\"max_people\"] : format(datum[\"max_people\"], \"\"))"
           },
           "x": {"scale": "x", "field": "min_people"},
           "x2": {"scale": "x", "field": "max_people"},
@@ -84,7 +84,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"min_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
+            "signal": "\"population: \" + (!isValid(datum[\"min_people\"]) || !isFinite(+datum[\"min_people\"]) ? \"\" + datum[\"min_people\"] : format(datum[\"min_people\"], \"\")) + \"; age: \" + (\"\" + datum[\"age\"])"
           },
           "xc": {"scale": "x", "field": "min_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
@@ -103,7 +103,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"max_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
+            "signal": "\"population: \" + (!isValid(datum[\"max_people\"]) || !isFinite(+datum[\"max_people\"]) ? \"\" + datum[\"max_people\"] : format(datum[\"max_people\"], \"\")) + \"; age: \" + (\"\" + datum[\"age\"])"
           },
           "xc": {"scale": "x", "field": "max_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
@@ -123,7 +123,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"mean_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
+            "signal": "\"population: \" + (!isValid(datum[\"mean_people\"]) || !isFinite(+datum[\"mean_people\"]) ? \"\" + datum[\"mean_people\"] : format(datum[\"mean_people\"], \"\")) + \"; age: \" + (\"\" + datum[\"age\"])"
           },
           "x": {"scale": "x", "field": "mean_people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},

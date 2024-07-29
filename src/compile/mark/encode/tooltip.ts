@@ -107,8 +107,8 @@ export function tooltipData(
       if (isBinned(fieldDef.bin) && fieldDef2) {
         const startField = vgField(fieldDef, {expr});
         const endField = vgField(fieldDef2, {expr});
-        const {format, formatType} = getFormatMixins(fieldDef);
-        value = binFormatExpression(startField, endField, format, formatType, formatConfig);
+        const formatMixins = getFormatMixins(fieldDef);
+        value = binFormatExpression(startField, endField, formatMixins, formatConfig);
         toSkip[channel2] = true;
       }
     }
@@ -119,11 +119,10 @@ export function tooltipData(
       stack.fieldChannel === channel &&
       stack.offset === 'normalize'
     ) {
-      const {format, formatType} = getFormatMixins(fieldDef);
+      const formatMixins = getFormatMixins(fieldDef);
       value = formatSignalRef({
         fieldOrDatumDef: fieldDef,
-        format,
-        formatType,
+        formatMixins,
         expr,
         config: formatConfig,
         normalizeStack: true

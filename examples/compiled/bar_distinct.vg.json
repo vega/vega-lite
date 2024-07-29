@@ -38,7 +38,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Distinct of Name: \" + (format(datum[\"distinct_Name\"], \"\"))"
+            "signal": "\"Origin: \" + (\"\" + datum[\"Origin\"]) + \"; Distinct of Name: \" + (!isValid(datum[\"distinct_Name\"]) || !isFinite(+datum[\"distinct_Name\"]) ? \"\" + datum[\"distinct_Name\"] : format(datum[\"distinct_Name\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Origin"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

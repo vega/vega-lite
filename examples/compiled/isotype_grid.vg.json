@@ -411,7 +411,7 @@
           ],
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"col: \" + (isValid(datum[\"col\"]) ? datum[\"col\"] : \"\"+datum[\"col\"]) + \"; row: \" + (isValid(datum[\"row\"]) ? datum[\"row\"] : \"\"+datum[\"row\"])"
+            "signal": "\"col: \" + (\"\" + datum[\"col\"]) + \"; row: \" + (\"\" + datum[\"row\"])"
           },
           "x": {"scale": "x", "field": "col"},
           "y": {"scale": "y", "field": "row"},

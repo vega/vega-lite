@@ -58,7 +58,7 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Cumulative Count: \" + (format(datum[\"Cumulative Count\"], \"\"))"
+            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"IMDB Rating\"]) || !isFinite(+datum[\"IMDB Rating\"]) ? \"\" + datum[\"IMDB Rating\"] : format(datum[\"IMDB Rating\"], \"\")) + \"; Cumulative Count: \" + (!isValid(datum[\"Cumulative Count\"]) || !isFinite(+datum[\"Cumulative Count\"]) ? \"\" + datum[\"Cumulative Count\"] : format(datum[\"Cumulative Count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "IMDB Rating"},
           "y": {"scale": "y", "field": "Cumulative Count_end"},

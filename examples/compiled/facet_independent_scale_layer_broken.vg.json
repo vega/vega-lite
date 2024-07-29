@@ -96,9 +96,7 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"gender\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"gender\"]) ? parent[\"gender\"] : \"\"+parent[\"gender\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"gender\"]"},
         "style": "guide-label",
         "frame": "group",
         "offset": 10
@@ -189,7 +187,7 @@
                 "update": {
                   "stroke": {"scale": "color", "field": "gender"},
                   "description": {
-                    "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                    "signal": "\"age: \" + (\"\" + datum[\"age\"]) + \"; population: \" + (!isValid(datum[\"sum_people\"]) || !isFinite(+datum[\"sum_people\"]) ? \"\" + datum[\"sum_people\"] : format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (\"\" + datum[\"gender\"])"
                   },
                   "x": {"scale": "child_x", "field": "age"},
                   "y": {"scale": "y", "field": "sum_people"},
@@ -212,7 +210,7 @@
               "stroke": {"scale": "color", "field": "gender"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                "signal": "\"age: \" + (\"\" + datum[\"age\"]) + \"; population: \" + (!isValid(datum[\"sum_people\"]) || !isFinite(+datum[\"sum_people\"]) ? \"\" + datum[\"sum_people\"] : format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (\"\" + datum[\"gender\"])"
               },
               "x": {"scale": "child_x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people"}

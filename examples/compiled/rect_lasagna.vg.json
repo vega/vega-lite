@@ -42,7 +42,7 @@
         "update": {
           "fill": {"scale": "color", "field": "sum_price"},
           "description": {
-            "signal": "\"Time: \" + (timeFormat(datum[\"yearmonthdate_date\"], '%Y')) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; Price: \" + (format(datum[\"sum_price\"], \"\"))"
+            "signal": "\"Time: \" + (!isValid(datum[\"yearmonthdate_date\"]) || !isFinite(+datum[\"yearmonthdate_date\"]) ? \"\" + datum[\"yearmonthdate_date\"] : timeFormat(datum[\"yearmonthdate_date\"], '%Y')) + \"; symbol: \" + (\"\" + datum[\"symbol\"]) + \"; Price: \" + (!isValid(datum[\"sum_price\"]) || !isFinite(+datum[\"sum_price\"]) ? \"\" + datum[\"sum_price\"] : format(datum[\"sum_price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

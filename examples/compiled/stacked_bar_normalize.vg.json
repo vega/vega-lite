@@ -56,7 +56,7 @@
           "fill": {"scale": "color", "field": "gender"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \".0%\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+            "signal": "\"age: \" + (\"\" + datum[\"age\"]) + \"; population: \" + (!isValid(datum[\"sum_people_end\"]-datum[\"sum_people_start\"]) || !isFinite(+datum[\"sum_people_end\"]-datum[\"sum_people_start\"]) ? \"\" + datum[\"sum_people_end\"]-datum[\"sum_people_start\"] : format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \".0%\")) + \"; gender: \" + (\"\" + datum[\"gender\"])"
           },
           "x": {"scale": "x", "field": "age"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

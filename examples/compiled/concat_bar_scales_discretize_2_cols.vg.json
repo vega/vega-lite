@@ -91,9 +91,7 @@
               "opacity": {"value": 0.7},
               "fill": {"scale": "concat_0_color", "field": "b"},
               "ariaRoleDescription": {"value": "circle"},
-              "description": {
-                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
-              },
+              "description": {"signal": "\"b: \" + (\"\" + datum[\"b\"])"},
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_0_y", "field": "b"},
               "size": {"scale": "concat_0_size", "field": "b"},
@@ -144,9 +142,7 @@
               "opacity": {"value": 0.7},
               "fill": {"scale": "concat_1_color", "field": "b"},
               "ariaRoleDescription": {"value": "circle"},
-              "description": {
-                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
-              },
+              "description": {"signal": "\"b: \" + (\"\" + datum[\"b\"])"},
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_1_y", "field": "b"},
               "size": {"scale": "concat_1_size", "field": "b"},
@@ -199,9 +195,7 @@
               "opacity": {"value": 0.7},
               "fill": {"scale": "concat_2_color", "field": "b"},
               "ariaRoleDescription": {"value": "circle"},
-              "description": {
-                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
-              },
+              "description": {"signal": "\"b: \" + (\"\" + datum[\"b\"])"},
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_2_y", "field": "b"},
               "size": {"scale": "concat_2_size", "field": "b"},

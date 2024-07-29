@@ -87,9 +87,7 @@
       "from": {"data": "trellis_barley_row_domain"},
       "sort": {"field": "datum[\"median_yield\"]", "order": "ascending"},
       "title": {
-        "text": {
-          "signal": "isValid(parent[\"site\"]) ? parent[\"site\"] : \"\"+parent[\"site\"]"
-        },
+        "text": {"signal": "\"\" + parent[\"site\"]"},
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -200,7 +198,7 @@
               "stroke": {"scale": "trellis_barley_color", "field": "year"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Median of yield: \" + (format(datum[\"median_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+                "signal": "\"Median of yield: \" + (!isValid(datum[\"median_yield\"]) || !isFinite(+datum[\"median_yield\"]) ? \"\" + datum[\"median_yield\"] : format(datum[\"median_yield\"], \"\")) + \"; variety: \" + (\"\" + datum[\"variety\"]) + \"; year: \" + (\"\" + datum[\"year\"])"
               },
               "x": {"scale": "trellis_barley_x", "field": "median_yield"},
               "y": {"scale": "trellis_barley_y", "field": "variety"}
@@ -216,7 +214,7 @@
             "update": {
               "stroke": {"value": "black"},
               "description": {
-                "signal": "\"Median of yield: \" + (format(datum[\"median_yield\"], \"\"))"
+                "signal": "\"Median of yield: \" + (!isValid(datum[\"median_yield\"]) || !isFinite(+datum[\"median_yield\"]) ? \"\" + datum[\"median_yield\"] : format(datum[\"median_yield\"], \"\"))"
               },
               "x": {"scale": "trellis_barley_x", "field": "median_yield"},
               "y": {"value": 0},

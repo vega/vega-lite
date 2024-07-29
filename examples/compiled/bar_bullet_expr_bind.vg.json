@@ -174,7 +174,7 @@
           "fill": {"value": "#eee"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"ranges[2]: \" + (format(datum[\"ranges.2\"], \"\"))"
+            "signal": "\"ranges[2]: \" + (!isValid(datum[\"ranges.2\"]) || !isFinite(+datum[\"ranges.2\"]) ? \"\" + datum[\"ranges.2\"] : format(datum[\"ranges.2\"], \"\"))"
           },
           "x": {"scale": "x", "field": "ranges\\.2\\._end"},
           "x2": {"scale": "x", "field": "ranges\\.2\\._start"},
@@ -193,7 +193,7 @@
           "fill": {"value": "#ddd"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"ranges[1]: \" + (format(datum[\"ranges.1\"], \"\"))"
+            "signal": "\"ranges[1]: \" + (!isValid(datum[\"ranges.1\"]) || !isFinite(+datum[\"ranges.1\"]) ? \"\" + datum[\"ranges.1\"] : format(datum[\"ranges.1\"], \"\"))"
           },
           "x": {"scale": "x", "field": "ranges\\.1\\._end"},
           "x2": {"scale": "x", "field": "ranges\\.1\\._start"},
@@ -212,7 +212,7 @@
           "fill": {"value": "#ccc"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"ranges[0]: \" + (format(datum[\"ranges.0\"], \"\"))"
+            "signal": "\"ranges[0]: \" + (!isValid(datum[\"ranges.0\"]) || !isFinite(+datum[\"ranges.0\"]) ? \"\" + datum[\"ranges.0\"] : format(datum[\"ranges.0\"], \"\"))"
           },
           "x": {"scale": "x", "field": "ranges\\.0\\._end"},
           "x2": {"scale": "x", "field": "ranges\\.0\\._start"},
@@ -231,7 +231,7 @@
           "fill": {"value": "lightsteelblue"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"measures[1]: \" + (format(datum[\"measures.1\"], \"\"))"
+            "signal": "\"measures[1]: \" + (!isValid(datum[\"measures.1\"]) || !isFinite(+datum[\"measures.1\"]) ? \"\" + datum[\"measures.1\"] : format(datum[\"measures.1\"], \"\"))"
           },
           "x": {"scale": "x", "field": "measures\\.1\\._end"},
           "x2": {"scale": "x", "field": "measures\\.1\\._start"},
@@ -250,7 +250,7 @@
           "fill": {"value": "steelblue"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"measures[0]: \" + (format(datum[\"measures.0\"], \"\"))"
+            "signal": "\"measures[0]: \" + (!isValid(datum[\"measures.0\"]) || !isFinite(+datum[\"measures.0\"]) ? \"\" + datum[\"measures.0\"] : format(datum[\"measures.0\"], \"\"))"
           },
           "x": {"scale": "x", "field": "measures\\.0\\._end"},
           "x2": {"scale": "x", "field": "measures\\.0\\._start"},
@@ -270,7 +270,7 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"markers[0]: \" + (format(datum[\"markers.0\"], \"\"))"
+            "signal": "\"markers[0]: \" + (!isValid(datum[\"markers.0\"]) || !isFinite(+datum[\"markers.0\"]) ? \"\" + datum[\"markers.0\"] : format(datum[\"markers.0\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "markers\\.0"},
           "yc": {"signal": "height", "mult": 0.5},

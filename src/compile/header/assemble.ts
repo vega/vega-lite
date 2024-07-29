@@ -131,8 +131,7 @@ export function assembleLabelTitle(
 
   const titleTextExpr = formatSignalRef({
     fieldOrDatumDef: facetFieldDef,
-    format,
-    formatType,
+    formatMixins: {format, formatType},
     expr: 'parent',
     config
   }).signal;

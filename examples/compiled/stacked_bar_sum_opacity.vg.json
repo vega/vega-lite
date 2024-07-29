@@ -58,7 +58,7 @@
           "opacity": {"scale": "opacity", "field": "people"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people\"], \"\")) + \"; people: \" + (format(datum[\"people\"], \"\"))"
+            "signal": "\"age: \" + (\"\" + datum[\"age\"]) + \"; population: \" + (!isValid(datum[\"sum_people\"]) || !isFinite(+datum[\"sum_people\"]) ? \"\" + datum[\"sum_people\"] : format(datum[\"sum_people\"], \"\")) + \"; people: \" + (!isValid(datum[\"people\"]) || !isFinite(+datum[\"people\"]) ? \"\" + datum[\"people\"] : format(datum[\"people\"], \"\"))"
           },
           "x": {"scale": "x", "field": "age"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

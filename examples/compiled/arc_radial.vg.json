@@ -57,7 +57,7 @@
           "innerRadius": {"value": 20},
           "fill": {"scale": "color", "field": "data"},
           "description": {
-            "signal": "\"data: \" + (format(datum[\"data\"], \"\"))"
+            "signal": "\"data: \" + (!isValid(datum[\"data\"]) || !isFinite(+datum[\"data\"]) ? \"\" + datum[\"data\"] : format(datum[\"data\"], \"\"))"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
@@ -76,11 +76,13 @@
         "update": {
           "fill": {"scale": "color", "field": "data"},
           "description": {
-            "signal": "\"data: \" + (format(datum[\"data\"], \"\"))"
+            "signal": "\"data: \" + (!isValid(datum[\"data\"]) || !isFinite(+datum[\"data\"]) ? \"\" + datum[\"data\"] : format(datum[\"data\"], \"\"))"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
-          "text": {"signal": "format(datum[\"data\"], \"\")"},
+          "text": {
+            "signal": "!isValid(datum[\"data\"]) || !isFinite(+datum[\"data\"]) ? \"\" + datum[\"data\"] : format(datum[\"data\"], \"\")"
+          },
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
           "radius": {"scale": "radius", "field": "data", "offset": 10},

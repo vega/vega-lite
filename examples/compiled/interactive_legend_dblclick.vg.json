@@ -153,7 +153,7 @@
                 {"value": 0.2}
               ],
               "description": {
-                "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], '%Y')) + \"; Sum of count: \" + (format(datum[\"sum_count\"], \"\")) + \"; series: \" + (isValid(datum[\"series\"]) ? datum[\"series\"] : \"\"+datum[\"series\"])"
+                "signal": "\"date (year-month): \" + (!isValid(datum[\"yearmonth_date\"]) || !isFinite(+datum[\"yearmonth_date\"]) ? \"\" + datum[\"yearmonth_date\"] : timeFormat(datum[\"yearmonth_date\"], '%Y')) + \"; Sum of count: \" + (!isValid(datum[\"sum_count\"]) || !isFinite(+datum[\"sum_count\"]) ? \"\" + datum[\"sum_count\"] : format(datum[\"sum_count\"], \"\")) + \"; series: \" + (\"\" + datum[\"series\"])"
               },
               "x": {"scale": "x", "field": "yearmonth_date"},
               "y": {"scale": "y", "field": "sum_count_end"},

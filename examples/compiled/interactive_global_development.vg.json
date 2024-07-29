@@ -223,14 +223,10 @@
           "opacity": {"value": 0.06},
           "fontSize": {"value": 100},
           "fill": {"value": "black"},
-          "description": {
-            "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
-          },
+          "description": {"signal": "\"year: \" + (\"\" + datum[\"year\"])"},
           "x": {"value": 420},
           "y": {"value": 250},
-          "text": {
-            "signal": "isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"year\"]"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }
@@ -272,7 +268,7 @@
                 {"value": 0}
               ],
               "description": {
-                "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"])"
+                "signal": "\"fertility: \" + (!isValid(datum[\"fertility\"]) || !isFinite(+datum[\"fertility\"]) ? \"\" + datum[\"fertility\"] : format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (!isValid(datum[\"life_expect\"]) || !isFinite(+datum[\"life_expect\"]) ? \"\" + datum[\"life_expect\"] : format(datum[\"life_expect\"], \"\")) + \"; year: \" + (\"\" + datum[\"year\"]) + \"; country: \" + (\"\" + datum[\"country\"])"
               },
               "x": {"scale": "x", "field": "fertility"},
               "y": {"scale": "y", "field": "life_expect"},
@@ -298,7 +294,7 @@
           "fill": {"scale": "color", "field": "name"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; Region: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
+            "signal": "\"fertility: \" + (!isValid(datum[\"fertility\"]) || !isFinite(+datum[\"fertility\"]) ? \"\" + datum[\"fertility\"] : format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (!isValid(datum[\"life_expect\"]) || !isFinite(+datum[\"life_expect\"]) ? \"\" + datum[\"life_expect\"] : format(datum[\"life_expect\"], \"\")) + \"; Region: \" + (\"\" + datum[\"name\"])"
           },
           "x": {"scale": "x", "field": "fertility"},
           "y": {"scale": "y", "field": "life_expect"},
@@ -318,13 +314,11 @@
           "fontWeight": {"value": "bold"},
           "fill": {"scale": "color", "field": "name"},
           "description": {
-            "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; Region: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"])"
+            "signal": "\"fertility: \" + (!isValid(datum[\"fertility\"]) || !isFinite(+datum[\"fertility\"]) ? \"\" + datum[\"fertility\"] : format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (!isValid(datum[\"life_expect\"]) || !isFinite(+datum[\"life_expect\"]) ? \"\" + datum[\"life_expect\"] : format(datum[\"life_expect\"], \"\")) + \"; Region: \" + (\"\" + datum[\"name\"]) + \"; country: \" + (\"\" + datum[\"country\"])"
           },
           "x": {"scale": "x", "field": "fertility"},
           "y": {"scale": "y", "field": "life_expect", "offset": -12},
-          "text": {
-            "signal": "isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"country\"]"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }
@@ -341,13 +335,11 @@
           "fontSize": {"value": 12},
           "fill": {"value": "gray"},
           "description": {
-            "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+            "signal": "\"fertility: \" + (!isValid(datum[\"fertility\"]) || !isFinite(+datum[\"fertility\"]) ? \"\" + datum[\"fertility\"] : format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (!isValid(datum[\"life_expect\"]) || !isFinite(+datum[\"life_expect\"]) ? \"\" + datum[\"life_expect\"] : format(datum[\"life_expect\"], \"\")) + \"; year: \" + (\"\" + datum[\"year\"])"
           },
           "x": {"scale": "x", "field": "fertility"},
           "y": {"scale": "y", "field": "life_expect", "offset": -12},
-          "text": {
-            "signal": "isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"year\"]"},
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }
@@ -365,7 +357,7 @@
           "fill": {"value": "gray"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\"))"
+            "signal": "\"fertility: \" + (!isValid(datum[\"fertility\"]) || !isFinite(+datum[\"fertility\"]) ? \"\" + datum[\"fertility\"] : format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (!isValid(datum[\"life_expect\"]) || !isFinite(+datum[\"life_expect\"]) ? \"\" + datum[\"life_expect\"] : format(datum[\"life_expect\"], \"\"))"
           },
           "x": {"scale": "x", "field": "fertility"},
           "y": {"scale": "y", "field": "life_expect"},

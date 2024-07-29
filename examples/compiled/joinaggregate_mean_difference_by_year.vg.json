@@ -79,7 +79,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
+            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"IMDB Rating\"]) || !isFinite(+datum[\"IMDB Rating\"]) ? \"\" + datum[\"IMDB Rating\"] : format(datum[\"IMDB Rating\"], \"\")) + \"; Title: \" + (\"\" + datum[\"Title\"])"
           },
           "x": {"scale": "x", "field": "IMDB Rating_end"},
           "x2": {"scale": "x", "field": "IMDB Rating_start"},
@@ -99,7 +99,7 @@
           "fill": {"value": "red"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"AverageYearRating: \" + (format(datum[\"AverageYearRating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
+            "signal": "\"AverageYearRating: \" + (!isValid(datum[\"AverageYearRating\"]) || !isFinite(+datum[\"AverageYearRating\"]) ? \"\" + datum[\"AverageYearRating\"] : format(datum[\"AverageYearRating\"], \"\")) + \"; Title: \" + (\"\" + datum[\"Title\"])"
           },
           "xc": {"scale": "x", "field": "AverageYearRating"},
           "yc": {"scale": "y", "field": "Title", "band": 0.5},

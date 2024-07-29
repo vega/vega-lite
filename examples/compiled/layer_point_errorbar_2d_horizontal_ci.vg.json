@@ -55,10 +55,10 @@
           "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Ci1 of yield\": format(datum[\"upper_yield\"], \"\"), \"Ci0 of yield\": format(datum[\"lower_yield\"], \"\"), \"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
+            "signal": "{\"Ci1 of yield\": !isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"]) ? \"\" + datum[\"upper_yield\"] : format(datum[\"upper_yield\"], \"\"), \"Ci0 of yield\": !isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"]) ? \"\" + datum[\"lower_yield\"] : format(datum[\"lower_yield\"], \"\"), \"Mean of yield\": !isValid(datum[\"center_yield\"]) || !isFinite(+datum[\"center_yield\"]) ? \"\" + datum[\"center_yield\"] : format(datum[\"center_yield\"], \"\"), \"variety\": \"\" + datum[\"variety\"]}"
           },
           "description": {
-            "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Ci1 of yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Ci0 of yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; Mean of yield: \" + (format(datum[\"center_yield\"], \"\"))"
+            "signal": "\"yield: \" + (!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"]) ? \"\" + datum[\"lower_yield\"] : format(datum[\"lower_yield\"], \"\")) + \"; variety: \" + (\"\" + datum[\"variety\"]) + \"; upper_yield: \" + (!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"]) ? \"\" + datum[\"upper_yield\"] : format(datum[\"upper_yield\"], \"\")) + \"; Ci1 of yield: \" + (!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"]) ? \"\" + datum[\"upper_yield\"] : format(datum[\"upper_yield\"], \"\")) + \"; Ci0 of yield: \" + (!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"]) ? \"\" + datum[\"lower_yield\"] : format(datum[\"lower_yield\"], \"\")) + \"; Mean of yield: \" + (!isValid(datum[\"center_yield\"]) || !isFinite(+datum[\"center_yield\"]) ? \"\" + datum[\"center_yield\"] : format(datum[\"center_yield\"], \"\"))"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "x2": {"scale": "x", "field": "upper_yield"},
@@ -76,7 +76,7 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Mean of yield: \" + (format(datum[\"mean_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
+            "signal": "\"Mean of yield: \" + (!isValid(datum[\"mean_yield\"]) || !isFinite(+datum[\"mean_yield\"]) ? \"\" + datum[\"mean_yield\"] : format(datum[\"mean_yield\"], \"\")) + \"; variety: \" + (\"\" + datum[\"variety\"])"
           },
           "x": {"scale": "x", "field": "mean_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5}

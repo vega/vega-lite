@@ -49,7 +49,7 @@
           "fill": {"scale": "color", "field": "rate"},
           "ariaRoleDescription": {"value": "geoshape"},
           "description": {
-            "signal": "\"rate: \" + (format(datum[\"rate\"], \"\"))"
+            "signal": "\"rate: \" + (!isValid(datum[\"rate\"]) || !isFinite(+datum[\"rate\"]) ? \"\" + datum[\"rate\"] : format(datum[\"rate\"], \"\"))"
           }
         }
       },

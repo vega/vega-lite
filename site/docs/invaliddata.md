@@ -5,7 +5,7 @@ title: Modes for Handling Invalid Data
 permalink: /docs/invalid-data.html
 ---
 
-This page discusses modes in Vega-Lite for handling invalid data (`null` and `NaN` in continuous scales).
+This page discusses modes in Vega-Lite for handling invalid data (`null` and `NaN` in continuous scales _without_ defined output for invalid values in `config.scale.invalid`).
 
 The main configurations are [`mark.invalid`](#mark) and [`config.scale.invalid`](#scale). In addition, you can use [other Vega-Lite features including conditional encodings, layering, or window transform to handle invalid and missing data](#other).
 

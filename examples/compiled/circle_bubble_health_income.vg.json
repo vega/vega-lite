@@ -146,7 +146,7 @@
           "fill": {"value": "#000"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"income: \" + (format(datum[\"income\"], \"\")) + \"; health: \" + (format(datum[\"health\"], \"\")) + \"; population: \" + (format(datum[\"population\"], \"\"))"
+            "signal": "\"income: \" + (!isValid(datum[\"income\"]) || !isFinite(+datum[\"income\"]) ? \"\" + datum[\"income\"] : format(datum[\"income\"], \"\")) + \"; health: \" + (!isValid(datum[\"health\"]) || !isFinite(+datum[\"health\"]) ? \"\" + datum[\"health\"] : format(datum[\"health\"], \"\")) + \"; population: \" + (!isValid(datum[\"population\"]) || !isFinite(+datum[\"population\"]) ? \"\" + datum[\"population\"] : format(datum[\"population\"], \"\"))"
           },
           "x": {"scale": "x", "field": "income"},
           "y": {"scale": "y", "field": "health"},

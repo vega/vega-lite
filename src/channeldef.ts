@@ -398,7 +398,7 @@ export interface DatumDef<
   // `F extends RepeatRef` probably should be `RepeatRef extends F` but there is likely a bug in TS.
 }
 
-export interface FormatMixins {
+export interface FormatMixins<FT extends string = 'number' | 'time' | string> {
   /**
    * When used with the default `"number"` and `"time"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.
    *
@@ -420,7 +420,7 @@ export interface FormatMixins {
    * - `"time"` for temporal fields and ordinal and nominal fields with `timeUnit`.
    * - `"number"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.
    */
-  formatType?: 'number' | 'time' | string;
+  formatType?: FT;
 }
 
 export type StringDatumDef<F extends Field = string> = DatumDef<F> & FormatMixins;
@@ -974,7 +974,7 @@ export function defaultTitle(fieldDef: FieldDefBase<string>, config: Config) {
   return titleFormatter(fieldDef, config);
 }
 
-export function getFormatMixins(fieldDef: TypedFieldDef<string> | DatumDef) {
+export function getFormatMixins(fieldDef: TypedFieldDef<string> | DatumDef): FormatMixins {
   if (isStringFieldOrDatumDef(fieldDef)) {
     const {format, formatType} = fieldDef;
     return {format, formatType};

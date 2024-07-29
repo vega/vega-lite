@@ -48,7 +48,7 @@
           "fill": {"value": "#ddd"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Mean IMDB Ratings: \" + (format(datum[\"mean_IMDB Rating\"], \"\")) + \"; Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"])"
+            "signal": "\"Mean IMDB Ratings: \" + (!isValid(datum[\"mean_IMDB Rating\"]) || !isFinite(+datum[\"mean_IMDB Rating\"]) ? \"\" + datum[\"mean_IMDB Rating\"] : format(datum[\"mean_IMDB Rating\"], \"\")) + \"; Major Genre: \" + (\"\" + datum[\"Major Genre\"])"
           },
           "x": {"scale": "x", "field": "mean_IMDB Rating"},
           "x2": {"scale": "x", "value": 0},
@@ -67,13 +67,11 @@
           "align": {"value": "left"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"Major Genre: \" + (\"\" + datum[\"Major Genre\"]) + \"; Count of Records: \" + (!isValid(datum[\"__count\"]) || !isFinite(+datum[\"__count\"]) ? \"\" + datum[\"__count\"] : format(datum[\"__count\"], \"\"))"
           },
           "x": {"value": 5},
           "y": {"scale": "y", "field": "Major Genre", "band": 0.5},
-          "text": {
-            "signal": "isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]"
-          },
+          "text": {"signal": "\"\" + datum[\"Major Genre\"]"},
           "baseline": {"value": "middle"}
         }
       }

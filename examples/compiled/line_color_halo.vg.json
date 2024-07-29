@@ -34,7 +34,7 @@
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"AAPL\"], \"\"))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"AAPL\"]) || !isFinite(+datum[\"AAPL\"]) ? \"\" + datum[\"AAPL\"] : format(datum[\"AAPL\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AAPL"},
@@ -54,7 +54,7 @@
         "update": {
           "stroke": {"scale": "stroke", "value": "AAPL"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"AAPL\"], \"\"))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"AAPL\"]) || !isFinite(+datum[\"AAPL\"]) ? \"\" + datum[\"AAPL\"] : format(datum[\"AAPL\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AAPL"},
@@ -75,7 +75,7 @@
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"AMZN\"], \"\"))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"AMZN\"]) || !isFinite(+datum[\"AMZN\"]) ? \"\" + datum[\"AMZN\"] : format(datum[\"AMZN\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AMZN"},
@@ -95,7 +95,7 @@
         "update": {
           "stroke": {"scale": "stroke", "value": "AMZN"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"AMZN\"], \"\"))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"AMZN\"]) || !isFinite(+datum[\"AMZN\"]) ? \"\" + datum[\"AMZN\"] : format(datum[\"AMZN\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AMZN"},
@@ -116,7 +116,7 @@
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"GOOG\"], \"\"))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"GOOG\"]) || !isFinite(+datum[\"GOOG\"]) ? \"\" + datum[\"GOOG\"] : format(datum[\"GOOG\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "GOOG"},
@@ -136,7 +136,7 @@
         "update": {
           "stroke": {"scale": "stroke", "value": "GOOG"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"GOOG\"], \"\"))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"GOOG\"]) || !isFinite(+datum[\"GOOG\"]) ? \"\" + datum[\"GOOG\"] : format(datum[\"GOOG\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "GOOG"},
@@ -157,7 +157,7 @@
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"IBM\"], \"\"))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"IBM\"]) || !isFinite(+datum[\"IBM\"]) ? \"\" + datum[\"IBM\"] : format(datum[\"IBM\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "IBM"},
@@ -177,7 +177,7 @@
         "update": {
           "stroke": {"scale": "stroke", "value": "IBM"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"IBM\"], \"\"))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"IBM\"]) || !isFinite(+datum[\"IBM\"]) ? \"\" + datum[\"IBM\"] : format(datum[\"IBM\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "IBM"},
@@ -198,7 +198,7 @@
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"MSFT\"], \"\"))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"MSFT\"]) || !isFinite(+datum[\"MSFT\"]) ? \"\" + datum[\"MSFT\"] : format(datum[\"MSFT\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "MSFT"},
@@ -218,7 +218,7 @@
         "update": {
           "stroke": {"scale": "stroke", "value": "MSFT"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"MSFT\"], \"\"))"
+            "signal": "\"date: \" + (!isValid(datum[\"date\"]) || !isFinite(+datum[\"date\"]) ? \"\" + datum[\"date\"] : timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (!isValid(datum[\"MSFT\"]) || !isFinite(+datum[\"MSFT\"]) ? \"\" + datum[\"MSFT\"] : format(datum[\"MSFT\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "MSFT"},

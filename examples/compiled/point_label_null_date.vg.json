@@ -1,0 +1,177 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a": "Jan 1, 2000", "b": 28},
+        {"a": "Jan 2, 2000", "b": 55},
+        {"a": "Jan 3, 2000", "b": null},
+        {"a": "Jan 4, 2000", "b": 65},
+        {"a": "Jan 5, 2000", "b": 43},
+        {"a": null, "b": 50}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"a\"])", "as": "a"},
+        {
+          "field": "a",
+          "type": "timeunit",
+          "units": ["year", "month", "date"],
+          "as": ["yearmonthdate_a", "yearmonthdate_a_end"]
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "tooltip": {
+            "signal": "{\"a (year-month-date)\": !isValid(datum[\"yearmonthdate_a\"]) || !isFinite(+datum[\"yearmonthdate_a\"]) ? \"\" + datum[\"yearmonthdate_a\"] : timeFormat(datum[\"yearmonthdate_a\"], '%d %b'), \"b\": !isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")}"
+          },
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"a (year-month-date): \" + (!isValid(datum[\"yearmonthdate_a\"]) || !isFinite(+datum[\"yearmonthdate_a\"]) ? \"\" + datum[\"yearmonthdate_a\"] : timeFormat(datum[\"yearmonthdate_a\"], '%d %b')) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
+          },
+          "x": [
+            {
+              "test": "!isValid(datum[\"yearmonthdate_a\"]) || !isFinite(+datum[\"yearmonthdate_a\"])",
+              "signal": "scale('x', domain('x')[0])"
+            },
+            {"scale": "x", "field": "yearmonthdate_a"}
+          ],
+          "y": [
+            {
+              "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
+              "scale": "y",
+              "value": 0
+            },
+            {"scale": "y", "field": "b"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "baseline": {"value": "bottom"},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"a (year-month-date): \" + (!isValid(datum[\"yearmonthdate_a\"]) || !isFinite(+datum[\"yearmonthdate_a\"]) ? \"\" + datum[\"yearmonthdate_a\"] : timeFormat(datum[\"yearmonthdate_a\"], '%d %b')) + \"; b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\"))"
+          },
+          "x": [
+            {
+              "test": "!isValid(datum[\"yearmonthdate_a\"]) || !isFinite(+datum[\"yearmonthdate_a\"])",
+              "signal": "scale('x', domain('x')[0])"
+            },
+            {"scale": "x", "field": "yearmonthdate_a"}
+          ],
+          "y": [
+            {
+              "test": "!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"])",
+              "scale": "y",
+              "value": 0
+            },
+            {"scale": "y", "field": "b"}
+          ],
+          "text": {
+            "signal": "!isValid(datum[\"yearmonthdate_a\"]) || !isFinite(+datum[\"yearmonthdate_a\"]) ? \"\" + datum[\"yearmonthdate_a\"] : timeFormat(datum[\"yearmonthdate_a\"], '%d %b')"
+          },
+          "align": {"value": "center"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "data_0", "field": "yearmonthdate_a"},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "b"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "a (year-month-date)",
+      "format": "%d %b",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "b",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

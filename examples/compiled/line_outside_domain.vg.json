@@ -39,7 +39,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"wavelength: \" + (format(datum[\"wavelength\"], \"\")) + \"; power: \" + (format(datum[\"power\"], \"\"))"
+            "signal": "\"wavelength: \" + (!isValid(datum[\"wavelength\"]) || !isFinite(+datum[\"wavelength\"]) ? \"\" + datum[\"wavelength\"] : format(datum[\"wavelength\"], \"\")) + \"; power: \" + (!isValid(datum[\"power\"]) || !isFinite(+datum[\"power\"]) ? \"\" + datum[\"power\"] : format(datum[\"power\"], \"\"))"
           },
           "x": {"scale": "x", "field": "wavelength"},
           "y": {"scale": "y", "field": "power"},

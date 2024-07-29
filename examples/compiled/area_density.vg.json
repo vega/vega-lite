@@ -49,7 +49,7 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (format(datum[\"value\"], \"\")) + \"; density: \" + (format(datum[\"density\"], \"\"))"
+            "signal": "\"IMDB Rating: \" + (!isValid(datum[\"value\"]) || !isFinite(+datum[\"value\"]) ? \"\" + datum[\"value\"] : format(datum[\"value\"], \"\")) + \"; density: \" + (!isValid(datum[\"density\"]) || !isFinite(+datum[\"density\"]) ? \"\" + datum[\"density\"] : format(datum[\"density\"], \"\"))"
           },
           "x": {"scale": "x", "field": "value"},
           "y": {"scale": "y", "field": "density_end"},

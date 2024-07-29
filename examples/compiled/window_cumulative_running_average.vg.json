@@ -60,7 +60,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"
+            "signal": "\"Year (year): \" + (!isValid(datum[\"year_Year\"]) || !isFinite(+datum[\"year_Year\"]) ? \"\" + datum[\"year_Year\"] : timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Miles_per_Gallon: \" + (!isValid(datum[\"Miles_per_Gallon\"]) || !isFinite(+datum[\"Miles_per_Gallon\"]) ? \"\" + datum[\"Miles_per_Gallon\"] : format(datum[\"Miles_per_Gallon\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
@@ -78,7 +78,7 @@
         "update": {
           "stroke": {"value": "red"},
           "description": {
-            "signal": "\"Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Miles Per Gallon: \" + (format(datum[\"Average_MPG\"], \"\"))"
+            "signal": "\"Year (year): \" + (!isValid(datum[\"year_Year\"]) || !isFinite(+datum[\"year_Year\"]) ? \"\" + datum[\"year_Year\"] : timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Miles Per Gallon: \" + (!isValid(datum[\"Average_MPG\"]) || !isFinite(+datum[\"Average_MPG\"]) ? \"\" + datum[\"Average_MPG\"] : format(datum[\"Average_MPG\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "Average_MPG"},

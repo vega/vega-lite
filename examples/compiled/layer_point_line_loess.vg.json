@@ -42,7 +42,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Rotten Tomatoes Rating: \" + (format(datum[\"Rotten Tomatoes Rating\"], \"\")) + \"; IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\"))"
+            "signal": "\"Rotten Tomatoes Rating: \" + (!isValid(datum[\"Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"Rotten Tomatoes Rating\"]) ? \"\" + datum[\"Rotten Tomatoes Rating\"] : format(datum[\"Rotten Tomatoes Rating\"], \"\")) + \"; IMDB Rating: \" + (!isValid(datum[\"IMDB Rating\"]) || !isFinite(+datum[\"IMDB Rating\"]) ? \"\" + datum[\"IMDB Rating\"] : format(datum[\"IMDB Rating\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Rotten Tomatoes Rating"},
           "y": {"scale": "y", "field": "IMDB Rating"}
@@ -59,7 +59,7 @@
         "update": {
           "stroke": {"value": "firebrick"},
           "description": {
-            "signal": "\"Rotten Tomatoes Rating: \" + (format(datum[\"Rotten Tomatoes Rating\"], \"\")) + \"; IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\"))"
+            "signal": "\"Rotten Tomatoes Rating: \" + (!isValid(datum[\"Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"Rotten Tomatoes Rating\"]) ? \"\" + datum[\"Rotten Tomatoes Rating\"] : format(datum[\"Rotten Tomatoes Rating\"], \"\")) + \"; IMDB Rating: \" + (!isValid(datum[\"IMDB Rating\"]) || !isFinite(+datum[\"IMDB Rating\"]) ? \"\" + datum[\"IMDB Rating\"] : format(datum[\"IMDB Rating\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Rotten Tomatoes Rating"},
           "y": {"scale": "y", "field": "IMDB Rating"},

@@ -50,7 +50,7 @@
           "fill": {"scale": "color", "field": "digit"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\")) + \"; digit: \" + (isValid(datum[\"digit\"]) ? datum[\"digit\"] : \"\"+datum[\"digit\"])"
+            "signal": "\"longitude: \" + (!isValid(datum[\"longitude\"]) || !isFinite(+datum[\"longitude\"]) ? \"\" + datum[\"longitude\"] : format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (!isValid(datum[\"latitude\"]) || !isFinite(+datum[\"latitude\"]) ? \"\" + datum[\"latitude\"] : format(datum[\"latitude\"], \"\")) + \"; digit: \" + (\"\" + datum[\"digit\"])"
           },
           "x": {"field": "x"},
           "y": {"field": "y"},

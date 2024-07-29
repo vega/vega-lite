@@ -42,7 +42,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; b2: \" + (format(datum[\"b2\"], \"\"))"
+            "signal": "\"b: \" + (!isValid(datum[\"b\"]) || !isFinite(+datum[\"b\"]) ? \"\" + datum[\"b\"] : format(datum[\"b\"], \"\")) + \"; b2: \" + (!isValid(datum[\"b2\"]) || !isFinite(+datum[\"b2\"]) ? \"\" + datum[\"b2\"] : format(datum[\"b2\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "b"},
           "width": {"value": 5},

@@ -50,7 +50,7 @@
           "fill": {"scale": "color", "field": "gender"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"v1\"], \"\")) + \"; v2: \" + (format(datum[\"v2\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+            "signal": "\"age: \" + (\"\" + datum[\"age\"]) + \"; population: \" + (!isValid(datum[\"v1\"]) || !isFinite(+datum[\"v1\"]) ? \"\" + datum[\"v1\"] : format(datum[\"v1\"], \"\")) + \"; v2: \" + (!isValid(datum[\"v2\"]) || !isFinite(+datum[\"v2\"]) ? \"\" + datum[\"v2\"] : format(datum[\"v2\"], \"\")) + \"; gender: \" + (\"\" + datum[\"gender\"])"
           },
           "x": {"scale": "x", "field": "age"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
