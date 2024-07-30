@@ -92,7 +92,7 @@ const POLAR_POSITION_CHANNEL_INDEX = {
 export type PolarPositionChannel = keyof typeof POLAR_POSITION_CHANNEL_INDEX;
 
 export function isPolarPositionChannel(c: Channel): c is PolarPositionChannel {
-  return c in POLAR_POSITION_CHANNEL_INDEX;
+  return hasOwnProperty(POLAR_POSITION_CHANNEL_INDEX, c);
 }
 
 const GEO_POSIITON_CHANNEL_INDEX = {
@@ -118,7 +118,7 @@ export function getPositionChannelFromLatLong(channel: GeoPositionChannel): Posi
 }
 
 export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
-  return c in GEO_POSIITON_CHANNEL_INDEX;
+  return hasOwnProperty(GEO_POSIITON_CHANNEL_INDEX, c);
 }
 
 export const GEOPOSITION_CHANNELS = keys(GEO_POSIITON_CHANNEL_INDEX);
@@ -422,7 +422,7 @@ export const OFFSET_SCALE_CHANNELS = keys(OFFSET_SCALE_CHANNEL_INDEX);
 export type OffsetScaleChannel = (typeof OFFSET_SCALE_CHANNELS)[0];
 
 export function isXorYOffset(channel: Channel): channel is OffsetScaleChannel {
-  return channel in OFFSET_SCALE_CHANNEL_INDEX;
+  return hasOwnProperty(OFFSET_SCALE_CHANNEL_INDEX, channel);
 }
 
 // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without position / offset

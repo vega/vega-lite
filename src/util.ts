@@ -214,9 +214,11 @@ export function isEmpty(obj: object) {
 // This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
 export const keys = Object.keys as <T>(o: T) => Extract<keyof T, string>[];
 
-export const vals = Object.values;
+// Stricter version from https://github.com/microsoft/TypeScript/issues/51572#issuecomment-1319153323
+export const vals = Object.values as <T>(obj: T) => Array<T[keyof T]>;
 
-export const entries = Object.entries;
+// Stricter version from https://github.com/microsoft/TypeScript/issues/51572#issuecomment-1319153323
+export const entries = Object.entries as <T>(obj: T) => Array<[keyof T, T[keyof T]]>;
 
 // Using mapped type to declare a collect of flags for a string literal type S
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types
@@ -513,10 +515,14 @@ export function stringify(data: any) {
 
 /**
  * Check if the input object has the key and it's not undefined.
+ *
  * @param object the object
  * @param key the key to search
  * @returns if the object has the key and it's not undefined.
  */
-export function hasKey(object: unknown, key: string) {
-  return isObject(object) && hasOwnProperty(object, key) && (object as any)[key] !== undefined;
+// export function hasKey(object: unknown, key: string) {
+//   return isObject(object) && hasOwnProperty(object, key) && (object as any)[key] !== undefined;
+// }
+export function hasKey<T>(obj: T, key: string | number | symbol): key is keyof T {
+  return isObject(obj) && hasOwnProperty(obj, key) && (obj as any)[key] !== undefined;
 }

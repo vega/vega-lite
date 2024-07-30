@@ -21,10 +21,10 @@ describe('compile/mark/encode/position-rect', () => {
       });
 
       const props = rectPosition(model, 'x');
-      expect(props.x['offset']).toEqual({
+      expect((props.x as any).offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -0.5'
       });
-      expect(props.x2['offset']).toEqual({
+      expect((props.x2 as any).offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * 0.5'
       });
     });
@@ -71,8 +71,8 @@ describe('compile/mark/encode/position-rect', () => {
       });
 
       const props = rectPosition(model, 'x');
-      expect(props.x['field']).toBe(`yearmonth_date_${OFFSETTED_RECT_END_SUFFIX}`);
-      expect(props.x2['field']).toBe(`yearmonth_date_${OFFSETTED_RECT_START_SUFFIX}`);
+      expect((props.x as any).field).toBe(`yearmonth_date_${OFFSETTED_RECT_END_SUFFIX}`);
+      expect((props.x2 as any).field).toBe(`yearmonth_date_${OFFSETTED_RECT_START_SUFFIX}`);
     });
 
     it('produces correct x-mixins for binned data with step and start field, without end field', () => {
@@ -113,10 +113,10 @@ describe('compile/mark/encode/position-rect', () => {
       });
 
       const props = rectPosition(model, 'y');
-      expect(props.y2['offset']).toEqual({
+      expect((props.y2 as any).offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -0.5'
       });
-      expect(props.y['offset']).toEqual({
+      expect((props.y as any).offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * 0.5'
       });
     });
@@ -138,10 +138,10 @@ describe('compile/mark/encode/position-rect', () => {
 
       const props = rectPosition(model, 'x');
 
-      expect(props.x['offset']).toEqual({
+      expect((props.x as any).offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -1'
       });
-      expect(props.x2['offset']).toEqual({
+      expect((props.x2 as any).offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * 1'
       });
     });
@@ -162,10 +162,10 @@ describe('compile/mark/encode/position-rect', () => {
       });
 
       const props = rectPosition(model, 'y');
-      expect(props.y2['offset']).toEqual({
+      expect((props.y2 as any).offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -1'
       });
-      expect(props.y['offset']).toEqual({
+      expect((props.y as any).offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * 1'
       });
     });
@@ -231,10 +231,10 @@ describe('compile/mark/encode/position-rect', () => {
       model.parseAxesAndHeaders();
 
       const props = rectPosition(model, 'x');
-      expect(props.x['offset']).toEqual({
+      expect((props.x as any).offset).toEqual({
         signal: 't + -0.5'
       });
-      expect(props.x2['offset']).toEqual({
+      expect((props.x2 as any).offset).toEqual({
         signal: 't + 0.5'
       });
     });
@@ -257,10 +257,10 @@ describe('compile/mark/encode/position-rect', () => {
       model.parseAxesAndHeaders();
 
       const props = rectPosition(model, 'x');
-      expect(props.x['offset']).toEqual({
+      expect((props.x as any).offset).toEqual({
         signal: 't + (r ? -1 : 1) * (o + -0.5)'
       });
-      expect(props.x2['offset']).toEqual({
+      expect((props.x2 as any).offset).toEqual({
         signal: 't + (r ? -1 : 1) * (o + 0.5)'
       });
     });

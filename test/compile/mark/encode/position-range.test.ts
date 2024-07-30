@@ -27,7 +27,7 @@ describe('compile/mark/encode/position-range', () => {
 
     [X, Y].forEach(channel => {
       const mixins = rangePosition(channel, model, {defaultPos: 'zeroOrMin', defaultPos2: 'zeroOrMin'});
-      expect(mixins[`${channel}c`]['field']).toEqual(model.getName(channel));
+      expect((mixins[`${channel}c`] as any).field).toEqual(model.getName(channel));
 
       const sizeChannel = getSizeChannel(channel);
       expect(mixins[sizeChannel]).toEqual({value: 42});
@@ -63,8 +63,8 @@ describe('compile/mark/encode/position-range', () => {
 
     [X, Y].forEach(channel => {
       const mixins = rangePosition(channel, model, {defaultPos: 'zeroOrMin', defaultPos2: 'zeroOrMin'});
-      expect(mixins[channel]['field']).toEqual(model.getName(channel));
-      expect(mixins[`${channel}2`]['field']).toEqual(model.getName(`${channel}2`));
+      expect((mixins[channel] as any).field).toEqual(model.getName(channel));
+      expect((mixins[`${channel}2`] as any).field).toEqual(model.getName(`${channel}2`));
     });
   });
 });

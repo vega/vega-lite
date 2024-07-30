@@ -10,7 +10,7 @@ import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
-import {keys} from '../util';
+import {hasKey, keys} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
@@ -58,7 +58,7 @@ export class FacetModel extends ModelWithField {
     }
 
     const channels = keys(facet);
-    const normalizedFacet = {};
+    const normalizedFacet: EncodingFacetMapping<FieldName, SignalRef> = {};
     for (const channel of channels) {
       if (![ROW, COLUMN].includes(channel)) {
         // Drop unsupported channel
@@ -91,11 +91,11 @@ export class FacetModel extends ModelWithField {
   }
 
   public channelHasField(channel: ExtendedChannel): boolean {
-    return !!this.facet[channel];
+    return hasKey(this.facet, channel);
   }
 
   public fieldDef(channel: ExtendedChannel): TypedFieldDef<string> {
-    return this.facet[channel];
+    return (this.facet as any)[channel];
   }
 
   public parseData() {
@@ -153,7 +153,7 @@ export class FacetModel extends ModelWithField {
           if (['right', 'bottom'].includes(titleOrient)) {
             const headerChannel = getHeaderChannel(channel, titleOrient);
             layoutMixins.titleAnchor ??= {};
-            layoutMixins.titleAnchor[headerChannel] = 'end';
+            (layoutMixins.titleAnchor as any)[headerChannel] = 'end';
           }
         }
 
@@ -164,12 +164,12 @@ export class FacetModel extends ModelWithField {
           if (channel !== 'facet' && !this.child.component.layoutSize.get(sizeType)) {
             // If facet child does not have size signal, then apply headerBand
             layoutMixins[bandType] ??= {};
-            layoutMixins[bandType][channel] = 0.5;
+            (layoutMixins[bandType] as any)[channel] = 0.5;
           }
 
           if (layoutHeaderComponent.title) {
             layoutMixins.offset ??= {};
-            layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
+            (layoutMixins.offset as any)[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
           }
         }
       }

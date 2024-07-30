@@ -571,7 +571,7 @@ describe('compile/compile', () => {
       }
     });
 
-    expect(spec.autosize['resize']).toBeTruthy();
+    expect((spec.autosize as any).resize).toBeTruthy();
   });
 });
 

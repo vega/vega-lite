@@ -2,7 +2,7 @@ import type {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {FieldName, valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
-import {ExprRef, isExprRef, replaceExprRef} from './expr';
+import {ExprRef, replaceExprRef} from './expr';
 import {LogicalComposition} from './logical';
 import {ParameterName} from './parameter';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams, BinnedTimeUnit} from './timeunit';

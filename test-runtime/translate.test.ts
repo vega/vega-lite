@@ -56,9 +56,9 @@ describe('Translate interval selections at runtime', () => {
       it('should move back-and-forth', async () => {
         for (let i = 0; i < hits.translate.length; i++) {
           await embed(spec('unit', i, {type, ...binding}));
-          const drag = (await page.evaluate(brush('drag', i)))[0];
+          const drag = ((await page.evaluate(brush('drag', i))) as [any])[0];
           await testRender(`${i}-0`);
-          const translate = (await page.evaluate(brush('translate', i, null, bind === unbound)))[0];
+          const translate = ((await page.evaluate(brush('translate', i, null, bind === unbound))) as [any])[0];
           expect(translate.values[0][0])[assertExtent[bind].x[i]](drag.values[0][0]);
           expect(translate.values[0][1])[assertExtent[bind].x[i]](drag.values[0][1]);
           expect(translate.values[1][0])[assertExtent[bind].y[i]](drag.values[1][0]);
@@ -81,9 +81,9 @@ describe('Translate interval selections at runtime', () => {
               }
             )
           );
-          const drag = (await page.evaluate(brush('bins', i)))[0];
+          const drag = ((await page.evaluate(brush('bins', i))) as [any])[0];
           await testRender(`bins_${i}-0`);
-          const translate = (await page.evaluate(brush('bins_translate', i, null, bind === unbound)))[0];
+          const translate = ((await page.evaluate(brush('bins_translate', i, null, bind === unbound))) as [any])[0];
           expect(translate.values[0][0])[assertExtent[bind].y[i]](drag.values[0][0]);
           expect(translate.values[0][1])[assertExtent[bind].y[i]](drag.values[0][1]);
           await testRender(`bins_${i}-1`);
@@ -119,9 +119,9 @@ describe('Translate interval selections at runtime', () => {
               }
             )
           );
-          const drag = (await page.evaluate(brush('drag', i)))[0];
+          const drag = ((await page.evaluate(brush('drag', i))) as [any])[0];
           await testRender(`logpow_${i}-0`);
-          const translate = (await page.evaluate(brush('translate', i, null, bind === unbound)))[0];
+          const translate = ((await page.evaluate(brush('translate', i, null, bind === unbound))) as [any])[0];
           expect(translate.values[0][0])[assertExtent[bind].x[i]](drag.values[0][0]);
           expect(translate.values[0][1])[assertExtent[bind].x[i]](drag.values[0][1]);
           expect(translate.values[1][0])[assertExtent[bind].y[i]](drag.values[1][0]);
@@ -144,9 +144,9 @@ describe('Translate interval selections at runtime', () => {
                 }
               )
             );
-            const drag = (await page.evaluate(brush('drag', i)))[0];
+            const drag = ((await page.evaluate(brush('drag', i))) as [any])[0];
             await testRender(`ord_${i}-0`);
-            const translate = (await page.evaluate(brush('translate', i, null, true)))[0];
+            const translate = ((await page.evaluate(brush('translate', i, null, true))) as [any])[0];
             expect(translate.values[0][0])[assertExtent[bind].x[i]](drag.values[0][0]);
             expect(translate.values[0][1])[assertExtent[bind].x[i]](drag.values[0][1]);
             expect(translate.values[1][0])[assertExtent[bind].y[i]](drag.values[1][0]);
@@ -167,16 +167,16 @@ describe('Translate interval selections at runtime', () => {
             }
           };
           it(`should work with shared scales in ${specType} views`, async () => {
-            for (let i = 0; i < hits[specType].length; i++) {
+            for (let i = 0; i < (hits as any)[specType].length; i++) {
               await embed(spec(specType, 0, {type, ...binding}, {resolve: {scale: {x: 'shared', y: 'shared'}}}));
               const parent = parentSelector(specType, i);
-              const xscale = await page.evaluate('view._runtime.scales.x.value.domain()');
-              const yscale = await page.evaluate('view._runtime.scales.y.value.domain()');
-              const drag = (await page.evaluate(brush(specType, i, parent)))[0];
-              expect(drag.values[0][0])[assertExtents[specType].x[i]](xscale[0]);
-              expect(drag.values[0][1])[assertExtents[specType].x[i]](xscale[1]);
-              expect(drag.values[1][0])[assertExtents[specType].y[i]](yscale[0]);
-              expect(drag.values[1][1])[assertExtents[specType].y[i]](yscale[1]);
+              const xscale = (await page.evaluate('view._runtime.scales.x.value.domain()')) as any[];
+              const yscale = (await page.evaluate('view._runtime.scales.y.value.domain()')) as any[];
+              const drag = ((await page.evaluate(brush(specType, i, parent))) as [any])[0];
+              ((expect(drag.values[0][0]) as any)[(assertExtents as any)[specType].x[i]] as any)(xscale[0]);
+              ((expect(drag.values[0][1]) as any)[(assertExtents as any)[specType].x[i]] as any)(xscale[1]);
+              ((expect(drag.values[1][0]) as any)[(assertExtents as any)[specType].y[i]] as any)(yscale[0]);
+              ((expect(drag.values[1][1]) as any)[(assertExtents as any)[specType].y[i]] as any)(yscale[1]);
               await testRender(`${specType}_${i}`);
             }
           });

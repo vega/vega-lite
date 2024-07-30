@@ -141,7 +141,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public axis(channel: PositionChannel): AxisInternal {
-    return this.specifiedAxes[channel];
+    return (this.specifiedAxes as any)[channel];
   }
 
   public legend(channel: NonPositionScaleChannel): LegendInternal {
@@ -191,15 +191,15 @@ export class UnitModel extends ModelWithField {
           : axisSpec;
       }
       return _axis;
-    }, {});
+    }, {} as any);
   }
 
   private initAxis(axis: Axis<ExprRef | SignalRef>): Axis<SignalRef> {
     const props = keys(axis);
-    const axisInternal = {};
+    const axisInternal: any = {};
     for (const prop of props) {
       const val = axis[prop];
-      axisInternal[prop as any] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
+      axisInternal[prop] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
         ? signalOrValueRefWithCondition<any>(val)
         : signalRefOrValue(val);
     }
@@ -218,7 +218,7 @@ export class UnitModel extends ModelWithField {
       }
 
       return _legend;
-    }, {});
+    }, {} as any);
   }
 
   public parseData() {
@@ -298,7 +298,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public fieldDef(channel: SingleDefChannel) {
-    const channelDef = this.encoding[channel];
+    const channelDef = (this.encoding as any)[channel];
     return getFieldDef<string>(channelDef);
   }
 

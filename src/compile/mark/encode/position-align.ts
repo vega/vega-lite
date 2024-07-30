@@ -39,9 +39,10 @@ export function vgAlignedPositionChannel(
     alignExcludingSignal = align;
   }
 
+  // FIXME: remove as any
   if (channel === 'x') {
-    return ALIGNED_X_CHANNEL[alignExcludingSignal || (defaultAlign === 'top' ? 'left' : 'center')];
+    return (ALIGNED_X_CHANNEL as any)[alignExcludingSignal || (defaultAlign === 'top' ? 'left' : 'center')];
   } else {
-    return BASELINED_Y_CHANNEL[alignExcludingSignal || defaultAlign];
+    return (BASELINED_Y_CHANNEL as any)[alignExcludingSignal || defaultAlign];
   }
 }

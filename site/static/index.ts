@@ -20,8 +20,8 @@ import {compile, TopLevelSpec} from '../../src';
 import {post} from './post';
 import {runStreamingExample} from './streaming';
 
-window['runStreamingExample'] = runStreamingExample;
-window['embedExample'] = embedExample;
+(window as any)['runStreamingExample'] = runStreamingExample;
+(window as any)['embedExample'] = embedExample;
 
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('typescript', typescript);
@@ -131,13 +131,13 @@ async function getSpec(el: d3.BaseType) {
   }
 }
 
-window['changeSpec'] = (elId: string, newSpec: string) => {
+(window as any)['changeSpec'] = (elId: string, newSpec: string) => {
   const el = document.getElementById(elId);
   select(el).attr('data-name', newSpec);
   getSpec(el);
 };
 
-window['buildSpecOpts'] = (id: string, baseName: string) => {
+(window as any)['buildSpecOpts'] = (id: string, baseName: string) => {
   const oldName = select(`#${id}`).attr('data-name');
   const prefixSel = select(`select[name=${id}]`);
   const inputsSel = selectAll(`input[name=${id}]:checked`);
@@ -149,7 +149,7 @@ window['buildSpecOpts'] = (id: string, baseName: string) => {
     .join('_');
   const newName = baseName + prefix + (values ? `_${values}` : '');
   if (oldName !== newName) {
-    window['changeSpec'](id, newName);
+    (window as any)['changeSpec'](id, newName);
   }
 };
 

@@ -39,7 +39,7 @@ export function getHeaderProperties(
   for (const prop of properties) {
     const value = getHeaderProperty(prop, header || {}, config, channel);
     if (value !== undefined) {
-      props[prop] = value;
+      (props as any)[prop] = value;
     }
   }
   return props;

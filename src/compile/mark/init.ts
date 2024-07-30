@@ -41,7 +41,7 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
     if (cornerRadiusEnd !== undefined) {
       const newProps =
         (markDef.orient === 'horizontal' && encoding.x2) || (markDef.orient === 'vertical' && encoding.y2)
-          ? ['cornerRadius']
+          ? (['cornerRadius'] as const)
           : BAR_CORNER_RADIUS_END_INDEX[markDef.orient];
 
       for (const newProp of newProps) {

@@ -1,3 +1,4 @@
+import {hasOwnProperty} from 'vega-util';
 import {keys} from './util';
 
 /**
@@ -14,7 +15,7 @@ export const Type = {
 export type Type = keyof typeof Type;
 
 export function isType(t: any): t is Type {
-  return t in Type;
+  return hasOwnProperty(Type, t);
 }
 
 export function isContinuous(type: Type): type is 'quantitative' | 'temporal' {

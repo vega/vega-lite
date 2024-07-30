@@ -249,7 +249,7 @@ function parseSingleChannelDomain(
   const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleDatumDef<string> | ScaleFieldDef<string>;
 
   const {type} = fieldOrDatumDef;
-  const timeUnit = fieldOrDatumDef['timeUnit'];
+  const timeUnit = (fieldOrDatumDef as any)['timeUnit'];
 
   const dataSourceTypeForScaleDomain = getScaleDataSourceForHandlingInvalidValues({
     invalid: getMarkConfig('invalid', markDef, config),

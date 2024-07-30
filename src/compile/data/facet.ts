@@ -152,7 +152,7 @@ export class FacetNode extends DataFlowNode {
     crossedDataName: string,
     childIndependentFieldsWithStep: ChildIndependentFieldsWithStep
   ): VgData {
-    const childChannel = {row: 'y', column: 'x', facet: undefined}[channel];
+    const childChannel = ({row: 'y', column: 'x', facet: undefined} as const)[channel];
 
     const fields: string[] = [];
     const ops: AggregateOp[] = [];

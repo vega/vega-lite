@@ -45,7 +45,7 @@ import {isArray} from 'vega-util';
 import {Value} from './channeldef';
 import {ExprRef} from './expr';
 import {SortOrder} from './sort';
-import {Dict, Flag, keys} from './util';
+import {Dict, Flag, hasKey, keys} from './util';
 
 export type {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
@@ -87,7 +87,7 @@ export type VgScaleDataRefWithSort = ScaleDataRef & {
 };
 
 export function isSignalRef(o: any): o is SignalRef {
-  return !!o?.signal;
+  return hasKey(o, 'signal');
 }
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
@@ -121,7 +121,7 @@ export type VgMultiFieldsRefWithSort = ScaleMultiFieldsRef & {
 export type VgRange = RangeScheme | ScaleData | RangeBand | RangeRaw;
 
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
-  return !!range['step'];
+  return hasKey(range, 'step');
 }
 
 export interface VgRangeStep {
@@ -193,21 +193,21 @@ export interface VgLayout {
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is VgScaleMultiDataRefWithSort {
   if (!isArray(domain)) {
-    return 'fields' in domain && !('data' in domain);
+    return hasKey(domain, 'fields') && !hasKey(domain, 'data');
   }
   return false;
 }
 
 export function isFieldRefUnionDomain(domain: VgDomain): domain is VgMultiFieldsRefWithSort {
   if (!isArray(domain)) {
-    return 'fields' in domain && 'data' in domain;
+    return hasKey(domain, 'fields') && hasKey(domain, 'data');
   }
   return false;
 }
 
 export function isDataRefDomain(domain: VgDomain | any): domain is VgScaleDataRefWithSort {
   if (!isArray(domain)) {
-    return 'field' in domain && 'data' in domain;
+    return hasKey(domain, 'field') && hasKey(domain, 'data');
   }
   return false;
 }

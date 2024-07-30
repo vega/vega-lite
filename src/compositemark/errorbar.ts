@@ -143,7 +143,7 @@ export function normalizeErrorBar(
     outerSpec,
     tooltipEncoding
   } = errorBarParams(spec, ERRORBAR, config);
-  delete encodingWithoutContinuousAxis['size'];
+  delete (encodingWithoutContinuousAxis as any).size;
 
   const makeErrorBarPart = makeCompositeAggregatePartFactory<ErrorBarPartsMixins>(
     markDef,

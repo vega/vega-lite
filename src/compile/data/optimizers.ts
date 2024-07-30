@@ -30,7 +30,7 @@ export class MergeIdenticalNodes extends TopDownOptimizer {
 
   public run(node: DataFlowNode) {
     const hashes = node.children.map(x => x.hash());
-    const buckets: {hash?: DataFlowNode[]} = {};
+    const buckets: Record<string | number, DataFlowNode[]> = {};
 
     for (let i = 0; i < hashes.length; i++) {
       if (buckets[hashes[i]] === undefined) {

@@ -46,7 +46,9 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
 
   const orient = markDef.orient;
   const hasSizeDef =
-    encoding[sizeChannel] ?? encoding.size ?? getMarkPropOrConfig('size', markDef, config, {vgChannel: sizeChannel});
+    (encoding as any)[sizeChannel] ??
+    encoding.size ??
+    getMarkPropOrConfig('size', markDef, config, {vgChannel: sizeChannel});
 
   const offsetScaleChannel = getOffsetChannel(channel);
 
@@ -57,7 +59,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
     isFieldDef(channelDef) &&
     (isBinning(channelDef.bin) || isBinned(channelDef.bin) || (channelDef.timeUnit && !channelDef2)) &&
     !(hasSizeDef && !isRelativeBandSize(hasSizeDef)) &&
-    !encoding[offsetScaleChannel] &&
+    !(encoding as any)[offsetScaleChannel] &&
     !hasDiscreteDomain(scaleType)
   ) {
     return rectBinPosition({
@@ -310,7 +312,7 @@ function rectBinPosition({
 
   const bandSize = getBandSize({channel, fieldDef, markDef, config, scaleType});
 
-  const axis = model.component.axes[channel]?.[0];
+  const axis = (model.component.axes as any)[channel]?.[0];
   const axisTranslate = axis?.get('translate') ?? 0.5; // vega default is 0.5
 
   const spacing = isXorY(channel) ? (getMarkPropOrConfig('binSpacing', markDef, config) ?? 0) : 0;

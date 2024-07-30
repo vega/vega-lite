@@ -33,7 +33,7 @@ describe('normalize()', () => {
           }
         };
         const normalized = normalize(spec);
-        expect(normalized['columns']).toBe(4);
+        expect((normalized as any).columns).toBe(4);
         expect(localLogger.warns[0]).toEqual(log.message.columnsNotSupportByRowCol('repeat'));
       })
     );
@@ -63,7 +63,7 @@ describe('normalize()', () => {
         }
       };
       const normalized = normalize(spec);
-      expect(normalized['layer']).toHaveLength(2);
+      expect((normalized as any).layer).toHaveLength(2);
     });
   });
 
@@ -170,7 +170,7 @@ describe('normalize()', () => {
           }
         };
         const normalized = normalize(spec);
-        expect(normalized['columns']).toBeUndefined();
+        expect((normalized as any).columns).toBeUndefined();
         expect(localLogger.warns[0]).toEqual(log.message.columnsNotSupportByRowCol('facet'));
       })
     );

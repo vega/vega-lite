@@ -1,4 +1,13 @@
-import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
+import {
+  Align,
+  Color,
+  Gradient,
+  MarkConfig as VgMarkConfig,
+  Orientation,
+  SignalRef,
+  TextBaseline,
+  hasOwnProperty
+} from 'vega';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
 import {Flag, hasKey, keys} from './util';
@@ -43,7 +52,7 @@ export const GEOSHAPE = Mark.geoshape;
 export type Mark = keyof typeof Mark;
 
 export function isMark(m: string): m is Mark {
-  return m in Mark;
+  return hasOwnProperty(Mark, m);
 }
 
 export const PATH_MARKS = ['line', 'area', 'trail'] as const;
@@ -453,7 +462,7 @@ export interface RelativeBandSize {
 }
 
 export function isRelativeBandSize(o: number | RelativeBandSize | ExprRef | SignalRef): o is RelativeBandSize {
-  return o && hasKey(o, 'band');
+  return hasKey(o, 'band');
 }
 
 export const BAR_CORNER_RADIUS_INDEX: Partial<

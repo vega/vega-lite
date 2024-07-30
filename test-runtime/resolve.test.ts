@@ -16,7 +16,7 @@ import {TopLevelSpec} from '../src';
 
 for (const type of selectionTypes) {
   const isInterval = type === 'interval';
-  const hits = isInterval ? hitsMaster.interval : hitsMaster.discrete;
+  const hits: any = isInterval ? hitsMaster.interval : hitsMaster.discrete;
   const fn = isInterval ? brush : pt;
 
   describe(`${type} selections at runtime`, () => {
@@ -55,7 +55,7 @@ for (const type of selectionTypes) {
           for (let i = 0; i < hits[specType].length; i++) {
             await embed(spec(specType, i, selection));
             const parent = parentSelector(specType, i);
-            const store = await page.evaluate(fn(specType, i, parent));
+            const store = (await page.evaluate(fn(specType, i, parent))) as [any];
             expect(store).toHaveLength(1);
             expect(store[0].unit).toMatch(unitNameRegex(specType, i));
             await testRender(`global_${i}`);
@@ -84,7 +84,7 @@ for (const type of selectionTypes) {
             await embed(spec(specType, 0, selection));
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);
-              const store = await page.evaluate(fn(specType, i, parent));
+              const store = (await page.evaluate(fn(specType, i, parent))) as [any];
               expect(store).toHaveLength(i + 1);
               expect(store[i].unit).toMatch(unitNameRegex(specType, i));
               await testRender(`${resolve}_${i}`);
@@ -98,7 +98,7 @@ for (const type of selectionTypes) {
 
             for (let i = hits[`${specType}_clear`].length - 1; i >= 0; i--) {
               const parent = parentSelector(specType, i);
-              const store = await page.evaluate(fn(`${specType}_clear`, i, parent));
+              const store = (await page.evaluate(fn(`${specType}_clear`, i, parent))) as [any];
               expect(store).toHaveLength(i);
               if (i > 0) {
                 expect(store[i - 1].unit).toMatch(unitNameRegex(specType, i - 1));

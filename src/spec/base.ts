@@ -1,5 +1,5 @@
 import {Color, Cursor, SignalRef, Text} from 'vega';
-import {isNumber, isObject} from 'vega-util';
+import {isNumber} from 'vega-util';
 import {NormalizedSpec} from '.';
 import {Data} from '../data';
 import {ExprRef} from '../expr';
@@ -7,7 +7,7 @@ import {MarkConfig} from '../mark';
 import {Resolve} from '../resolve';
 import {TitleParams} from '../title';
 import {Transform} from '../transform';
-import {Flag, keys} from '../util';
+import {Flag, hasKey, keys} from '../util';
 import {LayoutAlign, RowCol} from '../vega.schema';
 import {isConcatSpec, isVConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
@@ -74,7 +74,7 @@ export function getStepFor({step, offsetIsDiscrete}: {step: Step; offsetIsDiscre
 }
 
 export function isStep(size: number | Step | 'container' | 'merged'): size is Step {
-  return isObject(size) && size['step'] !== undefined;
+  return hasKey(size, 'step');
 }
 
 // TODO(https://github.com/vega/vega-lite/issues/2503): Make this generic so we can support some form of top-down sizing.
@@ -115,7 +115,7 @@ export interface LayoutSizeMixins {
 }
 
 export function isFrameMixins(o: any): o is FrameMixins<any> {
-  return o['view'] || o['width'] || o['height'];
+  return hasKey(o, 'view') || hasKey(o, 'width') || hasKey(o, 'height');
 }
 
 export interface FrameMixins<ES extends ExprRef | SignalRef = ExprRef | SignalRef> extends LayoutSizeMixins {

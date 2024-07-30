@@ -1,3 +1,5 @@
+import {hasKey} from './util';
+
 export type LogicalComposition<T> = LogicalNot<T> | LogicalAnd<T> | LogicalOr<T> | T;
 
 export interface LogicalOr<T> {
@@ -13,15 +15,15 @@ export interface LogicalNot<T> {
 }
 
 export function isLogicalOr(op: LogicalComposition<any>): op is LogicalOr<any> {
-  return !!op.or;
+  return hasKey(op, 'or');
 }
 
 export function isLogicalAnd(op: LogicalComposition<any>): op is LogicalAnd<any> {
-  return !!op.and;
+  return hasKey(op, 'and');
 }
 
 export function isLogicalNot(op: LogicalComposition<any>): op is LogicalNot<any> {
-  return !!op.not;
+  return hasKey(op, 'not');
 }
 
 export function forEachLeaf<T>(op: LogicalComposition<T>, fn: (op: T) => void) {

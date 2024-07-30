@@ -186,7 +186,7 @@ describe('Model', () => {
 
       expect(model.assembleGroupEncodeEntry(true)).toBeUndefined();
 
-      expect(model.assembleGroupEncodeEntry(false)['description']).toEqual({value: 'My awesome view'});
+      expect((model.assembleGroupEncodeEntry(false) as any).description).toEqual({value: 'My awesome view'});
     });
   });
 });

@@ -100,7 +100,7 @@ export const defaultViewConfig: ViewConfig<SignalRef> = {
 };
 
 export function isVgScheme(rangeScheme: string[] | RangeScheme): rangeScheme is RangeScheme {
-  return rangeScheme && hasKey(rangeScheme, 'scheme');
+  return hasKey(rangeScheme, 'scheme');
 }
 
 export type ColorConfig = Record<string, Color>;

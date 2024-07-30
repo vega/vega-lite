@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {COLOR, X, Y} from '../../../src/channel';
 import {area} from '../../../src/compile/mark/area';
 import {Encoding} from '../../../src/encoding';
@@ -55,7 +56,7 @@ describe('Mark: Area', () => {
     });
 
     it('should use bin_mid for the defined check', () => {
-      expect(props.defined['signal']).toContain('bin_maxbins_10_IMDB_Rating_mid');
+      expect((props.defined as SignalRef).signal).toContain('bin_maxbins_10_IMDB_Rating_mid');
     });
   });
 

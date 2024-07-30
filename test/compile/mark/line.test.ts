@@ -72,7 +72,7 @@ describe('Mark: Line', () => {
         const props = line.encodeEntry(model);
 
         // If size field is dropped, then strokeWidth only have value
-        expect(props.strokeWidth && props.strokeWidth['scale']).toBeFalsy();
+        expect(props.strokeWidth && (props.strokeWidth as any).scale).toBeFalsy();
         expect(localLogger.warns[0]).toEqual(log.message.LINE_WITH_VARYING_SIZE);
       })
     );

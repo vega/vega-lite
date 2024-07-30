@@ -15,7 +15,7 @@ import {
 import {Config} from '../../../config';
 import {Encoding, forEach} from '../../../encoding';
 import {StackProperties} from '../../../stack';
-import {entries} from '../../../util';
+import {Dict, entries} from '../../../util';
 import {isSignalRef} from '../../../vega.schema';
 import {getMarkPropOrConfig} from '../../common';
 import {binFormatExpression, formatSignalRef} from '../../format';
@@ -81,7 +81,7 @@ export function tooltipData(
   {reactiveGeom}: {reactiveGeom?: boolean} = {}
 ) {
   const formatConfig = {...config, ...config.tooltipFormat};
-  const toSkip = {};
+  const toSkip = new Set();
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
   const tuples: {channel: Channel; key: string; value: string}[] = [];
 
@@ -109,7 +109,7 @@ export function tooltipData(
         const endField = vgField(fieldDef2, {expr});
         const {format, formatType} = getFormatMixins(fieldDef);
         value = binFormatExpression(startField, endField, format, formatType, formatConfig);
-        toSkip[channel2] = true;
+        toSkip.add(channel2);
       }
     }
 
@@ -143,9 +143,9 @@ export function tooltipData(
     }
   });
 
-  const out = {};
+  const out: Dict<string> = {};
   for (const {channel, key, value} of tuples) {
-    if (!toSkip[channel] && !out[key]) {
+    if (!toSkip.has(channel) && !out[key]) {
       out[key] = value;
     }
   }

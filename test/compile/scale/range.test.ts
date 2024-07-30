@@ -1,3 +1,4 @@
+import {RangeRaw} from 'vega';
 import {
   defaultContinuousToDiscreteCount,
   interpolateRange,
@@ -574,8 +575,8 @@ describe('compile/scale', () => {
           }
         });
         const r = parseRangeForChannel('radius', model);
-        expect(r.value[0]).toBe(0);
-        expect(r.value[1]).toEqual({signal: 'min(width,height)/2'});
+        expect((r.value as RangeRaw)[0]).toBe(0);
+        expect((r.value as RangeRaw)[1]).toEqual({signal: 'min(width,height)/2'});
       });
     });
 

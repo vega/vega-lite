@@ -1,4 +1,6 @@
+import {MarkConfig} from 'vega';
 import {MarkDef} from '../../../mark';
+import {hasKey} from '../../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
@@ -44,10 +46,13 @@ function colorRef(channel: 'fill' | 'stroke', valueRef: VgValueRef | VgValueRef[
 }
 
 function markDefProperties(mark: MarkDef, ignore: Ignore) {
-  return VG_MARK_CONFIGS.reduce((m, prop) => {
-    if (!ALWAYS_IGNORE.has(prop) && mark[prop] !== undefined && ignore[prop] !== 'ignore') {
-      m[prop] = signalOrValueRef(mark[prop]);
-    }
-    return m;
-  }, {});
+  return VG_MARK_CONFIGS.reduce(
+    (m, prop) => {
+      if (!ALWAYS_IGNORE.has(prop) && hasKey(mark, prop) && (ignore as any)[prop] !== 'ignore') {
+        m[prop] = signalOrValueRef(mark[prop]);
+      }
+      return m;
+    },
+    {} as Record<keyof MarkConfig, unknown>
+  );
 }

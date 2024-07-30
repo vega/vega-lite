@@ -36,7 +36,7 @@ export interface FilterTransform {
 }
 
 export function isFilter(t: Transform): t is FilterTransform {
-  return 'filter' in t;
+  return hasKey(t, 'filter');
 }
 
 export interface CalculateTransform {
@@ -434,7 +434,7 @@ export interface PivotTransform {
 }
 
 export function isPivot(t: Transform): t is PivotTransform {
-  return 'pivot' in t;
+  return hasKey(t, 'pivot');
 }
 
 export interface DensityTransform {
@@ -508,7 +508,7 @@ export interface DensityTransform {
 }
 
 export function isDensity(t: Transform): t is DensityTransform {
-  return 'density' in t;
+  return hasKey(t, 'density');
 }
 
 export interface QuantileTransform {
@@ -541,7 +541,7 @@ export interface QuantileTransform {
 }
 
 export function isQuantile(t: Transform): t is QuantileTransform {
-  return 'quantile' in t;
+  return hasKey(t, 'quantile');
 }
 
 export interface RegressionTransform {
@@ -597,7 +597,7 @@ export interface RegressionTransform {
 }
 
 export function isRegression(t: Transform): t is RegressionTransform {
-  return 'regression' in t;
+  return hasKey(t, 'regression');
 }
 
 export interface LoessTransform {
@@ -632,54 +632,54 @@ export interface LoessTransform {
 }
 
 export function isLoess(t: Transform): t is LoessTransform {
-  return 'loess' in t;
+  return hasKey(t, 'loess');
 }
 
 export function isSample(t: Transform): t is SampleTransform {
-  return 'sample' in t;
+  return hasKey(t, 'sample');
 }
 
 export function isWindow(t: Transform): t is WindowTransform {
-  return 'window' in t;
+  return hasKey(t, 'window');
 }
 
 export function isJoinAggregate(t: Transform): t is JoinAggregateTransform {
-  return 'joinaggregate' in t;
+  return hasKey(t, 'joinaggregate');
 }
 
 export function isFlatten(t: Transform): t is FlattenTransform {
-  return 'flatten' in t;
+  return hasKey(t, 'flatten');
 }
 export function isCalculate(t: Transform): t is CalculateTransform {
-  return 'calculate' in t;
+  return hasKey(t, 'calculate');
 }
 
 export function isBin(t: Transform): t is BinTransform {
-  return 'bin' in t;
+  return hasKey(t, 'bin');
 }
 
 export function isImpute(t: Transform): t is ImputeTransform {
-  return 'impute' in t;
+  return hasKey(t, 'impute');
 }
 
 export function isTimeUnit(t: Transform): t is TimeUnitTransform {
-  return 'timeUnit' in t;
+  return hasKey(t, 'timeUnit');
 }
 
 export function isAggregate(t: Transform): t is AggregateTransform {
-  return 'aggregate' in t;
+  return hasKey(t, 'aggregate');
 }
 
 export function isStack(t: Transform): t is StackTransform {
-  return 'stack' in t;
+  return hasKey(t, 'stack');
 }
 
 export function isFold(t: Transform): t is FoldTransform {
-  return 'fold' in t;
+  return hasKey(t, 'fold');
 }
 
 export function isExtent(t: Transform): t is ExtentTransform {
-  return 'extent' in t && !('density' in t) && !('regression' in t);
+  return hasKey(t, 'extent') && !hasKey(t, 'density') && !hasKey(t, 'regression');
 }
 export type Transform =
   | AggregateTransform

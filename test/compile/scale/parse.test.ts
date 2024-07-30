@@ -469,11 +469,11 @@ describe('src/compile', () => {
       it('should add a selection extent', () => {
         expect('selectionExtent' in xScale.explicit).toBeTruthy();
         expect(xScale.explicit.selectionExtent.param).toBe('brush');
-        expect(xScale.explicit.selectionExtent['encoding']).toBe('x');
+        expect((xScale.explicit.selectionExtent as any).encoding).toBe('x');
 
         expect('selectionExtent' in yScale.explicit).toBeTruthy();
         expect(yScale.explicit.selectionExtent.param).toBe('foobar');
-        expect(yScale.explicit.selectionExtent['field']).toBe('Miles_per_Gallon');
+        expect((yScale.explicit.selectionExtent as any).field).toBe('Miles_per_Gallon');
       });
     });
   });

@@ -80,7 +80,7 @@ export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | S
 export type FitType = 'fit' | 'fit-x' | 'fit-y';
 
 export function isFitType(autoSizeType: AutosizeType): autoSizeType is FitType {
-  return autoSizeType === 'fit' || autoSizeType === 'fit-x' || autoSizeType === 'fit-y';
+  return ['fit', 'fit-x', 'fit-y'].includes(autoSizeType);
 }
 
 export function getFitType(sizeType?: 'width' | 'height'): FitType {

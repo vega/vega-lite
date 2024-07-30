@@ -328,7 +328,7 @@ export abstract class Model {
     if (!isTopLevel) {
       // Descriptions are already added to the top-level description so we only need to add them to the inner views.
       if (this.description) {
-        encodeEntry['description'] = signalOrValueRef(this.description);
+        (encodeEntry as any)['description'] = signalOrValueRef(this.description);
       }
 
       // For top-level spec, we can set the global width and height signal to adjust the group size.

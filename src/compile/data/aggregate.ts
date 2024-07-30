@@ -125,12 +125,12 @@ export class AggregateNode extends DataFlowNode {
         } else {
           if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
             const op = isArgminDef(aggregate) ? 'argmin' : 'argmax';
-            const argField = aggregate[op];
+            const argField = (aggregate as any)[op];
             meas[argField] ??= {};
             meas[argField][op] = new Set([vgField({op, field: argField}, {forAs: true})]);
           } else {
             meas[field] ??= {};
-            meas[field][aggregate] = new Set([vgField(fieldDef, {forAs: true})]);
+            (meas[field] as any)[aggregate] = new Set([vgField(fieldDef, {forAs: true})]);
           }
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain

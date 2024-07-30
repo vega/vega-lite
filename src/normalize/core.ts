@@ -283,8 +283,8 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
         log.warn(log.message.facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
       }
 
-      const facetMapping = {};
-      const layout = {};
+      const facetMapping: any = {};
+      const layout: any = {};
 
       for (const channel of [ROW, COLUMN]) {
         const def = facets[channel];
@@ -351,7 +351,7 @@ function mergeEncoding({
   if (parentEncoding) {
     const channels = new Set([...keys(parentEncoding), ...keys(encoding)]);
     for (const channel of channels) {
-      const channelDef = encoding[channel];
+      const channelDef = (encoding as any)[channel];
       const parentChannelDef = parentEncoding[channel];
 
       if (isFieldOrDatumDef(channelDef)) {
