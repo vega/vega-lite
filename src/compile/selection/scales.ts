@@ -57,7 +57,7 @@ const scaleBindings: SelectionCompiler<'interval'> = {
     // state is captured by the top-level signals that we insert and "push
     // outer" to from within the units. We need to reassemble this state into
     // the top-level named signal, except no single selCmpt has a global view.
-    const namedSg: NewSignal = signals.filter(s => s.name === selCmpt.name)[0];
+    const namedSg: NewSignal = signals.find(s => s.name === selCmpt.name);
     let update = namedSg.update;
     if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
       namedSg.update = `{${bound
