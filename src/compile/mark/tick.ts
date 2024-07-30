@@ -1,8 +1,7 @@
-import type {SignalRef} from 'vega';
 import {isNumber} from 'vega-util';
 import {getViewConfigDiscreteStep} from '../../config';
-import {isVgRangeStep} from '../../vega.schema';
-import {getMarkPropOrConfig, signalOrValueRef} from '../common';
+import {isVgRangeStep, VgValueRef} from '../../vega.schema';
+import {exprFromSignalRefOrValue, getMarkPropOrConfig, signalOrValueRef} from '../common';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as encode from './encode';
@@ -32,7 +31,7 @@ export const tick: MarkCompiler = {
 
       // size / thickness => width / height
       ...encode.nonPosition('size', model, {
-        defaultValue: defaultSize(model),
+        defaultRef: defaultSize(model),
         vgChannel: vgSizeChannel
       }),
       [vgThicknessChannel]: signalOrValueRef(getMarkPropOrConfig('thickness', markDef, config))
@@ -40,26 +39,32 @@ export const tick: MarkCompiler = {
   }
 };
 
-function defaultSize(model: UnitModel): number | SignalRef {
+function defaultSize(model: UnitModel): VgValueRef {
   const {config, markDef} = model;
   const {orient} = markDef;
 
   const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
-  const scale = model.getScaleComponent(orient === 'horizontal' ? 'x' : 'y');
+  const positionChannel = orient === 'horizontal' ? 'x' : 'y';
+  const scale = model.getScaleComponent(positionChannel);
 
   const markPropOrConfig =
     getMarkPropOrConfig('size', markDef, config, {vgChannel: vgSizeChannel}) ?? config.tick.bandSize;
 
   if (markPropOrConfig !== undefined) {
-    return markPropOrConfig;
+    return signalOrValueRef(markPropOrConfig);
+  } else if (scale?.get('type') === 'band') {
+    return {scale: model.scaleName(positionChannel), band: 1};
+  }
+
+  const scaleRange = scale?.get('range');
+  const {tickBandPaddingInner} = config.scale;
+
+  const step =
+    scaleRange && isVgRangeStep(scaleRange) ? scaleRange.step : getViewConfigDiscreteStep(config.view, vgSizeChannel);
+
+  if (isNumber(step) && isNumber(tickBandPaddingInner)) {
+    return {value: step * (1 - tickBandPaddingInner)};
   } else {
-    const scaleRange = scale ? scale.get('range') : undefined;
-    if (scaleRange && isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
-      return (scaleRange.step * 3) / 4;
-    }
-
-    const defaultViewStep = getViewConfigDiscreteStep(config.view, vgSizeChannel);
-
-    return (defaultViewStep * 3) / 4;
+    return {signal: `${exprFromSignalRefOrValue(tickBandPaddingInner)} * ${exprFromSignalRefOrValue(step)}`};
   }
 }
