@@ -111,7 +111,7 @@ describe('Mark: Tick', () => {
     });
 
     it('should scale on y', () => {
-      expect(props.yc).toEqual({scale: Y, field: 'Cylinders'});
+      expect(props.yc).toEqual({scale: Y, field: 'Cylinders', band: 0.5});
     });
 
     it('width should be tick thickness with default orient vertical', () => {
@@ -119,7 +119,43 @@ describe('Mark: Tick', () => {
     });
 
     it('height should be matched to field with default orient vertical', () => {
-      expect(props.height).toEqual({value: 15});
+      expect(props.height).toEqual({scale: 'y', band: 1});
+    });
+  });
+  describe('with quantitative x and ordinal y with yOffset', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'tick',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Cylinders', type: 'ordinal'},
+        yOffset: {field: 'Acceleration', type: 'ordinal'}
+      },
+      data: {url: 'data/cars.json'}
+    });
+    const props = tick.encodeEntry(model);
+
+    it('should scale on x', () => {
+      expect(props.xc).toEqual({scale: X, field: 'Horsepower'});
+    });
+
+    it('should scale on y', () => {
+      expect(props.yc).toEqual({
+        scale: Y,
+        field: 'Cylinders',
+        offset: {
+          band: 0.5,
+          field: 'Acceleration',
+          scale: 'yOffset'
+        }
+      });
+    });
+
+    it('width should be tick thickness with default orient vertical', () => {
+      expect(props.width).toEqual({value: 1});
+    });
+
+    it('height should be matched to field with default orient vertical', () => {
+      expect(props.height).toEqual({scale: 'yOffset', band: 1});
     });
   });
 
