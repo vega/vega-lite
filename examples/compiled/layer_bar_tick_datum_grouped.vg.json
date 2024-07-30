@@ -78,7 +78,7 @@
             "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
           },
           "yc": {"scale": "y", "value": 10},
-          "width": {"scale": "x", "band": 1},
+          "width": {"scale": "xOffset", "band": 1},
           "height": {"value": 1}
         }
       }
