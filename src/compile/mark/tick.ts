@@ -5,6 +5,7 @@ import {exprFromSignalRefOrValue, getMarkPropOrConfig, signalOrValueRef} from '.
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as encode from './encode';
+import {getOffsetScaleChannel} from '../../channel';
 
 export const tick: MarkCompiler = {
   vgMark: 'rect',
@@ -45,7 +46,12 @@ function defaultSize(model: UnitModel): VgValueRef {
 
   const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
   const positionChannel = orient === 'horizontal' ? 'x' : 'y';
-  const scale = model.getScaleComponent(positionChannel);
+
+  const offsetScaleChannel = getOffsetScaleChannel(positionChannel);
+
+  // Use offset scale if exists
+  const scale = model.getScaleComponent(offsetScaleChannel) || model.getScaleComponent(positionChannel);
+  const scaleName = model.scaleName(offsetScaleChannel) || model.scaleName(positionChannel);
 
   const markPropOrConfig =
     getMarkPropOrConfig('size', markDef, config, {vgChannel: vgSizeChannel}) ?? config.tick.bandSize;
@@ -53,7 +59,7 @@ function defaultSize(model: UnitModel): VgValueRef {
   if (markPropOrConfig !== undefined) {
     return signalOrValueRef(markPropOrConfig);
   } else if (scale?.get('type') === 'band') {
-    return {scale: model.scaleName(positionChannel), band: 1};
+    return {scale: scaleName, band: 1};
   }
 
   const scaleRange = scale?.get('range');
