@@ -259,6 +259,16 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
   rectBandPaddingInner?: number | ES;
 
   /**
+   * Default inner padding for `x` and `y` band-ordinal scales of `"tick"` marks.
+   *
+   * __Default value:__ `0.25`
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  tickBandPaddingInner?: number | ES;
+
+  /**
    * Default padding inner for xOffset/yOffset's band scales.
    *
    * __Default Value:__ `0`
@@ -432,6 +442,8 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
 
   barBandPaddingInner: 0.1,
   rectBandPaddingInner: 0,
+  tickBandPaddingInner: 0.25,
+
   bandWithNestedOffsetPaddingInner: 0.2,
   bandWithNestedOffsetPaddingOuter: 0.2,
 

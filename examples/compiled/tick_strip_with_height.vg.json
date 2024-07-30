@@ -1,8 +1,10 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Shows the relationship between horsepower and the number of cylinders using tick marks.",
   "background": "white",
   "padding": 5,
   "width": 200,
+  "height": 200,
   "style": "cell",
   "data": [
     {
@@ -15,13 +17,6 @@
           "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"])"
         }
       ]
-    }
-  ],
-  "signals": [
-    {"name": "y_step", "value": 20},
-    {
-      "name": "height",
-      "update": "bandspace(domain('y').length, 0.25, 0.125) * y_step"
     }
   ],
   "marks": [
@@ -59,7 +54,7 @@
       "name": "y",
       "type": "band",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": {"step": {"signal": "y_step"}},
+      "range": [0, {"signal": "height"}],
       "paddingInner": 0.25,
       "paddingOuter": 0.125
     }
@@ -71,20 +66,6 @@
       "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "domain": false,
-      "labels": false,
-      "aria": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
-      "zindex": 0
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": true,
-      "tickBand": "extent",
-      "gridScale": "x",
       "domain": false,
       "labels": false,
       "aria": false,
@@ -108,7 +89,6 @@
       "orient": "left",
       "grid": false,
       "title": "Cylinders",
-      "tickBand": "extent",
       "zindex": 0
     }
   ]
