@@ -59,7 +59,7 @@ const scaleBindings: SelectionCompiler<'interval'> = {
     // the top-level named signal, except no single selCmpt has a global view.
     const namedSg: NewSignal = signals.find(s => s.name === selCmpt.name);
     let update = namedSg.update;
-    if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
+    if (update.includes(VL_SELECTION_RESOLVE)) {
       namedSg.update = `{${bound
         .map(proj => `${stringValue(replacePathInField(proj.field))}: ${proj.signals.data}`)
         .join(', ')}}`;
