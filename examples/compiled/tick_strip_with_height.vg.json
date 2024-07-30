@@ -34,8 +34,8 @@
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
           },
           "xc": {"scale": "x", "field": "Horsepower"},
-          "yc": {"scale": "y", "field": "Cylinders"},
-          "height": {"value": 15},
+          "yc": {"scale": "y", "field": "Cylinders", "band": 0.5},
+          "height": {"scale": "y", "band": 1},
           "width": {"value": 1}
         }
       }
@@ -52,10 +52,11 @@
     },
     {
       "name": "y",
-      "type": "point",
+      "type": "band",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
       "range": [0, {"signal": "height"}],
-      "padding": 0.5
+      "paddingInner": 0.25,
+      "paddingOuter": 0.125
     }
   ],
   "axes": [

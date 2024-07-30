@@ -133,7 +133,7 @@
           },
           "xc": {"scale": "x", "field": "median"},
           "yc": {"scale": "y", "field": "Species", "band": 0.5},
-          "height": {"value": 15},
+          "height": {"scale": "y", "band": 1},
           "width": {"value": 1}
         }
       }
