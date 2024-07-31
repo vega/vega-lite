@@ -95,7 +95,7 @@ export function getImplicitFromFilterTransform(transform: FilterTransform) {
         // FIXME: remove as any
         val = (filter as any).range[0];
       } else if (isFieldOneOfPredicate(filter)) {
-        val = (filter.oneOf ?? (filter as any)['in'])[0];
+        val = (filter.oneOf ?? (filter as any).in)[0];
       } // else -- for filter expression, we can't infer anything
 
       if (val) {

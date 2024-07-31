@@ -220,7 +220,7 @@ export type FieldName = string;
 export type Field = FieldName | RepeatRef;
 
 export function isRepeatRef(field: Field | any): field is RepeatRef {
-  return field && !isString(field) && hasKey(field, 'repeat');
+  return !isString(field) && hasKey(field, 'repeat');
 }
 
 /** @@hidden */
