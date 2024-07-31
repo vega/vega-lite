@@ -1,4 +1,4 @@
-import {LayoutAlign, SignalRef} from 'vega';
+import type {LayoutAlign, SignalRef} from 'vega';
 import {BinParams} from '../bin';
 import {ChannelDef, Field, FieldName, TypedFieldDef} from '../channeldef';
 import {ExprRef} from '../expr';

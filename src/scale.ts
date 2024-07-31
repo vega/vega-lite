@@ -1,5 +1,5 @@
-import {
-  isObject,
+import type {
+  ColorScheme,
   RangeEnum,
   ScaleBins,
   ScaleInterpolateEnum,
@@ -8,8 +8,7 @@ import {
   TimeInterval,
   TimeIntervalStep
 } from 'vega';
-import type {ColorScheme} from 'vega-typings';
-import {isString} from 'vega-util';
+import {isString, isObject} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';

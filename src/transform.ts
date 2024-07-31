@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import type {AggregateOp} from 'vega';
 import {BinParams} from './bin';
 import {FieldName} from './channeldef';
 import {Data} from './data';

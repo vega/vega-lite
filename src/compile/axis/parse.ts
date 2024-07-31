@@ -1,4 +1,4 @@
-import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
+import type {AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS} from '../../channel';
 import {getFieldOrDatumDef, PositionDatumDef, PositionFieldDef} from '../../channeldef';

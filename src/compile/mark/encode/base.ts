@@ -1,4 +1,4 @@
-import {MarkConfig} from 'vega';
+import type {MarkConfig} from 'vega';
 import {MarkDef} from '../../../mark';
 import {hasKey} from '../../../util';
 import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../../vega.schema';

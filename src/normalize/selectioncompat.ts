@@ -1,13 +1,13 @@
-import {isArray} from 'vega';
+import {isArray} from 'vega-util';
 import {BinParams, isBinParams} from '../bin';
 import {ChannelDef, Field, isConditionalDef, isFieldDef, isScaleFieldDef} from '../channeldef';
+import {Encoding} from '../encoding';
 import {LogicalComposition, normalizeLogicalComposition} from '../logical';
 import {FacetedUnitSpec, GenericSpec, LayerSpec, RepeatSpec, UnitSpec} from '../spec';
 import {SpecMapper} from '../spec/map';
 import {isBin, isFilter, isLookup} from '../transform';
 import {duplicate, entries, vals} from '../util';
 import {NormalizerParams} from './base';
-import {Encoding} from '../encoding';
 
 export class SelectionCompatibilityNormalizer extends SpecMapper<
   NormalizerParams,

@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import type {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../../bin';
 import {COLUMN, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../../channel';

@@ -1,4 +1,14 @@
-import {Align, Color, FontStyle, FontWeight, Orient, SignalRef, TextBaseline, TitleAnchor, TitleConfig} from 'vega';
+import type {
+  Align,
+  Color,
+  FontStyle,
+  FontWeight,
+  Orient,
+  SignalRef,
+  TextBaseline,
+  TitleAnchor,
+  TitleConfig
+} from 'vega';
 import {FormatMixins} from './channeldef';
 import {ExprRef} from './expr';
 import {Guide, VlOnlyGuideConfig} from './guide';

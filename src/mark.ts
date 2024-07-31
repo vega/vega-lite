@@ -1,18 +1,10 @@
-import {
-  Align,
-  Color,
-  Gradient,
-  MarkConfig as VgMarkConfig,
-  Orientation,
-  SignalRef,
-  TextBaseline,
-  hasOwnProperty
-} from 'vega';
+import type {Align, Color, Gradient, Orientation, SignalRef, TextBaseline, MarkConfig as VgMarkConfig} from 'vega';
+import {hasOwnProperty} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
+import {MarkInvalidMixins} from './invalid';
 import {Flag, hasKey, keys} from './util';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
-import {MarkInvalidMixins} from './invalid';
 
 /**
  * All types of primitive marks.

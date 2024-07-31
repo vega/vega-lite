@@ -1,4 +1,4 @@
-import {ExprRef, SignalRef, Text} from 'vega';
+import type {ExprRef, SignalRef, Text} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
 import {AxisConfig, ConditionalAxisProperty} from '../axis';
 import {

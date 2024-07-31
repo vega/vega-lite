@@ -1,5 +1,5 @@
 import {ImputeSequence} from './transform';
-import {ImputeMethod} from 'vega';
+import type {ImputeMethod} from 'vega';
 
 export interface ImputeParams {
   /**

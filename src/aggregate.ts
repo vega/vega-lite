@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import type {AggregateOp} from 'vega';
 import {hasOwnProperty, isString} from 'vega-util';
 import {FieldName} from './channeldef';
 import {contains, Flag, hasKey} from './util';

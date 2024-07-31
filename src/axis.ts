@@ -1,4 +1,4 @@
-import {
+import type {
   Align,
   Axis as VgAxis,
   AxisEncode,

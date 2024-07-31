@@ -1,4 +1,4 @@
-import {isArray, isString} from 'vega';
+import {isArray, isString} from 'vega-util';
 import {Field} from '../channeldef';
 import {VariableParameter} from '../parameter';
 import {isSelectionParameter, SelectionParameter} from '../selection';
