@@ -571,9 +571,11 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   const outputConfig: Config<SignalRef> = omit(mergedConfig, configPropsWithExpr);
 
-  outputConfig['background'] = signalRefOrValue(mergedConfig['background']);
-  outputConfig['lineBreak'] = signalRefOrValue(mergedConfig['lineBreak']);
-  outputConfig['padding'] = signalRefOrValue(mergedConfig['padding']);
+  for (const prop of ['background', 'lineBreak', 'padding'] as const) {
+    if (mergedConfig[prop]) {
+      (outputConfig as any)[prop] = signalRefOrValue(mergedConfig[prop]);
+    }
+  }
 
   for (const markConfigType of mark.MARK_CONFIGS) {
     if (mergedConfig[markConfigType]) {
