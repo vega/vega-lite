@@ -1,4 +1,4 @@
-import {isArray} from 'vega-util';
+import {hasOwnProperty, isArray} from 'vega-util';
 import {NonArgAggregateOp} from './aggregate';
 import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
@@ -88,7 +88,7 @@ const SORT_BY_CHANNEL_INDEX = {
 export type SortByChannel = keyof typeof SORT_BY_CHANNEL_INDEX;
 
 export function isSortByChannel(c: string): c is SortByChannel {
-  return c in SORT_BY_CHANNEL_INDEX;
+  return hasOwnProperty(SORT_BY_CHANNEL_INDEX, c);
 }
 
 export type SortByChannelDesc =

@@ -1,3 +1,4 @@
+import {hasOwnProperty} from 'vega-util';
 import {entries, isEmpty} from '../../../util';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {VG_MARK_INDEX} from './../../../vega.schema';
@@ -37,7 +38,7 @@ function ariaRoleDescription(model: UnitModel) {
     return {ariaRoleDescription: {value: ariaRoleDesc}};
   }
 
-  return mark in VG_MARK_INDEX ? {} : {ariaRoleDescription: {value: mark}};
+  return hasOwnProperty(VG_MARK_INDEX, mark) ? {} : {ariaRoleDescription: {value: mark}};
 }
 
 export function description(model: UnitModel) {

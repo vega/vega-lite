@@ -400,7 +400,7 @@ export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = keyof typeof POSITION_SCALE_CHANNEL_INDEX;
 
 export function isXorY(channel: ExtendedChannel): channel is PositionScaleChannel {
-  return channel in POSITION_SCALE_CHANNEL_INDEX;
+  return hasOwnProperty(POSITION_SCALE_CHANNEL_INDEX, channel);
 }
 
 export const POLAR_POSITION_SCALE_CHANNEL_INDEX = {
