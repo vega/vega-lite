@@ -338,12 +338,7 @@ export function accessPathDepth(path: string) {
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
 export function getFirstDefined<T>(...args: readonly T[]): T | undefined {
-  for (const arg of args) {
-    if (arg !== undefined) {
-      return arg;
-    }
-  }
-  return undefined;
+  return args.find(a => a !== undefined);
 }
 
 // variable used to generate id
