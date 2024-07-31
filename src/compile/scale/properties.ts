@@ -316,13 +316,22 @@ export function paddingInner(
     // Basically it doesn't make sense to add padding for color and size.
 
     // paddingOuter would only be called if it's a band scale, just return the default for bandScale.
-    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner, bandWithNestedOffsetPaddingInner} = scaleConfig;
+    const {
+      bandPaddingInner,
+      barBandPaddingInner,
+      rectBandPaddingInner,
+      tickBandPaddingInner,
+      bandWithNestedOffsetPaddingInner
+    } = scaleConfig;
 
     if (hasNestedOffsetScale) {
       return bandWithNestedOffsetPaddingInner;
     }
 
-    return getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner);
+    return getFirstDefined(
+      bandPaddingInner,
+      mark === 'bar' ? barBandPaddingInner : mark === 'tick' ? tickBandPaddingInner : rectBandPaddingInner
+    );
   } else if (isXorYOffset(channel)) {
     if (scaleType === ScaleType.BAND) {
       return scaleConfig.offsetBandPaddingInner;

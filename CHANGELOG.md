@@ -1,5 +1,18 @@
 
 
+# [5.20.0](https://github.com/vega/vega-lite/compare/v5.19.0...v5.20.0) (2024-07-30)
+
+
+### Bug Fixes
+
+* for issue when there are multiple aggregates with the same data field and aggregation operation ([#9320](https://github.com/vega/vega-lite/issues/9320)) ([da84469](https://github.com/vega/vega-lite/commit/da844691cb4ad6e4d6cf32af90c7f14d248b4764)), closes [#6184](https://github.com/vega/vega-lite/issues/6184)
+* make tick size responsive to plot height ([#9395](https://github.com/vega/vega-lite/issues/9395)) ([3f5dce6](https://github.com/vega/vega-lite/commit/3f5dce6ed3df7783c61afd5fb80eb4520668aa04))
+
+
+### Features
+
+* Expose `react` option for params ([#9374](https://github.com/vega/vega-lite/issues/9374)) ([93d92ef](https://github.com/vega/vega-lite/commit/93d92efa4e1893fb01b77f8145ca3bf7bf8dba05)), closes [/github.com/vega/altair/pull/3394#issuecomment-2140320905](https://github.com//github.com/vega/altair/pull/3394/issues/issuecomment-2140320905)
+
 # [5.19.0](https://github.com/vega/vega-lite/compare/v5.18.1...v5.19.0) (2024-06-14)
 
 

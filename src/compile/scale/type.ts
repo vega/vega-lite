@@ -77,8 +77,8 @@ function defaultType(
       }
 
       if (isXorY(channel) || isXorYOffset(channel)) {
-        if (util.contains(['rect', 'bar', 'image', 'rule'], mark.type)) {
-          // The rect/bar mark should fit into a band.
+        if (util.contains(['rect', 'bar', 'image', 'rule', 'tick'], mark.type)) {
+          // The rect/bar/tick mark should fit into a band.
           // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
           return 'band';
         }

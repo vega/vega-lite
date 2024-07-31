@@ -89,9 +89,9 @@ describe('compile/scale', () => {
       });
 
       describe('continuous', () => {
-        it('should return point scale for ordinal X,Y for marks others than rect, rule, bar, and arc', () => {
+        it('should return point scale for ordinal X,Y for marks others than rect, rule, bar, arc, and tick', () => {
           PRIMITIVE_MARKS.forEach(mark => {
-            if (util.contains(['bar', 'rule', 'rect', 'image', 'arc'], mark)) {
+            if (util.contains(['bar', 'rule', 'rect', 'image', 'arc', 'tick'], mark)) {
               return;
             }
 
