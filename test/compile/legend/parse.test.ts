@@ -17,7 +17,7 @@ describe('compile/legend', () => {
       });
 
       const legendComponent = parseLegend(unitModel);
-      expect(legendComponent['color'].get('format')).toEqual({
+      expect(legendComponent.color.get('format')).toEqual({
         signal: 'timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
       });
     });
@@ -32,7 +32,7 @@ describe('compile/legend', () => {
       });
 
       const legendComponent = parseLegend(unitModel);
-      expect(legendComponent['color'].get('format')).toEqual({
+      expect(legendComponent.color.get('format')).toEqual({
         signal: 'timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
       });
     });

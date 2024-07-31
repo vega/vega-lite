@@ -278,7 +278,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align y-axis labels for labelAngle and orient signals', () => {
-      const ast = (parseExpression(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y') as any) as any).signal;
+      const ast = parseExpression((defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y') as any).signal);
       let a: number;
       let o: AxisOrient;
       // test all angles
