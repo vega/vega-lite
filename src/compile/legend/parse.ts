@@ -81,7 +81,7 @@ function isExplicit<T extends string | number | object | boolean>(
       }
   }
   // Otherwise, things are explicit if the returned value matches the specified property
-  return value === (legend ?? ({} as any))[property];
+  return value === (legend || ({} as any))[property];
 }
 
 export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {
