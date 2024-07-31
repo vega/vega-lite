@@ -77,7 +77,7 @@ describe('Translate interval selections at runtime', () => {
               {
                 x: {aggregate: 'count', type: 'quantitative'},
                 y: {bin: true},
-                color: {value: 'steelblue'}
+                color: {value: 'steelblue', field: undefined, type: undefined}
               }
             )
           );

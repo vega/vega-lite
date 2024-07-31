@@ -90,7 +90,7 @@ describe('interval selections at runtime in unit views', () => {
         {
           x: {aggregate: 'count', type: 'quantitative'},
           y: {bin: true},
-          color: {value: 'steelblue'}
+          color: {value: 'steelblue', field: undefined, type: undefined}
         }
       )
     );
