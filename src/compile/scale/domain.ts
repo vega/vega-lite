@@ -413,8 +413,8 @@ function parseSelectionDomain(model: UnitModel, channel: ScaleChannel) {
   const scale = model.component.scales[channel];
   const spec = model.specifiedScales[channel].domain;
   const bin = model.fieldDef(channel)?.bin;
-  const domain = isParameterDomain(spec) && spec;
-  const extent = isBinParams(bin) && isParameterExtent(bin.extent) && bin.extent;
+  const domain = isParameterDomain(spec) ? spec : undefined;
+  const extent = isBinParams(bin) && isParameterExtent(bin.extent) ? bin.extent : undefined;
 
   if (domain || extent) {
     // As scale parsing occurs before selection parsing, we cannot set
