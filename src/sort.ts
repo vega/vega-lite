@@ -2,7 +2,7 @@ import {hasOwnProperty, isArray} from 'vega-util';
 import {NonArgAggregateOp} from './aggregate';
 import {FieldName} from './channeldef';
 import {DateTime} from './datetime';
-import {hasKey} from './util';
+import {hasProperty} from './util';
 
 export type SortOrder = 'ascending' | 'descending';
 
@@ -110,11 +110,11 @@ export type AllSortString = SortOrder | SortByChannel | SortByChannelDesc;
 export type Sort<F> = SortArray | AllSortString | EncodingSortField<F> | SortByEncoding | null;
 
 export function isSortByEncoding<F>(sort: Sort<F>): sort is SortByEncoding {
-  return hasKey(sort, 'encoding');
+  return hasProperty(sort, 'encoding');
 }
 
 export function isSortField<F>(sort: Sort<F>): sort is EncodingSortField<F> {
-  return sort && ((sort as any).op === 'count' || hasKey(sort, 'field'));
+  return sort && ((sort as any).op === 'count' || hasProperty(sort, 'field'));
 }
 
 export function isSortArray<F>(sort: Sort<F>): sort is SortArray {

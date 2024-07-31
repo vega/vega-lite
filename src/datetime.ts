@@ -3,7 +3,7 @@
 import {isNumber, isObject} from 'vega-util';
 import * as log from './log';
 import {TIMEUNIT_PARTS} from './timeunit';
-import {duplicate, hasKey, isNumeric, keys} from './util';
+import {duplicate, hasProperty, isNumeric, keys} from './util';
 
 /**
  * @minimum 1
@@ -125,7 +125,7 @@ export interface DateTimeExpr {
 export function isDateTime(o: any): o is DateTime {
   if (o && isObject(o)) {
     for (const part of TIMEUNIT_PARTS) {
-      if (hasKey(o, part)) {
+      if (hasProperty(o, part)) {
         return true;
       }
     }

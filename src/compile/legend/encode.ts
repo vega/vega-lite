@@ -13,7 +13,7 @@ import {
 } from '../../channeldef';
 import {Encoding} from '../../encoding';
 import {FILL_STROKE_CONFIG} from '../../mark';
-import {getFirstDefined, hasKey, isEmpty, varName} from '../../util';
+import {getFirstDefined, hasProperty, isEmpty, varName} from '../../util';
 import {applyMarkConfig, signalOrValueRef} from '../common';
 import {formatCustomType, isCustomFormatType} from '../format';
 import * as mixins from '../mark/encode';
@@ -64,7 +64,7 @@ export function symbols(
     // for fill legend, we don't want any fill in symbol
     if (channel === 'fill' || (filled && channel === COLOR)) {
       delete out.fill;
-    } else if (hasKey(out.fill, 'field')) {
+    } else if (hasProperty(out.fill, 'field')) {
       // For others, set fill to some opaque value (or nothing if a color is already set)
       if (symbolFillColor) {
         delete out.fill;
@@ -83,7 +83,7 @@ export function symbols(
   if (out.stroke) {
     if (channel === 'stroke' || (!filled && channel === COLOR)) {
       delete out.stroke;
-    } else if (hasKey(out.stroke, 'field') || symbolStrokeColor) {
+    } else if (hasProperty(out.stroke, 'field') || symbolStrokeColor) {
       // For others, remove stroke field
       delete out.stroke;
     } else if (isArray(out.stroke)) {

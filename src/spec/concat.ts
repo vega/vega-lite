@@ -1,5 +1,5 @@
 import {GenericSpec, NormalizedSpec} from '.';
-import {hasKey} from '../util';
+import {hasProperty} from '../util';
 import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
 
 /**
@@ -69,13 +69,13 @@ export function isAnyConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any>
 }
 
 export function isConcatSpec(spec: BaseSpec): spec is GenericConcatSpec<any> {
-  return hasKey(spec, 'concat');
+  return hasProperty(spec, 'concat');
 }
 
 export function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any> {
-  return hasKey(spec, 'vconcat');
+  return hasProperty(spec, 'vconcat');
 }
 
 export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any> {
-  return hasKey(spec, 'hconcat');
+  return hasProperty(spec, 'hconcat');
 }

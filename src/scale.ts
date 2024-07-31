@@ -17,7 +17,7 @@ import {ScaleInvalidDataConfigMixins} from './invalid';
 import * as log from './log';
 import {ParameterExtent} from './selection';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
-import {contains, Flag, hasKey, keys} from './util';
+import {contains, Flag, hasProperty, keys} from './util';
 
 export const ScaleType = {
   // Continuous - Quantitative
@@ -494,11 +494,11 @@ export type Domain =
 export type Scheme = string | SchemeParams;
 
 export function isExtendedScheme(scheme: Scheme | SignalRef): scheme is SchemeParams {
-  return !isString(scheme) && hasKey(scheme, 'name');
+  return !isString(scheme) && hasProperty(scheme, 'name');
 }
 
 export function isParameterDomain(domain: Domain): domain is ParameterExtent {
-  return hasKey(domain, 'param');
+  return hasProperty(domain, 'param');
 }
 
 export interface DomainUnionWith {
@@ -510,7 +510,7 @@ export interface DomainUnionWith {
 }
 
 export function isDomainUnionWith(domain: Domain): domain is DomainUnionWith {
-  return hasKey(domain, 'unionWith');
+  return hasProperty(domain, 'unionWith');
 }
 
 export interface FieldRange {

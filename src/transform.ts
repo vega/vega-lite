@@ -8,7 +8,7 @@ import {ParameterName} from './parameter';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
 import {TimeUnit, TimeUnitTransformParams} from './timeunit';
-import {hasKey} from './util';
+import {hasProperty} from './util';
 
 export interface FilterTransform {
   /**
@@ -36,7 +36,7 @@ export interface FilterTransform {
 }
 
 export function isFilter(t: Transform): t is FilterTransform {
-  return hasKey(t, 'filter');
+  return hasProperty(t, 'filter');
 }
 
 export interface CalculateTransform {
@@ -260,7 +260,7 @@ export interface ImputeSequence {
 }
 
 export function isImputeSequence(t: ImputeSequence | any[] | undefined): t is ImputeSequence {
-  return hasKey(t, 'stop');
+  return hasProperty(t, 'stop');
 }
 
 export interface ImputeTransform extends ImputeParams {
@@ -367,15 +367,15 @@ export interface LookupTransform {
 }
 
 export function isLookup(t: Transform): t is LookupTransform {
-  return hasKey(t, 'lookup');
+  return hasProperty(t, 'lookup');
 }
 
 export function isLookupData(from: LookupData | LookupSelection): from is LookupData {
-  return hasKey(from, 'data');
+  return hasProperty(from, 'data');
 }
 
 export function isLookupSelection(from: LookupData | LookupSelection): from is LookupSelection {
-  return hasKey(from, 'param');
+  return hasProperty(from, 'param');
 }
 
 export interface FoldTransform {
@@ -434,7 +434,7 @@ export interface PivotTransform {
 }
 
 export function isPivot(t: Transform): t is PivotTransform {
-  return hasKey(t, 'pivot');
+  return hasProperty(t, 'pivot');
 }
 
 export interface DensityTransform {
@@ -508,7 +508,7 @@ export interface DensityTransform {
 }
 
 export function isDensity(t: Transform): t is DensityTransform {
-  return hasKey(t, 'density');
+  return hasProperty(t, 'density');
 }
 
 export interface QuantileTransform {
@@ -541,7 +541,7 @@ export interface QuantileTransform {
 }
 
 export function isQuantile(t: Transform): t is QuantileTransform {
-  return hasKey(t, 'quantile');
+  return hasProperty(t, 'quantile');
 }
 
 export interface RegressionTransform {
@@ -597,7 +597,7 @@ export interface RegressionTransform {
 }
 
 export function isRegression(t: Transform): t is RegressionTransform {
-  return hasKey(t, 'regression');
+  return hasProperty(t, 'regression');
 }
 
 export interface LoessTransform {
@@ -632,54 +632,54 @@ export interface LoessTransform {
 }
 
 export function isLoess(t: Transform): t is LoessTransform {
-  return hasKey(t, 'loess');
+  return hasProperty(t, 'loess');
 }
 
 export function isSample(t: Transform): t is SampleTransform {
-  return hasKey(t, 'sample');
+  return hasProperty(t, 'sample');
 }
 
 export function isWindow(t: Transform): t is WindowTransform {
-  return hasKey(t, 'window');
+  return hasProperty(t, 'window');
 }
 
 export function isJoinAggregate(t: Transform): t is JoinAggregateTransform {
-  return hasKey(t, 'joinaggregate');
+  return hasProperty(t, 'joinaggregate');
 }
 
 export function isFlatten(t: Transform): t is FlattenTransform {
-  return hasKey(t, 'flatten');
+  return hasProperty(t, 'flatten');
 }
 export function isCalculate(t: Transform): t is CalculateTransform {
-  return hasKey(t, 'calculate');
+  return hasProperty(t, 'calculate');
 }
 
 export function isBin(t: Transform): t is BinTransform {
-  return hasKey(t, 'bin');
+  return hasProperty(t, 'bin');
 }
 
 export function isImpute(t: Transform): t is ImputeTransform {
-  return hasKey(t, 'impute');
+  return hasProperty(t, 'impute');
 }
 
 export function isTimeUnit(t: Transform): t is TimeUnitTransform {
-  return hasKey(t, 'timeUnit');
+  return hasProperty(t, 'timeUnit');
 }
 
 export function isAggregate(t: Transform): t is AggregateTransform {
-  return hasKey(t, 'aggregate');
+  return hasProperty(t, 'aggregate');
 }
 
 export function isStack(t: Transform): t is StackTransform {
-  return hasKey(t, 'stack');
+  return hasProperty(t, 'stack');
 }
 
 export function isFold(t: Transform): t is FoldTransform {
-  return hasKey(t, 'fold');
+  return hasProperty(t, 'fold');
 }
 
 export function isExtent(t: Transform): t is ExtentTransform {
-  return hasKey(t, 'extent') && !hasKey(t, 'density') && !hasKey(t, 'regression');
+  return hasProperty(t, 'extent') && !hasProperty(t, 'density') && !hasProperty(t, 'regression');
 }
 export type Transform =
   | AggregateTransform

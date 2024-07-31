@@ -1,7 +1,7 @@
 import type {AggregateOp} from 'vega';
 import {hasOwnProperty, isString} from 'vega-util';
 import {FieldName} from './channeldef';
-import {contains, Flag, hasKey} from './util';
+import {contains, Flag, hasProperty} from './util';
 
 const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   argmax: 1,
@@ -50,11 +50,11 @@ export type NonArgAggregateOp = Exclude<AggregateOp, 'argmin' | 'argmax'>;
 export type Aggregate = NonArgAggregateOp | ArgmaxDef | ArgminDef;
 
 export function isArgminDef(a: Aggregate | string): a is ArgminDef {
-  return hasKey(a, 'argmin');
+  return hasProperty(a, 'argmin');
 }
 
 export function isArgmaxDef(a: Aggregate | string): a is ArgmaxDef {
-  return hasKey(a, 'argmax');
+  return hasProperty(a, 'argmax');
 }
 
 export function isAggregateOp(a: string | ArgminDef | ArgmaxDef): a is AggregateOp {

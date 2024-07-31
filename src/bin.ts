@@ -16,7 +16,7 @@ import {
 } from './channel';
 import {normalizeBin} from './channeldef';
 import {ParameterExtent} from './selection';
-import {entries, hasKey, keys, varName} from './util';
+import {entries, hasProperty, keys, varName} from './util';
 
 export interface BaseBin {
   /**
@@ -124,7 +124,7 @@ export function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinPara
 }
 
 export function isParameterExtent(extent: unknown): extent is ParameterExtent {
-  return hasKey(extent, 'param');
+  return hasProperty(extent, 'param');
 }
 
 export function autoMaxBins(channel?: ExtendedChannel): number {

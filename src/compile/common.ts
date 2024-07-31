@@ -17,7 +17,7 @@ import {isExprRef} from '../expr';
 import {Mark, MarkConfig, MarkDef} from '../mark';
 import {SortFields} from '../sort';
 import {isText} from '../title';
-import {deepEqual, getFirstDefined, hasKey} from '../util';
+import {deepEqual, getFirstDefined, hasProperty} from '../util';
 import {isSignalRef, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
@@ -111,7 +111,7 @@ export function getMarkPropOrConfig<P extends keyof MarkDef, ES extends ExprRef 
   } = {}
 ): MarkDef<Mark, ES>[P] {
   const {vgChannel, ignoreVgConfig} = opt;
-  if (vgChannel && hasKey(mark, vgChannel)) {
+  if (vgChannel && hasProperty(mark, vgChannel)) {
     return mark[vgChannel] as any;
   } else if (mark[channel] !== undefined) {
     return mark[channel];
@@ -166,7 +166,7 @@ export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig<Signal
   for (const style of styles) {
     const styleConfig = styleConfigIndex[style];
 
-    if (hasKey(styleConfig, p)) {
+    if (hasProperty(styleConfig, p)) {
       value = styleConfig[p];
     }
   }

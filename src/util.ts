@@ -508,15 +508,12 @@ export function stringify(data: any) {
 }
 
 /**
- * Check if the input object has the key and it's not undefined.
+ * Check if the input object has the property and it's not undefined.
  *
  * @param object the object
- * @param key the key to search
- * @returns if the object has the key and it's not undefined.
+ * @param property the property to search
+ * @returns if the object has the property and it's not undefined.
  */
-// export function hasKey(object: unknown, key: string) {
-//   return isObject(object) && hasOwnProperty(object, key) && (object as any)[key] !== undefined;
-// }
-export function hasKey<T>(obj: T, key: string | number | symbol): key is keyof T {
+export function hasProperty<T>(obj: T, key: string | number | symbol): key is keyof T {
   return isObject(obj) && hasOwnProperty(obj, key) && (obj as any)[key] !== undefined;
 }

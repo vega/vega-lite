@@ -10,7 +10,7 @@ import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
-import {hasKey, keys} from '../util';
+import {hasProperty, keys} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
@@ -91,7 +91,7 @@ export class FacetModel extends ModelWithField {
   }
 
   public channelHasField(channel: ExtendedChannel): boolean {
-    return hasKey(this.facet, channel);
+    return hasProperty(this.facet, channel);
   }
 
   public fieldDef(channel: ExtendedChannel): TypedFieldDef<string> {

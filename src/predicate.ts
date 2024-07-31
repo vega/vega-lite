@@ -6,7 +6,7 @@ import {ExprRef, replaceExprRef} from './expr';
 import {LogicalComposition} from './logical';
 import {ParameterName} from './parameter';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams, BinnedTimeUnit} from './timeunit';
-import {hasKey, stringify} from './util';
+import {hasProperty, stringify} from './util';
 import {isSignalRef} from './vega.schema';
 
 export type Predicate =
@@ -48,7 +48,7 @@ export interface ParameterPredicate {
 }
 
 export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is ParameterPredicate {
-  return hasKey(predicate, 'param');
+  return hasProperty(predicate, 'param');
 }
 
 export interface FieldPredicateBase {

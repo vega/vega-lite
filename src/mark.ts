@@ -3,7 +3,7 @@ import {hasOwnProperty} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
 import {MarkInvalidMixins} from './invalid';
-import {Flag, hasKey, keys} from './util';
+import {Flag, hasProperty, keys} from './util';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
 
 /**
@@ -292,7 +292,7 @@ export interface RectBinSpacingMixins {
 export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
 export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any> {
-  return hasKey(mark, 'type');
+  return hasProperty(mark, 'type');
 }
 
 export function isPrimitiveMark(mark: AnyMark): mark is Mark {
@@ -454,7 +454,7 @@ export interface RelativeBandSize {
 }
 
 export function isRelativeBandSize(o: number | RelativeBandSize | ExprRef | SignalRef): o is RelativeBandSize {
-  return hasKey(o, 'band');
+  return hasProperty(o, 'band');
 }
 
 export const BAR_CORNER_RADIUS_INDEX: Partial<

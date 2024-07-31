@@ -5,7 +5,7 @@ import {ExprRef} from '../expr';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionParameter} from '../selection';
-import {hasKey} from '../util';
+import {hasProperty} from '../util';
 import {Field} from './../channeldef';
 import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, ResolveMixins} from './base';
 import {TopLevel, TopLevelParameter} from './toplevel';
@@ -63,5 +63,5 @@ export type FacetedUnitSpec<F extends Field, P = SelectionParameter> = GenericUn
 export type TopLevelUnitSpec<F extends Field> = TopLevel<FacetedUnitSpec<F, TopLevelParameter>> & DataMixins;
 
 export function isUnitSpec(spec: BaseSpec): spec is FacetedUnitSpec<any> | NormalizedUnitSpec {
-  return hasKey(spec, 'mark');
+  return hasProperty(spec, 'mark');
 }

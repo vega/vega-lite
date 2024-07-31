@@ -18,7 +18,7 @@ import {Encoding} from '../encoding';
 import * as log from '../log';
 import {isSortField} from '../sort';
 import {FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
-import {hasKey} from '../util';
+import {hasProperty} from '../util';
 
 export interface RepeaterValue {
   row?: string;
@@ -141,7 +141,7 @@ function replaceRepeaterInMapping(
 ): EncodingOrFacet<FieldName> {
   const out: EncodingOrFacet<FieldName> = {};
   for (const channel in mapping) {
-    if (hasKey(mapping, channel)) {
+    if (hasProperty(mapping, channel)) {
       const channelDef: ChannelDef<Field> | ChannelDef<Field>[] = mapping[channel];
 
       if (isArray(channelDef)) {

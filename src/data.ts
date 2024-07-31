@@ -4,7 +4,7 @@
 import {Vector2} from 'vega';
 import {FieldName} from './channeldef';
 import {VgData} from './vega.schema';
-import {hasKey} from './util';
+import {hasProperty} from './util';
 
 export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
 
@@ -124,15 +124,15 @@ export interface NamedData extends DataBase {
 }
 
 export function isUrlData(data: Partial<Data> | Partial<VgData>): data is UrlData {
-  return hasKey(data, 'url');
+  return hasProperty(data, 'url');
 }
 
 export function isInlineData(data: Partial<Data> | Partial<VgData>): data is InlineData {
-  return hasKey(data, 'values');
+  return hasProperty(data, 'values');
 }
 
 export function isNamedData(data: Partial<Data> | Partial<VgData>): data is NamedData {
-  return hasKey(data, 'name') && !isUrlData(data) && !isInlineData(data) && !isGenerator(data);
+  return hasProperty(data, 'name') && !isUrlData(data) && !isInlineData(data) && !isGenerator(data);
 }
 
 export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Generator {
@@ -140,15 +140,15 @@ export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Gene
 }
 
 export function isSequenceGenerator(data: Partial<Data> | Partial<VgData>): data is SequenceGenerator {
-  return hasKey(data, 'sequence');
+  return hasProperty(data, 'sequence');
 }
 
 export function isSphereGenerator(data: Partial<Data> | Partial<VgData>): data is SphereGenerator {
-  return hasKey(data, 'sphere');
+  return hasProperty(data, 'sphere');
 }
 
 export function isGraticuleGenerator(data: Partial<Data> | Partial<VgData>): data is GraticuleGenerator {
-  return hasKey(data, 'graticule');
+  return hasProperty(data, 'graticule');
 }
 
 export enum DataSourceType {

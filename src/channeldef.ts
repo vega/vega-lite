@@ -83,7 +83,7 @@ import {
   Dict,
   flatAccessWithDatum,
   getFirstDefined,
-  hasKey,
+  hasProperty,
   internalField,
   omit,
   removePathFromField,
@@ -158,7 +158,7 @@ export type ConditionalPredicate<CD extends ConditionalTemplate> = {
 export type ConditionalParameter<CD extends ConditionalTemplate> = ParameterPredicate & CD;
 
 export function isConditionalParameter<T extends ConditionalTemplate>(c: Conditional<T>): c is ConditionalParameter<T> {
-  return hasKey(c, 'param');
+  return hasProperty(c, 'param');
 }
 
 export interface ConditionValueDefMixins<V extends Value = Value> {
@@ -220,7 +220,7 @@ export type FieldName = string;
 export type Field = FieldName | RepeatRef;
 
 export function isRepeatRef(field: Field | any): field is RepeatRef {
-  return !isString(field) && hasKey(field, 'repeat');
+  return !isString(field) && hasProperty(field, 'repeat');
 }
 
 /** @@hidden */
@@ -357,7 +357,7 @@ export interface SortableFieldDef<
 }
 
 export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fieldDef is SortableFieldDef<F> {
-  return hasKey(fieldDef, 'sort');
+  return hasProperty(fieldDef, 'sort');
 }
 
 export type ScaleFieldDef<
@@ -648,7 +648,7 @@ export interface OrderOnlyDef {
 export function isOrderOnlyDef<F extends Field>(
   orderDef: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef
 ): orderDef is OrderOnlyDef {
-  return hasKey(orderDef, 'sort') && !hasKey(orderDef, 'field');
+  return hasProperty(orderDef, 'sort') && !hasProperty(orderDef, 'field');
 }
 
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
@@ -661,7 +661,7 @@ export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>
 export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditionalValueDef | ExprRef | SignalRef>(
   channelDef: CD
 ): channelDef is CD & {condition: Conditional<any>} {
-  return hasKey(channelDef, 'condition');
+  return hasProperty(channelDef, 'condition');
 }
 
 /**
@@ -691,7 +691,7 @@ export function hasConditionalValueDef<F extends Field>(
 export function isFieldDef<F extends Field>(
   channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>
 ): channelDef is FieldDefBase<F> | TypedFieldDef<F> | SecondaryFieldDef<F> {
-  return hasKey(channelDef, 'field') || (channelDef as any)?.aggregate === 'count';
+  return hasProperty(channelDef, 'field') || (channelDef as any)?.aggregate === 'count';
 }
 
 export function channelDefType<F extends Field>(channelDef: ChannelDef<F>): Type | undefined {
@@ -701,7 +701,7 @@ export function channelDefType<F extends Field>(channelDef: ChannelDef<F>): Type
 export function isDatumDef<F extends Field>(
   channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>
 ): channelDef is DatumDef<F, any> {
-  return hasKey(channelDef, 'datum');
+  return hasProperty(channelDef, 'datum');
 }
 
 export function isContinuousFieldOrDatumDef<F extends Field>(
@@ -729,35 +729,35 @@ export function isFieldOrDatumDef<F extends Field>(
 export function isTypedFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is TypedFieldDef<F> {
   return (
     channelDef &&
-    (hasKey(channelDef, 'field') || (channelDef as any)['aggregate'] === 'count') &&
-    hasKey(channelDef, 'type')
+    (hasProperty(channelDef, 'field') || (channelDef as any)['aggregate'] === 'count') &&
+    hasProperty(channelDef, 'type')
   );
 }
 
 export function isValueDef<F extends Field>(channelDef: Partial<ChannelDef<F>>): channelDef is ValueDef<any> {
-  return hasKey(channelDef, 'value');
+  return hasProperty(channelDef, 'value');
 }
 
 export function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is ScaleFieldDef<F> {
-  return hasKey(channelDef, 'scale') || hasKey(channelDef, 'sort');
+  return hasProperty(channelDef, 'scale') || hasProperty(channelDef, 'sort');
 }
 
 export function isPositionFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is PositionFieldDef<F> | PositionDatumDef<F> {
-  return hasKey(channelDef, 'axis') || hasKey(channelDef, 'stack') || hasKey(channelDef, 'impute');
+  return hasProperty(channelDef, 'axis') || hasProperty(channelDef, 'stack') || hasProperty(channelDef, 'impute');
 }
 
 export function isMarkPropFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is MarkPropFieldDef<F, any> | MarkPropDatumDef<F> {
-  return hasKey(channelDef, 'legend');
+  return hasProperty(channelDef, 'legend');
 }
 
 export function isStringFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is StringFieldDef<F> | StringDatumDef<F> {
-  return hasKey(channelDef, 'format') || hasKey(channelDef, 'formatType');
+  return hasProperty(channelDef, 'format') || hasProperty(channelDef, 'formatType');
 }
 
 export function toStringFieldDef<F extends Field>(fieldDef: FieldDef<F>): StringFieldDef<F> {
@@ -786,7 +786,7 @@ export interface FieldRefOption {
 function isOpFieldDef(
   fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef
 ): fieldDef is WindowFieldDef | AggregatedFieldDef {
-  return hasKey(fieldDef, 'op');
+  return hasProperty(fieldDef, 'op');
 }
 
 /**

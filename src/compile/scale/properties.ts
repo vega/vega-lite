@@ -107,7 +107,7 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
             );
         }
       } else {
-        const value = util.hasKey(scaleRules, property)
+        const value = util.hasProperty(scaleRules, property)
           ? scaleRules[property]({
               model,
               channel,

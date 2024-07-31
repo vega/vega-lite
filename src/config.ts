@@ -25,7 +25,7 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
-import {duplicate, getFirstDefined, hasKey, isEmpty, keys, omit} from './util';
+import {duplicate, getFirstDefined, hasProperty, isEmpty, keys, omit} from './util';
 
 export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBackground<ES> {
   /**
@@ -100,7 +100,7 @@ export const defaultViewConfig: ViewConfig<SignalRef> = {
 };
 
 export function isVgScheme(rangeScheme: string[] | RangeScheme): rangeScheme is RangeScheme {
-  return hasKey(rangeScheme, 'scheme');
+  return hasProperty(rangeScheme, 'scheme');
 }
 
 export type ColorConfig = Record<string, Color>;
