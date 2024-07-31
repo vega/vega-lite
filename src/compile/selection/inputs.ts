@@ -55,7 +55,7 @@ const inputBindings: SelectionCompiler<'point'> = {
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const proj = selCmpt.project;
-    const signal: NewSignal = signals.filter(s => s.name === name + TUPLE)[0];
+    const signal: NewSignal = signals.find(s => s.name === name + TUPLE);
     const fields = name + TUPLE_FIELDS;
     const values = proj.items.map(p => varName(`${name}_${p.field}`));
     const valid = values.map(v => `${v} !== null`).join(' && ');

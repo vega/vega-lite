@@ -58,7 +58,7 @@ const nearest: SelectionCompiler<'point'> = {
       const name = mark.name ?? '';
       if (name === model.component.mark[0].name) {
         index = i;
-      } else if (name.indexOf(VORONOI) >= 0) {
+      } else if (name.includes(VORONOI)) {
         exists = true;
       }
     });
