@@ -102,7 +102,7 @@ describe('Zoom interval selections at runtime', () => {
               {
                 x: {aggregate: 'count', type: 'quantitative'},
                 y: {bin: true},
-                color: {value: 'steelblue', field: null, type: null}
+                color: {value: 'steelblue'}
               }
             )
           );

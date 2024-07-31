@@ -691,7 +691,6 @@ export function hasConditionalValueDef<F extends Field>(
 export function isFieldDef<F extends Field>(
   channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>
 ): channelDef is FieldDefBase<F> | TypedFieldDef<F> | SecondaryFieldDef<F> {
-  // TODO: we can't use field in channelDef here as it's somehow failing runtime test
   return hasKey(channelDef, 'field') || (channelDef as any)?.aggregate === 'count';
 }
 
