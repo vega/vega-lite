@@ -28,7 +28,10 @@
         "update": {
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
-          "opacity": [{"test": "datum.Horsepower > 100", "value": 0.25}],
+          "opacity": [
+            {"test": "datum.Horsepower > 100", "value": 0.25},
+            {"value": 0.5}
+          ],
           "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"
