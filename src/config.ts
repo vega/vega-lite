@@ -734,8 +734,10 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
   redirectTitleConfig(config);
 
   // Remove empty config objects.
-  for (const prop of keys(config)) {
+  for (const prop in config) {
+    // @ts-ignore
     if (isObject(config[prop]) && isEmpty(config[prop])) {
+      // @ts-ignore
       delete config[prop];
     }
   }

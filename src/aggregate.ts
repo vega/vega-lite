@@ -50,11 +50,11 @@ export type NonArgAggregateOp = Exclude<AggregateOp, 'argmin' | 'argmax'>;
 export type Aggregate = NonArgAggregateOp | ArgmaxDef | ArgminDef;
 
 export function isArgminDef(a: Aggregate | string): a is ArgminDef {
-  return !!a && hasKey(a, 'argmin');
+  return hasKey(a, 'argmin');
 }
 
 export function isArgmaxDef(a: Aggregate | string): a is ArgmaxDef {
-  return !!a && hasKey(a, 'argmax');
+  return hasKey(a, 'argmax');
 }
 
 export function isAggregateOp(a: string | ArgminDef | ArgmaxDef): a is AggregateOp {
