@@ -7747,7 +7747,7 @@ semver-diff@^4.0.0:
   dependencies:
     semver "^7.3.5"
 
-semver@7.6.0, semver@^7.3.4, semver@^7.3.5, semver@^7.3.7, semver@^7.5.2, semver@^7.5.3, semver@^7.5.4, semver@^7.6.0:
+semver@7.6.0:
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.0.tgz#1a46a4db4bffcccd97b743b5005c8325f23d4e2d"
   integrity sha512-EnwXhrlwXMk9gKu5/flx5sv/an57AkRplG3hTK68W7FRDN+k+OWBj65M7719OkA82XLBxrcX0KSHj+X5COhOVg==
@@ -7758,6 +7758,11 @@ semver@^6.0.0, semver@^6.3.0, semver@^6.3.1:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
+
+semver@^7.3.4, semver@^7.3.5, semver@^7.3.7, semver@^7.5.2, semver@^7.5.3, semver@^7.5.4, semver@^7.6.0, semver@^7.6.2:
+  version "7.6.3"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.3.tgz#980f7b5550bc175fb4dc09403085627f9eb33143"
+  integrity sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==
 
 serialize-javascript@^6.0.1:
   version "6.0.2"
@@ -8365,12 +8370,7 @@ tslib@^1.8.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.1, tslib@^2.1.0, tslib@^2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.2.tgz#703ac29425e7b37cd6fd456e92404d46d1f3e4ae"
-  integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
-
-tslib@~2.6.3:
+tslib@^2.0.1, tslib@^2.1.0, tslib@^2.6.2, tslib@^2.6.3, tslib@~2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.3.tgz#0438f810ad7a9edcde7a241c3d80db693c8cbfe0"
   integrity sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==
@@ -8669,17 +8669,17 @@ vega-datasets@^2.8.1:
   integrity sha512-RxFyrlIH3xWzHtBDxp2vsFNCxuzNNfAtEvyufFX25UczIORyNi1T336NbM62g67k4KbDkeXzWEZHwr71qQKF8w==
 
 vega-embed@^6.25.0:
-  version "6.25.0"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.25.0.tgz#a58ed5593cde3e0653184140d88306e18fee02d5"
-  integrity sha512-pK99jEhZPNYgx4daiYDyNZ7f1h2ep5PyzMYN/qKzJNxzcaNf8wgmUjHrWeJSeMh8RNyw89VRphIleeg7LNLhDA==
+  version "6.26.0"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.26.0.tgz#25ca51783b2819adf6e6330ae6dd5771e8da8653"
+  integrity sha512-AZCTdKHDAuhp6TFZRQOOs332tStCwZr/5e4uZMNEuJL69A57cT66NNZJdNiCP6u66REzIToYtMJhMTL9wl5B3A==
   dependencies:
     fast-json-patch "^3.1.1"
     json-stringify-pretty-compact "^3.0.0"
-    semver "^7.6.0"
-    tslib "^2.6.2"
+    semver "^7.6.2"
+    tslib "^2.6.3"
     vega-interpreter "^1.0.5"
     vega-schema-url-parser "^2.2.0"
-    vega-themes "^2.14.0"
+    vega-themes "^2.15.0"
     vega-tooltip "^0.34.0"
 
 vega-encode@~4.10.0:
@@ -8898,10 +8898,10 @@ vega-statistics@^1.8.1, vega-statistics@^1.9.0, vega-statistics@~1.9.0:
   dependencies:
     d3-array "^3.2.2"
 
-vega-themes@^2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/vega-themes/-/vega-themes-2.14.0.tgz#0df269396e057123ecf3942e3b704bf125d1eed7"
-  integrity sha512-9dLmsUER7gJrDp8SEYKxBFmXmpyzLlToKIjxq3HCvYjz8cnNrRGyAhvIlKWOB3ZnGvfYV+vnv3ZRElSNL31nkA==
+vega-themes@^2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/vega-themes/-/vega-themes-2.15.0.tgz#cf7592efb45406957e9beb67d7033ee5f7b7a511"
+  integrity sha512-DicRAKG9z+23A+rH/3w3QjJvKnlGhSbbUXGjBvYGseZ1lvj9KQ0BXZ2NS/+MKns59LNpFNHGi9us/wMlci4TOA==
 
 vega-time@^2.1.1, vega-time@~2.1.1:
   version "2.1.1"
