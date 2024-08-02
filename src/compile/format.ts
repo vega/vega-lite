@@ -22,7 +22,7 @@ import {TimeUnit} from './../timeunit';
 import {datumDefToExpr} from './mark/encode/valueref';
 
 export function isCustomFormatType(formatType: string) {
-  return formatType && formatType !== 'number' && formatType !== 'time';
+  return formatType && formatType !== 'number' && formatType !== 'time' && formatType !== 'utc';
 }
 
 function customFormatExpr(formatType: string, field: string, format: string | Dict<unknown>) {
@@ -227,7 +227,10 @@ export function guideFormatType(
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
   scaleType: ScaleType
 ) {
-  if (formatType && (isSignalRef(formatType) || formatType === 'number' || formatType === 'time')) {
+  if (
+    formatType &&
+    (isSignalRef(formatType) || formatType === 'number' || formatType === 'time' || formatType === 'utc')
+  ) {
     return formatType;
   }
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) && scaleType !== 'time' && scaleType !== 'utc') {
