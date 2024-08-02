@@ -4752,7 +4752,8 @@
         "set2",
         "set3",
         "tableau10",
-        "tableau20"
+        "tableau20",
+        "observable10"
       ],
       "type": "string"
     },
