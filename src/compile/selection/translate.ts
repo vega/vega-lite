@@ -80,7 +80,7 @@ function onDelta(
   const delta = name + DELTA;
   const channel = proj.channel as ScaleChannel;
   const boundScales = scalesCompiler.defined(selCmpt);
-  const signal = signals.filter(s => s.name === proj.signals[boundScales ? 'data' : 'visual'])[0];
+  const signal = signals.find(s => s.name === proj.signals[boundScales ? 'data' : 'visual']);
   const sizeSg = model.getSizeSignalRef(size).signal;
   const scaleCmpt = model.getScaleComponent(channel);
   const scaleType = scaleCmpt && scaleCmpt.get('type');

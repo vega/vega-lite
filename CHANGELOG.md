@@ -1,5 +1,12 @@
 
 
+## [5.20.1](https://github.com/vega/vega-lite/compare/v5.20.0...v5.20.1) (2024-07-31)
+
+
+### Bug Fixes
+
+* **#9401:** conditional opacity should respect default value ([#9402](https://github.com/vega/vega-lite/issues/9402)) ([b4c7e14](https://github.com/vega/vega-lite/commit/b4c7e1435339cd57cef620459ad6481aa4ec526e)), closes [#9401](https://github.com/vega/vega-lite/issues/9401)
+
 # [5.20.0](https://github.com/vega/vega-lite/compare/v5.19.0...v5.20.0) (2024-07-30)
 
 
