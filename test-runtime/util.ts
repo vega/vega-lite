@@ -11,7 +11,7 @@ const output = 'test-runtime/resources';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
 export const selectionTypes: SelectionType[] = ['point', 'interval'];
-export const compositeTypes: ComposeType[] = ['repeat', 'facet'];
+export const compositeTypes = ['repeat', 'facet'] as const;
 export const resolutions: SelectionResolution[] = ['union', 'intersect'];
 
 export const bound = 'bound';
@@ -249,7 +249,7 @@ export function geoSpec(selDef?: IntervalSelectionConfigWithoutType): TopLevelSp
   };
 }
 
-export function unitNameRegex(specType: ComposeType, idx: number) {
+export function unitNameRegex(specType: 'repeat' | 'facet', idx: number) {
   const name = UNIT_NAMES[specType][idx].replace('child_', '');
   return new RegExp(`child(.*?)_${name}`);
 }
@@ -258,12 +258,13 @@ export function parentSelector(compositeType: ComposeType, index: number) {
   return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : `${UNIT_NAMES.repeat[index]}_group`;
 }
 
-export function brush(key: string, idx: number, parent?: string, targetBrush?: boolean) {
+export type BrushKeys = keyof typeof hits.interval;
+export function brush(key: BrushKeys, idx: number, parent?: string, targetBrush?: boolean) {
   const fn = key.match('_clear') ? 'clear' : 'brush';
   return `${fn}(${hits.interval[key][idx].join(', ')}, ${stringValue(parent)}, ${!!targetBrush})`;
 }
 
-export function pt(key: string, idx: number, parent?: string) {
+export function pt(key: keyof typeof hits.discrete, idx: number, parent?: string) {
   const fn = key.match('_clear') ? 'clear' : 'pt';
   return `${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
 }
@@ -271,7 +272,7 @@ export function pt(key: string, idx: number, parent?: string) {
 export function embedFn(page: Page) {
   return async (specification: TopLevelSpec) => {
     await page.evaluate(
-      (_: any) => window['embed'](_),
+      (_: any) => (window as any).embed(_),
       // specification is serializable even if the types don't agree
       specification as any
     );

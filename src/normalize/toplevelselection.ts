@@ -1,4 +1,4 @@
-import {isArray, isString} from 'vega';
+import {isArray, isString} from 'vega-util';
 import {Field} from '../channeldef';
 import {VariableParameter} from '../parameter';
 import {isSelectionParameter, SelectionParameter} from '../selection';
@@ -66,7 +66,7 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
   }
 }
 
-for (const method of ['mapFacet', 'mapRepeat', 'mapHConcat', 'mapVConcat', 'mapLayer']) {
+for (const method of ['mapFacet', 'mapRepeat', 'mapHConcat', 'mapVConcat', 'mapLayer'] as const) {
   const proto = TopLevelSelectionsNormalizer.prototype[method];
   TopLevelSelectionsNormalizer.prototype[method] = function (spec: BaseSpec, params: NormalizerParams) {
     return proto.call(this, spec, addSpecNameToParams(spec, params));

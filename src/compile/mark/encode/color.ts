@@ -19,7 +19,7 @@ export function color(model: UnitModel, opt: {filled: boolean | undefined} = {fi
   const defaultFill =
     getMarkPropOrConfig(filled === true ? 'color' : undefined, markDef, config, {vgChannel: 'fill'}) ??
     // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
-    config.mark[filled === true && 'color'] ??
+    (config.mark as any)[filled === true && 'color'] ??
     // If there is no fill, always fill symbols, bar, geoshape
     // with transparent fills https://github.com/vega/vega-lite/issues/1316
     transparentIfNeeded;
@@ -27,7 +27,7 @@ export function color(model: UnitModel, opt: {filled: boolean | undefined} = {fi
   const defaultStroke =
     getMarkPropOrConfig(filled === false ? 'color' : undefined, markDef, config, {vgChannel: 'stroke'}) ??
     // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
-    config.mark[filled === false && 'color'];
+    (config.mark as any)[filled === false && 'color'];
 
   const colorVgChannel = filled ? 'fill' : 'stroke';
 

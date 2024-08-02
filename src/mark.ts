@@ -1,9 +1,10 @@
-import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
+import type {Align, Color, Gradient, Orientation, SignalRef, TextBaseline, MarkConfig as VgMarkConfig} from 'vega';
+import {hasOwnProperty} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
-import {Flag, keys} from './util';
-import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
 import {MarkInvalidMixins} from './invalid';
+import {Flag, hasProperty, keys} from './util';
+import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
 
 /**
  * All types of primitive marks.
@@ -43,7 +44,7 @@ export const GEOSHAPE = Mark.geoshape;
 export type Mark = keyof typeof Mark;
 
 export function isMark(m: string): m is Mark {
-  return m in Mark;
+  return hasOwnProperty(Mark, m);
 }
 
 export const PATH_MARKS = ['line', 'area', 'trail'] as const;
@@ -291,7 +292,7 @@ export interface RectBinSpacingMixins {
 export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
 export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any> {
-  return mark['type'];
+  return hasProperty(mark, 'type');
 }
 
 export function isPrimitiveMark(mark: AnyMark): mark is Mark {
@@ -453,7 +454,7 @@ export interface RelativeBandSize {
 }
 
 export function isRelativeBandSize(o: number | RelativeBandSize | ExprRef | SignalRef): o is RelativeBandSize {
-  return o && o['band'] != undefined;
+  return hasProperty(o, 'band');
 }
 
 export const BAR_CORNER_RADIUS_INDEX: Partial<

@@ -81,7 +81,7 @@ function isExplicit<T extends string | number | object | boolean>(
       }
   }
   // Otherwise, things are explicit if the returned value matches the specified property
-  return value === (legend || {})[property];
+  return value === (legend || ({} as any))[property];
 }
 
 export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {
@@ -132,10 +132,10 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
       continue;
     }
 
-    const value = property in legendRules ? legendRules[property](ruleParams) : legend[property];
+    const value = property in legendRules ? legendRules[property](ruleParams) : (legend as any)[property];
     if (value !== undefined) {
       const explicit = isExplicit(value, property, legend, model.fieldDef(channel));
-      if (explicit || config.legend[property] === undefined) {
+      if (explicit || (config.legend as any)[property] === undefined) {
         legendCmpt.set(property, value, explicit);
       }
     }
@@ -147,8 +147,9 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
 
   const legendEncodeParams: LegendEncodeParams = {fieldOrDatumDef, model, channel, legendCmpt, legendType};
 
-  for (const part of ['labels', 'legend', 'title', 'symbols', 'gradient', 'entries']) {
-    const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
+  for (const part of ['labels', 'legend', 'title', 'symbols', 'gradient', 'entries'] as const) {
+    // FIXME: remove as any (figure out what legendEncoding.entries is)
+    const legendEncodingPart = guideEncodeEntry((legendEncoding as any)[part] ?? {}, model);
 
     const value =
       part in legendEncodeRules

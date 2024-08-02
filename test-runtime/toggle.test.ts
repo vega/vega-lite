@@ -12,7 +12,7 @@ const hits = {
   composite: [1, 3, 5, 7, 8, 9]
 };
 
-function toggle(key: string, idx: number, shiftKey: boolean, parent?: string) {
+function toggle(key: keyof typeof hits, idx: number, shiftKey: boolean, parent?: string) {
   const fn = key.match('_clear') ? 'clear' : 'pt';
   return `${fn}(${hits[key][idx]}, ${stringValue(parent)}, ${!!shiftKey})`;
 }

@@ -1,4 +1,4 @@
-import {array, isBoolean} from 'vega-util';
+import {array, hasOwnProperty, isBoolean} from 'vega-util';
 import {Aggregate, SUM_OPS} from './aggregate';
 import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel';
 import {
@@ -43,7 +43,7 @@ const STACK_OFFSET_INDEX = {
 export type StackOffset = keyof typeof STACK_OFFSET_INDEX;
 
 export function isStackOffset(s: string): s is StackOffset {
-  return s in STACK_OFFSET_INDEX;
+  return hasOwnProperty(STACK_OFFSET_INDEX, s);
 }
 
 export interface StackProperties {

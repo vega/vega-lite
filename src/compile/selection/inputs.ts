@@ -44,7 +44,7 @@ const inputBindings: SelectionCompiler<'point'> = {
                 }
               ]
             : [],
-          bind: bind[p.field] ?? bind[p.channel] ?? bind
+          bind: (bind as any)[p.field] ?? (bind as any)[p.channel] ?? bind
         });
       }
     });

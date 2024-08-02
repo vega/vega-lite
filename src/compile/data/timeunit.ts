@@ -82,7 +82,7 @@ export class TimeUnitNode extends DataFlowNode {
         }
 
         if (component) {
-          timeUnitComponent[hash(component)] = component;
+          (timeUnitComponent as any)[hash(component)] = component;
         }
       }
       return timeUnitComponent;
@@ -137,7 +137,7 @@ export class TimeUnitNode extends DataFlowNode {
    * Remove time units coming from the other node.
    */
   public removeFormulas(fields: Set<string>) {
-    const newFormula = {};
+    const newFormula: Dict<TimeUnitComponent> = {};
 
     for (const [key, timeUnitComponent] of entries(this.timeUnits)) {
       const fieldAs = isTimeUnitTransformComponent(timeUnitComponent)

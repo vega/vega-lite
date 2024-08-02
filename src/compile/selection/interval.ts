@@ -235,18 +235,24 @@ const interval: SelectionCompiler<'interval'> = {
     // not interefere with the core marks, but that the brushed region can still
     // be interacted with (e.g., dragging it around).
     const {fill, fillOpacity, cursor, ...stroke} = selCmpt.mark;
-    const vgStroke = keys(stroke).reduce((def, k) => {
-      def[k] = [
-        {
-          test: [x !== undefined && `${xvname}[0] !== ${xvname}[1]`, y !== undefined && `${yvname}[0] !== ${yvname}[1]`]
-            .filter(t => t)
-            .join(' && '),
-          value: stroke[k]
-        },
-        {value: null}
-      ];
-      return def;
-    }, {});
+    const vgStroke = keys(stroke).reduce(
+      (def, k) => {
+        def[k] = [
+          {
+            test: [
+              x !== undefined && `${xvname}[0] !== ${xvname}[1]`,
+              y !== undefined && `${yvname}[0] !== ${yvname}[1]`
+            ]
+              .filter(t => t)
+              .join(' && '),
+            value: stroke[k]
+          },
+          {value: null}
+        ];
+        return def;
+      },
+      {} as Record<keyof typeof stroke, any>
+    );
 
     // Set cursor to move unless the brush cannot be translated
     const vgCursor = cursor ?? (selCmpt.translate ? 'move' : null);

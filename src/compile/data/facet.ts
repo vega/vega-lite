@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import type {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../../bin';
 import {COLUMN, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../../channel';
@@ -152,7 +152,7 @@ export class FacetNode extends DataFlowNode {
     crossedDataName: string,
     childIndependentFieldsWithStep: ChildIndependentFieldsWithStep
   ): VgData {
-    const childChannel = {row: 'y', column: 'x', facet: undefined}[channel];
+    const childChannel = ({row: 'y', column: 'x', facet: undefined} as const)[channel];
 
     const fields: string[] = [];
     const ops: AggregateOp[] = [];

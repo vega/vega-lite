@@ -2,6 +2,7 @@ import {Field} from '../channeldef';
 import {SharedCompositeEncoding} from '../compositemark';
 import {ExprRef} from '../expr';
 import {Projection} from '../projection';
+import {hasProperty} from '../util';
 import {BaseSpec, FrameMixins, ResolveMixins} from './base';
 import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
 
@@ -45,5 +46,5 @@ export interface LayerSpec<F extends Field> extends BaseSpec, FrameMixins, Resol
 export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 
 export function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<any> {
-  return 'layer' in spec;
+  return hasProperty(spec, 'layer');
 }

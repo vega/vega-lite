@@ -1,5 +1,5 @@
-import {
-  isObject,
+import type {
+  ColorScheme,
   RangeEnum,
   ScaleBins,
   ScaleInterpolateEnum,
@@ -8,8 +8,7 @@ import {
   TimeInterval,
   TimeIntervalStep
 } from 'vega';
-import type {ColorScheme} from 'vega-typings';
-import {isString} from 'vega-util';
+import {isString, isObject} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';
@@ -18,7 +17,7 @@ import {ScaleInvalidDataConfigMixins} from './invalid';
 import * as log from './log';
 import {ParameterExtent} from './selection';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
-import {contains, Flag, keys} from './util';
+import {contains, Flag, hasProperty, keys} from './util';
 
 export const ScaleType = {
   // Continuous - Quantitative
@@ -495,11 +494,11 @@ export type Domain =
 export type Scheme = string | SchemeParams;
 
 export function isExtendedScheme(scheme: Scheme | SignalRef): scheme is SchemeParams {
-  return !isString(scheme) && !!scheme['name'];
+  return !isString(scheme) && hasProperty(scheme, 'name');
 }
 
 export function isParameterDomain(domain: Domain): domain is ParameterExtent {
-  return domain?.['param'];
+  return hasProperty(domain, 'param');
 }
 
 export interface DomainUnionWith {
@@ -511,7 +510,7 @@ export interface DomainUnionWith {
 }
 
 export function isDomainUnionWith(domain: Domain): domain is DomainUnionWith {
-  return domain?.['unionWith'];
+  return hasProperty(domain, 'unionWith');
 }
 
 export interface FieldRange {

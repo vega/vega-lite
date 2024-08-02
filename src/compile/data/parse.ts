@@ -84,7 +84,7 @@ export function findSource(data: Data, sources: SourceNode[]) {
       continue;
     }
 
-    const formatMesh = data['format']?.mesh;
+    const formatMesh = (data as any).format?.mesh;
     const otherFeature = otherData.format?.feature;
 
     // feature and mesh are mutually exclusive
@@ -93,7 +93,7 @@ export function findSource(data: Data, sources: SourceNode[]) {
     }
 
     // we have to extract the same feature or mesh
-    const formatFeature = data['format']?.feature;
+    const formatFeature = (data as any).format?.feature;
     if ((formatFeature || otherFeature) && formatFeature !== otherFeature) {
       continue;
     }

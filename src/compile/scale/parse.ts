@@ -54,7 +54,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
       continue;
     }
 
-    let specifiedScale = fieldOrDatumDef && fieldOrDatumDef['scale'];
+    let specifiedScale = fieldOrDatumDef && (fieldOrDatumDef as any).scale;
     if (fieldOrDatumDef && specifiedScale !== null && specifiedScale !== false) {
       specifiedScale ??= {};
       const hasNestedOffsetScale = channelHasNestedOffsetScale(encoding, channel);

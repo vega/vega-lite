@@ -1,4 +1,4 @@
-import {Binding, Expr, InitSignal, NewSignal} from 'vega';
+import type {Binding, Expr, InitSignal, NewSignal} from 'vega';
 import {isSelectionParameter, TopLevelSelectionParameter} from './selection';
 
 export type ParameterName = string;

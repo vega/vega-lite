@@ -1,6 +1,7 @@
-import {isArray} from 'vega';
+import {isArray} from 'vega-util';
 import {BinParams, isBinParams} from '../bin';
 import {ChannelDef, Field, isConditionalDef, isFieldDef, isScaleFieldDef} from '../channeldef';
+import {Encoding} from '../encoding';
 import {LogicalComposition, normalizeLogicalComposition} from '../logical';
 import {FacetedUnitSpec, GenericSpec, LayerSpec, RepeatSpec, UnitSpec} from '../spec';
 import {SpecMapper} from '../spec/map';
@@ -28,9 +29,9 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
     spec = normalizeTransforms(spec, normParams);
 
     if (spec.encoding) {
-      const encoding = {};
+      const encoding: Encoding<any> = {};
       for (const [channel, enc] of entries(spec.encoding)) {
-        encoding[channel] = normalizeChannelDef(enc, normParams);
+        (encoding as any)[channel] = normalizeChannelDef(enc, normParams);
       }
 
       spec = {...spec, encoding};
@@ -54,8 +55,8 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
           }
 
           // Propagate emptiness forwards and backwards
-          normParams.emptySelections[name] = empty !== 'none';
-          for (const pred of vals(normParams.selectionPredicates[name] ?? {})) {
+          (normParams.emptySelections as any)[name] = empty !== 'none';
+          for (const pred of vals((normParams.selectionPredicates as any)[name] ?? {})) {
             pred.empty = empty !== 'none';
           }
 

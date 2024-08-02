@@ -3,6 +3,7 @@
  * such as 'x', 'y', 'color'.
  */
 
+import {hasOwnProperty} from 'vega-util';
 import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {Mark} from './mark';
@@ -91,7 +92,7 @@ const POLAR_POSITION_CHANNEL_INDEX = {
 export type PolarPositionChannel = keyof typeof POLAR_POSITION_CHANNEL_INDEX;
 
 export function isPolarPositionChannel(c: Channel): c is PolarPositionChannel {
-  return c in POLAR_POSITION_CHANNEL_INDEX;
+  return hasOwnProperty(POLAR_POSITION_CHANNEL_INDEX, c);
 }
 
 const GEO_POSIITON_CHANNEL_INDEX = {
@@ -117,7 +118,7 @@ export function getPositionChannelFromLatLong(channel: GeoPositionChannel): Posi
 }
 
 export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
-  return c in GEO_POSIITON_CHANNEL_INDEX;
+  return hasOwnProperty(GEO_POSIITON_CHANNEL_INDEX, c);
 }
 
 export const GEOPOSITION_CHANNELS = keys(GEO_POSIITON_CHANNEL_INDEX);
@@ -200,11 +201,11 @@ export const SINGLE_DEF_UNIT_CHANNELS = keys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
 export type SingleDefUnitChannel = (typeof SINGLE_DEF_UNIT_CHANNELS)[number];
 
 export function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel {
-  return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
+  return hasOwnProperty(SINGLE_DEF_UNIT_CHANNEL_INDEX, str);
 }
 
 export function isChannel(str: string): str is Channel {
-  return !!CHANNEL_INDEX[str];
+  return hasOwnProperty(CHANNEL_INDEX, str);
 }
 
 export type SecondaryRangeChannel = 'x2' | 'y2' | 'latitude2' | 'longitude2' | 'theta2' | 'radius2';
@@ -399,7 +400,7 @@ export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = keyof typeof POSITION_SCALE_CHANNEL_INDEX;
 
 export function isXorY(channel: ExtendedChannel): channel is PositionScaleChannel {
-  return channel in POSITION_SCALE_CHANNEL_INDEX;
+  return hasOwnProperty(POSITION_SCALE_CHANNEL_INDEX, channel);
 }
 
 export const POLAR_POSITION_SCALE_CHANNEL_INDEX = {
@@ -421,7 +422,7 @@ export const OFFSET_SCALE_CHANNELS = keys(OFFSET_SCALE_CHANNEL_INDEX);
 export type OffsetScaleChannel = (typeof OFFSET_SCALE_CHANNELS)[0];
 
 export function isXorYOffset(channel: Channel): channel is OffsetScaleChannel {
-  return channel in OFFSET_SCALE_CHANNEL_INDEX;
+  return hasOwnProperty(OFFSET_SCALE_CHANNEL_INDEX, channel);
 }
 
 // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without position / offset
@@ -444,7 +445,7 @@ export const NONPOSITION_SCALE_CHANNELS = keys(NONPOSITION_SCALE_CHANNEL_INDEX);
 export type NonPositionScaleChannel = (typeof NONPOSITION_SCALE_CHANNELS)[number];
 
 export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
-  return !!NONPOSITION_CHANNEL_INDEX[channel];
+  return hasOwnProperty(NONPOSITION_CHANNEL_INDEX, channel);
 }
 
 /**
@@ -481,7 +482,7 @@ export const SCALE_CHANNELS = keys(SCALE_CHANNEL_INDEX);
 export type ScaleChannel = (typeof SCALE_CHANNELS)[number];
 
 export function isScaleChannel(channel: ExtendedChannel): channel is ScaleChannel {
-  return !!SCALE_CHANNEL_INDEX[channel];
+  return hasOwnProperty(SCALE_CHANNEL_INDEX, channel);
 }
 
 export type SupportedMark = Partial<Record<Mark, 'always' | 'binned'>>;

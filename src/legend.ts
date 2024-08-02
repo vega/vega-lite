@@ -1,4 +1,4 @@
-import {
+import type {
   BaseLegend,
   LabelOverlap,
   Legend as VgLegend,

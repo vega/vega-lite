@@ -26,7 +26,7 @@ describe('compile/mark/encode/position-point', () => {
 
     [X, Y].forEach(channel => {
       const mixins = pointPosition(channel, model, {defaultPos: 'zeroOrMin'});
-      expect(mixins[channel]['field']).toEqual(model.getName(channel));
+      expect((mixins[channel] as any).field).toEqual(model.getName(channel));
     });
   });
 });

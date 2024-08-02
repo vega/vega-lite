@@ -25,7 +25,7 @@ describe(`point selections at runtime in unit views`, () => {
   it('should add values to the store', async () => {
     for (let i = 0; i < hits.qq.length; i++) {
       await embed(spec('unit', i, {type}));
-      const store = await page.evaluate(pt('qq', i));
+      const store = (await page.evaluate(pt('qq', i))) as [any];
       expect(store).toHaveLength(1);
       expect(store[0]).toHaveProperty(SELECTION_ID);
       await testRender(`click_${i}`);
@@ -39,7 +39,7 @@ describe(`point selections at runtime in unit views`, () => {
     const t = async (emb: (i: number) => void) => {
       for (let i = 0; i < hits.qq.length; i++) {
         emb(i);
-        const store = await page.evaluate(pt('qq', i));
+        const store = (await page.evaluate(pt('qq', i))) as [any];
         expect(store).toHaveLength(1);
         expect(store[0].fields).toHaveLength(fields.length);
         expect(store[0].values).toHaveLength(fields.length);
@@ -70,10 +70,10 @@ describe(`point selections at runtime in unit views`, () => {
   it('should clear out the store', async () => {
     for (let i = 0; i < hits.qq_clear.length; i++) {
       await embed(spec('unit', i, {type}));
-      let store = await page.evaluate(pt('qq', i));
+      let store = (await page.evaluate(pt('qq', i))) as [any];
       expect(store).toHaveLength(1);
 
-      store = await page.evaluate(pt('qq_clear', i));
+      store = (await page.evaluate(pt('qq_clear', i))) as [any];
       expect(store).toHaveLength(0);
       await testRender(`clear_${i}`);
     }
@@ -90,7 +90,7 @@ describe(`point selections at runtime in unit views`, () => {
 
     for (let i = 0; i < hits.bins.length; i++) {
       await embed(spec('unit', i, {type, encodings}, {x: {bin: true}, y: {bin: true}}));
-      const store = await page.evaluate(pt('bins', i));
+      const store = (await page.evaluate(pt('bins', i))) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(fields.length);
       expect(store[0].values).toHaveLength(fields.length);

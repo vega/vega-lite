@@ -27,9 +27,9 @@ function getAxisConfigFromConfigTypes(
 
         const conditionalOrientAxisConfig = {};
         for (const prop of props.values()) {
-          conditionalOrientAxisConfig[prop] = {
+          (conditionalOrientAxisConfig as any)[prop] = {
             // orient is surely signal in this case
-            signal: `${orient['signal']} === "${orient1}" ? ${signalOrStringValue(
+            signal: `${(orient as any)['signal']} === "${orient1}" ? ${signalOrStringValue(
               orientConfig1[prop]
             )} : ${signalOrStringValue(orientConfig2[prop])}`
           };
@@ -38,7 +38,7 @@ function getAxisConfigFromConfigTypes(
         return conditionalOrientAxisConfig;
       }
 
-      return config[configType];
+      return (config as any)[configType];
     })
   ]);
 }
@@ -85,7 +85,7 @@ export function getAxisConfigStyle(axisConfigTypes: string[], config: Config) {
   const toMerge = [{}];
   for (const configType of axisConfigTypes) {
     // TODO: add special casing to add conditional value based on orient signal
-    let style = config[configType]?.style;
+    let style = (config as any)[configType]?.style;
     if (style) {
       style = array(style);
       for (const s of style) {
@@ -110,7 +110,7 @@ export function getAxisConfig(
     };
   }
 
-  for (const configFrom of ['vlOnlyAxisConfig', 'vgAxisConfig', 'axisConfigStyle']) {
+  for (const configFrom of ['vlOnlyAxisConfig', 'vgAxisConfig', 'axisConfigStyle'] as const) {
     if (axisConfigs[configFrom]?.[property] !== undefined) {
       return {configFrom, configValue: axisConfigs[configFrom][property]};
     }

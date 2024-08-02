@@ -1,6 +1,7 @@
 import {isObject, isString} from 'vega-util';
 import {DateTime, DateTimeExpr, dateTimeExprToExpr, dateTimeToExpr} from './datetime';
 import {accessPathWithDatum, keys, stringify, varName} from './util';
+import {hasOwnProperty} from 'vega';
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 export const LOCAL_SINGLE_TIMEUNIT_INDEX = {
@@ -22,7 +23,7 @@ export type LocalSingleTimeUnit = keyof typeof LOCAL_SINGLE_TIMEUNIT_INDEX;
 export const TIMEUNIT_PARTS = keys(LOCAL_SINGLE_TIMEUNIT_INDEX);
 
 export function isLocalSingleTimeUnit(timeUnit: string): timeUnit is LocalSingleTimeUnit {
-  return !!LOCAL_SINGLE_TIMEUNIT_INDEX[timeUnit];
+  return hasOwnProperty(LOCAL_SINGLE_TIMEUNIT_INDEX, timeUnit);
 }
 
 export const UTC_SINGLE_TIMEUNIT_INDEX = {
@@ -325,13 +326,13 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string, {end}: {end: bo
 
   for (const part of TIMEUNIT_PARTS) {
     if (containsTimeUnit(fullTimeUnit, part)) {
-      dateExpr[part] = func(part);
+      (dateExpr as any)[part] = func(part);
       lastTimeUnit = part;
     }
   }
 
   if (end) {
-    dateExpr[lastTimeUnit] += '+1';
+    (dateExpr as any)[lastTimeUnit] += '+1';
   }
 
   return dateTimeExprToExpr(dateExpr);
@@ -459,7 +460,7 @@ const DATE_PARTS = {
 type DatePart = keyof typeof DATE_PARTS;
 
 export function isDatePart(timeUnit: LocalSingleTimeUnit): timeUnit is DatePart {
-  return !!DATE_PARTS[timeUnit];
+  return hasOwnProperty(DATE_PARTS, timeUnit);
 }
 
 export function getDateTimePartAndStep(

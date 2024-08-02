@@ -45,7 +45,7 @@ describe('compile/mark/encode/color', () => {
 
     const colorMixins = color(model);
     expect(colorMixins.stroke).toEqual({field: 'gender', scale: 'color'});
-    expect(colorMixins.fill['value']).toBe('transparent');
+    expect((colorMixins.fill as any).value).toBe('transparent');
   });
 
   it('add transparent fill when stroke is encoded', () => {
@@ -68,7 +68,7 @@ describe('compile/mark/encode/color', () => {
 
     const colorMixins = color(model);
     expect(colorMixins.stroke).toEqual({field: 'gender', scale: 'stroke'});
-    expect(colorMixins.fill['value']).toBe('transparent');
+    expect((colorMixins.fill as any).value).toBe('transparent');
   });
 
   it('combines color with fill when filled=false', () => {

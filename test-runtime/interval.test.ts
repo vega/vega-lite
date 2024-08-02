@@ -25,7 +25,7 @@ describe('interval selections at runtime in unit views', () => {
   it('should add extents to the store', async () => {
     for (let i = 0; i < hits.drag.length; i++) {
       await embed(spec('unit', i, {type}));
-      const store = await page.evaluate(brush('drag', i));
+      const store = (await page.evaluate(brush('drag', i))) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(2);
       expect(store[0].values).toHaveLength(2);
@@ -44,7 +44,7 @@ describe('interval selections at runtime in unit views', () => {
   it('should respect projections', async () => {
     await embed(spec('unit', 0, {type, encodings: ['x']}));
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = await page.evaluate(brush('drag', i));
+      const store = (await page.evaluate(brush('drag', i))) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(1);
       expect(store[0].values).toHaveLength(1);
@@ -57,7 +57,7 @@ describe('interval selections at runtime in unit views', () => {
 
     await embed(spec('unit', 1, {type, encodings: ['y']}));
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = await page.evaluate(brush('drag', i));
+      const store = (await page.evaluate(brush('drag', i))) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(1);
       expect(store[0].values).toHaveLength(1);
@@ -72,10 +72,10 @@ describe('interval selections at runtime in unit views', () => {
   it('should clear out stored extents', async () => {
     for (let i = 0; i < hits.drag_clear.length; i++) {
       await embed(spec('unit', i, {type}));
-      let store = await page.evaluate(brush('drag', i));
+      let store = (await page.evaluate(brush('drag', i))) as [any];
       expect(store).toHaveLength(1);
 
-      store = await page.evaluate(brush('drag_clear', i));
+      store = (await page.evaluate(brush('drag_clear', i))) as [any];
       expect(store).toHaveLength(0);
       await testRender(`clear_${i}`);
     }
@@ -90,12 +90,12 @@ describe('interval selections at runtime in unit views', () => {
         {
           x: {aggregate: 'count', type: 'quantitative'},
           y: {bin: true},
-          color: {value: 'steelblue', field: null, type: null}
+          color: {value: 'steelblue', field: undefined, type: undefined}
         }
       )
     );
     for (let i = 0; i < hits.bins.length; i++) {
-      const store = await page.evaluate(brush('bins', i));
+      const store = (await page.evaluate(brush('bins', i))) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(1);
       expect(store[0].values).toHaveLength(1);
@@ -122,7 +122,7 @@ describe('interval selections at runtime in unit views', () => {
 
     for (let i = 0; i < hits.drag.length; i++) {
       await embed(spec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
-      const store = await page.evaluate(brush('drag', i));
+      const store = (await page.evaluate(brush('drag', i))) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(2);
       expect(store[0].values).toHaveLength(2);
@@ -151,7 +151,7 @@ describe('interval selections at runtime in unit views', () => {
       [1496346498000, 1504364922000]
     ];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = toNumber(await page.evaluate(brush('drag', i)));
+      const store = toNumber((await page.evaluate(brush('drag', i))) as [any]);
       expect(store).toEqual(expect.arrayContaining(extents[i]));
       await testRender(`temporal_${i}`);
     }
@@ -166,7 +166,7 @@ describe('interval selections at runtime in unit views', () => {
       [1325752128000, 1325837664000]
     ];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = toNumber(await page.evaluate(brush('drag', i)));
+      const store = toNumber((await page.evaluate(brush('drag', i))) as [any]);
       expect(store).toEqual(expect.arrayContaining(extents[i]));
       await testRender(`dayTimeUnit_${i}`);
     }
@@ -188,7 +188,7 @@ describe('interval selections at runtime in unit views', () => {
           }
         )
       );
-      const store = await page.evaluate(brush('drag', i));
+      const store = (await page.evaluate(brush('drag', i))) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(2);
       expect(store[0].values).toHaveLength(2);

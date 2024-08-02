@@ -233,8 +233,8 @@ const LAYOUT_TITLE_BAND = {
   }
 };
 
-export function getLayoutTitleBand(titleAnchor: TitleAnchor, headerChannel: HeaderChannel) {
-  return LAYOUT_TITLE_BAND[headerChannel][titleAnchor];
+export function getLayoutTitleBand(titleAnchor: TitleAnchor, headerChannel: HeaderChannel): 0 | 1 {
+  return (LAYOUT_TITLE_BAND[headerChannel] as any)[titleAnchor];
 }
 
 export function assembleLayoutTitleBand(
@@ -256,7 +256,7 @@ export function assembleLayoutTitleBand(
       const headerChannel = getHeaderChannel(channel, titleOrient);
       const band = getLayoutTitleBand(titleAnchor, headerChannel);
       if (band !== undefined) {
-        titleBand[headerChannel] = band;
+        (titleBand as any)[headerChannel] = band;
       }
     }
   }
@@ -279,7 +279,7 @@ export function assembleHeaderProperties(
 
     const value = getHeaderProperty(prop, facetFieldDef?.header, config, channel);
     if (value !== undefined) {
-      props[propertiesMap[prop]] = value;
+      (props as any)[propertiesMap[prop]] = value;
     }
   }
   return props;

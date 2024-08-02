@@ -1,13 +1,13 @@
 import type {SignalRef} from 'vega';
-import {isObject, isString} from 'vega-util';
+import {hasOwnProperty, isObject, isString} from 'vega-util';
 import {
   Aggregate,
   isAggregateOp,
   isArgmaxDef,
   isArgminDef,
-  MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX,
   NonArgAggregateOp,
-  SHARED_DOMAIN_OPS
+  SHARED_DOMAIN_OPS,
+  MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX
 } from '../../aggregate';
 import {isBinning, isBinParams, isParameterExtent} from '../../bin';
 import {getSecondaryRangeChannel, isScaleChannel, isXorY, ScaleChannel} from '../../channel';
@@ -29,6 +29,7 @@ import {DataSourceType} from '../../data';
 import {DateTime} from '../../datetime';
 import {ExprRef} from '../../expr';
 import * as log from '../../log';
+import {isPathMark, isRectBasedMark} from '../../mark';
 import {Domain, hasDiscreteDomain, isDomainUnionWith, isParameterDomain, ScaleConfig, ScaleType} from '../../scale';
 import {ParameterExtent} from '../../selection';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
@@ -47,18 +48,17 @@ import {
   VgSortField,
   VgUnionSortField
 } from '../../vega.schema';
+import {getMarkConfig} from '../common';
 import {getBinSignalName} from '../data/bin';
 import {sortArrayIndexField} from '../data/calculate';
 import {FACET_SCALE_PREFIX} from '../data/optimize';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../data/timeunit';
+import {getScaleDataSourceForHandlingInvalidValues} from '../invalid/datasources';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
-import {isPathMark, isRectBasedMark} from '../../mark';
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../data/timeunit';
-import {getScaleDataSourceForHandlingInvalidValues} from '../invalid/datasources';
-import {getMarkConfig} from '../common';
 
 export function parseScaleDomain(model: Model) {
   if (isUnitModel(model)) {
@@ -249,7 +249,7 @@ function parseSingleChannelDomain(
   const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleDatumDef<string> | ScaleFieldDef<string>;
 
   const {type} = fieldOrDatumDef;
-  const timeUnit = fieldOrDatumDef['timeUnit'];
+  const timeUnit = (fieldOrDatumDef as any)['timeUnit'];
 
   const dataSourceTypeForScaleDomain = getScaleDataSourceForHandlingInvalidValues({
     invalid: getMarkConfig('invalid', markDef, config),
@@ -413,8 +413,8 @@ function parseSelectionDomain(model: UnitModel, channel: ScaleChannel) {
   const scale = model.component.scales[channel];
   const spec = model.specifiedScales[channel].domain;
   const bin = model.fieldDef(channel)?.bin;
-  const domain = isParameterDomain(spec) && spec;
-  const extent = isBinParams(bin) && isParameterExtent(bin.extent) && bin.extent;
+  const domain = isParameterDomain(spec) ? spec : undefined;
+  const extent = isBinParams(bin) && isParameterExtent(bin.extent) ? bin.extent : undefined;
 
   if (domain || extent) {
     // As scale parsing occurs before selection parsing, we cannot set
@@ -623,7 +623,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
   // only keep sort properties that work with unioned domains
   const unionDomainSorts = util.unique<VgUnionSortField>(
     sorts.map(s => {
-      if (util.isBoolean(s) || !('op' in s) || (isString(s.op) && s.op in UNIONDOMAIN_SORT_OP_INDEX)) {
+      if (util.isBoolean(s) || !('op' in s) || (isString(s.op) && hasOwnProperty(UNIONDOMAIN_SORT_OP_INDEX, s.op))) {
         return s as VgUnionSortField;
       }
       log.warn(log.message.domainSortDropped(s));

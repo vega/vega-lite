@@ -2,11 +2,11 @@ import type {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {FieldName, valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
-import {ExprRef} from './expr';
+import {ExprRef, replaceExprRef} from './expr';
 import {LogicalComposition} from './logical';
 import {ParameterName} from './parameter';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams, BinnedTimeUnit} from './timeunit';
-import {stringify} from './util';
+import {hasProperty, stringify} from './util';
 import {isSignalRef} from './vega.schema';
 
 export type Predicate =
@@ -48,7 +48,7 @@ export interface ParameterPredicate {
 }
 
 export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is ParameterPredicate {
-  return predicate?.['param'];
+  return hasProperty(predicate, 'param');
 }
 
 export interface FieldPredicateBase {
@@ -227,7 +227,7 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
   } else if (isFieldValidPredicate(predicate)) {
     return fieldValidPredicate(fieldExpr, predicate.valid);
   } else if (isFieldRangePredicate(predicate)) {
-    const {range} = predicate;
+    const {range} = replaceExprRef(predicate);
     const lower = isSignalRef(range) ? {signal: `${range.signal}[0]`} : range[0];
     const upper = isSignalRef(range) ? {signal: `${range.signal}[1]`} : range[1];
 

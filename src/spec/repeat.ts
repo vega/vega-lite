@@ -3,6 +3,7 @@ import {LayerSpec, NonNormalizedSpec} from '.';
 import {Field} from '../channeldef';
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
 import {UnitSpecWithFrame} from './unit';
+import {hasProperty} from '../util';
 
 export interface RepeatMapping {
   /**
@@ -57,9 +58,9 @@ export interface LayerRepeatSpec extends BaseSpec, GenericCompositionLayoutWithC
 }
 
 export function isRepeatSpec(spec: BaseSpec): spec is RepeatSpec {
-  return 'repeat' in spec;
+  return hasProperty(spec, 'repeat');
 }
 
 export function isLayerRepeatSpec(spec: RepeatSpec): spec is LayerRepeatSpec {
-  return !isArray(spec.repeat) && spec.repeat['layer'];
+  return !isArray(spec.repeat) && hasProperty(spec.repeat, 'layer');
 }

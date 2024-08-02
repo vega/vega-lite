@@ -1,4 +1,4 @@
-import {BaseProjection, SignalRef, Vector2} from 'vega';
+import type {BaseProjection, SignalRef, Vector2} from 'vega';
 import {ExprRef} from './expr';
 import {MapExcludeValueRefAndReplaceSignalWith, ProjectionType} from './vega.schema';
 

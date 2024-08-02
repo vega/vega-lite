@@ -1,6 +1,12 @@
 import {Axis as VgAxis, AxisEncode, NewSignal, SignalRef, Text} from 'vega';
 import {array, isArray} from 'vega-util';
-import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
+import {
+  AXIS_PARTS,
+  AXIS_PROPERTY_TYPE,
+  CONDITIONAL_AXIS_PROP_INDEX,
+  ConditionalAxisProp,
+  isConditionalAxisValue
+} from '../../axis';
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
@@ -49,7 +55,8 @@ export function assembleAxis(
     return undefined;
   }
 
-  for (const prop in axis) {
+  for (const p in axis) {
+    const prop = p as keyof typeof axis;
     const propType = AXIS_PROPERTY_TYPE[prop];
     const propValue = axis[prop];
 
@@ -59,10 +66,10 @@ export function assembleAxis(
     } else if (isConditionalAxisValue<any, SignalRef>(propValue)) {
       // deal with conditional axis value
 
-      const {condition, ...valueOrSignalRef} = propValue;
+      const {condition, ...valueOrSignalRef} = propValue as any;
       const conditions = array(condition);
 
-      const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop];
+      const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop as ConditionalAxisProp];
       if (propIndex) {
         const {vgProp, part} = propIndex;
         // If there is a corresponding Vega property for the channel,
@@ -91,13 +98,14 @@ export function assembleAxis(
               })
               .join('') + exprFromValueRefOrSignalRef(valueOrSignalRef)
         };
-        axis[prop] = signalRef;
+        (axis as any)[prop] = signalRef;
       }
     } else if (isSignalRef(propValue)) {
-      const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop];
+      const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop as ConditionalAxisProp];
       if (propIndex) {
         const {vgProp, part} = propIndex;
-        setAxisEncode(axis, part, vgProp, propValue);
+        // FIXME: remove as any
+        setAxisEncode(axis, part, vgProp, propValue as any);
         delete axis[prop];
       } // else do nothing since the property already supports signal
     }

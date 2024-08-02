@@ -278,7 +278,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align y-axis labels for labelAngle and orient signals', () => {
-      const ast = parseExpression(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
+      const ast = parseExpression((defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y') as any).signal);
       let a: number;
       let o: AxisOrient;
       // test all angles
@@ -297,7 +297,7 @@ describe('compile/axis/properties', () => {
 
     it('correctly align x-axis labels for labelAngle and orient signals', () => {
       return new Promise<void>(done => {
-        const ast = parseExpression(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
+        const ast = parseExpression((defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'x') as any).signal);
         let a: number;
         let o: AxisOrient;
         // test all angles
@@ -390,7 +390,7 @@ describe('compile/axis/properties', () => {
 
     it('correctly align y-axis labels for labelAngle and orient signals', () => {
       return new Promise<void>(done => {
-        const ast = parseExpression(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
+        const ast = parseExpression((defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'y') as any).signal);
         let a: number;
         let o: AxisOrient;
         // test all angles
@@ -411,7 +411,7 @@ describe('compile/axis/properties', () => {
 
     it('correctly align x-axis labels for labelAngle and orient signals', () => {
       return new Promise<void>(done => {
-        const ast = parseExpression(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
+        const ast = parseExpression((defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'x') as any).signal);
         let a: number;
         let o: AxisOrient;
         // test all angles

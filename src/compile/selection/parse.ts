@@ -35,11 +35,11 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
       }
 
       if (key === 'mark') {
-        defaults[key] = {...cfg[key], ...defaults[key]};
+        (defaults as any).mark = {...(cfg as any).mark, ...(defaults as any).mark};
       }
 
-      if (defaults[key] === undefined || defaults[key] === true) {
-        defaults[key] = duplicate(cfg[key] ?? defaults[key]);
+      if ((defaults as any)[key] === undefined || (defaults as any)[key] === true) {
+        (defaults as any)[key] = duplicate((cfg as any)[key] ?? (defaults as any)[key]);
       }
     }
 
@@ -101,8 +101,8 @@ export function parseSelectionPredicate(
 
 export function parseSelectionExtent(model: Model, name: string, extent: ParameterExtent) {
   const vname = varName(name);
-  const encoding = extent['encoding'];
-  let field = extent['field'];
+  const encoding = (extent as any).encoding;
+  let field = (extent as any).field;
   let selCmpt;
 
   try {

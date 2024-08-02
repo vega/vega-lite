@@ -76,7 +76,7 @@ describe('compile/legend', () => {
           legendType
         }
       );
-      expect(symbol.opacity['value']).toBe(0.7); // default opacity is 0.7.
+      expect((symbol.opacity as any).value).toBe(0.7); // default opacity is 0.7.
     });
 
     it('should use symbolOpacity when set', () => {
@@ -121,7 +121,7 @@ describe('compile/legend', () => {
           legendType
         }
       );
-      expect(symbol.opacity['value']).toBe(1);
+      expect((symbol.opacity as any).value).toBe(1);
     });
   });
 
@@ -143,7 +143,7 @@ describe('compile/legend', () => {
         }
       );
 
-      expect(gradient.opacity['value']).toBe(0.7); // default opacity is 0.7.
+      expect((gradient.opacity as any).value).toBe(0.7); // default opacity is 0.7.
     });
   });
 

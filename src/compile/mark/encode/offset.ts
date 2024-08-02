@@ -39,7 +39,8 @@ export function positionOffset({
     | 'radius2Offset'; // Need to cast as the type can't be inferred automatically
 
   const defaultValue = markDef[channel];
-  const channelDef = encoding[channel];
+  // FIXME: remove as any
+  const channelDef = (encoding as any)[channel];
 
   if ((channel === 'xOffset' || channel === 'yOffset') && channelDef) {
     const ref = midPoint({

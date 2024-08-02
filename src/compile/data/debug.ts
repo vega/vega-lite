@@ -43,10 +43,10 @@ export function dotString(roots: readonly DataFlowNode[]) {
   const edges: [string, string][] = [];
 
   function getId(node: DataFlowNode) {
-    let id = node['__uniqueid'];
+    let id = (node as any)['__uniqueid'];
     if (id === undefined) {
       id = uniqueId();
-      node['__uniqueid'] = id;
+      (node as any)['__uniqueid'] = id;
     }
     return id;
   }
@@ -83,7 +83,7 @@ export function dotString(roots: readonly DataFlowNode[]) {
       label: getLabel(node),
       hash:
         node instanceof SourceNode
-          ? node.data.url ?? node.data.name ?? node.debugName
+          ? (node.data.url ?? node.data.name ?? node.debugName)
           : String(node.hash()).replace(/"/g, '')
     };
 

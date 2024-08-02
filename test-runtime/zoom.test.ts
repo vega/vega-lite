@@ -3,6 +3,7 @@
 import {
   bound,
   brush,
+  BrushKeys,
   compositeTypes,
   embedFn,
   geoSpec,
@@ -21,7 +22,7 @@ import {TopLevelSpec} from '../src';
 
 type InOut = 'in' | 'out';
 
-function zoom(key: string, idx: number, direction: InOut, parent?: string, targetBrush?: boolean) {
+function zoom(key: keyof typeof hits, idx: number, direction: InOut, parent?: string, targetBrush?: boolean) {
   const delta = direction === 'out' ? 200 : -200;
   return `zoom(${hits[key][idx]}, ${delta}, ${parent}, ${targetBrush})`;
 }
@@ -56,13 +57,13 @@ describe('Zoom interval selections at runtime', () => {
         out: ['toBeLessThanOrEqual', 'toBeGreaterThanOrEqual']
       } as const;
 
-      async function setup(brushKey: string, idx: number, encodings: string[], parent?: string) {
+      async function setup(brushKey: BrushKeys, idx: number, encodings: string[], parent?: string) {
         const inOut: InOut = idx % 2 ? 'out' : 'in';
         let xold: number[];
         let yold: number[];
 
         if (bind === unbound) {
-          const drag = (await page.evaluate(brush(brushKey, idx, parent)))[0];
+          const drag = ((await page.evaluate(brush(brushKey, idx, parent))) as [any])[0];
           xold = drag.values[0].sort(cmp);
           yold = encodings.includes('y') ? drag.values[encodings.indexOf('x') + 1].sort(cmp) : null;
         } else {
@@ -79,7 +80,7 @@ describe('Zoom interval selections at runtime', () => {
           const {inOut, xold, yold} = await setup('drag', i, ['x', 'y']);
           await testRender(`${inOut}-0`);
 
-          const zoomed = (await page.evaluate(zoom('zoom', i, inOut, null, bind === unbound)))[0];
+          const zoomed = ((await page.evaluate(zoom('zoom', i, inOut, null, bind === unbound))) as [any])[0];
           const xnew = zoomed.values[0].sort(cmp);
           const ynew = zoomed.values[1].sort(cmp);
           await testRender(`${inOut}-1`);
@@ -101,7 +102,7 @@ describe('Zoom interval selections at runtime', () => {
               {
                 x: {aggregate: 'count', type: 'quantitative'},
                 y: {bin: true},
-                color: {value: 'steelblue', field: null, type: null}
+                color: {value: 'steelblue', field: undefined, type: undefined}
               }
             )
           );
@@ -109,7 +110,7 @@ describe('Zoom interval selections at runtime', () => {
           const {inOut, yold} = await setup('bins', i, encodings);
           await testRender(`bins_${inOut}-0`);
 
-          const zoomed = (await page.evaluate(zoom('bins', i, inOut, null, bind === unbound)))[0];
+          const zoomed = ((await page.evaluate(zoom('bins', i, inOut, null, bind === unbound))) as [any])[0];
           const ynew = zoomed.values[0].sort(cmp);
           expect(ynew[0])[assertExtent[inOut][0]](yold[0]);
           expect(ynew[1])[assertExtent[inOut][1]](yold[1]);
@@ -126,7 +127,7 @@ describe('Zoom interval selections at runtime', () => {
           const {inOut, xold} = await setup('drag', i, encodings);
           await testRender(`temporal_${inOut}-0`);
 
-          const zoomed = (await page.evaluate(zoom('zoom', i, inOut, null, bind === unbound)))[0];
+          const zoomed = ((await page.evaluate(zoom('zoom', i, inOut, null, bind === unbound))) as [any])[0];
           const xnew = zoomed.values[0].sort(cmp);
           expect(+xnew[0])[assertExtent[inOut][0]](+new Date(xold[0]));
           expect(+xnew[1])[assertExtent[inOut][1]](+new Date(xold[1]));
@@ -150,7 +151,7 @@ describe('Zoom interval selections at runtime', () => {
           const {inOut, xold, yold} = await setup('drag', i, ['x', 'y']);
           await testRender(`logpow_${inOut}-0`);
 
-          const zoomed = (await page.evaluate(zoom('zoom', i, inOut, null, bind === unbound)))[0];
+          const zoomed = ((await page.evaluate(zoom('zoom', i, inOut, null, bind === unbound))) as [any])[0];
           const xnew = zoomed.values[0].sort(cmp);
           const ynew = zoomed.values[1].sort(cmp);
           expect(xnew[0])[assertExtent[inOut][0]](xold[0]);
@@ -178,7 +179,7 @@ describe('Zoom interval selections at runtime', () => {
             const {inOut, xold, yold} = await setup('drag', i, ['x', 'y']);
             await testRender(`ord_${inOut}-0`);
 
-            const zoomed = (await page.evaluate(zoom('zoom', i, inOut, null, bind === unbound)))[0];
+            const zoomed = ((await page.evaluate(zoom('zoom', i, inOut, null, bind === unbound))) as [any])[0];
             const xnew = zoomed.values[0].sort(cmp);
             const ynew = zoomed.values[1].sort(cmp);
 
@@ -199,8 +200,10 @@ describe('Zoom interval selections at runtime', () => {
             for (let i = 0; i < hits.bins.length; i++) {
               await embed(spec(specType, 0, {type, ...binding}, {resolve: {scale: {x: 'shared', y: 'shared'}}}));
               const parent = parentSelector(specType, i);
-              const {inOut, xold, yold} = await setup(specType, i, ['x', 'y'], parent);
-              const zoomed = (await page.evaluate(zoom('bins', i, inOut, null, false /* bind === unbound */)))[0];
+              const {inOut, xold, yold} = await setup(specType as any, i, ['x', 'y'], parent);
+              const zoomed = (
+                (await page.evaluate(zoom('bins', i, inOut, null, false /* bind === unbound */))) as [any]
+              )[0];
               const xnew = zoomed.values[0].sort(cmp);
               const ynew = zoomed.values[1].sort(cmp);
               expect(xnew[0])[assertExtent[inOut][0]](xold[0]);

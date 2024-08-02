@@ -1,4 +1,4 @@
-import {
+import type {
   Align,
   Axis as VgAxis,
   AxisEncode,
@@ -19,6 +19,7 @@ import {ExprRef} from './expr';
 import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
 import {MapExcludeValueRefAndReplaceSignalWith, VgEncodeChannel} from './vega.schema';
+import {hasOwnProperty} from 'vega-util';
 
 export type BaseAxisNoValueRefs<ES extends ExprRef | SignalRef> = AxisOverrideMixins<ES> &
   VLOnlyAxisMixins &
@@ -569,7 +570,7 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis<any>> = {
 };
 
 export function isAxisProperty(prop: string): prop is keyof Axis<any> {
-  return !!AXIS_PROPERTIES_INDEX[prop];
+  return hasOwnProperty(AXIS_PROPERTIES_INDEX, prop);
 }
 
 // Export for dependent projects

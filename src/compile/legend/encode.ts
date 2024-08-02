@@ -13,7 +13,7 @@ import {
 } from '../../channeldef';
 import {Encoding} from '../../encoding';
 import {FILL_STROKE_CONFIG} from '../../mark';
-import {getFirstDefined, isEmpty, varName} from '../../util';
+import {getFirstDefined, hasProperty, isEmpty, varName} from '../../util';
 import {applyMarkConfig, signalOrValueRef} from '../common';
 import {formatCustomType, isCustomFormatType} from '../format';
 import * as mixins from '../mark/encode';
@@ -58,27 +58,24 @@ export function symbols(
   const symbolFillColor = legendCmpt.get('symbolFillColor') ?? config.legend.symbolFillColor;
   const symbolStrokeColor = legendCmpt.get('symbolStrokeColor') ?? config.legend.symbolStrokeColor;
 
-  const opacity = symbolOpacity === undefined ? getMaxValue(encoding.opacity) ?? markDef.opacity : undefined;
+  const opacity = symbolOpacity === undefined ? (getMaxValue(encoding.opacity) ?? markDef.opacity) : undefined;
 
   if (out.fill) {
     // for fill legend, we don't want any fill in symbol
     if (channel === 'fill' || (filled && channel === COLOR)) {
       delete out.fill;
-    } else {
-      if (out.fill['field']) {
-        // For others, set fill to some opaque value (or nothing if a color is already set)
-        if (symbolFillColor) {
-          delete out.fill;
-        } else {
-          out.fill = signalOrValueRef(config.legend.symbolBaseFillColor ?? 'black');
-          out.fillOpacity = signalOrValueRef(opacity ?? 1);
-        }
-      } else if (isArray(out.fill)) {
-        const fill =
-          getFirstConditionValue(encoding.fill ?? encoding.color) ?? markDef.fill ?? (filled && markDef.color);
-        if (fill) {
-          out.fill = signalOrValueRef(fill) as ColorValueRef;
-        }
+    } else if (hasProperty(out.fill, 'field')) {
+      // For others, set fill to some opaque value (or nothing if a color is already set)
+      if (symbolFillColor) {
+        delete out.fill;
+      } else {
+        out.fill = signalOrValueRef(config.legend.symbolBaseFillColor ?? 'black');
+        out.fillOpacity = signalOrValueRef(opacity ?? 1);
+      }
+    } else if (isArray(out.fill)) {
+      const fill = getFirstConditionValue(encoding.fill ?? encoding.color) ?? markDef.fill ?? (filled && markDef.color);
+      if (fill) {
+        out.fill = signalOrValueRef(fill) as ColorValueRef;
       }
     }
   }
@@ -86,19 +83,17 @@ export function symbols(
   if (out.stroke) {
     if (channel === 'stroke' || (!filled && channel === COLOR)) {
       delete out.stroke;
-    } else {
-      if (out.stroke['field'] || symbolStrokeColor) {
-        // For others, remove stroke field
-        delete out.stroke;
-      } else if (isArray(out.stroke)) {
-        const stroke = getFirstDefined<string | Gradient | SignalRef>(
-          getFirstConditionValue<string | Gradient>(encoding.stroke || encoding.color),
-          markDef.stroke,
-          filled ? markDef.color : undefined
-        );
-        if (stroke) {
-          out.stroke = {value: stroke} as ColorValueRef;
-        }
+    } else if (hasProperty(out.stroke, 'field') || symbolStrokeColor) {
+      // For others, remove stroke field
+      delete out.stroke;
+    } else if (isArray(out.stroke)) {
+      const stroke = getFirstDefined<string | Gradient | SignalRef>(
+        getFirstConditionValue<string | Gradient>(encoding.stroke || encoding.color),
+        markDef.stroke,
+        filled ? markDef.color : undefined
+      );
+      if (stroke) {
+        out.stroke = {value: stroke} as ColorValueRef;
       }
     }
   }

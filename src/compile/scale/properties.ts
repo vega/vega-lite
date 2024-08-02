@@ -87,7 +87,7 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
     }
     if (supportedByScaleType && channelIncompatability === undefined) {
       if (specifiedValue !== undefined) {
-        const timeUnit = fieldOrDatumDef['timeUnit'];
+        const timeUnit = (fieldOrDatumDef as any).timeUnit;
         const type = fieldOrDatumDef.type;
 
         switch (property) {
@@ -107,26 +107,25 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
             );
         }
       } else {
-        const value =
-          property in scaleRules
-            ? scaleRules[property]({
-                model,
-                channel,
-                fieldOrDatumDef,
-                scaleType,
-                scalePadding,
-                scalePaddingInner,
-                domain: specifiedScale.domain,
-                domainMin: specifiedScale.domainMin,
-                domainMax: specifiedScale.domainMax,
-                markDef,
-                config,
-                hasNestedOffsetScale: channelHasNestedOffsetScale(encoding, channel),
-                hasSecondaryRangeChannel: !!encoding[getSecondaryRangeChannel(channel)]
-              })
-            : config.scale[property];
+        const value = util.hasProperty(scaleRules, property)
+          ? scaleRules[property]({
+              model,
+              channel,
+              fieldOrDatumDef,
+              scaleType,
+              scalePadding,
+              scalePaddingInner,
+              domain: specifiedScale.domain,
+              domainMin: specifiedScale.domainMin,
+              domainMax: specifiedScale.domainMax,
+              markDef,
+              config,
+              hasNestedOffsetScale: channelHasNestedOffsetScale(encoding, channel),
+              hasSecondaryRangeChannel: !!encoding[getSecondaryRangeChannel(channel)]
+            })
+          : config.scale[property];
         if (value !== undefined) {
-          localScaleCmpt.set(property, value, false);
+          localScaleCmpt.set(property, value as any, false);
         }
       }
     }

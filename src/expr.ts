@@ -1,5 +1,5 @@
 import {signalRefOrValue} from './compile/common';
-import {Dict, keys} from './util';
+import {Dict, hasProperty, keys} from './util';
 import {MappedExclude} from './vega.schema';
 
 export interface ExprRef {
@@ -10,7 +10,7 @@ export interface ExprRef {
 }
 
 export function isExprRef(o: any): o is ExprRef {
-  return !!o?.expr;
+  return hasProperty(o, 'expr');
 }
 
 export function replaceExprRef<T extends Dict<any>>(index: T, {level}: {level: number} = {level: 0}) {

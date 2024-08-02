@@ -268,7 +268,7 @@ describe('normalizeErrorBar with raw data input', () => {
 
     assertIsUnitSpec(outputSpec);
 
-    expect(outputSpec.encoding.y['title']).toBe('population');
+    expect((outputSpec.encoding.y as any).title).toBe('population');
   });
 
   it("should not overwrite transform with errorbar's transfroms", () => {
@@ -395,11 +395,11 @@ describe('normalizeErrorBar with raw data input', () => {
 
     assertIsLayerSpec(outputSpec);
     for (const layer of outputSpec.layer) {
-      if (layer['mark']) {
-        if (layer['mark']['type'] === 'tick') {
-          expect(layer['mark']['size']).toBe(size);
+      if ((layer as any).mark) {
+        if ((layer as any).mark.type === 'tick') {
+          expect((layer as any).mark.size).toBe(size);
         } else {
-          expect(layer['mark']['size']).toBeFalsy();
+          expect((layer as any).mark.size).toBeFalsy();
         }
       }
     }
@@ -419,11 +419,11 @@ describe('normalizeErrorBar with raw data input', () => {
 
     assertIsLayerSpec(outputSpec);
     for (const layer of outputSpec.layer) {
-      if (layer['mark']) {
-        if (layer['mark']['type'] === 'tick') {
-          expect(layer['mark']['size']).toBe(tickSize);
+      if ((layer as any).mark) {
+        if ((layer as any).mark.type === 'tick') {
+          expect((layer as any).mark.size).toBe(tickSize);
         } else {
-          expect(layer['mark']['size']).toBeFalsy();
+          expect((layer as any).mark.size).toBeFalsy();
         }
       }
     }
@@ -442,11 +442,11 @@ describe('normalizeErrorBar with raw data input', () => {
 
     assertIsLayerSpec(outputSpec);
     for (const layer of outputSpec.layer) {
-      if (layer['mark']) {
-        if (layer['mark']['type'] === 'tick') {
-          expect(layer['mark']['thickness']).toBe(thickness);
+      if ((layer as any).mark) {
+        if ((layer as any).mark.type === 'tick') {
+          expect((layer as any).mark.thickness).toBe(thickness);
         } else {
-          expect(layer['mark']['size']).toBe(thickness);
+          expect((layer as any).mark.size).toBe(thickness);
         }
       }
     }
@@ -473,11 +473,11 @@ describe('normalizeErrorBar with raw data input', () => {
 
     assertIsLayerSpec(outputSpec);
     for (const layer of outputSpec.layer) {
-      if (layer['mark']) {
-        if (layer['mark']['type'] === 'tick') {
-          expect(layer['mark']['thickness']).toBe(tickThickness);
+      if ((layer as any).mark) {
+        if ((layer as any).mark.type === 'tick') {
+          expect((layer as any).mark.thickness).toBe(tickThickness);
         } else {
-          expect(layer['mark']['size']).toBe(ruleSize);
+          expect((layer as any).mark.size).toBe(ruleSize);
         }
       }
     }
@@ -690,8 +690,8 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
 
     const encoding = outputSpec.encoding;
 
-    expect(encoding.x['field']).toBe('lower_people');
-    expect(encoding.x2['field']).toBe('upper_people');
+    expect((encoding.x as any).field).toBe('lower_people');
+    expect((encoding.x2 as any).field).toBe('upper_people');
   });
 
   it(
@@ -860,8 +860,8 @@ describe('normalizeErrorBar with aggregated error input', () => {
 
     const encoding = outputSpec.encoding;
 
-    expect(encoding.x['field']).toBe('lower_people');
-    expect(encoding.x2['field']).toBe('upper_people');
+    expect((encoding.x as any).field).toBe('lower_people');
+    expect((encoding.x2 as any).field).toBe('upper_people');
   });
 
   it('should produce correct layered specs for horizontal errorbar with 2 aggregated error input', () => {

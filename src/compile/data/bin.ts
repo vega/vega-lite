@@ -17,7 +17,7 @@ function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, ch
     // read format from axis or legend, if there is no format then use config.numberFormat
 
     const guide = isUnitModel(model)
-      ? model.axis(channel as PositionChannel) ?? model.legend(channel as NonPositionScaleChannel) ?? {}
+      ? (model.axis(channel as PositionChannel) ?? model.legend(channel as NonPositionScaleChannel) ?? {})
       : {};
 
     const startField = vgField(fieldDef, {expr: 'datum'});

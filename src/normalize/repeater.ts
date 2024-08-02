@@ -1,4 +1,4 @@
-import {hasOwnProperty, isArray} from 'vega-util';
+import {isArray} from 'vega-util';
 import {
   ChannelDef,
   DatumDef,
@@ -18,6 +18,7 @@ import {Encoding} from '../encoding';
 import * as log from '../log';
 import {isSortField} from '../sort';
 import {FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
+import {hasProperty} from '../util';
 
 export interface RepeaterValue {
   row?: string;
@@ -140,18 +141,18 @@ function replaceRepeaterInMapping(
 ): EncodingOrFacet<FieldName> {
   const out: EncodingOrFacet<FieldName> = {};
   for (const channel in mapping) {
-    if (hasOwnProperty(mapping, channel)) {
+    if (hasProperty(mapping, channel)) {
       const channelDef: ChannelDef<Field> | ChannelDef<Field>[] = mapping[channel];
 
       if (isArray(channelDef)) {
         // array cannot have condition
-        out[channel] = (channelDef as ChannelDef<Field>[]) // somehow we need to cast it here
+        (out as any)[channel] = (channelDef as ChannelDef<Field>[]) // somehow we need to cast it here
           .map(cd => replaceRepeaterInChannelDef(cd, repeater))
           .filter(cd => cd);
       } else {
         const cd = replaceRepeaterInChannelDef(channelDef, repeater);
         if (cd !== undefined) {
-          out[channel] = cd;
+          (out as any)[channel] = cd;
         }
       }
     }

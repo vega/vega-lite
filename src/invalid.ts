@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import type {SignalRef} from 'vega';
 import {ScaleChannel} from './channel';
 import {Mark, MarkDef} from './mark';
 import {isObject} from 'vega-util';

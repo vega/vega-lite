@@ -1,4 +1,4 @@
-import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig} from 'vega-util';
+import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig, isObject} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical';
 
 export const duplicate = structuredClone;
@@ -41,7 +41,7 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: readonl
 /**
  * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
-Set.prototype['toJSON'] = function () {
+(Set.prototype as any)['toJSON'] = function () {
   return `Set(${[...this].map(x => stringify(x)).join(',')})`;
 };
 
@@ -134,7 +134,7 @@ export function unique<T>(values: readonly T[], f: (item: T) => string | number)
     if (v in u) {
       continue;
     }
-    u[v] = 1;
+    (u as any)[v] = 1;
     results.push(val);
   }
   return results;
@@ -213,9 +213,11 @@ export function isEmpty(obj: object) {
 // This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
 export const keys = Object.keys as <T>(o: T) => Extract<keyof T, string>[];
 
-export const vals = Object.values;
+// Stricter version from https://github.com/microsoft/TypeScript/issues/51572#issuecomment-1319153323
+export const vals = Object.values as <T>(obj: T) => Array<T[keyof T]>;
 
-export const entries = Object.entries;
+// Stricter version from https://github.com/microsoft/TypeScript/issues/51572#issuecomment-1319153323
+export const entries = Object.entries as <T>(obj: T) => Array<[keyof T, T[keyof T]]>;
 
 // Using mapped type to declare a collect of flags for a string literal type S
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types
@@ -336,12 +338,7 @@ export function accessPathDepth(path: string) {
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
 export function getFirstDefined<T>(...args: readonly T[]): T | undefined {
-  for (const arg of args) {
-    if (arg !== undefined) {
-      return arg;
-    }
-  }
-  return undefined;
+  return args.find(a => a !== undefined);
 }
 
 // variable used to generate id
@@ -407,7 +404,7 @@ export function deepEqual(a: any, b: any) {
     if (a.constructor.name !== b.constructor.name) return false;
 
     let length;
-    let i;
+    let i: number;
 
     if (Array.isArray(a)) {
       length = a.length;
@@ -418,21 +415,21 @@ export function deepEqual(a: any, b: any) {
 
     if (a instanceof Map && b instanceof Map) {
       if (a.size !== b.size) return false;
-      for (i of a.entries()) if (!b.has(i[0])) return false;
-      for (i of a.entries()) if (!deepEqual(i[1], b.get(i[0]))) return false;
+      for (const e of a.entries()) if (!b.has(e[0])) return false;
+      for (const e of a.entries()) if (!deepEqual(e[1], b.get(e[0]))) return false;
       return true;
     }
 
     if (a instanceof Set && b instanceof Set) {
       if (a.size !== b.size) return false;
-      for (i of a.entries()) if (!b.has(i[0])) return false;
+      for (const e of a.entries()) if (!b.has(e[0])) return false;
       return true;
     }
 
     if (ArrayBuffer.isView(a) && ArrayBuffer.isView(b)) {
       length = (a as any).length;
       if (length != (b as any).length) return false;
-      for (i = length; i-- !== 0; ) if (a[i] !== b[i]) return false;
+      for (i = length; i-- !== 0; ) if ((a as any)[i] !== (b as any)[i]) return false;
       return true;
     }
 
@@ -508,4 +505,15 @@ export function stringify(data: any) {
     seen.splice(seenIndex, 1);
     return `{${out}}`;
   })(data);
+}
+
+/**
+ * Check if the input object has the property and it's not undefined.
+ *
+ * @param object the object
+ * @param property the property to search
+ * @returns if the object has the property and it's not undefined.
+ */
+export function hasProperty<T>(obj: T, key: string | number | symbol): key is keyof T {
+  return isObject(obj) && hasOwnProperty(obj, key) && (obj as any)[key] !== undefined;
 }
