@@ -70,6 +70,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vega-Lite-Linter](https://github.com/idvxlab/vega-lite-linter) is a python package to help users detect and fix encoding issues.
 - [VegaLite](https://github.com/JoshDavid/VegaLite) is a library for [Dyalog APL](https://www.dyalog.com) to build and render Vega-Lite specifications from your data.
 - [React Spectrum Charts](https://github.com/adobe/react-spectrum-charts) are declarative visualization components from Adobe using Vega and Vega-Lite.
+- [vega-view](https://github.com/cuprous-au/vega-view) displays [nushell](https://www.nushell.sh/) tables using Vega-Lite in a webview. vega-view operates from the command line and pops open a window for the visualisation. 
 
 ## Programming / Data Science Environment that supports Vega-Lite
 
