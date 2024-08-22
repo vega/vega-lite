@@ -34,7 +34,7 @@
           },
           "xc": {"scale": "x", "field": "Horsepower"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 15},
+          "height": {"signal": "(1 - 0.25) * height"},
           "width": {"value": 1}
         }
       }
