@@ -206,4 +206,32 @@ describe('Mark: Tick', () => {
       expect(props.height).toEqual({field: 'Acceleration', scale: SIZE});
     });
   });
+
+  describe('vertical ticks without Y', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'tick',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'}
+      },
+      data: {url: 'data/cars.json'}
+    });
+    const props = tick.encodeEntry(model);
+    it('sets mark height to (1-tickBandPaddingInner) * plot_height', () => {
+      expect(props.height).toEqual({signal: '(1 - 0.25) * height'});
+    });
+  });
+
+  describe('horizontal ticks without X', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'tick',
+      encoding: {
+        y: {field: 'Horsepower', type: 'quantitative'}
+      },
+      data: {url: 'data/cars.json'}
+    });
+    const props = tick.encodeEntry(model);
+    it('sets mark width to (1-tickBandPaddingInner) * plot_width', () => {
+      expect(props.width).toEqual({signal: '(1 - 0.25) * width'});
+    });
+  });
 });

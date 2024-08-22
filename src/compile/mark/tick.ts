@@ -1,5 +1,4 @@
 import {isNumber} from 'vega-util';
-import {getViewConfigDiscreteStep} from '../../config';
 import {isVgRangeStep, VgValueRef} from '../../vega.schema';
 import {exprFromSignalRefOrValue, getMarkPropOrConfig, signalOrValueRef} from '../common';
 import {UnitModel} from '../unit';
@@ -51,7 +50,6 @@ function defaultSize(model: UnitModel): VgValueRef {
 
   // Use offset scale if exists
   const scale = model.getScaleComponent(offsetScaleChannel) || model.getScaleComponent(positionChannel);
-  const scaleName = model.scaleName(offsetScaleChannel) || model.scaleName(positionChannel);
 
   const markPropOrConfig =
     getMarkPropOrConfig('size', markDef, config, {vgChannel: vgSizeChannel}) ?? config.tick.bandSize;
@@ -59,18 +57,18 @@ function defaultSize(model: UnitModel): VgValueRef {
   if (markPropOrConfig !== undefined) {
     return signalOrValueRef(markPropOrConfig);
   } else if (scale?.get('type') === 'band') {
+    const scaleName = model.scaleName(offsetScaleChannel) || model.scaleName(positionChannel);
     return {scale: scaleName, band: 1};
   }
 
   const scaleRange = scale?.get('range');
   const {tickBandPaddingInner} = config.scale;
 
-  const step =
-    scaleRange && isVgRangeStep(scaleRange) ? scaleRange.step : getViewConfigDiscreteStep(config.view, vgSizeChannel);
+  const step = scaleRange && isVgRangeStep(scaleRange) ? scaleRange.step : model[vgSizeChannel];
 
   if (isNumber(step) && isNumber(tickBandPaddingInner)) {
     return {value: step * (1 - tickBandPaddingInner)};
   } else {
-    return {signal: `${exprFromSignalRefOrValue(tickBandPaddingInner)} * ${exprFromSignalRefOrValue(step)}`};
+    return {signal: `(1 - ${exprFromSignalRefOrValue(tickBandPaddingInner)}) * ${exprFromSignalRefOrValue(step)}`};
   }
 }
