@@ -111,7 +111,7 @@ describe('Mark: Tick', () => {
     });
 
     it('should scale on y', () => {
-      expect(props.yc).toEqual({scale: Y, field: 'Cylinders', band: 0.5});
+      expect(props.y).toEqual({scale: Y, field: 'Cylinders'});
     });
 
     it('width should be tick thickness with default orient vertical', () => {
@@ -119,7 +119,7 @@ describe('Mark: Tick', () => {
     });
 
     it('height should be matched to field with default orient vertical', () => {
-      expect(props.height).toEqual({scale: 'y', band: 1});
+      expect(props.height).toEqual({signal: "max(0.25, bandwidth('y'))"});
     });
   });
   describe('with quantitative x and ordinal y with yOffset', () => {
@@ -139,11 +139,10 @@ describe('Mark: Tick', () => {
     });
 
     it('should scale on y', () => {
-      expect(props.yc).toEqual({
+      expect(props.y).toEqual({
         scale: Y,
         field: 'Cylinders',
         offset: {
-          band: 0.5,
           field: 'Acceleration',
           scale: 'yOffset'
         }
@@ -155,7 +154,7 @@ describe('Mark: Tick', () => {
     });
 
     it('height should be matched to field with default orient vertical', () => {
-      expect(props.height).toEqual({scale: 'yOffset', band: 1});
+      expect(props.height).toEqual({signal: "max(0.25, bandwidth('yOffset'))"});
     });
   });
 
@@ -217,7 +216,7 @@ describe('Mark: Tick', () => {
     });
     const props = tick.encodeEntry(model);
     it('sets mark height to (1-tickBandPaddingInner) * plot_height', () => {
-      expect(props.height).toEqual({signal: '(1 - 0.25) * height'});
+      expect(props.height).toEqual({signal: '0.75 * height'});
     });
   });
 
@@ -231,7 +230,7 @@ describe('Mark: Tick', () => {
     });
     const props = tick.encodeEntry(model);
     it('sets mark width to (1-tickBandPaddingInner) * plot_width', () => {
-      expect(props.width).toEqual({signal: '(1 - 0.25) * width'});
+      expect(props.width).toEqual({signal: '0.75 * width'});
     });
   });
 });
