@@ -43,7 +43,7 @@
           },
           "xc": {"signal": "width", "mult": 0.5},
           "yc": {"scale": "y", "field": "mean_data"},
-          "width": {"value": 15},
+          "width": {"signal": "(1 - 0.25) * width"},
           "height": {"value": 1}
         }
       }

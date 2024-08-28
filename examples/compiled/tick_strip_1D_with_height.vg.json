@@ -3,7 +3,7 @@
   "background": "white",
   "padding": 5,
   "width": 200,
-  "height": 20,
+  "height": 200,
   "style": "cell",
   "data": [
     {
@@ -46,7 +46,6 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
-      "reverse": true,
       "nice": true,
       "zero": true
     }

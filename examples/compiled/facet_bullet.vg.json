@@ -439,7 +439,7 @@
               },
               "xc": {"scale": "child_x", "field": "markers\\.0"},
               "yc": {"signal": "child_height", "mult": 0.5},
-              "height": {"value": 15},
+              "height": {"signal": "(1 - 0.25) * child_height"},
               "width": {"value": 2}
             }
           }

@@ -213,7 +213,7 @@
           },
           "xc": {"scale": "x", "field": "lower_whisker_Body Mass (g)"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 15},
+          "height": {"signal": "(1 - 0.25) * height"},
           "width": {"value": 1}
         }
       }
@@ -233,7 +233,7 @@
           },
           "xc": {"scale": "x", "field": "upper_whisker_Body Mass (g)"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"value": 15},
+          "height": {"signal": "(1 - 0.25) * height"},
           "width": {"value": 1}
         }
       }
