@@ -1,5 +1,18 @@
 
 
+# [5.21.0](https://github.com/vega/vega-lite/compare/v5.20.1...v5.21.0) (2024-08-28)
+
+
+### Bug Fixes
+
+* **#7724,#9414:** Make ticks respect bin/timeUnit bands and custom band ([#9415](https://github.com/vega/vega-lite/issues/9415)) ([088094e](https://github.com/vega/vega-lite/commit/088094ee4401ca2c888a44057789093a2cd7f3df)), closes [#7724](https://github.com/vega/vega-lite/issues/7724) [#9414](https://github.com/vega/vega-lite/issues/9414)
+* make 1D tick mark responsive to width/height ([#9411](https://github.com/vega/vega-lite/issues/9411)) ([c0c7b6b](https://github.com/vega/vega-lite/commit/c0c7b6b4ef126e138b48990366b24ae7d713dafe))
+
+
+### Features
+
+* update code to not need implicit any, add hasProperty util ([#9394](https://github.com/vega/vega-lite/issues/9394)) ([6ce344e](https://github.com/vega/vega-lite/commit/6ce344e3d3e92023ca991267565e39e195241485))
+
 ## [5.20.1](https://github.com/vega/vega-lite/compare/v5.20.0...v5.20.1) (2024-07-31)
 
 
