@@ -1,10 +1,7 @@
-import {isNumber} from 'vega-util';
-import {isVgRangeStep, VgValueRef} from '../../vega.schema';
-import {exprFromSignalRefOrValue, getMarkPropOrConfig, signalOrValueRef} from '../common';
+import {getMarkPropOrConfig, signalOrValueRef} from '../common';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as encode from './encode';
-import {getOffsetScaleChannel} from '../../channel';
 
 export const tick: MarkCompiler = {
   vgMark: 'rect',
@@ -13,7 +10,8 @@ export const tick: MarkCompiler = {
     const {config, markDef} = model;
     const orient = markDef.orient;
 
-    const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
+    const vgSizeAxisChannel = orient === 'horizontal' ? 'x' : 'y';
+    const vgThicknessAxisChannel = orient === 'horizontal' ? 'y' : 'x';
     const vgThicknessChannel = orient === 'horizontal' ? 'height' : 'width';
 
     return {
@@ -26,49 +24,12 @@ export const tick: MarkCompiler = {
         theta: 'ignore'
       }),
 
-      ...encode.pointPosition('x', model, {defaultPos: 'mid', vgChannel: 'xc'}),
-      ...encode.pointPosition('y', model, {defaultPos: 'mid', vgChannel: 'yc'}),
-
-      // size / thickness => width / height
-      ...encode.nonPosition('size', model, {
-        defaultRef: defaultSize(model),
-        vgChannel: vgSizeChannel
+      ...encode.rectPosition(model, vgSizeAxisChannel),
+      ...encode.pointPosition(vgThicknessAxisChannel, model, {
+        defaultPos: 'mid',
+        vgChannel: vgThicknessAxisChannel === 'y' ? 'yc' : 'xc'
       }),
       [vgThicknessChannel]: signalOrValueRef(getMarkPropOrConfig('thickness', markDef, config))
     };
   }
 };
-
-function defaultSize(model: UnitModel): VgValueRef {
-  const {config, markDef} = model;
-  const {orient} = markDef;
-
-  const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
-  const positionChannel = orient === 'horizontal' ? 'x' : 'y';
-
-  const offsetScaleChannel = getOffsetScaleChannel(positionChannel);
-
-  // Use offset scale if exists
-  const scale = model.getScaleComponent(offsetScaleChannel) || model.getScaleComponent(positionChannel);
-
-  const markPropOrConfig =
-    getMarkPropOrConfig('size', markDef, config, {vgChannel: vgSizeChannel}) ?? config.tick.bandSize;
-
-  if (markPropOrConfig !== undefined) {
-    return signalOrValueRef(markPropOrConfig);
-  } else if (scale?.get('type') === 'band') {
-    const scaleName = model.scaleName(offsetScaleChannel) || model.scaleName(positionChannel);
-    return {scale: scaleName, band: 1};
-  }
-
-  const scaleRange = scale?.get('range');
-  const {tickBandPaddingInner} = config.scale;
-
-  const step = scaleRange && isVgRangeStep(scaleRange) ? scaleRange.step : model[vgSizeChannel];
-
-  if (isNumber(step) && isNumber(tickBandPaddingInner)) {
-    return {value: step * (1 - tickBandPaddingInner)};
-  } else {
-    return {signal: `(1 - ${exprFromSignalRefOrValue(tickBandPaddingInner)}) * ${exprFromSignalRefOrValue(step)}`};
-  }
-}

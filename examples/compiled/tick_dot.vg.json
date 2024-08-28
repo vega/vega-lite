@@ -32,9 +32,9 @@
           "description": {
             "signal": "\"precipitation: \" + (format(datum[\"precipitation\"], \"\"))"
           },
-          "xc": {"scale": "x", "field": "precipitation"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"signal": "(1 - 0.25) * height"},
+          "height": {"signal": "0.75 * height"},
+          "xc": {"scale": "x", "field": "precipitation"},
           "width": {"value": 1}
         }
       }

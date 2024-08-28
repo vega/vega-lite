@@ -228,9 +228,9 @@
             {"value": "white"}
           ],
           "tooltip": {"signal": "format(datum[\"mean_Body Mass (g)\"], \"\")"},
-          "xc": {"scale": "x", "field": "mid_box_Body Mass (g)"},
           "yc": {"scale": "y", "field": "Species", "band": 0.5},
           "height": {"value": 14},
+          "xc": {"scale": "x", "field": "mid_box_Body Mass (g)"},
           "width": {"value": 1}
         }
       }

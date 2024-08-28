@@ -55,8 +55,8 @@ export function isPathMark(m: Mark | CompositeMark): m is PathMark {
   return ['line', 'area', 'trail'].includes(m);
 }
 
-export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' | 'arc' {
-  return ['rect', 'bar', 'image', 'arc' /* arc is rect/interval in polar coordinate */].includes(m);
+export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' | 'arc' | 'tick' {
+  return ['rect', 'bar', 'image', 'arc', 'tick' /* arc is rect/interval in polar coordinate */].includes(m);
 }
 
 export const PRIMITIVE_MARKS = new Set(keys(Mark));
@@ -327,14 +327,21 @@ const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig<any>> = {
 
 export const VL_ONLY_MARK_CONFIG_PROPERTIES = keys(VL_ONLY_MARK_CONFIG_INDEX);
 
+const VL_ONLY_RECT_CONFIG: (keyof RectConfig<any>)[] = [
+  'binSpacing',
+  'continuousBandSize',
+  'discreteBandSize',
+  'minBandSize'
+];
+
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in Mark]?: (keyof Required<MarkConfigMixins<any>>[k])[];
 } = {
   area: ['line', 'point'],
-  bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
-  rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
+  bar: VL_ONLY_RECT_CONFIG,
+  rect: VL_ONLY_RECT_CONFIG,
   line: ['point'],
-  tick: ['bandSize', 'thickness']
+  tick: ['bandSize', 'thickness', ...VL_ONLY_RECT_CONFIG]
 };
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
@@ -647,13 +654,6 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
 
 const DEFAULT_RECT_BAND_SIZE = 5;
 
-export const defaultBarConfig: RectConfig<SignalRef> = {
-  binSpacing: 1,
-  continuousBandSize: DEFAULT_RECT_BAND_SIZE,
-  minBandSize: 0.25,
-  timeUnitBandPosition: 0.5
-};
-
 export const defaultRectConfig: RectConfig<SignalRef> = {
   binSpacing: 0,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
@@ -661,7 +661,15 @@ export const defaultRectConfig: RectConfig<SignalRef> = {
   timeUnitBandPosition: 0.5
 };
 
-export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, TickThicknessMixins {
+export const defaultBarConfig: RectConfig<SignalRef> = {
+  ...defaultRectConfig,
+  binSpacing: 1
+};
+
+export interface TickConfig<ES extends ExprRef | SignalRef>
+  extends MarkConfig<ES>,
+    TickThicknessMixins,
+    RectConfig<ES> {
   /**
    * The width of the ticks.
    *
@@ -672,6 +680,7 @@ export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<E
 }
 
 export const defaultTickConfig: TickConfig<SignalRef> = {
+  ...defaultRectConfig,
   thickness: 1
 };
 

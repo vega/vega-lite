@@ -216,8 +216,8 @@
             "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
           "xc": {"scale": "x", "field": "a", "band": 0.5},
-          "yc": {"scale": "y", "field": "mid_box_b"},
           "width": {"value": 14},
+          "yc": {"scale": "y", "field": "mid_box_b"},
           "height": {"value": 1}
         }
       }

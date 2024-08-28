@@ -152,8 +152,8 @@
             "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
           },
           "xc": {"scale": "x", "field": "key", "band": 0.5},
-          "yc": {"value": 0},
           "width": {"value": 8},
+          "yc": {"value": 0},
           "height": {"value": 1}
         }
       }
@@ -189,8 +189,8 @@
             "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
           },
           "xc": {"scale": "x", "field": "key", "band": 0.5},
-          "yc": {"value": 150},
           "width": {"value": 8},
+          "yc": {"value": 150},
           "height": {"value": 1}
         }
       }
@@ -226,8 +226,8 @@
             "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
           },
           "xc": {"scale": "x", "field": "key", "band": 0.5},
-          "yc": {"value": 300},
           "width": {"value": 8},
+          "yc": {"value": 300},
           "height": {"value": 1}
         }
       }

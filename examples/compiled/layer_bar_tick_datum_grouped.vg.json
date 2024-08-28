@@ -72,13 +72,13 @@
           "description": {
             "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
-          "xc": {
+          "x": {
             "scale": "x",
             "field": "Cylinders",
-            "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
+            "offset": {"scale": "xOffset", "field": "Origin"}
           },
+          "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "yc": {"scale": "y", "value": 10},
-          "width": {"scale": "xOffset", "band": 1},
           "height": {"value": 1}
         }
       }

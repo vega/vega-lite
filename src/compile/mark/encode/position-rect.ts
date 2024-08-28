@@ -52,7 +52,9 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
 
   const offsetScaleChannel = getOffsetChannel(channel);
 
-  const isBarBand = mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal');
+  const isBarOrTickBand =
+    (mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal')) ||
+    (mark === 'tick' && (channel === 'y' ? orient === 'vertical' : orient === 'horizontal'));
 
   // x, x2, and width -- we must specify two of these in all conditions
   if (
@@ -68,7 +70,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
       channel,
       model
     });
-  } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !channelDef2) {
+  } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarOrTickBand) && !channelDef2) {
     return positionAndSize(channelDef, channel, model);
   } else {
     return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
@@ -118,8 +120,11 @@ function defaultSizeRef(
     }
   }
   if (!hasFieldDef) {
-    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner} = config.scale;
-    const padding = getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner); // this part is like paddingInner in scale.ts
+    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner, tickBandPaddingInner} = config.scale;
+    const padding = getFirstDefined(
+      bandPaddingInner,
+      mark === 'tick' ? tickBandPaddingInner : mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner
+    ); // this part is like paddingInner in scale.ts
     if (isSignalRef(padding)) {
       return {signal: `(1 - (${padding.signal})) * ${sizeChannel}`};
     } else if (isNumber(padding)) {
@@ -150,8 +155,12 @@ function positionAndSize(
   const offsetScaleName = model.scaleName(offsetScaleChannel);
   const offsetScale = model.getScaleComponent(getOffsetScaleChannel(channel));
 
-  // use "size" channel for bars, if there is orient and the channel matches the right orientation
-  const useVlSizeChannel = (orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x');
+  const useVlSizeChannel =
+    // Always uses size channel for ticks, because tick only calls rectPosition() for the size channel
+    markDef.type === 'tick' ||
+    // use "size" channel for bars, if there is orient and the channel matches the right orientation
+    (orient === 'horizontal' && channel === 'y') ||
+    (orient === 'vertical' && channel === 'x');
 
   // Use size encoding / mark property / config if it exists
   let sizeMixins;

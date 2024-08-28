@@ -256,8 +256,8 @@
             "field": "Cylinders",
             "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
           },
-          "yc": {"scale": "y", "field": "mid_box_Acceleration"},
           "width": {"value": 14},
+          "yc": {"scale": "y", "field": "mid_box_Acceleration"},
           "height": {"value": 1}
         }
       }

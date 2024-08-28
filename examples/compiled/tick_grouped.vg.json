@@ -54,13 +54,13 @@
           "description": {
             "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
           },
-          "xc": {
+          "x": {
             "scale": "x",
             "field": "category",
-            "offset": {"scale": "xOffset", "field": "group", "band": 0.5}
+            "offset": {"scale": "xOffset", "field": "group"}
           },
+          "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "yc": {"scale": "y", "field": "value"},
-          "width": {"scale": "xOffset", "band": 1},
           "height": {"value": 1}
         }
       }
