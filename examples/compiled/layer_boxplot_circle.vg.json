@@ -197,9 +197,9 @@
           "tooltip": {
             "signal": "{\"Max of population\": format(datum[\"max_people\"], \"\"), \"Q3 of population\": format(datum[\"upper_box_people\"], \"\"), \"Median of population\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of population\": format(datum[\"lower_box_people\"], \"\"), \"Min of population\": format(datum[\"min_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "xc": {"scale": "x", "field": "mid_box_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
           "height": {"value": 14},
+          "xc": {"scale": "x", "field": "mid_box_people"},
           "width": {"value": 1}
         }
       }

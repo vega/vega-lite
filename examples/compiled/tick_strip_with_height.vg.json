@@ -33,9 +33,9 @@
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
           },
+          "y": {"scale": "y", "field": "Cylinders"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"},
           "xc": {"scale": "x", "field": "Horsepower"},
-          "yc": {"scale": "y", "field": "Cylinders", "band": 0.5},
-          "height": {"scale": "y", "band": 1},
           "width": {"value": 1}
         }
       }

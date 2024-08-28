@@ -272,9 +272,9 @@
           "description": {
             "signal": "\"markers[0]: \" + (format(datum[\"markers.0\"], \"\"))"
           },
-          "xc": {"scale": "x", "field": "markers\\.0"},
           "yc": {"signal": "height", "mult": 0.5},
           "height": {"signal": "height"},
+          "xc": {"scale": "x", "field": "markers\\.0"},
           "width": {"value": 2}
         }
       }

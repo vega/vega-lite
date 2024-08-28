@@ -21,7 +21,7 @@
         },
         {
           "type": "aggregate",
-          "groupby": ["year_date"],
+          "groupby": ["year_date", "year_date_end"],
           "ops": ["sum"],
           "fields": ["price"],
           "as": ["sum_price"]
@@ -46,9 +46,21 @@
           "description": {
             "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of price: \" + (format(datum[\"sum_price\"], \"\"))"
           },
-          "xc": {"scale": "x", "field": "year_date"},
+          "x2": {
+            "scale": "x",
+            "field": "year_date",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"year_date_end\"]) - scale(\"x\", datum[\"year_date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"year_date_end\"]) - scale(\"x\", datum[\"year_date\"])))) : 0)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "year_date_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"year_date_end\"]) - scale(\"x\", datum[\"year_date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"year_date_end\"]) - scale(\"x\", datum[\"year_date\"])))) : 0)"
+            }
+          },
           "yc": {"scale": "y", "field": "sum_price"},
-          "width": {"signal": "(1 - 0.25) * width"},
           "height": {"value": 1}
         }
       }
@@ -58,7 +70,7 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "year_date"},
+      "domain": {"data": "source_0", "fields": ["year_date", "year_date_end"]},
       "range": [0, {"signal": "width"}]
     },
     {

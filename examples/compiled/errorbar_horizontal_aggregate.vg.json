@@ -86,9 +86,9 @@
           "description": {
             "signal": "\"population: \" + (format(datum[\"min_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
           },
-          "xc": {"scale": "x", "field": "min_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
           "height": {"value": 5},
+          "xc": {"scale": "x", "field": "min_people"},
           "width": {"value": 1}
         }
       }
@@ -105,9 +105,9 @@
           "description": {
             "signal": "\"population: \" + (format(datum[\"max_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
           },
-          "xc": {"scale": "x", "field": "max_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
           "height": {"value": 5},
+          "xc": {"scale": "x", "field": "max_people"},
           "width": {"value": 1}
         }
       }

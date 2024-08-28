@@ -290,9 +290,9 @@
           "description": {
             "signal": "\"median: \" + (format(datum[\"median\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
           },
+          "y": {"scale": "y", "field": "name"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"},
           "xc": {"scale": "x", "field": "median"},
-          "yc": {"scale": "y", "field": "name", "band": 0.5},
-          "height": {"scale": "y", "band": 1},
           "width": {"value": 1}
         }
       }

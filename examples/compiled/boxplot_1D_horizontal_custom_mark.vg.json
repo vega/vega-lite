@@ -211,9 +211,9 @@
           "tooltip": {
             "signal": "{\"Upper Whisker of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Lower Whisker of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\")}"
           },
-          "xc": {"scale": "x", "field": "lower_whisker_Body Mass (g)"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"signal": "(1 - 0.25) * height"},
+          "height": {"signal": "0.75 * height"},
+          "xc": {"scale": "x", "field": "lower_whisker_Body Mass (g)"},
           "width": {"value": 1}
         }
       }
@@ -231,9 +231,9 @@
           "tooltip": {
             "signal": "{\"Upper Whisker of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Lower Whisker of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\")}"
           },
-          "xc": {"scale": "x", "field": "upper_whisker_Body Mass (g)"},
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"signal": "(1 - 0.25) * height"},
+          "height": {"signal": "0.75 * height"},
+          "xc": {"scale": "x", "field": "upper_whisker_Body Mass (g)"},
           "width": {"value": 1}
         }
       }
@@ -279,9 +279,9 @@
           "tooltip": {
             "signal": "{\"Max of Body Mass (g)\": format(datum[\"max_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"min_Body Mass (g)\"], \"\")}"
           },
-          "xc": {"scale": "x", "field": "mid_box_Body Mass (g)"},
           "yc": {"signal": "height", "mult": 0.5},
           "height": {"value": 14},
+          "xc": {"scale": "x", "field": "mid_box_Body Mass (g)"},
           "width": {"value": 1}
         }
       }

@@ -131,9 +131,9 @@
           "description": {
             "signal": "\"median: \" + (format(datum[\"median\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
           },
+          "y": {"scale": "y", "field": "Species"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"},
           "xc": {"scale": "x", "field": "median"},
-          "yc": {"scale": "y", "field": "Species", "band": 0.5},
-          "height": {"scale": "y", "band": 1},
           "width": {"value": 1}
         }
       }

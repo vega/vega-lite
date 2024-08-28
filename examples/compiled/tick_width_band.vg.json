@@ -52,9 +52,9 @@
           "description": {
             "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
-          "xc": {"scale": "x", "field": "a", "band": 0.5},
+          "x": {"scale": "x", "field": "a", "band": 0.25},
+          "width": {"signal": "max(0.25, 0.5 * bandwidth('x'))"},
           "yc": {"scale": "y", "field": "b"},
-          "width": {"value": {"band": 0.5}},
           "height": {"value": 1}
         }
       }
