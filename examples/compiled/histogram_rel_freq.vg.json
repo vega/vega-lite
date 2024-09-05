@@ -103,6 +103,7 @@
         "fields": ["bin_Horsepwoer", "bin_Horsepwoer_end"]
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"step": 60},
       "zero": false
     },
     {
