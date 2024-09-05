@@ -18,7 +18,7 @@
     "x": {
       "title": "Horsepower",
       "field": "bin_Horsepwoer",
-      "bin": {"binned": true}
+      "bin": {"binned": true, "step": 60}
     },
     "x2": {"field": "bin_Horsepwoer_end"},
     "y": {
