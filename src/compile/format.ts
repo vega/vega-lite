@@ -179,7 +179,7 @@ export function guideFormat(
   format: string | Dict<unknown>,
   formatType: string | SignalRef,
   config: Config,
-  omitTimeFormatConfig: boolean // axis doesn't use config.timeFormat
+  isAxis: boolean
 ) {
   if (isString(formatType) && isCustomFormatType(formatType)) {
     return undefined; // handled in encode block
@@ -216,7 +216,7 @@ export function guideFormat(
       return undefined; // hanlded in encode block
     }
 
-    return timeFormat({specifiedFormat: format as string, timeUnit, config, omitTimeFormatConfig});
+    return timeFormat({specifiedFormat: format as string, timeUnit, config, isAxis});
   }
 
   return numberFormat({type, specifiedFormat: format, config});
@@ -269,12 +269,12 @@ export function timeFormat({
   specifiedFormat,
   timeUnit,
   config,
-  omitTimeFormatConfig
+  isAxis
 }: {
   specifiedFormat?: string;
   timeUnit?: TimeUnit;
   config: Config;
-  omitTimeFormatConfig?: boolean;
+  isAxis?: boolean;
 }) {
   if (specifiedFormat) {
     return specifiedFormat;
@@ -282,11 +282,12 @@ export function timeFormat({
 
   if (timeUnit) {
     return {
-      signal: timeUnitSpecifierExpression(timeUnit)
+      signal: timeUnitSpecifierExpression(timeUnit, {isAxis})
     };
   }
 
-  return omitTimeFormatConfig ? undefined : config.timeFormat;
+  // axis doesn't use config.timeFormat
+  return isAxis ? undefined : config.timeFormat;
 }
 
 function formatExpr(field: string, format: string) {
