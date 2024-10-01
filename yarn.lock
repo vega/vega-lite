@@ -8030,9 +8030,9 @@ vega-dataflow@^5.7.6, vega-dataflow@~5.7.6:
     vega-util "^1.17.2"
 
 vega-datasets@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.8.1.tgz#a38202efff1bc763c3120954f55a7d1c9758af3f"
-  integrity sha512-RxFyrlIH3xWzHtBDxp2vsFNCxuzNNfAtEvyufFX25UczIORyNi1T336NbM62g67k4KbDkeXzWEZHwr71qQKF8w==
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.9.0.tgz#a0fdf83eb7892a3ffcbfdcecedfd4897f6360d92"
+  integrity sha512-7nMvhXLMtduoaP7T4bJ13EhenhVTPvOqTrJ1DKXy0FRly/iwN7keMKSUwTZrdKYqU2k19r+sgub1LUAVyiip+A==
 
 vega-embed@^6.26.0:
   version "6.26.0"
