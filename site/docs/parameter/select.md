@@ -60,9 +60,9 @@ In the scatterplot example below, highlight <select name="point" onchange="build
 
 <div id="point" class="vl-example" data-name="selection_project_multi"></div>
 
-With interval selections, we can use the projection to restrict the region to just the <label onclick="buildProjection('interval')"><input type="checkbox" name="interval" value="x" />horizontal (`x`)</label> and/or <label onclick="buildProjection('interval')"><input type="checkbox" name="interval" value="y" />vertical (`y`)</label> dimensions.
+With interval selections, we can use the projection to restrict the region to just the <label onclick="buildProjection('interval_vis')"><input type="checkbox" name="interval_vis" value="x" />horizontal (`x`)</label> and/or <label onclick="buildProjection('interval_vis')"><input type="checkbox" name="interval_vis" value="y" />vertical (`y`)</label> dimensions.
 
-<div id="interval" class="vl-example" data-name="selection_project_interval"></div>
+<div id="interval_vis" class="vl-example" data-name="selection_project_interval"></div>
 
 #### Current Limitations
 
