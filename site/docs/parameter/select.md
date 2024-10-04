@@ -56,9 +56,9 @@ A [selection's type](parameter.html#select) determines which data values fall wi
 
 ### Selection Projection with `encodings` and `fields`
 
-In the scatterplot example below, highlight <select name="point" onchange="buildProjection('point')"><option value="multi">multiple</option><option value="single">a single</option></select>: <label onclick="buildProjection('point')"><input type="checkbox" name="point" value="cylinders" />Cylinder(s)</label> <label onclick="buildProjection('point')"><input type="checkbox" name="point" value="origin" />Origin(s)</label>.
+In the scatterplot example below, highlight <select name="point_vis" onchange="buildProjection('point_vis')"><option value="multi">multiple</option><option value="single">a single</option></select>: <label onclick="buildProjection('point_vis')"><input type="checkbox" name="point_vis" value="cylinders" />Cylinder(s)</label> <label onclick="buildProjection('point_vis')"><input type="checkbox" name="point_vis" value="origin" />Origin(s)</label>.
 
-<div id="point" class="vl-example" data-name="selection_project_multi"></div>
+<div id="point_vis" class="vl-example" data-name="selection_project_multi"></div>
 
 With interval selections, we can use the projection to restrict the region to just the <label onclick="buildProjection('interval_vis')"><input type="checkbox" name="interval_vis" value="x" />horizontal (`x`)</label> and/or <label onclick="buildProjection('interval_vis')"><input type="checkbox" name="interval_vis" value="y" />vertical (`y`)</label> dimensions.
 
