@@ -6,6 +6,7 @@ labels: 'Enhancement :tada:'
 
 ## Enhancement Description
 
+<!--
 Describe the feature's goal, motivating use cases, and its expected behavior.
 
 If you are proposing a new syntax, please provide at least one example spec, wrapped by triple backticks like this:
@@ -18,7 +19,10 @@ If you are proposing a new syntax, please provide at least one example spec, wra
 ```
 
 You are encouraged to prototype multiple alternative syntaxes for your proposed feature. Doing so often leads to a better design.
+-->
 
-## Checklist
+<details>
+  <summary><h2>Checklist</h2></summary>
 
 - [ ] I checked for duplicate issues.
+</details>
