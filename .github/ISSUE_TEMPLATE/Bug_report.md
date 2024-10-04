@@ -6,6 +6,7 @@ labels: 'Bug :bug:'
 
 ## Bug Description
 
+<!--
 Describe how to reproduce this bug. Provide an [minimal, reproducible example](https://stackoverflow.com/help/minimal-reproducible-example) spec in JSON, wrapped by triple backticks like this:
 
 ```json
@@ -16,7 +17,10 @@ Describe how to reproduce this bug. Provide an [minimal, reproducible example](h
 ```
 
 If applicable, include error messages and screenshots, videos, or working examples (e.g. by clicking share in the [Vega-Editor](https://vega.github.io/editor/).
+-->
 
-## Checklist
+<details>
+  <summary><h2>Checklist</h2></summary>
 
 - [ ] I checked for duplicate issues.
+</details>
