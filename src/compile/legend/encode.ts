@@ -1,4 +1,4 @@
-import {ColorValueRef, EncodeEntry, Gradient, LegendEncode, LegendType, SignalRef, SymbolEncodeEntry} from 'vega';
+import {ColorValueRef, EncodeEntry, Gradient, LegendEncode, SignalRef, SymbolEncodeEntry} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
 import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel';
 import {
@@ -19,14 +19,14 @@ import {formatCustomType, isCustomFormatType} from '../format';
 import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';
-import {LegendComponent} from './component';
+import {LegendComponent, FullLegendType} from './component';
 
 export interface LegendEncodeParams {
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
   model: UnitModel;
   channel: NonPositionScaleChannel;
   legendCmpt: LegendComponent;
-  legendType: LegendType;
+  legendType: FullLegendType;
 }
 
 export const legendEncodeRules: {

@@ -116,9 +116,18 @@
         {
           "title": "Quantize",
           "fill": "concat_0_color",
+          "type": "symbol",
           "symbolType": "circle",
-          "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
-          "size": "concat_0_size"
+          "size": "concat_0_size",
+          "encode": {
+            "symbols": {
+              "update": {
+                "fillOpacity": {"value": 0.7},
+                "opacity": {"value": 0.7},
+                "stroke": {"value": "transparent"}
+              }
+            }
+          }
         }
       ]
     },
@@ -171,9 +180,18 @@
           "title": "Quantile",
           "fill": "concat_1_color",
           "labelOverlap": "greedy",
+          "type": "symbol",
           "symbolType": "circle",
-          "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
-          "size": "concat_1_size"
+          "size": "concat_1_size",
+          "encode": {
+            "symbols": {
+              "update": {
+                "fillOpacity": {"value": 0.7},
+                "opacity": {"value": 0.7},
+                "stroke": {"value": "transparent"}
+              }
+            }
+          }
         }
       ]
     },
@@ -225,9 +243,18 @@
           "title": "Threshold",
           "fill": "concat_2_color",
           "labelOverlap": "greedy",
+          "type": "symbol",
           "symbolType": "circle",
-          "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
-          "size": "concat_2_size"
+          "size": "concat_2_size",
+          "encode": {
+            "symbols": {
+              "update": {
+                "fillOpacity": {"value": 0.7},
+                "opacity": {"value": 0.7},
+                "stroke": {"value": "transparent"}
+              }
+            }
+          }
         }
       ]
     }
