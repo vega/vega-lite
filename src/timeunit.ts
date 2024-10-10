@@ -345,7 +345,7 @@ export function timeUnitSpecifierExpression(timeUnit: TimeUnit, {isAxis}: {isAxi
 
   const timeUnitParts = getTimeUnitParts(timeUnit);
   if (isAxis) {
-    if (timeUnitParts.includes('year')) {
+    if (timeUnitParts.includes('year') && !timeUnitParts.includes('week')) {
       // If the timeUnit includes year (meaning it's a chronological timeUnit (aka datetime truncation),
       // then the default axis format is actually pretty smart.
       return undefined;
