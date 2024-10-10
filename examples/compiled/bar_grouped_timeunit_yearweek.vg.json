@@ -135,7 +135,9 @@
       "orient": "bottom",
       "grid": false,
       "title": "Year (year-week)",
-      "format": {},
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\",\"week\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
