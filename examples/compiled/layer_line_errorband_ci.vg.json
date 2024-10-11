@@ -51,10 +51,10 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Ci1 of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Ci0 of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%b %d, %Y')}"
+            "signal": "{\"Ci1 of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Ci0 of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], \"%b %d, %Y\")}"
           },
           "description": {
-            "signal": "\"Year (year): \" + (timeFormat(datum[\"year_Year\"], '%b %d, %Y')) + \"; Mean of Miles per Gallon (95% CIs): \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; upper_Miles_per_Gallon: \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; Ci1 of Miles_per_Gallon: \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; Ci0 of Miles_per_Gallon: \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; Mean of Miles_per_Gallon: \" + (format(datum[\"center_Miles_per_Gallon\"], \"\"))"
+            "signal": "\"Year (year): \" + (timeFormat(datum[\"year_Year\"], \"%b %d, %Y\")) + \"; Mean of Miles per Gallon (95% CIs): \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; upper_Miles_per_Gallon: \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; Ci1 of Miles_per_Gallon: \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; Ci0 of Miles_per_Gallon: \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; Mean of Miles_per_Gallon: \" + (format(datum[\"center_Miles_per_Gallon\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},

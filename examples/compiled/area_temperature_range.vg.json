@@ -44,7 +44,7 @@
           "fill": {"value": "#4c78a8"},
           "opacity": {"value": 0.7},
           "description": {
-            "signal": "\"Date: \" + (timeFormat(datum[\"monthdate_date\"], '%b')) + \"; Daily Temperature Range (C): \" + (format(datum[\"max_temp_max\"], \"\")) + \"; Min of temp_min: \" + (format(datum[\"min_temp_min\"], \"\"))"
+            "signal": "\"Date: \" + (timeFormat(datum[\"monthdate_date\"], \"%b\")) + \"; Daily Temperature Range (C): \" + (format(datum[\"max_temp_max\"], \"\")) + \"; Min of temp_min: \" + (format(datum[\"min_temp_min\"], \"\"))"
           },
           "x": {"scale": "x", "field": "monthdate_date"},
           "y": {"scale": "y", "field": "max_temp_max"},
