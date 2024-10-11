@@ -32,7 +32,7 @@ describe('Format', () => {
         format: '%Y',
         rawTimeFormat: defaultConfig.timeFormat
       });
-      expect(expression).toBe(`timeFormat(datum["yearmonth_a"], '%Y')`);
+      expect(expression).toBe(`timeFormat(datum["yearmonth_a"], "%Y")`);
     });
 
     it('should get the right time expression for quarter', () => {
@@ -67,7 +67,7 @@ describe('Format', () => {
         rawTimeFormat: defaultConfig.timeFormat,
         isUTCScale: true
       });
-      expect(expression).toBe(`utcFormat(datum["yearmonth_a"], '%Y')`);
+      expect(expression).toBe(`utcFormat(datum["yearmonth_a"], "%Y")`);
     });
 
     it('should get the right time expression for with a custom timeFormatType', () => {
@@ -77,7 +77,7 @@ describe('Format', () => {
         format: '%Y',
         formatType: 'customFormat'
       });
-      expect(expression).toBe(`customFormat(datum["a"], '%Y')`);
+      expect(expression).toBe(`customFormat(datum["a"], "%Y")`);
     });
 
     it('should prefer timeUnit over timeFormatType', () => {
@@ -88,7 +88,7 @@ describe('Format', () => {
         timeUnit: 'date',
         formatType: 'customFormat'
       });
-      expect(expression).toBe(`timeFormat(datum["date_a"], '%Y')`);
+      expect(expression).toBe(`timeFormat(datum["date_a"], "%Y")`);
     });
   });
 

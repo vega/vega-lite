@@ -120,7 +120,7 @@ describe('Mark: Text', () => {
     const props = text.encodeEntry(model);
 
     it('should use date template', () => {
-      expect(props.text).toEqual({signal: `timeFormat(datum["foo"], '%b %d, %Y')`});
+      expect(props.text).toEqual({signal: `timeFormat(datum["foo"], "%b %d, %Y")`});
     });
   });
 
