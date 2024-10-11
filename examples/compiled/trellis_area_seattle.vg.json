@@ -166,7 +166,7 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"Month: \" + (timeFormat(datum[\"monthdate_date\"], '%b')) + \"; Mean of temperature: \" + (format(datum[\"mean_temperature\"], \"\"))"
+                "signal": "\"Month: \" + (timeFormat(datum[\"monthdate_date\"], \"%b\")) + \"; Mean of temperature: \" + (format(datum[\"mean_temperature\"], \"\"))"
               },
               "x": {"scale": "x", "field": "monthdate_date"},
               "y": {"scale": "y", "field": "mean_temperature"},

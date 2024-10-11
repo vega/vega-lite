@@ -170,7 +170,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"signal": "height", "mult": 0.5}
@@ -227,7 +227,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; indexed_price: \" + (format(datum[\"indexed_price\"], \"%\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; indexed_price: \" + (format(datum[\"indexed_price\"], \"%\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "indexed_price"},
@@ -250,7 +250,7 @@
           "strokeWidth": {"value": 0.5},
           "stroke": {"value": "firebrick"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 0},
@@ -270,7 +270,7 @@
           "fontWeight": {"value": 100},
           "fill": {"value": "firebrick"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 310},

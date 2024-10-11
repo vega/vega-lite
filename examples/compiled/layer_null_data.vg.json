@@ -77,7 +77,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"a (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_a\"], '%d %b')) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_a\"], \"%d %b\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonthdate_a"},
           "y": {"scale": "y", "field": "b"},
