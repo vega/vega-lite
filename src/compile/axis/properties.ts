@@ -84,7 +84,7 @@ export const axisRules: {
     return axis.tickCount ?? defaultTickCount({fieldOrDatumDef, scaleType, size, values: axis.values});
   },
 
-  tickMinStep: defaultTickMinStep,
+  tickMinStep: ({axis, format, fieldOrDatumDef}) => axis.tickMinStep ?? defaultTickMinStep({format, fieldOrDatumDef}),
 
   title: ({axis, model, channel}) => {
     if (axis.title !== undefined) {
