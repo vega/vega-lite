@@ -1,3 +1,4 @@
+import {Datum} from 'vega';
 import {TopLevelSpec} from '../src';
 import {embedFn, getSignal, getState, setSignal, sleep, testRenderFn} from './util';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
@@ -75,7 +76,7 @@ describe('time encoding animations', () => {
 
       expect(anim_value).toBe(domain[i]);
 
-      const curr_dataset = state.data['source_0_curr'] as object[];
+      const curr_dataset = state.data['source_0_curr'] as Datum[];
       const time_field = gapminderSpec.encoding.time.field as string;
       const filteredDataset = curr_dataset.filter(d => d[time_field] === anim_value);
 
