@@ -6,7 +6,7 @@
   "mark": "point",
   "params": [
     {
-      "name": "avl",
+      "name": "animation_frame",
       "select": {
         "type": "point",
         "fields": [
@@ -19,7 +19,7 @@
   "transform": [
     {
       "filter": {
-        "param": "avl"
+        "param": "animation_frame"
       }
     }
   ],

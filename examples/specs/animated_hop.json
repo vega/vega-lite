@@ -11,7 +11,7 @@
   },
   "params": [
     {
-      "name": "date",
+      "name": "animation_frame",
       "select": {
         "type": "point",
         "fields": [
@@ -24,7 +24,7 @@
   "transform": [
     {
       "filter": {
-        "param": "date"
+        "param": "animation_frame"
       }
     }
   ],
