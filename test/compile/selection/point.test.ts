@@ -9,6 +9,7 @@ import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
+import * as log from '../../../src/log';
 
 describe('Multi Selection', () => {
   const model = parseUnitModelWithScale({
@@ -503,4 +504,75 @@ describe('Animated Selection', () => {
       ])
     );
   });
+
+  it(
+    'does not build extra signals for duplicate selection',
+    log.wrap(localLogger => {
+      const modelDuplicateSelection = parseUnitModelWithScaleAndSelection({
+        data: {
+          url: 'data/gapminder.json'
+        },
+        params: [
+          {
+            name: 'avl',
+            select: {
+              type: 'point',
+              fields: ['year'],
+              on: 'timer'
+            }
+          },
+          {
+            name: 'avl_2',
+            select: {
+              type: 'point',
+              fields: ['year'],
+              on: 'timer'
+            }
+          }
+        ],
+        transform: [
+          {
+            filter: {
+              param: 'avl'
+            }
+          }
+        ],
+        mark: 'point',
+        encoding: {
+          color: {
+            field: 'country'
+          },
+          x: {
+            field: 'fertility',
+            type: 'quantitative'
+          },
+          y: {
+            field: 'life_expect',
+            type: 'quantitative'
+          },
+          time: {
+            field: 'year',
+            type: 'ordinal'
+          }
+        }
+      });
+
+      modelDuplicateSelection.parseData();
+      optimizeDataflow(modelDuplicateSelection.component.data, modelDuplicateSelection);
+
+      const signals = assembleUnitSelectionSignals(model, []);
+      // TODO(jzong): uncomment commented signals when implementing interpolation
+      expect(signals).toEqual(
+        expect.arrayContaining([
+          {name: 'avl_domain', init: "domain('time')"},
+          {name: 'min_extent', init: 'extent(avl_domain)[0]'},
+          // {name: 'max_extent', init: 'extent(avl_domain)[1]'},
+          {name: 'max_range_extent', init: "extent(range('time'))[1]"},
+          // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
+          {name: 'anim_value', update: "invert('time', eased_anim_clock)"}
+        ])
+      );
+      expect(localLogger.warns).toHaveLength(1);
+    })
+  );
 });
