@@ -58,6 +58,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
       // check for multiple timer selections and ignore all but the first one
       nTimerSelections++;
       if (nTimerSelections > 1) {
+        delete selCmpts[name];
         continue;
       }
     }
