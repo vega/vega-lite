@@ -1350,7 +1350,7 @@ export function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef: FieldDef<string>
 }
 
 /**
- * Check if field def has type `temporal`. If you want to also cover field defs that use a time format, use `isTimeFormatFieldDef`.
+ * Check if field def has type `temporal`. If you want to also cover field defs that use a time format, use `isFieldOrDatumDefForTimeFormat`.
  */
 export function isTemporalFieldDef(def: FieldDef<any> | DatumDef): boolean {
   return def && ((def as any)['type'] === 'temporal' || (isFieldDef(def) && !!def.timeUnit));
