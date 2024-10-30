@@ -6,8 +6,6 @@ import project from '../../../src/compile/selection/project';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 
-import * as log from '../../../src/log';
-
 describe('Selection', () => {
   const model = parseUnitModel({
     mark: 'circle',
