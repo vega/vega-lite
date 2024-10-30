@@ -1,6 +1,6 @@
 import {parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
-import {selectionCompilers, SelectionComponent, STORE} from '.';
+import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
 import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection';
 import {Dict, duplicate, entries, replacePathInField, varName} from '../../util';
@@ -16,6 +16,8 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
   const selectionConfig = model.config.selection;
 
   if (!selDefs || !selDefs.length) return selCmpts;
+
+  let nTimerSelections = 0;
 
   for (const def of selDefs) {
     const name = varName(def.name);
@@ -52,12 +54,25 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
       events: isString(defaults.on) ? parseSelector(defaults.on, 'scope') : array(duplicate(defaults.on))
     } as any);
 
+    if (isTimerSelection(selCmpt)) {
+      // check for multiple timer selections and ignore all but the first one
+      nTimerSelections++;
+      if (nTimerSelections > 1) {
+        continue;
+      }
+    }
+
     const def_ = duplicate(def); // defensive copy to prevent compilers from causing side effects
     for (const c of selectionCompilers) {
       if (c.defined(selCmpt) && c.parse) {
         c.parse(model, selCmpt, def_);
       }
     }
+  }
+
+  if (nTimerSelections > 1) {
+    // if multiple timer selections were found, issue a warning
+    warn('Multiple timer selections in one unit spec are not supported. Ignoring all but the first.');
   }
 
   return selCmpts;
