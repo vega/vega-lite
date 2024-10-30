@@ -269,16 +269,16 @@ export class UnitModel extends ModelWithField {
     // for normal data references
     if (mark.from?.data) {
       mark.from.data = this.lookupDataSource(mark.from.data);
+      if ('time' in this.encoding) {
+        mark.from.data = mark.from.data + CURR;
+      }
     }
 
     // for access to facet data
     if (mark.from?.facet?.data) {
       mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
-    }
-
-    if ('time' in this.encoding) {
-      if (mark.from?.data) {
-        mark.from.data = mark.from.data + CURR;
+      if ('time' in this.encoding) {
+        mark.from.facet.data = mark.from.facet.data + CURR;
       }
     }
 
