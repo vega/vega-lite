@@ -6,6 +6,8 @@ import project from '../../../src/compile/selection/project';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 
+import * as log from '../../../src/log';
+
 describe('Selection', () => {
   const model = parseUnitModel({
     mark: 'circle',
@@ -396,5 +398,63 @@ describe('Selection', () => {
         }
       ]
     });
+  });
+
+  describe('Animation', () => {
+    it(
+      'warns on duplicate timer selections',
+      log.wrap(localLogger => {
+        const m = parseUnitModel({
+          mark: 'circle',
+          encoding: {
+            color: {
+              field: 'country'
+            },
+            x: {
+              field: 'fertility',
+              type: 'quantitative'
+            },
+            y: {
+              field: 'life_expect',
+              type: 'quantitative'
+            },
+            time: {
+              field: 'year',
+              type: 'ordinal'
+            }
+          }
+        });
+
+        m.parseScale();
+        parseUnitSelection(m, [
+          {
+            name: 'animation_frame',
+            select: {
+              type: 'point',
+              fields: ['year'],
+              on: 'timer'
+            }
+          },
+          {
+            name: 'animation_frame_duplicate',
+            select: {
+              type: 'point',
+              fields: ['year'],
+              on: 'timer'
+            }
+          },
+          {
+            name: 'animation_frame_duplicate2',
+            select: {
+              type: 'point',
+              fields: ['year'],
+              on: 'timer'
+            }
+          }
+        ]);
+
+        expect(localLogger.warns).toHaveLength(1);
+      })
+    );
   });
 });
