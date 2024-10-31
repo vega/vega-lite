@@ -505,6 +505,12 @@ describe('Animated Selection', () => {
     );
   });
 
+  it('assigns correct animation frame dataset to marks', () => {
+    model.parseMarkGroup();
+    const marks = model.assembleMarks();
+    expect(marks[0].from.data).toBe('source_0_curr');
+  });
+
   it(
     'does not build extra signals for duplicate selection',
     log.wrap(localLogger => {
