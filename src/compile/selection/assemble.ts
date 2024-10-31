@@ -147,10 +147,12 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
     }
 
     if (isTimerSelection(selCmpt) && data.length) {
-      const sourceName =
-        model.parent && model.parent.type !== 'unit' // facet, layer, or concat
-          ? model.parent.lookupDataSource(model.parent.getDataName(DataSourceType.Main))
-          : model.lookupDataSource(model.getDataName(DataSourceType.Main));
+      // TODO(jzong): eventually uncomment this stuff when we want to support multi-view
+      // const sourceName =
+      //   model.parent && model.parent.type !== 'unit' // facet, layer, or concat
+      //     ? model.parent.lookupDataSource(model.parent.getDataName(DataSourceType.Main))
+      //     : model.lookupDataSource(model.getDataName(DataSourceType.Main));
+      const sourceName = model.lookupDataSource(model.getDataName(DataSourceType.Main));
       const sourceData = data.find(d => d.name === sourceName);
 
       // find the filter transform for the current selection

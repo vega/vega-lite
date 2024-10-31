@@ -277,9 +277,10 @@ export class UnitModel extends ModelWithField {
     // for access to facet data
     if (mark.from?.facet?.data) {
       mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
-      if ('time' in this.encoding) {
-        mark.from.facet.data = mark.from.facet.data + CURR;
-      }
+      // TOOD(jzong) uncomment this when it's time to implement facet animation
+      // if ('time' in this.encoding) {
+      //   mark.from.facet.data = mark.from.facet.data + CURR;
+      // }
     }
 
     return mark;

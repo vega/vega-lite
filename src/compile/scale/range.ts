@@ -319,10 +319,10 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
     }
 
     case TIME: {
-      if (scaleType === 'band') {
-        return {step: 1000 / config.scale.framesPerSecond};
-      }
-      return [0, config.scale.animationDuration * 1000]; // e.g. linear
+      // if (scaleType === 'band') {
+      return {step: 1000 / config.scale.framesPerSecond};
+      // }
+      // return [0, config.scale.animationDuration * 1000]; // TODO(jzong): uncomment for linear scales when interpolation is implemented
     }
 
     case STROKEWIDTH:
