@@ -10,6 +10,11 @@ import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {DataSourceType} from '../../data';
 import {ParameterPredicate} from '../../predicate';
+import {
+  MULTIPLE_TIMER_ANIMATION_SELECTION,
+  selectionAsScaleDomainWithoutField,
+  selectionAsScaleDomainWrongEncodings
+} from '../../log/message';
 
 export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
@@ -73,7 +78,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
 
   if (nTimerSelections > 1) {
     // if multiple timer selections were found, issue a warning
-    warn('Multiple timer selections in one unit spec are not supported. Ignoring all but the first.');
+    warn(MULTIPLE_TIMER_ANIMATION_SELECTION);
   }
 
   return selCmpts;
@@ -131,20 +136,13 @@ export function parseSelectionExtent(model: Model, name: string, extent: Paramet
   if (!encoding && !field) {
     field = selCmpt.project.items[0].field;
     if (selCmpt.project.items.length > 1) {
-      warn(
-        'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
-          `Using "field": ${stringValue(field)}.`
-      );
+      warn(selectionAsScaleDomainWithoutField(field));
     }
   } else if (encoding && !field) {
     const encodings = selCmpt.project.items.filter(p => p.channel === encoding);
     if (!encodings.length || encodings.length > 1) {
       field = selCmpt.project.items[0].field;
-      warn(
-        (!encodings.length ? 'No ' : 'Multiple ') +
-          `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.param)}. ` +
-          `Using "field": ${stringValue(field)}.`
-      );
+      warn(selectionAsScaleDomainWrongEncodings(encodings, encoding, extent, field));
     } else {
       field = encodings[0].field;
     }
