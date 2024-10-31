@@ -61,12 +61,15 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
     } as any);
 
     if (isTimerSelection(selCmpt)) {
+      nTimerSelections++;
+
+      // check for facet, concat, or layer (unsupported)
       if (['facet', 'concat', 'layer'].includes(model.parent?.type)) {
         delete selCmpts[name];
         continue;
       }
+
       // check for multiple timer selections and ignore all but the first one
-      nTimerSelections++;
       if (nTimerSelections > 1) {
         delete selCmpts[name];
         continue;
@@ -86,7 +89,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
     warn(MULTIPLE_TIMER_ANIMATION_SELECTION);
   }
 
-  if (['facet', 'concat', 'layer'].includes(model.parent?.type)) {
+  if (nTimerSelections > 0 && ['facet', 'concat', 'layer'].includes(model.parent?.type)) {
     // facet, layer, and concat not supported for animation
     error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
   }
