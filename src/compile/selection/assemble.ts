@@ -148,7 +148,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
 
     if (isTimerSelection(selCmpt) && data.length) {
       const sourceName =
-        model.parent?.type === 'facet'
+        model.parent && model.parent.type !== 'unit' // facet, layer, or concat
           ? model.parent.lookupDataSource(model.parent.getDataName(DataSourceType.Main))
           : model.lookupDataSource(model.getDataName(DataSourceType.Main));
       const sourceData = data.find(d => d.name === sourceName);

@@ -118,6 +118,8 @@ export function columnsNotSupportByRowCol(type: 'facet' | 'repeat') {
 export const MULTIPLE_TIMER_ANIMATION_SELECTION =
   'Multiple timer selections in one unit spec are not supported. Ignoring all but the first.';
 
+export const MULTI_VIEW_ANIMATION_UNSUPPORTED = 'Animation involving facet, layer, or concat is currently unsupported.';
+
 export function selectionAsScaleDomainWithoutField(field: string) {
   return (
     'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
