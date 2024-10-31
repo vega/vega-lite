@@ -14,6 +14,8 @@ import {assembleLegends} from './legend/assemble';
 import {Model} from './model';
 import {assembleLayerSelectionMarks} from './selection/assemble';
 import {UnitModel} from './unit';
+import {isTimerSelection} from './selection';
+import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message';
 
 export class LayerModel extends Model {
   // HACK: This should be (LayerModel | UnitModel)[], but setting the correct type leads to weird error.
@@ -67,6 +69,10 @@ export class LayerModel extends Model {
       for (const key of keys(child.component.selection)) {
         this.component.selection[key] = child.component.selection[key];
       }
+    }
+
+    if (Object.values(this.component.selection).some(selCmpt => isTimerSelection(selCmpt))) {
+      log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
     }
   }
 

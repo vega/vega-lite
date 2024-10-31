@@ -1,7 +1,7 @@
 import {parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
 import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from '.';
-import {error, warn} from '../../log';
+import {warn} from '../../log';
 import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection';
 import {Dict, duplicate, entries, replacePathInField, varName} from '../../util';
 import {DataFlowNode, OutputNode} from '../data/dataflow';
@@ -11,7 +11,6 @@ import {UnitModel} from '../unit';
 import {DataSourceType} from '../../data';
 import {ParameterPredicate} from '../../predicate';
 import {
-  MULTI_VIEW_ANIMATION_UNSUPPORTED,
   MULTIPLE_TIMER_ANIMATION_SELECTION,
   selectionAsScaleDomainWithoutField,
   selectionAsScaleDomainWrongEncodings
@@ -62,13 +61,6 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
 
     if (isTimerSelection(selCmpt)) {
       nTimerSelections++;
-
-      // check for facet, concat, or layer (unsupported)
-      if (['facet', 'concat', 'layer'].includes(model.parent?.type)) {
-        delete selCmpts[name];
-        continue;
-      }
-
       // check for multiple timer selections and ignore all but the first one
       if (nTimerSelections > 1) {
         delete selCmpts[name];
@@ -87,11 +79,6 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
   if (nTimerSelections > 1) {
     // if multiple timer selections were found, issue a warning
     warn(MULTIPLE_TIMER_ANIMATION_SELECTION);
-  }
-
-  if (nTimerSelections > 0 && ['facet', 'concat', 'layer'].includes(model.parent?.type)) {
-    // facet, layer, and concat not supported for animation
-    error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
   }
 
   return selCmpts;

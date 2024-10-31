@@ -6,7 +6,7 @@ import {
 } from '../../../src/compile/selection/assemble';
 import point from '../../../src/compile/selection/point';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
+import {parseModel, parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 import * as log from '../../../src/log';
@@ -581,4 +581,155 @@ describe('Animated Selection', () => {
       expect(localLogger.warns).toHaveLength(1);
     })
   );
+
+  it('errors if you try to use animation on a multi-view', () => {
+    expect(() => {
+      const facetModel = parseModel({
+        data: {
+          url: 'data/gapminder.json'
+        },
+        params: [
+          {
+            name: 'avl',
+            select: {
+              type: 'point',
+              fields: ['year'],
+              on: 'timer'
+            }
+          }
+        ],
+        transform: [
+          {
+            filter: {
+              param: 'avl'
+            }
+          }
+        ],
+        mark: 'point',
+        encoding: {
+          color: {
+            field: 'country'
+          },
+          x: {
+            field: 'fertility',
+            type: 'quantitative'
+          },
+          y: {
+            field: 'life_expect',
+            type: 'quantitative'
+          },
+          time: {
+            field: 'year',
+            type: 'ordinal'
+          },
+          facet: {
+            field: 'cluster'
+          }
+        }
+      });
+      facetModel.parseSelections();
+    }).toThrow(Error);
+
+    expect(() => {
+      const layerModel = parseModel({
+        data: {
+          url: 'data/gapminder.json'
+        },
+        params: [
+          {
+            name: 'avl',
+            select: {
+              type: 'point',
+              fields: ['year'],
+              on: 'timer'
+            }
+          }
+        ],
+        transform: [
+          {
+            filter: {
+              param: 'avl'
+            }
+          }
+        ],
+        layer: [
+          {
+            mark: 'point'
+          },
+          {
+            mark: 'point'
+          }
+        ],
+        encoding: {
+          color: {
+            field: 'country'
+          },
+          x: {
+            field: 'fertility',
+            type: 'quantitative'
+          },
+          y: {
+            field: 'life_expect',
+            type: 'quantitative'
+          },
+          time: {
+            field: 'year',
+            type: 'ordinal'
+          }
+        }
+      });
+      layerModel.parseSelections();
+    }).toThrow(Error);
+
+    expect(() => {
+      const concatModel = parseModel({
+        data: {
+          url: 'data/gapminder.json'
+        },
+        params: [
+          {
+            name: 'avl',
+            select: {
+              type: 'point',
+              fields: ['year'],
+              on: 'timer'
+            }
+          }
+        ],
+        transform: [
+          {
+            filter: {
+              param: 'avl'
+            }
+          }
+        ],
+        vconcat: [
+          {
+            mark: 'point'
+          },
+          {
+            mark: 'point'
+          }
+        ],
+        encoding: {
+          color: {
+            field: 'country'
+          },
+          x: {
+            field: 'fertility',
+            type: 'quantitative'
+          },
+          y: {
+            field: 'life_expect',
+            type: 'quantitative'
+          },
+          time: {
+            field: 'year',
+            type: 'ordinal'
+          }
+        }
+      });
+      concatModel.parseSelections();
+    }).toThrow(Error);
+  });
 });
