@@ -8545,7 +8545,7 @@
       "properties": {
         "extent": {
           "$ref": "#/definitions/ErrorBarExtent",
-          "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+          "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the 95% bootstrapped confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
         },
         "rule": {
           "anyOf": [
@@ -8601,7 +8601,7 @@
         },
         "extent": {
           "$ref": "#/definitions/ErrorBarExtent",
-          "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
+          "description": "The extent of the rule. Available options include:\n- `\"ci\"`: Extend the rule to the 95% bootstrapped confidence interval of the mean.\n- `\"stderr\"`: The size of rule are set to the value of standard error, extending from the mean.\n- `\"stdev\"`: The size of rule are set to the value of standard deviation, extending from the mean.\n- `\"iqr\"`: Extend the rule to the q1 and q3.\n\n__Default value:__ `\"stderr\"`."
         },
         "opacity": {
           "description": "The opacity (value between [0,1]) of the mark.",
