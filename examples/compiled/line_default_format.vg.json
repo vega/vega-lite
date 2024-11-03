@@ -3,7 +3,7 @@
   "description": "Google's stock price over time.",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 400,
   "height": 200,
   "style": "cell",
   "data": [
@@ -11,7 +11,13 @@
       "name": "source_0",
       "url": "data/stocks.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
-      "transform": [{"type": "filter", "expr": "datum.symbol==='GOOG'"}]
+      "transform": [
+        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
+        {
+          "type": "filter",
+          "expr": "indexof([time(datetime(2006, 0, 1, 0, 0, 0, 0)),time(datetime(2007, 0, 1, 0, 0, 0, 0))], time(datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0))) !== -1"
+        }
+      ]
     }
   ],
   "marks": [
@@ -41,9 +47,7 @@
       "name": "x",
       "type": "time",
       "domain": {"data": "source_0", "field": "date"},
-      "range": [0, {"signal": "width"}],
-      "domainMax": {"signal": "datetime(2012, 0, 1, 0, 0, 0, 0)"},
-      "domainMin": {"signal": "datetime(2002, 0, 1, 0, 0, 0, 0)"}
+      "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
