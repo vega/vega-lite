@@ -96,7 +96,7 @@ export interface ErrorBarConfig extends ErrorBarPartsMixins {
 
   /**
    * The extent of the rule. Available options include:
-   * - `"ci"`: Extend the rule to the confidence interval of the mean.
+   * - `"ci"`: Extend the rule to the 95% bootstrapped confidence interval of the mean.
    * - `"stderr"`: The size of rule are set to the value of standard error, extending from the mean.
    * - `"stdev"`: The size of rule are set to the value of standard deviation, extending from the mean.
    * - `"iqr"`: Extend the rule to the q1 and q3.
