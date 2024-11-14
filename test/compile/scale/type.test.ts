@@ -159,6 +159,13 @@ describe('compile/scale', () => {
           });
         });
       });
+
+      describe('time (animation)', () => {
+        it('should return band scale for nominal/ordinal data by default.', () => {
+          expect(scaleType({}, 'time', {type: 'nominal'}, 'point')).toEqual(ScaleType.BAND);
+          expect(scaleType({}, 'time', {type: 'ordinal'}, 'point')).toEqual(ScaleType.BAND);
+        });
+      });
     });
 
     describe('temporal', () => {
@@ -184,6 +191,13 @@ describe('compile/scale', () => {
         for (const timeUnit of TIMEUNITS.filter(t => isUTCTimeUnit(t))) {
           expect(scaleType({}, Y, {type: 'temporal', field: 'x', timeUnit}, 'point')).toEqual(ScaleType.UTC);
         }
+      });
+
+      describe('time (animation)', () => {
+        it('should return linear scale for temporal data by default.', () => {
+          // expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
+          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.BAND); // TODO(jzong) change to linear when interpolation implemented
+        });
       });
     });
     describe('quantitative', () => {
@@ -223,6 +237,13 @@ describe('compile/scale', () => {
 
       it('should return linear scale for quantitative x and y.', () => {
         expect(scaleType({}, 'x', {type: 'quantitative', field: 'x', bin: true}, 'point')).toEqual(ScaleType.LINEAR);
+      });
+
+      describe('time (animation)', () => {
+        it('should return linear scale for quantitative data by default.', () => {
+          // expect(scaleType({}, 'time', {type: 'quantitative'}, 'point')).toEqual(ScaleType.LINEAR);
+          expect(scaleType({}, 'time', {type: 'quantitative'}, 'point')).toEqual(ScaleType.BAND); // TODO(jzong) change to linear when interpolation implemented
+        });
       });
     });
 

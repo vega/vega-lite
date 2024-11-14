@@ -1,0 +1,43 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {
+    "url": "data/gapminder.json"
+  },
+  "mark": "point",
+  "params": [
+    {
+      "name": "animation_frame",
+      "select": {
+        "type": "point",
+        "fields": [
+          "year"
+        ],
+        "on": "timer"
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": {
+        "param": "animation_frame"
+      }
+    }
+  ],
+  "encoding": {
+    "color": {
+      "field": "country"
+    },
+    "x": {
+      "field": "fertility",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "life_expect",
+      "type": "quantitative"
+    },
+    "time": {
+      "field": "year",
+      "type": "ordinal"
+    }
+  }
+}

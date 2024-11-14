@@ -1,7 +1,7 @@
 import {Update} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {isString} from 'vega-util';
-import {TUPLE} from '.';
+import {TUPLE, isTimerSelection} from '.';
 import {varName} from '../../util';
 import inputBindings from './inputs';
 import toggle, {TOGGLE} from './toggle';
@@ -9,7 +9,7 @@ import {SelectionCompiler} from '.';
 
 const clear: SelectionCompiler = {
   defined: selCmpt => {
-    return selCmpt.clear !== undefined && selCmpt.clear !== false;
+    return selCmpt.clear !== undefined && selCmpt.clear !== false && !isTimerSelection(selCmpt);
   },
 
   parse: (model, selCmpt) => {

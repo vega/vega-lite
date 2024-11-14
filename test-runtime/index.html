@@ -103,6 +103,28 @@
         });
         return (await view.runAsync()).data('sel_store');
       }
+
+      async function getState(signals, data) {
+        (await view.runAsync())
+        return {
+          signals: signals.reduce((o, s) => {
+            o[s] = view.signal(s);
+            return o;
+          }, {}),
+          data: data.reduce((o, d) => {
+            o[d] = view.data(d);
+            return o;
+          }, {})
+        };
+      }
+
+      async function getSignal(signal) {
+        return (await view.runAsync()).signal(signal);
+      }
+
+      async function setSignal(name, value) {
+        return (await view.signal(name, value).runAsync());
+      }
     </script>
   </body>
 </html>

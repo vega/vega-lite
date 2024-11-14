@@ -868,6 +868,34 @@ describe('compile/scale', () => {
         expect(parseRangeForChannel('shape', model)).toEqual(makeImplicit('symbol'));
       });
     });
+
+    describe('time', () => {
+      it('should use default time range.', () => {
+        const bandModel = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            time: {field: 'x', type: 'ordinal'}
+          }
+        });
+
+        console.log(parseRangeForChannel('time', bandModel));
+        expect(parseRangeForChannel('time', bandModel)).toEqual(
+          makeImplicit({step: 1000 / defaultConfig.scale.framesPerSecond})
+        );
+
+        // TODO(jzong) uncomment the below when implementing linear scales for interpolation
+
+        // const linearModel = parseUnitModelWithScaleExceptRange({
+        //   mark: 'point',
+        //   encoding: {
+        //     time: {field: 'x', type: 'quantitative'}
+        //   }
+        // });
+
+        // console.log(parseRangeForChannel('time', linearModel));
+        // expect(parseRangeForChannel('time', linearModel)).toEqual(makeImplicit([0, defaultConfig.scale.animationDuration * 1000]));
+      });
+    });
   });
 
   describe('defaultContinuousToDiscreteCount', () => {

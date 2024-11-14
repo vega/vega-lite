@@ -25,7 +25,8 @@ import {
   X,
   XOFFSET,
   Y,
-  YOFFSET
+  YOFFSET,
+  TIME
 } from '../../channel';
 import {
   getBandPosition,
@@ -315,6 +316,13 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
           return `min(${w},${h})/2`;
         })
       ];
+    }
+
+    case TIME: {
+      // if (scaleType === 'band') {
+      return {step: 1000 / config.scale.framesPerSecond};
+      // }
+      // return [0, config.scale.animationDuration * 1000]; // TODO(jzong): uncomment for linear scales when interpolation is implemented
     }
 
     case STROKEWIDTH:

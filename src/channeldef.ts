@@ -40,6 +40,7 @@ import {
   TEXT,
   THETA,
   THETA2,
+  TIME,
   TOOLTIP,
   URL,
   X,
@@ -517,6 +518,12 @@ export interface PositionMixins {
 }
 
 export type PolarDef<F extends Field> = PositionFieldDefBase<F> | PositionDatumDefBase<F> | PositionValueDef;
+
+export type TimeDef<F extends Field> = TimeFieldDef<F>;
+export interface TimeMixins {
+  rescale?: boolean;
+}
+export type TimeFieldDef<F extends Field> = ScaleFieldDef<F, StandardType> & TimeMixins;
 
 export function getBandPosition({
   fieldDef,
@@ -1303,6 +1310,7 @@ export function channelCompatibility(
     case RADIUS2:
     case X2:
     case Y2:
+    case TIME:
       if (type === 'nominal' && !(fieldDef as any)['sort']) {
         return {
           compatible: false,
@@ -1338,13 +1346,13 @@ export function channelCompatibility(
  */
 export function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef: FieldDef<string> | DatumDef): boolean {
   const {formatType} = getFormatMixins(fieldOrDatumDef);
-  return formatType === 'time' || (!formatType && isTimeFieldDef(fieldOrDatumDef));
+  return formatType === 'time' || (!formatType && isTemporalFieldDef(fieldOrDatumDef));
 }
 
 /**
- * Check if field def has type `temporal`. If you want to also cover field defs that use a time format, use `isTimeFormatFieldDef`.
+ * Check if field def has type `temporal`. If you want to also cover field defs that use a time format, use `isFieldOrDatumDefForTimeFormat`.
  */
-export function isTimeFieldDef(def: FieldDef<any> | DatumDef): boolean {
+export function isTemporalFieldDef(def: FieldDef<any> | DatumDef): boolean {
   return def && ((def as any)['type'] === 'temporal' || (isFieldDef(def) && !!def.timeUnit));
 }
 

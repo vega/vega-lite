@@ -269,6 +269,23 @@ export function pt(key: keyof typeof hits.discrete, idx: number, parent?: string
   return `${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
 }
 
+export function getState(signals: string[], data: string[]) {
+  return `getState(${JSON.stringify(signals)}, ${JSON.stringify(data)})`;
+}
+export function getSignal(name: string) {
+  return `getSignal('${name}')`;
+}
+
+export function setSignal(name: string, value: any) {
+  return `setSignal(${stringValue(name)}, ${value})`;
+}
+
+export function sleep(milliseconds: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
 export function embedFn(page: Page) {
   return async (specification: TopLevelSpec) => {
     await page.evaluate(

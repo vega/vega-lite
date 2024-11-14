@@ -37,7 +37,7 @@ import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
 import {stack, StackProperties} from '../stack';
 import {keys} from '../util';
-import {VgData, VgLayout} from '../vega.schema';
+import {VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {AxisInternalIndex} from './axis/component';
 import {parseUnitAxes} from './axis/parse';
@@ -58,6 +58,7 @@ import {
   assembleUnitSelectionSignals
 } from './selection/assemble';
 import {parseUnitSelection} from './selection/parse';
+import {CURR} from './selection/point';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -260,6 +261,30 @@ export class UnitModel extends ModelWithField {
   public assembleLayoutSignals(): NewSignal[] {
     return assembleLayoutSignals(this);
   }
+
+  /**
+   * Corrects the data references in marks after assemble.
+   */
+  public correctDataNames = (mark: VgMarkGroup) => {
+    // for normal data references
+    if (mark.from?.data) {
+      mark.from.data = this.lookupDataSource(mark.from.data);
+      if ('time' in this.encoding) {
+        mark.from.data = mark.from.data + CURR;
+      }
+    }
+
+    // for access to facet data
+    if (mark.from?.facet?.data) {
+      mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
+      // TOOD(jzong) uncomment this when it's time to implement facet animation
+      // if ('time' in this.encoding) {
+      //   mark.from.facet.data = mark.from.facet.data + CURR;
+      // }
+    }
+
+    return mark;
+  };
 
   public assembleMarks() {
     let marks = this.component.mark ?? [];

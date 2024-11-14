@@ -9,6 +9,8 @@ import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseConcatLayoutSize} from './layoutsize/parse';
 import {Model} from './model';
+import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message';
+import {isTimerSelection} from './selection';
 
 export class ConcatModel extends Model {
   public readonly children: Model[];
@@ -42,6 +44,10 @@ export class ConcatModel extends Model {
       for (const key of keys(child.component.selection)) {
         this.component.selection[key] = child.component.selection[key];
       }
+    }
+
+    if (Object.values(this.component.selection).some(selCmpt => isTimerSelection(selCmpt))) {
+      log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
     }
   }
 
