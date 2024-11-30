@@ -9,7 +9,7 @@ import {MarkInvalidMixins} from '../invalid';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
-import {isEmpty, omit, removePathFromField} from '../util';
+import {removePathFromField} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -301,7 +301,6 @@ export function normalizeBoxPlot(
 
   const {scale, axis} = continuousAxisChannelDef;
   const title = getTitle(continuousAxisChannelDef);
-  const axisWithoutTitle = omit(axis, ['title']);
 
   const outlierLayersMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, {
     transform: [{filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`}],
@@ -312,8 +311,7 @@ export function normalizeBoxPlot(
         type: continuousAxisChannelDef.type,
         ...(title !== undefined ? {title} : {}),
         ...(scale !== undefined ? {scale} : {}),
-        // add axis without title since we already added the title above
-        ...(isEmpty(axisWithoutTitle) ? {} : {axis: axisWithoutTitle})
+        ...(axis !== undefined ? {axis} : {})
       },
       ...encodingWithoutSizeColorContinuousAxisAndTooltip,
       ...(color ? {color} : {}),
