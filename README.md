@@ -32,3 +32,7 @@ Vega-Lite gets significant contributions from its community. Please see the [con
   url = {http://idl.cs.washington.edu/papers/vega-lite},
 }
 ```
+
+## Ask AI
+
+[Vega-Lite](https://codeparrot.ai/oracle?owner=vega&repo=vega-lite) AI will help you understand this repository better. You can ask for code examples, installation guide, debugging help and much more.
