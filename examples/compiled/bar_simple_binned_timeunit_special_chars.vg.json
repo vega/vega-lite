@@ -31,7 +31,7 @@
         {"type": "formula", "expr": "toDate(datum[\"a.b\"])", "as": "a.b"},
         {
           "type": "formula",
-          "expr": "utcOffset('date', datum['a\\.b'], 1)",
+          "expr": "utcOffset('date', datum['a.b'], 1)",
           "as": "a.b_end"
         },
         {
