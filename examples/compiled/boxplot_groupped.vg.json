@@ -26,7 +26,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"Acceleration\"] < datum[\"lower_box_Acceleration\"] - 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"])) || (datum[\"Acceleration\"] > datum[\"upper_box_Acceleration\"] + 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"]))"
+          "expr": "(datum['Acceleration'] < datum['lower_box_Acceleration'] - 1.5 * (datum['upper_box_Acceleration'] - datum['lower_box_Acceleration'])) || (datum['Acceleration'] > datum['upper_box_Acceleration'] + 1.5 * (datum['upper_box_Acceleration'] - datum['lower_box_Acceleration']))"
         },
         {
           "type": "filter",
@@ -40,7 +40,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"lower_box_Acceleration\"] - 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"]) <= datum[\"Acceleration\"]) && (datum[\"Acceleration\"] <= datum[\"upper_box_Acceleration\"] + 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"]))"
+          "expr": "(datum['lower_box_Acceleration'] - 1.5 * (datum['upper_box_Acceleration'] - datum['lower_box_Acceleration']) <= datum['Acceleration']) && (datum['Acceleration'] <= datum['upper_box_Acceleration'] + 1.5 * (datum['upper_box_Acceleration'] - datum['lower_box_Acceleration']))"
         },
         {
           "type": "aggregate",
