@@ -624,7 +624,7 @@ describe('normalizeBoxIQR', () => {
       transform: [
         {
           filter:
-            '(datum["people"] < datum["lower_box_people"] - 1.5 * (datum["upper_box_people"] - datum["lower_box_people"])) || (datum["people"] > datum["upper_box_people"] + 1.5 * (datum["upper_box_people"] - datum["lower_box_people"]))'
+            "(datum['people'] < datum['lower_box_people'] - 1.5 * (datum['upper_box_people'] - datum['lower_box_people'])) || (datum['people'] > datum['upper_box_people'] + 1.5 * (datum['upper_box_people'] - datum['lower_box_people']))"
         }
       ],
       mark: {
@@ -644,7 +644,7 @@ describe('normalizeBoxIQR', () => {
       transform: [
         {
           filter:
-            '(datum["lower_box_people"] - 1.5 * (datum["upper_box_people"] - datum["lower_box_people"]) <= datum["people"]) && (datum["people"] <= datum["upper_box_people"] + 1.5 * (datum["upper_box_people"] - datum["lower_box_people"]))'
+            "(datum['lower_box_people'] - 1.5 * (datum['upper_box_people'] - datum['lower_box_people']) <= datum['people']) && (datum['people'] <= datum['upper_box_people'] + 1.5 * (datum['upper_box_people'] - datum['lower_box_people']))"
         },
         {
           aggregate: [

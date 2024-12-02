@@ -82,6 +82,36 @@ describe('compile/data/timeunit', () => {
       ]);
     });
 
+    it('should return a unit transform for bar with bandPosition=0 and escaped field name', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {field: "\\'a\\'", type: 'temporal', timeUnit: 'month', bandPosition: 0}
+        }
+      });
+
+      expect(assembleFromEncoding(model)).toEqual([
+        {
+          type: 'timeunit',
+          field: "\\'a\\'",
+          as: ["month_'a'", "month_'a'_end"],
+          units: ['month']
+        },
+        {
+          type: 'formula',
+          expr: "0.5 * timeOffset('month', datum['month_\\'a\\''], -1) + 0.5 * datum['month_\\'a\\'']",
+          as: `month_'a'_${OFFSETTED_RECT_START_SUFFIX}`
+        },
+
+        {
+          type: 'formula',
+          expr: "0.5 * datum['month_\\'a\\''] + 0.5 * datum['month_\\'a\\'_end']",
+          as: `month_'a'_${OFFSETTED_RECT_END_SUFFIX}`
+        }
+      ]);
+    });
+
     it('should return a timeunit transform with step for bar with bandPosition=0', () => {
       const model = parseUnitModel({
         data: {values: []},
