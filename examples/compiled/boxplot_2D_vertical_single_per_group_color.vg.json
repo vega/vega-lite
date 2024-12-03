@@ -29,7 +29,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"b\"] < datum[\"lower_box_b\"] - 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"])) || (datum[\"b\"] > datum[\"upper_box_b\"] + 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]))"
+          "expr": "(datum['b'] < datum['lower_box_b'] - 1.5 * (datum['upper_box_b'] - datum['lower_box_b'])) || (datum['b'] > datum['upper_box_b'] + 1.5 * (datum['upper_box_b'] - datum['lower_box_b']))"
         },
         {
           "type": "filter",
@@ -43,7 +43,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"lower_box_b\"] - 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]) <= datum[\"b\"]) && (datum[\"b\"] <= datum[\"upper_box_b\"] + 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]))"
+          "expr": "(datum['lower_box_b'] - 1.5 * (datum['upper_box_b'] - datum['lower_box_b']) <= datum['b']) && (datum['b'] <= datum['upper_box_b'] + 1.5 * (datum['upper_box_b'] - datum['lower_box_b']))"
         },
         {
           "type": "aggregate",

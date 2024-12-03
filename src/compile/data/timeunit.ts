@@ -10,7 +10,16 @@ import {
   normalizeTimeUnit
 } from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
-import {Dict, duplicate, entries, hash, isEmpty, replacePathInField, vals} from '../../util';
+import {
+  accessWithDatumToUnescapedPath,
+  Dict,
+  duplicate,
+  entries,
+  hash,
+  isEmpty,
+  replacePathInField,
+  vals
+} from '../../util';
 import {ModelWithField, isUnitModel} from '../model';
 import {DataFlowNode} from './dataflow';
 import {isRectBasedMark} from '../../mark';
@@ -218,7 +227,7 @@ function offsetExpr({timeUnit, field, reverse}: {timeUnit: TimeUnitParams; field
   const smallestUnit = getSmallestTimeUnitPart(unit);
   const {part, step} = getDateTimePartAndStep(smallestUnit, timeUnit.step);
   const offsetFn = utc ? 'utcOffset' : 'timeOffset';
-  const expr = `${offsetFn}('${part}', datum['${field}'], ${reverse ? -step : step})`;
+  const expr = `${offsetFn}('${part}', ${accessWithDatumToUnescapedPath(field)}, ${reverse ? -step : step})`;
   return expr;
 }
 
@@ -228,8 +237,8 @@ function offsetedRectFormulas(
   timeUnit: TimeUnitParams
 ): VgFormulaTransform[] {
   if (rectBandPosition !== undefined && rectBandPosition !== 0.5) {
-    const startExpr = `datum['${startField}']`;
-    const endExpr = `datum['${endField}']`;
+    const startExpr = accessWithDatumToUnescapedPath(startField);
+    const endExpr = accessWithDatumToUnescapedPath(endField);
     return [
       {
         type: 'formula',

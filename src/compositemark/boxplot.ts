@@ -9,7 +9,7 @@ import {MarkInvalidMixins} from '../invalid';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
-import {removePathFromField} from '../util';
+import {accessWithDatumToUnescapedPath, removePathFromField} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -143,7 +143,7 @@ export function normalizeBoxPlot(
     ...(size ? {size} : {}),
     color: {
       condition: {
-        test: `datum['lower_box_${continuousAxisChannelDef.field}'] >= datum['upper_box_${continuousAxisChannelDef.field}']`,
+        test: `${accessWithDatumToUnescapedPath(`lower_box_${continuousAxisChannelDef.field}`)} >= ${accessWithDatumToUnescapedPath(`upper_box_${continuousAxisChannelDef.field}`)}`,
         ...(color || {value: defaultBoxColor})
       }
     }
@@ -249,12 +249,12 @@ export function normalizeBoxPlot(
 
   // Tukey Box Plot
 
-  const lowerBoxExpr = `datum["lower_box_${continuousAxisChannelDef.field}"]`;
-  const upperBoxExpr = `datum["upper_box_${continuousAxisChannelDef.field}"]`;
+  const lowerBoxExpr = accessWithDatumToUnescapedPath(`lower_box_${continuousAxisChannelDef.field}`);
+  const upperBoxExpr = accessWithDatumToUnescapedPath(`upper_box_${continuousAxisChannelDef.field}`);
   const iqrExpr = `(${upperBoxExpr} - ${lowerBoxExpr})`;
   const lowerWhiskerExpr = `${lowerBoxExpr} - ${extent} * ${iqrExpr}`;
   const upperWhiskerExpr = `${upperBoxExpr} + ${extent} * ${iqrExpr}`;
-  const fieldExpr = `datum["${continuousAxisChannelDef.field}"]`;
+  const fieldExpr = accessWithDatumToUnescapedPath(continuousAxisChannelDef.field);
 
   const joinaggregateTransform: JoinAggregateTransform = {
     joinaggregate: boxParamsQuartiles(continuousAxisChannelDef.field),
@@ -397,15 +397,15 @@ function boxParams(
       : [
           // This is for the  original k-IQR, which we do not expose
           {
-            calculate: `datum["upper_box_${aliasedFieldName}"] - datum["lower_box_${aliasedFieldName}"]`,
+            calculate: `${accessWithDatumToUnescapedPath(`upper_box_${aliasedFieldName}`)} - ${accessWithDatumToUnescapedPath(`lower_box_${aliasedFieldName}`)}`,
             as: `iqr_${aliasedFieldName}`
           },
           {
-            calculate: `min(datum["upper_box_${aliasedFieldName}"] + datum["iqr_${aliasedFieldName}"] * ${extent}, datum["max_${aliasedFieldName}"])`,
+            calculate: `min(${accessWithDatumToUnescapedPath(`upper_box_${aliasedFieldName}`)} + ${accessWithDatumToUnescapedPath(`iqr_${aliasedFieldName}`)} * ${extent}, ${accessWithDatumToUnescapedPath(`max_${aliasedFieldName}`)})`,
             as: `upper_whisker_${aliasedFieldName}`
           },
           {
-            calculate: `max(datum["lower_box_${aliasedFieldName}"] - datum["iqr_${aliasedFieldName}"] * ${extent}, datum["min_${aliasedFieldName}"])`,
+            calculate: `max(${accessWithDatumToUnescapedPath(`lower_box_${aliasedFieldName}`)} - ${accessWithDatumToUnescapedPath(`iqr_${aliasedFieldName}`)} * ${extent}, ${accessWithDatumToUnescapedPath(`min_${aliasedFieldName}`)})`,
             as: `lower_whisker_${aliasedFieldName}`
           }
         ];

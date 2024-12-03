@@ -25,7 +25,7 @@
         {
           "transform": [
             {
-              "filter": "(datum[\"b\"] < datum[\"lower_box_b\"] - 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"])) || (datum[\"b\"] > datum[\"upper_box_b\"] + 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]))"
+              "filter": "(datum['b'] < datum['lower_box_b'] - 1.5 * (datum['upper_box_b'] - datum['lower_box_b'])) || (datum['b'] > datum['upper_box_b'] + 1.5 * (datum['upper_box_b'] - datum['lower_box_b']))"
             }
           ],
           "mark": {"type": "point", "style": "boxplot-outliers"},
@@ -41,7 +41,7 @@
         {
           "transform": [
             {
-              "filter": "(datum[\"lower_box_b\"] - 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]) <= datum[\"b\"]) && (datum[\"b\"] <= datum[\"upper_box_b\"] + 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]))"
+              "filter": "(datum['lower_box_b'] - 1.5 * (datum['upper_box_b'] - datum['lower_box_b']) <= datum['b']) && (datum['b'] <= datum['upper_box_b'] + 1.5 * (datum['upper_box_b'] - datum['lower_box_b']))"
             },
             {
               "aggregate": [
