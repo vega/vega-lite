@@ -30,11 +30,11 @@
           "groupby": ["Cylinders", "Origin"]
         },
         {
-          "calculate": "datum[\"center_Acceleration\"] + datum[\"extent_Acceleration\"]",
+          "calculate": "datum['center_Acceleration'] + datum['extent_Acceleration']",
           "as": "upper_Acceleration"
         },
         {
-          "calculate": "datum[\"center_Acceleration\"] - datum[\"extent_Acceleration\"]",
+          "calculate": "datum['center_Acceleration'] - datum['extent_Acceleration']",
           "as": "lower_Acceleration"
         }
       ],

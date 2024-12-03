@@ -30,12 +30,12 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum[\"center_Acceleration\"] + datum[\"extent_Acceleration\"]",
+          "expr": "datum['center_Acceleration'] + datum['extent_Acceleration']",
           "as": "upper_Acceleration"
         },
         {
           "type": "formula",
-          "expr": "datum[\"center_Acceleration\"] - datum[\"extent_Acceleration\"]",
+          "expr": "datum['center_Acceleration'] - datum['extent_Acceleration']",
           "as": "lower_Acceleration"
         },
         {

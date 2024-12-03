@@ -52,8 +52,8 @@
       "name": "data_1",
       "source": "data_0",
       "transform": [
-        {"type": "formula", "expr": "datum[\"ci0\"]", "as": "upper_ci1"},
-        {"type": "formula", "expr": "datum[\"ci1\"]", "as": "lower_ci1"}
+        {"type": "formula", "expr": "datum['ci0']", "as": "upper_ci1"},
+        {"type": "formula", "expr": "datum['ci1']", "as": "lower_ci1"}
       ]
     }
   ],
