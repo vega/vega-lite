@@ -149,7 +149,7 @@ export function isBinnedTimeUnit(
 }
 
 export function isBinnedTimeUnitString(timeUnit: TimeUnit | BinnedTimeUnit | undefined): timeUnit is BinnedTimeUnit {
-  return timeUnit && timeUnit.startsWith('binned');
+  return timeUnit?.startsWith('binned');
 }
 
 export const UTC_MULTI_TIMEUNIT_INDEX = {

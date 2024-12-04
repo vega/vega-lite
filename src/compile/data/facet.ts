@@ -213,7 +213,7 @@ export class FacetNode extends DataFlowNode {
     const hasSharedAxis: {row?: true; column?: true} = {};
     for (const headerChannel of HEADER_CHANNELS) {
       for (const headerType of HEADER_TYPES) {
-        const headers = (layoutHeaders[headerChannel] && layoutHeaders[headerChannel][headerType]) ?? [];
+        const headers = layoutHeaders[headerChannel]?.[headerType] ?? [];
         for (const header of headers) {
           if (header.axes?.length > 0) {
             hasSharedAxis[headerChannel] = true;

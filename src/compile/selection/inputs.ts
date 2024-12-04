@@ -25,7 +25,7 @@ const inputBindings: SelectionCompiler<'point'> = {
     const name = selCmpt.name;
     const proj = selCmpt.project;
     const bind = selCmpt.bind;
-    const init = selCmpt.init && selCmpt.init[0]; // Can only exist on single selections (one initial value).
+    const init = selCmpt.init?.[0]; // Can only exist on single selections (one initial value).
     const datum = nearest.defined(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
 
     proj.items.forEach((p, i) => {
