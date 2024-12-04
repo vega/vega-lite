@@ -337,7 +337,7 @@ export function channelHasField<F extends Field>(
   encoding: EncodingWithFacet<F>,
   channel: keyof EncodingWithFacet<F>
 ): boolean {
-  const channelDef = encoding && encoding[channel];
+  const channelDef = encoding?.[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
       return some(channelDef, fieldDef => !!fieldDef.field);
@@ -352,7 +352,7 @@ export function channelHasFieldOrDatum<F extends Field>(
   encoding: EncodingWithFacet<F>,
   channel: keyof EncodingWithFacet<F>
 ): boolean {
-  const channelDef = encoding && encoding[channel];
+  const channelDef = encoding?.[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
       return some(channelDef, fieldDef => !!fieldDef.field);

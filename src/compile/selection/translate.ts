@@ -83,8 +83,8 @@ function onDelta(
   const signal = signals.find(s => s.name === proj.signals[boundScales ? 'data' : 'visual']);
   const sizeSg = model.getSizeSignalRef(size).signal;
   const scaleCmpt = model.getScaleComponent(channel);
-  const scaleType = scaleCmpt && scaleCmpt.get('type');
-  const reversed = scaleCmpt && scaleCmpt.get('reverse'); // scale parsing sets this flag for fieldDef.sort
+  const scaleType = scaleCmpt?.get('type');
+  const reversed = scaleCmpt?.get('reverse'); // scale parsing sets this flag for fieldDef.sort
   const sign = !boundScales ? '' : channel === X ? (reversed ? '' : '-') : reversed ? '-' : '';
   const extent = `${anchor}.extent_${channel}`;
   const offset = `${sign}${delta}.${channel} / ${boundScales ? `${sizeSg}` : `span(${extent})`}`;
