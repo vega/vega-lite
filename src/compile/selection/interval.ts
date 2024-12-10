@@ -61,7 +61,7 @@ const interval: SelectionCompiler<'interval'> = {
     const init = selCmpt.init ? selCmpt.init[0] : null;
 
     signals.push(
-      ...channels.reduce((arr, proj) => arr.concat(channelSignals(model, selCmpt, proj, init && init[proj.index])), [])
+      ...channels.reduce((arr, proj) => arr.concat(channelSignals(model, selCmpt, proj, init?.[proj.index])), [])
     );
 
     if (!model.hasProjection) {
@@ -119,10 +119,10 @@ const interval: SelectionCompiler<'interval'> = {
       const projection = stringValue(model.projectionName());
       const centerSg = model.projectionName() + CENTER;
       const {x, y} = selCmpt.project.hasChannel;
-      const xvname = x && x.signals.visual;
-      const yvname = y && y.signals.visual;
-      const xinit = x ? init && init[x.index] : `${centerSg}[0]`;
-      const yinit = y ? init && init[y.index] : `${centerSg}[1]`;
+      const xvname = x?.signals.visual;
+      const yvname = y?.signals.visual;
+      const xinit = x ? init?.[x.index] : `${centerSg}[0]`;
+      const yinit = y ? init?.[y.index] : `${centerSg}[1]`;
       const sizeSg = (layout: keyof LayoutSizeIndex) => model.getSizeSignalRef(layout).signal;
       const bbox =
         `[` +
