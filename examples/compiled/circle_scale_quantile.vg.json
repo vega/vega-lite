@@ -98,9 +98,18 @@
       "title": "Quantile",
       "fill": "color",
       "labelOverlap": "greedy",
+      "type": "symbol",
       "symbolType": "circle",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
-      "size": "size"
+      "size": "size",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fillOpacity": {"value": 0.7},
+            "opacity": {"value": 0.7},
+            "stroke": {"value": "transparent"}
+          }
+        }
+      }
     }
   ]
 }

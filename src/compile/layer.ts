@@ -1,4 +1,4 @@
-import {Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
+import {NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {array} from 'vega-util';
 import {Config} from '../config';
 import * as log from '../log';
@@ -13,6 +13,8 @@ import {parseLayerLayoutSize} from './layoutsize/parse';
 import {assembleLegends} from './legend/assemble';
 import {Model} from './model';
 import {assembleLayerSelectionMarks} from './selection/assemble';
+import {FullVgLegend as VgLegend} from './legend/component';
+
 import {UnitModel} from './unit';
 import {isTimerSelection} from './selection';
 import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message';

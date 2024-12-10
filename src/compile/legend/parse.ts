@@ -126,7 +126,10 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
 
   for (const property of LEGEND_COMPONENT_PROPERTIES) {
     if (
+      // Continuous and discrete gradients ignore symbol properties
       (legendType === 'gradient' && property.startsWith('symbol')) ||
+      (legendType === 'discrete' && property.startsWith('symbol')) ||
+      // Symbols ignore gradient properties
       (legendType === 'symbol' && property.startsWith('gradient'))
     ) {
       continue;

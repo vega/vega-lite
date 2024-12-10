@@ -153,6 +153,34 @@ describe('compile/legend', () => {
       expect(def.title).toBe('foo');
     });
 
+    it('should produce a Vega legend with gradientLength for color with a discrete scale type', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          color: {
+            field: 'a',
+            type: 'quantitative',
+            scale: {type: 'quantile'},
+            legend: {
+              gradientLength: 100
+            }
+          }
+        }
+      });
+
+      const def = parseLegendForChannel(model, COLOR).combine();
+      // TODO: Check if we are open to enabling toMatchSnapshot testing instead?
+      expect(def).toEqual({
+        disable: false,
+        gradientLength: 100,
+        labelOverlap: 'greedy',
+        stroke: 'color',
+        title: 'a',
+        type: 'discrete'
+      });
+    });
+
     [SIZE, SHAPE, OPACITY, STROKEWIDTH].forEach(channel => {
       it(`should produce a Vega legend object with correct type and scale for ${channel}`, () => {
         const spec: NormalizedUnitSpec = {
