@@ -1,5 +1,18 @@
 
 
+# [5.23.0](https://github.com/vega/vega-lite/compare/v5.21.0...v5.23.0) (2024-12-10)
+
+
+### Bug Fixes
+
+* **#9480:** apply proper quote escapes for the datum access expression ([#9479](https://github.com/vega/vega-lite/issues/9479)) ([6a73892](https://github.com/vega/vega-lite/commit/6a7389272e179fadc3d502bf2f80e319241029c6)), closes [#9480](https://github.com/vega/vega-lite/issues/9480)
+* links in docs ([#9450](https://github.com/vega/vega-lite/issues/9450)) ([4098609](https://github.com/vega/vega-lite/commit/409860957c46d07f9fe449aaeb6d86ef50c89ec9))
+
+
+### Features
+
+* frame animations with time encoding and timer param ([#8921](https://github.com/vega/vega-lite/issues/8921)) ([e3f9620](https://github.com/vega/vega-lite/commit/e3f9620ed3d3284bb4acd66cc39074d579b80903))
+
 # [5.21.0](https://github.com/vega/vega-lite/compare/v5.20.1...v5.21.0) (2024-08-28)
 
 
