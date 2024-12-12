@@ -484,7 +484,7 @@ export function stringify(data: any) {
   const seen: any[] = [];
 
   return (function _stringify(node: any) {
-    if (node && node.toJSON && typeof node.toJSON === 'function') {
+    if (node?.toJSON && typeof node.toJSON === 'function') {
       node = node.toJSON();
     }
 
