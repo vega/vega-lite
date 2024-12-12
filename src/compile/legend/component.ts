@@ -1,10 +1,24 @@
-import {Legend as VgLegend} from 'vega';
+import {Legend as VgLegend, LegendType} from 'vega';
 import {NonPositionScaleChannel} from '../../channel';
 import {COMMON_LEGEND_PROPERTY_INDEX, LegendInternal} from '../../legend';
 import {Flag, keys} from '../../util';
 import {Split} from '../split';
 
-export type LegendComponentProps = VgLegend & {
+/** Update LegendType to support a third value (discrete), which is needed for discrete gradient legends
+ * https://github.com/vega/vega/blob/main/packages/vega-parser/src/parsers/legend.js */
+export type FullLegendType = LegendType | 'discrete';
+
+/** Update LegendType to support a third value (discrete), which is needed for discrete gradient legends
+ * https://github.com/vega/vega/blob/main/packages/vega-parser/src/parsers/legend.js */
+export type FullVgLegend = Omit<VgLegend, 'type'> & {
+  /**
+   * The type of legend to include. One of `"symbol"` for discrete symbol legends, `"gradient"` for a continuous color gradient, or `"discrete"` for a discrete color gradient.
+   * If gradient is used only the fill, stroke, and length scale parameters are considered. If unspecified, the type will be inferred based on the scale parameters used and their backing scale types.
+   * TODO: Remove FullLegendType override after base type in VgLegend is updated */
+  type?: FullLegendType;
+};
+
+export type LegendComponentProps = FullVgLegend & {
   labelExpr?: string;
   selections?: string[];
   disable?: boolean;
