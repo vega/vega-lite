@@ -40,6 +40,7 @@ const loader = vega.loader({
 });
 
 const editorURL = 'https://vega.github.io/editor/';
+const MIDDLE_MOUSE_CLICK = 1;
 
 /* Anchors */
 selectAll('h2, h3, h4, h5, h6').each(function (this: d3.BaseType) {
@@ -92,13 +93,16 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      .on('click', event => {
-        post(window, editorURL, {
-          mode: 'vega-lite',
-          spec: compactStringify(spec),
-          config: vgSpec.config,
-          renderer: 'svg'
-        });
+      .on('click mouseup', event => {
+        // Check if it's a regular left click or middle mouse click
+        if (event.type === 'click' || (event.type === 'mouseup' && event.button === MIDDLE_MOUSE_CLICK)) {
+          post(window, editorURL, {
+            mode: 'vega-lite',
+            spec: compactStringify(spec),
+            config: vgSpec.config,
+            renderer: 'svg'
+          });
+        }
         // remove as any when d3 typings are updated
         (event as any).preventDefault();
       });
