@@ -62,4 +62,5 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 - [An interactive Dashboard](https://paginas.fe.up.pt/~jlborges/vis/cars_dashboard/db.html) by [@jlborges](https://observablehq.com/@jlmborges)
 - [Dashboard for the Effects of Labor Market Subsidies in Austria](https://observablehq.com/@schmoigl/effektivitat) by [@schmoigl](https://observablehq.com/@schmoigl)
 - [Size of People around the World](https://observablehq.com/@schmoigl/makeover2) by [@schmoigl](https://observablehq.com/@schmoigl)
+- [Diverging Dot Plot](https://observablehq.com/d/2d34f7b4448f1969) by [@shadfrigui](https://x.com/shadfrigui)
 
