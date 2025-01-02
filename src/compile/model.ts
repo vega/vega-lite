@@ -1,7 +1,6 @@
 import {
   AnchorValue,
   Axis as VgAxis,
-  Legend as VgLegend,
   NewSignal,
   Projection as VgProjection,
   Signal,
@@ -56,7 +55,7 @@ import {
   LayoutSizeType
 } from './layoutsize/component';
 import {assembleLegends} from './legend/assemble';
-import {LegendComponentIndex} from './legend/component';
+import {LegendComponentIndex, FullVgLegend as VgLegend} from './legend/component';
 import {parseLegend} from './legend/parse';
 import {assembleProjections} from './projection/assemble';
 import {ProjectionComponent} from './projection/component';
