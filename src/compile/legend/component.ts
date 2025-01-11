@@ -43,7 +43,7 @@ const LEGEND_COMPONENT_PROPERTY_INDEX: Flag<keyof LegendComponentProps> = {
 
 export const LEGEND_COMPONENT_PROPERTIES = keys(LEGEND_COMPONENT_PROPERTY_INDEX);
 
-export class LegendComponent extends Split<LegendComponentProps> { }
+export class LegendComponent extends Split<LegendComponentProps> {}
 
 export type LegendComponentIndex = Partial<Record<NonPositionScaleChannel, LegendComponent>>;
 
