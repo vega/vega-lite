@@ -50,6 +50,7 @@
     "data": "rsync -r node_modules/vega-datasets/data/* site/data",
     "format": "eslint . --fix && yarn prettierbase --write",
     "lint": "eslint . && yarn prettierbase --check",
+    "prepare": "yarn build",
     "prebuild": "yarn clean:build",
     "prebuild:examples": "yarn build:only",
     "prebuild:examples-full": "yarn build:only",
