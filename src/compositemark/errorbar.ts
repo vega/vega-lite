@@ -21,7 +21,7 @@ import {Step} from '../spec/base';
 import {NormalizedUnitSpec} from '../spec/unit';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
-import {replaceAll, titleCase} from '../util';
+import {accessWithDatumToUnescapedPath, replaceAll, titleCase} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -96,7 +96,7 @@ export interface ErrorBarConfig extends ErrorBarPartsMixins {
 
   /**
    * The extent of the rule. Available options include:
-   * - `"ci"`: Extend the rule to the confidence interval of the mean.
+   * - `"ci"`: Extend the rule to the 95% bootstrapped confidence interval of the mean.
    * - `"stderr"`: The size of rule are set to the value of standard error, extending from the mean.
    * - `"stdev"`: The size of rule are set to the value of standard deviation, extending from the mean.
    * - `"iqr"`: Extend the rule to the q1 and q3.
@@ -464,11 +464,11 @@ function errorBarAggregationAndCalculation<
 
       postAggregateCalculates = [
         {
-          calculate: `datum["center_${continuousFieldName}"] + datum["extent_${continuousFieldName}"]`,
+          calculate: `${accessWithDatumToUnescapedPath(`center_${continuousFieldName}`)} + ${accessWithDatumToUnescapedPath(`extent_${continuousFieldName}`)}`,
           as: `upper_${continuousFieldName}`
         },
         {
-          calculate: `datum["center_${continuousFieldName}"] - datum["extent_${continuousFieldName}"]`,
+          calculate: `${accessWithDatumToUnescapedPath(`center_${continuousFieldName}`)} - ${accessWithDatumToUnescapedPath(`extent_${continuousFieldName}`)}`,
           as: `lower_${continuousFieldName}`
         }
       ];
@@ -528,26 +528,29 @@ function errorBarAggregationAndCalculation<
     if (inputType === 'aggregated-upper-lower') {
       tooltipSummary = [];
       postAggregateCalculates = [
-        {calculate: `datum["${continuousAxisChannelDef2.field}"]`, as: `upper_${continuousFieldName}`},
-        {calculate: `datum["${continuousFieldName}"]`, as: `lower_${continuousFieldName}`}
+        {
+          calculate: accessWithDatumToUnescapedPath(continuousAxisChannelDef2.field),
+          as: `upper_${continuousFieldName}`
+        },
+        {calculate: accessWithDatumToUnescapedPath(continuousFieldName), as: `lower_${continuousFieldName}`}
       ];
     } else if (inputType === 'aggregated-error') {
       tooltipSummary = [{fieldPrefix: '', titlePrefix: continuousFieldName}];
       postAggregateCalculates = [
         {
-          calculate: `datum["${continuousFieldName}"] + datum["${continuousAxisChannelDefError.field}"]`,
+          calculate: `${accessWithDatumToUnescapedPath(continuousFieldName)} + ${accessWithDatumToUnescapedPath(continuousAxisChannelDefError.field)}`,
           as: `upper_${continuousFieldName}`
         }
       ];
 
       if (continuousAxisChannelDefError2) {
         postAggregateCalculates.push({
-          calculate: `datum["${continuousFieldName}"] + datum["${continuousAxisChannelDefError2.field}"]`,
+          calculate: `${accessWithDatumToUnescapedPath(continuousFieldName)} + ${accessWithDatumToUnescapedPath(continuousAxisChannelDefError2.field)}`,
           as: `lower_${continuousFieldName}`
         });
       } else {
         postAggregateCalculates.push({
-          calculate: `datum["${continuousFieldName}"] - datum["${continuousAxisChannelDefError.field}"]`,
+          calculate: `${accessWithDatumToUnescapedPath(continuousFieldName)} - ${accessWithDatumToUnescapedPath(continuousAxisChannelDefError.field)}`,
           as: `lower_${continuousFieldName}`
         });
       }
@@ -556,7 +559,7 @@ function errorBarAggregationAndCalculation<
     for (const postAggregateCalculate of postAggregateCalculates) {
       tooltipSummary.push({
         fieldPrefix: postAggregateCalculate.as.substring(0, 6),
-        titlePrefix: replaceAll(replaceAll(postAggregateCalculate.calculate, 'datum["', ''), '"]', '')
+        titlePrefix: replaceAll(replaceAll(postAggregateCalculate.calculate, "datum['", ''), "']", '')
       });
     }
   }

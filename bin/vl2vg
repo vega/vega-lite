@@ -4,7 +4,6 @@
 
 const {createWriteStream} = require('fs');
 const vegaLite = require('..');
-const compactStringify = require('json-stringify-pretty-compact');
 const read = require('./read');
 const args = require('./args');
 
@@ -13,13 +12,14 @@ const arg = args('vega');
 // load spec, compile vg spec
 read(arg._[0]).then(text => compile(JSON.parse(text)));
 
-function compile(vlSpec) {
+async function compile(vlSpec) {
   // @ts-ignore
   const vgSpec = vegaLite.compile(vlSpec).spec;
 
   const file = arg._[1] || null;
   const out = file ? createWriteStream(file) : process.stdout;
   if (arg.p) {
+    const compactStringify = (await import('json-stringify-pretty-compact')).default;
     out.write(compactStringify(vgSpec) + '\n');
   } else {
     out.write(JSON.stringify(vgSpec) + '\n');

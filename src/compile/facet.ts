@@ -24,6 +24,8 @@ import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 import {assembleFacetSignals} from './selection/assemble';
+import {isTimerSelection} from './selection';
+import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message';
 
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,
@@ -113,6 +115,10 @@ export class FacetModel extends ModelWithField {
     // within its unit.
     this.child.parseSelections();
     this.component.selection = this.child.component.selection;
+
+    if (Object.values(this.component.selection).some(selCmpt => isTimerSelection(selCmpt))) {
+      log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
+    }
   }
 
   public parseMarkGroup() {

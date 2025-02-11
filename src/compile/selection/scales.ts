@@ -99,5 +99,5 @@ export function domain(model: UnitModel, channel: ScaleChannel) {
 }
 
 function isTopLevelLayer(model: Model): boolean {
-  return model.parent && isLayerModel(model.parent) && (!model.parent.parent ?? isTopLevelLayer(model.parent.parent));
+  return model.parent && isLayerModel(model.parent) && (!model.parent.parent || isTopLevelLayer(model.parent.parent));
 }

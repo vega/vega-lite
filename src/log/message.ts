@@ -1,7 +1,7 @@
 /**
  * Collection of all Vega-Lite Error Messages
  */
-import {AggregateOp, SignalRef} from 'vega';
+import {AggregateOp, SignalRef, stringValue} from 'vega';
 import {Aggregate} from '../aggregate';
 import {
   Channel,
@@ -10,7 +10,8 @@ import {
   getSizeChannel,
   OffsetScaleChannel,
   PositionScaleChannel,
-  ScaleChannel
+  ScaleChannel,
+  SingleDefUnitChannel
 } from '../channel';
 import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef';
 import {SplitParentProperty} from '../compile/split';
@@ -25,6 +26,8 @@ import {GenericSpec} from '../spec';
 import {Type} from '../type';
 import {stringify} from '../util';
 import {VgSortField} from '../vega.schema';
+import {SelectionProjection} from '../compile/selection/project';
+import {ParameterExtent} from '../selection';
 
 export function invalidSpec(spec: GenericSpec<any, any, any, any>) {
   return `Invalid specification ${stringify(
@@ -110,6 +113,31 @@ export function noSuchRepeatedValue(field: string) {
 
 export function columnsNotSupportByRowCol(type: 'facet' | 'repeat') {
   return `The "columns" property cannot be used when "${type}" has nested row/column.`;
+}
+
+export const MULTIPLE_TIMER_ANIMATION_SELECTION =
+  'Multiple timer selections in one unit spec are not supported. Ignoring all but the first.';
+
+export const MULTI_VIEW_ANIMATION_UNSUPPORTED = 'Animation involving facet, layer, or concat is currently unsupported.';
+
+export function selectionAsScaleDomainWithoutField(field: string) {
+  return (
+    'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
+    `Using "field": ${stringValue(field)}.`
+  );
+}
+
+export function selectionAsScaleDomainWrongEncodings(
+  encodings: SelectionProjection[],
+  encoding: SingleDefUnitChannel,
+  extent: ParameterExtent,
+  field: string
+) {
+  return (
+    (!encodings.length ? 'No ' : 'Multiple ') +
+    `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.param)}. ` +
+    `Using "field": ${stringValue(field)}.`
+  );
 }
 
 // CONCAT / REPEAT

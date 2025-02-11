@@ -293,6 +293,23 @@ export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'd
   return `${datum}[${stringValue(splitAccessPath(path).join('.'))}]`;
 }
 
+/**
+ * Return access with datum to **an unescaped path**.
+ *
+ * ```ts
+ * console.log(accessWithDatumToUnescapedPath("vega's favorite"))
+ * // "datum['vega\\'s favorite']"
+ * ```
+ *
+ * @param path The unescaped path name. E.g., `"a.b"`, `"vega's favorite"`. (Note
+ * that the field defs take escaped strings like `"a\\.b"`, `"vega\\'s favorite"`,
+ * but this function is for the unescaped field/path)
+ */
+export function accessWithDatumToUnescapedPath(unescapedPath: string) {
+  const singleQuoteEscapedPath = unescapedPath.replaceAll("'", "\\'");
+  return `datum['${singleQuoteEscapedPath}']`;
+}
+
 function escapePathAccess(string: string) {
   return string.replace(/(\[|\]|\.|'|")/g, '\\$1');
 }
@@ -467,7 +484,7 @@ export function stringify(data: any) {
   const seen: any[] = [];
 
   return (function _stringify(node: any) {
-    if (node && node.toJSON && typeof node.toJSON === 'function') {
+    if (node?.toJSON && typeof node.toJSON === 'function') {
       node = node.toJSON();
     }
 

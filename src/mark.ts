@@ -182,6 +182,8 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
    */
   y2?: number | 'height' | ES; // Vega doesn't have 'height'
 
+  time?: number | ES;
+
   /**
    * Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.
    *

@@ -30,7 +30,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"Body Mass (g)\"] < datum[\"lower_box_Body Mass (g)\"] - 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"])) || (datum[\"Body Mass (g)\"] > datum[\"upper_box_Body Mass (g)\"] + 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]))"
+          "expr": "(datum['Body Mass (g)'] < datum['lower_box_Body Mass (g)'] - 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)'])) || (datum['Body Mass (g)'] > datum['upper_box_Body Mass (g)'] + 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)']))"
         },
         {
           "type": "filter",
@@ -44,7 +44,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"lower_box_Body Mass (g)\"] - 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]) <= datum[\"Body Mass (g)\"]) && (datum[\"Body Mass (g)\"] <= datum[\"upper_box_Body Mass (g)\"] + 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]))"
+          "expr": "(datum['lower_box_Body Mass (g)'] - 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)']) <= datum['Body Mass (g)']) && (datum['Body Mass (g)'] <= datum['upper_box_Body Mass (g)'] + 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)']))"
         },
         {
           "type": "aggregate",

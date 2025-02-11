@@ -1,6 +1,6 @@
 import {parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
-import {selectionCompilers, SelectionComponent, STORE} from '.';
+import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
 import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection';
 import {Dict, duplicate, entries, replacePathInField, varName} from '../../util';
@@ -10,12 +10,19 @@ import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {DataSourceType} from '../../data';
 import {ParameterPredicate} from '../../predicate';
+import {
+  MULTIPLE_TIMER_ANIMATION_SELECTION,
+  selectionAsScaleDomainWithoutField,
+  selectionAsScaleDomainWrongEncodings
+} from '../../log/message';
 
 export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
   if (!selDefs || !selDefs.length) return selCmpts;
+
+  let nTimerSelections = 0;
 
   for (const def of selDefs) {
     const name = varName(def.name);
@@ -52,12 +59,26 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
       events: isString(defaults.on) ? parseSelector(defaults.on, 'scope') : array(duplicate(defaults.on))
     } as any);
 
+    if (isTimerSelection(selCmpt)) {
+      nTimerSelections++;
+      // check for multiple timer selections and ignore all but the first one
+      if (nTimerSelections > 1) {
+        delete selCmpts[name];
+        continue;
+      }
+    }
+
     const def_ = duplicate(def); // defensive copy to prevent compilers from causing side effects
     for (const c of selectionCompilers) {
       if (c.defined(selCmpt) && c.parse) {
         c.parse(model, selCmpt, def_);
       }
     }
+  }
+
+  if (nTimerSelections > 1) {
+    // if multiple timer selections were found, issue a warning
+    warn(MULTIPLE_TIMER_ANIMATION_SELECTION);
   }
 
   return selCmpts;
@@ -115,20 +136,13 @@ export function parseSelectionExtent(model: Model, name: string, extent: Paramet
   if (!encoding && !field) {
     field = selCmpt.project.items[0].field;
     if (selCmpt.project.items.length > 1) {
-      warn(
-        'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
-          `Using "field": ${stringValue(field)}.`
-      );
+      warn(selectionAsScaleDomainWithoutField(field));
     }
   } else if (encoding && !field) {
     const encodings = selCmpt.project.items.filter(p => p.channel === encoding);
     if (!encodings.length || encodings.length > 1) {
       field = selCmpt.project.items[0].field;
-      warn(
-        (!encodings.length ? 'No ' : 'Multiple ') +
-          `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.param)}. ` +
-          `Using "field": ${stringValue(field)}.`
-      );
+      warn(selectionAsScaleDomainWrongEncodings(encodings, encoding, extent, field));
     } else {
       field = encodings[0].field;
     }

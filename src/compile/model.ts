@@ -599,25 +599,6 @@ export abstract class Model {
   }
 
   /**
-   * Corrects the data references in marks after assemble.
-   */
-  public correctDataNames = (mark: VgMarkGroup) => {
-    // TODO: make this correct
-
-    // for normal data references
-    if (mark.from?.data) {
-      mark.from.data = this.lookupDataSource(mark.from.data);
-    }
-
-    // for access to facet data
-    if (mark.from?.facet?.data) {
-      mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
-    }
-
-    return mark;
-  };
-
-  /**
    * Traverse a model's hierarchy to get the scale component for a particular channel.
    */
   public getScaleComponent(channel: ScaleChannel): ScaleComponent {

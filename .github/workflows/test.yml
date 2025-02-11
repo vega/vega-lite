@@ -35,7 +35,7 @@ jobs:
 
   runtime-lint-coverage:
     name: Runtime, Linting, and Coverage
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v4
@@ -68,7 +68,7 @@ jobs:
         run: yarn jest test/ --collectCoverage=true
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4.6.0
+        uses: codecov/codecov-action@v5.3.1
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
