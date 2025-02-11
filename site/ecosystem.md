@@ -82,6 +82,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Liminoid](https://liminoid.io/), toolkit for building interactive analytics applications with Python and WebAssembly. Can pass Python data to JavaScript callbacks which render Vega/Vega-Lite specifications.
 - [Neptune.ai](https://neptune.ai), machine learning experiment tracking tool with Vega-Lite and Altair visualizations.
 - [Livebook](https://github.com/elixir-nx/livebook), Interactive and collaborative code notebooks with Vega-Lite visualizations.
+- [Hex](https://hex.tech) is a data science platform that uses Vega-Lite visualizations.
 
 ## Tools that use Vega-Lite
 
