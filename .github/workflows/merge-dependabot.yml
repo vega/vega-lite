@@ -3,7 +3,7 @@ name: Auto-merge Dependabot PRs
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'
+    - cron: "0 * * * *"
 
 jobs:
   auto_merge:
@@ -15,5 +15,5 @@ jobs:
       - uses: akheron/dependabot-cron-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          auto-merge: 'minor'
-          merge-method: 'squash'
+          auto-merge: "minor"
+          merge-method: "squash"

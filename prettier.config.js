@@ -11,11 +11,10 @@ const config = {
       options: {
         bracketSpacing: false,
         singleQuote: true,
-        arrowParens: 'avoid',
-        trailingComma: 'none',
-      },
-    },
-  ],
+        trailingComma: 'all'
+      }
+    }
+  ]
 };
 
 export default config;

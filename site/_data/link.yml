@@ -5,19 +5,19 @@ Spec:
   link: spec.html
 CompositeUnitSpec:
   name: SingleViewSpec
-  link: 'spec.html#single'
+  link: "spec.html#single"
 FacetedUnitSpec:
-  name: 'UnitSpec'
-  link: 'spec.html#single'
+  name: "UnitSpec"
+  link: "spec.html#single"
 UnitSpec:
-  link: 'spec.html#single'
+  link: "spec.html#single"
 LayerSpec:
-  link: 'layer.html'
+  link: "layer.html"
 
 AutoSizeParams:
-  link: 'size.html#autosize'
+  link: "size.html#autosize"
 ViewBackground:
-  link: 'spec.html#view-background'
+  link: "spec.html#view-background"
 RowCol:
   name: Object
 AutosizeType:
@@ -32,19 +32,19 @@ FontStyle:
 
 ## Facet Spec
 FacetMapping:
-  link: 'facet.html#mapping'
+  link: "facet.html#mapping"
 Header:
-  link: 'facet.html#header'
+  link: "facet.html#header"
 
 # Data
 Data:
-  link: 'data.html'
+  link: "data.html"
 DataFormat:
-  link: 'data.html#format'
+  link: "data.html#format"
 InlineDataSet:
-  name: 'Object[]'
+  name: "Object[]"
 Parse:
-  name: 'Object'
+  name: "Object"
 FieldName:
   name: String
 
@@ -52,41 +52,41 @@ FieldName:
 TitleAnchor:
   name: Null | String
 TitleParams:
-  link: 'title.html#params'
+  link: "title.html#params"
 
 # Transform
 Transform:
-  link: 'transform.html'
+  link: "transform.html"
 
 AggregateOp:
-  link: 'aggregate.html#ops'
+  link: "aggregate.html#ops"
 AggregatedFieldDef:
-  link: 'aggregate.html#aggregate-op-def'
+  link: "aggregate.html#aggregate-op-def"
 NonArgAggregateOp:
   name: AggregateOp
-  link: 'aggregate.html#ops'
+  link: "aggregate.html#ops"
 AggregateOpDef:
-  link: 'transform.html#aggregate-op-def'
+  link: "transform.html#aggregate-op-def"
 
 Bin:
-  link: 'bin.html'
+  link: "bin.html"
 BinParams:
-  link: 'bin.html#bin-parameters'
+  link: "bin.html#bin-parameters"
 BinExtent:
   name: Array
 
 TimeUnit:
-  link: 'timeunit.html'
+  link: "timeunit.html"
 TimeUnitParams:
-  link: 'timeunit.html#params'
+  link: "timeunit.html#params"
 
 LookupData:
-  link: 'lookup.html#lookup-data'
+  link: "lookup.html#lookup-data"
 LookupSelection:
-  link: 'lookup.html#lookup-selection'
+  link: "lookup.html#lookup-selection"
 
 Window:
-  link: 'window.html'
+  link: "window.html"
 
 # Transform - Impute
 ImputeSequence:
@@ -100,11 +100,11 @@ Day:
 
 # Transform - Window
 WindowFieldDef:
-  link: 'window.html#field-def'
+  link: "window.html#field-def"
 SortField:
-  link: 'window.html#sort-field-def'
+  link: "window.html#sort-field-def"
 WindowOnlyOp:
-  link: 'window.html#ops'
+  link: "window.html#ops"
 
 # Mark
 AnyMark:
@@ -119,261 +119,261 @@ SymbolShape:
 LabelOverlap:
   name: String
 ConditionalAxisColor:
-  link: 'axis.html#conditional'
+  link: "axis.html#conditional"
 ConditionalAxisNumber:
-  link: 'axis.html#conditional'
+  link: "axis.html#conditional"
 ConditionalAxisString:
-  link: 'axis.html#conditional'
+  link: "axis.html#conditional"
 ConditionalAxisNumberArray:
-  link: 'axis.html#conditional'
+  link: "axis.html#conditional"
 ConditionalAxisLabelAlign:
   name: ConditionalAxisString
-  link: 'axis.html#conditional'
+  link: "axis.html#conditional"
 ConditionalAxisLabelBaseline:
   name: ConditionalAxisString
-  link: 'axis.html#conditional'
+  link: "axis.html#conditional"
 ConditionalAxisLabelFontStyle:
   name: ConditionalAxisString
-  link: 'axis.html#conditional'
+  link: "axis.html#conditional"
 ConditionalAxisLabelFontWeight:
   name: ConditionalAxisString
-  link: 'axis.html#conditional'
+  link: "axis.html#conditional"
 
 # Config
 Config:
-  link: 'config.html'
+  link: "config.html"
 AxisConfig:
-  link: 'axis.html#config'
+  link: "axis.html#config"
 LegendConfig:
-  link: 'legend.html#config'
+  link: "legend.html#config"
 MarkConfig:
-  link: 'mark.html#config'
+  link: "mark.html#config"
 AreaConfig:
-  link: 'area.html#config'
+  link: "area.html#config"
 BarConfig:
-  link: 'bar.html#config'
+  link: "bar.html#config"
 HeaderConfig:
-  link: 'header.html#config'
+  link: "header.html#config"
 LineConfig:
-  link: 'line.html#config'
+  link: "line.html#config"
 ProjectionConfig:
-  link: 'projection.html#config'
+  link: "projection.html#config"
 RangeConfig:
-  link: 'scale.html#range-config'
+  link: "scale.html#range-config"
 RectConfig:
-  link: 'rect.html#config'
+  link: "rect.html#config"
 ScaleConfig:
-  link: 'scale.html#config'
+  link: "scale.html#config"
 SelectionConfig:
-  link: 'parameter.html#config'
+  link: "parameter.html#config"
 StyleConfigIndex:
   name: Object
 TextConfig:
-  link: 'text.html#config'
+  link: "text.html#config"
 TickConfig:
-  link: 'tick.html#config'
+  link: "tick.html#config"
 TitleConfig:
-  link: 'title.html#config'
+  link: "title.html#config"
 ViewConfig:
-  link: 'spec.html#config'
+  link: "spec.html#config"
 CompositionConfig:
-  link: 'config.html#composition-config'
+  link: "config.html#composition-config"
 
 # Encoding
 FacetedEncoding:
   name: Encoding
-  link: 'encoding.html'
+  link: "encoding.html"
 Encoding:
-  link: 'encoding.html'
+  link: "encoding.html"
 
 Type:
   link: type.html
 SingleDefChannel:
-  name: 'Channel'
-  link: 'encoding.html#channels'
+  name: "Channel"
+  link: "encoding.html#channels"
 SingleDefUnitChannel:
-  name: 'Channel'
-  link: 'encoding.html#channels'
+  name: "Channel"
+  link: "encoding.html#channels"
 AllSortString:
   name: String
 
 # Channel Definitions
 NumericMarkPropDef:
   name: MarkPropDef
-  link: 'encoding.html#mark-prop'
+  link: "encoding.html#mark-prop"
 NumericArrayPropDef:
   name: MarkPropDef
-  link: 'encoding.html#mark-prop'
+  link: "encoding.html#mark-prop"
 StringArrayPropDef:
   name: MarkPropDef
-  link: 'encoding.html#mark-prop'
+  link: "encoding.html#mark-prop"
 ShapeDef:
   name: MarkPropDef
-  link: 'encoding.html#mark-prop'
+  link: "encoding.html#mark-prop"
 ColorDef:
   name: MarkPropDef
-  link: 'encoding.html#mark-prop'
+  link: "encoding.html#mark-prop"
 
 TextDef:
   name: TextFieldDef
-  link: 'encoding.html#text-field-def'
+  link: "encoding.html#text-field-def"
 
 FieldDefWithCondition:
-  link: 'encoding.html#href-field-def'
+  link: "encoding.html#href-field-def"
 ValueDefWithCondition:
-  link: 'encoding.html#href-value-def'
+  link: "encoding.html#href-value-def"
 
 ConditionalMarkPropFieldOrDatumDef:
   name: ConditionalFieldDef
-  link: 'condition.html#field'
+  link: "condition.html#field"
 ConditionalTextFieldDef:
   name: ConditionFieldDef
-  link: 'condition.html#field'
+  link: "condition.html#field"
 ConditionalFieldDef:
-  link: 'condition.html#field'
+  link: "condition.html#field"
 ConditionalValueDef:
-  link: 'condition.html#value'
+  link: "condition.html#value"
 ConditionalColorValueDef:
   name: ConditionalValueDef
-  link: 'condition.html#value'
+  link: "condition.html#value"
 ConditionalTextValueDef:
   name: ConditionalValueDef
-  link: 'condition.html#value'
+  link: "condition.html#value"
 ConditionalStringValueDef:
   name: ConditionalValueDef
-  link: 'condition.html#value'
+  link: "condition.html#value"
 
 FieldDef:
-  link: 'encoding.html#field'
+  link: "encoding.html#field"
 FieldDefWithoutScale:
   name: FieldDef
-  link: 'encoding.html#field'
+  link: "encoding.html#field"
 LatLongFieldDef:
   name: FieldDef
-  link: 'encoding.html#field'
+  link: "encoding.html#field"
 SecondaryFieldDef:
   name: FieldDef
-  link: 'encoding.html#field'
+  link: "encoding.html#field"
 FacetEncodingFieldDef:
   name: FacetFieldDef
-  link: 'facet.html#facet-field-definition'
+  link: "facet.html#facet-field-definition"
 RowColumnEncodingFieldDef:
   name: FacetFieldDef
-  link: 'facet.html#facet-field-definition'
+  link: "facet.html#facet-field-definition"
 OrderFieldDef:
-  link: 'encoding.html#order'
+  link: "encoding.html#order"
 PositionDef:
-  link: 'encoding.html#position'
+  link: "encoding.html#position"
 PolarDef:
-  link: 'encoding.html#polar'
+  link: "encoding.html#polar"
 ValueDef:
-  link: 'encoding.html#value-def'
+  link: "encoding.html#value-def"
 
 DatumDef:
-  link: 'encoding.html#datum-def'
+  link: "encoding.html#datum-def"
 
 # Field Definition
 Aggregate:
-  link: 'aggregate.html'
+  link: "aggregate.html"
 Axis:
-  link: 'axis.html'
+  link: "axis.html"
 Field:
-  link: 'field.html'
+  link: "field.html"
 RepeatRef:
-  link: 'field.html#repeat-ref'
+  link: "field.html#repeat-ref"
 Legend:
   link: legend.html
 Scale:
-  link: 'scale.html'
+  link: "scale.html"
 ScaleBinParams:
-  link: 'scale.html#bins'
+  link: "scale.html#bins"
 SelectionExtent:
   name: Object
 Sort:
-  link: 'sort.html'
+  link: "sort.html"
 EncodingSortField:
-  link: 'sort.html#sort-field'
+  link: "sort.html#sort-field"
 StackOffset:
-  link: 'stack.html'
+  link: "stack.html"
 
 # Scale / Axis / Legend / Projection
 ProjectionType:
-  link: 'projection.html#projection-types'
+  link: "projection.html#projection-types"
 SchemeParams:
-  link: 'scale.html#scheme-params'
+  link: "scale.html#scheme-params"
 SelectionDomain:
-  link: 'parameter.html#scale-domains'
+  link: "parameter.html#scale-domains"
 InterpolateParams:
   name: Object
 Scheme:
-  link: 'https://vega.github.io/vega/docs/schemes/#scheme-properties'
+  link: "https://vega.github.io/vega/docs/schemes/#scheme-properties"
 
 TimeIntervalStep:
   name: Object
 Resolve:
   name: Resolve
-  link: 'resolve.html'
+  link: "resolve.html"
 
 # Parameters/Selections
 SelectionDef:
   name: Selection
-  link: 'parameter.html'
+  link: "parameter.html"
 SelectionComposition:
-  name: 'String | Object'
+  name: "String | Object"
 PointSelectionConfig:
   name: PointSelection
-  link: 'selection.html#point'
+  link: "selection.html#point"
 PointSelectionConfigWithoutType:
   name: PointSelection
-  link: 'selection.html#point'
+  link: "selection.html#point"
 IntervalSelectionConfig:
   name: IntervalSelection
-  link: 'selection.html#interval'
+  link: "selection.html#interval"
 IntervalSelectionConfigWithoutType:
   name: IntervalSelection
-  link: 'selection.html#interval'
+  link: "selection.html#interval"
 VariableParameter:
   name: Parameter
-  link: 'parameter.html'
+  link: "parameter.html"
 SelectionParameter:
   name: Parameter
-  link: 'parameter.html'
+  link: "parameter.html"
 Binding:
-  link: 'bind.html'
+  link: "bind.html"
 LegendBinding:
-  link: 'bind.html#legend-binding'
+  link: "bind.html#legend-binding"
 BrushConfig:
   name: Mark
-  link: 'parameter.html#interval-mark'
+  link: "parameter.html#interval-mark"
 Stream:
-  name: 'VegaEventStream'
-  link: 'https://vega.github.io/vega/docs/event-streams/'
+  name: "VegaEventStream"
+  link: "https://vega.github.io/vega/docs/event-streams/"
 SelectionResolution:
-  link: 'selection-resolve.html'
+  link: "selection-resolve.html"
 SelectionInitMapping:
-  name: 'Object'
-  link: 'value.html'
+  name: "Object"
+  link: "value.html"
 SelectionInitIntervalMapping:
-  name: 'Object'
-  link: 'value.html'
+  name: "Object"
+  link: "value.html"
 ParameterName:
   name: String
 
 # Types
 Any:
-  link: 'types.html#any'
+  link: "types.html#any"
 DateTime:
-  link: 'datetime.html'
+  link: "datetime.html"
 Color:
-  link: 'types.html#color'
+  link: "types.html#color"
 ExprRef:
-  link: 'types.html#exprref'
+  link: "types.html#exprref"
 Gradient:
-  link: 'gradient.html'
+  link: "gradient.html"
 GradientStop:
-  link: 'gradient.html#gradient-stop'
+  link: "gradient.html#gradient-stop"
 Text:
-  link: 'types.html#text'
+  link: "types.html#text"
 Vector2:
   name: Array
 Vector3:
@@ -383,17 +383,17 @@ Dict:
 InlineDataset:
   name: Array
 Expr:
-  link: 'types.html#expression'
+  link: "types.html#expression"
 
 # Others
 PredicateComposition:
-  name: 'Predicate'
-  link: 'predicate.html'
+  name: "Predicate"
+  link: "predicate.html"
 FontWeight:
-  name: 'String | Number'
+  name: "String | Number"
 RepeatMapping:
-  link: 'repeat.html#repeat-mapping'
+  link: "repeat.html#repeat-mapping"
 Padding:
-  name: 'Number | Object'
+  name: "Number | Object"
 TextBaseline:
   name: String # we need to cast his as TextBaseline unions "alphabetic" with Baseline

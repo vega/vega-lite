@@ -8,10 +8,10 @@ import {
   isSequenceGenerator,
   isUrlData,
   DataSourceType,
-  ParseValue,
+  ParseValue
 } from '../../data';
 import {getDataSourcesForHandlingInvalidValues, DataSourcesForHandlingInvalidValues} from '../invalid/datasources.js';
-import * as log from '../../log.js';
+import * as log from '../../log/index.js';
 import {isPathMark} from '../../mark.js';
 import {
   isAggregate,
@@ -32,7 +32,7 @@ import {
   isSample,
   isStack,
   isTimeUnit,
-  isWindow,
+  isWindow
 } from '../../transform';
 import {deepEqual, mergeDeep} from '../../util.js';
 import {getMarkPropOrConfig} from '../common.js';
@@ -54,7 +54,7 @@ import {
   getImplicitFromEncoding,
   getImplicitFromFilterTransform,
   getImplicitFromSelection,
-  ParseNode,
+  ParseNode
 } from './formatparse';
 import {GeoJSONNode} from './geojson.js';
 import {GeoPointNode} from './geopoint.js';
@@ -407,7 +407,7 @@ export function parseData(model: Model): DataComponent {
 
     const {marks, scales} = (dataSourcesForHandlingInvalidValues = getDataSourcesForHandlingInvalidValues({
       invalid,
-      isPath: isPathMark(mark),
+      isPath: isPathMark(mark)
     }));
 
     if (marks !== scales && scales === 'include-invalid-values') {
@@ -460,7 +460,7 @@ export function parseData(model: Model): DataComponent {
     facetRoot,
     ancestorParse,
     preFilterInvalid,
-    postFilterInvalid,
+    postFilterInvalid
   };
 }
 

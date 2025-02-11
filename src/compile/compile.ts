@@ -3,7 +3,7 @@ import {isString, mergeConfig} from 'vega-util';
 import {getPositionScaleChannel} from '../channel.js';
 import * as vlFieldDef from '../channeldef.js';
 import {Config, initConfig, stripAndRedirectConfig} from '../config.js';
-import * as log from '../log.js';
+import * as log from '../log/index.js';
 import {normalize} from '../normalize/index.js';
 import {assembleParameterSignals} from '../parameter.js';
 import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec.js';

@@ -11,11 +11,11 @@ import {
   SecondaryFieldDef,
   StringFieldDef,
   StringFieldDefWithCondition,
-  StringValueDefWithCondition,
+  StringValueDefWithCondition
 } from '../channeldef.js';
 import {Encoding, fieldDefs} from '../encoding.js';
 import {ExprRef} from '../expr.js';
-import * as log from '../log.js';
+import * as log from '../log/index.js';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, AnyMarkConfig, MarkDef} from '../mark.js';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec.js';
 import {getFirstDefined, hash, unique} from '../util.js';
@@ -54,7 +54,7 @@ export interface CompositeMarkTooltipSummary {
 }
 
 export function filterTooltipWithAggregatedField<F extends Field>(
-  oldEncoding: Encoding<F>,
+  oldEncoding: Encoding<F>
 ): {
   customTooltipWithoutAggregatedField?:
     | StringFieldDefWithCondition<F>
@@ -112,7 +112,7 @@ export function getCompositeMarkTooltip(
   tooltipSummary: CompositeMarkTooltipSummary[],
   continuousAxisChannelDef: PositionFieldDef<string>,
   encodingWithoutContinuousAxis: Encoding<string>,
-  withFieldName = true,
+  withFieldName = true
 ): Encoding<string> {
   if ('tooltip' in encodingWithoutContinuousAxis) {
     return {tooltip: encodingWithoutContinuousAxis.tooltip};
@@ -124,9 +124,9 @@ export function getCompositeMarkTooltip(
       return {
         field: fieldPrefix + continuousAxisChannelDef.field,
         type: continuousAxisChannelDef.type,
-        title: isSignalRef(titlePrefix) ? {signal: `${titlePrefix}"${escape(mainTitle)}"`} : titlePrefix + mainTitle,
+        title: isSignalRef(titlePrefix) ? {signal: `${titlePrefix}"${escape(mainTitle)}"`} : titlePrefix + mainTitle
       };
-    },
+    }
   );
 
   const tooltipFieldDefs = fieldDefs(encodingWithoutContinuousAxis).map(toStringFieldDef);
@@ -135,8 +135,8 @@ export function getCompositeMarkTooltip(
     tooltip: [
       ...fiveSummaryTooltip,
       // need to cast because TextFieldDef supports fewer types of bin
-      ...unique(tooltipFieldDefs, hash),
-    ],
+      ...unique(tooltipFieldDefs, hash)
+    ]
   };
 }
 
@@ -150,7 +150,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
   continuousAxis: 'x' | 'y',
   continuousAxisChannelDef: PositionFieldDef<string>,
   sharedEncoding: Encoding<string>,
-  compositeMarkConfig: P,
+  compositeMarkConfig: P
 ) {
   const {scale, axis} = continuousAxisChannelDef;
 
@@ -159,7 +159,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
     mark,
     positionPrefix,
     endPositionPrefix = undefined,
-    extraEncoding = {},
+    extraEncoding = {}
   }: {
     partName: keyof P;
     mark: Mark | MarkDef;
@@ -177,18 +177,18 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
           type: continuousAxisChannelDef.type,
           ...(title !== undefined ? {title} : {}),
           ...(scale !== undefined ? {scale} : {}),
-          ...(axis !== undefined ? {axis} : {}),
+          ...(axis !== undefined ? {axis} : {})
         },
         ...(isString(endPositionPrefix)
           ? {
               [`${continuousAxis}2`]: {
-                field: `${endPositionPrefix}_${continuousAxisChannelDef.field}`,
-              },
+                field: `${endPositionPrefix}_${continuousAxisChannelDef.field}`
+              }
             }
           : {}),
         ...sharedEncoding,
-        ...extraEncoding,
-      },
+        ...extraEncoding
+      }
     });
   };
 }
@@ -197,7 +197,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
   markDef: GenericCompositeMarkDef<any> & P,
   part: keyof P,
   compositeMarkConfig: P,
-  partBaseSpec: NormalizedUnitSpec,
+  partBaseSpec: NormalizedUnitSpec
 ): NormalizedUnitSpec[] {
   const {clip, color, opacity} = markDef;
 
@@ -214,9 +214,9 @@ export function partLayerMixins<P extends PartsMixins<any>>(
           ...(opacity ? {opacity} : {}),
           ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
           style: `${mark}-${String(part)}`,
-          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as AnyMarkConfig<ExprRef | SignalRef>)),
-        },
-      },
+          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as AnyMarkConfig<ExprRef | SignalRef>))
+        }
+      }
     ];
   }
   return [];
@@ -225,7 +225,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
 export function compositeMarkContinuousAxis<M extends CompositeMark>(
   spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>,
   orient: Orientation,
-  compositeMark: M,
+  compositeMark: M
 ): {
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxisChannelDef2: SecondaryFieldDef<string>;
@@ -246,13 +246,13 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
     continuousAxisChannelDef2: filterAggregateFromChannelDef(continuousAxisChannelDef2, compositeMark),
     continuousAxisChannelDefError: filterAggregateFromChannelDef(continuousAxisChannelDefError, compositeMark),
     continuousAxisChannelDefError2: filterAggregateFromChannelDef(continuousAxisChannelDefError2, compositeMark),
-    continuousAxis,
+    continuousAxis
   };
 }
 
 function filterAggregateFromChannelDef<M extends CompositeMark, F extends FieldDefBase<string>>(
   continuousAxisChannelDef: F,
-  compositeMark: M,
+  compositeMark: M
 ): F {
   if (continuousAxisChannelDef?.aggregate) {
     const {aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
@@ -267,7 +267,7 @@ function filterAggregateFromChannelDef<M extends CompositeMark, F extends FieldD
 
 export function compositeMarkOrient<M extends CompositeMark>(
   spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>,
-  compositeMark: M,
+  compositeMark: M
 ): Orientation {
   const {mark, encoding} = spec;
   const {x, y} = encoding;

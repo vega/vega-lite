@@ -12,7 +12,7 @@ delete globals.browser['AudioWorkletGlobalScope '];
  */
 export default [
   {
-    ignores: ['build/**', 'coverage/**'],
+    ignores: ['build/**', 'coverage/**']
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -20,25 +20,25 @@ export default [
     languageOptions: {
       parserOptions: {
         project: './tsconfig.json',
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
+        tsconfigRootDir: import.meta.dirname
+      }
+    }
   },
   {
     files: ['src/**/*.ts'],
     plugins: {
-      vitest,
+      vitest
     },
     languageOptions: {
       parser: tsParser,
       globals: {
-        ...globals.browser,
-      },
+        ...globals.browser
+      }
     },
     settings: {
       vitest: {
-        typecheck: true,
-      },
+        typecheck: true
+      }
     },
     rules: {
       ...vitest.configs.recommended.rules,
@@ -54,8 +54,8 @@ export default [
         {
           vars: 'all',
           args: 'after-used',
-          ignoreRestSiblings: true,
-        },
+          ignoreRestSiblings: true
+        }
       ],
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-unsafe-member-access': 'warn',
@@ -81,12 +81,12 @@ export default [
       'prefer-template': 'error',
       'no-unused-vars': 'off',
       // "no-undef": "off", // typescript takes care of this for us
-      'no-unreachable': 'off', // typescript takes care of this for us
-    },
+      'no-unreachable': 'off' // typescript takes care of this for us
+    }
   },
   prettierConfig,
   {
     files: ['**/*.js'],
-    ...tseslint.configs.disableTypeChecked,
-  },
+    ...tseslint.configs.disableTypeChecked
+  }
 ];

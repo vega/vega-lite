@@ -13,7 +13,7 @@ import {Config} from '../config.js';
 import {Data} from '../data.js';
 import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding.js';
 import {ExprRef} from '../expr.js';
-import * as log from '../log.js';
+import * as log from '../log/index.js';
 import {isMarkDef, MarkDef} from '../mark.js';
 import {NormalizerParams} from '../normalize/index.js';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec.js';

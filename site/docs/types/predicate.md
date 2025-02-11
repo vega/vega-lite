@@ -32,7 +32,7 @@ For a field predicate, a `field` must be provided along with one of the predicat
 For example, to check if the `car_color` field's value is equal to `"red"`, we can use the following predicate:
 
 ```json
-{"field": "car_color", "equal": "red"}
+{ "field": "car_color", "equal": "red" }
 ```
 
 {:#lt-predicate}
@@ -44,7 +44,7 @@ For example, to check if the `car_color` field's value is equal to `"red"`, we c
 For example, to check if the `height` field's value is less than `180`, we can use the following predicate:
 
 ```json
-{"field": "height", "lt": 180}
+{ "field": "height", "lt": 180 }
 ```
 
 {:#lte-predicate}
@@ -56,7 +56,7 @@ For example, to check if the `height` field's value is less than `180`, we can u
 For example, to check if the `Year` field's value is less than or equals to `"2000"`, we can use the following predicate:
 
 ```json
-{"timeUnit": "year", "field": "Year", "lte": "2000"}
+{ "timeUnit": "year", "field": "Year", "lte": "2000" }
 ```
 
 {:#gt-predicate}
@@ -68,7 +68,7 @@ For example, to check if the `Year` field's value is less than or equals to `"20
 To check if the `state` field's value is greater than `"Arizona"` by string comparison, we can use the following predicate: (Note: Standard Javascript string comparison is done, ie., "A" < "B", but "B" < "a")
 
 ```json
-{"field": "state", "gt": "Arizona"}
+{ "field": "state", "gt": "Arizona" }
 ```
 
 {:#gte-predicate}
@@ -80,7 +80,7 @@ To check if the `state` field's value is greater than `"Arizona"` by string comp
 For example, to check if the `height` field's value is greater than or equals to `0`, we can use the following predicate:
 
 ```json
-{"field": "height", "gte": 0}
+{ "field": "height", "gte": 0 }
 ```
 
 {:#range-predicate}

@@ -37,14 +37,14 @@ To understand how these modes affect common marks, see these examples below, whi
 
 ```json
 [
-  {"a": null, "b": 100},
-  {"a": -10, "b": null},
-  {"a": -5, "b": -25},
-  {"a": -1, "b": -20},
-  {"a": 0, "b": null},
-  {"a": 1, "b": 30},
-  {"a": 5, "b": 40},
-  {"a": 10, "b": null}
+  { "a": null, "b": 100 },
+  { "a": -10, "b": null },
+  { "a": -5, "b": -25 },
+  { "a": -1, "b": -20 },
+  { "a": 0, "b": null },
+  { "a": 1, "b": 30 },
+  { "a": 5, "b": 40 },
+  { "a": 10, "b": null }
 ]
 ```
 

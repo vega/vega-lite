@@ -1,7 +1,7 @@
 import {Interpolate, Orientation} from 'vega';
 import {Field} from '../channeldef.js';
 import {Encoding, normalizeEncoding} from '../encoding.js';
-import * as log from '../log.js';
+import * as log from '../log/index.js';
 import {MarkDef} from '../mark.js';
 import {NormalizerParams} from '../normalize/index.js';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec.js';

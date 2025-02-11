@@ -3,7 +3,7 @@ import {array, stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {GeoPositionChannel, LATITUDE, LONGITUDE, ScaleChannel, X, Y} from '../../channel.js';
 import {FieldName} from '../../channeldef.js';
-import {warn} from '../../log.js';
+import {warn} from '../../log/index.js';
 import {hasContinuousDomain} from '../../scale.js';
 import {IntervalSelectionConfigWithoutType, SelectionInitInterval, SELECTION_ID} from '../../selection.js';
 import {keys, vals} from '../../util.js';
@@ -24,7 +24,7 @@ const CENTER = '_center';
 export type IntervalSelectionConfigWithField = IntervalSelectionConfigWithoutType & {fields?: FieldName[]};
 
 const interval: SelectionCompiler<'interval'> = {
-  defined: (selCmpt) => selCmpt.type === 'interval',
+  defined: selCmpt => selCmpt.type === 'interval',
 
   parse: (model, selCmpt, selDef) => {
     if (model.hasProjection) {
@@ -57,11 +57,11 @@ const interval: SelectionCompiler<'interval'> = {
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const tupleSg = name + TUPLE;
-    const channels = vals(selCmpt.project.hasChannel).filter((p) => p.channel === X || p.channel === Y);
+    const channels = vals(selCmpt.project.hasChannel).filter(p => p.channel === X || p.channel === Y);
     const init = selCmpt.init ? selCmpt.init[0] : null;
 
     signals.push(
-      ...channels.reduce((arr, proj) => arr.concat(channelSignals(model, selCmpt, proj, init?.[proj.index])), []),
+      ...channels.reduce((arr, proj) => arr.concat(channelSignals(model, selCmpt, proj, init?.[proj.index])), [])
     );
 
     if (!model.hasProjection) {
@@ -69,7 +69,7 @@ const interval: SelectionCompiler<'interval'> = {
       // when an interval selection filter touches the scale.
       if (!scales.defined(selCmpt)) {
         const triggerSg = name + SCALE_TRIGGER;
-        const scaleTriggers = channels.map((proj) => {
+        const scaleTriggers = channels.map(proj => {
           const channel = proj.channel as 'x' | 'y';
           const {data: dname, visual: vname} = proj.signals;
           const scaleName = stringValue(model.scaleName(channel));
@@ -88,10 +88,10 @@ const interval: SelectionCompiler<'interval'> = {
             value: {},
             on: [
               {
-                events: channels.map((proj) => ({scale: model.scaleName(proj.channel)})),
-                update: scaleTriggers.join(' && ') + ` ? ${triggerSg} : {}`,
-              },
-            ],
+                events: channels.map(proj => ({scale: model.scaleName(proj.channel)})),
+                update: scaleTriggers.join(' && ') + ` ? ${triggerSg} : {}`
+              }
+            ]
           });
         }
       }
@@ -99,7 +99,7 @@ const interval: SelectionCompiler<'interval'> = {
       // Only add an interval to the store if it has valid data extents. Data extents
       // are set to null if pixel extents are equal to account for intervals over
       // ordinal/nominal domains which, when inverted, will still produce a valid datum.
-      const dataSignals = channels.map((proj) => proj.signals.data);
+      const dataSignals = channels.map(proj => proj.signals.data);
       const update = `unit: ${unitName(model)}, fields: ${name + TUPLE_FIELDS}, values`;
       return signals.concat({
         name: tupleSg,
@@ -109,11 +109,11 @@ const interval: SelectionCompiler<'interval'> = {
               on: [
                 {
                   events: [{signal: dataSignals.join(' || ')}], // Prevents double invocation, see https://github.com/vega/vega/issues/1672.
-                  update: `${dataSignals.join(' && ')} ? {${update}: [${dataSignals}]} : null`,
-                },
-              ],
+                  update: `${dataSignals.join(' && ')} ? {${update}: [${dataSignals}]} : null`
+                }
+              ]
             }
-          : {}),
+          : {})
       });
     } else {
       const projection = stringValue(model.projectionName());
@@ -136,16 +136,16 @@ const interval: SelectionCompiler<'interval'> = {
           name: name + INIT,
           init:
             `[scale(${projection}, [${x ? xinit[0] : xinit}, ${y ? yinit[0] : yinit}]), ` +
-            `scale(${projection}, [${x ? xinit[1] : xinit}, ${y ? yinit[1] : yinit}])]`,
+            `scale(${projection}, [${x ? xinit[1] : xinit}, ${y ? yinit[1] : yinit}])]`
         });
 
         if (!x || !y) {
           // If initializing a uni-dimensional brush, use the center of the view to determine the other coord
-          const hasCenterSg = signals.find((s) => s.name === centerSg);
+          const hasCenterSg = signals.find(s => s.name === centerSg);
           if (!hasCenterSg) {
             signals.unshift({
               name: centerSg,
-              update: `invert(${projection}, [${sizeSg('width')}/2, ${sizeSg('height')}/2])`,
+              update: `invert(${projection}, [${sizeSg('width')}/2, ${sizeSg('height')}/2])`
             });
           }
         }
@@ -154,7 +154,7 @@ const interval: SelectionCompiler<'interval'> = {
       const intersect = `intersect(${bbox}, {markname: ${stringValue(model.getName('marks'))}}, unit.mark)`;
       const base = `{unit: ${unitName(model)}}`;
       const update = `vlSelectionTuples(${intersect}, ${base})`;
-      const visualSignals = channels.map((proj) => proj.signals.visual);
+      const visualSignals = channels.map(proj => proj.signals.visual);
 
       return signals.concat({
         name: tupleSg,
@@ -162,11 +162,11 @@ const interval: SelectionCompiler<'interval'> = {
           {
             events: [
               ...(visualSignals.length ? [{signal: visualSignals.join(' || ')}] : []),
-              ...(init ? [{signal: GEO_INIT_TICK}] : []),
+              ...(init ? [{signal: GEO_INIT_TICK}] : [])
             ],
-            update,
-          },
-        ],
+            update
+          }
+        ]
       });
     }
   },
@@ -177,7 +177,7 @@ const interval: SelectionCompiler<'interval'> = {
       // The scenegraph isn't populated on the first pulse. So we use a timer signal
       // to re-pulse the dataflow as soon as possible. We return an object to ensure
       // this only occurs once.
-      const hasTick = signals.filter((s) => s.name === GEO_INIT_TICK);
+      const hasTick = signals.filter(s => s.name === GEO_INIT_TICK);
       if (!hasTick.length) {
         signals.unshift({
           name: GEO_INIT_TICK,
@@ -185,9 +185,9 @@ const interval: SelectionCompiler<'interval'> = {
           on: [
             {
               events: 'timer{1}',
-              update: `${GEO_INIT_TICK} === null ? {} : ${GEO_INIT_TICK}`,
-            },
-          ],
+              update: `${GEO_INIT_TICK} === null ? {} : ${GEO_INIT_TICK}`
+            }
+          ]
         });
       }
     }
@@ -212,7 +212,7 @@ const interval: SelectionCompiler<'interval'> = {
       x: x !== undefined ? {signal: `${xvname}[0]`} : {value: 0},
       y: y !== undefined ? {signal: `${yvname}[0]`} : {value: 0},
       x2: x !== undefined ? {signal: `${xvname}[1]`} : {field: {group: 'width'}},
-      y2: y !== undefined ? {signal: `${yvname}[1]`} : {field: {group: 'height'}},
+      y2: y !== undefined ? {signal: `${yvname}[1]`} : {field: {group: 'height'}}
     };
 
     // If the selection is resolved to global, only a single interval is in
@@ -224,9 +224,9 @@ const interval: SelectionCompiler<'interval'> = {
         update[key] = [
           {
             test: `${store}.length && ${store}[0].unit === ${unitName(model)}`,
-            ...update[key],
+            ...update[key]
           },
-          {value: 0},
+          {value: 0}
         ];
       }
     }
@@ -241,17 +241,17 @@ const interval: SelectionCompiler<'interval'> = {
           {
             test: [
               x !== undefined && `${xvname}[0] !== ${xvname}[1]`,
-              y !== undefined && `${yvname}[0] !== ${yvname}[1]`,
+              y !== undefined && `${yvname}[0] !== ${yvname}[1]`
             ]
-              .filter((t) => t)
+              .filter(t => t)
               .join(' && '),
-            value: stroke[k],
+            value: stroke[k]
           },
-          {value: null},
+          {value: null}
         ];
         return def;
       },
-      {} as Record<keyof typeof stroke, any>,
+      {} as Record<keyof typeof stroke, any>
     );
 
     // Set cursor to move unless the brush cannot be translated
@@ -265,10 +265,10 @@ const interval: SelectionCompiler<'interval'> = {
         encode: {
           enter: {
             fill: {value: fill},
-            fillOpacity: {value: fillOpacity},
+            fillOpacity: {value: fillOpacity}
           },
-          update,
-        },
+          update
+        }
       },
       ...marks,
       {
@@ -278,13 +278,13 @@ const interval: SelectionCompiler<'interval'> = {
         encode: {
           enter: {
             ...(vgCursor ? {cursor: {value: vgCursor}} : {}),
-            fill: {value: 'transparent'},
+            fill: {value: 'transparent'}
           },
-          update: {...update, ...vgStroke},
-        },
-      },
+          update: {...update, ...vgStroke}
+        }
+      }
     ];
-  },
+  }
 };
 export default interval;
 
@@ -295,7 +295,7 @@ function channelSignals(
   model: UnitModel,
   selCmpt: SelectionComponent<'interval'>,
   proj: SelectionProjection,
-  init: SelectionInitInterval,
+  init: SelectionInitInterval
 ): NewSignal[] {
   const scaledInterval = !model.hasProjection;
   const channel = proj.channel;
@@ -310,7 +310,7 @@ function channelSignals(
     return [
       ...def,
       {events: evt.between[0], update: `[${coord}, ${coord}]`}, // Brush Start
-      {events: evt, update: `[${vname}[0], clamp(${coord}, 0, ${size})]`}, // Brush End
+      {events: evt, update: `[${vname}[0], clamp(${coord}, 0, ${size})]`} // Brush End
     ];
   }, []);
 
@@ -326,7 +326,7 @@ function channelSignals(
     // to their domains (e.g., filtering) should clear the brushes.
     von.push({
       events: {signal: selCmpt.name + SCALE_TRIGGER},
-      update: hasContinuousDomain(scaleType) ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]` : `[0, 0]`,
+      update: hasContinuousDomain(scaleType) ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]` : `[0, 0]`
     });
 
     return hasScales
@@ -339,10 +339,10 @@ function channelSignals(
             on: [
               {
                 events: {signal: vname},
-                update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleName}, ${vname})`,
-              },
-            ],
-          },
+                update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleName}, ${vname})`
+              }
+            ]
+          }
         ];
   } else {
     const initIdx = channel === X ? 0 : 1;

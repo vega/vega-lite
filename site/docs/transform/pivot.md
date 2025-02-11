@@ -19,15 +19,15 @@ For the following input data:
 
 ```json
 [
-  {"country": "Norway", "type": "gold", "count": 14},
-  {"country": "Norway", "type": "silver", "count": 14},
-  {"country": "Norway", "type": "bronze", "count": 11},
-  {"country": "Germany", "type": "gold", "count": 14},
-  {"country": "Germany", "type": "silver", "count": 10},
-  {"country": "Germany", "type": "bronze", "count": 7},
-  {"country": "Canada", "type": "gold", "count": 11},
-  {"country": "Canada", "type": "silver", "count": 8},
-  {"country": "Canada", "type": "bronze", "count": 10}
+  { "country": "Norway", "type": "gold", "count": 14 },
+  { "country": "Norway", "type": "silver", "count": 14 },
+  { "country": "Norway", "type": "bronze", "count": 11 },
+  { "country": "Germany", "type": "gold", "count": 14 },
+  { "country": "Germany", "type": "silver", "count": 10 },
+  { "country": "Germany", "type": "bronze", "count": 7 },
+  { "country": "Canada", "type": "gold", "count": 11 },
+  { "country": "Canada", "type": "silver", "count": 8 },
+  { "country": "Canada", "type": "bronze", "count": 10 }
 ]
 ```
 
@@ -45,9 +45,9 @@ produces the output:
 
 ```json
 [
-  {"country": "Norway", "gold": 14, "silver": 14, "bronze": 11},
-  {"country": "Germany", "gold": 14, "silver": 10, "bronze": 7},
-  {"country": "Canada", "gold": 11, "silver": 8, "bronze": 10}
+  { "country": "Norway", "gold": 14, "silver": 14, "bronze": 11 },
+  { "country": "Germany", "gold": 14, "silver": 10, "bronze": 7 },
+  { "country": "Canada", "gold": 11, "silver": 8, "bronze": 10 }
 ]
 ```
 

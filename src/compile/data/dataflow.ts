@@ -1,5 +1,5 @@
 import {DataSourceType} from '../../data.js';
-import * as log from '../../log.js';
+import * as log from '../../log/index.js';
 import {Dict, uniqueId} from '../../util.js';
 
 /**
@@ -14,7 +14,7 @@ export abstract class DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    public readonly debugName?: string,
+    public readonly debugName?: string
   ) {
     if (parent) {
       this.parent = parent;
@@ -154,7 +154,7 @@ export class OutputNode extends DataFlowNode {
     parent: DataFlowNode,
     source: string,
     public readonly type: DataSourceType,
-    private readonly refCounts: Dict<number>,
+    private readonly refCounts: Dict<number>
   ) {
     super(parent, source);
 

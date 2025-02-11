@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - 'site/**'
-      - 'yarn.lock'
-      - '**prettier**'
+      - "site/**"
+      - "yarn.lock"
+      - "**prettier**"
 
 jobs:
   build-site:
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          cache: 'yarn'
+          cache: "yarn"
           node-version: 20
 
       - name: Install Node dependencies

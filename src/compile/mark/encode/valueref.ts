@@ -21,12 +21,12 @@ import {
   isFieldOrDatumDef,
   isTypedFieldDef,
   isValueDef,
-  vgField,
+  vgField
 } from '../../../channeldef.js';
 import {Config} from '../../../config.js';
 import {dateTimeToExpr, isDateTime} from '../../../datetime.js';
 import {isExprRef} from '../../../expr.js';
-import * as log from '../../../log.js';
+import * as log from '../../../log/index.js';
 import {Mark, MarkDef} from '../../../mark.js';
 import {hasDiscreteDomain} from '../../../scale.js';
 import {StackProperties} from '../../../stack.js';
@@ -40,7 +40,7 @@ import {getConditionalValueRefForIncludingInvalidValue} from './invalid.js';
 export function midPointRefWithPositionInvalidTest(
   params: MidPointParams & {
     channel: PositionChannel | PolarPositionChannel;
-  },
+  }
 ): VgValueRef | VgValueRef[] {
   const {channel, channelDef, markDef, scale, scaleName, config} = params;
   const scaleChannel = getMainRangeChannel(channel);
@@ -52,7 +52,7 @@ export function midPointRefWithPositionInvalidTest(
     scale,
     scaleName,
     markDef,
-    config,
+    config
   });
 
   return valueRefForIncludingInvalid !== undefined ? [valueRefForIncludingInvalid, mainRef] : mainRef;
@@ -70,7 +70,7 @@ export function valueRefForFieldOrDatumDef(
   fieldDef: FieldDefBase<string> | DatumDef<string>,
   scaleName: string,
   opt: FieldRefOption,
-  encode: {offset?: number | VgValueRef; band?: number | boolean | SignalRef},
+  encode: {offset?: number | VgValueRef; band?: number | boolean | SignalRef}
 ): VgValueRef {
   const ref: VgValueRef = {};
 
@@ -115,7 +115,7 @@ export function interpolatedSignalRef({
   offset,
   startSuffix,
   endSuffix = 'end',
-  bandPosition = 0.5,
+  bandPosition = 0.5
 }: {
   scaleName: string;
   fieldOrDatumDef: TypedFieldDef<string>;
@@ -188,7 +188,7 @@ export function midPoint({
   stack,
   offset,
   defaultRef,
-  bandPosition,
+  bandPosition
 }: MidPointParams): VgValueRef {
   // TODO: datum support
   if (channelDef) {
@@ -201,7 +201,7 @@ export function midPoint({
           fieldDef: channelDef,
           fieldDef2: channel2Def,
           markDef,
-          config,
+          config
         });
         const {bin, timeUnit, type} = channelDef;
 
@@ -223,8 +223,8 @@ export function midPoint({
             scaleName,
             binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {},
             {
-              offset,
-            },
+              offset
+            }
           );
         } else if (isBinned(bin)) {
           if (isFieldDef(channel2Def)) {
@@ -233,7 +233,7 @@ export function midPoint({
               fieldOrDatumDef: channelDef,
               fieldOrDatumDef2: channel2Def,
               bandPosition,
-              offset,
+              offset
             });
           } else {
             const channel2 = channel === X ? X2 : Y2;
@@ -249,8 +249,8 @@ export function midPoint({
         {
           offset,
           // For band, to get mid point, need to offset by half of the band
-          band: scaleType === 'band' ? (bandPosition ?? channelDef.bandPosition ?? 0.5) : undefined,
-        },
+          band: scaleType === 'band' ? (bandPosition ?? channelDef.bandPosition ?? 0.5) : undefined
+        }
       );
     } else if (isValueDef(channelDef)) {
       const value = channelDef.value;
@@ -272,7 +272,7 @@ export function midPoint({
     return {
       ...defaultRef,
       // only include offset when it is non-zero (zero = no offset)
-      ...(offset ? {offset} : {}),
+      ...(offset ? {offset} : {})
     };
   }
   return defaultRef;

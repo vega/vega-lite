@@ -3,7 +3,7 @@ import {isBinned} from '../bin.js';
 import {getMainRangeChannel, SECONDARY_RANGE_CHANNEL} from '../channel.js';
 import {Field, isDatumDef, isFieldDef} from '../channeldef.js';
 import {Encoding} from '../encoding.js';
-import * as log from '../log.js';
+import * as log from '../log/index.js';
 import {isMarkDef} from '../mark.js';
 import {GenericSpec} from '../spec.js';
 import {GenericUnitSpec, isUnitSpec} from '../spec/unit.js';
@@ -48,9 +48,9 @@ export class RuleForRangedLineNormalizer implements NonFacetUnitNormalizer<Range
     return normalize(
       {
         ...spec,
-        mark: isObject(mark) ? {...mark, type: 'rule'} : 'rule',
+        mark: isObject(mark) ? {...mark, type: 'rule'} : 'rule'
       },
-      params,
+      params
     );
   }
 }

@@ -25,7 +25,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          cache: 'yarn'
+          cache: "yarn"
           node-version: 20
 
       - name: Install Node dependencies
@@ -61,7 +61,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          cache: 'yarn'
+          cache: "yarn"
           node-version: 20
 
       - name: Setup Pages
@@ -81,7 +81,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: './_site'
+          path: "./_site"
 
   deploy:
     name: Deploy Site

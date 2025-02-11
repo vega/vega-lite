@@ -4,12 +4,12 @@ import {
   isFieldDef,
   isNumericDataDef,
   isUnbinnedQuantitativeFieldOrDatumDef,
-  isTypedFieldDef,
+  isTypedFieldDef
 } from '../../channeldef.js';
 import {Config} from '../../config.js';
 import {Encoding, isAggregate} from '../../encoding.js';
 import {replaceExprRef} from '../../expr.js';
-import * as log from '../../log.js';
+import * as log from '../../log/index.js';
 import {
   AREA,
   BAR,
@@ -24,7 +24,7 @@ import {
   RULE,
   SQUARE,
   TEXT,
-  TICK,
+  TICK
 } from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type.js';
 import {contains, getFirstDefined} from '../../util.js';

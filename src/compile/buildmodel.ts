@@ -1,6 +1,6 @@
 import type {SignalRef} from 'vega';
 import {Config} from '../config.js';
-import * as log from '../log.js';
+import * as log from '../log/index.js';
 import {isAnyConcatSpec, isFacetSpec, isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedSpec} from '../spec.js';
 import {ConcatModel} from './concat.js';
 import {FacetModel} from './facet.js';
@@ -13,7 +13,7 @@ export function buildModel(
   parent: Model,
   parentGivenName: string,
   unitSize: LayoutSizeMixins,
-  config: Config<SignalRef>,
+  config: Config<SignalRef>
 ): Model {
   if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName, config);

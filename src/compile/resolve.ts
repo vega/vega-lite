@@ -1,5 +1,5 @@
 import {isXorY, ScaleChannel} from '../channel.js';
-import * as log from '../log.js';
+import * as log from '../log/index.js';
 import {Resolve, ResolveMode} from '../resolve.js';
 import {isConcatModel, isFacetModel, isLayerModel, Model} from './model.js';
 
