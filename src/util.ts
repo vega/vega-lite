@@ -14,7 +14,6 @@ export function never(message: string): never {
  * pick(object, ['a', 'c']);
  * // → {'a': 1, 'c': 3}
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function pick<T extends object, K extends keyof T>(obj: T, props: readonly K[]): Pick<T, K> {
   const copy: any = {};
   for (const prop of props) {
@@ -29,7 +28,6 @@ export function pick<T extends object, K extends keyof T>(obj: T, props: readonl
  * The opposite of _.pick; this method creates an object composed of the own
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function omit<T extends object, K extends keyof T>(obj: T, props: readonly K[]): Omit<T, K> {
   const copy = {...(obj as any)};
   for (const prop of props) {
@@ -42,7 +40,7 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: readonl
  * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
 (Set.prototype as any)['toJSON'] = function () {
-  return `Set(${[...this].map((x) => stringify(x)).join(',')})`;
+  return `Set(${[...this].map(x => stringify(x)).join(',')})`;
 };
 
 /**
@@ -205,7 +203,6 @@ export function fieldIntersection(a: ReadonlySet<string>, b: ReadonlySet<string>
   return hasIntersection(prefixGenerator(a), prefixGenerator(b));
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function isEmpty(obj: object) {
   return keys(obj).length === 0;
 }
@@ -257,7 +254,7 @@ export function deleteNestedProperty(obj: any, orderedProps: string[]) {
   if (orderedProps.length === 0) {
     return true;
   }
-  const prop = orderedProps.shift()!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+  const prop = orderedProps.shift()!;
   if (prop in obj && deleteNestedProperty(obj[prop], orderedProps)) {
     delete obj[prop];
   }
@@ -355,7 +352,7 @@ export function accessPathDepth(path: string) {
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
 export function getFirstDefined<T>(...args: readonly T[]): T | undefined {
-  return args.find((a) => a !== undefined);
+  return args.find(a => a !== undefined);
 }
 
 // variable used to generate id
@@ -489,17 +486,18 @@ export function stringify(data: any) {
     }
 
     if (node === undefined) return undefined;
-    if (typeof node == 'number') return isFinite(node) ? '' + node : 'null';
+    if (typeof node == 'number') return isFinite(node) ? `${node}` : 'null';
     if (typeof node !== 'object') return JSON.stringify(node);
 
-    let i, out;
+    let i;
+    let out;
     if (Array.isArray(node)) {
       out = '[';
       for (i = 0; i < node.length; i++) {
         if (i) out += ',';
         out += _stringify(node[i]) || 'null';
       }
-      return out + ']';
+      return `${out}]`;
     }
 
     if (node === null) return 'null';
@@ -517,7 +515,7 @@ export function stringify(data: any) {
 
       if (!value) continue;
       if (out) out += ',';
-      out += JSON.stringify(key) + ':' + value;
+      out += `${JSON.stringify(key)}:${value}`;
     }
     seen.splice(seenIndex, 1);
     return `{${out}}`;

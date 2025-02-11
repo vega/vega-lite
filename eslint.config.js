@@ -12,7 +12,7 @@ delete globals.browser['AudioWorkletGlobalScope '];
  */
 export default [
   {
-    ignores: ['node_modules', 'build/**', 'coverage/**']
+    ignores: ['build/**', 'coverage/**']
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -63,6 +63,8 @@ export default [
       '@typescript-eslint/no-unsafe-return': 'warn',
       '@typescript-eslint/no-unsafe-assignment': 'warn',
       '@typescript-eslint/no-unsafe-call': 'warn',
+      '@typescript-eslint/no-redundant-type-constituents': 'warn',
+      '@typescript-eslint/no-duplicate-type-constituents': 'warn',
       '@typescript-eslint/no-object-literal-type-assertion': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-namespace': 'error',
@@ -87,6 +89,9 @@ export default [
   prettierConfig,
   {
     files: ['**/*.js'],
-    ...tseslint.configs.disableTypeChecked
+    ...tseslint.configs.disableTypeChecked,
+    rules: {
+      'prefer-template': 'warn'
+    }
   }
 ];
