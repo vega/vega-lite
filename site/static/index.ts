@@ -131,10 +131,10 @@ async function getSpec(el: d3.BaseType) {
   }
 }
 
-(window as any)['changeSpec'] = (elId: string, newSpec: string) => {
+(window as any)['changeSpec'] = async (elId: string, newSpec: string) => {
   const el = document.getElementById(elId);
   select(el).attr('data-name', newSpec);
-  getSpec(el);
+  await getSpec(el);
 };
 
 (window as any)['buildSpecOpts'] = (id: string, baseName: string) => {
@@ -153,8 +153,8 @@ async function getSpec(el: d3.BaseType) {
   }
 };
 
-selectAll('.vl-example').each(function (this: d3.BaseType) {
-  getSpec(this);
+selectAll('.vl-example').each(async function (this: d3.BaseType) {
+  await getSpec(this);
 });
 
 // caroussel for the front page

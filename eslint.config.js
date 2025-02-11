@@ -25,7 +25,7 @@ export default [
     },
   },
   {
-    files: ['src/**/*.ts'],
+    files: ['**/*.ts'],
     plugins: {
       vitest,
     },
