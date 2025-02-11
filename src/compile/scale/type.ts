@@ -7,7 +7,7 @@ import {
   isXorY,
   isXorYOffset,
   rangeType,
-  ScaleChannel
+  ScaleChannel,
 } from '../../channel.js';
 import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef.js';
 import * as log from '../../log/index.js';
@@ -29,7 +29,7 @@ export function scaleType(
   channel: ScaleChannel,
   fieldDef: TypedFieldDef<string> | DatumDef,
   mark: MarkDef,
-  hasNestedOffsetScale = false
+  hasNestedOffsetScale = false,
 ): ScaleType {
   const defaultScaleType = defaultType(channel, fieldDef, mark, hasNestedOffsetScale);
   const {type} = specifiedScale;
@@ -65,7 +65,7 @@ function defaultType(
   channel: ScaleChannel,
   fieldDef: TypedFieldDef<string> | ScaleDatumDef,
   mark: MarkDef,
-  hasNestedOffsetScale: boolean
+  hasNestedOffsetScale: boolean,
 ): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':

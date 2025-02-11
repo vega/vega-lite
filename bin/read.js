@@ -9,10 +9,10 @@ export default function read(file) {
     let text = '';
 
     input.setEncoding('utf8');
-    input.on('error', err => {
+    input.on('error', (err) => {
       reject(err);
     });
-    input.on('data', chunk => {
+    input.on('data', (chunk) => {
       text += chunk;
     });
     input.on('end', () => {

@@ -27,14 +27,14 @@ export class LayerModel extends Model {
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins,
-    config: Config<SignalRef>
+    config: Config<SignalRef>,
   ) {
     super(spec, 'layer', parent, parentGivenName, config, spec.resolve, spec.view);
 
     const layoutSize = {
       ...parentGivenSize,
       ...(spec.width ? {width: spec.width} : {}),
-      ...(spec.height ? {height: spec.height} : {})
+      ...(spec.height ? {height: spec.height} : {}),
     };
 
     this.children = spec.layer.map((layer, i) => {
@@ -71,7 +71,7 @@ export class LayerModel extends Model {
       }
     }
 
-    if (Object.values(this.component.selection).some(selCmpt => isTimerSelection(selCmpt))) {
+    if (Object.values(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
       log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
     }
   }
@@ -140,9 +140,9 @@ export class LayerModel extends Model {
   public assembleMarks(): any[] {
     return assembleLayerSelectionMarks(
       this,
-      this.children.flatMap(child => {
+      this.children.flatMap((child) => {
         return child.assembleMarks();
-      })
+      }),
     );
   }
 

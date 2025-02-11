@@ -8,7 +8,7 @@ import {
   isFieldOrDatumDefForTimeFormat,
   isScaleFieldDef,
   isTypedFieldDef,
-  TypedFieldDef
+  TypedFieldDef,
 } from '../../channeldef.js';
 import {isGenerator, Parse} from '../../data.js';
 import {DateTime, isDateTime} from '../../datetime.js';
@@ -23,7 +23,7 @@ import {
   isFieldLTPredicate,
   isFieldOneOfPredicate,
   isFieldPredicate,
-  isFieldRangePredicate
+  isFieldRangePredicate,
 } from '../../predicate.js';
 import {isSortField} from '../../sort.js';
 import {FilterTransform} from '../../transform.js';
@@ -73,7 +73,7 @@ function parseExpression(field: string, parse: string): string {
 
 export function getImplicitFromFilterTransform(transform: FilterTransform) {
   const implicit: Dict<string> = {};
-  forEachLeaf(transform.filter, filter => {
+  forEachLeaf(transform.filter, (filter) => {
     if (isFieldPredicate(filter)) {
       // Automatically add a parse node for filters with filter objects
       let val: string | number | boolean | DateTime | SignalRef = null;
@@ -155,7 +155,7 @@ export function getImplicitFromEncoding(model: Model) {
         const mainFieldDef = model.fieldDef(mainChannel as SingleDefChannel) as TypedFieldDef<string>;
         add({
           ...fieldDef,
-          type: mainFieldDef.type
+          type: mainFieldDef.type,
         });
       }
     });
@@ -242,7 +242,7 @@ export class ParseNode extends DataFlowNode {
     parent: DataFlowNode,
     explicit: Parse,
     implicit: Parse,
-    ancestorParse: AncestorParse
+    ancestorParse: AncestorParse,
   ) {
     // We should not parse what has already been parsed in a parent (explicitly or implicitly) or what has been derived (maked as "derived"). We also don't need to flatten a field that has already been parsed.
     for (const field of keys(implicit)) {
@@ -329,8 +329,8 @@ export class ParseNode extends DataFlowNode {
 
   public assembleTransforms(onlyNested = false): VgFormulaTransform[] {
     return keys(this._parse)
-      .filter(field => (onlyNested ? accessPathDepth(field) > 1 : true))
-      .map(field => {
+      .filter((field) => (onlyNested ? accessPathDepth(field) > 1 : true))
+      .map((field) => {
         const expr = parseExpression(field, this._parse[field]);
         if (!expr) {
           return null;
@@ -339,10 +339,10 @@ export class ParseNode extends DataFlowNode {
         const formula: VgFormulaTransform = {
           type: 'formula',
           expr,
-          as: removePathFromField(field) // Vega output is always flattened
+          as: removePathFromField(field), // Vega output is always flattened
         };
         return formula;
       })
-      .filter(t => t !== null);
+      .filter((t) => t !== null);
   }
 }

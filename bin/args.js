@@ -40,7 +40,7 @@ To load data, you may need to set a base directory:
     .alias('t', 'timeFormat')
     .describe(
       't',
-      'Date/time format locale descriptor. Either a JSON file or a .js file that exports the locale object.'
+      'Date/time format locale descriptor. Either a JSON file or a .js file that exports the locale object.',
     );
 
   if (type === 'svg') {

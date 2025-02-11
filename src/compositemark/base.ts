@@ -20,8 +20,8 @@ export class CompositeMarkNormalizer<M extends string> implements NonFacetUnitNo
         GenericUnitSpec<Encoding<FieldName>, M> | GenericLayerSpec<any>,
         // Output of the normalize method
         NormalizedLayerSpec | NormalizedUnitSpec
-      >
-    ) => NormalizedLayerSpec | NormalizedUnitSpec
+      >,
+    ) => NormalizedLayerSpec | NormalizedUnitSpec,
   ) {}
 
   public hasMatchingType(spec: GenericSpec<any, any, any, any>): spec is CompositeMarkUnitSpec<M> {

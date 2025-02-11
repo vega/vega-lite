@@ -2,7 +2,7 @@ import {
   assembleUnitSelectionData,
   assembleUnitSelectionMarks,
   assembleUnitSelectionSignals,
-  assembleTopLevelSignals
+  assembleTopLevelSignals,
 } from '../../../src/compile/selection/assemble.js';
 import point from '../../../src/compile/selection/point.js';
 import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
@@ -17,14 +17,14 @@ describe('Multi Selection', () => {
     encoding: {
       x: {field: 'Horsepower', type: 'quantitative'},
       y: {field: 'Miles_per_Gallon', type: 'quantitative', bin: true},
-      color: {field: 'Origin', type: 'nominal'}
-    }
+      color: {field: 'Origin', type: 'nominal'},
+    },
   });
 
   const selCmpts = (model.component.selection = parseUnitSelection(model, [
     {
       name: 'one',
-      select: {type: 'point', toggle: false, clear: false}
+      select: {type: 'point', toggle: false, clear: false},
     },
     {
       name: 'two',
@@ -35,8 +35,8 @@ describe('Multi Selection', () => {
         clear: false,
         on: 'pointerover',
         toggle: false,
-        resolve: 'intersect'
-      }
+        resolve: 'intersect',
+      },
     },
     {
       name: 'thr-ee',
@@ -44,8 +44,8 @@ describe('Multi Selection', () => {
       select: {
         type: 'point',
         fields: ['Horsepower'],
-        clear: false
-      }
+        clear: false,
+      },
     },
     {
       name: 'four',
@@ -53,52 +53,52 @@ describe('Multi Selection', () => {
       select: {
         type: 'point',
         encodings: ['x', 'color'],
-        clear: false
-      }
+        clear: false,
+      },
     },
     {
       name: 'five',
       value: [
         {
           Origin: 'Japan',
-          Year: {year: 1970, month: 1, date: 1}
+          Year: {year: 1970, month: 1, date: 1},
         },
         {
           Origin: 'USA',
-          Year: {year: 1980, month: 1, date: 1}
-        }
+          Year: {year: 1980, month: 1, date: 1},
+        },
       ],
       select: {
         type: 'point',
         fields: ['Year', 'Origin'],
-        clear: false
-      }
+        clear: false,
+      },
     },
     {
       name: 'six',
       select: {
         type: 'point',
         fields: ['nested.a', 'nested.b'],
-        clear: false
-      }
+        clear: false,
+      },
     },
     // Seven ensures a smooth abstraction gradient for "value" var params -> point selections
     {
       name: 'seven',
       value: 50,
-      select: {type: 'point', fields: ['Horsepower']}
+      select: {type: 'point', fields: ['Horsepower']},
     },
     // Eight ensures this smooth "value" gradient logic doesn't kick in on unprojected point selections
     {
       name: 'eight',
       value: 75,
-      select: 'point'
+      select: 'point',
     },
     {
       name: 'nine',
       value: [{_vgsid_: 75}, {_vgsid_: 80}],
-      select: 'point'
-    }
+      select: 'point',
+    },
   ]));
 
   it('builds tuple signals', () => {
@@ -111,10 +111,10 @@ describe('Multi Selection', () => {
             events: selCmpts['one'].events,
             update:
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
-            force: true
-          }
-        ]
-      }
+            force: true,
+          },
+        ],
+      },
     ]);
 
     const twoSg = point.signals(model, selCmpts['two'], []);
@@ -126,10 +126,10 @@ describe('Multi Selection', () => {
             events: selCmpts['two'].events,
             update:
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: two_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon"], (item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon_end"]], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
-            force: true
-          }
-        ]
-      }
+            force: true,
+          },
+        ],
+      },
     ]);
 
     const threeSg = point.signals(model, selCmpts['thr_ee'], []);
@@ -141,10 +141,10 @@ describe('Multi Selection', () => {
             events: [{source: 'scope', type: 'click'}],
             update:
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: thr_ee_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"]]} : null',
-            force: true
-          }
-        ]
-      }
+            force: true,
+          },
+        ],
+      },
     ]);
 
     const fourSg = point.signals(model, selCmpts['four'], []);
@@ -156,10 +156,10 @@ describe('Multi Selection', () => {
             events: [{source: 'scope', type: 'click'}],
             update:
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
-            force: true
-          }
-        ]
-      }
+            force: true,
+          },
+        ],
+      },
     ]);
 
     const fiveSg = point.signals(model, selCmpts['five'], []);
@@ -171,10 +171,10 @@ describe('Multi Selection', () => {
             events: [{source: 'scope', type: 'click'}],
             update:
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: five_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Year"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
-            force: true
-          }
-        ]
-      }
+            force: true,
+          },
+        ],
+      },
     ]);
 
     const sixSg = point.signals(model, selCmpts['six'], []);
@@ -186,10 +186,10 @@ describe('Multi Selection', () => {
             events: [{source: 'scope', type: 'click'}],
             update:
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: six_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["nested.a"], (item().isVoronoi ? datum.datum : datum)["nested.b"]]} : null',
-            force: true
-          }
-        ]
-      }
+            force: true,
+          },
+        ],
+      },
     ]);
 
     const signals = assembleUnitSelectionSignals(model, []);
@@ -200,7 +200,7 @@ describe('Multi Selection', () => {
     const selCmpts2 = parseUnitSelection(model, [
       {name: 'one', select: 'point'},
       {name: 'two', select: 'interval'},
-      {name: 'three', select: 'interval'}
+      {name: 'three', select: 'interval'},
     ]);
     model.component.selection = selCmpts2;
     const oneSgInterval = point.signals(model, selCmpts['one'], []);
@@ -212,10 +212,10 @@ describe('Multi Selection', () => {
             events: selCmpts['one'].events,
             update:
               "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(item().mark.name, 'two_brush') < 0 && indexof(item().mark.name, 'three_brush') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
-            force: true
-          }
-        ]
-      }
+            force: true,
+          },
+        ],
+      },
     ]);
     model.component.selection = selCmpts;
   });
@@ -229,20 +229,20 @@ describe('Multi Selection', () => {
           on: [
             {
               events: {signal: 'one_tuple'},
-              update: `modify("one_store", one_tuple, true)`
-            }
-          ]
+              update: `modify("one_store", one_tuple, true)`,
+            },
+          ],
         },
         {
           name: 'two_modify',
           on: [
             {
               events: {signal: 'two_tuple'},
-              update: `modify("two_store", two_tuple, {unit: ""})`
-            }
-          ]
-        }
-      ])
+              update: `modify("two_store", two_tuple, {unit: ""})`,
+            },
+          ],
+        },
+      ]),
     );
   });
 
@@ -252,18 +252,18 @@ describe('Multi Selection', () => {
       expect.arrayContaining([
         {
           name: 'one',
-          update: 'vlSelectionResolve("one_store", "union", true, true)'
+          update: 'vlSelectionResolve("one_store", "union", true, true)',
         },
         {
           name: 'two',
-          update: 'vlSelectionResolve("two_store", "intersect", true, true)'
+          update: 'vlSelectionResolve("two_store", "intersect", true, true)',
         },
         {
           name: 'unit',
           value: {},
-          on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}]
-        }
-      ])
+          on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}],
+        },
+      ]),
     );
   });
 
@@ -271,7 +271,7 @@ describe('Multi Selection', () => {
     expect(assembleUnitSelectionData(model, [])).toEqual([
       {
         name: 'one_store',
-        transform: [{type: 'collect', sort: {field: '_vgsid_'}}]
+        transform: [{type: 'collect', sort: {field: '_vgsid_'}}],
       },
       {name: 'two_store'},
       {
@@ -280,9 +280,9 @@ describe('Multi Selection', () => {
           {
             unit: '',
             fields: [{type: 'E', field: 'Horsepower'}],
-            values: [50]
-          }
-        ]
+            values: [50],
+          },
+        ],
       },
       {
         name: 'four_store',
@@ -291,11 +291,11 @@ describe('Multi Selection', () => {
             unit: '',
             fields: [
               {field: 'Horsepower', channel: 'x', type: 'E'},
-              {field: 'Origin', channel: 'color', type: 'E'}
+              {field: 'Origin', channel: 'color', type: 'E'},
             ],
-            values: [50, 'Japan']
-          }
-        ]
+            values: [50, 'Japan'],
+          },
+        ],
       },
       {
         name: 'five_store',
@@ -304,19 +304,19 @@ describe('Multi Selection', () => {
             unit: '',
             fields: [
               {type: 'E', field: 'Year'},
-              {type: 'E', field: 'Origin'}
+              {type: 'E', field: 'Origin'},
             ],
-            values: [+new Date(1970, 0, 1, 0, 0, 0, 0), 'Japan']
+            values: [+new Date(1970, 0, 1, 0, 0, 0, 0), 'Japan'],
           },
           {
             unit: '',
             fields: [
               {type: 'E', field: 'Year'},
-              {type: 'E', field: 'Origin'}
+              {type: 'E', field: 'Origin'},
             ],
-            values: [+new Date(1980, 0, 1, 0, 0, 0, 0), 'USA']
-          }
-        ]
+            values: [+new Date(1980, 0, 1, 0, 0, 0, 0), 'USA'],
+          },
+        ],
       },
       {name: 'six_store'},
       {
@@ -325,23 +325,23 @@ describe('Multi Selection', () => {
           {
             unit: '',
             fields: [{type: 'E', field: 'Horsepower'}],
-            values: [50]
-          }
-        ]
+            values: [50],
+          },
+        ],
       },
       {
         name: 'eight_store',
         transform: [{type: 'collect', sort: {field: '_vgsid_'}}],
-        values: [{unit: '', _vgsid_: 75}]
+        values: [{unit: '', _vgsid_: 75}],
       },
       {
         name: 'nine_store',
         transform: [{type: 'collect', sort: {field: '_vgsid_'}}],
         values: [
           {unit: '', _vgsid_: 75},
-          {unit: '', _vgsid_: 80}
-        ]
-      }
+          {unit: '', _vgsid_: 80},
+        ],
+      },
     ]);
   });
 
@@ -355,7 +355,7 @@ describe('Multi Selection', () => {
 describe('Animated Selection', () => {
   const model = parseUnitModelWithScaleAndSelection({
     data: {
-      url: 'data/gapminder.json'
+      url: 'data/gapminder.json',
     },
     params: [
       {
@@ -363,35 +363,35 @@ describe('Animated Selection', () => {
         select: {
           type: 'point',
           fields: ['year'],
-          on: 'timer'
-        }
-      }
+          on: 'timer',
+        },
+      },
     ],
     transform: [
       {
         filter: {
-          param: 'avl'
-        }
-      }
+          param: 'avl',
+        },
+      },
     ],
     mark: 'point',
     encoding: {
       color: {
-        field: 'country'
+        field: 'country',
       },
       x: {
         field: 'fertility',
-        type: 'quantitative'
+        type: 'quantitative',
       },
       y: {
         field: 'life_expect',
-        type: 'quantitative'
+        type: 'quantitative',
       },
       time: {
         field: 'year',
-        type: 'ordinal'
-      }
-    }
+        type: 'ordinal',
+      },
+    },
   });
 
   model.parseData();
@@ -407,11 +407,11 @@ describe('Animated Selection', () => {
             {
               events: [{signal: 'eased_anim_clock'}, {signal: 'anim_value'}],
               update: '{unit: "", fields: avl_tuple_fields, values: [anim_value ? anim_value : min_extent]}',
-              force: true
-            }
-          ]
-        }
-      ])
+              force: true,
+            },
+          ],
+        },
+      ]),
     );
   });
 
@@ -426,16 +426,16 @@ describe('Animated Selection', () => {
             {
               events: {type: 'timer', throttle: 16.666666666666668},
               update:
-                'is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock'
-            }
-          ]
+                'is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock',
+            },
+          ],
         },
         {
           name: 'last_tick_at',
           init: 'now()',
-          on: [{events: [{signal: 'anim_clock'}, {signal: 'is_playing'}], update: 'now()'}]
-        }
-      ])
+          on: [{events: [{signal: 'anim_clock'}, {signal: 'is_playing'}], update: 'now()'}],
+        },
+      ]),
     );
   });
 
@@ -449,8 +449,8 @@ describe('Animated Selection', () => {
         // {name: 'max_extent', init: 'extent(avl_domain)[1]'},
         {name: 'max_range_extent', init: "extent(range('time'))[1]"},
         // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
-        {name: 'anim_value', update: "invert('time', eased_anim_clock)"}
-      ])
+        {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
+      ]),
     );
   });
 
@@ -463,11 +463,11 @@ describe('Animated Selection', () => {
           on: [
             {
               events: {signal: 'avl_tuple'},
-              update: 'modify("avl_store", avl_tuple, true)'
-            }
-          ]
-        }
-      ])
+              update: 'modify("avl_store", avl_tuple, true)',
+            },
+          ],
+        },
+      ]),
     );
   });
 
@@ -477,14 +477,14 @@ describe('Animated Selection', () => {
       expect.arrayContaining([
         {
           name: 'avl',
-          update: 'vlSelectionResolve("avl_store", "union", true, true)'
+          update: 'vlSelectionResolve("avl_store", "union", true, true)',
         },
         {
           name: 'unit',
           value: {},
-          on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}]
-        }
-      ])
+          on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}],
+        },
+      ]),
     );
   });
 
@@ -497,11 +497,11 @@ describe('Animated Selection', () => {
           transform: [
             {
               type: 'filter',
-              expr: '!length(data("avl_store")) || vlSelectionTest("avl_store", datum)'
-            }
-          ]
-        }
-      ])
+              expr: '!length(data("avl_store")) || vlSelectionTest("avl_store", datum)',
+            },
+          ],
+        },
+      ]),
     );
   });
 
@@ -513,10 +513,10 @@ describe('Animated Selection', () => {
 
   it(
     'does not build extra signals for duplicate selection',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const modelDuplicateSelection = parseUnitModelWithScaleAndSelection({
         data: {
-          url: 'data/gapminder.json'
+          url: 'data/gapminder.json',
         },
         params: [
           {
@@ -524,43 +524,43 @@ describe('Animated Selection', () => {
             select: {
               type: 'point',
               fields: ['year'],
-              on: 'timer'
-            }
+              on: 'timer',
+            },
           },
           {
             name: 'avl_2',
             select: {
               type: 'point',
               fields: ['year'],
-              on: 'timer'
-            }
-          }
+              on: 'timer',
+            },
+          },
         ],
         transform: [
           {
             filter: {
-              param: 'avl'
-            }
-          }
+              param: 'avl',
+            },
+          },
         ],
         mark: 'point',
         encoding: {
           color: {
-            field: 'country'
+            field: 'country',
           },
           x: {
             field: 'fertility',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           y: {
             field: 'life_expect',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           time: {
             field: 'year',
-            type: 'ordinal'
-          }
-        }
+            type: 'ordinal',
+          },
+        },
       });
 
       modelDuplicateSelection.parseData();
@@ -575,18 +575,18 @@ describe('Animated Selection', () => {
           // {name: 'max_extent', init: 'extent(avl_domain)[1]'},
           {name: 'max_range_extent', init: "extent(range('time'))[1]"},
           // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
-          {name: 'anim_value', update: "invert('time', eased_anim_clock)"}
-        ])
+          {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
+        ]),
       );
       expect(localLogger.warns).toHaveLength(1);
-    })
+    }),
   );
 
   it('errors if you try to use animation on a multi-view', () => {
     expect(() => {
       const facetModel = parseModel({
         data: {
-          url: 'data/gapminder.json'
+          url: 'data/gapminder.json',
         },
         params: [
           {
@@ -594,38 +594,38 @@ describe('Animated Selection', () => {
             select: {
               type: 'point',
               fields: ['year'],
-              on: 'timer'
-            }
-          }
+              on: 'timer',
+            },
+          },
         ],
         transform: [
           {
             filter: {
-              param: 'avl'
-            }
-          }
+              param: 'avl',
+            },
+          },
         ],
         mark: 'point',
         encoding: {
           color: {
-            field: 'country'
+            field: 'country',
           },
           x: {
             field: 'fertility',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           y: {
             field: 'life_expect',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           time: {
             field: 'year',
-            type: 'ordinal'
+            type: 'ordinal',
           },
           facet: {
-            field: 'cluster'
-          }
-        }
+            field: 'cluster',
+          },
+        },
       });
       facetModel.parseSelections();
     }).toThrow(Error);
@@ -633,7 +633,7 @@ describe('Animated Selection', () => {
     expect(() => {
       const layerModel = parseModel({
         data: {
-          url: 'data/gapminder.json'
+          url: 'data/gapminder.json',
         },
         params: [
           {
@@ -641,42 +641,42 @@ describe('Animated Selection', () => {
             select: {
               type: 'point',
               fields: ['year'],
-              on: 'timer'
-            }
-          }
+              on: 'timer',
+            },
+          },
         ],
         transform: [
           {
             filter: {
-              param: 'avl'
-            }
-          }
+              param: 'avl',
+            },
+          },
         ],
         layer: [
           {
-            mark: 'point'
+            mark: 'point',
           },
           {
-            mark: 'point'
-          }
+            mark: 'point',
+          },
         ],
         encoding: {
           color: {
-            field: 'country'
+            field: 'country',
           },
           x: {
             field: 'fertility',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           y: {
             field: 'life_expect',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           time: {
             field: 'year',
-            type: 'ordinal'
-          }
-        }
+            type: 'ordinal',
+          },
+        },
       });
       layerModel.parseSelections();
     }).toThrow(Error);
@@ -684,7 +684,7 @@ describe('Animated Selection', () => {
     expect(() => {
       const concatModel = parseModel({
         data: {
-          url: 'data/gapminder.json'
+          url: 'data/gapminder.json',
         },
         params: [
           {
@@ -692,42 +692,42 @@ describe('Animated Selection', () => {
             select: {
               type: 'point',
               fields: ['year'],
-              on: 'timer'
-            }
-          }
+              on: 'timer',
+            },
+          },
         ],
         transform: [
           {
             filter: {
-              param: 'avl'
-            }
-          }
+              param: 'avl',
+            },
+          },
         ],
         vconcat: [
           {
-            mark: 'point'
+            mark: 'point',
           },
           {
-            mark: 'point'
-          }
+            mark: 'point',
+          },
         ],
         encoding: {
           color: {
-            field: 'country'
+            field: 'country',
           },
           x: {
             field: 'fertility',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           y: {
             field: 'life_expect',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           time: {
             field: 'year',
-            type: 'ordinal'
-          }
-        }
+            type: 'ordinal',
+          },
+        },
       });
       concatModel.parseSelections();
     }).toThrow(Error);

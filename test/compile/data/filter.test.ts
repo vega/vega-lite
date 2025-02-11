@@ -18,10 +18,10 @@ describe('compile/data/filter', () => {
         {filter: {field: 'e', lt: {year: 2000}}},
         {filter: {field: 'f', lte: {year: 2000}}},
         {filter: {field: 'g', gte: {year: 2000}}},
-        {filter: {field: 'h', gt: {year: 2000}}}
+        {filter: {field: 'h', gt: {year: 2000}}},
       ],
       mark: 'point',
-      encoding: {}
+      encoding: {},
     });
 
     let parse: Dict<string> = {};
@@ -47,7 +47,7 @@ describe('compile/data/filter', () => {
       e: 'date',
       f: 'date',
       g: 'date',
-      h: 'date'
+      h: 'date',
     });
   });
 

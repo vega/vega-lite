@@ -277,7 +277,7 @@ const COMPOSITION_LAYOUT_INDEX: Flag<keyof GenericCompositionLayoutWithColumns> 
   bounds: 1,
   center: 1,
   columns: 1,
-  spacing: 1
+  spacing: 1,
 };
 
 const COMPOSITION_LAYOUT_PROPERTIES = keys(COMPOSITION_LAYOUT_INDEX);
@@ -287,7 +287,7 @@ export type SpecType = 'unit' | 'facet' | 'layer' | 'concat';
 export function extractCompositionLayout(
   spec: NormalizedSpec,
   specType: keyof CompositionConfigMixins,
-  config: CompositionConfigMixins
+  config: CompositionConfigMixins,
 ): GenericCompositionLayoutWithColumns {
   const compositionConfig = config[specType];
   const layout: GenericCompositionLayoutWithColumns = {};
@@ -318,7 +318,7 @@ export function extractCompositionLayout(
           ? spacing
           : {
               row: spacing.row ?? spacingConfig,
-              column: spacing.column ?? spacingConfig
+              column: spacing.column ?? spacingConfig,
             };
       } else {
         (layout[prop] as any) = (spec as any)[prop];

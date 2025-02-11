@@ -8,6 +8,14 @@
     "Arvind Satyanarayan (https://arvindsatya.com)",
     "Jeffrey Heer (https://jheer.org)"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vega/vega-lite.git"
+  },
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/vega/vega-lite/issues"
+  },
   "homepage": "https://vega.github.io/vega-lite/",
   "description": "Vega-Lite is a concise high-level language for interactive visualization.",
   "keywords": [
@@ -58,9 +66,8 @@
     "presite": "yarn data && yarn schema && yarn build:site && yarn build:versions && scripts/create-example-pages.sh",
     "site": "yarn site:only",
     "site:only": "pushd site && bundle exec jekyll serve -I -l && popd",
-    "prettierbase": "prettier '**/*.{md,css,yml}'",
-    "format": "eslint . --fix && yarn prettierbase --write",
-    "lint": "eslint . && yarn prettierbase --check",
+    "format": "eslint . --fix && prettier . --write",
+    "lint": "eslint . && prettier . --check",
     "test": "yarn jest test/ && yarn lint && yarn schema && yarn jest examples/ && yarn test:runtime",
     "test:cover": "yarn jest --collectCoverage test/",
     "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
@@ -71,14 +78,6 @@
     "watch:test": "yarn jest --watch test/",
     "watch:test:runtime": "TZ=America/Los_Angeles npx jest --watch test-runtime/ --config test-runtime/jest-config.json",
     "release": "release-it"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vega/vega-lite.git"
-  },
-  "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.0",

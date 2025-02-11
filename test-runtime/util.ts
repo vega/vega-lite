@@ -47,12 +47,12 @@ export const tuples = [
   {a: 8, b: 67, c: 2},
   {a: 9, b: 49, c: 0},
   {a: 9, b: 15, c: 1},
-  {a: 9, b: 48, c: 2}
+  {a: 9, b: 48, c: 2},
 ];
 
 const UNIT_NAMES = {
   repeat: ['child__row_d', 'child__row_e', 'child__row_f'],
-  facet: ['child__facet_row_0', 'child__facet_row_1', 'child__facet_row_2']
+  facet: ['child__facet_row_0', 'child__facet_row_1', 'child__facet_row_2'],
 };
 
 export const hits = {
@@ -67,44 +67,44 @@ export const hits = {
     repeat_clear: [13, 14, 2],
 
     facet: [2, 6, 9],
-    facet_clear: [3, 4, 8]
+    facet_clear: [3, 4, 8],
   },
 
   interval: {
     drag: [
       [5, 14],
-      [18, 26]
+      [18, 26],
     ],
     drag_clear: [[5], [16]],
     translate: [
       [6, 16],
-      [24, 8]
+      [24, 8],
     ],
 
     bins: [
       [4, 8],
-      [2, 7]
+      [2, 7],
     ],
     bins_clear: [[5], [9]],
     bins_translate: [
       [5, 7],
-      [1, 8]
+      [1, 8],
     ],
 
     repeat: [
       [8, 29],
       [11, 26],
-      [7, 21]
+      [7, 21],
     ],
     repeat_clear: [[8], [11], [17]],
 
     facet: [
       [1, 9],
       [2, 8],
-      [4, 10]
+      [4, 10],
     ],
-    facet_clear: [[3], [5], [7]]
-  }
+    facet_clear: [[3], [5], [7]],
+  },
 };
 
 const config = {
@@ -112,7 +112,7 @@ const config = {
   aria: false,
 
   // A lot of magic numbers in this file use the old step = 21
-  view: {discreteWidth: {step: 21}, discreteHeight: {step: 21}}
+  view: {discreteWidth: {step: 21}, discreteHeight: {step: 21}},
 };
 
 function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {
@@ -136,9 +136,9 @@ function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | N
         size,
         color: {
           condition: {param: 'sel', ...color},
-          value: 'grey'
-        }
-      }
+          value: 'grey',
+        },
+      },
     };
   } else {
     return {
@@ -152,15 +152,15 @@ function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | N
             y,
             size,
             color,
-            opacity: {value: 0.25}
-          }
+            opacity: {value: 0.25},
+          },
         },
         {
           transform: [{filter: {param: 'sel'}}],
           mark,
-          encoding: {x, y, size, color}
-        }
-      ]
+          encoding: {x, y, size, color},
+        },
+      ],
     };
   }
 }
@@ -177,7 +177,7 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
         facet: {row: {field: 'c', type: 'nominal'}},
         spec: specification,
         resolve,
-        config
+        config,
       } as TopLevelSpec;
     case 'repeat':
       return {
@@ -185,7 +185,7 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
         repeat: {row: ['d', 'e', 'f']},
         spec: specification,
         resolve,
-        config
+        config,
       } as TopLevelSpec;
   }
 }
@@ -227,25 +227,25 @@ export function geoSpec(selDef?: IntervalSelectionConfigWithoutType): TopLevelSp
         {latitude: 48.30079861, longitude: -102.4063514},
         {latitude: 40.65138528, longitude: -98.07978667},
         {latitude: 32.76124611, longitude: -89.53007139},
-        {latitude: 32.11931306, longitude: -88.1274625}
-      ]
+        {latitude: 32.11931306, longitude: -88.1274625},
+      ],
     },
     mark: 'circle',
     params: [
       {
         name: 'sel',
-        select: {type: 'interval', ...selDef}
-      }
+        select: {type: 'interval', ...selDef},
+      },
     ],
     encoding: {
       longitude: {field: 'longitude', type: 'quantitative'},
       latitude: {field: 'latitude', type: 'quantitative'},
       color: {
         condition: {param: 'sel', empty: false, value: 'goldenrod'},
-        value: 'steelblue'
+        value: 'steelblue',
       },
-      size: {value: 10}
-    }
+      size: {value: 10},
+    },
   };
 }
 
@@ -281,7 +281,7 @@ export function setSignal(name: string, value: any) {
 }
 
 export function sleep(milliseconds: number) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, milliseconds);
   });
 }
@@ -291,7 +291,7 @@ export function embedFn(page: Page) {
     await page.evaluate(
       (_: any) => (window as any).embed(_),
       // specification is serializable even if the types don't agree
-      specification as any
+      specification as any,
     );
   };
 }
@@ -301,7 +301,7 @@ const writeFileAsync = promisify(fs.writeFile);
 
 export async function svg(page: Page, path: string, filename: string) {
   const svgString = (await page.evaluate(
-    `(async () => { vega.resetSVGClipId(); await view.runAsync(); return await view.toSVG() })()`
+    `(async () => { vega.resetSVGClipId(); await view.runAsync(); return await view.toSVG() })()`,
   )) as string;
 
   if (generate) {

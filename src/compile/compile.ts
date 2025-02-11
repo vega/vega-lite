@@ -13,7 +13,7 @@ import {
   extractTopLevelProperties,
   getFitType,
   isFitType,
-  TopLevelProperties
+  TopLevelProperties,
 } from '../spec/toplevel.js';
 import {Dict, keys} from '../util.js';
 import {buildModel} from './buildmodel.js';
@@ -123,12 +123,12 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
       model,
       getTopLevelProperties(inputSpec, spec.autosize, config, model),
       inputSpec.datasets,
-      inputSpec.usermeta
+      inputSpec.usermeta,
     );
 
     return {
       spec: vgSpec,
-      normalized: spec
+      normalized: spec,
     };
   } finally {
     // Reset the singleton logger if a logger is provided
@@ -146,7 +146,7 @@ function getTopLevelProperties(
   inputSpec: TopLevel<any>,
   autosize: AutoSizeType | AutoSizeParams,
   config: Config,
-  model: Model
+  model: Model,
 ) {
   const width = model.component.layoutSize.get('width');
   const height = model.component.layoutSize.get('height');
@@ -183,7 +183,7 @@ function getTopLevelProperties(
         : {autosize: autosize.type}
       : {autosize}),
     ...extractTopLevelProperties(config, false),
-    ...extractTopLevelProperties(inputSpec, true)
+    ...extractTopLevelProperties(inputSpec, true),
   };
 }
 
@@ -197,7 +197,7 @@ function assembleTopLevelModel(
   model: Model,
   topLevelProperties: TopLevelProperties & LayoutSizeMixins,
   datasets: Datasets = {},
-  usermeta: Dict<any>
+  usermeta: Dict<any>,
 ): VgSpec {
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
@@ -213,7 +213,7 @@ function assembleTopLevelModel(
   let layoutSignals = model.assembleLayoutSignals();
 
   // move width and height signals with values to top level
-  layoutSignals = layoutSignals.filter(signal => {
+  layoutSignals = layoutSignals.filter((signal) => {
     if ((signal.name === 'width' || signal.name === 'height') && signal.value !== undefined) {
       topLevelProperties[signal.name] = +signal.value;
       return false;
@@ -235,9 +235,9 @@ function assembleTopLevelModel(
     ...model.assembleGroup([
       ...layoutSignals,
       ...model.assembleSelectionTopLevelSignals([]),
-      ...assembleParameterSignals(params)
+      ...assembleParameterSignals(params),
     ]),
     ...(vgConfig ? {config: vgConfig} : {}),
-    ...(usermeta ? {usermeta} : {})
+    ...(usermeta ? {usermeta} : {}),
   };
 }

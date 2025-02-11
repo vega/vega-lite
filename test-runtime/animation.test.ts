@@ -6,7 +6,7 @@ import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 const gapminderSpec: TopLevelSpec = {
   $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
   data: {
-    url: 'gapminder.json'
+    url: 'gapminder.json',
   },
   mark: 'point',
   params: [
@@ -15,33 +15,33 @@ const gapminderSpec: TopLevelSpec = {
       select: {
         type: 'point',
         fields: ['year'],
-        on: 'timer'
-      }
-    }
+        on: 'timer',
+      },
+    },
   ],
   transform: [
     {
       filter: {
-        param: 'avl'
-      }
-    }
+        param: 'avl',
+      },
+    },
   ],
   encoding: {
     color: {
-      field: 'country'
+      field: 'country',
     },
     x: {
       field: 'fertility',
-      type: 'quantitative'
+      type: 'quantitative',
     },
     y: {
       field: 'life_expect',
-      type: 'quantitative'
+      type: 'quantitative',
     },
     time: {
-      field: 'year'
-    }
-  }
+      field: 'year',
+    },
+  },
 };
 
 describe('time encoding animations', () => {
@@ -78,7 +78,7 @@ describe('time encoding animations', () => {
 
       const curr_dataset = state.data['source_0_curr'] as Datum[];
       const time_field = gapminderSpec.encoding.time.field as string;
-      const filteredDataset = curr_dataset.filter(d => d[time_field] === anim_value);
+      const filteredDataset = curr_dataset.filter((d) => d[time_field] === anim_value);
 
       expect(filteredDataset).toHaveLength(curr_dataset.length);
 

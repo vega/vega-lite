@@ -20,21 +20,21 @@ export const text: MarkCompiler = {
         color: 'include',
         size: 'ignore',
         orient: 'ignore',
-        theta: 'include'
+        theta: 'include',
       }),
       ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
       ...encode.text(model),
       ...encode.nonPosition('size', model, {
-        vgChannel: 'fontSize' // VL's text size is fontSize
+        vgChannel: 'fontSize', // VL's text size is fontSize
       }),
       ...encode.nonPosition('angle', model),
       ...encode.valueIfDefined('align', align(model.markDef, encoding, config)),
       ...encode.valueIfDefined('baseline', baseline(model.markDef, encoding, config)),
       ...encode.pointPosition('radius', model, {defaultPos: null}),
-      ...encode.pointPosition('theta', model, {defaultPos: null})
+      ...encode.pointPosition('theta', model, {defaultPos: null}),
     };
-  }
+  },
 };
 
 function align(markDef: MarkDef, encoding: Encoding<string>, config: Config<SignalRef>) {

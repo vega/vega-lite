@@ -12,19 +12,19 @@ export const area: MarkCompiler = {
         color: 'include',
         orient: 'include',
         size: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
       ...encode.pointOrRangePosition('x', model, {
         defaultPos: 'zeroOrMin',
         defaultPos2: 'zeroOrMin',
-        range: model.markDef.orient === 'horizontal'
+        range: model.markDef.orient === 'horizontal',
       }),
       ...encode.pointOrRangePosition('y', model, {
         defaultPos: 'zeroOrMin',
         defaultPos2: 'zeroOrMin',
-        range: model.markDef.orient === 'vertical'
+        range: model.markDef.orient === 'vertical',
       }),
-      ...encode.defined(model)
+      ...encode.defined(model),
     };
-  }
+  },
 };

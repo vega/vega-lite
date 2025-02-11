@@ -54,7 +54,7 @@ describe(`point selections at runtime in unit views`, () => {
     fields = ['a', 'c'];
     values = [
       [2, 1],
-      [6, 0]
+      [6, 0],
     ];
     await t(async (i: number) => await embed(spec('unit', i, {type, encodings})));
 
@@ -62,7 +62,7 @@ describe(`point selections at runtime in unit views`, () => {
     fields = ['c', 'a', 'b'];
     values = [
       [1, 2, 53],
-      [0, 6, 87]
+      [0, 6, 87],
     ];
     await t(async (i: number) => await embed(spec('unit', i, {type, fields})));
   });
@@ -85,7 +85,7 @@ describe(`point selections at runtime in unit views`, () => {
     const types = ['R-RE', 'E', 'R-RE'];
     const values = [
       [[1, 2], 0, [40, 50]],
-      [[8, 9], 1, [10, 20]]
+      [[8, 9], 1, [10, 20]],
     ];
 
     for (let i = 0; i < hits.bins.length; i++) {

@@ -47,14 +47,14 @@ export function assembleParameterSignals(params: (VariableParameter | TopLevelSe
       const signal: InitSignal = {
         ...rest,
         bind,
-        init: expr
+        init: expr,
       };
       signals.push(signal);
     } else {
       const signal: NewSignal = {
         ...rest,
         ...(expr ? {update: expr} : {}),
-        ...(bind ? {bind} : {})
+        ...(bind ? {bind} : {}),
       };
       signals.push(signal);
     }

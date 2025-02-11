@@ -9,7 +9,7 @@ import {
   isValueDef,
   TypedFieldDef,
   Value,
-  ValueDef
+  ValueDef,
 } from '../../channeldef.js';
 import {Encoding} from '../../encoding.js';
 import {FILL_STROKE_CONFIG} from '../../mark.js';
@@ -35,12 +35,12 @@ export const legendEncodeRules: {
   symbols,
   gradient,
   labels,
-  entries
+  entries,
 };
 
 export function symbols(
   symbolsSpec: any,
-  {fieldOrDatumDef, model, channel, legendCmpt, legendType}: LegendEncodeParams
+  {fieldOrDatumDef, model, channel, legendCmpt, legendType}: LegendEncodeParams,
 ): SymbolEncodeEntry {
   if (legendType !== 'symbol') {
     return undefined;
@@ -51,7 +51,7 @@ export function symbols(
 
   let out = {
     ...applyMarkConfig({}, model, FILL_STROKE_CONFIG),
-    ...mixins.color(model, {filled})
+    ...mixins.color(model, {filled}),
   } as SymbolEncodeEntry; // FIXME: remove this when VgEncodeEntry is compatible with SymbolEncodeEntry
 
   const symbolOpacity = legendCmpt.get('symbolOpacity') ?? config.legend.symbolOpacity;
@@ -90,7 +90,7 @@ export function symbols(
       const stroke = getFirstDefined<string | Gradient | SignalRef>(
         getFirstConditionValue<string | Gradient>(encoding.stroke || encoding.color),
         markDef.stroke,
-        filled ? markDef.color : undefined
+        filled ? markDef.color : undefined,
       );
       if (stroke) {
         out.stroke = {value: stroke} as ColorValueRef;
@@ -104,7 +104,7 @@ export function symbols(
     if (condition) {
       out.opacity = [
         {test: condition, ...signalOrValueRef(opacity ?? 1)},
-        signalOrValueRef(config.legend.unselectedOpacity)
+        signalOrValueRef(config.legend.unselectedOpacity),
       ];
     } else if (opacity) {
       out.opacity = signalOrValueRef(opacity);
@@ -153,7 +153,7 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
       field: 'datum.value',
       format,
       formatType,
-      config
+      config,
     });
   } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
     if (fieldOrDatumDef.type === 'quantitative' && config.numberFormatType) {
@@ -162,7 +162,7 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
         field: 'datum.value',
         format: config.numberFormat,
         formatType: config.numberFormatType,
-        config
+        config,
       });
     } else if (
       fieldOrDatumDef.type === 'temporal' &&
@@ -175,7 +175,7 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
         field: 'datum.value',
         format: config.timeFormat,
         formatType: config.timeFormatType,
-        config
+        config,
       });
     }
   }
@@ -183,7 +183,7 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
   const labelsSpec = {
     ...(opacity ? {opacity} : {}),
     ...(text ? {text} : {}),
-    ...specifiedlabelsSpec
+    ...specifiedlabelsSpec,
   };
 
   return isEmpty(labelsSpec) ? undefined : labelsSpec;
@@ -199,7 +199,7 @@ function getMaxValue(channelDef: Encoding<string>['opacity']) {
 }
 
 export function getFirstConditionValue<V extends Value | Gradient>(
-  channelDef: Encoding<string>['fill' | 'stroke' | 'shape']
+  channelDef: Encoding<string>['fill' | 'stroke' | 'shape'],
 ): V {
   return getConditionValue<V>(channelDef, (v: V, conditionalDef: Conditional<ValueDef<V>>) => {
     return getFirstDefined<V>(v, conditionalDef.value);
@@ -208,7 +208,7 @@ export function getFirstConditionValue<V extends Value | Gradient>(
 
 function getConditionValue<V extends Value | Gradient>(
   channelDef: Encoding<string>['fill' | 'stroke' | 'shape' | 'opacity'],
-  reducer: (val: V, conditionalDef: Conditional<ValueDef<V>>) => V
+  reducer: (val: V, conditionalDef: Conditional<ValueDef<V>>) => V,
 ): V {
   if (hasConditionalValueDef(channelDef)) {
     return array(channelDef.condition).reduce(reducer, channelDef.value as any);
@@ -224,7 +224,7 @@ function selectedCondition(model: UnitModel, legendCmpt: LegendComponent, fieldD
 
   const field = stringValue(fieldDef.field);
   return selections
-    .map(name => {
+    .map((name) => {
       const store = stringValue(varName(name) + STORE);
       return `(!length(data(${store})) || (${name}[${field}] && indexof(${name}[${field}], datum.value) >= 0))`;
     })

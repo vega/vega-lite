@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - "site/**"
-      - "scripts/**"
-      - ".github/workflows/**"
+      - 'site/**'
+      - 'scripts/**'
+      - '.github/workflows/**'
 
 jobs:
   toc:
@@ -23,7 +23,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          cache: "yarn"
+          cache: 'yarn'
           node-version: 20
 
       - name: Install Node dependencies
@@ -32,7 +32,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3"
+          ruby-version: '3.3'
 
       - name: Setup data
         run: yarn data

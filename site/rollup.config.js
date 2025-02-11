@@ -14,7 +14,14 @@ export default {
   output: {
     file: 'site/static/bundle.js',
     format: 'iife',
-    sourcemap: true
+    sourcemap: true,
   },
-  plugins: [json(), nodeResolve({browser: true, extensions}), commonjs(), typescript(), watch && terser(), bundleSize()]
+  plugins: [
+    json(),
+    nodeResolve({browser: true, extensions}),
+    commonjs(),
+    typescript(),
+    watch && terser(),
+    bundleSize(),
+  ],
 };

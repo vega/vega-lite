@@ -13,7 +13,7 @@ import {
   ErrorBandConfigMixins,
   ErrorBandDef,
   ERRORBAND_PARTS,
-  normalizeErrorBand
+  normalizeErrorBand,
 } from './errorband.js';
 import {
   ERRORBAR,
@@ -22,7 +22,7 @@ import {
   ErrorBarDef,
   ERRORBAR_PARTS,
   ErrorExtraEncoding,
-  normalizeErrorBar
+  normalizeErrorBar,
 } from './errorbar.js';
 
 export type {BoxPlotConfig} from './boxplot.js';
@@ -31,7 +31,7 @@ export type {ErrorBarConfigMixins} from './errorbar.js';
 
 export type CompositeMarkNormalizerRun = (
   spec: GenericUnitSpec<any, any>,
-  params: NormalizerParams
+  params: NormalizerParams,
 ) => NormalizedLayerSpec | NormalizedUnitSpec;
 
 /**

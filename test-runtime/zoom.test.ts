@@ -11,11 +11,11 @@ import {
   spec,
   testRenderFn,
   tuples,
-  unbound
+  unbound,
 } from './util.js';
 const hits = {
   zoom: [9, 23],
-  bins: [8, 2]
+  bins: [8, 2],
 };
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 import {TopLevelSpec} from '../src/index.js';
@@ -54,7 +54,7 @@ describe('Zoom interval selections at runtime', () => {
 
       const assertExtent = {
         in: ['toBeGreaterThanOrEqual', 'toBeLessThanOrEqual'],
-        out: ['toBeLessThanOrEqual', 'toBeGreaterThanOrEqual']
+        out: ['toBeLessThanOrEqual', 'toBeGreaterThanOrEqual'],
       } as const;
 
       async function setup(brushKey: BrushKeys, idx: number, encodings: string[], parent?: string) {
@@ -102,9 +102,9 @@ describe('Zoom interval selections at runtime', () => {
               {
                 x: {aggregate: 'count', type: 'quantitative'},
                 y: {bin: true},
-                color: {value: 'steelblue', field: undefined, type: undefined}
-              }
-            )
+                color: {value: 'steelblue', field: undefined, type: undefined},
+              },
+            ),
           );
 
           const {inOut, yold} = await setup('bins', i, encodings);
@@ -119,7 +119,7 @@ describe('Zoom interval selections at runtime', () => {
       });
 
       it('should work with temporal domains', async () => {
-        const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
+        const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
         const encodings = ['x'];
 
         for (let i = 0; i < hits.zoom.length; i++) {
@@ -144,9 +144,9 @@ describe('Zoom interval selections at runtime', () => {
               {type, ...binding},
               {
                 x: {scale: {type: 'pow', exponent: 1.5}},
-                y: {scale: {type: 'log'}}
-              }
-            )
+                y: {scale: {type: 'log'}},
+              },
+            ),
           );
           const {inOut, xold, yold} = await setup('drag', i, ['x', 'y']);
           await testRender(`logpow_${inOut}-0`);
@@ -172,9 +172,9 @@ describe('Zoom interval selections at runtime', () => {
                 {type, ...binding},
                 {
                   x: {type: 'ordinal'},
-                  y: {type: 'nominal'}
-                }
-              )
+                  y: {type: 'nominal'},
+                },
+              ),
             );
             const {inOut, xold, yold} = await setup('drag', i, ['x', 'y']);
             await testRender(`ord_${inOut}-0`);

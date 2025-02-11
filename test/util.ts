@@ -18,7 +18,7 @@ import {
   NormalizedLayerSpec,
   NormalizedUnitSpec,
   TopLevel,
-  TopLevelSpec
+  TopLevelSpec,
 } from '../src/spec/index.js';
 import {BaseSpec, FrameMixins} from '../src/spec/base.js';
 import {FacetedUnitSpec} from '../src/spec/unit.js';
@@ -105,7 +105,7 @@ export function assertIsLayerSpec(spec: BaseSpec): asserts spec is GenericLayerS
 
 /** Returns the array without the elements in excludedItems */
 export function without<T>(array: readonly T[], excludedItems: readonly T[]) {
-  return array.filter(item => !contains(excludedItems, item));
+  return array.filter((item) => !contains(excludedItems, item));
 }
 
 export function range(start: number, stop: number, step: number) {

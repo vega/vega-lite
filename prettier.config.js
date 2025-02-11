@@ -5,17 +5,10 @@
 const config = {
   printWidth: 120,
   proseWrap: 'never',
-  overrides: [
-    {
-      files: '*.{js,jsx,ts,tsx}',
-      options: {
-        bracketSpacing: false,
-        singleQuote: true,
-        trailingComma: 'all',
-        arrowParens: 'always'
-      }
-    }
-  ]
+  bracketSpacing: false,
+  singleQuote: true,
+  trailingComma: 'all',
+  arrowParens: 'always',
 };
 
 export default config;

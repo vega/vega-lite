@@ -20,21 +20,21 @@ export const rule: MarkCompiler = {
         color: 'include',
         orient: 'ignore',
         size: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
       ...encode.pointOrRangePosition('x', model, {
         defaultPos: orient === 'horizontal' ? 'zeroOrMax' : 'mid',
         defaultPos2: 'zeroOrMin',
-        range: orient !== 'vertical' // include x2 for horizontal or line segment rule
+        range: orient !== 'vertical', // include x2 for horizontal or line segment rule
       }),
       ...encode.pointOrRangePosition('y', model, {
         defaultPos: orient === 'vertical' ? 'zeroOrMax' : 'mid',
         defaultPos2: 'zeroOrMin',
-        range: orient !== 'horizontal' // include y2 for vertical or line segment rule
+        range: orient !== 'horizontal', // include y2 for vertical or line segment rule
       }),
       ...encode.nonPosition('size', model, {
-        vgChannel: 'strokeWidth' // VL's rule size is strokeWidth
-      })
+        vgChannel: 'strokeWidth', // VL's rule size is strokeWidth
+      }),
     };
-  }
+  },
 };

@@ -12,10 +12,10 @@ export const rect: MarkCompiler = {
         color: 'include',
         orient: 'ignore',
         size: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
       ...encode.rectPosition(model, 'x'),
-      ...encode.rectPosition(model, 'y')
+      ...encode.rectPosition(model, 'y'),
     };
-  }
+  },
 };

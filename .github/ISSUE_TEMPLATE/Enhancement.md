@@ -1,7 +1,7 @@
 ---
-name: "Enhancement"
-about: "Suggest a new idea or improvement for Vega-Lite"
-labels: "Enhancement :tada:"
+name: 'Enhancement'
+about: 'Suggest a new idea or improvement for Vega-Lite'
+labels: 'Enhancement :tada:'
 ---
 
 ## Enhancement Description

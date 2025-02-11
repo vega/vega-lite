@@ -6,7 +6,7 @@ import {
   isInlineData,
   isNamedData,
   isSphereGenerator,
-  isUrlData
+  isUrlData,
 } from '../../data.js';
 import {contains, isEmpty, omit} from '../../util.js';
 import {VgData} from '../../vega.schema.js';
@@ -109,7 +109,7 @@ export class SourceNode extends DataFlowNode {
     return {
       name: this._name,
       ...this._data,
-      transform: []
+      transform: [],
     };
   }
 }

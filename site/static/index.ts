@@ -32,7 +32,7 @@ hljs.highlightAll();
 declare const BASEURL: string;
 
 const loader = vega.loader({
-  baseURL: BASEURL
+  baseURL: BASEURL,
 });
 
 const editorURL = 'https://vega.github.io/editor/';
@@ -89,14 +89,14 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      .on('click mouseup', event => {
+      .on('click mouseup', (event) => {
         // Check if it's a regular left click or middle mouse click
         if (event.type === 'click' || (event.type === 'mouseup' && event.button === MIDDLE_MOUSE_CLICK)) {
           post(window, editorURL, {
             mode: 'vega-lite',
             spec: compactStringify(spec),
             config: vgSpec.config,
-            renderer: 'svg'
+            renderer: 'svg',
           });
         }
         // remove as any when d3 typings are updated
@@ -121,7 +121,7 @@ async function getSpec(el: d3.BaseType) {
     } catch (e) {
       sel
         .html(
-          `Could not load spec: ${e}. Please report this issue on <a href="https://github.com/vega/vega-lite/issues/new/choose">GitHub</a>.`
+          `Could not load spec: ${e}. Please report this issue on <a href="https://github.com/vega/vega-lite/issues/new/choose">GitHub</a>.`,
         )
         .classed('error', true);
       console.error(e);
@@ -194,7 +194,7 @@ function setSlide(
   slides: NodeListOf<Element>,
   indicators: NodeListOf<Element>,
   links: NodeListOf<any>,
-  active: number
+  active: number,
 ) {
   return () => {
     // Reset all slides

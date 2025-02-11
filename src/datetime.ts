@@ -145,12 +145,12 @@ export const MONTHS = [
   'september',
   'october',
   'november',
-  'december'
+  'december',
 ];
-export const SHORT_MONTHS = MONTHS.map(m => m.substr(0, 3));
+export const SHORT_MONTHS = MONTHS.map((m) => m.substr(0, 3));
 
 export const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-export const SHORT_DAYS = DAYS.map(d => d.substr(0, 3));
+export const SHORT_DAYS = DAYS.map((d) => d.substr(0, 3));
 
 function normalizeQuarter(q: number | string): number {
   if (isNumeric(q)) {

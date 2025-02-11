@@ -114,7 +114,7 @@ export interface AutoSizeParams {
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
   'background',
-  'padding'
+  'padding',
   // We do not include "autosize" here as it is supported by only unit and layer specs and thus need to be normalized
 ];
 

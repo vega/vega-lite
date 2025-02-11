@@ -12,11 +12,11 @@ export const image: MarkCompiler = {
         color: 'ignore',
         orient: 'ignore',
         size: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
       ...encode.rectPosition(model, 'x'),
       ...encode.rectPosition(model, 'y'),
-      ...encode.text(model, 'url')
+      ...encode.text(model, 'url'),
     };
-  }
+  },
 };

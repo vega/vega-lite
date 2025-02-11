@@ -29,7 +29,7 @@ export class MergeIdenticalNodes extends TopDownOptimizer {
   }
 
   public run(node: DataFlowNode) {
-    const hashes = node.children.map(x => x.hash());
+    const hashes = node.children.map((x) => x.hash());
     const buckets: Record<string | number, DataFlowNode[]> = {};
 
     for (let i = 0; i < hashes.length; i++) {
@@ -341,7 +341,7 @@ export class MergeBins extends BottomUpOptimizer {
 export class MergeOutputs extends BottomUpOptimizer {
   public run(node: DataFlowNode) {
     const children = [...node.children];
-    const hasOutputChild = some(children, child => child instanceof OutputNode);
+    const hasOutputChild = some(children, (child) => child instanceof OutputNode);
 
     if (!hasOutputChild || node.numChildren() <= 1) {
       return;

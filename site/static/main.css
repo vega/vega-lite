@@ -6,7 +6,7 @@ body {
 
 body {
   font:
-    16px/1.5em "Helvetica Neue",
+    16px/1.5em 'Helvetica Neue',
     Helvetica,
     sans-serif;
   box-sizing: border-box;
@@ -547,7 +547,7 @@ footer .edit-page {
 
 #showcase:after,
 #showcase:before {
-  content: "";
+  content: '';
   display: block;
   width: 100%;
   position: absolute;
@@ -725,7 +725,7 @@ footer .edit-page {
   display: none;
 }
 
-.slide[data-state="active"] {
+.slide[data-state='active'] {
   display: block;
 }
 
@@ -754,7 +754,7 @@ footer .edit-page {
   cursor: pointer;
 }
 
-.slide-nav[data-state="active"] {
+.slide-nav[data-state='active'] {
   color: #373a3c;
   font-weight: bold;
 }

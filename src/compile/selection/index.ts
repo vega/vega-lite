@@ -8,7 +8,7 @@ import {
   SelectionInitInterval,
   SelectionResolution,
   SelectionType,
-  SelectionParameter
+  SelectionParameter,
 } from '../../selection.js';
 import {Dict, vals} from '../../util.js';
 import {OutputNode} from '../data/dataflow.js';
@@ -78,7 +78,7 @@ export const selectionCompilers: SelectionCompiler[] = [
   clear,
   translate,
   zoom,
-  nearest
+  nearest,
 ];
 
 function getFacetModel(model: Model): FacetModel {
@@ -120,5 +120,5 @@ export function disableDirectManipulation(selCmpt: SelectionComponent, selDef: S
 }
 
 export function isTimerSelection<T extends SelectionType>(selCmpt: SelectionComponent<T>) {
-  return selCmpt.events?.find(e => 'type' in e && e.type === 'timer');
+  return selCmpt.events?.find((e) => 'type' in e && e.type === 'timer');
 }

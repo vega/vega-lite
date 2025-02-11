@@ -37,7 +37,7 @@ All models are fit using [ordinary least squares](https://en.wikipedia.org/wiki/
 ## Usage
 
 ```json
-{ "regression": "y", "on": "x" }
+{"regression": "y", "on": "x"}
 ```
 
 Generate a linear regression trend line that models field `"y"` as a function of `"x"`. The output data stream can then be visualized with a line mark, and takes the form:

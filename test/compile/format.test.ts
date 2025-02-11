@@ -5,7 +5,7 @@ import {
   guideFormatType,
   numberFormat,
   timeFormatExpression,
-  timeFormat
+  timeFormat,
 } from '../../src/compile/format.js';
 import {defaultConfig} from '../../src/config.js';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type.js';
@@ -17,10 +17,10 @@ describe('Format', () => {
       const expression = timeFormatExpression({
         field: vgField(fieldDef, {expr: 'datum'}),
         timeUnit: 'month',
-        rawTimeFormat: defaultConfig.timeFormat
+        rawTimeFormat: defaultConfig.timeFormat,
       });
       expect(expression).toBe(
-        'timeFormat(datum["month_a"], timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'timeFormat(datum["month_a"], timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
@@ -30,7 +30,7 @@ describe('Format', () => {
         field: vgField(fieldDef, {expr: 'datum'}),
         timeUnit: 'month',
         format: '%Y',
-        rawTimeFormat: defaultConfig.timeFormat
+        rawTimeFormat: defaultConfig.timeFormat,
       });
       expect(expression).toBe(`timeFormat(datum["yearmonth_a"], "%Y")`);
     });
@@ -40,10 +40,10 @@ describe('Format', () => {
       const expression = timeFormatExpression({
         field: vgField(fieldDef, {expr: 'datum'}),
         timeUnit: 'quarter',
-        rawTimeFormat: defaultConfig.timeFormat
+        rawTimeFormat: defaultConfig.timeFormat,
       });
       expect(expression).toBe(
-        'timeFormat(datum["quarter_a"], timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'timeFormat(datum["quarter_a"], timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
@@ -51,10 +51,10 @@ describe('Format', () => {
       const expression = timeFormatExpression({
         field: 'datum["data"]',
         timeUnit: 'yearquarter',
-        rawTimeFormat: defaultConfig.timeFormat
+        rawTimeFormat: defaultConfig.timeFormat,
       });
       expect(expression).toBe(
-        'timeFormat(datum["data"], timeUnitSpecifier(["year","quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'timeFormat(datum["data"], timeUnitSpecifier(["year","quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
@@ -65,7 +65,7 @@ describe('Format', () => {
         timeUnit: 'month',
         format: '%Y',
         rawTimeFormat: defaultConfig.timeFormat,
-        isUTCScale: true
+        isUTCScale: true,
       });
       expect(expression).toBe(`utcFormat(datum["yearmonth_a"], "%Y")`);
     });
@@ -75,7 +75,7 @@ describe('Format', () => {
       const expression = timeFormatExpression({
         field: vgField(fieldDef, {expr: 'datum'}),
         format: '%Y',
-        formatType: 'customFormat'
+        formatType: 'customFormat',
       });
       expect(expression).toBe(`customFormat(datum["a"], "%Y")`);
     });
@@ -86,7 +86,7 @@ describe('Format', () => {
         field: vgField(fieldDef, {expr: 'datum'}),
         format: '%Y',
         timeUnit: 'date',
-        formatType: 'customFormat'
+        formatType: 'customFormat',
       });
       expect(expression).toBe(`timeFormat(datum["date_a"], "%Y")`);
     });
@@ -101,7 +101,7 @@ describe('Format', () => {
     it('returns the the formatted timeUnitExpression', () => {
       const formatted = timeFormat({timeUnit: 'date', config: {}});
       expect(formatted).toEqual({
-        signal: 'timeUnitSpecifier(["date"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+        signal: 'timeUnitSpecifier(["date"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})',
       });
     });
 
@@ -126,8 +126,8 @@ describe('Format', () => {
         numberFormat({
           type: QUANTITATIVE,
           config: {numberFormat: 'd', normalizedNumberFormat: 'c'},
-          normalizeStack: true
-        })
+          normalizeStack: true,
+        }),
       ).toBe('c');
     });
 
@@ -164,10 +164,10 @@ describe('Format', () => {
           format: '.2f',
           formatType: undefined,
           expr: 'parent',
-          config: {}
-        })
+          config: {},
+        }),
       ).toEqual({
-        signal: 'format(parent["foo"], ".2f")'
+        signal: 'format(parent["foo"], ".2f")',
       });
     });
 
@@ -178,11 +178,11 @@ describe('Format', () => {
           format: undefined,
           formatType: undefined,
           expr: 'parent',
-          config: {numberFormat: 'abc', numberFormatType: 'customFormatter'}
-        })
+          config: {numberFormat: 'abc', numberFormatType: 'customFormatter'},
+        }),
       ).toEqual({
         signal:
-          '!isValid(parent["bin_maxbins_10_foo"]) || !isFinite(+parent["bin_maxbins_10_foo"]) ? "null" : format(parent["bin_maxbins_10_foo"], "abc") + " – " + format(parent["bin_maxbins_10_foo_end"], "abc")'
+          '!isValid(parent["bin_maxbins_10_foo"]) || !isFinite(+parent["bin_maxbins_10_foo"]) ? "null" : format(parent["bin_maxbins_10_foo"], "abc") + " – " + format(parent["bin_maxbins_10_foo_end"], "abc")',
       });
     });
 
@@ -193,10 +193,10 @@ describe('Format', () => {
           format: '.2f',
           formatType: undefined,
           expr: 'parent',
-          config: {}
-        })
+          config: {},
+        }),
       ).toEqual({
-        signal: 'format(200, ".2f")'
+        signal: 'format(200, ".2f")',
       });
     });
 
@@ -207,10 +207,10 @@ describe('Format', () => {
           format: 'abc',
           formatType: 'customFormatter',
           expr: 'parent',
-          config: {}
-        })
+          config: {},
+        }),
       ).toEqual({
-        signal: 'customFormatter(200, "abc")'
+        signal: 'customFormatter(200, "abc")',
       });
     });
 
@@ -221,10 +221,10 @@ describe('Format', () => {
           format: undefined,
           formatType: undefined,
           expr: 'parent',
-          config: {numberFormat: 'abc', numberFormatType: 'customFormatter', customFormatTypes: true}
-        })
+          config: {numberFormat: 'abc', numberFormatType: 'customFormatter', customFormatTypes: true},
+        }),
       ).toEqual({
-        signal: 'customFormatter(200, "abc")'
+        signal: 'customFormatter(200, "abc")',
       });
     });
 
@@ -235,10 +235,10 @@ describe('Format', () => {
           format: undefined,
           formatType: undefined,
           expr: 'parent',
-          config: {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true}
-        })
+          config: {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true},
+        }),
       ).toEqual({
-        signal: 'customFormatter(parent["date"], "abc")'
+        signal: 'customFormatter(parent["date"], "abc")',
       });
     });
 
@@ -253,11 +253,11 @@ describe('Format', () => {
           config: {
             normalizedNumberFormat: 'abc',
             normalizedNumberFormatType: 'customFormatter',
-            customFormatTypes: true
-          }
-        })
+            customFormatTypes: true,
+          },
+        }),
       ).toEqual({
-        signal: 'customFormatter(200, "abc")'
+        signal: 'customFormatter(200, "abc")',
       });
     });
 
@@ -274,11 +274,11 @@ describe('Format', () => {
             numberFormatType: 'customFormatter2',
             normalizedNumberFormat: 'abc',
             normalizedNumberFormatType: 'customFormatter',
-            customFormatTypes: true
-          }
-        })
+            customFormatTypes: true,
+          },
+        }),
       ).toEqual({
-        signal: 'customFormatter(200, "abc")'
+        signal: 'customFormatter(200, "abc")',
       });
     });
   });
@@ -296,7 +296,7 @@ describe('Format', () => {
         undefined,
         undefined,
         {numberFormat: 'abc', numberFormatType: 'customFormatter', customFormatTypes: true},
-        false
+        false,
       );
       expect(format).toBeUndefined();
     });
@@ -308,7 +308,7 @@ describe('Format', () => {
         undefined,
         undefined,
         {normalizedNumberFormat: 'abc', normalizedNumberFormatType: 'customFormatter', customFormatTypes: true},
-        false
+        false,
       );
       expect(format).toBeUndefined();
     });
@@ -320,7 +320,7 @@ describe('Format', () => {
         undefined,
         undefined,
         {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true},
-        false
+        false,
       );
       expect(format).toBeUndefined();
     });
@@ -332,10 +332,10 @@ describe('Format', () => {
         undefined,
         undefined,
         {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true},
-        false
+        false,
       );
       expect(format).toEqual({
-        signal: 'timeUnitSpecifier(["hours"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+        signal: 'timeUnitSpecifier(["hours"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})',
       });
     });
 
@@ -346,7 +346,7 @@ describe('Format', () => {
         undefined,
         undefined,
         {normalizedNumberFormat: 'abc'},
-        false
+        false,
       );
       expect(format).toBe('abc');
     });
@@ -360,7 +360,7 @@ describe('Format', () => {
 
     it('should return utc for utc time units', () => {
       expect(
-        guideFormatType('', {field: ' foo', type: 'ordinal', timeUnit: {utc: true, unit: 'year'}}, 'ordinal')
+        guideFormatType('', {field: ' foo', type: 'ordinal', timeUnit: {utc: true, unit: 'year'}}, 'ordinal'),
       ).toBe('utc');
     });
   });

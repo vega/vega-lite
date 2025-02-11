@@ -6,7 +6,7 @@ import {
   getSecondaryRangeChannel,
   isGeoPositionChannel,
   isScaleChannel,
-  isXorY
+  isXorY,
 } from '../../channel.js';
 import {
   binRequiresRange,
@@ -15,7 +15,7 @@ import {
   hasBandEnd,
   isScaleFieldDef,
   isTypedFieldDef,
-  vgField
+  vgField,
 } from '../../channeldef.js';
 import * as log from '../../log/index.js';
 import {isFieldRange} from '../../scale.js';
@@ -91,7 +91,7 @@ export class AggregateNode extends DataFlowNode {
   constructor(
     parent: DataFlowNode,
     private dimensions: Set<string>,
-    private measures: Measures
+    private measures: Measures,
   ) {
     super(parent);
   }
@@ -102,7 +102,7 @@ export class AggregateNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel): AggregateNode {
     let isAggregate = false;
-    model.forEachFieldDef(fd => {
+    model.forEachFieldDef((fd) => {
       if (fd.aggregate) {
         isAggregate = true;
       }
@@ -239,7 +239,7 @@ export class AggregateNode extends DataFlowNode {
       groupby: [...this.dimensions].map(replacePathInField),
       ops,
       fields,
-      as
+      as,
     };
 
     return result;

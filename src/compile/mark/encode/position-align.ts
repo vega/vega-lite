@@ -9,20 +9,20 @@ import {getMarkPropOrConfig} from '../../common.js';
 const ALIGNED_X_CHANNEL: Record<Align, VgEncodeChannel> = {
   left: 'x',
   center: 'xc',
-  right: 'x2'
+  right: 'x2',
 };
 
 const BASELINED_Y_CHANNEL = {
   top: 'y',
   middle: 'yc',
-  bottom: 'y2'
+  bottom: 'y2',
 };
 
 export function vgAlignedPositionChannel(
   channel: 'x' | 'y' | 'radius' | 'theta',
   markDef: MarkDef<Mark, SignalRef>,
   config: Config<SignalRef>,
-  defaultAlign: 'top' | 'middle' = 'middle'
+  defaultAlign: 'top' | 'middle' = 'middle',
 ) {
   if (channel === 'radius' || channel === 'theta') {
     return getVgPositionChannel(channel);

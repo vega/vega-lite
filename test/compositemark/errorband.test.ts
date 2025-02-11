@@ -12,13 +12,13 @@ describe('normalizeErrorBand', () => {
         {
           data: {url: 'data/population.json'},
           mark: 'errorband',
-          encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
+          encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}},
         },
-        defaultConfig
-      )
+        defaultConfig,
+      ),
     ).toEqual({
       data: {
-        url: 'data/population.json'
+        url: 'data/population.json',
       },
       transform: [
         {
@@ -26,24 +26,24 @@ describe('normalizeErrorBand', () => {
             {
               op: 'stderr',
               field: 'people',
-              as: 'extent_people'
+              as: 'extent_people',
             },
             {
               op: 'mean',
               field: 'people',
-              as: 'center_people'
-            }
+              as: 'center_people',
+            },
           ],
-          groupby: ['age']
+          groupby: ['age'],
         },
         {
           calculate: "datum['center_people'] + datum['extent_people']",
-          as: 'upper_people'
+          as: 'upper_people',
         },
         {
           calculate: "datum['center_people'] - datum['extent_people']",
-          as: 'lower_people'
-        }
+          as: 'lower_people',
+        },
       ],
       layer: [
         {
@@ -51,30 +51,30 @@ describe('normalizeErrorBand', () => {
             opacity: 0.3,
             type: 'area',
             style: 'errorband-band',
-            ariaRoleDescription: 'errorband'
+            ariaRoleDescription: 'errorband',
           },
           encoding: {
             y: {
               field: 'lower_people',
               type: 'quantitative',
-              title: 'people'
+              title: 'people',
             },
             y2: {
-              field: 'upper_people'
+              field: 'upper_people',
             },
             x: {
               field: 'age',
-              type: 'ordinal'
+              type: 'ordinal',
             },
             tooltip: [
               {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
               {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
               {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
-              {field: 'age', type: 'ordinal'}
-            ]
-          }
-        }
-      ]
+              {field: 'age', type: 'ordinal'},
+            ],
+          },
+        },
+      ],
     });
   });
 
@@ -83,22 +83,22 @@ describe('normalizeErrorBand', () => {
       {
         data: {url: 'data/population.json'},
         mark: {type: 'errorband', borders: true},
-        encoding: {y: {field: 'people', type: 'quantitative'}}
+        encoding: {y: {field: 'people', type: 'quantitative'}},
       },
-      defaultConfig
+      defaultConfig,
     );
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
       expect(
-        some(layer, unitSpec => {
+        some(layer, (unitSpec) => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rect';
-        })
+        }),
       ).toBe(true);
       expect(
-        some(layer, unitSpec => {
+        some(layer, (unitSpec) => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'rule';
-        })
+        }),
       ).toBe(true);
     } else {
       expect(false).toBe(true);
@@ -112,23 +112,23 @@ describe('normalizeErrorBand', () => {
         mark: {type: 'errorband', borders: true},
         encoding: {
           y: {field: 'people', type: 'quantitative'},
-          x: {field: 'age', type: 'ordinal'}
-        }
+          x: {field: 'age', type: 'ordinal'},
+        },
       },
-      defaultConfig
+      defaultConfig,
     );
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
       expect(
-        some(layer, unitSpec => {
+        some(layer, (unitSpec) => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'area';
-        })
+        }),
       ).toBe(true);
       expect(
-        some(layer, unitSpec => {
+        some(layer, (unitSpec) => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.type === 'line';
-        })
+        }),
       ).toBe(true);
     } else {
       expect(false).toBe(true);
@@ -142,18 +142,18 @@ describe('normalizeErrorBand', () => {
         mark: {type: 'errorband', interpolate: 'monotone'},
         encoding: {
           y: {field: 'people', type: 'quantitative'},
-          x: {field: 'age', type: 'ordinal'}
-        }
+          x: {field: 'age', type: 'ordinal'},
+        },
       },
-      defaultConfig
+      defaultConfig,
     );
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     if (layer) {
       expect(
-        every(layer, unitSpec => {
+        every(layer, (unitSpec) => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && unitSpec.mark.interpolate === 'monotone';
-        })
+        }),
       ).toBe(true);
     } else {
       expect(false).toBe(true);
@@ -162,61 +162,61 @@ describe('normalizeErrorBand', () => {
 
   it(
     'should produce correct layered specs without interpolation in 1D error band',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const outputSpec = normalize(
         {
           data: {url: 'data/population.json'},
           mark: {type: 'errorband', interpolate: 'bundle', tension: 1},
           encoding: {
-            y: {field: 'people', type: 'quantitative'}
-          }
+            y: {field: 'people', type: 'quantitative'},
+          },
         },
-        defaultConfig
+        defaultConfig,
       );
 
       const layer = isLayerSpec(outputSpec) && outputSpec.layer;
       expect(
-        every(layer, unitSpec => {
+        every(layer, (unitSpec) => {
           return isUnitSpec(unitSpec) && isMarkDef(unitSpec.mark) && !unitSpec.mark.interpolate;
-        })
+        }),
       ).toBe(true);
       expect(localLogger.warns[0]).toEqual(log.message.errorBand1DNotSupport('interpolate'));
-    })
+    }),
   );
 
   it(
     'should produce a warning 1D error band has interpolate property',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       normalize(
         {
           data: {url: 'data/population.json'},
           mark: {type: 'errorband', interpolate: 'monotone'},
           encoding: {
-            y: {field: 'people', type: 'quantitative'}
-          }
+            y: {field: 'people', type: 'quantitative'},
+          },
         },
-        defaultConfig
+        defaultConfig,
       );
 
       expect(localLogger.warns[0]).toEqual(log.message.errorBand1DNotSupport('interpolate'));
-    })
+    }),
   );
 
   it(
     'should produce a warning 1D error band has tension property',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       normalize(
         {
           data: {url: 'data/population.json'},
           mark: {type: 'errorband', tension: 1},
           encoding: {
-            y: {field: 'people', type: 'quantitative'}
-          }
+            y: {field: 'people', type: 'quantitative'},
+          },
         },
-        defaultConfig
+        defaultConfig,
       );
 
       expect(localLogger.warns[0]).toEqual(log.message.errorBand1DNotSupport('tension'));
-    })
+    }),
   );
 });

@@ -10,10 +10,10 @@ const config = {
       'ts-jest',
       {
         diagnostics: false,
-        useESM: true
-      }
-    ]
-  }
+        useESM: true,
+      },
+    ],
+  },
 };
 
 module.exports = config;

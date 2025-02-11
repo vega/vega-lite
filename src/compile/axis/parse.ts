@@ -29,7 +29,7 @@ const OPPOSITE_ORIENT: Record<AxisOrient, AxisOrient> = {
   bottom: 'top',
   top: 'bottom',
   left: 'right',
-  right: 'left'
+  right: 'left',
 };
 
 export function parseLayerAxes(model: LayerModel) {
@@ -106,7 +106,7 @@ export function parseLayerAxes(model: LayerModel) {
 
 function mergeAxisComponents(
   mergedAxisCmpts: AxisComponent[],
-  childAxisCmpts: readonly AxisComponent[]
+  childAxisCmpts: readonly AxisComponent[],
 ): AxisComponent[] {
   if (mergedAxisCmpts) {
     // FIXME: this is a bit wrong once we support multiple axes
@@ -136,7 +136,7 @@ function mergeAxisComponents(
     }
   } else {
     // For first one, return a copy of the child
-    return childAxisCmpts.map(axisComponent => axisComponent.clone());
+    return childAxisCmpts.map((axisComponent) => axisComponent.clone());
   }
   return mergedAxisCmpts;
 }
@@ -157,11 +157,11 @@ function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisCo
           case 'gridScale':
             return {
               explicit: v1.explicit, // keep the old explicit
-              value: getFirstDefined(v1.value, v2.value)
+              value: getFirstDefined(v1.value, v2.value),
             };
         }
         return defaultTieBreaker<AxisComponentProps, any>(v1, v2, prop, 'axis');
-      }
+      },
     );
     merged.setWithExplicit(prop, mergedValueWithExplicit);
   }
@@ -173,7 +173,7 @@ function isExplicit<T extends string | number | boolean | unknown>(
   property: keyof AxisComponentProps,
   axis: Axis<SignalRef>,
   model: UnitModel,
-  channel: PositionScaleChannel
+  channel: PositionScaleChannel,
 ) {
   if (property === 'disable') {
     return axis !== undefined; // if axis is specified or null/false, then its enable/disable state is explicit
@@ -214,7 +214,7 @@ const propsToAlwaysIncludeConfig = new Set([
   'labelExpr',
   'tickCount',
   'position',
-  'tickMinStep'
+  'tickMinStep',
 ]);
 
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
@@ -262,7 +262,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     format,
     formatType,
     mark,
-    config
+    config,
   };
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {

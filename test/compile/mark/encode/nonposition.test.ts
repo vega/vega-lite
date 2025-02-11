@@ -9,13 +9,13 @@ describe('compile/mark/encode/nonPosition', () => {
       encoding: {
         x: {
           field: 'Acceleration',
-          type: 'quantitative'
+          type: 'quantitative',
         },
         y: {
           field: 'Horsepower',
-          type: 'quantitative'
-        }
-      }
+          type: 'quantitative',
+        },
+      },
     });
 
     const mixins = nonPosition('opacity', model);

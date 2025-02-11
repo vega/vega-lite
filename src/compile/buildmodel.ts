@@ -7,7 +7,7 @@ import {
   isLayerSpec,
   isUnitSpec,
   LayoutSizeMixins,
-  NormalizedSpec
+  NormalizedSpec,
 } from '../spec/index.js';
 import {ConcatModel} from './concat.js';
 import {FacetModel} from './facet.js';
@@ -20,7 +20,7 @@ export function buildModel(
   parent: Model,
   parentGivenName: string,
   unitSize: LayoutSizeMixins,
-  config: Config<SignalRef>
+  config: Config<SignalRef>,
 ): Model {
   if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName, config);

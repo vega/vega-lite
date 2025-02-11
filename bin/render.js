@@ -16,7 +16,7 @@ const Levels = {
   error: vega.Error,
   warn: vega.Warn,
   info: vega.Info,
-  debug: vega.Debug
+  debug: vega.Debug,
 };
 
 export function render(type, callback, opt) {
@@ -47,7 +47,7 @@ export function render(type, callback, opt) {
   // locale options, load custom number/time formats if specified
   const locale = {
     number: arg.format ? load(arg.format) : null,
-    time: arg.timeFormat ? load(arg.timeFormat) : null
+    time: arg.timeFormat ? load(arg.timeFormat) : null,
   };
 
   // instantiate view and invoke headless render method
@@ -57,16 +57,16 @@ export function render(type, callback, opt) {
       locale: locale, // set locale options
       loader: vega.loader({baseURL: base}), // load files from base path
       logger: vega.logger(loglevel, 'error'), // route all logging to stderr
-      renderer: 'none' // no primary renderer needed
+      renderer: 'none', // no primary renderer needed
     }).finalize(); // clear any timers, etc
 
-    return (type === 'svg' ? view.toSVG(scale) : view.toCanvas((scale * ppi) / 72, opt)).then(_ => callback(_, arg));
+    return (type === 'svg' ? view.toSVG(scale) : view.toCanvas((scale * ppi) / 72, opt)).then((_) => callback(_, arg));
   }
 
   // read input from file or stdin
   read(arg._[0] || null)
-    .then(text => render(JSON.parse(text)))
-    .catch(err => {
+    .then((text) => render(JSON.parse(text)))
+    .catch((err) => {
       console.error(err);
       exit(1);
     });

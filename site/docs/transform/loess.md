@@ -26,7 +26,7 @@ The loess transform (for locally-estimated scatterplot smoothing) uses [locally-
 ## Usage
 
 ```json
-{ "loess": "y", "on": "x", "bandwidth": 0.5 }
+{"loess": "y", "on": "x", "bandwidth": 0.5}
 ```
 
 Generate a loess trend line that models field `"y"` as a function of `"x"`, using a bandwidth parameter of `0.5`. The output data stream can then be visualized with a line mark, and takes the form:

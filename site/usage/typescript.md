@@ -12,35 +12,35 @@ The main function for Vega-Lite is [`compile`](compile.html). Vega-Lite directly
 Below is a short code snippet that uses the `compile` function and the various types exported by Vega-Lite.
 
 ```ts
-import { Config, TopLevelSpec, compile } from "vega-lite";
+import {Config, TopLevelSpec, compile} from 'vega-lite';
 
 const vegaLiteSpec: TopLevelSpec = {
-  $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
   data: {
     values: [
-      { a: "A", b: 28 },
-      { a: "B", b: 55 },
-      { a: "C", b: 43 },
-      { a: "D", b: 91 },
-      { a: "E", b: 81 },
-      { a: "F", b: 53 },
-      { a: "G", b: 19 },
-      { a: "H", b: 87 },
-      { a: "I", b: 52 },
+      {a: 'A', b: 28},
+      {a: 'B', b: 55},
+      {a: 'C', b: 43},
+      {a: 'D', b: 91},
+      {a: 'E', b: 81},
+      {a: 'F', b: 53},
+      {a: 'G', b: 19},
+      {a: 'H', b: 87},
+      {a: 'I', b: 52},
     ],
   },
-  mark: "bar",
+  mark: 'bar',
   encoding: {
-    x: { field: "a", type: "nominal", axis: { labelAngle: 0 } },
-    y: { field: "b", type: "quantitative" },
+    x: {field: 'a', type: 'nominal', axis: {labelAngle: 0}},
+    y: {field: 'b', type: 'quantitative'},
   },
 };
 
 const config: Config = {
   bar: {
-    color: "firebrick",
+    color: 'firebrick',
   },
 };
 
-const vegaSpec = compile(vegaLiteSpec, { config }).spec;
+const vegaSpec = compile(vegaLiteSpec, {config}).spec;
 ```

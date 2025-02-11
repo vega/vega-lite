@@ -6,7 +6,7 @@ import {
   Projection as VgProjection,
   Signal,
   SignalRef,
-  Title as VgTitle
+  Title as VgTitle,
 } from 'vega';
 import {
   Channel,
@@ -16,7 +16,7 @@ import {
   isChannel,
   isScaleChannel,
   ScaleChannel,
-  SingleDefChannel
+  SingleDefChannel,
 } from '../channel.js';
 import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef.js';
 import {Config} from '../config.js';
@@ -32,7 +32,7 @@ import {
   GenericCompositionLayoutWithColumns,
   LayoutSizeMixins,
   SpecType,
-  ViewBackground
+  ViewBackground,
 } from '../spec/base.js';
 import {NormalizedSpec} from '../spec/index.js';
 import {extractTitleConfig, isText, TitleParams} from '../title.js';
@@ -53,7 +53,7 @@ import {
   getSizeTypeFromLayoutSizeType,
   LayoutSizeComponent,
   LayoutSizeIndex,
-  LayoutSizeType
+  LayoutSizeType,
 } from './layoutsize/component.js';
 import {assembleLegends} from './legend/assemble.js';
 import {LegendComponentIndex} from './legend/component.js';
@@ -193,7 +193,7 @@ export abstract class Model {
     parentGivenName: string,
     public readonly config: Config<SignalRef>,
     resolve: Resolve,
-    view?: ViewBackground<ExprRef | SignalRef>
+    view?: ViewBackground<ExprRef | SignalRef>,
   ) {
     this.parent = parent;
     this.config = config;
@@ -220,7 +220,7 @@ export abstract class Model {
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
         // data is faceted if the spec is a facet spec or the parent has faceted data and data is undefined
-        isFaceted: isFacetSpec(spec) || (parent?.component.data.isFaceted && spec.data === undefined)
+        isFaceted: isFacetSpec(spec) || (parent?.component.data.isFaceted && spec.data === undefined),
       },
       layoutSize: new Split<LayoutSizeIndex>(),
       layoutHeaders: {row: {}, column: {}, facet: {}},
@@ -229,13 +229,13 @@ export abstract class Model {
         scale: {},
         axis: {},
         legend: {},
-        ...(resolve ? duplicate(resolve) : {})
+        ...(resolve ? duplicate(resolve) : {}),
       },
       selection: null,
       scales: null,
       projection: null,
       axes: {},
-      legends: {}
+      legends: {},
     };
   }
 
@@ -337,7 +337,7 @@ export abstract class Model {
         return {
           width: this.getSizeSignalRef('width'),
           height: this.getSizeSignalRef('height'),
-          ...encodeEntry
+          ...encodeEntry,
         };
       }
     }
@@ -359,7 +359,7 @@ export abstract class Model {
       padding: spacing,
       ...this.assembleDefaultLayout(),
       ...layout,
-      ...(titleBand ? {titleBand} : {})
+      ...(titleBand ? {titleBand} : {}),
     };
   }
 
@@ -405,7 +405,7 @@ export abstract class Model {
     const title: VgTitle = {
       ...extractTitleConfig(this.config.title).nonMarkTitleProperties,
       ...titleNoEncoding,
-      ...(encoding ? {encode: {update: encoding}} : {})
+      ...(encoding ? {encode: {update: encoding}} : {}),
     };
 
     if (title.text) {
@@ -508,7 +508,7 @@ export abstract class Model {
           if (field) {
             const fieldRef = vgField({aggregate: 'distinct', field}, {expr: 'datum'});
             return {
-              signal: sizeExpr(scaleName, scaleComponent, fieldRef)
+              signal: sizeExpr(scaleName, scaleComponent, fieldRef),
             };
           } else {
             log.warn(log.message.unknownField(channel));
@@ -519,7 +519,7 @@ export abstract class Model {
     }
 
     return {
-      signal: this.signalNameMap.get(this.getName(layoutSizeType))
+      signal: this.signalNameMap.get(this.getName(layoutSizeType)),
     };
   }
 
@@ -605,7 +605,7 @@ export abstract class Model {
     /* istanbul ignore next: This is warning for debugging test */
     if (!this.component.scales) {
       throw new Error(
-        'getScaleComponent cannot be called before parseScale(). Make sure you have called parseScale or use parseUnitModelWithScale().'
+        'getScaleComponent cannot be called before parseScale(). Make sure you have called parseScale or use parseUnitModelWithScale().',
       );
     }
 
@@ -640,8 +640,8 @@ export abstract class Model {
    */
   public hasAxisOrientSignalRef() {
     return (
-      this.component.axes.x?.some(a => a.hasOrientSignalRef()) ||
-      this.component.axes.y?.some(a => a.hasOrientSignalRef())
+      this.component.axes.x?.some((a) => a.hasOrientSignalRef()) ||
+      this.component.axes.y?.some((a) => a.hasOrientSignalRef())
     );
   }
 }
@@ -673,7 +673,7 @@ export abstract class ModelWithField extends Model {
         }
         return acc;
       },
-      init
+      init,
     );
   }
 
@@ -686,7 +686,7 @@ export abstract class ModelWithField extends Model {
           f(fieldDef, c);
         }
       },
-      t
+      t,
     );
   }
 

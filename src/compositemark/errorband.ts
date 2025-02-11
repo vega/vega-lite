@@ -10,7 +10,7 @@ import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins}
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar.js';
 
 export type ErrorBandUnitSpec<
-  EE = undefined // extra encoding parameter (for faceted composite unit spec)
+  EE = undefined, // extra encoding parameter (for faceted composite unit spec)
 > = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBand | ErrorBandDef>;
 
 export const ERRORBAND = 'errorband' as const;
@@ -92,12 +92,12 @@ export const errorBandNormalizer = new CompositeMarkNormalizer(ERRORBAND, normal
 
 export function normalizeErrorBand(
   spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>,
-  {config}: NormalizerParams
+  {config}: NormalizerParams,
 ): NormalizedLayerSpec {
   // Need to initEncoding first so we can infer type
   spec = {
     ...spec,
-    encoding: normalizeEncoding(spec.encoding, config)
+    encoding: normalizeEncoding(spec.encoding, config),
   };
 
   const {
@@ -107,7 +107,7 @@ export function normalizeErrorBand(
     encodingWithoutContinuousAxis,
     markDef,
     outerSpec,
-    tooltipEncoding
+    tooltipEncoding,
   } = errorBarParams(spec, ERRORBAND, config);
   const errorBandDef: ErrorBandDef = markDef;
 
@@ -116,7 +116,7 @@ export function normalizeErrorBand(
     continuousAxis,
     continuousAxisChannelDef,
     encodingWithoutContinuousAxis,
-    config.errorband
+    config.errorband,
   );
 
   const is2D = spec.encoding.x !== undefined && spec.encoding.y !== undefined;
@@ -125,19 +125,19 @@ export function normalizeErrorBand(
   let bordersMark: MarkDef = {type: is2D ? 'line' : 'rule'};
   const interpolate = {
     ...(errorBandDef.interpolate ? {interpolate: errorBandDef.interpolate} : {}),
-    ...(errorBandDef.tension && errorBandDef.interpolate ? {tension: errorBandDef.tension} : {})
+    ...(errorBandDef.tension && errorBandDef.interpolate ? {tension: errorBandDef.tension} : {}),
   };
 
   if (is2D) {
     bandMark = {
       ...bandMark,
       ...interpolate,
-      ariaRoleDescription: 'errorband'
+      ariaRoleDescription: 'errorband',
     };
     bordersMark = {
       ...bordersMark,
       ...interpolate,
-      aria: false
+      aria: false,
     };
   } else if (errorBandDef.interpolate) {
     log.warn(log.message.errorBand1DNotSupport('interpolate'));
@@ -154,21 +154,21 @@ export function normalizeErrorBand(
         mark: bandMark,
         positionPrefix: 'lower',
         endPositionPrefix: 'upper',
-        extraEncoding: tooltipEncoding
+        extraEncoding: tooltipEncoding,
       }),
       ...makeErrorBandPart({
         partName: 'borders',
         mark: bordersMark,
         positionPrefix: 'lower',
 
-        extraEncoding: tooltipEncoding
+        extraEncoding: tooltipEncoding,
       }),
       ...makeErrorBandPart({
         partName: 'borders',
         mark: bordersMark,
         positionPrefix: 'upper',
-        extraEncoding: tooltipEncoding
-      })
-    ]
+        extraEncoding: tooltipEncoding,
+      }),
+    ],
   };
 }

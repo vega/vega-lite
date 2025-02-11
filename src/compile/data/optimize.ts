@@ -53,11 +53,11 @@ function optimizationDataflowHelper(dataComponent: DataComponent, model: Model, 
   modified = runOptimizer(new optimizers.RemoveUnnecessaryIdentifierNodes(model), roots) || modified;
 
   // remove source nodes that don't have any children because they also don't have output nodes
-  roots = roots.filter(r => r.numChildren() > 0);
+  roots = roots.filter((r) => r.numChildren() > 0);
 
   modified = runOptimizer(new optimizers.RemoveUnusedSubtrees(), roots) || modified;
 
-  roots = roots.filter(r => r.numChildren() > 0);
+  roots = roots.filter((r) => r.numChildren() > 0);
 
   if (!firstPass) {
     // Only run these optimizations after the optimizer has moved down the facet node.

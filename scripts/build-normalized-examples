@@ -8,18 +8,18 @@
  * redundant Vega output specs.
  */
 
-import fs from "fs";
-import vl from "../build/vega-lite/index.js";
-import stableStringify from "fast-json-stable-stringify";
+import fs from 'fs';
+import vl from '../build/vega-lite/index.js';
+import stableStringify from 'fast-json-stable-stringify';
 
-const DIR = import.meta.dirname + "/..";
-const SPECS = "/examples/specs";
+const DIR = import.meta.dirname + '/..';
+const SPECS = '/examples/specs';
 const examples = fs.readdirSync(DIR + SPECS);
 
 async function main() {
-  const { default: compactStringify } = await import("json-stringify-pretty-compact");
+  const {default: compactStringify} = await import('json-stringify-pretty-compact');
 
-  const vlExamples = examples.filter((example) => example.includes(".vl.json"));
+  const vlExamples = examples.filter((example) => example.includes('.vl.json'));
   for (const example of vlExamples) {
     const path = `${DIR + SPECS}/${example}`;
     const spec = JSON.parse(fs.readFileSync(path));
@@ -30,9 +30,9 @@ async function main() {
 
     // console.log(preNormalized, postNormalized);
     if (preNormalized !== postNormalized) {
-      const postNormalizedOutput = compactStringify(fullSpec, { indent: 2 });
+      const postNormalizedOutput = compactStringify(fullSpec, {indent: 2});
       // -8 is cutting .vl.json
-      const newFilename = example.slice(0, -8) + "_normalized.vl.json";
+      const newFilename = example.slice(0, -8) + '_normalized.vl.json';
       const newFilenameAndPath = `${DIR + SPECS}/normalized/${newFilename}`;
       fs.writeFileSync(newFilenameAndPath, postNormalizedOutput);
     }

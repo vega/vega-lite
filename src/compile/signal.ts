@@ -10,7 +10,7 @@ export class SignalRefWrapper implements SignalRef {
   constructor(exprGenerator: () => string) {
     Object.defineProperty(this, 'signal', {
       enumerable: true,
-      get: exprGenerator
+      get: exprGenerator,
     });
   }
 

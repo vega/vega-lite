@@ -12,16 +12,16 @@ export const line: MarkCompiler = {
         color: 'include',
         size: 'ignore',
         orient: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
       ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
       ...encode.nonPosition('size', model, {
-        vgChannel: 'strokeWidth' // VL's line size is strokeWidth
+        vgChannel: 'strokeWidth', // VL's line size is strokeWidth
       }),
-      ...encode.defined(model)
+      ...encode.defined(model),
     };
-  }
+  },
 };
 
 export const trail: MarkCompiler = {
@@ -34,12 +34,12 @@ export const trail: MarkCompiler = {
         color: 'include',
         size: 'include',
         orient: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
       ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
       ...encode.nonPosition('size', model),
-      ...encode.defined(model)
+      ...encode.defined(model),
     };
-  }
+  },
 };

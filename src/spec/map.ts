@@ -7,7 +7,7 @@ import {
   GenericVConcatSpec,
   isConcatSpec,
   isHConcatSpec,
-  isVConcatSpec
+  isVConcatSpec,
 } from './concat.js';
 import {GenericFacetSpec, isFacetSpec} from './facet.js';
 import {GenericLayerSpec, isLayerSpec} from './layer.js';
@@ -20,7 +20,7 @@ export abstract class SpecMapper<
   LI extends GenericLayerSpec<any> = GenericLayerSpec<UI>,
   UO extends GenericUnitSpec<any, any> = NormalizedUnitSpec,
   RO extends RepeatSpec = never,
-  FO extends Field = FieldName
+  FO extends Field = FieldName,
 > {
   public map(spec: GenericSpec<UI, LI, RepeatSpec, Field>, params: P): GenericSpec<UO, GenericLayerSpec<UO>, RO, FO> {
     if (isFacetSpec(spec)) {
@@ -52,39 +52,39 @@ export abstract class SpecMapper<
   protected mapLayer(spec: LI, params: P): GenericLayerSpec<UO> {
     return {
       ...spec,
-      layer: spec.layer.map(subspec => this.mapLayerOrUnit(subspec, params))
+      layer: spec.layer.map((subspec) => this.mapLayerOrUnit(subspec, params)),
     };
   }
 
   protected mapHConcat(
     spec: GenericHConcatSpec<GenericSpec<UI, LI, RepeatSpec, Field>>,
-    params: P
+    params: P,
   ): GenericHConcatSpec<GenericSpec<UO, GenericLayerSpec<UO>, RO, FO>> {
     return {
       ...spec,
-      hconcat: spec.hconcat.map(subspec => this.map(subspec, params))
+      hconcat: spec.hconcat.map((subspec) => this.map(subspec, params)),
     };
   }
 
   protected mapVConcat(
     spec: GenericVConcatSpec<GenericSpec<UI, LI, RepeatSpec, Field>>,
-    params: P
+    params: P,
   ): GenericVConcatSpec<GenericSpec<UO, GenericLayerSpec<UO>, RO, FO>> {
     return {
       ...spec,
-      vconcat: spec.vconcat.map(subspec => this.map(subspec, params))
+      vconcat: spec.vconcat.map((subspec) => this.map(subspec, params)),
     };
   }
 
   protected mapConcat(
     spec: GenericConcatSpec<GenericSpec<UI, LI, RepeatSpec, Field>>,
-    params: P
+    params: P,
   ): GenericConcatSpec<GenericSpec<UO, GenericLayerSpec<UO>, RO, FO>> {
     const {concat, ...rest} = spec;
 
     return {
       ...rest,
-      concat: concat.map(subspec => this.map(subspec, params))
+      concat: concat.map((subspec) => this.map(subspec, params)),
     };
   }
 
@@ -93,7 +93,7 @@ export abstract class SpecMapper<
       // as any is required here since TS cannot infer that FO may only be FieldName or Field, but not RepeatRef
       ...(spec as any),
       // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
-      spec: this.map(spec.spec, params) as any
+      spec: this.map(spec.spec, params) as any,
     };
   }
 
@@ -101,7 +101,7 @@ export abstract class SpecMapper<
     return {
       ...spec,
       // as any is required here since TS cannot infer that the output type satisfies the input type
-      spec: this.map(spec.spec as any, params)
+      spec: this.map(spec.spec as any, params),
     };
   }
 }

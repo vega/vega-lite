@@ -34,7 +34,7 @@ export type GenericSpec<
   U extends GenericUnitSpec<Encoding<F>, any>,
   L extends GenericLayerSpec<U>,
   R extends RepeatSpec,
-  F extends Field
+  F extends Field,
 > =
   | U
   | L

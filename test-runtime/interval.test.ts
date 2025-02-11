@@ -90,9 +90,9 @@ describe('interval selections at runtime in unit views', () => {
         {
           x: {aggregate: 'count', type: 'quantitative'},
           y: {bin: true},
-          color: {value: 'steelblue', field: undefined, type: undefined}
-        }
-      )
+          color: {value: 'steelblue', field: undefined, type: undefined},
+        },
+      ),
     );
     for (let i = 0; i < hits.bins.length; i++) {
       const store = (await page.evaluate(brush('bins', i))) as [any];
@@ -113,11 +113,11 @@ describe('interval selections at runtime in unit views', () => {
   it('should brush over ordinal/nominal domains', async () => {
     const xextents = [
       [2, 3, 4],
-      [6, 7, 8]
+      [6, 7, 8],
     ];
     const yextents = [
       [49, 52, 53, 54, 55, 66, 67, 68, 76, 81, 87, 91],
-      [17, 19, 23, 24, 27, 28, 35, 39, 43, 48]
+      [17, 19, 23, 24, 27, 28, 35, 39, 43, 48],
     ];
 
     for (let i = 0; i < hits.drag.length; i++) {
@@ -142,13 +142,13 @@ describe('interval selections at runtime in unit views', () => {
   });
 
   it('should brush over temporal domains', async () => {
-    const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
+    const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
     const toNumber = (a: any) => a[0].values[0].map((d: any) => +d);
 
     await embed(spec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
     let extents = [
       [1485969714000, 1493634384000],
-      [1496346498000, 1504364922000]
+      [1496346498000, 1504364922000],
     ];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = toNumber((await page.evaluate(brush('drag', i))) as [any]);
@@ -163,7 +163,7 @@ describe('interval selections at runtime in unit views', () => {
 
     extents = [
       [1325492928000, 1325664000000],
-      [1325752128000, 1325837664000]
+      [1325752128000, 1325837664000],
     ];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = toNumber((await page.evaluate(brush('drag', i))) as [any]);
@@ -184,9 +184,9 @@ describe('interval selections at runtime in unit views', () => {
           {type},
           {
             x: {scale: {type: 'pow', exponent: 1.5}},
-            y: {scale: {type: 'log'}}
-          }
-        )
+            y: {scale: {type: 'log'}},
+          },
+        ),
       );
       const store = (await page.evaluate(brush('drag', i))) as [any];
       expect(store).toHaveLength(1);

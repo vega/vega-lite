@@ -9,41 +9,41 @@ describe('Layered Selections', () => {
         params: [
           {
             name: 'brush',
-            select: 'interval'
-          }
+            select: 'interval',
+          },
         ],
         mark: 'circle',
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
           y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-          color: {field: 'Origin', type: 'nominal'}
-        }
+          color: {field: 'Origin', type: 'nominal'},
+        },
       },
       {
         params: [
           {
             name: 'brush',
             select: 'interval',
-            bind: 'scales'
-          }
+            bind: 'scales',
+          },
         ],
         mark: 'square',
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
           y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-          color: {field: 'Origin', type: 'nominal'}
-        }
+          color: {field: 'Origin', type: 'nominal'},
+        },
       },
       {
         mark: 'point',
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
           y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-          color: {field: 'Origin', type: 'nominal'}
-        }
-      }
+          color: {field: 'Origin', type: 'nominal'},
+        },
+      },
     ],
-    config: {mark: {tooltip: null, invalid: 'break-paths-show-domains'}}
+    config: {mark: {tooltip: null, invalid: 'break-paths-show-domains'}},
   });
 
   layers.parse();
@@ -65,39 +65,39 @@ describe('Layered Selections', () => {
         style: ['circle'],
         interactive: true,
         from: {
-          data: 'layer_0_main'
+          data: 'layer_0_main',
         },
         clip: true,
         encode: {
           update: {
             x: {
               scale: 'x',
-              field: 'Horsepower'
+              field: 'Horsepower',
             },
             y: {
               scale: 'y',
-              field: 'Miles_per_Gallon'
+              field: 'Miles_per_Gallon',
             },
             ariaRoleDescription: {
-              value: 'circle'
+              value: 'circle',
             },
             description: {
               signal:
-                '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
+                '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])',
             },
             fill: {
               scale: 'color',
-              field: 'Origin'
+              field: 'Origin',
             },
             shape: {
-              value: 'circle'
+              value: 'circle',
             },
             opacity: {
-              value: 0.7
-            }
-          }
-        }
-      }
+              value: 0.7,
+            },
+          },
+        },
+      },
     ]);
 
     expect(layers.children[1].assembleMarks()).toEqual([
@@ -107,39 +107,39 @@ describe('Layered Selections', () => {
         style: ['square'],
         interactive: true,
         from: {
-          data: 'layer_1_main'
+          data: 'layer_1_main',
         },
         clip: true,
         encode: {
           update: {
             x: {
               scale: 'x',
-              field: 'Horsepower'
+              field: 'Horsepower',
             },
             y: {
               scale: 'y',
-              field: 'Miles_per_Gallon'
+              field: 'Miles_per_Gallon',
             },
             ariaRoleDescription: {
-              value: 'square'
+              value: 'square',
             },
             description: {
               signal:
-                '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
+                '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])',
             },
             fill: {
               scale: 'color',
-              field: 'Origin'
+              field: 'Origin',
             },
             shape: {
-              value: 'square'
+              value: 'square',
             },
             opacity: {
-              value: 0.7
-            }
-          }
-        }
-      }
+              value: 0.7,
+            },
+          },
+        },
+      },
     ]);
 
     expect(layers.children[2].assembleMarks()).toEqual([
@@ -149,39 +149,39 @@ describe('Layered Selections', () => {
         style: ['point'],
         interactive: false,
         from: {
-          data: 'layer_2_main'
+          data: 'layer_2_main',
         },
         clip: true,
         encode: {
           update: {
             opacity: {
-              value: 0.7
+              value: 0.7,
             },
             ariaRoleDescription: {
-              value: 'point'
+              value: 'point',
             },
             description: {
               signal:
-                '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
+                '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])',
             },
             fill: {
-              value: 'transparent'
+              value: 'transparent',
             },
             stroke: {
               scale: 'color',
-              field: 'Origin'
+              field: 'Origin',
             },
             x: {
               scale: 'x',
-              field: 'Horsepower'
+              field: 'Horsepower',
             },
             y: {
               scale: 'y',
-              field: 'Miles_per_Gallon'
-            }
-          }
-        }
-      }
+              field: 'Miles_per_Gallon',
+            },
+          },
+        },
+      },
     ]);
   });
 
@@ -199,47 +199,47 @@ describe('Layered Selections', () => {
         encode: {
           enter: {
             fill: {value: '#333'},
-            fillOpacity: {value: 0.125}
+            fillOpacity: {value: 0.125},
           },
           update: {
             x: [
               {
                 test: 'data("brush_store").length && data("brush_store")[0].unit === "layer_0"',
-                signal: 'brush_x[0]'
+                signal: 'brush_x[0]',
               },
               {
-                value: 0
-              }
+                value: 0,
+              },
             ],
             y: [
               {
                 test: 'data("brush_store").length && data("brush_store")[0].unit === "layer_0"',
-                signal: 'brush_y[0]'
+                signal: 'brush_y[0]',
               },
               {
-                value: 0
-              }
+                value: 0,
+              },
             ],
             x2: [
               {
                 test: 'data("brush_store").length && data("brush_store")[0].unit === "layer_0"',
-                signal: 'brush_x[1]'
+                signal: 'brush_x[1]',
               },
               {
-                value: 0
-              }
+                value: 0,
+              },
             ],
             y2: [
               {
                 test: 'data("brush_store").length && data("brush_store")[0].unit === "layer_0"',
-                signal: 'brush_y[1]'
+                signal: 'brush_y[1]',
               },
               {
-                value: 0
-              }
-            ]
-          }
-        }
+                value: 0,
+              },
+            ],
+          },
+        },
       },
       // Layer marks
       {...child0, clip: true},
@@ -253,55 +253,55 @@ describe('Layered Selections', () => {
         encode: {
           enter: {
             cursor: {value: 'move'},
-            fill: {value: 'transparent'}
+            fill: {value: 'transparent'},
           },
           update: {
             stroke: [
               {
                 test: 'brush_x[0] !== brush_x[1] && brush_y[0] !== brush_y[1]',
-                value: 'white'
+                value: 'white',
               },
-              {value: null}
+              {value: null},
             ],
             x: [
               {
                 test: 'data("brush_store").length && data("brush_store")[0].unit === "layer_0"',
-                signal: 'brush_x[0]'
+                signal: 'brush_x[0]',
               },
               {
-                value: 0
-              }
+                value: 0,
+              },
             ],
             y: [
               {
                 test: 'data("brush_store").length && data("brush_store")[0].unit === "layer_0"',
-                signal: 'brush_y[0]'
+                signal: 'brush_y[0]',
               },
               {
-                value: 0
-              }
+                value: 0,
+              },
             ],
             x2: [
               {
                 test: 'data("brush_store").length && data("brush_store")[0].unit === "layer_0"',
-                signal: 'brush_x[1]'
+                signal: 'brush_x[1]',
               },
               {
-                value: 0
-              }
+                value: 0,
+              },
             ],
             y2: [
               {
                 test: 'data("brush_store").length && data("brush_store")[0].unit === "layer_0"',
-                signal: 'brush_y[1]'
+                signal: 'brush_y[1]',
               },
               {
-                value: 0
-              }
-            ]
-          }
-        }
-      }
+                value: 0,
+              },
+            ],
+          },
+        },
+      },
     ]);
   });
 });

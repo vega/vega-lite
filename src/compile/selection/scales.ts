@@ -11,7 +11,7 @@ import {replacePathInField} from '../../util.js';
 import {NewSignal} from 'vega';
 
 const scaleBindings: SelectionCompiler<'interval'> = {
-  defined: selCmpt => {
+  defined: (selCmpt) => {
     return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
   },
 
@@ -43,7 +43,7 @@ const scaleBindings: SelectionCompiler<'interval'> = {
   },
 
   topLevelSignals: (model, selCmpt, signals) => {
-    const bound = selCmpt.scales.filter(proj => signals.filter(s => s.name === proj.signals.data).length === 0);
+    const bound = selCmpt.scales.filter((proj) => signals.filter((s) => s.name === proj.signals.data).length === 0);
 
     // Top-level signals are only needed for multiview displays and if this
     // view's top-level signals haven't already been generated.
@@ -57,11 +57,11 @@ const scaleBindings: SelectionCompiler<'interval'> = {
     // state is captured by the top-level signals that we insert and "push
     // outer" to from within the units. We need to reassemble this state into
     // the top-level named signal, except no single selCmpt has a global view.
-    const namedSg: NewSignal = signals.find(s => s.name === selCmpt.name);
+    const namedSg: NewSignal = signals.find((s) => s.name === selCmpt.name);
     let update = namedSg.update;
     if (update.includes(VL_SELECTION_RESOLVE)) {
       namedSg.update = `{${bound
-        .map(proj => `${stringValue(replacePathInField(proj.field))}: ${proj.signals.data}`)
+        .map((proj) => `${stringValue(replacePathInField(proj.field))}: ${proj.signals.data}`)
         .join(', ')}}`;
     } else {
       for (const proj of bound) {
@@ -73,14 +73,14 @@ const scaleBindings: SelectionCompiler<'interval'> = {
       namedSg.update = update;
     }
 
-    return signals.concat(bound.map(proj => ({name: proj.signals.data})));
+    return signals.concat(bound.map((proj) => ({name: proj.signals.data})));
   },
 
   signals: (model, selCmpt, signals) => {
     // Nested signals need only push to top-level signals with multiview displays.
     if (model.parent && !isTopLevelLayer(model)) {
       for (const proj of selCmpt.scales) {
-        const signal: any = signals.find(s => s.name === proj.signals.data);
+        const signal: any = signals.find((s) => s.name === proj.signals.data);
         signal.push = 'outer';
         delete signal.value;
         delete signal.update;
@@ -88,7 +88,7 @@ const scaleBindings: SelectionCompiler<'interval'> = {
     }
 
     return signals;
-  }
+  },
 };
 
 export default scaleBindings;

@@ -7,8 +7,8 @@ describe('compile/axis/encode', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
+        },
       });
       const labels = encode.labels(model, 'x', {});
       expect(labels?.angle).toBeUndefined();
@@ -18,9 +18,9 @@ describe('compile/axis/encode', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
         },
-        config: {axisX: {labelAngle: 90}}
+        config: {axisX: {labelAngle: 90}},
       });
       const labels = encode.labels(model, 'x', {});
       expect(labels?.angle).toBeUndefined();
@@ -30,9 +30,9 @@ describe('compile/axis/encode', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'quantitative', axis: {format: 'abc', formatType: 'customNumberFormat'}}
+          x: {field: 'a', type: 'quantitative', axis: {format: 'abc', formatType: 'customNumberFormat'}},
         },
-        config: {customFormatTypes: true}
+        config: {customFormatTypes: true},
       });
       const labels = encode.labels(model, 'x', {});
       expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
@@ -42,9 +42,9 @@ describe('compile/axis/encode', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'quantitative', axis: {formatType: 'customNumberFormat'}}
+          x: {field: 'a', type: 'quantitative', axis: {formatType: 'customNumberFormat'}},
         },
-        config: {customFormatTypes: true}
+        config: {customFormatTypes: true},
       });
       const labels = encode.labels(model, 'x', {});
       expect(labels.text.signal).toBe('customNumberFormat(datum.value)');
@@ -54,9 +54,9 @@ describe('compile/axis/encode', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'quantitative'}
+          x: {field: 'a', type: 'quantitative'},
         },
-        config: {customFormatTypes: true, numberFormat: 'abc', numberFormatType: 'customNumberFormat'}
+        config: {customFormatTypes: true, numberFormat: 'abc', numberFormatType: 'customNumberFormat'},
       });
       const labels = encode.labels(model, 'x', {});
       expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
@@ -66,13 +66,13 @@ describe('compile/axis/encode', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'quantitative', stack: 'normalize'}
+          x: {field: 'a', type: 'quantitative', stack: 'normalize'},
         },
         config: {
           customFormatTypes: true,
           normalizedNumberFormat: 'abc',
-          normalizedNumberFormatType: 'customNumberFormat'
-        }
+          normalizedNumberFormatType: 'customNumberFormat',
+        },
       });
       const labels = encode.labels(model, 'x', {});
       expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
@@ -82,9 +82,9 @@ describe('compile/axis/encode', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'temporal'}
+          x: {field: 'a', type: 'temporal'},
         },
-        config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customTimeFormat'}
+        config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customTimeFormat'},
       });
       const labels = encode.labels(model, 'x', {});
       expect(labels.text.signal).toBe('customTimeFormat(datum.value, "abc")');
@@ -94,9 +94,9 @@ describe('compile/axis/encode', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'date'}
+          x: {field: 'a', type: 'temporal', timeUnit: 'date'},
         },
-        config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customTimeFormat'}
+        config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customTimeFormat'},
       });
       const labels = encode.labels(model, 'x', {});
       expect(labels).toEqual({});

@@ -37,7 +37,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...zindex(model),
     ...tooltip(model),
     ...text(model, 'href'),
-    ...aria(model)
+    ...aria(model),
   };
 }
 
@@ -53,6 +53,6 @@ function markDefProperties(mark: MarkDef, ignore: Ignore) {
       }
       return m;
     },
-    {} as Record<keyof MarkConfig, unknown>
+    {} as Record<keyof MarkConfig, unknown>,
   );
 }

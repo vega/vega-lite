@@ -13,9 +13,9 @@ For example:
 {
   "gradient": "linear",
   "stops": [
-    { "offset": 0.0, "color": "red" },
-    { "offset": 0.5, "color": "white" },
-    { "offset": 1.0, "color": "blue" }
+    {"offset": 0.0, "color": "red"},
+    {"offset": 0.5, "color": "white"},
+    {"offset": 1.0, "color": "blue"}
   ]
 }
 ```

@@ -16,8 +16,8 @@ export const geoshape: MarkCompiler = {
         color: 'include',
         size: 'ignore',
         orient: 'ignore',
-        theta: 'ignore'
-      })
+        theta: 'ignore',
+      }),
     };
   },
   postEncodingTransform: (model: UnitModel): VgPostEncodingTransform[] => {
@@ -30,8 +30,8 @@ export const geoshape: MarkCompiler = {
       // as: 'shape',
       ...(shapeDef && isFieldDef(shapeDef) && shapeDef.type === GEOJSON
         ? {field: vgField(shapeDef, {expr: 'datum'})}
-        : {})
+        : {}),
     };
     return [transform];
-  }
+  },
 };

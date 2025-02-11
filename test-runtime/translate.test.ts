@@ -11,7 +11,7 @@ import {
   spec,
   testRenderFn,
   tuples,
-  unbound
+  unbound,
 } from './util.js';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 import {TopLevelSpec} from '../src/index.js';
@@ -45,12 +45,12 @@ describe('Translate interval selections at runtime', () => {
       const assertExtent = {
         [unbound]: {
           x: ['toBeGreaterThan', 'toBeLessThan'],
-          y: ['toBeLessThan', 'toBeGreaterThan']
+          y: ['toBeLessThan', 'toBeGreaterThan'],
         },
         [bound]: {
           x: ['toBeLessThan', 'toBeGreaterThan'],
-          y: ['toBeGreaterThan', 'toBeLessThan']
-        }
+          y: ['toBeGreaterThan', 'toBeLessThan'],
+        },
       } as const;
 
       it('should move back-and-forth', async () => {
@@ -77,9 +77,9 @@ describe('Translate interval selections at runtime', () => {
               {
                 x: {aggregate: 'count', type: 'quantitative'},
                 y: {bin: true},
-                color: {value: 'steelblue', field: undefined, type: undefined}
-              }
-            )
+                color: {value: 'steelblue', field: undefined, type: undefined},
+              },
+            ),
           );
           const drag = ((await page.evaluate(brush('bins', i))) as [any])[0];
           await testRender(`bins_${i}-0`);
@@ -92,7 +92,7 @@ describe('Translate interval selections at runtime', () => {
 
       it('should work with temporal domains', async () => {
         // await jestPuppeteer.debug();
-        const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
+        const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
         const toNumber = (a: any) => a[0].values[0].map((d: any) => +d);
 
         for (let i = 0; i < hits.translate.length; i++) {
@@ -115,9 +115,9 @@ describe('Translate interval selections at runtime', () => {
               {type, ...binding},
               {
                 x: {scale: {type: 'pow', exponent: 1.5}},
-                y: {scale: {type: 'log'}}
-              }
-            )
+                y: {scale: {type: 'log'}},
+              },
+            ),
           );
           const drag = ((await page.evaluate(brush('drag', i))) as [any])[0];
           await testRender(`logpow_${i}-0`);
@@ -140,9 +140,9 @@ describe('Translate interval selections at runtime', () => {
                 {type, ...binding},
                 {
                   x: {type: 'ordinal'},
-                  y: {type: 'nominal'}
-                }
-              )
+                  y: {type: 'nominal'},
+                },
+              ),
             );
             const drag = ((await page.evaluate(brush('drag', i))) as [any])[0];
             await testRender(`ord_${i}-0`);
@@ -159,12 +159,12 @@ describe('Translate interval selections at runtime', () => {
           const assertExtents = {
             repeat: {
               x: ['toBeLessThan', 'toBeLessThan', 'toBeLessThan'],
-              y: ['toBeGreaterThan', 'toBeGreaterThan', 'toBeGreaterThan']
+              y: ['toBeGreaterThan', 'toBeGreaterThan', 'toBeGreaterThan'],
             },
             facet: {
               x: ['toBeLessThan', 'toBeLessThan', 'toBeLessThan'],
-              y: ['toBeLessThan', 'toBeGreaterThan', 'toBeLessThan']
-            }
+              y: ['toBeLessThan', 'toBeGreaterThan', 'toBeLessThan'],
+            },
           };
           it(`should work with shared scales in ${specType} views`, async () => {
             for (let i = 0; i < (hits as any)[specType].length; i++) {

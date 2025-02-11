@@ -15,12 +15,12 @@ describe('compile/data/lookup', () => {
           from: {
             data: {url: 'data/lookup_people.csv'},
             key: 'name',
-            fields: ['age', 'height']
-          }
-        }
+            fields: ['age', 'height'],
+          },
+        },
       ],
       mark: 'bar',
-      encoding: {}
+      encoding: {},
     });
 
     const t = parseTransformArray(null, model, new AncestorParse());
@@ -29,7 +29,7 @@ describe('compile/data/lookup', () => {
       from: 'lookup_0',
       key: 'name',
       fields: ['person'],
-      values: ['age', 'height']
+      values: ['age', 'height'],
     });
   });
 
@@ -41,10 +41,10 @@ describe('compile/data/lookup', () => {
         from: {
           data: {url: 'data/lookup_people.csv'},
           key: 'name',
-          fields: ['age', 'height']
-        }
+          fields: ['age', 'height'],
+        },
       },
-      'lookup_0'
+      'lookup_0',
     );
 
     expect(lookup.assemble()).toEqual({
@@ -52,7 +52,7 @@ describe('compile/data/lookup', () => {
       from: 'lookup_0',
       key: 'name',
       fields: ['person'],
-      values: ['age', 'height']
+      values: ['age', 'height'],
     });
   });
 
@@ -63,11 +63,11 @@ describe('compile/data/lookup', () => {
         lookup: 'person',
         from: {
           data: {url: 'data/lookup_people.csv'},
-          key: 'name'
+          key: 'name',
         },
-        as: 'foo'
+        as: 'foo',
       },
-      'lookup_0'
+      'lookup_0',
     );
 
     expect(lookup.assemble()).toEqual({
@@ -75,28 +75,28 @@ describe('compile/data/lookup', () => {
       from: 'lookup_0',
       key: 'name',
       fields: ['person'],
-      as: ['foo']
+      as: ['foo'],
     });
   });
 
   it(
     'should warn if fields are not specified and as is missing',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const lookup = new LookupNode(
         null,
         {
           lookup: 'person',
           from: {
             data: {url: 'data/lookup_people.csv'},
-            key: 'name'
-          }
+            key: 'name',
+          },
         },
-        'lookup_0'
+        'lookup_0',
       );
       lookup.assemble();
 
       expect(localLogger.warns[0]).toEqual(log.message.NO_FIELDS_NEEDS_AS);
-    })
+    }),
   );
 
   // Selection lookups are more fully tested in test/compile/selection/parse.test.ts
@@ -109,12 +109,12 @@ describe('compile/data/lookup', () => {
             lookup: 'person',
             from: {
               param: 'foobar',
-              key: 'person'
-            }
-          }
+              key: 'person',
+            },
+          },
         ],
         mark: 'bar',
-        encoding: {}
+        encoding: {},
       });
 
       parseTransformArray(null, model, new AncestorParse());
@@ -129,10 +129,10 @@ describe('compile/data/lookup', () => {
           lookup: 'person',
           from: {
             data: {url: 'data/lookup_people.csv'},
-            key: 'name'
-          }
+            key: 'name',
+          },
         },
-        'lookup_0'
+        'lookup_0',
       );
       expect(lookup.dependentFields()).toEqual(new Set(['person']));
     });
@@ -146,10 +146,10 @@ describe('compile/data/lookup', () => {
           lookup: 'person',
           from: {
             data: {url: 'data/lookup_people.csv'},
-            key: 'name'
-          }
+            key: 'name',
+          },
         },
-        'lookup_0'
+        'lookup_0',
       );
       expect(lookup.producedFields()).toEqual(new Set([]));
     });
@@ -162,10 +162,10 @@ describe('compile/data/lookup', () => {
           from: {
             data: {url: 'data/lookup_people.csv'},
             key: 'name',
-            fields: ['foo', 'bar']
-          }
+            fields: ['foo', 'bar'],
+          },
         },
-        'lookup_0'
+        'lookup_0',
       );
       expect(lookup.producedFields()).toEqual(new Set(['foo', 'bar']));
     });
@@ -178,11 +178,11 @@ describe('compile/data/lookup', () => {
           from: {
             data: {url: 'data/lookup_people.csv'},
             key: 'name',
-            fields: ['foo', 'bar']
+            fields: ['foo', 'bar'],
           },
-          as: ['f1', 'f2']
+          as: ['f1', 'f2'],
         },
-        'lookup_0'
+        'lookup_0',
       );
       expect(lookup.producedFields()).toEqual(new Set(['f1', 'f2']));
     });
@@ -196,16 +196,16 @@ describe('compile/data/lookup', () => {
           lookup: 'person',
           from: {
             data: {url: 'data/lookup_people.csv'},
-            key: 'name'
+            key: 'name',
           },
-          as: 'lookedup'
+          as: 'lookedup',
         },
-        'lookup_0'
+        'lookup_0',
       );
       lookup.assemble();
 
       expect(lookup.hash()).toBe(
-        'Lookup {"secondary":"lookup_0","transform":{"as":"lookedup","from":{"data":{"url":"data/lookup_people.csv"},"key":"name"},"lookup":"person"}}'
+        'Lookup {"secondary":"lookup_0","transform":{"as":"lookedup","from":{"data":{"url":"data/lookup_people.csv"},"key":"name"},"lookup":"person"}}',
       );
     });
   });
@@ -219,10 +219,10 @@ describe('compile/data/lookup', () => {
           lookup: 'person',
           from: {
             data: {url: 'data/lookup_people.csv'},
-            key: 'name'
-          }
+            key: 'name',
+          },
         },
-        null
+        null,
       );
       expect(lookup.clone().parent).toBeNull();
     });

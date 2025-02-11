@@ -9,7 +9,7 @@ export const Type = {
   ordinal: 'ordinal',
   temporal: 'temporal',
   nominal: 'nominal',
-  geojson: 'geojson'
+  geojson: 'geojson',
 } as const;
 
 export type Type = keyof typeof Type;

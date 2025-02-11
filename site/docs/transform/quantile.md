@@ -26,27 +26,27 @@ The quantile transform calculates empirical [quantile](https://en.wikipedia.org/
 ## Usage
 
 ```json
-{ "quantile": "measure", "probs": [0.25, 0.5, 0.75] }
+{"quantile": "measure", "probs": [0.25, 0.5, 0.75]}
 ```
 
 Computes the [quartile](https://en.wikipedia.org/wiki/Quartile) boundaries for the `"measure"` field. The output data is of the form:
 
 ```js
 [
-  { prob: 0.25, value: 1.34 },
-  { prob: 0.5, value: 5.82 },
-  { prob: 0.75, value: 9.31 },
+  {prob: 0.25, value: 1.34},
+  {prob: 0.5, value: 5.82},
+  {prob: 0.75, value: 9.31},
 ];
 ```
 
 ```json
-{ "quantile": "measure", "step": 0.05 }
+{"quantile": "measure", "step": 0.05}
 ```
 
 Computes quantiles for the `"measure"` field over equal-sized probability steps. The output data is of the form:
 
 ```js
-[{ prob: 0.025, value: 0.01 }, { prob: 0.075, value: 0.02 }, ...{ prob: 0.975, value: 0.2 }];
+[{prob: 0.025, value: 0.01}, {prob: 0.075, value: 0.02}, ...{prob: 0.975, value: 0.2}];
 ```
 
 ### Example: Quantile-Quantile Plot

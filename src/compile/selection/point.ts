@@ -23,7 +23,7 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
     {
       name: EASED_ANIM_CLOCK,
       // update: 'easeLinear(anim_clock / max_range_extent) * max_range_extent'
-      update: ANIM_CLOCK // TODO: replace with above once easing functions are implemented in vega-functions
+      update: ANIM_CLOCK, // TODO: replace with above once easing functions are implemented in vega-functions
     },
 
     // scale signals
@@ -33,12 +33,12 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
     // {name: 'max_extent', init: `extent(${selectionName}_domain)[1]`},
     {name: MAX_RANGE_EXTENT, init: `extent(range('${scaleName}'))[1]`},
     // {name: 't_index', update: `indexof(${selectionName}_domain, anim_value)`},
-    {name: ANIM_VALUE, update: `invert('${scaleName}', ${EASED_ANIM_CLOCK})`}
+    {name: ANIM_VALUE, update: `invert('${scaleName}', ${EASED_ANIM_CLOCK})`},
   ];
 };
 
 const point: SelectionCompiler<'point'> = {
-  defined: selCmpt => selCmpt.type === 'point',
+  defined: (selCmpt) => selCmpt.type === 'point',
 
   topLevelSignals: (model, selCmpt, signals) => {
     if (isTimerSelection(selCmpt)) {
@@ -49,19 +49,19 @@ const point: SelectionCompiler<'point'> = {
           on: [
             {
               events: {type: 'timer', throttle: THROTTLE},
-              update: `${IS_PLAYING} ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`
-            }
-          ]
+              update: `${IS_PLAYING} ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`,
+            },
+          ],
         },
         {
           name: LAST_TICK,
           init: 'now()',
-          on: [{events: [{signal: ANIM_CLOCK}, {signal: IS_PLAYING}], update: 'now()'}]
+          on: [{events: [{signal: ANIM_CLOCK}, {signal: IS_PLAYING}], update: 'now()'}],
         },
         {
           name: IS_PLAYING,
-          init: 'true'
-        }
+          init: 'true',
+        },
       ]);
     }
 
@@ -85,7 +85,7 @@ const point: SelectionCompiler<'point'> = {
       .reduce((acc, cmpt) => {
         return cmpt.type === 'interval' ? acc.concat(cmpt.name + BRUSH) : acc;
       }, [])
-      .map(b => `indexof(item().mark.name, '${b}') < 0`)
+      .map((b) => `indexof(item().mark.name, '${b}') < 0`)
       .join(' && ');
 
     const test = `datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0${
@@ -100,7 +100,7 @@ const point: SelectionCompiler<'point'> = {
       update += `fields: ${fieldsSg}, values: [${ANIM_VALUE} ? ${ANIM_VALUE} : ${MIN_EXTENT}]`;
     } else {
       const values = project.items
-        .map(p => {
+        .map((p) => {
           const fieldDef = model.fieldDef(p.channel);
           // Binned fields should capture extents, for a range test against the raw field.
           return fieldDef?.bin
@@ -122,10 +122,10 @@ const point: SelectionCompiler<'point'> = {
             {
               events: [{signal: EASED_ANIM_CLOCK}, {signal: ANIM_VALUE}],
               update: `{${update}}`,
-              force: true
-            }
-          ]
-        }
+              force: true,
+            },
+          ],
+        },
       ]);
     } else {
       const events: Stream[] = selCmpt.events;
@@ -137,14 +137,14 @@ const point: SelectionCompiler<'point'> = {
                 {
                   events,
                   update: `${test} ? {${update}} : null`,
-                  force: true
-                }
+                  force: true,
+                },
               ]
-            : []
-        }
+            : [],
+        },
       ]);
     }
-  }
+  },
 };
 
 export default point;

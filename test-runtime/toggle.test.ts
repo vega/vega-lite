@@ -9,7 +9,7 @@ const hits = {
   qq_clear: [5, 16],
   bins: [4, 29, 16, 9],
   bins_clear: [18, 7],
-  composite: [1, 3, 5, 7, 8, 9]
+  composite: [1, 3, 5, 7, 8, 9],
 };
 
 function toggle(key: keyof typeof hits, idx: number, shiftKey: boolean, parent?: string) {

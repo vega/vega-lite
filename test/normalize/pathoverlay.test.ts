@@ -14,9 +14,9 @@ describe('PathOverlayNormalizer', () => {
       mark: 'line',
       encoding: {
         x: {field: 'date', type: 'temporal'},
-        y: {field: 'price', type: 'quantitative'}
+        y: {field: 'price', type: 'quantitative'},
       },
-      config: {line: {point: {}}}
+      config: {line: {point: {}}},
     };
 
     expect(pathOverlayNormalizer.hasMatchingType(spec, spec.config)).toBeTruthy();
@@ -29,18 +29,18 @@ describe('PathOverlayNormalizer', () => {
           mark: 'line',
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
-          }
+            y: {field: 'price', type: 'quantitative'},
+          },
         },
         {
           mark: {type: 'point', opacity: 1, filled: true},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
-          }
-        }
+            y: {field: 'price', type: 'quantitative'},
+          },
+        },
       ],
-      config: {line: {point: {}}}
+      config: {line: {point: {}}},
     });
   });
 
@@ -50,8 +50,8 @@ describe('PathOverlayNormalizer', () => {
       mark: {type: 'line', point: 'transparent', tooltip: ''},
       encoding: {
         x: {field: 'date', type: 'temporal'},
-        y: {field: 'price', type: 'quantitative'}
-      }
+        y: {field: 'price', type: 'quantitative'},
+      },
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
@@ -61,17 +61,17 @@ describe('PathOverlayNormalizer', () => {
           mark: {type: 'line', tooltip: ''},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
-          }
+            y: {field: 'price', type: 'quantitative'},
+          },
         },
         {
           mark: {type: 'point', opacity: 0, filled: true, tooltip: ''},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
-          }
-        }
-      ]
+            y: {field: 'price', type: 'quantitative'},
+          },
+        },
+      ],
     });
   });
 
@@ -81,8 +81,8 @@ describe('PathOverlayNormalizer', () => {
       mark: {type: 'line', point: {color: 'red'}},
       encoding: {
         x: {field: 'date', type: 'temporal'},
-        y: {field: 'price', type: 'quantitative'}
-      }
+        y: {field: 'price', type: 'quantitative'},
+      },
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
@@ -92,17 +92,17 @@ describe('PathOverlayNormalizer', () => {
           mark: 'line',
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
-          }
+            y: {field: 'price', type: 'quantitative'},
+          },
         },
         {
           mark: {type: 'point', opacity: 1, filled: true, color: 'red'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
-          }
-        }
-      ]
+            y: {field: 'price', type: 'quantitative'},
+          },
+        },
+      ],
     });
   });
 
@@ -113,15 +113,15 @@ describe('PathOverlayNormalizer', () => {
       encoding: {
         row: {field: 'symbol', type: 'nominal'},
         x: {field: 'date', type: 'temporal'},
-        y: {field: 'price', type: 'quantitative'}
+        y: {field: 'price', type: 'quantitative'},
       },
-      config: {line: {point: {}}}
+      config: {line: {point: {}}},
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
       data: {url: 'data/stocks.csv'},
       facet: {
-        row: {field: 'symbol', type: 'nominal'}
+        row: {field: 'symbol', type: 'nominal'},
       },
       spec: {
         layer: [
@@ -129,19 +129,19 @@ describe('PathOverlayNormalizer', () => {
             mark: 'line',
             encoding: {
               x: {field: 'date', type: 'temporal'},
-              y: {field: 'price', type: 'quantitative'}
-            }
+              y: {field: 'price', type: 'quantitative'},
+            },
           },
           {
             mark: {type: 'point', opacity: 1, filled: true},
             encoding: {
               x: {field: 'date', type: 'temporal'},
-              y: {field: 'price', type: 'quantitative'}
-            }
-          }
-        ]
+              y: {field: 'price', type: 'quantitative'},
+            },
+          },
+        ],
       },
-      config: {line: {point: {}}}
+      config: {line: {point: {}}},
     });
   });
 
@@ -151,50 +151,9 @@ describe('PathOverlayNormalizer', () => {
       mark: 'area',
       encoding: {
         x: {field: 'date', type: 'temporal'},
-        y: {field: 'price', type: 'quantitative'}
-      },
-      config: {area: {line: {}, point: {}}}
-    };
-    const normalizedSpec = normalize(spec);
-    expect(normalizedSpec).toEqual({
-      data: {url: 'data/stocks.csv'},
-      layer: [
-        {
-          mark: {type: 'area', opacity: 0.7},
-          encoding: {
-            x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
-          }
-        },
-        {
-          mark: {type: 'line'},
-          encoding: {
-            x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative', stack: 'zero'}
-          }
-        },
-        {
-          mark: {type: 'point', opacity: 1, filled: true},
-          encoding: {
-            x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative', stack: 'zero'}
-          }
-        }
-      ],
-      config: {area: {line: {}, point: {}}}
-    });
-  });
-
-  it('correctly normalizes area using y2 with overlay line.', () => {
-    const spec: TopLevelSpec = {
-      data: {url: 'data/stocks.csv'},
-      mark: 'area',
-      encoding: {
-        x: {field: 'date', type: 'temporal'},
         y: {field: 'price', type: 'quantitative'},
-        y2: {value: 0, type: 'quantitative'}
       },
-      config: {area: {line: {}, point: {}}}
+      config: {area: {line: {}, point: {}}},
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
@@ -205,25 +164,66 @@ describe('PathOverlayNormalizer', () => {
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {field: 'price', type: 'quantitative'},
-            y2: {value: 0, type: 'quantitative'}
-          }
+          },
         },
         {
           mark: {type: 'line'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative', stack: 'zero'}
-          }
+            y: {field: 'price', type: 'quantitative', stack: 'zero'},
+          },
         },
         {
           mark: {type: 'point', opacity: 1, filled: true},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative', stack: 'zero'}
-          }
-        }
+            y: {field: 'price', type: 'quantitative', stack: 'zero'},
+          },
+        },
       ],
-      config: {area: {line: {}, point: {}}}
+      config: {area: {line: {}, point: {}}},
+    });
+  });
+
+  it('correctly normalizes area using y2 with overlay line.', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: 'area',
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        y2: {value: 0, type: 'quantitative'},
+      },
+      config: {area: {line: {}, point: {}}},
+    };
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          mark: {type: 'area', opacity: 0.7},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'},
+            y2: {value: 0, type: 'quantitative'},
+          },
+        },
+        {
+          mark: {type: 'line'},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative', stack: 'zero'},
+          },
+        },
+        {
+          mark: {type: 'point', opacity: 1, filled: true},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative', stack: 'zero'},
+          },
+        },
+      ],
+      config: {area: {line: {}, point: {}}},
     });
   });
 
@@ -233,9 +233,9 @@ describe('PathOverlayNormalizer', () => {
       mark: {type: 'area', interpolate: 'monotone'},
       encoding: {
         x: {field: 'date', type: 'temporal'},
-        y: {field: 'price', type: 'quantitative'}
+        y: {field: 'price', type: 'quantitative'},
       },
-      config: {area: {line: {}}}
+      config: {area: {line: {}}},
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
@@ -245,18 +245,18 @@ describe('PathOverlayNormalizer', () => {
           mark: {type: 'area', opacity: 0.7, interpolate: 'monotone'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
-          }
+            y: {field: 'price', type: 'quantitative'},
+          },
         },
         {
           mark: {type: 'line', interpolate: 'monotone'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative', stack: 'zero'}
-          }
-        }
+            y: {field: 'price', type: 'quantitative', stack: 'zero'},
+          },
+        },
       ],
-      config: {area: {line: {}}}
+      config: {area: {line: {}}},
     });
   });
 
@@ -267,11 +267,11 @@ describe('PathOverlayNormalizer', () => {
         mark: 'area',
         encoding: {
           x: {field: 'date', type: 'temporal'},
-          y: {field: 'price', type: 'quantitative'}
+          y: {field: 'price', type: 'quantitative'},
         },
         config: {
-          area: {point: overlay, line: overlay}
-        }
+          area: {point: overlay, line: overlay},
+        },
       };
       const normalizedSpec = normalize(spec);
       expect(normalizedSpec).toEqual({
@@ -279,11 +279,11 @@ describe('PathOverlayNormalizer', () => {
         mark: 'area',
         encoding: {
           x: {field: 'date', type: 'temporal'},
-          y: {field: 'price', type: 'quantitative'}
+          y: {field: 'price', type: 'quantitative'},
         },
         config: {
-          area: {point: overlay, line: overlay}
-        }
+          area: {point: overlay, line: overlay},
+        },
       });
     }
   });
@@ -295,9 +295,9 @@ describe('PathOverlayNormalizer', () => {
       encoding: {
         x: {field: 'date', type: 'temporal'},
         y: {aggregate: 'sum', field: 'price', type: 'quantitative'},
-        color: {field: 'symbol', type: 'nominal'}
+        color: {field: 'symbol', type: 'nominal'},
       },
-      config: {area: {line: {}}}
+      config: {area: {line: {}}},
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
@@ -308,19 +308,19 @@ describe('PathOverlayNormalizer', () => {
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {aggregate: 'sum', field: 'price', type: 'quantitative'},
-            color: {field: 'symbol', type: 'nominal'}
-          }
+            color: {field: 'symbol', type: 'nominal'},
+          },
         },
         {
           mark: {type: 'line'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {aggregate: 'sum', field: 'price', type: 'quantitative', stack: 'zero'},
-            color: {field: 'symbol', type: 'nominal'}
-          }
-        }
+            color: {field: 'symbol', type: 'nominal'},
+          },
+        },
       ],
-      config: {area: {line: {}}}
+      config: {area: {line: {}}},
     });
   });
 
@@ -331,9 +331,9 @@ describe('PathOverlayNormalizer', () => {
       encoding: {
         x: {field: 'IMDB Rating', type: 'quantitative'},
         y: {field: 'Rotten Tomatoes Rating', type: 'quantitative'},
-        color: {field: 'MPAA RATING', type: 'nominal'}
+        color: {field: 'MPAA RATING', type: 'nominal'},
       },
-      config: {area: {line: {}}}
+      config: {area: {line: {}}},
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
@@ -344,19 +344,19 @@ describe('PathOverlayNormalizer', () => {
           encoding: {
             x: {field: 'IMDB Rating', type: 'quantitative'},
             y: {field: 'Rotten Tomatoes Rating', type: 'quantitative'},
-            color: {field: 'MPAA RATING', type: 'nominal'}
-          }
+            color: {field: 'MPAA RATING', type: 'nominal'},
+          },
         },
         {
           mark: {type: 'line'},
           encoding: {
             x: {field: 'IMDB Rating', type: 'quantitative'},
             y: {field: 'Rotten Tomatoes Rating', type: 'quantitative', stack: 'zero'},
-            color: {field: 'MPAA RATING', type: 'nominal'}
-          }
-        }
+            color: {field: 'MPAA RATING', type: 'nominal'},
+          },
+        },
       ],
-      config: {area: {line: {}}}
+      config: {area: {line: {}}},
     });
   });
 
@@ -367,9 +367,9 @@ describe('PathOverlayNormalizer', () => {
       encoding: {
         x: {field: 'date', type: 'temporal'},
         y: {aggregate: 'sum', field: 'price', type: 'quantitative', stack: 'center'},
-        color: {field: 'symbol', type: 'nominal'}
+        color: {field: 'symbol', type: 'nominal'},
       },
-      config: {area: {line: {}}}
+      config: {area: {line: {}}},
     };
 
     const normalizedSpec = normalize(spec);
@@ -381,19 +381,19 @@ describe('PathOverlayNormalizer', () => {
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {aggregate: 'sum', field: 'price', type: 'quantitative', stack: 'center'},
-            color: {field: 'symbol', type: 'nominal'}
-          }
+            color: {field: 'symbol', type: 'nominal'},
+          },
         },
         {
           mark: {type: 'line'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {aggregate: 'sum', field: 'price', type: 'quantitative', stack: 'center'},
-            color: {field: 'symbol', type: 'nominal'}
-          }
-        }
+            color: {field: 'symbol', type: 'nominal'},
+          },
+        },
       ],
-      config: {area: {line: {}}}
+      config: {area: {line: {}}},
     });
   });
 
@@ -404,12 +404,12 @@ describe('PathOverlayNormalizer', () => {
         type: 'area',
         line: true,
         opacity: 1,
-        color: 'red'
+        color: 'red',
       },
       encoding: {
         x: {field: 'date', type: 'temporal'},
-        y: {field: 'price', type: 'quantitative'}
-      }
+        y: {field: 'price', type: 'quantitative'},
+      },
     };
 
     const normalizedSpec = normalize(spec);
@@ -420,17 +420,17 @@ describe('PathOverlayNormalizer', () => {
           mark: {type: 'area', opacity: 1, color: 'red'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
-          }
+            y: {field: 'price', type: 'quantitative'},
+          },
         },
         {
           mark: {type: 'line'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative', stack: 'zero'}
-          }
-        }
-      ]
+            y: {field: 'price', type: 'quantitative', stack: 'zero'},
+          },
+        },
+      ],
     });
   });
 });

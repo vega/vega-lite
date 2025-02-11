@@ -21,15 +21,15 @@ export const tick: MarkCompiler = {
         color: 'include',
         orient: 'ignore',
         size: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
 
       ...encode.rectPosition(model, vgSizeAxisChannel),
       ...encode.pointPosition(vgThicknessAxisChannel, model, {
         defaultPos: 'mid',
-        vgChannel: vgThicknessAxisChannel === 'y' ? 'yc' : 'xc'
+        vgChannel: vgThicknessAxisChannel === 'y' ? 'yc' : 'xc',
       }),
-      [vgThicknessChannel]: signalOrValueRef(getMarkPropOrConfig('thickness', markDef, config))
+      [vgThicknessChannel]: signalOrValueRef(getMarkPropOrConfig('thickness', markDef, config)),
     };
-  }
+  },
 };

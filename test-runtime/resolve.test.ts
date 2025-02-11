@@ -9,7 +9,7 @@ import {
   selectionTypes,
   spec,
   testRenderFn,
-  unitNameRegex
+  unitNameRegex,
 } from './util.js';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 import {TopLevelSpec} from '../src/index.js';
@@ -33,7 +33,7 @@ for (const type of selectionTypes) {
       await page.close();
     });
 
-    compositeTypes.forEach(specType => {
+    compositeTypes.forEach((specType) => {
       let testRender: (filename: string) => Promise<void>;
 
       beforeAll(async () => {
@@ -49,7 +49,7 @@ for (const type of selectionTypes) {
           const selection = {
             type,
             resolve: 'global',
-            ...(specType === 'facet' ? {encodings: ['y']} : {})
+            ...(specType === 'facet' ? {encodings: ['y']} : {}),
           };
 
           for (let i = 0; i < hits[specType].length; i++) {
@@ -72,7 +72,7 @@ for (const type of selectionTypes) {
           const selection = {
             type,
             resolve,
-            ...(specType === 'facet' ? {encodings: ['x']} : {})
+            ...(specType === 'facet' ? {encodings: ['x']} : {}),
           };
 
           /**

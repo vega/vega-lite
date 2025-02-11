@@ -48,9 +48,9 @@ export class RuleForRangedLineNormalizer implements NonFacetUnitNormalizer<Range
     return normalize(
       {
         ...spec,
-        mark: isObject(mark) ? {...mark, type: 'rule'} : 'rule'
+        mark: isObject(mark) ? {...mark, type: 'rule'} : 'rule',
       },
-      params
+      params,
     );
   }
 }

@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
 // Render a Vega-Lite specification to PDF, using node canvas
-import { createWriteStream } from "fs";
-import { render } from "./render";
+import {createWriteStream} from 'fs';
+import {render} from './render';
 
 render(
-  "pdf",
+  'pdf',
   (canvas, arg) => {
     const file = arg._[1] || null;
     const out = file ? createWriteStream(file) : process.stdout;
     const stream = canvas.createPDFStream();
-    stream.on("data", (chunk) => {
+    stream.on('data', (chunk) => {
       out.write(chunk);
     });
   },
-  { type: "pdf", context: { textDrawingMode: "glyph" } },
+  {type: 'pdf', context: {textDrawingMode: 'glyph'}},
 );

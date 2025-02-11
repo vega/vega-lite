@@ -12,14 +12,14 @@ export const arc: MarkCompiler = {
         color: 'include',
         size: 'ignore',
         orient: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
       ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
 
       // arcs are rectangles in polar coordinates
       ...encode.rectPosition(model, 'radius'),
-      ...encode.rectPosition(model, 'theta')
+      ...encode.rectPosition(model, 'theta'),
     };
-  }
+  },
 };

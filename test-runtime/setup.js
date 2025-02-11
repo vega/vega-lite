@@ -11,7 +11,7 @@ module.exports = async function () {
   globalThis.servers = await setupDevServer({
     command: `node ./node_modules/.bin/serve -l 8000`,
     launchTimeout: 50000,
-    port: 8000
+    port: 8000,
   });
 
   console.log(chalk.green('Setup Puppeteer'));

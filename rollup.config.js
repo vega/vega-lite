@@ -12,23 +12,23 @@ const extensions = ['.js', '.ts'];
 
 export function disallowedImports() {
   return {
-    resolveId: module => {
+    resolveId: (module) => {
       if (['vega', 'util', 'd3'].includes(module)) {
         throw new Error('Cannot import from Vega, Node Util, or D3 in Vega-Lite.');
       }
       return null;
-    }
+    },
   };
 }
 
 export function debugImports() {
   return {
-    resolveId: module => {
+    resolveId: (module) => {
       if (module === 'pako') {
         throw new Error('Do not import pako in builds. Did you forget to remove drawDataflow?');
       }
       return null;
-    }
+    },
   };
 }
 
@@ -38,18 +38,18 @@ const outputs = [
     output: {
       file: pkg.exports.default,
       format: 'esm',
-      sourcemap: true
+      sourcemap: true,
     },
     plugins: [
       nodeResolve({browser: true, extensions}),
       commonjs(),
       json(),
       typescript({
-        tsconfig: './tsconfig.build.json'
+        tsconfig: './tsconfig.build.json',
       }),
-      bundleSize()
+      bundleSize(),
     ],
-    external: [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies)]
+    external: [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies)],
   },
   {
     input: 'src/index.ts',
@@ -59,8 +59,8 @@ const outputs = [
       name: 'vegaLite',
       sourcemap: true,
       globals: {
-        vega: 'vega'
-      }
+        vega: 'vega',
+      },
     },
     plugins: [
       disallowedImports(),
@@ -69,20 +69,20 @@ const outputs = [
         entries: {
           'vega-event-selector': 'vega',
           'vega-expression': 'vega',
-          'vega-util': 'vega'
-        }
+          'vega-util': 'vega',
+        },
       }),
       nodeResolve({browser: true, extensions}),
       commonjs(),
       json(),
       typescript({
-        tsconfig: './tsconfig.build.json'
+        tsconfig: './tsconfig.build.json',
       }),
       terser(),
-      bundleSize()
+      bundleSize(),
     ],
-    external: ['vega']
-  }
+    external: ['vega'],
+  },
 ];
 
 export default outputs;

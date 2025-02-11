@@ -19,7 +19,7 @@ const addFormats = _addFormats as unknown as typeof _addFormats.default;
 const ajv = new Ajv({
   allowUnionTypes: true,
   strictTypes: false,
-  strictTuples: false
+  strictTuples: false,
 });
 
 ajv.addFormat('color-hex', () => true);
@@ -62,8 +62,10 @@ function validateVega(vegaSpec: VgSpec) {
 const BROKEN_SUFFIX = '_broken.vl.json';
 const FUTURE_SUFFIX = '_future.vl.json';
 
-const examples = fs.readdirSync('examples/specs').map(file => `examples/specs/${file}`);
-const normalizedExamples = fs.readdirSync('examples/specs/normalized').map(file => `examples/specs/normalized/${file}`);
+const examples = fs.readdirSync('examples/specs').map((file) => `examples/specs/${file}`);
+const normalizedExamples = fs
+  .readdirSync('examples/specs/normalized')
+  .map((file) => `examples/specs/normalized/${file}`);
 
 for (const example of [...examples, ...normalizedExamples]) {
   if (path.extname(example) !== '.json') {
@@ -75,7 +77,7 @@ for (const example of [...examples, ...normalizedExamples]) {
   describe(
     // eslint-disable-next-line jest/valid-describe-callback, jest/valid-title
     example,
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const vegaSpec: VgSpec = compile(jsonSpec).spec;
 
       it('should not cause any side effects', () => {
@@ -106,6 +108,6 @@ for (const example of [...examples, ...normalizedExamples]) {
 
         validateVega(vegaSpec);
       });
-    })
+    }),
   );
 }

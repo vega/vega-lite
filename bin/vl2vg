@@ -2,12 +2,12 @@
 
 // Compile a Vega-Lite spec to Vega
 
-import { createWriteStream } from "fs";
-import { compile as compileVL } from "../build/index.js";
-import read from "./read.js";
-import args from "./args.js";
+import {createWriteStream} from 'fs';
+import {compile as compileVL} from '../build/index.js';
+import read from './read.js';
+import args from './args.js';
 
-const arg = args("vega");
+const arg = args('vega');
 
 // load spec, compile vg spec
 read(arg._[0]).then((text) => compile(JSON.parse(text)));
@@ -18,9 +18,9 @@ async function compile(vlSpec) {
   const file = arg._[1] || null;
   const out = file ? createWriteStream(file) : process.stdout;
   if (arg.p) {
-    const compactStringify = (await import("json-stringify-pretty-compact")).default;
-    out.write(compactStringify(vgSpec) + "\n");
+    const compactStringify = (await import('json-stringify-pretty-compact')).default;
+    out.write(compactStringify(vgSpec) + '\n');
   } else {
-    out.write(JSON.stringify(vgSpec) + "\n");
+    out.write(JSON.stringify(vgSpec) + '\n');
   }
 }
