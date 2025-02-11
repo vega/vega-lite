@@ -1,4 +1,4 @@
-import {Gradient, ScaleType, SignalRef, Text} from 'vega';
+import {Gradient, ScaleType, SignalRef, Text, TimeFormatSpecifier} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -400,20 +400,24 @@ export interface DatumDef<
   // `F extends RepeatRef` probably should be `RepeatRef extends F` but there is likely a bug in TS.
 }
 
+export type Format = string | TimeFormatSpecifier | Dict<unknown>;
+
 export interface FormatMixins {
   /**
-   * When used with the default `"number"` and `"time"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.
+   * The text format specifier for formatting number and date/time in labels of guides (axes, legends, headers) and text marks.
    *
-   * - If the format type is `"number"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).
-   * - If the format type is `"time"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).
+   * If the format type is `"number"` (e.g., for quantitative fields), this is a D3's [number format pattern string](https://github.com/d3/d3-format#locale_format).
    *
-   * See the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.
+   * If the format type is `"time"` (e.g., for temporal fields), this is either:
+   *   a) D3's [time format pattern](https://d3js.org/d3-time-format#locale_format) if you desire to set a static time format.
+   *
+   *   b) [dynamic time format specifier object](https://vega.github.io/vega-lite/docs/format.html#dynamic-time-format) if you desire to set a dynamic time format that uses different formats depending on the granularity of the input date (e.g., if the date lies on a year, month, date, hour, etc. boundary).
    *
    * When used with a [custom `formatType`](https://vega.github.io/vega-lite/docs/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function.
    *
    * __Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format.
    */
-  format?: string | Dict<unknown>;
+  format?: Format;
 
   /**
    * The format type for labels. One of `"number"`, `"time"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).

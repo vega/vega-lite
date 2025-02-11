@@ -319,7 +319,7 @@
               ],
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Date: \" + (timeFormat(datum[\"monthdate_date\"], '%b')) + \"; Maximum Daily Temperature (C): \" + (format(datum[\"temp_max\"], \"\")) + \"; Weather: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"]) + \"; Precipitation: \" + (format(datum[\"precipitation\"], \"\"))"
+                "signal": "\"Date: \" + (timeFormat(datum[\"monthdate_date\"], \"%b\")) + \"; Maximum Daily Temperature (C): \" + (format(datum[\"temp_max\"], \"\")) + \"; Weather: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"]) + \"; Precipitation: \" + (format(datum[\"precipitation\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "monthdate_date"},
               "y": {"scale": "concat_0_y", "field": "temp_max"},

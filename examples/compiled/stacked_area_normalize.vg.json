@@ -72,7 +72,7 @@
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "series"},
               "description": {
-                "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], '%Y')) + \"; Sum of count: \" + (format(datum[\"sum_count_end\"]-datum[\"sum_count_start\"], \".0%\")) + \"; series: \" + (isValid(datum[\"series\"]) ? datum[\"series\"] : \"\"+datum[\"series\"])"
+                "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], \"%Y\")) + \"; Sum of count: \" + (format(datum[\"sum_count_end\"]-datum[\"sum_count_start\"], \".0%\")) + \"; series: \" + (isValid(datum[\"series\"]) ? datum[\"series\"] : \"\"+datum[\"series\"])"
               },
               "x": {"scale": "x", "field": "yearmonth_date"},
               "y": {"scale": "y", "field": "sum_count_end"},
