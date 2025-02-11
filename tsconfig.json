@@ -13,7 +13,7 @@
     "preserveConstEnums": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "lib": ["ESNext.Array", "DOM", "DOM.Iterable", "ES2021.String"],
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "ignoreDeprecations": "5.0",
     "noEmit": true
   },

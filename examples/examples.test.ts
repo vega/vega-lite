@@ -1,5 +1,4 @@
 import {Ajv, ErrorObject} from 'ajv';
-import addFormats from 'ajv-formats';
 import draft6Schema from 'ajv/lib/refs/json-schema-draft-06.json';
 import fs from 'fs';
 import path from 'path';
@@ -10,6 +9,10 @@ import {compile} from '../src/compile/compile.js';
 import * as log from '../src/log/index.js';
 import {TopLevelSpec} from '../src/spec/index.js';
 import {duplicate} from '../src/util.js';
+
+// Workaround for https://github.com/ajv-validator/ajv-formats/issues/85
+import _addFormats from 'ajv-formats';
+const addFormats = _addFormats as unknown as typeof _addFormats.default;
 
 // import {inspect} from 'util';
 

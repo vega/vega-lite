@@ -1,17 +1,10 @@
 import {select, selectAll, Selection} from 'd3-selection';
-// @ts-ignore
-import hljs from 'highlight.js/lib/core';
-// @ts-ignore
+import hljs_ from 'highlight.js/lib/core';
 import css from 'highlight.js/lib/languages/css';
-// @ts-ignore
 import diff from 'highlight.js/lib/languages/diff';
-// @ts-ignore
 import javascript from 'highlight.js/lib/languages/javascript';
-// @ts-ignore
 import json from 'highlight.js/lib/languages/json';
-// @ts-ignore
 import typescript from 'highlight.js/lib/languages/typescript';
-// @ts-ignore
 import xml from 'highlight.js/lib/languages/xml';
 import compactStringify from 'json-stringify-pretty-compact';
 import * as vega from 'vega';
@@ -19,6 +12,9 @@ import {Handler} from 'vega-tooltip';
 import {compile, TopLevelSpec} from '../../src/index.js';
 import {post} from './post.js';
 import {runStreamingExample} from './streaming.js';
+
+// to work around weird type issue
+const hljs = hljs_ as any;
 
 (window as any)['runStreamingExample'] = runStreamingExample;
 (window as any)['embedExample'] = embedExample;
@@ -36,7 +32,7 @@ hljs.highlightAll();
 declare const BASEURL: string;
 
 const loader = vega.loader({
-  baseURL: BASEURL,
+  baseURL: BASEURL
 });
 
 const editorURL = 'https://vega.github.io/editor/';
@@ -93,18 +89,18 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      .on('click mouseup', (event) => {
+      .on('click mouseup', event => {
         // Check if it's a regular left click or middle mouse click
         if (event.type === 'click' || (event.type === 'mouseup' && event.button === MIDDLE_MOUSE_CLICK)) {
           post(window, editorURL, {
             mode: 'vega-lite',
             spec: compactStringify(spec),
             config: vgSpec.config,
-            renderer: 'svg',
+            renderer: 'svg'
           });
         }
         // remove as any when d3 typings are updated
-        (event as any).preventDefault();
+        event.preventDefault();
       });
   }
 
@@ -125,7 +121,7 @@ async function getSpec(el: d3.BaseType) {
     } catch (e) {
       sel
         .html(
-          `Could not load spec: ${e}. Please report this issue on <a href="https://github.com/vega/vega-lite/issues/new/choose">GitHub</a>.`,
+          `Could not load spec: ${e}. Please report this issue on <a href="https://github.com/vega/vega-lite/issues/new/choose">GitHub</a>.`
         )
         .classed('error', true);
       console.error(e);
@@ -198,7 +194,7 @@ function setSlide(
   slides: NodeListOf<Element>,
   indicators: NodeListOf<Element>,
   links: NodeListOf<any>,
-  active: number,
+  active: number
 ) {
   return () => {
     // Reset all slides
@@ -246,7 +242,7 @@ if (carousel) {
     const video = slide.querySelector('video');
     if (video) {
       video.addEventListener('pointerover', () => {
-        (slide.querySelector('.example-vis') as any).style.visibility = 'visible';
+        slide.querySelector<HTMLElement>('.example-vis').style.visibility = 'visible';
         video.style.display = 'none';
         video.pause();
       });
