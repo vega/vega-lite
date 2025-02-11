@@ -21,7 +21,7 @@ import {
   makeCompositeAggregatePartFactory,
   partLayerMixins,
   PartsMixins
-} from './common';
+} from './common.js';
 
 export const BOXPLOT = 'boxplot' as const;
 export type BoxPlot = typeof BOXPLOT;
