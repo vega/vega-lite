@@ -1,5 +1,5 @@
 /** @type {import('jest').Config} */
-const config = {
+export default {
   preset: 'ts-jest/presets/default-esm',
   testPathIgnorePatterns: ['<rootDir>/node_modules', '<rootDir>/build', '<rootDir>/_site', '<rootDir>/src'],
   coverageDirectory: './coverage/',
@@ -15,5 +15,3 @@ const config = {
     ],
   },
 };
-
-module.exports = config;

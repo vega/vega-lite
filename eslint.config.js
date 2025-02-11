@@ -33,7 +33,7 @@ export default [
       },
     },
     rules: {
-      'prettier/prettier': 'off',
+      'prettier/prettier': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/prefer-for-of': 'error',
