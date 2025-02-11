@@ -52,8 +52,7 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
             (isString(view) && (view === spec.name || path.includes(view))) ||
             (isArray(view) &&
               // logic for backwards compatibility with view paths before we had unique names
-              // @ts-ignore
-              view.map(v => path.indexOf(v)).every((v, i, arr) => v !== -1 && (i === 0 || v > arr[i - 1])))
+              view.map(v => path.indexOf(v as string)).every((v, i, arr) => v !== -1 && (i === 0 || v > arr[i - 1])))
           ) {
             params.push(selection);
           }

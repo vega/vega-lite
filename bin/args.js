@@ -1,4 +1,7 @@
-module.exports = type => {
+import yargs from 'yargs';
+import {argv} from 'process';
+
+export default function args(type) {
   const helpText = `${type === 'vega' ? 'Compile' : 'Render'} a Vega-Lite specification to ${
     type === 'vega' ? 'Vega' : type.toUpperCase()
   }.
@@ -10,7 +13,7 @@ To load data, you may need to set a base directory:
   For web retrieval, use '-b http://host/data/'.
   For files, use '-b file:///dir/data/' (absolute) or '-b data/' (relative).`;
 
-  const args = require('yargs').usage(helpText).demand(0);
+  const args = yargs(argv.slice(2)).usage(helpText).demand(0);
 
   args
     .string('b')
@@ -50,10 +53,9 @@ To load data, you may need to set a base directory:
 
   if (type === 'vega') {
     args.boolean('p').alias('p', 'pretty').describe('p', 'Output human readable/pretty spec.');
-  }
-  else if (type === 'png') {
+  } else if (type === 'png') {
     args.number('ppi').describe('ppi', 'Resolution in ppi.');
   }
 
   return args.help().version().argv;
-};
+}

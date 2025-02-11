@@ -1,10 +1,11 @@
 // from vega-cli
 
-const {createReadStream} = require('fs');
+import {createReadStream} from 'fs';
+import {stdin} from 'process';
 
-module.exports = file => {
+export default function read(file) {
   return new Promise((resolve, reject) => {
-    const input = file ? createReadStream(file) : process.stdin;
+    const input = file ? createReadStream(file) : stdin;
     let text = '';
 
     input.setEncoding('utf8');
@@ -18,4 +19,4 @@ module.exports = file => {
       resolve(text);
     });
   });
-};
+}

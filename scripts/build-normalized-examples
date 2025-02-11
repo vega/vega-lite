@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-"use strict";
 
 /*
  * This script normalizes all the specs in examples/specs and
@@ -9,9 +8,9 @@
  * redundant Vega output specs.
  */
 
-const fs = require("fs");
-const vl = require("../build/vega-lite");
-const stableStringify = require("fast-json-stable-stringify");
+import fs from "fs";
+import vl from "../build/vega-lite/index.js";
+import stableStringify from "fast-json-stable-stringify";
 
 const DIR = import.meta.dirname + "/..";
 const SPECS = "/examples/specs";

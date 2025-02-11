@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 
 // Render a Vega-Lite specification to SVG
-const {writeFile} = require('fs');
-const render = require('./render');
+import { writeFile } from "fs";
+import { render } from "./render";
 
 const svgHeader =
   '<?xml version="1.0" encoding="utf-8"?>\n' +
   '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" ' +
   '"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n';
 
-render('svg', function (body, arg) {
-  const svg = (arg.h ? svgHeader : '') + body;
+render("svg", (body, arg) => {
+  const svg = (arg.h ? svgHeader : "") + body;
   const file = arg._[1] || null;
 
   if (file) {
     // write to file
-    writeFile(file, svg, err => {
+    writeFile(file, svg, (err) => {
       if (err) throw err;
     });
   } else {
