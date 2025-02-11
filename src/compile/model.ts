@@ -6,7 +6,7 @@ import {
   Projection as VgProjection,
   Signal,
   SignalRef,
-  Title as VgTitle
+  Title as VgTitle,
 } from 'vega';
 import {
   Channel,
@@ -16,58 +16,58 @@ import {
   isChannel,
   isScaleChannel,
   ScaleChannel,
-  SingleDefChannel
+  SingleDefChannel,
 } from '../channel';
-import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef';
-import {Config} from '../config';
-import {Data, DataSourceType} from '../data';
-import {forEach, reduce} from '../encoding';
-import {ExprRef, replaceExprRef} from '../expr';
-import * as log from '../log';
-import {Resolve} from '../resolve';
-import {ScaleType, hasDiscreteDomain} from '../scale';
-import {isFacetSpec} from '../spec';
+import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef.js';
+import {Config} from '../config.js';
+import {Data, DataSourceType} from '../data.js';
+import {forEach, reduce} from '../encoding.js';
+import {ExprRef, replaceExprRef} from '../expr.js';
+import * as log from '../log.js';
+import {Resolve} from '../resolve.js';
+import {ScaleType, hasDiscreteDomain} from '../scale.js';
+import {isFacetSpec} from '../spec.js';
 import {
   extractCompositionLayout,
   GenericCompositionLayoutWithColumns,
   LayoutSizeMixins,
   SpecType,
-  ViewBackground
+  ViewBackground,
 } from '../spec/base';
-import {NormalizedSpec} from '../spec/index';
-import {extractTitleConfig, isText, TitleParams} from '../title';
-import {normalizeTransform, Transform} from '../transform';
-import {contains, Dict, duplicate, isEmpty, keys, varName} from '../util';
-import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
-import {assembleAxes} from './axis/assemble';
-import {AxisComponentIndex} from './axis/component';
-import {signalOrValueRef} from './common';
-import {ConcatModel} from './concat';
-import {DataComponent} from './data';
-import {FacetModel} from './facet';
-import {assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup} from './header/assemble';
-import {HEADER_CHANNELS, LayoutHeaderComponent} from './header/component';
-import {LayerModel} from './layer';
-import {sizeExpr} from './layoutsize/assemble';
+import {NormalizedSpec} from '../spec/index.js';
+import {extractTitleConfig, isText, TitleParams} from '../title.js';
+import {normalizeTransform, Transform} from '../transform.js';
+import {contains, Dict, duplicate, isEmpty, keys, varName} from '../util.js';
+import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema.js';
+import {assembleAxes} from './axis/assemble.js';
+import {AxisComponentIndex} from './axis/component.js';
+import {signalOrValueRef} from './common.js';
+import {ConcatModel} from './concat.js';
+import {DataComponent} from './data.js';
+import {FacetModel} from './facet.js';
+import {assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup} from './header/assemble.js';
+import {HEADER_CHANNELS, LayoutHeaderComponent} from './header/component.js';
+import {LayerModel} from './layer.js';
+import {sizeExpr} from './layoutsize/assemble.js';
 import {
   getSizeTypeFromLayoutSizeType,
   LayoutSizeComponent,
   LayoutSizeIndex,
-  LayoutSizeType
+  LayoutSizeType,
 } from './layoutsize/component';
-import {assembleLegends} from './legend/assemble';
-import {LegendComponentIndex} from './legend/component';
-import {parseLegend} from './legend/parse';
-import {assembleProjections} from './projection/assemble';
-import {ProjectionComponent} from './projection/component';
-import {parseProjection} from './projection/parse';
-import {assembleScales} from './scale/assemble';
-import {ScaleComponent, ScaleComponentIndex} from './scale/component';
-import {assembleDomain, getFieldFromDomain} from './scale/domain';
-import {parseScales} from './scale/parse';
-import {SelectionComponent} from './selection';
-import {Split} from './split';
-import {UnitModel} from './unit';
+import {assembleLegends} from './legend/assemble.js';
+import {LegendComponentIndex} from './legend/component.js';
+import {parseLegend} from './legend/parse.js';
+import {assembleProjections} from './projection/assemble.js';
+import {ProjectionComponent} from './projection/component.js';
+import {parseProjection} from './projection/parse.js';
+import {assembleScales} from './scale/assemble.js';
+import {ScaleComponent, ScaleComponentIndex} from './scale/component.js';
+import {assembleDomain, getFieldFromDomain} from './scale/domain.js';
+import {parseScales} from './scale/parse.js';
+import {SelectionComponent} from './selection.js';
+import {Split} from './split.js';
+import {UnitModel} from './unit.js';
 
 /**
  * Composable Components that are intermediate results of the parsing phase of the
@@ -193,7 +193,7 @@ export abstract class Model {
     parentGivenName: string,
     public readonly config: Config<SignalRef>,
     resolve: Resolve,
-    view?: ViewBackground<ExprRef | SignalRef>
+    view?: ViewBackground<ExprRef | SignalRef>,
   ) {
     this.parent = parent;
     this.config = config;
@@ -220,7 +220,7 @@ export abstract class Model {
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
         // data is faceted if the spec is a facet spec or the parent has faceted data and data is undefined
-        isFaceted: isFacetSpec(spec) || (parent?.component.data.isFaceted && spec.data === undefined)
+        isFaceted: isFacetSpec(spec) || (parent?.component.data.isFaceted && spec.data === undefined),
       },
       layoutSize: new Split<LayoutSizeIndex>(),
       layoutHeaders: {row: {}, column: {}, facet: {}},
@@ -229,13 +229,13 @@ export abstract class Model {
         scale: {},
         axis: {},
         legend: {},
-        ...(resolve ? duplicate(resolve) : {})
+        ...(resolve ? duplicate(resolve) : {}),
       },
       selection: null,
       scales: null,
       projection: null,
       axes: {},
-      legends: {}
+      legends: {},
     };
   }
 
@@ -337,7 +337,7 @@ export abstract class Model {
         return {
           width: this.getSizeSignalRef('width'),
           height: this.getSizeSignalRef('height'),
-          ...encodeEntry
+          ...encodeEntry,
         };
       }
     }
@@ -359,7 +359,7 @@ export abstract class Model {
       padding: spacing,
       ...this.assembleDefaultLayout(),
       ...layout,
-      ...(titleBand ? {titleBand} : {})
+      ...(titleBand ? {titleBand} : {}),
     };
   }
 
@@ -405,7 +405,7 @@ export abstract class Model {
     const title: VgTitle = {
       ...extractTitleConfig(this.config.title).nonMarkTitleProperties,
       ...titleNoEncoding,
-      ...(encoding ? {encode: {update: encoding}} : {})
+      ...(encoding ? {encode: {update: encoding}} : {}),
     };
 
     if (title.text) {
@@ -508,7 +508,7 @@ export abstract class Model {
           if (field) {
             const fieldRef = vgField({aggregate: 'distinct', field}, {expr: 'datum'});
             return {
-              signal: sizeExpr(scaleName, scaleComponent, fieldRef)
+              signal: sizeExpr(scaleName, scaleComponent, fieldRef),
             };
           } else {
             log.warn(log.message.unknownField(channel));
@@ -519,7 +519,7 @@ export abstract class Model {
     }
 
     return {
-      signal: this.signalNameMap.get(this.getName(layoutSizeType))
+      signal: this.signalNameMap.get(this.getName(layoutSizeType)),
     };
   }
 
@@ -605,7 +605,7 @@ export abstract class Model {
     /* istanbul ignore next: This is warning for debugging test */
     if (!this.component.scales) {
       throw new Error(
-        'getScaleComponent cannot be called before parseScale(). Make sure you have called parseScale or use parseUnitModelWithScale().'
+        'getScaleComponent cannot be called before parseScale(). Make sure you have called parseScale or use parseUnitModelWithScale().',
       );
     }
 
@@ -640,8 +640,8 @@ export abstract class Model {
    */
   public hasAxisOrientSignalRef() {
     return (
-      this.component.axes.x?.some(a => a.hasOrientSignalRef()) ||
-      this.component.axes.y?.some(a => a.hasOrientSignalRef())
+      this.component.axes.x?.some((a) => a.hasOrientSignalRef()) ||
+      this.component.axes.y?.some((a) => a.hasOrientSignalRef())
     );
   }
 }
@@ -673,7 +673,7 @@ export abstract class ModelWithField extends Model {
         }
         return acc;
       },
-      init
+      init,
     );
   }
 
@@ -686,7 +686,7 @@ export abstract class ModelWithField extends Model {
           f(fieldDef, c);
         }
       },
-      t
+      t,
     );
   }
 

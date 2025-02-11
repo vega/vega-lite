@@ -1,8 +1,8 @@
 import {Gradient, ScaleType, SignalRef, Text, TimeFormatSpecifier} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
-import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
-import {Axis} from './axis';
-import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
+import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate.js';
+import {Axis} from './axis.js';
+import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin.js';
 import {
   ANGLE,
   Channel,
@@ -48,26 +48,26 @@ import {
   XOFFSET,
   Y,
   Y2,
-  YOFFSET
-} from './channel';
-import {getMarkConfig, getMarkPropOrConfig} from './compile/common';
-import {isCustomFormatType} from './compile/format';
-import {CompositeAggregate} from './compositemark';
-import {Config} from './config';
-import {DateTime, dateTimeToExpr, isDateTime} from './datetime';
-import {Encoding} from './encoding';
-import {ExprRef, isExprRef} from './expr';
-import {Guide, GuideEncodingConditionalValueDef, TitleMixins} from './guide';
-import {ImputeParams} from './impute';
-import {Legend} from './legend';
-import * as log from './log';
-import {LogicalComposition} from './logical';
-import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark';
-import {ParameterPredicate, Predicate} from './predicate';
-import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale';
-import {isSortByChannel, Sort, SortOrder} from './sort';
-import {isFacetFieldDef} from './spec/facet';
-import {StackOffset} from './stack';
+  YOFFSET,
+} from './channel.js';
+import {getMarkConfig, getMarkPropOrConfig} from './compile/common.js';
+import {isCustomFormatType} from './compile/format.js';
+import {CompositeAggregate} from './compositemark/index.js';
+import {Config} from './config.js';
+import {DateTime, dateTimeToExpr, isDateTime} from './datetime.js';
+import {Encoding} from './encoding.js';
+import {ExprRef, isExprRef} from './expr.js';
+import {Guide, GuideEncodingConditionalValueDef, TitleMixins} from './guide.js';
+import {ImputeParams} from './impute.js';
+import {Legend} from './legend.js';
+import * as log from './log/index.js';
+import {LogicalComposition} from './logical.js';
+import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark.js';
+import {ParameterPredicate, Predicate} from './predicate.js';
+import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale.js';
+import {isSortByChannel, Sort, SortOrder} from './sort.js';
+import {isFacetFieldDef} from './spec/facet.js';
+import {StackOffset} from './stack.js';
 import {
   BinnedTimeUnit,
   getTimeUnitParts,
@@ -76,10 +76,10 @@ import {
   normalizeTimeUnit,
   TimeUnit,
   TimeUnitParams,
-  timeUnitToString
-} from './timeunit';
-import {AggregatedFieldDef, WindowFieldDef} from './transform';
-import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
+  timeUnitToString,
+} from './timeunit.js';
+import {AggregatedFieldDef, WindowFieldDef} from './transform.js';
+import {getFullName, QUANTITATIVE, StandardType, Type} from './type.js';
 import {
   Dict,
   flatAccessWithDatum,
@@ -90,9 +90,9 @@ import {
   removePathFromField,
   replacePathInField,
   stringify,
-  titleCase
-} from './util';
-import {isSignalRef} from './vega.schema';
+  titleCase,
+} from './util.js';
+import {isSignalRef} from './vega.schema.js';
 
 export type PrimitiveValue = number | string | boolean | null;
 
@@ -284,7 +284,7 @@ export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string>
     ...(timeUnit ? {timeUnit} : {}),
     ...(bin ? {bin} : {}),
     ...(aggregate ? {aggregate} : {}),
-    field
+    field,
   };
 }
 
@@ -328,13 +328,13 @@ export interface TypeMixins<T extends Type> {
 export type TypedFieldDef<
   F extends Field,
   T extends Type = any,
-  B extends Bin = boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
+  B extends Bin = boolean | BinParams | 'binned' | null, // This is equivalent to Bin but we use the full form so the docs has detailed types
 > = FieldDefBase<F, B> & TitleMixins & TypeMixins<T>;
 
 export interface SortableFieldDef<
   F extends Field,
   T extends Type = StandardType,
-  B extends Bin = boolean | BinParams | null
+  B extends Bin = boolean | BinParams | null,
 > extends TypedFieldDef<F, T, B> {
   /**
    * Sort order for the encoded field.
@@ -364,7 +364,7 @@ export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fiel
 export type ScaleFieldDef<
   F extends Field,
   T extends Type = StandardType,
-  B extends Bin = boolean | BinParams | null
+  B extends Bin = boolean | BinParams | null,
 > = SortableFieldDef<F, T, B> & ScaleMixins;
 
 export interface ScaleMixins {
@@ -387,7 +387,7 @@ export type OffsetDef<F extends Field, T extends Type = StandardType> =
 
 export interface DatumDef<
   F extends Field = string,
-  V extends PrimitiveValue | DateTime | ExprRef | SignalRef = PrimitiveValue | DateTime | ExprRef | SignalRef
+  V extends PrimitiveValue | DateTime | ExprRef | SignalRef = PrimitiveValue | DateTime | ExprRef | SignalRef,
 > extends Partial<TypeMixins<Type>>,
     BandMixins,
     TitleMixins {
@@ -533,7 +533,7 @@ export function getBandPosition({
   fieldDef,
   fieldDef2,
   markDef: mark,
-  config
+  config,
 }: {
   fieldDef: FieldDef<string> | DatumDef;
   fieldDef2?: SecondaryChannelDef<string>;
@@ -562,7 +562,7 @@ export function getBandSize({
   markDef: mark,
   config,
   scaleType,
-  useVlSizeChannel
+  useVlSizeChannel,
 }: {
   channel: PositionScaleChannel | PolarPositionScaleChannel;
   fieldDef: ChannelDef<string>;
@@ -574,7 +574,7 @@ export function getBandSize({
 }): number | RelativeBandSize | SignalRef {
   const sizeChannel = getSizeChannel(channel);
   const size = getMarkPropOrConfig(useVlSizeChannel ? 'size' : sizeChannel, mark, config, {
-    vgChannel: sizeChannel
+    vgChannel: sizeChannel,
   });
 
   if (size !== undefined) {
@@ -609,7 +609,7 @@ export function hasBandEnd(
   fieldDef: FieldDef<string>,
   fieldDef2: SecondaryChannelDef<string>,
   markDef: MarkDef<Mark, SignalRef>,
-  config: Config<SignalRef>
+  config: Config<SignalRef>,
 ): boolean {
   if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
     // Need to check bandPosition because non-rect marks (e.g., point) with timeUnit
@@ -657,7 +657,7 @@ export interface OrderOnlyDef {
 }
 
 export function isOrderOnlyDef<F extends Field>(
-  orderDef: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef
+  orderDef: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef,
 ): orderDef is OrderOnlyDef {
   return hasProperty(orderDef, 'sort') && !hasProperty(orderDef, 'field');
 }
@@ -670,7 +670,7 @@ export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];
 
 export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditionalValueDef | ExprRef | SignalRef>(
-  channelDef: CD
+  channelDef: CD,
 ): channelDef is CD & {condition: Conditional<any>} {
   return hasProperty(channelDef, 'condition');
 }
@@ -679,28 +679,28 @@ export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingCondi
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
 export function hasConditionalFieldDef<F extends Field>(
-  channelDef: Partial<ChannelDef<F>>
+  channelDef: Partial<ChannelDef<F>>,
 ): channelDef is {condition: Conditional<TypedFieldDef<F>>} {
   const condition = (channelDef as any)?.['condition'];
   return !!condition && !isArray(condition) && isFieldDef(condition);
 }
 
 export function hasConditionalFieldOrDatumDef<F extends Field>(
-  channelDef: ChannelDef<F>
+  channelDef: ChannelDef<F>,
 ): channelDef is {condition: Conditional<TypedFieldDef<F>>} {
   const condition = (channelDef as any)?.['condition'];
   return !!condition && !isArray(condition) && isFieldOrDatumDef(condition);
 }
 
 export function hasConditionalValueDef<F extends Field>(
-  channelDef: ChannelDef<F>
+  channelDef: ChannelDef<F>,
 ): channelDef is ValueDef<any> & {condition: Conditional<ValueDef<any>> | Conditional<ValueDef<any>>[]} {
   const condition = (channelDef as any)?.['condition'];
   return !!condition && (isArray(condition) || isValueDef(condition));
 }
 
 export function isFieldDef<F extends Field>(
-  channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>
+  channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>,
 ): channelDef is FieldDefBase<F> | TypedFieldDef<F> | SecondaryFieldDef<F> {
   return hasProperty(channelDef, 'field') || (channelDef as any)?.aggregate === 'count';
 }
@@ -710,13 +710,13 @@ export function channelDefType<F extends Field>(channelDef: ChannelDef<F>): Type
 }
 
 export function isDatumDef<F extends Field>(
-  channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>
+  channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>,
 ): channelDef is DatumDef<F, any> {
   return hasProperty(channelDef, 'datum');
 }
 
 export function isContinuousFieldOrDatumDef<F extends Field>(
-  cd: ChannelDef<F>
+  cd: ChannelDef<F>,
 ): cd is TypedFieldDef<F> | DatumDef<F, number> {
   // TODO: make datum support DateTime object
   return (isTypedFieldDef(cd) && !isDiscrete(cd)) || isNumericDataDef(cd);
@@ -732,7 +732,7 @@ export function isNumericDataDef<F extends Field>(cd: ChannelDef<F>): cd is Datu
 }
 
 export function isFieldOrDatumDef<F extends Field>(
-  channelDef: Partial<ChannelDef<F>>
+  channelDef: Partial<ChannelDef<F>>,
 ): channelDef is FieldDef<F, any> | DatumDef<F> {
   return isFieldDef(channelDef) || isDatumDef(channelDef);
 }
@@ -754,19 +754,19 @@ export function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<F>): cha
 }
 
 export function isPositionFieldOrDatumDef<F extends Field>(
-  channelDef: ChannelDef<F>
+  channelDef: ChannelDef<F>,
 ): channelDef is PositionFieldDef<F> | PositionDatumDef<F> {
   return hasProperty(channelDef, 'axis') || hasProperty(channelDef, 'stack') || hasProperty(channelDef, 'impute');
 }
 
 export function isMarkPropFieldOrDatumDef<F extends Field>(
-  channelDef: ChannelDef<F>
+  channelDef: ChannelDef<F>,
 ): channelDef is MarkPropFieldDef<F, any> | MarkPropDatumDef<F> {
   return hasProperty(channelDef, 'legend');
 }
 
 export function isStringFieldOrDatumDef<F extends Field>(
-  channelDef: ChannelDef<F>
+  channelDef: ChannelDef<F>,
 ): channelDef is StringFieldDef<F> | StringDatumDef<F> {
   return hasProperty(channelDef, 'format') || hasProperty(channelDef, 'formatType');
 }
@@ -795,7 +795,7 @@ export interface FieldRefOption {
 }
 
 function isOpFieldDef(
-  fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef
+  fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef,
 ): fieldDef is WindowFieldDef | AggregatedFieldDef {
   return hasProperty(fieldDef, 'op');
 }
@@ -805,7 +805,7 @@ function isOpFieldDef(
  */
 export function vgField(
   fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef,
-  opt: FieldRefOption = {}
+  opt: FieldRefOption = {},
 ): string {
   let field = fieldDef.field;
   const prefix = opt.prefix;
@@ -952,7 +952,7 @@ export function resetTitleFormatter() {
 export function title(
   fieldOrDatumDef: TypedFieldDef<string> | SecondaryFieldDef<string> | DatumDef,
   config: Config,
-  {allowDisabling, includeDefault = true}: {allowDisabling: boolean; includeDefault?: boolean}
+  {allowDisabling, includeDefault = true}: {allowDisabling: boolean; includeDefault?: boolean},
 ) {
   const guideTitle = getGuide(fieldOrDatumDef)?.title;
 
@@ -1054,7 +1054,7 @@ export function getFieldDef<F extends Field>(channelDef: ChannelDef<F>): FieldDe
 }
 
 export function getFieldOrDatumDef<F extends Field = string, CD extends ChannelDef<F> = ChannelDef<F>>(
-  channelDef: CD
+  channelDef: CD,
 ): FieldDef<F> | DatumDef<F> {
   if (isFieldOrDatumDef<F>(channelDef)) {
     return channelDef;
@@ -1071,7 +1071,7 @@ export function initChannelDef(
   channelDef: ChannelDef<string>,
   channel: ExtendedChannel,
   config: Config,
-  opt: {compositeMark?: boolean} = {}
+  opt: {compositeMark?: boolean} = {},
 ): ChannelDef<string> {
   if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
     const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
@@ -1086,7 +1086,7 @@ export function initChannelDef(
     return {
       ...channelDef,
       // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
-      condition: initFieldOrDatumDef(channelDef.condition, channel, config, opt) as Conditional<TypedFieldDef<string>>
+      condition: initFieldOrDatumDef(channelDef.condition, channel, config, opt) as Conditional<TypedFieldDef<string>>,
     };
   }
   return channelDef;
@@ -1096,7 +1096,7 @@ export function initFieldOrDatumDef(
   fd: FieldDef<string, any> | DatumDef,
   channel: ExtendedChannel,
   config: Config,
-  opt: {compositeMark?: boolean}
+  opt: {compositeMark?: boolean},
 ): FieldDef<string, any> | DatumDef {
   if (isStringFieldOrDatumDef(fd)) {
     const {format, formatType, ...rest} = fd;
@@ -1141,7 +1141,7 @@ function initDatumDef(datumDef: DatumDef): DatumDef {
 export function initFieldDef(
   fd: FieldDef<string, any>,
   channel: ExtendedChannel,
-  {compositeMark = false}: {compositeMark?: boolean} = {}
+  {compositeMark = false}: {compositeMark?: boolean} = {},
 ) {
   const {aggregate, timeUnit, bin, field} = fd;
   const fieldDef = {...fd};
@@ -1202,14 +1202,14 @@ export function initFieldDef(
     if (isSortByChannel(sort)) {
       return {
         ...fieldDef,
-        sort: {encoding: sort}
+        sort: {encoding: sort},
       };
     }
     const sub = sort.substring(1);
     if (sort.charAt(0) === '-' && isSortByChannel(sub)) {
       return {
         ...fieldDef,
-        sort: {encoding: sub, order: 'descending'}
+        sort: {encoding: sub, order: 'descending'},
       };
     }
   }
@@ -1224,8 +1224,8 @@ export function initFieldDef(
           header: {
             ...rest,
             labelOrient: header.labelOrient || orient,
-            titleOrient: header.titleOrient || orient
-          }
+            titleOrient: header.titleOrient || orient,
+          },
         };
       }
     }
@@ -1239,7 +1239,7 @@ export function normalizeBin(bin: BinParams | boolean | 'binned', channel?: Exte
     return {maxbins: autoMaxBins(channel)};
   } else if (bin === 'binned') {
     return {
-      binned: true
+      binned: true,
     };
   } else if (!bin.maxbins && !bin.step) {
     return {...bin, maxbins: autoMaxBins(channel)};
@@ -1251,14 +1251,14 @@ export function normalizeBin(bin: BinParams | boolean | 'binned', channel?: Exte
 const COMPATIBLE = {compatible: true};
 export function channelCompatibility(
   fieldDef: TypedFieldDef<Field>,
-  channel: ExtendedChannel
+  channel: ExtendedChannel,
 ): {compatible: boolean; warning?: string} {
   const type = fieldDef.type;
 
   if (type === 'geojson' && channel !== 'shape') {
     return {
       compatible: false,
-      warning: `Channel ${channel} should not be used with a geojson data.`
+      warning: `Channel ${channel} should not be used with a geojson data.`,
     };
   }
 
@@ -1269,7 +1269,7 @@ export function channelCompatibility(
       if (!isDiscrete(fieldDef)) {
         return {
           compatible: false,
-          warning: log.message.channelShouldBeDiscrete(channel)
+          warning: log.message.channelShouldBeDiscrete(channel),
         };
       }
       return COMPATIBLE;
@@ -1300,7 +1300,7 @@ export function channelCompatibility(
       if (type !== QUANTITATIVE) {
         return {
           compatible: false,
-          warning: `Channel ${channel} should be used with a quantitative field only, not ${fieldDef.type} field.`
+          warning: `Channel ${channel} should be used with a quantitative field only, not ${fieldDef.type} field.`,
         };
       }
       return COMPATIBLE;
@@ -1318,7 +1318,7 @@ export function channelCompatibility(
       if (type === 'nominal' && !(fieldDef as any)['sort']) {
         return {
           compatible: false,
-          warning: `Channel ${channel} should not be used with an unsorted discrete field.`
+          warning: `Channel ${channel} should not be used with an unsorted discrete field.`,
         };
       }
       return COMPATIBLE;
@@ -1328,7 +1328,7 @@ export function channelCompatibility(
       if (!isDiscrete(fieldDef) && !isDiscretizing(fieldDef)) {
         return {
           compatible: false,
-          warning: log.message.channelShouldBeDiscreteOrDiscretizing(channel)
+          warning: log.message.channelShouldBeDiscreteOrDiscretizing(channel),
         };
       }
       return COMPATIBLE;
@@ -1337,7 +1337,7 @@ export function channelCompatibility(
       if (fieldDef.type === 'nominal' && !('sort' in fieldDef)) {
         return {
           compatible: false,
-          warning: `Channel order is inappropriate for nominal field, which has no inherent order.`
+          warning: `Channel order is inappropriate for nominal field, which has no inherent order.`,
         };
       }
       return COMPATIBLE;
@@ -1370,13 +1370,13 @@ export function valueExpr(
     timeUnit,
     type,
     wrapTime,
-    undefinedIfExprNotRequired
+    undefinedIfExprNotRequired,
   }: {
     timeUnit: TimeUnit | TimeUnitParams;
     type?: Type;
     wrapTime?: boolean;
     undefinedIfExprNotRequired?: boolean;
-  }
+  },
 ): string {
   const unit = timeUnit && normalizeTimeUnit(timeUnit)?.unit;
   let isTime = unit || type === 'temporal';
@@ -1413,16 +1413,16 @@ export function valueExpr(
  */
 export function valueArray(
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
-  values: (number | string | boolean | DateTime)[]
+  values: (number | string | boolean | DateTime)[],
 ) {
   const {type} = fieldOrDatumDef;
-  return values.map(v => {
+  return values.map((v) => {
     const timeUnit =
       isFieldDef(fieldOrDatumDef) && !isBinnedTimeUnit(fieldOrDatumDef.timeUnit) ? fieldOrDatumDef.timeUnit : undefined;
     const expr = valueExpr(v, {
       timeUnit,
       type,
-      undefinedIfExprNotRequired: true
+      undefinedIfExprNotRequired: true,
     });
     // return signal for the expression if we need an expression
     if (expr !== undefined) {

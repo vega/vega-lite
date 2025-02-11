@@ -1,23 +1,23 @@
-import * as log from '../../../src/log';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import * as log from '../../../src/log/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('compile/layout', () => {
   describe('initLayoutSize', () => {
     it(
       'should have step-based width/height for ordinal x,y',
-      log.wrap(localLogger => {
+      log.wrap((localLogger) => {
         const model = parseUnitModelWithScaleAndLayoutSize({
           mark: 'point',
           width: {step: 20},
           encoding: {
-            x: {field: 'a', type: 'quantitative'}
-          }
+            x: {field: 'a', type: 'quantitative'},
+          },
         });
 
         expect(localLogger.warns[0]).toEqual(log.message.stepDropped('width'));
 
         expect(model.component.layoutSize.get('width')).toBe(200);
-      })
+      }),
     );
   });
 });

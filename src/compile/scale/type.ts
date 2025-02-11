@@ -1,4 +1,4 @@
-import {isBinning} from '../../bin';
+import {isBinning} from '../../bin.js';
 import {
   getSizeChannel,
   isColorChannel,
@@ -7,15 +7,15 @@ import {
   isXorY,
   isXorYOffset,
   rangeType,
-  ScaleChannel
+  ScaleChannel,
 } from '../../channel';
-import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
-import * as log from '../../log';
-import {isRelativeBandSize, MarkDef} from '../../mark';
-import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale';
-import {normalizeTimeUnit} from '../../timeunit';
-import * as util from '../../util';
-import {POLAR_POSITION_SCALE_CHANNEL_INDEX} from './../../channel';
+import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef.js';
+import * as log from '../../log.js';
+import {isRelativeBandSize, MarkDef} from '../../mark.js';
+import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale.js';
+import {normalizeTimeUnit} from '../../timeunit.js';
+import * as util from '../../util.js';
+import {POLAR_POSITION_SCALE_CHANNEL_INDEX} from './../../channel.js';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 
@@ -29,7 +29,7 @@ export function scaleType(
   channel: ScaleChannel,
   fieldDef: TypedFieldDef<string> | DatumDef,
   mark: MarkDef,
-  hasNestedOffsetScale = false
+  hasNestedOffsetScale = false,
 ): ScaleType {
   const defaultScaleType = defaultType(channel, fieldDef, mark, hasNestedOffsetScale);
   const {type} = specifiedScale;
@@ -65,7 +65,7 @@ function defaultType(
   channel: ScaleChannel,
   fieldDef: TypedFieldDef<string> | ScaleDatumDef,
   mark: MarkDef,
-  hasNestedOffsetScale: boolean
+  hasNestedOffsetScale: boolean,
 ): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':

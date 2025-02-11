@@ -1,8 +1,8 @@
 import {hasOwnProperty, isArray} from 'vega-util';
-import {NonArgAggregateOp} from './aggregate';
-import {FieldName} from './channeldef';
-import {DateTime} from './datetime';
-import {hasProperty} from './util';
+import {NonArgAggregateOp} from './aggregate.js';
+import {FieldName} from './channeldef.js';
+import {DateTime} from './datetime.js';
+import {hasProperty} from './util.js';
 
 export type SortOrder = 'ascending' | 'descending';
 
@@ -82,7 +82,7 @@ const SORT_BY_CHANNEL_INDEX = {
   fillOpacity: 1,
   strokeOpacity: 1,
   opacity: 1,
-  text: 1
+  text: 1,
 } as const;
 
 export type SortByChannel = keyof typeof SORT_BY_CHANNEL_INDEX;

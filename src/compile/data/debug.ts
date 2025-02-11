@@ -1,17 +1,17 @@
-import {entries, uniqueId} from '../../util';
-import {DataFlowNode, OutputNode} from './dataflow';
-import {SourceNode} from './source';
+import {entries, uniqueId} from '../../util.js';
+import {DataFlowNode, OutputNode} from './dataflow.js';
+import {SourceNode} from './source.js';
 import pako from 'pako';
-import {checkLinks} from './optimize';
+import {checkLinks} from './optimize.js';
 
 /**
  * Print debug information for dataflow tree.
  */
 export function printDebugDataflow(node: DataFlowNode) {
   console.log(
-    `${(node.constructor as any).name}${node.debugName ? `(${node.debugName})` : ''} -> ${node.children.map(c => {
+    `${(node.constructor as any).name}${node.debugName ? `(${node.debugName})` : ''} -> ${node.children.map((c) => {
       return `${(c.constructor as any).name}${c.debugName ? ` (${c.debugName})` : ''}`;
-    })}`
+    })}`,
   );
   console.log(node);
   node.children.forEach(printDebugDataflow);
@@ -84,7 +84,7 @@ export function dotString(roots: readonly DataFlowNode[]) {
       hash:
         node instanceof SourceNode
           ? (node.data.url ?? node.data.name ?? node.debugName)
-          : String(node.hash()).replace(/"/g, '')
+          : String(node.hash()).replace(/"/g, ''),
     };
 
     for (const child of node.children) {
@@ -105,7 +105,7 @@ export function dotString(roots: readonly DataFlowNode[]) {
       ([key, value]) => `  "${key}" [
     label = <${value.label}>;
     tooltip = "[${value.id}]&#010;${value.hash}"
-  ]`
+  ]`,
     )
     .join('\n')}
 

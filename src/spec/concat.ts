@@ -1,6 +1,6 @@
 import {GenericSpec, NormalizedSpec} from '.';
-import {hasProperty} from '../util';
-import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
+import {hasProperty} from '../util.js';
+import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base.js';
 
 /**
  * Base layout mixins for V/HConcatSpec, which should not have RowCol<T> generic fo its property.

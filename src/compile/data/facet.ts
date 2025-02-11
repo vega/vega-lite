@@ -1,19 +1,19 @@
 import type {AggregateOp} from 'vega';
 import {isArray} from 'vega-util';
-import {isBinning} from '../../bin';
-import {COLUMN, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../../channel';
-import {vgField} from '../../channeldef';
-import * as log from '../../log';
-import {hasDiscreteDomain} from '../../scale';
-import {DEFAULT_SORT_OP, EncodingSortField, isSortField} from '../../sort';
-import {hash} from '../../util';
-import {isVgRangeStep, VgData} from '../../vega.schema';
-import {FacetModel} from '../facet';
-import {HEADER_CHANNELS, HEADER_TYPES} from '../header/component';
-import {Model} from '../model';
-import {assembleDomain, getFieldFromDomain} from '../scale/domain';
-import {sortArrayIndexField} from './calculate';
-import {DataFlowNode} from './dataflow';
+import {isBinning} from '../../bin.js';
+import {COLUMN, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../../channel.js';
+import {vgField} from '../../channeldef.js';
+import * as log from '../../log.js';
+import {hasDiscreteDomain} from '../../scale.js';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortField} from '../../sort.js';
+import {hash} from '../../util.js';
+import {isVgRangeStep, VgData} from '../../vega.schema.js';
+import {FacetModel} from '../facet.js';
+import {HEADER_CHANNELS, HEADER_TYPES} from '../header/component.js';
+import {Model} from '../model.js';
+import {assembleDomain, getFieldFromDomain} from '../scale/domain.js';
+import {sortArrayIndexField} from './calculate.js';
+import {DataFlowNode} from './dataflow.js';
 
 interface ChildIndependentFieldsWithStep {
   x?: string;
@@ -49,7 +49,7 @@ export class FacetNode extends DataFlowNode {
     parent: DataFlowNode,
     public readonly model: FacetModel,
     public readonly name: string,
-    public data: string
+    public data: string,
   ) {
     super(parent);
 
@@ -64,7 +64,7 @@ export class FacetNode extends DataFlowNode {
             ? {sortField: sort}
             : isArray(sort)
               ? {sortIndexField: sortArrayIndexField(fieldDef, channel)}
-              : {})
+              : {}),
         };
       }
     }
@@ -150,7 +150,7 @@ export class FacetNode extends DataFlowNode {
   private assembleRowColumnHeaderData(
     channel: 'row' | 'column' | 'facet',
     crossedDataName: string,
-    childIndependentFieldsWithStep: ChildIndependentFieldsWithStep
+    childIndependentFieldsWithStep: ChildIndependentFieldsWithStep,
   ): VgData {
     const childChannel = ({row: 'y', column: 'x', facet: undefined} as const)[channel];
 
@@ -197,11 +197,11 @@ export class FacetNode extends DataFlowNode {
             ? {
                 fields,
                 ops,
-                as
+                as,
               }
-            : {})
-        }
-      ]
+            : {}),
+        },
+      ],
     };
   }
 
@@ -240,9 +240,9 @@ export class FacetNode extends DataFlowNode {
             {
               type: 'sequence',
               start: 0,
-              stop
-            }
-          ]
+              stop,
+            },
+          ],
         });
       }
     }
@@ -269,7 +269,7 @@ export class FacetNode extends DataFlowNode {
 
       const fields: string[] = [].concat(
         childIndependentFieldsWithStep.x ?? [],
-        childIndependentFieldsWithStep.y ?? []
+        childIndependentFieldsWithStep.y ?? [],
       );
       const ops = fields.map((): AggregateOp => 'distinct');
 
@@ -281,9 +281,9 @@ export class FacetNode extends DataFlowNode {
             type: 'aggregate',
             groupby: this.fields,
             fields,
-            ops
-          }
-        ]
+            ops,
+          },
+        ],
       });
     }
 

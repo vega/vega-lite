@@ -1,36 +1,36 @@
 import {AggregateOp, LayoutAlign, NewSignal, SignalRef} from 'vega';
 import {isArray} from 'vega-util';
-import {isBinning} from '../bin';
-import {COLUMN, ExtendedChannel, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel';
-import {FieldName, FieldRefOption, initFieldDef, TypedFieldDef, vgField} from '../channeldef';
-import {Config} from '../config';
-import {ExprRef, replaceExprRef} from '../expr';
-import * as log from '../log';
-import {hasDiscreteDomain} from '../scale';
-import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
-import {NormalizedFacetSpec} from '../spec';
-import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
-import {hasProperty, keys} from '../util';
-import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
-import {buildModel} from './buildmodel';
-import {assembleFacetData} from './data/assemble';
-import {sortArrayIndexField} from './data/calculate';
-import {parseData} from './data/parse';
-import {assembleLabelTitle} from './header/assemble';
-import {getHeaderChannel, getHeaderProperty} from './header/common';
-import {HEADER_CHANNELS, HEADER_TYPES} from './header/component';
-import {parseFacetHeaders} from './header/parse';
-import {parseChildrenLayoutSize} from './layoutsize/parse';
-import {Model, ModelWithField} from './model';
-import {assembleDomain, getFieldFromDomain} from './scale/domain';
-import {assembleFacetSignals} from './selection/assemble';
-import {isTimerSelection} from './selection';
-import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message';
+import {isBinning} from '../bin.js';
+import {COLUMN, ExtendedChannel, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel.js';
+import {FieldName, FieldRefOption, initFieldDef, TypedFieldDef, vgField} from '../channeldef.js';
+import {Config} from '../config.js';
+import {ExprRef, replaceExprRef} from '../expr.js';
+import * as log from '../log.js';
+import {hasDiscreteDomain} from '../scale.js';
+import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort.js';
+import {NormalizedFacetSpec} from '../spec.js';
+import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet.js';
+import {hasProperty, keys} from '../util.js';
+import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema.js';
+import {buildModel} from './buildmodel.js';
+import {assembleFacetData} from './data/assemble.js';
+import {sortArrayIndexField} from './data/calculate.js';
+import {parseData} from './data/parse.js';
+import {assembleLabelTitle} from './header/assemble.js';
+import {getHeaderChannel, getHeaderProperty} from './header/common.js';
+import {HEADER_CHANNELS, HEADER_TYPES} from './header/component.js';
+import {parseFacetHeaders} from './header/parse.js';
+import {parseChildrenLayoutSize} from './layoutsize/parse.js';
+import {Model, ModelWithField} from './model.js';
+import {assembleDomain, getFieldFromDomain} from './scale/domain.js';
+import {assembleFacetSignals} from './selection/assemble.js';
+import {isTimerSelection} from './selection.js';
+import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message.js';
 
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,
   sort: EncodingSortField<string>,
-  opt?: FieldRefOption
+  opt?: FieldRefOption,
 ) {
   return vgField(sort, {suffix: `by_${vgField(fieldDef)}`, ...opt});
 }
@@ -52,7 +52,7 @@ export class FacetModel extends ModelWithField {
   }
 
   private initFacet(
-    facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>
+    facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>,
   ): EncodingFacetMapping<FieldName, SignalRef> {
     // clone to prevent side effect to the original spec
     if (!isFacetMapping(facet)) {
@@ -116,7 +116,7 @@ export class FacetModel extends ModelWithField {
     this.child.parseSelections();
     this.component.selection = this.child.component.selection;
 
-    if (Object.values(this.component.selection).some(selCmpt => isTimerSelection(selCmpt))) {
+    if (Object.values(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
       log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
     }
   }
@@ -203,7 +203,7 @@ export class FacetModel extends ModelWithField {
 
       ...(columns ? {columns} : {}),
       bounds: 'full',
-      align
+      align,
     };
   }
 
@@ -241,12 +241,12 @@ export class FacetModel extends ModelWithField {
                 update: {
                   // TODO(https://github.com/vega/vega-lite/issues/2759):
                   // Correct the signal for facet of concat of facet_column
-                  columns: {field: vgField(this.facet.column, {prefix: 'distinct'})}
-                }
-              }
+                  columns: {field: vgField(this.facet.column, {prefix: 'distinct'})},
+                },
+              },
             }
           : {}),
-        ...super.assembleGroup(signals)
+        ...super.assembleGroup(signals),
       };
     }
     return super.assembleGroup(signals);
@@ -342,10 +342,10 @@ export class FacetModel extends ModelWithField {
         ? {
             aggregate: {
               ...(cross ? {cross} : {}),
-              ...(fields.length ? {fields, ops, as} : {})
-            }
+              ...(fields.length ? {fields, ops, as} : {}),
+            },
           }
-        : {})
+        : {}),
     };
   }
 
@@ -384,7 +384,7 @@ export class FacetModel extends ModelWithField {
 
     const ORTHOGONAL_ORIENT = {
       row: ['top', 'bottom'],
-      column: ['left', 'right']
+      column: ['left', 'right'],
     };
 
     for (const channel of HEADER_CHANNELS) {
@@ -418,16 +418,16 @@ export class FacetModel extends ModelWithField {
       ...(title ? {title} : {}),
       ...(style ? {style} : {}),
       from: {
-        facet: this.assembleFacet()
+        facet: this.assembleFacet(),
       },
       // TODO: move this to after data
       sort: {
-        field: FACET_CHANNELS.map(c => this.facetSortFields(c)).flat(),
-        order: FACET_CHANNELS.map(c => this.facetSortOrder(c)).flat()
+        field: FACET_CHANNELS.map((c) => this.facetSortFields(c)).flat(),
+        order: FACET_CHANNELS.map((c) => this.facetSortOrder(c)).flat(),
       },
       ...(data.length > 0 ? {data} : {}),
       ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
-      ...child.assembleGroup(assembleFacetSignals(this, []))
+      ...child.assembleGroup(assembleFacetSignals(this, [])),
     };
 
     return [markGroup];

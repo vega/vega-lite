@@ -1,7 +1,7 @@
-import {COLOR, X, Y} from '../../../src/channel';
-import {line} from '../../../src/compile/mark/line';
-import * as log from '../../../src/log';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {COLOR, X, Y} from '../../../src/channel.js';
+import {line} from '../../../src/compile/mark/line.js';
+import * as log from '../../../src/log/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Line', () => {
   describe('with x, y', () => {
@@ -10,8 +10,8 @@ describe('Mark: Line', () => {
       mark: 'line',
       encoding: {
         x: {field: 'year', type: 'ordinal'},
-        y: {field: 'yield', type: 'quantitative'}
-      }
+        y: {field: 'yield', type: 'quantitative'},
+      },
     });
     const props = line.encodeEntry(model);
 
@@ -31,8 +31,8 @@ describe('Mark: Line', () => {
       encoding: {
         x: {field: 'year', type: 'ordinal'},
         y: {field: 'yield', type: 'quantitative'},
-        color: {field: 'Acceleration', type: 'quantitative'}
-      }
+        color: {field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = line.encodeEntry(model);
 
@@ -49,8 +49,8 @@ describe('Mark: Line', () => {
         encoding: {
           x: {field: 'year', type: 'ordinal'},
           y: {field: 'yield', type: 'quantitative', aggregate: 'mean'},
-          size: {field: 'variety', type: 'quantitative'}
-        }
+          size: {field: 'variety', type: 'quantitative'},
+        },
       });
       const props = line.encodeEntry(model);
 
@@ -59,22 +59,22 @@ describe('Mark: Line', () => {
 
     it(
       'should drop aggregate size field',
-      log.wrap(localLogger => {
+      log.wrap((localLogger) => {
         const model = parseUnitModelWithScaleAndLayoutSize({
           data: {url: 'data/barley.json'},
           mark: 'line',
           encoding: {
             x: {field: 'year', type: 'ordinal'},
             y: {field: 'yield', type: 'quantitative', aggregate: 'mean'},
-            size: {field: 'Acceleration', type: 'quantitative', aggregate: 'mean'}
-          }
+            size: {field: 'Acceleration', type: 'quantitative', aggregate: 'mean'},
+          },
         });
         const props = line.encodeEntry(model);
 
         // If size field is dropped, then strokeWidth only have value
         expect(props.strokeWidth && (props.strokeWidth as any).scale).toBeFalsy();
         expect(localLogger.warns[0]).toEqual(log.message.LINE_WITH_VARYING_SIZE);
-      })
+      }),
     );
   });
 
@@ -85,8 +85,8 @@ describe('Mark: Line', () => {
       encoding: {
         x: {field: 'year', type: 'ordinal'},
         y: {field: 'yield', type: 'quantitative', aggregate: 'sum', stack: 'zero'},
-        color: {field: 'a', type: 'nominal'}
-      }
+        color: {field: 'a', type: 'nominal'},
+      },
     });
     const props = line.encodeEntry(model);
 
@@ -102,8 +102,8 @@ describe('Mark: Line', () => {
       encoding: {
         y: {field: 'year', type: 'ordinal'},
         x: {field: 'yield', type: 'quantitative', aggregate: 'sum', stack: 'zero'},
-        color: {field: 'a', type: 'nominal'}
-      }
+        color: {field: 'a', type: 'nominal'},
+      },
     });
     const props = line.encodeEntry(model);
 
@@ -116,7 +116,7 @@ describe('Mark: Line', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'line',
       encoding: {x: {field: 'year', type: 'ordinal'}},
-      data: {url: 'data/barley.json'}
+      data: {url: 'data/barley.json'},
     });
 
     const props = line.encodeEntry(model);
@@ -124,7 +124,7 @@ describe('Mark: Line', () => {
     it('should be centered on y', () => {
       expect(props.y).toEqual({
         mult: 0.5,
-        signal: 'height'
+        signal: 'height',
       });
     });
 
@@ -137,7 +137,7 @@ describe('Mark: Line', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'line',
       encoding: {y: {field: 'year', type: 'ordinal'}},
-      data: {url: 'data/barley.json'}
+      data: {url: 'data/barley.json'},
     });
 
     const props = line.encodeEntry(model);
@@ -145,7 +145,7 @@ describe('Mark: Line', () => {
     it('should be centered on x', () => {
       expect(props.x).toEqual({
         mult: 0.5,
-        signal: 'width'
+        signal: 'width',
       });
     });
 

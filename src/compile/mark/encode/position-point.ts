@@ -7,17 +7,17 @@ import {
   PolarPositionChannel,
   PolarPositionScaleChannel,
   PositionChannel,
-  PositionScaleChannel
+  PositionScaleChannel,
 } from '../../../channel';
-import {isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef';
-import {Config} from '../../../config';
-import {VgValueRef} from '../../../vega.schema';
-import {getMarkPropOrConfig} from '../../common';
-import {ScaleComponent} from '../../scale/component';
-import {UnitModel} from '../../unit';
-import {positionOffset} from './offset';
-import * as ref from './valueref';
-import {scaledZeroOrMinOrMax, ScaledZeroOrMinOrMaxProps} from './scaledZeroOrMinOrMax';
+import {isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef.js';
+import {Config} from '../../../config.js';
+import {VgValueRef} from '../../../vega.schema.js';
+import {getMarkPropOrConfig} from '../../common.js';
+import {ScaleComponent} from '../../scale/component.js';
+import {UnitModel} from '../../unit.js';
+import {positionOffset} from './offset.js';
+import * as ref from './valueref.js';
+import {scaledZeroOrMinOrMax, ScaledZeroOrMinOrMaxProps} from './scaledZeroOrMinOrMax.js';
 
 /**
  * Return encode for point (non-band) position channels.
@@ -27,11 +27,11 @@ export function pointPosition(
   model: UnitModel,
   {
     defaultPos,
-    vgChannel
+    vgChannel,
   }: {
     defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null;
     vgChannel?: 'x' | 'y' | 'xc' | 'yc';
-  }
+  },
 ) {
   const {encoding, markDef, config, stack} = model;
 
@@ -45,7 +45,7 @@ export function pointPosition(
     markDef,
     encoding,
     model,
-    bandPosition: 0.5
+    bandPosition: 0.5,
   });
 
   // Get default position or position from mark def
@@ -54,7 +54,7 @@ export function pointPosition(
     defaultPos,
     channel,
     scaleName,
-    scale
+    scale,
   });
 
   const valueRef =
@@ -72,7 +72,7 @@ export function pointPosition(
           stack,
           offset,
           defaultRef,
-          bandPosition: offsetType === 'encoding' ? 0 : undefined
+          bandPosition: offsetType === 'encoding' ? 0 : undefined,
         });
 
   return valueRef ? {[vgChannel || channel]: valueRef} : undefined;
@@ -87,7 +87,7 @@ export function pointPosition(
 export function positionRef(
   params: ref.MidPointParams & {
     channel: 'x' | 'y' | 'radius' | 'theta';
-  }
+  },
 ): VgValueRef | VgValueRef[] {
   const {channel, channelDef, scaleName, stack, offset, markDef} = params;
 
@@ -108,7 +108,7 @@ export function positionRef(
           fieldOrDatumDef: channelDef as TypedFieldDef<string>, // positionRef always have type
           startSuffix: 'start',
           bandPosition,
-          offset
+          offset,
         });
       }
     }
@@ -124,7 +124,7 @@ export function pointPositionDefaultRef({
   defaultPos,
   channel,
   scaleName,
-  scale
+  scale,
 }: {
   model: UnitModel;
   defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null;
@@ -151,7 +151,7 @@ export function pointPositionDefaultRef({
           scale,
           mode: {zeroOrMax: {widthSignal: model.width.signal, heightSignal: model.height.signal}},
           mainChannel,
-          config
+          config,
         });
       case 'mid': {
         const sizeRef = model[getSizeChannel(channel)];
@@ -186,7 +186,7 @@ function zeroOrMinOrMaxPosition({
       const {widthSignal, heightSignal} = mode.zeroOrMax;
       // max of radius is min(width, height) / 2
       return {
-        signal: `min(${widthSignal},${heightSignal})/2`
+        signal: `min(${widthSignal},${heightSignal})/2`,
       };
     }
     case 'theta':

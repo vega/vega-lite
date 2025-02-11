@@ -1,12 +1,12 @@
-import {COLOR, X, Y} from '../../../src/channel';
-import {rule} from '../../../src/compile/mark/rule';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {COLOR, X, Y} from '../../../src/channel.js';
+import {rule} from '../../../src/compile/mark/rule.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Rule', () => {
   describe('without encoding', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'rule',
-      encoding: {}
+      encoding: {},
     });
 
     const props = rule.encodeEntry(model);
@@ -20,7 +20,7 @@ describe('Mark: Rule', () => {
   describe('with x-only', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'rule',
-      encoding: {x: {field: 'a', type: 'quantitative'}}
+      encoding: {x: {field: 'a', type: 'quantitative'}},
     });
 
     const props = rule.encodeEntry(model);
@@ -35,7 +35,7 @@ describe('Mark: Rule', () => {
   describe('with y-only', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'rule',
-      encoding: {y: {field: 'a', type: 'quantitative'}}
+      encoding: {y: {field: 'a', type: 'quantitative'}},
     });
 
     const props = rule.encodeEntry(model);
@@ -51,7 +51,7 @@ describe('Mark: Rule', () => {
     () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'rule',
-        encoding: {y: {field: 'a', type: 'quantitative', scale: {type: 'log'}}}
+        encoding: {y: {field: 'a', type: 'quantitative', scale: {type: 'log'}}},
       });
 
       const props = rule.encodeEntry(model);
@@ -69,8 +69,8 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         x: {field: 'a', type: 'quantitative'},
-        x2: {field: 'a2'}
-      }
+        x2: {field: 'a2'},
+      },
     });
 
     const props = rule.encodeEntry(model);
@@ -80,7 +80,7 @@ describe('Mark: Rule', () => {
       expect(props.x2).toEqual({scale: X, field: 'a2'});
       expect(props.y).toEqual({
         mult: 0.5,
-        signal: 'height'
+        signal: 'height',
       });
     });
   });
@@ -90,8 +90,8 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         y: {field: 'a', type: 'quantitative'},
-        y2: {field: 'a2'}
-      }
+        y2: {field: 'a2'},
+      },
     });
 
     const props = rule.encodeEntry(model);
@@ -101,7 +101,7 @@ describe('Mark: Rule', () => {
       expect(props.y2).toEqual({scale: Y, field: 'a2'});
       expect(props.x).toEqual({
         mult: 0.5,
-        signal: 'width'
+        signal: 'width',
       });
     });
   });
@@ -112,8 +112,8 @@ describe('Mark: Rule', () => {
       encoding: {
         x: {field: 'a', type: 'quantitative'},
         x2: {field: 'a2'},
-        y: {field: 'b', type: 'quantitative'}
-      }
+        y: {field: 'b', type: 'quantitative'},
+      },
     });
 
     const props = rule.encodeEntry(model);
@@ -132,8 +132,8 @@ describe('Mark: Rule', () => {
         x: {field: 'a', type: 'quantitative'},
         x2: {field: 'a2'},
         y: {field: 'b', type: 'quantitative'},
-        y2: {field: 'b2'}
-      }
+        y2: {field: 'b2'},
+      },
     });
 
     const props = rule.encodeEntry(model);
@@ -151,8 +151,8 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         x: {field: 'a', type: 'quantitative'},
-        y: {field: 'b', type: 'quantitative'}
-      }
+        y: {field: 'b', type: 'quantitative'},
+      },
     });
 
     const props = rule.encodeEntry(model);
@@ -169,8 +169,8 @@ describe('Mark: Rule', () => {
       encoding: {
         y: {field: 'a', type: 'quantitative'},
         y2: {field: 'a2'},
-        x: {field: 'b', type: 'quantitative'}
-      }
+        x: {field: 'b', type: 'quantitative'},
+      },
     });
 
     const props = rule.encodeEntry(model);
@@ -187,8 +187,8 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         x: {field: 'a', type: 'ordinal'},
-        y: {field: 'b', type: 'quantitative'}
-      }
+        y: {field: 'b', type: 'quantitative'},
+      },
     });
 
     const props = rule.encodeEntry(model);
@@ -207,8 +207,8 @@ describe('Mark: Rule', () => {
       mark: 'rule',
       encoding: {
         y: {field: 'a', type: 'ordinal'},
-        x: {field: 'b', type: 'quantitative'}
-      }
+        x: {field: 'b', type: 'quantitative'},
+      },
     });
 
     const props = rule.encodeEntry(model);
@@ -228,11 +228,11 @@ describe('Mark: Rule', () => {
       encoding: {
         y: {field: 'a', type: 'ordinal'},
         x: {aggregate: 'sum', field: 'b', type: 'quantitative', stack: 'zero'},
-        color: {field: 'Origin', type: 'nominal'}
+        color: {field: 'Origin', type: 'nominal'},
       },
       config: {
-        mark: {invalid: null}
-      }
+        mark: {invalid: null},
+      },
     });
 
     const props = rule.encodeEntry(model);
@@ -250,11 +250,11 @@ describe('Mark: Rule', () => {
       encoding: {
         x: {field: 'a', type: 'ordinal'},
         y: {aggregate: 'sum', field: 'b', type: 'quantitative', stack: 'zero'},
-        color: {field: 'Origin', type: 'nominal'}
+        color: {field: 'Origin', type: 'nominal'},
       },
       config: {
-        mark: {invalid: null}
-      }
+        mark: {invalid: null},
+      },
     });
 
     const props = rule.encodeEntry(model);

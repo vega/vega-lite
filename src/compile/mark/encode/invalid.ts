@@ -1,23 +1,23 @@
-import {isCountingAggregateOp} from '../../../aggregate';
-import {NonPositionScaleChannel, PolarPositionScaleChannel, PositionScaleChannel} from '../../../channel';
-import {getFieldDef, vgField} from '../../../channeldef';
-import {ScaleInvalidDataShowAs, isScaleInvalidDataIncludeAsValue} from '../../../invalid';
-import {fieldValidPredicate} from '../../../predicate';
-import {VgValueRef, isSignalRef} from '../../../vega.schema';
-import {getScaleInvalidDataMode} from '../../invalid/ScaleInvalidDataMode';
-import {ScaleComponent} from '../../scale/component';
-import {scaledZeroOrMinOrMax} from './scaledZeroOrMinOrMax';
-import {MidPointParams} from './valueref';
+import {isCountingAggregateOp} from '../../../aggregate.js';
+import {NonPositionScaleChannel, PolarPositionScaleChannel, PositionScaleChannel} from '../../../channel.js';
+import {getFieldDef, vgField} from '../../../channeldef.js';
+import {ScaleInvalidDataShowAs, isScaleInvalidDataIncludeAsValue} from '../../../invalid.js';
+import {fieldValidPredicate} from '../../../predicate.js';
+import {VgValueRef, isSignalRef} from '../../../vega.schema.js';
+import {getScaleInvalidDataMode} from '../../invalid/ScaleInvalidDataMode.js';
+import {ScaleComponent} from '../../scale/component.js';
+import {scaledZeroOrMinOrMax} from './scaledZeroOrMinOrMax.js';
+import {MidPointParams} from './valueref.js';
 
 export function getConditionalValueRefForIncludingInvalidValue<
-  C extends PositionScaleChannel | PolarPositionScaleChannel | NonPositionScaleChannel
+  C extends PositionScaleChannel | PolarPositionScaleChannel | NonPositionScaleChannel,
 >({
   scaleChannel,
   channelDef,
   scale,
   scaleName,
   markDef,
-  config
+  config,
 }: {
   scaleChannel: C;
 } & Pick<MidPointParams, 'scale' | 'scaleName' | 'channelDef' | 'markDef' | 'config'>): VgValueRef | undefined {
@@ -31,14 +31,14 @@ export function getConditionalValueRefForIncludingInvalidValue<
     markDef,
     config,
     scaleType,
-    isCountAggregate
+    isCountAggregate,
   });
 
   if (fieldDef && invalidDataMode === 'show') {
     const includeAs: ScaleInvalidDataShowAs<C> = config.scale.invalid?.[scaleChannel] ?? 'zero-or-min';
     return {
       test: fieldValidPredicate(vgField(fieldDef, {expr: 'datum'}), false),
-      ...refForInvalidValues(includeAs, scale, scaleName)
+      ...refForInvalidValues(includeAs, scale, scaleName),
     };
   }
   return undefined;
@@ -47,7 +47,7 @@ export function getConditionalValueRefForIncludingInvalidValue<
 function refForInvalidValues<C extends PositionScaleChannel | PolarPositionScaleChannel | NonPositionScaleChannel>(
   includeAs: ScaleInvalidDataShowAs<C>,
   scale: ScaleComponent,
-  scaleName: string
+  scaleName: string,
 ): VgValueRef {
   if (isScaleInvalidDataIncludeAsValue(includeAs)) {
     const {value} = includeAs;
@@ -57,6 +57,6 @@ function refForInvalidValues<C extends PositionScaleChannel | PolarPositionScale
   return scaledZeroOrMinOrMax({
     scale,
     scaleName,
-    mode: 'zeroOrMin'
+    mode: 'zeroOrMin',
   });
 }

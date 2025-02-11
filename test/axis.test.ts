@@ -1,4 +1,4 @@
-import {AXIS_COMPONENT_PROPERTIES} from '../src/compile/axis/component';
+import {AXIS_COMPONENT_PROPERTIES} from '../src/compile/axis/component.js';
 
 describe('axis', () => {
   describe('VG_AXIS_PROPERTIES', () => {

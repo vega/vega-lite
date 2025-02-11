@@ -1,15 +1,15 @@
 import type {MarkConfig} from 'vega';
-import {MarkDef} from '../../../mark';
-import {hasProperty} from '../../../util';
-import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {signalOrValueRef} from '../../common';
-import {UnitModel} from '../../unit';
-import {aria} from './aria';
-import {color} from './color';
-import {nonPosition} from './nonposition';
-import {text} from './text';
-import {tooltip} from './tooltip';
-import {zindex} from './zindex';
+import {MarkDef} from '../../../mark.js';
+import {hasProperty} from '../../../util.js';
+import {VG_MARK_CONFIGS, VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
+import {signalOrValueRef} from '../../common.js';
+import {UnitModel} from '../../unit.js';
+import {aria} from './aria.js';
+import {color} from './color.js';
+import {nonPosition} from './nonposition.js';
+import {text} from './text.js';
+import {tooltip} from './tooltip.js';
+import {zindex} from './zindex.js';
 
 export {color} from './color';
 export {nonPosition} from './nonposition';
@@ -37,7 +37,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...zindex(model),
     ...tooltip(model),
     ...text(model, 'href'),
-    ...aria(model)
+    ...aria(model),
   };
 }
 
@@ -53,6 +53,6 @@ function markDefProperties(mark: MarkDef, ignore: Ignore) {
       }
       return m;
     },
-    {} as Record<keyof MarkConfig, unknown>
+    {} as Record<keyof MarkConfig, unknown>,
   );
 }

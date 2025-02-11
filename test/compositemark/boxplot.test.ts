@@ -1,8 +1,8 @@
 import {array} from 'vega-util';
-import * as log from '../../src/log';
-import {normalize} from '../../src/normalize';
-import {Transform} from '../../src/transform';
-import {defaultConfig} from '.././../src/config';
+import * as log from '../../src/log/index.js';
+import {normalize} from '../../src/normalize/index.js';
+import {Transform} from '../../src/transform.js';
+import {defaultConfig} from '.././../src/config.js';
 
 describe('normalizeBoxMinMax', () => {
   it('should produce an error if both axes have aggregate boxplot', () => {

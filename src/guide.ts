@@ -1,7 +1,7 @@
 import type {SignalRef, Text} from 'vega';
-import {ConditionValueDefMixins, FormatMixins, ValueDef} from './channeldef';
-import {LegendConfig} from './legend';
-import {VgEncodeChannel} from './vega.schema';
+import {ConditionValueDefMixins, FormatMixins, ValueDef} from './channeldef.js';
+import {LegendConfig} from './legend.js';
+import {VgEncodeChannel} from './vega.schema.js';
 
 export interface TitleMixins {
   /**
@@ -36,5 +36,5 @@ export const VL_ONLY_LEGEND_CONFIG: (keyof LegendConfig<any>)[] = [
   'gradientHorizontalMinLength',
   'gradientVerticalMaxLength',
   'gradientVerticalMinLength',
-  'unselectedOpacity'
+  'unselectedOpacity',
 ];

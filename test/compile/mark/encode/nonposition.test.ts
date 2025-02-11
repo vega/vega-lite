@@ -1,5 +1,5 @@
-import {nonPosition} from '../../../../src/compile/mark/encode';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {nonPosition} from '../../../../src/compile/mark/encode.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/nonPosition', () => {
   it('respects default value for a particular channel', () => {
@@ -9,13 +9,13 @@ describe('compile/mark/encode/nonPosition', () => {
       encoding: {
         x: {
           field: 'Acceleration',
-          type: 'quantitative'
+          type: 'quantitative',
         },
         y: {
           field: 'Horsepower',
-          type: 'quantitative'
-        }
-      }
+          type: 'quantitative',
+        },
+      },
     });
 
     const mixins = nonPosition('opacity', model);

@@ -4,12 +4,12 @@ import {
   AxisPart,
   AxisPropsWithCondition,
   COMMON_AXIS_PROPERTIES_INDEX,
-  ConditionalAxisProp
-} from '../../axis';
-import {FieldDefBase} from '../../channeldef';
-import {duplicate, Flag, keys} from '../../util';
-import {isSignalRef} from '../../vega.schema';
-import {Split} from '../split';
+  ConditionalAxisProp,
+} from '../../axis.js';
+import {FieldDefBase} from '../../channeldef.js';
+import {duplicate, Flag, keys} from '../../util.js';
+import {isSignalRef} from '../../vega.schema.js';
+import {Split} from '../split.js';
 
 function isFalseOrNull(v: any) {
   return v === false || v === null;
@@ -28,7 +28,7 @@ const AXIS_COMPONENT_PROPERTIES_INDEX: Flag<keyof AxisComponentProps> = {
   scale: 1,
   ...COMMON_AXIS_PROPERTIES_INDEX,
   labelExpr: 1,
-  encode: 1
+  encode: 1,
 };
 
 export const AXIS_COMPONENT_PROPERTIES = keys(AXIS_COMPONENT_PROPERTIES_INDEX);
@@ -37,7 +37,7 @@ export class AxisComponent extends Split<AxisComponentProps> {
   constructor(
     public readonly explicit: Partial<AxisComponentProps> = {},
     public readonly implicit: Partial<AxisComponentProps> = {},
-    public mainExtracted = false
+    public mainExtracted = false,
   ) {
     super();
   }

@@ -1,15 +1,15 @@
 import type {SignalRef} from 'vega';
-import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel';
-import {isFieldOrDatumDef} from '../../../channeldef';
-import * as log from '../../../log';
-import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark';
-import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkStyleConfig} from '../../common';
-import {UnitModel} from '../../unit';
-import {positionOffset} from './offset';
-import {vgAlignedPositionChannel} from './position-align';
-import {pointPosition, pointPositionDefaultRef} from './position-point';
-import * as ref from './valueref';
+import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel.js';
+import {isFieldOrDatumDef} from '../../../channeldef.js';
+import * as log from '../../../log.js';
+import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark.js';
+import {VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
+import {getMarkStyleConfig} from '../../common.js';
+import {UnitModel} from '../../unit.js';
+import {positionOffset} from './offset.js';
+import {vgAlignedPositionChannel} from './position-align.js';
+import {pointPosition, pointPositionDefaultRef} from './position-point.js';
+import * as ref from './valueref.js';
 
 /**
  * Utility for area/rule position, which can be either point or range.
@@ -21,12 +21,12 @@ export function pointOrRangePosition(
   {
     defaultPos,
     defaultPos2,
-    range
+    range,
   }: {
     defaultPos: 'zeroOrMin' | 'zeroOrMax' | 'mid';
     defaultPos2: 'zeroOrMin' | 'zeroOrMax';
     range: boolean;
-  }
+  },
 ) {
   if (range) {
     return rangePosition(channel, model, {defaultPos, defaultPos2});
@@ -39,11 +39,11 @@ export function rangePosition(
   model: UnitModel,
   {
     defaultPos,
-    defaultPos2
+    defaultPos2,
   }: {
     defaultPos: 'zeroOrMin' | 'zeroOrMax' | 'mid';
     defaultPos2: 'zeroOrMin' | 'zeroOrMax';
-  }
+  },
 ): VgEncodeEntry {
   const {markDef, config} = model;
   const channel2 = getSecondaryRangeChannel(channel);
@@ -59,7 +59,7 @@ export function rangePosition(
 
   return {
     ...pointPosition(channel, model, {defaultPos, vgChannel}),
-    ...pos2Mixins
+    ...pos2Mixins,
   };
 }
 
@@ -70,7 +70,7 @@ export function rangePosition(
 function pointPosition2OrSize(
   model: UnitModel,
   defaultPos: 'zeroOrMin' | 'zeroOrMax',
-  channel: 'x2' | 'y2' | 'radius2' | 'theta2'
+  channel: 'x2' | 'y2' | 'radius2' | 'theta2',
 ) {
   const {encoding, mark, markDef, stack, config} = model;
 
@@ -93,11 +93,11 @@ function pointPosition2OrSize(
     const size = model.markDef[vgSizeChannel];
     if (size != null) {
       return {
-        [vgSizeChannel]: {value: size}
+        [vgSizeChannel]: {value: size},
       };
     } else {
       return {
-        [vgChannel]: {field: model.getName(channel)}
+        [vgChannel]: {field: model.getName(channel)},
       };
     }
   }
@@ -112,7 +112,7 @@ function pointPosition2OrSize(
     scale,
     stack,
     offset,
-    defaultRef: undefined
+    defaultRef: undefined,
   });
 
   if (valueRef !== undefined) {
@@ -128,7 +128,7 @@ function pointPosition2OrSize(
     position2orSize(channel, markDef) ||
     position2orSize(channel, {
       [channel]: getMarkStyleConfig(channel, markDef, config.style),
-      [sizeChannel]: getMarkStyleConfig(sizeChannel, markDef, config.style)
+      [sizeChannel]: getMarkStyleConfig(sizeChannel, markDef, config.style),
     }) ||
     position2orSize(channel, config[mark]) ||
     position2orSize(channel, config.mark) || {
@@ -137,8 +137,8 @@ function pointPosition2OrSize(
         defaultPos,
         channel,
         scaleName,
-        scale
-      })()
+        scale,
+      })(),
     }
   );
 }
@@ -153,7 +153,7 @@ export function position2Ref({
   scale,
   stack,
   offset,
-  defaultRef
+  defaultRef,
 }: ref.MidPointParams & {
   channel: 'x2' | 'y2' | 'radius2' | 'theta2';
 }): VgValueRef | VgValueRef[] {
@@ -174,13 +174,13 @@ export function position2Ref({
     markDef,
     config,
     offset,
-    defaultRef
+    defaultRef,
   });
 }
 
 function position2orSize(
   channel: 'x2' | 'y2' | 'radius2' | 'theta2',
-  markDef: MarkConfig<SignalRef> | MarkDef<Mark, SignalRef>
+  markDef: MarkConfig<SignalRef> | MarkDef<Mark, SignalRef>,
 ) {
   const sizeChannel = getSizeChannel(channel);
   const vgChannel = getVgPositionChannel(channel);

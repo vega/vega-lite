@@ -1,10 +1,10 @@
-import {Field} from '../channeldef';
-import {SharedCompositeEncoding} from '../compositemark';
-import {ExprRef} from '../expr';
-import {Projection} from '../projection';
-import {hasProperty} from '../util';
-import {BaseSpec, FrameMixins, ResolveMixins} from './base';
-import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
+import {Field} from '../channeldef.js';
+import {SharedCompositeEncoding} from '../compositemark.js';
+import {ExprRef} from '../expr.js';
+import {Projection} from '../projection.js';
+import {hasProperty} from '../util.js';
+import {BaseSpec, FrameMixins, ResolveMixins} from './base.js';
+import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit.js';
 
 /**
  * Base interface for a layer specification.

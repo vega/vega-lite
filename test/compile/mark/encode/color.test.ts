@@ -1,6 +1,6 @@
-import {color} from '../../../../src/compile/mark/encode';
-import * as log from '../../../../src/log';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {color} from '../../../../src/compile/mark/encode.js';
+import * as log from '../../../../src/log/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/color', () => {
   it('color should be mapped to fill for bar', () => {
@@ -10,15 +10,15 @@ describe('compile/mark/encode/color', () => {
         x: {
           field: 'gender',
           type: 'nominal',
-          axis: null
+          axis: null,
         },
         color: {
           field: 'gender',
           type: 'nominal',
-          scale: {range: ['#EA98D2', '#659CCA']}
-        }
+          scale: {range: ['#EA98D2', '#659CCA']},
+        },
       },
-      data: {url: 'data/population.json'}
+      data: {url: 'data/population.json'},
     });
 
     const colorMixins = color(model);
@@ -32,15 +32,15 @@ describe('compile/mark/encode/color', () => {
         x: {
           field: 'gender',
           type: 'nominal',
-          axis: null
+          axis: null,
         },
         color: {
           field: 'gender',
           type: 'nominal',
-          scale: {range: ['#EA98D2', '#659CCA']}
-        }
+          scale: {range: ['#EA98D2', '#659CCA']},
+        },
       },
-      data: {url: 'data/population.json'}
+      data: {url: 'data/population.json'},
     });
 
     const colorMixins = color(model);
@@ -55,15 +55,15 @@ describe('compile/mark/encode/color', () => {
         x: {
           field: 'gender',
           type: 'nominal',
-          axis: null
+          axis: null,
         },
         stroke: {
           field: 'gender',
           type: 'nominal',
-          scale: {range: ['#EA98D2', '#659CCA']}
-        }
+          scale: {range: ['#EA98D2', '#659CCA']},
+        },
       },
-      data: {url: 'data/population.json'}
+      data: {url: 'data/population.json'},
     });
 
     const colorMixins = color(model);
@@ -78,20 +78,20 @@ describe('compile/mark/encode/color', () => {
         x: {
           field: 'gender',
           type: 'nominal',
-          axis: null
+          axis: null,
         },
         fill: {
           field: 'gender',
           type: 'nominal',
-          scale: {range: ['#EA98D2', '#659CCA']}
+          scale: {range: ['#EA98D2', '#659CCA']},
         },
         color: {
           field: 'gender',
           type: 'nominal',
-          scale: {range: ['#EA98D2', '#659CCA']}
-        }
+          scale: {range: ['#EA98D2', '#659CCA']},
+        },
       },
-      data: {url: 'data/population.json'}
+      data: {url: 'data/population.json'},
     });
 
     const colorMixins = color(model);
@@ -106,15 +106,15 @@ describe('compile/mark/encode/color', () => {
         x: {
           field: 'gender',
           type: 'nominal',
-          axis: null
+          axis: null,
         },
         fill: {
           field: 'gender',
           type: 'nominal',
-          scale: {range: ['#EA98D2', '#659CCA']}
-        }
+          scale: {range: ['#EA98D2', '#659CCA']},
+        },
       },
-      data: {url: 'data/population.json'}
+      data: {url: 'data/population.json'},
     });
 
     const colorMixins = color(model);
@@ -124,18 +124,18 @@ describe('compile/mark/encode/color', () => {
 
   it(
     'should apply stroke property over color property',
-    log.wrap(logger => {
+    log.wrap((logger) => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', color: 'red', stroke: 'blue'},
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
-          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-        }
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        },
       });
       const props = color(model);
       expect(props.stroke).toEqual({value: 'blue'});
       expect(logger.warns[0]).toEqual(log.message.droppingColor('property', {stroke: true}));
-    })
+    }),
   );
 
   it('combines color with fill', () => {
@@ -143,8 +143,8 @@ describe('compile/mark/encode/color', () => {
       mark: {type: 'point', color: 'red', fill: 'blue'},
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
-        y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-      }
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+      },
     });
     const props = color(model);
     expect(props.stroke).toEqual({value: 'red'});
@@ -155,8 +155,8 @@ describe('compile/mark/encode/color', () => {
       mark: {type: 'point', color: 'red'},
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
-        y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-      }
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+      },
     });
     const props = color(model);
     expect(props.stroke).toEqual({value: 'red'});
@@ -167,9 +167,9 @@ describe('compile/mark/encode/color', () => {
       mark: 'point',
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
-        y: {field: 'Miles_per_Gallon', type: 'quantitative'}
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
       },
-      config: {mark: {color: 'blue'}, point: {color: 'red'}}
+      config: {mark: {color: 'blue'}, point: {color: 'red'}},
     });
     const props = color(model);
     expect(props.stroke).toEqual({value: 'red'});
@@ -180,9 +180,9 @@ describe('compile/mark/encode/color', () => {
       mark: 'point',
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
-        y: {field: 'Miles_per_Gallon', type: 'quantitative'}
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
       },
-      config: {mark: {color: 'red', stroke: 'blue'}}
+      config: {mark: {color: 'red', stroke: 'blue'}},
     });
     const props = color(model);
     expect(props.stroke).toEqual({value: 'blue'});
@@ -193,9 +193,9 @@ describe('compile/mark/encode/color', () => {
       mark: 'point',
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
-        y: {field: 'Miles_per_Gallon', type: 'quantitative'}
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
       },
-      config: {point: {color: 'red', stroke: 'blue'}}
+      config: {point: {color: 'red', stroke: 'blue'}},
     });
     const props = color(model);
     expect(props.stroke).toEqual({value: 'blue'});

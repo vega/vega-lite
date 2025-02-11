@@ -1,8 +1,8 @@
 import {Align, AxisOrient, Orient, SignalRef} from 'vega';
 import {isArray, isObject} from 'vega-util';
-import {AxisInternal} from '../../axis';
-import {isBinned, isBinning} from '../../bin';
-import {PositionScaleChannel, X} from '../../channel';
+import {AxisInternal} from '../../axis.js';
+import {isBinned, isBinning} from '../../bin.js';
+import {PositionScaleChannel, X} from '../../channel.js';
 import {
   DatumDef,
   isDiscrete,
@@ -11,22 +11,22 @@ import {
   PositionFieldDef,
   toFieldDefBase,
   TypedFieldDef,
-  valueArray
-} from '../../channeldef';
-import {Config, StyleConfigIndex} from '../../config';
-import {Mark} from '../../mark';
-import {hasDiscreteDomain} from '../../scale';
-import {Sort} from '../../sort';
-import {durationExpr, normalizeTimeUnit} from '../../timeunit';
-import {NOMINAL, ORDINAL, Type} from '../../type';
-import {contains, normalizeAngle} from '../../util';
-import {isSignalRef} from '../../vega.schema';
-import {mergeTitle, mergeTitleFieldDefs} from '../common';
-import {guideFormatType} from '../format';
-import {UnitModel} from '../unit';
-import {ScaleType} from './../../scale';
-import {AxisComponentProps} from './component';
-import {AxisConfigs, getAxisConfig} from './config';
+  valueArray,
+} from '../../channeldef.js';
+import {Config, StyleConfigIndex} from '../../config.js';
+import {Mark} from '../../mark.js';
+import {hasDiscreteDomain} from '../../scale.js';
+import {Sort} from '../../sort.js';
+import {durationExpr, normalizeTimeUnit} from '../../timeunit.js';
+import {NOMINAL, ORDINAL, Type} from '../../type.js';
+import {contains, normalizeAngle} from '../../util.js';
+import {isSignalRef} from '../../vega.schema.js';
+import {mergeTitle, mergeTitleFieldDefs} from '../common.js';
+import {guideFormatType} from '../format.js';
+import {UnitModel} from '../unit.js';
+import {ScaleType} from './../../scale.js';
+import {AxisComponentProps} from './component.js';
+import {AxisConfigs, getAxisConfig} from './config.js';
 
 export interface AxisRuleParams {
   fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>;
@@ -72,7 +72,7 @@ export const axisRules: {
       fieldOrDatumDef.type,
       scaleType,
       isFieldDef(fieldOrDatumDef) && !!fieldOrDatumDef.timeUnit,
-      isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined
+      isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined,
     ),
 
   // we already calculate orient in parse
@@ -101,13 +101,13 @@ export const axisRules: {
     // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
     return mergeTitleFieldDefs(
       fieldDef ? [toFieldDefBase(fieldDef)] : [],
-      isFieldDef(fieldDef2) ? [toFieldDefBase(fieldDef2)] : []
+      isFieldDef(fieldDef2) ? [toFieldDefBase(fieldDef2)] : [],
     );
   },
 
   values: ({axis, fieldOrDatumDef}) => values(axis, fieldOrDatumDef),
 
-  zindex: ({axis, fieldOrDatumDef, mark}) => axis.zindex ?? defaultZindex(mark, fieldOrDatumDef)
+  zindex: ({axis, fieldOrDatumDef, mark}) => axis.zindex ?? defaultZindex(mark, fieldOrDatumDef),
 };
 
 // TODO: we need to refactor this method after we take care of config refactoring
@@ -133,7 +133,7 @@ export function getLabelAngle(
   axis: AxisInternal,
   channel: PositionScaleChannel,
   styleConfig: StyleConfigIndex<SignalRef>,
-  axisConfigs?: AxisConfigs
+  axisConfigs?: AxisConfigs,
 ) {
   const labelAngle = axis?.labelAngle;
   // try axis value
@@ -167,7 +167,7 @@ export function defaultLabelBaseline(
   angle: number | SignalRef,
   orient: AxisOrient | SignalRef,
   channel: 'x' | 'y',
-  alwaysIncludeMiddle?: boolean
+  alwaysIncludeMiddle?: boolean,
 ) {
   if (angle !== undefined) {
     if (channel === 'x') {
@@ -177,7 +177,7 @@ export function defaultLabelBaseline(
         return {
           signal:
             `(45 < ${a} && ${a} < 135) || (225 < ${a} && ${a} < 315) ? "middle" :` +
-            `(${a} <= 45 || 315 <= ${a}) === ${orientIsTop} ? "bottom" : "top"`
+            `(${a} <= 45 || 315 <= ${a}) === ${orientIsTop} ? "bottom" : "top"`,
         };
       }
 
@@ -197,7 +197,7 @@ export function defaultLabelBaseline(
         const orientIsLeft = isSignalRef(orient) ? `(${orient.signal} === "left")` : orient === 'left';
         const middle = alwaysIncludeMiddle ? '"middle"' : 'null';
         return {
-          signal: `${a} <= 45 || 315 <= ${a} || (135 <= ${a} && ${a} <= 225) ? ${middle} : (45 <= ${a} && ${a} <= 135) === ${orientIsLeft} ? "top" : "bottom"`
+          signal: `${a} <= 45 || 315 <= ${a} || (135 <= ${a} && ${a} <= 225) ? ${middle} : (45 <= ${a} && ${a} <= 135) === ${orientIsLeft} ? "top" : "bottom"`,
         };
       }
 
@@ -219,7 +219,7 @@ export function defaultLabelBaseline(
 export function defaultLabelAlign(
   angle: number | SignalRef,
   orient: AxisOrient | SignalRef,
-  channel: 'x' | 'y'
+  channel: 'x' | 'y',
 ): Align | SignalRef {
   if (angle === undefined) {
     return undefined;
@@ -235,7 +235,7 @@ export function defaultLabelAlign(
     return {
       signal:
         `(${startAngle ? `(${a} + 90)` : a} % 180 === 0) ? ${isX ? null : '"center"'} :` +
-        `(${startAngle} < ${a} && ${a} < ${180 + startAngle}) === ${orientIsMain} ? "left" : "right"`
+        `(${startAngle} < ${a} && ${a} < ${180 + startAngle}) === ${orientIsMain} ? "left" : "right"`,
     };
   }
 
@@ -248,7 +248,7 @@ export function defaultLabelAlign(
     const op = startAngle < angle && angle < 180 + startAngle ? '===' : '!==';
     const orientIsMain = `${orient.signal} ${op} "${mainOrient}"`;
     return {
-      signal: `${orientIsMain} ? "left" : "right"`
+      signal: `${orientIsMain} ? "left" : "right"`,
     };
   }
 
@@ -285,7 +285,7 @@ export function defaultTickCount({
   fieldOrDatumDef,
   scaleType,
   size,
-  values: vals
+  values: vals,
 }: {
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
   scaleType: ScaleType;

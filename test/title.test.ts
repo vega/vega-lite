@@ -1,4 +1,4 @@
-import {extractTitleConfig} from '../src/title';
+import {extractTitleConfig} from '../src/title.js';
 describe('title', () => {
   describe('extractTitleConfig', () => {
     it('extract angle and limit of config.title as title property', () => {

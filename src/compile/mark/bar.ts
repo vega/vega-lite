@@ -1,6 +1,6 @@
-import {UnitModel} from '../unit';
-import {MarkCompiler} from './base';
-import * as encode from './encode';
+import {UnitModel} from '../unit.js';
+import {MarkCompiler} from './base.js';
+import * as encode from './encode.js';
 
 export const bar: MarkCompiler = {
   vgMark: 'rect',
@@ -12,10 +12,10 @@ export const bar: MarkCompiler = {
         color: 'include',
         orient: 'ignore',
         size: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
       ...encode.rectPosition(model, 'x'),
-      ...encode.rectPosition(model, 'y')
+      ...encode.rectPosition(model, 'y'),
     };
-  }
+  },
 };

@@ -6,11 +6,11 @@ import {
   isInlineData,
   isNamedData,
   isSphereGenerator,
-  isUrlData
+  isUrlData,
 } from '../../data';
-import {contains, isEmpty, omit} from '../../util';
-import {VgData} from '../../vega.schema';
-import {DataFlowNode} from './dataflow';
+import {contains, isEmpty, omit} from '../../util.js';
+import {VgData} from '../../vega.schema.js';
+import {DataFlowNode} from './dataflow.js';
 
 export class SourceNode extends DataFlowNode {
   private _data: Partial<VgData>;
@@ -109,7 +109,7 @@ export class SourceNode extends DataFlowNode {
     return {
       name: this._name,
       ...this._data,
-      transform: []
+      transform: [],
     };
   }
 }

@@ -1,6 +1,6 @@
 import {array, isArray, isObject, isString} from 'vega-util';
-import {isBinned} from '../../../bin';
-import {getMainRangeChannel, isXorY, Channel, THETA, RADIUS} from '../../../channel';
+import {isBinned} from '../../../bin.js';
+import {getMainRangeChannel, isXorY, Channel, THETA, RADIUS} from '../../../channel.js';
 import {
   defaultTitle,
   getFieldDef,
@@ -10,18 +10,18 @@ import {
   isTypedFieldDef,
   SecondaryFieldDef,
   TypedFieldDef,
-  vgField
-} from '../../../channeldef';
-import {Config} from '../../../config';
-import {Encoding, forEach} from '../../../encoding';
-import {StackProperties} from '../../../stack';
-import {Dict, entries} from '../../../util';
-import {isSignalRef} from '../../../vega.schema';
-import {getMarkPropOrConfig} from '../../common';
-import {binFormatExpression, formatSignalRef} from '../../format';
-import {UnitModel} from '../../unit';
-import {wrapCondition} from './conditional';
-import {textRef} from './text';
+  vgField,
+} from '../../../channeldef.js';
+import {Config} from '../../../config.js';
+import {Encoding, forEach} from '../../../encoding.js';
+import {StackProperties} from '../../../stack.js';
+import {Dict, entries} from '../../../util.js';
+import {isSignalRef} from '../../../vega.schema.js';
+import {getMarkPropOrConfig} from '../../common.js';
+import {binFormatExpression, formatSignalRef} from '../../format.js';
+import {UnitModel} from '../../unit.js';
+import {wrapCondition} from './conditional.js';
+import {textRef} from './text.js';
 
 export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config, stack} = model;
@@ -69,7 +69,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
       channelDef,
       vgChannel: 'tooltip',
       mainRefFn,
-      invalidValueRef: undefined // tooltip encoding doesn't have continuous scales and thus can't have invalid values
+      invalidValueRef: undefined, // tooltip encoding doesn't have continuous scales and thus can't have invalid values
     });
   }
 }
@@ -78,7 +78,7 @@ export function tooltipData(
   encoding: Encoding<string>,
   stack: StackProperties,
   config: Config,
-  {reactiveGeom}: {reactiveGeom?: boolean} = {}
+  {reactiveGeom}: {reactiveGeom?: boolean} = {},
 ) {
   const formatConfig = {...config, ...config.tooltipFormat};
   const toSkip = new Set();
@@ -92,7 +92,7 @@ export function tooltipData(
       ? fDef
       : {
           ...fDef,
-          type: (encoding[mainChannel] as TypedFieldDef<any>).type // for secondary field def, copy type from main channel
+          type: (encoding[mainChannel] as TypedFieldDef<any>).type, // for secondary field def, copy type from main channel
         };
 
     const title = fieldDef.title || defaultTitle(fieldDef, formatConfig);
@@ -126,7 +126,7 @@ export function tooltipData(
         formatType,
         expr,
         config: formatConfig,
-        normalizeStack: true
+        normalizeStack: true,
       }).signal;
     }
 
@@ -157,7 +157,7 @@ export function tooltipRefForEncoding(
   encoding: Encoding<string>,
   stack: StackProperties,
   config: Config,
-  {reactiveGeom}: {reactiveGeom?: boolean} = {}
+  {reactiveGeom}: {reactiveGeom?: boolean} = {},
 ) {
   const data = tooltipData(encoding, stack, config, {reactiveGeom});
 

@@ -1,6 +1,6 @@
 import type {SignalRef} from 'vega';
 import {isString} from 'vega-util';
-import {isBinning} from '../bin';
+import {isBinning} from '../bin.js';
 import {
   channelDefType,
   DatumDef,
@@ -10,17 +10,17 @@ import {
   isFieldOrDatumDefForTimeFormat,
   isPositionFieldOrDatumDef,
   isScaleFieldDef,
-  vgField
-} from '../channeldef';
-import {Config} from '../config';
-import {fieldValidPredicate} from '../predicate';
-import {ScaleType} from '../scale';
-import {formatExpression, normalizeTimeUnit, timeUnitSpecifierExpression} from '../timeunit';
-import {QUANTITATIVE, Type} from '../type';
-import {stringify} from '../util';
-import {isSignalRef} from '../vega.schema';
-import {TimeUnit} from './../timeunit';
-import {datumDefToExpr} from './mark/encode/valueref';
+  vgField,
+} from '../channeldef.js';
+import {Config} from '../config.js';
+import {fieldValidPredicate} from '../predicate.js';
+import {ScaleType} from '../scale.js';
+import {formatExpression, normalizeTimeUnit, timeUnitSpecifierExpression} from '../timeunit.js';
+import {QUANTITATIVE, Type} from '../type.js';
+import {stringify} from '../util.js';
+import {isSignalRef} from '../vega.schema.js';
+import {TimeUnit} from './../timeunit.js';
+import {datumDefToExpr} from './mark/encode/valueref.js';
 
 export function isCustomFormatType(formatType: string) {
   return formatType && formatType !== 'number' && formatType !== 'time';
@@ -38,7 +38,7 @@ export function formatSignalRef({
   formatType,
   expr,
   normalizeStack,
-  config
+  config,
 }: {
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>;
   format: Format;
@@ -53,7 +53,7 @@ export function formatSignalRef({
       format,
       formatType,
       expr,
-      config
+      config,
     });
   }
 
@@ -68,7 +68,7 @@ export function formatSignalRef({
           format: config.normalizedNumberFormat,
           formatType: config.normalizedNumberFormatType,
           expr,
-          config
+          config,
         });
       if (config.numberFormatType) {
         return formatCustomType({
@@ -76,7 +76,7 @@ export function formatSignalRef({
           format: config.numberFormat,
           formatType: config.numberFormatType,
           expr,
-          config
+          config,
         });
       }
     }
@@ -91,7 +91,7 @@ export function formatSignalRef({
         format: config.timeFormat,
         formatType: config.timeFormatType,
         expr,
-        config
+        config,
       });
     }
   }
@@ -103,7 +103,7 @@ export function formatSignalRef({
       format,
       formatType: config.timeFormatType,
       rawTimeFormat: config.timeFormat,
-      isUTCScale: isScaleFieldDef(fieldOrDatumDef) && fieldOrDatumDef.scale?.type === ScaleType.UTC
+      isUTCScale: isScaleFieldDef(fieldOrDatumDef) && fieldOrDatumDef.scale?.type === ScaleType.UTC,
     });
     return signal ? {signal} : undefined;
   }
@@ -112,11 +112,11 @@ export function formatSignalRef({
   if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
     const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
     return {
-      signal: binFormatExpression(field, endField, format, formatType, config)
+      signal: binFormatExpression(field, endField, format, formatType, config),
     };
   } else if (format || channelDefType(fieldOrDatumDef) === 'quantitative') {
     return {
-      signal: `${formatExpr(field, format)}`
+      signal: `${formatExpr(field, format)}`,
     };
   } else {
     return {signal: `isValid(${field}) ? ${field} : ""+${field}`};
@@ -126,13 +126,13 @@ export function formatSignalRef({
 function fieldToFormat(
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
   expr: 'datum' | 'parent' | 'datum.datum',
-  normalizeStack: boolean
+  normalizeStack: boolean,
 ) {
   if (isFieldDef(fieldOrDatumDef)) {
     if (normalizeStack) {
       return `${vgField(fieldOrDatumDef, {expr, suffix: 'end'})}-${vgField(fieldOrDatumDef, {
         expr,
-        suffix: 'start'
+        suffix: 'start',
       })}`;
     } else {
       return vgField(fieldOrDatumDef, {expr});
@@ -149,7 +149,7 @@ export function formatCustomType({
   expr,
   normalizeStack,
   config,
-  field
+  field,
 }: {
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>;
   format: Format;
@@ -168,7 +168,7 @@ export function formatCustomType({
   ) {
     const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
     return {
-      signal: binFormatExpression(field, endField, format, formatType, config)
+      signal: binFormatExpression(field, endField, format, formatType, config),
     };
   }
   return {signal: customFormatExpr(formatType, field, format)};
@@ -180,7 +180,7 @@ export function guideFormat(
   format: Format,
   formatType: string | SignalRef,
   config: Config,
-  omitTimeFormatConfig: boolean // axis doesn't use config.timeFormat
+  omitTimeFormatConfig: boolean, // axis doesn't use config.timeFormat
 ) {
   if (isString(formatType) && isCustomFormatType(formatType)) {
     return undefined; // handled in encode block
@@ -207,7 +207,7 @@ export function guideFormat(
     return numberFormat({
       type: 'quantitative',
       config,
-      normalizeStack: true
+      normalizeStack: true,
     });
   }
 
@@ -226,7 +226,7 @@ export function guideFormat(
 export function guideFormatType(
   formatType: string | SignalRef,
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
-  scaleType: ScaleType
+  scaleType: ScaleType,
 ) {
   if (formatType && (isSignalRef(formatType) || formatType === 'number' || formatType === 'time')) {
     return formatType;
@@ -244,7 +244,7 @@ export function numberFormat({
   type,
   specifiedFormat,
   config,
-  normalizeStack
+  normalizeStack,
 }: {
   type: Type;
   specifiedFormat?: Format;
@@ -270,7 +270,7 @@ export function timeFormat({
   specifiedFormat,
   timeUnit,
   config,
-  omitTimeFormatConfig
+  omitTimeFormatConfig,
 }: {
   specifiedFormat?: string;
   timeUnit?: TimeUnit;
@@ -283,7 +283,7 @@ export function timeFormat({
 
   if (timeUnit) {
     return {
-      signal: timeUnitSpecifierExpression(timeUnit)
+      signal: timeUnitSpecifierExpression(timeUnit),
     };
   }
 
@@ -307,7 +307,7 @@ export function binFormatExpression(
   endField: string,
   format: Format,
   formatType: string,
-  config: Config
+  config: Config,
 ): string {
   if (format === undefined && formatType === undefined && config.customFormatTypes && config.numberFormatType) {
     return binFormatExpression(startField, endField, config.numberFormat, config.numberFormatType, config);
@@ -326,7 +326,7 @@ export function timeFormatExpression({
   format,
   formatType,
   rawTimeFormat,
-  isUTCScale
+  isUTCScale,
 }: {
   field: string;
   timeUnit?: TimeUnit;

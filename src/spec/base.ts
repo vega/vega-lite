@@ -1,16 +1,16 @@
 import {Color, Cursor, SignalRef, Text} from 'vega';
 import {isNumber} from 'vega-util';
 import {NormalizedSpec} from '.';
-import {Data} from '../data';
-import {ExprRef} from '../expr';
-import {MarkConfig} from '../mark';
-import {Resolve} from '../resolve';
-import {TitleParams} from '../title';
-import {Transform} from '../transform';
-import {Flag, hasProperty, keys} from '../util';
-import {LayoutAlign, RowCol} from '../vega.schema';
-import {isConcatSpec, isVConcatSpec} from './concat';
-import {isFacetMapping, isFacetSpec} from './facet';
+import {Data} from '../data.js';
+import {ExprRef} from '../expr.js';
+import {MarkConfig} from '../mark.js';
+import {Resolve} from '../resolve.js';
+import {TitleParams} from '../title.js';
+import {Transform} from '../transform.js';
+import {Flag, hasProperty, keys} from '../util.js';
+import {LayoutAlign, RowCol} from '../vega.schema.js';
+import {isConcatSpec, isVConcatSpec} from './concat.js';
+import {isFacetMapping, isFacetSpec} from './facet.js';
 
 export type {TopLevel} from './toplevel';
 
@@ -277,7 +277,7 @@ const COMPOSITION_LAYOUT_INDEX: Flag<keyof GenericCompositionLayoutWithColumns> 
   bounds: 1,
   center: 1,
   columns: 1,
-  spacing: 1
+  spacing: 1,
 };
 
 const COMPOSITION_LAYOUT_PROPERTIES = keys(COMPOSITION_LAYOUT_INDEX);
@@ -287,7 +287,7 @@ export type SpecType = 'unit' | 'facet' | 'layer' | 'concat';
 export function extractCompositionLayout(
   spec: NormalizedSpec,
   specType: keyof CompositionConfigMixins,
-  config: CompositionConfigMixins
+  config: CompositionConfigMixins,
 ): GenericCompositionLayoutWithColumns {
   const compositionConfig = config[specType];
   const layout: GenericCompositionLayoutWithColumns = {};
@@ -318,7 +318,7 @@ export function extractCompositionLayout(
           ? spacing
           : {
               row: spacing.row ?? spacingConfig,
-              column: spacing.column ?? spacingConfig
+              column: spacing.column ?? spacingConfig,
             };
       } else {
         (layout[prop] as any) = (spec as any)[prop];

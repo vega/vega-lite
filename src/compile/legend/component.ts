@@ -1,8 +1,8 @@
 import {Legend as VgLegend} from 'vega';
-import {NonPositionScaleChannel} from '../../channel';
-import {COMMON_LEGEND_PROPERTY_INDEX, LegendInternal} from '../../legend';
-import {Flag, keys} from '../../util';
-import {Split} from '../split';
+import {NonPositionScaleChannel} from '../../channel.js';
+import {COMMON_LEGEND_PROPERTY_INDEX, LegendInternal} from '../../legend.js';
+import {Flag, keys} from '../../util.js';
+import {Split} from '../split.js';
 
 export type LegendComponentProps = VgLegend & {
   labelExpr?: string;
@@ -24,7 +24,7 @@ const LEGEND_COMPONENT_PROPERTY_INDEX: Flag<keyof LegendComponentProps> = {
   strokeWidth: 1,
   strokeDash: 1,
   // encode
-  encode: 1
+  encode: 1,
 };
 
 export const LEGEND_COMPONENT_PROPERTIES = keys(LEGEND_COMPONENT_PROPERTY_INDEX);

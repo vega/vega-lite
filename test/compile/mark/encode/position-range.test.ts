@@ -1,31 +1,31 @@
-import {getSizeChannel, X, Y} from '../../../../src/channel';
-import {rangePosition} from '../../../../src/compile/mark/encode';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {getSizeChannel, X, Y} from '../../../../src/channel.js';
+import {rangePosition} from '../../../../src/compile/mark/encode.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/position-range', () => {
   it('should return correct position for lat/lng with size', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {
-        url: 'data/zipcodes.csv'
+        url: 'data/zipcodes.csv',
       },
       mark: {
         type: 'image',
         width: 42,
-        height: 42
+        height: 42,
       },
       encoding: {
         longitude: {
           field: 'longitude',
-          type: 'quantitative'
+          type: 'quantitative',
         },
         latitude: {
           field: 'latitude',
-          type: 'quantitative'
-        }
-      }
+          type: 'quantitative',
+        },
+      },
     });
 
-    [X, Y].forEach(channel => {
+    [X, Y].forEach((channel) => {
       const mixins = rangePosition(channel, model, {defaultPos: 'zeroOrMin', defaultPos2: 'zeroOrMin'});
       expect((mixins[`${channel}c`] as any).field).toEqual(model.getName(channel));
 
@@ -42,26 +42,26 @@ describe('compile/mark/encode/position-range', () => {
             latitude: 0,
             longitude: 0,
             latitude2: 30,
-            longitude2: 30
+            longitude2: 30,
           },
           {
             latitude: -10,
             longitude: -10,
             latitude2: 20,
-            longitude2: 20
-          }
-        ]
+            longitude2: 20,
+          },
+        ],
       },
       mark: 'rect',
       encoding: {
         longitude: {field: 'longitude', type: 'quantitative'},
         latitude: {field: 'latitude', type: 'quantitative'},
         longitude2: {field: 'longitude2'},
-        latitude2: {field: 'latitude2'}
-      }
+        latitude2: {field: 'latitude2'},
+      },
     });
 
-    [X, Y].forEach(channel => {
+    [X, Y].forEach((channel) => {
       const mixins = rangePosition(channel, model, {defaultPos: 'zeroOrMin', defaultPos2: 'zeroOrMin'});
       expect((mixins[channel] as any).field).toEqual(model.getName(channel));
       expect((mixins[`${channel}2`] as any).field).toEqual(model.getName(`${channel}2`));

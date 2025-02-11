@@ -1,14 +1,14 @@
 import {Transforms as VgTransform} from 'vega';
 import {isArray, isString} from 'vega-util';
-import {FieldDef, FieldName, getFieldDef, isFieldDef, isOrderOnlyDef, vgField} from '../../channeldef';
-import {SortFields, SortOrder} from '../../sort';
-import {StackOffset} from '../../stack';
-import {StackTransform} from '../../transform';
-import {duplicate, getFirstDefined, hash} from '../../util';
-import {sortParams} from '../common';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
-import {isValidFiniteNumberExpr} from './filterinvalid';
+import {FieldDef, FieldName, getFieldDef, isFieldDef, isOrderOnlyDef, vgField} from '../../channeldef.js';
+import {SortFields, SortOrder} from '../../sort.js';
+import {StackOffset} from '../../stack.js';
+import {StackTransform} from '../../transform.js';
+import {duplicate, getFirstDefined, hash} from '../../util.js';
+import {sortParams} from '../common.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
+import {isValidFiniteNumberExpr} from './filterinvalid.js';
 
 function getStackByFields(model: UnitModel): string[] {
   return model.stack.stackBy.reduce((fields, by) => {
@@ -67,7 +67,7 @@ export interface StackComponent {
 }
 
 function isValidAsArray(as: string[] | string): as is string[] {
-  return isArray(as) && as.every(s => isString(s)) && as.length > 1;
+  return isArray(as) && as.every((s) => isString(s)) && as.length > 1;
 }
 
 export class StackNode extends DataFlowNode {
@@ -96,7 +96,7 @@ export class StackNode extends DataFlowNode {
     }
     const sort: SortFields = {
       field: sortFields,
-      order: sortOrder
+      order: sortOrder,
     };
     let normalizedAs: [string, string];
     if (isValidAsArray(as)) {
@@ -114,7 +114,7 @@ export class StackNode extends DataFlowNode {
       offset,
       sort,
       facetby: [],
-      as: normalizedAs
+      as: normalizedAs,
     });
   }
 
@@ -129,11 +129,11 @@ export class StackNode extends DataFlowNode {
     const {groupbyChannels, fieldChannel, offset, impute} = stackProperties;
 
     const dimensionFieldDefs = groupbyChannels
-      .map(groupbyChannel => {
+      .map((groupbyChannel) => {
         const cDef = encoding[groupbyChannel];
         return getFieldDef(cDef);
       })
-      .filter(def => !!def);
+      .filter((def) => !!def);
 
     const stackby = getStackByFields(model);
     const orderDef = model.encoding.order;
@@ -153,7 +153,7 @@ export class StackNode extends DataFlowNode {
           }
           return s;
         },
-        {field: [], order: []}
+        {field: [], order: []},
       );
     }
 
@@ -167,8 +167,8 @@ export class StackNode extends DataFlowNode {
       impute,
       as: [
         model.vgField(fieldChannel, {suffix: 'start', forAs: true}),
-        model.vgField(fieldChannel, {suffix: 'end', forAs: true})
-      ]
+        model.vgField(fieldChannel, {suffix: 'end', forAs: true}),
+      ],
     });
   }
 
@@ -205,7 +205,7 @@ export class StackNode extends DataFlowNode {
 
     if (dimensionFieldDefs.length > 0) {
       return dimensionFieldDefs
-        .map(dimensionFieldDef => {
+        .map((dimensionFieldDef) => {
           if (dimensionFieldDef.bin) {
             if (impute) {
               // For binned group by field with impute, we calculate bin_mid
@@ -215,7 +215,7 @@ export class StackNode extends DataFlowNode {
             return [
               // For binned group by field without impute, we need both bin (start) and bin_end
               vgField(dimensionFieldDef, {}),
-              vgField(dimensionFieldDef, {binSuffix: 'end'})
+              vgField(dimensionFieldDef, {binSuffix: 'end'}),
             ];
           }
           return [vgField(dimensionFieldDef)];
@@ -242,7 +242,7 @@ export class StackNode extends DataFlowNode {
           transform.push({
             type: 'formula',
             expr: `${isValidFiniteNumberExpr(binStart)} ? ${bandPosition}*${binStart}+${1 - bandPosition}*${binEnd} : ${binStart}`,
-            as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
+            as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true}),
           });
         }
 
@@ -252,7 +252,7 @@ export class StackNode extends DataFlowNode {
           groupby: [...stackby, ...facetby],
           key: vgField(dimensionFieldDef, {binSuffix: 'mid'}),
           method: 'value',
-          value: 0
+          value: 0,
         });
       }
     }
@@ -264,7 +264,7 @@ export class StackNode extends DataFlowNode {
       field,
       sort,
       as,
-      offset
+      offset,
     });
 
     return transform;

@@ -1,7 +1,7 @@
-import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel';
-import {channelDefType, getFieldOrDatumDef, isFieldDef, isPositionFieldOrDatumDef} from '../../channeldef';
-import {formatCustomType, isCustomFormatType} from '../format';
-import {UnitModel} from '../unit';
+import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel.js';
+import {channelDefType, getFieldOrDatumDef, isFieldDef, isPositionFieldOrDatumDef} from '../../channeldef.js';
+import {formatCustomType, isCustomFormatType} from '../format.js';
+import {UnitModel} from '../unit.js';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
   const {encoding, config} = model;
@@ -18,9 +18,9 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
         field: 'datum.value',
         format,
         formatType,
-        config
+        config,
       }),
-      ...specifiedLabelsSpec
+      ...specifiedLabelsSpec,
     };
   } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
     if (channelDefType(fieldOrDatumDef) === 'quantitative') {
@@ -35,9 +35,9 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
             field: 'datum.value',
             format: config.normalizedNumberFormat,
             formatType: config.normalizedNumberFormatType,
-            config
+            config,
           }),
-          ...specifiedLabelsSpec
+          ...specifiedLabelsSpec,
         };
       } else if (config.numberFormatType) {
         return {
@@ -46,9 +46,9 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
             field: 'datum.value',
             format: config.numberFormat,
             formatType: config.numberFormatType,
-            config
+            config,
           }),
-          ...specifiedLabelsSpec
+          ...specifiedLabelsSpec,
         };
       }
     }
@@ -64,9 +64,9 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
           field: 'datum.value',
           format: config.timeFormat,
           formatType: config.timeFormatType,
-          config
+          config,
         }),
-        ...specifiedLabelsSpec
+        ...specifiedLabelsSpec,
       };
     }
   }

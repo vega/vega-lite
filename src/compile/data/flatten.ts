@@ -1,7 +1,7 @@
 import type {FlattenTransform as VgFlattenTransform} from 'vega';
-import {FlattenTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {FlattenTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for flatten transform nodes
@@ -13,7 +13,7 @@ export class FlattenTransformNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private transform: FlattenTransform
+    private transform: FlattenTransform,
   ) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
@@ -39,7 +39,7 @@ export class FlattenTransformNode extends DataFlowNode {
     const result: VgFlattenTransform = {
       type: 'flatten',
       fields,
-      as
+      as,
     };
     return result;
   }

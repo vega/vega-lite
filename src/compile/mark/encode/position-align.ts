@@ -1,28 +1,28 @@
 import {Align, SignalRef, TextBaseline} from 'vega';
-import {getVgPositionChannel} from '../../../channel';
-import {Config} from '../../../config';
-import * as log from '../../../log';
-import {Mark, MarkDef} from '../../../mark';
-import {isSignalRef, VgEncodeChannel} from '../../../vega.schema';
-import {getMarkPropOrConfig} from '../../common';
+import {getVgPositionChannel} from '../../../channel.js';
+import {Config} from '../../../config.js';
+import * as log from '../../../log.js';
+import {Mark, MarkDef} from '../../../mark.js';
+import {isSignalRef, VgEncodeChannel} from '../../../vega.schema.js';
+import {getMarkPropOrConfig} from '../../common.js';
 
 const ALIGNED_X_CHANNEL: Record<Align, VgEncodeChannel> = {
   left: 'x',
   center: 'xc',
-  right: 'x2'
+  right: 'x2',
 };
 
 const BASELINED_Y_CHANNEL = {
   top: 'y',
   middle: 'yc',
-  bottom: 'y2'
+  bottom: 'y2',
 };
 
 export function vgAlignedPositionChannel(
   channel: 'x' | 'y' | 'radius' | 'theta',
   markDef: MarkDef<Mark, SignalRef>,
   config: Config<SignalRef>,
-  defaultAlign: 'top' | 'middle' = 'middle'
+  defaultAlign: 'top' | 'middle' = 'middle',
 ) {
   if (channel === 'radius' || channel === 'theta') {
     return getVgPositionChannel(channel);

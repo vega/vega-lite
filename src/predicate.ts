@@ -1,13 +1,19 @@
 import type {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
-import {FieldName, valueExpr, vgField} from './channeldef';
-import {DateTime} from './datetime';
-import {ExprRef, replaceExprRef} from './expr';
-import {LogicalComposition} from './logical';
-import {ParameterName} from './parameter';
-import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams, BinnedTimeUnit} from './timeunit';
-import {hasProperty, stringify} from './util';
-import {isSignalRef} from './vega.schema';
+import {FieldName, valueExpr, vgField} from './channeldef.js';
+import {DateTime} from './datetime.js';
+import {ExprRef, replaceExprRef} from './expr.js';
+import {LogicalComposition} from './logical.js';
+import {ParameterName} from './parameter.js';
+import {
+  fieldExpr as timeUnitFieldExpr,
+  normalizeTimeUnit,
+  TimeUnit,
+  TimeUnitParams,
+  BinnedTimeUnit,
+} from './timeunit.js';
+import {hasProperty, stringify} from './util.js';
+import {isSignalRef} from './vega.schema.js';
 
 export type Predicate =
   // a) FieldPredicate (but we don't type FieldFilter here so the schema has no nesting
@@ -167,7 +173,7 @@ export function isFieldValidPredicate(predicate: any): predicate is FieldValidPr
 }
 
 export function isFieldPredicate(
-  predicate: Predicate
+  predicate: Predicate,
 ): predicate is
   | FieldOneOfPredicate
   | FieldEqualPredicate
@@ -192,7 +198,7 @@ function predicateValueExpr(v: number | string | boolean | DateTime | ExprRef | 
 }
 
 function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], timeUnit: TimeUnit) {
-  return vals.map(v => predicateValueExpr(v, timeUnit));
+  return vals.map((v) => predicateValueExpr(v, timeUnit));
 }
 
 // This method is used by Voyager. Do not change its behavior without changing Voyager.
@@ -264,7 +270,7 @@ export function normalizePredicate(f: Predicate): Predicate {
   if (isFieldPredicate(f) && f.timeUnit) {
     return {
       ...f,
-      timeUnit: normalizeTimeUnit(f.timeUnit)
+      timeUnit: normalizeTimeUnit(f.timeUnit),
     };
   }
   return f;

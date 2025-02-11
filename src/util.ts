@@ -1,5 +1,5 @@
 import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig, isObject} from 'vega-util';
-import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical';
+import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical.js';
 
 export const duplicate = structuredClone;
 
@@ -42,7 +42,7 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: readonl
  * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
 (Set.prototype as any)['toJSON'] = function () {
-  return `Set(${[...this].map(x => stringify(x)).join(',')})`;
+  return `Set(${[...this].map((x) => stringify(x)).join(',')})`;
 };
 
 /**
@@ -355,7 +355,7 @@ export function accessPathDepth(path: string) {
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
 export function getFirstDefined<T>(...args: readonly T[]): T | undefined {
-  return args.find(a => a !== undefined);
+  return args.find((a) => a !== undefined);
 }
 
 // variable used to generate id

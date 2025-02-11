@@ -1,5 +1,5 @@
 import {hasOwnProperty} from 'vega-util';
-import {keys} from './util';
+import {keys} from './util.js';
 
 /**
  * Data type based on level of measurement
@@ -9,7 +9,7 @@ export const Type = {
   ordinal: 'ordinal',
   temporal: 'temporal',
   nominal: 'nominal',
-  geojson: 'geojson'
+  geojson: 'geojson',
 } as const;
 
 export type Type = keyof typeof Type;

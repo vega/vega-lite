@@ -1,6 +1,6 @@
 import {splitAccessPath} from 'vega-util';
-import {FilterNode} from '../src/compile/data/filter';
-import {PivotTransformNode} from '../src/compile/data/pivot';
+import {FilterNode} from '../src/compile/data/filter.js';
+import {PivotTransformNode} from '../src/compile/data/pivot.js';
 import {
   accessPathDepth,
   accessPathWithDatum,
@@ -22,7 +22,7 @@ import {
   uniqueId,
   vals,
   varName
-} from '../src/util';
+} from '../src/util.js';
 
 describe('util', () => {
   describe('varName', () => {

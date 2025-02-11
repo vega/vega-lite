@@ -1,6 +1,6 @@
 import {AggregateTransform} from 'vega';
-import {compile} from '../../src/compile/compile';
-import * as log from '../../src/log';
+import {compile} from '../../src/compile/compile.js';
+import * as log from '../../src/log/index.js';
 
 describe('compile/compile', () => {
   it('should throw error for invalid spec', () => {
@@ -12,11 +12,11 @@ describe('compile/compile', () => {
   it('should return a spec with default top-level properties, size signals, data, marks, and title', () => {
     const {spec} = compile({
       data: {
-        values: [{a: 'A', b: 28}]
+        values: [{a: 'A', b: 28}],
       },
       title: {text: 'test'},
       mark: 'point',
-      encoding: {}
+      encoding: {},
     });
 
     expect(spec.padding).toBe(5);
@@ -33,10 +33,10 @@ describe('compile/compile', () => {
     const {spec} = compile({
       padding: 123,
       data: {
-        values: [{a: 'A', b: 28}]
+        values: [{a: 'A', b: 28}],
       },
       mark: 'point',
-      encoding: {}
+      encoding: {},
     });
 
     expect(spec.padding).toBe(123);
@@ -50,70 +50,70 @@ describe('compile/compile', () => {
 
   it(
     'should drop fit in top-level properties for discrete x discrete chart',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const {spec} = compile({
         data: {
-          values: [{x: 'foo', y: 'bar'}]
+          values: [{x: 'foo', y: 'bar'}],
         },
         autosize: 'fit',
         mark: 'point',
         encoding: {
           x: {field: 'x', type: 'nominal'},
-          y: {field: 'y', type: 'nominal'}
-        }
+          y: {field: 'y', type: 'nominal'},
+        },
       });
 
       expect(localLogger.warns[0]).toBe(log.message.droppingFit());
       expect(spec.autosize).toBeUndefined();
-    })
+    }),
   );
 
   it(
     'should drop fit-y in top-level properties for quantitative x discrete chart',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const {spec} = compile({
         data: {
-          values: [{x: 1, y: 'bar'}]
+          values: [{x: 1, y: 'bar'}],
         },
         autosize: 'fit',
         mark: 'point',
         encoding: {
           x: {field: 'x', type: 'quantitative'},
-          y: {field: 'y', type: 'nominal'}
-        }
+          y: {field: 'y', type: 'nominal'},
+        },
       });
 
       expect(localLogger.warns[0]).toBe(log.message.droppingFit('y'));
       expect(spec.autosize).toBe('fit-x');
-    })
+    }),
   );
 
   it(
     'should drop fit-x in top-level properties for discrete x quantitative chart',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const {spec} = compile({
         data: {
-          values: [{x: 'foo', y: 1}]
+          values: [{x: 'foo', y: 1}],
         },
         autosize: 'fit',
         mark: 'point',
         encoding: {
           x: {field: 'x', type: 'nominal'},
-          y: {field: 'y', type: 'quantitative'}
-        }
+          y: {field: 'y', type: 'quantitative'},
+        },
       });
 
       expect(localLogger.warns[0]).toBe(log.message.droppingFit('x'));
       expect(spec.autosize).toBe('fit-y');
-    })
+    }),
   );
 
   it(
     'should NOT drop fit in top-level properties for specified width/height chart',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const {spec} = compile({
         data: {
-          values: [{x: 'foo', y: 'bar'}]
+          values: [{x: 'foo', y: 'bar'}],
         },
         autosize: 'fit',
         width: 400,
@@ -121,55 +121,55 @@ describe('compile/compile', () => {
         mark: 'point',
         encoding: {
           x: {field: 'x', type: 'nominal'},
-          y: {field: 'y', type: 'nominal'}
-        }
+          y: {field: 'y', type: 'nominal'},
+        },
       });
 
       expect(localLogger.warns).toHaveLength(0);
       expect(spec.autosize).toBe('fit');
-    })
+    }),
   );
 
   it(
     'should NOT drop fit-y in top-level properties for specified height chart',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const {spec} = compile({
         data: {
-          values: [{x: 1, y: 'bar'}]
+          values: [{x: 1, y: 'bar'}],
         },
         height: 400,
         autosize: 'fit',
         mark: 'point',
         encoding: {
           x: {field: 'x', type: 'quantitative'},
-          y: {field: 'y', type: 'nominal'}
-        }
+          y: {field: 'y', type: 'nominal'},
+        },
       });
 
       expect(localLogger.warns).toHaveLength(0);
       expect(spec.autosize).toBe('fit');
-    })
+    }),
   );
 
   it(
     'should NOT drop fit-x in top-level properties for specified width chart',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const {spec} = compile({
         data: {
-          values: [{x: 'foo', y: 1}]
+          values: [{x: 'foo', y: 1}],
         },
         width: 400,
         autosize: 'fit',
         mark: 'point',
         encoding: {
           x: {field: 'x', type: 'nominal'},
-          y: {field: 'y', type: 'quantitative'}
-        }
+          y: {field: 'y', type: 'quantitative'},
+        },
       });
 
       expect(localLogger.warns).toHaveLength(0);
       expect(spec.autosize).toBe('fit');
-    })
+    }),
   );
 
   it('should use size signal for bar chart width', () => {
@@ -178,19 +178,19 @@ describe('compile/compile', () => {
       mark: 'bar',
       encoding: {
         x: {field: 'a', type: 'ordinal'},
-        y: {field: 'b', type: 'quantitative'}
-      }
+        y: {field: 'b', type: 'quantitative'},
+      },
     });
 
     expect(spec.signals).toEqual([
       {
         name: 'x_step',
-        value: 20
+        value: 20,
       },
       {
         name: 'width',
-        update: `bandspace(domain('x').length, 0.1, 0.05) * x_step`
-      }
+        update: `bandspace(domain('x').length, 0.1, 0.05) * x_step`,
+      },
     ]);
     expect(spec.height).toBe(200);
   });
@@ -198,11 +198,11 @@ describe('compile/compile', () => {
   it('should set resize to true if requested', () => {
     const {spec} = compile({
       autosize: {
-        resize: true
+        resize: true,
       },
       data: {url: 'foo.csv'},
       mark: 'point',
-      encoding: {}
+      encoding: {},
     });
 
     expect((spec.autosize as any).resize).toBeTruthy();
@@ -212,11 +212,11 @@ describe('compile/compile', () => {
     const {spec} = compile({
       autosize: {
         type: 'fit',
-        contains: 'content'
+        contains: 'content',
       },
       data: {url: 'foo.csv'},
       mark: 'point',
-      encoding: {}
+      encoding: {},
     });
 
     expect(spec.autosize).toEqual({type: 'fit', contains: 'content'});
@@ -227,7 +227,7 @@ describe('compile/compile', () => {
       autosize: 'fit',
       data: {url: 'foo.csv'},
       mark: 'point',
-      encoding: {}
+      encoding: {},
     });
 
     expect(spec.autosize).toBe('fit');
@@ -238,7 +238,7 @@ describe('compile/compile', () => {
       width: 'container',
       data: {url: 'foo.csv'},
       mark: 'point',
-      encoding: {}
+      encoding: {},
     });
 
     expect(spec.autosize).toEqual({type: 'fit-x', contains: 'padding'});
@@ -246,8 +246,8 @@ describe('compile/compile', () => {
       {
         name: 'width',
         init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 200',
-        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 200'}]
-      }
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 200'}],
+      },
     ]);
     expect(spec.width).toBeUndefined();
   });
@@ -257,7 +257,7 @@ describe('compile/compile', () => {
       height: 'container',
       data: {url: 'foo.csv'},
       mark: 'point',
-      encoding: {}
+      encoding: {},
     });
 
     expect(spec.autosize).toEqual({type: 'fit-y', contains: 'padding'});
@@ -265,8 +265,8 @@ describe('compile/compile', () => {
       {
         name: 'height',
         init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 200',
-        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 200'}]
-      }
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 200'}],
+      },
     ]);
     expect(spec.height).toBeUndefined();
   });
@@ -281,9 +281,9 @@ describe('compile/compile', () => {
       config: {
         view: {
           continuousWidth: 500,
-          continuousHeight: 300
-        }
-      }
+          continuousHeight: 300,
+        },
+      },
     });
 
     expect(spec.autosize).toEqual({type: 'fit', contains: 'padding'});
@@ -291,13 +291,13 @@ describe('compile/compile', () => {
       {
         name: 'width',
         init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500',
-        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'}]
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'}],
       },
       {
         name: 'height',
         init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
-        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'}]
-      }
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'}],
+      },
     ]);
     expect(spec.width).toBeUndefined();
     expect(spec.height).toBeUndefined();
@@ -305,84 +305,84 @@ describe('compile/compile', () => {
 
   it(
     'warn if use container for width and pad for autosize',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       compile({
         width: 'container',
         height: 'container',
         autosize: 'pad',
         data: {url: 'foo.csv'},
         mark: 'point',
-        encoding: {}
+        encoding: {},
       });
       expect(localLogger.warns[0]).toBe(log.message.containerSizeNotCompatibleWithAutosize('width'));
       expect(localLogger.warns[1]).toBe(log.message.containerSizeNotCompatibleWithAutosize('height'));
-    })
+    }),
   );
 
   it(
     'warn if use container for width for composed spec',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const {spec} = compile({
         width: 'container',
         vconcat: [
           {
             mark: 'point',
-            encoding: {}
-          }
-        ]
+            encoding: {},
+          },
+        ],
       });
       expect(localLogger.warns[0]).toBe(log.message.containerSizeNonSingle('width'));
       expect(spec.autosize).toBeUndefined();
-    })
+    }),
   );
 
   it(
     'warn if use container for height for composed spec',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const {spec} = compile({
         height: 'container',
         vconcat: [
           {
             mark: 'point',
-            encoding: {}
-          }
-        ]
+            encoding: {},
+          },
+        ],
       });
       expect(localLogger.warns[0]).toBe(log.message.containerSizeNonSingle('height'));
       expect(spec.autosize).toBeUndefined();
-    })
+    }),
   );
 
   it(
     'warn if trying to fit composed spec',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const {spec} = compile({
         data: {values: [{a: 'A', b: 28}]},
         autosize: 'fit',
         vconcat: [
           {
             mark: 'point',
-            encoding: {}
-          }
-        ]
+            encoding: {},
+          },
+        ],
       });
       expect(localLogger.warns[0]).toBe(log.message.FIT_NON_SINGLE);
       expect(spec.autosize).toBe('fit');
-    })
+    }),
   );
 
   it('should return title for a layered spec.', () => {
     const {spec} = compile({
       data: {
-        values: [{a: 'A', b: 28}]
+        values: [{a: 'A', b: 28}],
       },
       title: {text: 'test'},
       layer: [
         {
           mark: 'point',
-          encoding: {}
-        }
-      ]
+          encoding: {},
+        },
+      ],
     });
     expect(spec.title).toEqual({text: 'test', frame: 'group'});
   });
@@ -390,15 +390,15 @@ describe('compile/compile', () => {
   it('should return title (string) for a layered spec.', () => {
     const {spec} = compile({
       data: {
-        values: [{a: 'A', b: 28}]
+        values: [{a: 'A', b: 28}],
       },
       title: 'test',
       layer: [
         {
           mark: 'point',
-          encoding: {}
-        }
-      ]
+          encoding: {},
+        },
+      ],
     });
     expect(spec.title).toEqual({text: 'test', frame: 'group'});
   });
@@ -406,15 +406,15 @@ describe('compile/compile', () => {
   it('should return title from a child of a layer spec if parent has no title.', () => {
     const {spec} = compile({
       data: {
-        values: [{a: 'A', b: 28}]
+        values: [{a: 'A', b: 28}],
       },
       layer: [
         {
           title: {text: 'test'},
           mark: 'point',
-          encoding: {}
-        }
-      ]
+          encoding: {},
+        },
+      ],
     });
     expect(spec.title).toEqual({text: 'test', frame: 'group'});
   });
@@ -422,56 +422,56 @@ describe('compile/compile', () => {
   it('should return a title for a concat spec', () => {
     const {spec} = compile({
       data: {
-        values: [{a: 'A', b: 28}]
+        values: [{a: 'A', b: 28}],
       },
       title: {text: 'test'},
       hconcat: [
         {
           mark: 'point',
-          encoding: {}
-        }
+          encoding: {},
+        },
       ],
-      config: {title: {anchor: 'middle'}}
+      config: {title: {anchor: 'middle'}},
     });
     expect(spec.title).toEqual({
       text: 'test',
-      anchor: 'middle' // We only support anchor as start for concat
+      anchor: 'middle', // We only support anchor as start for concat
     });
   });
 
   it('should return a title for a concat spec, automatically set anchor to "start", and augment the title with non-mark title config (e.g., offset).', () => {
     const {spec} = compile({
       data: {
-        values: [{a: 'A', b: 28}]
+        values: [{a: 'A', b: 28}],
       },
       title: {text: 'test'},
       hconcat: [
         {
           mark: 'point',
-          encoding: {}
-        }
+          encoding: {},
+        },
       ],
-      config: {title: {offset: 5}}
+      config: {title: {offset: 5}},
     });
     expect(spec.title).toEqual({
       text: 'test',
       anchor: 'start',
-      offset: 5
+      offset: 5,
     });
   });
 
   it('should not have title if there is no title.', () => {
     const {spec} = compile({
       data: {
-        values: [{a: 'A', b: 28}]
+        values: [{a: 'A', b: 28}],
       },
       hconcat: [
         {
           mark: 'point',
-          encoding: {}
-        }
+          encoding: {},
+        },
       ],
-      config: {title: {offset: 5}}
+      config: {title: {offset: 5}},
     });
     expect(spec.title).toBeUndefined();
   });
@@ -481,13 +481,13 @@ describe('compile/compile', () => {
       {
         mark: 'point',
         data: {url: 'foo.csv'},
-        encoding: {}
+        encoding: {},
       },
       {
         config: {
-          background: 'blue'
-        }
-      }
+          background: 'blue',
+        },
+      },
     );
     expect(spec.background).toBe('blue');
   });
@@ -498,11 +498,11 @@ describe('compile/compile', () => {
         background: {expr: "'red"},
         mark: 'point',
         data: {url: 'foo.csv'},
-        encoding: {}
+        encoding: {},
       },
       {
-        config: {}
-      }
+        config: {},
+      },
     );
     expect(spec.background).toEqual({signal: "'red"});
   });
@@ -514,14 +514,14 @@ describe('compile/compile', () => {
         data: {url: 'foo.csv'},
         encoding: {},
         config: {
-          background: 'red'
-        }
+          background: 'red',
+        },
       },
       {
         config: {
-          background: 'blue'
-        }
-      }
+          background: 'blue',
+        },
+      },
     );
     expect(spec.background).toBe('red');
   });
@@ -533,10 +533,10 @@ describe('compile/compile', () => {
         url: 'data/us-10m.json',
         format: {
           type: 'topojson',
-          feature: 'states'
-        }
+          feature: 'states',
+        },
       },
-      encoding: {}
+      encoding: {},
     });
     expect(spec.projections).toBeDefined();
   });
@@ -545,16 +545,16 @@ describe('compile/compile', () => {
     const {spec} = compile({
       mark: 'geoshape',
       projection: {
-        type: 'albersUsa'
+        type: 'albersUsa',
       },
       data: {
         url: 'data/us-10m.json',
         format: {
           type: 'topojson',
-          feature: 'states'
-        }
+          feature: 'states',
+        },
       },
-      encoding: {}
+      encoding: {},
     });
     expect(spec.projections).toBeDefined();
   });
@@ -562,13 +562,13 @@ describe('compile/compile', () => {
   it('should set `resize: true` for spec with axis orient signal', () => {
     const {spec} = compile({
       data: {
-        values: [{a: 'A', b: 28}]
+        values: [{a: 'A', b: 28}],
       },
       mark: 'point',
       encoding: {
         x: {field: 'a', type: 'nominal', axis: {orient: {signal: '"top"'}}},
-        y: {field: 'b', type: 'quantitative', axis: {orient: {signal: '"right"'}}}
-      }
+        y: {field: 'b', type: 'quantitative', axis: {orient: {signal: '"right"'}}},
+      },
     });
 
     expect((spec.autosize as any).resize).toBeTruthy();
@@ -582,13 +582,13 @@ it('should generate right tooltip', () => {
     encoding: {
       x: {field: 'age', type: 'ordinal'},
       y: {field: 'people', type: 'quantitative'},
-      tooltip: {field: 'people', aggregate: 'mean'}
-    }
+      tooltip: {field: 'people', aggregate: 'mean'},
+    },
   });
 
   expect((spec.data[0].transform[0] as AggregateTransform).as as string[]).toEqual([
     'mean_people',
     'center_people',
-    'extent_people'
+    'extent_people',
   ]);
 });

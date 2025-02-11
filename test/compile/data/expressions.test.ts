@@ -1,4 +1,4 @@
-import {getDependentFields} from '../../../src/compile/data/expressions';
+import {getDependentFields} from '../../../src/compile/data/expressions.js';
 
 describe('compile/data/expressions', () => {
   describe('getDependentFields', () => {

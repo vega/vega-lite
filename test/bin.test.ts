@@ -1,4 +1,4 @@
-import {autoMaxBins, binToString, isBinParams} from '../src/bin';
+import {autoMaxBins, binToString, isBinParams} from '../src/bin.js';
 import {
   COLOR,
   COLUMN,
@@ -10,14 +10,14 @@ import {
   SIZE,
   STROKE,
   STROKEOPACITY,
-  STROKEWIDTH
-} from '../src/channel';
+  STROKEWIDTH,
+} from '../src/channel.js';
 
 describe('autoMaxBins', () => {
   it('should assign generate correct defaults for different channels', () => {
     // Not testing case for 10 because it's already tested
-    [COLOR, FILL, STROKE, STROKEWIDTH, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, SHAPE, ROW, COLUMN].forEach(a =>
-      expect(autoMaxBins(a)).toBe(6)
+    [COLOR, FILL, STROKE, STROKEWIDTH, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, SHAPE, ROW, COLUMN].forEach((a) =>
+      expect(autoMaxBins(a)).toBe(6),
     );
   });
 });

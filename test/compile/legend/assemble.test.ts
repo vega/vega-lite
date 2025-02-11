@@ -1,4 +1,4 @@
-import {parseUnitModelWithScale} from '../../util';
+import {parseUnitModelWithScale} from '../../util.js';
 
 describe('legend/assemble', () => {
   it('correctly applies labelExpr.', () => {
@@ -12,16 +12,16 @@ describe('legend/assemble', () => {
           field: 'Origin',
           type: 'nominal',
           legend: {
-            labelExpr: 'datum.label[0]'
-          }
-        }
-      }
+            labelExpr: 'datum.label[0]',
+          },
+        },
+      },
     });
     model.parseLegends();
 
     const legends = model.assembleLegends();
     expect(legends[0].encode.labels.update.text).toEqual({
-      signal: 'datum.label[0]'
+      signal: 'datum.label[0]',
     });
   });
 
@@ -38,17 +38,17 @@ describe('legend/assemble', () => {
           legend: {
             format: {a: 'b'},
             formatType: 'myFormat',
-            labelExpr: 'datum.label[0]'
-          }
-        }
+            labelExpr: 'datum.label[0]',
+          },
+        },
       },
-      config: {customFormatTypes: true}
+      config: {customFormatTypes: true},
     });
     model.parseLegends();
 
     const legends = model.assembleLegends();
     expect(legends[0].encode.labels.update.text).toEqual({
-      signal: 'myFormat(datum.value, {"a":"b"})[0]'
+      signal: 'myFormat(datum.value, {"a":"b"})[0]',
     });
   });
 
@@ -64,16 +64,16 @@ describe('legend/assemble', () => {
           field: 'date',
           type: 'temporal',
           legend: {
-            labelExpr: 'datum.label[0]'
-          }
-        }
-      }
+            labelExpr: 'datum.label[0]',
+          },
+        },
+      },
     });
     model.parseLegends();
 
     const legends = model.assembleLegends();
     expect(legends[0].encode.labels.update.text).toEqual({
-      signal: 'datum.label[0]'
+      signal: 'datum.label[0]',
     });
   });
 
@@ -86,8 +86,8 @@ describe('legend/assemble', () => {
         x: {field: 'Horsepower', type: 'quantitative'},
         y: {field: 'Miles_per_Gallon', type: 'quantitative'},
         color: {field: 'Origin', type: 'nominal'},
-        shape: {field: 'Origin', type: 'nominal'}
-      }
+        shape: {field: 'Origin', type: 'nominal'},
+      },
     });
     model.parseLegends();
 
@@ -103,16 +103,16 @@ describe('legend/assemble', () => {
       data: {
         values: [
           {a: 'A', b: 28},
-          {a: 'B', b: 55}
-        ]
+          {a: 'B', b: 55},
+        ],
       },
       mark: 'bar',
       encoding: {
         x: {field: 'a', type: 'ordinal'},
         y: {field: 'b', type: 'quantitative'},
         color: {field: 'b', type: 'quantitative'},
-        size: {field: 'b', type: 'quantitative'}
-      }
+        size: {field: 'b', type: 'quantitative'},
+      },
     });
 
     model.parseLegends();
@@ -129,11 +129,11 @@ describe('legend/assemble', () => {
     const model = parseUnitModelWithScale({
       mark: 'point',
       encoding: {
-        color: {field: 'b', type: 'quantitative'}
+        color: {field: 'b', type: 'quantitative'},
       },
       config: {
-        aria: false
-      }
+        aria: false,
+      },
     });
 
     model.parseLegends();

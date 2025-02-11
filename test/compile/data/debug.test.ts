@@ -1,10 +1,10 @@
-import {BinNode} from '../../../src/compile/data/bin';
-import {dotString, printDebugDataflow} from '../../../src/compile/data/debug';
-import {checkLinks} from '../../../src/compile/data/optimize';
-import {SourceNode} from '../../../src/compile/data/source';
-import {resetIdCounter} from '../../../src/util';
-import {PlaceholderDataFlowNode} from './util';
-import {jest} from '@jest/globals';
+import {BinNode} from '../../../src/compile/data/bin.js';
+import {dotString, printDebugDataflow} from '../../../src/compile/data/debug.js';
+import {checkLinks} from '../../../src/compile/data/optimize.js';
+import {SourceNode} from '../../../src/compile/data/source.js';
+import {resetIdCounter} from '../../../src/util.js';
+import {PlaceholderDataFlowNode} from './util.js';
+import {jest} from '@jest/globals.js';
 
 const dot = `digraph DataFlow {
   rankdir = TB;

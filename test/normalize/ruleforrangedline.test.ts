@@ -1,7 +1,7 @@
-import {FieldName} from '../../src/channeldef';
-import * as log from '../../src/log';
-import {normalize} from '../../src/normalize';
-import {TopLevelUnitSpec} from '../../src/spec/unit';
+import {FieldName} from '../../src/channeldef.js';
+import * as log from '../../src/log/index.js';
+import {normalize} from '../../src/normalize/index.js';
+import {TopLevelUnitSpec} from '../../src/spec/unit.js';
 
 describe('RuleForRangedLineNormalizer', () => {
   it(

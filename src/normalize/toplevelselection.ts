@@ -1,7 +1,7 @@
 import {isArray, isString} from 'vega-util';
-import {Field} from '../channeldef';
-import {VariableParameter} from '../parameter';
-import {isSelectionParameter, SelectionParameter} from '../selection';
+import {Field} from '../channeldef.js';
+import {VariableParameter} from '../parameter.js';
+import {isSelectionParameter, SelectionParameter} from '../selection.js';
 import {
   BaseSpec,
   isUnitSpec,
@@ -9,10 +9,10 @@ import {
   NormalizedSpec,
   NormalizedUnitSpec,
   TopLevel,
-  UnitSpec
+  UnitSpec,
 } from '../spec';
-import {SpecMapper} from '../spec/map';
-import {NormalizerParams} from './base';
+import {SpecMapper} from '../spec/map.js';
+import {NormalizerParams} from './base.js';
 
 export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, NormalizedUnitSpec> {
   public map(spec: TopLevel<NormalizedSpec>, normParams: NormalizerParams): TopLevel<NormalizedSpec> {
@@ -53,7 +53,7 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
             (isArray(view) &&
               // logic for backwards compatibility with view paths before we had unique names
               // @ts-ignore
-              view.map(v => path.indexOf(v)).every((v, i, arr) => v !== -1 && (i === 0 || v > arr[i - 1])))
+              view.map((v) => path.indexOf(v)).every((v, i, arr) => v !== -1 && (i === 0 || v > arr[i - 1])))
           ) {
             params.push(selection);
           }
@@ -77,7 +77,7 @@ function addSpecNameToParams(spec: BaseSpec, params: NormalizerParams) {
   return spec.name
     ? {
         ...params,
-        path: (params.path ?? []).concat(spec.name)
+        path: (params.path ?? []).concat(spec.name),
       }
     : params;
 }

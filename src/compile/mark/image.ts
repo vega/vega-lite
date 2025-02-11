@@ -1,6 +1,6 @@
-import {UnitModel} from '../unit';
-import {MarkCompiler} from './base';
-import * as encode from './encode';
+import {UnitModel} from '../unit.js';
+import {MarkCompiler} from './base.js';
+import * as encode from './encode.js';
 
 export const image: MarkCompiler = {
   vgMark: 'image',
@@ -12,11 +12,11 @@ export const image: MarkCompiler = {
         color: 'ignore',
         orient: 'ignore',
         size: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
       ...encode.rectPosition(model, 'x'),
       ...encode.rectPosition(model, 'y'),
-      ...encode.text(model, 'url')
+      ...encode.text(model, 'url'),
     };
-  }
+  },
 };

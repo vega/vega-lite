@@ -1,9 +1,9 @@
 import {BaseTitle, SignalRef, Text, TextEncodeEntry, TitleAnchor} from 'vega';
 import {isArray, isString} from 'vega-util';
-import {ExprRef} from './expr';
-import {MarkConfig} from './mark';
-import {pick} from './util';
-import {MapExcludeValueRefAndReplaceSignalWith, MappedExcludeValueRef} from './vega.schema';
+import {ExprRef} from './expr.js';
+import {MarkConfig} from './mark.js';
+import {pick} from './util.js';
+import {MapExcludeValueRefAndReplaceSignalWith, MappedExcludeValueRef} from './vega.schema.js';
 
 export type BaseTitleNoValueRefs<ES extends ExprRef | SignalRef> = MapExcludeValueRefAndReplaceSignalWith<
   Omit<BaseTitle, 'align' | 'baseline'>,
@@ -96,7 +96,7 @@ export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
 
   const titleMarkConfig: MarkConfig<SignalRef> = {
     ...rest,
-    ...(color ? {fill: color} : {})
+    ...(color ? {fill: color} : {}),
   };
 
   // These are non-mark title config that need to be hardcoded
@@ -106,7 +106,7 @@ export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
     ...(offset ? {offset} : {}),
     ...(orient ? {orient} : {}),
     ...(angle !== undefined ? {angle} : {}),
-    ...(limit !== undefined ? {limit} : {})
+    ...(limit !== undefined ? {limit} : {}),
   };
 
   // subtitle part can stay in config.title since header titles do not use subtitle
@@ -117,7 +117,7 @@ export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
     ...(subtitleFontStyle ? {subtitleFontStyle} : {}),
     ...(subtitleFontWeight ? {subtitleFontWeight} : {}),
     ...(subtitleLineHeight ? {subtitleLineHeight} : {}),
-    ...(subtitlePadding ? {subtitlePadding} : {})
+    ...(subtitlePadding ? {subtitlePadding} : {}),
   };
 
   const subtitleMarkConfig = pick(titleConfig, ['align', 'baseline', 'dx', 'dy', 'limit']);

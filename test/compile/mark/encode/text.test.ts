@@ -1,5 +1,5 @@
-import {text} from '../../../../src/compile/mark/encode';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {text} from '../../../../src/compile/mark/encode.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/text', () => {
   it('text support signals', () => {
@@ -7,10 +7,10 @@ describe('compile/mark/encode/text', () => {
       mark: 'text',
       encoding: {
         text: {
-          value: {signal: 'Hello'}
-        }
+          value: {signal: 'Hello'},
+        },
       },
-      data: {url: 'data/population.json'}
+      data: {url: 'data/population.json'},
     });
 
     const textMixins = text(model);
@@ -24,10 +24,10 @@ describe('compile/mark/encode/text', () => {
         text: {
           datum: 0.12342342134324,
           type: 'quantitative',
-          format: '.2f'
-        }
+          format: '.2f',
+        },
       },
-      data: {url: 'data/population.json'}
+      data: {url: 'data/population.json'},
     });
 
     const textMixins = text(model);

@@ -1,14 +1,14 @@
 import type {AggregateOp} from 'vega';
-import {BinParams} from './bin';
-import {FieldName} from './channeldef';
-import {Data} from './data';
-import {ImputeParams} from './impute';
-import {LogicalComposition, normalizeLogicalComposition} from './logical';
-import {ParameterName} from './parameter';
-import {normalizePredicate, Predicate} from './predicate';
-import {SortField} from './sort';
-import {TimeUnit, TimeUnitTransformParams} from './timeunit';
-import {hasProperty} from './util';
+import {BinParams} from './bin.js';
+import {FieldName} from './channeldef.js';
+import {Data} from './data.js';
+import {ImputeParams} from './impute.js';
+import {LogicalComposition, normalizeLogicalComposition} from './logical.js';
+import {ParameterName} from './parameter.js';
+import {normalizePredicate, Predicate} from './predicate.js';
+import {SortField} from './sort.js';
+import {TimeUnit, TimeUnitTransformParams} from './timeunit.js';
+import {hasProperty} from './util.js';
 
 export interface FilterTransform {
   /**
@@ -703,10 +703,10 @@ export type Transform =
   | PivotTransform;
 
 export function normalizeTransform(transform: Transform[]) {
-  return transform.map(t => {
+  return transform.map((t) => {
     if (isFilter(t)) {
       return {
-        filter: normalizeLogicalComposition(t.filter, normalizePredicate)
+        filter: normalizeLogicalComposition(t.filter, normalizePredicate),
       };
     }
     return t;

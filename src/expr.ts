@@ -1,6 +1,6 @@
-import {signalRefOrValue} from './compile/common';
-import {Dict, hasProperty, keys} from './util';
-import {MappedExclude} from './vega.schema';
+import {signalRefOrValue} from './compile/common.js';
+import {Dict, hasProperty, keys} from './util.js';
+import {MappedExclude} from './vega.schema.js';
 
 export interface ExprRef {
   /**

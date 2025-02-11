@@ -1,24 +1,24 @@
 import {isArray} from 'vega-util';
-import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
-import {DataSourceType} from '../../data';
-import {pathGroupingFields} from '../../encoding';
-import {AREA, BAR, LINE, Mark, TRAIL, isPathMark} from '../../mark';
-import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util';
-import {VG_CORNERRADIUS_CHANNELS, VgCompare, VgEncodeEntry} from '../../vega.schema';
-import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortParams} from '../common';
-import {UnitModel} from '../unit';
-import {arc} from './arc';
-import {area} from './area';
-import {bar} from './bar';
-import {MarkCompiler} from './base';
-import {geoshape} from './geoshape';
-import {image} from './image';
-import {line, trail} from './line';
-import {circle, point, square} from './point';
-import {rect} from './rect';
-import {rule} from './rule';
-import {text} from './text';
-import {tick} from './tick';
+import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef.js';
+import {DataSourceType} from '../../data.js';
+import {pathGroupingFields} from '../../encoding.js';
+import {AREA, BAR, LINE, Mark, TRAIL, isPathMark} from '../../mark.js';
+import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util.js';
+import {VG_CORNERRADIUS_CHANNELS, VgCompare, VgEncodeEntry} from '../../vega.schema.js';
+import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortParams} from '../common.js';
+import {UnitModel} from '../unit.js';
+import {arc} from './arc.js';
+import {area} from './area.js';
+import {bar} from './bar.js';
+import {MarkCompiler} from './base.js';
+import {geoshape} from './geoshape.js';
+import {image} from './image.js';
+import {line, trail} from './line.js';
+import {circle, point, square} from './point.js';
+import {rect} from './rect.js';
+import {rule} from './rule.js';
+import {text} from './text.js';
+import {tick} from './tick.js';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -34,7 +34,7 @@ const markCompiler: Record<Mark, MarkCompiler> = {
   square,
   text,
   tick,
-  trail
+  trail,
 };
 
 export function parseMarkGroups(model: UnitModel): any[] {
@@ -45,8 +45,8 @@ export function parseMarkGroups(model: UnitModel): any[] {
     }
     // otherwise use standard mark groups
   } else if (model.mark === BAR) {
-    const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some(prop =>
-      getMarkPropOrConfig(prop, model.markDef, model.config)
+    const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some((prop) =>
+      getMarkPropOrConfig(prop, model.markDef, model.config),
     );
     if (model.stack && !model.fieldDef('size') && hasCornerRadius) {
       return getGroupsForStackedBarWithCornerRadius(model);
@@ -69,18 +69,18 @@ function getPathGroups(model: UnitModel, details: string[]) {
         facet: {
           name: FACETED_PATH_PREFIX + model.requestDataName(DataSourceType.Main),
           data: model.requestDataName(DataSourceType.Main),
-          groupby: details
-        }
+          groupby: details,
+        },
       },
       encode: {
         update: {
           width: {field: {group: 'width'}},
-          height: {field: {group: 'height'}}
-        }
+          height: {field: {group: 'height'}},
+        },
       },
       // With subfacet for line/area group, need to use faceted data from above.
-      marks: getMarkGroup(model, {fromPrefix: FACETED_PATH_PREFIX})
-    }
+      marks: getMarkGroup(model, {fromPrefix: FACETED_PATH_PREFIX}),
+    },
   ];
 }
 
@@ -104,9 +104,9 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
       stackField({prefix: 'min', suffix: 'start', expr}),
       stackField({prefix: 'max', suffix: 'start', expr}),
       stackField({prefix: 'min', suffix: 'end', expr}),
-      stackField({prefix: 'max', suffix: 'end', expr})
+      stackField({prefix: 'max', suffix: 'end', expr}),
     ];
-    return `${func}(${vgFieldMinMax.map(field => `scale('${fieldScale}',${field})`).join(',')})`;
+    return `${func}(${vgFieldMinMax.map((field) => `scale('${fieldScale}',${field})`).join(',')})`;
   };
 
   let groupUpdate: VgEncodeEntry;
@@ -120,33 +120,33 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
       ...pick(mark.encode.update, ['y', 'yc', 'y2', 'height', ...VG_CORNERRADIUS_CHANNELS]),
       x: {signal: stackFieldGroup('min', 'datum')},
       x2: {signal: stackFieldGroup('max', 'datum')},
-      clip: {value: true}
+      clip: {value: true},
     };
     // Inner group should revert the x translation, and pass height through
     innerGroupUpdate = {
       x: {field: {group: 'x'}, mult: -1},
-      height: {field: {group: 'height'}}
+      height: {field: {group: 'height'}},
     };
     // The marks should use the same height as group, without y/yc/y2 properties (because it's already done by group)
     // This is why size encoding is not supported yet
     mark.encode.update = {
       ...omit(mark.encode.update, ['y', 'yc', 'y2']),
-      height: {field: {group: 'height'}}
+      height: {field: {group: 'height'}},
     };
   } else {
     groupUpdate = {
       ...pick(mark.encode.update, ['x', 'xc', 'x2', 'width']),
       y: {signal: stackFieldGroup('min', 'datum')},
       y2: {signal: stackFieldGroup('max', 'datum')},
-      clip: {value: true}
+      clip: {value: true},
     };
     innerGroupUpdate = {
       y: {field: {group: 'y'}, mult: -1},
-      width: {field: {group: 'width'}}
+      width: {field: {group: 'width'}},
     };
     mark.encode.update = {
       ...omit(mark.encode.update, ['x', 'xc', 'x2']),
-      width: {field: {group: 'width'}}
+      width: {field: {group: 'width'}},
     };
   }
 
@@ -191,7 +191,7 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
     'strokeDash',
     'strokeDashOffset',
     'strokeMiterLimit',
-    'strokeOpacity'
+    'strokeOpacity',
   ] as const;
 
   // Generate stroke properties for the group
@@ -227,23 +227,23 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
               stackField({suffix: 'start'}),
               stackField({suffix: 'start'}),
               stackField({suffix: 'end'}),
-              stackField({suffix: 'end'})
+              stackField({suffix: 'end'}),
             ],
-            ops: ['min', 'max', 'min', 'max']
-          }
-        }
+            ops: ['min', 'max', 'min', 'max'],
+          },
+        },
       },
       encode: {
-        update: groupUpdate
+        update: groupUpdate,
       },
       marks: [
         {
           type: 'group',
           encode: {update: innerGroupUpdate},
-          marks: [mark]
-        }
-      ]
-    }
+          marks: [mark],
+        },
+      ],
+    },
   ];
 }
 
@@ -295,14 +295,14 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
       ...(aria === false ? {aria} : {}),
       from: {data: opt.fromPrefix + model.requestDataName(DataSourceType.Main)},
       encode: {
-        update: markCompiler[mark].encodeEntry(model)
+        update: markCompiler[mark].encodeEntry(model),
       },
       ...(postEncodingTransform
         ? {
-            transform: postEncodingTransform
+            transform: postEncodingTransform,
           }
-        : {})
-    }
+        : {}),
+    },
   ];
 }
 
@@ -340,7 +340,7 @@ function interactiveFlag(model: UnitModel) {
   }
   return parentCount
     ? {
-        interactive: unitCount > 0 || model.mark === 'geoshape' || !!model.encoding.tooltip || !!model.markDef.tooltip
+        interactive: unitCount > 0 || model.mark === 'geoshape' || !!model.encoding.tooltip || !!model.markDef.tooltip,
       }
     : null;
 }

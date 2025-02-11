@@ -1,9 +1,9 @@
-import {X, Y} from '../../../src/channel';
-import {BIN_RANGE_DELIMITER} from '../../../src/compile/common';
-import {text} from '../../../src/compile/mark/text';
-import {UnitModel} from '../../../src/compile/unit';
-import {NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../../src/spec';
-import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {X, Y} from '../../../src/channel.js';
+import {BIN_RANGE_DELIMITER} from '../../../src/compile/common.js';
+import {text} from '../../../src/compile/mark/text.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import {NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../../src/spec.js';
+import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Text', () => {
   describe('with stacked x', () => {
@@ -13,9 +13,9 @@ describe('Mark: Text', () => {
       mark: 'text',
       encoding: {
         x: {aggregate: 'sum', field: 'a', type: 'quantitative', stack: 'zero'},
-        color: {field: 'b', type: 'ordinal'}
+        color: {field: 'b', type: 'ordinal'},
       },
-      data: {url: 'data/barley.json'}
+      data: {url: 'data/barley.json'},
     });
 
     const props = text.encodeEntry(model);
@@ -32,9 +32,9 @@ describe('Mark: Text', () => {
       mark: 'text',
       encoding: {
         theta: {field: 'value', type: 'quantitative', stack: true},
-        color: {field: 'b', type: 'ordinal'}
+        color: {field: 'b', type: 'ordinal'},
       },
-      data: {url: 'data/barley.json'}
+      data: {url: 'data/barley.json'},
     });
 
     const props = text.encodeEntry(model);
@@ -48,9 +48,9 @@ describe('Mark: Text', () => {
       mark: 'text',
       encoding: {
         y: {aggregate: 'sum', field: 'a', type: 'quantitative', stack: 'zero'},
-        color: {field: 'b', type: 'ordinal'}
+        color: {field: 'b', type: 'ordinal'},
       },
-      data: {url: 'data/barley.json'}
+      data: {url: 'data/barley.json'},
     });
 
     const props = text.encodeEntry(model);
@@ -64,8 +64,8 @@ describe('Mark: Text', () => {
     const spec: NormalizedUnitSpec = {
       mark: 'text',
       encoding: {
-        text: {field: 'foo', type: 'quantitative', format: 'd'}
-      }
+        text: {field: 'foo', type: 'quantitative', format: 'd'},
+      },
     };
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
     const props = text.encodeEntry(model);
@@ -79,9 +79,9 @@ describe('Mark: Text', () => {
     const spec: TopLevel<NormalizedUnitSpec> = {
       mark: 'text',
       encoding: {
-        text: {field: 'foo', type: 'quantitative', format: 'd', formatType: 'numberFormat'}
+        text: {field: 'foo', type: 'quantitative', format: 'd', formatType: 'numberFormat'},
       },
-      config: {customFormatTypes: true}
+      config: {customFormatTypes: true},
     };
 
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
@@ -96,15 +96,15 @@ describe('Mark: Text', () => {
     const spec: NormalizedUnitSpec = {
       mark: 'text',
       encoding: {
-        text: {bin: true, field: 'foo', type: 'quantitative', format: 'd'}
-      }
+        text: {bin: true, field: 'foo', type: 'quantitative', format: 'd'},
+      },
     };
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
     const props = text.encodeEntry(model);
 
     it('should output correct bin range', () => {
       expect(props.text).toEqual({
-        signal: `!isValid(datum["bin_maxbins_10_foo"]) || !isFinite(+datum["bin_maxbins_10_foo"]) ? "null" : format(datum["bin_maxbins_10_foo"], "d") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_foo_end"], "d")`
+        signal: `!isValid(datum["bin_maxbins_10_foo"]) || !isFinite(+datum["bin_maxbins_10_foo"]) ? "null" : format(datum["bin_maxbins_10_foo"], "d") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_foo_end"], "d")`,
       });
     });
   });
@@ -113,8 +113,8 @@ describe('Mark: Text', () => {
     const spec: NormalizedUnitSpec = {
       mark: 'text',
       encoding: {
-        text: {field: 'foo', type: 'temporal'}
-      }
+        text: {field: 'foo', type: 'temporal'},
+      },
     };
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
     const props = text.encodeEntry(model);
@@ -130,9 +130,9 @@ describe('Mark: Text', () => {
       encoding: {
         x: {field: 'Acceleration', type: 'ordinal'},
         y: {field: 'Displacement', type: 'quantitative'},
-        text: {field: 'Origin', type: 'ordinal'}
+        text: {field: 'Origin', type: 'ordinal'},
       },
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
     };
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
     const props = text.encodeEntry(model);
@@ -157,9 +157,9 @@ describe('Mark: Text', () => {
     const spec: NormalizedUnitSpec = {
       mark: {type: 'text', size: 5},
       encoding: {
-        text: {field: 'Origin', type: 'ordinal'}
+        text: {field: 'Origin', type: 'ordinal'},
       },
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
     };
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
     const props = text.encodeEntry(model);
@@ -173,10 +173,10 @@ describe('Mark: Text', () => {
     const spec: TopLevel<NormalizedUnitSpec> = {
       mark: {type: 'text'},
       encoding: {
-        text: {field: 'Origin', type: 'ordinal'}
+        text: {field: 'Origin', type: 'ordinal'},
       },
       data: {url: 'data/cars.json'},
-      config: {text: {size: 25}}
+      config: {text: {size: 25}},
     };
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
     const props = text.encodeEntry(model);
@@ -190,10 +190,10 @@ describe('Mark: Text', () => {
     const spec: TopLevel<NormalizedUnitSpec> = {
       mark: {type: 'text'},
       encoding: {
-        text: {field: 'Origin', type: 'ordinal'}
+        text: {field: 'Origin', type: 'ordinal'},
       },
       data: {url: 'data/cars.json'},
-      config: {text: {fontSize: 25}}
+      config: {text: {fontSize: 25}},
     };
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
     const props = text.encodeEntry(model);
@@ -211,12 +211,12 @@ describe('Mark: Text', () => {
         column: {field: 'Cylinders', type: 'ordinal'},
         text: {field: 'Acceleration', type: 'quantitative', aggregate: 'mean'},
         color: {field: 'Acceleration', type: 'quantitative', aggregate: 'mean'},
-        size: {field: 'Acceleration', type: 'quantitative', aggregate: 'mean'}
+        size: {field: 'Acceleration', type: 'quantitative', aggregate: 'mean'},
       },
       data: {url: 'data/cars.json'},
       config: {
-        mark: {invalid: 'break-paths-show-domains'}
-      }
+        mark: {invalid: 'break-paths-show-domains'},
+      },
     };
     const model = parseModelWithScale(spec);
     model.parseLayoutSize();
@@ -231,27 +231,27 @@ describe('Mark: Text', () => {
     it('should center on y', () => {
       expect(props.y).toEqual({
         mult: 0.5,
-        signal: 'child_height'
+        signal: 'child_height',
       });
     });
 
     it('should map text to expression', () => {
       expect(props.text).toEqual({
-        signal: `format(datum["mean_Acceleration"], "")`
+        signal: `format(datum["mean_Acceleration"], "")`,
       });
     });
 
     it('should map color to fill', () => {
       expect(props.fill).toEqual({
         scale: 'color',
-        field: 'mean_Acceleration'
+        field: 'mean_Acceleration',
       });
     });
 
     it('should map size to fontSize', () => {
       expect(props.fontSize).toEqual({
         scale: 'size',
-        field: 'mean_Acceleration'
+        field: 'mean_Acceleration',
       });
     });
   });

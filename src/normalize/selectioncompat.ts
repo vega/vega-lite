@@ -1,13 +1,13 @@
 import {isArray} from 'vega-util';
-import {BinParams, isBinParams} from '../bin';
-import {ChannelDef, Field, isConditionalDef, isFieldDef, isScaleFieldDef} from '../channeldef';
-import {Encoding} from '../encoding';
-import {LogicalComposition, normalizeLogicalComposition} from '../logical';
-import {FacetedUnitSpec, GenericSpec, LayerSpec, RepeatSpec, UnitSpec} from '../spec';
-import {SpecMapper} from '../spec/map';
-import {isBin, isFilter, isLookup} from '../transform';
-import {duplicate, entries, vals} from '../util';
-import {NormalizerParams} from './base';
+import {BinParams, isBinParams} from '../bin.js';
+import {ChannelDef, Field, isConditionalDef, isFieldDef, isScaleFieldDef} from '../channeldef.js';
+import {Encoding} from '../encoding.js';
+import {LogicalComposition, normalizeLogicalComposition} from '../logical.js';
+import {FacetedUnitSpec, GenericSpec, LayerSpec, RepeatSpec, UnitSpec} from '../spec.js';
+import {SpecMapper} from '../spec/map.js';
+import {isBin, isFilter, isLookup} from '../transform.js';
+import {duplicate, entries, vals} from '../util.js';
+import {NormalizerParams} from './base.js';
 
 export class SelectionCompatibilityNormalizer extends SpecMapper<
   NormalizerParams,
@@ -17,7 +17,7 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
 > {
   public map(
     spec: GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>,
-    normParams: NormalizerParams
+    normParams: NormalizerParams,
   ) {
     normParams.emptySelections ??= {};
     normParams.selectionPredicates ??= {};
@@ -61,7 +61,7 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
           }
 
           return {name, value, select, bind};
-        })
+        }),
       };
     }
 
@@ -78,14 +78,14 @@ function normalizeTransforms(spec: any, normParams: NormalizerParams) {
       } else if (isBin(t) && isBinParams(t.bin)) {
         return {
           ...t,
-          bin: normalizeBinExtent(t.bin)
+          bin: normalizeBinExtent(t.bin),
         };
       } else if (isLookup(t)) {
         const {selection: param, ...from} = t.from as any;
         return param
           ? {
               ...t,
-              from: {param, ...from}
+              from: {param, ...from},
             }
           : t;
       }
@@ -122,7 +122,7 @@ function normalizeChannelDef(obj: any, normParams: NormalizerParams): ChannelDef
         ? enc.condition
         : {
             ...cond,
-            test: normalizePredicate(enc.condition, normParams)
+            test: normalizePredicate(enc.condition, normParams),
           };
     }
   }
@@ -143,7 +143,7 @@ function normalizeBinExtent(bin: BinParams): BinParams {
 function normalizePredicate(op: any, normParams: NormalizerParams) {
   // Normalize old compositions of selection names (e.g., selection: {and: ["one", "two"]})
   const normalizeSelectionComposition = (o: LogicalComposition<string>) => {
-    return normalizeLogicalComposition(o, param => {
+    return normalizeLogicalComposition(o, (param) => {
       const empty = normParams.emptySelections[param] ?? true;
       const pred = {param, empty};
       normParams.selectionPredicates[param] ??= [];
@@ -154,7 +154,7 @@ function normalizePredicate(op: any, normParams: NormalizerParams) {
 
   return op.selection
     ? normalizeSelectionComposition(op.selection)
-    : normalizeLogicalComposition(op.test || op.filter, o =>
-        o.selection ? normalizeSelectionComposition(o.selection) : o
+    : normalizeLogicalComposition(op.test || op.filter, (o) =>
+        o.selection ? normalizeSelectionComposition(o.selection) : o,
       );
 }

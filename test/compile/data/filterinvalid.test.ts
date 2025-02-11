@@ -1,14 +1,14 @@
-import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid';
-import {getDataSourcesForHandlingInvalidValues} from '../../../src/compile/invalid/datasources';
-import {UnitModel} from '../../../src/compile/unit';
-import {NormalizedUnitSpec, TopLevel} from '../../../src/spec';
-import {mergeDeep} from '../../../src/util';
-import {parseUnitModelWithScale} from '../../util';
+import {FilterInvalidNode} from '../../../src/compile/data/filterinvalid.js';
+import {getDataSourcesForHandlingInvalidValues} from '../../../src/compile/invalid/datasources.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import {NormalizedUnitSpec, TopLevel} from '../../../src/spec.js';
+import {mergeDeep} from '../../../src/util.js';
+import {parseUnitModelWithScale} from '../../util.js';
 
 function parse(model: UnitModel) {
   const dataSourcesForHandlingInvalidValues = getDataSourcesForHandlingInvalidValues({
     invalid: 'filter',
-    isPath: false
+    isPath: false,
   });
   return FilterInvalidNode.make(null, model, dataSourcesForHandlingInvalidValues);
 }
@@ -21,15 +21,15 @@ describe('compile/data/filterinvalid', () => {
         y: {field: 'qq', type: 'quantitative'},
         x: {field: 'tt', type: 'temporal'},
         color: {field: 'oo', type: 'ordinal'},
-        shape: {field: 'nn', type: 'nominal'}
-      }
+        shape: {field: 'nn', type: 'nominal'},
+      },
     };
 
     it('should add filterNull for Q and T by default', () => {
       const model = parseUnitModelWithScale(spec);
       expect(parse(model).filter).toEqual({
         qq: {field: 'qq', type: 'quantitative'},
-        tt: {field: 'tt', type: 'temporal'}
+        tt: {field: 'tt', type: 'temporal'},
       });
     });
 
@@ -37,13 +37,13 @@ describe('compile/data/filterinvalid', () => {
       const model = parseUnitModelWithScale(
         mergeDeep<TopLevel<NormalizedUnitSpec>>(spec, {
           config: {
-            mark: {invalid: 'filter'}
-          }
-        })
+            mark: {invalid: 'filter'},
+          },
+        }),
       );
       expect(parse(model).filter).toEqual({
         qq: {field: 'qq', type: 'quantitative'},
-        tt: {field: 'tt', type: 'temporal'}
+        tt: {field: 'tt', type: 'temporal'},
       });
     });
 
@@ -51,9 +51,9 @@ describe('compile/data/filterinvalid', () => {
       const model = parseUnitModelWithScale(
         mergeDeep<TopLevel<NormalizedUnitSpec>>(spec, {
           config: {
-            mark: {invalid: 'show'}
-          }
-        })
+            mark: {invalid: 'show'},
+          },
+        }),
       );
       expect(parse(model)).toBeNull();
     });
@@ -62,8 +62,8 @@ describe('compile/data/filterinvalid', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          y: {aggregate: 'count', type: 'quantitative'}
-        }
+          y: {aggregate: 'count', type: 'quantitative'},
+        },
       });
 
       expect(parse(model)).toBeNull();
@@ -98,13 +98,13 @@ describe('compile/data/filterinvalid', () => {
         const model = parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            y: {field: 'foo', type: 'quantitative'}
-          }
+            y: {field: 'foo', type: 'quantitative'},
+          },
         });
 
         expect(parse(model).assemble()).toEqual({
           type: 'filter',
-          expr: 'isValid(datum["foo"]) && isFinite(+datum["foo"])'
+          expr: 'isValid(datum["foo"]) && isFinite(+datum["foo"])',
         });
       });
 
@@ -112,13 +112,13 @@ describe('compile/data/filterinvalid', () => {
         const model = parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            y: {field: 'foo.bar', type: 'quantitative'}
-          }
+            y: {field: 'foo.bar', type: 'quantitative'},
+          },
         });
 
         expect(parse(model).assemble()).toEqual({
           type: 'filter',
-          expr: 'isValid(datum["foo.bar"]) && isFinite(+datum["foo.bar"])'
+          expr: 'isValid(datum["foo.bar"]) && isFinite(+datum["foo.bar"])',
         });
       });
     });

@@ -1,8 +1,8 @@
 import type {SignalRef} from 'vega';
 import {isString} from 'vega-util';
-import {Field} from '../channeldef';
-import {Config, initConfig} from '../config';
-import * as log from '../log';
+import {Field} from '../channeldef.js';
+import {Config, initConfig} from '../config.js';
+import * as log from '../log.js';
 import {
   FacetedUnitSpec,
   isLayerSpec,
@@ -11,18 +11,18 @@ import {
   NonNormalizedSpec,
   NormalizedSpec,
   RepeatSpec,
-  TopLevelSpec
+  TopLevelSpec,
 } from '../spec';
-import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel';
-import {deepEqual} from '../util';
-import {NormalizerParams} from './base';
-import {CoreNormalizer} from './core';
-import {SelectionCompatibilityNormalizer} from './selectioncompat';
-import {TopLevelSelectionsNormalizer} from './toplevelselection';
+import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel.js';
+import {deepEqual} from '../util.js';
+import {NormalizerParams} from './base.js';
+import {CoreNormalizer} from './core.js';
+import {SelectionCompatibilityNormalizer} from './selectioncompat.js';
+import {TopLevelSelectionsNormalizer} from './toplevelselection.js';
 
 export function normalize(
   spec: TopLevelSpec & LayoutSizeMixins,
-  config?: Config<SignalRef>
+  config?: Config<SignalRef>,
 ): TopLevel<NormalizedSpec> & LayoutSizeMixins {
   if (config === undefined) {
     config = initConfig(spec.config);
@@ -35,7 +35,7 @@ export function normalize(
 
   return {
     ...normalizedSpec,
-    ...(autosize ? {autosize} : {})
+    ...(autosize ? {autosize} : {}),
   };
 }
 
@@ -49,12 +49,12 @@ const topLevelSelectionNormalizer = new TopLevelSelectionsNormalizer();
  */
 function normalizeGenericSpec(
   spec: NonNormalizedSpec | FacetedUnitSpec<Field, any> | RepeatSpec,
-  config: Config<SignalRef> = {}
+  config: Config<SignalRef> = {},
 ) {
   const normParams = {config};
   return topLevelSelectionNormalizer.map(
     coreNormalizer.map(selectionCompatNormalizer.map(spec, normParams), normParams),
-    normParams
+    normParams,
   );
 }
 
@@ -68,7 +68,7 @@ function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
 export function normalizeAutoSize(
   spec: TopLevel<NormalizedSpec>,
   sizeInfo: {autosize: AutosizeType | AutoSizeParams} & LayoutSizeMixins,
-  config?: Config
+  config?: Config,
 ) {
   let {width, height} = sizeInfo;
 
@@ -103,7 +103,7 @@ export function normalizeAutoSize(
     type: 'pad',
     ...autosizeDefault,
     ...(config ? _normalizeAutoSize(config.autosize) : {}),
-    ..._normalizeAutoSize(spec.autosize)
+    ..._normalizeAutoSize(spec.autosize),
   };
 
   if (autosize.type === 'fit' && !isFitCompatible) {

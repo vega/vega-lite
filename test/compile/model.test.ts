@@ -1,6 +1,6 @@
-import {NameMap} from '../../src/compile/model';
-import {DataSourceType} from '../../src/data';
-import {parseFacetModelWithScale, parseModel} from '../util';
+import {NameMap} from '../../src/compile/model.js';
+import {DataSourceType} from '../../src/data.js';
+import {parseFacetModelWithScale, parseModel} from '../util.js';
 
 describe('Model', () => {
   describe('NameMap', () => {
@@ -29,7 +29,7 @@ describe('Model', () => {
     it('returns undefined by default for non cartesian plots', () => {
       const model = parseModel({
         data: {values: []},
-        mark: 'point'
+        mark: 'point',
       });
 
       expect(model.assembleGroupStyle()).toBe('view');
@@ -41,8 +41,8 @@ describe('Model', () => {
         mark: 'point',
         encoding: {
           x: {field: 'a'},
-          y: {field: 'b'}
-        }
+          y: {field: 'b'},
+        },
       });
 
       expect(model.assembleGroupStyle()).toBe('cell');
@@ -56,17 +56,17 @@ describe('Model', () => {
             mark: 'point',
             encoding: {
               x: {field: 'a'},
-              y: {field: 'b'}
-            }
+              y: {field: 'b'},
+            },
           },
           {
             mark: 'line',
             encoding: {
               x: {field: 'a'},
-              y: {field: 'b'}
-            }
-          }
-        ]
+              y: {field: 'b'},
+            },
+          },
+        ],
       });
 
       expect(model.assembleGroupStyle()).toBe('cell');
@@ -81,17 +81,17 @@ describe('Model', () => {
             view: {style: 'a'},
             encoding: {
               x: {field: 'a'},
-              y: {field: 'b'}
-            }
+              y: {field: 'b'},
+            },
           },
           {
             mark: 'line',
             encoding: {
               x: {field: 'a'},
-              y: {field: 'b'}
-            }
-          }
-        ]
+              y: {field: 'b'},
+            },
+          },
+        ],
       });
 
       expect(model.assembleGroupStyle()).toEqual(['a', 'cell']);
@@ -101,7 +101,7 @@ describe('Model', () => {
       const model = parseModel({
         data: {values: []},
         mark: 'point',
-        view: {style: 'notcell'}
+        view: {style: 'notcell'},
       });
 
       expect(model.assembleGroupStyle()).toBe('notcell');
@@ -112,7 +112,7 @@ describe('Model', () => {
     it('returns correct names for DataSourceType', () => {
       const model = parseModel({
         data: {values: []},
-        mark: 'point'
+        mark: 'point',
       });
       expect(model.getDataName(DataSourceType.Column)).toBe('column');
       expect(model.getDataName(DataSourceType.Lookup)).toBe('lookup');
@@ -126,7 +126,7 @@ describe('Model', () => {
     it('returns formula for step if parent is facet', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          row: {field: 'a', type: 'ordinal'}
+          row: {field: 'a', type: 'ordinal'},
         },
         spec: {
           mark: 'point',
@@ -135,18 +135,18 @@ describe('Model', () => {
               field: 'b',
               type: 'nominal',
               scale: {
-                padding: 0.345
-              }
-            }
-          }
+                padding: 0.345,
+              },
+            },
+          },
         },
         resolve: {
-          scale: {x: 'independent'}
-        }
+          scale: {x: 'independent'},
+        },
       });
 
       expect(model.child.getSizeSignalRef('width')).toEqual({
-        signal: `bandspace(datum["distinct_b"], 1, 0.345) * child_x_step`
+        signal: `bandspace(datum["distinct_b"], 1, 0.345) * child_x_step`,
       });
     });
   });
@@ -156,12 +156,12 @@ describe('Model', () => {
       const model = parseModel({
         data: {values: []},
         mark: 'point',
-        view: {fill: 'red', stroke: 'blue'}
+        view: {fill: 'red', stroke: 'blue'},
       });
 
       expect(model.assembleGroupEncodeEntry(true)).toEqual({
         fill: {value: 'red'},
-        stroke: {value: 'blue'}
+        stroke: {value: 'blue'},
       });
     });
 
@@ -169,11 +169,11 @@ describe('Model', () => {
       const model = parseModel({
         data: {values: []},
         mark: 'point',
-        view: {fill: {signal: '"red"'}}
+        view: {fill: {signal: '"red"'}},
       });
 
       expect(model.assembleGroupEncodeEntry(true)).toEqual({
-        fill: {signal: '"red"'}
+        fill: {signal: '"red"'},
       });
     });
 
@@ -181,7 +181,7 @@ describe('Model', () => {
       const model = parseModel({
         data: {values: []},
         mark: 'point',
-        description: 'My awesome view'
+        description: 'My awesome view',
       });
 
       expect(model.assembleGroupEncodeEntry(true)).toBeUndefined();

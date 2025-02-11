@@ -1,6 +1,6 @@
-import {assembleRootData} from '../../../src/compile/data/assemble';
-import {SequenceNode} from '../../../src/compile/data/sequence';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {assembleRootData} from '../../../src/compile/data/assemble.js';
+import {SequenceNode} from '../../../src/compile/data/sequence.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('compile/data/sequence', () => {
   describe('assemble', () => {
@@ -8,14 +8,14 @@ describe('compile/data/sequence', () => {
       const params = {
         start: 1,
         stop: 10,
-        step: 2
+        step: 2,
       };
       const sequence = new SequenceNode(null, params);
       expect(sequence.assemble()).toEqual({
         type: 'sequence',
         start: 1,
         stop: 10,
-        step: 2
+        step: 2,
       });
     });
   });
@@ -25,7 +25,7 @@ describe('compile/data/sequence', () => {
       const params = {
         start: 1,
         stop: 10,
-        step: 2
+        step: 2,
       };
       const sequence = new SequenceNode(null, params);
       expect(sequence.dependentFields()).toEqual(new Set());
@@ -37,7 +37,7 @@ describe('compile/data/sequence', () => {
       const params = {
         start: 1,
         stop: 10,
-        step: 2
+        step: 2,
       };
       const sequence = new SequenceNode(null, params);
       expect(sequence.producedFields()).toEqual(new Set(['data']));
@@ -48,7 +48,7 @@ describe('compile/data/sequence', () => {
         start: 1,
         stop: 10,
         step: 2,
-        as: 'foo'
+        as: 'foo',
       };
       const sequence = new SequenceNode(null, params);
       expect(sequence.producedFields()).toEqual(new Set(['foo']));
@@ -58,9 +58,9 @@ describe('compile/data/sequence', () => {
   it('should parse and add generator transform correctly', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {
-        sequence: {start: 0, stop: 20, step: 2}
+        sequence: {start: 0, stop: 20, step: 2},
       },
-      mark: 'line'
+      mark: 'line',
     });
     model.parseData();
 

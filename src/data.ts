@@ -2,9 +2,9 @@
  * Constants and utilities for data.
  */
 import {Vector2} from 'vega';
-import {FieldName} from './channeldef';
-import {VgData} from './vega.schema';
-import {hasProperty} from './util';
+import {FieldName} from './channeldef.js';
+import {VgData} from './vega.schema.js';
+import {hasProperty} from './util.js';
 
 export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
 
@@ -162,7 +162,7 @@ export enum DataSourceType {
   PreFilterInvalid,
 
   /** Post-filter-invalid data source for scale domains */
-  PostFilterInvalid
+  PostFilterInvalid,
 }
 
 export type Generator = SequenceGenerator | SphereGenerator | GraticuleGenerator;

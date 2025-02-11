@@ -1,14 +1,14 @@
 import {Orientation} from 'vega';
-import {compositeMarkOrient} from '../../src/compositemark/common';
-import {isMarkDef, MarkDef} from '../../src/mark';
-import {normalize} from '../../src/normalize';
-import {isLayerSpec, isUnitSpec, TopLevelSpec} from '../../src/spec';
-import {NormalizedUnitSpec} from '../../src/spec/unit';
-import {isAggregate, isCalculate} from '../../src/transform';
-import {some} from '../../src/util';
-import {defaultConfig} from '.././../src/config';
-import {assertIsUnitSpec} from '../util';
-import {AggregateTransform} from './../../src/transform';
+import {compositeMarkOrient} from '../../src/compositemark/common.js';
+import {isMarkDef, MarkDef} from '../../src/mark.js';
+import {normalize} from '../../src/normalize/index.js';
+import {isLayerSpec, isUnitSpec, TopLevelSpec} from '../../src/spec.js';
+import {NormalizedUnitSpec} from '../../src/spec/unit.js';
+import {isAggregate, isCalculate} from '../../src/transform.js';
+import {some} from '../../src/util.js';
+import {defaultConfig} from '.././../src/config.js';
+import {assertIsUnitSpec} from '../util.js';
+import {AggregateTransform} from './../../src/transform.js';
 
 describe('common', () => {
   it('should clip all parts when clip property in composite mark def is true', () => {

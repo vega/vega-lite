@@ -1,8 +1,8 @@
-import {OutputNode} from '../../../src/compile/data/dataflow';
-import {ParseNode} from '../../../src/compile/data/formatparse';
-import {optimizeDataflow} from '../../../src/compile/data/optimize';
-import {SourceNode} from '../../../src/compile/data/source';
-import {parseLayerModel} from '../../util';
+import {OutputNode} from '../../../src/compile/data/dataflow.js';
+import {ParseNode} from '../../../src/compile/data/formatparse.js';
+import {optimizeDataflow} from '../../../src/compile/data/optimize.js';
+import {SourceNode} from '../../../src/compile/data/source.js';
+import {parseLayerModel} from '../../util.js';
 
 describe('compile/data/optimize', () => {
   describe('optimizeDataFlow', () => {
@@ -60,26 +60,26 @@ describe('compile/data/optimize', () => {
       const transform = {
         bin: {extent: [0, 100] as [number, number], anchor: 6},
         field: 'Acceleration',
-        as: ['binned_acceleration_start', 'binned_acceleration_stop']
+        as: ['binned_acceleration_start', 'binned_acceleration_stop'],
       };
       const model = parseLayerModel({
         layer: [
           {
             transform: [transform],
             mark: 'rect',
-            encoding: {}
+            encoding: {},
           },
           {
             transform: [transform],
             mark: 'rect',
-            encoding: {}
-          }
-        ]
+            encoding: {},
+          },
+        ],
       });
       model.parse();
       optimizeDataflow(model.component.data, model);
       expect(model.getSignalName('layer_0_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins')).toBe(
-        'layer_1_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
+        'layer_1_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins',
       );
     });
   });

@@ -1,6 +1,6 @@
-import {RegressionTransformNode} from '../../../src/compile/data/regression';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {RegressionTransformNode} from '../../../src/compile/data/regression.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/fold', () => {
   describe('assemble', () => {
@@ -13,7 +13,7 @@ describe('compile/data/fold', () => {
         order: 3,
         extent: [0, 10],
         params: false,
-        as: ['u', 'v']
+        as: ['u', 'v'],
       };
       const regression = new RegressionTransformNode(null, transform);
       expect(regression.assemble()).toEqual({
@@ -25,14 +25,14 @@ describe('compile/data/fold', () => {
         order: 3,
         extent: [0, 10],
         params: false,
-        as: ['u', 'v']
+        as: ['u', 'v'],
       });
     });
 
     it('should handle missing "as" field', () => {
       const transform: Transform = {
         regression: 'y',
-        on: 'x'
+        on: 'x',
       };
 
       const regression = new RegressionTransformNode(null, transform);
@@ -40,7 +40,7 @@ describe('compile/data/fold', () => {
         type: 'regression',
         x: 'x',
         y: 'y',
-        as: ['x', 'y']
+        as: ['x', 'y'],
       });
     });
 
@@ -48,14 +48,14 @@ describe('compile/data/fold', () => {
       const transform: Transform = {
         regression: 'y',
         on: 'x',
-        as: ['A'] as any
+        as: ['A'] as any,
       };
       const regression = new RegressionTransformNode(null, transform);
       expect(regression.assemble()).toEqual({
         type: 'regression',
         x: 'x',
         y: 'y',
-        as: ['A', 'y']
+        as: ['A', 'y'],
       });
     });
   });
@@ -65,7 +65,7 @@ describe('compile/data/fold', () => {
       const transform: Transform = {
         regression: 'y',
         on: 'x',
-        groupby: ['f', 'g']
+        groupby: ['f', 'g'],
       };
       const regression = new RegressionTransformNode(null, transform);
       expect(regression.dependentFields()).toEqual(new Set(['x', 'y', 'f', 'g']));
@@ -74,7 +74,7 @@ describe('compile/data/fold', () => {
     it('should return proper dependent fields without groupby', () => {
       const transform: Transform = {
         regression: 'y',
-        on: 'x'
+        on: 'x',
       };
       const regression = new RegressionTransformNode(null, transform);
       expect(regression.dependentFields()).toEqual(new Set(['x', 'y']));
@@ -85,7 +85,7 @@ describe('compile/data/fold', () => {
     it('should return proper produced fields for no "as"', () => {
       const transform: Transform = {
         regression: 'y',
-        on: 'x'
+        on: 'x',
       };
       const regression = new RegressionTransformNode(null, transform);
       expect(regression.producedFields()).toEqual(new Set(['x', 'y']));
@@ -95,7 +95,7 @@ describe('compile/data/fold', () => {
       const transform: Transform = {
         regression: 'y',
         on: 'x',
-        as: ['A', 'B']
+        as: ['A', 'B'],
       };
       const regression = new RegressionTransformNode(null, transform);
       expect(regression.producedFields()).toEqual(new Set(['A', 'B']));
@@ -107,7 +107,7 @@ describe('compile/data/fold', () => {
       const transform: Transform = {
         regression: 'y',
         on: 'x',
-        as: ['A', 'B']
+        as: ['A', 'B'],
       };
       const regression = new RegressionTransformNode(null, transform);
       expect(regression.hash()).toBe('RegressionTransform {"as":["A","B"],"on":"x","regression":"y"}');

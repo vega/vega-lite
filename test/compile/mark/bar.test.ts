@@ -1,8 +1,8 @@
-import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef';
-import {bar} from '../../../src/compile/mark/bar';
-import {DEFAULT_STEP} from '../../../src/config';
-import {defaultBarConfig} from '../../../src/mark';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef.js';
+import {bar} from '../../../src/compile/mark/bar.js';
+import {DEFAULT_STEP} from '../../../src/config.js';
+import {defaultBarConfig} from '../../../src/mark.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Bar', () => {
   describe('simple vertical', () => {
@@ -11,8 +11,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -32,8 +32,8 @@ describe('Mark: Bar', () => {
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
         xOffset: {field: 'SubOrigin', type: 'nominal'},
-        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
+      },
     });
     const props = bar.encodeEntry(model);
     expect(props.x).toEqual({scale: 'x', field: 'Origin', offset: {scale: 'xOffset', field: 'SubOrigin'}});
@@ -52,8 +52,8 @@ describe('Mark: Bar', () => {
       encoding: {
         x,
         x2,
-        y: {type: 'quantitative', field: 'Acceleration'}
-      }
+        y: {type: 'quantitative', field: 'Acceleration'},
+      },
     });
     const props = bar.encodeEntry(model);
     expect(props.x).toEqual({scale: 'x', field: 'q_start'});
@@ -72,9 +72,9 @@ describe('Mark: Bar', () => {
       encoding: {
         x,
         x2,
-        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
     expect(props.x).toEqual({scale: 'x', field: 'bin_end'});
@@ -89,8 +89,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean', scale: {domain: [-1, 1]}}
-      }
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean', scale: {domain: [-1, 1]}},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -106,15 +106,15 @@ describe('Mark: Bar', () => {
       type: 'quantitative',
       field: 'Acceleration',
       aggregate: 'mean',
-      scale: {domain: [1, 2]}
+      scale: {domain: [1, 2]},
     };
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
       mark: 'bar',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y
-      }
+        y,
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -128,15 +128,15 @@ describe('Mark: Bar', () => {
       type: 'quantitative',
       field: 'Acceleration',
       aggregate: 'mean',
-      scale: {zero: false}
+      scale: {zero: false},
     };
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
       mark: 'bar',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y
-      }
+        y,
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -150,15 +150,15 @@ describe('Mark: Bar', () => {
       type: 'quantitative',
       field: 'Acceleration',
       aggregate: 'mean',
-      scale: {domain: [1, 5]}
+      scale: {domain: [1, 5]},
     };
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
       mark: 'bar',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y
-      }
+        y,
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -173,8 +173,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean', scale: {type: 'log'}}
-      }
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean', scale: {type: 'log'}},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -189,8 +189,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y: {field: 'Origin', type: 'nominal'},
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -209,8 +209,8 @@ describe('Mark: Bar', () => {
       mark: {type: 'bar', height: {band: 0.6}},
       encoding: {
         y: {field: 'Origin', type: 'nominal'},
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -232,9 +232,9 @@ describe('Mark: Bar', () => {
       encoding: {
         y,
         y2,
-        x: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
+        x: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
     expect(props.y).toEqual({scale: 'y', field: 'bin_end', offset: 1});
@@ -252,8 +252,8 @@ describe('Mark: Bar', () => {
       encoding: {
         y,
         y2,
-        x: {type: 'quantitative', field: 'Acceleration'}
-      }
+        x: {type: 'quantitative', field: 'Acceleration'},
+      },
     });
     const props = bar.encodeEntry(model);
     expect(props.y).toEqual({scale: 'y', field: 'q_start'});
@@ -269,8 +269,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y: {field: 'Origin', type: 'nominal', scale: {type: 'point'}},
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -290,8 +290,8 @@ describe('Mark: Bar', () => {
       encoding: {
         y: {field: 'Origin', type: 'nominal'},
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
-        size: {value: 5}
-      }
+        size: {value: 5},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -307,8 +307,8 @@ describe('Mark: Bar', () => {
       mark: {type: 'bar', size: 5},
       encoding: {
         y: {field: 'Origin', type: 'nominal'},
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -325,8 +325,8 @@ describe('Mark: Bar', () => {
       encoding: {
         y: {field: 'Origin', type: 'nominal'},
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
-        size: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'}
-      }
+        size: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -346,9 +346,9 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y,
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
 
@@ -357,7 +357,7 @@ describe('Mark: Bar', () => {
       expect(props.y).toEqual({
         scale: 'y',
         field: 'bin_maxbins_10_Horsepower_end',
-        offset: defaultBarConfig.binSpacing
+        offset: defaultBarConfig.binSpacing,
       });
       expect(props.height).toBeUndefined();
     });
@@ -370,9 +370,9 @@ describe('Mark: Bar', () => {
       mark: {type: 'bar', yOffset: 5},
       encoding: {
         y,
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
 
@@ -381,7 +381,7 @@ describe('Mark: Bar', () => {
       expect(props.y).toEqual({
         scale: 'y',
         field: 'bin_maxbins_10_Horsepower_end',
-        offset: defaultBarConfig.binSpacing + 5
+        offset: defaultBarConfig.binSpacing + 5,
       });
       expect(props.height).toBeUndefined();
     });
@@ -394,9 +394,9 @@ describe('Mark: Bar', () => {
       mark: {type: 'bar', yOffset: {signal: 'a'}},
       encoding: {
         y,
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
 
@@ -406,8 +406,8 @@ describe('Mark: Bar', () => {
         scale: 'y',
         field: 'bin_maxbins_10_Horsepower_end',
         offset: {
-          signal: '0.5 + (a + 0.5)'
-        }
+          signal: '0.5 + (a + 0.5)',
+        },
       });
       expect(props.height).toBeUndefined();
     });
@@ -420,9 +420,9 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y,
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
 
@@ -440,9 +440,9 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y,
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
 
@@ -461,9 +461,9 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x,
-        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
 
@@ -483,14 +483,14 @@ describe('Mark: Bar', () => {
       mark: {type: 'bar', width: 5},
       encoding: {
         x,
-        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
     it('should draw bar with xc and width', () => {
       expect(props.xc).toEqual({
-        signal: 'scale("x", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
+        signal: 'scale("x", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])',
       });
       expect(props.width).toEqual({value: 5});
     });
@@ -503,9 +503,9 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x,
-        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
 
@@ -514,7 +514,7 @@ describe('Mark: Bar', () => {
       expect(props.x).toEqual({
         scale: 'x',
         field: 'bin_maxbins_10_Horsepower_end',
-        offset: defaultBarConfig.binSpacing
+        offset: defaultBarConfig.binSpacing,
       });
       expect(props.width).toBeUndefined();
     });
@@ -526,8 +526,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y: {bin: true, field: 'Horsepower', type: 'ordinal'},
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -543,8 +543,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x: {bin: true, field: 'Horsepower', type: 'ordinal'},
-        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -561,9 +561,9 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y,
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {bar: {binSpacing: 0, minBandSize: null}}
+      config: {bar: {binSpacing: 0, minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
 
@@ -581,9 +581,9 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x,
-        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {bar: {binSpacing: 0, minBandSize: null}}
+      config: {bar: {binSpacing: 0, minBandSize: null}},
     });
     const props = bar.encodeEntry(model);
 
@@ -602,14 +602,14 @@ describe('Mark: Bar', () => {
       encoding: {
         y,
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
-        size: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+        size: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y centered on bin_mid and height = size field', () => {
       expect(props.yc).toEqual({
-        signal: 'scale("y", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
+        signal: 'scale("y", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])',
       });
       expect(props.height).toEqual({scale: 'size', field: 'mean_Acceleration'});
     });
@@ -623,14 +623,14 @@ describe('Mark: Bar', () => {
       encoding: {
         x,
         y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
-        size: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+        size: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x centered on bin_mid and width = size field', () => {
       expect(props.xc).toEqual({
-        signal: 'scale("x", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
+        signal: 'scale("x", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])',
       });
       expect(props.width).toEqual({scale: 'size', field: 'mean_Acceleration'});
     });
@@ -642,8 +642,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y: {scale: {type: 'log'}, type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+        y: {scale: {type: 'log'}, type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -659,8 +659,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y: {field: 'Origin', type: 'nominal'},
-        x: {scale: {type: 'log'}, type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+        x: {scale: {type: 'log'}, type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
+      },
     });
 
     const props = bar.encodeEntry(model);
@@ -679,15 +679,15 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'}
-      }
+        y: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
     it('should use x and with band true', () => {
       expect(props.x).toEqual({
         scale: 'x',
-        field: 'Origin'
+        field: 'Origin',
       });
       expect(props.width).toEqual({signal: `max(0.25, bandwidth('x'))`});
     });
@@ -701,15 +701,15 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y: {field: 'Origin', type: 'nominal'},
-        x: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'}
-      }
+        x: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'},
+      },
     });
     const props = bar.encodeEntry(model);
 
     it('should use y with band true', () => {
       expect(props.y).toEqual({
         scale: 'y',
-        field: 'Origin'
+        field: 'Origin',
       });
       expect(props.height).toEqual({signal: `max(0.25, bandwidth('y'))`});
     });
@@ -721,8 +721,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y: {scale: {zero: false}, type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+        y: {scale: {zero: false}, type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -738,8 +738,8 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y: {field: 'Origin', type: 'nominal'},
-        x: {scale: {zero: false}, type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+        x: {scale: {zero: false}, type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
+      },
     });
 
     const props = bar.encodeEntry(model);
@@ -754,8 +754,8 @@ describe('Mark: Bar', () => {
       data: {url: 'data/cars.json'},
       mark: {type: 'bar', width: {band: 0.5}},
       encoding: {
-        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
+      },
     });
     const props = bar.encodeEntry(model);
     it('should have y end on axis, have no-height and have x-offset', () => {
@@ -764,7 +764,7 @@ describe('Mark: Bar', () => {
       expect(props.height).toBeUndefined();
       expect(props.xc).toEqual({
         mult: 0.5,
-        signal: 'width'
+        signal: 'width',
       });
       expect(props.width).toEqual({mult: 0.5, field: {group: 'width'}});
     });
@@ -775,9 +775,9 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
-        size: {value: 5}
+        size: {value: 5},
       },
-      data: {url: 'data/movies.json'}
+      data: {url: 'data/movies.json'},
     });
     const props = bar.encodeEntry(model);
 
@@ -790,12 +790,12 @@ describe('Mark: Bar', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'bar',
       encoding: {
-        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}
+        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
       },
       data: {url: 'data/movies.json'},
       config: {
-        mark: {size: 5}
-      }
+        mark: {size: 5},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -809,11 +809,11 @@ describe('Mark: Bar', () => {
       data: {url: 'data/movies.json'},
       mark: 'bar',
       encoding: {
-        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}
+        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
       },
       config: {
-        bar: {discreteBandSize: 5}
-      }
+        bar: {discreteBandSize: 5},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -828,11 +828,11 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
-        x: {type: 'nominal', field: 'Major_Genre', scale: {type: 'point'}}
+        x: {type: 'nominal', field: 'Major_Genre', scale: {type: 'point'}},
       },
       config: {
-        bar: {discreteBandSize: 5}
-      }
+        bar: {discreteBandSize: 5},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -847,11 +847,11 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
-        x: {type: 'nominal', field: 'Major_Genre'}
+        x: {type: 'nominal', field: 'Major_Genre'},
       },
       config: {
-        bar: {discreteBandSize: 5}
-      }
+        bar: {discreteBandSize: 5},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -866,11 +866,11 @@ describe('Mark: Bar', () => {
       data: {url: 'data/movies.json'},
       mark: 'bar',
       encoding: {
-        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}
+        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
       },
       config: {
-        bar: {size: 5}
-      }
+        bar: {size: 5},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -884,11 +884,11 @@ describe('Mark: Bar', () => {
       data: {url: 'data/movies.json'},
       mark: 'bar',
       encoding: {
-        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}
+        y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
       },
       config: {
-        style: {bar: {size: 5}}
-      }
+        style: {bar: {size: 5}},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -901,7 +901,7 @@ describe('Mark: Bar', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'bar',
       encoding: {x: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}},
-      data: {url: 'data/movies.json'}
+      data: {url: 'data/movies.json'},
     });
     const props = bar.encodeEntry(model);
 
@@ -911,7 +911,7 @@ describe('Mark: Bar', () => {
       expect(props.width).toBeUndefined();
       expect(props.yc).toEqual({
         mult: 0.5,
-        signal: 'height'
+        signal: 'height',
       });
     });
   });
@@ -925,11 +925,11 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x: {field: 'Acceleration', type: 'quantitative'},
-        y
+        y,
       },
       config: {
-        mark: {orient: 'horizontal'}
-      }
+        mark: {orient: 'horizontal'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -950,11 +950,11 @@ describe('Mark: Bar', () => {
       mark: 'bar',
       encoding: {
         x,
-        y: {field: 'Horsepower', type: 'quantitative'}
+        y: {field: 'Horsepower', type: 'quantitative'},
       },
       config: {
-        mark: {orient: 'vertical'}
-      }
+        mark: {orient: 'vertical'},
+      },
     });
     const props = bar.encodeEntry(model);
 
@@ -975,8 +975,8 @@ describe('Mark: Bar', () => {
         mark: 'bar',
         encoding: {
           x: {field: 'Origin', type: 'nominal'},
-          y: {field: 'Cylinders', type: 'ordinal'}
-        }
+          y: {field: 'Cylinders', type: 'ordinal'},
+        },
       });
       const props = bar.encodeEntry(model);
 
@@ -999,8 +999,8 @@ describe('Mark: Bar', () => {
         encoding: {
           x: {field: 'age', type: 'ordinal'},
           y: {field: 'people', aggregate: 'q1', type: 'quantitative'},
-          y2: {field: 'people', aggregate: 'q3'}
-        }
+          y2: {field: 'people', aggregate: 'q3'},
+        },
       });
 
       const props = bar.encodeEntry(model);
@@ -1016,8 +1016,8 @@ describe('Mark: Bar', () => {
         encoding: {
           y: {field: 'age', type: 'ordinal'},
           x: {field: 'people', aggregate: 'q1', type: 'quantitative'},
-          x2: {field: 'people', aggregate: 'q3'}
-        }
+          x2: {field: 'people', aggregate: 'q3'},
+        },
       });
 
       const props = bar.encodeEntry(model);
@@ -1037,18 +1037,18 @@ describe('Mark: Bar', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickMinStep: 2
-            }
+              tickMinStep: 2,
+            },
           },
           x2: {
-            field: 'bin_end'
+            field: 'bin_end',
           },
           y: {
             field: 'count',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
-        config: {bar: {minBandSize: null}}
+        config: {bar: {minBandSize: null}},
       });
       const props = bar.encodeEntry(model);
 
@@ -1070,18 +1070,18 @@ describe('Mark: Bar', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickMinStep: 2
-            }
+              tickMinStep: 2,
+            },
           },
           x2: {
-            field: 'bin_end'
+            field: 'bin_end',
           },
           y: {
             field: 'count',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
-        config: {bar: {minBandSize: null}}
+        config: {bar: {minBandSize: null}},
       });
       const props = bar.encodeEntry(model);
 
@@ -1105,18 +1105,18 @@ describe('Mark: Bar', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickMinStep: 2
-            }
+              tickMinStep: 2,
+            },
           },
           y2: {
-            field: 'bin_end'
+            field: 'bin_end',
           },
           x: {
             field: 'count',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
-        config: {bar: {minBandSize: null}}
+        config: {bar: {minBandSize: null}},
       });
       const props = bar.encodeEntry(model);
 
@@ -1138,18 +1138,18 @@ describe('Mark: Bar', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickMinStep: 2
-            }
+              tickMinStep: 2,
+            },
           },
           y2: {
-            field: 'bin_end'
+            field: 'bin_end',
           },
           x: {
             field: 'count',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
-        config: {bar: {minBandSize: null}}
+        config: {bar: {minBandSize: null}},
       });
       const props = bar.encodeEntry(model);
 

@@ -1,21 +1,21 @@
-import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import legends from '../../../src/compile/selection/legends';
-import * as log from '../../../src/log';
-import {parseUnitModel} from '../../util';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import legends from '../../../src/compile/selection/legends.js';
+import * as log from '../../../src/log/index.js';
+import {parseUnitModel} from '../../util.js';
 
 describe('Interactive Legends', () => {
   it(
     'throws drops invalid legend binding without projection',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const m = parseUnitModel({
         mark: 'circle',
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
           y: {field: 'Miles_per_Gallon', type: 'quantitative'},
           color: {field: 'Origin', type: 'nominal'},
-          size: {field: 'Cylinders', type: 'ordinal'}
-        }
+          size: {field: 'Cylinders', type: 'ordinal'},
+        },
       });
 
       m.parseScale();
@@ -23,18 +23,18 @@ describe('Interactive Legends', () => {
         {
           name: 'three',
           select: {type: 'point', fields: ['Origin', 'Cylinders']},
-          bind: 'legend'
+          bind: 'legend',
         },
         {
           name: 'five',
           select: {type: 'point', encodings: ['color', 'size']},
-          bind: 'legend'
+          bind: 'legend',
         },
         {
           name: 'six',
           select: 'point',
-          bind: 'legend'
-        }
+          bind: 'legend',
+        },
       ]));
       m.parseLegends();
       expect(legends.defined(selCmpts['three'])).toBeFalsy();
@@ -45,7 +45,7 @@ describe('Interactive Legends', () => {
 
       expect(legends.defined(selCmpts['six'])).toBeFalsy();
       expect(localLogger.warns[2]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
-    })
+    }),
   );
 
   const model = parseUnitModel({
@@ -54,8 +54,8 @@ describe('Interactive Legends', () => {
       x: {field: 'Horsepower', type: 'quantitative'},
       y: {field: 'Miles_per_Gallon', type: 'quantitative'},
       color: {field: 'Origin', type: 'nominal'},
-      size: {field: 'Cylinders', type: 'ordinal'}
-    }
+      size: {field: 'Cylinders', type: 'ordinal'},
+    },
   });
 
   model.parseScale();
@@ -63,42 +63,42 @@ describe('Interactive Legends', () => {
     {
       name: 'one',
       select: {type: 'point', fields: ['Origin']},
-      bind: 'legend'
+      bind: 'legend',
     },
     {
       name: 'two',
       select: {type: 'point', fields: ['Origin']},
-      bind: {legend: 'dblclick, pointerover'}
+      bind: {legend: 'dblclick, pointerover'},
     },
     {
       name: 'four',
       select: {type: 'point', encodings: ['color']},
-      bind: 'legend'
+      bind: 'legend',
     },
     {
       name: 'seven',
       select: {type: 'point', fields: ['Origin'], on: 'click'},
-      bind: {legend: 'pointerover'}
+      bind: {legend: 'pointerover'},
     },
     {
       name: 'eight',
       select: {type: 'point', encodings: ['color'], on: 'click', clear: 'dblclick'},
-      bind: {legend: 'pointerover'}
+      bind: {legend: 'pointerover'},
     },
     {
       name: 'nine',
       select: 'point',
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     },
     {
       name: 'ten',
       value: [{Origin: 'USA'}, {Origin: 'Japan'}],
       select: {
         type: 'point',
-        fields: ['Origin']
+        fields: ['Origin'],
       },
-      bind: 'legend'
-    }
+      bind: 'legend',
+    },
   ]));
   model.parseLegends();
 
@@ -126,28 +126,28 @@ describe('Interactive Legends', () => {
                 {
                   source: 'view',
                   type: 'click',
-                  markname: 'Origin_legend_symbols'
+                  markname: 'Origin_legend_symbols',
                 },
                 {
                   source: 'view',
                   type: 'click',
-                  markname: 'Origin_legend_labels'
+                  markname: 'Origin_legend_labels',
                 },
                 {
                   source: 'view',
                   type: 'click',
-                  markname: 'Origin_legend_entries'
-                }
+                  markname: 'Origin_legend_entries',
+                },
               ],
               update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
-              force: true
+              force: true,
             },
             {
               events: [{source: 'view', type: 'click'}],
               update: '!event.item || !datum ? null : one_Origin_legend',
-              force: true
-            }
-          ]
+              force: true,
+            },
+          ],
         },
         {
           name: 'two_Origin_legend',
@@ -158,52 +158,52 @@ describe('Interactive Legends', () => {
                 {
                   source: 'view',
                   type: 'dblclick',
-                  markname: 'Origin_legend_symbols'
+                  markname: 'Origin_legend_symbols',
                 },
                 {
                   source: 'view',
                   type: 'pointerover',
-                  markname: 'Origin_legend_symbols'
+                  markname: 'Origin_legend_symbols',
                 },
                 {
                   source: 'view',
                   type: 'dblclick',
-                  markname: 'Origin_legend_labels'
+                  markname: 'Origin_legend_labels',
                 },
                 {
                   source: 'view',
                   type: 'pointerover',
-                  markname: 'Origin_legend_labels'
+                  markname: 'Origin_legend_labels',
                 },
                 {
                   source: 'view',
                   type: 'dblclick',
-                  markname: 'Origin_legend_entries'
+                  markname: 'Origin_legend_entries',
                 },
                 {
                   source: 'view',
                   type: 'pointerover',
-                  markname: 'Origin_legend_entries'
-                }
+                  markname: 'Origin_legend_entries',
+                },
               ],
               update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
-              force: true
+              force: true,
             },
             {
               events: [
                 {
                   source: 'view',
-                  type: 'dblclick'
+                  type: 'dblclick',
                 },
                 {
                   source: 'view',
-                  type: 'pointerover'
-                }
+                  type: 'pointerover',
+                },
               ],
               update: '!event.item || !datum ? null : two_Origin_legend',
-              force: true
-            }
-          ]
+              force: true,
+            },
+          ],
         },
         {
           name: 'four_Origin_legend',
@@ -214,33 +214,33 @@ describe('Interactive Legends', () => {
                 {
                   source: 'view',
                   type: 'click',
-                  markname: 'Origin_legend_symbols'
+                  markname: 'Origin_legend_symbols',
                 },
                 {
                   source: 'view',
                   type: 'click',
-                  markname: 'Origin_legend_labels'
+                  markname: 'Origin_legend_labels',
                 },
                 {
                   source: 'view',
                   type: 'click',
-                  markname: 'Origin_legend_entries'
-                }
+                  markname: 'Origin_legend_entries',
+                },
               ],
               update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
-              force: true
+              force: true,
             },
             {
               events: [
                 {
                   source: 'view',
-                  type: 'click'
-                }
+                  type: 'click',
+                },
               ],
               update: '!event.item || !datum ? null : four_Origin_legend',
-              force: true
-            }
-          ]
+              force: true,
+            },
+          ],
         },
         {
           name: 'seven_Origin_legend',
@@ -251,33 +251,33 @@ describe('Interactive Legends', () => {
                 {
                   source: 'view',
                   type: 'pointerover',
-                  markname: 'Origin_legend_symbols'
+                  markname: 'Origin_legend_symbols',
                 },
                 {
                   source: 'view',
                   type: 'pointerover',
-                  markname: 'Origin_legend_labels'
+                  markname: 'Origin_legend_labels',
                 },
                 {
                   source: 'view',
                   type: 'pointerover',
-                  markname: 'Origin_legend_entries'
-                }
+                  markname: 'Origin_legend_entries',
+                },
               ],
               update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
-              force: true
+              force: true,
             },
             {
               events: [
                 {
                   source: 'view',
-                  type: 'pointerover'
-                }
+                  type: 'pointerover',
+                },
               ],
               update: '!event.item || !datum ? null : seven_Origin_legend',
-              force: true
-            }
-          ]
+              force: true,
+            },
+          ],
         },
         {
           name: 'eight_Origin_legend',
@@ -288,35 +288,35 @@ describe('Interactive Legends', () => {
                 {
                   source: 'view',
                   type: 'pointerover',
-                  markname: 'Origin_legend_symbols'
+                  markname: 'Origin_legend_symbols',
                 },
                 {
                   source: 'view',
                   type: 'pointerover',
-                  markname: 'Origin_legend_labels'
+                  markname: 'Origin_legend_labels',
                 },
                 {
                   source: 'view',
                   type: 'pointerover',
-                  markname: 'Origin_legend_entries'
-                }
+                  markname: 'Origin_legend_entries',
+                },
               ],
               update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
-              force: true
+              force: true,
             },
             {
               events: [
                 {
                   source: 'view',
-                  type: 'pointerover'
-                }
+                  type: 'pointerover',
+                },
               ],
               update: '!event.item || !datum ? null : eight_Origin_legend',
-              force: true
-            }
-          ]
-        }
-      ])
+              force: true,
+            },
+          ],
+        },
+      ]),
     );
   });
 
@@ -325,17 +325,17 @@ describe('Interactive Legends', () => {
       expect.arrayContaining([
         {
           name: 'one_tuple',
-          update: 'one_Origin_legend !== null ? {fields: one_tuple_fields, values: [one_Origin_legend]} : null'
+          update: 'one_Origin_legend !== null ? {fields: one_tuple_fields, values: [one_Origin_legend]} : null',
         },
         {
           name: 'two_tuple',
-          update: 'two_Origin_legend !== null ? {fields: two_tuple_fields, values: [two_Origin_legend]} : null'
+          update: 'two_Origin_legend !== null ? {fields: two_tuple_fields, values: [two_Origin_legend]} : null',
         },
         {
           name: 'four_tuple',
-          update: 'four_Origin_legend !== null ? {fields: four_tuple_fields, values: [four_Origin_legend]} : null'
-        }
-      ])
+          update: 'four_Origin_legend !== null ? {fields: four_tuple_fields, values: [four_Origin_legend]} : null',
+        },
+      ]),
     );
   });
 
@@ -350,23 +350,23 @@ describe('Interactive Legends', () => {
                 {
                   source: 'scope',
                   type: 'click',
-                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
-                }
+                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0'],
+                },
               ],
               update:
                 'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: seven_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
-              force: true
+              force: true,
             },
             {
               events: [
                 {
-                  signal: 'seven_Origin_legend'
-                }
+                  signal: 'seven_Origin_legend',
+                },
               ],
               update:
-                'seven_Origin_legend !== null ? {fields: seven_tuple_fields, values: [seven_Origin_legend]} : null'
-            }
-          ]
+                'seven_Origin_legend !== null ? {fields: seven_tuple_fields, values: [seven_Origin_legend]} : null',
+            },
+          ],
         },
         {
           name: 'eight_tuple',
@@ -376,34 +376,34 @@ describe('Interactive Legends', () => {
                 {
                   source: 'scope',
                   type: 'click',
-                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0']
-                }
+                  filter: ['event.item && indexof(event.item.mark.role, "legend") < 0'],
+                },
               ],
               update:
                 'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: eight_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
-              force: true
+              force: true,
             },
             {
               events: [
                 {
-                  signal: 'eight_Origin_legend'
-                }
+                  signal: 'eight_Origin_legend',
+                },
               ],
               update:
-                'eight_Origin_legend !== null ? {fields: eight_tuple_fields, values: [eight_Origin_legend]} : null'
+                'eight_Origin_legend !== null ? {fields: eight_tuple_fields, values: [eight_Origin_legend]} : null',
             },
             {
               events: [
                 {
                   source: 'view',
-                  type: 'dblclick'
-                }
+                  type: 'dblclick',
+                },
               ],
-              update: 'null'
-            }
-          ]
-        }
-      ])
+              update: 'null',
+            },
+          ],
+        },
+      ]),
     );
   });
 
@@ -418,30 +418,30 @@ describe('Interactive Legends', () => {
                 {
                   source: 'view',
                   type: 'click',
-                  markname: 'Origin_legend_symbols'
+                  markname: 'Origin_legend_symbols',
                 },
                 {
                   source: 'view',
                   type: 'click',
-                  markname: 'Origin_legend_labels'
+                  markname: 'Origin_legend_labels',
                 },
                 {
                   source: 'view',
                   type: 'click',
-                  markname: 'Origin_legend_entries'
-                }
+                  markname: 'Origin_legend_entries',
+                },
               ],
               update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
-              force: true
+              force: true,
             },
             {
               events: [{source: 'view', type: 'click'}],
               update: '!event.item || !datum ? null : ten_Origin_legend',
-              force: true
-            }
-          ]
-        }
-      ])
+              force: true,
+            },
+          ],
+        },
+      ]),
     );
   });
 });
