@@ -3,7 +3,7 @@ import tseslint from 'typescript-eslint';
 import tsParser from '@typescript-eslint/parser';
 import prettierConfig from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
-import vitest from 'eslint-plugin-vitest';
+import pluginJest from 'eslint-plugin-jest';
 
 delete globals.browser['AudioWorkletGlobalScope '];
 
@@ -26,23 +26,14 @@ export default [
   },
   {
     files: ['**/*.ts'],
-    plugins: {
-      vitest,
-    },
     languageOptions: {
       parser: tsParser,
       globals: {
         ...globals.browser,
       },
     },
-    settings: {
-      vitest: {
-        typecheck: true,
-      },
-    },
     rules: {
-      ...vitest.configs.recommended.rules,
-      'prettier/prettier': 'warn',
+      'prettier/prettier': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/prefer-for-of': 'error',
@@ -86,9 +77,16 @@ export default [
       'no-unreachable': 'off', // typescript takes care of this for us
     },
   },
-  prettierConfig,
+  {
+    files: ['**/*.test.js'],
+    plugins: {jest: pluginJest},
+    languageOptions: {
+      globals: pluginJest.environments.globals.globals,
+    },
+  },
   {
     files: ['**/*.js'],
     ...tseslint.configs.disableTypeChecked,
   },
+  prettierConfig,
 ];
