@@ -35,7 +35,7 @@ describe('Zoom interval selections at runtime', () => {
   beforeAll(async () => {
     page = await (global as any).__BROWSER_GLOBAL__.newPage();
     embed = embedFn(page);
-    await page.goto('http://0.0.0.0:8000/test-runtime/');
+    await page.goto('http://0.0.0.0:9000/test-runtime/');
   });
 
   afterAll(async () => {

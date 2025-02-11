@@ -12,7 +12,7 @@ describe(`point selections at runtime in unit views`, () => {
     page = await (global as any).__BROWSER_GLOBAL__.newPage();
     embed = embedFn(page);
     testRender = testRenderFn(page, `${type}/unit`);
-    await page.goto('http://0.0.0.0:8000/test-runtime/');
+    await page.goto('http://0.0.0.0:9000/test-runtime/');
   });
 
   afterAll(async () => {

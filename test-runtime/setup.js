@@ -1,17 +1,17 @@
-const {mkdir, writeFile} = require('fs').promises;
-const os = require('os');
-const path = require('path');
-const puppeteer = require('puppeteer');
-const {setup: setupDevServer} = require('jest-dev-server');
-const chalk = require('chalk');
+import {mkdir, writeFile} from 'fs/promises';
+import os from 'os';
+import path from 'path';
+import puppeteer from 'puppeteer';
+import {setup as setupDevServer} from 'jest-dev-server';
+import chalk from 'chalk';
 
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup');
 
-module.exports = async function () {
+export default async function globalSetup() {
   globalThis.servers = await setupDevServer({
-    command: `node ./node_modules/.bin/serve -l 8000`,
+    command: `npx serve -l 9000`,
     launchTimeout: 50000,
-    port: 8000,
+    port: 9000,
   });
 
   console.log(chalk.green('Setup Puppeteer'));
@@ -24,4 +24,4 @@ module.exports = async function () {
   // use the file system to expose the wsEndpoint for TestEnvironments
   await mkdir(DIR, {recursive: true});
   await writeFile(path.join(DIR, 'wsEndpoint'), browser.wsEndpoint());
-};
+}
