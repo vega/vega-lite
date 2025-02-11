@@ -1,10 +1,10 @@
 import {FieldName} from '../channeldef.js';
-import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark.js';
+import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark/index.js';
 import {Encoding} from '../encoding.js';
 import {ExprRef} from '../expr.js';
 import {AnyMark, Mark, MarkDef} from '../mark.js';
 import {Projection} from '../projection.js';
-import {SelectionParameter} from '../selection.js';
+import {SelectionParameter} from '../selection/index.js';
 import {hasProperty} from '../util.js';
 import {Field} from './../channeldef.js';
 import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, ResolveMixins} from './base.js';

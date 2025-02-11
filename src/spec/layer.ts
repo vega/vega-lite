@@ -1,5 +1,5 @@
 import {Field} from '../channeldef.js';
-import {SharedCompositeEncoding} from '../compositemark.js';
+import {SharedCompositeEncoding} from '../compositemark/index.js';
 import {ExprRef} from '../expr.js';
 import {Projection} from '../projection.js';
 import {hasProperty} from '../util.js';

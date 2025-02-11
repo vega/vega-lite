@@ -2,7 +2,7 @@ import {Orientation} from 'vega';
 import {compositeMarkOrient} from '../../src/compositemark/common.js';
 import {isMarkDef, MarkDef} from '../../src/mark.js';
 import {normalize} from '../../src/normalize/index.js';
-import {isLayerSpec, isUnitSpec, TopLevelSpec} from '../../src/spec.js';
+import {isLayerSpec, isUnitSpec, TopLevelSpec} from '../../src/spec/index.js';
 import {NormalizedUnitSpec} from '../../src/spec/unit.js';
 import {isAggregate, isCalculate} from '../../src/transform.js';
 import {some} from '../../src/util.js';

@@ -6,7 +6,7 @@ import {
   MarkPropFieldOrDatumDef,
   title as fieldDefTitle,
   TypedFieldDef,
-  valueArray,
+  valueArray
 } from '../../channeldef.js';
 import {Config} from '../../config.js';
 import {Encoding} from '../../encoding.js';
@@ -53,7 +53,7 @@ export const legendRules: {
     return guideFormatType(formatType, fieldOrDatumDef, scaleType);
   },
 
-  gradientLength: (params) => {
+  gradientLength: params => {
     const {legend, legendConfig} = params;
     return legend.gradientLength ?? legendConfig.gradientLength ?? defaultGradientLength(params);
   },
@@ -77,7 +77,7 @@ export const legendRules: {
     return legendType;
   }, // depended by other property, let's define upfront
 
-  values: ({fieldOrDatumDef, legend}) => values(legend, fieldOrDatumDef),
+  values: ({fieldOrDatumDef, legend}) => values(legend, fieldOrDatumDef)
 };
 
 export function values(legend: LegendInternal, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
@@ -95,7 +95,7 @@ export function defaultSymbolType(
   mark: Mark,
   channel: NonPositionScaleChannel,
   shapeChannelDef: Encoding<string>['shape'],
-  markShape: SymbolShape | SignalRef,
+  markShape: SymbolShape | SignalRef
 ): SymbolShape | SignalRef {
   if (channel !== 'shape') {
     // use the value from the shape encoding or the mark config if they exist
@@ -147,7 +147,7 @@ export function getLegendType(params: {
 export function defaultType({
   channel,
   timeUnit,
-  scaleType,
+  scaleType
 }: {
   channel: NonPositionScaleChannel;
   timeUnit?: TimeUnit;
@@ -171,7 +171,7 @@ export function getDirection({
   legendConfig,
   legendType,
   orient,
-  legend,
+  legend
 }: {
   orient: LegendOrient;
   legendConfig: LegendConfig<SignalRef>;
@@ -208,7 +208,7 @@ export function defaultGradientLength({
   model,
   direction,
   orient,
-  scaleType,
+  scaleType
 }: {
   scaleType: ScaleType;
   direction: Orientation;
@@ -220,7 +220,7 @@ export function defaultGradientLength({
     gradientHorizontalMaxLength,
     gradientHorizontalMinLength,
     gradientVerticalMaxLength,
-    gradientVerticalMinLength,
+    gradientVerticalMinLength
   } = legendConfig;
   if (isContinuousToContinuous(scaleType)) {
     if (direction === 'horizontal') {

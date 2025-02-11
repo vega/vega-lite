@@ -6,8 +6,8 @@ import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
   scaleCompatible,
   ScaleType,
-  scaleTypePrecedence,
-} from '../../scale';
+  scaleTypePrecedence
+} from '../../scale.js';
 import {GEOJSON} from '../../type.js';
 import {keys} from '../../util.js';
 import {VgScale} from '../../vega.schema.js';
@@ -62,7 +62,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
       const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, markDef, hasNestedOffsetScale);
       scaleComponents[channel] = new ScaleComponent(model.scaleName(`${channel}`, true), {
         value: sType,
-        explicit: specifiedScale.type === sType,
+        explicit: specifiedScale.type === sType
       });
     }
   }
@@ -70,7 +70,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 }
 
 const scaleTypeTieBreaker = tieBreakByComparing(
-  (st1: ScaleType, st2: ScaleType) => scaleTypePrecedence(st1) - scaleTypePrecedence(st2),
+  (st1: ScaleType, st2: ScaleType) => scaleTypePrecedence(st1) - scaleTypePrecedence(st2)
 );
 
 function parseNonUnitScaleCore(model: Model) {
@@ -100,7 +100,7 @@ function parseNonUnitScaleCore(model: Model) {
               childScaleType,
               'type',
               'scale',
-              scaleTypeTieBreaker,
+              scaleTypeTieBreaker
             );
           } else {
             // Otherwise, update conflicting channel to be independent

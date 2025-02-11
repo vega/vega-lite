@@ -1,5 +1,5 @@
 import {X, Y} from '../../../../src/channel.js';
-import {pointPosition} from '../../../../src/compile/mark/encode.js';
+import {pointPosition} from '../../../../src/compile/mark/encode/index.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/position-point', () => {
@@ -8,23 +8,23 @@ describe('compile/mark/encode/position-point', () => {
       data: {
         url: 'data/zipcodes.csv',
         format: {
-          type: 'csv',
-        },
+          type: 'csv'
+        }
       },
       mark: 'point',
       encoding: {
         longitude: {
           field: 'longitude',
-          type: 'quantitative',
+          type: 'quantitative'
         },
         latitude: {
           field: 'latitude',
-          type: 'quantitative',
-        },
-      },
+          type: 'quantitative'
+        }
+      }
     });
 
-    [X, Y].forEach((channel) => {
+    [X, Y].forEach(channel => {
       const mixins = pointPosition(channel, model, {defaultPos: 'zeroOrMin'});
       expect((mixins[channel] as any).field).toEqual(model.getName(channel));
     });

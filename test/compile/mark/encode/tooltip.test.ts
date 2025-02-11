@@ -1,5 +1,5 @@
 import {BIN_RANGE_DELIMITER} from '../../../../src/compile/common.js';
-import {tooltip, tooltipRefForEncoding} from '../../../../src/compile/mark/encode.js';
+import {tooltip, tooltipRefForEncoding} from '../../../../src/compile/mark/encode/index.js';
 import {defaultConfig} from '../../../../src/config.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
@@ -11,13 +11,13 @@ describe('compile/mark/encode/tooltip', () => {
         encoding: {
           tooltip: [
             {field: 'Horsepower', type: 'quantitative'},
-            {field: 'Acceleration', type: 'quantitative'},
-          ],
-        },
+            {field: 'Acceleration', type: 'quantitative'}
+          ]
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
-        signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}',
+        signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}'
       });
     });
 
@@ -26,12 +26,12 @@ describe('compile/mark/encode/tooltip', () => {
         mark: {type: 'point', tooltip: true},
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
-          y: {field: 'Acceleration', type: 'quantitative'},
-        },
+          y: {field: 'Acceleration', type: 'quantitative'}
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
-        signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}',
+        signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}'
       });
     });
 
@@ -41,8 +41,8 @@ describe('compile/mark/encode/tooltip', () => {
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
           y: {field: 'Acceleration', type: 'quantitative'},
-          tooltip: null,
-        },
+          tooltip: null
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toBeUndefined();
@@ -53,8 +53,8 @@ describe('compile/mark/encode/tooltip', () => {
         mark: {type: 'point', tooltip: {content: 'data'}},
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
-          y: {field: 'Acceleration', type: 'quantitative'},
-        },
+          y: {field: 'Acceleration', type: 'quantitative'}
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({signal: 'datum'});
@@ -64,8 +64,8 @@ describe('compile/mark/encode/tooltip', () => {
         mark: {type: 'point', tooltip: {signal: 'a'}},
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
-          y: {field: 'Acceleration', type: 'quantitative'},
-        },
+          y: {field: 'Acceleration', type: 'quantitative'}
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({signal: 'a'});
@@ -76,8 +76,8 @@ describe('compile/mark/encode/tooltip', () => {
         mark: {type: 'line', tooltip: {content: 'data'}},
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
-          y: {field: 'Acceleration', type: 'quantitative'},
-        },
+          y: {field: 'Acceleration', type: 'quantitative'}
+        }
       });
       const props = tooltip(model, {reactiveGeom: true});
       expect(props.tooltip).toEqual({signal: 'datum.datum'});
@@ -91,13 +91,13 @@ describe('compile/mark/encode/tooltip', () => {
           y: {field: 'Displacement', type: 'quantitative'},
           tooltip: [
             {field: 'Horsepower', type: 'quantitative'},
-            {field: 'Acceleration', type: 'quantitative'},
-          ],
-        },
+            {field: 'Acceleration', type: 'quantitative'}
+          ]
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
-        signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}',
+        signal: '{"Horsepower": format(datum["Horsepower"], ""), "Acceleration": format(datum["Acceleration"], "")}'
       });
     });
 
@@ -107,8 +107,8 @@ describe('compile/mark/encode/tooltip', () => {
         encoding: {
           x: {field: 'Cylinders', type: 'quantitative'},
           y: {field: 'Displacement', type: 'quantitative'},
-          tooltip: {value: 'haha'},
-        },
+          tooltip: {value: 'haha'}
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({value: 'haha'});
@@ -119,12 +119,12 @@ describe('compile/mark/encode/tooltip', () => {
         mark: {type: 'point', tooltip: true},
         encoding: {
           x: {field: 'Date', type: 'quantitative', axis: {title: 'foo', format: '%y'}},
-          y: {field: 'Displacement', type: 'quantitative', axis: {title: 'bar'}},
-        },
+          y: {field: 'Displacement', type: 'quantitative', axis: {title: 'bar'}}
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
-        signal: '{"Date": format(datum["Date"], "%y"), "Displacement": format(datum["Displacement"], "")}',
+        signal: '{"Date": format(datum["Date"], "%y"), "Displacement": format(datum["Displacement"], "")}'
       });
     });
 
@@ -132,24 +132,24 @@ describe('compile/mark/encode/tooltip', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: true},
         encoding: {
-          color: {field: 'Foobar', type: 'nominal', legend: {title: 'baz'}},
-        },
+          color: {field: 'Foobar', type: 'nominal', legend: {title: 'baz'}}
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
-        signal: '{"Foobar": isValid(datum["Foobar"]) ? datum["Foobar"] : ""+datum["Foobar"]}',
+        signal: '{"Foobar": isValid(datum["Foobar"]) ? datum["Foobar"] : ""+datum["Foobar"]}'
       });
     });
     it('generates correct keys and values for channels with title', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: true},
         encoding: {
-          color: {field: 'Foobar', type: 'nominal', title: 'baz'},
-        },
+          color: {field: 'Foobar', type: 'nominal', title: 'baz'}
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
-        signal: '{"baz": isValid(datum["Foobar"]) ? datum["Foobar"] : ""+datum["Foobar"]}',
+        signal: '{"baz": isValid(datum["Foobar"]) ? datum["Foobar"] : ""+datum["Foobar"]}'
       });
     });
 
@@ -157,12 +157,12 @@ describe('compile/mark/encode/tooltip', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: true},
         encoding: {
-          color: {field: 'Foobar', type: 'nominal', title: '"baz"'},
-        },
+          color: {field: 'Foobar', type: 'nominal', title: '"baz"'}
+        }
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
-        signal: '{"\\"baz\\"": isValid(datum["Foobar"]) ? datum["Foobar"] : ""+datum["Foobar"]}',
+        signal: '{"\\"baz\\"": isValid(datum["Foobar"]) ? datum["Foobar"] : ""+datum["Foobar"]}'
       });
     });
   });
@@ -175,14 +175,14 @@ describe('compile/mark/encode/tooltip', () => {
             x: {
               bin: true,
               field: 'IMDB_Rating',
-              type: 'quantitative',
-            },
+              type: 'quantitative'
+            }
           },
           null,
-          defaultConfig,
-        ),
+          defaultConfig
+        )
       ).toEqual({
-        signal: `{"IMDB_Rating (binned)": !isValid(datum["bin_maxbins_10_IMDB_Rating"]) || !isFinite(+datum["bin_maxbins_10_IMDB_Rating"]) ? "null" : format(datum["bin_maxbins_10_IMDB_Rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_IMDB_Rating_end"], "")}`,
+        signal: `{"IMDB_Rating (binned)": !isValid(datum["bin_maxbins_10_IMDB_Rating"]) || !isFinite(+datum["bin_maxbins_10_IMDB_Rating"]) ? "null" : format(datum["bin_maxbins_10_IMDB_Rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_IMDB_Rating_end"], "")}`
       });
     });
 
@@ -193,8 +193,8 @@ describe('compile/mark/encode/tooltip', () => {
             x: {
               aggregate: 'sum',
               field: 'IMDB_Rating',
-              type: 'quantitative',
-            },
+              type: 'quantitative'
+            }
           },
           {
             fieldChannel: 'x',
@@ -202,12 +202,12 @@ describe('compile/mark/encode/tooltip', () => {
             groupbyFields: new Set(),
             offset: 'normalize',
             impute: false,
-            stackBy: [],
+            stackBy: []
           },
-          defaultConfig,
-        ),
+          defaultConfig
+        )
       ).toEqual({
-        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".0%")}`,
+        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".0%")}`
       });
     });
 
@@ -218,8 +218,8 @@ describe('compile/mark/encode/tooltip', () => {
             theta: {
               aggregate: 'sum',
               field: 'IMDB_Rating',
-              type: 'quantitative',
-            },
+              type: 'quantitative'
+            }
           },
           {
             fieldChannel: 'theta',
@@ -227,12 +227,12 @@ describe('compile/mark/encode/tooltip', () => {
             groupbyFields: new Set(),
             offset: 'normalize',
             impute: false,
-            stackBy: [],
+            stackBy: []
           },
-          defaultConfig,
-        ),
+          defaultConfig
+        )
       ).toEqual({
-        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".0%")}`,
+        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".0%")}`
       });
     });
 
@@ -243,8 +243,8 @@ describe('compile/mark/encode/tooltip', () => {
             x: {
               aggregate: 'sum',
               field: 'IMDB_Rating',
-              type: 'quantitative',
-            },
+              type: 'quantitative'
+            }
           },
           {
             fieldChannel: 'x',
@@ -252,12 +252,12 @@ describe('compile/mark/encode/tooltip', () => {
             groupbyFields: new Set(),
             offset: 'normalize',
             impute: false,
-            stackBy: [],
+            stackBy: []
           },
-          {...defaultConfig, normalizedNumberFormat: '.4%', customFormatTypes: true},
-        ),
+          {...defaultConfig, normalizedNumberFormat: '.4%', customFormatTypes: true}
+        )
       ).toEqual({
-        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".4%")}`,
+        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".4%")}`
       });
     });
 
@@ -268,8 +268,8 @@ describe('compile/mark/encode/tooltip', () => {
             x: {
               aggregate: 'sum',
               field: 'IMDB_Rating',
-              type: 'quantitative',
-            },
+              type: 'quantitative'
+            }
           },
           {
             fieldChannel: 'x',
@@ -277,12 +277,12 @@ describe('compile/mark/encode/tooltip', () => {
             groupbyFields: new Set(),
             offset: 'normalize',
             impute: false,
-            stackBy: [],
+            stackBy: []
           },
-          {...defaultConfig, tooltipFormat: {normalizedNumberFormat: '.4%'}, customFormatTypes: true},
-        ),
+          {...defaultConfig, tooltipFormat: {normalizedNumberFormat: '.4%'}, customFormatTypes: true}
+        )
       ).toEqual({
-        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".4%")}`,
+        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".4%")}`
       });
     });
 
@@ -293,8 +293,8 @@ describe('compile/mark/encode/tooltip', () => {
             x: {
               aggregate: 'sum',
               field: 'IMDB_Rating',
-              type: 'quantitative',
-            },
+              type: 'quantitative'
+            }
           },
           {
             fieldChannel: 'x',
@@ -302,17 +302,17 @@ describe('compile/mark/encode/tooltip', () => {
             groupbyFields: new Set(),
             offset: 'normalize',
             impute: false,
-            stackBy: [],
+            stackBy: []
           },
           {
             ...defaultConfig,
             tooltipFormat: {normalizedNumberFormat: '.4%'},
             normalizedNumberFormat: '.2%',
-            customFormatTypes: true,
-          },
-        ),
+            customFormatTypes: true
+          }
+        )
       ).toEqual({
-        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".4%")}`,
+        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".4%")}`
       });
     });
 
@@ -324,17 +324,17 @@ describe('compile/mark/encode/tooltip', () => {
               bin: 'binned',
               field: 'bin_IMDB_rating',
               type: 'quantitative',
-              title: 'IMDB_Rating (binned)',
+              title: 'IMDB_Rating (binned)'
             },
             x2: {
-              field: 'bin_IMDB_rating_end',
-            },
+              field: 'bin_IMDB_rating_end'
+            }
           },
           null,
-          defaultConfig,
-        ),
+          defaultConfig
+        )
       ).toEqual({
-        signal: `{"IMDB_Rating (binned)": !isValid(datum["bin_IMDB_rating"]) || !isFinite(+datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_IMDB_rating_end"], "")}`,
+        signal: `{"IMDB_Rating (binned)": !isValid(datum["bin_IMDB_rating"]) || !isFinite(+datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_IMDB_rating_end"], "")}`
       });
     });
   });

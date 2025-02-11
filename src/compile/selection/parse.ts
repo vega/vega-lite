@@ -1,8 +1,8 @@
 import {parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
-import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from '.';
+import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from './index.js';
 import {warn} from '../../log/index.js';
-import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection.js';
+import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection/index.js';
 import {Dict, duplicate, entries, replacePathInField, varName} from '../../util.js';
 import {DataFlowNode, OutputNode} from '../data/dataflow.js';
 import {FilterNode} from '../data/filter.js';

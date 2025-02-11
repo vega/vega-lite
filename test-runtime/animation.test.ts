@@ -1,7 +1,7 @@
 import {Datum} from 'vega';
-import {TopLevelSpec} from '../src';
-import {embedFn, getSignal, getState, setSignal, sleep, testRenderFn} from './util';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {TopLevelSpec} from '../src/index.js';
+import {embedFn, getSignal, getState, setSignal, sleep, testRenderFn} from './util.js';
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 
 const gapminderSpec: TopLevelSpec = {
   $schema: 'https://vega.github.io/schema/vega-lite/v5.json',

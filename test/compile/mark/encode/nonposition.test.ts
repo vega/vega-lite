@@ -1,4 +1,4 @@
-import {nonPosition} from '../../../../src/compile/mark/encode.js';
+import {nonPosition} from '../../../../src/compile/mark/encode/index.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encode/nonPosition', () => {
@@ -9,13 +9,13 @@ describe('compile/mark/encode/nonPosition', () => {
       encoding: {
         x: {
           field: 'Acceleration',
-          type: 'quantitative',
+          type: 'quantitative'
         },
         y: {
           field: 'Horsepower',
-          type: 'quantitative',
-        },
-      },
+          type: 'quantitative'
+        }
+      }
     });
 
     const mixins = nonPosition('opacity', model);

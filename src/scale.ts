@@ -15,7 +15,7 @@ import {DateTime} from './datetime.js';
 import {ExprRef} from './expr.js';
 import {ScaleInvalidDataConfigMixins} from './invalid.js';
 import * as log from './log/index.js';
-import {ParameterExtent} from './selection.js';
+import {ParameterExtent} from './selection/index.js';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type.js';
 import {contains, Flag, hasProperty, keys} from './util.js';
 

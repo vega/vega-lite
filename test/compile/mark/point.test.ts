@@ -3,7 +3,7 @@ import {circle, point, square} from '../../../src/compile/mark/point.js';
 import {Config} from '../../../src/config.js';
 import {Encoding} from '../../../src/encoding.js';
 import {defaultMarkConfig} from '../../../src/mark.js';
-import {NormalizedUnitSpec, TopLevel} from '../../../src/spec.js';
+import {NormalizedUnitSpec, TopLevel} from '../../../src/spec/index.js';
 import {internalField} from '../../../src/util.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
@@ -14,10 +14,10 @@ describe('Mark: Point', () => {
       encoding: {
         x: {field: 'year', type: 'ordinal'},
         y: {field: 'yield', type: 'quantitative'},
-        ...moreEncoding,
+        ...moreEncoding
       },
       data: {url: 'data/barley.json'},
-      config,
+      config
     };
   }
 
@@ -25,7 +25,7 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {x: {field: 'year', type: 'ordinal'}},
-      data: {url: 'data/barley.json'},
+      data: {url: 'data/barley.json'}
     });
 
     const props = point.encodeEntry(model);
@@ -33,7 +33,7 @@ describe('Mark: Point', () => {
     it('should be centered on y', () => {
       expect(props.y).toEqual({
         mult: 0.5,
-        signal: 'height',
+        signal: 'height'
       });
     });
 
@@ -46,8 +46,8 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {
-        y: {bin: true, field: 'Miles_per_Gallon', type: 'ordinal'},
-      },
+        y: {bin: true, field: 'Miles_per_Gallon', type: 'ordinal'}
+      }
     });
 
     const props = point.encodeEntry(model);
@@ -61,9 +61,9 @@ describe('Mark: Point', () => {
         type: 'point',
         size: 250,
         y: 'height',
-        yOffset: 25,
+        yOffset: 25
       },
-      data: {url: 'data/barley.json'},
+      data: {url: 'data/barley.json'}
     });
 
     const props = point.encodeEntry(model);
@@ -78,9 +78,9 @@ describe('Mark: Point', () => {
       mark: 'point',
       encoding: {
         x: {aggregate: 'sum', field: 'a', type: 'quantitative', stack: 'zero'},
-        color: {field: 'b', type: 'ordinal'},
+        color: {field: 'b', type: 'ordinal'}
       },
-      data: {url: 'data/barley.json'},
+      data: {url: 'data/barley.json'}
     });
 
     const props = point.encodeEntry(model);
@@ -97,9 +97,9 @@ describe('Mark: Point', () => {
       mark: 'point',
       encoding: {
         x: {field: 'a', type: 'quantitative', bandPosition: 0.5, stack: 'zero'},
-        color: {field: 'b', type: 'ordinal'},
+        color: {field: 'b', type: 'ordinal'}
       },
-      data: {url: 'data/barley.json'},
+      data: {url: 'data/barley.json'}
     });
 
     const props = point.encodeEntry(model);
@@ -113,15 +113,15 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {
-        x: {bin: true, field: 'a', type: 'quantitative', bandPosition: 0.6},
+        x: {bin: true, field: 'a', type: 'quantitative', bandPosition: 0.6}
       },
-      data: {url: 'data/barley.json'},
+      data: {url: 'data/barley.json'}
     });
 
     const props = point.encodeEntry(model);
 
     expect(props.x).toEqual({
-      signal: 'scale("x", 0.4 * datum["bin_maxbins_10_a"] + 0.6 * datum["bin_maxbins_10_a_end"])',
+      signal: 'scale("x", 0.4 * datum["bin_maxbins_10_a"] + 0.6 * datum["bin_maxbins_10_a_end"])'
     });
   });
   it('interpolates x timeUnit with timeUnitBand = 0.5', () => {
@@ -131,11 +131,11 @@ describe('Mark: Point', () => {
       data: {url: 'data/barley.json'},
       mark: 'point',
       encoding: {
-        x: {timeUnit: 'year', field: 'a'},
+        x: {timeUnit: 'year', field: 'a'}
       },
       config: {
-        point: {timeUnitBandPosition: 0.5},
-      },
+        point: {timeUnitBandPosition: 0.5}
+      }
     });
 
     const props = point.encodeEntry(model);
@@ -148,9 +148,9 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {
-        x: {field: 'a', type: 'nominal', bandPosition: 0.6, scale: {type: 'band'}},
+        x: {field: 'a', type: 'nominal', bandPosition: 0.6, scale: {type: 'band'}}
       },
-      data: {url: 'data/barley.json'},
+      data: {url: 'data/barley.json'}
     });
 
     const props = point.encodeEntry(model);
@@ -164,9 +164,9 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {
-        x: {value: {expr: 'a'}},
+        x: {value: {expr: 'a'}}
       },
-      data: {url: 'data/barley.json'},
+      data: {url: 'data/barley.json'}
     });
 
     const props = point.encodeEntry(model);
@@ -178,7 +178,7 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {y: {field: 'year', type: 'ordinal'}},
-      data: {url: 'data/barley.json'},
+      data: {url: 'data/barley.json'}
     });
 
     const props = point.encodeEntry(model);
@@ -186,7 +186,7 @@ describe('Mark: Point', () => {
     it('should be centered on x', () => {
       expect(props.x).toEqual({
         mult: 0.5,
-        signal: 'width',
+        signal: 'width'
       });
     });
 
@@ -202,9 +202,9 @@ describe('Mark: Point', () => {
       mark: 'point',
       encoding: {
         y: {aggregate: 'sum', field: 'a', type: 'quantitative', stack: 'zero'},
-        color: {field: 'b', type: 'ordinal'},
+        color: {field: 'b', type: 'ordinal'}
       },
-      data: {url: 'data/barley.json'},
+      data: {url: 'data/barley.json'}
     });
 
     const props = point.encodeEntry(model);
@@ -239,7 +239,7 @@ describe('Mark: Point', () => {
     it('should test for invalid values on y', () => {
       expect(props.y).toEqual([
         {scale: 'y', value: 0, test: '!isValid(datum["yield"]) || !isFinite(+datum["yield"])'},
-        {scale: Y, field: 'yield'},
+        {scale: Y, field: 'yield'}
       ]);
     });
 
@@ -256,8 +256,8 @@ describe('Mark: Point', () => {
         mark: 'point',
         encoding: {
           x: {field: 'year', type: 'ordinal', scale: {type: 'band'}},
-          y: {field: 'yield', type: 'quantitative'},
-        },
+          y: {field: 'yield', type: 'quantitative'}
+        }
       });
       const props = point.encodeEntry(model);
       expect(props.x).toEqual({scale: 'x', field: 'year', band: 0.5});
@@ -267,8 +267,8 @@ describe('Mark: Point', () => {
   describe('with x, y, size', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(
       pointXY({
-        size: {aggregate: 'count', type: 'quantitative'},
-      }),
+        size: {aggregate: 'count', type: 'quantitative'}
+      })
     );
     const props = point.encodeEntry(model);
 
@@ -280,8 +280,8 @@ describe('Mark: Point', () => {
   describe('with x, y, color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(
       pointXY({
-        color: {field: 'yield', type: 'quantitative'},
-      }),
+        color: {field: 'yield', type: 'quantitative'}
+      })
     );
     const props = point.encodeEntry(model);
 
@@ -293,19 +293,19 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(
       pointXY(
         {
-          color: {field: 'yield', type: 'quantitative'},
+          color: {field: 'yield', type: 'quantitative'}
         },
         {
-          scale: {invalid: {color: {value: 'red'}}},
-        },
-      ),
+          scale: {invalid: {color: {value: 'red'}}}
+        }
+      )
     );
     const props = point.encodeEntry(model);
 
     it('should have scale for color', () => {
       expect(props.stroke).toEqual([
         {test: '!isValid(datum["yield"]) || !isFinite(+datum["yield"])', value: 'red'},
-        {scale: COLOR, field: 'yield'},
+        {scale: COLOR, field: 'yield'}
       ]);
     });
   });
@@ -313,9 +313,9 @@ describe('Mark: Point', () => {
   describe('with x, y, and condition-only color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       ...pointXY({
-        color: {condition: {param: 'test', field: 'yield', type: 'quantitative'}},
+        color: {condition: {param: 'test', field: 'yield', type: 'quantitative'}}
       }),
-      params: [{name: 'test', select: 'point'}],
+      params: [{name: 'test', select: 'point'}]
     });
     model.parseSelections();
     const props = point.encodeEntry(model);
@@ -331,8 +331,8 @@ describe('Mark: Point', () => {
   describe('with x, y, and condition-only color and explicit test value', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       ...pointXY({
-        color: {condition: {test: 'true', field: 'yield', type: 'quantitative'}},
-      }),
+        color: {condition: {test: 'true', field: 'yield', type: 'quantitative'}}
+      })
     });
     model.parseSelections();
     const props = point.encodeEntry(model);
@@ -348,8 +348,8 @@ describe('Mark: Point', () => {
   describe('with x, y, shape', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(
       pointXY({
-        shape: {field: 'site', type: 'nominal'},
-      }),
+        shape: {field: 'site', type: 'nominal'}
+      })
     );
     const props = point.encodeEntry(model);
 
@@ -363,8 +363,8 @@ describe('Mark: Point', () => {
       pointXY({
         shape: {value: 'circle'},
         color: {value: 'red'},
-        size: {value: 23},
-      }),
+        size: {value: 23}
+      })
     );
     const props = point.encodeEntry(model);
     it('should correct shape, color and size', () => {
@@ -394,8 +394,8 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {
-        href: {value: 'https://idl.cs.washington.edu/'},
-      },
+        href: {value: 'https://idl.cs.washington.edu/'}
+      }
     });
     const props = point.encodeEntry(model);
 
@@ -410,8 +410,8 @@ describe('Mark: Square', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'square',
       encoding: {
-        color: {value: 'blue'},
-      },
+        color: {value: 'blue'}
+      }
     });
     const props = square.encodeEntry(model);
 
@@ -422,8 +422,8 @@ describe('Mark: Square', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'square',
       encoding: {
-        color: {value: 'blue'},
-      },
+        color: {value: 'blue'}
+      }
     });
     const props = square.encodeEntry(model);
 
@@ -434,13 +434,13 @@ describe('Mark: Square', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'square',
       encoding: {
-        color: {value: 'blue'},
+        color: {value: 'blue'}
       },
       config: {
         mark: {
-          filled: false,
-        },
-      },
+          filled: false
+        }
+      }
     });
 
     const props = square.encodeEntry(model);
@@ -454,8 +454,8 @@ describe('Mark: Circle', () => {
   const model = parseUnitModelWithScaleAndLayoutSize({
     mark: 'circle',
     encoding: {
-      color: {value: 'blue'},
-    },
+      color: {value: 'blue'}
+    }
   });
   const props = circle.encodeEntry(model);
 
@@ -471,13 +471,13 @@ describe('Mark: Circle', () => {
     const filledCircleModel = parseUnitModelWithScaleAndLayoutSize({
       mark: 'circle',
       encoding: {
-        color: {value: 'blue'},
+        color: {value: 'blue'}
       },
       config: {
         mark: {
-          filled: false,
-        },
-      },
+          filled: false
+        }
+      }
     });
 
     const filledCircleProps = circle.encodeEntry(filledCircleModel);
@@ -491,9 +491,9 @@ describe('Mark: Circle', () => {
       mark: {type: 'circle', stroke: {expr: "'red'"}},
       config: {
         mark: {
-          filled: false,
-        },
-      },
+          filled: false
+        }
+      }
     });
 
     const filledCircleProps = circle.encodeEntry(filledCircleModel);
@@ -505,8 +505,8 @@ describe('Mark: Circle', () => {
     const filledCircleModel = parseUnitModelWithScaleAndLayoutSize({
       mark: {type: 'circle'},
       encoding: {
-        x: {datum: {expr: 'myX'}, type: 'quantitative'},
-      },
+        x: {datum: {expr: 'myX'}, type: 'quantitative'}
+      }
     });
 
     const filledCircleProps = circle.encodeEntry(filledCircleModel);

@@ -9,8 +9,8 @@ import {
   NormalizedSpec,
   NormalizedUnitSpec,
   TopLevel,
-  UnitSpec,
-} from '../spec';
+  UnitSpec
+} from '../spec/index.js';
 import {SpecMapper} from '../spec/map.js';
 import {NormalizerParams} from './base.js';
 
@@ -53,7 +53,7 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
             (isArray(view) &&
               // logic for backwards compatibility with view paths before we had unique names
               // @ts-ignore
-              view.map((v) => path.indexOf(v)).every((v, i, arr) => v !== -1 && (i === 0 || v > arr[i - 1])))
+              view.map(v => path.indexOf(v)).every((v, i, arr) => v !== -1 && (i === 0 || v > arr[i - 1])))
           ) {
             params.push(selection);
           }
@@ -77,7 +77,7 @@ function addSpecNameToParams(spec: BaseSpec, params: NormalizerParams) {
   return spec.name
     ? {
         ...params,
-        path: (params.path ?? []).concat(spec.name),
+        path: (params.path ?? []).concat(spec.name)
       }
     : params;
 }

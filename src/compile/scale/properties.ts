@@ -11,7 +11,7 @@ import {
   POSITION_SCALE_CHANNELS,
   ScaleChannel,
   STROKE
-} from '../../channel';
+} from '../../channel.js';
 import {
   getFieldDef,
   getFieldOrDatumDef,
@@ -36,7 +36,7 @@ import {
   ScaleConfig,
   ScaleType,
   scaleTypeSupportProperty
-} from '../../scale';
+} from '../../scale.js';
 import {Sort} from '../../sort.js';
 import {Type} from '../../type.js';
 import * as util from '../../util.js';

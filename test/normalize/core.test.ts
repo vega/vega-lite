@@ -3,7 +3,7 @@ import {defaultConfig, initConfig} from '../../src/config.js';
 import * as log from '../../src/log/index.js';
 import {LocalLogger} from '../../src/log/index.js';
 import {normalize} from '../../src/normalize/index.js';
-import {TopLevelSpec} from '../../src/spec.js';
+import {TopLevelSpec} from '../../src/spec/index.js';
 
 describe('normalize()', () => {
   it('throws errors for invalid spec', () => {

@@ -8,7 +8,7 @@ import {
   isXorYOffset,
   rangeType,
   ScaleChannel
-} from '../../channel';
+} from '../../channel.js';
 import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef.js';
 import * as log from '../../log/index.js';
 import {isRelativeBandSize, MarkDef} from '../../mark.js';

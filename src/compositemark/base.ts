@@ -1,7 +1,7 @@
 import {Encoding} from '../encoding.js';
 import {GenericMarkDef, getMarkType} from '../mark.js';
 import {NonFacetUnitNormalizer, Normalize, NormalizerParams} from '../normalize/base.js';
-import {GenericSpec} from '../spec.js';
+import {GenericSpec} from '../spec/index.js';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer.js';
 import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from '../spec/unit.js';
 import {FieldName} from '../channeldef.js';
@@ -20,8 +20,8 @@ export class CompositeMarkNormalizer<M extends string> implements NonFacetUnitNo
         GenericUnitSpec<Encoding<FieldName>, M> | GenericLayerSpec<any>,
         // Output of the normalize method
         NormalizedLayerSpec | NormalizedUnitSpec
-      >,
-    ) => NormalizedLayerSpec | NormalizedUnitSpec,
+      >
+    ) => NormalizedLayerSpec | NormalizedUnitSpec
   ) {}
 
   public hasMatchingType(spec: GenericSpec<any, any, any, any>): spec is CompositeMarkUnitSpec<M> {

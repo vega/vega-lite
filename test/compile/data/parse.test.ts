@@ -1,4 +1,4 @@
-import {AncestorParse} from '../../../src/compile/data.js';
+import {AncestorParse} from '../../../src/compile/data/index.js';
 import {AggregateNode} from '../../../src/compile/data/aggregate.js';
 import {BinNode} from '../../../src/compile/data/bin.js';
 import {CalculateNode} from '../../../src/compile/data/calculate.js';
@@ -26,8 +26,8 @@ describe('compile/data/parse', () => {
         mark: 'point',
         transform: [{calculate: 'calculate', as: 'as'}, {filter: 'filter'}],
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
-        },
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
       });
 
       const root = new PlaceholderDataFlowNode(null);
@@ -49,23 +49,23 @@ describe('compile/data/parse', () => {
                       {
                         timeUnit: 'year',
                         field: 'date',
-                        equal: 2005,
+                        equal: 2005
                       },
-                      'datum.a > 5',
-                    ],
-                  },
-                ],
-              },
-            },
-          },
+                      'datum.a > 5'
+                    ]
+                  }
+                ]
+              }
+            }
+          }
         ],
         mark: 'point',
         encoding: {
           x: {field: 'a', type: 'quantitative'},
           y: {field: 'b', type: 'temporal'},
           color: {field: 'c', type: 'ordinal'},
-          shape: {field: 'd', type: 'nominal'},
-        },
+          shape: {field: 'd', type: 'nominal'}
+        }
       });
 
       const root = new PlaceholderDataFlowNode(null);
@@ -75,7 +75,7 @@ describe('compile/data/parse', () => {
       expect(root.children[0]).toBeInstanceOf(ParseNode);
       expect(result).toBeInstanceOf(FilterNode);
       expect((root.children[0] as ParseNode).parse).toEqual({
-        date: 'date',
+        date: 'date'
       });
       expect(parse.combine()).toEqual({date: 'date'});
     });
@@ -86,11 +86,11 @@ describe('compile/data/parse', () => {
         mark: 'point',
         transform: [
           {bin: true, field: 'field', as: 'a'},
-          {timeUnit: 'month', field: 'field', as: 'b'},
+          {timeUnit: 'month', field: 'field', as: 'b'}
         ],
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
-        },
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
       });
 
       const root = new PlaceholderDataFlowNode(null);
@@ -102,7 +102,7 @@ describe('compile/data/parse', () => {
         a: 'number',
         a_end: 'number',
         b: 'date',
-        field: 'date',
+        field: 'date'
       });
     });
 
@@ -115,14 +115,14 @@ describe('compile/data/parse', () => {
           {
             aggregate: [
               {op: 'count', field: 'f', as: 'b'},
-              {op: 'sum', field: 'f', as: 'c'},
+              {op: 'sum', field: 'f', as: 'c'}
             ],
-            groupby: ['field'],
-          },
+            groupby: ['field']
+          }
         ],
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
-        },
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
       });
 
       const root = new PlaceholderDataFlowNode(null);
@@ -138,8 +138,8 @@ describe('compile/data/parse', () => {
         transform: [{impute: 'x', key: 'y', method: 'mean'}],
         encoding: {
           x: {field: 'a', type: 'temporal'},
-          y: {field: 'b', type: 'quantitative'},
-        },
+          y: {field: 'b', type: 'quantitative'}
+        }
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
@@ -152,17 +152,17 @@ describe('compile/data/parse', () => {
           {
             op: 'count',
             field: 'f',
-            as: 'b',
-          },
-        ],
+            as: 'b'
+          }
+        ]
       };
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
         transform: [transform],
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
-        },
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
       });
       const root = new PlaceholderDataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
@@ -173,24 +173,24 @@ describe('compile/data/parse', () => {
         window: [
           {
             op: 'row_number',
-            as: 'ordered_row_number',
-          },
+            as: 'ordered_row_number'
+          }
         ],
         ignorePeers: false,
         sort: [
           {
             field: 'f',
-            order: 'ascending',
-          },
-        ],
+            order: 'ascending'
+          }
+        ]
       };
       const model = parseUnitModel({
         data: {values: []},
         mark: 'point',
         transform: [transform],
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
-        },
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
       });
       const root = new PlaceholderDataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
@@ -200,7 +200,7 @@ describe('compile/data/parse', () => {
     it('should return a FoldTransformNode', () => {
       const transform: Transform = {
         fold: ['a', 'b'],
-        as: ['A', 'B'],
+        as: ['A', 'B']
       };
       const model = parseUnitModel({
         data: {values: []},
@@ -208,8 +208,8 @@ describe('compile/data/parse', () => {
         transform: [transform],
         encoding: {
           x: {field: 'A', type: 'temporal'},
-          y: {field: 'B', type: 'quantitative'},
-        },
+          y: {field: 'B', type: 'quantitative'}
+        }
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
@@ -220,7 +220,7 @@ describe('compile/data/parse', () => {
     it('should return a ExtentTransformNode', () => {
       const transform: Transform = {
         extent: 'a',
-        param: 'A',
+        param: 'A'
       };
 
       const model = parseUnitModel({
@@ -229,8 +229,8 @@ describe('compile/data/parse', () => {
         transform: [transform],
         encoding: {
           x: {field: 'A', type: 'temporal'},
-          y: {field: 'B', type: 'quantitative'},
-        },
+          y: {field: 'B', type: 'quantitative'}
+        }
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
@@ -241,7 +241,7 @@ describe('compile/data/parse', () => {
     it('should return a PivotTransformNode', () => {
       const transform: Transform = {
         pivot: 'a',
-        value: 'b',
+        value: 'b'
       };
       const model = parseUnitModel({
         data: {values: []},
@@ -249,8 +249,8 @@ describe('compile/data/parse', () => {
         transform: [transform],
         encoding: {
           x: {field: 'a', type: 'temporal'},
-          y: {field: 'b', type: 'quantitative'},
-        },
+          y: {field: 'b', type: 'quantitative'}
+        }
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
@@ -260,7 +260,7 @@ describe('compile/data/parse', () => {
 
     it('should return a FlattenTransformNode', () => {
       const transform: Transform = {
-        flatten: ['a', 'b'],
+        flatten: ['a', 'b']
       };
       const model = parseUnitModel({
         data: {values: []},
@@ -268,8 +268,8 @@ describe('compile/data/parse', () => {
         transform: [transform],
         encoding: {
           x: {field: 'a', type: 'temporal'},
-          y: {field: 'b', type: 'quantitative'},
-        },
+          y: {field: 'b', type: 'quantitative'}
+        }
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
@@ -279,7 +279,7 @@ describe('compile/data/parse', () => {
 
     it('should return a SampleTransformNode', () => {
       const transform: Transform = {
-        sample: 1000,
+        sample: 1000
       };
       const model = parseUnitModel({
         data: {values: []},
@@ -287,8 +287,8 @@ describe('compile/data/parse', () => {
         transform: [transform],
         encoding: {
           x: {field: 'A', type: 'temporal'},
-          y: {field: 'B', type: 'quantitative'},
-        },
+          y: {field: 'B', type: 'quantitative'}
+        }
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
@@ -302,7 +302,7 @@ describe('compile/data/parse', () => {
         key: 'x',
         method: 'max',
         groupby: ['a', 'b'],
-        frame: [-2, 2],
+        frame: [-2, 2]
       };
 
       const model = parseUnitModel({
@@ -312,8 +312,8 @@ describe('compile/data/parse', () => {
         encoding: {
           x: {field: 'x', type: 'quantitative'},
           y: {field: 'y', type: 'quantitative'},
-          color: {field: 'c', type: 'nominal'},
-        },
+          color: {field: 'c', type: 'nominal'}
+        }
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
@@ -371,21 +371,21 @@ describe('compile/data/parse', () => {
 
     it('should not find a source with mesh and feature', () => {
       const actual = findSource({url: 'foo.csv', format: {type: 'topojson', mesh: 'states'}}, [
-        new SourceNode({url: 'foo.csv', format: {type: 'topojson', feature: 'counties'}}),
+        new SourceNode({url: 'foo.csv', format: {type: 'topojson', feature: 'counties'}})
       ]);
       expect(actual).toBeNull();
     });
 
     it('should not find a source with conflicting features', () => {
       const actual = findSource({url: 'foo.csv', format: {type: 'topojson', feature: 'states'}}, [
-        new SourceNode({url: 'foo.csv', format: {type: 'topojson', feature: 'counties'}}),
+        new SourceNode({url: 'foo.csv', format: {type: 'topojson', feature: 'counties'}})
       ]);
       expect(actual).toBeNull();
     });
 
     it('should not find a source with conflicting meshes', () => {
       const actual = findSource({url: 'foo.csv', format: {type: 'topojson', mesh: 'states'}}, [
-        new SourceNode({url: 'foo.csv', format: {type: 'topojson', mesh: 'counties'}}),
+        new SourceNode({url: 'foo.csv', format: {type: 'topojson', mesh: 'counties'}})
       ]);
       expect(actual).toBeNull();
     });

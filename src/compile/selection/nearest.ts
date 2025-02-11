@@ -1,7 +1,7 @@
 import * as log from '../../log/index.js';
 import {isPathMark} from '../../mark.js';
-import {tooltip} from '../mark/encode.js';
-import {SelectionCompiler} from '.';
+import {tooltip} from '../mark/encode/index.js';
+import {SelectionCompiler} from './index.js';
 
 const VORONOI = 'voronoi';
 

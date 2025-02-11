@@ -4,7 +4,7 @@ import {Config} from '../config.js';
 import {Encoding, normalizeEncoding} from '../encoding.js';
 import {ExprRef} from '../expr.js';
 import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark.js';
-import {GenericUnitSpec, NormalizedUnitSpec} from '../spec.js';
+import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/index.js';
 import {isUnitSpec} from '../spec/unit.js';
 import {stack} from '../stack.js';
 import {keys, omit, pick} from '../util.js';
@@ -25,7 +25,7 @@ function dropLineAndPointFromConfig(config: Config<SignalRef>) {
       config = {
         ...config,
         // TODO: remove as any
-        [mark]: omit(config[mark], ['point', 'line'] as any),
+        [mark]: omit(config[mark], ['point', 'line'] as any)
       };
     }
   }
@@ -35,7 +35,7 @@ function dropLineAndPointFromConfig(config: Config<SignalRef>) {
 function getPointOverlay(
   markDef: MarkDef,
   markConfig: LineConfig<ExprRef | SignalRef> = {},
-  encoding: Encoding<string>,
+  encoding: Encoding<string>
 ): MarkConfig<ExprRef | SignalRef> {
   if (markDef.point === 'transparent') {
     return {opacity: 0};
@@ -58,7 +58,7 @@ function getPointOverlay(
 
 function getLineOverlay(
   markDef: MarkDef,
-  markConfig: AreaConfig<ExprRef | SignalRef> = {},
+  markConfig: AreaConfig<ExprRef | SignalRef> = {}
 ): MarkConfig<ExprRef | SignalRef> {
   if (markDef.line) {
     // true or object
@@ -122,11 +122,11 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...(markDef.type === 'area' && markDef.opacity === undefined && markDef.fillOpacity === undefined
             ? {opacity: 0.7}
             : {}),
-          ...markDef,
+          ...markDef
         }),
         // drop shape from encoding as this might be used to trigger point overlay
-        encoding: omit(encoding, ['shape']),
-      },
+        encoding: omit(encoding, ['shape'])
+      }
     ];
 
     // FIXME: determine rules for applying selections.
@@ -142,8 +142,8 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
         ...encoding,
         [stackFieldChannel]: {
           ...encoding[stackFieldChannel],
-          ...(offset ? {stack: offset} : {}),
-        },
+          ...(offset ? {stack: offset} : {})
+        }
       };
     }
 
@@ -158,9 +158,9 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
         mark: {
           type: 'line',
           ...pick(markDef, ['clip', 'interpolate', 'tension', 'tooltip']),
-          ...lineOverlay,
+          ...lineOverlay
         },
-        encoding: overlayEncoding,
+        encoding: overlayEncoding
       });
     }
     if (pointOverlay) {
@@ -171,21 +171,21 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           opacity: 1,
           filled: true,
           ...pick(markDef, ['clip', 'tooltip']),
-          ...pointOverlay,
+          ...pointOverlay
         },
-        encoding: overlayEncoding,
+        encoding: overlayEncoding
       });
     }
 
     return normalize(
       {
         ...outerSpec,
-        layer,
+        layer
       },
       {
         ...normParams,
-        config: dropLineAndPointFromConfig(config),
-      },
+        config: dropLineAndPointFromConfig(config)
+      }
     );
   }
 }

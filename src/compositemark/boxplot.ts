@@ -7,7 +7,7 @@ import * as log from '../log/index.js';
 import {isMarkDef, MarkDef} from '../mark.js';
 import {MarkInvalidMixins} from '../invalid.js';
 import {NormalizerParams} from '../normalize/index.js';
-import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec.js';
+import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec/index.js';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform.js';
 import {accessWithDatumToUnescapedPath, isEmpty, omit, removePathFromField} from '../util.js';
 import {CompositeMarkNormalizer} from './base.js';

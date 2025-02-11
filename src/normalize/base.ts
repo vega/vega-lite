@@ -6,7 +6,7 @@ import {ParameterPredicate} from '../predicate.js';
 import {ExprRef} from '../expr.js';
 import {Projection} from '../projection.js';
 import {TopLevelSelectionParameter} from '../selection.js';
-import {GenericSpec, NormalizedSpec} from '../spec.js';
+import {GenericSpec, NormalizedSpec} from '../spec/index.js';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer.js';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/unit.js';
 import {Dict} from '../util.js';
@@ -14,13 +14,13 @@ import {RepeaterValue} from './repeater.js';
 
 export type Normalize<S extends GenericSpec<any, any, any, any>, NS extends NormalizedSpec> = (
   spec: S,
-  params: NormalizerParams,
+  params: NormalizerParams
 ) => NS;
 
 export interface ExtraNormalizer<
   S extends GenericSpec<any, any, any, FieldName>, // Input type
   O extends NormalizedSpec, // Output Type
-  SN extends GenericSpec<any, any, any, FieldName> = S, // input to additional normalization
+  SN extends GenericSpec<any, any, any, FieldName> = S // input to additional normalization
 > {
   name: string;
   hasMatchingType: (spec: GenericSpec<any, any, any, any>, config: Config) => spec is S;

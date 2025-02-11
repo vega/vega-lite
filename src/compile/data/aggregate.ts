@@ -7,7 +7,7 @@ import {
   isGeoPositionChannel,
   isScaleChannel,
   isXorY
-} from '../../channel';
+} from '../../channel.js';
 import {
   binRequiresRange,
   FieldDef,

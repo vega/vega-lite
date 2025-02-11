@@ -1,4 +1,4 @@
-import {GenericSpec} from '.';
+import {GenericSpec} from './index.js';
 import * as log from '../log/index.js';
 import {Field, FieldName} from '../channeldef.js';
 import {

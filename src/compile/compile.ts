@@ -6,7 +6,7 @@ import {Config, initConfig, stripAndRedirectConfig} from '../config.js';
 import * as log from '../log/index.js';
 import {normalize} from '../normalize/index.js';
 import {assembleParameterSignals} from '../parameter.js';
-import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec.js';
+import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec/index.js';
 import {
   AutoSizeParams,
   Datasets,
@@ -14,7 +14,7 @@ import {
   getFitType,
   isFitType,
   TopLevelProperties
-} from '../spec/toplevel';
+} from '../spec/toplevel.js';
 import {Dict, keys} from '../util.js';
 import {buildModel} from './buildmodel.js';
 import {assembleRootData} from './data/assemble.js';

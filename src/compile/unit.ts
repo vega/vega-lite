@@ -13,15 +13,15 @@ import {
   SingleDefChannel,
   supportLegend,
   X,
-  Y,
-} from '../channel';
+  Y
+} from '../channel.js';
 import {
   getFieldDef,
   getFieldOrDatumDef,
   isFieldOrDatumDef,
   isTypedFieldDef,
   MarkPropFieldOrDatumDef,
-  PositionFieldDef,
+  PositionFieldDef
 } from '../channeldef.js';
 import {Config} from '../config.js';
 import {isGraticuleGenerator} from '../data.js';
@@ -32,8 +32,8 @@ import {LegendInternal} from '../legend.js';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark.js';
 import {Projection} from '../projection.js';
 import {Domain, Scale} from '../scale.js';
-import {isSelectionParameter, SelectionParameter} from '../selection.js';
-import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec.js';
+import {isSelectionParameter, SelectionParameter} from '../selection/index.js';
+import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec/index.js';
 import {isFrameMixins} from '../spec/base.js';
 import {stack, StackProperties} from '../stack.js';
 import {keys} from '../util.js';
@@ -55,8 +55,8 @@ import {
   assembleTopLevelSignals,
   assembleUnitSelectionData,
   assembleUnitSelectionMarks,
-  assembleUnitSelectionSignals,
-} from './selection/assemble';
+  assembleUnitSelectionSignals
+} from './selection/assemble.js';
 import {parseUnitSelection} from './selection/parse.js';
 import {CURR} from './selection/point.js';
 
@@ -85,7 +85,7 @@ export class UnitModel extends ModelWithField {
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {},
-    config: Config<SignalRef>,
+    config: Config<SignalRef>
   ) {
     super(spec, 'unit', parent, parentGivenName, config, undefined, isFrameMixins(spec) ? spec.view : undefined);
 
@@ -95,7 +95,7 @@ export class UnitModel extends ModelWithField {
     // Need to init filled before other mark properties because encoding depends on filled but other mark properties depend on types inside encoding
     if (markDef.filled === undefined) {
       markDef.filled = defaultFilled(markDef, config, {
-        graticule: spec.data && isGraticuleGenerator(spec.data),
+        graticule: spec.data && isGraticuleGenerator(spec.data)
       });
     }
 
@@ -108,9 +108,9 @@ export class UnitModel extends ModelWithField {
         ? {
             ...parentGivenSize,
             ...(spec.width ? {width: spec.width} : {}),
-            ...(spec.height ? {height: spec.height} : {}),
+            ...(spec.height ? {height: spec.height} : {})
           }
-        : parentGivenSize,
+        : parentGivenSize
     });
 
     // calculate stack properties
@@ -122,13 +122,13 @@ export class UnitModel extends ModelWithField {
     this.specifiedProjection = spec.projection;
 
     // Selections will be initialized upon parse.
-    this.selection = (spec.params ?? []).filter((p) => isSelectionParameter(p)) as SelectionParameter[];
+    this.selection = (spec.params ?? []).filter(p => isSelectionParameter(p)) as SelectionParameter[];
   }
 
   public get hasProjection(): boolean {
     const {encoding} = this;
     const isGeoShapeMark = this.mark === GEOSHAPE;
-    const hasGeoPosition = encoding && GEOPOSITION_CHANNELS.some((channel) => isFieldOrDatumDef(encoding[channel]));
+    const hasGeoPosition = encoding && GEOPOSITION_CHANNELS.some(channel => isFieldOrDatumDef(encoding[channel]));
     return isGeoShapeMark || hasGeoPosition;
   }
 

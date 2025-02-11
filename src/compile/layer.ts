@@ -2,7 +2,7 @@ import {Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {array} from 'vega-util';
 import {Config} from '../config.js';
 import * as log from '../log/index.js';
-import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec.js';
+import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec/index.js';
 import {keys} from '../util.js';
 import {VgData, VgLayout} from '../vega.schema.js';
 import {assembleAxisSignals} from './axis/assemble.js';
@@ -14,7 +14,7 @@ import {assembleLegends} from './legend/assemble.js';
 import {Model} from './model.js';
 import {assembleLayerSelectionMarks} from './selection/assemble.js';
 import {UnitModel} from './unit.js';
-import {isTimerSelection} from './selection.js';
+import {isTimerSelection} from './selection/index.js';
 import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message.js';
 
 export class LayerModel extends Model {

@@ -6,8 +6,8 @@ import {
   DEFAULT_FONT_SIZE,
   initConfig,
   isVgScheme,
-  stripAndRedirectConfig,
-} from '../src/config';
+  stripAndRedirectConfig
+} from '../src/config.js';
 import {PRIMITIVE_MARKS} from '../src/mark.js';
 import {duplicate} from '../src/util.js';
 
@@ -21,25 +21,25 @@ describe('config', () => {
           mark: {color: {expr: "'red'"}},
           point: {color: {expr: "'green'"}},
           scale: {
-            bandPaddingInner: {expr: '0.1'},
+            bandPaddingInner: {expr: '0.1'}
           },
           style: {
-            foo: {color: {expr: "'blue'"}},
+            foo: {color: {expr: "'blue'"}}
           },
-          title: {color: {expr: "'violet'"}},
-        }),
+          title: {color: {expr: "'violet'"}}
+        })
       ).toMatchObject({
         background: {signal: "'yellow'"},
         padding: {signal: '5'},
         mark: {color: {signal: "'red'"}},
         point: {color: {signal: "'green'"}},
         scale: {
-          bandPaddingInner: {signal: '0.1'},
+          bandPaddingInner: {signal: '0.1'}
         },
         style: {
-          foo: {color: {signal: "'blue'"}},
+          foo: {color: {signal: "'blue'"}}
         },
-        title: {color: {signal: "'violet'"}},
+        title: {color: {signal: "'violet'"}}
       });
     });
 
@@ -49,49 +49,49 @@ describe('config', () => {
         signals: [
           {
             name: 'fontSize',
-            value: DEFAULT_FONT_SIZE,
+            value: DEFAULT_FONT_SIZE
           },
           {
             name: 'color',
-            value: DEFAULT_COLOR,
-          },
+            value: DEFAULT_COLOR
+          }
         ],
         mark: {...defaultConfig.mark, color: {signal: 'color.blue'}},
         rule: {color: {signal: 'color.gray0'}},
         text: {
           color: {signal: 'color.gray0'},
           font: 'abc',
-          fontSize: {signal: 'fontSize.text'},
+          fontSize: {signal: 'fontSize.text'}
         },
         style: {
           'guide-label': {
             fill: {signal: 'color.gray0'},
             font: 'abc',
-            fontSize: {signal: 'fontSize.guideLabel'},
+            fontSize: {signal: 'fontSize.guideLabel'}
           },
           'guide-title': {
             fill: {signal: 'color.gray0'},
             font: 'abc',
-            fontSize: {signal: 'fontSize.guideTitle'},
+            fontSize: {signal: 'fontSize.guideTitle'}
           },
           'group-title': {
             fill: {signal: 'color.gray0'},
             font: 'abc',
-            fontSize: {signal: 'fontSize.groupTitle'},
+            fontSize: {signal: 'fontSize.groupTitle'}
           },
           'group-subtitle': {
             fill: {signal: 'color.gray0'},
             font: 'abc',
-            fontSize: {signal: 'fontSize.groupSubtitle'},
+            fontSize: {signal: 'fontSize.groupSubtitle'}
           },
           cell: {
-            stroke: {signal: 'color.gray8'},
-          },
+            stroke: {signal: 'color.gray8'}
+          }
         },
         axis: {
           domainColor: {signal: 'color.gray13'},
           gridColor: {signal: 'color.gray8'},
-          tickColor: {signal: 'color.gray13'},
+          tickColor: {signal: 'color.gray13'}
         },
         range: {
           category: [
@@ -104,9 +104,9 @@ describe('config', () => {
             {signal: 'color.purple'},
             {signal: 'color.pink'},
             {signal: 'color.brown'},
-            {signal: 'color.grey8'},
-          ],
-        },
+            {signal: 'color.grey8'}
+          ]
+        }
       });
     });
 
@@ -114,12 +114,12 @@ describe('config', () => {
       expect(initConfig({color: {newColor: 'red'}, fontSize: {newFontSize: 123}}).signals).toEqual([
         {
           name: 'fontSize',
-          value: {...DEFAULT_FONT_SIZE, newFontSize: 123},
+          value: {...DEFAULT_FONT_SIZE, newFontSize: 123}
         },
         {
           name: 'color',
-          value: {...DEFAULT_COLOR, newColor: 'red'},
-        },
+          value: {...DEFAULT_COLOR, newColor: 'red'}
+        }
       ]);
     });
 
@@ -144,20 +144,20 @@ describe('config', () => {
       mark: {
         ...defaultConfig.mark,
         opacity: 0.3,
-        tooltip: {content: 'encoding'},
+        tooltip: {content: 'encoding'}
       },
       bar: {
         opacity: 0.5,
-        ...defaultConfig.bar,
+        ...defaultConfig.bar
       },
       axis: {
         gridDash: {
           condition: {test: {field: 'value', timeUnit: 'month', equal: 1}, value: null},
-          value: [2, 2],
-        },
+          value: [2, 2]
+        }
       },
       view: {
-        fill: '#eee',
+        fill: '#eee'
       },
       title: {
         color: 'red',
@@ -167,16 +167,16 @@ describe('config', () => {
         dx: 5,
         dy: 5,
         angle: 1,
-        limit: 5,
+        limit: 5
       },
       boxplot: {
         rule: {
-          fill: 'red',
+          fill: 'red'
         },
         median: {
-          color: 'white',
-        },
-      },
+          color: 'white'
+        }
+      }
     };
     const copy = duplicate(config);
     const output = stripAndRedirectConfig(config);
@@ -226,7 +226,7 @@ describe('config', () => {
 
     it('should keep subtitle config in config.title if specified', () => {
       const cfg = initConfig({
-        title: {subtitleColor: 'red'},
+        title: {subtitleColor: 'red'}
       });
       expect(stripAndRedirectConfig(cfg).title).toEqual({subtitleColor: 'red'});
     });
@@ -236,34 +236,34 @@ describe('config', () => {
         signals: [
           {
             name: 'x',
-            update: 'foo',
-          },
+            update: 'foo'
+          }
         ],
         params: [
           {
             name: 'a',
-            expr: 'bar',
+            expr: 'bar'
           },
           {
             name: 'b',
-            bind: {input: 'range', min: -6.28, max: 6.28},
-          },
-        ],
+            bind: {input: 'range', min: -6.28, max: 6.28}
+          }
+        ]
       });
 
       expect(stripAndRedirectConfig(cfg).signals).toEqual([
         {
           name: 'x',
-          update: 'foo',
+          update: 'foo'
         },
         {
           name: 'a',
-          update: 'bar',
+          update: 'bar'
         },
         {
           name: 'b',
-          bind: {input: 'range', min: -6.28, max: 6.28},
-        },
+          bind: {input: 'range', min: -6.28, max: 6.28}
+        }
       ]);
     });
   });

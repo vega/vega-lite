@@ -1,4 +1,4 @@
-import {DataComponent} from '.';
+import {DataComponent} from './index.js';
 import * as log from '../../log/index.js';
 import {Model} from '../model.js';
 import {DataFlowNode} from './dataflow.js';

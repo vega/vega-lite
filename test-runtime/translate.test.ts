@@ -12,9 +12,9 @@ import {
   testRenderFn,
   tuples,
   unbound
-} from './util';
+} from './util.js';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
-import {TopLevelSpec} from '../src';
+import {TopLevelSpec} from '../src/index.js';
 
 describe('Translate interval selections at runtime', () => {
   let page: Page;

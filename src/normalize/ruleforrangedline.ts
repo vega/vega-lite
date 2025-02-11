@@ -5,7 +5,7 @@ import {Field, isDatumDef, isFieldDef} from '../channeldef.js';
 import {Encoding} from '../encoding.js';
 import * as log from '../log/index.js';
 import {isMarkDef} from '../mark.js';
-import {GenericSpec} from '../spec.js';
+import {GenericSpec} from '../spec/index.js';
 import {GenericUnitSpec, isUnitSpec} from '../spec/unit.js';
 import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base.js';
 

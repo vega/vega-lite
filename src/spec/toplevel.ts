@@ -1,5 +1,5 @@
 import type {Color, SignalRef} from 'vega';
-import {BaseSpec} from '.';
+import {BaseSpec} from './index.js';
 import {getPositionScaleChannel} from '../channel.js';
 import {signalRefOrValue} from '../compile/common.js';
 import {Config} from '../config.js';
@@ -114,7 +114,7 @@ export interface AutoSizeParams {
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
   'background',
-  'padding',
+  'padding'
   // We do not include "autosize" here as it is supported by only unit and layer specs and thus need to be normalized
 ];
 

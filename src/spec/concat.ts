@@ -1,4 +1,4 @@
-import {GenericSpec, NormalizedSpec} from '.';
+import {GenericSpec, NormalizedSpec} from './index.js';
 import {hasProperty} from '../util.js';
 import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base.js';
 

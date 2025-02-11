@@ -1,7 +1,6 @@
 import {InlineDataset, isUrlData} from '../../data.js';
 import {Dict} from '../../util.js';
 import {VgData} from '../../vega.schema.js';
-import {DataComponent} from './.js';
 import {AggregateNode} from './aggregate.js';
 import {BinNode} from './bin.js';
 import {CalculateNode} from './calculate.js';
@@ -31,6 +30,7 @@ import {SourceNode} from './source.js';
 import {StackNode} from './stack.js';
 import {TimeUnitNode} from './timeunit.js';
 import {WindowTransformNode} from './window.js';
+import {DataComponent} from './index.js';
 
 function makeWalkTree(data: VgData[]) {
   // to name datasources
@@ -48,7 +48,7 @@ function makeWalkTree(data: VgData[]) {
         const newData: VgData = {
           name: null,
           source: dataSource.name,
-          transform: [],
+          transform: []
         };
         dataSource = newData;
       }
@@ -59,7 +59,7 @@ function makeWalkTree(data: VgData[]) {
         // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
         dataSource.format = {
           ...dataSource.format,
-          parse: node.assembleFormatParse(),
+          parse: node.assembleFormatParse()
         };
 
         // add calculates for all nested fields
@@ -145,7 +145,7 @@ function makeWalkTree(data: VgData[]) {
           const newData: VgData = {
             name: null,
             source: dataSource.name,
-            transform: [],
+            transform: []
           };
           dataSource = newData;
         }
@@ -179,7 +179,7 @@ function makeWalkTree(data: VgData[]) {
           const newData: VgData = {
             name: null,
             source,
-            transform: [],
+            transform: []
           };
           walkTree(child, newData);
         }
@@ -202,7 +202,7 @@ export function assembleFacetData(root: FacetNode): VgData[] {
     walkTree(child, {
       source: root.name,
       name: null,
-      transform: [],
+      transform: []
     });
   }
 

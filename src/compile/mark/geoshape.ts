@@ -4,7 +4,7 @@ import {GEOJSON} from '../../type.js';
 import {VgPostEncodingTransform} from '../../vega.schema.js';
 import {UnitModel} from '../unit.js';
 import {MarkCompiler} from './base.js';
-import * as encode from './encode.js';
+import * as encode from './encode/index.js';
 
 export const geoshape: MarkCompiler = {
   vgMark: 'shape',
@@ -16,8 +16,8 @@ export const geoshape: MarkCompiler = {
         color: 'include',
         size: 'ignore',
         orient: 'ignore',
-        theta: 'ignore',
-      }),
+        theta: 'ignore'
+      })
     };
   },
   postEncodingTransform: (model: UnitModel): VgPostEncodingTransform[] => {
@@ -30,8 +30,8 @@ export const geoshape: MarkCompiler = {
       // as: 'shape',
       ...(shapeDef && isFieldDef(shapeDef) && shapeDef.type === GEOJSON
         ? {field: vgField(shapeDef, {expr: 'datum'})}
-        : {}),
+        : {})
     };
     return [transform];
-  },
+  }
 };

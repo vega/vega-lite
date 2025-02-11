@@ -8,7 +8,7 @@ import {isLegendBinding} from '../../selection.js';
 import {NewSignal} from 'vega';
 
 const inputBindings: SelectionCompiler<'point'> = {
-  defined: (selCmpt) => {
+  defined: selCmpt => {
     return (
       selCmpt.type === 'point' &&
       selCmpt.resolve === 'global' &&
@@ -29,7 +29,7 @@ const inputBindings: SelectionCompiler<'point'> = {
 
     proj.items.forEach((p, i) => {
       const sgname = varName(`${name}_${p.field}`);
-      const hasSignal = signals.filter((s) => s.name === sgname);
+      const hasSignal = signals.filter(s => s.name === sgname);
 
       if (!hasSignal.length) {
         signals.unshift({
@@ -39,11 +39,11 @@ const inputBindings: SelectionCompiler<'point'> = {
             ? [
                 {
                   events: selCmpt.events,
-                  update: `datum && item().mark.marktype !== 'group' ? ${datum}[${stringValue(p.field)}] : null`,
-                },
+                  update: `datum && item().mark.marktype !== 'group' ? ${datum}[${stringValue(p.field)}] : null`
+                }
               ]
             : [],
-          bind: (bind as any)[p.field] ?? (bind as any)[p.channel] ?? bind,
+          bind: (bind as any)[p.field] ?? (bind as any)[p.channel] ?? bind
         });
       }
     });
@@ -54,10 +54,10 @@ const inputBindings: SelectionCompiler<'point'> = {
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const proj = selCmpt.project;
-    const signal: NewSignal = signals.find((s) => s.name === name + TUPLE);
+    const signal: NewSignal = signals.find(s => s.name === name + TUPLE);
     const fields = name + TUPLE_FIELDS;
-    const values = proj.items.map((p) => varName(`${name}_${p.field}`));
-    const valid = values.map((v) => `${v} !== null`).join(' && ');
+    const values = proj.items.map(p => varName(`${name}_${p.field}`));
+    const valid = values.map(v => `${v} !== null`).join(' && ');
 
     if (values.length) {
       signal.update = `${valid} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
@@ -67,7 +67,7 @@ const inputBindings: SelectionCompiler<'point'> = {
     delete signal.on;
 
     return signals;
-  },
+  }
 };
 
 export default inputBindings;

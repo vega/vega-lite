@@ -1,4 +1,4 @@
-import {AncestorParse, DataComponent} from '.';
+import {AncestorParse, DataComponent} from './index.js';
 import {
   Data,
   isGenerator,
@@ -9,7 +9,7 @@ import {
   isUrlData,
   DataSourceType,
   ParseValue
-} from '../../data';
+} from '../../data.js';
 import {getDataSourcesForHandlingInvalidValues, DataSourcesForHandlingInvalidValues} from '../invalid/datasources.js';
 import * as log from '../../log/index.js';
 import {isPathMark} from '../../mark.js';
@@ -33,11 +33,11 @@ import {
   isStack,
   isTimeUnit,
   isWindow
-} from '../../transform';
+} from '../../transform.js';
 import {deepEqual, mergeDeep} from '../../util.js';
 import {getMarkPropOrConfig} from '../common.js';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model.js';
-import {requiresSelectionId} from '../selection.js';
+import {requiresSelectionId} from '../selection/index.js';
 import {materializeSelections} from '../selection/parse.js';
 import {AggregateNode} from './aggregate.js';
 import {BinNode} from './bin.js';

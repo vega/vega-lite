@@ -1,6 +1,6 @@
 import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega';
 import {isNumber, isString} from 'vega-util';
-import {AncestorParse} from '.';
+import {AncestorParse} from './index.js';
 import {isMinMaxOp} from '../../aggregate.js';
 import {getMainRangeChannel, SingleDefChannel} from '../../channel.js';
 import {
@@ -24,7 +24,7 @@ import {
   isFieldOneOfPredicate,
   isFieldPredicate,
   isFieldRangePredicate
-} from '../../predicate';
+} from '../../predicate.js';
 import {isSortField} from '../../sort.js';
 import {FilterTransform} from '../../transform.js';
 import {accessPathDepth, accessPathWithDatum, Dict, duplicate, hash, keys, removePathFromField} from '../../util.js';

@@ -17,7 +17,7 @@ import {
   isScaleChannel,
   ScaleChannel,
   SingleDefChannel
-} from '../channel';
+} from '../channel.js';
 import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef.js';
 import {Config} from '../config.js';
 import {Data, DataSourceType} from '../data.js';
@@ -26,7 +26,7 @@ import {ExprRef, replaceExprRef} from '../expr.js';
 import * as log from '../log/index.js';
 import {Resolve} from '../resolve.js';
 import {ScaleType, hasDiscreteDomain} from '../scale.js';
-import {isFacetSpec} from '../spec.js';
+import {isFacetSpec} from '../spec/index.js';
 import {
   extractCompositionLayout,
   GenericCompositionLayoutWithColumns,
@@ -65,7 +65,7 @@ import {assembleScales} from './scale/assemble.js';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component.js';
 import {assembleDomain, getFieldFromDomain} from './scale/domain.js';
 import {parseScales} from './scale/parse.js';
-import {SelectionComponent} from './selection.js';
+import {SelectionComponent} from './selection/index.js';
 import {Split} from './split.js';
 import {UnitModel} from './unit.js';
 

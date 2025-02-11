@@ -12,7 +12,7 @@ import {
   STROKE,
   STROKEDASH,
   STROKEOPACITY,
-  STROKEWIDTH,
+  STROKEWIDTH
 } from './channel.js';
 import {normalizeBin} from './channeldef.js';
 import {ParameterExtent} from './selection.js';
@@ -97,12 +97,9 @@ export function binToString(bin: BinParams | true) {
   if (isBoolean(bin)) {
     bin = normalizeBin(bin, undefined);
   }
-  return (
-    'bin' +
-    keys(bin)
-      .map((p) => (isParameterExtent(bin[p]) ? varName(`_${p}_${entries(bin[p])}`) : varName(`_${p}_${bin[p]}`)))
-      .join('')
-  );
+  return `bin${keys(bin)
+    .map(p => (isParameterExtent(bin[p]) ? varName(`_${p}_${entries(bin[p])}`) : varName(`_${p}_${bin[p]}`)))
+    .join('')}`;
 }
 
 /**

@@ -4,7 +4,7 @@ import {Encoding, normalizeEncoding} from '../encoding.js';
 import * as log from '../log/index.js';
 import {MarkDef} from '../mark.js';
 import {NormalizerParams} from '../normalize/index.js';
-import {GenericUnitSpec, NormalizedLayerSpec} from '../spec.js';
+import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
 import {CompositeMarkNormalizer} from './base.js';
 import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common.js';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar.js';

@@ -1,4 +1,4 @@
-import {AncestorParse} from '../../../src/compile/data.js';
+import {AncestorParse} from '../../../src/compile/data/index.js';
 import {PlaceholderDataFlowNode} from './util.js';
 import {ParseNode, getImplicitFromEncoding, getImplicitFromSelection} from '../../../src/compile/data/formatparse.js';
 import {parseTransformArray} from '../../../src/compile/data/parse.js';
@@ -18,12 +18,12 @@ describe('compile/data/formatparse', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'ordinal', sort: {field: 'foo.bar', op: 'mean'}},
-        },
+          x: {field: 'a', type: 'ordinal', sort: {field: 'foo.bar', op: 'mean'}}
+        }
       });
 
       expect(getImplicitFromEncoding(model)).toEqual({
-        'foo.bar': 'flatten',
+        'foo.bar': 'flatten'
       });
     });
 
@@ -35,17 +35,17 @@ describe('compile/data/formatparse', () => {
           x: {field: 'a', type: 'quantitative'},
           y: {field: 'b', type: 'temporal'},
           color: {field: 'c', type: 'ordinal'},
-          shape: {field: 'c', type: 'nominal'},
-        },
+          shape: {field: 'c', type: 'nominal'}
+        }
       });
 
       expect(getImplicitFromEncoding(model)).toEqual({
-        b: 'date',
+        b: 'date'
       });
 
       expect(ParseNode.makeExplicit(null, model, new AncestorParse()).parse).toEqual({
         c: 'number',
-        d: 'date',
+        d: 'date'
       });
     });
 
@@ -57,8 +57,8 @@ describe('compile/data/formatparse', () => {
           x: {field: 'a', type: 'temporal'},
           y: {field: 'b', type: 'quantitative'},
           color: {type: 'quantitative', aggregate: 'count'},
-          size: {field: 'b2', type: 'quantitative'},
-        },
+          size: {field: 'b2', type: 'quantitative'}
+        }
       });
 
       const ancestorParse = new AncestorParse();
@@ -67,11 +67,11 @@ describe('compile/data/formatparse', () => {
 
       const implicit = getImplicitFromEncoding(model);
       expect(implicit).toEqual({
-        a: 'date',
+        a: 'date'
       });
 
       expect(ParseNode.makeWithAncestors(null, {}, implicit, ancestorParse).parse).toEqual({
-        a: 'date',
+        a: 'date'
       });
     });
 
@@ -81,8 +81,8 @@ describe('compile/data/formatparse', () => {
         encoding: {
           x: {aggregate: 'missing', field: 'b', type: 'quantitative'},
           y: {aggregate: 'valid', field: 'b', type: 'quantitative'},
-          color: {aggregate: 'distinct', field: 'b', type: 'quantitative'},
-        },
+          color: {aggregate: 'distinct', field: 'b', type: 'quantitative'}
+        }
       });
 
       expect(getImplicitFromEncoding(model)).toEqual({});
@@ -94,31 +94,31 @@ describe('compile/data/formatparse', () => {
           values: [],
           format: {
             parse: {
-              a: 'number',
-            },
-          },
+              a: 'number'
+            }
+          }
         },
         facet: {
-          row: {field: 'a', type: 'ordinal'},
+          row: {field: 'a', type: 'ordinal'}
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: 'a', type: 'quantitative'},
-            y: {field: 'b', type: 'temporal'},
-          },
-        },
+            y: {field: 'b', type: 'temporal'}
+          }
+        }
       });
 
       expect(ParseNode.makeExplicit(null, model, new AncestorParse()).parse).toEqual({
-        a: 'number',
+        a: 'number'
       });
       model.parseScale();
       model.parseData();
 
       expect(model.child.component.data.ancestorParse.combine()).toEqual({
         a: 'number',
-        b: 'date',
+        b: 'date'
       });
 
       // set the ancestor parse to see whether fields from it are not parsed
@@ -126,10 +126,10 @@ describe('compile/data/formatparse', () => {
 
       const implicit = getImplicitFromEncoding(model.child as ModelWithField);
       expect(implicit).toEqual({
-        b: 'date',
+        b: 'date'
       });
       expect(ParseNode.makeWithAncestors(null, {}, implicit, model.child.component.data.ancestorParse).parse).toEqual({
-        b: 'date',
+        b: 'date'
       });
     });
 
@@ -139,12 +139,12 @@ describe('compile/data/formatparse', () => {
           values: [],
           format: {
             parse: {
-              a: 'number',
-            },
-          },
+              a: 'number'
+            }
+          }
         },
         mark: 'point',
-        encoding: {},
+        encoding: {}
       });
 
       expect(ParseNode.makeExplicit(null, model, new AncestorParse({a: 'number'}, {}))).toBeNull();
@@ -154,8 +154,8 @@ describe('compile/data/formatparse', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'quantitative'},
-        },
+          x: {field: 'a', type: 'quantitative'}
+        }
       });
 
       expect(ParseNode.makeExplicit(null, model, new AncestorParse({a: 'number'}, {}))).toBeNull();
@@ -166,8 +166,8 @@ describe('compile/data/formatparse', () => {
         mark: 'point',
         encoding: {
           x: {aggregate: 'sum', field: 'foo', type: 'quantitative'},
-          y: {aggregate: 'count', type: 'quantitative'},
-        },
+          y: {aggregate: 'count', type: 'quantitative'}
+        }
       });
 
       expect(getImplicitFromEncoding(model)).toEqual({});
@@ -178,13 +178,13 @@ describe('compile/data/formatparse', () => {
         mark: 'point',
         encoding: {
           x: {field: 'foo.bar', type: 'quantitative'},
-          y: {field: 'foo.baz', type: 'ordinal'},
-        },
+          y: {field: 'foo.baz', type: 'ordinal'}
+        }
       });
 
       expect(getImplicitFromEncoding(model)).toEqual({
         'foo.bar': 'flatten',
-        'foo.baz': 'flatten',
+        'foo.baz': 'flatten'
       });
     });
 
@@ -194,15 +194,15 @@ describe('compile/data/formatparse', () => {
         mark: 'point',
         encoding: {
           x: {field: 'bar', type: 'quantitative'},
-          y: {field: 'baz', type: 'ordinal'},
-        },
+          y: {field: 'baz', type: 'ordinal'}
+        }
       });
 
       model.parseSelections();
 
       expect(getImplicitFromSelection(model)).toEqual({
         'foo.bar': 'flatten',
-        'foo.baz': 'flatten',
+        'foo.baz': 'flatten'
       });
     });
 
@@ -213,20 +213,20 @@ describe('compile/data/formatparse', () => {
           values: [],
           format: {
             parse: {
-              b: null,
-            },
-          },
+              b: null
+            }
+          }
         },
         encoding: {
           x: {field: 'a', type: 'quantitative'},
-          y: {field: 'b', type: 'quantitative'},
-        },
+          y: {field: 'b', type: 'quantitative'}
+        }
       });
 
       const ancestorParse = new AncestorParse();
       expect(ParseNode.makeExplicit(null, model, ancestorParse)).toBeNull();
       expect(ancestorParse.combine()).toEqual({
-        b: null,
+        b: null
       });
 
       expect(getImplicitFromEncoding(model)).toEqual({});
@@ -238,13 +238,13 @@ describe('compile/data/formatparse', () => {
         data: {
           values: [],
           format: {
-            parse: null, // implies AncestorParse.makeExplicit = true
-          },
+            parse: null // implies AncestorParse.makeExplicit = true
+          }
         },
         encoding: {
           x: {field: 'a', type: 'quantitative'},
-          y: {field: 'b', type: 'quantitative'},
-        },
+          y: {field: 'b', type: 'quantitative'}
+        }
       });
 
       expect(ParseNode.makeExplicit(null, model, new AncestorParse({}, {}, true))).toBeNull();
@@ -255,12 +255,12 @@ describe('compile/data/formatparse', () => {
         mark: 'line',
         encoding: {
           x: {field: 'foo', type: 'quantitative'},
-          y: {field: 'bar', type: 'quantitative'},
-        },
+          y: {field: 'bar', type: 'quantitative'}
+        }
       });
 
       expect(getImplicitFromEncoding(model)).toEqual({
-        foo: 'number',
+        foo: 'number'
       });
     });
   });
@@ -275,7 +275,7 @@ describe('compile/data/formatparse', () => {
         d2: 'date:"%y"',
         d3: 'utc:"%y"',
         d4: 'utc:%y',
-        d5: `utc:'%y'`,
+        d5: `utc:'%y'`
       });
 
       expect(p.assembleTransforms()).toEqual([
@@ -286,31 +286,31 @@ describe('compile/data/formatparse', () => {
         {type: 'formula', expr: `timeParse(datum["d2"],'%y')`, as: 'd2'},
         {type: 'formula', expr: `utcParse(datum["d3"],'%y')`, as: 'd3'},
         {type: 'formula', expr: `utcParse(datum["d4"],'%y')`, as: 'd4'},
-        {type: 'formula', expr: `utcParse(datum["d5"],'%y')`, as: 'd5'},
+        {type: 'formula', expr: `utcParse(datum["d5"],'%y')`, as: 'd5'}
       ]);
     });
 
     it('should assemble flatten for nested fields', () => {
       const p = new ParseNode(null, {
         flat: 'number',
-        'nested.field': 'flatten',
+        'nested.field': 'flatten'
       });
 
       expect(p.assembleTransforms(true)).toEqual([
-        {type: 'formula', expr: 'datum["nested"] && datum["nested"]["field"]', as: 'nested.field'},
+        {type: 'formula', expr: 'datum["nested"] && datum["nested"]["field"]', as: 'nested.field'}
       ]);
     });
 
     it(
       'should show warning for unrecognized types',
-      log.wrap((localLogger) => {
+      log.wrap(localLogger => {
         const p = new ParseNode(null, {
-          x: 'foo',
+          x: 'foo'
         });
 
         expect(p.assembleTransforms()).toEqual([]);
         expect(localLogger.warns[0]).toEqual(log.message.unrecognizedParse('foo'));
-      }),
+      })
     );
   });
 
@@ -319,12 +319,12 @@ describe('compile/data/formatparse', () => {
       const p = new ParseNode(null, {
         n: 'number',
         b: 'boolean',
-        'nested.field': 'flatten',
+        'nested.field': 'flatten'
       });
 
       expect(p.assembleFormatParse()).toEqual({
         n: 'number',
-        b: 'boolean',
+        b: 'boolean'
       });
     });
   });
@@ -334,7 +334,7 @@ describe('compile/data/formatparse', () => {
       const p = new ParseNode(null, {
         n: 'number',
         b: 'boolean',
-        'nested.field': 'flatten',
+        'nested.field': 'flatten'
       });
 
       expect(p.producedFields()).toEqual(new Set(['n', 'b', 'nested.field']));

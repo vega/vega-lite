@@ -13,7 +13,7 @@ import {
   TypedFieldDef,
   vgField
 } from './channeldef.js';
-import {CompositeAggregate} from './compositemark.js';
+import {CompositeAggregate} from './compositemark/index.js';
 import {channelHasField, Encoding, isAggregate} from './encoding.js';
 import * as log from './log/index.js';
 import {

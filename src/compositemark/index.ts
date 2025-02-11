@@ -1,7 +1,7 @@
 import {Field} from '../channeldef.js';
 import {Encoding} from '../encoding.js';
 import {NormalizerParams} from '../normalize/index.js';
-import {GenericUnitSpec, NormalizedLayerSpec} from '../spec.js';
+import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
 import {EncodingFacetMapping} from '../spec/facet.js';
 import {NormalizedUnitSpec} from '../spec/unit.js';
 import {keys} from '../util.js';
@@ -14,7 +14,7 @@ import {
   ErrorBandDef,
   ERRORBAND_PARTS,
   normalizeErrorBand
-} from './errorband';
+} from './errorband.js';
 import {
   ERRORBAR,
   ErrorBar,
@@ -23,11 +23,11 @@ import {
   ERRORBAR_PARTS,
   ErrorExtraEncoding,
   normalizeErrorBar
-} from './errorbar';
+} from './errorbar.js';
 
-export type {BoxPlotConfig} from './boxplot';
-export type {ErrorBandConfigMixins} from './errorband';
-export type {ErrorBarConfigMixins} from './errorbar';
+export type {BoxPlotConfig} from './boxplot.js';
+export type {ErrorBandConfigMixins} from './errorband.js';
+export type {ErrorBarConfigMixins} from './errorbar.js';
 
 export type CompositeMarkNormalizerRun = (
   spec: GenericUnitSpec<any, any>,

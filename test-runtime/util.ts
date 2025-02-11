@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import {sync as mkdirp} from 'mkdirp';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 import {promisify} from 'util';
 import {stringValue} from 'vega-util';
-import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} from '../src/selection';
-import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec';
+import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} from '../src/selection.js';
+import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec/index.js';
 
 const generate = process.env.VL_GENERATE_TESTS;
 const output = 'test-runtime/resources';

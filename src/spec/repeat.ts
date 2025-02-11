@@ -1,5 +1,5 @@
 import {isArray} from 'vega-util';
-import {LayerSpec, NonNormalizedSpec} from '.';
+import {LayerSpec, NonNormalizedSpec} from './index.js';
 import {Field} from '../channeldef.js';
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base.js';
 import {UnitSpecWithFrame} from './unit.js';

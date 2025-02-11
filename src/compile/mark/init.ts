@@ -25,7 +25,7 @@ import {
   SQUARE,
   TEXT,
   TICK
-} from '../../mark';
+} from '../../mark.js';
 import {QUANTITATIVE, TEMPORAL} from '../../type.js';
 import {contains, getFirstDefined} from '../../util.js';
 import {getMarkConfig, getMarkPropOrConfig} from '../common.js';

@@ -6,7 +6,7 @@ import {
   getFieldOrDatumDef,
   isFieldDef,
   MarkPropDatumDef,
-  MarkPropFieldDef,
+  MarkPropFieldDef
 } from '../../channeldef.js';
 import {LegendInternal, LEGEND_SCALE_CHANNELS} from '../../legend.js';
 import {normalizeTimeUnit} from '../../timeunit.js';
@@ -73,7 +73,7 @@ function isExplicit<T extends string | number | object | boolean>(
   value: T,
   property: keyof LegendComponentProps,
   legend: LegendInternal,
-  fieldDef: FieldDef<string>,
+  fieldDef: FieldDef<string>
 ) {
   switch (property) {
     case 'disable':
@@ -128,7 +128,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
     scaleType,
     orient,
     legendType,
-    direction,
+    direction
   };
 
   for (const property of LEGEND_COMPONENT_PROPERTIES) {
@@ -169,7 +169,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
           ? {name: `${varName(fieldOrDatumDef.field)}_legend_${part}`}
           : {}),
         ...(selections?.length ? {interactive: !!selections} : {}),
-        update: value,
+        update: value
       };
     }
   }
@@ -258,7 +258,7 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
             return makeImplicit('symbol');
         }
         return defaultTieBreaker<LegendComponentProps, any>(v1, v2, prop, 'legend');
-      },
+      }
     );
     mergedLegend.setWithExplicit(prop, mergedValueWithExplicit);
   }

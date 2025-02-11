@@ -5,7 +5,7 @@ import {defaultConfig} from '../../src/config.js';
 import * as log from '../../src/log/index.js';
 import {isMarkDef} from '../../src/mark.js';
 import {normalize} from '../../src/normalize/index.js';
-import {isLayerSpec, isUnitSpec} from '../../src/spec.js';
+import {isLayerSpec, isUnitSpec} from '../../src/spec/index.js';
 import {TopLevelUnitSpec} from '../../src/spec/unit.js';
 import {isAggregate, isCalculate, Transform} from '../../src/transform.js';
 import {some} from '../../src/util.js';

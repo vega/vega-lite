@@ -16,8 +16,8 @@ function getVgData(params: any, x?: any, y?: any, mark?: Mark, enc?: any, transf
       x: {field: 'Horsepower', type: 'quantitative', ...x},
       y: {field: 'Miles-per-Gallon', type: 'quantitative', ...y},
       color: {field: 'Origin', type: 'nominal'},
-      ...enc,
-    },
+      ...enc
+    }
   });
   model.parseData();
   optimizeDataflow(model.component.data, model);
@@ -30,7 +30,7 @@ describe('compile/data/identifier', () => {
       function run(selDef?: any) {
         const data = getVgData(selDef);
         for (const d of data) {
-          expect(d.transform?.some((t) => t.type === 'identifier')).not.toBe(true);
+          expect(d.transform?.some(t => t.type === 'identifier')).not.toBe(true);
         }
       }
 
@@ -61,7 +61,7 @@ describe('compile/data/identifier', () => {
 
     it('is added before any user-specified transforms', () => {
       const data = getVgData([{name: 'pt', select: 'point'}], null, null, null, null, [
-        {calculate: 'datum.Horsepower * 2', as: 'foo'},
+        {calculate: 'datum.Horsepower * 2', as: 'foo'}
       ]);
       let calc = -1;
       data[0].transform.some((t, i) => ((calc = i), t.type === 'formula' && t.as === 'foo'));
@@ -77,25 +77,25 @@ describe('compile/data/identifier', () => {
               params: [
                 {
                   name: 'pt',
-                  select: 'point',
-                },
+                  select: 'point'
+                }
               ],
               mark: 'circle',
               encoding: {
                 x: {field: 'Horsepower', type: 'quantitative'},
                 y: {field: 'Miles-per-Gallon', type: 'quantitative'},
-                color: {field: 'Year', type: 'temporal'},
-              },
+                color: {field: 'Year', type: 'temporal'}
+              }
             },
             {
               mark: 'circle',
               encoding: {
                 x: {field: 'Horsepower', type: 'quantitative', bin},
                 y: {field: 'Miles-per-Gallon', type: 'quantitative'},
-                color: {field: 'Origin', type: 'nominal'},
-              },
-            },
-          ],
+                color: {field: 'Origin', type: 'nominal'}
+              }
+            }
+          ]
         });
         model.parseScale();
         model.parseSelections();

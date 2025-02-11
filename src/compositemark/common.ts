@@ -1,6 +1,6 @@
 import {Orientation, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isString} from 'vega-util';
-import {CompositeMark, CompositeMarkDef} from '.';
+import {CompositeMark, CompositeMarkDef} from './index.js';
 import {
   Field,
   FieldDefBase,
@@ -17,7 +17,7 @@ import {Encoding, fieldDefs} from '../encoding.js';
 import {ExprRef} from '../expr.js';
 import * as log from '../log/index.js';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, AnyMarkConfig, MarkDef} from '../mark.js';
-import {GenericUnitSpec, NormalizedUnitSpec} from '../spec.js';
+import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/index.js';
 import {getFirstDefined, hash, unique} from '../util.js';
 import {isSignalRef} from '../vega.schema.js';
 import {toStringFieldDef} from './../channeldef.js';

@@ -1,12 +1,12 @@
 import {stringValue} from 'vega-util';
-import {VL_SELECTION_RESOLVE} from '.';
+import {VL_SELECTION_RESOLVE} from './index.js';
 import {isScaleChannel, ScaleChannel} from '../../channel.js';
 import * as log from '../../log/index.js';
 import {hasContinuousDomain} from '../../scale.js';
 import {isLayerModel, Model} from '../model.js';
 import {UnitModel} from '../unit.js';
 import {SelectionProjection} from './project.js';
-import {SelectionCompiler} from '.';
+import {SelectionCompiler} from './index.js';
 import {replacePathInField} from '../../util.js';
 import {NewSignal} from 'vega';
 

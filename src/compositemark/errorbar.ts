@@ -16,7 +16,7 @@ import {ExprRef} from '../expr.js';
 import * as log from '../log/index.js';
 import {isMarkDef, MarkDef} from '../mark.js';
 import {NormalizerParams} from '../normalize/index.js';
-import {GenericUnitSpec, NormalizedLayerSpec} from '../spec.js';
+import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
 import {Step} from '../spec/base.js';
 import {NormalizedUnitSpec} from '../spec/unit.js';
 import {TitleParams} from '../title.js';

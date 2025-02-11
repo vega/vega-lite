@@ -1,7 +1,7 @@
 import {NewSignal, SignalRef} from 'vega';
 import {Config} from '../config.js';
 import * as log from '../log/index.js';
-import {isHConcatSpec, isVConcatSpec, NormalizedConcatSpec, NormalizedSpec} from '../spec.js';
+import {isHConcatSpec, isVConcatSpec, NormalizedConcatSpec, NormalizedSpec} from '../spec/index.js';
 import {keys} from '../util.js';
 import {VgData, VgLayout} from '../vega.schema.js';
 import {buildModel} from './buildmodel.js';
@@ -10,7 +10,7 @@ import {assembleLayoutSignals} from './layoutsize/assemble.js';
 import {parseConcatLayoutSize} from './layoutsize/parse.js';
 import {Model} from './model.js';
 import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message.js';
-import {isTimerSelection} from './selection.js';
+import {isTimerSelection} from './selection/index.js';
 
 export class ConcatModel extends Model {
   public readonly children: Model[];

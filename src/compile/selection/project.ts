@@ -6,7 +6,7 @@ import {
   isScaleChannel,
   isSingleDefUnitChannel,
   SingleDefUnitChannel
-} from '../../channel';
+} from '../../channel.js';
 import * as log from '../../log/index.js';
 import {hasContinuousDomain} from '../../scale.js';
 import {
@@ -14,10 +14,10 @@ import {
   SelectionInitIntervalMapping,
   SelectionInitMapping,
   SELECTION_ID
-} from '../../selection.js';
+} from '../../selection/index.js';
 import {Dict, hash, keys, varName, isEmpty} from '../../util.js';
 import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit.js';
-import {SelectionCompiler} from '.';
+import {SelectionCompiler} from './index.js';
 import {assembleProjection} from './assemble.js';
 import {isBinnedTimeUnit} from '../../timeunit.js';
 export const TUPLE_FIELDS = '_tuple_fields';

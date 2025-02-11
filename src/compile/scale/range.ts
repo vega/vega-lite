@@ -27,7 +27,7 @@ import {
   Y,
   YOFFSET,
   TIME
-} from '../../channel';
+} from '../../channel.js';
 import {
   getBandPosition,
   getFieldOrDatumDef,
@@ -52,7 +52,7 @@ import {
   ScaleType,
   scaleTypeSupportProperty,
   Scheme
-} from '../../scale';
+} from '../../scale.js';
 import {getStepFor, isStep, LayoutSizeMixins, Step} from '../../spec/base.js';
 import {isDiscrete} from '../../type.js';
 import * as util from '../../util.js';

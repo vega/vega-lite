@@ -1,7 +1,7 @@
 import {Signal, SignalRef} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
-import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers, isTimerSelection} from '.';
+import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers, isTimerSelection} from './index.js';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime.js';
 import {hasContinuousDomain} from '../../scale.js';
 import {SelectionInit, SelectionInitInterval, ParameterExtent, SELECTION_ID} from '../../selection.js';
@@ -26,10 +26,10 @@ export function assembleProjection(proj: SelectionProjection) {
 export function assembleInit(
   init: readonly (SelectionInit | readonly SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
   isExpr = true,
-  wrap: (str: string | number) => string | number = identity,
+  wrap: (str: string | number) => string | number = identity
 ): any {
   if (isArray(init)) {
-    const assembled = init.map((v) => assembleInit(v, isExpr, wrap));
+    const assembled = init.map(v => assembleInit(v, isExpr, wrap));
     return isExpr ? `[${assembled.join(', ')}]` : assembled;
   } else if (isDateTime(init)) {
     if (isExpr) {
@@ -57,9 +57,9 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]
       on: [
         {
           events: {signal: selCmpt.name + TUPLE},
-          update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`,
-        },
-      ],
+          update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`
+        }
+      ]
     });
   }
 
@@ -75,9 +75,9 @@ export function assembleFacetSignals(model: FacetModel, signals: Signal[]) {
       on: [
         {
           events: parseSelector('pointermove', 'scope'),
-          update: `isTuple(facet) ? facet : group(${name}).datum`,
-        },
-      ],
+          update: `isTuple(facet) ? facet : group(${name}).datum`
+        }
+      ]
     });
   }
 
@@ -89,13 +89,13 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
   for (const selCmpt of vals(model.component.selection ?? {})) {
     const name = selCmpt.name;
     const store = stringValue(name + STORE);
-    const hasSg = signals.filter((s) => s.name === name);
+    const hasSg = signals.filter(s => s.name === name);
     if (hasSg.length === 0) {
       const resolve = selCmpt.resolve === 'global' ? 'union' : selCmpt.resolve;
       const isPoint = selCmpt.type === 'point' ? ', true, true)' : ')';
       signals.push({
         name: selCmpt.name,
-        update: `${VL_SELECTION_RESOLVE}(${store}, ${stringValue(resolve)}${isPoint}`,
+        update: `${VL_SELECTION_RESOLVE}(${store}, ${stringValue(resolve)}${isPoint}`
       });
     }
     hasSelections = true;
@@ -108,12 +108,12 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
   }
 
   if (hasSelections) {
-    const hasUnit = signals.filter((s) => s.name === 'unit');
+    const hasUnit = signals.filter(s => s.name === 'unit');
     if (hasUnit.length === 0) {
       signals.unshift({
         name: 'unit',
         value: {},
-        on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}],
+        on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}]
       });
     }
   }
@@ -137,11 +137,11 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
       const fields = selCmpt.project.items.map(assembleProjection);
 
       store.values = selCmpt.project.hasSelectionId
-        ? selCmpt.init.map((i) => ({unit, [SELECTION_ID]: assembleInit(i, false)[0]}))
-        : selCmpt.init.map((i) => ({unit, fields, values: assembleInit(i, false)}));
+        ? selCmpt.init.map(i => ({unit, [SELECTION_ID]: assembleInit(i, false)[0]}))
+        : selCmpt.init.map(i => ({unit, fields, values: assembleInit(i, false)}));
     }
 
-    const contains = [...selectionData, ...data].filter((d) => d.name === selCmpt.name + STORE);
+    const contains = [...selectionData, ...data].filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
       selectionData.push(store);
     }
@@ -153,22 +153,22 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
       //     ? model.parent.lookupDataSource(model.parent.getDataName(DataSourceType.Main))
       //     : model.lookupDataSource(model.getDataName(DataSourceType.Main));
       const sourceName = model.lookupDataSource(model.getDataName(DataSourceType.Main));
-      const sourceData = data.find((d) => d.name === sourceName);
+      const sourceData = data.find(d => d.name === sourceName);
 
       // find the filter transform for the current selection
       const sourceDataFilter = sourceData.transform.find(
-        (t) => t.type === 'filter' && t.expr.includes('vlSelectionTest'),
+        t => t.type === 'filter' && t.expr.includes('vlSelectionTest')
       );
 
       if (sourceDataFilter) {
         // remove it from the original dataset
-        sourceData.transform = sourceData.transform.filter((t) => t !== sourceDataFilter);
+        sourceData.transform = sourceData.transform.filter(t => t !== sourceDataFilter);
 
         // create dataset to hold current animation frame
         const currentFrame: VgData = {
           name: sourceData.name + CURR,
           source: sourceData.name,
-          transform: [sourceDataFilter], // add the selection filter to the animation dataset
+          transform: [sourceDataFilter] // add the selection filter to the animation dataset
         };
 
         animationData.push(currentFrame);
@@ -205,7 +205,7 @@ export function assembleSelectionScaleDomain(
   model: Model,
   extent: ParameterExtent,
   scaleCmpt: ScaleComponent,
-  domain: VgDomain,
+  domain: VgDomain
 ): SignalRef {
   const parsedExtent = parseSelectionExtent(model, extent.param, extent);
 
@@ -213,12 +213,12 @@ export function assembleSelectionScaleDomain(
     signal:
       hasContinuousDomain(scaleCmpt.get('type')) && isArray(domain) && domain[0] > domain[1]
         ? `isValid(${parsedExtent}) && reverse(${parsedExtent})`
-        : parsedExtent,
+        : parsedExtent
   };
 }
 
 function cleanupEmptyOnArray(signals: Signal[]) {
-  return signals.map((s) => {
+  return signals.map(s => {
     if (s.on && !s.on.length) delete s.on;
     return s;
   });

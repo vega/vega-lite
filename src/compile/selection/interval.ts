@@ -1,11 +1,11 @@
 import {isObject, NewSignal, OnEvent, SignalValue, Stream} from 'vega';
 import {array, stringValue} from 'vega-util';
-import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
+import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from './index.js';
 import {GeoPositionChannel, LATITUDE, LONGITUDE, ScaleChannel, X, Y} from '../../channel.js';
 import {FieldName} from '../../channeldef.js';
 import {warn} from '../../log/index.js';
 import {hasContinuousDomain} from '../../scale.js';
-import {IntervalSelectionConfigWithoutType, SelectionInitInterval, SELECTION_ID} from '../../selection.js';
+import {IntervalSelectionConfigWithoutType, SelectionInitInterval, SELECTION_ID} from '../../selection/index.js';
 import {keys, vals} from '../../util.js';
 import {LayoutSizeIndex} from '../layoutsize/component.js';
 import {isUnitModel} from '../model.js';

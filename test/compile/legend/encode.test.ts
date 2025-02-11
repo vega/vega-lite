@@ -1,6 +1,6 @@
 import {COLOR, SIZE} from '../../../src/channel.js';
 import {LegendComponent} from '../../../src/compile/legend/component.js';
-import * as encode from '../../../src/compile/legend/encode.js';
+import * as encode from '../../../src/compile/legend/encode/index.js';
 import {getLegendType} from '../../../src/compile/legend/properties.js';
 import {Encoding} from '../../../src/encoding.js';
 import {parseUnitModelWithScale} from '../../util.js';
@@ -20,13 +20,13 @@ describe('compile/legend', () => {
             mark: 'point',
             encoding: {
               x: {field: 'a', type: 'nominal'},
-              color: {field: 'a', type: 'nominal'},
-            },
+              color: {field: 'a', type: 'nominal'}
+            }
           }),
           channel: COLOR,
           legendCmpt: symbolLegend,
-          legendType,
-        },
+          legendType
+        }
       );
       expect(symbol.fill).toEqual({value: 'transparent'});
       expect((symbol ?? {}).strokeDash).toBeUndefined();
@@ -42,18 +42,18 @@ describe('compile/legend', () => {
           model: parseUnitModelWithScale({
             mark: {
               type: 'circle',
-              opacity: 0.3,
+              opacity: 0.3
             },
             encoding: {
               x: {field: 'a', type: 'nominal'},
               color: {field: 'a', type: 'nominal'},
-              size: {field: 'a', type: 'quantitative'},
-            },
+              size: {field: 'a', type: 'quantitative'}
+            }
           }),
           channel: SIZE,
           legendCmpt: symbolLegend,
-          legendType,
-        },
+          legendType
+        }
       );
       expect(symbol.fill).toEqual({value: 'black'});
       expect(symbol.fillOpacity).toEqual({value: 0.3});
@@ -68,13 +68,13 @@ describe('compile/legend', () => {
           model: parseUnitModelWithScale({
             mark: 'point',
             encoding: {
-              color: {field: 'a', type: 'nominal'},
-            },
+              color: {field: 'a', type: 'nominal'}
+            }
           }),
           channel: COLOR,
           legendCmpt: symbolLegend,
-          legendType,
-        },
+          legendType
+        }
       );
       expect((symbol.opacity as any).value).toBe(0.7); // default opacity is 0.7.
     });
@@ -89,13 +89,13 @@ describe('compile/legend', () => {
           model: parseUnitModelWithScale({
             mark: 'point',
             encoding: {
-              color: {field: 'a', type: 'nominal'},
-            },
+              color: {field: 'a', type: 'nominal'}
+            }
           }),
           channel: COLOR,
           legendCmpt: symbolLegendWithProps,
-          legendType,
-        },
+          legendType
+        }
       );
       expect(symbol.opacity).toBeUndefined();
     });
@@ -112,14 +112,14 @@ describe('compile/legend', () => {
               color: {field: 'a', type: 'nominal'},
               opacity: {
                 condition: {param: 'brush', value: 1},
-                value: 0,
-              },
-            },
+                value: 0
+              }
+            }
           }),
           channel: COLOR,
           legendCmpt: symbolLegend,
-          legendType,
-        },
+          legendType
+        }
       );
       expect((symbol.opacity as any).value).toBe(1);
     });
@@ -134,13 +134,13 @@ describe('compile/legend', () => {
           model: parseUnitModelWithScale({
             mark: 'point',
             encoding: {
-              color: {field: 'a', type: 'nominal'},
-            },
+              color: {field: 'a', type: 'nominal'}
+            }
           }),
           channel: COLOR,
           legendCmpt: gradientLegend,
-          legendType: 'gradient',
-        },
+          legendType: 'gradient'
+        }
       );
 
       expect((gradient.opacity as any).value).toBe(0.7); // default opacity is 0.7.
@@ -152,16 +152,16 @@ describe('compile/legend', () => {
       const fieldDef: Encoding<string>['color'] = {
         field: 'a',
         type: 'temporal',
-        legend: {format: 'abc', formatType: 'customDateFormat'},
+        legend: {format: 'abc', formatType: 'customDateFormat'}
       };
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {color: fieldDef},
-        config: {customFormatTypes: true},
+        config: {customFormatTypes: true}
       });
       const label = encode.labels(
         {},
-        {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'},
+        {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}
       );
       expect(label.text).toEqual({signal: 'customDateFormat(datum.value, "abc")'});
     });
@@ -170,18 +170,18 @@ describe('compile/legend', () => {
   it('returns correct expression for custom format Type from config.numberFormatType', () => {
     const fieldDef: Encoding<string>['color'] = {
       field: 'a',
-      type: 'quantitative',
+      type: 'quantitative'
     };
 
     const model = parseUnitModelWithScale({
       mark: 'point',
       encoding: {color: fieldDef},
-      config: {customFormatTypes: true, numberFormat: 'abc', numberFormatType: 'customDateFormat'},
+      config: {customFormatTypes: true, numberFormat: 'abc', numberFormatType: 'customDateFormat'}
     });
 
     const label = encode.labels(
       {},
-      {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'},
+      {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}
     );
     expect(label.text).toEqual({signal: 'customDateFormat(datum.value, "abc")'});
   });
@@ -189,18 +189,18 @@ describe('compile/legend', () => {
   it('returns correct expression for custom format Type from config.timeFormatType', () => {
     const fieldDef: Encoding<string>['color'] = {
       field: 'a',
-      type: 'temporal',
+      type: 'temporal'
     };
 
     const model = parseUnitModelWithScale({
       mark: 'point',
       encoding: {color: fieldDef},
-      config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customDateFormat'},
+      config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customDateFormat'}
     });
 
     const label = encode.labels(
       {},
-      {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'},
+      {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}
     );
     expect(label.text).toEqual({signal: 'customDateFormat(datum.value, "abc")'});
   });
@@ -209,18 +209,18 @@ describe('compile/legend', () => {
     const fieldDef: Encoding<string>['color'] = {
       field: 'a',
       type: 'temporal',
-      timeUnit: 'date',
+      timeUnit: 'date'
     };
 
     const model = parseUnitModelWithScale({
       mark: 'point',
       encoding: {color: fieldDef},
-      config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customDateFormat'},
+      config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customDateFormat'}
     });
 
     const label = encode.labels(
       {},
-      {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'},
+      {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}
     );
     expect(label).toBeUndefined();
   });

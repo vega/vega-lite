@@ -2,7 +2,7 @@ import type {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {COLUMN, FACET, ROW} from '../channel.js';
 import {Field, FieldName, hasConditionalFieldOrDatumDef, isFieldOrDatumDef, isValueDef} from '../channeldef.js';
-import {SharedCompositeEncoding} from '../compositemark.js';
+import {SharedCompositeEncoding} from '../compositemark/index.js';
 import {boxPlotNormalizer} from '../compositemark/boxplot.js';
 import {errorBandNormalizer} from '../compositemark/errorband.js';
 import {errorBarNormalizer} from '../compositemark/errorbar.js';
@@ -10,7 +10,7 @@ import {channelHasField, Encoding} from '../encoding.js';
 import {ExprRef} from '../expr.js';
 import * as log from '../log/index.js';
 import {Projection} from '../projection.js';
-import {FacetedUnitSpec, GenericSpec, LayerSpec, UnitSpec} from '../spec.js';
+import {FacetedUnitSpec, GenericSpec, LayerSpec, UnitSpec} from '../spec/index.js';
 import {GenericCompositionLayoutWithColumns} from '../spec/base.js';
 import {GenericConcatSpec} from '../spec/concat.js';
 import {
@@ -20,7 +20,7 @@ import {
   GenericFacetSpec,
   isFacetMapping,
   NormalizedFacetSpec
-} from '../spec/facet';
+} from '../spec/facet.js';
 import {NormalizedSpec} from '../spec/index.js';
 import {NormalizedLayerSpec} from '../spec/layer.js';
 import {SpecMapper} from '../spec/map.js';
@@ -170,14 +170,11 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
             layer: repeater.layer
           };
 
-          const childName =
-            (childSpec.name ? `${childSpec.name}_` : '') +
-            repeaterPrefix +
-            'child__' +
-            (isArray(repeat)
+          const childName = `${(childSpec.name ? `${childSpec.name}_` : '') + repeaterPrefix}child__${
+            isArray(repeat)
               ? `${varName(repeatValue)}`
-              : (repeat.row ? `row_${varName(rowValue)}` : '') +
-                (repeat.column ? `column_${varName(columnValue)}` : ''));
+              : (repeat.row ? `row_${varName(rowValue)}` : '') + (repeat.column ? `column_${varName(columnValue)}` : '')
+          }`;
 
           const child = this.map(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
           child.name = childName;

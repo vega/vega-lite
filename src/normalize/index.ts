@@ -12,7 +12,7 @@ import {
   NormalizedSpec,
   RepeatSpec,
   TopLevelSpec
-} from '../spec';
+} from '../spec/index.js';
 import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel.js';
 import {deepEqual} from '../util.js';
 import {NormalizerParams} from './base.js';

@@ -1,6 +1,6 @@
 import {normalize} from '../../src/index.js';
 import {TopLevelSelectionsNormalizer} from '../../src/normalize/toplevelselection.js';
-import {GenericVConcatSpec, NormalizedSpec, NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../src/spec.js';
+import {GenericVConcatSpec, NormalizedSpec, NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../src/spec/index.js';
 
 const selectionNormalizer = new TopLevelSelectionsNormalizer();
 const unit: NormalizedUnitSpec = {
@@ -8,8 +8,8 @@ const unit: NormalizedUnitSpec = {
   mark: 'point',
   encoding: {
     x: {field: 'Horsepower', type: 'quantitative'},
-    y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-  },
+    y: {field: 'Miles_per_Gallon', type: 'quantitative'}
+  }
 };
 
 describe('TopLevelSelectionNormalizer', () => {
@@ -20,9 +20,9 @@ describe('TopLevelSelectionNormalizer', () => {
         {name: 'two', select: 'point'},
         {name: 'three', select: 'interval'},
         {name: 'four', expr: 'true'},
-        {name: 'five', bind: {input: 'range'}},
+        {name: 'five', bind: {input: 'range'}}
       ],
-      vconcat: [{...unit}, {...unit}],
+      vconcat: [{...unit}, {...unit}]
     };
 
     const normalized = selectionNormalizer.map(spec, {config: null}) as TopLevel<
@@ -40,9 +40,9 @@ describe('TopLevelSelectionNormalizer', () => {
         {name: 'two', select: 'point', views: ['b']},
         {name: 'three', select: 'interval', views: ['a', 'b']},
         {name: 'four', expr: 'true'},
-        {name: 'five', bind: {input: 'range'}},
+        {name: 'five', bind: {input: 'range'}}
       ],
-      vconcat: [{name: 'a', ...unit}, {name: 'b', ...unit}, {name: 'c', ...unit}, {...unit}],
+      vconcat: [{name: 'a', ...unit}, {name: 'b', ...unit}, {name: 'c', ...unit}, {...unit}]
     };
 
     const normalized = selectionNormalizer.map(spec, {config: null}) as TopLevel<
@@ -67,10 +67,10 @@ describe('TopLevelSelectionNormalizer', () => {
         {
           name: 'three',
           select: 'interval',
-          views: ['child__row_Horsepower_a', 'child__row_Horsepower_c', 'child__row_Acceleration_a'],
+          views: ['child__row_Horsepower_a', 'child__row_Horsepower_c', 'child__row_Acceleration_a']
         },
         {name: 'four', expr: 'true'},
-        {name: 'five', bind: {input: 'range'}},
+        {name: 'five', bind: {input: 'range'}}
       ],
       repeat: {row: ['Horsepower', 'Acceleration']},
       spec: {
@@ -78,10 +78,10 @@ describe('TopLevelSelectionNormalizer', () => {
           {name: 'a', ...unit},
           {
             name: 'b',
-            layer: [{name: 'c', ...unit}, {...unit}],
-          },
-        ],
-      },
+            layer: [{name: 'c', ...unit}, {...unit}]
+          }
+        ]
+      }
     };
 
     const normalized = normalize(spec) as any;

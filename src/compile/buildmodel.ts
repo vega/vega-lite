@@ -1,7 +1,14 @@
 import type {SignalRef} from 'vega';
 import {Config} from '../config.js';
 import * as log from '../log/index.js';
-import {isAnyConcatSpec, isFacetSpec, isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedSpec} from '../spec.js';
+import {
+  isAnyConcatSpec,
+  isFacetSpec,
+  isLayerSpec,
+  isUnitSpec,
+  LayoutSizeMixins,
+  NormalizedSpec
+} from '../spec/index.js';
 import {ConcatModel} from './concat.js';
 import {FacetModel} from './facet.js';
 import {LayerModel} from './layer.js';

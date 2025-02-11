@@ -8,7 +8,7 @@ import {ExprRef, replaceExprRef} from '../expr.js';
 import * as log from '../log/index.js';
 import {hasDiscreteDomain} from '../scale.js';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort.js';
-import {NormalizedFacetSpec} from '../spec.js';
+import {NormalizedFacetSpec} from '../spec/index.js';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet.js';
 import {hasProperty, keys} from '../util.js';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema.js';
@@ -24,7 +24,7 @@ import {parseChildrenLayoutSize} from './layoutsize/parse.js';
 import {Model, ModelWithField} from './model.js';
 import {assembleDomain, getFieldFromDomain} from './scale/domain.js';
 import {assembleFacetSignals} from './selection/assemble.js';
-import {isTimerSelection} from './selection.js';
+import {isTimerSelection} from './selection/index.js';
 import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message.js';
 
 export function facetSortFieldName(

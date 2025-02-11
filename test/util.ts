@@ -19,7 +19,7 @@ import {
   NormalizedUnitSpec,
   TopLevel,
   TopLevelSpec
-} from '../src/spec';
+} from '../src/spec/index.js';
 import {BaseSpec, FrameMixins} from '../src/spec/base.js';
 import {FacetedUnitSpec} from '../src/spec/unit.js';
 import {contains} from '../src/util.js';

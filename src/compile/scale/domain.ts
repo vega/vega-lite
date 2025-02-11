@@ -8,7 +8,7 @@ import {
   NonArgAggregateOp,
   SHARED_DOMAIN_OPS,
   MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX
-} from '../../aggregate';
+} from '../../aggregate.js';
 import {isBinning, isBinParams, isParameterExtent} from '../../bin.js';
 import {getSecondaryRangeChannel, isScaleChannel, isXorY, ScaleChannel} from '../../channel.js';
 import {
@@ -24,14 +24,14 @@ import {
   valueExpr,
   vgField
 } from '../../channeldef.js';
-import {CompositeAggregate} from '../../compositemark.js';
+import {CompositeAggregate} from '../../compositemark/index.js';
 import {DataSourceType} from '../../data.js';
 import {DateTime} from '../../datetime.js';
 import {ExprRef} from '../../expr.js';
 import * as log from '../../log/index.js';
 import {isPathMark, isRectBasedMark} from '../../mark.js';
 import {Domain, hasDiscreteDomain, isDomainUnionWith, isParameterDomain, ScaleConfig, ScaleType} from '../../scale.js';
-import {ParameterExtent} from '../../selection.js';
+import {ParameterExtent} from '../../selection/index.js';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort.js';
 import {normalizeTimeUnit, TimeUnit, TimeUnitTransformParams} from '../../timeunit.js';
 import {Type} from '../../type.js';
