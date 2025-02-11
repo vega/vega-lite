@@ -31,7 +31,7 @@ import {
   getCompositeMarkTooltip,
   makeCompositeAggregatePartFactory,
   PartsMixins
-} from './common';
+} from './common.js';
 import {ErrorBand, ErrorBandDef} from './errorband.js';
 
 export const ERRORBAR = 'errorbar' as const;

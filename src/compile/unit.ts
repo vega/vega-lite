@@ -32,7 +32,7 @@ import {LegendInternal} from '../legend.js';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark.js';
 import {Projection} from '../projection.js';
 import {Domain, Scale} from '../scale.js';
-import {isSelectionParameter, SelectionParameter} from '../selection/index.js';
+import {isSelectionParameter, SelectionParameter} from '../selection.js';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec/index.js';
 import {isFrameMixins} from '../spec/base.js';
 import {stack, StackProperties} from '../stack.js';

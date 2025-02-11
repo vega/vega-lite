@@ -2,7 +2,7 @@ import {parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
 import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from './index.js';
 import {warn} from '../../log/index.js';
-import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection/index.js';
+import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection.js';
 import {Dict, duplicate, entries, replacePathInField, varName} from '../../util.js';
 import {DataFlowNode, OutputNode} from '../data/dataflow.js';
 import {FilterNode} from '../data/filter.js';
@@ -14,7 +14,7 @@ import {
   MULTIPLE_TIMER_ANIMATION_SELECTION,
   selectionAsScaleDomainWithoutField,
   selectionAsScaleDomainWrongEncodings
-} from '../../log/message';
+} from '../../log/message.js';
 
 export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};

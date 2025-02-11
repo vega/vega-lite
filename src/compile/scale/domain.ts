@@ -31,7 +31,7 @@ import {ExprRef} from '../../expr.js';
 import * as log from '../../log/index.js';
 import {isPathMark, isRectBasedMark} from '../../mark.js';
 import {Domain, hasDiscreteDomain, isDomainUnionWith, isParameterDomain, ScaleConfig, ScaleType} from '../../scale.js';
-import {ParameterExtent} from '../../selection/index.js';
+import {ParameterExtent} from '../../selection.js';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort.js';
 import {normalizeTimeUnit, TimeUnit, TimeUnitTransformParams} from '../../timeunit.js';
 import {Type} from '../../type.js';
@@ -47,7 +47,7 @@ import {
   VgScaleDataRefWithSort,
   VgSortField,
   VgUnionSortField
-} from '../../vega.schema';
+} from '../../vega.schema.js';
 import {getMarkConfig} from '../common.js';
 import {getBinSignalName} from '../data/bin.js';
 import {sortArrayIndexField} from '../data/calculate.js';

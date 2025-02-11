@@ -1,4 +1,4 @@
-import * as encode from '../../../src/compile/axis/encode/index.js';
+import * as encode from '../../../src/compile/axis/encode.js';
 import {parseUnitModelWithScale} from '../../util.js';
 
 describe('compile/axis/encode', () => {

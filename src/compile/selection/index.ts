@@ -9,7 +9,7 @@ import {
   SelectionResolution,
   SelectionType,
   SelectionParameter
-} from '../../selection/index.js';
+} from '../../selection.js';
 import {Dict, vals} from '../../util.js';
 import {OutputNode} from '../data/dataflow.js';
 import {FacetModel} from '../facet.js';

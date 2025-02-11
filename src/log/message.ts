@@ -27,7 +27,7 @@ import {Type} from '../type.js';
 import {stringify} from '../util.js';
 import {VgSortField} from '../vega.schema.js';
 import {SelectionProjection} from '../compile/selection/project.js';
-import {ParameterExtent} from '../selection/index.js';
+import {ParameterExtent} from '../selection.js';
 
 export function invalidSpec(spec: GenericSpec<any, any, any, any>) {
   return `Invalid specification ${stringify(
@@ -134,8 +134,9 @@ export function selectionAsScaleDomainWrongEncodings(
   field: string
 ) {
   return (
-    (!encodings.length ? 'No ' : 'Multiple ') +
-    `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.param)}. ` +
+    `${
+      !encodings.length ? 'No ' : 'Multiple '
+    }matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.param)}. ` +
     `Using "field": ${stringValue(field)}.`
   );
 }

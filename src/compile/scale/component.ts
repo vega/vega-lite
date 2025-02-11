@@ -2,7 +2,7 @@ import type {SignalRef} from 'vega';
 import {isArray, isNumber} from 'vega-util';
 import {ScaleChannel} from '../../channel.js';
 import {Scale, ScaleType} from '../../scale.js';
-import {ParameterExtent} from '../../selection/index.js';
+import {ParameterExtent} from '../../selection.js';
 import {contains} from '../../util.js';
 import {VgNonUnionDomain, VgScale} from '../../vega.schema.js';
 import {Explicit, Split} from '../split.js';

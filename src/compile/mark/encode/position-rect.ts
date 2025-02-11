@@ -10,7 +10,7 @@ import {
   isXorY,
   PolarPositionChannel,
   PositionChannel
-} from '../../../channel';
+} from '../../../channel.js';
 import {
   getBandPosition,
   getBandSize,

@@ -4,7 +4,7 @@ import {checkLinks} from '../../../src/compile/data/optimize.js';
 import {SourceNode} from '../../../src/compile/data/source.js';
 import {resetIdCounter} from '../../../src/util.js';
 import {PlaceholderDataFlowNode} from './util.js';
-import {jest} from '@jest/globals.js';
+import {jest} from '@jest/globals';
 
 const dot = `digraph DataFlow {
   rankdir = TB;

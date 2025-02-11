@@ -14,7 +14,7 @@ import {
   SelectionInitIntervalMapping,
   SelectionInitMapping,
   SELECTION_ID
-} from '../../selection/index.js';
+} from '../../selection.js';
 import {Dict, hash, keys, varName, isEmpty} from '../../util.js';
 import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit.js';
 import {SelectionCompiler} from './index.js';

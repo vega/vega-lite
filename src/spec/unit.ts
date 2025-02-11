@@ -4,7 +4,7 @@ import {Encoding} from '../encoding.js';
 import {ExprRef} from '../expr.js';
 import {AnyMark, Mark, MarkDef} from '../mark.js';
 import {Projection} from '../projection.js';
-import {SelectionParameter} from '../selection/index.js';
+import {SelectionParameter} from '../selection.js';
 import {hasProperty} from '../util.js';
 import {Field} from './../channeldef.js';
 import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, ResolveMixins} from './base.js';

@@ -11,7 +11,7 @@ import {
   testRenderFn,
   unitNameRegex
 } from './util.js';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 import {TopLevelSpec} from '../src/index.js';
 
 for (const type of selectionTypes) {

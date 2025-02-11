@@ -5,15 +5,15 @@ import {
   assembleTitleGroup,
   defaultHeaderGuideAlign,
   defaultHeaderGuideBaseline,
-  getLayoutTitleBand,
-} from '../../../src/compile/header/assemble';
+  getLayoutTitleBand
+} from '../../../src/compile/header/assemble.js';
 import {HEADER_CHANNELS} from '../../../src/compile/header/component.js';
 import {
   HEADER_LABEL_PROPERTIES,
   HEADER_LABEL_PROPERTIES_MAP,
   HEADER_TITLE_PROPERTIES,
-  HEADER_TITLE_PROPERTIES_MAP,
-} from '../../../src/header';
+  HEADER_TITLE_PROPERTIES_MAP
+} from '../../../src/header.js';
 import {parseFacetModel} from '../../util.js';
 
 describe('compile/header/index', () => {
@@ -61,15 +61,15 @@ describe('compile/header/index', () => {
       const model = parseFacetModel({
         facet: {
           row: {field: 'a', type: 'ordinal', sort: 'ascending'},
-          column: {field: 'a', type: 'ordinal', sort: 'descending'},
+          column: {field: 'a', type: 'ordinal', sort: 'descending'}
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'},
-          },
-        },
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
       });
       model.parseScale();
       model.parseLayoutSize();
@@ -84,15 +84,15 @@ describe('compile/header/index', () => {
     it('should correctly process sort field', () => {
       const model = parseFacetModel({
         facet: {
-          row: {field: 'a', type: 'ordinal', sort: {field: 'd', op: 'min'}},
+          row: {field: 'a', type: 'ordinal', sort: {field: 'd', op: 'min'}}
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'},
-          },
-        },
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
       });
       model.parseScale();
       model.parseLayoutSize();
@@ -124,15 +124,15 @@ describe('compile/header/index', () => {
     const model = parseFacetModel({
       facet: {
         row: {field: 'a', type: 'ordinal'},
-        column: {field: 'a', type: 'ordinal'},
+        column: {field: 'a', type: 'ordinal'}
       },
       spec: {
         mark: 'point',
         encoding: {
           x: {field: 'b', type: 'quantitative'},
-          y: {field: 'c', type: 'quantitative'},
-        },
-      },
+          y: {field: 'c', type: 'quantitative'}
+        }
+      }
     });
     model.parseScale();
     model.parseLayoutSize();
@@ -145,7 +145,7 @@ describe('compile/header/index', () => {
         expect(columnTitleGroupTopLevelProps).toEqual({
           name: 'column-title',
           type: 'group',
-          role: 'column-title',
+          role: 'column-title'
         });
       });
       const name = title.text;
@@ -153,7 +153,7 @@ describe('compile/header/index', () => {
         expect(title).toEqual({
           text: name,
           offset: 10,
-          style: 'guide-title',
+          style: 'guide-title'
         });
       });
     });
@@ -165,7 +165,7 @@ describe('compile/header/index', () => {
         expect(rowTitleGroupTopLevelProps).toEqual({
           name: 'row-title',
           type: 'group',
-          role: 'row-title',
+          role: 'row-title'
         });
       });
       const name = title.text;
@@ -174,7 +174,7 @@ describe('compile/header/index', () => {
           text: name,
           offset: 10,
           orient: 'left',
-          style: 'guide-title',
+          style: 'guide-title'
         });
       });
     });
@@ -185,15 +185,15 @@ describe('compile/header/index', () => {
       const model = parseFacetModel({
         config: {header: {titleFontSize: 20}},
         facet: {
-          row: {field: 'a', type: 'ordinal', header: {titleFontSize: 40}},
+          row: {field: 'a', type: 'ordinal', header: {titleFontSize: 40}}
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'},
-          },
-        },
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
       });
       model.parseScale();
       model.parseLayoutSize();
@@ -206,7 +206,7 @@ describe('compile/header/index', () => {
         facetFieldDef,
         'column',
         HEADER_TITLE_PROPERTIES,
-        HEADER_TITLE_PROPERTIES_MAP,
+        HEADER_TITLE_PROPERTIES_MAP
       );
       it('should return the correct title property from header', () => {
         expect(headerTitleProps.fontSize).toBe(40);
@@ -217,7 +217,7 @@ describe('compile/header/index', () => {
         undefined,
         'column',
         HEADER_TITLE_PROPERTIES,
-        HEADER_TITLE_PROPERTIES_MAP,
+        HEADER_TITLE_PROPERTIES_MAP
       );
       it('should return the correct title property from config', () => {
         expect(configTitleProps).toEqual({fontSize: 20, offset: 10});
@@ -228,7 +228,7 @@ describe('compile/header/index', () => {
         facetFieldDef,
         'column',
         HEADER_TITLE_PROPERTIES,
-        HEADER_TITLE_PROPERTIES_MAP,
+        HEADER_TITLE_PROPERTIES_MAP
       );
       it('should overwrite the config title property with the header title property', () => {
         expect(bothTitleProps.fontSize).toBe(40);
@@ -239,15 +239,15 @@ describe('compile/header/index', () => {
       const model = parseFacetModel({
         config: {header: {labelFontSize: 20}},
         facet: {
-          row: {field: 'a', type: 'ordinal', header: {labelFontSize: 40}},
+          row: {field: 'a', type: 'ordinal', header: {labelFontSize: 40}}
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'},
-          },
-        },
+            y: {field: 'c', type: 'quantitative'}
+          }
+        }
       });
       model.parseScale();
       model.parseLayoutSize();
@@ -260,7 +260,7 @@ describe('compile/header/index', () => {
         facetFieldDef,
         'column',
         HEADER_LABEL_PROPERTIES,
-        HEADER_LABEL_PROPERTIES_MAP,
+        HEADER_LABEL_PROPERTIES_MAP
       );
       it('should return the correct label property from header', () => {
         expect(headerLabelProps.fontSize).toBe(40);
@@ -271,7 +271,7 @@ describe('compile/header/index', () => {
         undefined,
         'column',
         HEADER_LABEL_PROPERTIES,
-        HEADER_LABEL_PROPERTIES_MAP,
+        HEADER_LABEL_PROPERTIES_MAP
       );
       it('should return the correct label property from config', () => {
         expect(configLabelProps).toEqual({fontSize: 20, offset: 10});
@@ -282,7 +282,7 @@ describe('compile/header/index', () => {
         facetFieldDef,
         'column',
         HEADER_LABEL_PROPERTIES,
-        HEADER_LABEL_PROPERTIES_MAP,
+        HEADER_LABEL_PROPERTIES_MAP
       );
       it('should overwrite the config label property with the header label property', () => {
         expect(bothLabelProps.fontSize).toBe(40);
@@ -295,7 +295,7 @@ describe('compile/header/index', () => {
       const title = assembleLabelTitle(
         {field: 'foo', type: 'ordinal', header: {labelExpr: 'datum.label[0]'}},
         'column',
-        {headerColumn: {format: 'd'}, header: {format: 'd'}},
+        {headerColumn: {format: 'd'}, header: {format: 'd'}}
       );
 
       expect(title.text).toEqual({signal: 'format(parent["foo"], "d")[0]'});
@@ -305,7 +305,7 @@ describe('compile/header/index', () => {
       const title = assembleLabelTitle(
         {field: 'foo', type: 'ordinal', header: {format: 'abc', formatType: 'foo'}},
         'column',
-        {headerColumn: {format: 'd'}, header: {format: 'd'}, customFormatTypes: true},
+        {headerColumn: {format: 'd'}, header: {format: 'd'}, customFormatTypes: true}
       );
       expect(title.text).toEqual({signal: 'foo(parent["foo"], "abc")'});
     });
@@ -316,8 +316,8 @@ describe('compile/header/index', () => {
         'column',
         {
           headerColumn: {format: 'd'},
-          header: {format: 'd'},
-        },
+          header: {format: 'd'}
+        }
       );
 
       expect(title.text).toEqual({signal: 'parent["foo"][0]'});

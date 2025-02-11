@@ -8,8 +8,8 @@ import {
   functionalTitleFormatter,
   initChannelDef,
   TypedFieldDef,
-  vgField,
-} from '../src/channeldef';
+  vgField
+} from '../src/channeldef.js';
 import {defaultConfig} from '../src/config.js';
 import * as log from '../src/log/index.js';
 import {FacetFieldDef} from '../src/spec/facet.js';
@@ -32,10 +32,10 @@ describe('fieldDef', () => {
 
     it('should support argmin/argmax field names with space', () => {
       expect(vgField({aggregate: {argmin: 'foo bar'}, field: 'bar baz'}, {expr: 'datum'})).toBe(
-        'datum["argmin_foo bar"]["bar baz"]',
+        'datum["argmin_foo bar"]["bar baz"]'
       );
       expect(vgField({aggregate: {argmax: 'foo bar'}, field: 'bar baz'}, {expr: 'datum'})).toBe(
-        'datum["argmax_foo bar"]["bar baz"]',
+        'datum["argmax_foo bar"]["bar baz"]'
       );
     });
 
@@ -114,10 +114,10 @@ describe('fieldDef', () => {
   describe('initChannelDef()', () => {
     it(
       'should convert primitive type to value def',
-      log.wrap((localLogger) => {
+      log.wrap(localLogger => {
         expect(initChannelDef(5 as any, 'x', defaultConfig)).toEqual({value: 5});
         expect(localLogger.warns).toHaveLength(1);
-      }),
+      })
     );
 
     it('should return fieldDef with full type name.', () => {
@@ -135,19 +135,19 @@ describe('fieldDef', () => {
       expect(initChannelDef(fieldDef, 'row', defaultConfig)).toEqual({
         field: '1',
         type: 'nominal',
-        header: {labelOrient: 'bottom', titleOrient: 'bottom'},
+        header: {labelOrient: 'bottom', titleOrient: 'bottom'}
       });
     });
 
     it(
       'should replace other type with quantitative for a field with counting aggregate.',
-      log.wrap((localLogger) => {
+      log.wrap(localLogger => {
         for (const aggregate of COUNTING_OPS) {
           const fieldDef: TypedFieldDef<string> = {aggregate, field: 'a', type: 'nominal'};
           expect(initChannelDef(fieldDef, 'x', defaultConfig)).toEqual({aggregate, field: 'a', type: 'quantitative'});
         }
         expect(localLogger.warns).toHaveLength(4);
-      }),
+      })
     );
 
     it('should return fieldDef with default type', () => {
@@ -157,51 +157,51 @@ describe('fieldDef', () => {
 
     it(
       'should drop invalid aggregate ops and throw warning.',
-      log.wrap((localLogger) => {
+      log.wrap(localLogger => {
         const fieldDef: TypedFieldDef<string> = {aggregate: 'boxplot', field: 'a', type: 'quantitative'};
         expect(initChannelDef(fieldDef, 'x', defaultConfig)).toEqual({field: 'a', type: 'quantitative'});
         expect(localLogger.warns[0]).toEqual(log.message.invalidAggregate('boxplot'));
-      }),
+      })
     );
 
     it(
       'should drop invalid custom format type and throw warning.',
-      log.wrap((localLogger) => {
+      log.wrap(localLogger => {
         const fieldDef = {field: 'a', type: 'quantitative', formatType: 'foo', format: '.2f'};
         expect(initChannelDef(fieldDef, 'text', defaultConfig)).toEqual({field: 'a', type: 'quantitative'});
         expect(localLogger.warns[0]).toEqual(log.message.customFormatTypeNotAllowed('text'));
-      }),
+      })
     );
 
     it(
       'should drop invalid custom format type for x encoding and throw warning.',
-      log.wrap((localLogger) => {
+      log.wrap(localLogger => {
         const fieldDef = {field: 'a', type: 'quantitative', axis: {formatType: 'foo', format: '.2f'}};
         expect(initChannelDef(fieldDef, 'x', defaultConfig)).toEqual({field: 'a', type: 'quantitative', axis: {}});
         expect(localLogger.warns[0]).toEqual(log.message.customFormatTypeNotAllowed('x'));
-      }),
+      })
     );
 
     it(
       'should drop invalid custom format type for row encoding and throw warning.',
-      log.wrap((localLogger) => {
+      log.wrap(localLogger => {
         const fieldDef = {field: 'a', type: 'quantitative', header: {formatType: 'foo', format: '.2f'}};
         expect(initChannelDef(fieldDef, 'row', defaultConfig)).toEqual({field: 'a', type: 'quantitative', header: {}});
         expect(localLogger.warns[0]).toEqual(log.message.customFormatTypeNotAllowed('row'));
-      }),
+      })
     );
 
     it(
       'should drop invalid custom format type for color encoding and throw warning.',
-      log.wrap((localLogger) => {
+      log.wrap(localLogger => {
         const fieldDef = {field: 'a', type: 'quantitative', legend: {formatType: 'foo', format: '.2f'}};
         expect(initChannelDef(fieldDef, 'color', defaultConfig)).toEqual({
           field: 'a',
           type: 'quantitative',
-          legend: {},
+          legend: {}
         });
         expect(localLogger.warns[0]).toEqual(log.message.customFormatTypeNotAllowed('color'));
-      }),
+      })
     );
   });
 
@@ -266,7 +266,7 @@ describe('fieldDef', () => {
       it('is the only channel that is incompatible with geojson field', () => {
         for (const channel of CHANNELS) {
           expect(
-            channelCompatibility({field: 'a', type: 'geojson'}, channel).compatible === (channel === 'shape'),
+            channelCompatibility({field: 'a', type: 'geojson'}, channel).compatible === (channel === 'shape')
           ).toBeTruthy();
         }
       });

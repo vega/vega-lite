@@ -33,7 +33,7 @@ import {
   LayoutSizeMixins,
   SpecType,
   ViewBackground
-} from '../spec/base';
+} from '../spec/base.js';
 import {NormalizedSpec} from '../spec/index.js';
 import {extractTitleConfig, isText, TitleParams} from '../title.js';
 import {normalizeTransform, Transform} from '../transform.js';
@@ -43,7 +43,7 @@ import {assembleAxes} from './axis/assemble.js';
 import {AxisComponentIndex} from './axis/component.js';
 import {signalOrValueRef} from './common.js';
 import {ConcatModel} from './concat.js';
-import {DataComponent} from './data.js';
+import {DataComponent} from './data/index.js';
 import {FacetModel} from './facet.js';
 import {assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup} from './header/assemble.js';
 import {HEADER_CHANNELS, LayoutHeaderComponent} from './header/component.js';
@@ -54,7 +54,7 @@ import {
   LayoutSizeComponent,
   LayoutSizeIndex,
   LayoutSizeType
-} from './layoutsize/component';
+} from './layoutsize/component.js';
 import {assembleLegends} from './legend/assemble.js';
 import {LegendComponentIndex} from './legend/component.js';
 import {parseLegend} from './legend/parse.js';

@@ -8,7 +8,7 @@ import {
   isConcatSpec,
   isHConcatSpec,
   isVConcatSpec
-} from './concat';
+} from './concat.js';
 import {GenericFacetSpec, isFacetSpec} from './facet.js';
 import {GenericLayerSpec, isLayerSpec} from './layer.js';
 import {isRepeatSpec, RepeatSpec} from './repeat.js';

@@ -55,7 +55,7 @@ import {
   getImplicitFromFilterTransform,
   getImplicitFromSelection,
   ParseNode
-} from './formatparse';
+} from './formatparse.js';
 import {GeoJSONNode} from './geojson.js';
 import {GeoPointNode} from './geopoint.js';
 import {GraticuleNode} from './graticule.js';

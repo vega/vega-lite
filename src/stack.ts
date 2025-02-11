@@ -31,7 +31,7 @@ import {
   SQUARE,
   TEXT,
   TICK
-} from './mark';
+} from './mark.js';
 import {ScaleType} from './scale.js';
 
 const STACK_OFFSET_INDEX = {

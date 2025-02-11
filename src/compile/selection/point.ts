@@ -1,7 +1,7 @@
 import {Signal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, TUPLE, isTimerSelection, unitName} from './index.js';
-import {SELECTION_ID} from '../../selection/index.js';
+import {SELECTION_ID} from '../../selection.js';
 import {vals} from '../../util.js';
 import {BRUSH} from './interval.js';
 import {TUPLE_FIELDS} from './project.js';

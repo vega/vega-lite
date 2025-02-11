@@ -5,7 +5,7 @@ import {GeoPositionChannel, LATITUDE, LONGITUDE, ScaleChannel, X, Y} from '../..
 import {FieldName} from '../../channeldef.js';
 import {warn} from '../../log/index.js';
 import {hasContinuousDomain} from '../../scale.js';
-import {IntervalSelectionConfigWithoutType, SelectionInitInterval, SELECTION_ID} from '../../selection/index.js';
+import {IntervalSelectionConfigWithoutType, SelectionInitInterval, SELECTION_ID} from '../../selection.js';
 import {keys, vals} from '../../util.js';
 import {LayoutSizeIndex} from '../layoutsize/component.js';
 import {isUnitModel} from '../model.js';
@@ -89,7 +89,7 @@ const interval: SelectionCompiler<'interval'> = {
             on: [
               {
                 events: channels.map(proj => ({scale: model.scaleName(proj.channel)})),
-                update: scaleTriggers.join(' && ') + ` ? ${triggerSg} : {}`
+                update: `${scaleTriggers.join(' && ')} ? ${triggerSg} : {}`
               }
             ]
           });
@@ -126,9 +126,9 @@ const interval: SelectionCompiler<'interval'> = {
       const sizeSg = (layout: keyof LayoutSizeIndex) => model.getSizeSignalRef(layout).signal;
       const bbox =
         `[` +
-        `[${xvname ? xvname + '[0]' : '0'}, ${yvname ? yvname + '[0]' : '0'}],` +
-        `[${xvname ? xvname + '[1]' : sizeSg('width')}, ` +
-        `${yvname ? yvname + '[1]' : sizeSg('height')}]` +
+        `[${xvname ? `${xvname}[0]` : '0'}, ${yvname ? `${yvname}[0]` : '0'}],` +
+        `[${xvname ? `${xvname}[1]` : sizeSg('width')}, ` +
+        `${yvname ? `${yvname}[1]` : sizeSg('height')}]` +
         `]`;
 
       if (init) {

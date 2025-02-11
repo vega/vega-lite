@@ -11,13 +11,13 @@ import {text} from './text.js';
 import {tooltip} from './tooltip.js';
 import {zindex} from './zindex.js';
 
-export {color} from './color';
-export {nonPosition} from './nonposition';
-export {pointPosition} from './position-point';
-export {pointOrRangePosition, rangePosition} from './position-range';
-export {rectPosition} from './position-rect';
-export {text} from './text';
-export {tooltip} from './tooltip';
+export {color} from './color.js';
+export {nonPosition} from './nonposition.js';
+export {pointPosition} from './position-point.js';
+export {pointOrRangePosition, rangePosition} from './position-range.js';
+export {rectPosition} from './position-rect.js';
+export {text} from './text.js';
+export {tooltip} from './tooltip.js';
 
 export type Ignore = Record<'color' | 'size' | 'orient' | 'align' | 'baseline' | 'theta', 'ignore' | 'include'>;
 
@@ -37,7 +37,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...zindex(model),
     ...tooltip(model),
     ...text(model, 'href'),
-    ...aria(model),
+    ...aria(model)
   };
 }
 
@@ -53,6 +53,6 @@ function markDefProperties(mark: MarkDef, ignore: Ignore) {
       }
       return m;
     },
-    {} as Record<keyof MarkConfig, unknown>,
+    {} as Record<keyof MarkConfig, unknown>
   );
 }

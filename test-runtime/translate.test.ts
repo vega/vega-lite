@@ -13,7 +13,7 @@ import {
   tuples,
   unbound
 } from './util.js';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 import {TopLevelSpec} from '../src/index.js';
 
 describe('Translate interval selections at runtime', () => {
@@ -173,10 +173,10 @@ describe('Translate interval selections at runtime', () => {
               const xscale = (await page.evaluate('view._runtime.scales.x.value.domain()')) as any[];
               const yscale = (await page.evaluate('view._runtime.scales.y.value.domain()')) as any[];
               const drag = ((await page.evaluate(brush(specType, i, parent))) as [any])[0];
-              ((expect(drag.values[0][0]) as any)[(assertExtents as any)[specType].x[i]] as any)(xscale[0]);
-              ((expect(drag.values[0][1]) as any)[(assertExtents as any)[specType].x[i]] as any)(xscale[1]);
-              ((expect(drag.values[1][0]) as any)[(assertExtents as any)[specType].y[i]] as any)(yscale[0]);
-              ((expect(drag.values[1][1]) as any)[(assertExtents as any)[specType].y[i]] as any)(yscale[1]);
+              (expect(drag.values[0][0]) as any)[(assertExtents as any)[specType].x[i]](xscale[0]);
+              (expect(drag.values[0][1]) as any)[(assertExtents as any)[specType].x[i]](xscale[1]);
+              (expect(drag.values[1][0]) as any)[(assertExtents as any)[specType].y[i]](yscale[0]);
+              (expect(drag.values[1][1]) as any)[(assertExtents as any)[specType].y[i]](yscale[1]);
               await testRender(`${specType}_${i}`);
             }
           });

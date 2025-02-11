@@ -48,7 +48,7 @@ import {
   Y,
   Y2,
   YOFFSET
-} from './channel';
+} from './channel.js';
 import {
   binRequiresRange,
   ChannelDef,
