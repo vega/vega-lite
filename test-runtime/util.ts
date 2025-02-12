@@ -273,13 +273,16 @@ export function fill<T>(val: T, len: number) {
 }
 
 export async function embed(spec: TopLevelSpec) {
+  // clear previous DOM
+  document.body.innerHTML = '';
+
   const body = document.body;
   const div = document.createElement('div');
   body.appendChild(div);
 
   const vgSpec = compile(spec).spec;
 
-  return await new View(parse(vgSpec), {container: div}).runAsync();
+  return await new View(parse(vgSpec), {container: div, renderer: 'svg'}).runAsync();
 }
 
 export async function getSignal(view: View, signal: string): Promise<SignalValue> {
@@ -297,7 +300,7 @@ export function sleep(milliseconds: number) {
 }
 
 const winSrc = ['pointermove', 'pointerup'];
-export function pointerEvt(type, target, opts) {
+export function pointerEvt(type: string, target: HTMLElement | Window, opts?: {clientX: number; clientY: number}) {
   opts.bubbles = true;
   target = winSrc.indexOf(type) < 0 ? target : window;
 
@@ -314,26 +317,26 @@ export function pointerEvt(type, target, opts) {
   );
 }
 
-export function mark(id, parent) {
+export function mark(id: number, parent?: string): HTMLElement {
   return document.querySelector(`${parent ? `g.${parent} ` : ''}g.mark-symbol.role-mark path:nth-child(${id})`);
 }
 
-export function coords(el) {
+export function coords(el: HTMLElement) {
   const rect = el.getBoundingClientRect();
   return [Math.ceil(rect.left + rect.width / 2), Math.ceil(rect.top + rect.height / 2)];
 }
 
-export function brushOrEl(el, parent, _) {
+export function brushOrEl(el: HTMLElement, parent: string, _) {
   return !_ ? el : document.querySelector(`${parent ? `g.${parent} ` : ''}g.sel_brush > path`);
 }
 
-export function click(el, evt) {
+export function click(el: HTMLElement, evt: Event) {
   pointerEvt('pointerdown', el, evt);
   pointerEvt('pointerup', window, evt);
   pointerEvt('click', el, evt);
 }
 
-async function _brush(view: View, id0, id1, parent, targetBrush) {
+async function _brush(view: View, id0, id1, parent: string, targetBrush) {
   const el0 = mark(id0, parent);
   const el1 = mark(id1, parent);
   const [mdX, mdY] = coords(el0);

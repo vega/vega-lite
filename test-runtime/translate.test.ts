@@ -173,7 +173,7 @@ describe('Translate interval selections at runtime', () => {
               const parent = parentSelector(specType, i);
               const xscale = (view as any)._runtime.scales.x.value.domain() as any[];
               const yscale = (view as any)._runtime.scales.y.value.domain() as any[];
-              const drag = ((await page.evaluate(brush(specType, i, parent))) as [any])[0];
+              const drag = ((await brush(view, specType, i, parent)) as [any])[0];
               (expect(drag.values[0][0]) as any)[(assertExtents as any)[specType].x[i]](xscale[0]);
               (expect(drag.values[0][1]) as any)[(assertExtents as any)[specType].x[i]](xscale[1]);
               (expect(drag.values[1][0]) as any)[(assertExtents as any)[specType].y[i]](yscale[0]);

@@ -69,7 +69,7 @@ describe('time encoding animations', () => {
 
       expect(filteredDataset).toHaveLength(curr_dataset.length);
 
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/gapminder_${anim_value}.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/animation/gapminder_${anim_value}.svg`);
     }
   }, 10000);
 

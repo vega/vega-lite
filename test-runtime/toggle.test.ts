@@ -26,15 +26,15 @@ describe('Toggle point selections at runtime', () => {
     await toggle(view, 'qq', 1, true);
     let store = await toggle(view, 'qq', 2, true);
     expect(store).toHaveLength(3);
-    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/click_0.svg');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/click_0.svg');
 
     store = await toggle(view, 'qq', 2, true);
     expect(store).toHaveLength(2);
-    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/click_1.svg');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/click_1.svg');
 
     store = await toggle(view, 'qq', 3, false);
     expect(store).toHaveLength(1);
-    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/click_2.svg');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/click_2.svg');
   });
 
   it('should clear out the store w/o shiftKey', async () => {
@@ -43,15 +43,15 @@ describe('Toggle point selections at runtime', () => {
     await toggle(view, 'qq', 1, true);
     await toggle(view, 'qq', 2, true);
     await toggle(view, 'qq', 3, true);
-    await expect(await view.toSVG()).toMatchFileSnapshot(`clear_0.svg`);
+    await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/clear_0.svg`);
 
     let store = await toggle(view, 'qq_clear', 0, true);
     expect(store).toHaveLength(4);
-    await expect(await view.toSVG()).toMatchFileSnapshot(`clear_1.svg`);
+    await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/clear_1.svg`);
 
     store = await toggle(view, 'qq_clear', 1, false);
     expect(store).toHaveLength(0);
-    await expect(await view.toSVG()).toMatchFileSnapshot(`clear_2.svg`);
+    await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/clear_2.svg`);
   });
 
   it('should toggle binned fields', async () => {
@@ -61,15 +61,15 @@ describe('Toggle point selections at runtime', () => {
     await toggle(view, 'bins', 1, true);
     let store = await toggle(view, 'bins', 2, true);
     expect(store).toHaveLength(3);
-    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/bins_0.svg');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/bins_0.svg');
 
     store = await toggle(view, 'bins', 2, true);
     expect(store).toHaveLength(2);
-    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/bins_1.svg');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/bins_1.svg');
 
     store = await toggle(view, 'bins', 3, false);
     expect(store).toHaveLength(1);
-    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/bins_2.svg');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/bins_2.svg');
   });
 
   compositeTypes.forEach((specType, idx) => {
@@ -81,7 +81,7 @@ describe('Toggle point selections at runtime', () => {
         const store = (await toggle(view, 'composite', i, true, parent)) as string;
         expect((length = store.length)).toEqual(i + 1);
         if (i % 3 === 2) {
-          await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${specType}_${i}.svg`);
+          await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/${specType}_${i}.svg`);
         }
       }
 
@@ -91,7 +91,7 @@ describe('Toggle point selections at runtime', () => {
         const store = await toggle(view, 'qq_clear', 0, even, parent);
         expect(store).toHaveLength(even ? length : (length -= 2));
         if (!even) {
-          await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${specType}_clear_${i}.svg`);
+          await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/${specType}_clear_${i}.svg`);
         }
       }
     });
