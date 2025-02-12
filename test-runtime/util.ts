@@ -185,7 +185,7 @@ export function getSpec(compose: ComposeType, iter: number, sel: any, opts: any 
   }
 }
 
-export function geoSpec(selDef?: IntervalSelectionConfigWithoutType): TopLevelSpec {
+export function getGeoSpec(selDef?: IntervalSelectionConfigWithoutType): TopLevelSpec {
   return {
     width: 500,
     height: 300,
@@ -272,7 +272,7 @@ export function fill<T>(val: T, len: number) {
   return arr;
 }
 
-export async function embed(spec: TopLevelUnitSpec) {
+export async function embed(spec: TopLevelSpec) {
   const body = document.body;
   const div = document.createElement('div');
   body.appendChild(div);

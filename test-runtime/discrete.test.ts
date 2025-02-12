@@ -13,7 +13,7 @@ describe(`point selections at runtime in unit views`, () => {
       const store = (await pt(view, 'qq', i)) as [any];
       expect(store).toHaveLength(1);
       expect(store[0]).toHaveProperty(SELECTION_ID);
-      await expect(await view.toSVG()).toMatchFileSnapshot(`click_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/click_${i}.svg`);
     }
   });
 
@@ -31,7 +31,7 @@ describe(`point selections at runtime in unit views`, () => {
         expect(store[0].fields.map((f: any) => f.field)).toEqual(fields);
         expect(store[0].fields.map((f: any) => f.type)).toEqual(fill('E', fields.length));
         expect(store[0].values).toEqual(values[i]);
-        await expect(await view.toSVG()).toMatchFileSnapshot(`${encodings}_${fields}_${i}`);
+        await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${encodings}_${fields}_${i}.svg`);
       }
     };
 
@@ -60,7 +60,7 @@ describe(`point selections at runtime in unit views`, () => {
 
       store = (await pt(view, 'qq_clear', i)) as [any];
       expect(store).toHaveLength(0);
-      await expect(await view.toSVG()).toMatchFileSnapshot(`clear_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/clear_${i}.svg`);
     }
   });
 
@@ -82,7 +82,7 @@ describe(`point selections at runtime in unit views`, () => {
       expect(store[0].fields.map((f: any) => f.field)).toEqual(fields);
       expect(store[0].fields.map((f: any) => f.type)).toEqual(types);
       expect(store[0].values).toEqual(values[i]);
-      await expect(await view.toSVG()).toMatchFileSnapshot(`bins_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/bins_${i}.svg`);
     }
   });
 });

@@ -1,18 +1,15 @@
 import {
   brush,
   compositeTypes,
-  embedFn,
   hits as hitsMaster,
   parentSelector,
   pt,
   resolutions,
   selectionTypes,
-  spec,
-  testRenderFn,
+  getSpec,
   unitNameRegex,
-} from './_util.js';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
-import {TopLevelSpec} from '../src/index.js';
+  embed,
+} from './util.js';
 import {describe, expect, it} from 'vitest';
 
 for (const type of selectionTypes) {
@@ -21,26 +18,7 @@ for (const type of selectionTypes) {
   const fn = isInterval ? brush : pt;
 
   describe(`${type} selections at runtime`, () => {
-    let page: Page;
-    let embed: (specification: TopLevelSpec) => Promise<void>;
-
-    beforeAll(async () => {
-      page = await (global as any).__BROWSER_GLOBAL__.newPage();
-      embed = embedFn(page);
-      await page.goto('http://0.0.0.0:9000/test-runtime/');
-    });
-
-    afterAll(async () => {
-      await page.close();
-    });
-
     compositeTypes.forEach((specType) => {
-      let testRender: (filename: string) => Promise<void>;
-
-      beforeAll(async () => {
-        testRender = testRenderFn(page, `${type}/${specType}`);
-      });
-
       describe(`in ${specType} views`, () => {
         /**
          * Loop through the views, click to add a selection instance.
@@ -54,17 +32,19 @@ for (const type of selectionTypes) {
           };
 
           for (let i = 0; i < hits[specType].length; i++) {
-            await embed(spec(specType, i, selection));
+            const view = await embed(getSpec(specType, i, selection));
             const parent = parentSelector(specType, i);
-            const store = (await page.evaluate(fn(specType, i, parent))) as [any];
+            const store = (await fn(view, specType, i, parent)) as [any];
             expect(store).toHaveLength(1);
             expect(store[0].unit).toMatch(unitNameRegex(specType, i));
-            await testRender(`global_${i}`);
+            await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/${specType}/global_${i}.svg`);
 
             if (i === hits[specType].length - 1) {
-              const cleared = await page.evaluate(fn(`${specType}_clear`, 0, parent));
+              const cleared = await fn(view, `${specType}_clear`, 0, parent);
               expect(cleared).toHaveLength(0);
-              await testRender(`global_clear_${i}`);
+              await expect(await view.toSVG()).toMatchFileSnapshot(
+                `./snapshots/${type}/${specType}/global_clear_${i}.svg`,
+              );
             }
           }
         });
@@ -82,29 +62,33 @@ for (const type of selectionTypes) {
            * observe decrementing store size. Check unit names in each case.
            */
           it(`should have one selection instance per ${resolve} view`, async () => {
-            await embed(spec(specType, 0, selection));
+            const view1 = await embed(getSpec(specType, 0, selection));
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);
-              const store = (await page.evaluate(fn(specType, i, parent))) as [any];
+              const store = (await fn(view1, specType, i, parent)) as [any];
               expect(store).toHaveLength(i + 1);
               expect(store[i].unit).toMatch(unitNameRegex(specType, i));
-              await testRender(`${resolve}_${i}`);
+              await expect(await view1.toSVG()).toMatchFileSnapshot(
+                `./snapshots/${type}/${specType}/${resolve}_${i}.svg`,
+              );
             }
 
-            await embed(spec(specType, 1, {type, resolve, encodings: ['x']}));
+            const view2 = await embed(getSpec(specType, 1, {type, resolve, encodings: ['x']}));
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);
-              await page.evaluate(fn(specType, i, parent));
+              await fn(view2, specType, i, parent);
             }
 
             for (let i = hits[`${specType}_clear`].length - 1; i >= 0; i--) {
               const parent = parentSelector(specType, i);
-              const store = (await page.evaluate(fn(`${specType}_clear`, i, parent))) as [any];
+              const store = (await fn(view2, `${specType}_clear`, i, parent)) as [any];
               expect(store).toHaveLength(i);
               if (i > 0) {
                 expect(store[i - 1].unit).toMatch(unitNameRegex(specType, i - 1));
               }
-              await testRender(`${resolve}_clear_${i}`);
+              await expect(await view2.toSVG()).toMatchFileSnapshot(
+                `./snapshots/${type}/${specType}/${resolve}_clear_${i}.svg`,
+              );
             }
           });
         }
