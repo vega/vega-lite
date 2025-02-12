@@ -17,5 +17,6 @@ site/examples
 site/static/bundle.*
 test/log
 test/log/difflist.json
+test-runtime/__screenshots__
 yarn-debug.log*
 yarn-error.log*

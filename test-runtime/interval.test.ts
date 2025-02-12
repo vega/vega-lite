@@ -1,7 +1,8 @@
 import {TopLevelSpec} from '../src/index.js';
 import {SelectionType} from '../src/selection.js';
-import {brush, embedFn, geoSpec, hits as hitsMaster, spec, testRenderFn, tuples} from './util.js';
+import {brush, embedFn, geoSpec, hits as hitsMaster, spec, testRenderFn, tuples} from './_util.js';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
+import {describe, expect, it} from 'vitest';
 
 describe('interval selections at runtime in unit views', () => {
   let page: Page;

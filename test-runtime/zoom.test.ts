@@ -10,13 +10,14 @@ import {
   testRenderFn,
   tuples,
   unbound,
-} from './util.js';
+} from './_util.js';
 const hits = {
   zoom: [9, 23],
   bins: [8, 2],
 };
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 import {TopLevelSpec} from '../src/index.js';
+import {describe, expect, it} from 'vitest';
 
 type InOut = 'in' | 'out';
 

@@ -1,10 +1,8 @@
-import fs from 'fs';
+import {parse, SignalValue, View} from 'vega';
+import {compile} from '../src/index.js';
 import {stringValue} from 'vega-util';
 import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} from '../src/selection.js';
 import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec/index.js';
-
-const generate = (import.meta as any).env.VITE_VL_GENERATE_TESTS;
-const output = 'test-runtime/resources';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
 export const selectionTypes: SelectionType[] = ['point', 'interval'];
@@ -162,7 +160,7 @@ function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | N
   }
 }
 
-export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelSpec {
+export function getSpec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelSpec {
   const {data, ...specification} = base(iter, sel, opts);
   const resolve = opts.resolve;
   switch (compose) {
@@ -256,58 +254,14 @@ export function parentSelector(compositeType: ComposeType, index: number) {
 }
 
 export type BrushKeys = keyof typeof hits.interval;
-export function brush(key: BrushKeys, idx: number, parent?: string, targetBrush?: boolean) {
-  const fn = key.match('_clear') ? 'clear' : 'brush';
-  return `${fn}(${hits.interval[key][idx].join(', ')}, ${stringValue(parent)}, ${!!targetBrush})`;
+export async function brush(view: View, key: BrushKeys, idx: number, parent?: string, targetBrush?: boolean) {
+  const fn = key.match('_clear') ? clear : _brush;
+  return await fn(view, hits.interval[key][idx].join(', '), stringValue(parent), !!targetBrush);
 }
 
-export function pt(key: keyof typeof hits.discrete, idx: number, parent?: string) {
-  const fn = key.match('_clear') ? 'clear' : 'pt';
-  return `${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
-}
-
-export function getState(signals: string[], data: string[]) {
-  return `getState(${JSON.stringify(signals)}, ${JSON.stringify(data)})`;
-}
-export function getSignal(name: string) {
-  return `getSignal('${name}')`;
-}
-
-export function setSignal(name: string, value: any) {
-  return `setSignal(${stringValue(name)}, ${value})`;
-}
-
-export function sleep(milliseconds: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, milliseconds);
-  });
-}
-
-export function embedFn() {
-  return async (specification: TopLevelSpec) => {
-    await (window as any).embed(specification);
-  };
-}
-
-export async function svg(path: string, filename: string) {
-  (window as any).vega.resetSVGClipId();
-  await (window as any).view.runAsync();
-  const svgString = await (window as any).view.toSVG();
-
-  if (generate) {
-    fs.mkdirSync((path = `${output}/${path}`), {recursive: true});
-    fs.writeFileSync(`${path}/${filename}.svg`, svgString);
-  }
-
-  return svgString;
-}
-
-export function testRenderFn(path: string) {
-  return async (filename: string) => {
-    const render = await svg(path, filename);
-    const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
-    expect(render).toBe(file.toString());
-  };
+export async function pt(view: View, key: keyof typeof hits.discrete, idx: number, parent?: string) {
+  const fn = key.match('_clear') ? clear : _pt;
+  return await fn(view, hits.discrete[key][idx], stringValue(parent));
 }
 
 export function fill<T>(val: T, len: number) {
@@ -316,4 +270,126 @@ export function fill<T>(val: T, len: number) {
     arr[i] = val;
   }
   return arr;
+}
+
+export async function embed(spec: TopLevelUnitSpec) {
+  const body = document.body;
+  const div = document.createElement('div');
+  body.appendChild(div);
+
+  const vgSpec = compile(spec).spec;
+
+  return await new View(parse(vgSpec), {container: div}).runAsync();
+}
+
+export async function getSignal(view: View, signal: string): Promise<SignalValue> {
+  return (await view.runAsync()).signal(signal);
+}
+
+export async function setSignal(view: View, signal: string, value: SignalValue) {
+  return await view.signal(signal, value).runAsync();
+}
+
+export function sleep(milliseconds: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
+const winSrc = ['pointermove', 'pointerup'];
+export function pointerEvt(type, target, opts) {
+  opts.bubbles = true;
+  target = winSrc.indexOf(type) < 0 ? target : window;
+
+  target.dispatchEvent(
+    new PointerEvent('pointermove', {...opts, clientX: opts.clientX - 5, clientY: opts.clientY - 5}),
+  );
+
+  target.dispatchEvent(new PointerEvent('pointermove', opts));
+
+  target.dispatchEvent(type === 'wheel' ? new WheelEvent('wheel', opts) : new PointerEvent(type, opts));
+
+  target.dispatchEvent(
+    new PointerEvent('pointermove', {...opts, clientX: opts.clientX + 5, clientY: opts.clientY + 5}),
+  );
+}
+
+export function mark(id, parent) {
+  return document.querySelector(`${parent ? `g.${parent} ` : ''}g.mark-symbol.role-mark path:nth-child(${id})`);
+}
+
+export function coords(el) {
+  const rect = el.getBoundingClientRect();
+  return [Math.ceil(rect.left + rect.width / 2), Math.ceil(rect.top + rect.height / 2)];
+}
+
+export function brushOrEl(el, parent, _) {
+  return !_ ? el : document.querySelector(`${parent ? `g.${parent} ` : ''}g.sel_brush > path`);
+}
+
+export function click(el, evt) {
+  pointerEvt('pointerdown', el, evt);
+  pointerEvt('pointerup', window, evt);
+  pointerEvt('click', el, evt);
+}
+
+async function _brush(view: View, id0, id1, parent, targetBrush) {
+  const el0 = mark(id0, parent);
+  const el1 = mark(id1, parent);
+  const [mdX, mdY] = coords(el0);
+  const [muX, muY] = coords(el1);
+  pointerEvt('pointerdown', brushOrEl(el0, parent, targetBrush), {clientX: mdX, clientY: mdY});
+  pointerEvt('pointerup', window, {clientX: muX, clientY: muY});
+  return (await view.runAsync()).data('sel_store');
+}
+
+async function _pt(view: View, id, parent, shiftKey) {
+  const el = mark(id, parent);
+  const [clientX, clientY] = coords(el);
+  click(el, {clientX, clientY, shiftKey});
+  return (await view.runAsync()).data('sel_store');
+}
+
+export async function clear(view: View, id, parent, shiftKey) {
+  const bg = document.querySelector(`${parent ? `g.${parent} ` : ''}path.background`);
+  const el = mark(id, parent);
+  let [clientX, clientY] = coords(el);
+  clientX += 10;
+  clientY -= 10;
+  click(bg, {clientX, clientY, shiftKey});
+  return (await view.runAsync()).data('sel_store');
+}
+
+export async function zoom(view: View, id, delta, parent, targetBrush) {
+  const el = mark(id, parent);
+  const [clientX, clientY] = coords(el);
+  pointerEvt('wheel', brushOrEl(el, parent, targetBrush), {
+    clientX,
+    clientY,
+    deltaX: delta,
+    deltaY: delta,
+    deltaZ: delta,
+  });
+  pointerEvt('wheel', brushOrEl(el, parent, targetBrush), {
+    clientX,
+    clientY,
+    deltaX: Math.sign(delta),
+    deltaY: Math.sign(delta),
+    deltaZ: Math.sign(delta),
+  });
+  return (await view.runAsync()).data('sel_store');
+}
+
+export async function getState(view: View, signals: string[], data: string[]) {
+  await view.runAsync();
+  return {
+    signals: signals.reduce((o: any, s) => {
+      o[s] = view.signal(s);
+      return o;
+    }, {}),
+    data: data.reduce((o: any, d) => {
+      o[d] = view.data(d);
+      return o;
+    }, {}),
+  };
 }

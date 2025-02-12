@@ -10,9 +10,10 @@ import {
   testRenderFn,
   tuples,
   unbound,
-} from './util.js';
+} from './_util.js';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 import {TopLevelSpec} from '../src/index.js';
+import {describe, expect, it} from 'vitest';
 
 describe('Translate interval selections at runtime', () => {
   let page: Page;

@@ -10,9 +10,10 @@ import {
   spec,
   testRenderFn,
   unitNameRegex,
-} from './util.js';
+} from './_util.js';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
 import {TopLevelSpec} from '../src/index.js';
+import {describe, expect, it} from 'vitest';
 
 for (const type of selectionTypes) {
   const isInterval = type === 'interval';
