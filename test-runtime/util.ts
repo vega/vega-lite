@@ -1,12 +1,9 @@
-import * as fs from 'fs';
-import {sync as mkdirp} from 'mkdirp';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
-import {promisify} from 'util';
+import fs from 'fs';
 import {stringValue} from 'vega-util';
 import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} from '../src/selection.js';
 import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec/index.js';
 
-const generate = process.env.VL_GENERATE_TESTS;
+const generate = (import.meta as any).env.VITE_VL_GENERATE_TESTS;
 const output = 'test-runtime/resources';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
@@ -286,36 +283,29 @@ export function sleep(milliseconds: number) {
   });
 }
 
-export function embedFn(page: Page) {
+export function embedFn() {
   return async (specification: TopLevelSpec) => {
-    await page.evaluate(
-      (_: any) => (window as any).embed(_),
-      // specification is serializable even if the types don't agree
-      specification as any,
-    );
+    await (window as any).embed(specification);
   };
 }
 
-const readFileAsync = promisify(fs.readFile);
-const writeFileAsync = promisify(fs.writeFile);
-
-export async function svg(page: Page, path: string, filename: string) {
-  const svgString = (await page.evaluate(
-    `(async () => { vega.resetSVGClipId(); await view.runAsync(); return await view.toSVG() })()`,
-  )) as string;
+export async function svg(path: string, filename: string) {
+  (window as any).vega.resetSVGClipId();
+  await (window as any).view.runAsync();
+  const svgString = await (window as any).view.toSVG();
 
   if (generate) {
-    mkdirp((path = `${output}/${path}`));
-    await writeFileAsync(`${path}/${filename}.svg`, svgString);
+    fs.mkdirSync((path = `${output}/${path}`), {recursive: true});
+    fs.writeFileSync(`${path}/${filename}.svg`, svgString);
   }
 
   return svgString;
 }
 
-export function testRenderFn(page: Page, path: string) {
+export function testRenderFn(path: string) {
   return async (filename: string) => {
-    const render = await svg(page, path, filename);
-    const file = await readFileAsync(`${output}/${path}/${filename}.svg`);
+    const render = await svg(path, filename);
+    const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
     expect(render).toBe(file.toString());
   };
 }

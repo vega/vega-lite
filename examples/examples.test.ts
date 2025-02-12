@@ -75,7 +75,6 @@ for (const example of [...examples, ...normalizedExamples]) {
   const originalSpec = duplicate(jsonSpec);
 
   describe(
-    // eslint-disable-next-line jest/valid-describe-callback, jest/valid-title
     example,
     log.wrap((localLogger) => {
       const vegaSpec: VgSpec = compile(jsonSpec).spec;
@@ -84,7 +83,6 @@ for (const example of [...examples, ...normalizedExamples]) {
         expect(jsonSpec).toEqual(originalSpec);
       });
 
-      // eslint-disable-next-line jest/expect-expect
       it('should be valid Vega-Lite with proper $schema', () => {
         if (example.endsWith(FUTURE_SUFFIX)) {
           return;
@@ -100,7 +98,6 @@ for (const example of [...examples, ...normalizedExamples]) {
         expect(localLogger.warns).toEqual([]);
       });
 
-      // eslint-disable-next-line jest/expect-expect
       it('should produce valid Vega', () => {
         if (example.endsWith(BROKEN_SUFFIX)) {
           return;

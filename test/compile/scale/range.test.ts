@@ -878,7 +878,6 @@ describe('compile/scale', () => {
           },
         });
 
-        console.log(parseRangeForChannel('time', bandModel));
         expect(parseRangeForChannel('time', bandModel)).toEqual(
           makeImplicit({step: 1000 / defaultConfig.scale.framesPerSecond}),
         );

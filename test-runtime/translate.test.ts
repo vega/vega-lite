@@ -1,5 +1,3 @@
-/* eslint-disable jest/valid-expect */
-
 import {
   bound,
   brush,
@@ -91,7 +89,6 @@ describe('Translate interval selections at runtime', () => {
       });
 
       it('should work with temporal domains', async () => {
-        // await jestPuppeteer.debug();
         const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
         const toNumber = (a: any) => a[0].values[0].map((d: any) => +d);
 

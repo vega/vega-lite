@@ -28,8 +28,8 @@
     "types": "./build/index.d.ts",
     "default": "./build/index.js"
   },
-  "unpkg": "build/vega-embed.min.js",
-  "jsdelivr": "build/vega-embed.min.js",
+  "unpkg": "build/vega-lite.min.js",
+  "jsdelivr": "build/vega-lite.min.js",
   "bin": {
     "vl2pdf": "./bin/vl2pdf",
     "vl2png": "./bin/vl2png",
@@ -73,7 +73,7 @@
     "test:cover": "yarn jest --collectCoverage test/",
     "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
     "test:runtime": "TZ=America/Los_Angeles npx jest test-runtime/ --config test-runtime/jest-config.json",
-    "test:runtime:generate": "yarn build:only && del-cli test-runtime/resources && VL_GENERATE_TESTS=true yarn test:runtime",
+    "test:runtime:generate": "yarn build:only && del-cli test-runtime/resources && VITE_VL_GENERATE_TESTS=true vitest test:runtime",
     "watch": "tsc -p tsconfig.build.json -w",
     "watch:site": "yarn build:site -w",
     "watch:test": "yarn jest --watch test/",
@@ -94,6 +94,7 @@
     "@types/pako": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^8.24.0",
     "@typescript-eslint/parser": "^8.24.0",
+    "@vitest/browser": "^3.0.5",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "cheerio": "^1.0.0",
@@ -108,8 +109,8 @@
     "highlight.js": "^11.11.1",
     "jest": "^29.7.0",
     "jest-dev-server": "^11.0.0",
-    "mkdirp": "^3.0.1",
     "pako": "^2.1.0",
+    "playwright": "^1.50.1",
     "prettier": "^3.5.0",
     "puppeteer": "^15.0.0",
     "release-it": "18.1.2",
@@ -125,6 +126,8 @@
     "vega-datasets": "^2.11.0",
     "vega-embed": "^6.29.0",
     "vega-tooltip": "^0.35.2",
+    "vitest": "^3.0.5",
+    "webdriverio": "^9.8.0",
     "yaml-front-matter": "^4.1.1"
   },
   "dependencies": {

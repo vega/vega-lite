@@ -124,8 +124,4 @@ describe('compile/data/source', () => {
       });
     });
   });
-
-  describe('assemble', () => {
-    // TODO: write test
-  });
 });

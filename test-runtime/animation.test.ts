@@ -1,7 +1,7 @@
 import {Datum} from 'vega';
 import {TopLevelSpec} from '../src/index.js';
 import {embedFn, getSignal, getState, setSignal, sleep, testRenderFn} from './util.js';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
+import {page} from '@vitest/browser/context';
 
 const gapminderSpec: TopLevelSpec = {
   $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -45,13 +45,11 @@ const gapminderSpec: TopLevelSpec = {
 };
 
 describe('time encoding animations', () => {
-  let page: Page;
   let embed: (specification: TopLevelSpec) => Promise<void>;
   let testRender: (filename: string) => Promise<void>;
 
   beforeAll(async () => {
-    page = await (global as any).__BROWSER_GLOBAL__.newPage();
-    embed = embedFn(page);
+    embed = embedFn();
     testRender = testRenderFn(page, 'animation');
     await page.goto('http://0.0.0.0:9000/test-runtime/');
   });

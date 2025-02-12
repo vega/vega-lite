@@ -15,9 +15,21 @@
     "isolatedModules": true,
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "ignoreDeprecations": "5.0",
-    "noEmit": true
+    "noEmit": true,
+    "types": [
+      "@vitest/browser/matchers",
+      "@vitest/browser/providers/playwright",
+      "@vitest/browser/providers/webdriverio"
+    ]
   },
   "files": ["src/index.ts"],
-  "include": ["src/**/*.ts", "test/**/*.ts", "test-runtime/**/*.ts", "site/static/**/*.ts", "examples/*.test.ts"],
+  "include": [
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "test-runtime/**/*.ts",
+    "site/static/**/*.ts",
+    "examples/*.test.ts",
+    "vitest.workspace.ts"
+  ],
   "exclude": ["build/**/*"]
 }
