@@ -50,7 +50,7 @@ export class LookupNode extends DataFlowNode {
 
       try {
         selCmpt = model.getSelectionComponent(varName(selName), selName);
-      } catch (e) {
+      } catch {
         throw new Error(log.message.cannotLookupVariableParameter(selName));
       }
 

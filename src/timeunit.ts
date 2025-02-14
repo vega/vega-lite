@@ -409,13 +409,9 @@ export function timeUnitToString(tu: TimeUnit | TimeUnitTransformParams) {
     );
   } else {
     // when maxbins is specified instead of units
-    return (
-      (utc ? 'utc' : '') +
-      'timeunit' +
-      keys(rest)
-        .map((p) => varName(`_${p}_${rest[p]}`))
-        .join('')
-    );
+    return `${utc ? 'utc' : ''}timeunit${keys(rest)
+      .map((p) => varName(`_${p}_${rest[p]}`))
+      .join('')}`;
   }
 }
 

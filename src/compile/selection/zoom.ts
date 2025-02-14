@@ -38,11 +38,9 @@ const zoom: SelectionCompiler<'interval'> = {
             events,
             update: !boundScales
               ? `{x: x(unit), y: y(unit)}`
-              : '{' +
-                [sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : '']
+              : `{${[sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : '']
                   .filter((expr) => expr)
-                  .join(', ') +
-                '}',
+                  .join(', ')}}`,
           },
         ],
       },

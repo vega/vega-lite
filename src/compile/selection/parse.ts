@@ -97,7 +97,7 @@ export function parseSelectionPredicate(
 
   try {
     selCmpt = model.getSelectionComponent(vname, name);
-  } catch (e) {
+  } catch {
     // If a selection isn't found, treat as a variable parameter and coerce to boolean.
     return `!!${vname}`;
   }
@@ -128,7 +128,7 @@ export function parseSelectionExtent(model: Model, name: string, extent: Paramet
 
   try {
     selCmpt = model.getSelectionComponent(vname, name);
-  } catch (e) {
+  } catch {
     // If a selection isn't found, treat it as a variable parameter.
     return vname;
   }

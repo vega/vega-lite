@@ -437,10 +437,10 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
       const bandPositionOffsetExpr = bandPositionOffset !== 0 ? ` + ${bandPositionOffset}` : '';
       if (padding) {
         const startRatio = isSignalRef(padding)
-          ? `${padding.signal}/2` + bandPositionOffsetExpr
+          ? `${padding.signal}/2${bandPositionOffsetExpr}`
           : `${padding / 2 + bandPositionOffset}`;
         const endRatio = isSignalRef(padding)
-          ? `(1 - ${padding.signal}/2)` + bandPositionOffsetExpr
+          ? `(1 - ${padding.signal}/2)${bandPositionOffsetExpr}`
           : `${1 - padding / 2 + bandPositionOffset}`;
         return [{signal: `${startRatio} * (${duration})`}, {signal: `${endRatio} * (${duration})`}];
       }

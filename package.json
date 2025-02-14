@@ -67,7 +67,7 @@
     "site": "yarn site:only",
     "site:only": "pushd site && bundle exec jekyll serve -I -l && popd",
     "format": "eslint --fix && prettier . --write",
-    "lint": "eslint && prettier . --check",
+    "lint": "eslint --quiet && prettier . --check",
     "jest": "node --experimental-vm-modules ./node_modules/.bin/jest",
     "test": "yarn jest test/ && yarn lint && yarn schema && yarn jest examples/ && yarn test:runtime",
     "test:cover": "yarn jest --collectCoverage test/",

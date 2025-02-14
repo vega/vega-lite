@@ -238,9 +238,7 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
     const upper = isSignalRef(range) ? {signal: `${range.signal}[1]`} : range[1];
 
     if (lower !== null && upper !== null && useInRange) {
-      return (
-        'inrange(' + fieldExpr + ', [' + predicateValueExpr(lower, unit) + ', ' + predicateValueExpr(upper, unit) + '])'
-      );
+      return `inrange(${fieldExpr}, [${predicateValueExpr(lower, unit)}, ${predicateValueExpr(upper, unit)}])`;
     }
 
     const exprs = [];

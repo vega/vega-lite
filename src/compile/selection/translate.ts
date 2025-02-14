@@ -34,11 +34,9 @@ const translate: SelectionCompiler<'interval'> = {
         on: [
           {
             events: events.map((e) => e.between[0]),
-            update:
-              '{x: x(unit), y: y(unit)' +
-              (x !== undefined ? `, extent_x: ${boundScales ? domain(model, X) : `slice(${x.signals.visual})`}` : '') +
-              (y !== undefined ? `, extent_y: ${boundScales ? domain(model, Y) : `slice(${y.signals.visual})`}` : '') +
-              '}',
+            update: `{x: x(unit), y: y(unit)${
+              x !== undefined ? `, extent_x: ${boundScales ? domain(model, X) : `slice(${x.signals.visual})`}` : ''
+            }${y !== undefined ? `, extent_y: ${boundScales ? domain(model, Y) : `slice(${y.signals.visual})`}` : ''}}`,
           },
         ],
       },

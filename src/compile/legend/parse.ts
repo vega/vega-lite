@@ -68,7 +68,6 @@ function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChanne
   return {[channel]: scale};
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 function isExplicit<T extends string | number | object | boolean>(
   value: T,
   property: keyof LegendComponentProps,

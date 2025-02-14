@@ -735,9 +735,9 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
 
   // Remove empty config objects.
   for (const prop in config) {
-    // @ts-ignore
+    // @ts-expect-error(TS7053)
     if (isObject(config[prop]) && isEmpty(config[prop])) {
-      // @ts-ignore
+      // @ts-expect-error(TS7053)
       delete config[prop];
     }
   }
