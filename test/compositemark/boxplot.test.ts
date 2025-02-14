@@ -3,6 +3,7 @@ import * as log from '../../src/log';
 import {normalize} from '../../src/normalize';
 import {Transform} from '../../src/transform';
 import {defaultConfig} from '.././../src/config';
+import {compile} from '../../src/compile/compile';
 
 describe('normalizeBoxMinMax', () => {
   it('should produce an error if both axes have aggregate boxplot', () => {
@@ -1165,5 +1166,25 @@ describe('normalizeBoxIQR', () => {
       field,
       as: `${timeUnit}_${field}`
     });
+  });
+
+  it('should produce correct y axis title when mark.extent is not explicitly set', () => {
+    const {spec} = compile({
+      data: {url: 'data/population.json'},
+      mark: {
+        type: 'boxplot'
+      },
+      encoding: {
+        x: {field: 'age', type: 'quantitative'},
+        y: {
+          field: 'people',
+          type: 'quantitative',
+          axis: {title: 'Population'}
+        },
+        color: {value: 'skyblue'}
+      }
+    });
+    const title = spec.axes[3].title;
+    expect(title).toBe('Population');
   });
 });
