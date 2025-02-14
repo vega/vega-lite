@@ -3,7 +3,6 @@ import * as log from '../../src/log';
 import {normalize} from '../../src/normalize';
 import {Transform} from '../../src/transform';
 import {defaultConfig} from '.././../src/config';
-import {compile} from '../../src/compile/compile';
 
 describe('normalizeBoxMinMax', () => {
   it('should produce an error if both axes have aggregate boxplot', () => {
@@ -1169,22 +1168,25 @@ describe('normalizeBoxIQR', () => {
   });
 
   it('should produce correct y axis title when mark.extent is not explicitly set', () => {
-    const {spec} = compile({
-      data: {url: 'data/population.json'},
-      mark: {
-        type: 'boxplot'
-      },
-      encoding: {
-        x: {field: 'age', type: 'quantitative'},
-        y: {
-          field: 'people',
-          type: 'quantitative',
-          axis: {title: 'Population'}
+    const normalizedSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {
+          type: 'boxplot'
         },
-        color: {value: 'skyblue'}
-      }
-    });
-    const title = spec.axes[3].title;
+        encoding: {
+          x: {field: 'age', type: 'quantitative'},
+          y: {
+            field: 'people',
+            type: 'quantitative',
+            axis: {title: 'Population'}
+          },
+          color: {value: 'skyblue'}
+        }
+      },
+      defaultConfig
+    );
+    const title = (normalizedSpec as any).layer[0].layer[0].encoding.y.axis.title;
     expect(title).toBe('Population');
   });
 });
