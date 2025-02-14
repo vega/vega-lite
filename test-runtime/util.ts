@@ -300,7 +300,11 @@ export function sleep(milliseconds: number) {
 }
 
 const winSrc = ['pointermove', 'pointerup'];
-export function pointerEvt(type: string, target: HTMLElement | Window, opts?: {clientX: number; clientY: number}) {
+export function pointerEvt(
+  type: string,
+  target: Element | Window,
+  opts?: {clientX?: number; clientY?: number; bubbles?: boolean},
+) {
   opts.bubbles = true;
   target = winSrc.indexOf(type) < 0 ? target : window;
 
@@ -317,7 +321,7 @@ export function pointerEvt(type: string, target: HTMLElement | Window, opts?: {c
   );
 }
 
-export function mark(id: number, parent?: string): HTMLElement {
+export function mark(id: string, parent?: string): HTMLElement {
   return document.querySelector(`${parent ? `g.${parent} ` : ''}g.mark-symbol.role-mark path:nth-child(${id})`);
 }
 
@@ -326,17 +330,17 @@ export function coords(el: HTMLElement) {
   return [Math.ceil(rect.left + rect.width / 2), Math.ceil(rect.top + rect.height / 2)];
 }
 
-export function brushOrEl(el: HTMLElement, parent: string, _) {
+export function brushOrEl(el: Element, parent: string, _) {
   return !_ ? el : document.querySelector(`${parent ? `g.${parent} ` : ''}g.sel_brush > path`);
 }
 
-export function click(el: HTMLElement, evt: Event) {
+export function click(el: Element, evt: Event) {
   pointerEvt('pointerdown', el, evt);
   pointerEvt('pointerup', window, evt);
   pointerEvt('click', el, evt);
 }
 
-async function _brush(view: View, id0, id1, parent: string, targetBrush) {
+async function _brush(view: View, id0: string, id1: string, parent: string, targetBrush) {
   const el0 = mark(id0, parent);
   const el1 = mark(id1, parent);
   const [mdX, mdY] = coords(el0);
@@ -346,14 +350,14 @@ async function _brush(view: View, id0, id1, parent: string, targetBrush) {
   return (await view.runAsync()).data('sel_store');
 }
 
-async function _pt(view: View, id, parent, shiftKey) {
+async function _pt(view: View, id: string, parent: string, shiftKey) {
   const el = mark(id, parent);
   const [clientX, clientY] = coords(el);
   click(el, {clientX, clientY, shiftKey});
   return (await view.runAsync()).data('sel_store');
 }
 
-export async function clear(view: View, id, parent, shiftKey) {
+export async function clear(view: View, id: string, parent: string, shiftKey: boolean) {
   const bg = document.querySelector(`${parent ? `g.${parent} ` : ''}path.background`);
   const el = mark(id, parent);
   let [clientX, clientY] = coords(el);
