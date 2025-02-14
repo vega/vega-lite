@@ -49,8 +49,8 @@ jobs:
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
-      - name: Install extra dependencies for Puppeteer
-        run: sudo apt-get install libgbm1
+      - name: Set up playwright
+        run: yarn playwright install chromium
 
       - name: Build
         run: yarn build:only

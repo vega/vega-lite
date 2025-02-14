@@ -1,26 +1,23 @@
 import {View} from 'vega';
+import {describe, expect, it} from 'vitest';
 import {
   bound,
   brush,
   BrushKeys,
   compositeTypes,
   embed,
-  embedFn,
-  geoSpec,
+  getGeoSpec,
   getSpec,
   parentSelector,
-  spec,
-  zoom as zoom_,
-  testRenderFn,
   tuples,
   unbound,
-  getGeoSpec,
+  zoom as zoom_,
 } from './util.js';
+
 const hits = {
   zoom: [9, 23],
   bins: [8, 2],
 };
-import {describe, expect, it} from 'vitest';
 
 type InOut = 'in' | 'out';
 
@@ -54,7 +51,7 @@ describe('Zoom interval selections at runtime', () => {
         let yold: number[];
 
         if (bind === unbound) {
-          const drag = ((await brush(view, brushKey, idx, parent)) as [any])[0];
+          const drag = (await brush(view, brushKey, idx, parent))[0];
           xold = drag.values[0].sort(cmp);
           yold = encodings.includes('y') ? drag.values[encodings.indexOf('x') + 1].sort(cmp) : null;
         } else {
@@ -71,7 +68,7 @@ describe('Zoom interval selections at runtime', () => {
           const {inOut, xold, yold} = await setup(view, 'drag', i, ['x', 'y']);
           await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/interval/zoom/${bind}/${inOut}-0.svg`);
 
-          const zoomed = ((await zoom(view, 'zoom', i, inOut, null, bind === unbound)) as [any])[0];
+          const zoomed = (await zoom(view, 'zoom', i, inOut, null, bind === unbound))[0];
           const xnew = zoomed.values[0].sort(cmp);
           const ynew = zoomed.values[1].sort(cmp);
           await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/interval/zoom/${bind}/${inOut}-1.svg`);
@@ -101,7 +98,7 @@ describe('Zoom interval selections at runtime', () => {
           const {inOut, yold} = await setup(view, 'bins', i, encodings);
           await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/interval/zoom/${bind}/bins_${inOut}-0.svg`);
 
-          const zoomed = ((await zoom(view, 'bins', i, inOut, null, bind === unbound)) as [any])[0];
+          const zoomed = (await zoom(view, 'bins', i, inOut, null, bind === unbound))[0];
           const ynew = zoomed.values[0].sort(cmp);
           expect(ynew[0])[assertExtent[inOut][0]](yold[0]);
           expect(ynew[1])[assertExtent[inOut][1]](yold[1]);
@@ -120,7 +117,7 @@ describe('Zoom interval selections at runtime', () => {
             `./snapshots/interval/zoom/${bind}/temporal_${inOut}-0.svg`,
           );
 
-          const zoomed = ((await zoom(view, 'zoom', i, inOut, null, bind === unbound)) as [any])[0];
+          const zoomed = (await zoom(view, 'zoom', i, inOut, null, bind === unbound))[0];
           const xnew = zoomed.values[0].sort(cmp);
           expect(+xnew[0])[assertExtent[inOut][0]](+new Date(xold[0]));
           expect(+xnew[1])[assertExtent[inOut][1]](+new Date(xold[1]));
@@ -148,7 +145,7 @@ describe('Zoom interval selections at runtime', () => {
             `./snapshots/interval/zoom/${bind}/logpow_${inOut}-0.svg`,
           );
 
-          const zoomed = ((await zoom(view, 'zoom', i, inOut, null, bind === unbound)) as [any])[0];
+          const zoomed = (await zoom(view, 'zoom', i, inOut, null, bind === unbound))[0];
           const xnew = zoomed.values[0].sort(cmp);
           const ynew = zoomed.values[1].sort(cmp);
           expect(xnew[0])[assertExtent[inOut][0]](xold[0]);
@@ -180,7 +177,7 @@ describe('Zoom interval selections at runtime', () => {
               `./snapshots/interval/zoom/${bind}/ord_${inOut}-0.svg`,
             );
 
-            const zoomed = ((await zoom(view, 'zoom', i, inOut, null, bind === unbound)) as [any])[0];
+            const zoomed = (await zoom(view, 'zoom', i, inOut, null, bind === unbound))[0];
             const xnew = zoomed.values[0].sort(cmp);
             const ynew = zoomed.values[1].sort(cmp);
 
@@ -206,7 +203,7 @@ describe('Zoom interval selections at runtime', () => {
               );
               const parent = parentSelector(specType, i);
               const {inOut, xold, yold} = await setup(view, specType as any, i, ['x', 'y'], parent);
-              const zoomed = ((await zoom(view, 'bins', i, inOut, null, false /* bind === unbound */)) as [any])[0];
+              const zoomed = (await zoom(view, 'bins', i, inOut, null, false /* bind === unbound */))[0];
               const xnew = zoomed.values[0].sort(cmp);
               const ynew = zoomed.values[1].sort(cmp);
               expect(xnew[0])[assertExtent[inOut][0]](xold[0]);
