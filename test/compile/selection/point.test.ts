@@ -628,7 +628,7 @@ describe('Animated Selection', () => {
         }
       });
       facetModel.parseSelections();
-    }).toThrow(Error);
+    }).toThrow(`ERROR: ${log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED}`);
 
     expect(() => {
       const layerModel = parseModel({
@@ -679,7 +679,7 @@ describe('Animated Selection', () => {
         }
       });
       layerModel.parseSelections();
-    }).toThrow(Error);
+    }).toThrow(`ERROR: ${log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED}`);
 
     expect(() => {
       const concatModel = parseModel({
@@ -730,6 +730,6 @@ describe('Animated Selection', () => {
         }
       });
       concatModel.parseSelections();
-    }).toThrow(Error);
+    }).toThrow(`ERROR: ${log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED}`);
   });
 });
