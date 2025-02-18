@@ -279,6 +279,7 @@ Note: `time` encoding animations currently have a few restrictions. See the [exa
   - parameter must select the same field as the `time` field definition
 - must explicitliy define a filter using that parameter
 - currently, the `time` channel only supports `band` scales (these are the default for discrete frame animation)
+- currently, only unit specifications are supported (no multi-view animations)
 
 <!--
 TODO(jzong): uncomment once we've added rescale, scale types
