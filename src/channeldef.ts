@@ -525,7 +525,12 @@ export type PolarDef<F extends Field> = PositionFieldDefBase<F> | PositionDatumD
 
 export type TimeDef<F extends Field> = TimeFieldDef<F>;
 export interface TimeMixins {
-  rescale?: boolean;
+  /*
+  Optional. A boolean flag. When rescale is true, scale domains update according to the subset of data inside the current keyframe. When rescale is false, scale domains are generated from the entire dataset.
+
+  __Default value:__ `false`
+  */
+  rescale?: boolean; // TODO(jzong) commenting this out because it's not implemented yet.
 }
 export type TimeFieldDef<F extends Field> = ScaleFieldDef<F, StandardType> & TimeMixins;
 
