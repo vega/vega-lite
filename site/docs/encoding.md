@@ -272,13 +272,13 @@ See [an example scatterplot animation]({{ site.baseurl }}/examples/animated_gapm
 
 {% include table.html props="time" source="Encoding" %}
 
-Note: `time` encoding animations currently have a few restrictions
+Note: `time` encoding animations currently have a few restrictions. See the [example gallery]({{ site.baseurl }}/examples/#animated) for examples of animated visualizations.
 
 - must also explicility specify a selection parameter
   - parameter must have a `timer` event
   - parameter must select the same field as the `time` field definition
 - must explicitliy define a filter using that parameter
-- currently, the `time` channel only supports `band` scales (discrete frame animation)
+- currently, the `time` channel only supports `band` scales (these are the default for discrete frame animation)
 
 <!--
 TODO(jzong): uncomment once we've added rescale, scale types
