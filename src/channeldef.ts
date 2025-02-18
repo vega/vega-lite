@@ -530,7 +530,7 @@ export interface TimeMixins {
 
   __Default value:__ `false`
   */
-  rescale?: boolean; // TODO(jzong) commenting this out because it's not implemented yet.
+  rescale?: boolean;
 }
 export type TimeFieldDef<F extends Field> = ScaleFieldDef<F, StandardType> & TimeMixins;
 
