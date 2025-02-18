@@ -955,5 +955,13 @@
         "png": true
       }
     ]
+  },
+  "Animated": {
+    "": [
+      {
+        "name": "animated_gapminder",
+        "title": "Gapminder Frame Animation"
+      }
+    ]
   }
 }
