@@ -1,7 +1,9 @@
-import {TopLevelSpec} from '../src';
-import {SELECTION_ID, SelectionType} from '../src/selection';
-import {clearRegion, embedFn, circleRegion, polygonRegion, spec, testRenderFn, hits} from './util';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {TopLevelSpec} from '../src.js';
+import {SELECTION_ID, SelectionType} from '../src/selection.js';
+import {clearRegion, embedFn, circleRegion, polygonRegion, spec, testRenderFn, hits} from './util.js';
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page.js';
+
+// TODO: Rewrite this file with vitest
 
 describe('region selections at runtime in unit views', () => {
   let page: Page;

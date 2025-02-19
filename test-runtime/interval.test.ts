@@ -1,5 +1,5 @@
 import {View} from 'vega';
-import {SelectionType} from '../src/selection.js';
+import {SELECTION_ID, SelectionType} from '../src/selection.js';
 import {brush, embed, getGeoSpec, getSpec, hits as hitsMaster, tuples} from './util.js';
 import {describe, expect, it} from 'vitest';
 
