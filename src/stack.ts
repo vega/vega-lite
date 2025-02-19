@@ -17,6 +17,7 @@ import {
   PositionFieldDef,
   TypedFieldDef,
   vgField,
+  areFieldDefsWithInlineTransformsEquivalent,
 } from './channeldef.js';
 import {CompositeAggregate} from './compositemark/index.js';
 import {channelHasField, Encoding, isAggregate} from './encoding.js';
@@ -181,13 +182,15 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   if (encoding[dimensionChannel]) {
     const dimensionDef = encoding[dimensionChannel];
     const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
-    const hasSameDimensionAndStackedField = dimensionField && dimensionField === stackedField;
+    // const hasSameDimensionAndStackedField = dimensionField && dimensionField === stackedField;
+    const areDefsEquivalent =
+      isFieldDef(dimensionDef) && areFieldDefsWithInlineTransformsEquivalent(dimensionDef, stackedFieldDef);
 
     // For polar coordinates, do not set a groupBy when working with quantitative fields.
     // const isPolar = isPolarPositionChannel(fieldChannel) || isPolarPositionChannel(dimensionChannel);
     // const shouldAddPolarGroupBy = !isUnbinnedQuantitative(dimensionDef);
 
-    if (!hasSameDimensionAndStackedField) {
+    if (!areDefsEquivalent) {
       // if (isPolar ? shouldAddPolarGroupBy : !hasSameDimensionAndStackedField) {
       // avoid grouping by the stacked field
       groupbyChannels.push(dimensionChannel);
