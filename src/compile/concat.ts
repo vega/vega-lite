@@ -2,7 +2,7 @@ import {NewSignal, SignalRef} from 'vega';
 import {Config} from '../config.js';
 import * as log from '../log/index.js';
 import {isHConcatSpec, isVConcatSpec, NormalizedConcatSpec, NormalizedSpec} from '../spec/index.js';
-import {keys} from '../util.js';
+import {keys, vals} from '../util.js';
 import {VgData, VgLayout} from '../vega.schema.js';
 import {buildModel} from './buildmodel.js';
 import {parseData} from './data/parse.js';
@@ -46,7 +46,7 @@ export class ConcatModel extends Model {
       }
     }
 
-    if (Object.values(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
+    if (vals(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
       log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
     }
   }

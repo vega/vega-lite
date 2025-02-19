@@ -583,7 +583,7 @@ describe('Animated Selection', () => {
   );
 
   it('errors if you try to use animation on a multi-view', () => {
-    expect(() => {
+    log.wrap((localLogger) => {
       const facetModel = parseModel({
         data: {
           url: 'data/gapminder.json',
@@ -628,9 +628,10 @@ describe('Animated Selection', () => {
         },
       });
       facetModel.parseSelections();
-    }).toThrow(`ERROR: ${log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED}`);
 
-    expect(() => {
+      expect(localLogger.warns).toHaveLength(1);
+      expect(localLogger.warns[0]).toEqual(log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED);
+
       const layerModel = parseModel({
         data: {
           url: 'data/gapminder.json',
@@ -679,9 +680,10 @@ describe('Animated Selection', () => {
         },
       });
       layerModel.parseSelections();
-    }).toThrow(`ERROR: ${log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED}`);
 
-    expect(() => {
+      expect(localLogger.warns).toHaveLength(2);
+      expect(localLogger.warns[1]).toEqual(log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED);
+
       const concatModel = parseModel({
         data: {
           url: 'data/gapminder.json',
@@ -730,6 +732,9 @@ describe('Animated Selection', () => {
         },
       });
       concatModel.parseSelections();
-    }).toThrow(`ERROR: ${log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED}`);
+
+      expect(localLogger.warns).toHaveLength(3);
+      expect(localLogger.warns[2]).toEqual(log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED);
+    });
   });
 });

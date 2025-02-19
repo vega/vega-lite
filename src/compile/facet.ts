@@ -10,7 +10,7 @@ import {hasDiscreteDomain} from '../scale.js';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort.js';
 import {NormalizedFacetSpec} from '../spec/index.js';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet.js';
-import {hasProperty, keys} from '../util.js';
+import {hasProperty, keys, vals} from '../util.js';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema.js';
 import {buildModel} from './buildmodel.js';
 import {assembleFacetData} from './data/assemble.js';
@@ -116,7 +116,7 @@ export class FacetModel extends ModelWithField {
     this.child.parseSelections();
     this.component.selection = this.child.component.selection;
 
-    if (Object.values(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
+    if (vals(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
       log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
     }
   }

@@ -3,7 +3,7 @@ import {array} from 'vega-util';
 import {Config} from '../config.js';
 import * as log from '../log/index.js';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec/index.js';
-import {keys} from '../util.js';
+import {keys, vals} from '../util.js';
 import {VgData, VgLayout} from '../vega.schema.js';
 import {assembleAxisSignals} from './axis/assemble.js';
 import {parseLayerAxes} from './axis/parse.js';
@@ -71,7 +71,7 @@ export class LayerModel extends Model {
       }
     }
 
-    if (Object.values(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
+    if (vals(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
       log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
     }
   }
