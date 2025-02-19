@@ -57,18 +57,19 @@ describe('time encoding animations', () => {
       await setSignal(view, 'anim_clock', i * 500);
       await sleep(100);
 
-      const anim_clock = getState(view);
+      const state = getState(view);
+      console.log(state);
 
-      const state = anim_clock.signals['anim_value'];
-      expect(state).toBe(domain[i]);
+      const anim_value = state.signals['anim_value'];
+      expect(anim_value).toBe(domain[i]);
 
-      const curr_dataset = anim_clock.data['source_0_curr'] as Datum[];
+      const curr_dataset = state.data['source_0_curr'] as Datum[];
       const time_field = gapminderSpec.encoding.time.field as string;
-      const filteredDataset = curr_dataset.filter((d) => d[time_field] === state);
+      const filteredDataset = curr_dataset.filter((d) => d[time_field] === anim_value);
 
       expect(filteredDataset).toHaveLength(curr_dataset.length);
 
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/animation/gapminder_${state}.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/animation/gapminder_${anim_value}.svg`);
     }
   }, 10000);
 
