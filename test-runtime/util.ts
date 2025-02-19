@@ -1,8 +1,8 @@
-import {parse, SignalValue, View} from 'vega';
+import {parse, SignalValue, View, resetSVGDefIds} from 'vega';
 import {compile} from '../src/index.js';
-import {stringValue} from 'vega-util';
 import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} from '../src/selection.js';
 import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec/index.js';
+import {vi} from 'vitest';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
 export const selectionTypes: SelectionType[] = ['point', 'interval'];
@@ -100,7 +100,7 @@ export const hits = {
     ],
     facet_clear: [[3], [5], [7]],
   },
-};
+} as const;
 
 const config = {
   // reduce changes in generated SVGs
@@ -255,13 +255,21 @@ export function parentSelector(compositeType: ComposeType, index: number) {
 
 export type BrushKeys = keyof typeof hits.interval;
 export async function brush(view: View, key: BrushKeys, idx: number, parent?: string, targetBrush?: boolean) {
-  const fn = key.match('_clear') ? clear : _brush;
-  return await fn(view, hits.interval[key][idx].join(', '), stringValue(parent), !!targetBrush);
+  const h = hits.interval[key][idx];
+  if (key.match('_clear')) {
+    return await clear(view, h[0], parent, !!targetBrush);
+  } else {
+    return await _brush(view, h[0], h[1], parent, !!targetBrush);
+  }
 }
 
 export async function pt(view: View, key: keyof typeof hits.discrete, idx: number, parent?: string) {
-  const fn = key.match('_clear') ? clear : _pt;
-  return await fn(view, hits.discrete[key][idx], stringValue(parent));
+  const h = hits.discrete[key][idx] as number;
+  if (key.match('_clear')) {
+    return await clear(view, h, parent);
+  } else {
+    return await _pt(view, h, parent);
+  }
 }
 
 export function fill<T>(val: T, len: number) {
@@ -272,17 +280,18 @@ export function fill<T>(val: T, len: number) {
   return arr;
 }
 
-export async function embed(spec: TopLevelSpec) {
-  // clear previous DOM
+export async function embed(spec: TopLevelSpec, run = true) {
+  // reset DOM and Vega counters
   document.body.innerHTML = '';
+  resetSVGDefIds();
 
   const body = document.body;
   const div = document.createElement('div');
   body.appendChild(div);
 
   const vgSpec = compile(spec).spec;
-
-  return await new View(parse(vgSpec), {container: div, renderer: 'svg'}).runAsync();
+  const view = new View(parse(vgSpec), {container: div, renderer: 'svg'});
+  return run ? await view.runAsync() : view;
 }
 
 export async function getSignal(view: View, signal: string): Promise<SignalValue> {
@@ -321,7 +330,7 @@ export function pointerEvt(
   );
 }
 
-export function mark(id: string, parent?: string): HTMLElement {
+export function mark(id: number, parent?: string): HTMLElement {
   return document.querySelector(`${parent ? `g.${parent} ` : ''}g.mark-symbol.role-mark path:nth-child(${id})`);
 }
 
@@ -330,17 +339,17 @@ export function coords(el: HTMLElement) {
   return [Math.ceil(rect.left + rect.width / 2), Math.ceil(rect.top + rect.height / 2)];
 }
 
-export function brushOrEl(el: Element, parent: string, _) {
-  return !_ ? el : document.querySelector(`${parent ? `g.${parent} ` : ''}g.sel_brush > path`);
+export function brushOrEl(el: Element, parent: string, targetBrush) {
+  return !targetBrush ? el : document.querySelector(`${parent ? `g.${parent} ` : ''}g.sel_brush > path`);
 }
 
-export function click(el: Element, evt: Event) {
+export function click(el: Element, evt: Partial<MouseEvent>) {
   pointerEvt('pointerdown', el, evt);
   pointerEvt('pointerup', window, evt);
   pointerEvt('click', el, evt);
 }
 
-async function _brush(view: View, id0: string, id1: string, parent: string, targetBrush) {
+async function _brush(view: View, id0: number, id1: number, parent: string, targetBrush) {
   const el0 = mark(id0, parent);
   const el1 = mark(id1, parent);
   const [mdX, mdY] = coords(el0);
@@ -350,14 +359,14 @@ async function _brush(view: View, id0: string, id1: string, parent: string, targ
   return (await view.runAsync()).data('sel_store');
 }
 
-async function _pt(view: View, id: string, parent: string, shiftKey) {
+export async function _pt(view: View, id: number, parent: string, shiftKey?: boolean) {
   const el = mark(id, parent);
   const [clientX, clientY] = coords(el);
   click(el, {clientX, clientY, shiftKey});
   return (await view.runAsync()).data('sel_store');
 }
 
-export async function clear(view: View, id: string, parent: string, shiftKey: boolean) {
+export async function clear(view: View, id: number, parent: string, shiftKey?: boolean) {
   const bg = document.querySelector(`${parent ? `g.${parent} ` : ''}path.background`);
   const el = mark(id, parent);
   let [clientX, clientY] = coords(el);
@@ -367,7 +376,7 @@ export async function clear(view: View, id: string, parent: string, shiftKey: bo
   return (await view.runAsync()).data('sel_store');
 }
 
-export async function zoom(view: View, id, delta, parent, targetBrush) {
+export async function zoom(view: View, id: number, delta: number, parent: string, targetBrush) {
   const el = mark(id, parent);
   const [clientX, clientY] = coords(el);
   pointerEvt('wheel', brushOrEl(el, parent, targetBrush), {
@@ -387,16 +396,7 @@ export async function zoom(view: View, id, delta, parent, targetBrush) {
   return (await view.runAsync()).data('sel_store');
 }
 
-export async function getState(view: View, signals: string[], data: string[]) {
+export async function getState(view: View) {
   await view.runAsync();
-  return {
-    signals: signals.reduce((o: any, s) => {
-      o[s] = view.signal(s);
-      return o;
-    }, {}),
-    data: data.reduce((o: any, d) => {
-      o[d] = view.data(d);
-      return o;
-    }, {}),
-  };
+  return view.getState({recurse: true, signals: () => true, data: () => true});
 }

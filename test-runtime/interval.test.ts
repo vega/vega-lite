@@ -1,3 +1,4 @@
+import {View} from 'vega';
 import {SelectionType} from '../src/selection.js';
 import {brush, embed, getGeoSpec, getSpec, hits as hitsMaster, tuples} from './util.js';
 import {describe, expect, it} from 'vitest';
@@ -21,7 +22,7 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].fields[1].type).toBe('R');
       expect(store[0].values[0]).toHaveLength(2);
       expect(store[0].values[1]).toHaveLength(2);
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/drag_${i}.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/drag_${i}.svg`);
     }
   });
 
@@ -37,7 +38,7 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].fields[0].field).toBe('a');
       expect(store[0].fields[0].type).toBe('R');
       expect(store[0].values[0]).toHaveLength(2);
-      await expect(await view1.toSVG()).toMatchFileSnapshot(`./snapshots/x_${i}.svg`);
+      await expect(await view1.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/x_${i}.svg`);
     }
 
     const view2 = await embed(getSpec('unit', 1, {type, encodings: ['y']}));
@@ -50,7 +51,7 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].fields[0].field).toBe('b');
       expect(store[0].fields[0].type).toBe('R');
       expect(store[0].values[0]).toHaveLength(2);
-      await expect(await view2.toSVG()).toMatchFileSnapshot(`./snapshots/y_${i}.svg`);
+      await expect(await view2.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/y_${i}.svg`);
     }
   });
 
@@ -62,7 +63,7 @@ describe('interval selections at runtime in unit views', () => {
 
       store = (await brush(view, 'drag_clear', i)) as [any];
       expect(store).toHaveLength(0);
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/clear_${i}.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/clear_${i}.svg`);
     }
   });
 
@@ -88,7 +89,7 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].fields[0].field).toBe('b');
       expect(store[0].fields[0].type).toBe('R');
       expect(store[0].values[0]).toHaveLength(2);
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/bins_${i}.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/bins_${i}.svg`);
     }
 
     const store = await brush(view, 'bins_clear', 0);
@@ -105,8 +106,10 @@ describe('interval selections at runtime in unit views', () => {
       [17, 19, 23, 24, 27, 28, 35, 39, 43, 48],
     ];
 
+    let view: View;
+
     for (let i = 0; i < hits.drag.length; i++) {
-      const view = await embed(getSpec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
+      view = await embed(getSpec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
       const store = (await brush(view, 'drag', i)) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(2);
@@ -119,7 +122,7 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].fields[1].type).toBe('E');
       expect(store[0].values[0]).toEqual(expect.arrayContaining(xextents[i]));
       expect(store[0].values[1]).toEqual(expect.arrayContaining(yextents[i]));
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/ord_${i}.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/ord_${i}.svg`);
     }
 
     const store = await brush(view, 'drag_clear', 0);
@@ -132,13 +135,13 @@ describe('interval selections at runtime in unit views', () => {
 
     const view1 = await embed(getSpec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
     let extents = [
-      [1485969714000, 1493634384000],
-      [1496346498000, 1504364922000],
+      [1485958914000, 1493623584000],
+      [1496335698000, 1504354122000],
     ];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = toNumber((await brush(view1, 'drag', i)) as [any]);
       expect(store).toEqual(expect.arrayContaining(extents[i]));
-      await expect(await view1.toSVG()).toMatchFileSnapshot(`./snapshots/temporal_${i}.svg`);
+      await expect(await view1.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/temporal_${i}.svg`);
     }
 
     let cleared = await brush(view1, 'drag_clear', 0);
@@ -149,13 +152,13 @@ describe('interval selections at runtime in unit views', () => {
     );
 
     extents = [
-      [1325492928000, 1325664000000],
-      [1325752128000, 1325837664000],
+      [1325482128000, 1325653200000],
+      [1325741328000, 1325826864000],
     ];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = toNumber((await brush(view2, 'drag', i)) as [any]);
       expect(store).toEqual(expect.arrayContaining(extents[i]));
-      await expect(await view2.toSVG()).toMatchFileSnapshot(`./snapshots/dayTimeUnit_${i}.svg`);
+      await expect(await view2.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/dayTimeUnit_${i}.svg`);
     }
 
     cleared = await brush(view2, 'drag_clear', 0);
@@ -181,7 +184,7 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].values).toHaveLength(2);
       expect(store[0].values[0]).toHaveLength(2);
       expect(store[0].values[1]).toHaveLength(2);
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/logpow_${i}.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/logpow_${i}.svg`);
     }
   });
 
@@ -193,7 +196,7 @@ describe('interval selections at runtime in unit views', () => {
       for (const t of store) {
         expect(t).toHaveProperty('_vgsid_');
       }
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/geo_1.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/geo_1.svg`);
     });
 
     it('should respect projections', async () => {
@@ -203,7 +206,7 @@ describe('interval selections at runtime in unit views', () => {
       for (const t of store) {
         expect(t).toHaveProperty('_vgsid_');
       }
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/geo_0.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/geo_0.svg`);
     });
   });
 });

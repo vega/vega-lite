@@ -1,6 +1,6 @@
 import {stringValue} from 'vega-util';
 import {SelectionType} from '../src/selection.js';
-import {compositeTypes, embed, parentSelector, getSpec, clear, pt} from './util.js';
+import {compositeTypes, embed, parentSelector, getSpec, clear, _pt} from './util.js';
 import {describe, expect, it} from 'vitest';
 import {View} from 'vega';
 
@@ -13,8 +13,8 @@ const hits = {
 } as const;
 
 function toggle(view: View, key: keyof typeof hits, idx: number, shiftKey: boolean, parent?: string) {
-  const fn = key.match('_clear') ? clear : pt;
-  return fn(view, hits[key][idx], stringValue(parent), !!shiftKey);
+  const fn = key.match('_clear') ? clear : _pt;
+  return fn(view, hits[key][idx], parent, !!shiftKey);
 }
 
 describe('Toggle point selections at runtime', () => {

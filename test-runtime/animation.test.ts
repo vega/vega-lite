@@ -3,7 +3,9 @@ import {TopLevelSpec} from '../src/index.js';
 import {embed, getSignal, getState, setSignal, sleep} from './util.js';
 import {describe, expect, it} from 'vitest';
 
-import gapminderData from './gapminder.json' with {type: 'json'};
+import gapminderData from '../examples/specs/data/gapminder.json' with {type: 'json'};
+
+const fps = 10;
 
 const gapminderSpec: TopLevelSpec = {
   $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -44,11 +46,18 @@ const gapminderSpec: TopLevelSpec = {
       field: 'year',
     },
   },
+  config: {
+    scale: {
+      framesPerSecond: fps,
+    },
+  },
 };
+
+const sleepTime = 1000 / fps;
 
 describe('time encoding animations', () => {
   it('renders a frame for each anim_value', async () => {
-    const view = await embed(gapminderSpec);
+    const view = await embed(gapminderSpec, false);
 
     expect(await getSignal(view, 'is_playing')).toBe(false);
 
@@ -56,14 +65,16 @@ describe('time encoding animations', () => {
 
     for (let i = 0; i < domain.length; i++) {
       await setSignal(view, 'anim_clock', i * 500);
-      await sleep(100);
+      await sleep(sleepTime);
 
-      const anim_clock = await getState(view, ['anim_value'], ['source_0_curr']);
+      const anim_clock = await getState(view);
       const anim_value = anim_clock.signals['anim_value'];
 
       expect(anim_value).toBe(domain[i]);
 
-      const curr_dataset = anim_clock.data['source_0_curr'] as Datum[];
+      console.log(anim_clock.data);
+
+      const curr_dataset = (anim_clock.data['source_0_curr'] ?? []) as Datum[];
       const time_field = gapminderSpec.encoding.time.field as string;
       const filteredDataset = curr_dataset.filter((d) => d[time_field] === anim_value);
 
@@ -80,7 +91,7 @@ describe('time encoding animations', () => {
     let prev_anim_clock = anim_clock;
 
     for (let i = 0; i < 10; i++) {
-      await sleep(100);
+      await sleep(sleepTime);
       anim_clock = (await getSignal(view, 'anim_clock')) as number;
       expect(anim_clock).toBeGreaterThan(prev_anim_clock);
       prev_anim_clock = anim_clock;
