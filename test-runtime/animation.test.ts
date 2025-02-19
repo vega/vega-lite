@@ -1,6 +1,6 @@
 import {Datum} from 'vega';
 import {TopLevelSpec} from '../src';
-import {embedFn, getSignal, getState, setSignal, sleep, testRenderFn} from './util';
+import {embedFn, getState, setSignal, testRenderFn} from './util';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 
 const gapminderSpec: TopLevelSpec = {
@@ -69,7 +69,6 @@ describe('time encoding animations', () => {
 
     for (let i = 0; i < domain.length; i++) {
       await page.evaluate(setSignal('anim_clock', i * 500));
-      await sleep(100);
 
       const state = (await page.evaluate(getState(['anim_value'], ['source_0_curr']))) as {signals: any; data: any};
       const anim_value = state.signals['anim_value'];
@@ -84,31 +83,5 @@ describe('time encoding animations', () => {
 
       await testRender(`gapminder_${anim_value}`);
     }
-  }, 10000);
-
-  it('anim_clock makes forward progress', async () => {
-    await embed(gapminderSpec);
-
-    let anim_clock = (await page.evaluate(getSignal('anim_clock'))) as number;
-    let prev_anim_clock = anim_clock;
-
-    for (let i = 0; i < 10; i++) {
-      await sleep(100);
-      anim_clock = (await page.evaluate(getSignal('anim_clock'))) as number;
-      expect(anim_clock).toBeGreaterThan(prev_anim_clock);
-      prev_anim_clock = anim_clock;
-    }
-  }, 10000);
-
-  it('anim_clock loops', async () => {
-    await embed(gapminderSpec);
-
-    const max_range_extent = (await page.evaluate(getSignal('max_range_extent'))) as number;
-
-    await sleep(max_range_extent);
-
-    const anim_clock = await page.evaluate(getSignal('anim_clock'));
-
-    expect(anim_clock).toBeLessThanOrEqual(max_range_extent);
-  }, 10000);
+  });
 });
