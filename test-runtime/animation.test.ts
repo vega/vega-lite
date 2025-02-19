@@ -3,12 +3,12 @@ import {TopLevelSpec} from '../src/index.js';
 import {embed, getSignal, getState, setSignal, sleep} from './util.js';
 import {describe, expect, it} from 'vitest';
 
-import gapminderData from '../examples/specs/data/gapminder.json' with {type: 'json'};
+import gapminderData from '../examples/specs/data/gapminder.json?url';
 
 const gapminderSpec: TopLevelSpec = {
   $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
   data: {
-    values: gapminderData,
+    url: gapminderData,
   },
   mark: 'point',
   params: [
@@ -49,7 +49,6 @@ const gapminderSpec: TopLevelSpec = {
 describe('time encoding animations', () => {
   it('renders a frame for each anim_value', async () => {
     const view = await embed(gapminderSpec, false);
-
     await setSignal(view, 'is_playing', false);
 
     const domain = [1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005];
@@ -58,18 +57,18 @@ describe('time encoding animations', () => {
       await setSignal(view, 'anim_clock', i * 500);
       await sleep(100);
 
-      const anim_clock = await getState(view);
+      const anim_clock = getState(view);
 
-      const anim_value = anim_clock.signals['anim_value'];
-      expect(anim_value).toBe(domain[i]);
+      const state = anim_clock.signals['anim_value'];
+      expect(state).toBe(domain[i]);
 
       const curr_dataset = anim_clock.data['source_0_curr'] as Datum[];
       const time_field = gapminderSpec.encoding.time.field as string;
-      const filteredDataset = curr_dataset.filter((d) => d[time_field] === anim_value);
+      const filteredDataset = curr_dataset.filter((d) => d[time_field] === state);
 
       expect(filteredDataset).toHaveLength(curr_dataset.length);
 
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/animation/gapminder_${anim_value}.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/animation/gapminder_${state}.svg`);
     }
   }, 10000);
 
