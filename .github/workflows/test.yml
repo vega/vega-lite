@@ -25,10 +25,10 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Tests
-        run: yarn jest test/
+        run: yarn vitest run test/
 
       - name: Example tests
-        run: yarn jest examples/
+        run: yarn vitest run examples/
 
       - name: Build
         run: yarn build
@@ -65,7 +65,7 @@ jobs:
         run: yarn test:runtime
 
       - name: Test coverage
-        run: yarn jest test/ --collectCoverage=true
+        run: yarn vitest test/ --collectCoverage=true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5.3.1

@@ -17,6 +17,7 @@
     "ignoreDeprecations": "5.0",
     "noEmit": true,
     "types": [
+      "vitest/globals",
       "@vitest/browser/matchers",
       "@vitest/browser/providers/playwright",
       "@vitest/browser/providers/webdriverio"
