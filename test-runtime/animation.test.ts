@@ -59,8 +59,8 @@ describe('time encoding animations', () => {
       await sleep(100);
 
       const anim_clock = await getState(view);
-      const anim_value = anim_clock.signals['anim_value'];
 
+      const anim_value = anim_clock.signals['anim_value'];
       expect(anim_value).toBe(domain[i]);
 
       const curr_dataset = anim_clock.data['source_0_curr'] as Datum[];
