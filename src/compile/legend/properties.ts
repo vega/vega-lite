@@ -6,7 +6,7 @@ import {Config} from '../../config';
 import {Encoding} from '../../encoding';
 import {Legend, LegendConfig, LegendInternal} from '../../legend';
 import {Mark, MarkDef} from '../../mark';
-import {isContinuousToContinuous, ScaleType} from '../../scale';
+import {isContinuousToContinuous, isContinuousToDiscrete, ScaleType} from '../../scale';
 import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
 import {isSignalRef} from '../../vega.schema';
@@ -14,7 +14,7 @@ import {guideFormat, guideFormatType} from '../format';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {NonPositionScaleChannel} from './../../channel';
-import {LegendComponentProps} from './component';
+import {LegendComponentProps, FullLegendType} from './component';
 import {getFirstConditionValue} from './encode';
 
 export interface LegendRuleParams {
@@ -28,7 +28,7 @@ export interface LegendRuleParams {
   config: Config<SignalRef>;
   scaleType: ScaleType;
   orient: LegendOrient;
-  legendType: LegendType;
+  legendType: FullLegendType;
   direction: Orientation;
 }
 
@@ -132,7 +132,7 @@ export function getLegendType(params: {
   channel: NonPositionScaleChannel;
   timeUnit?: TimeUnit;
   scaleType: ScaleType;
-}): LegendType {
+}): FullLegendType {
   const {legend} = params;
 
   return getFirstDefined(legend.type, defaultType(params));
@@ -146,7 +146,9 @@ export function defaultType({
   channel: NonPositionScaleChannel;
   timeUnit?: TimeUnit;
   scaleType: ScaleType;
-}): LegendType {
+  // TODO: Update this function and LegendType to support a third value (discrete), which is needed for discrete gradient legends
+  // https://github.com/vega/vega/blob/main/packages/vega-parser/src/parsers/legend.js
+}): FullLegendType {
   // Following the logic in https://github.com/vega/vega-parser/blob/master/src/parsers/legend.js
 
   if (isColorChannel(channel)) {
@@ -156,6 +158,10 @@ export function defaultType({
 
     if (isContinuousToContinuous(scaleType)) {
       return 'gradient';
+    }
+
+    if (isContinuousToDiscrete(scaleType)) {
+      return 'discrete';
     }
   }
   return 'symbol';
@@ -169,7 +175,7 @@ export function getDirection({
 }: {
   orient: LegendOrient;
   legendConfig: LegendConfig<SignalRef>;
-  legendType: LegendType;
+  legendType: FullLegendType;
   legend: Legend<SignalRef>;
 }): Orientation {
   return (
@@ -179,7 +185,7 @@ export function getDirection({
   );
 }
 
-export function defaultDirection(orient: LegendOrient, legendType: LegendType): 'horizontal' | undefined {
+export function defaultDirection(orient: LegendOrient, legendType: FullLegendType): 'horizontal' | undefined {
   switch (orient) {
     case 'top':
     case 'bottom':
