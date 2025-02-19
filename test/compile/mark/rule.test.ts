@@ -48,7 +48,7 @@ describe('Mark: Rule', () => {
   });
 
   describe('with y-only and log scale', () => {
-    () => {
+    it('should create horizontal rule that fits height', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'rule',
         encoding: {y: {field: 'a', type: 'quantitative', scale: {type: 'log'}}},
@@ -56,12 +56,10 @@ describe('Mark: Rule', () => {
 
       const props = rule.encodeEntry(model);
 
-      it('should create horizontal rule that fits height', () => {
-        expect(props.y).toEqual({scale: Y, field: 'a'});
-        expect(props.x).toEqual({value: 0});
-        expect(props.x2).toEqual({field: {group: 'width'}});
-      });
-    };
+      expect(props.y).toEqual({scale: Y, field: 'a'});
+      expect(props.x2).toEqual({value: 0});
+      expect(props.x).toEqual({field: {group: 'width'}});
+    });
   });
 
   describe('with x and x2 only', () => {
