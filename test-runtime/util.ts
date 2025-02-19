@@ -396,7 +396,6 @@ export async function zoom(view: View, id: number, delta: number, parent: string
   return (await view.runAsync()).data('sel_store');
 }
 
-export async function getState(view: View) {
-  await view.runAsync();
+export function getState(view: View) {
   return view.getState({recurse: true, signals: () => true, data: () => true});
 }
