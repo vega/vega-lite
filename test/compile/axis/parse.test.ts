@@ -50,11 +50,12 @@ describe('Axis', () => {
             type: 'quantitative'
           }
         },
-        config: {axisQuantitative: {labelAlign: 'right'}}
+        config: {axisQuantitative: {labelAlign: 'right'}, axisX: {title: 'foo'}}
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].implicit.labelAlign).toBe('right');
+      expect(axisComponent['x'][0].implicit.title).toBe('foo');
     });
 
     it('should produce grid, orient, tickCount, labelExpr in the component when axis config is specified.', () => {
