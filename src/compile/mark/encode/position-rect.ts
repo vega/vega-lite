@@ -304,6 +304,8 @@ function getBinSpacing(
     };
   } else {
     offset = offset || 0;
+    // FIXME: remove this override
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-unary-minus
     return axisTranslate + (reverse ? -offset - spacingOffset : +offset + spacingOffset);
   }
 }

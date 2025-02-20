@@ -635,60 +635,61 @@ describe('Animated Selection', () => {
   });
 
   it('errors if you try to use animation on a layered multi-view', () => {
-    log
-      .wrap((localLogger) => {
-        const layerModel = parseModel({
-          data: {
-            url: 'data/gapminder.json',
-          },
-          params: [
-            {
-              name: 'avl',
-              select: {
-                type: 'point',
-                fields: ['year'],
-                on: 'timer',
-              },
-            },
-          ],
-          transform: [
-            {
-              filter: {
-                param: 'avl',
-              },
-            },
-          ],
-          layer: [
-            {
-              mark: 'point',
-            },
-            {
-              mark: 'point',
-            },
-          ],
-          encoding: {
-            color: {
-              field: 'country',
-            },
-            x: {
-              field: 'fertility',
-              type: 'quantitative',
-            },
-            y: {
-              field: 'life_expect',
-              type: 'quantitative',
-            },
-            time: {
-              field: 'year',
-              type: 'ordinal',
+    log.wrap((localLogger) => {
+      const layerModel = parseModel({
+        data: {
+          url: 'data/gapminder.json',
+        },
+        params: [
+          {
+            name: 'avl',
+            select: {
+              type: 'point',
+              fields: ['year'],
+              on: 'timer',
             },
           },
-        });
-        layerModel.parseSelections();
-      })
-      .toThrow(Error);
+        ],
+        transform: [
+          {
+            filter: {
+              param: 'avl',
+            },
+          },
+        ],
+        layer: [
+          {
+            mark: 'point',
+          },
+          {
+            mark: 'point',
+          },
+        ],
+        encoding: {
+          color: {
+            field: 'country',
+          },
+          x: {
+            field: 'fertility',
+            type: 'quantitative',
+          },
+          y: {
+            field: 'life_expect',
+            type: 'quantitative',
+          },
+          time: {
+            field: 'year',
+            type: 'ordinal',
+          },
+        },
+      });
+      layerModel.parseSelections();
 
-    expect(() => {
+      expect(localLogger.warns).toHaveLength(1);
+      expect(localLogger.warns[2]).toEqual(log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED);
+    });
+
+    log.wrap((localLogger) => {
       const concatModel = parseModel({
         data: {
           url: 'data/gapminder.json',

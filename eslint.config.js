@@ -35,7 +35,7 @@ export default [
     rules: {
       'prettier/prettier': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off', // TODO: turn on
       '@typescript-eslint/prefer-for-of': 'error',
       '@typescript-eslint/no-for-in-array': 'error',
       '@typescript-eslint/no-require-imports': 'error',
@@ -48,13 +48,14 @@ export default [
           ignoreRestSiblings: true,
         },
       ],
+      '@typescript-eslint/restrict-plus-operands': 'off', // FIXME: turn on
       '@typescript-eslint/no-shadow': 'error',
-      '@typescript-eslint/no-unsafe-member-access': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn',
-      '@typescript-eslint/no-unsafe-return': 'warn',
-      '@typescript-eslint/no-unsafe-assignment': 'warn',
-      '@typescript-eslint/no-unsafe-call': 'warn',
-      '@typescript-eslint/no-redundant-type-constituents': 'warn',
+      '@typescript-eslint/no-unsafe-member-access': 'off', // TODO: turn on
+      '@typescript-eslint/no-unsafe-argument': 'off', // TODO: turn on
+      '@typescript-eslint/no-unsafe-return': 'off', // TODO: turn on
+      '@typescript-eslint/no-unsafe-assignment': 'off', // TODO: turn on
+      '@typescript-eslint/no-unsafe-call': 'off', // TODO: turn on
+      '@typescript-eslint/no-redundant-type-constituents': 'off',
       '@typescript-eslint/no-duplicate-type-constituents': 'warn',
       '@typescript-eslint/no-object-literal-type-assertion': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',

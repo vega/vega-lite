@@ -1172,19 +1172,19 @@ describe('normalizeBoxIQR', () => {
       {
         data: {url: 'data/population.json'},
         mark: {
-          type: 'boxplot'
+          type: 'boxplot',
         },
         encoding: {
           x: {field: 'age', type: 'quantitative'},
           y: {
             field: 'people',
             type: 'quantitative',
-            axis: {title: 'Population'}
+            axis: {title: 'Population'},
           },
-          color: {value: 'skyblue'}
-        }
+          color: {value: 'skyblue'},
+        },
       },
-      defaultConfig
+      defaultConfig,
     );
     const title = (normalizedSpec as any).layer[0].layer[0].encoding.y.axis.title;
     expect(title).toBe('Population');
