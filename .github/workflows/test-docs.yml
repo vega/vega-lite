@@ -26,7 +26,7 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Lint
-        run: yarn prettierbase --check
+        run: yarn prettier . --check
 
       - name: Build
         run: yarn build:site
