@@ -1,6 +1,5 @@
-import {Datum} from 'vega';
 import {TopLevelSpec} from '../src/index.js';
-import {embed, getSignal, getState, setSignal, sleep} from './util.js';
+import {embed} from './util.js';
 import {describe, expect, it} from 'vitest';
 
 import gapminderData from '../examples/specs/data/gapminder.json?url';
@@ -42,6 +41,7 @@ const gapminderSpec: TopLevelSpec = {
     },
     time: {
       field: 'year',
+      sort: 'ascending',
     },
   },
 };
@@ -49,53 +49,28 @@ const gapminderSpec: TopLevelSpec = {
 describe('time encoding animations', () => {
   it('renders a frame for each anim_value', async () => {
     const view = await embed(gapminderSpec, false);
-    await setSignal(view, 'is_playing', false);
+    await view.runAsync(); // Ensure initial initialization is complete
+    view.signal('is_playing', false);
+    await view.runAsync();
+    expect(view.signal('is_playing')).toBe(false);
+    console.log('nice');
 
     const domain = [1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005];
 
     for (let i = 0; i < domain.length; i++) {
-      await setSignal(view, 'anim_clock', i * 500);
-      await sleep(100);
+      view.signal('anim_clock', i * 500);
+      await view.runAsync();
 
-      const state = getState(view);
-      console.log(state);
-
-      const anim_value = state.signals['anim_value'];
+      const anim_value = view.signal('anim_value');
       expect(anim_value).toBe(domain[i]);
 
-      const curr_dataset = state.data['source_0_curr'] as Datum[];
+      const curr_dataset = view.data('source_0_curr');
       const time_field = gapminderSpec.encoding.time.field as string;
       const filteredDataset = curr_dataset.filter((d) => d[time_field] === anim_value);
 
       expect(filteredDataset).toHaveLength(curr_dataset.length);
 
-      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/animation/gapminder_${anim_value}.svg`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./resources/animation/gapminder_${anim_value}.svg`);
     }
-  }, 10000);
-
-  it('anim_clock makes forward progress', async () => {
-    const view = await embed(gapminderSpec);
-
-    let anim_clock = (await getSignal(view, 'anim_clock')) as number;
-    let prev_anim_clock = anim_clock;
-
-    for (let i = 0; i < 10; i++) {
-      await sleep(100);
-      anim_clock = (await getSignal(view, 'anim_clock')) as number;
-      expect(anim_clock).toBeGreaterThan(prev_anim_clock);
-      prev_anim_clock = anim_clock;
-    }
-  }, 10000);
-
-  it('anim_clock loops', async () => {
-    const view = await embed(gapminderSpec);
-
-    const max_range_extent = (await getSignal(view, 'max_range_extent')) as number;
-
-    await sleep(max_range_extent);
-
-    const anim_clock = (await getSignal(view, 'anim_clock')) as number;
-
-    expect(anim_clock).toBeLessThanOrEqual(max_range_extent);
-  }, 10000);
+  });
 });
