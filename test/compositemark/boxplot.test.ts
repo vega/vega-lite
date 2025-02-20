@@ -1166,4 +1166,27 @@ describe('normalizeBoxIQR', () => {
       as: `${timeUnit}_${field}`,
     });
   });
+
+  it('should produce correct y axis title when mark.extent is not explicitly set', () => {
+    const normalizedSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {
+          type: 'boxplot'
+        },
+        encoding: {
+          x: {field: 'age', type: 'quantitative'},
+          y: {
+            field: 'people',
+            type: 'quantitative',
+            axis: {title: 'Population'}
+          },
+          color: {value: 'skyblue'}
+        }
+      },
+      defaultConfig
+    );
+    const title = (normalizedSpec as any).layer[0].layer[0].encoding.y.axis.title;
+    expect(title).toBe('Population');
+  });
 });
