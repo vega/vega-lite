@@ -16,12 +16,7 @@
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "ignoreDeprecations": "5.0",
     "noEmit": true,
-    "types": [
-      "vitest/globals",
-      "@vitest/browser/matchers",
-      "@vitest/browser/providers/playwright",
-      "@vitest/browser/providers/webdriverio"
-    ]
+    "types": ["vitest/globals", "@vitest/browser/matchers", "@vitest/browser/providers/playwright"]
   },
   "files": ["src/index.ts"],
   "include": [

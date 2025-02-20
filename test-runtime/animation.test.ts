@@ -66,7 +66,8 @@ describe('time encoding animations', () => {
       const time_field = gapminderSpec.encoding.time.field as string;
       const filteredDataset = curr_dataset.filter((d) => d[time_field] === anim_value);
 
-      expect(filteredDataset).toHaveLength(curr_dataset.length);
+      // expect the current dataset to only contain data for the current frame
+      expect(curr_dataset).toHaveLength(filteredDataset.length);
 
       await expect(await view.toSVG()).toMatchFileSnapshot(`./resources/animation/gapminder_${anim_value}.svg`);
     }
