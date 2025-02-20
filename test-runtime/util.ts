@@ -1,8 +1,7 @@
-import {parse, SignalValue, View, resetSVGDefIds} from 'vega';
+import {parse, View, resetSVGDefIds} from 'vega';
 import {compile} from '../src/index.js';
 import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} from '../src/selection.js';
 import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec/index.js';
-import {vi} from 'vitest';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
 export const selectionTypes: SelectionType[] = ['point', 'interval'];
@@ -294,14 +293,6 @@ export async function embed(spec: TopLevelSpec, run = true) {
   return run ? await view.runAsync() : view;
 }
 
-export async function getSignal(view: View, signal: string): Promise<SignalValue> {
-  return (await view.runAsync()).signal(signal);
-}
-
-export async function setSignal(view: View, signal: string, value: SignalValue) {
-  return await view.signal(signal, value).runAsync();
-}
-
 export function sleep(milliseconds: number) {
   return new Promise((resolve) => {
     setTimeout(resolve, milliseconds);
@@ -394,8 +385,4 @@ export async function zoom(view: View, id: number, delta: number, parent: string
     deltaZ: Math.sign(delta),
   });
   return (await view.runAsync()).data('sel_store');
-}
-
-export function getState(view: View) {
-  return view.getState({recurse: true, signals: () => true, data: () => true});
 }
