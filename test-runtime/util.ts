@@ -304,7 +304,7 @@ const winSrc = ['pointermove', 'pointerup'];
 export function pointerEvt(
   type: string,
   target: Element | Window,
-  opts?: {clientX?: number; clientY?: number; bubbles?: boolean},
+  opts?: {clientX?: number; clientY?: number; deltaX?: number; deltaY?: number; deltaZ?: number; bubbles?: boolean},
 ) {
   opts.bubbles = true;
   target = winSrc.indexOf(type) < 0 ? target : window;
@@ -322,7 +322,7 @@ export function pointerEvt(
   );
 }
 
-export function mark(id: number, parent?: string): HTMLElement {
+export function getMark(id: number, parent?: string): HTMLElement {
   return document.querySelector(`${parent ? `g.${parent} ` : ''}g.mark-symbol.role-mark path:nth-child(${id})`);
 }
 
@@ -331,19 +331,19 @@ export function coords(el: HTMLElement) {
   return [Math.ceil(rect.left + rect.width / 2), Math.ceil(rect.top + rect.height / 2)];
 }
 
-export function brushOrEl(el: Element, parent: string, targetBrush) {
+function brushOrEl(el: Element, parent: string, targetBrush: boolean) {
   return !targetBrush ? el : document.querySelector(`${parent ? `g.${parent} ` : ''}g.sel_brush > path`);
 }
 
-export function click(el: Element, evt: Partial<MouseEvent>) {
+function click(el: Element, evt: Partial<MouseEvent>) {
   pointerEvt('pointerdown', el, evt);
   pointerEvt('pointerup', window, evt);
   pointerEvt('click', el, evt);
 }
 
-async function _brush(view: View, id0: number, id1: number, parent: string, targetBrush) {
-  const el0 = mark(id0, parent);
-  const el1 = mark(id1, parent);
+async function _brush(view: View, id0: number, id1: number, parent: string, targetBrush: boolean) {
+  const el0 = getMark(id0, parent);
+  const el1 = getMark(id1, parent);
   const [mdX, mdY] = coords(el0);
   const [muX, muY] = coords(el1);
   pointerEvt('pointerdown', brushOrEl(el0, parent, targetBrush), {clientX: mdX, clientY: mdY});
@@ -352,7 +352,7 @@ async function _brush(view: View, id0: number, id1: number, parent: string, targ
 }
 
 export async function _pt(view: View, id: number, parent: string, shiftKey?: boolean) {
-  const el = mark(id, parent);
+  const el = getMark(id, parent);
   const [clientX, clientY] = coords(el);
   click(el, {clientX, clientY, shiftKey});
   return (await view.runAsync()).data('sel_store');
@@ -360,7 +360,7 @@ export async function _pt(view: View, id: number, parent: string, shiftKey?: boo
 
 export async function clear(view: View, id: number, parent: string, shiftKey?: boolean) {
   const bg = document.querySelector(`${parent ? `g.${parent} ` : ''}path.background`);
-  const el = mark(id, parent);
+  const el = getMark(id, parent);
   let [clientX, clientY] = coords(el);
   clientX += 10;
   clientY -= 10;
@@ -368,8 +368,8 @@ export async function clear(view: View, id: number, parent: string, shiftKey?: b
   return (await view.runAsync()).data('sel_store');
 }
 
-export async function zoom(view: View, id: number, delta: number, parent: string, targetBrush) {
-  const el = mark(id, parent);
+export async function zoom(view: View, id: number, delta: number, parent: string, targetBrush: boolean) {
+  const el = getMark(id, parent);
   const [clientX, clientY] = coords(el);
   pointerEvt('wheel', brushOrEl(el, parent, targetBrush), {
     clientX,

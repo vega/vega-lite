@@ -208,7 +208,7 @@ export interface SphereGenerator extends GeneratorBase {
   /**
    * Generate sphere GeoJSON data for the full globe.
    */
-  sphere: true;
+  sphere: true | object;
 }
 
 export interface GraticuleGenerator extends GeneratorBase {
