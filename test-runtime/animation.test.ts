@@ -50,15 +50,14 @@ describe('time encoding animations', () => {
   it('renders a frame for each anim_value', async () => {
     const view = await embed(gapminderSpec, false);
     await view.runAsync(); // Ensure initial initialization is complete
-    view.signal('is_playing', false);
-    await view.runAsync();
+
+    await view.signal('is_playing', false).runAsync();
     expect(view.signal('is_playing')).toBe(false);
 
     const domain = [1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005];
 
     for (let i = 0; i < domain.length; i++) {
-      view.signal('anim_clock', i * 500);
-      await view.runAsync();
+      await view.signal('anim_clock', i * 500).runAsync();
 
       const anim_value = view.signal('anim_value');
       expect(anim_value).toBe(domain[i]);
