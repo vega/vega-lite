@@ -4,10 +4,10 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import bundleSize from 'rollup-plugin-bundle-size';
+import 'dotenv/config';
 
+// eslint-disable-next-line no-undef
 const watch = process.env.ROLLUP_WATCH;
-
-const extensions = ['.js', '.ts'];
 
 export default {
   input: 'site/static/index.ts',
@@ -17,9 +17,9 @@ export default {
     sourcemap: true,
   },
   plugins: [
-    json(),
-    nodeResolve({browser: true, extensions}),
+    nodeResolve({browser: true, extensions: ['.ts']}),
     commonjs(),
+    json(),
     typescript(),
     watch && terser(),
     bundleSize(),

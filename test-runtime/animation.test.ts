@@ -2,6 +2,7 @@ import {TopLevelSpec} from '../src/index.js';
 import {embed} from './util.js';
 import {describe, expect, it} from 'vitest';
 
+// @ts-expect-error ts doesn't support ?url
 import gapminderData from '../examples/specs/data/gapminder.json?url';
 
 const gapminderSpec: TopLevelSpec = {

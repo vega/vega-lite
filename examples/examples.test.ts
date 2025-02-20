@@ -1,7 +1,7 @@
 import {Ajv, ErrorObject} from 'ajv';
 import draft6Schema from 'ajv/lib/refs/json-schema-draft-06.json';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import {Spec as VgSpec} from 'vega';
 import vgSchema from 'vega/build/vega-schema.json';
 import vlSchema from '../build/vega-lite-schema.json';
@@ -44,7 +44,7 @@ function validateVL(spec: TopLevelSpec) {
   expect(errors?.map((err: ErrorObject) => err.message).join(', ')).toBeUndefined();
   expect(valid).toBe(true);
 
-  expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v5');
+  expect(spec.$schema.substring(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v5');
 }
 
 function validateVega(vegaSpec: VgSpec) {

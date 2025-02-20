@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 import {select, selectAll, Selection} from 'd3-selection';
 import hljs_ from 'highlight.js/lib/core';
 import css from 'highlight.js/lib/languages/css';

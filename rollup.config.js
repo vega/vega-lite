@@ -8,8 +8,6 @@ import bundleSize from 'rollup-plugin-bundle-size';
 
 import pkg from './package.json' with {type: 'json'};
 
-const extensions = ['.js', '.ts'];
-
 export function disallowedImports() {
   return {
     resolveId: (module) => {
@@ -41,7 +39,7 @@ const outputs = [
       sourcemap: true,
     },
     plugins: [
-      nodeResolve({browser: true, extensions}),
+      nodeResolve({browser: true, extensions: ['.ts']}),
       commonjs(),
       json(),
       typescript({
@@ -72,7 +70,7 @@ const outputs = [
           'vega-util': 'vega',
         },
       }),
-      nodeResolve({browser: true, extensions}),
+      nodeResolve({browser: true, extensions: ['.ts']}),
       commonjs(),
       json(),
       typescript({

@@ -1,4 +1,3 @@
-import {stringValue} from 'vega-util';
 import {SelectionType} from '../src/selection.js';
 import {compositeTypes, embed, parentSelector, getSpec, clear, _pt} from './util.js';
 import {describe, expect, it} from 'vitest';
@@ -78,7 +77,7 @@ describe('Toggle point selections at runtime', () => {
       let length = 0;
       for (let i = 0; i < hits.composite.length; i++) {
         const parent = parentSelector(specType, i % 3);
-        const store = (await toggle(view, 'composite', i, true, parent)) as string;
+        const store = await toggle(view, 'composite', i, true, parent);
         expect((length = store.length)).toEqual(i + 1);
         if (i % 3 === 2) {
           await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/${specType}_${i}.svg`);
