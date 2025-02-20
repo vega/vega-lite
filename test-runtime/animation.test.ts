@@ -53,7 +53,6 @@ describe('time encoding animations', () => {
     view.signal('is_playing', false);
     await view.runAsync();
     expect(view.signal('is_playing')).toBe(false);
-    console.log('nice');
 
     const domain = [1955, 1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005];
 
