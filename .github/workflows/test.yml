@@ -68,7 +68,7 @@ jobs:
         run: yarn test:runtime
 
       - name: Test coverage
-        run: yarn vitest test/ --collectCoverage=true
+        run: yarn test:cover
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5.3.1
