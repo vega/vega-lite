@@ -70,7 +70,7 @@
     "lint": "eslint --quiet && prettier . --check",
     "test": "vitest run test/ && yarn lint && yarn schema && vitest run examples/ && yarn test:runtime",
     "test:cover": "vitest run test/ --coverage",
-    "test:runtime": "TZ=America/Los_Angeles vitest run test-runtime/",
+    "test:runtime": "vitest run test-runtime/",
     "watch": "tsc -p tsconfig.build.json -w",
     "watch:site": "yarn build:site -w",
     "release": "release-it"
@@ -100,7 +100,6 @@
     "dotenv": "^16.4.7",
     "eslint": "^9.20.1",
     "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-jest": "^28.11.0",
     "eslint-plugin-prettier": "^5.2.3",
     "fast-json-stable-stringify": "~2.1.0",
     "highlight.js": "^11.11.1",

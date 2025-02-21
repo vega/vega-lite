@@ -65,7 +65,7 @@ jobs:
         run: yarn lint
 
       - name: Runtime tests
-        run: yarn test:runtime
+        run: yarn test:runtime --browser.headless
 
       - name: Test coverage
         run: yarn test:cover

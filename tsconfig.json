@@ -26,7 +26,8 @@
     "test-runtime/**/*.ts",
     "site/static/**/*.ts",
     "examples/*.test.ts",
-    "vitest.workspace.ts"
+    "vitest.workspace.ts",
+    "vitest.global-setup.ts"
   ],
   "exclude": ["build/**/*"]
 }

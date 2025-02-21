@@ -180,7 +180,7 @@ You can run `yarn build` to compile Vega-Lite and regenerate `vega-lite-schema.j
 
 ### Basic Lint & Test & Test Coverage
 
-`yarn test` run linting and all unit-tests respectively. `yarn format` automatically fixes linting issues if possible. `yarn test:inspect` to inspect tests
+`yarn test` run linting and all unit-tests respectively. `yarn format` automatically fixes linting issues if possible.
 
 `yarn test:cover` includes test coverage and generates a report inside `coverage/index.html`. You can see if specific lines are covered in the unit test by running `open coverage/index.html` and browsing through the report.
 
@@ -188,9 +188,9 @@ You can run `yarn build` to compile Vega-Lite and regenerate `vega-lite-schema.j
 
 During development, it can be convenient to rebuild automatically or to run tests in the background. You can use:
 
-- `yarn watch:test` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
-
 - `yarn watch` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
+
+To automatically run tests when files change, run `yarn vitest`. You can also run specific tests like the runtime tests with `yarn vitest test-runtime/`.
 
 ### Website
 
@@ -207,7 +207,7 @@ We use the [Visual Studio Code](https://code.visualstudio.com/) editor.
 - VSCode has nice built-in Typescript support!
 - We already include project settings to hide compiled files (`*.js`, `*.js.map`). This should work automatically if you open the `vega-lite` folder with VSCode.
 - Make sure to install [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions.
-- The [vscode-jest-runner](https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner) extension is also very helpful for debugging tests.
+- The [vitest](https://marketplace.visualstudio.com/items?itemName=vitest.explorer) extension is also very helpful for debugging tests.
 
 ## Manually Testing with Vega-Editor
 
