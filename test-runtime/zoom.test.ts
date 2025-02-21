@@ -211,7 +211,7 @@ describe('Zoom interval selections at runtime', () => {
               expect(ynew[0])[assertExtent[inOut][0]](yold[0]);
               expect(ynew[1])[assertExtent[inOut][1]](yold[1]);
               await expect(await view.toSVG()).toMatchFileSnapshot(
-                `./snapshots/interval/zoom/${bind}/${specType}_${inOut}-0.svg`,
+                `./snapshots/interval/zoom/${bind}/${specType}_${inOut}.svg`,
               );
             }
           });
