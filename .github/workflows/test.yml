@@ -49,6 +49,9 @@ jobs:
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
+      - name: Copy Data
+        run: yarn data
+
       - name: Set up playwright
         run: yarn playwright install chromium
 
