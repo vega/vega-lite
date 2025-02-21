@@ -9,7 +9,7 @@
  */
 
 import fs from 'fs';
-import vl from '../build/index.js';
+import {normalize} from '../build/index.js';
 import stableStringify from 'fast-json-stable-stringify';
 
 const DIR = import.meta.dirname + '/..';
@@ -25,7 +25,7 @@ async function main() {
     const spec = JSON.parse(fs.readFileSync(path));
 
     const preNormalized = stableStringify(spec);
-    const fullSpec = vl.normalize(spec);
+    const fullSpec = normalize(spec);
     const postNormalized = stableStringify(fullSpec);
 
     // console.log(preNormalized, postNormalized);
