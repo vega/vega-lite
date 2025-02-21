@@ -9,7 +9,7 @@
  */
 
 import fs from 'fs';
-import vl from '../build/vega-lite/index.js';
+import vl from '../build/index.js';
 import stableStringify from 'fast-json-stable-stringify';
 import compactStringify from 'json-stringify-pretty-compact';
 import yargs from 'yargs';
