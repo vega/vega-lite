@@ -1,10 +1,10 @@
 import {array} from 'vega-util';
-import {ChannelDef, ConditionalPredicate, isConditionalDef, isConditionalParameter} from '../../../channeldef';
-import {GuideEncodingConditionalValueDef} from '../../../guide';
-import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {expression} from '../../predicate';
-import {parseSelectionPredicate} from '../../selection/parse';
-import {UnitModel} from '../../unit';
+import {ChannelDef, ConditionalPredicate, isConditionalDef, isConditionalParameter} from '../../../channeldef.js';
+import {GuideEncodingConditionalValueDef} from '../../../guide.js';
+import {VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
+import {expression} from '../../predicate.js';
+import {parseSelectionPredicate} from '../../selection/parse.js';
+import {UnitModel} from '../../unit.js';
 
 /**
  * Return a VgEncodeEntry that includes a Vega production rule for a scale channel's encoding or guide encoding, which includes:
@@ -17,7 +17,7 @@ export function wrapCondition<CD extends ChannelDef | GuideEncodingConditionalVa
   channelDef,
   vgChannel,
   invalidValueRef,
-  mainRefFn
+  mainRefFn,
 }: {
   model: UnitModel;
   channelDef: CD;
@@ -36,7 +36,7 @@ export function wrapCondition<CD extends ChannelDef | GuideEncodingConditionalVa
 
   if (condition) {
     const conditions = array(condition);
-    valueRefs = conditions.map(c => {
+    valueRefs = conditions.map((c) => {
       const conditionValueRef = mainRefFn(c);
       if (isConditionalParameter<any>(c)) {
         const {param, empty} = c;

@@ -1,7 +1,7 @@
-import {getMarkPropOrConfig, signalOrValueRef} from '../common';
-import {UnitModel} from '../unit';
-import {MarkCompiler} from './base';
-import * as encode from './encode';
+import {getMarkPropOrConfig, signalOrValueRef} from '../common.js';
+import {UnitModel} from '../unit.js';
+import {MarkCompiler} from './base.js';
+import * as encode from './encode/index.js';
 
 export const tick: MarkCompiler = {
   vgMark: 'rect',
@@ -21,15 +21,15 @@ export const tick: MarkCompiler = {
         color: 'include',
         orient: 'ignore',
         size: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
 
       ...encode.rectPosition(model, vgSizeAxisChannel),
       ...encode.pointPosition(vgThicknessAxisChannel, model, {
         defaultPos: 'mid',
-        vgChannel: vgThicknessAxisChannel === 'y' ? 'yc' : 'xc'
+        vgChannel: vgThicknessAxisChannel === 'y' ? 'yc' : 'xc',
       }),
-      [vgThicknessChannel]: signalOrValueRef(getMarkPropOrConfig('thickness', markDef, config))
+      [vgThicknessChannel]: signalOrValueRef(getMarkPropOrConfig('thickness', markDef, config)),
     };
-  }
+  },
 };

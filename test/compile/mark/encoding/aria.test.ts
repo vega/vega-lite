@@ -1,5 +1,5 @@
-import {aria} from '../../../../src/compile/mark/encode';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {aria} from '../../../../src/compile/mark/encode/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encoding/aria', () => {
   it('aria should be added to bar mark', () => {
@@ -8,14 +8,14 @@ describe('compile/mark/encoding/aria', () => {
       encoding: {
         x: {
           field: 'category',
-          type: 'ordinal'
+          type: 'ordinal',
         },
         y: {
           field: 'value',
-          type: 'quantitative'
-        }
+          type: 'quantitative',
+        },
       },
-      data: {values: []}
+      data: {values: []},
     });
 
     const ariaMixins = aria(model);
@@ -23,11 +23,11 @@ describe('compile/mark/encoding/aria', () => {
     expect(ariaMixins).toEqual({
       description: {
         signal:
-          '"category: " + (isValid(datum["category"]) ? datum["category"] : ""+datum["category"]) + "; value: " + (format(datum["value"], ""))'
+          '"category: " + (isValid(datum["category"]) ? datum["category"] : ""+datum["category"]) + "; value: " + (format(datum["value"], ""))',
       },
       ariaRoleDescription: {
-        value: 'bar'
-      }
+        value: 'bar',
+      },
     });
   });
 
@@ -36,19 +36,19 @@ describe('compile/mark/encoding/aria', () => {
       mark: {
         type: 'bar',
         aria: false,
-        description: 'this will not show'
+        description: 'this will not show',
       },
       encoding: {
         x: {
           field: 'category',
-          type: 'ordinal'
+          type: 'ordinal',
         },
         y: {
           field: 'value',
-          type: 'quantitative'
-        }
+          type: 'quantitative',
+        },
       },
-      data: {values: []}
+      data: {values: []},
     });
 
     const ariaMixins = aria(model);
@@ -62,13 +62,13 @@ describe('compile/mark/encoding/aria', () => {
       encoding: {
         x: {
           field: 'category',
-          type: 'ordinal'
-        }
+          type: 'ordinal',
+        },
       },
       data: {values: []},
       config: {
-        aria: false
-      }
+        aria: false,
+      },
     });
 
     const ariaMixins = aria(model);
@@ -80,26 +80,26 @@ describe('compile/mark/encoding/aria', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: {
         type: 'bar',
-        description: 'An awesome mark'
+        description: 'An awesome mark',
       },
       encoding: {
         x: {
           field: 'category',
-          type: 'ordinal'
-        }
+          type: 'ordinal',
+        },
       },
       data: {values: []},
       config: {
-        aria: false
-      }
+        aria: false,
+      },
     });
 
     const ariaMixins = aria(model);
 
     expect(ariaMixins).toEqual({
       description: {
-        value: 'An awesome mark'
-      }
+        value: 'An awesome mark',
+      },
     });
   });
 
@@ -107,26 +107,26 @@ describe('compile/mark/encoding/aria', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: {
         type: 'bar',
-        ariaRoleDescription: 'mark'
+        ariaRoleDescription: 'mark',
       },
       encoding: {
         x: {
           field: 'category',
-          type: 'ordinal'
-        }
+          type: 'ordinal',
+        },
       },
-      data: {values: []}
+      data: {values: []},
     });
 
     const ariaMixins = aria(model);
 
     expect(ariaMixins).toEqual({
       ariaRoleDescription: {
-        value: 'mark'
+        value: 'mark',
       },
       description: {
-        signal: '"category: " + (isValid(datum["category"]) ? datum["category"] : ""+datum["category"])'
-      }
+        signal: '"category: " + (isValid(datum["category"]) ? datum["category"] : ""+datum["category"])',
+      },
     });
   });
 });

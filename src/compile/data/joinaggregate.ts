@@ -1,11 +1,11 @@
 import {AggregateOp} from 'vega';
-import {vgField} from '../../channeldef';
-import {JoinAggregateTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {VgJoinAggregateTransform} from '../../vega.schema';
-import {JoinAggregateFieldDef} from '../../transform';
-import {unique} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {vgField} from '../../channeldef.js';
+import {JoinAggregateTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {VgJoinAggregateTransform} from '../../vega.schema.js';
+import {JoinAggregateFieldDef} from '../../transform.js';
+import {unique} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for the join aggregate transform nodes.
@@ -17,13 +17,13 @@ export class JoinAggregateTransformNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private readonly transform: JoinAggregateTransform
+    private readonly transform: JoinAggregateTransform,
   ) {
     super(parent);
   }
 
   public addDimensions(fields: string[]) {
-    this.transform.groupby = unique(this.transform.groupby.concat(fields), d => d);
+    this.transform.groupby = unique(this.transform.groupby.concat(fields), (d) => d);
   }
 
   public dependentFields() {
@@ -33,8 +33,8 @@ export class JoinAggregateTransformNode extends DataFlowNode {
       this.transform.groupby.forEach(out.add, out);
     }
     this.transform.joinaggregate
-      .map(w => w.field)
-      .filter(f => f !== undefined)
+      .map((w) => w.field)
+      .filter((f) => f !== undefined)
       .forEach(out.add, out);
 
     return out;
@@ -69,7 +69,7 @@ export class JoinAggregateTransformNode extends DataFlowNode {
       as,
       ops,
       fields,
-      ...(groupby !== undefined ? {groupby} : {})
+      ...(groupby !== undefined ? {groupby} : {}),
     };
   }
 }

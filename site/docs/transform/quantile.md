@@ -35,7 +35,7 @@ Computes the [quartile](https://en.wikipedia.org/wiki/Quartile) boundaries for t
 [
   {prob: 0.25, value: 1.34},
   {prob: 0.5, value: 5.82},
-  {prob: 0.75, value: 9.31}
+  {prob: 0.75, value: 9.31},
 ];
 ```
 

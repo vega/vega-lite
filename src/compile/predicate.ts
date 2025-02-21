@@ -1,10 +1,10 @@
 import {isString} from 'vega-util';
-import {LogicalComposition} from '../logical';
-import {fieldFilterExpression, isSelectionPredicate, Predicate} from '../predicate';
-import {logicalExpr} from '../util';
-import {DataFlowNode} from './data/dataflow';
-import {Model} from './model';
-import {parseSelectionPredicate} from './selection/parse';
+import {LogicalComposition} from '../logical.js';
+import {fieldFilterExpression, isSelectionPredicate, Predicate} from '../predicate.js';
+import {logicalExpr} from '../util.js';
+import {DataFlowNode} from './data/dataflow.js';
+import {Model} from './model.js';
+import {parseSelectionPredicate} from './selection/parse.js';
 
 /**
  * Converts a predicate into an expression.

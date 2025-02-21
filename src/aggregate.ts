@@ -1,7 +1,7 @@
 import type {AggregateOp} from 'vega';
 import {hasOwnProperty, isString} from 'vega-util';
-import {FieldName} from './channeldef';
-import {contains, Flag, hasProperty} from './util';
+import {FieldName} from './channeldef.js';
+import {contains, Flag, hasProperty} from './util.js';
 
 const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   argmax: 1,
@@ -28,13 +28,13 @@ const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
   valid: 1,
   values: 1,
   variance: 1,
-  variancep: 1
+  variancep: 1,
 };
 
 export const MULTIDOMAIN_SORT_OP_INDEX = {
   count: 1,
   min: 1,
-  max: 1
+  max: 1,
 };
 
 export interface ArgminDef {
@@ -65,7 +65,7 @@ export const COUNTING_OPS = new Set<NonArgAggregateOp>([
   'count',
   'valid',
   'missing',
-  'distinct'
+  'distinct',
 ]) as ReadonlySet<NonArgAggregateOp>;
 
 export function isCountingAggregateOp(aggregate?: string | Aggregate): boolean {
@@ -82,7 +82,7 @@ export const SUM_OPS = new Set<NonArgAggregateOp>([
   'sum',
   'distinct',
   'valid',
-  'missing'
+  'missing',
 ]) as ReadonlySet<NonArgAggregateOp>;
 
 /**
@@ -95,5 +95,5 @@ export const SHARED_DOMAIN_OPS = new Set<AggregateOp>([
   'q1',
   'q3',
   'min',
-  'max'
+  'max',
 ]) as ReadonlySet<AggregateOp>;

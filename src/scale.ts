@@ -6,18 +6,18 @@ import type {
   ScaleInterpolateParams,
   SignalRef,
   TimeInterval,
-  TimeIntervalStep
+  TimeIntervalStep,
 } from 'vega';
 import {isString, isObject} from 'vega-util';
-import * as CHANNEL from './channel';
-import {Channel, isColorChannel} from './channel';
-import {DateTime} from './datetime';
-import {ExprRef} from './expr';
-import {ScaleInvalidDataConfigMixins} from './invalid';
-import * as log from './log';
-import {ParameterExtent} from './selection';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
-import {contains, Flag, hasProperty, keys} from './util';
+import * as CHANNEL from './channel.js';
+import {Channel, isColorChannel} from './channel.js';
+import {DateTime} from './datetime.js';
+import {ExprRef} from './expr.js';
+import {ScaleInvalidDataConfigMixins} from './invalid.js';
+import * as log from './log/index.js';
+import {ParameterExtent} from './selection.js';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type.js';
+import {contains, Flag, hasProperty, keys} from './util.js';
 
 export const ScaleType = {
   // Continuous - Quantitative
@@ -43,7 +43,7 @@ export const ScaleType = {
   // Discrete scales
   ORDINAL: 'ordinal',
   POINT: 'point',
-  BAND: 'band'
+  BAND: 'band',
 } as const;
 
 type ValueOf<T> = T[keyof T];
@@ -69,7 +69,7 @@ export const SCALE_CATEGORY_INDEX: Record<ScaleType, ScaleType | 'numeric' | 'or
   band: 'ordinal-position',
   quantile: 'discretizing',
   quantize: 'discretizing',
-  threshold: 'discretizing'
+  threshold: 'discretizing',
 };
 
 export const SCALE_TYPES: ScaleType[] = keys(SCALE_CATEGORY_INDEX);
@@ -110,7 +110,7 @@ const SCALE_PRECEDENCE_INDEX: Record<ScaleType, number> = {
   'bin-ordinal': 0,
   quantile: 0,
   quantize: 0,
-  threshold: 0
+  threshold: 0,
 };
 
 /**
@@ -125,13 +125,13 @@ export const QUANTITATIVE_SCALES = new Set<ScaleType>([
   'log',
   'pow',
   'sqrt',
-  'symlog'
+  'symlog',
 ]) as ReadonlySet<ScaleType>;
 
 export const CONTINUOUS_TO_CONTINUOUS_SCALES = new Set<ScaleType>([
   ...QUANTITATIVE_SCALES,
   'time',
-  'utc'
+  'utc',
 ]) as ReadonlySet<ScaleType>;
 
 export function isQuantitative(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' {
@@ -141,21 +141,21 @@ export function isQuantitative(type: ScaleType): type is 'linear' | 'log' | 'pow
 export const CONTINUOUS_TO_DISCRETE_SCALES = new Set<ScaleType>([
   'quantile',
   'quantize',
-  'threshold'
+  'threshold',
 ]) as ReadonlySet<ScaleType>;
 
 export const CONTINUOUS_DOMAIN_SCALES = new Set<ScaleType>([
   ...CONTINUOUS_TO_CONTINUOUS_SCALES,
   ...CONTINUOUS_TO_DISCRETE_SCALES,
   'sequential',
-  'identity'
+  'identity',
 ]) as ReadonlySet<ScaleType>;
 
 export const DISCRETE_DOMAIN_SCALES = new Set<ScaleType>([
   'ordinal',
   'bin-ordinal',
   'point',
-  'band'
+  'band',
 ]) as ReadonlySet<ScaleType>;
 
 export const TIME_SCALE_TYPES = new Set<ScaleType>(['time', 'utc']) as ReadonlySet<ScaleType>;
@@ -165,13 +165,13 @@ export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'bin-ord
 }
 
 export function hasContinuousDomain(
-  type: ScaleType
+  type: ScaleType,
 ): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' | 'time' | 'utc' | 'quantile' | 'quantize' | 'threshold' {
   return CONTINUOUS_DOMAIN_SCALES.has(type);
 }
 
 export function isContinuousToContinuous(
-  type: ScaleType
+  type: ScaleType,
 ): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' | 'time' | 'utc' {
   return CONTINUOUS_TO_CONTINUOUS_SCALES.has(type);
 }
@@ -481,7 +481,7 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
   zero: true,
 
   framesPerSecond: 2,
-  animationDuration: 5
+  animationDuration: 5,
 };
 
 export interface SchemeParams {
@@ -791,7 +791,7 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale<any>> = {
   // band/point
   padding: 1,
   paddingInner: 1,
-  paddingOuter: 1
+  paddingOuter: 1,
 };
 
 export const SCALE_PROPERTIES = keys(SCALE_PROPERTY_INDEX);
@@ -847,9 +847,9 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
             'time',
             'utc', // zero is not meaningful for time
             'threshold', // threshold requires custom domain so zero does not matter
-            'quantile' // quantile depends on distribution so zero does not matter
+            'quantile', // quantile depends on distribution so zero does not matter
           ],
-          scaleType
+          scaleType,
         )
       );
   }

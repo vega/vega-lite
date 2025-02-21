@@ -1,7 +1,7 @@
-import {ExtentTransformNode} from '../../../src/compile/data/extent';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
-import {isExtent} from '../../../src/transform';
+import {ExtentTransformNode} from '../../../src/compile/data/extent.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
+import {isExtent} from '../../../src/transform.js';
 
 describe('compile/data/extent', () => {
   describe('isExtent', () => {
@@ -22,13 +22,13 @@ describe('compile/data/extent', () => {
     it('should return a proper vg transform', () => {
       const transform: Transform = {
         extent: 'a',
-        param: 'a_extent'
+        param: 'a_extent',
       };
       const extent = new ExtentTransformNode(null, transform);
       expect(extent.assemble()).toEqual({
         type: 'extent',
         field: 'a',
-        signal: 'a_extent'
+        signal: 'a_extent',
       });
     });
   });
@@ -37,7 +37,7 @@ describe('compile/data/extent', () => {
     it('should return empty set', () => {
       const transform: Transform = {
         extent: 'a',
-        param: 'A'
+        param: 'A',
       };
       const extent = new ExtentTransformNode(null, transform);
       expect(extent.producedFields()).toEqual(new Set([]));
@@ -48,7 +48,7 @@ describe('compile/data/extent', () => {
     it('should generate the correct hash', () => {
       const transform: Transform = {
         extent: 'a',
-        param: 'A'
+        param: 'A',
       };
       const extent = new ExtentTransformNode(null, transform);
       expect(extent.hash()).toBe('ExtentTransform {"extent":"a","param":"A"}');

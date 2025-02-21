@@ -1,4 +1,4 @@
-import {Split} from '../split';
+import {Split} from '../split.js';
 
 export type LayoutSize = number | 'container' | 'step' | 'merged';
 

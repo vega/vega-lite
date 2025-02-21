@@ -1,9 +1,9 @@
 import {parseSelector} from 'vega-event-selector';
-import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import inputs from '../../../src/compile/selection/inputs';
-import * as log from '../../../src/log';
-import {parseUnitModel} from '../../util';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import inputs from '../../../src/compile/selection/inputs.js';
+import * as log from '../../../src/log/index.js';
+import {parseUnitModel} from '../../util.js';
 
 describe('Inputs Selection Transform', () => {
   const model = parseUnitModel({
@@ -11,8 +11,8 @@ describe('Inputs Selection Transform', () => {
     encoding: {
       x: {field: 'Horsepower', type: 'quantitative'},
       y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-      color: {field: 'Origin', type: 'nominal'}
-    }
+      color: {field: 'Origin', type: 'nominal'},
+    },
   });
 
   model.parseScale();
@@ -20,100 +20,100 @@ describe('Inputs Selection Transform', () => {
     {
       name: 'one',
       select: 'point',
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     },
     {
       name: 'two',
       select: {
         type: 'point',
-        fields: ['Cylinders', 'Horsepower']
+        fields: ['Cylinders', 'Horsepower'],
       },
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     },
     {
       name: 'three',
       select: {
         type: 'point',
         fields: ['Cylinders', 'Origin'],
-        nearest: true
+        nearest: true,
       },
       bind: {
         Horsepower: {input: 'range', min: 0, max: 10, step: 1},
-        Origin: {input: 'select', options: ['Japan', 'USA', 'Europe']}
-      }
+        Origin: {input: 'select', options: ['Japan', 'USA', 'Europe']},
+      },
     },
     {
       name: 'four',
       select: 'point',
-      bind: null
+      bind: null,
     },
     {
       name: 'six',
       select: 'interval',
-      bind: 'scales'
+      bind: 'scales',
     },
     {
       name: 'seven',
       value: [
         {
-          Year: {year: 1970, month: 3, date: 9}
-        }
+          Year: {year: 1970, month: 3, date: 9},
+        },
       ],
       select: {type: 'point', fields: ['Year']},
       bind: {
-        Year: {input: 'range', min: 1970, max: 1980, step: 1}
-      }
+        Year: {input: 'range', min: 1970, max: 1980, step: 1},
+      },
     },
     {
       name: 'eight',
       select: {type: 'point', on: 'dblclick'},
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     },
     {
       name: 'nine',
       select: {
         type: 'point',
         on: 'click',
-        clear: 'dblclick'
+        clear: 'dblclick',
       },
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     },
     {
       name: 'ten',
       select: {type: 'point', fields: ['nested.a']},
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     },
     {
       name: 'eleven',
       select: {
         type: 'point',
         fields: ['nested.a'],
-        on: 'click'
+        on: 'click',
       },
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     },
     {
       name: 'space separated',
       select: 'point',
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     },
     {
       name: 'dash-separated',
       select: 'point',
-      bind: {input: 'range', min: 0, max: 10, step: 1}
-    }
+      bind: {input: 'range', min: 0, max: 10, step: 1},
+    },
   ]);
 
   it(
     'drop invalid selection',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const model1 = parseUnitModel({
         mark: 'circle',
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
           y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-          color: {field: 'Origin', type: 'nominal'}
-        }
+          color: {field: 'Origin', type: 'nominal'},
+        },
       });
 
       model1.parseScale();
@@ -121,13 +121,13 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'twelve',
           select: 'point',
-          bind: 'legend'
-        }
+          bind: 'legend',
+        },
       ]);
 
       expect(inputs.defined(invalidBindLegendSelCmpts['twelve'])).toBeFalsy();
       expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
-    })
+    }),
   );
 
   it('identifies transform invocation', () => {
@@ -150,13 +150,13 @@ describe('Inputs Selection Transform', () => {
     model.component.selection = {one: selCmpts['one']};
     expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
       name: 'one_tuple',
-      update: 'one__vgsid_ !== null ? {fields: one_tuple_fields, values: [one__vgsid_]} : null'
+      update: 'one__vgsid_ !== null ? {fields: one_tuple_fields, values: [one__vgsid_]} : null',
     });
 
     expect(assembleTopLevelSignals(model, [])).toContainEqual({
       name: 'one__vgsid_',
       value: null,
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     });
   });
 
@@ -165,7 +165,7 @@ describe('Inputs Selection Transform', () => {
     expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
       name: 'two_tuple',
       update:
-        'two_Cylinders !== null && two_Horsepower !== null ? {fields: two_tuple_fields, values: [two_Cylinders, two_Horsepower]} : null'
+        'two_Cylinders !== null && two_Horsepower !== null ? {fields: two_tuple_fields, values: [two_Cylinders, two_Horsepower]} : null',
     });
 
     expect(assembleTopLevelSignals(model, [])).toEqual(
@@ -173,14 +173,14 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'two_Horsepower',
           value: null,
-          bind: {input: 'range', min: 0, max: 10, step: 1}
+          bind: {input: 'range', min: 0, max: 10, step: 1},
         },
         {
           name: 'two_Cylinders',
           value: null,
-          bind: {input: 'range', min: 0, max: 10, step: 1}
-        }
-      ])
+          bind: {input: 'range', min: 0, max: 10, step: 1},
+        },
+      ]),
     );
   });
 
@@ -189,7 +189,7 @@ describe('Inputs Selection Transform', () => {
     expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
       name: 'three_tuple',
       update:
-        'three_Cylinders !== null && three_Origin !== null ? {fields: three_tuple_fields, values: [three_Cylinders, three_Origin]} : null'
+        'three_Cylinders !== null && three_Origin !== null ? {fields: three_tuple_fields, values: [three_Cylinders, three_Origin]} : null',
     });
 
     expect(assembleTopLevelSignals(model, [])).toEqual(
@@ -199,8 +199,8 @@ describe('Inputs Selection Transform', () => {
           value: null,
           bind: {
             input: 'select',
-            options: ['Japan', 'USA', 'Europe']
-          }
+            options: ['Japan', 'USA', 'Europe'],
+          },
         },
         {
           name: 'three_Cylinders',
@@ -209,11 +209,11 @@ describe('Inputs Selection Transform', () => {
             Horsepower: {input: 'range', min: 0, max: 10, step: 1},
             Origin: {
               input: 'select',
-              options: ['Japan', 'USA', 'Europe']
-            }
-          }
-        }
-      ])
+              options: ['Japan', 'USA', 'Europe'],
+            },
+          },
+        },
+      ]),
     );
   });
 
@@ -221,19 +221,19 @@ describe('Inputs Selection Transform', () => {
     model.component.selection = {one: selCmpts['ten']};
     expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
       name: 'ten_tuple',
-      update: 'ten_nested_a !== null ? {fields: ten_tuple_fields, values: [ten_nested_a]} : null'
+      update: 'ten_nested_a !== null ? {fields: ten_tuple_fields, values: [ten_nested_a]} : null',
     });
 
     expect(assembleTopLevelSignals(model, [])).toContainEqual({
       name: 'ten_nested_a',
       value: null,
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     });
 
     model.component.selection = {one: selCmpts['eleven']};
     expect(assembleUnitSelectionSignals(model, [])).toContainEqual({
       name: 'eleven_tuple',
-      update: 'eleven_nested_a !== null ? {fields: eleven_tuple_fields, values: [eleven_nested_a]} : null'
+      update: 'eleven_nested_a !== null ? {fields: eleven_tuple_fields, values: [eleven_nested_a]} : null',
     });
 
     expect(assembleTopLevelSignals(model, [])).toContainEqual({
@@ -242,10 +242,10 @@ describe('Inputs Selection Transform', () => {
       on: [
         {
           events: [{source: 'scope', type: 'click'}],
-          update: 'datum && item().mark.marktype !== \'group\' ? datum["nested.a"] : null'
-        }
+          update: 'datum && item().mark.marktype !== \'group\' ? datum["nested.a"] : null',
+        },
       ],
-      bind: {input: 'range', min: 0, max: 10, step: 1}
+      bind: {input: 'range', min: 0, max: 10, step: 1},
     });
   });
 
@@ -255,9 +255,9 @@ describe('Inputs Selection Transform', () => {
       expect.arrayContaining([
         {
           name: 'seven_tuple',
-          update: 'seven_Year !== null ? {fields: seven_tuple_fields, values: [seven_Year]} : null'
-        }
-      ])
+          update: 'seven_Year !== null ? {fields: seven_tuple_fields, values: [seven_Year]} : null',
+        },
+      ]),
     );
 
     expect(assembleTopLevelSignals(model, [])).toEqual(
@@ -265,9 +265,9 @@ describe('Inputs Selection Transform', () => {
         {
           name: 'seven_Year',
           init: 'datetime(1970, 2, 9, 0, 0, 0, 0)',
-          bind: {input: 'range', min: 1970, max: 1980, step: 1}
-        }
-      ])
+          bind: {input: 'range', min: 1970, max: 1980, step: 1},
+        },
+      ]),
     );
   });
 
@@ -282,10 +282,10 @@ describe('Inputs Selection Transform', () => {
           on: [
             {
               events: [{source: 'scope', type: 'dblclick'}],
-              update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null'
-            }
+              update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null',
+            },
           ],
-          bind: {input: 'range', min: 0, max: 10, step: 1}
+          bind: {input: 'range', min: 0, max: 10, step: 1},
         },
         {
           name: 'nine__vgsid_',
@@ -293,13 +293,13 @@ describe('Inputs Selection Transform', () => {
           on: [
             {
               events: [{source: 'scope', type: 'click'}],
-              update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null'
+              update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null',
             },
-            {events: parseSelector('dblclick', 'view'), update: 'null'}
+            {events: parseSelector('dblclick', 'view'), update: 'null'},
           ],
-          bind: {input: 'range', min: 0, max: 10, step: 1}
-        }
-      ])
+          bind: {input: 'range', min: 0, max: 10, step: 1},
+        },
+      ]),
     );
   });
 });

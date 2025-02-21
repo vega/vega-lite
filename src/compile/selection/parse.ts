@@ -1,20 +1,20 @@
 import {parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
-import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from '.';
-import {warn} from '../../log';
-import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection';
-import {Dict, duplicate, entries, replacePathInField, varName} from '../../util';
-import {DataFlowNode, OutputNode} from '../data/dataflow';
-import {FilterNode} from '../data/filter';
-import {Model} from '../model';
-import {UnitModel} from '../unit';
-import {DataSourceType} from '../../data';
-import {ParameterPredicate} from '../../predicate';
+import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from './index.js';
+import {warn} from '../../log/index.js';
+import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection.js';
+import {Dict, duplicate, entries, replacePathInField, varName} from '../../util.js';
+import {DataFlowNode, OutputNode} from '../data/dataflow.js';
+import {FilterNode} from '../data/filter.js';
+import {Model} from '../model.js';
+import {UnitModel} from '../unit.js';
+import {DataSourceType} from '../../data.js';
+import {ParameterPredicate} from '../../predicate.js';
 import {
   MULTIPLE_TIMER_ANIMATION_SELECTION,
   selectionAsScaleDomainWithoutField,
-  selectionAsScaleDomainWrongEncodings
-} from '../../log/message';
+  selectionAsScaleDomainWrongEncodings,
+} from '../../log/message.js';
 
 export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
@@ -56,7 +56,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
       type,
       init: def.value,
       bind: def.bind,
-      events: isString(defaults.on) ? parseSelector(defaults.on, 'scope') : array(duplicate(defaults.on))
+      events: isString(defaults.on) ? parseSelector(defaults.on, 'scope') : array(duplicate(defaults.on)),
     } as any);
 
     if (isTimerSelection(selCmpt)) {
@@ -88,7 +88,7 @@ export function parseSelectionPredicate(
   model: Model,
   pred: ParameterPredicate,
   dfnode?: DataFlowNode,
-  datum = 'datum'
+  datum = 'datum',
 ): string {
   const name = isString(pred) ? pred : pred.param;
   const vname = varName(name);
@@ -97,7 +97,7 @@ export function parseSelectionPredicate(
 
   try {
     selCmpt = model.getSelectionComponent(vname, name);
-  } catch (e) {
+  } catch {
     // If a selection isn't found, treat as a variable parameter and coerce to boolean.
     return `!!${vname}`;
   }
@@ -128,7 +128,7 @@ export function parseSelectionExtent(model: Model, name: string, extent: Paramet
 
   try {
     selCmpt = model.getSelectionComponent(vname, name);
-  } catch (e) {
+  } catch {
     // If a selection isn't found, treat it as a variable parameter.
     return vname;
   }
@@ -139,7 +139,7 @@ export function parseSelectionExtent(model: Model, name: string, extent: Paramet
       warn(selectionAsScaleDomainWithoutField(field));
     }
   } else if (encoding && !field) {
-    const encodings = selCmpt.project.items.filter(p => p.channel === encoding);
+    const encodings = selCmpt.project.items.filter((p) => p.channel === encoding);
     if (!encodings.length || encodings.length > 1) {
       field = selCmpt.project.items[0].field;
       warn(selectionAsScaleDomainWrongEncodings(encodings, encoding, extent, field));
@@ -158,7 +158,7 @@ export function materializeSelections(model: UnitModel, main: OutputNode) {
       new FilterNode(main, model, {param: selection}),
       lookupName,
       DataSourceType.Lookup,
-      model.component.data.outputNodeRefCounts
+      model.component.data.outputNodeRefCounts,
     );
   }
 }

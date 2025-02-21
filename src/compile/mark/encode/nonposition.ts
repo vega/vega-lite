@@ -1,12 +1,12 @@
 import type {SignalRef} from 'vega';
-import {NonPositionScaleChannel} from '../../../channel';
-import {Value, isConditionalDef} from '../../../channeldef';
-import {VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
-import {UnitModel} from '../../unit';
-import {wrapCondition} from './conditional';
-import * as ref from './valueref';
-import {getConditionalValueRefForIncludingInvalidValue} from './invalid';
+import {NonPositionScaleChannel} from '../../../channel.js';
+import {Value, isConditionalDef} from '../../../channeldef.js';
+import {VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
+import {UnitModel} from '../../unit.js';
+import {wrapCondition} from './conditional.js';
+import * as ref from './valueref.js';
+import {getConditionalValueRefForIncludingInvalidValue} from './invalid.js';
 
 /**
  * Return encode for non-positional channels with scales. (Text doesn't have scale.)
@@ -18,7 +18,7 @@ export function nonPosition(
     defaultValue?: Value | SignalRef;
     vgChannel?: VgEncodeChannel;
     defaultRef?: VgValueRef;
-  } = {}
+  } = {},
 ): VgEncodeEntry {
   const {markDef, encoding, config} = model;
   const {vgChannel} = opt;
@@ -44,13 +44,13 @@ export function nonPosition(
     markDef,
     config,
     scaleName: model.scaleName(channel),
-    scale: model.getScaleComponent(channel)
+    scale: model.getScaleComponent(channel),
   };
 
   const invalidValueRef = getConditionalValueRefForIncludingInvalidValue({
     ...commonProps,
     scaleChannel: channel,
-    channelDef
+    channelDef,
   });
 
   const mainRefFn = (cDef: typeof channelDef) => {
@@ -59,7 +59,7 @@ export function nonPosition(
       channel,
       channelDef: cDef,
       stack: null, // No need to provide stack for non-position as it does not affect mid point
-      defaultRef
+      defaultRef,
     });
   };
 
@@ -68,6 +68,6 @@ export function nonPosition(
     channelDef,
     vgChannel: vgChannel ?? channel,
     invalidValueRef,
-    mainRefFn
+    mainRefFn,
   });
 }

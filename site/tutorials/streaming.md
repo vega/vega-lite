@@ -50,8 +50,8 @@ var vlSpec = {
   encoding: {
     x: {field: 'x', type: 'quantitative', scale: {zero: false}},
     y: {field: 'y', type: 'quantitative'},
-    color: {field: 'category', type: 'nominal'}
-  }
+    color: {field: 'category', type: 'nominal'},
+  },
 };
 vegaEmbed('#chart', vlSpec).then(function (res) {
   /**
@@ -66,7 +66,7 @@ vegaEmbed('#chart', vlSpec).then(function (res) {
         return {
           x: counter,
           y: v + Math.round(Math.random() * 10 - c * 3),
-          category: c
+          category: c,
         };
       });
       previousY = newVals.map(function (v) {

@@ -1,19 +1,19 @@
 import {InitSignal, NewSignal} from 'vega';
-import {getViewConfigContinuousSize} from '../../config';
-import {hasDiscreteDomain} from '../../scale';
-import {getFirstDefined} from '../../util';
-import {isSignalRef, isVgRangeStep, VgRangeStep} from '../../vega.schema';
-import {signalOrStringValue} from '../common';
-import {isFacetModel, Model} from '../model';
-import {ScaleComponent} from '../scale/component';
-import {LayoutSizeType} from './component';
+import {getViewConfigContinuousSize} from '../../config.js';
+import {hasDiscreteDomain} from '../../scale.js';
+import {getFirstDefined} from '../../util.js';
+import {isSignalRef, isVgRangeStep, VgRangeStep} from '../../vega.schema.js';
+import {signalOrStringValue} from '../common.js';
+import {isFacetModel, Model} from '../model.js';
+import {ScaleComponent} from '../scale/component.js';
+import {LayoutSizeType} from './component.js';
 
 export function assembleLayoutSignals(model: Model): NewSignal[] {
   return [
     ...sizeSignals(model, 'width'),
     ...sizeSignals(model, 'height'),
     ...sizeSignals(model, 'childWidth'),
-    ...sizeSignals(model, 'childHeight')
+    ...sizeSignals(model, 'childHeight'),
   ];
 }
 
@@ -51,8 +51,8 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
           stepSignal(scaleName, range),
           {
             name,
-            update: sizeExpr(scaleName, scaleComponent, `domain('${scaleName}').length`)
-          }
+            update: sizeExpr(scaleName, scaleComponent, `domain('${scaleName}').length`),
+          },
         ];
       }
     }
@@ -68,8 +68,8 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
     return [
       {
         name,
-        value: size
-      }
+        value: size,
+      },
     ];
   }
 }
@@ -99,6 +99,6 @@ export function sizeExpr(scaleName: string, scaleComponent: ScaleComponent, card
         // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
         1;
   return `bandspace(${cardinality}, ${signalOrStringValue(paddingInner)}, ${signalOrStringValue(
-    paddingOuter
+    paddingOuter,
   )}) * ${scaleName}_step`;
 }

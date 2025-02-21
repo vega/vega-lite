@@ -11,14 +11,14 @@ import type {
   SignalRef,
   TextBaseline,
   TimeInterval,
-  TimeIntervalStep
+  TimeIntervalStep,
 } from 'vega';
-import {ConditionalPredicate, Value, ValueDef} from './channeldef';
-import {DateTime} from './datetime';
-import {ExprRef} from './expr';
-import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide';
-import {Flag, keys} from './util';
-import {MapExcludeValueRefAndReplaceSignalWith, VgEncodeChannel} from './vega.schema';
+import {ConditionalPredicate, Value, ValueDef} from './channeldef.js';
+import {DateTime} from './datetime.js';
+import {ExprRef} from './expr.js';
+import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide.js';
+import {Flag, keys} from './util.js';
+import {MapExcludeValueRefAndReplaceSignalWith, VgEncodeChannel} from './vega.schema.js';
 import {hasOwnProperty} from 'vega-util';
 
 export type BaseAxisNoValueRefs<ES extends ExprRef | SignalRef> = AxisOverrideMixins<ES> &
@@ -189,79 +189,79 @@ export const CONDITIONAL_AXIS_PROP_INDEX: Record<
 > = {
   labelAlign: {
     part: 'labels',
-    vgProp: 'align'
+    vgProp: 'align',
   },
   labelBaseline: {
     part: 'labels',
-    vgProp: 'baseline'
+    vgProp: 'baseline',
   },
   labelColor: {
     part: 'labels',
-    vgProp: 'fill'
+    vgProp: 'fill',
   },
   labelFont: {
     part: 'labels',
-    vgProp: 'font'
+    vgProp: 'font',
   },
   labelFontSize: {
     part: 'labels',
-    vgProp: 'fontSize'
+    vgProp: 'fontSize',
   },
   labelFontStyle: {
     part: 'labels',
-    vgProp: 'fontStyle'
+    vgProp: 'fontStyle',
   },
   labelFontWeight: {
     part: 'labels',
-    vgProp: 'fontWeight'
+    vgProp: 'fontWeight',
   },
   labelOpacity: {
     part: 'labels',
-    vgProp: 'opacity'
+    vgProp: 'opacity',
   },
   labelOffset: null,
   labelPadding: null, // There is no fixed vgProp for tickSize, need to use signal.
   gridColor: {
     part: 'grid',
-    vgProp: 'stroke'
+    vgProp: 'stroke',
   },
   gridDash: {
     part: 'grid',
-    vgProp: 'strokeDash'
+    vgProp: 'strokeDash',
   },
   gridDashOffset: {
     part: 'grid',
-    vgProp: 'strokeDashOffset'
+    vgProp: 'strokeDashOffset',
   },
   gridOpacity: {
     part: 'grid',
-    vgProp: 'opacity'
+    vgProp: 'opacity',
   },
   gridWidth: {
     part: 'grid',
-    vgProp: 'strokeWidth'
+    vgProp: 'strokeWidth',
   },
   tickColor: {
     part: 'ticks',
-    vgProp: 'stroke'
+    vgProp: 'stroke',
   },
   tickDash: {
     part: 'ticks',
-    vgProp: 'strokeDash'
+    vgProp: 'strokeDash',
   },
   tickDashOffset: {
     part: 'ticks',
-    vgProp: 'strokeDashOffset'
+    vgProp: 'strokeDashOffset',
   },
   tickOpacity: {
     part: 'ticks',
-    vgProp: 'opacity'
+    vgProp: 'opacity',
   },
   tickSize: null, // There is no fixed vgProp for tickSize, need to use signal.
   tickWidth: {
     part: 'ticks',
-    vgProp: 'strokeWidth'
-  }
+    vgProp: 'strokeWidth',
+  },
 };
 
 export type ConditionalAxisProperty<V extends Value | number[], ES extends ExprRef | SignalRef> = (ValueDef<V> | ES) & {
@@ -269,7 +269,7 @@ export type ConditionalAxisProperty<V extends Value | number[], ES extends ExprR
 };
 
 export function isConditionalAxisValue<V extends Value | number[], ES extends ExprRef | SignalRef>(
-  v: any
+  v: any,
 ): v is ConditionalAxisProperty<V, ES> {
   return v?.condition;
 }
@@ -447,7 +447,7 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   tickExtra: 'both',
   translate: 'both',
   values: 'both',
-  zindex: 'both' // this is actually set afterward, so it doesn't matter
+  zindex: 'both', // this is actually set afterward, so it doesn't matter
 };
 
 export interface AxisEncoding {
@@ -559,14 +559,14 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis<any>)> = {
   titleY: 1,
   translate: 1,
   values: 1,
-  zindex: 1
+  zindex: 1,
 };
 
 const AXIS_PROPERTIES_INDEX: Flag<keyof Axis<any>> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
   style: 1,
   labelExpr: 1,
-  encoding: 1
+  encoding: 1,
 };
 
 export function isAxisProperty(prop: string): prop is keyof Axis<any> {
@@ -710,7 +710,7 @@ const AXIS_CONFIGS_INDEX: Flag<keyof AxisConfigMixins<any>> = {
   axisYDiscrete: 1,
   axisYPoint: 1,
   axisYQuantitative: 1,
-  axisYTemporal: 1
+  axisYTemporal: 1,
 };
 
 export const AXIS_CONFIGS = keys(AXIS_CONFIGS_INDEX);

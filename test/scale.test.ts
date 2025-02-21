@@ -1,14 +1,14 @@
-import {ScaleChannel, SCALE_CHANNELS} from '../src/channel';
-import * as scale from '../src/scale';
+import {ScaleChannel, SCALE_CHANNELS} from '../src/channel.js';
+import * as scale from '../src/scale.js';
 import {
   channelSupportScaleType,
   CONTINUOUS_TO_CONTINUOUS_SCALES,
   CONTINUOUS_TO_DISCRETE_SCALES,
   ScaleType,
-  SCALE_TYPES
-} from '../src/scale';
-import {some} from '../src/util';
-import {without} from './util';
+  SCALE_TYPES,
+} from '../src/scale.js';
+import {some} from '../src/util.js';
+import {without} from './util.js';
 
 describe('scale', () => {
   describe('scaleTypeSupportProperty', () => {
@@ -16,9 +16,9 @@ describe('scale', () => {
     it('should have at least one supported scale types for all scale properties', () => {
       for (const prop of scale.SCALE_PROPERTIES) {
         expect(
-          some(scale.SCALE_TYPES, scaleType => {
+          some(scale.SCALE_TYPES, (scaleType) => {
             return scale.scaleTypeSupportProperty(scaleType, prop);
-          })
+          }),
         ).toBeTruthy();
       }
     });
@@ -39,9 +39,9 @@ describe('scale', () => {
     it('should have at least one supported scale types for all channels with scale', () => {
       for (const channel of SCALE_CHANNELS) {
         expect(
-          some(SCALE_TYPES, scaleType => {
+          some(SCALE_TYPES, (scaleType) => {
             return channelSupportScaleType(channel, scaleType);
-          })
+          }),
         ).toBeTruthy();
       }
     });
@@ -50,9 +50,9 @@ describe('scale', () => {
     it('should have at least one supported channel for all scale types', () => {
       for (const scaleType of SCALE_TYPES) {
         expect(
-          some(SCALE_CHANNELS, channel => {
+          some(SCALE_CHANNELS, (channel) => {
             return channelSupportScaleType(channel, scaleType);
-          })
+          }),
         ).toBeTruthy();
       }
     });

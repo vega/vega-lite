@@ -1,6 +1,6 @@
 import type {ExprRef, SignalRef, Text} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
-import {AxisConfig, ConditionalAxisProperty} from '../axis';
+import {AxisConfig, ConditionalAxisProperty} from '../axis.js';
 import {
   ConditionalPredicate,
   DatumDef,
@@ -10,23 +10,23 @@ import {
   OrderFieldDef,
   Value,
   ValueDef,
-  vgField
-} from '../channeldef';
-import {Config, StyleConfigIndex} from '../config';
-import {isExprRef} from '../expr';
-import {Mark, MarkConfig, MarkDef} from '../mark';
-import {SortFields} from '../sort';
-import {isText} from '../title';
-import {deepEqual, getFirstDefined, hasProperty} from '../util';
-import {isSignalRef, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../vega.schema';
-import {AxisComponentProps} from './axis/component';
-import {Explicit} from './split';
-import {UnitModel} from './unit';
+  vgField,
+} from '../channeldef.js';
+import {Config, StyleConfigIndex} from '../config.js';
+import {isExprRef} from '../expr.js';
+import {Mark, MarkConfig, MarkDef} from '../mark.js';
+import {SortFields} from '../sort.js';
+import {isText} from '../title.js';
+import {deepEqual, getFirstDefined, hasProperty} from '../util.js';
+import {isSignalRef, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../vega.schema.js';
+import {AxisComponentProps} from './axis/component.js';
+import {Explicit} from './split.js';
+import {UnitModel} from './unit.js';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
 export function signalOrValueRefWithCondition<V extends Value | number[]>(
-  val: ConditionalAxisProperty<V, SignalRef | ExprRef>
+  val: ConditionalAxisProperty<V, SignalRef | ExprRef>,
 ): ConditionalAxisProperty<V, SignalRef> {
   const condition = isArray(val.condition)
     ? (val.condition as ConditionalPredicate<ValueDef<any> | ExprRef | SignalRef>[]).map(conditionalSignalRefOrValue)
@@ -34,7 +34,7 @@ export function signalOrValueRefWithCondition<V extends Value | number[]>(
 
   return {
     ...signalRefOrValue<ValueDef<any>>(val),
-    condition
+    condition,
   };
 }
 
@@ -47,7 +47,7 @@ export function signalRefOrValue<T>(value: T | SignalRef | ExprRef): T | SignalR
 }
 
 export function conditionalSignalRefOrValue<T extends FieldDef<any> | DatumDef | ValueDef<any>>(
-  value: ConditionalPredicate<T | ExprRef | SignalRef>
+  value: ConditionalPredicate<T | ExprRef | SignalRef>,
 ): ConditionalPredicate<T | SignalRef> {
   if (isExprRef(value)) {
     const {expr, ...rest} = value;
@@ -108,7 +108,7 @@ export function getMarkPropOrConfig<P extends keyof MarkDef, ES extends ExprRef 
   opt: {
     vgChannel?: VgEncodeChannel;
     ignoreVgConfig?: boolean;
-  } = {}
+  } = {},
 ): MarkDef<Mark, ES>[P] {
   const {vgChannel, ignoreVgConfig} = opt;
   if (vgChannel && hasProperty(mark, vgChannel)) {
@@ -130,7 +130,7 @@ export function getMarkConfig<P extends keyof MarkDef, ES extends ExprRef | Sign
   channel: P,
   mark: MarkDef<Mark, ES>,
   config: Config<SignalRef>,
-  {vgChannel}: {vgChannel?: VgEncodeChannel} = {}
+  {vgChannel}: {vgChannel?: VgEncodeChannel} = {},
 ): MarkDef<Mark, ES>[P] {
   const cfg = getMarkStyleConfig(channel, mark, config.style) as MarkDef<Mark, ES>[P];
   return getFirstDefined<MarkDef<Mark, ES>[P]>(
@@ -144,14 +144,14 @@ export function getMarkConfig<P extends keyof MarkDef, ES extends ExprRef | Sign
 
     // If there is vgChannel, skip vl channel.
     // For example, vl size for text is vg fontSize, but config.mark.size is only for point size.
-    vgChannel ? (config.mark as any)[vgChannel] : (config.mark as any)[channel] // Need to cast for the same reason as above
+    vgChannel ? (config.mark as any)[vgChannel] : (config.mark as any)[channel], // Need to cast for the same reason as above
   );
 }
 
 export function getMarkStyleConfig<P extends keyof MarkDef, ES extends ExprRef | SignalRef>(
   prop: P,
   mark: MarkDef<Mark, ES>,
-  styleConfigIndex: StyleConfigIndex<SignalRef>
+  styleConfigIndex: StyleConfigIndex<SignalRef>,
 ) {
   return getStyleConfig(prop, getStyles(mark), styleConfigIndex);
 }
@@ -159,7 +159,7 @@ export function getMarkStyleConfig<P extends keyof MarkDef, ES extends ExprRef |
 export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig<SignalRef>>(
   p: P,
   styles: string | string[],
-  styleConfigIndex: StyleConfigIndex<SignalRef>
+  styleConfigIndex: StyleConfigIndex<SignalRef>,
 ) {
   styles = array(styles);
   let value;
@@ -178,7 +178,7 @@ export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig<Signal
  */
 export function sortParams(
   orderDef: OrderFieldDef<string> | OrderFieldDef<string>[],
-  fieldRefOption?: FieldRefOption
+  fieldRefOption?: FieldRefOption,
 ): SortFields {
   return array(orderDef).reduce(
     (s, orderChannelDef) => {
@@ -186,7 +186,7 @@ export function sortParams(
       s.order.push(orderChannelDef.sort ?? 'ascending');
       return s;
     },
-    {field: [], order: []}
+    {field: [], order: []},
   );
 }
 
@@ -195,7 +195,7 @@ export type AxisTitleComponent = AxisComponentProps['title'];
 export function mergeTitleFieldDefs(f1: readonly FieldDefBase<string>[], f2: readonly FieldDefBase<string>[]) {
   const merged = [...f1];
 
-  f2.forEach(fdToMerge => {
+  f2.forEach((fdToMerge) => {
     for (const fieldDef1 of merged) {
       // If already exists, no need to append to merged array
       if (deepEqual(fieldDef1, fdToMerge)) {
@@ -226,27 +226,27 @@ export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explic
   if (v1Val == null || v2Val === null) {
     return {
       explicit: v1.explicit,
-      value: null
+      value: null,
     };
   } else if ((isText(v1Val) || isSignalRef(v1Val)) && (isText(v2Val) || isSignalRef(v2Val))) {
     return {
       explicit: v1.explicit,
-      value: mergeTitle(v1Val, v2Val)
+      value: mergeTitle(v1Val, v2Val),
     };
   } else if (isText(v1Val) || isSignalRef(v1Val)) {
     return {
       explicit: v1.explicit,
-      value: v1Val
+      value: v1Val,
     };
   } else if (isText(v2Val) || isSignalRef(v2Val)) {
     return {
       explicit: v1.explicit,
-      value: v2Val
+      value: v2Val,
     };
   } else if (!isText(v1Val) && !isSignalRef(v1Val) && !isText(v2Val) && !isSignalRef(v2Val)) {
     return {
       explicit: v1.explicit,
-      value: mergeTitleFieldDefs(v1Val, v2Val)
+      value: mergeTitleFieldDefs(v1Val, v2Val),
     };
   }
   /* istanbul ignore next: Condition should not happen -- only for warning in development. */

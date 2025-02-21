@@ -1,112 +1,96 @@
-import {stringValue} from 'vega-util';
-import {TopLevelSpec} from '../src';
-import {SelectionType} from '../src/selection';
-import {compositeTypes, embedFn, parentSelector, spec, testRenderFn} from './util';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {SelectionType} from '../src/selection.js';
+import {compositeTypes, embed, parentSelector, getSpec, clear, _pt} from './util.js';
+import {describe, expect, it} from 'vitest';
+import {View} from 'vega';
 
 const hits = {
   qq: [8, 19, 13, 21],
   qq_clear: [5, 16],
   bins: [4, 29, 16, 9],
   bins_clear: [18, 7],
-  composite: [1, 3, 5, 7, 8, 9]
-};
+  composite: [1, 3, 5, 7, 8, 9],
+} as const;
 
-function toggle(key: keyof typeof hits, idx: number, shiftKey: boolean, parent?: string) {
-  const fn = key.match('_clear') ? 'clear' : 'pt';
-  return `${fn}(${hits[key][idx]}, ${stringValue(parent)}, ${!!shiftKey})`;
+function toggle(view: View, key: keyof typeof hits, idx: number, shiftKey: boolean, parent?: string) {
+  const fn = key.match('_clear') ? clear : _pt;
+  return fn(view, hits[key][idx], parent, !!shiftKey);
 }
 
 describe('Toggle point selections at runtime', () => {
-  let page: Page;
-  let embed: (specification: TopLevelSpec) => Promise<void>;
-  let testRender: (filename: string) => Promise<void>;
-
-  beforeAll(async () => {
-    page = await (global as any).__BROWSER_GLOBAL__.newPage();
-    embed = embedFn(page);
-    testRender = testRenderFn(page, 'point/toggle');
-    await page.goto('http://0.0.0.0:8000/test-runtime/');
-  });
-
-  afterAll(async () => {
-    await page.close();
-  });
-
   const type: SelectionType = 'point';
 
   it('should toggle values into/out of the store', async () => {
-    await embed(spec('unit', 0, {type}));
-    await page.evaluate(toggle('qq', 0, false));
-    await page.evaluate(toggle('qq', 1, true));
-    let store = await page.evaluate(toggle('qq', 2, true));
+    const view = await embed(getSpec('unit', 0, {type}));
+    await toggle(view, 'qq', 0, false);
+    await toggle(view, 'qq', 1, true);
+    let store = await toggle(view, 'qq', 2, true);
     expect(store).toHaveLength(3);
-    await testRender('click_0');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/click_0.svg');
 
-    store = await page.evaluate(toggle('qq', 2, true));
+    store = await toggle(view, 'qq', 2, true);
     expect(store).toHaveLength(2);
-    await testRender('click_1');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/click_1.svg');
 
-    store = await page.evaluate(toggle('qq', 3, false));
+    store = await toggle(view, 'qq', 3, false);
     expect(store).toHaveLength(1);
-    await testRender('click_2');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/click_2.svg');
   });
 
   it('should clear out the store w/o shiftKey', async () => {
-    await embed(spec('unit', 1, {type}));
-    await page.evaluate(toggle('qq', 0, false));
-    await page.evaluate(toggle('qq', 1, true));
-    await page.evaluate(toggle('qq', 2, true));
-    await page.evaluate(toggle('qq', 3, true));
-    await testRender(`clear_0`);
+    const view = await embed(getSpec('unit', 1, {type}));
+    await toggle(view, 'qq', 0, false);
+    await toggle(view, 'qq', 1, true);
+    await toggle(view, 'qq', 2, true);
+    await toggle(view, 'qq', 3, true);
+    await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/clear_0.svg`);
 
-    let store = await page.evaluate(toggle('qq_clear', 0, true));
+    let store = await toggle(view, 'qq_clear', 0, true);
     expect(store).toHaveLength(4);
-    await testRender(`clear_1`);
+    await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/clear_1.svg`);
 
-    store = await page.evaluate(toggle('qq_clear', 1, false));
+    store = await toggle(view, 'qq_clear', 1, false);
     expect(store).toHaveLength(0);
-    await testRender(`clear_2`);
+    await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/clear_2.svg`);
   });
 
   it('should toggle binned fields', async () => {
-    await embed(spec('unit', 0, {type, encodings: ['x', 'y']}, {x: {bin: true}, y: {bin: true}}));
+    const view = await embed(getSpec('unit', 0, {type, encodings: ['x', 'y']}, {x: {bin: true}, y: {bin: true}}));
 
-    await page.evaluate(toggle('bins', 0, false));
-    await page.evaluate(toggle('bins', 1, true));
-    let store = await page.evaluate(toggle('bins', 2, true));
+    await toggle(view, 'bins', 0, false);
+    await toggle(view, 'bins', 1, true);
+    let store = await toggle(view, 'bins', 2, true);
     expect(store).toHaveLength(3);
-    await testRender('bins_0');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/bins_0.svg');
 
-    store = await page.evaluate(toggle('bins', 2, true));
+    store = await toggle(view, 'bins', 2, true);
     expect(store).toHaveLength(2);
-    await testRender('bins_1');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/bins_1.svg');
 
-    store = await page.evaluate(toggle('bins', 3, false));
+    store = await toggle(view, 'bins', 3, false);
     expect(store).toHaveLength(1);
-    await testRender('bins_2');
+    await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/bins_2.svg');
   });
 
   compositeTypes.forEach((specType, idx) => {
     it(`should toggle in ${specType} views`, async () => {
-      await embed(spec(specType, idx, {type, resolve: 'union'}));
+      const view = await embed(getSpec(specType, idx, {type, resolve: 'union'}));
       let length = 0;
       for (let i = 0; i < hits.composite.length; i++) {
         const parent = parentSelector(specType, i % 3);
-        const store = (await page.evaluate(toggle('composite', i, true, parent))) as string;
+        const store = await toggle(view, 'composite', i, true, parent);
         expect((length = store.length)).toEqual(i + 1);
         if (i % 3 === 2) {
-          await testRender(`${specType}_${i}`);
+          await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/${specType}_${i}.svg`);
         }
       }
 
       for (let i = 0; i < hits.composite.length; i++) {
         const even = i % 2 === 0;
         const parent = parentSelector(specType, ~~(i / 2));
-        const store = await page.evaluate(toggle('qq_clear', 0, even, parent));
+        const store = await toggle(view, 'qq_clear', 0, even, parent);
         expect(store).toHaveLength(even ? length : (length -= 2));
         if (!even) {
-          await testRender(`${specType}_clear_${i}`);
+          await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/${specType}_clear_${i}.svg`);
         }
       }
     });

@@ -1,9 +1,9 @@
-import * as log from '../../../log';
-import {contains} from '../../../util';
-import {VgEncodeEntry} from '../../../vega.schema';
-import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
-import {UnitModel} from '../../unit';
-import {nonPosition} from './nonposition';
+import * as log from '../../../log/index.js';
+import {contains} from '../../../util.js';
+import {VgEncodeEntry} from '../../../vega.schema.js';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
+import {UnitModel} from '../../unit.js';
+import {nonPosition} from './nonposition.js';
 
 export function color(model: UnitModel, opt: {filled: boolean | undefined} = {filled: undefined}): VgEncodeEntry {
   const {markDef, encoding, config} = model;
@@ -33,7 +33,7 @@ export function color(model: UnitModel, opt: {filled: boolean | undefined} = {fi
 
   const fillStrokeMarkDefAndConfig: VgEncodeEntry = {
     ...(defaultFill ? {fill: signalOrValueRef(defaultFill)} : {}),
-    ...(defaultStroke ? {stroke: signalOrValueRef(defaultStroke)} : {})
+    ...(defaultStroke ? {stroke: signalOrValueRef(defaultStroke)} : {}),
   };
 
   if (markDef.color && (filled ? markDef.fill : markDef.stroke)) {
@@ -44,15 +44,15 @@ export function color(model: UnitModel, opt: {filled: boolean | undefined} = {fi
     ...fillStrokeMarkDefAndConfig,
     ...nonPosition('color', model, {
       vgChannel: colorVgChannel,
-      defaultValue: filled ? defaultFill : defaultStroke
+      defaultValue: filled ? defaultFill : defaultStroke,
     }),
     ...nonPosition('fill', model, {
       // if there is encoding.fill, include default fill just in case we have conditional-only fill encoding
-      defaultValue: encoding.fill ? defaultFill : undefined
+      defaultValue: encoding.fill ? defaultFill : undefined,
     }),
     ...nonPosition('stroke', model, {
       // if there is encoding.stroke, include default fill just in case we have conditional-only stroke encoding
-      defaultValue: encoding.stroke ? defaultStroke : undefined
-    })
+      defaultValue: encoding.stroke ? defaultStroke : undefined,
+    }),
   };
 }

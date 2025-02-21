@@ -1,6 +1,6 @@
-import {LoessTransformNode} from '../../../src/compile/data/loess';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {LoessTransformNode} from '../../../src/compile/data/loess.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/fold', () => {
   describe('assemble', () => {
@@ -10,7 +10,7 @@ describe('compile/data/fold', () => {
         on: 'x',
         groupby: ['a', 'b'],
         bandwidth: 0.3,
-        as: ['u', 'v']
+        as: ['u', 'v'],
       };
       const loess = new LoessTransformNode(null, transform);
       expect(loess.assemble()).toEqual({
@@ -19,14 +19,14 @@ describe('compile/data/fold', () => {
         y: 'y',
         groupby: ['a', 'b'],
         bandwidth: 0.3,
-        as: ['u', 'v']
+        as: ['u', 'v'],
       });
     });
 
     it('should handle missing "as" field', () => {
       const transform: Transform = {
         loess: 'y',
-        on: 'x'
+        on: 'x',
       };
 
       const loess = new LoessTransformNode(null, transform);
@@ -34,7 +34,7 @@ describe('compile/data/fold', () => {
         type: 'loess',
         x: 'x',
         y: 'y',
-        as: ['x', 'y']
+        as: ['x', 'y'],
       });
     });
 
@@ -42,14 +42,14 @@ describe('compile/data/fold', () => {
       const transform: Transform = {
         loess: 'y',
         on: 'x',
-        as: ['A'] as any
+        as: ['A'] as any,
       };
       const loess = new LoessTransformNode(null, transform);
       expect(loess.assemble()).toEqual({
         type: 'loess',
         x: 'x',
         y: 'y',
-        as: ['A', 'y']
+        as: ['A', 'y'],
       });
     });
   });
@@ -59,7 +59,7 @@ describe('compile/data/fold', () => {
       const transform: Transform = {
         loess: 'y',
         on: 'x',
-        groupby: ['f', 'g']
+        groupby: ['f', 'g'],
       };
       const loess = new LoessTransformNode(null, transform);
       expect(loess.dependentFields()).toEqual(new Set(['x', 'y', 'f', 'g']));
@@ -68,7 +68,7 @@ describe('compile/data/fold', () => {
     it('should return proper dependent fields without groupby', () => {
       const transform: Transform = {
         loess: 'y',
-        on: 'x'
+        on: 'x',
       };
       const loess = new LoessTransformNode(null, transform);
       expect(loess.dependentFields()).toEqual(new Set(['x', 'y']));
@@ -79,7 +79,7 @@ describe('compile/data/fold', () => {
     it('should return proper produced fields for no "as"', () => {
       const transform: Transform = {
         loess: 'y',
-        on: 'x'
+        on: 'x',
       };
       const loess = new LoessTransformNode(null, transform);
       expect(loess.producedFields()).toEqual(new Set(['x', 'y']));
@@ -89,7 +89,7 @@ describe('compile/data/fold', () => {
       const transform: Transform = {
         loess: 'y',
         on: 'x',
-        as: ['A', 'B']
+        as: ['A', 'B'],
       };
       const loess = new LoessTransformNode(null, transform);
       expect(loess.producedFields()).toEqual(new Set(['A', 'B']));
@@ -101,7 +101,7 @@ describe('compile/data/fold', () => {
       const transform: Transform = {
         loess: 'y',
         on: 'x',
-        as: ['A', 'B']
+        as: ['A', 'B'],
       };
       const loess = new LoessTransformNode(null, transform);
       expect(loess.hash()).toBe('LoessTransform {"as":["A","B"],"loess":"y","on":"x"}');

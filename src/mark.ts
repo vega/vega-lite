@@ -1,10 +1,10 @@
 import type {Align, Color, Gradient, Orientation, SignalRef, TextBaseline, MarkConfig as VgMarkConfig} from 'vega';
 import {hasOwnProperty} from 'vega-util';
-import {CompositeMark, CompositeMarkDef} from './compositemark';
-import {ExprRef} from './expr';
-import {MarkInvalidMixins} from './invalid';
-import {Flag, hasProperty, keys} from './util';
-import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
+import {CompositeMark, CompositeMarkDef} from './compositemark/index.js';
+import {ExprRef} from './expr.js';
+import {MarkInvalidMixins} from './invalid.js';
+import {Flag, hasProperty, keys} from './util.js';
+import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema.js';
 
 /**
  * All types of primitive marks.
@@ -23,7 +23,7 @@ export const Mark = {
   trail: 'trail',
   circle: 'circle',
   square: 'square',
-  geoshape: 'geoshape'
+  geoshape: 'geoshape',
 } as const;
 
 export const ARC = Mark.arc;
@@ -309,7 +309,7 @@ export const STROKE_CONFIG = [
   'strokeDashOffset',
   'strokeOpacity',
   'strokeJoin',
-  'strokeMiterLimit'
+  'strokeMiterLimit',
 ] as const;
 
 export const FILL_CONFIG = ['fill', 'fillOpacity'] as const;
@@ -324,7 +324,7 @@ const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig<any>> = {
   radius2: 1,
   theta2: 1,
   timeUnitBandSize: 1,
-  timeUnitBandPosition: 1
+  timeUnitBandPosition: 1,
 };
 
 export const VL_ONLY_MARK_CONFIG_PROPERTIES = keys(VL_ONLY_MARK_CONFIG_INDEX);
@@ -333,7 +333,7 @@ const VL_ONLY_RECT_CONFIG: (keyof RectConfig<any>)[] = [
   'binSpacing',
   'continuousBandSize',
   'discreteBandSize',
-  'minBandSize'
+  'minBandSize',
 ];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
@@ -343,13 +343,13 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   bar: VL_ONLY_RECT_CONFIG,
   rect: VL_ONLY_RECT_CONFIG,
   line: ['point'],
-  tick: ['bandSize', 'thickness', ...VL_ONLY_RECT_CONFIG]
+  tick: ['bandSize', 'thickness', ...VL_ONLY_RECT_CONFIG],
 };
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
   color: '#4c78a8',
   invalid: 'break-paths-show-path-domains',
-  timeUnitBandSize: 1
+  timeUnitBandSize: 1,
 };
 
 // TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
@@ -425,7 +425,7 @@ const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
   text: 1,
   tick: 1,
   trail: 1,
-  geoshape: 1
+  geoshape: 1,
 };
 
 export const MARK_CONFIGS = keys(MARK_CONFIG_INDEX);
@@ -473,7 +473,7 @@ export const BAR_CORNER_RADIUS_INDEX: Partial<
   >
 > = {
   horizontal: ['cornerRadiusTopRight', 'cornerRadiusBottomRight'],
-  vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight']
+  vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight'],
 };
 
 export interface BarCornerRadiusMixins<ES extends ExprRef | SignalRef> {
@@ -660,12 +660,12 @@ export const defaultRectConfig: RectConfig<SignalRef> = {
   binSpacing: 0,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
   minBandSize: 0.25,
-  timeUnitBandPosition: 0.5
+  timeUnitBandPosition: 0.5,
 };
 
 export const defaultBarConfig: RectConfig<SignalRef> = {
   ...defaultRectConfig,
-  binSpacing: 1
+  binSpacing: 1,
 };
 
 export interface TickConfig<ES extends ExprRef | SignalRef>
@@ -683,7 +683,7 @@ export interface TickConfig<ES extends ExprRef | SignalRef>
 
 export const defaultTickConfig: TickConfig<SignalRef> = {
   ...defaultRectConfig,
-  thickness: 1
+  thickness: 1,
 };
 
 export function getMarkType(m: string | GenericMarkDef<any>) {

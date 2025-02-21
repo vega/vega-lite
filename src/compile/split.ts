@@ -1,5 +1,5 @@
-import * as log from '../log';
-import {deepEqual, duplicate, getFirstDefined, keys} from '../util';
+import * as log from '../log/index.js';
+import {deepEqual, duplicate, getFirstDefined, keys} from '../util.js';
 
 /**
  * Generic class for storing properties that are explicitly specified
@@ -7,11 +7,10 @@ import {deepEqual, duplicate, getFirstDefined, keys} from '../util';
  * This is important for scale/axis/legend merging as
  * we want to prioritize properties that users explicitly specified.
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export class Split<T extends object> {
   constructor(
     public readonly explicit: Partial<T> = {},
-    public readonly implicit: Partial<T> = {}
+    public readonly implicit: Partial<T> = {},
   ) {}
 
   public clone() {
@@ -21,7 +20,7 @@ export class Split<T extends object> {
   public combine(): Partial<T> {
     return {
       ...this.explicit, // Explicit properties comes first
-      ...this.implicit
+      ...this.implicit,
     };
   }
 
@@ -87,14 +86,14 @@ export interface Explicit<T> {
 export function makeExplicit<T>(value: T): Explicit<T> {
   return {
     explicit: true,
-    value
+    value,
   };
 }
 
 export function makeImplicit<T>(value: T): Explicit<T> {
   return {
     explicit: false,
-    value
+    value,
   };
 }
 
@@ -105,7 +104,7 @@ export function tieBreakByComparing<S, T>(compare: (v1: T, v2: T) => number) {
     v1: Explicit<T>,
     v2: Explicit<T>,
     property: keyof S | never,
-    propertyOf: SplitParentProperty
+    propertyOf: SplitParentProperty,
   ): Explicit<T> => {
     const diff = compare(v1.value, v2.value);
     if (diff > 0) {
@@ -121,7 +120,7 @@ export function defaultTieBreaker<S, T>(
   v1: Explicit<T>,
   v2: Explicit<T>,
   property: keyof S,
-  propertyOf: SplitParentProperty
+  propertyOf: SplitParentProperty,
 ) {
   if (v1.explicit && v2.explicit) {
     log.warn(log.message.mergeConflictingProperty(property, propertyOf, v1.value, v2.value));
@@ -139,8 +138,8 @@ export function mergeValuesWithExplicit<S, T>(
     v1: Explicit<T>,
     v2: Explicit<T>,
     property: keyof S,
-    propertyOf: string
-  ) => Explicit<T> = defaultTieBreaker
+    propertyOf: string,
+  ) => Explicit<T> = defaultTieBreaker,
 ) {
   if (v1 === undefined || v1.value === undefined) {
     // For first run

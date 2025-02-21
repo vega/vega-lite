@@ -5,16 +5,21 @@ import {
   isGeoPositionChannel,
   isScaleChannel,
   isSingleDefUnitChannel,
-  SingleDefUnitChannel
-} from '../../channel';
-import * as log from '../../log';
-import {hasContinuousDomain} from '../../scale';
-import {PointSelectionConfig, SelectionInitIntervalMapping, SelectionInitMapping, SELECTION_ID} from '../../selection';
-import {Dict, hash, keys, varName, isEmpty} from '../../util';
-import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit';
-import {SelectionCompiler} from '.';
-import {assembleProjection} from './assemble';
-import {isBinnedTimeUnit} from '../../timeunit';
+  SingleDefUnitChannel,
+} from '../../channel.js';
+import * as log from '../../log/index.js';
+import {hasContinuousDomain} from '../../scale.js';
+import {
+  PointSelectionConfig,
+  SelectionInitIntervalMapping,
+  SelectionInitMapping,
+  SELECTION_ID,
+} from '../../selection.js';
+import {Dict, hash, keys, varName, isEmpty} from '../../util.js';
+import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit.js';
+import {SelectionCompiler} from './index.js';
+import {assembleProjection} from './assemble.js';
+import {isBinnedTimeUnit} from '../../timeunit.js';
 export const TUPLE_FIELDS = '_tuple_fields';
 
 /**
@@ -139,7 +144,7 @@ const project: SelectionCompiler = {
           const component = {
             timeUnit: fieldDef.timeUnit,
             as: field,
-            field: fieldDef.field
+            field: fieldDef.field,
           };
 
           timeUnits[hash(component)] = component;
@@ -192,8 +197,8 @@ const project: SelectionCompiler = {
       selCmpt.init = (init as any).map((v: SelectionInitMapping | SelectionInitIntervalMapping) => {
         // Selections can be initialized either with a full object that maps projections to values
         // or scalar values to smoothen the abstraction gradient from variable params to point selections.
-        return proj.items.map(p =>
-          isObject(v) ? (v[p.geoChannel || p.channel] !== undefined ? v[p.geoChannel || p.channel] : v[p.field]) : v
+        return proj.items.map((p) =>
+          isObject(v) ? (v[p.geoChannel || p.channel] !== undefined ? v[p.geoChannel || p.channel] : v[p.field]) : v,
         );
       });
     }
@@ -205,14 +210,14 @@ const project: SelectionCompiler = {
 
   signals: (model, selCmpt, allSignals) => {
     const name = selCmpt.name + TUPLE_FIELDS;
-    const hasSignal = allSignals.filter(s => s.name === name);
+    const hasSignal = allSignals.filter((s) => s.name === name);
     return hasSignal.length > 0 || selCmpt.project.hasSelectionId
       ? allSignals
       : allSignals.concat({
           name,
-          value: selCmpt.project.items.map(assembleProjection)
+          value: selCmpt.project.items.map(assembleProjection),
         });
-  }
+  },
 };
 
 export default project;

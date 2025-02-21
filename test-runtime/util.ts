@@ -1,13 +1,8 @@
-import * as fs from 'fs';
-import {sync as mkdirp} from 'mkdirp';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
-import {promisify} from 'util';
-import {stringValue} from 'vega-util';
-import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} from '../src/selection';
-import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec';
-
-const generate = process.env.VL_GENERATE_TESTS;
-const output = 'test-runtime/resources';
+// @ts-expect-error - vega does not yet export resetSVGDefIds
+import {parse, View, resetSVGDefIds} from 'vega';
+import {compile} from '../src/index.js';
+import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} from '../src/selection.js';
+import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec/index.js';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
 export const selectionTypes: SelectionType[] = ['point', 'interval'];
@@ -47,12 +42,12 @@ export const tuples = [
   {a: 8, b: 67, c: 2},
   {a: 9, b: 49, c: 0},
   {a: 9, b: 15, c: 1},
-  {a: 9, b: 48, c: 2}
+  {a: 9, b: 48, c: 2},
 ];
 
 const UNIT_NAMES = {
   repeat: ['child__row_d', 'child__row_e', 'child__row_f'],
-  facet: ['child__facet_row_0', 'child__facet_row_1', 'child__facet_row_2']
+  facet: ['child__facet_row_0', 'child__facet_row_1', 'child__facet_row_2'],
 };
 
 export const hits = {
@@ -67,52 +62,52 @@ export const hits = {
     repeat_clear: [13, 14, 2],
 
     facet: [2, 6, 9],
-    facet_clear: [3, 4, 8]
+    facet_clear: [3, 4, 8],
   },
 
   interval: {
     drag: [
       [5, 14],
-      [18, 26]
+      [18, 26],
     ],
     drag_clear: [[5], [16]],
     translate: [
       [6, 16],
-      [24, 8]
+      [24, 8],
     ],
 
     bins: [
       [4, 8],
-      [2, 7]
+      [2, 7],
     ],
     bins_clear: [[5], [9]],
     bins_translate: [
       [5, 7],
-      [1, 8]
+      [1, 8],
     ],
 
     repeat: [
       [8, 29],
       [11, 26],
-      [7, 21]
+      [7, 21],
     ],
     repeat_clear: [[8], [11], [17]],
 
     facet: [
       [1, 9],
       [2, 8],
-      [4, 10]
+      [4, 10],
     ],
-    facet_clear: [[3], [5], [7]]
-  }
-};
+    facet_clear: [[3], [5], [7]],
+  },
+} as const;
 
 const config = {
   // reduce changes in generated SVGs
   aria: false,
 
   // A lot of magic numbers in this file use the old step = 21
-  view: {discreteWidth: {step: 21}, discreteHeight: {step: 21}}
+  view: {discreteWidth: {step: 21}, discreteHeight: {step: 21}},
 };
 
 function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {
@@ -136,9 +131,9 @@ function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | N
         size,
         color: {
           condition: {param: 'sel', ...color},
-          value: 'grey'
-        }
-      }
+          value: 'grey',
+        },
+      },
     };
   } else {
     return {
@@ -152,20 +147,20 @@ function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | N
             y,
             size,
             color,
-            opacity: {value: 0.25}
-          }
+            opacity: {value: 0.25},
+          },
         },
         {
           transform: [{filter: {param: 'sel'}}],
           mark,
-          encoding: {x, y, size, color}
-        }
-      ]
+          encoding: {x, y, size, color},
+        },
+      ],
     };
   }
 }
 
-export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelSpec {
+export function getSpec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelSpec {
   const {data, ...specification} = base(iter, sel, opts);
   const resolve = opts.resolve;
   switch (compose) {
@@ -177,7 +172,7 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
         facet: {row: {field: 'c', type: 'nominal'}},
         spec: specification,
         resolve,
-        config
+        config,
       } as TopLevelSpec;
     case 'repeat':
       return {
@@ -185,12 +180,12 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
         repeat: {row: ['d', 'e', 'f']},
         spec: specification,
         resolve,
-        config
+        config,
       } as TopLevelSpec;
   }
 }
 
-export function geoSpec(selDef?: IntervalSelectionConfigWithoutType): TopLevelSpec {
+export function getGeoSpec(selDef?: IntervalSelectionConfigWithoutType): TopLevelSpec {
   return {
     width: 500,
     height: 300,
@@ -227,25 +222,25 @@ export function geoSpec(selDef?: IntervalSelectionConfigWithoutType): TopLevelSp
         {latitude: 48.30079861, longitude: -102.4063514},
         {latitude: 40.65138528, longitude: -98.07978667},
         {latitude: 32.76124611, longitude: -89.53007139},
-        {latitude: 32.11931306, longitude: -88.1274625}
-      ]
+        {latitude: 32.11931306, longitude: -88.1274625},
+      ],
     },
     mark: 'circle',
     params: [
       {
         name: 'sel',
-        select: {type: 'interval', ...selDef}
-      }
+        select: {type: 'interval', ...selDef},
+      },
     ],
     encoding: {
       longitude: {field: 'longitude', type: 'quantitative'},
       latitude: {field: 'latitude', type: 'quantitative'},
       color: {
         condition: {param: 'sel', empty: false, value: 'goldenrod'},
-        value: 'steelblue'
+        value: 'steelblue',
       },
-      size: {value: 10}
-    }
+      size: {value: 10},
+    },
   };
 }
 
@@ -259,65 +254,22 @@ export function parentSelector(compositeType: ComposeType, index: number) {
 }
 
 export type BrushKeys = keyof typeof hits.interval;
-export function brush(key: BrushKeys, idx: number, parent?: string, targetBrush?: boolean) {
-  const fn = key.match('_clear') ? 'clear' : 'brush';
-  return `${fn}(${hits.interval[key][idx].join(', ')}, ${stringValue(parent)}, ${!!targetBrush})`;
-}
-
-export function pt(key: keyof typeof hits.discrete, idx: number, parent?: string) {
-  const fn = key.match('_clear') ? 'clear' : 'pt';
-  return `${fn}(${hits.discrete[key][idx]}, ${stringValue(parent)})`;
-}
-
-export function getState(signals: string[], data: string[]) {
-  return `getState(${JSON.stringify(signals)}, ${JSON.stringify(data)})`;
-}
-export function getSignal(name: string) {
-  return `getSignal('${name}')`;
-}
-
-export function setSignal(name: string, value: any) {
-  return `setSignal(${stringValue(name)}, ${value})`;
-}
-
-export function sleep(milliseconds: number) {
-  return new Promise(resolve => {
-    setTimeout(resolve, milliseconds);
-  });
-}
-
-export function embedFn(page: Page) {
-  return async (specification: TopLevelSpec) => {
-    await page.evaluate(
-      (_: any) => (window as any).embed(_),
-      // specification is serializable even if the types don't agree
-      specification as any
-    );
-  };
-}
-
-const readFileAsync = promisify(fs.readFile);
-const writeFileAsync = promisify(fs.writeFile);
-
-export async function svg(page: Page, path: string, filename: string) {
-  const svgString = (await page.evaluate(
-    `(async () => { vega.resetSVGClipId(); await view.runAsync(); return await view.toSVG() })()`
-  )) as string;
-
-  if (generate) {
-    mkdirp((path = `${output}/${path}`));
-    await writeFileAsync(`${path}/${filename}.svg`, svgString);
+export async function brush(view: View, key: BrushKeys, idx: number, parent?: string, targetBrush?: boolean) {
+  const h = hits.interval[key][idx];
+  if (key.match('_clear')) {
+    return await clear(view, h[0], parent, !!targetBrush);
+  } else {
+    return await _brush(view, h[0], h[1], parent, !!targetBrush);
   }
-
-  return svgString;
 }
 
-export function testRenderFn(page: Page, path: string) {
-  return async (filename: string) => {
-    const render = await svg(page, path, filename);
-    const file = await readFileAsync(`${output}/${path}/${filename}.svg`);
-    expect(render).toBe(file.toString());
-  };
+export async function pt(view: View, key: keyof typeof hits.discrete, idx: number, parent?: string) {
+  const h = hits.discrete[key][idx] as number;
+  if (key.match('_clear')) {
+    return await clear(view, h, parent);
+  } else {
+    return await _pt(view, h, parent);
+  }
 }
 
 export function fill<T>(val: T, len: number) {
@@ -326,4 +278,112 @@ export function fill<T>(val: T, len: number) {
     arr[i] = val;
   }
   return arr;
+}
+
+export async function embed(spec: TopLevelSpec, run = true) {
+  // reset DOM and Vega counters
+  document.body.innerHTML = '';
+  resetSVGDefIds();
+
+  const body = document.body;
+  const div = document.createElement('div');
+  body.appendChild(div);
+
+  const vgSpec = compile(spec).spec;
+  const view = new View(parse(vgSpec), {container: div, renderer: 'svg'});
+  return run ? await view.runAsync() : view;
+}
+
+export function sleep(milliseconds: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
+const winSrc = ['pointermove', 'pointerup'];
+export function pointerEvt(
+  type: string,
+  target: Element | Window,
+  opts?: {clientX?: number; clientY?: number; deltaX?: number; deltaY?: number; deltaZ?: number; bubbles?: boolean},
+) {
+  opts.bubbles = true;
+  target = winSrc.indexOf(type) < 0 ? target : window;
+
+  target.dispatchEvent(
+    new PointerEvent('pointermove', {...opts, clientX: opts.clientX - 5, clientY: opts.clientY - 5}),
+  );
+
+  target.dispatchEvent(new PointerEvent('pointermove', opts));
+
+  target.dispatchEvent(type === 'wheel' ? new WheelEvent('wheel', opts) : new PointerEvent(type, opts));
+
+  target.dispatchEvent(
+    new PointerEvent('pointermove', {...opts, clientX: opts.clientX + 5, clientY: opts.clientY + 5}),
+  );
+}
+
+export function getMark(id: number, parent?: string): HTMLElement {
+  return document.querySelector(`${parent ? `g.${parent} ` : ''}g.mark-symbol.role-mark path:nth-child(${id})`);
+}
+
+export function coords(el: HTMLElement) {
+  const rect = el.getBoundingClientRect();
+  return [Math.ceil(rect.left + rect.width / 2), Math.ceil(rect.top + rect.height / 2)];
+}
+
+function brushOrEl(el: Element, parent: string, targetBrush: boolean) {
+  return !targetBrush ? el : document.querySelector(`${parent ? `g.${parent} ` : ''}g.sel_brush > path`);
+}
+
+function click(el: Element, evt: Partial<MouseEvent>) {
+  pointerEvt('pointerdown', el, evt);
+  pointerEvt('pointerup', window, evt);
+  pointerEvt('click', el, evt);
+}
+
+async function _brush(view: View, id0: number, id1: number, parent: string, targetBrush: boolean) {
+  const el0 = getMark(id0, parent);
+  const el1 = getMark(id1, parent);
+  const [mdX, mdY] = coords(el0);
+  const [muX, muY] = coords(el1);
+  pointerEvt('pointerdown', brushOrEl(el0, parent, targetBrush), {clientX: mdX, clientY: mdY});
+  pointerEvt('pointerup', window, {clientX: muX, clientY: muY});
+  return (await view.runAsync()).data('sel_store');
+}
+
+export async function _pt(view: View, id: number, parent: string, shiftKey?: boolean) {
+  const el = getMark(id, parent);
+  const [clientX, clientY] = coords(el);
+  click(el, {clientX, clientY, shiftKey});
+  return (await view.runAsync()).data('sel_store');
+}
+
+export async function clear(view: View, id: number, parent: string, shiftKey?: boolean) {
+  const bg = document.querySelector(`${parent ? `g.${parent} ` : ''}path.background`);
+  const el = getMark(id, parent);
+  let [clientX, clientY] = coords(el);
+  clientX += 10;
+  clientY -= 10;
+  click(bg, {clientX, clientY, shiftKey});
+  return (await view.runAsync()).data('sel_store');
+}
+
+export async function zoom(view: View, id: number, delta: number, parent: string, targetBrush: boolean) {
+  const el = getMark(id, parent);
+  const [clientX, clientY] = coords(el);
+  pointerEvt('wheel', brushOrEl(el, parent, targetBrush), {
+    clientX,
+    clientY,
+    deltaX: delta,
+    deltaY: delta,
+    deltaZ: delta,
+  });
+  pointerEvt('wheel', brushOrEl(el, parent, targetBrush), {
+    clientX,
+    clientY,
+    deltaX: Math.sign(delta),
+    deltaY: Math.sign(delta),
+    deltaZ: Math.sign(delta),
+  });
+  return (await view.runAsync()).data('sel_store');
 }

@@ -1,5 +1,5 @@
-import {SignalRefWrapper} from '../../src/compile/signal';
-import {keys, stringify} from '../../src/util';
+import {SignalRefWrapper} from '../../src/compile/signal.js';
+import {keys, stringify} from '../../src/util.js';
 
 describe('SignalRefWrapper', () => {
   const s = new SignalRefWrapper(() => 'hello world');

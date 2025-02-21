@@ -1,11 +1,11 @@
 import type {FilterTransform as VgFilterTransform} from 'vega';
-import {LogicalComposition} from '../../logical';
-import {Predicate} from '../../predicate';
-import {duplicate} from '../../util';
-import {Model} from '../model';
-import {expression} from '../predicate';
-import {DataFlowNode} from './dataflow';
-import {getDependentFields} from './expressions';
+import {LogicalComposition} from '../../logical.js';
+import {Predicate} from '../../predicate.js';
+import {duplicate} from '../../util.js';
+import {Model} from '../model.js';
+import {expression} from '../predicate.js';
+import {DataFlowNode} from './dataflow.js';
+import {getDependentFields} from './expressions.js';
 
 export class FilterNode extends DataFlowNode {
   private expr: string;
@@ -17,7 +17,7 @@ export class FilterNode extends DataFlowNode {
   constructor(
     parent: DataFlowNode,
     private readonly model: Model,
-    private readonly filter: LogicalComposition<Predicate>
+    private readonly filter: LogicalComposition<Predicate>,
   ) {
     super(parent);
 
@@ -39,7 +39,7 @@ export class FilterNode extends DataFlowNode {
   public assemble(): VgFilterTransform {
     return {
       type: 'filter',
-      expr: this.expr
+      expr: this.expr,
     };
   }
 

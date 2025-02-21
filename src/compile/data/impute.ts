@@ -2,14 +2,14 @@ import {
   FormulaTransform as VgFormulaTransform,
   ImputeTransform as VgImputeTransform,
   SignalRef,
-  WindowTransform as VgWindowTransform
+  WindowTransform as VgWindowTransform,
 } from 'vega';
-import {isFieldDef} from '../../channeldef';
-import {pathGroupingFields} from '../../encoding';
-import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
+import {isFieldDef} from '../../channeldef.js';
+import {pathGroupingFields} from '../../encoding.js';
+import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
 
 export class ImputeNode extends DataFlowNode {
   public clone() {
@@ -18,7 +18,7 @@ export class ImputeNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private readonly transform: ImputeTransform
+    private readonly transform: ImputeTransform,
   ) {
     super(parent);
   }
@@ -63,7 +63,7 @@ export class ImputeNode extends DataFlowNode {
         ...(value !== undefined ? {value} : {}),
         ...(frame ? {frame} : {}),
         ...(keyvals !== undefined ? {keyvals} : {}),
-        ...(groupbyFields.length ? {groupby: groupbyFields} : {})
+        ...(groupbyFields.length ? {groupby: groupbyFields} : {}),
       });
     }
     return null;
@@ -83,7 +83,7 @@ export class ImputeNode extends DataFlowNode {
       ...(keyvals ? {keyvals: isImputeSequence(keyvals) ? this.processSequence(keyvals) : keyvals} : {}),
       method: 'value',
       ...(groupby ? {groupby} : {}),
-      value: !method || method === 'value' ? value : null
+      value: !method || method === 'value' ? value : null,
     };
 
     if (method && method !== 'value') {
@@ -94,12 +94,12 @@ export class ImputeNode extends DataFlowNode {
         fields: [impute],
         frame,
         ignorePeers: false,
-        ...(groupby ? {groupby} : {})
+        ...(groupby ? {groupby} : {}),
       };
       const replaceOriginal: VgFormulaTransform = {
         type: 'formula',
         expr: `datum.${impute} === null ? datum.imputed_${impute}_value : datum.${impute}`,
-        as: impute
+        as: impute,
       };
       return [imputeTransform, deriveNewField, replaceOriginal];
     } else {

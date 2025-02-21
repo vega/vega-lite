@@ -2,19 +2,18 @@
 
 // Compile a Vega-Lite spec to Vega
 
-const {createWriteStream} = require('fs');
-const vegaLite = require('..');
-const read = require('./read');
-const args = require('./args');
+import {createWriteStream} from 'fs';
+import {compile as compileVL} from '../build/index.js';
+import read from './read.js';
+import args from './args.js';
 
 const arg = args('vega');
 
 // load spec, compile vg spec
-read(arg._[0]).then(text => compile(JSON.parse(text)));
+read(arg._[0]).then((text) => compile(JSON.parse(text)));
 
 async function compile(vlSpec) {
-  // @ts-ignore
-  const vgSpec = vegaLite.compile(vlSpec).spec;
+  const vgSpec = compileVL(vlSpec).spec;
 
   const file = arg._[1] || null;
   const out = file ? createWriteStream(file) : process.stdout;

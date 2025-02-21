@@ -1,4 +1,4 @@
-import {expression} from '../src/compile/predicate';
+import {expression} from '../src/compile/predicate.js';
 import {
   fieldFilterExpression,
   FieldValidPredicate,
@@ -7,9 +7,9 @@ import {
   isFieldOneOfPredicate,
   isFieldRangePredicate,
   isFieldValidPredicate,
-  Predicate
-} from '../src/predicate';
-import {without} from './util';
+  Predicate,
+} from '../src/predicate.js';
+import {without} from './util.js';
 
 describe('filter', () => {
   const equalFilter = {field: 'color', equal: 'red'};
@@ -26,7 +26,7 @@ describe('filter', () => {
     oneOfFilter,
     rangeFilter,
     validFilter,
-    exprFilter
+    exprFilter,
   ];
 
   describe('isEqualFilter', () => {
@@ -35,7 +35,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      without(allFilters, [equalFilter]).forEach(filter => {
+      without(allFilters, [equalFilter]).forEach((filter) => {
         expect(isFieldEqualPredicate(filter)).toBe(false);
       });
     });
@@ -47,7 +47,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      without(allFilters, [lessThanEqualsFilter]).forEach(filter => {
+      without(allFilters, [lessThanEqualsFilter]).forEach((filter) => {
         expect(isFieldLTEPredicate(filter)).toBe(false);
       });
     });
@@ -59,7 +59,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      without(allFilters, [oneOfFilter]).forEach(filter => {
+      without(allFilters, [oneOfFilter]).forEach((filter) => {
         expect(isFieldOneOfPredicate(filter)).toBe(false);
       });
     });
@@ -75,7 +75,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      without(allFilters, [rangeFilter]).forEach(filter => {
+      without(allFilters, [rangeFilter]).forEach((filter) => {
         expect(isFieldRangePredicate(filter)).toBe(false);
       });
     });
@@ -87,7 +87,7 @@ describe('filter', () => {
     });
 
     it('should return false for other filters', () => {
-      without(allFilters, [validFilter]).forEach(filter => {
+      without(allFilters, [validFilter]).forEach((filter) => {
         expect(isFieldValidPredicate(filter)).toBe(false);
       });
     });
@@ -128,8 +128,8 @@ describe('filter', () => {
       const expr = expression(null, {
         field: 'date',
         equal: {
-          month: 'January'
-        }
+          month: 'January',
+        },
       });
       expect(expr).toBe('datum["date"]===time(datetime(2012, 0, 1, 0, 0, 0, 0))');
     });
@@ -139,11 +139,11 @@ describe('filter', () => {
         timeUnit: 'month',
         field: 'date',
         equal: {
-          month: 'January'
-        }
+          month: 'January',
+        },
       });
       expect(expr).toBe(
-        'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))'
+        'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))',
       );
     });
 
@@ -151,10 +151,10 @@ describe('filter', () => {
       const expr = expression(null, {
         timeUnit: 'month',
         field: 'date',
-        equal: 'January'
+        equal: 'January',
       });
       expect(expr).toBe(
-        'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))'
+        'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))',
       );
     });
 
@@ -162,8 +162,8 @@ describe('filter', () => {
       const expr = expression(null, {
         field: 'date',
         lt: {
-          month: 'February'
-        }
+          month: 'February',
+        },
       });
       expect(expr).toBe('datum["date"]<time(datetime(2012, 1, 1, 0, 0, 0, 0))');
     });
@@ -173,11 +173,11 @@ describe('filter', () => {
         timeUnit: 'month',
         field: 'date',
         gt: {
-          month: 'January'
-        }
+          month: 'January',
+        },
       });
       expect(expr).toBe(
-        'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))>time(datetime(2012, 0, 1, 0, 0, 0, 0))'
+        'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))>time(datetime(2012, 0, 1, 0, 0, 0, 0))',
       );
     });
 
@@ -185,10 +185,10 @@ describe('filter', () => {
       const expr = expression(null, {
         timeUnit: 'month',
         field: 'date',
-        gte: 'January'
+        gte: 'January',
       });
       expect(expr).toBe(
-        'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))>=time(datetime(2012, 0, 1, 0, 0, 0, 0))'
+        'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))>=time(datetime(2012, 0, 1, 0, 0, 0, 0))',
       );
     });
 
@@ -235,8 +235,8 @@ describe('filter', () => {
     expr = expression(null, {
       and: [
         {field: 'color', equal: 'red'},
-        {field: 'x', range: [0, 5]}
-      ]
+        {field: 'x', range: [0, 5]},
+      ],
     });
 
     expect(expr).toBe('(datum["color"]==="red") && (inrange(datum["x"], [0, 5]))');
@@ -245,14 +245,14 @@ describe('filter', () => {
       and: [
         {field: 'color', oneOf: ['red', 'yellow']},
         {
-          or: [{field: 'x', range: [0, null]}, 'datum.price > 10', {not: 'datum["x"]===5'}]
-        }
-      ]
+          or: [{field: 'x', range: [0, null]}, 'datum.price > 10', {not: 'datum["x"]===5'}],
+        },
+      ],
     });
 
     expect(expr).toEqual(
       '(indexof(["red","yellow"], datum["color"]) !== -1) && ' +
-        '((datum["x"] >= 0) || (datum.price > 10) || (!(datum["x"]===5)))'
+        '((datum["x"] >= 0) || (datum.price > 10) || (!(datum["x"]===5)))',
     );
   });
 

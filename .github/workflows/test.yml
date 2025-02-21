@@ -25,10 +25,10 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Tests
-        run: yarn jest test/
+        run: yarn vitest run test/
 
       - name: Example tests
-        run: yarn jest examples/
+        run: yarn vitest run examples/
 
       - name: Build
         run: yarn build
@@ -49,8 +49,11 @@ jobs:
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
-      - name: Install extra dependencies for Puppeteer
-        run: sudo apt-get install libgbm1
+      - name: Copy Data
+        run: yarn data
+
+      - name: Set up playwright
+        run: yarn playwright install chromium
 
       - name: Build
         run: yarn build:only
@@ -65,7 +68,7 @@ jobs:
         run: yarn test:runtime
 
       - name: Test coverage
-        run: yarn jest test/ --collectCoverage=true
+        run: yarn test:cover
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5.3.1

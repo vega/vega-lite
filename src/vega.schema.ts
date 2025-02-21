@@ -39,13 +39,13 @@ import type {
   TimeScale,
   Title as VgTitle,
   Transforms as VgTransform,
-  UnionSortField as VgUnionSortField
+  UnionSortField as VgUnionSortField,
 } from 'vega';
 import {isArray} from 'vega-util';
-import {Value} from './channeldef';
-import {ExprRef} from './expr';
-import {SortOrder} from './sort';
-import {Dict, Flag, hasProperty, keys} from './util';
+import {Value} from './channeldef.js';
+import {ExprRef} from './expr.js';
+import {SortOrder} from './sort.js';
+import {Dict, Flag, hasProperty, keys} from './util.js';
 
 export type {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
@@ -264,7 +264,6 @@ export type VgEncodeChannel =
   | 'fontStyle'
   | 'tooltip'
   | 'href'
-  | 'cursor'
   | 'defined'
   | 'cornerRadius'
   | 'cornerRadiusTopLeft'
@@ -343,7 +342,7 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof MarkConfig> = {
   width: 1,
   height: 1,
   url: 1,
-  smooth: 1
+  smooth: 1,
 
   // commented below are vg channel that do not have mark config.
   // x: 1,
@@ -371,7 +370,7 @@ export const VG_MARK_INDEX: Flag<Mark['type']> = {
   shape: 1,
   symbol: 1,
   text: 1,
-  trail: 1
+  trail: 1,
 };
 
 // Vega's cornerRadius channels.
@@ -380,7 +379,7 @@ export const VG_CORNERRADIUS_CHANNELS = [
   'cornerRadiusTopLeft',
   'cornerRadiusTopRight',
   'cornerRadiusBottomLeft',
-  'cornerRadiusBottomRight'
+  'cornerRadiusBottomRight',
 ] as const;
 
 export interface VgComparator {

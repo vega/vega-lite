@@ -1,22 +1,22 @@
-import {assembleProjectionForModel} from '../../../src/compile/projection/assemble';
-import {isSignalRef} from '../../../src/vega.schema';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {assembleProjectionForModel} from '../../../src/compile/projection/assemble.js';
+import {isSignalRef} from '../../../src/vega.schema.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('compile/projection/assemble', () => {
   describe('assembleProjectionForModel', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'geoshape',
       projection: {
-        type: 'albersUsa'
+        type: 'albersUsa',
       },
       data: {
         url: 'data/us-10m.json',
         format: {
           type: 'topojson',
-          feature: 'states'
-        }
+          feature: 'states',
+        },
       },
-      encoding: {}
+      encoding: {},
     });
     model.parse();
 
@@ -40,16 +40,16 @@ describe('compile/projection/assemble', () => {
       mark: 'geoshape',
       projection: {
         type: 'albersUsa',
-        scale: 1000
+        scale: 1000,
       },
       data: {
         url: 'data/us-10m.json',
         format: {
           type: 'topojson',
-          feature: 'states'
-        }
+          feature: 'states',
+        },
       },
-      encoding: {}
+      encoding: {},
     });
     model.parse();
 
@@ -76,16 +76,16 @@ describe('compile/projection/assemble', () => {
       mark: 'geoshape',
       projection: {
         type: 'albersUsa',
-        translate: [100, 200]
+        translate: [100, 200],
       },
       data: {
         url: 'data/us-10m.json',
         format: {
           type: 'topojson',
-          feature: 'states'
-        }
+          feature: 'states',
+        },
       },
-      encoding: {}
+      encoding: {},
     });
     model.parse();
 

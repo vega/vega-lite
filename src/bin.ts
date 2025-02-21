@@ -12,11 +12,11 @@ import {
   STROKE,
   STROKEDASH,
   STROKEOPACITY,
-  STROKEWIDTH
-} from './channel';
-import {normalizeBin} from './channeldef';
-import {ParameterExtent} from './selection';
-import {entries, hasProperty, keys, varName} from './util';
+  STROKEWIDTH,
+} from './channel.js';
+import {normalizeBin} from './channeldef.js';
+import {ParameterExtent} from './selection.js';
+import {entries, hasProperty, keys, varName} from './util.js';
 
 export interface BaseBin {
   /**
@@ -97,12 +97,9 @@ export function binToString(bin: BinParams | true) {
   if (isBoolean(bin)) {
     bin = normalizeBin(bin, undefined);
   }
-  return (
-    'bin' +
-    keys(bin)
-      .map(p => (isParameterExtent(bin[p]) ? varName(`_${p}_${entries(bin[p])}`) : varName(`_${p}_${bin[p]}`)))
-      .join('')
-  );
+  return `bin${keys(bin)
+    .map((p) => (isParameterExtent(bin[p]) ? varName(`_${p}_${entries(bin[p])}`) : varName(`_${p}_${bin[p]}`)))
+    .join('')}`;
 }
 
 /**

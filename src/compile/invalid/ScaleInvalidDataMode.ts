@@ -1,11 +1,11 @@
 import {SignalRef} from 'vega';
-import {ScaleChannel} from '../../channel';
-import {Config} from '../../config';
-import {MarkInvalidDataMode} from '../../invalid';
-import {MarkDef, isPathMark} from '../../mark';
-import {ScaleType, hasContinuousDomain} from '../../scale';
-import {getMarkPropOrConfig} from '../common';
-import {normalizeInvalidDataMode} from './normalizeInvalidDataMode';
+import {ScaleChannel} from '../../channel.js';
+import {Config} from '../../config.js';
+import {MarkInvalidDataMode} from '../../invalid.js';
+import {MarkDef, isPathMark} from '../../mark.js';
+import {ScaleType, hasContinuousDomain} from '../../scale.js';
+import {getMarkPropOrConfig} from '../common.js';
+import {normalizeInvalidDataMode} from './normalizeInvalidDataMode.js';
 
 export type ScaleInvalidDataMode =
   // remove 'break-paths-show-path-domains' from MarkInvalidDataMode
@@ -20,7 +20,7 @@ export function getScaleInvalidDataMode<C extends ScaleChannel>({
   config,
   scaleChannel,
   scaleType,
-  isCountAggregate
+  isCountAggregate,
 }: {
   markDef: MarkDef;
   config: Config<SignalRef>;
@@ -35,7 +35,7 @@ export function getScaleInvalidDataMode<C extends ScaleChannel>({
   }
 
   const invalidMode = normalizeInvalidDataMode(getMarkPropOrConfig('invalid', markDef, config), {
-    isPath: isPathMark(markDef.type)
+    isPath: isPathMark(markDef.type),
   });
 
   const scaleOutputForInvalid = config.scale?.invalid?.[scaleChannel];

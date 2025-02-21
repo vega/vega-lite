@@ -1,10 +1,10 @@
 import {parseSelector} from 'vega-event-selector';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {keys} from '../../../src/util';
-import {parseUnitModel, parseModelWithScale, parseUnitModelWithScale} from '../../util';
-import project from '../../../src/compile/selection/project';
-import {assembleRootData} from '../../../src/compile/data/assemble';
-import {optimizeDataflow} from '../../../src/compile/data/optimize';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import {keys} from '../../../src/util.js';
+import {parseUnitModel, parseModelWithScale, parseUnitModelWithScale} from '../../util.js';
+import project from '../../../src/compile/selection/project.js';
+import {assembleRootData} from '../../../src/compile/data/assemble.js';
+import {optimizeDataflow} from '../../../src/compile/data/optimize.js';
 
 describe('Selection', () => {
   const model = parseUnitModel({
@@ -12,8 +12,8 @@ describe('Selection', () => {
     encoding: {
       x: {field: 'Horsepower', type: 'quantitative'},
       y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-      color: {field: 'Origin', type: 'nominal'}
-    }
+      color: {field: 'Origin', type: 'nominal'},
+    },
   });
 
   model.parseScale();
@@ -21,7 +21,7 @@ describe('Selection', () => {
   it('parses default selection definitions', () => {
     const component = parseUnitSelection(model, [
       {name: 'one', select: 'point'},
-      {name: 'two', select: {type: 'interval'}}
+      {name: 'two', select: {type: 'interval'}},
     ]);
 
     expect(keys(component)).toEqual(['one', 'two']);
@@ -29,7 +29,7 @@ describe('Selection', () => {
     expect(component.one.name).toBe('one');
     expect(component.one.type).toBe('point');
     expect(component['one'].project.items).toEqual(
-      expect.arrayContaining([{field: '_vgsid_', index: 0, type: 'E', signals: {data: 'one__vgsid_'}}])
+      expect.arrayContaining([{field: '_vgsid_', index: 0, type: 'E', signals: {data: 'one__vgsid_'}}]),
     );
     expect(component['one'].events).toEqual(parseSelector('click', 'scope'));
 
@@ -44,22 +44,22 @@ describe('Selection', () => {
           channel: 'x',
           index: 0,
           type: 'R',
-          signals: {data: 'two_Horsepower', visual: 'two_x'}
+          signals: {data: 'two_Horsepower', visual: 'two_x'},
         },
         {
           field: 'Miles_per_Gallon',
           channel: 'y',
           index: 1,
           type: 'R',
-          signals: {data: 'two_Miles_per_Gallon', visual: 'two_y'}
-        }
-      ])
+          signals: {data: 'two_Miles_per_Gallon', visual: 'two_y'},
+        },
+      ]),
     );
     expect(component['two'].events).toEqual(
       parseSelector(
         '[pointerdown[!event.item || event.item.mark.name !== "two_brush"], window:pointerup] > window:pointermove!',
-        'scope'
-      )
+        'scope',
+      ),
     );
   });
 
@@ -70,8 +70,8 @@ describe('Selection', () => {
         select: {
           type: 'point',
           on: 'dblclick',
-          fields: ['Cylinders']
-        }
+          fields: ['Cylinders'],
+        },
       },
       {
         name: 'two',
@@ -79,8 +79,8 @@ describe('Selection', () => {
           type: 'point',
           on: 'pointerover',
           toggle: 'event.ctrlKey',
-          encodings: ['color']
-        }
+          encodings: ['color'],
+        },
       },
       {
         name: 'three',
@@ -89,9 +89,9 @@ describe('Selection', () => {
           on: '[pointerdown[!event.shiftKey], pointerup] > pointermove',
           encodings: ['y'],
           translate: false,
-          zoom: 'wheel[event.altKey]'
-        }
-      }
+          zoom: 'wheel[event.altKey]',
+        },
+      },
     ]);
 
     expect(keys(component)).toEqual(['one', 'two', 'three']);
@@ -99,7 +99,7 @@ describe('Selection', () => {
     expect(component.one.name).toBe('one');
     expect(component.one.type).toBe('point');
     expect(component['one'].project.items).toEqual(
-      expect.arrayContaining([{field: 'Cylinders', index: 0, type: 'E', signals: {data: 'one_Cylinders'}}])
+      expect.arrayContaining([{field: 'Cylinders', index: 0, type: 'E', signals: {data: 'one_Cylinders'}}]),
     );
     expect(component['one'].events).toEqual(parseSelector('dblclick', 'scope'));
 
@@ -108,8 +108,8 @@ describe('Selection', () => {
     expect(component.two.toggle).toBe('event.ctrlKey');
     expect(component['two'].project.items).toEqual(
       expect.arrayContaining([
-        {field: 'Origin', channel: 'color', index: 0, type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
-      ])
+        {field: 'Origin', channel: 'color', index: 0, type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}},
+      ]),
     );
     expect(component['two'].events).toEqual(parseSelector('pointerover', 'scope'));
 
@@ -124,12 +124,12 @@ describe('Selection', () => {
           channel: 'y',
           index: 0,
           type: 'R',
-          signals: {data: 'three_Miles_per_Gallon', visual: 'three_y'}
-        }
-      ])
+          signals: {data: 'three_Miles_per_Gallon', visual: 'three_y'},
+        },
+      ]),
     );
     expect(component['three'].events).toEqual(
-      parseSelector('[pointerdown[!event.shiftKey], pointerup] > pointermove', 'scope')
+      parseSelector('[pointerdown[!event.shiftKey], pointerup] > pointermove', 'scope'),
     );
   });
 
@@ -139,13 +139,13 @@ describe('Selection', () => {
       interval: {
         on: '[pointerdown[!event.shiftKey], pointerup] > pointermove',
         encodings: ['y'],
-        zoom: 'wheel[event.altKey]'
-      }
+        zoom: 'wheel[event.altKey]',
+      },
     };
 
     const component = parseUnitSelection(model, [
       {name: 'one', select: 'point'},
-      {name: 'two', select: {type: 'interval'}}
+      {name: 'two', select: {type: 'interval'}},
     ]);
 
     expect(keys(component)).toEqual(['one', 'two']);
@@ -155,8 +155,8 @@ describe('Selection', () => {
     expect(component.one.toggle).toBe('event.ctrlKey');
     expect(component['one'].project.items).toEqual(
       expect.arrayContaining([
-        {field: 'Origin', channel: 'color', index: 0, type: 'E', signals: {data: 'one_Origin', visual: 'one_color'}}
-      ])
+        {field: 'Origin', channel: 'color', index: 0, type: 'E', signals: {data: 'one_Origin', visual: 'one_color'}},
+      ]),
     );
     expect(component['one'].events).toEqual(parseSelector('pointerover', 'scope'));
 
@@ -171,12 +171,12 @@ describe('Selection', () => {
           channel: 'y',
           index: 0,
           type: 'R',
-          signals: {data: 'two_Miles_per_Gallon', visual: 'two_y'}
-        }
-      ])
+          signals: {data: 'two_Miles_per_Gallon', visual: 'two_y'},
+        },
+      ]),
     );
     expect(component['two'].events).toEqual(
-      parseSelector('[pointerdown[!event.shiftKey], pointerup] > pointermove', 'scope')
+      parseSelector('[pointerdown[!event.shiftKey], pointerup] > pointermove', 'scope'),
     );
   });
 
@@ -186,8 +186,8 @@ describe('Selection', () => {
         mark: 'circle',
         encoding: {
           x: {field: 'Origin', type: 'nominal'},
-          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-        }
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        },
       });
 
       m.parseScale();
@@ -196,16 +196,16 @@ describe('Selection', () => {
 
       expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
-          {field: 'Origin', channel: 'x', index: 0, type: 'E', signals: {data: 'one_Origin', visual: 'one_x'}}
-        ])
+          {field: 'Origin', channel: 'x', index: 0, type: 'E', signals: {data: 'one_Origin', visual: 'one_x'}},
+        ]),
       );
 
       m = parseUnitModel({
         mark: 'bar',
         encoding: {
           x: {field: 'Origin', type: 'nominal'},
-          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-        }
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        },
       });
 
       m.parseScale();
@@ -214,8 +214,8 @@ describe('Selection', () => {
 
       expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
-          {field: 'Origin', channel: 'x', index: 0, type: 'E', signals: {data: 'one_Origin', visual: 'one_x'}}
-        ])
+          {field: 'Origin', channel: 'x', index: 0, type: 'E', signals: {data: 'one_Origin', visual: 'one_x'}},
+        ]),
       );
     });
 
@@ -224,8 +224,8 @@ describe('Selection', () => {
         mark: 'circle',
         encoding: {
           x: {field: 'Acceleration', type: 'quantitative', bin: true},
-          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-        }
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        },
       });
 
       const c = parseUnitSelection(m, [{name: 'one', select: {type: 'point', encodings: ['x']}}]);
@@ -237,9 +237,9 @@ describe('Selection', () => {
             channel: 'x',
             index: 0,
             type: 'R-RE',
-            signals: {data: 'one_Acceleration', visual: 'one_x'}
-          }
-        ])
+            signals: {data: 'one_Acceleration', visual: 'one_x'},
+          },
+        ]),
       );
     });
 
@@ -248,28 +248,28 @@ describe('Selection', () => {
         {
           name: 'one',
           select: 'point',
-          value: [{Origin: 5}]
+          value: [{Origin: 5}],
         },
         {
           name: 'two',
           select: 'point',
-          value: [{color: 10}]
+          value: [{color: 10}],
         },
         {
           name: 'three',
           select: {type: 'interval'},
-          value: {x: [10, 100]}
-        }
+          value: {x: [10, 100]},
+        },
       ]);
 
       expect(component['one'].project.items).toEqual(
-        expect.arrayContaining([{field: 'Origin', index: 0, type: 'E', signals: {data: 'one_Origin'}}])
+        expect.arrayContaining([{field: 'Origin', index: 0, type: 'E', signals: {data: 'one_Origin'}}]),
       );
 
       expect(component['two'].project.items).toEqual(
         expect.arrayContaining([
-          {channel: 'color', field: 'Origin', index: 0, type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
-        ])
+          {channel: 'color', field: 'Origin', index: 0, type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}},
+        ]),
       );
 
       expect(component['three'].project.items).toEqual(
@@ -279,9 +279,9 @@ describe('Selection', () => {
             channel: 'x',
             index: 0,
             type: 'R',
-            signals: {data: 'three_Horsepower', visual: 'three_x'}
-          }
-        ])
+            signals: {data: 'three_Horsepower', visual: 'three_x'},
+          },
+        ]),
       );
     });
 
@@ -289,13 +289,13 @@ describe('Selection', () => {
       const component = parseUnitSelection(model, [
         {
           name: 'one',
-          select: {type: 'point', fields: ['nested.a', 'nested.b.aa']}
-        }
+          select: {type: 'point', fields: ['nested.a', 'nested.b.aa']},
+        },
       ]);
 
       expect(component['one'].project.items).toEqual([
         {field: 'nested.a', index: 0, type: 'E', signals: {data: 'one_nested_a'}},
-        {field: 'nested.b.aa', index: 1, type: 'E', signals: {data: 'one_nested_b_aa'}}
+        {field: 'nested.b.aa', index: 1, type: 'E', signals: {data: 'one_nested_b_aa'}},
       ]);
 
       expect(project.signals(null, component['one'], [])).toEqual([
@@ -303,9 +303,9 @@ describe('Selection', () => {
           name: 'one_tuple_fields',
           value: [
             {field: 'nested\\.a', type: 'E'},
-            {field: 'nested\\.b\\.aa', type: 'E'}
-          ]
-        }
+            {field: 'nested\\.b\\.aa', type: 'E'},
+          ],
+        },
       ]);
     });
 
@@ -313,8 +313,8 @@ describe('Selection', () => {
       const component = parseUnitSelection(model, [
         {
           name: 'one',
-          select: {type: 'point', fields: ['Horsepower', 'Miles_per_Gallon'], encodings: ['x', 'y']}
-        }
+          select: {type: 'point', fields: ['Horsepower', 'Miles_per_Gallon'], encodings: ['x', 'y']},
+        },
       ]);
 
       expect(component['one'].project.items).toEqual([
@@ -324,8 +324,8 @@ describe('Selection', () => {
           channel: 'y',
           index: 1,
           type: 'E',
-          signals: {data: 'one_Miles_per_Gallon', visual: 'one_y'}
-        }
+          signals: {data: 'one_Miles_per_Gallon', visual: 'one_y'},
+        },
       ]);
     });
   });
@@ -343,28 +343,28 @@ describe('Selection', () => {
                 type: 'point',
                 on: 'pointerover',
                 encodings: ['x'],
-                nearest: true
-              }
-            }
+                nearest: true,
+              },
+            },
           ],
           mark: 'point',
           encoding: {
-            x: {field: 'price', type: 'quantitative', axis: null}
-          }
+            x: {field: 'price', type: 'quantitative', axis: null},
+          },
         },
         {
           transform: [
             {
               lookup: 'symbol',
-              from: {param: 'index', key: 'symbol'}
-            }
+              from: {param: 'index', key: 'symbol'},
+            },
           ],
           mark: 'line',
           encoding: {
-            x: {field: 'price', type: 'quantitative', axis: null}
-          }
-        }
-      ]
+            x: {field: 'price', type: 'quantitative', axis: null},
+          },
+        },
+      ],
     });
 
     lookupModel.parseSelections();
@@ -378,9 +378,9 @@ describe('Selection', () => {
       transform: [
         {
           type: 'filter',
-          expr: '!length(data("index_store")) || vlSelectionTest("index_store", datum)'
-        }
-      ]
+          expr: '!length(data("index_store")) || vlSelectionTest("index_store", datum)',
+        },
+      ],
     });
 
     expect(data[3]).toEqual({
@@ -392,9 +392,9 @@ describe('Selection', () => {
           from: 'data_1',
           key: 'symbol',
           fields: ['symbol'],
-          as: ['index']
-        }
-      ]
+          as: ['index'],
+        },
+      ],
     });
   });
 });

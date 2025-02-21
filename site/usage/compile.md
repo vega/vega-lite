@@ -67,7 +67,7 @@ const vgSpec = vegaLite.compile(vlSpec, {
     } else {
       return fieldDef.field;
     }
-  }
+  },
 }).spec;
 ```
 

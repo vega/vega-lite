@@ -26,20 +26,20 @@ const vegaLiteSpec: TopLevelSpec = {
       {a: 'F', b: 53},
       {a: 'G', b: 19},
       {a: 'H', b: 87},
-      {a: 'I', b: 52}
-    ]
+      {a: 'I', b: 52},
+    ],
   },
   mark: 'bar',
   encoding: {
     x: {field: 'a', type: 'nominal', axis: {labelAngle: 0}},
-    y: {field: 'b', type: 'quantitative'}
-  }
+    y: {field: 'b', type: 'quantitative'},
+  },
 };
 
 const config: Config = {
   bar: {
-    color: 'firebrick'
-  }
+    color: 'firebrick',
+  },
 };
 
 const vegaSpec = compile(vegaLiteSpec, {config}).spec;

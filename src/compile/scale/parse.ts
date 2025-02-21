@@ -1,24 +1,24 @@
-import {ScaleChannel, SCALE_CHANNELS, SHAPE} from '../../channel';
-import {getFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
-import {channelHasNestedOffsetScale} from '../../encoding';
-import {GEOSHAPE} from '../../mark';
+import {ScaleChannel, SCALE_CHANNELS, SHAPE} from '../../channel.js';
+import {getFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef.js';
+import {channelHasNestedOffsetScale} from '../../encoding.js';
+import {GEOSHAPE} from '../../mark.js';
 import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
   scaleCompatible,
   ScaleType,
-  scaleTypePrecedence
-} from '../../scale';
-import {GEOJSON} from '../../type';
-import {keys} from '../../util';
-import {VgScale} from '../../vega.schema';
-import {isUnitModel, Model} from '../model';
-import {defaultScaleResolve} from '../resolve';
-import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
-import {UnitModel} from '../unit';
-import {ScaleComponent, ScaleComponentIndex} from './component';
-import {parseScaleDomain} from './domain';
-import {parseScaleProperty, parseScaleRange} from './properties';
-import {scaleType} from './type';
+  scaleTypePrecedence,
+} from '../../scale.js';
+import {GEOJSON} from '../../type.js';
+import {keys} from '../../util.js';
+import {VgScale} from '../../vega.schema.js';
+import {isUnitModel, Model} from '../model.js';
+import {defaultScaleResolve} from '../resolve.js';
+import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split.js';
+import {UnitModel} from '../unit.js';
+import {ScaleComponent, ScaleComponentIndex} from './component.js';
+import {parseScaleDomain} from './domain.js';
+import {parseScaleProperty, parseScaleRange} from './properties.js';
+import {scaleType} from './type.js';
 
 export function parseScales(model: Model, {ignoreRange}: {ignoreRange?: boolean} = {}) {
   parseScaleCore(model);
@@ -62,7 +62,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
       const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, markDef, hasNestedOffsetScale);
       scaleComponents[channel] = new ScaleComponent(model.scaleName(`${channel}`, true), {
         value: sType,
-        explicit: specifiedScale.type === sType
+        explicit: specifiedScale.type === sType,
       });
     }
   }
@@ -70,7 +70,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 }
 
 const scaleTypeTieBreaker = tieBreakByComparing(
-  (st1: ScaleType, st2: ScaleType) => scaleTypePrecedence(st1) - scaleTypePrecedence(st2)
+  (st1: ScaleType, st2: ScaleType) => scaleTypePrecedence(st1) - scaleTypePrecedence(st2),
 );
 
 function parseNonUnitScaleCore(model: Model) {
@@ -100,7 +100,7 @@ function parseNonUnitScaleCore(model: Model) {
               childScaleType,
               'type',
               'scale',
-              scaleTypeTieBreaker
+              scaleTypeTieBreaker,
             );
           } else {
             // Otherwise, update conflicting channel to be independent

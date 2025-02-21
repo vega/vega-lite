@@ -1,6 +1,6 @@
 import {RangeScheme, SignalRef} from 'vega';
 import {isArray, isNumber, isObject} from 'vega-util';
-import {isBinning} from '../../bin';
+import {isBinning} from '../../bin.js';
 import {
   ANGLE,
   COLOR,
@@ -26,21 +26,21 @@ import {
   XOFFSET,
   Y,
   YOFFSET,
-  TIME
-} from '../../channel';
+  TIME,
+} from '../../channel.js';
 import {
   getBandPosition,
   getFieldOrDatumDef,
   isFieldDef,
   isFieldOrDatumDef,
   ScaleDatumDef,
-  ScaleFieldDef
-} from '../../channeldef';
-import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
-import {DataSourceType} from '../../data';
-import {channelHasFieldOrDatum} from '../../encoding';
-import * as log from '../../log';
-import {Mark} from '../../mark';
+  ScaleFieldDef,
+} from '../../channeldef.js';
+import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config.js';
+import {DataSourceType} from '../../data.js';
+import {channelHasFieldOrDatum} from '../../encoding.js';
+import * as log from '../../log/index.js';
+import {Mark} from '../../mark.js';
 import {
   channelScalePropertyIncompatability,
   Domain,
@@ -51,20 +51,20 @@ import {
   Scale,
   ScaleType,
   scaleTypeSupportProperty,
-  Scheme
-} from '../../scale';
-import {getStepFor, isStep, LayoutSizeMixins, Step} from '../../spec/base';
-import {isDiscrete} from '../../type';
-import * as util from '../../util';
-import {isSignalRef, VgRange} from '../../vega.schema';
-import {exprFromSignalRefOrValue, signalOrStringValue} from '../common';
-import {getBinSignalName} from '../data/bin';
-import {SignalRefWrapper} from '../signal';
-import {Explicit, makeExplicit, makeImplicit} from '../split';
-import {UnitModel} from '../unit';
-import {ScaleComponentIndex} from './component';
-import {durationExpr} from '../../timeunit';
-import {isFacetModel} from '../model';
+  Scheme,
+} from '../../scale.js';
+import {getStepFor, isStep, LayoutSizeMixins, Step} from '../../spec/base.js';
+import {isDiscrete} from '../../type.js';
+import * as util from '../../util.js';
+import {isSignalRef, VgRange} from '../../vega.schema.js';
+import {exprFromSignalRefOrValue, signalOrStringValue} from '../common.js';
+import {getBinSignalName} from '../data/bin.js';
+import {SignalRefWrapper} from '../signal.js';
+import {Explicit, makeExplicit, makeImplicit} from '../split.js';
+import {UnitModel} from '../unit.js';
+import {ScaleComponentIndex} from './component.js';
+import {durationExpr} from '../../timeunit.js';
+import {isFacetModel} from '../model.js';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
@@ -140,7 +140,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
             if (isArray(range)) {
               if (isXorY(channel)) {
                 return makeExplicit(
-                  range.map(v => {
+                  range.map((v) => {
                     if (v === 'width' || v === 'height') {
                       // get signal for width/height
 
@@ -151,14 +151,14 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
                       return SignalRefWrapper.fromName(getSignalName, sizeSignal);
                     }
                     return v;
-                  })
+                  }),
                 );
               }
             } else if (isObject(range)) {
               return makeExplicit({
                 data: model.requestDataName(DataSourceType.Main),
                 field: range.field,
-                sort: {op: 'min', field: model.vgField(channel)}
+                sort: {op: 'min', field: model.vgField(channel)},
               });
             }
 
@@ -217,7 +217,7 @@ function parseScheme(scheme: Scheme | SignalRef): RangeScheme {
   if (isExtendedScheme(scheme)) {
     return {
       scheme: scheme.name,
-      ...util.omit(scheme, ['name'])
+      ...util.omit(scheme, ['name']),
     };
   }
   return {scheme};
@@ -227,7 +227,7 @@ function fullWidthOrHeightRange(
   channel: 'x' | 'y',
   model: UnitModel,
   scaleType: ScaleType,
-  {center}: {center?: boolean} = {}
+  {center}: {center?: boolean} = {},
 ) {
   // If step is null, use zero to width or height.
   // Note that we use SignalRefWrapper to account for potential merges and renames.
@@ -239,15 +239,15 @@ function fullWidthOrHeightRange(
     // For y continuous scale, we have to start from the height as the bottom part has the max value.
     return center
       ? [
-          SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal),
-          SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal)
+          SignalRefWrapper.fromName((name) => `${getSignalName(name)}/2`, sizeSignal),
+          SignalRefWrapper.fromName((name) => `-${getSignalName(name)}/2`, sizeSignal),
         ]
       : [SignalRefWrapper.fromName(getSignalName, sizeSignal), 0];
   } else {
     return center
       ? [
-          SignalRefWrapper.fromName(name => `-${getSignalName(name)}/2`, sizeSignal),
-          SignalRefWrapper.fromName(name => `${getSignalName(name)}/2`, sizeSignal)
+          SignalRefWrapper.fromName((name) => `-${getSignalName(name)}/2`, sizeSignal),
+          SignalRefWrapper.fromName((name) => `${getSignalName(name)}/2`, sizeSignal),
         ]
       : [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
   }
@@ -290,7 +290,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         return interpolateRange(
           rangeMin,
           rangeMax,
-          defaultContinuousToDiscreteCount(scaleType, config, domain, channel)
+          defaultContinuousToDiscreteCount(scaleType, config, domain, channel),
         );
       } else {
         return [rangeMin, rangeMax];
@@ -314,7 +314,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
           const w = model.getSignalName(isFacetModel(model.parent) ? 'child_width' : 'width');
           const h = model.getSignalName(isFacetModel(model.parent) ? 'child_height' : 'height');
           return `min(${w},${h})/2`;
-        })
+        }),
       ];
     }
 
@@ -335,7 +335,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         [4, 2],
         [2, 1],
         [1, 1],
-        [1, 2, 4, 2]
+        [1, 2, 4, 2],
       ];
     case SHAPE:
       return 'symbol';
@@ -382,7 +382,7 @@ function getPositionStep(step: Step, model: UnitModel, channel: PositionScaleCha
 
     const paddingInner = mergedScaleCmpt.get('paddingInner') ?? mergedScaleCmpt.get('padding');
     return {
-      signal: `${step.step} * ${stepCount} / (1-${exprFromSignalRefOrValue(paddingInner)})`
+      signal: `${step.step} * ${stepCount} / (1-${exprFromSignalRefOrValue(paddingInner)})`,
     };
   } else {
     return step.step;
@@ -426,21 +426,21 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
     // continuous scale
     const positionDef = model.encoding[positionChannel];
     if (isFieldDef(positionDef) && positionDef.timeUnit) {
-      const duration = durationExpr(positionDef.timeUnit, expr => `scale('${positionScaleName}', ${expr})`);
+      const duration = durationExpr(positionDef.timeUnit, (expr) => `scale('${positionScaleName}', ${expr})`);
       const padding = model.config.scale.bandWithNestedOffsetPaddingInner;
       const bandPositionOffset =
         getBandPosition({
           fieldDef: positionDef,
           markDef,
-          config
+          config,
         }) - 0.5;
       const bandPositionOffsetExpr = bandPositionOffset !== 0 ? ` + ${bandPositionOffset}` : '';
       if (padding) {
         const startRatio = isSignalRef(padding)
-          ? `${padding.signal}/2` + bandPositionOffsetExpr
+          ? `${padding.signal}/2${bandPositionOffsetExpr}`
           : `${padding / 2 + bandPositionOffset}`;
         const endRatio = isSignalRef(padding)
-          ? `(1 - ${padding.signal}/2)` + bandPositionOffsetExpr
+          ? `(1 - ${padding.signal}/2)${bandPositionOffsetExpr}`
           : `${1 - padding / 2 + bandPositionOffset}`;
         return [{signal: `${startRatio} * (${duration})`}, {signal: `${endRatio} * (${duration})`}];
       }
@@ -453,7 +453,7 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
 function getDiscretePositionSize(
   channel: 'x' | 'y',
   size: LayoutSizeMixins,
-  viewConfig: ViewConfig<SignalRef>
+  viewConfig: ViewConfig<SignalRef>,
 ): Step | number | 'container' {
   const sizeChannel = channel === X ? 'width' : 'height';
   const sizeValue = size[sizeChannel];
@@ -467,7 +467,7 @@ export function defaultContinuousToDiscreteCount(
   scaleType: 'quantile' | 'quantize' | 'threshold',
   config: Config,
   domain: Domain,
-  channel: ScaleChannel
+  channel: ScaleChannel,
 ) {
   switch (scaleType) {
     case 'quantile':
@@ -495,7 +495,7 @@ export function defaultContinuousToDiscreteCount(
 export function interpolateRange(
   rangeMin: number | SignalRef,
   rangeMax: number | SignalRef,
-  cardinality: number
+  cardinality: number,
 ): SignalRef {
   // always return a signal since it's better to compute the sequence in Vega later
   const f = () => {
@@ -538,11 +538,11 @@ function sizeRangeMax(
   mark: Mark,
   size: LayoutSizeMixins,
   model: UnitModel,
-  config: Config<SignalRef>
+  config: Config<SignalRef>,
 ): number | SignalRef {
   const xyStepSignals = {
     x: getBinStepSignal(model, 'x'),
-    y: getBinStepSignal(model, 'y')
+    y: getBinStepSignal(model, 'y'),
   };
 
   switch (mark) {
@@ -591,7 +591,7 @@ function sizeRangeMax(
 function minXYStep(
   size: LayoutSizeMixins,
   xyStepSignals: {x?: SignalRefWrapper; y?: SignalRefWrapper},
-  viewConfig: ViewConfig<SignalRef>
+  viewConfig: ViewConfig<SignalRef>,
 ): number | SignalRef {
   const widthStep = isStep(size.width) ? size.width.step : getViewConfigDiscreteStep(viewConfig, 'width');
   const heightStep = isStep(size.height) ? size.height.step : getViewConfigDiscreteStep(viewConfig, 'height');
@@ -600,7 +600,7 @@ function minXYStep(
     return new SignalRefWrapper(() => {
       const exprs = [
         xyStepSignals.x ? xyStepSignals.x.signal : widthStep,
-        xyStepSignals.y ? xyStepSignals.y.signal : heightStep
+        xyStepSignals.y ? xyStepSignals.y.signal : heightStep,
       ];
       return `min(${exprs.join(', ')})`;
     });

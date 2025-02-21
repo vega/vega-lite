@@ -2,9 +2,9 @@
  * Constants and utilities for data.
  */
 import {Vector2} from 'vega';
-import {FieldName} from './channeldef';
-import {VgData} from './vega.schema';
-import {hasProperty} from './util';
+import {FieldName} from './channeldef.js';
+import {VgData} from './vega.schema.js';
+import {hasProperty} from './util.js';
 
 export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
 
@@ -84,7 +84,6 @@ export type DataSource = UrlData | InlineData | NamedData;
 
 export type Data = DataSource | Generator;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
 
 export interface DataBase {
@@ -162,7 +161,7 @@ export enum DataSourceType {
   PreFilterInvalid,
 
   /** Post-filter-invalid data source for scale domains */
-  PostFilterInvalid
+  PostFilterInvalid,
 }
 
 export type Generator = SequenceGenerator | SphereGenerator | GraticuleGenerator;
@@ -209,8 +208,7 @@ export interface SphereGenerator extends GeneratorBase {
   /**
    * Generate sphere GeoJSON data for the full globe.
    */
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  sphere: true | {};
+  sphere: true | object;
 }
 
 export interface GraticuleGenerator extends GeneratorBase {

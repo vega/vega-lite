@@ -92,14 +92,14 @@ Here is the final HTML file in the easiest way to embed Vega-Lite (assuming that
             {a: 'F', b: 53},
             {a: 'G', b: 19},
             {a: 'H', b: 87},
-            {a: 'I', b: 52}
-          ]
+            {a: 'I', b: 52},
+          ],
         },
         mark: 'bar',
         encoding: {
           x: {field: 'a', type: 'ordinal'},
-          y: {field: 'b', type: 'quantitative'}
-        }
+          y: {field: 'b', type: 'quantitative'},
+        },
       };
       vegaEmbed('#vis', yourVlSpec);
     </script>

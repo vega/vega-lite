@@ -2,7 +2,7 @@
  * Collection of all Vega-Lite Error Messages
  */
 import {AggregateOp, SignalRef, stringValue} from 'vega';
-import {Aggregate} from '../aggregate';
+import {Aggregate} from '../aggregate.js';
 import {
   Channel,
   ExtendedChannel,
@@ -11,27 +11,27 @@ import {
   OffsetScaleChannel,
   PositionScaleChannel,
   ScaleChannel,
-  SingleDefUnitChannel
-} from '../channel';
-import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef';
-import {SplitParentProperty} from '../compile/split';
-import {CompositeMark} from '../compositemark';
-import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
-import {DateTime, DateTimeExpr} from '../datetime';
-import {ExprRef} from '../expr';
-import {Mark} from '../mark';
-import {Projection} from '../projection';
-import {ScaleType} from '../scale';
-import {GenericSpec} from '../spec';
-import {Type} from '../type';
-import {stringify} from '../util';
-import {VgSortField} from '../vega.schema';
-import {SelectionProjection} from '../compile/selection/project';
-import {ParameterExtent} from '../selection';
+  SingleDefUnitChannel,
+} from '../channel.js';
+import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef.js';
+import {SplitParentProperty} from '../compile/split.js';
+import {CompositeMark} from '../compositemark/index.js';
+import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar.js';
+import {DateTime, DateTimeExpr} from '../datetime.js';
+import {ExprRef} from '../expr.js';
+import {Mark} from '../mark.js';
+import {Projection} from '../projection.js';
+import {ScaleType} from '../scale.js';
+import {GenericSpec} from '../spec/index.js';
+import {Type} from '../type.js';
+import {stringify} from '../util.js';
+import {VgSortField} from '../vega.schema.js';
+import {SelectionProjection} from '../compile/selection/project.js';
+import {ParameterExtent} from '../selection.js';
 
 export function invalidSpec(spec: GenericSpec<any, any, any, any>) {
   return `Invalid specification ${stringify(
-    spec
+    spec,
   )}. Make sure the specification includes at least one of the following properties: "mark", "layer", "facet", "hconcat", "vconcat", "concat", or "repeat".`;
 }
 
@@ -131,11 +131,12 @@ export function selectionAsScaleDomainWrongEncodings(
   encodings: SelectionProjection[],
   encoding: SingleDefUnitChannel,
   extent: ParameterExtent,
-  field: string
+  field: string,
 ) {
   return (
-    (!encodings.length ? 'No ' : 'Multiple ') +
-    `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.param)}. ` +
+    `${
+      !encodings.length ? 'No ' : 'Multiple '
+    }matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.param)}. ` +
     `Using "field": ${stringValue(field)}.`
   );
 }
@@ -175,7 +176,7 @@ export function projectionOverridden<ES extends ExprRef | SignalRef>(opt: {
 }) {
   const {parentProjection, projection} = opt;
   return `Layer's shared projection ${stringify(parentProjection)} is overridden by a child projection ${stringify(
-    projection
+    projection,
   )}.`;
 }
 
@@ -188,7 +189,7 @@ export function offsetNestedInsideContinuousPositionScaleDropped(mainChannel: Po
 export function primitiveChannelDef(
   channel: ExtendedChannel,
   type: 'string' | 'number' | 'boolean',
-  value: Exclude<Value, null>
+  value: Exclude<Value, null>,
 ) {
   return `Channel ${channel} is a ${type}. Converted to {value: ${stringify(value)}}.`;
 }
@@ -221,7 +222,7 @@ export function relativeBandSizeNotSupported(sizeChannel: 'width' | 'height') {
 
 export function emptyFieldDef(fieldDef: unknown, channel: ExtendedChannel) {
   return `Dropping ${stringify(
-    fieldDef
+    fieldDef,
   )} from channel "${channel}" since it does not contain any data field, datum, value, or signal.`;
 }
 
@@ -231,7 +232,7 @@ export const LINE_WITH_VARYING_SIZE =
 export function incompatibleChannel(
   channel: ExtendedChannel,
   markOrFacet: Mark | 'facet' | CompositeMark,
-  when?: string
+  when?: string,
 ) {
   return `${channel} dropped as it is incompatible with "${markOrFacet}"${when ? ` when ${when}` : ''}.`;
 }
@@ -329,16 +330,16 @@ export function mergeConflictingProperty<T>(
   property: string | number | symbol,
   propertyOf: SplitParentProperty,
   v1: T,
-  v2: T
+  v2: T,
 ) {
   return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(
-    v2
+    v2,
   )}). Using ${stringify(v1)}.`;
 }
 
 export function mergeConflictingDomainProperty<T>(property: 'domains', propertyOf: SplitParentProperty, v1: T, v2: T) {
   return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(
-    v2
+    v2,
   )}). Using the union of the two domains.`;
 }
 
@@ -348,7 +349,7 @@ export function independentScaleMeansIndependentGuide(channel: Channel) {
 
 export function domainSortDropped(sort: VgSortField) {
   return `Dropping sort property ${stringify(
-    sort
+    sort,
   )} as unioned domains only support boolean or op "count", "min", and "max".`;
 }
 
@@ -398,14 +399,14 @@ export function errorBarCenterAndExtentAreNotNeeded(center: ErrorBarCenter, exte
 export function errorBarCenterIsUsedWithWrongExtent(
   center: ErrorBarCenter,
   extent: ErrorBarExtent,
-  mark: 'errorbar' | 'errorband'
+  mark: 'errorbar' | 'errorband',
 ) {
   return `${center} is not usually used with ${extent} for ${mark}.`;
 }
 
 export function errorBarContinuousAxisHasCustomizedAggregate(
   aggregate: Aggregate | string,
-  compositeMark: CompositeMark
+  compositeMark: CompositeMark,
 ) {
   return `Continuous axis should not have customized aggregation function ${aggregate}; ${compositeMark} already agregates the axis.`;
 }

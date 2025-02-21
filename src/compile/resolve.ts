@@ -1,7 +1,7 @@
-import {isXorY, ScaleChannel} from '../channel';
-import * as log from '../log';
-import {Resolve, ResolveMode} from '../resolve';
-import {isConcatModel, isFacetModel, isLayerModel, Model} from './model';
+import {isXorY, ScaleChannel} from '../channel.js';
+import * as log from '../log/index.js';
+import {Resolve, ResolveMode} from '../resolve.js';
+import {isConcatModel, isFacetModel, isLayerModel, Model} from './model.js';
 
 export function defaultScaleResolve(channel: ScaleChannel, model: Model): ResolveMode {
   if (isFacetModel(model)) {

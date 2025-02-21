@@ -183,8 +183,8 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
             {a: 'D', b: 6},
             {a: 'E', b: 8},
             {a: 'E', b: 4},
-            {a: 'E', b: 7}
-          ]
+            {a: 'E', b: 7},
+          ],
         },
         mark: 'bar',
         encoding: {
@@ -194,10 +194,10 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
             field: 'b',
             type: 'quantitative',
             axis: {
-              title: 'Average of b'
-            }
-          }
-        }
+              title: 'Average of b',
+            },
+          },
+        },
       };
 
       // Embed the visualization in the container with id `vis`

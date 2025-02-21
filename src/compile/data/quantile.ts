@@ -1,7 +1,7 @@
 import {QuantileTransform as VgQuantileTransform} from 'vega';
-import {QuantileTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {QuantileTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for quantile transform nodes
@@ -13,7 +13,7 @@ export class QuantileTransformNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private transform: QuantileTransform
+    private transform: QuantileTransform,
   ) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
@@ -38,7 +38,7 @@ export class QuantileTransformNode extends DataFlowNode {
     const result: VgQuantileTransform = {
       type: 'quantile',
       field: quantile,
-      ...rest
+      ...rest,
     };
     return result;
   }

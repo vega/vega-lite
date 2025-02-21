@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-'use strict';
 
 /*
  * This script normalizes all the specs in examples/specs and
@@ -9,24 +8,24 @@
  * redundant Vega output specs.
  */
 
-const fs = require('fs');
-const vl = require('../build/vega-lite');
-const stableStringify = require('fast-json-stable-stringify');
+import fs from 'fs';
+import {normalize} from '../build/index.js';
+import stableStringify from 'fast-json-stable-stringify';
 
-const DIR = __dirname + '/..';
+const DIR = import.meta.dirname + '/..';
 const SPECS = '/examples/specs';
 const examples = fs.readdirSync(DIR + SPECS);
 
 async function main() {
   const {default: compactStringify} = await import('json-stringify-pretty-compact');
 
-  const vlExamples = examples.filter(example => example.includes('.vl.json'));
+  const vlExamples = examples.filter((example) => example.includes('.vl.json'));
   for (const example of vlExamples) {
     const path = `${DIR + SPECS}/${example}`;
     const spec = JSON.parse(fs.readFileSync(path));
 
     const preNormalized = stableStringify(spec);
-    const fullSpec = vl.normalize(spec);
+    const fullSpec = normalize(spec);
     const postNormalized = stableStringify(fullSpec);
 
     // console.log(preNormalized, postNormalized);

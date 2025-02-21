@@ -1,11 +1,11 @@
 import {NewSignal, PushSignal} from 'vega';
-import {X} from '../../../src/channel';
-import {Model} from '../../../src/compile/model';
-import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
-import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {UnitModel} from '../../../src/compile/unit';
-import * as log from '../../../src/log';
-import {parseConcatModel, parseModel, parseUnitModelWithScaleAndSelection} from '../../util';
+import {X} from '../../../src/channel.js';
+import {Model} from '../../../src/compile/model.js';
+import {assembleScalesForModel} from '../../../src/compile/scale/assemble.js';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import * as log from '../../../src/log/index.js';
+import {parseConcatModel, parseModel, parseUnitModelWithScaleAndSelection} from '../../util.js';
 
 describe('Selection + Scales', () => {
   describe('selectionExtent', () => {
@@ -17,12 +17,12 @@ describe('Selection + Scales', () => {
             mark: 'area',
             params: [
               {name: 'brush', select: {type: 'interval', encodings: ['x']}},
-              {name: 'brush2', select: {type: 'point', fields: ['price'], resolve: 'intersect'}}
+              {name: 'brush2', select: {type: 'point', fields: ['price'], resolve: 'intersect'}},
             ],
             encoding: {
               x: {field: 'date', type: 'temporal'},
-              y: {field: 'price', type: 'quantitative'}
-            }
+              y: {field: 'price', type: 'quantitative'},
+            },
           },
           {
             params: [{name: 'brush3', select: {type: 'point', fields: ['symbol']}}],
@@ -31,32 +31,32 @@ describe('Selection + Scales', () => {
               x: {
                 field: 'date',
                 type: 'temporal',
-                scale: {domain: {param: 'brush', encoding: 'x'}}
+                scale: {domain: {param: 'brush', encoding: 'x'}},
               },
               y: {
                 field: 'price',
                 type: 'quantitative',
-                scale: {domain: {param: 'brush2', field: 'price'}}
+                scale: {domain: {param: 'brush2', field: 'price'}},
               },
               color: {
                 field: 'symbol',
                 type: 'nominal',
-                scale: {domain: {param: 'brush3'}}
+                scale: {domain: {param: 'brush3'}},
               },
               opacity: {
                 field: 'symbol',
                 type: 'ordinal',
-                scale: {domain: {param: 'var'}}
-              }
-            }
-          }
+                scale: {domain: {param: 'var'}},
+              },
+            },
+          },
         ],
         resolve: {
           scale: {
             color: 'independent',
-            opacity: 'independent'
-          }
-        }
+            opacity: 'independent',
+          },
+        },
       });
 
       model.parseScale();
@@ -97,27 +97,27 @@ describe('Selection + Scales', () => {
                   x: {
                     field: 'date',
                     type: 'temporal',
-                    scale: {domain: {param: 'brush'}}
+                    scale: {domain: {param: 'brush'}},
                   },
-                  y: {field: 'price', type: 'quantitative'}
-                }
-              }
-            ]
+                  y: {field: 'price', type: 'quantitative'},
+                },
+              },
+            ],
           },
           {
             mark: 'area',
             params: [
               {
                 name: 'brush',
-                select: {type: 'interval', encodings: ['x']}
-              }
+                select: {type: 'interval', encodings: ['x']},
+              },
             ],
             encoding: {
               x: {field: 'date', type: 'temporal'},
-              y: {field: 'price', type: 'quantitative'}
-            }
-          }
-        ]
+              y: {field: 'price', type: 'quantitative'},
+            },
+          },
+        ],
       });
 
       model.parseScale();
@@ -133,23 +133,23 @@ describe('Selection + Scales', () => {
           {
             name: 'grid',
             select: 'interval',
-            bind: 'scales'
-          }
+            bind: 'scales',
+          },
         ],
         data: {
-          values: [{nested: {a: '1', b: 28}}, {nested: {a: '2', b: 55}}, {nested: {a: '3', b: 43}}]
+          values: [{nested: {a: '1', b: 28}}, {nested: {a: '2', b: 55}}, {nested: {a: '3', b: 43}}],
         },
         mark: 'point',
         encoding: {
           y: {
             field: 'nested.a',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           x: {
             field: 'nested.b',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
 
       let scales = assembleScalesForModel(model);
@@ -165,13 +165,13 @@ describe('Selection + Scales', () => {
             params: [
               {
                 name: 'brush',
-                select: {type: 'interval', encodings: ['x']}
-              }
+                select: {type: 'interval', encodings: ['x']},
+              },
             ],
             encoding: {
               x: {field: 'nested.a', type: 'temporal'},
-              y: {field: 'price', type: 'quantitative'}
-            }
+              y: {field: 'price', type: 'quantitative'},
+            },
           },
           {
             mark: 'area',
@@ -179,13 +179,13 @@ describe('Selection + Scales', () => {
               x: {
                 field: 'date',
                 type: 'temporal',
-                scale: {domain: {param: 'brush', encoding: 'x'}}
+                scale: {domain: {param: 'brush', encoding: 'x'}},
               },
               y: {
                 field: 'price',
-                type: 'quantitative'
-              }
-            }
+                type: 'quantitative',
+              },
+            },
           },
           {
             mark: 'area',
@@ -193,21 +193,21 @@ describe('Selection + Scales', () => {
               x: {
                 field: 'date',
                 type: 'temporal',
-                scale: {domain: {param: 'brush', field: 'nested.a'}}
+                scale: {domain: {param: 'brush', field: 'nested.a'}},
               },
               y: {
                 field: 'price',
-                type: 'quantitative'
-              }
-            }
-          }
+                type: 'quantitative',
+              },
+            },
+          },
         ],
         resolve: {
           scale: {
             color: 'independent',
-            opacity: 'independent'
-          }
-        }
+            opacity: 'independent',
+          },
+        },
       });
 
       model.parseScale();
@@ -229,17 +229,17 @@ describe('Selection + Scales', () => {
           x: {
             type: 'quantitative',
             field: 'Horsepower',
-            scale: {domain: [250, 0]}
+            scale: {domain: [250, 0]},
           },
-          y: {type: 'quantitative', field: 'Miles_per_Gallon'}
+          y: {type: 'quantitative', field: 'Miles_per_Gallon'},
         },
         params: [
           {
             name: 'pan',
             select: 'interval',
-            bind: 'scales'
-          }
-        ]
+            bind: 'scales',
+          },
+        ],
       });
 
       const scales = assembleScalesForModel(model);
@@ -252,7 +252,7 @@ describe('Selection + Scales', () => {
     const repeatModel = parseModel({
       repeat: {
         row: ['Horsepower', 'Acceleration'],
-        column: ['Miles_per_Gallon', 'Acceleration']
+        column: ['Miles_per_Gallon', 'Acceleration'],
       },
       spec: {
         data: {url: 'data/cars.json'},
@@ -262,17 +262,17 @@ describe('Selection + Scales', () => {
             name: 'grid',
             select: {
               type: 'interval',
-              resolve: 'global'
+              resolve: 'global',
             },
-            bind: 'scales'
-          }
+            bind: 'scales',
+          },
         ],
         encoding: {
           x: {field: {repeat: 'column'}, type: 'quantitative'},
           y: {field: {repeat: 'row'}, type: 'quantitative'},
-          color: {field: 'Origin', type: 'nominal'}
-        }
-      }
+          color: {field: 'Origin', type: 'nominal'},
+        },
+      },
     });
 
     const concatModel = parseConcatModel({
@@ -282,19 +282,19 @@ describe('Selection + Scales', () => {
           mark: 'point',
           encoding: {
             x: {type: 'quantitative', field: 'Miles_per_Gallon'},
-            y: {type: 'quantitative', field: 'Weight_in_lbs'}
+            y: {type: 'quantitative', field: 'Weight_in_lbs'},
           },
-          params: [{name: 'selector001', select: 'interval', bind: 'scales'}]
+          params: [{name: 'selector001', select: 'interval', bind: 'scales'}],
         },
         {
           mark: 'point',
           encoding: {
             x: {type: 'quantitative', field: 'Acceleration'},
-            y: {type: 'quantitative', field: 'Horsepower'}
+            y: {type: 'quantitative', field: 'Horsepower'},
           },
-          params: [{name: 'selector001', select: {type: 'interval'}, bind: 'scales'}]
-        }
-      ]
+          params: [{name: 'selector001', select: {type: 'interval'}, bind: 'scales'}],
+        },
+      ],
     });
 
     repeatModel.parseScale();
@@ -305,8 +305,8 @@ describe('Selection + Scales', () => {
 
     it('should be marked as push: outer', () => {
       const signals = assembleUnitSelectionSignals(repeatModel.children[0] as UnitModel, []);
-      const hp = signals.filter(s => s.name === 'grid_Horsepower') as PushSignal[];
-      const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon') as PushSignal[];
+      const hp = signals.filter((s) => s.name === 'grid_Horsepower') as PushSignal[];
+      const mpg = signals.filter((s) => s.name === 'grid_Miles_per_Gallon') as PushSignal[];
 
       expect(hp).toHaveLength(1);
       expect(hp[0].push).toBe('outer');
@@ -321,9 +321,9 @@ describe('Selection + Scales', () => {
 
     it('should be assembled at the top-level', () => {
       const signals = assembleTopLevelSignals(repeatModel.children[0] as UnitModel, []);
-      const hp = signals.filter(s => s.name === 'grid_Horsepower');
-      const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon');
-      let named = signals.filter(s => s.name === 'grid') as NewSignal[];
+      const hp = signals.filter((s) => s.name === 'grid_Horsepower');
+      const mpg = signals.filter((s) => s.name === 'grid_Miles_per_Gallon');
+      let named = signals.filter((s) => s.name === 'grid') as NewSignal[];
 
       expect(hp).toHaveLength(1);
       expect(mpg).toHaveLength(1);
@@ -331,22 +331,22 @@ describe('Selection + Scales', () => {
       expect(named[0].update).toBe('{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower}');
 
       const signals2 = assembleTopLevelSignals(repeatModel.children[1] as UnitModel, signals);
-      const acc = signals2.filter(s => s.name === 'grid_Acceleration');
-      named = signals2.filter(s => s.name === 'grid');
+      const acc = signals2.filter((s) => s.name === 'grid_Acceleration');
+      named = signals2.filter((s) => s.name === 'grid');
 
       expect(acc).toHaveLength(1);
       expect(named).toHaveLength(1);
       expect(named[0].update).toBe(
-        '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower, "Acceleration": grid_Acceleration}'
+        '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower, "Acceleration": grid_Acceleration}',
       );
 
       const signals3 = assembleTopLevelSignals(
         concatModel.children[1] as UnitModel,
-        assembleTopLevelSignals(concatModel.children[0] as UnitModel, [])
+        assembleTopLevelSignals(concatModel.children[0] as UnitModel, []),
       );
-      const namedSelector = signals3.filter(s => s.name === 'selector001') as NewSignal[];
+      const namedSelector = signals3.filter((s) => s.name === 'selector001') as NewSignal[];
       expect(namedSelector[0].update).toBe(
-        '{"Miles_per_Gallon": selector001_Miles_per_Gallon, "Weight_in_lbs": selector001_Weight_in_lbs, "Acceleration": selector001_Acceleration, "Horsepower": selector001_Horsepower}'
+        '{"Miles_per_Gallon": selector001_Miles_per_Gallon, "Weight_in_lbs": selector001_Weight_in_lbs, "Acceleration": selector001_Acceleration, "Horsepower": selector001_Horsepower}',
       );
     });
 
@@ -354,7 +354,7 @@ describe('Selection + Scales', () => {
       const model = parseModel({
         repeat: {
           row: ['p.x', 'p.y'],
-          column: ['p.x', 'p.y']
+          column: ['p.x', 'p.y'],
         },
         spec: {
           mark: 'point',
@@ -362,24 +362,24 @@ describe('Selection + Scales', () => {
             {
               name: 'sel11',
               select: 'interval',
-              bind: 'scales'
-            }
+              bind: 'scales',
+            },
           ],
           encoding: {
             x: {field: {repeat: 'column'}, type: 'quantitative'},
-            y: {field: {repeat: 'row'}, type: 'quantitative'}
+            y: {field: {repeat: 'row'}, type: 'quantitative'},
           },
           data: {
-            values: [{p: {x: 1, y: 1}}, {p: {x: 2, y: 1}}, {p: {x: 1, y: 2}}, {p: {x: 3, y: 3}}, {p: {x: 3, y: 2}}]
-          }
-        }
+            values: [{p: {x: 1, y: 1}}, {p: {x: 2, y: 1}}, {p: {x: 1, y: 2}}, {p: {x: 3, y: 3}}, {p: {x: 3, y: 2}}],
+          },
+        },
       });
 
       model.parseScale();
       model.parseSelections();
 
       const signals = assembleTopLevelSignals(model.children[2] as UnitModel, []);
-      const named = signals.filter(s => s.name === 'sel11') as NewSignal[];
+      const named = signals.filter((s) => s.name === 'sel11') as NewSignal[];
       expect(named).toHaveLength(1);
       expect(named[0].update).toBe('{"p\\\\.x": sel11_p_x, "p\\\\.y": sel11_p_y}');
     });
@@ -387,20 +387,20 @@ describe('Selection + Scales', () => {
 
   it(
     'should not bind for unavailable/unsupported scales',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       parseUnitModelWithScaleAndSelection({
         data: {url: 'data/cars.json'},
         params: [
           {
             name: 'grid',
             select: 'interval',
-            bind: 'scales'
-          }
+            bind: 'scales',
+          },
         ],
         mark: 'circle',
         encoding: {
-          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-        }
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        },
       });
       expect(localLogger.warns[0]).toEqual(log.message.cannotProjectOnChannelWithoutField(X));
 
@@ -410,16 +410,16 @@ describe('Selection + Scales', () => {
           {
             name: 'grid',
             select: {type: 'interval'},
-            bind: 'scales'
-          }
+            bind: 'scales',
+          },
         ],
         mark: 'circle',
         encoding: {
           x: {field: 'Origin', type: 'nominal'},
-          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-        }
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        },
       });
       expect(localLogger.warns[1]).toEqual(log.message.SCALE_BINDINGS_CONTINUOUS);
-    })
+    }),
   );
 });

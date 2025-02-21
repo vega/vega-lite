@@ -1,20 +1,20 @@
 import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega';
 import {isNumber, isString} from 'vega-util';
-import {AncestorParse} from '.';
-import {isMinMaxOp} from '../../aggregate';
-import {getMainRangeChannel, SingleDefChannel} from '../../channel';
+import {AncestorParse} from './index.js';
+import {isMinMaxOp} from '../../aggregate.js';
+import {getMainRangeChannel, SingleDefChannel} from '../../channel.js';
 import {
   isFieldDef,
   isFieldOrDatumDefForTimeFormat,
   isScaleFieldDef,
   isTypedFieldDef,
-  TypedFieldDef
-} from '../../channeldef';
-import {isGenerator, Parse} from '../../data';
-import {DateTime, isDateTime} from '../../datetime';
-import * as log from '../../log';
-import {forEachLeaf} from '../../logical';
-import {isPathMark} from '../../mark';
+  TypedFieldDef,
+} from '../../channeldef.js';
+import {isGenerator, Parse} from '../../data.js';
+import {DateTime, isDateTime} from '../../datetime.js';
+import * as log from '../../log/index.js';
+import {forEachLeaf} from '../../logical.js';
+import {isPathMark} from '../../mark.js';
 import {
   isFieldEqualPredicate,
   isFieldGTEPredicate,
@@ -23,15 +23,15 @@ import {
   isFieldLTPredicate,
   isFieldOneOfPredicate,
   isFieldPredicate,
-  isFieldRangePredicate
-} from '../../predicate';
-import {isSortField} from '../../sort';
-import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, Dict, duplicate, hash, keys, removePathFromField} from '../../util';
-import {signalRefOrValue} from '../common';
-import {isFacetModel, isUnitModel, Model} from '../model';
-import {Split} from '../split';
-import {DataFlowNode} from './dataflow';
+  isFieldRangePredicate,
+} from '../../predicate.js';
+import {isSortField} from '../../sort.js';
+import {FilterTransform} from '../../transform.js';
+import {accessPathDepth, accessPathWithDatum, Dict, duplicate, hash, keys, removePathFromField} from '../../util.js';
+import {signalRefOrValue} from '../common.js';
+import {isFacetModel, isUnitModel, Model} from '../model.js';
+import {Split} from '../split.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * Remove quotes from a string.
@@ -73,7 +73,7 @@ function parseExpression(field: string, parse: string): string {
 
 export function getImplicitFromFilterTransform(transform: FilterTransform) {
   const implicit: Dict<string> = {};
-  forEachLeaf(transform.filter, filter => {
+  forEachLeaf(transform.filter, (filter) => {
     if (isFieldPredicate(filter)) {
       // Automatically add a parse node for filters with filter objects
       let val: string | number | boolean | DateTime | SignalRef = null;
@@ -155,7 +155,7 @@ export function getImplicitFromEncoding(model: Model) {
         const mainFieldDef = model.fieldDef(mainChannel as SingleDefChannel) as TypedFieldDef<string>;
         add({
           ...fieldDef,
-          type: mainFieldDef.type
+          type: mainFieldDef.type,
         });
       }
     });
@@ -242,7 +242,7 @@ export class ParseNode extends DataFlowNode {
     parent: DataFlowNode,
     explicit: Parse,
     implicit: Parse,
-    ancestorParse: AncestorParse
+    ancestorParse: AncestorParse,
   ) {
     // We should not parse what has already been parsed in a parent (explicitly or implicitly) or what has been derived (maked as "derived"). We also don't need to flatten a field that has already been parsed.
     for (const field of keys(implicit)) {
@@ -329,8 +329,8 @@ export class ParseNode extends DataFlowNode {
 
   public assembleTransforms(onlyNested = false): VgFormulaTransform[] {
     return keys(this._parse)
-      .filter(field => (onlyNested ? accessPathDepth(field) > 1 : true))
-      .map(field => {
+      .filter((field) => (onlyNested ? accessPathDepth(field) > 1 : true))
+      .map((field) => {
         const expr = parseExpression(field, this._parse[field]);
         if (!expr) {
           return null;
@@ -339,10 +339,10 @@ export class ParseNode extends DataFlowNode {
         const formula: VgFormulaTransform = {
           type: 'formula',
           expr,
-          as: removePathFromField(field) // Vega output is always flattened
+          as: removePathFromField(field), // Vega output is always flattened
         };
         return formula;
       })
-      .filter(t => t !== null);
+      .filter((t) => t !== null);
   }
 }

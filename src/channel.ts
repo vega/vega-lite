@@ -4,11 +4,11 @@
  */
 
 import {hasOwnProperty} from 'vega-util';
-import {RangeType} from './compile/scale/type';
-import {Encoding} from './encoding';
-import {Mark} from './mark';
-import {EncodingFacetMapping} from './spec/facet';
-import {Flag, keys} from './util';
+import {RangeType} from './compile/scale/type.js';
+import {Encoding} from './encoding.js';
+import {Mark} from './mark.js';
+import {EncodingFacetMapping} from './spec/facet.js';
+import {Flag, keys} from './util.js';
 
 export type Channel = keyof Encoding<any>;
 export type ExtendedChannel = Channel | FacetChannel;
@@ -80,7 +80,7 @@ const POSITION_CHANNEL_INDEX = {
   x: 1,
   y: 1,
   x2: 1,
-  y2: 1
+  y2: 1,
 } as const;
 
 export type PositionChannel = keyof typeof POSITION_CHANNEL_INDEX;
@@ -89,7 +89,7 @@ const POLAR_POSITION_CHANNEL_INDEX = {
   theta: 1,
   theta2: 1,
   radius: 1,
-  radius2: 1
+  radius2: 1,
 } as const;
 
 export type PolarPositionChannel = keyof typeof POLAR_POSITION_CHANNEL_INDEX;
@@ -102,7 +102,7 @@ const GEO_POSIITON_CHANNEL_INDEX = {
   longitude: 1,
   longitude2: 1,
   latitude: 1,
-  latitude2: 1
+  latitude2: 1,
 } as const;
 
 export type GeoPositionChannel = keyof typeof GEO_POSIITON_CHANNEL_INDEX;
@@ -161,7 +161,7 @@ const UNIT_CHANNEL_INDEX: Flag<Channel> = {
   tooltip: 1,
   href: 1,
   url: 1,
-  description: 1
+  description: 1,
 };
 
 export type ColorChannel = 'color' | 'fill' | 'stroke';
@@ -175,14 +175,14 @@ export type FacetChannel = keyof EncodingFacetMapping<any, any>;
 const FACET_CHANNEL_INDEX: Flag<keyof EncodingFacetMapping<any, any>> = {
   row: 1,
   column: 1,
-  facet: 1
+  facet: 1,
 };
 
 export const FACET_CHANNELS = keys(FACET_CHANNEL_INDEX);
 
 const CHANNEL_INDEX = {
   ...UNIT_CHANNEL_INDEX,
-  ...FACET_CHANNEL_INDEX
+  ...FACET_CHANNEL_INDEX,
 };
 
 export const CHANNELS = keys(CHANNEL_INDEX);
@@ -400,7 +400,7 @@ export type NonPositionChannel = (typeof NONPOSITION_CHANNELS)[number];
 
 const POSITION_SCALE_CHANNEL_INDEX = {
   x: 1,
-  y: 1
+  y: 1,
 } as const;
 export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = keyof typeof POSITION_SCALE_CHANNEL_INDEX;
@@ -411,7 +411,7 @@ export function isXorY(channel: ExtendedChannel): channel is PositionScaleChanne
 
 export const POLAR_POSITION_SCALE_CHANNEL_INDEX = {
   theta: 1,
-  radius: 1
+  radius: 1,
 } as const;
 
 export const POLAR_POSITION_SCALE_CHANNELS = keys(POLAR_POSITION_SCALE_CHANNEL_INDEX);
@@ -432,7 +432,7 @@ export function isXorYOffset(channel: Channel): channel is OffsetScaleChannel {
 }
 
 const TIME_SCALE_CHANNEL_INDEX = {
-  time: 1
+  time: 1,
 } as const;
 export const TIME_SCALE_CHANNELS = keys(TIME_SCALE_CHANNEL_INDEX);
 export type TimeScaleChannel = keyof typeof TIME_SCALE_CHANNEL_INDEX;
@@ -491,7 +491,7 @@ const SCALE_CHANNEL_INDEX = {
   ...POSITION_SCALE_CHANNEL_INDEX,
   ...POLAR_POSITION_SCALE_CHANNEL_INDEX,
   ...OFFSET_SCALE_CHANNEL_INDEX,
-  ...NONPOSITION_SCALE_CHANNEL_INDEX
+  ...NONPOSITION_SCALE_CHANNEL_INDEX,
 };
 
 /** List of channels with scales */
@@ -529,7 +529,7 @@ const ALL_MARKS: Record<Mark, 'always'> = {
   square: 'always',
   trail: 'always',
   text: 'always',
-  tick: 'always'
+  tick: 'always',
 };
 
 const {geoshape: _g, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
@@ -587,7 +587,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
         square: 'binned',
         tick: 'binned',
         line: 'binned',
-        trail: 'binned'
+        trail: 'binned',
       };
     case SIZE:
       return {
@@ -599,7 +599,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
         bar: 'always',
         text: 'always',
         line: 'always',
-        trail: 'always'
+        trail: 'always',
       };
     case STROKEDASH:
       return {
@@ -610,7 +610,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
         circle: 'always',
         square: 'always',
         bar: 'always',
-        geoshape: 'always'
+        geoshape: 'always',
       };
     case SHAPE:
       return {point: 'always', geoshape: 'always'};

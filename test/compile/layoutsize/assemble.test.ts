@@ -1,5 +1,5 @@
-import {sizeSignals} from '../../../src/compile/layoutsize/assemble';
-import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {sizeSignals} from '../../../src/compile/layoutsize/assemble.js';
+import {parseFacetModel, parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('compile/layout', () => {
   describe('sizeExpr', () => {
@@ -7,20 +7,20 @@ describe('compile/layout', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point', // point mark produce ordinal-point scale by default
         encoding: {
-          x: {field: 'a', type: 'ordinal'}
-        }
+          x: {field: 'a', type: 'ordinal'},
+        },
       });
 
       const size = sizeSignals(model, 'width');
       expect(size).toEqual([
         {
           name: 'x_step',
-          value: 20
+          value: 20,
         },
         {
           name: 'width',
-          update: "bandspace(domain('x').length, 1, 0.5) * x_step"
-        }
+          update: "bandspace(domain('x').length, 1, 0.5) * x_step",
+        },
       ]);
     });
 
@@ -28,20 +28,20 @@ describe('compile/layout', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'rect', // rect produces ordinal-band by default
         encoding: {
-          x: {field: 'a', type: 'ordinal', scale: {padding: 0.3}}
-        }
+          x: {field: 'a', type: 'ordinal', scale: {padding: 0.3}},
+        },
       });
 
       const size = sizeSignals(model, 'width');
       expect(size).toEqual([
         {
           name: 'x_step',
-          value: 20
+          value: 20,
         },
         {
           name: 'width',
-          update: "bandspace(domain('x').length, 0.3, 0.3) * x_step"
-        }
+          update: "bandspace(domain('x').length, 0.3, 0.3) * x_step",
+        },
       ]);
     });
 
@@ -49,37 +49,37 @@ describe('compile/layout', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'rect', // rect produces ordinal-band by default
         encoding: {
-          x: {field: 'a', type: 'ordinal', scale: {paddingInner: 0.3}}
-        }
+          x: {field: 'a', type: 'ordinal', scale: {paddingInner: 0.3}},
+        },
       });
 
       const size = sizeSignals(model, 'width');
       expect(size).toEqual([
         {
           name: 'x_step',
-          value: 20
+          value: 20,
         },
         {
           name: 'width',
-          update: "bandspace(domain('x').length, 0.3, 0.15) * x_step"
-        }
+          update: "bandspace(domain('x').length, 0.3, 0.15) * x_step",
+        },
       ]);
     });
 
     it('should return only step if parent is facet', () => {
       const model = parseFacetModel({
         facet: {
-          row: {field: 'a', type: 'ordinal'}
+          row: {field: 'a', type: 'ordinal'},
         },
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'b', type: 'nominal'}
-          }
+            x: {field: 'b', type: 'nominal'},
+          },
         },
         resolve: {
-          scale: {x: 'independent'}
-        }
+          scale: {x: 'independent'},
+        },
       });
       model.parseScale();
       model.parseLayoutSize();
@@ -88,8 +88,8 @@ describe('compile/layout', () => {
       expect(size).toEqual([
         {
           name: 'child_x_step',
-          value: 20
-        }
+          value: 20,
+        },
       ]);
     });
 
@@ -98,8 +98,8 @@ describe('compile/layout', () => {
         width: 205,
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'ordinal'}
-        }
+          x: {field: 'a', type: 'ordinal'},
+        },
       });
 
       const size = sizeSignals(model, 'width');
@@ -110,8 +110,8 @@ describe('compile/layout', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'quantitative'}
-        }
+          x: {field: 'a', type: 'quantitative'},
+        },
       });
 
       const size = sizeSignals(model, 'width');
@@ -122,8 +122,8 @@ describe('compile/layout', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {
-          y: {field: 'a', type: 'quantitative'}
-        }
+          y: {field: 'a', type: 'quantitative'},
+        },
       });
 
       const size = sizeSignals(model, 'height');
@@ -134,7 +134,7 @@ describe('compile/layout', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
         encoding: {},
-        config: {view: {discreteWidth: 17, discreteHeight: 18}}
+        config: {view: {discreteWidth: 17, discreteHeight: 18}},
       });
 
       const width = sizeSignals(model, 'width');

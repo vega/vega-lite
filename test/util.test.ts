@@ -1,6 +1,6 @@
 import {splitAccessPath} from 'vega-util';
-import {FilterNode} from '../src/compile/data/filter';
-import {PivotTransformNode} from '../src/compile/data/pivot';
+import {FilterNode} from '../src/compile/data/filter.js';
+import {PivotTransformNode} from '../src/compile/data/pivot.js';
 import {
   accessPathDepth,
   accessPathWithDatum,
@@ -21,8 +21,8 @@ import {
   unique,
   uniqueId,
   vals,
-  varName
-} from '../src/util';
+  varName,
+} from '../src/util.js';
 
 describe('util', () => {
   describe('varName', () => {
@@ -76,11 +76,11 @@ describe('util', () => {
       const originalObject = {
         property1: {property1: 'value1'},
         property2: {property5: 'value2'},
-        property3: {property6: 'value3', property7: 'value4'}
+        property3: {property6: 'value3', property7: 'value4'},
       };
       const newObject = {
         property2: {property5: 'value2'},
-        property3: {property6: 'value3', property7: 'value4'}
+        property3: {property6: 'value3', property7: 'value4'},
       };
       deleteNestedProperty(originalObject, ['property1']);
       expect(stringify(originalObject)).toBe(stringify(newObject));
@@ -90,11 +90,11 @@ describe('util', () => {
       const originalObject = {
         property1: {property4: 'value1'},
         property2: {property5: 'value2'},
-        property3: {property6: 'value3', property7: 'value4'}
+        property3: {property6: 'value3', property7: 'value4'},
       };
       const newObject = {
         property2: {property5: 'value2'},
-        property3: {property6: 'value3', property7: 'value4'}
+        property3: {property6: 'value3', property7: 'value4'},
       };
       deleteNestedProperty(originalObject, ['property1', 'property4']);
       expect(stringify(originalObject)).toBe(stringify(newObject));
@@ -104,12 +104,12 @@ describe('util', () => {
       const originalObject = {
         property1: {property4: 'value1'},
         property2: {property5: 'value2'},
-        property3: {property6: 'value3', property7: 'value4'}
+        property3: {property6: 'value3', property7: 'value4'},
       };
       const newObject = {
         property1: {property4: 'value1'},
         property2: {property5: 'value2'},
-        property3: {property6: 'value3'}
+        property3: {property6: 'value3'},
       };
       deleteNestedProperty(originalObject, ['property3', 'property7']);
       expect(stringify(originalObject)).toBe(stringify(newObject));
@@ -255,7 +255,7 @@ describe('util', () => {
       const filterNode = new FilterNode(null, null, 'datum.foo > 1');
       const pivotNode = new PivotTransformNode(null, {
         pivot: 'a',
-        value: 'b'
+        value: 'b',
       });
       expect(fieldIntersection(filterNode.producedFields(), filterNode.dependentFields())).toBe(false);
       expect(fieldIntersection(pivotNode.producedFields(), filterNode.dependentFields())).toBe(true);
@@ -265,10 +265,10 @@ describe('util', () => {
 
   describe('unique', () => {
     it('should collapse the same numbers', () => {
-      expect(unique([1, 2, 3, 2], d => d)).toEqual([1, 2, 3]);
+      expect(unique([1, 2, 3, 2], (d) => d)).toEqual([1, 2, 3]);
     });
     it('should collapse the same items with strings', () => {
-      expect(unique([1, 2, 'a', 'a'], d => d)).toEqual([1, 2, 'a']);
+      expect(unique([1, 2, 'a', 'a'], (d) => d)).toEqual([1, 2, 'a']);
     });
   });
 
@@ -288,7 +288,7 @@ describe('util', () => {
     it('should return entries', () => {
       expect(entries({a: 12, b: 42})).toEqual([
         ['a', 12],
-        ['b', 42]
+        ['b', 42],
       ]);
     });
   });

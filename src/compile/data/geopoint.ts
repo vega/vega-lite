@@ -1,11 +1,11 @@
 import {GeoPointTransform as VgGeoPointTransform, Vector2} from 'vega';
 import {isString} from 'vega-util';
-import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel';
-import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef';
-import {duplicate, hash} from '../../util';
-import {VgExprRef} from '../../vega.schema';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
+import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel.js';
+import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef.js';
+import {duplicate, hash} from '../../util.js';
+import {VgExprRef} from '../../vega.schema.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
 
 export class GeoPointNode extends DataFlowNode {
   public clone() {
@@ -16,7 +16,7 @@ export class GeoPointNode extends DataFlowNode {
     parent: DataFlowNode,
     private projection: string,
     private fields: [string | VgExprRef, string | VgExprRef],
-    private as: [string, string]
+    private as: [string, string],
   ) {
     super(parent);
   }
@@ -28,9 +28,9 @@ export class GeoPointNode extends DataFlowNode {
 
     for (const coordinates of [
       [LONGITUDE, LATITUDE],
-      [LONGITUDE2, LATITUDE2]
+      [LONGITUDE2, LATITUDE2],
     ] as Vector2<GeoPositionChannel>[]) {
-      const pair = coordinates.map(channel => {
+      const pair = coordinates.map((channel) => {
         const def = getFieldOrDatumDef(model.encoding[channel]);
         return isFieldDef(def)
           ? def.field
@@ -46,7 +46,7 @@ export class GeoPointNode extends DataFlowNode {
       if (pair[0] || pair[1]) {
         parent = new GeoPointNode(parent, model.projectionName(), pair, [
           model.getName(`x${suffix}`),
-          model.getName(`y${suffix}`)
+          model.getName(`y${suffix}`),
         ]);
       }
     }
@@ -71,7 +71,7 @@ export class GeoPointNode extends DataFlowNode {
       type: 'geopoint',
       projection: this.projection,
       fields: this.fields,
-      as: this.as
+      as: this.as,
     };
   }
 }
