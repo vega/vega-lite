@@ -25,7 +25,7 @@ export default [
     },
   },
   {
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.js'],
     languageOptions: {
       parser: tsParser,
       globals: {

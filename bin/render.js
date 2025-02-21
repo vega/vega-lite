@@ -51,7 +51,7 @@ export function render(type, callback, opt) {
   };
 
   // instantiate view and invoke headless render method
-  function render(vlSpec) {
+  function r(vlSpec) {
     const vgSpec = compile(vlSpec, {config}).spec;
     const view = new vega.View(vega.parse(vgSpec), {
       locale: locale, // set locale options
@@ -65,7 +65,7 @@ export function render(type, callback, opt) {
 
   // read input from file or stdin
   read(arg._[0] || null)
-    .then((text) => render(JSON.parse(text)))
+    .then((text) => r(JSON.parse(text)))
     .catch((err) => {
       console.error(err);
       exit(1);
