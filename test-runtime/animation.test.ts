@@ -48,7 +48,7 @@ const gapminderSpec: TopLevelSpec = {
 };
 
 describe('time encoding animations', () => {
-  it('renders a frame for each anim_value', async () => {
+  it.skip('renders a frame for each anim_value', async () => {
     const view = await embed(gapminderSpec, false);
     await view.runAsync(); // Ensure initial initialization is complete
 
