@@ -20,11 +20,11 @@ export default defineWorkspace([
   {
     test: {
       include: ['test-runtime/**/*.test.ts'],
+      globalSetup: './vitest.global-setup.ts',
       name: 'runtime',
       browser: {
         provider: 'playwright',
         enabled: true,
-        headless: true,
         instances: [{browser: 'chromium'}],
       },
       globals: true,
