@@ -873,7 +873,7 @@ export function vgField(
  */
 export function areFieldDefsWithInlineTransformsEquivalent(
   fieldDef1: FieldDef<string> | WindowFieldDef | AggregatedFieldDef,
-  fieldDef2: FieldDef<string> | WindowFieldDef | AggregatedFieldDef
+  fieldDef2: FieldDef<string> | WindowFieldDef | AggregatedFieldDef,
 ) {
   if (isOpFieldDef(fieldDef1) || isOpFieldDef(fieldDef2)) {
     return isOpFieldDef(fieldDef1) && isOpFieldDef(fieldDef2) && fieldDef1.op === fieldDef2.op;
