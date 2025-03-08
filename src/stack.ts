@@ -1,6 +1,6 @@
 import {array, hasOwnProperty, isBoolean} from 'vega-util';
 import {Aggregate, SUM_OPS} from './aggregate.js';
-import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS, isPolarPositionChannel} from './channel.js';
+import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel.js';
 import {
   channelDefType,
   FieldName,
@@ -177,12 +177,23 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     const dimensionDef = encoding[dimensionChannel];
     const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
     const hasSameDimensionAndStackedField = dimensionField && dimensionField === stackedField;
+    const isUnbinnedQuant = isUnbinnedQuantitative(dimensionDef);
 
-    // For polar coordinates, do not set a groupBy when working with quantitative fields.
-    const isPolar = isPolarPositionChannel(fieldChannel) || isPolarPositionChannel(dimensionChannel);
-    const shouldAddPolarGroupBy = !isUnbinnedQuantitative(dimensionDef);
+    // Check if both the field channel and dimension channel have unbinned quantitative fields
+    const isFieldUnbinnedQuant = isUnbinnedQuantitative(stackedFieldDef);
 
-    if (isPolar ? shouldAddPolarGroupBy : !hasSameDimensionAndStackedField) {
+    const bothChannelsAreUnbinnedQuantitative = isUnbinnedQuant && isFieldUnbinnedQuant;
+
+    // The core logic: we only add to groupBy when:
+    // 1. The dimension field is different from the stacked field (to avoid redundant grouping)
+    // 2. AND either:
+    //    a. The dimension field is not an unbinned quantitative field, OR
+    //    b. The field channel is not an unbinned quantitative field
+    //       (to handle the special case where both channels are unbinned quantitative)
+    const shouldAddToGroupBy =
+      !hasSameDimensionAndStackedField && (!isUnbinnedQuant || !bothChannelsAreUnbinnedQuantitative);
+
+    if (shouldAddToGroupBy) {
       // avoid grouping by the stacked field
       groupbyChannels.push(dimensionChannel);
       groupbyFields.add(dimensionField);
