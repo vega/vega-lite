@@ -30,7 +30,7 @@
       "transform": [
         {
           "type": "stack",
-          "groupby": ["a"],
+          "groupby": [],
           "field": "b",
           "sort": {"field": [], "order": []},
           "as": ["b_start", "b_end"],
@@ -43,16 +43,8 @@
       "source": "data_0",
       "transform": [
         {
-          "type": "impute",
-          "field": "b",
-          "groupby": [],
-          "key": "a",
-          "method": "value",
-          "value": 0
-        },
-        {
           "type": "stack",
-          "groupby": ["a"],
+          "groupby": [],
           "field": "b",
           "sort": {"field": [], "order": []},
           "as": ["b_start", "b_end"],

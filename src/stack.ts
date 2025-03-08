@@ -1,6 +1,6 @@
 import {array, hasOwnProperty, isBoolean} from 'vega-util';
 import {Aggregate, SUM_OPS} from './aggregate.js';
-import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS, isPolarPositionChannel} from './channel.js';
+import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel.js';
 import {
   channelDefType,
   FieldName,
@@ -177,12 +177,14 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     const dimensionDef = encoding[dimensionChannel];
     const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
     const hasSameDimensionAndStackedField = dimensionField && dimensionField === stackedField;
+    const isDimensionUnbinnedQuant = isUnbinnedQuantitative(dimensionDef);
 
-    // For polar coordinates, do not set a groupBy when working with quantitative fields.
-    const isPolar = isPolarPositionChannel(fieldChannel) || isPolarPositionChannel(dimensionChannel);
-    const shouldAddPolarGroupBy = !isUnbinnedQuantitative(dimensionDef);
+    // The core logic for when to add a dimension to groupBy:
+    // 1. Never add if dimension field is the same as stacked field (avoid redundancy)
+    // 2. Add if dimension is not an unbinned quantitative field
+    const shouldAddToGroupBy = !hasSameDimensionAndStackedField && !isDimensionUnbinnedQuant;
 
-    if (isPolar ? shouldAddPolarGroupBy : !hasSameDimensionAndStackedField) {
+    if (shouldAddToGroupBy) {
       // avoid grouping by the stacked field
       groupbyChannels.push(dimensionChannel);
       groupbyFields.add(dimensionField);

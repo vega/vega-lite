@@ -18,16 +18,8 @@
           "resolve": "shared"
         },
         {
-          "type": "impute",
-          "field": "density",
-          "groupby": ["Species"],
-          "key": "value",
-          "method": "value",
-          "value": 0
-        },
-        {
           "type": "stack",
-          "groupby": ["value", "Species"],
+          "groupby": ["Species"],
           "field": "density",
           "sort": {"field": [], "order": []},
           "as": ["density_start", "density_end"],

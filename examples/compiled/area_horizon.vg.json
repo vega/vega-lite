@@ -44,16 +44,8 @@
       "source": "data_0",
       "transform": [
         {
-          "type": "impute",
-          "field": "y",
-          "groupby": [],
-          "key": "x",
-          "method": "value",
-          "value": 0
-        },
-        {
           "type": "stack",
-          "groupby": ["x"],
+          "groupby": [],
           "field": "y",
           "sort": {"field": [], "order": []},
           "as": ["y_start", "y_end"],
@@ -67,16 +59,8 @@
       "transform": [
         {"type": "formula", "expr": "datum.y - 50", "as": "ny"},
         {
-          "type": "impute",
-          "field": "ny",
-          "groupby": [],
-          "key": "x",
-          "method": "value",
-          "value": 0
-        },
-        {
           "type": "stack",
-          "groupby": ["x"],
+          "groupby": [],
           "field": "ny",
           "sort": {"field": [], "order": []},
           "as": ["ny_start", "ny_end"],
