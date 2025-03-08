@@ -476,9 +476,9 @@ describe('stack', () => {
           radius: {
             field: 'variety',
             type: 'quantitative',
-            scale: {type: 'sqrt', zero: true, range: [20, 100]}
-          }
-        }
+            scale: {type: 'sqrt', zero: true, range: [20, 100]},
+          },
+        },
       };
       const _stack = stack(spec.mark, spec.encoding);
       expect(_stack.fieldChannel).toBe('theta');
