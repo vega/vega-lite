@@ -184,14 +184,18 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
     const bothChannelsAreUnbinnedQuantitative = isUnbinnedQuant && isFieldUnbinnedQuant;
 
+    // For area charts, we need to ensure we still group by the dimension field
+    // even if both fields are quantitative (e.g., for cumulative frequency plots)
+    const isAreaMark = mark === 'area';
+
     // The core logic: we only add to groupBy when:
     // 1. The dimension field is different from the stacked field (to avoid redundant grouping)
     // 2. AND either:
     //    a. The dimension field is not an unbinned quantitative field, OR
-    //    b. The field channel is not an unbinned quantitative field
-    //       (to handle the special case where both channels are unbinned quantitative)
+    //    b. The field channel is not an unbinned quantitative field, OR
+    //    c. It's an area mark (which needs grouping even with quantitative fields)
     const shouldAddToGroupBy =
-      !hasSameDimensionAndStackedField && (!isUnbinnedQuant || !bothChannelsAreUnbinnedQuantitative);
+      !hasSameDimensionAndStackedField && (!isUnbinnedQuant || !bothChannelsAreUnbinnedQuantitative || isAreaMark);
 
     if (shouldAddToGroupBy) {
       // avoid grouping by the stacked field
