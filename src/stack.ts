@@ -177,25 +177,12 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     const dimensionDef = encoding[dimensionChannel];
     const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
     const hasSameDimensionAndStackedField = dimensionField && dimensionField === stackedField;
-    const isUnbinnedQuant = isUnbinnedQuantitative(dimensionDef);
+    const isDimensionUnbinnedQuant = isUnbinnedQuantitative(dimensionDef);
 
-    // Check if both the field channel and dimension channel have unbinned quantitative fields
-    const isFieldUnbinnedQuant = isUnbinnedQuantitative(stackedFieldDef);
-
-    const bothChannelsAreUnbinnedQuantitative = isUnbinnedQuant && isFieldUnbinnedQuant;
-
-    // For area charts, we need to ensure we still group by the dimension field
-    // even if both fields are quantitative (e.g., for cumulative frequency plots)
-    const isAreaMark = mark === 'area';
-
-    // The core logic: we only add to groupBy when:
-    // 1. The dimension field is different from the stacked field (to avoid redundant grouping)
-    // 2. AND either:
-    //    a. The dimension field is not an unbinned quantitative field, OR
-    //    b. The field channel is not an unbinned quantitative field, OR
-    //    c. It's an area mark (which needs grouping even with quantitative fields)
-    const shouldAddToGroupBy =
-      !hasSameDimensionAndStackedField && (!isUnbinnedQuant || !bothChannelsAreUnbinnedQuantitative || isAreaMark);
+    // The core logic for when to add a dimension to groupBy:
+    // 1. Never add if dimension field is the same as stacked field (avoid redundancy)
+    // 2. Add if dimension is not an unbinned quantitative field
+    const shouldAddToGroupBy = !hasSameDimensionAndStackedField && !isDimensionUnbinnedQuant;
 
     if (shouldAddToGroupBy) {
       // avoid grouping by the stacked field
