@@ -26,16 +26,8 @@
       "transform": [
         {"type": "formula", "expr": "toNumber(datum[\"x\"])", "as": "x"},
         {
-          "type": "impute",
-          "field": "y",
-          "groupby": [],
-          "key": "x",
-          "method": "value",
-          "value": 0
-        },
-        {
           "type": "stack",
-          "groupby": ["x"],
+          "groupby": [],
           "field": "y",
           "sort": {"field": [], "order": []},
           "as": ["y_start", "y_end"],

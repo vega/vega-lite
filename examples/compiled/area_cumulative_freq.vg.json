@@ -28,16 +28,8 @@
           "frame": [null, 0]
         },
         {
-          "type": "impute",
-          "field": "Cumulative Count",
-          "groupby": [],
-          "key": "IMDB Rating",
-          "method": "value",
-          "value": 0
-        },
-        {
           "type": "stack",
-          "groupby": ["IMDB Rating"],
+          "groupby": [],
           "field": "Cumulative Count",
           "sort": {"field": [], "order": []},
           "as": ["Cumulative Count_start", "Cumulative Count_end"],

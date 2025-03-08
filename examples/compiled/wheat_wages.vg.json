@@ -52,16 +52,8 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "impute",
-          "field": "wages",
-          "groupby": [],
-          "key": "year",
-          "method": "value",
-          "value": 0
-        },
-        {
           "type": "stack",
-          "groupby": ["year"],
+          "groupby": [],
           "field": "wages",
           "sort": {"field": [], "order": []},
           "as": ["wages_start", "wages_end"],
