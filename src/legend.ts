@@ -138,7 +138,7 @@ interface LegendMixins<ES extends ExprRef | SignalRef> {
   /**
    * The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used. If set to `"greedy"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).
    *
-   * __Default value:__ `"greedy"` for `log scales otherwise `true`.
+   * __Default value:__ `"greedy"` for log scales otherwise `true`.
    */
   labelOverlap?: LabelOverlap | ES; // override comment since our default differs from Vega
 
