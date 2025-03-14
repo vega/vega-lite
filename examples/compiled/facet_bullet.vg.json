@@ -205,7 +205,7 @@
         "style": "guide-label",
         "frame": "group",
         "baseline": "middle",
-        "align": "right",
+        "align": "left",
         "angle": 0,
         "offset": 10
       },
