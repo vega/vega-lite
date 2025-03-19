@@ -8407,7 +8407,7 @@
               "type": "null"
             }
           ],
-          "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (no not sort)."
+          "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (do not sort)."
         }
       },
       "type": "object"
@@ -27907,7 +27907,7 @@
               "type": "null"
             }
           ],
-          "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (no not sort)."
+          "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (do not sort)."
         }
       },
       "required": [
@@ -27932,7 +27932,7 @@
               "type": "null"
             }
           ],
-          "description": "Whether to sort the field in ascending or descending order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (no not sort)."
+          "description": "Whether to sort the field in ascending or descending order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (do not sort)."
         }
       },
       "required": [
