@@ -3,8 +3,8 @@
   "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on color.",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {

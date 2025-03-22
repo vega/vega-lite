@@ -56,7 +56,7 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_height", "value": 200},
+    {"name": "concat_0_height", "value": 300},
     {"name": "concat_1_height", "value": 60},
     {
       "name": "unit",

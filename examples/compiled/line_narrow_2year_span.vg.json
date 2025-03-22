@@ -3,8 +3,8 @@
   "description": "Google's stock price from 2006 to 2008.",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {

@@ -3,7 +3,7 @@
   "description": "A horizontal box plot showing median, min, and max body mass of penguins.",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {

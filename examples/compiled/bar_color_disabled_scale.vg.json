@@ -3,7 +3,7 @@
   "description": "A bar chart that directly encodes color names in the data.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {

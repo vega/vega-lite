@@ -3,7 +3,7 @@
   "description": "A simple pie chart with embedded data.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "data": [
     {"name": "source_0", "values": [{}]},
     {
@@ -37,7 +37,7 @@
     }
   ],
   "signals": [
-    {"name": "childWidth", "value": 200},
+    {"name": "childWidth", "value": 300},
     {
       "name": "radius",
       "value": 0,
