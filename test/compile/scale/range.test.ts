@@ -49,7 +49,7 @@ describe('compile/scale', () => {
         }
       });
 
-      it('should return [0, width] / [height, 0] for x/y-discrete scales with numberic config.view.discreteWidth/Height', () => {
+      it('should return [0, width] / [height, 0] for x/y-discrete scales with numeric config.view.discreteWidth/Height', () => {
         for (const scaleType of [ScaleType.BAND, ScaleType.POINT]) {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'point',
@@ -58,7 +58,7 @@ describe('compile/scale', () => {
               y: {field: 'y', type: 'nominal', scale: {type: scaleType}},
             },
             config: {
-              view: {discreteWidth: 200, discreteHeight: 200},
+              view: {discreteWidth: 300, discreteHeight: 300},
             },
           });
 

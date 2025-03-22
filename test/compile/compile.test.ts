@@ -192,7 +192,7 @@ describe('compile/compile', () => {
         update: `bandspace(domain('x').length, 0.1, 0.05) * x_step`,
       },
     ]);
-    expect(spec.height).toBe(200);
+    expect(spec.height).toBe(300);
   });
 
   it('should set resize to true if requested', () => {
@@ -245,8 +245,8 @@ describe('compile/compile', () => {
     expect(spec.signals).toEqual([
       {
         name: 'width',
-        init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 200',
-        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 200'}],
+        init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300',
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300'}],
       },
     ]);
     expect(spec.width).toBeUndefined();
@@ -264,8 +264,8 @@ describe('compile/compile', () => {
     expect(spec.signals).toEqual([
       {
         name: 'height',
-        init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 200',
-        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 200'}],
+        init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
+        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'}],
       },
     ]);
     expect(spec.height).toBeUndefined();

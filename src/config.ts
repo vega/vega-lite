@@ -31,7 +31,7 @@ export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBack
   /**
    * The default width when the plot has a continuous field for x or longitude, or has arc marks.
    *
-   * __Default value:__ `400`
+   * __Default value:__ `300`
    */
   continuousWidth?: number;
 
@@ -94,7 +94,7 @@ export function getViewConfigDiscreteSize<ES extends ExprRef | SignalRef>(
 export const DEFAULT_STEP = 20;
 
 export const defaultViewConfig: ViewConfig<SignalRef> = {
-  continuousWidth: 400,
+  continuousWidth: 300,
   continuousHeight: 300,
   step: DEFAULT_STEP,
 };
