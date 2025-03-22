@@ -32146,11 +32146,11 @@
           "type": "boolean"
         },
         "continuousHeight": {
-          "description": "The default height when the plot has a continuous y-field for x or latitude, or has arc marks.\n\n__Default value:__ `200`",
+          "description": "The default height when the plot has a continuous y-field for x or latitude, or has arc marks.\n\n__Default value:__ `300`",
           "type": "number"
         },
         "continuousWidth": {
-          "description": "The default width when the plot has a continuous field for x or longitude, or has arc marks.\n\n__Default value:__ `200`",
+          "description": "The default width when the plot has a continuous field for x or longitude, or has arc marks.\n\n__Default value:__ `300`",
           "type": "number"
         },
         "cornerRadius": {
