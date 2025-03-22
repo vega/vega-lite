@@ -12,7 +12,7 @@
   "facet": {
     "row": {
       "field": "title", "type": "ordinal",
-      "header": {"labelAngle": 0, "title": ""}
+      "header": {"labelAngle": 0, "title": "", "labelAlign": "left"}
     }
   },
   "spacing": 10,
