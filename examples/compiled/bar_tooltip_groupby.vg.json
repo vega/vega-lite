@@ -3,7 +3,7 @@
   "background": "white",
   "padding": 5,
   "width": 20,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {"name": "source_0", "values": [28, 55, 28, 91, 81, 55, 19, 81, 52]},
