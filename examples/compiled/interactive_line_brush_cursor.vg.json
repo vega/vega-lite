@@ -4,7 +4,7 @@
   "background": "white",
   "padding": 5,
   "width": 400,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "encode": {"update": {"cursor": {"value": "text"}}},
   "data": [
