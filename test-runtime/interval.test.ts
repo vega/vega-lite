@@ -135,8 +135,8 @@ describe('interval selections at runtime in unit views', () => {
 
     const view1 = await embed(getSpec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
     let extents = [
-      [1485969714000, 1493634384000],
-      [1496346498000, 1504364922000],
+      [1486009020000, 1493634384000],
+      [1496307192000, 1504325616000],
     ];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = toNumber((await brush(view1, 'drag', i)) as [any]);
@@ -152,8 +152,8 @@ describe('interval selections at runtime in unit views', () => {
     );
 
     extents = [
-      [1325492928000, 1325664000000],
-      [1325752128000, 1325837664000],
+      [1325491200000, 1325664000000],
+      [1325750400000, 1325836800000],
     ];
     for (let i = 0; i < hits.drag.length; i++) {
       const store = toNumber((await brush(view2, 'drag', i)) as [any]);
