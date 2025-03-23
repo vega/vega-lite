@@ -43,7 +43,7 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 200},
+    {"name": "concat_0_width", "value": 300},
     {"name": "concat_0_y_step", "value": 20},
     {
       "name": "concat_0_height",

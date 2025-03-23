@@ -3,7 +3,7 @@
   "description": "Shows the relationship between horsepower and the number of cylinders using point marks with random offset (jittering).",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {

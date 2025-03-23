@@ -363,9 +363,9 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 200},
+    {"name": "concat_0_width", "value": 300},
     {"name": "concat_0_height", "value": 700},
-    {"name": "concat_1_width", "value": 200},
+    {"name": "concat_1_width", "value": 300},
     {"name": "concat_1_height", "value": 700},
     {"name": "concat_2_width", "value": 260},
     {"name": "concat_2_height", "value": 260},

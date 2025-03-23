@@ -16,7 +16,7 @@ describe('compile/layout', () => {
 
         expect(localLogger.warns[0]).toEqual(log.message.stepDropped('width'));
 
-        expect(model.component.layoutSize.get('width')).toBe(200);
+        expect(model.component.layoutSize.get('width')).toBe(300);
       }),
     );
   });

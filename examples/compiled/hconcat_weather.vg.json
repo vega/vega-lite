@@ -3,7 +3,7 @@
   "description": "Two horizonally concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "data": [
     {
       "name": "source_0",
@@ -89,7 +89,7 @@
       "name": "concat_0_width",
       "update": "bandspace(domain('concat_0_x').length, 0.1, 0.05) * concat_0_x_step"
     },
-    {"name": "concat_1_width", "value": 200}
+    {"name": "concat_1_width", "value": 300}
   ],
   "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [

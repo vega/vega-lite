@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "data": [
     {"name": "grid_store"},
     {"name": "brush_store"},
@@ -29,7 +29,7 @@
     }
   ],
   "signals": [
-    {"name": "childHeight", "value": 200},
+    {"name": "childHeight", "value": 300},
     {
       "name": "unit",
       "value": {},

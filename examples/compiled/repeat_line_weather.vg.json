@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "data": [
     {
       "name": "source_0",
@@ -25,7 +25,7 @@
       ]
     }
   ],
-  "signals": [{"name": "childWidth", "value": 200}],
+  "signals": [{"name": "childWidth", "value": 300}],
   "layout": {"padding": 20, "bounds": "full", "align": "all"},
   "marks": [
     {

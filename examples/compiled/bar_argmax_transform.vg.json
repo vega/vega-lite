@@ -3,7 +3,7 @@
   "description": "The production budget of the movie that has the highest US Gross in each major genre.",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {

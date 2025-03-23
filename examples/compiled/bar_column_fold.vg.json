@@ -41,7 +41,7 @@
       "name": "child_width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
     },
-    {"name": "child_height", "value": 200}
+    {"name": "child_height", "value": 300}
   ],
   "layout": {
     "padding": 20,

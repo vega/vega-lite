@@ -3,7 +3,7 @@
   "description": "A vertical box plot showing median, min, and max body mass of penguins.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},

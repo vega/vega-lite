@@ -3,7 +3,7 @@
   "description": "Bar Chart with a spacing-saving y-axis",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {

@@ -202,8 +202,8 @@
   "signals": [
     {"name": "concat_0_width", "value": 500},
     {"name": "concat_0_height", "value": 300},
-    {"name": "concat_1_childWidth", "value": 200},
-    {"name": "concat_1_childHeight", "value": 200},
+    {"name": "concat_1_childWidth", "value": 300},
+    {"name": "concat_1_childHeight", "value": 300},
     {
       "name": "unit",
       "value": {},

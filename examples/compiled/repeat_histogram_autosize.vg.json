@@ -3,7 +3,7 @@
   "autosize": {"type": "fit-x", "contains": "padding"},
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "data": [
     {
       "name": "source_0",
@@ -86,7 +86,7 @@
       ]
     }
   ],
-  "signals": [{"name": "childHeight", "value": 200}],
+  "signals": [{"name": "childHeight", "value": 300}],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "all"},
   "marks": [
     {

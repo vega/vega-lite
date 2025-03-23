@@ -115,7 +115,7 @@ describe('compile/layout', () => {
       });
 
       const size = sizeSignals(model, 'width');
-      expect(size).toEqual([{name: 'width', value: 200}]);
+      expect(size).toEqual([{name: 'width', value: 300}]);
     });
 
     it('should return static view size for continuous y-scale', () => {
@@ -127,7 +127,7 @@ describe('compile/layout', () => {
       });
 
       const size = sizeSignals(model, 'height');
-      expect(size).toEqual([{name: 'height', value: 200}]);
+      expect(size).toEqual([{name: 'height', value: 300}]);
     });
 
     it('should return default discreteWidth/Height if axis is not mapped', () => {

@@ -54,7 +54,7 @@
     }
   ],
   "signals": [
-    {"name": "trellis_barley_child_width", "value": 200},
+    {"name": "trellis_barley_child_width", "value": 300},
     {"name": "trellis_barley_y_step", "value": 12},
     {
       "name": "trellis_barley_child_height",
