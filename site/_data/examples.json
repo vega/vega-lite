@@ -954,6 +954,17 @@
         "description": "Similar to the Vega version at https://vega.github.io/vega/examples/global-development/.",
         "png": true
       }
+    ],
+    "Animated": [
+      {
+        "name": "animated_easing",
+        "title": "Demonstration of Easing Functions.",
+        "png": true
+      },
+      {
+        "name": "animated_breathe",
+        "title": "Animated Breathing Circle."
+      }
     ]
   }
 }
