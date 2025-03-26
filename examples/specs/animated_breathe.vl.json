@@ -1,0 +1,197 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A breathe animation inspired by Apple's breathe app. 5 seconds in, 5 seconds out!",
+  "width": 400,
+  "height": 400,
+  "params": [
+    {
+      "name": "time",
+      "on": [{"events": {"type": "timer", "throttle": 20}, "update": "now()"}]
+    }
+  ],
+  "transform": [
+    {"joinaggregate": [{"op": "max", "field": "width", "as": "maxWidth"}]},
+    {"calculate": "100", "as": "delay"},
+    {"calculate": "seconds(time)", "as": "seconds"}
+  ],
+  "data": {
+    "values": [
+      {"id": 1, "width": 200},
+      {"id": 2, "width": 200},
+      {"id": 3, "width": 200},
+      {"id": 4, "width": 200},
+      {"id": 5, "width": 200},
+      {"id": 6, "width": 200},
+      {"id": 7, "width": 200},
+      {"id": 8, "width": 200},
+      {"id": 9, "width": 200},
+      {"id": 10, "width": 200},
+      {"id": 11, "width": 200}
+    ]
+  },
+  "layer": [
+    {
+      "transform": [{"calculate": "seconds(time)", "as": "seconds"}],
+      "mark": {
+        "type": "circle",
+        "size": 31000,
+        "color": {
+          "gradient": "radial",
+          "stops": [
+            {"offset": 0, "color": "#fff"},
+            {"offset": 1, "color": "#a3bcdd"}
+          ]
+        },
+        "opacity": 0.1
+      },
+      "encoding": {
+        "x": {"field": "maxWidth", "axis": null},
+        "y": {"field": "maxWidth", "axis": null}
+      }
+    },
+    {
+      "transform": [
+        {"calculate": "seconds(time)", "as": "seconds"},
+        {
+          "filter": "indexof([1,2,3,4,5,11,12,13,14,15,21,22,23,24,25,31,32,33,34,35,41,42,43,44,45,51,52,53,54,55], datum.seconds) !== -1"
+        },
+        {"calculate": "((milliseconds(time)/1000)*1000)", "as": "sec"},
+        {
+          "calculate": "datum.seconds== 0 ?  0: datum.seconds<=5 ?  5000-((datum.seconds*1000)-0): datum.seconds<=10 ? 5000-((datum.seconds*1000)-5000): datum.seconds<=15 ? 5000-((datum.seconds*1000)-10000): datum.seconds<=20 ? 5000-((datum.seconds*1000)-15000): datum.seconds<=25 ? 5000-((datum.seconds*1000)-20000): datum.seconds<=30 ? 5000-((datum.seconds*1000)-25000): datum.seconds<=35 ? 5000-((datum.seconds*1000)-30000): datum.seconds<=40 ? 5000-((datum.seconds*1000)-35000): datum.seconds<=45 ? 5000-((datum.seconds*1000)-40000): datum.seconds<=50 ? 5000-((datum.seconds*1000)-45000): datum.seconds<=55 ? 5000-((datum.seconds*1000)-50000): datum.seconds<=60 ? 5000-((datum.seconds*1000)-55000): 60000",
+          "as": "sizeReset"
+        },
+        {
+          "calculate": "0.4-(((5000-(datum.sizeReset-datum.sec))/5000)/2)",
+          "as": "opacityFactor"
+        }
+      ],
+      "data": {"values": [{"id": 1, "descr": "Exhale"}]},
+      "mark": {
+        "type": "text",
+        "dy": -120,
+        "fontSize": 20,
+        "color": "#286abf",
+        "opacity": {"expr": "datum.opacityFactor"}
+      },
+      "encoding": {"text": {"field": "descr"}}
+    },
+    {
+      "transform": [
+        {"calculate": "seconds(time)", "as": "seconds"},
+        {
+          "filter": "indexof([1,2,3,4,5,11,12,13,14,15,21,22,23,24,25,31,32,33,34,35,41,42,43,44,45,51,52,53,54,55], datum.seconds) === -1"
+        },
+        {"calculate": "((milliseconds(time)/1000)*1000)", "as": "sec"},
+        {
+          "calculate": "datum.seconds== 0 ?  0: datum.seconds<=5 ?  5000-((datum.seconds*1000)-0): datum.seconds<=10 ? 5000-((datum.seconds*1000)-5000): datum.seconds<=15 ? 5000-((datum.seconds*1000)-10000): datum.seconds<=20 ? 5000-((datum.seconds*1000)-15000): datum.seconds<=25 ? 5000-((datum.seconds*1000)-20000): datum.seconds<=30 ? 5000-((datum.seconds*1000)-25000): datum.seconds<=35 ? 5000-((datum.seconds*1000)-30000): datum.seconds<=40 ? 5000-((datum.seconds*1000)-35000): datum.seconds<=45 ? 5000-((datum.seconds*1000)-40000): datum.seconds<=50 ? 5000-((datum.seconds*1000)-45000): datum.seconds<=55 ? 5000-((datum.seconds*1000)-50000): datum.seconds<=60 ? 5000-((datum.seconds*1000)-55000): 60000",
+          "as": "sizeReset"
+        },
+        {
+          "calculate": "0.4-(((5000-(datum.sizeReset-datum.sec))/5000)/2)",
+          "as": "opacityFactor"
+        }
+      ],
+      "data": {"values": [{"id": 1, "descr": "Inhale"}]},
+      "mark": {
+        "type": "text",
+        "dy": -120,
+        "fontSize": 20,
+        "color": "#286abf",
+        "opacity": {"expr": "datum.opacityFactor"}
+      },
+      "encoding": {"text": {"field": "descr"}}
+    },
+    {
+      "transform": [
+        {"calculate": "seconds(time)", "as": "seconds"},
+        {
+          "filter": "indexof([1,2,3,4,5,11,12,13,14,15,21,22,23,24,25,31,32,33,34,35,41,42,43,44,45,51,52,53,54,55], datum.seconds) !== -1"
+        },
+        {"calculate": "((milliseconds(time)/1000)*1000)", "as": "sec"},
+        {
+          "calculate": "datum.seconds== 0 ?  0: datum.seconds<=5 ?  5000-((datum.seconds*1000)-0): datum.seconds<=10 ? 5000-((datum.seconds*1000)-5000): datum.seconds<=15 ? 5000-((datum.seconds*1000)-10000): datum.seconds<=20 ? 5000-((datum.seconds*1000)-15000): datum.seconds<=25 ? 5000-((datum.seconds*1000)-20000): datum.seconds<=30 ? 5000-((datum.seconds*1000)-25000): datum.seconds<=35 ? 5000-((datum.seconds*1000)-30000): datum.seconds<=40 ? 5000-((datum.seconds*1000)-35000): datum.seconds<=45 ? 5000-((datum.seconds*1000)-40000): datum.seconds<=50 ? 5000-((datum.seconds*1000)-45000): datum.seconds<=55 ? 5000-((datum.seconds*1000)-50000): datum.seconds<=60 ? 5000-((datum.seconds*1000)-55000): 60000",
+          "as": "sizeReset"
+        },
+        {
+          "calculate": "5000-(4000-(datum.sizeReset-datum.sec))",
+          "as": "sizeFactor"
+        },
+        {"calculate": "0.3", "as": "Opacity"},
+        {"calculate": "(datum.sizeFactor)/100", "as": "movement"},
+        {"calculate": "datum.id*(20)", "as": "angle"},
+        {
+          "calculate": "(200 - cos(datum.angle + (PI/2)) * (datum.movement))",
+          "as": "x_pos"
+        },
+        {
+          "calculate": "(200 - cos(datum.angle) * (datum.movement))",
+          "as": "y_pos"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": {"expr": "datum.sizeFactor"},
+        "opacity": {"expr": "datum.Opacity"}
+      },
+      "encoding": {
+        "x": {
+          "field": "x_pos",
+          "type": "quantitative",
+          "scale": {"domain": [400, 0]},
+          "axis": null
+        },
+        "y": {
+          "field": "y_pos",
+          "type": "quantitative",
+          "scale": {"domain": [400, 0]},
+          "axis": null
+        }
+      }
+    },
+    {
+      "transform": [
+        {"calculate": "seconds(time)", "as": "seconds"},
+        {
+          "filter": "indexof([1,2,3,4,5,11,12,13,14,15,21,22,23,24,25,31,32,33,34,35,41,42,43,44,45,51,52,53,54,55], datum.seconds) === -1"
+        },
+        {"calculate": "((milliseconds(time)/1000)*1000)", "as": "sec"},
+        {
+          "calculate": "datum.seconds== 0 ?  0: datum.seconds<=5 ?  5000-((datum.seconds*1000)-0): datum.seconds<=10 ? 5000-((datum.seconds*1000)-5000): datum.seconds<=15 ? 5000-((datum.seconds*1000)-10000): datum.seconds<=20 ? 5000-((datum.seconds*1000)-15000): datum.seconds<=25 ? 5000-((datum.seconds*1000)-20000): datum.seconds<=30 ? 5000-((datum.seconds*1000)-25000): datum.seconds<=35 ? 5000-((datum.seconds*1000)-30000): datum.seconds<=40 ? 5000-((datum.seconds*1000)-35000): datum.seconds<=45 ? 5000-((datum.seconds*1000)-40000): datum.seconds<=50 ? 5000-((datum.seconds*1000)-45000): datum.seconds<=55 ? 5000-((datum.seconds*1000)-50000): datum.seconds<=60 ? 5000-((datum.seconds*1000)-55000): 60000",
+          "as": "sizeReset"
+        },
+        {"calculate": "(4000-(datum.sizeReset-datum.sec))", "as": "sizeFactor"},
+        {"calculate": "0.3", "as": "Opacity"},
+        {"calculate": "(datum.sizeFactor)/100", "as": "movement"},
+        {"calculate": "datum.id*(20)", "as": "angle"},
+        {
+          "calculate": "(200 - cos(datum.angle + (PI/2)) * (datum.movement))",
+          "as": "x_pos"
+        },
+        {
+          "calculate": "(200 - cos(datum.angle) * (datum.movement))",
+          "as": "y_pos"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": {"expr": "datum.sizeFactor"},
+        "opacity": {"expr": "datum.Opacity"}
+      },
+      "encoding": {
+        "x": {
+          "field": "x_pos",
+          "type": "quantitative",
+          "scale": {"domain": [400, 0]},
+          "axis": null
+        },
+        "y": {
+          "field": "y_pos",
+          "type": "quantitative",
+          "scale": {"domain": [400, 0]},
+          "axis": null
+        }
+      }
+    }
+  ],
+  "config": {"view": {"stroke": "transparent"}, "background": "transparent"}
+}
