@@ -1,0 +1,641 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Here you can compare different easing functions and see their respective formulas. This isn't a comprehensive list of easing functions, but these are definitely some popular ones. Special thanks to Pavithra Kodmad for writing this excellent article on understanding easing! https://css-tricks.com/ease-y-breezy-a-primer-on-easing-functions/ A few months prior to making this, I would not have thought that this would be feasible in Vega.",
+  "padding": {"top": 0, "right": 20, "bottom": 20, "left": 0},
+  "width": 1000,
+  "height": 300,
+  "title": {
+    "text": {"signal": "['Easing Formulas']"},
+    "subtitle": {
+      "signal": "['Using Timers in Vega','‎', 't = '+format(t, '0.3f'), 'd = ' + s+'s']"
+    },
+    "subtitleFontStyle": "italic",
+    "subtitleFontSize": 16,
+    "subtitleFontWeight": 200,
+    "subtitlePadding": 5,
+    "fontSize": 20,
+    "anchor": "start",
+    "offset": 20
+  },
+  "signals": [
+    {
+      "name": "duration",
+      "description": "time in seconds to complete one to go from t[0] to t[1]",
+      "value": 3,
+      "bind": {
+        "input": "range",
+        "min": 1,
+        "max": 25,
+        "step": 1,
+        "name": "Duration (s)"
+      }
+    },
+    {
+      "name": "colorDomain",
+      "description": "ease names",
+      "init": "['Linear','EaseInQuad','EaseOutQuad','EaseInOutQuad','EaseInCubic','EaseOutCubic','EaseInOutCubic']"
+    },
+    {
+      "name": "colorRange",
+      "description": "ease colors",
+      "init": "['#003f5c','#ffa600','#374c80','#ff764a','#7a5195','#ef5675','#bc5090']"
+    },
+    {
+      "name": "oscillationChartWidth",
+      "description": "width of the oscillation chart area",
+      "init": "width*0.45"
+    },
+    {
+      "name": "chartsInnerPadding",
+      "description": "padding between charts",
+      "init": "0.1*width"
+    },
+    {
+      "name": "lineChartWidth",
+      "description": "width of the line chart area",
+      "update": "width-oscillationChartWidth-chartsInnerPadding"
+    },
+    {
+      "name": "toggleOscillationSecondsVisibility",
+      "description": "show seconds in oscillation chart",
+      "value": true,
+      "bind": {"input": "checkbox", "name": "Seconds"}
+    },
+    {
+      "name": "toggleFormulasVisibility",
+      "description": "show formulas in the oscillation chart",
+      "value": true,
+      "bind": {"input": "checkbox", "name": "Formulas"}
+    },
+    {
+      "name": "toggleAllEasingsVisibility",
+      "description": "show/hide all easings",
+      "value": false,
+      "bind": {"input": "checkbox", "name": "Select/Clear All"}
+    },
+    {
+      "name": "showLinear",
+      "description": "show linear easing",
+      "value": true,
+      "bind": {"input": "checkbox", "name": "Linear"},
+      "on": [
+        {
+          "events": {"signal": "toggleAllEasingsVisibility"},
+          "update": "toggleAllEasingsVisibility"
+        }
+      ]
+    },
+    {
+      "name": "showEaseInQuad",
+      "description": "show easeInQuad easing",
+      "value": false,
+      "bind": {"input": "checkbox", "name": "EaseInQuad"},
+      "on": [
+        {
+          "events": {"signal": "toggleAllEasingsVisibility"},
+          "update": "toggleAllEasingsVisibility"
+        }
+      ]
+    },
+    {
+      "name": "showEaseOutQuad",
+      "description": "show eaeOutQuad easing",
+      "value": false,
+      "bind": {"input": "checkbox", "name": "EaseOutQuad"},
+      "on": [
+        {
+          "events": {"signal": "toggleAllEasingsVisibility"},
+          "update": "toggleAllEasingsVisibility"
+        }
+      ]
+    },
+    {
+      "name": "showEaseInOutQuad",
+      "description": "show easeInOutQuad easing",
+      "value": true,
+      "bind": {"input": "checkbox", "name": "EaseInOutQuad"},
+      "on": [
+        {
+          "events": {"signal": "toggleAllEasingsVisibility"},
+          "update": "toggleAllEasingsVisibility"
+        }
+      ]
+    },
+    {
+      "name": "showEaseInCubic",
+      "description": "show easeInCubic easing",
+      "value": false,
+      "bind": {"input": "checkbox", "name": "EaseInCubic"},
+      "on": [
+        {
+          "events": {"signal": "toggleAllEasingsVisibility"},
+          "update": "toggleAllEasingsVisibility"
+        }
+      ]
+    },
+    {
+      "name": "showEaseOutCubic",
+      "description": "show easeOutCubic easing",
+      "value": false,
+      "bind": {"input": "checkbox", "name": "EaseOutCubic"},
+      "on": [
+        {
+          "events": {"signal": "toggleAllEasingsVisibility"},
+          "update": "toggleAllEasingsVisibility"
+        }
+      ]
+    },
+    {
+      "name": "showEaseInOutCubic",
+      "description": "show easeInOutCubic easing",
+      "value": false,
+      "bind": {"input": "checkbox", "name": "EaseInOutCubic"},
+      "on": [
+        {
+          "events": {"signal": "toggleAllEasingsVisibility"},
+          "update": "toggleAllEasingsVisibility"
+        }
+      ]
+    },
+    {
+      "name": "xOscillationDomain",
+      "description": "input range from 0 to duration",
+      "init": "[0, duration]",
+      "on": [{"events": {"signal": "duration"}, "update": "[0, duration]"}]
+    },
+    {
+      "name": "timer",
+      "description": "timer that updates every milisecond",
+      "init": "now()",
+      "on": [{"events": {"type": "timer"}, "update": "now()"}]
+    },
+    {
+      "name": "start",
+      "description": "time in miliseconds at t[0]",
+      "init": "timer",
+      "on": [
+        {
+          "events": {"signal": "timer"},
+          "update": "timer > start+duration*1000 ? timer+duration*1000 : start"
+        },
+        {"events": {"signal": "duration"}, "update": "timer+duration*1000"}
+      ]
+    },
+    {
+      "name": "end",
+      "description": "time in miliseconds at t[1]",
+      "init": "start+duration*1000",
+      "on": [{"events": {"signal": "start"}, "update": "start+duration*1000"}]
+    },
+    {
+      "name": "direction",
+      "description": "direction in the oscillation chart. When t is increasing 1 else -1",
+      "update": "(xOscillationDomain[1]-xOscillationDomain[0])*(timer-start)/(end-start) >= 0 ? 1 : -1"
+    },
+    {
+      "name": "linearOscillationX",
+      "init": "xOscillationDomain[0]",
+      "on": [
+        {
+          "events": {"signal": "timer"},
+          "update": "abs(lerp(xOscillationDomain, (timer-start)/(end-start)))"
+        },
+        {"events": {"signal": "duration"}, "update": "xOscillationDomain[0]"}
+      ]
+    },
+    {
+      "name": "t",
+      "description": "current linear t ",
+      "update": "direction === 1 ? linearOscillationX/xOscillationDomain[1] : 1-linearOscillationX/xOscillationDomain[1]"
+    },
+    {
+      "name": "s",
+      "description": "current second",
+      "update": "direction === 1 ? round(linearOscillationX+0.5) : duration - round(linearOscillationX-0.5)"
+    }
+  ],
+  "marks": [
+    {
+      "name": "groupOscillationChart",
+      "description": "group of the oscillation chart marks",
+      "type": "group",
+      "marks": [
+        {
+          "type": "rect",
+          "description": "horizontal line (rect) that the circles travel on in the oscillation chart",
+          "from": {"data": "ease"},
+          "encode": {
+            "enter": {
+              "width": {"signal": "range('xOscillate')[1]-range('xOscillate')[0]"},
+              "height": {"value": 0.5},
+              "x": {"signal": "range('xOscillate')[0]"},
+              "stroke": {"value": "gainsboro"}
+            },
+            "update": {
+              "y": {
+                "scale": "yOscillate",
+                "field": "name",
+                "offset": {"signal": "bandwidth('yOscillate')/2"}
+              }
+            }
+          }
+        },
+        {
+          "type": "symbol",
+          "description": "circle marker next to ease labels in the oscillation chart",
+          "from": {"data": "ease"},
+          "encode": {
+            "enter": {
+              "x": {"value": -40},
+              "shape": {"value": "circle"},
+              "size": {"signal": "100"},
+              "fill": {"scale": "color", "field": "name"}
+            },
+            "update": {
+              "y": {
+                "scale": "yOscillate",
+                "field": "name",
+                "offset": {"signal": "bandwidth('yOscillate')/2"}
+              }
+            }
+          }
+        },
+        {
+          "type": "symbol",
+          "description": "oscillating circle marks in the oscillation chart",
+          "from": {"data": "ease"},
+          "encode": {
+            "enter": {
+              "shape": {"value": "circle"},
+              "size": {"signal": "700"},
+              "fill": {"scale": "color", "field": "name"},
+              "strokeWidth": {"value": 2}
+            },
+            "update": {
+              "x": {"scale": "xOscillate", "field": "value"},
+              "y": {
+                "scale": "yOscillate",
+                "field": "name",
+                "offset": {"signal": "bandwidth('yOscillate')/2"}
+              }
+            }
+          }
+        },
+        {
+          "type": "text",
+          "description": "oscillating circle text marks in the oscillation chart",
+          "from": {"data": "ease"},
+          "encode": {
+            "enter": {
+              "align": {"value": "center"},
+              "fill": {
+                "signal": "luminance(scale('color', datum['name'])) >= 0.5 ? '#000' : '#fff'"
+              },
+              "baseline": {"value": "middle"}
+            },
+            "update": {
+              "x": {"scale": "xOscillate", "field": "value"},
+              "y": {
+                "scale": "yOscillate",
+                "field": "name",
+                "offset": {"signal": "bandwidth('yOscillate')/2"}
+              },
+              "text": {"signal": "datum['seconds'] + 's'"},
+              "opacity": {
+                "signal": "toggleOscillationSecondsVisibility ? 1 : 0"
+              }
+            }
+          }
+        },
+        {
+          "type": "rect",
+          "description": "invisible rect for  tooltips in the oscillation chart",
+          "from": {"data": "ease"},
+          "encode": {
+            "enter": {
+              "x": {"value": -40},
+              "align": {"value": "center"},
+              "width": {"signal": "range('xOscillate')[1]+40"},
+              "height": {"signal": "bandwidth('yOscillate')"},
+              "opacity": {"value": 0},
+              "baseline": {"value": "middle"}
+            },
+            "update": {
+              "y": {"scale": "yOscillate", "field": "name"},
+              "tooltip": {
+                "signal": "{title: datum['name'], 't => ': replace(datum['formula'], 't => ', '')}"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "groupLineChart",
+      "description": "group that holds the marks for the line chart",
+      "type": "group",
+      "from": {
+        "facet": {"name": "series", "data": "easeSteps", "groupby": "name"}
+      },
+      "marks": [
+        {
+          "type": "symbol",
+          "description": "circle marks that travel up the curves in the line chart",
+          "from": {"data": "ease"},
+          "encode": {
+            "enter": {
+              "shape": {"value": "circle"},
+              "size": {"signal": "50"},
+              "fill": {"scale": "color", "field": "name"},
+              "strokeWidth": {"value": 2}
+            },
+            "update": {
+              "x": {"scale": "xLine", "field": "t"},
+              "y": {"scale": "yLine", "field": "e"}
+            }
+          }
+        },
+        {
+          "type": "line",
+          "description": "line marks in the line chart",
+          "from": {"data": "series"},
+          "encode": {
+            "enter": {
+              "x": {"scale": "xLine", "field": "t"},
+              "y": {"scale": "yLine", "field": "e"},
+              "stroke": {"scale": "color", "field": "name"},
+              "strokeWidth": {"value": 2},
+              "tooltip": {
+                "signal": "{title: datum['name'], 't => ': replace(datum['formula'], 't => ', '')}"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "xOscillate",
+      "type": "linear",
+      "domain": {"signal": "xOscillationDomain"},
+      "range": {"signal": "[95,oscillationChartWidth]"}
+    },
+    {
+      "name": "yOscillate",
+      "type": "band",
+      "domain": {"field": "name", "data": "ease", "sort": {"field": "sort"}},
+      "range": {"signal": "[0,height]"}
+    },
+    {
+      "name": "y2Oscillate",
+      "type": "band",
+      "domain": {"field": "y2Label", "data": "ease", "sort": {"field": "sort"}},
+      "range": {"signal": "[0,height]"}
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"signal": "colorDomain"},
+      "range": {"signal": "colorRange"}
+    },
+    {
+      "name": "xLine",
+      "type": "linear",
+      "domain": {"data": "easeSteps", "field": "t"},
+      "range": {"signal": "[oscillationChartWidth+chartsInnerPadding, width]"}
+    },
+    {
+      "name": "yLine",
+      "type": "linear",
+      "reverse": true,
+      "domain": {"data": "easeSteps", "field": "e"},
+      "range": {"signal": "[5,height-5]"}
+    }
+  ],
+  "axes": [
+    {
+      "scale": "xOscillate",
+      "orient": "top",
+      "domain": false,
+      "ticks": false,
+      "labels": false,
+      "title": {"signal": "length(data('ease')) > 0 ? 'Oscillating Easing' : '' "},
+      "titleFontSize": 13,
+      "titleAnchor": "start",
+      "titleX": -40
+    },
+    {
+      "scale": "yOscillate",
+      "orient": "left",
+      "domain": false,
+      "ticks": false,
+      "labelPadding": 30,
+      "labelFontSize": 14,
+      "labelAlign": "left"
+    },
+    {
+      "scale": "y2Oscillate",
+      "orient": "left",
+      "domain": false,
+      "ticks": false,
+      "labelAlign": "left",
+      "labelPadding": 30,
+      "labelFontSize": 12,
+      "labelFontWeight": 100,
+      "labelFont": "consolas",
+      "labelLimit": {"signal": "oscillationChartWidth+40"},
+      "labelOffset": 23,
+      "labelOpacity": {"signal": "toggleFormulasVisibility ? 0.5 : 0"}
+    },
+    {
+      "scale": "xLine",
+      "orient": "top",
+      "domain": false,
+      "ticks": false,
+      "labels": false,
+      "title": {"signal": "length(data('ease')) > 0 ? 'Ease Over t' : '' "},
+      "titleFontSize": 13,
+      "titleAnchor": "start"
+    },
+    {
+      "scale": "xLine",
+      "orient": "bottom",
+      "domainOpacity": {"signal": "length(data('ease')) > 0 ? 0.5 : 0"},
+      "ticks": false,
+      "labelOpacity": 0.5,
+      "title": {"signal": "length(data('ease')) > 0 ? 't (original)' : ''"}
+    },
+    {
+      "scale": "yLine",
+      "orient": "left",
+      "offset": {"signal": "-range('xLine')[0]"},
+      "domainOpacity": {"signal": "length(data('ease')) > 0 ? 0.5 : 0"},
+      "ticks": false,
+      "labelOpacity": 0.5,
+      "title": {"signal": "length(data('ease')) > 0 ? 't (eased)' : ''"},
+      "zindex": -99
+    }
+  ],
+  "data": [
+    {
+      "name": "ease",
+      "values": [
+        {"id": 1, "name": "Linear", "formula": "t => t"},
+        {"id": 2, "name": "EaseInQuad", "formula": "t => t * t"},
+        {
+          "id": 3,
+          "name": "EaseOutQuad",
+          "formula": "t => t * (2 - t)"
+        },
+        {
+          "id": 4,
+          "name": "EaseInOutQuad",
+          "formula": "t => t < 0.5 ? 2 * t * t : - 1 + (4 - 2 * t ) * t"
+        },
+        {
+          "id": 5,
+          "name": "EaseInCubic",
+          "formula": "t => t * t * t"
+        },
+        {
+          "id": 6,
+          "name": "EaseOutCubic",
+          "formula": "t => 1 - pow(1 - t, 3)"
+        },
+        {
+          "id": 7,
+          "name": "EaseInOutCubic",
+          "formula": "t => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1"
+        }
+      ],
+      "transform": [
+        {"type": "formula", "expr": "null", "as": "value"},
+        {"type": "collect", "sort": {"field": "id"}},
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'Linear' ? t : datum['value']",
+          "as": "value"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseInQuad' ? (t*t) : datum['value']",
+          "as": "value"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseOutQuad' ? t*(2-t) : datum['value']",
+          "as": "value"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseInOutQuad' ? t < 0.5 ? 2 * t * t : -1 + (4 -2 * t) * t : datum['value']",
+          "as": "value"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseInCubic' ? t * t * t : datum['value']",
+          "as": "value"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseOutCubic' ? 1 - pow(1 - t, 3) : datum['value']",
+          "as": "value"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseInOutCubic' ? t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1: datum['value']",
+          "as": "value"
+        },
+        {
+          "type": "filter",
+          "expr": "datum['name'] === 'Linear' && !showLinear ? false : true"
+        },
+        {
+          "type": "filter",
+          "expr": "datum['name'] === 'EaseInQuad' && !showEaseInQuad ? false : true"
+        },
+        {
+          "type": "filter",
+          "expr": "datum['name'] === 'EaseOutQuad' && !showEaseOutQuad ? false : true"
+        },
+        {
+          "type": "filter",
+          "expr": "datum['name'] === 'EaseInOutQuad' && !showEaseInOutQuad ? false : true"
+        },
+        {
+          "type": "filter",
+          "expr": "datum['name'] === 'EaseInCubic' && !showEaseInCubic ? false : true"
+        },
+        {
+          "type": "filter",
+          "expr": "datum['name'] === 'EaseOutCubic' && !showEaseOutCubic ? false : true"
+        },
+        {
+          "type": "filter",
+          "expr": "datum['name'] === 'EaseInOutCubic' && !showEaseInOutCubic ? false : true"
+        },
+        {"type": "formula", "expr": "datum['value']", "as": "e"},
+        {
+          "type": "formula",
+          "expr": "xOscillationDomain[1]*(direction > 0 ? datum['value'] : 1-datum['value'])",
+          "as": "value"
+        },
+        {"type": "formula", "expr": "t", "as": "t"},
+        {"type": "formula", "expr": "s", "as": "seconds"},
+        {"type": "formula", "expr": "datum['formula']", "as": "y2Label"},
+        {"type": "window", "ops": ["row_number"], "as": ["sort"]}
+      ]
+    },
+    {
+      "name": "easeSteps",
+      "source": "ease",
+      "transform": [
+        {"type": "project", "fields": ["id", "name", "formula"]},
+        {"type": "formula", "expr": "null", "as": "value"},
+        {"type": "formula", "expr": "sequence(0, 1, 0.01)", "as": "t"},
+        {"type": "flatten", "fields": ["t"], "as": ["t"]},
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'Linear' ? datum['t'] : datum['e']",
+          "as": "e"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseInQuad' ? (datum['t']*datum['t']) : datum['e']",
+          "as": "e"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseOutQuad' ? datum['t']*(2-datum['t']) : datum['e']",
+          "as": "e"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseInOutQuad' ? datum['t'] < 0.5 ? 2 * datum['t'] * datum['t'] : -1 + (4 -2 * datum['t']) * datum['t'] : datum['e']",
+          "as": "e"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseInCubic' ? datum['t'] * datum['t'] * datum['t'] : datum['e']",
+          "as": "e"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseOutCubic' ? 1 - pow(1 - datum['t'], 3) : datum['e']",
+          "as": "e"
+        },
+        {
+          "type": "formula",
+          "expr": "datum['name'] === 'EaseInOutCubic' ? datum['t'] < 0.5 ? 4 * datum['t'] * datum['t'] * datum['t'] : (datum['t'] - 1) * (2 * datum['t'] - 2) * (2 * datum['t'] - 2) + 1: datum['e']",
+          "as": "e"
+        }
+      ]
+    },
+    {
+      "name": "easeStepsFiltered",
+      "source": "ease",
+      "transform": [{"type": "filter", "expr": "datum['t']===t"}]
+    }
+  ]
+}
