@@ -13,8 +13,9 @@ import {normalize} from '../build/index.js';
 import stableStringify from 'fast-json-stable-stringify';
 import compactStringify from 'json-stringify-pretty-compact';
 import yargs from 'yargs';
+import {argv} from 'process';
 
-const args = yargs.demand(0).argv;
+const args = yargs(argv.slice(2)).demand(0).argv;
 
 const DIR = import.meta.dirname + '/..';
 const SPECS = '/examples/specs';
