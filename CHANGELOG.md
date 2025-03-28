@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.0.1](https://github.com/vega/vega-lite/compare/v6.0.0...v6.0.1) (2025-03-28)
+
+
+### Bug Fixes
+
+* correct peer dependency ([984ea50](https://github.com/vega/vega-lite/commit/984ea50c18912b3b72024ef914c222a878c83c92))
+
 # [6.0.0](https://github.com/vega/vega-lite/compare/v5.23.0...v6.0.0) (2025-03-28)
 
 
