@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.0.2](https://github.com/vega/vega-lite/compare/v6.0.1...v6.0.2) (2025-03-28)
+
+
+### Bug Fixes
+
+* update version in example specs ([#9573](https://github.com/vega/vega-lite/issues/9573)) ([bac7a2f](https://github.com/vega/vega-lite/commit/bac7a2f36a0597f4b714342bce54d67e349640f0))
+
 ## [6.0.1](https://github.com/vega/vega-lite/compare/v6.0.0...v6.0.1) (2025-03-28)
 
 
