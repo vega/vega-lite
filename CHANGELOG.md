@@ -1,4 +1,15 @@
+# Changelog
 
+# [6.0.0](https://github.com/vega/vega-lite/compare/v5.23.0...v6.0.0) (2025-03-28)
+
+
+### Bug Fixes
+
+* correct build normalized example script ([#9571](https://github.com/vega/vega-lite/issues/9571)) ([4cbf2fd](https://github.com/vega/vega-lite/commit/4cbf2fdb49c05d70d158d51d3e7608d097b53072))
+* correct y axis title in boxplot when mark.extent isnt set ([#9483](https://github.com/vega/vega-lite/issues/9483)) ([f3dc811](https://github.com/vega/vega-lite/commit/f3dc81124e23dbb6e56bf9ebbe15fa75bb25857b))
+* correctly support timeFormatSpecifier in Vega-Lite ([#9455](https://github.com/vega/vega-lite/issues/9455)) ([9325b67](https://github.com/vega/vega-lite/commit/9325b676b57ba84780afbf509acab403f8318da1))
+* prefer user-defined tickMinStep to defaultTickMinStep ([#9461](https://github.com/vega/vega-lite/issues/9461)) ([31a76e7](https://github.com/vega/vega-lite/commit/31a76e72a054a3e21df9bc6a79215c725bff0ba9))
+* remove extra backtick in LegendConfig.labelOverlap documentation ([#9560](https://github.com/vega/vega-lite/issues/9560)) ([44fe4ac](https://github.com/vega/vega-lite/commit/44fe4ac1f2fa2544b15213c63a76f1427aec622a))
 
 # [5.23.0](https://github.com/vega/vega-lite/compare/v5.21.0...v5.23.0) (2024-12-10)
 
