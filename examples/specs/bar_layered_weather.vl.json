@@ -13,7 +13,7 @@
     "frame": "group"
   },
   "data": {
-    "url": "data/weather.json"
+    "url": "data/weekly-weather.json"
   },
   "width": 250,
   "height": 200,
