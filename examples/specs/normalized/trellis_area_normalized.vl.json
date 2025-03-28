@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Stock prices of four large companies as a small multiples of area charts.",
   "data": {"url": "data/stocks.csv"},
   "transform": [{"filter": "datum.symbol !== 'GOOG'"}],

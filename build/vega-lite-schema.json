@@ -29841,7 +29841,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v5.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v6.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -30000,7 +30000,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v5.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v6.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -30130,7 +30130,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v5.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v6.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -30260,7 +30260,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v5.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v6.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -30425,7 +30425,7 @@
           "additionalProperties": false,
           "properties": {
             "$schema": {
-              "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v5.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+              "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v6.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
               "format": "uri",
               "type": "string"
             },
@@ -30596,7 +30596,7 @@
           "additionalProperties": false,
           "properties": {
             "$schema": {
-              "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v5.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+              "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v6.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
               "format": "uri",
               "type": "string"
             },
@@ -30766,7 +30766,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v5.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v6.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },
@@ -31051,7 +31051,7 @@
       "additionalProperties": false,
       "properties": {
         "$schema": {
-          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v5.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
+          "description": "URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v6.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.",
           "format": "uri",
           "type": "string"
         },

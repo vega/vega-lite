@@ -15,7 +15,7 @@ Below is a short code snippet that uses the `compile` function and the various t
 import {Config, TopLevelSpec, compile} from 'vega-lite';
 
 const vegaLiteSpec: TopLevelSpec = {
-  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
   data: {
     values: [
       {a: 'A', b: 28},

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "the population per state, engineers per state, and hurricanes per state",
   "repeat": {"row": ["population", "engineers", "hurricanes"]},
   "resolve": {

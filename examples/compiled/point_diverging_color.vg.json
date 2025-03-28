@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A bubbleplot showing horsepower on x, miles per gallons on y, and weight with a diverging color scale.",
   "background": "white",
   "padding": 5,

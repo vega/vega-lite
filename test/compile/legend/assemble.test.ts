@@ -79,7 +79,7 @@ describe('legend/assemble', () => {
 
   it('merges legend of the same field with the default type.', () => {
     const model = parseUnitModelWithScale({
-      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
       data: {url: 'data/cars.json'},
       mark: 'point',
       encoding: {

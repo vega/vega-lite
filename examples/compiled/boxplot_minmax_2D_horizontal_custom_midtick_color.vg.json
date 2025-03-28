@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A horizontal box plot showing median, min, and max body mass of penguins.",
   "background": "white",
   "padding": 5,
