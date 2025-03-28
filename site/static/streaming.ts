@@ -3,7 +3,7 @@ import {TopLevelSpec} from '../../src/index.js';
 
 export function runStreamingExample(eleId: string) {
   const vlSpec: TopLevelSpec = {
-    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
     data: {name: 'table'},
     autosize: {
       resize: true,

@@ -15,7 +15,7 @@ describe('normalize()', () => {
       'should ignore columns from repeat with row/column',
       log.wrap((localLogger: LocalLogger) => {
         const spec: TopLevelSpec = {
-          $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+          $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
           repeat: {column: ['Horsepower', 'Miles_per_Gallon', 'Acceleration', 'Displacement']},
           columns: 2,
           spec: {

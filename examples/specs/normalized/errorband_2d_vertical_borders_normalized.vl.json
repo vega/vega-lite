@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {"url": "data/cars.json"},
   "transform": [
     {"timeUnit": {"unit": "year"}, "field": "Year", "as": "year_Year"},

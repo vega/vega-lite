@@ -80,7 +80,7 @@ Here is the final HTML file in the easiest way to embed Vega-Lite (assuming that
 
     <script type="text/javascript">
       var yourVlSpec = {
-        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
         description: 'A simple bar chart with embedded data.',
         data: {
           values: [

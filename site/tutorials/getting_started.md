@@ -172,7 +172,7 @@ You can use [Vega-Embed](https://github.com/vega/vega-embed) to embed your Vega-
     <script>
       // Assign the specification to a local variable vlSpec.
       var vlSpec = {
-        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
         data: {
           values: [
             {a: 'C', b: 2},

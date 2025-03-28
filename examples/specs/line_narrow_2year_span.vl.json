@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Google's stock price from 2006 to 2008.",
   "data": {"url": "data/stocks.csv"},
   "transform": [

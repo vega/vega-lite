@@ -6,7 +6,7 @@ import {describe, expect, it} from 'vitest';
 import gapminderData from '../examples/specs/data/gapminder.json?url';
 
 const gapminderSpec: TopLevelSpec = {
-  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
   data: {
     url: gapminderData,
   },

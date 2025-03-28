@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "A dashboard with cross-highlighting.",
   "data": {"url": "data/movies.json"},
   "vconcat": [
