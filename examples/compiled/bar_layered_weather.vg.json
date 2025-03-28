@@ -13,7 +13,7 @@
   "data": [
     {
       "name": "source_0",
-      "url": "data/weather.json",
+      "url": "data/weekly-weather.json",
       "format": {"type": "json", "parse": {}},
       "transform": [
         {

@@ -1,6 +1,6 @@
 // modified from vega-cli
 
-import vega from 'vega';
+import * as vega from 'vega';
 import path from 'path';
 import args from './args.js';
 import read from './read.js';

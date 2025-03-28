@@ -6,7 +6,7 @@
     "text": ["Weekly Weather", "Observations and Predictions"],
     "frame": "group"
   },
-  "data": {"url": "data/weather.json"},
+  "data": {"url": "data/weekly-weather.json"},
   "width": 250,
   "height": 200,
   "layer": [
