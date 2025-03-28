@@ -1,4 +1,3 @@
-// @ts-expect-error - vega does not yet export resetSVGDefIds
 import {parse, View, resetSVGDefIds} from 'vega';
 import {compile} from '../src/index.js';
 import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} from '../src/selection.js';
