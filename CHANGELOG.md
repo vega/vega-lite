@@ -1,5 +1,12 @@
 # Changelog
 
+# [6.1.0](https://github.com/vega/vega-lite/compare/v6.0.2...v6.1.0) (2025-03-28)
+
+
+### Features
+
+* export the schema ([#9574](https://github.com/vega/vega-lite/issues/9574)) ([5220f07](https://github.com/vega/vega-lite/commit/5220f07e03f8b976d5351923828e451966344872))
+
 ## [6.0.2](https://github.com/vega/vega-lite/compare/v6.0.1...v6.0.2) (2025-03-28)
 
 
