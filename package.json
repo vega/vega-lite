@@ -25,8 +25,11 @@
   ],
   "type": "module",
   "exports": {
-    "types": "./build/index.d.ts",
-    "default": "./build/index.js"
+    ".": {
+      "types": "./build/index.d.ts",
+      "default": "./build/index.js"
+    },
+    "./vega-lite-schema.json": "./build/vega-lite-schema.json"
   },
   "unpkg": "build/vega-lite.min.js",
   "jsdelivr": "build/vega-lite.min.js",
