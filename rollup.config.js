@@ -34,7 +34,7 @@ const outputs = [
   {
     input: 'src/index.ts',
     output: {
-      file: pkg.exports.default,
+      file: pkg.exports['.'].default,
       format: 'esm',
       sourcemap: true,
     },
