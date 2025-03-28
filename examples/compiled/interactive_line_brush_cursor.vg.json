@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A line chart with text cursor to indicate the brush selection. The cursor changes to pointer on the mark as it can be moved with drag&drop.",
   "background": "white",
   "padding": 5,

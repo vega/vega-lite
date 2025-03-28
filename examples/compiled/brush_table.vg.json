@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Drag a rectangular brush to show (first 20) selected points in a table.",
   "background": "white",
   "padding": 5,
