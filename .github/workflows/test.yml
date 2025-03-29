@@ -18,20 +18,20 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          cache: 'yarn'
+          cache: 'npm'
           node-version: 20
 
       - name: Install Node dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Tests
-        run: yarn vitest run test/
+        run: npx vitest run test/
 
       - name: Example tests
-        run: yarn vitest run examples/
+        run: npx vitest run examples/
 
       - name: Build
-        run: yarn build
+        run: npm run build
 
   runtime-lint-coverage:
     name: Runtime, Linting, and Coverage
@@ -43,32 +43,32 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          cache: 'yarn'
+          cache: 'npm'
           node-version: 20
 
       - name: Install Node dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Copy Data
-        run: yarn data
+        run: npm run data
 
       - name: Set up playwright
-        run: yarn playwright install chromium
+        run: npx playwright install chromium
 
       - name: Build
-        run: yarn build:only
+        run: npm run build:only
 
       - name: Typechecks
-        run: yarn tsc
+        run: npx tsc
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
       - name: Runtime tests
-        run: yarn test:runtime --browser.headless
+        run: npm run test:runtime -- --browser.headless
 
       - name: Test coverage
-        run: yarn test:cover
+        run: npm run test:cover
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5.4.0
@@ -90,14 +90,14 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          cache: 'yarn'
+          cache: 'npm'
           node-version: 20
 
       - name: Install Node dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Build
-        run: yarn build:only
+        run: npm run build:only
 
       - name: Compile Vega
         run: |

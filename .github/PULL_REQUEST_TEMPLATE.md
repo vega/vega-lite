@@ -5,7 +5,7 @@
 
 - [ ] This PR is atomic (i.e., it fixes one issue at a time).
 - [ ] The title is a concise [semantic commit message](https://www.conventionalcommits.org/) (e.g. "fix: correctly handle undefined properties").
-- [ ] `yarn test` runs successfully
+- [ ] `npm test` runs successfully
 - For new features:
   - [ ] Has unit tests.
   - [ ] Has documentation under `site/docs/` + examples.
