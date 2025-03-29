@@ -3,7 +3,6 @@ _site/
 !site/examples/index.md
 .DS_Store
 .jekyll-metadata
-.yarnclean
 build/*
 coverage
 examples/all-examples.json
@@ -18,5 +17,3 @@ site/static/bundle.*
 test/log
 test/log/difflist.json
 test-runtime/__screenshots__
-yarn-debug.log*
-yarn-error.log*

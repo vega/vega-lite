@@ -5,7 +5,7 @@ on:
   pull_request:
     paths:
       - 'site/**'
-      - 'yarn.lock'
+      - 'package-lock.json'
       - '**prettier**'
 
 jobs:
@@ -19,14 +19,14 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          cache: 'yarn'
+          cache: 'npm'
           node-version: 20
 
       - name: Install Node dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Lint
-        run: yarn prettier . --check
+        run: npx prettier . --check
 
       - name: Build
-        run: yarn build:site
+        run: npm run build:site
