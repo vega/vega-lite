@@ -6,3 +6,5 @@ export type {Config} from './config.js';
 export {normalize} from './normalize/index.js';
 export type {TopLevelSpec} from './spec/index.js';
 export * from './util.js';
+
+import './types_unstable.js';

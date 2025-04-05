@@ -14,7 +14,7 @@ import {
   vgField,
 } from './channeldef.js';
 import {CompositeAggregate} from './compositemark/index.js';
-import {channelHasField, Encoding, isAggregate} from './encoding.js';
+import {channelHasField, Encoding, isAggregateEncoding} from './encoding.js';
 import * as log from './log/index.js';
 import {
   ARC,
@@ -29,7 +29,7 @@ import {
   POINT,
   RULE,
   SQUARE,
-  TEXT,
+  TEXT_MARK,
   TICK,
 } from './mark.js';
 import {ScaleType} from './scale.js';
@@ -73,7 +73,7 @@ export interface StackProperties {
   impute: boolean;
 }
 
-export const STACKABLE_MARKS = new Set<Mark>([ARC, BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK]);
+export const STACKABLE_MARKS = new Set<Mark>([ARC, BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT_MARK, TICK]);
 export const STACK_BY_DEFAULT_MARKS = new Set<Mark>([BAR, AREA, ARC]);
 
 function isUnbinnedQuantitative(channelDef: PositionDef<string>) {
@@ -238,7 +238,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     return null;
   }
 
-  if (isAggregate(encoding) && stackBy.length === 0) {
+  if (isAggregateEncoding(encoding) && stackBy.length === 0) {
     return null;
   }
 
