@@ -31,6 +31,7 @@ import {
 import {
   getBandPosition,
   getFieldOrDatumDef,
+  isDiscrete,
   isFieldDef,
   isFieldOrDatumDef,
   ScaleDatumDef,
@@ -54,7 +55,6 @@ import {
   Scheme,
 } from '../../scale.js';
 import {getStepFor, isStep, LayoutSizeMixins, Step} from '../../spec/base.js';
-import {isDiscrete} from '../../type.js';
 import * as util from '../../util.js';
 import {isSignalRef, VgRange} from '../../vega.schema.js';
 import {exprFromSignalRefOrValue, signalOrStringValue} from '../common.js';
@@ -366,7 +366,7 @@ function getPositionStep(step: Step, model: UnitModel, channel: PositionScaleCha
   const mergedScaleCmpt = model.getScaleComponent(channel);
   const offsetChannel = getOffsetScaleChannel(channel);
   const offsetDef = encoding[offsetChannel];
-  const stepFor = getStepFor({step, offsetIsDiscrete: isFieldOrDatumDef(offsetDef) && isDiscrete(offsetDef.type)});
+  const stepFor = getStepFor({step, offsetIsDiscrete: isFieldOrDatumDef(offsetDef) && isDiscrete(offsetDef)});
 
   if (stepFor === 'offset' && channelHasFieldOrDatum(encoding, offsetChannel)) {
     const offsetScaleCmpt = model.getScaleComponent(offsetChannel);

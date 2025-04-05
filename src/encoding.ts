@@ -64,6 +64,7 @@ import {
   initFieldDef,
   isConditionalDef,
   isDatumDef,
+  isDiscrete,
   isFieldDef,
   isOrderOnlyDef,
   isTypedFieldDef,
@@ -94,7 +95,7 @@ import * as log from './log/index.js';
 import {Mark} from './mark.js';
 import {EncodingFacetMapping} from './spec/facet.js';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform.js';
-import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type.js';
+import {QUANTITATIVE, TEMPORAL} from './type.js';
 import {keys, some} from './util.js';
 import {isSignalRef} from './vega.schema.js';
 import {isBinnedTimeUnit} from './timeunit.js';
@@ -371,7 +372,7 @@ export function channelHasNestedOffsetScale<F extends Field>(
     const fieldDef = encoding[channel];
     if (
       (isFieldDef(fieldDef) || isDatumDef(fieldDef)) &&
-      (isDiscrete(fieldDef.type) || (isFieldDef(fieldDef) && fieldDef.timeUnit))
+      (isDiscrete(fieldDef) || (isFieldDef(fieldDef) && fieldDef.timeUnit))
     ) {
       const offsetChannel = getOffsetScaleChannel(channel);
       return channelHasFieldOrDatum(encoding, offsetChannel);
@@ -380,7 +381,7 @@ export function channelHasNestedOffsetScale<F extends Field>(
   return false;
 }
 
-export function isAggregate(encoding: EncodingWithFacet<any>) {
+export function isAggregateEncoding(encoding: EncodingWithFacet<any>) {
   return some(CHANNELS, (channel) => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
@@ -554,7 +555,7 @@ export function initEncoding(
 
       const positionDef = normalizedEncoding[mainChannel];
       if (isFieldDef(positionDef)) {
-        if (isContinuous(positionDef.type)) {
+        if (!isDiscrete(positionDef)) {
           if (isFieldDef(channelDef) && !positionDef.timeUnit) {
             // TODO: nesting continuous field instead continuous field should
             // behave like offsetting the data in data domain
