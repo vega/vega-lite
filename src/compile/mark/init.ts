@@ -7,7 +7,7 @@ import {
   isTypedFieldDef,
 } from '../../channeldef.js';
 import {Config} from '../../config.js';
-import {Encoding, isAggregate} from '../../encoding.js';
+import {Encoding, isAggregateEncoding} from '../../encoding.js';
 import {replaceExprRef} from '../../expr.js';
 import * as log from '../../log/index.js';
 import {
@@ -23,7 +23,7 @@ import {
   RECT,
   RULE,
   SQUARE,
-  TEXT,
+  TEXT_MARK,
   TICK,
 } from '../../mark.js';
 import {QUANTITATIVE, TEMPORAL} from '../../type.js';
@@ -85,7 +85,7 @@ function cursor(markDef: MarkDef<Mark, SignalRef>, encoding: Encoding<string>, c
 function opacity(mark: Mark, encoding: Encoding<string>) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
-    if (!isAggregate(encoding)) {
+    if (!isAggregateEncoding(encoding)) {
       return 0.7;
     }
   }
@@ -106,7 +106,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     case POINT:
     case CIRCLE:
     case SQUARE:
-    case TEXT:
+    case TEXT_MARK:
     case RECT:
     case IMAGE:
       // orient is meaningless for these marks.

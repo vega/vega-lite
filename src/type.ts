@@ -18,13 +18,6 @@ export function isType(t: any): t is Type {
   return hasOwnProperty(Type, t);
 }
 
-export function isContinuous(type: Type): type is 'quantitative' | 'temporal' {
-  return type === 'quantitative' || type === 'temporal';
-}
-export function isDiscrete(type: Type): type is 'ordinal' | 'nominal' {
-  return type === 'ordinal' || type === 'nominal';
-}
-
 export const QUANTITATIVE = Type.quantitative;
 export const ORDINAL = Type.ordinal;
 export const TEMPORAL = Type.temporal;
