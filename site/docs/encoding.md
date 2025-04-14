@@ -469,7 +469,3 @@ In addition to the constant `value`, [value definitions](#value-def) of the `ord
 {% include table.html props="facet,row,column" source="FacetedEncoding" %}
 
 For more information, read the [facet documentation](facet.html).
-
-```
-
-```
