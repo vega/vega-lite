@@ -444,12 +444,14 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
   framesPerSecond?: number;
 
   /**
+   *
    * Default animation duration (in seconds) for [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) encodings (except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales, which use `framesPerSecond` instead).
    *
    * __Default value:__ `5`
    *
    */
-  animationDuration?: number;
+  // TODO(jzong): uncomment when linear scales for animation are implemented https://github.com/vega/vega-lite/issues/9590
+  // animationDuration?: number;
 }
 
 export const defaultScaleConfig: ScaleConfig<SignalRef> = {
@@ -481,7 +483,7 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
   zero: true,
 
   framesPerSecond: 2,
-  animationDuration: 5,
+  // animationDuration: 5, //TODO(jzong): uncomment when linear scales for animation are implemented https://github.com/vega/vega-lite/issues/9590
 };
 
 export interface SchemeParams {
