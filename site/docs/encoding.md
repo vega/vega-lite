@@ -277,7 +277,7 @@ Note: `time` encoding animations currently have a few restrictions. See the [exa
 - must also explicility specify a selection parameter
   - parameter must have a `timer` event
   - parameter must select the same field as the `time` field definition
-- must explicitliy define a filter using that parameter
+- must explicitly define a filter using that parameter
 - currently, the `time` channel only supports `band` scales (these are the default for discrete frame animation)
 - currently, only unit specifications are supported (no multi-view animations)
 
