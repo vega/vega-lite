@@ -21,6 +21,7 @@ import {stringify} from '../util.js';
 import {isSignalRef} from '../vega.schema.js';
 import {TimeUnit} from './../timeunit.js';
 import {datumDefToExpr} from './mark/encode/valueref.js';
+import {BIN_RANGE_DELIMITER} from './common.js';
 
 export function isCustomFormatType(formatType: string) {
   return formatType && formatType !== 'number' && formatType !== 'time';
@@ -29,8 +30,6 @@ export function isCustomFormatType(formatType: string) {
 function customFormatExpr(formatType: string, field: string, format: Format) {
   return `${formatType}(${field}${format ? `, ${stringify(format)}` : ''})`;
 }
-
-export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
 export function formatSignalRef({
   fieldOrDatumDef,

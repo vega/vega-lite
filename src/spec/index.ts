@@ -15,7 +15,7 @@ import {TopLevel} from './toplevel.js';
 import {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec, UnitSpecWithFrame} from './unit.js';
 
 export type {BaseSpec, LayoutSizeMixins} from './base.js';
-export type {GenericHConcatSpec, GenericVConcatSpec, NormalizedConcatSpec} from './concat.js';
+export type {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec, NormalizedConcatSpec} from './concat.js';
 export {isAnyConcatSpec, isHConcatSpec, isVConcatSpec} from './concat.js';
 export type {GenericFacetSpec, NormalizedFacetSpec} from './facet.js';
 export {isFacetSpec} from './facet.js';
@@ -24,7 +24,14 @@ export {isLayerSpec} from './layer.js';
 export type {RepeatSpec} from './repeat.js';
 export {isRepeatSpec} from './repeat.js';
 export type {TopLevel} from './toplevel.js';
-export type {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit.js';
+export type {
+  FacetedUnitSpec,
+  GenericUnitSpec,
+  NormalizedUnitSpec,
+  UnitSpec,
+  TopLevelUnitSpec,
+  UnitSpecWithFrame,
+} from './unit.js';
 export {isUnitSpec} from './unit.js';
 
 /**
