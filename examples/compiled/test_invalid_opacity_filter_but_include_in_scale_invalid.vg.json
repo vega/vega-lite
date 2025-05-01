@@ -41,7 +41,7 @@
       "transform": [
         {
           "type": "stack",
-          "groupby": ["a"],
+          "groupby": [],
           "field": "b",
           "sort": {"field": ["c"], "order": ["descending"]},
           "as": ["b_start", "b_end"],

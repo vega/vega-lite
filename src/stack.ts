@@ -1,6 +1,6 @@
 import {array, hasOwnProperty, isBoolean} from 'vega-util';
 import {Aggregate, SUM_OPS} from './aggregate.js';
-import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS, isPolarPositionChannel} from './channel.js';
+import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel.js';
 import {
   channelDefType,
   FieldName,
@@ -173,17 +173,23 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   const groupbyChannels: StackProperties['groupbyChannels'] = [];
   const groupbyFields: Set<FieldName> = new Set();
 
+  const didDisableImpute = stackedFieldDef.impute === null;
+  const shouldAutoImpute = isPathMark(mark);
+
   if (encoding[dimensionChannel]) {
     const dimensionDef = encoding[dimensionChannel];
     const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
     const hasSameDimensionAndStackedField = dimensionField && dimensionField === stackedField;
 
-    // For polar coordinates, do not set a groupBy when working with quantitative fields.
-    const isPolar = isPolarPositionChannel(fieldChannel) || isPolarPositionChannel(dimensionChannel);
-    const shouldAddPolarGroupBy = !isUnbinnedQuantitative(dimensionDef);
+    // Only add dimension to groupBy if:
+    //1. We're imputing OR
+    //2a. It's not the same field we're stacking on AND
+    //2b. It's not a quantitative field used for measurement
+    const isQuantitativeDimension = isUnbinnedQuantitative(dimensionDef);
+    const shouldAddGroupBy =
+      (!didDisableImpute && shouldAutoImpute) || (!hasSameDimensionAndStackedField && !isQuantitativeDimension);
 
-    if (isPolar ? shouldAddPolarGroupBy : !hasSameDimensionAndStackedField) {
-      // avoid grouping by the stacked field
+    if (shouldAddGroupBy) {
       groupbyChannels.push(dimensionChannel);
       groupbyFields.add(dimensionField);
     }
@@ -274,7 +280,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     groupbyChannels,
     groupbyFields,
     fieldChannel,
-    impute: stackedFieldDef.impute === null ? false : isPathMark(mark),
+    impute: didDisableImpute ? false : shouldAutoImpute,
     stackBy,
     offset,
   };
