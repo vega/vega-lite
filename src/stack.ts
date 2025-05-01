@@ -173,16 +173,21 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   const groupbyChannels: StackProperties['groupbyChannels'] = [];
   const groupbyFields: Set<FieldName> = new Set();
 
+  const didDisableImpute = stackedFieldDef.impute === null;
+  const shouldAutoImpute = isPathMark(mark);
+
   if (encoding[dimensionChannel]) {
     const dimensionDef = encoding[dimensionChannel];
     const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
     const hasSameDimensionAndStackedField = dimensionField && dimensionField === stackedField;
 
     // Only add dimension to groupBy if:
-    // 1. It's not the same field we're stacking on
-    // 2. It's not a quantitative field being used for measurement
+    //1. We're imputing OR
+    //2a. It's not the same field we're stacking on AND
+    //2b. It's not a quantitative field used for measurement
     const isQuantitativeDimension = isUnbinnedQuantitative(dimensionDef);
-    const shouldAddGroupBy = !hasSameDimensionAndStackedField && !isQuantitativeDimension;
+    const shouldAddGroupBy =
+      (!didDisableImpute && shouldAutoImpute) || (!hasSameDimensionAndStackedField && !isQuantitativeDimension);
 
     if (shouldAddGroupBy) {
       groupbyChannels.push(dimensionChannel);
@@ -275,7 +280,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     groupbyChannels,
     groupbyFields,
     fieldChannel,
-    impute: stackedFieldDef.impute === null ? false : isPathMark(mark),
+    impute: didDisableImpute ? false : shouldAutoImpute,
     stackBy,
     offset,
   };
