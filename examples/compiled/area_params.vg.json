@@ -23,16 +23,8 @@
       "transform": [
         {"type": "formula", "expr": "toNumber(datum[\"u\"])", "as": "u"},
         {
-          "type": "impute",
-          "field": "v",
-          "groupby": [],
-          "key": "u",
-          "method": "value",
-          "value": 0
-        },
-        {
           "type": "stack",
-          "groupby": ["u"],
+          "groupby": [],
           "field": "v",
           "sort": {"field": [], "order": []},
           "as": ["v_start", "v_end"],
