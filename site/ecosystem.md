@@ -27,7 +27,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Deneb](https://deneb-viz.github.io), a Power BI custom visual with an editor for Vega-Lite or Vega specifications.
 - [VizLinter](https://vizlinter.idvxlab.com/), an online editor that detects and fixes encoding issues based on vega-lite-linter.
 - [Datapane](https://github.com/datapane/datapane), a Python framework for building interactive reports from open-source visualization formats such as Vega-Lite.
-- [Graphpad](https://www.figma.com/community/widget/1027276088284051809), an editor for creating Vega-Lite visualizations in the Figjam collaborative whiteboarding tool.
+- [Graphpad](https://www.figma.com/community/widget/1027276088284051809), an editor for creating Vega-Lite or Vega visualizations in the Figma and Figjam collaborative design/whiteboarding tools.
 
 ## Tools for Scaling Vega-Lite Visualizations
 
@@ -127,3 +127,4 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [generator-veeg](https://github.com/millette/generator-veeg) is a Vega and Vega-Lite boilerplate generator for [Yeoman](https://yeoman.io/).
 - [Kroki](https://kroki.io/) is a service to render Vega and Vega-Lite as PNG, SVG, or PDF.
 - [vega_embed_flutter](https://pub.dev/packages/vega_embed_flutter), a flutter-web widget to embed Vega-Lite specs into flutter-web apps.
+- [vegalite-wordpress-plugin](https://github.com/wikimedia/vegalite-wordpress-plugin) enables viewing and editing Vega-Lite in a WordPress site.
