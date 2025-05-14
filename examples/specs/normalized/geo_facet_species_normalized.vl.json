@@ -6,9 +6,9 @@
     {
       "title": "American Bullfrog",
       "data": {
-        "url": "data/species.csv",
+        "url": "data/species.json",
         "format": {
-          "type": "csv",
+          "type": "json",
           "parse": {
             "county_id": "number",
             "habitat_yearround_pct": "number"
@@ -68,9 +68,9 @@
     {
       "title": "American Robin",
       "data": {
-        "url": "data/species.csv",
+        "url": "data/species.json",
         "format": {
-          "type": "csv",
+          "type": "json",
           "parse": {
             "county_id": "number",
             "habitat_yearround_pct": "number"
@@ -130,9 +130,9 @@
     {
       "title": "Common Gartersnake",
       "data": {
-        "url": "data/species.csv",
+        "url": "data/species.json",
         "format": {
-          "type": "csv",
+          "type": "json",
           "parse": {
             "county_id": "number",
             "habitat_yearround_pct": "number"
@@ -192,9 +192,9 @@
     {
       "title": "White-tailed Deer",
       "data": {
-        "url": "data/species.csv",
+        "url": "data/species.json",
         "format": {
-          "type": "csv",
+          "type": "json",
           "parse": {
             "county_id": "number",
             "habitat_yearround_pct": "number"

@@ -2,9 +2,9 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json",
   "description": "Species Habitat Distribution in US Counties (Faceted)",
   "data": {
-    "url": "data/species.csv",
+    "url": "data/species.json",
     "format": {
-      "type": "csv",
+      "type": "json",
       "parse": {
         "county_id": "number",
         "habitat_yearround_pct": "number"
