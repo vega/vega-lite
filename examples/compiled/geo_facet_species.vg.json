@@ -1,0 +1,136 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Species Habitat Distribution in US Counties (Faceted)",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_1",
+      "url": "data/us-10m.json",
+      "format": {"type": "topojson", "feature": "counties"}
+    },
+    {
+      "name": "source_0",
+      "url": "data/species.json",
+      "format": {
+        "type": "json",
+        "parse": {"county_id": "number", "habitat_yearround_pct": "number"}
+      },
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "source_1",
+          "key": "id",
+          "fields": ["county_id"],
+          "as": ["geo"]
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"geo\"] && datum[\"geo\"][\"properties\"] && datum[\"geo\"][\"properties\"][\"name\"]",
+          "as": "geo.properties.name"
+        },
+        {"type": "filter", "expr": "datum.geo != null"},
+        {
+          "type": "filter",
+          "expr": "datum.common_name != null && isValid(datum.habitat_yearround_pct)"
+        },
+        {"type": "filter", "expr": "isValid(datum[\"geo\"])"},
+        {"type": "geojson", "geojson": "geo", "signal": "child_geojson_0"},
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"habitat_yearround_pct\"]) && isFinite(+datum[\"habitat_yearround_pct\"])"
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[child_width, child_height]"},
+      "fit": {"signal": "child_geojson_0"},
+      "type": "albers"
+    }
+  ],
+  "signals": [
+    {"name": "child_width", "value": 300},
+    {"name": "child_height", "value": 200}
+  ],
+  "layout": {"padding": 15, "bounds": "full", "align": "all", "columns": 2},
+  "marks": [
+    {
+      "name": "cell",
+      "type": "group",
+      "title": {
+        "text": {
+          "signal": "isValid(parent[\"common_name\"]) ? parent[\"common_name\"] : \"\"+parent[\"common_name\"]"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "style": "view",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "source_0",
+          "groupby": ["common_name"]
+        }
+      },
+      "sort": {"field": ["datum[\"common_name\"]"], "order": ["ascending"]},
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "shape",
+          "style": ["geoshape"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "stroke": {"value": "black"},
+              "strokeWidth": {"value": 0.1},
+              "fill": {"scale": "color", "field": "habitat_yearround_pct"},
+              "tooltip": {
+                "signal": "{\"Species\": isValid(datum[\"common_name\"]) ? datum[\"common_name\"] : \"\"+datum[\"common_name\"], \"County FIPS\": isValid(datum[\"county_id\"]) ? datum[\"county_id\"] : \"\"+datum[\"county_id\"], \"County Name\": isValid(datum[\"geo.properties.name\"]) ? datum[\"geo.properties.name\"] : \"\"+datum[\"geo.properties.name\"], \"Habitat %\": format(datum[\"habitat_yearround_pct\"], \".2%\")}"
+              },
+              "ariaRoleDescription": {"value": "geoshape"},
+              "description": {
+                "signal": "\"Suitable Habitat, % of County: \" + (format(datum[\"habitat_yearround_pct\"], \".0%\")) + \"; geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; Species: \" + (isValid(datum[\"common_name\"]) ? datum[\"common_name\"] : \"\"+datum[\"common_name\"]) + \"; County FIPS: \" + (isValid(datum[\"county_id\"]) ? datum[\"county_id\"] : \"\"+datum[\"county_id\"]) + \"; County Name: \" + (isValid(datum[\"geo.properties.name\"]) ? datum[\"geo.properties.name\"] : \"\"+datum[\"geo.properties.name\"]) + \"; Habitat %: \" + (format(datum[\"habitat_yearround_pct\"], \".2%\"))"
+              }
+            }
+          },
+          "transform": [
+            {
+              "type": "geoshape",
+              "projection": "projection",
+              "field": "datum[\"geo\"]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": [0, 1],
+      "range": {"scheme": "viridis"},
+      "zero": true,
+      "interpolate": "hcl"
+    }
+  ],
+  "legends": [
+    {
+      "format": ".0%",
+      "title": ["Suitable Habitat", "% of County"],
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"}
+    }
+  ],
+  "config": {"style": {"cell": {"stroke": null}}}
+}
