@@ -1,0 +1,74 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json",
+  "description": "Species Habitat Distribution in US Counties (Faceted)",
+  "data": {
+    "url": "data/species.csv",
+    "format": {
+      "type": "csv",
+      "parse": {
+        "county_id": "number",
+        "habitat_yearround_pct": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "lookup": "county_id",
+      "from": {
+        "data": {
+          "url": "data/us-10m.json",
+          "format": {
+            "type": "topojson",
+            "feature": "counties"
+          }
+        },
+        "key": "id"
+      },
+      "as": "geo"
+    },
+    {"filter": "datum.geo != null"},
+    {"filter": "datum.common_name != null && isValid(datum.habitat_yearround_pct)"}
+  ],
+  "columns": 2,
+  "facet": {
+    "field": "common_name",
+    "type": "nominal",
+    "title": null
+  },
+  "spec": {
+    "width": 300,
+    "height": 200,
+    "projection": {
+      "type": "albers"
+    },
+    "mark": {
+      "type": "geoshape",
+      "stroke": "black",
+      "strokeWidth": 0.1
+    },
+    "encoding": {
+      "shape": {"field": "geo", "type": "geojson"},
+      "color": {
+        "field": "habitat_yearround_pct",
+        "type": "quantitative",
+        "scale": {"domain": [0, 1], "scheme": "viridis", "zero": true},
+        "title": ["Suitable Habitat", "% of County"],
+        "legend": {"format": ".0%"}
+      },
+      "tooltip": [
+        {"field": "common_name", "type": "nominal", "title": "Species"},
+        {"field": "county_id", "type": "nominal", "title": "County FIPS"},
+        {
+          "field": "geo.properties.name",
+          "type": "nominal",
+          "title": "County Name"
+        },
+        {"field": "habitat_yearround_pct", "type": "quantitative", "title": "Habitat %", "format": ".2%"}
+      ]
+    }
+  },
+  "config": {
+    "view": {"stroke": null},
+    "facet": {"spacing": 15}
+  }
+}

@@ -1,0 +1,259 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json",
+  "description": "Species Habitat Distribution in US Counties (Faceted)",
+  "columns": 2,
+  "concat": [
+    {
+      "title": "American Bullfrog",
+      "data": {
+        "url": "data/species.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "county_id": "number",
+            "habitat_yearround_pct": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "lookup": "county_id",
+          "from": {
+            "data": {
+              "url": "data/us-10m.json",
+              "format": {
+                "type": "topojson",
+                "feature": "counties"
+              }
+            },
+            "key": "id"
+          },
+          "as": "geo"
+        },
+        {"filter": "datum.geo != null"},
+        {"filter": "datum.common_name != null && isValid(datum.habitat_yearround_pct)"},
+        {"filter": "datum.common_name === 'American Bullfrog'"}
+      ],
+      "width": 300,
+      "height": 200,
+      "projection": {
+        "type": "albers"
+      },
+      "mark": {
+        "type": "geoshape",
+        "stroke": "black",
+        "strokeWidth": 0.1
+      },
+      "encoding": {
+        "shape": {"field": "geo", "type": "geojson"},
+        "color": {
+          "field": "habitat_yearround_pct",
+          "type": "quantitative",
+          "scale": {"domain": [0, 1], "scheme": "viridis", "zero": true},
+          "title": ["Suitable Habitat", "% of County"],
+          "legend": {"format": ".0%"}
+        },
+        "tooltip": [
+          {"field": "common_name", "type": "nominal", "title": "Species"},
+          {"field": "county_id", "type": "nominal", "title": "County FIPS"},
+          {
+            "field": "geo.properties.name",
+            "type": "nominal",
+            "title": "County Name"
+          },
+          {"field": "habitat_yearround_pct", "type": "quantitative", "title": "Habitat %", "format": ".2%"}
+        ]
+      }
+    },
+    {
+      "title": "American Robin",
+      "data": {
+        "url": "data/species.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "county_id": "number",
+            "habitat_yearround_pct": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "lookup": "county_id",
+          "from": {
+            "data": {
+              "url": "data/us-10m.json",
+              "format": {
+                "type": "topojson",
+                "feature": "counties"
+              }
+            },
+            "key": "id"
+          },
+          "as": "geo"
+        },
+        {"filter": "datum.geo != null"},
+        {"filter": "datum.common_name != null && isValid(datum.habitat_yearround_pct)"},
+        {"filter": "datum.common_name === 'American Robin'"}
+      ],
+      "width": 300,
+      "height": 200,
+      "projection": {
+        "type": "albers"
+      },
+      "mark": {
+        "type": "geoshape",
+        "stroke": "black",
+        "strokeWidth": 0.1
+      },
+      "encoding": {
+        "shape": {"field": "geo", "type": "geojson"},
+        "color": {
+          "field": "habitat_yearround_pct",
+          "type": "quantitative",
+          "scale": {"domain": [0, 1], "scheme": "viridis", "zero": true},
+          "title": ["Suitable Habitat", "% of County"],
+          "legend": {"format": ".0%"}
+        },
+        "tooltip": [
+          {"field": "common_name", "type": "nominal", "title": "Species"},
+          {"field": "county_id", "type": "nominal", "title": "County FIPS"},
+          {
+            "field": "geo.properties.name",
+            "type": "nominal",
+            "title": "County Name"
+          },
+          {"field": "habitat_yearround_pct", "type": "quantitative", "title": "Habitat %", "format": ".2%"}
+        ]
+      }
+    },
+    {
+      "title": "Common Gartersnake",
+      "data": {
+        "url": "data/species.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "county_id": "number",
+            "habitat_yearround_pct": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "lookup": "county_id",
+          "from": {
+            "data": {
+              "url": "data/us-10m.json",
+              "format": {
+                "type": "topojson",
+                "feature": "counties"
+              }
+            },
+            "key": "id"
+          },
+          "as": "geo"
+        },
+        {"filter": "datum.geo != null"},
+        {"filter": "datum.common_name != null && isValid(datum.habitat_yearround_pct)"},
+        {"filter": "datum.common_name === 'Common Gartersnake'"}
+      ],
+      "width": 300,
+      "height": 200,
+      "projection": {
+        "type": "albers"
+      },
+      "mark": {
+        "type": "geoshape",
+        "stroke": "black",
+        "strokeWidth": 0.1
+      },
+      "encoding": {
+        "shape": {"field": "geo", "type": "geojson"},
+        "color": {
+          "field": "habitat_yearround_pct",
+          "type": "quantitative",
+          "scale": {"domain": [0, 1], "scheme": "viridis", "zero": true},
+          "title": ["Suitable Habitat", "% of County"],
+          "legend": {"format": ".0%"}
+        },
+        "tooltip": [
+          {"field": "common_name", "type": "nominal", "title": "Species"},
+          {"field": "county_id", "type": "nominal", "title": "County FIPS"},
+          {
+            "field": "geo.properties.name",
+            "type": "nominal",
+            "title": "County Name"
+          },
+          {"field": "habitat_yearround_pct", "type": "quantitative", "title": "Habitat %", "format": ".2%"}
+        ]
+      }
+    },
+    {
+      "title": "White-tailed Deer",
+      "data": {
+        "url": "data/species.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "county_id": "number",
+            "habitat_yearround_pct": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "lookup": "county_id",
+          "from": {
+            "data": {
+              "url": "data/us-10m.json",
+              "format": {
+                "type": "topojson",
+                "feature": "counties"
+              }
+            },
+            "key": "id"
+          },
+          "as": "geo"
+        },
+        {"filter": "datum.geo != null"},
+        {"filter": "datum.common_name != null && isValid(datum.habitat_yearround_pct)"},
+        {"filter": "datum.common_name === 'White-tailed Deer'"}
+      ],
+      "width": 300,
+      "height": 200,
+      "projection": {
+        "type": "albers"
+      },
+      "mark": {
+        "type": "geoshape",
+        "stroke": "black",
+        "strokeWidth": 0.1
+      },
+      "encoding": {
+        "shape": {"field": "geo", "type": "geojson"},
+        "color": {
+          "field": "habitat_yearround_pct",
+          "type": "quantitative",
+          "scale": {"domain": [0, 1], "scheme": "viridis", "zero": true},
+          "title": ["Suitable Habitat", "% of County"],
+          "legend": {"format": ".0%"}
+        },
+        "tooltip": [
+          {"field": "common_name", "type": "nominal", "title": "Species"},
+          {"field": "county_id", "type": "nominal", "title": "County FIPS"},
+          {
+            "field": "geo.properties.name",
+            "type": "nominal",
+            "title": "County Name"
+          },
+          {"field": "habitat_yearround_pct", "type": "quantitative", "title": "Habitat %", "format": ".2%"}
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": null},
+    "concat": {"spacing": 15}
+  }
+}
