@@ -110,7 +110,7 @@
     "pako": "^2.1.0",
     "playwright": "^1.51.1",
     "prettier": "^3.5.3",
-    "release-it": "18.1.2",
+    "release-it": "19.0.2",
     "rollup": "^4.37.0",
     "rollup-plugin-bundle-size": "^1.0.3",
     "serve": "^14.2.4",
