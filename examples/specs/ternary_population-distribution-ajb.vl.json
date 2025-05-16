@@ -48,7 +48,7 @@
       "mark": {
         "type": "line",
         "fill": "#06292d",
-        "stroke": null
+        "stroke": "transparent"
       },
       "encoding": {
         "x": {
@@ -81,7 +81,7 @@
       "mark": {
         "type": "line",
         "fill": "#481919",
-        "stroke": null
+        "stroke": "transparent"
       },
       "encoding": {
         "x": {
@@ -114,7 +114,7 @@
       "mark": {
         "type": "line",
         "fill": "#240505",
-        "stroke": null
+        "stroke": "transparent"
       },
       "encoding": {
         "x": {
@@ -147,7 +147,7 @@
       "mark": {
         "type": "line",
         "fill": "#153f1e",
-        "stroke": null
+        "stroke": "transparent"
       },
       "encoding": {
         "x": {
@@ -180,7 +180,7 @@
       "mark": {
         "type": "line",
         "fill": "#041f0a",
-        "stroke": null
+        "stroke": "transparent"
       },
       "encoding": {
         "x": {
@@ -213,7 +213,7 @@
       "mark": {
         "type": "line",
         "fill": "#564319",
-        "stroke": null
+        "stroke": "transparent"
       },
       "encoding": {
         "x": {
@@ -246,7 +246,7 @@
       "mark": {
         "type": "line",
         "fill": "#2e2104",
-        "stroke": null
+        "stroke": "transparent"
       },
       "encoding": {
         "x": {
