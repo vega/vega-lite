@@ -21,16 +21,16 @@ export function isGraticuleGenerator(data) {
   return hasProperty(data, 'graticule');
 }
 export var DataSourceType;
-(function (DataSourceType) {
-  DataSourceType[(DataSourceType['Raw'] = 0)] = 'Raw';
+(function (DataSourceType2) {
+  DataSourceType[(DataSourceType2['Raw'] = 0)] = 'Raw';
   /** Main data source for marks */
-  DataSourceType[(DataSourceType['Main'] = 1)] = 'Main';
-  DataSourceType[(DataSourceType['Row'] = 2)] = 'Row';
-  DataSourceType[(DataSourceType['Column'] = 3)] = 'Column';
-  DataSourceType[(DataSourceType['Lookup'] = 4)] = 'Lookup';
+  DataSourceType[(DataSourceType2['Main'] = 1)] = 'Main';
+  DataSourceType[(DataSourceType2['Row'] = 2)] = 'Row';
+  DataSourceType[(DataSourceType2['Column'] = 3)] = 'Column';
+  DataSourceType[(DataSourceType2['Lookup'] = 4)] = 'Lookup';
   /** Pre-filter-invalid data source for scale domains */
-  DataSourceType[(DataSourceType['PreFilterInvalid'] = 5)] = 'PreFilterInvalid';
+  DataSourceType[(DataSourceType2['PreFilterInvalid'] = 5)] = 'PreFilterInvalid';
   /** Post-filter-invalid data source for scale domains */
-  DataSourceType[(DataSourceType['PostFilterInvalid'] = 6)] = 'PostFilterInvalid';
+  DataSourceType[(DataSourceType2['PostFilterInvalid'] = 6)] = 'PostFilterInvalid';
 })(DataSourceType || (DataSourceType = {}));
 //# sourceMappingURL=data.js.map
