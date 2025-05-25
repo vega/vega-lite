@@ -657,7 +657,6 @@
             "color": "transparent",
             "opacity": 1,
             "stroke": "#000000",
-            "tooltip": true,
             "strokeWidth": 1.5,
             "strokeOpacity": 1
           },
@@ -691,7 +690,6 @@
         {
           "mark": {
             "type": "text",
-            "tooltip": true,
             "font": "Verdana",
             "dy": {
               "expr": "datum.dy_val"

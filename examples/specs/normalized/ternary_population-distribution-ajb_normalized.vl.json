@@ -7,7 +7,7 @@
     "text": [
       "Population Distribution by Socioeconomic Level in Cities [Data shown is fictional]"
     ],
-    "subtitle": "Note: Created by  Adrián Bazzana – https://www.linkedin.com/in/adrian-bazzana/",
+    "subtitle": "Note: Created by Adrián Bazzana https://www.linkedin.com/in/adrian-bazzana/",
     "fontSize": 15,
     "subtitleFontSize": 14,
     "subtitleFontStyle": "italic",
@@ -557,116 +557,6 @@
           }
         ]
       },
-      "layer": [
-        {
-          "mark": {
-            "type": "point",
-            "color": "transparent",
-            "opacity": 1,
-            "stroke": "#000000",
-            "tooltip": true,
-            "strokeWidth": 1.5,
-            "strokeOpacity": 1
-          },
-          "encoding": {
-            "x": {
-              "field": "x",
-              "type": "quantitative"
-            },
-            "y": {
-              "field": "y",
-              "type": "quantitative"
-            },
-            "tooltip": [
-              {
-                "field": "City",
-                "type": "nominal",
-                "title": "City:"
-              },
-              {
-                "field": "tooltip_high",
-                "type": "nominal",
-                "title": "🔴 High:"
-              },
-              {
-                "field": "tooltip_medium",
-                "type": "nominal",
-                "title": "🟡 Medium:"
-              },
-              {
-                "field": "tooltip_low",
-                "type": "nominal",
-                "title": "🟢 Low:"
-              }
-            ],
-            "fill": {
-              "field": "color",
-              "type": "nominal",
-              "scale": null
-            },
-            "size": {
-              "field": "TotalLevel",
-              "type": "quantitative",
-              "legend": null,
-              "scale": {
-                "range": [
-                  50,
-                  500
-                ]
-              }
-            }
-          }
-        },
-        {
-          "mark": {
-            "type": "text",
-            "tooltip": true,
-            "font": "Verdana",
-            "dy": {
-              "expr": "datum.dy_val"
-            },
-            "fontSize": 13,
-            "color": "#ffffff",
-            "fontWeight": 100
-          },
-          "encoding": {
-            "x": {
-              "field": "x",
-              "type": "quantitative"
-            },
-            "y": {
-              "field": "y",
-              "type": "quantitative"
-            },
-            "tooltip": [
-              {
-                "field": "City",
-                "type": "nominal",
-                "title": "City:"
-              },
-              {
-                "field": "tooltip_high",
-                "type": "nominal",
-                "title": "🔴 High:"
-              },
-              {
-                "field": "tooltip_medium",
-                "type": "nominal",
-                "title": "🟡 Medium:"
-              },
-              {
-                "field": "tooltip_low",
-                "type": "nominal",
-                "title": "🟢 Low:"
-              }
-            ],
-            "text": {
-              "field": "City",
-              "type": "nominal"
-            }
-          }
-        }
-      ],
       "transform": [
         {
           "calculate": "datum['Higt'] + datum['Medium'] + datum['Low']",
@@ -726,6 +616,102 @@
         {
           "calculate": "datum.medium_percent > 0.9 ? 15 : -15",
           "as": "dy_val"
+        }
+      ],
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "City",
+            "type": "nominal",
+            "title": "City:"
+          },
+          {
+            "field": "tooltip_high",
+            "type": "nominal",
+            "title": "🔴 High:"
+          },
+          {
+            "field": "tooltip_medium",
+            "type": "nominal",
+            "title": "🟡 Medium:"
+          },
+          {
+            "field": "tooltip_low",
+            "type": "nominal",
+            "title": "🟢 Low:"
+          }
+        ]
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "color": "transparent",
+            "opacity": 1,
+            "stroke": "#000000",
+            "strokeWidth": 1.5,
+            "strokeOpacity": 1
+          },
+          "encoding": {
+            "x": {
+              "field": "x",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "y",
+              "type": "quantitative"
+            },
+            "fill": {
+              "field": "color",
+              "type": "nominal",
+              "scale": null
+            },
+            "size": {
+              "field": "TotalLevel",
+              "type": "quantitative",
+              "legend": null,
+              "scale": {
+                "range": [
+                  50,
+                  500
+                ]
+              }
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "Verdana",
+            "dy": {
+              "expr": "datum.dy_val"
+            },
+            "fontSize": 13,
+            "color": "#ffffff",
+            "fontWeight": 100
+          },
+          "encoding": {
+            "x": {
+              "field": "x",
+              "type": "quantitative"
+            },
+            "y": {
+              "field": "y",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "City",
+              "type": "nominal"
+            }
+          }
         }
       ]
     }
