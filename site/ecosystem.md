@@ -28,6 +28,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [VizLinter](https://vizlinter.idvxlab.com/), an online editor that detects and fixes encoding issues based on vega-lite-linter.
 - [Datapane](https://github.com/datapane/datapane), a Python framework for building interactive reports from open-source visualization formats such as Vega-Lite.
 - [Graphpad](https://www.figma.com/community/widget/1027276088284051809), an editor for creating Vega-Lite or Vega visualizations in the Figma and Figjam collaborative design/whiteboarding tools.
+- [Datadog](https://www.datadoghq.com/), the monitoring and security platform, has a browser editor for Vega-Lite visualizations in several places: in dashboards and notebooks through the [Wildcard Widget](https://www.datadoghq.com/blog/wildcard-widget/), and in low-code apps through [custom charts](https://docs.datadoghq.com/actions/app_builder/components/custom_charts/).
 
 ## Tools for Scaling Vega-Lite Visualizations
 
