@@ -77,7 +77,7 @@
     "test": "vitest run test/ && npm run lint && npm run schema && vitest run examples/ && npm run test:runtime",
     "test:cover": "vitest run test/ --coverage",
     "test:runtime": "vitest run test-runtime/",
-    "watch": "tsc -p tsconfig.build.json -w",
+    "watch": "rollup -c -w",
     "watch:site": "npm run build:site -- -w",
     "release": "release-it"
   },
