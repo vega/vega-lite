@@ -51,7 +51,11 @@ describe('Zoom interval selections at runtime', () => {
         let yold: number[];
 
         if (bind === unbound) {
-          const drag = (await brush(view, brushKey, idx, parent))[0];
+          const result = await brush(view, brushKey, idx, parent);
+          if (result instanceof HTMLElement) {
+            throw new Error('Expected brush result to be an array');
+          }
+          const drag = result[0];
           xold = drag.values[0].sort(cmp);
           yold = encodings.includes('y') ? drag.values[encodings.indexOf('x') + 1].sort(cmp) : null;
         } else {

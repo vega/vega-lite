@@ -1,11 +1,11 @@
-import {parse, View, resetSVGDefIds} from 'vega';
+import {parse, View} from 'vega';
 import {compile} from '../src/index.js';
 import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} from '../src/selection.js';
 import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec/index.js';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
-export const selectionTypes: SelectionType[] = ['point', 'interval'];
-export const compositeTypes = ['repeat', 'facet'] as const;
+export const selectionTypes: SelectionType[] = ['point', 'interval', 'region'];
+export const compositeTypes: ComposeType[] = ['repeat', 'facet'];
 export const resolutions: SelectionResolution[] = ['union', 'intersect'];
 
 export const bound = 'bound';
@@ -49,8 +49,58 @@ const UNIT_NAMES = {
   facet: ['child__facet_row_0', 'child__facet_row_1', 'child__facet_row_2'],
 };
 
-export const hits = {
-  discrete: {
+type RegionHit = {
+  id: number;
+  count?: number;
+  coords?: number[][];
+};
+
+type RegionHits = {
+  circle: RegionHit[];
+  circle_clear: RegionHit[];
+  polygon: RegionHit[];
+  polygon_clear: RegionHit[];
+  facet: number[];
+  facet_clear: number[];
+  repeat: number[];
+  repeat_clear: number[];
+};
+
+type IntervalHits = {
+  drag: number[][];
+  drag_clear: number[][];
+  translate: number[][];
+  bins: number[][];
+  bins_clear: number[][];
+  bins_translate: number[][];
+  repeat: number[][];
+  repeat_clear: number[][];
+  facet: number[][];
+  facet_clear: number[][];
+  zoom: number[];
+};
+
+type PointHits = {
+  qq: number[];
+  qq_clear: number[];
+  bins: number[];
+  bins_clear: number[];
+  repeat: number[];
+  repeat_clear: number[];
+  facet: number[];
+  facet_clear: number[];
+};
+
+export type BrushKeys = keyof IntervalHits | 'unit' | 'zoom';
+
+export type Hits = {
+  point: PointHits;
+  interval: IntervalHits;
+  region: RegionHits;
+};
+
+export const hits: Hits = {
+  point: {
     qq: [8, 19],
     qq_clear: [5, 16],
 
@@ -98,8 +148,53 @@ export const hits = {
       [4, 10],
     ],
     facet_clear: [[3], [5], [7]],
+
+    zoom: [1, 2, 3],
   },
-} as const;
+
+  region: {
+    circle: [
+      {id: 14, count: 5},
+      {id: 3, count: 2},
+      {id: 6, count: 4},
+    ],
+    circle_clear: [{id: 14}],
+
+    polygon: [
+      {
+        id: 6,
+        coords: [
+          [-30, -30],
+          [-30, 30],
+          [30, 30],
+          [30, -30],
+        ],
+        count: 4,
+      },
+      {
+        id: 14,
+        coords: [
+          [-30, -30],
+          [-30, 30],
+          [-15, 15],
+          [-15, -15],
+          [15, -15],
+          [15, 30],
+          [30, 30],
+          [30, -30],
+        ],
+        count: 2,
+      },
+    ],
+    polygon_clear: [{id: 6}],
+
+    facet: [2, 4, 7],
+    facet_clear: [3, 5, 8],
+
+    repeat: [5, 10, 16],
+    repeat_clear: [13, 14, 2],
+  } satisfies RegionHits,
+};
 
 const config = {
   // reduce changes in generated SVGs
@@ -252,8 +347,10 @@ export function parentSelector(compositeType: ComposeType, index: number) {
   return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : `${UNIT_NAMES.repeat[index]}_group`;
 }
 
-export type BrushKeys = keyof typeof hits.interval;
 export async function brush(view: View, key: BrushKeys, idx: number, parent?: string, targetBrush?: boolean) {
+  if (key === 'unit' || key === 'zoom') {
+    return await _brush(view, idx, idx + 1, parent, !!targetBrush);
+  }
   const h = hits.interval[key][idx];
   if (key.match('_clear')) {
     return await clear(view, h[0], parent, !!targetBrush);
@@ -262,8 +359,8 @@ export async function brush(view: View, key: BrushKeys, idx: number, parent?: st
   }
 }
 
-export async function pt(view: View, key: keyof typeof hits.discrete, idx: number, parent?: string) {
-  const h = hits.discrete[key][idx] as number;
+export async function pt(view: View, key: keyof typeof hits.point, idx: number, parent?: string) {
+  const h = hits.point[key][idx] as number;
   if (key.match('_clear')) {
     return await clear(view, h, parent);
   } else {
@@ -282,7 +379,6 @@ export function fill<T>(val: T, len: number) {
 export async function embed(spec: TopLevelSpec, run = true) {
   // reset DOM and Vega counters
   document.body.innerHTML = '';
-  resetSVGDefIds();
 
   const body = document.body;
   const div = document.createElement('div');
@@ -358,13 +454,49 @@ export async function _pt(view: View, id: number, parent: string, shiftKey?: boo
 }
 
 export async function clear(view: View, id: number, parent: string, shiftKey?: boolean) {
-  const bg = document.querySelector(`${parent ? `g.${parent} ` : ''}path.background`);
   const el = getMark(id, parent);
-  let [clientX, clientY] = coords(el);
-  clientX += 10;
-  clientY -= 10;
-  click(bg, {clientX, clientY, shiftKey});
-  return (await view.runAsync()).data('sel_store');
+  await _pt(view, id, parent, shiftKey);
+  return el;
+}
+
+export function clearRegion(idx: number, parent?: string, targetBrush?: boolean) {
+  const el = getMark(idx, parent);
+  if (!el) return;
+  const target = brushOrEl(el, parent, !!targetBrush);
+  pointerEvt('click', target, {bubbles: true});
+  click(target, {});
+}
+
+export function circleRegion(idx: number, parent?: string, radius = 40, segments = 20) {
+  const el = getMark(idx, parent);
+  if (!el) return;
+  const [x, y] = coords(el);
+  const points: number[][] = [];
+  for (let i = 0; i < segments; i++) {
+    const angle = (i / segments) * 2 * Math.PI;
+    points.push([x + radius * Math.cos(angle), y + radius * Math.sin(angle)]);
+  }
+  polygonRegion(idx, points, parent);
+}
+
+export function polygonRegion(idx: number, polygon: number[][], parent?: string) {
+  const el = getMark(idx, parent);
+  if (!el) return;
+  pointerEvt('mousedown', el, {bubbles: true});
+  click(el, {});
+
+  for (const [x, y] of polygon) {
+    pointerEvt('mousemove', el, {clientX: x, clientY: y, bubbles: true});
+  }
+
+  pointerEvt('mouseup', el, {bubbles: true});
+}
+
+export function multiviewRegion(key: string, idx: number, parent?: string) {
+  const el = getMark(idx, parent);
+  if (!el) return;
+  pointerEvt('click', el, {bubbles: true});
+  click(el, {});
 }
 
 export async function zoom(view: View, id: number, delta: number, parent: string, targetBrush: boolean) {

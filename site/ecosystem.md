@@ -72,6 +72,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [VegaLite](https://github.com/JoshDavid/VegaLite) is a library for [Dyalog APL](https://www.dyalog.com) to build and render Vega-Lite specifications from your data.
 - [React Spectrum Charts](https://github.com/adobe/react-spectrum-charts) are declarative visualization components from Adobe using Vega and Vega-Lite.
 - [vega-view](https://github.com/cuprous-au/vega-view) displays [nushell](https://www.nushell.sh/) tables using Vega-Lite in a webview.
+- [PyGWalker](https://github.com/Kanaries/pygwalker) Turn your pandas dataframe into a Tableau-style User Interface for visual analysis.
 
 ## Programming / Data Science Environment that supports Vega-Lite
 
@@ -111,7 +112,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Scalene](https://github.com/plasma-umass/scalene): A CPU+GPU+memory profiler for Python.
 - [CSrankings](https://csrankings.org): a metrics-based ranking of top computer science institutions around the world.
 - [Kibana](https://github.com/elastic/kibana): a browser-based analytics and search dashboard for Elasticsearch that supports [authoring and embedding Vega and Vega-Lite visualizations](https://www.elastic.co/guide/en/kibana/current/vega.html).
-- [PyGWalker](https://github.com/Kanaries/pygwalker) A python library that turns your data into an interactive visual exploration app with one line of code.
+- [PyGWalker](https://github.com/Kanaries/pygwalker) Turn your pandas dataframe into a Tableau-style User Interface for visual analysis.
 - [GWalkR](https://github.com/Kanaries/GWalkR) An R library that turns your dataframe into an interactive visual exploration app in RStudio.
 - [graphic-walker](https://github.com/Kanaries/graphic-walker), an open-source alternative to Tableau, is a versatile visualization tool for data exploration and no-code Vega-Lite editing, that can be easily embedded as a component in web apps.
 
