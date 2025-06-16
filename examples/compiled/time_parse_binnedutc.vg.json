@@ -40,7 +40,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"time: \" + (timeFormat(datum[\"date\"], timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"time: \" + (utcFormat(datum[\"date\"], timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
           "x": {"field": {"group": "width"}},
           "x2": {"value": 0},

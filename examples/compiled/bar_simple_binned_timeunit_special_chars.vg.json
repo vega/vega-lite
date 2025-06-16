@@ -60,7 +60,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; a.b: \" + (timeFormat(datum[\"a.b\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; a.b: \" + (utcFormat(datum[\"a.b\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
           "x": {"scale": "x", "field": "b_end"},
           "x2": {"scale": "x", "field": "b_start"},
