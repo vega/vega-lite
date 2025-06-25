@@ -76,6 +76,7 @@ function voronoiMark(x?: string | {expr: string}, y?: string | {expr: string}, t
       type: 'path',
       interactive: true,
       from: {data: 'marks'},
+      aria: false,
       encode: {
         update: {
           fill: {value: 'transparent'},
@@ -123,7 +124,7 @@ describe('Nearest Selection Transform', () => {
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: 'world'}];
     const nearestMarks = nearest.marks(model, selCmpts['one'] as SelectionComponent<'point'>, marks);
-    expect(nearestMarks).toMatchObject(voronoiMark(null, null, tooltip(model, {reactiveGeom: true})));
+    expect(nearestMarks).toEqual(voronoiMark(null, null, tooltip(model, {reactiveGeom: true})));
   });
 
   it(
@@ -143,7 +144,7 @@ describe('Nearest Selection Transform', () => {
     const marks: any[] = [{hello: 'world'}];
 
     const marks2 = nearest.marks(model, selCmpts['one'] as SelectionComponent<'point'>, marks);
-    expect(nearest.marks(model, selCmpts['two'] as SelectionComponent<'point'>, marks2)).toMatchObject(voronoiMark());
+    expect(nearest.marks(model, selCmpts['two'] as SelectionComponent<'point'>, marks2)).toEqual(voronoiMark());
   });
 
   it('supports 1D voronoi', () => {
@@ -151,15 +152,15 @@ describe('Nearest Selection Transform', () => {
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: 'world'}];
 
-    expect(nearest.marks(model, selCmpts['seven'] as SelectionComponent<'point'>, duplicate(marks))).toMatchObject(
+    expect(nearest.marks(model, selCmpts['seven'] as SelectionComponent<'point'>, duplicate(marks))).toEqual(
       voronoiMark(null, {expr: '0'}),
     );
 
-    expect(nearest.marks(model, selCmpts['eight'] as SelectionComponent<'point'>, duplicate(marks))).toMatchObject(
+    expect(nearest.marks(model, selCmpts['eight'] as SelectionComponent<'point'>, duplicate(marks))).toEqual(
       voronoiMark({expr: '0'}),
     );
 
-    expect(nearest.marks(model, selCmpts['nine'] as SelectionComponent<'point'>, duplicate(marks))).toMatchObject(
+    expect(nearest.marks(model, selCmpts['nine'] as SelectionComponent<'point'>, duplicate(marks))).toEqual(
       voronoiMark(),
     );
   });
