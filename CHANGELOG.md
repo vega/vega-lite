@@ -1,5 +1,20 @@
 # Changelog
 
+# [6.2.0](https://github.com/vega/vega-lite/compare/v6.1.0...v6.2.0) (2025-06-27)
+
+
+### Bug Fixes
+
+* **docs:** improve header alignment for `facet_bullet` graph example ([#9554](https://github.com/vega/vega-lite/issues/9554)) ([99a43e4](https://github.com/vega/vega-lite/commit/99a43e4e0110275016c1592e256bae32ae5a4401))
+* ensure temporal field propagates to time expression ([#8757](https://github.com/vega/vega-lite/issues/8757)) ([473f359](https://github.com/vega/vega-lite/commit/473f3594e3db5c24f439f0c183eac8f662f46817))
+* turn off aria for the generated voronoi layer from nearest spec ([#9624](https://github.com/vega/vega-lite/issues/9624)) ([8588c14](https://github.com/vega/vega-lite/commit/8588c14eb798d198f6537f259f2848ccf03a5941))
+
+
+### Features
+
+* export types ([#9595](https://github.com/vega/vega-lite/issues/9595)) ([641a5b5](https://github.com/vega/vega-lite/commit/641a5b5a5d25ca503d3eab77e80eec9682847380)), closes [#9583](https://github.com/vega/vega-lite/issues/9583) [#9222](https://github.com/vega/vega-lite/issues/9222) [#9584](https://github.com/vega/vega-lite/issues/9584)
+* update deps ([#9626](https://github.com/vega/vega-lite/issues/9626)) ([e369205](https://github.com/vega/vega-lite/commit/e3692053894ebf9b9e49868c47c584cedf0d7c7c))
+
 # [6.1.0](https://github.com/vega/vega-lite/compare/v6.0.2...v6.1.0) (2025-03-28)
 
 
