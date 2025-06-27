@@ -236,6 +236,7 @@
       "name": "layer_2_voronoi",
       "type": "path",
       "interactive": true,
+      "aria": false,
       "from": {"data": "layer_2_marks"},
       "encode": {
         "update": {
