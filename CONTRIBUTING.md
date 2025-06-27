@@ -11,7 +11,6 @@ If you find a bug in the code or a mistake in the [documentation](https://vega.g
 - For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
 
 - For major changes, please discuss it with the community via a GitHub issue first. This will help us coordinate our efforts, prevent duplication of work, and help you to craft the change so that it is successfully accepted into the project.
-
   - One way to use GitHub for this purpose is to submit a [draft pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests).
 
 - Generally, we name a branch using this pattern `<your 2-3 letters initial>/<topic>`. For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
@@ -142,7 +141,6 @@ pushd site && bundle install && popd
 
 - `bin/` – Scripts for using Vega-Lite with command line.
 - `site/` – Vega-Lite website including documentation.
-
   - `_data/` – Jekyll data.
   - `_includes/` – Jekyll includes.
   - `_layouts/` – Jekyll layout files.
@@ -151,13 +149,11 @@ pushd site && bundle install && popd
   - `static/` – Static files for the website.
 
 - `examples/` – Example Vega-Lite specifications.
-
   - `specs` Vega-Lite examples.
   - `compiled` The generated Vega specifications and SVG files of the Vega-Lite examples.
 
 - `scripts/` - Scripts for NPM commands.
 - `src/` - Main source code directory.
-
   - All interfaces for Vega-Lite syntax should be declared at the top-level of the `src/` folder.
     - `src/index.ts` is the root file for Vega-Lite that exports the global `vegaLite` object.
     - Other files under `src/` reflect the namespace structure. All methods for `vegaLite.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`. For example, `vegaLite.channel.*` methods are in `src/channel.ts` while `vegaLite.compile` is in `src/compile/compile.ts`.
