@@ -246,7 +246,6 @@
         {
           "mark": {
             "type": "point",
-            "color": "transparent",
             "opacity": 1,
             "stroke": "#000000",
             "strokeWidth": 1.5,
