@@ -527,7 +527,8 @@
       },
       {
         "name": "ternary",
-        "title": "A ternary chart example created by [Adrián Bazzana](https://www.linkedin.com/in/adrian-bazzana/)."
+        "title": "Ternary chart",
+        "description": "A ternary chart example created by [Adrián Bazzana](https://www.linkedin.com/in/adrian-bazzana/)."
       }
     ]
   },
