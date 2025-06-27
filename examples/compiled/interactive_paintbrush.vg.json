@@ -104,6 +104,7 @@
       "name": "voronoi",
       "type": "path",
       "interactive": true,
+      "aria": false,
       "from": {"data": "marks"},
       "encode": {
         "update": {
