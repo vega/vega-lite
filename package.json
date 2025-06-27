@@ -111,7 +111,7 @@
     "playwright": "^1.53.1",
     "prettier": "^3.6.2",
     "release-it": "19.0.3",
-    "rollup": "^4.37.0",
+    "rollup": "^4.44.1",
     "rollup-plugin-bundle-size": "^1.0.3",
     "serve": "^14.2.4",
     "terser": "^5.43.1",
