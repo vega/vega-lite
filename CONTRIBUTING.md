@@ -111,7 +111,7 @@ npm install
 
 Now you should be able to build and test the code.
 
-3. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/), [bundler](http://bundler.io/) and [Jekyll](https://help.github.com/articles/using-jekyll-as-a-static-site-generator-with-github-pages/).
+3. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/) and [bundler](http://bundler.io/).
 
 For ruby, Mac users can use [homebrew](http://brew.sh) to add it:
 
