@@ -1,6 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Note: Created by Adrián Bazzana https://www.linkedin.com/in/adrian-bazzana/",
   "width": 625,
   "height": 541.25,
   "padding": 50,
