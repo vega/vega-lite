@@ -32,6 +32,7 @@ const nearest: SelectionCompiler<'point'> = {
       name: model.getName(VORONOI),
       type: 'path',
       interactive: true,
+      aria: false,
       from: {data: model.getName('marks')},
       encode: {
         update: {
