@@ -101,7 +101,7 @@
     "conventional-changelog-cli": "^5.0.0",
     "d3": "^7.9.0",
     "del-cli": "^6.0.0",
-    "dotenv": "^16.6.0",
+    "dotenv": "^17.0.1",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.1",
