@@ -117,13 +117,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
       {
         name,
         ...(params ? {params} : {}),
-        mark: dropLineAndPoint({
-          // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
-          ...(markDef.type === 'area' && markDef.opacity === undefined && markDef.fillOpacity === undefined
-            ? {opacity: 0.7}
-            : {}),
-          ...markDef,
-        }),
+        mark: dropLineAndPoint(markDef),
         // drop shape from encoding as this might be used to trigger point overlay
         encoding: omit(encoding, ['shape']),
       },
