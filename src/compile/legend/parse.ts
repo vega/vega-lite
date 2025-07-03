@@ -167,8 +167,8 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
         ...(selections?.length && isFieldDef(fieldOrDatumDef)
           ? {name: `${varName(fieldOrDatumDef.field)}_legend_${part}`}
           : {}),
-        ...(selections?.length ? {interactive: !!selections} : {}),
-        update: value,
+        ...(selections?.length ? {interactive: true} : {}),
+        update: selections?.length ? {...value, cursor: {value: 'pointer'}} : value,
       };
     }
   }

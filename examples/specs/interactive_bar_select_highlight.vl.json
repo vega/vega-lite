@@ -18,8 +18,7 @@
   "mark": {
     "type": "bar",
     "fill": "#4C78A8",
-    "stroke": "black",
-    "cursor": "pointer"
+    "stroke": "black"
   },
   "encoding": {
     "x": {"field": "a", "type": "ordinal"},

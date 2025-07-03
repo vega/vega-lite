@@ -207,7 +207,8 @@
                 "value": 1
               },
               {"value": 0.35}
-            ]
+            ],
+            "cursor": {"value": "pointer"}
           }
         },
         "symbols": {
@@ -220,13 +221,17 @@
                 "value": 0.7
               },
               {"value": 0.35}
-            ]
+            ],
+            "cursor": {"value": "pointer"}
           }
         },
         "entries": {
           "name": "Origin_legend_entries",
           "interactive": true,
-          "update": {"fill": {"value": "transparent"}}
+          "update": {
+            "fill": {"value": "transparent"},
+            "cursor": {"value": "pointer"}
+          }
         }
       }
     }

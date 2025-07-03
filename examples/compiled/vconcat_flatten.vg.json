@@ -151,6 +151,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
+              "cursor": {"value": "pointer"},
               "fill": [
                 {
                   "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",

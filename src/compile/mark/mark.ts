@@ -277,6 +277,21 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
   const key = encoding.key;
   const sort = getSort(model);
   const interactive = interactiveFlag(model);
+
+  // set pointer cursor for point selections that are not bound
+  if (
+    interactive &&
+    Object.values(model.component.selection).some(
+      (s) =>
+        s.type === 'point' &&
+        !s.bind &&
+        // if on is a pointerover (hover) the pointer makes less sense since the mark is not clickable.
+        (s as any).on !== 'pointerover',
+    )
+  ) {
+    model.markDef.cursor ??= 'pointer';
+  }
+
   const aria = getMarkPropOrConfig('aria', markDef, config);
 
   const postEncodingTransform = markCompiler[mark].postEncodingTransform

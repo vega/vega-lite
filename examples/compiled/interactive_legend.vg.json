@@ -243,7 +243,8 @@
                 "value": 1
               },
               {"value": 0.35}
-            ]
+            ],
+            "cursor": {"value": "pointer"}
           }
         },
         "symbols": {
@@ -256,13 +257,17 @@
                 "value": 1
               },
               {"value": 0.35}
-            ]
+            ],
+            "cursor": {"value": "pointer"}
           }
         },
         "entries": {
           "name": "series_legend_entries",
           "interactive": true,
-          "update": {"fill": {"value": "transparent"}}
+          "update": {
+            "fill": {"value": "transparent"},
+            "cursor": {"value": "pointer"}
+          }
         }
       }
     }

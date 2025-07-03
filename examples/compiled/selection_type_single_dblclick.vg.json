@@ -85,6 +85,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "cursor": {"value": "pointer"},
           "fill": [
             {
               "test": "!length(data(\"pts_store\")) || vlSelectionIdTest(\"pts_store\", datum)",

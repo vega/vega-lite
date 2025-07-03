@@ -497,6 +497,7 @@
           "from": {"data": "data_1"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": [
                 {
                   "test": "!length(data(\"click_store\")) || vlSelectionTest(\"click_store\", datum)",
