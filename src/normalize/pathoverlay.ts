@@ -10,6 +10,7 @@ import {stack} from '../stack.js';
 import {keys, omit, pick} from '../util.js';
 import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base.js';
 import {DEFAULT_REDUCED_OPACITY, initMarkdef} from '../compile/mark/init.js';
+import {getMarkPropOrConfig} from '../compile/common.js';
 
 type UnitSpecWithPathOverlay = GenericUnitSpec<Encoding<string>, Mark | MarkDef<'line' | 'area' | 'rule' | 'trail'>>;
 
@@ -119,10 +120,8 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
         ...(params ? {params} : {}),
         mark: dropLineAndPoint({
           ...(markDef.type === 'area' &&
-          markDef.opacity === undefined &&
-          markDef.fillOpacity === undefined &&
-          config[markDef.type]?.opacity === undefined &&
-          config[markDef.type]?.fillOpacity === undefined
+          getMarkPropOrConfig('opacity', markDef, config) == undefined &&
+          getMarkPropOrConfig('fillOpacity', markDef, config) == undefined
             ? {opacity: DEFAULT_REDUCED_OPACITY}
             : {}),
           ...markDef,
