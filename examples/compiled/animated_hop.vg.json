@@ -101,6 +101,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
+          "cursor": {"value": "pointer"},
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
