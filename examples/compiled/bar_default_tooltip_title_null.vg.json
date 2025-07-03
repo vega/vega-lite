@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Field definition's title is applied to both axis title and tooltip's field title. Meanwhile, axis.title is specific to axis.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {

@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -36,7 +36,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"b\"] < datum[\"lower_box_b\"] - 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"])) || (datum[\"b\"] > datum[\"upper_box_b\"] + 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]))"
+          "expr": "(datum['b'] < datum['lower_box_b'] - 1.5 * (datum['upper_box_b'] - datum['lower_box_b'])) || (datum['b'] > datum['upper_box_b'] + 1.5 * (datum['upper_box_b'] - datum['lower_box_b']))"
         },
         {
           "type": "filter",
@@ -50,7 +50,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"lower_box_b\"] - 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]) <= datum[\"b\"]) && (datum[\"b\"] <= datum[\"upper_box_b\"] + 1.5 * (datum[\"upper_box_b\"] - datum[\"lower_box_b\"]))"
+          "expr": "(datum['lower_box_b'] - 1.5 * (datum['upper_box_b'] - datum['lower_box_b']) <= datum['b']) && (datum['b'] <= datum['upper_box_b'] + 1.5 * (datum['upper_box_b'] - datum['lower_box_b']))"
         },
         {
           "type": "aggregate",
@@ -218,8 +218,8 @@
             "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": format(datum[\"a\"], \"\")}"
           },
           "xc": {"scale": "x", "field": "a"},
-          "yc": {"scale": "y", "field": "mid_box_b"},
           "width": {"value": 14},
+          "yc": {"scale": "y", "field": "mid_box_b"},
           "height": {"value": 1}
         }
       }

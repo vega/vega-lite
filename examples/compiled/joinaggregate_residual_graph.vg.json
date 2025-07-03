@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A dot plot showing each movie in the database, and the difference from the average movie rating. The display is sorted by year to visualize everything in sequential order. The graph is for all Movies before 2019.",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -48,7 +48,7 @@
           "stroke": {"scale": "color", "field": "RatingDelta"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Release Date: \" + (timeFormat(datum[\"Release Date\"], '%b %d, %Y')) + \"; Rating Delta: \" + (format(datum[\"RatingDelta\"], \"\"))"
+            "signal": "\"Release Date: \" + (timeFormat(datum[\"Release Date\"], \"%b %d, %Y\")) + \"; Rating Delta: \" + (format(datum[\"RatingDelta\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Release Date"},
           "y": {"scale": "y", "field": "RatingDelta"}

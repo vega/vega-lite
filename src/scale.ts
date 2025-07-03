@@ -1,24 +1,23 @@
-import {
-  isObject,
+import type {
+  ColorScheme,
   RangeEnum,
   ScaleBins,
   ScaleInterpolateEnum,
   ScaleInterpolateParams,
   SignalRef,
   TimeInterval,
-  TimeIntervalStep
+  TimeIntervalStep,
 } from 'vega';
-import type {ColorScheme} from 'vega-typings';
-import {isString} from 'vega-util';
-import * as CHANNEL from './channel';
-import {Channel, isColorChannel} from './channel';
-import {DateTime} from './datetime';
-import {ExprRef} from './expr';
-import {ScaleInvalidDataConfigMixins} from './invalid';
-import * as log from './log';
-import {ParameterExtent} from './selection';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
-import {contains, Flag, keys} from './util';
+import {isString, isObject} from 'vega-util';
+import * as CHANNEL from './channel.js';
+import {Channel, isColorChannel} from './channel.js';
+import {DateTime} from './datetime.js';
+import {ExprRef} from './expr.js';
+import {ScaleInvalidDataConfigMixins} from './invalid.js';
+import * as log from './log/index.js';
+import {ParameterExtent} from './selection.js';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type.js';
+import {contains, Flag, hasProperty, keys} from './util.js';
 
 export const ScaleType = {
   // Continuous - Quantitative
@@ -44,7 +43,7 @@ export const ScaleType = {
   // Discrete scales
   ORDINAL: 'ordinal',
   POINT: 'point',
-  BAND: 'band'
+  BAND: 'band',
 } as const;
 
 type ValueOf<T> = T[keyof T];
@@ -70,7 +69,7 @@ export const SCALE_CATEGORY_INDEX: Record<ScaleType, ScaleType | 'numeric' | 'or
   band: 'ordinal-position',
   quantile: 'discretizing',
   quantize: 'discretizing',
-  threshold: 'discretizing'
+  threshold: 'discretizing',
 };
 
 export const SCALE_TYPES: ScaleType[] = keys(SCALE_CATEGORY_INDEX);
@@ -111,7 +110,7 @@ const SCALE_PRECEDENCE_INDEX: Record<ScaleType, number> = {
   'bin-ordinal': 0,
   quantile: 0,
   quantize: 0,
-  threshold: 0
+  threshold: 0,
 };
 
 /**
@@ -126,13 +125,13 @@ export const QUANTITATIVE_SCALES = new Set<ScaleType>([
   'log',
   'pow',
   'sqrt',
-  'symlog'
+  'symlog',
 ]) as ReadonlySet<ScaleType>;
 
 export const CONTINUOUS_TO_CONTINUOUS_SCALES = new Set<ScaleType>([
   ...QUANTITATIVE_SCALES,
   'time',
-  'utc'
+  'utc',
 ]) as ReadonlySet<ScaleType>;
 
 export function isQuantitative(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' {
@@ -142,21 +141,21 @@ export function isQuantitative(type: ScaleType): type is 'linear' | 'log' | 'pow
 export const CONTINUOUS_TO_DISCRETE_SCALES = new Set<ScaleType>([
   'quantile',
   'quantize',
-  'threshold'
+  'threshold',
 ]) as ReadonlySet<ScaleType>;
 
 export const CONTINUOUS_DOMAIN_SCALES = new Set<ScaleType>([
   ...CONTINUOUS_TO_CONTINUOUS_SCALES,
   ...CONTINUOUS_TO_DISCRETE_SCALES,
   'sequential',
-  'identity'
+  'identity',
 ]) as ReadonlySet<ScaleType>;
 
 export const DISCRETE_DOMAIN_SCALES = new Set<ScaleType>([
   'ordinal',
   'bin-ordinal',
   'point',
-  'band'
+  'band',
 ]) as ReadonlySet<ScaleType>;
 
 export const TIME_SCALE_TYPES = new Set<ScaleType>(['time', 'utc']) as ReadonlySet<ScaleType>;
@@ -166,13 +165,13 @@ export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'bin-ord
 }
 
 export function hasContinuousDomain(
-  type: ScaleType
+  type: ScaleType,
 ): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' | 'time' | 'utc' | 'quantile' | 'quantize' | 'threshold' {
   return CONTINUOUS_DOMAIN_SCALES.has(type);
 }
 
 export function isContinuousToContinuous(
-  type: ScaleType
+  type: ScaleType,
 ): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' | 'time' | 'utc' {
   return CONTINUOUS_TO_CONTINUOUS_SCALES.has(type);
 }
@@ -257,6 +256,16 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
    * @maximum 1
    */
   rectBandPaddingInner?: number | ES;
+
+  /**
+   * Default inner padding for `x` and `y` band-ordinal scales of `"tick"` marks.
+   *
+   * __Default value:__ `0.25`
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  tickBandPaddingInner?: number | ES;
 
   /**
    * Default padding inner for xOffset/yOffset's band scales.
@@ -425,6 +434,22 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
    *
    */
   zero?: boolean;
+
+  /**
+   * Default framerate (frames per second) for time [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.
+   *
+   * __Default value:__ `2`
+   *
+   */
+  framesPerSecond?: number;
+
+  /**
+   * Default animation duration (in seconds) for time encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.
+   *
+   * __Default value:__ `5`
+   *
+   */
+  animationDuration?: number;
 }
 
 export const defaultScaleConfig: ScaleConfig<SignalRef> = {
@@ -432,6 +457,8 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
 
   barBandPaddingInner: 0.1,
   rectBandPaddingInner: 0,
+  tickBandPaddingInner: 0.25,
+
   bandWithNestedOffsetPaddingInner: 0.2,
   bandWithNestedOffsetPaddingOuter: 0.2,
 
@@ -451,7 +478,10 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
   quantileCount: 4,
   quantizeCount: 4,
 
-  zero: true
+  zero: true,
+
+  framesPerSecond: 2,
+  animationDuration: 5,
 };
 
 export interface SchemeParams {
@@ -483,11 +513,11 @@ export type Domain =
 export type Scheme = string | SchemeParams;
 
 export function isExtendedScheme(scheme: Scheme | SignalRef): scheme is SchemeParams {
-  return !isString(scheme) && !!scheme['name'];
+  return !isString(scheme) && hasProperty(scheme, 'name');
 }
 
 export function isParameterDomain(domain: Domain): domain is ParameterExtent {
-  return domain?.['param'];
+  return hasProperty(domain, 'param');
 }
 
 export interface DomainUnionWith {
@@ -499,7 +529,7 @@ export interface DomainUnionWith {
 }
 
 export function isDomainUnionWith(domain: Domain): domain is DomainUnionWith {
-  return domain?.['unionWith'];
+  return hasProperty(domain, 'unionWith');
 }
 
 export interface FieldRange {
@@ -761,7 +791,7 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale<any>> = {
   // band/point
   padding: 1,
   paddingInner: 1,
-  paddingOuter: 1
+  paddingOuter: 1,
 };
 
 export const SCALE_PROPERTIES = keys(SCALE_PROPERTY_INDEX);
@@ -817,9 +847,9 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
             'time',
             'utc', // zero is not meaningful for time
             'threshold', // threshold requires custom domain so zero does not matter
-            'quantile' // quantile depends on distribution so zero does not matter
+            'quantile', // quantile depends on distribution so zero does not matter
           ],
-          scaleType
+          scaleType,
         )
       );
   }
@@ -897,6 +927,8 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType, 
         return !hasNestedOffsetScale;
       }
       return false;
+    case CHANNEL.TIME:
+      return contains(['linear', 'band'], scaleType);
     case CHANNEL.SIZE: // TODO: size and opacity can support ordinal with more modification
     case CHANNEL.STROKEWIDTH:
     case CHANNEL.OPACITY:

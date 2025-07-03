@@ -1,8 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -31,7 +31,10 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "update": "20 * domain('xOffset').length / (1-0.2)"},
+    {
+      "name": "x_step",
+      "update": "20 * bandspace(domain('xOffset').length, 0, 0) / (1-0.2)"
+    },
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.2, 0.2) * x_step"
@@ -51,13 +54,13 @@
           "description": {
             "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
           },
-          "xc": {
+          "x": {
             "scale": "x",
             "field": "category",
             "offset": {"scale": "xOffset", "field": "group"}
           },
+          "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "yc": {"scale": "y", "field": "value"},
-          "width": {"value": 15},
           "height": {"value": 1}
         }
       }
@@ -82,10 +85,9 @@
     },
     {
       "name": "xOffset",
-      "type": "point",
+      "type": "band",
       "domain": {"data": "data_0", "field": "group", "sort": true},
-      "range": {"step": 20},
-      "paddingOuter": 0.5
+      "range": {"step": 20}
     },
     {
       "name": "color",

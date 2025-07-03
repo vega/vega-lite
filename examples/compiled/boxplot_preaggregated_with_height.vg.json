@@ -1,0 +1,228 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 200,
+  "title": {"text": "Body Mass of Penguin Species (g)", "frame": "group"},
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {
+          "Species": "Adelie",
+          "lower": 2850,
+          "q1": 3350,
+          "median": 3700,
+          "q3": 4000,
+          "upper": 4775,
+          "outliers": []
+        },
+        {
+          "Species": "Chinstrap",
+          "lower": 2700,
+          "q1": 3487.5,
+          "median": 3700,
+          "q3": 3950,
+          "upper": 4800,
+          "outliers": [2700, 4800]
+        },
+        {
+          "Species": "Gentoo",
+          "lower": 3950,
+          "q1": 4700,
+          "median": 5000,
+          "q3": 5500,
+          "upper": 6300,
+          "outliers": []
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"lower\"]) && isFinite(+datum[\"lower\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"q1\"]) && isFinite(+datum[\"q1\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"median\"]) && isFinite(+datum[\"median\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "source_0",
+      "transform": [
+        {"type": "flatten", "fields": ["outliers"], "as": ["outliers"]},
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"outliers\"]) && isFinite(+datum[\"outliers\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "black"},
+          "description": {
+            "signal": "\"lower: \" + (format(datum[\"lower\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; upper: \" + (format(datum[\"upper\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "lower"},
+          "x2": {"scale": "x", "field": "upper"},
+          "y": {"scale": "y", "field": "Species", "band": 0.5}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "Species"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"q1: \" + (format(datum[\"q1\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; q3: \" + (format(datum[\"q3\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "q1"},
+          "x2": {"scale": "x", "field": "q3"},
+          "y": {"scale": "y", "field": "Species"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"}
+        }
+      }
+    },
+    {
+      "name": "layer_2_marks",
+      "type": "rect",
+      "style": ["tick"],
+      "from": {"data": "data_3"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "white"},
+          "ariaRoleDescription": {"value": "tick"},
+          "description": {
+            "signal": "\"median: \" + (format(datum[\"median\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+          },
+          "y": {"scale": "y", "field": "Species"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"},
+          "xc": {"scale": "x", "field": "median"},
+          "width": {"value": 1}
+        }
+      }
+    },
+    {
+      "name": "layer_3_marks",
+      "type": "symbol",
+      "style": ["point", "boxplot-outliers"],
+      "from": {"data": "data_4"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"outliers: \" + (format(datum[\"outliers\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+          },
+          "x": {"scale": "x", "field": "outliers"},
+          "y": {"scale": "y", "field": "Species", "band": 0.5}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "lower"},
+          {"data": "data_1", "field": "upper"},
+          {"data": "data_2", "field": "q1"},
+          {"data": "data_2", "field": "q3"},
+          {"data": "data_3", "field": "median"},
+          {"data": "data_4", "field": "outliers"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "zero": false,
+      "nice": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "Species"},
+          {"data": "data_2", "field": "Species"},
+          {"data": "data_3", "field": "Species"},
+          {"data": "data_4", "field": "Species"}
+        ],
+        "sort": true
+      },
+      "range": [0, {"signal": "height"}],
+      "paddingInner": 0.25,
+      "paddingOuter": 0.125
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_2", "field": "Species", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {"scale": "y", "orient": "left", "grid": false, "zindex": 0}
+  ]
+}

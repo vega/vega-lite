@@ -1,20 +1,20 @@
-import {embedExample} from '.';
-import {TopLevelSpec} from '../../src';
+import {embedExample} from './index.js';
+import {TopLevelSpec} from '../../src/index.js';
 
 export function runStreamingExample(eleId: string) {
   const vlSpec: TopLevelSpec = {
-    $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+    $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
     data: {name: 'table'},
     autosize: {
-      resize: true
+      resize: true,
     },
     width: 400,
     mark: 'line',
     encoding: {
       x: {field: 'x', type: 'quantitative', scale: {zero: false}},
       y: {field: 'y', type: 'quantitative'},
-      color: {field: 'category', type: 'nominal'}
-    }
+      color: {field: 'category', type: 'nominal'},
+    },
   };
 
   const view = embedExample(eleId, vlSpec, false, false);
@@ -30,9 +30,9 @@ export function runStreamingExample(eleId: string) {
       const newVals = previousY.map((v, category) => ({
         x: counter,
         y: v + Math.round(Math.random() * 10 - category * 3),
-        category
+        category,
       }));
-      previousY = newVals.map(v => v.y);
+      previousY = newVals.map((v) => v.y);
       return newVals;
     };
   }

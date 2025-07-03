@@ -1,5 +1,5 @@
-import {geoshape} from '../../../src/compile/mark/geoshape';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {geoshape} from '../../../src/compile/mark/geoshape.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Geoshape', () => {
   describe('encode', () => {
@@ -7,36 +7,36 @@ describe('Mark: Geoshape', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'geoshape',
         projection: {
-          type: 'albersUsa'
+          type: 'albersUsa',
         },
         data: {
           url: 'data/us-10m.json',
           format: {
             type: 'topojson',
-            feature: 'states'
-          }
+            feature: 'states',
+          },
         },
         encoding: {
           color: {
-            value: 'black'
+            value: 'black',
           },
           opacity: {
-            value: 0.8
-          }
+            value: 0.8,
+          },
         },
-        config: {mark: {tooltip: null}}
+        config: {mark: {tooltip: null}},
       });
       const props = geoshape.encodeEntry(model);
       expect({
         ariaRoleDescription: {
-          value: 'geoshape'
+          value: 'geoshape',
         },
         fill: {
-          value: 'black'
+          value: 'black',
         },
         opacity: {
-          value: 0.8
-        }
+          value: 0.8,
+        },
       }).toEqual(props);
     });
   });

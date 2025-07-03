@@ -27,7 +27,8 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Deneb](https://deneb-viz.github.io), a Power BI custom visual with an editor for Vega-Lite or Vega specifications.
 - [VizLinter](https://vizlinter.idvxlab.com/), an online editor that detects and fixes encoding issues based on vega-lite-linter.
 - [Datapane](https://github.com/datapane/datapane), a Python framework for building interactive reports from open-source visualization formats such as Vega-Lite.
-- [Graphpad](https://www.figma.com/community/widget/1027276088284051809), an editor for creating Vega-Lite visualizations in the Figjam collaborative whiteboarding tool.
+- [Graphpad](https://www.figma.com/community/widget/1027276088284051809), an editor for creating Vega-Lite or Vega visualizations in the Figma and Figjam collaborative design/whiteboarding tools.
+- [Datadog](https://www.datadoghq.com/), the monitoring and security platform, has a browser editor for Vega-Lite visualizations in several places: in dashboards and notebooks through the [Wildcard Widget](https://www.datadoghq.com/blog/wildcard-widget/), and in low-code apps through [custom charts](https://docs.datadoghq.com/actions/app_builder/components/custom_charts/).
 
 ## Tools for Scaling Vega-Lite Visualizations
 
@@ -51,6 +52,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [ipyvega](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts in Jupyter Notebooks.
 - [VegaLite (Elixir bindings)](https://github.com/elixir-nx/vega_lite).
 - <span class="octicon octicon-star"></span> [VegaLite.jl](https://github.com/queryverse/VegaLite.jl) are Julia bindings to Vega and Vega-Lite.
+- [Deneb.jl](https://github.com/brucala/Deneb.jl) is a convenient Julia API for creating Vega-Lite visualizations.
 - [Vega-Lite "bindings" for R](https://github.com/hrbrmstr/vegalite), create Vega-Lite visualizations in R.
 - [vegaliteR](https://github.com/timelyportfolio/vegaliteR), vega-lite htmlwidget for R.
 - [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
@@ -70,6 +72,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vega-Lite-Linter](https://github.com/idvxlab/vega-lite-linter) is a python package to help users detect and fix encoding issues.
 - [VegaLite](https://github.com/JoshDavid/VegaLite) is a library for [Dyalog APL](https://www.dyalog.com) to build and render Vega-Lite specifications from your data.
 - [React Spectrum Charts](https://github.com/adobe/react-spectrum-charts) are declarative visualization components from Adobe using Vega and Vega-Lite.
+- [vega-view](https://github.com/cuprous-au/vega-view) displays [nushell](https://www.nushell.sh/) tables using Vega-Lite in a webview.
 
 ## Programming / Data Science Environment that supports Vega-Lite
 
@@ -81,6 +84,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Liminoid](https://liminoid.io/), toolkit for building interactive analytics applications with Python and WebAssembly. Can pass Python data to JavaScript callbacks which render Vega/Vega-Lite specifications.
 - [Neptune.ai](https://neptune.ai), machine learning experiment tracking tool with Vega-Lite and Altair visualizations.
 - [Livebook](https://github.com/elixir-nx/livebook), Interactive and collaborative code notebooks with Vega-Lite visualizations.
+- [Hex](https://hex.tech) is a data science platform that uses Vega-Lite visualizations.
 
 ## Tools that use Vega-Lite
 
@@ -124,3 +128,4 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [generator-veeg](https://github.com/millette/generator-veeg) is a Vega and Vega-Lite boilerplate generator for [Yeoman](https://yeoman.io/).
 - [Kroki](https://kroki.io/) is a service to render Vega and Vega-Lite as PNG, SVG, or PDF.
 - [vega_embed_flutter](https://pub.dev/packages/vega_embed_flutter), a flutter-web widget to embed Vega-Lite specs into flutter-web apps.
+- [vegalite-wordpress-plugin](https://github.com/wikimedia/vegalite-wordpress-plugin) enables viewing and editing Vega-Lite in a WordPress site.

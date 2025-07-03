@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "autosize": {"type": "fit-x", "contains": "padding"},
   "background": "white",
   "padding": 5,
@@ -24,10 +24,10 @@
   "signals": [
     {
       "name": "width",
-      "init": "isFinite(containerSize()[0]) ? containerSize()[0] : 200",
+      "init": "isFinite(containerSize()[0]) ? containerSize()[0] : 300",
       "on": [
         {
-          "update": "isFinite(containerSize()[0]) ? containerSize()[0] : 200",
+          "update": "isFinite(containerSize()[0]) ? containerSize()[0] : 300",
           "events": "window:resize"
         }
       ]

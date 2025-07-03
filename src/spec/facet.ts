@@ -1,13 +1,14 @@
-import {LayoutAlign, SignalRef} from 'vega';
-import {BinParams} from '../bin';
-import {ChannelDef, Field, FieldName, TypedFieldDef} from '../channeldef';
-import {ExprRef} from '../expr';
-import {Header} from '../header';
-import {EncodingSortField, SortArray, SortOrder} from '../sort';
-import {StandardType} from '../type';
-import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
-import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
-import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
+import type {LayoutAlign, SignalRef} from 'vega';
+import {BinParams} from '../bin.js';
+import {ChannelDef, Field, FieldName, TypedFieldDef} from '../channeldef.js';
+import {ExprRef} from '../expr.js';
+import {Header} from '../header.js';
+import {EncodingSortField, SortArray, SortOrder} from '../sort.js';
+import {StandardType} from '../type.js';
+import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base.js';
+import {GenericLayerSpec, NormalizedLayerSpec} from './layer.js';
+import {GenericUnitSpec, NormalizedUnitSpec} from './unit.js';
+import {hasProperty} from '../util.js';
 
 export interface FacetFieldDef<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   extends TypedFieldDef<F, StandardType, boolean | BinParams | null> {
@@ -38,7 +39,7 @@ export interface FacetFieldDef<F extends Field, ES extends ExprRef | SignalRef =
 
 export type FacetEncodingFieldDef<
   F extends Field,
-  ES extends ExprRef | SignalRef = ExprRef | SignalRef
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef,
 > = FacetFieldDef<F, ES> & GenericCompositionLayoutWithColumns;
 
 export interface RowColumnEncodingFieldDef<F extends Field, ES extends ExprRef | SignalRef>
@@ -74,7 +75,7 @@ export interface RowColumnEncodingFieldDef<F extends Field, ES extends ExprRef |
 
 export interface FacetMapping<
   F extends Field,
-  FD extends FacetFieldDef<F, ExprRef | SignalRef> = FacetFieldDef<F, ExprRef | SignalRef>
+  FD extends FacetFieldDef<F, ExprRef | SignalRef> = FacetFieldDef<F, ExprRef | SignalRef>,
 > {
   /**
    * A field definition for the vertical facet of trellis plots.
@@ -88,9 +89,9 @@ export interface FacetMapping<
 }
 
 export function isFacetMapping<F extends Field, ES extends ExprRef | SignalRef>(
-  f: FacetFieldDef<F, ES> | FacetMapping<F>
+  f: FacetFieldDef<F, ES> | FacetMapping<F>,
 ): f is FacetMapping<F> {
-  return 'row' in f || 'column' in f;
+  return hasProperty(f, 'row') || hasProperty(f, 'column');
 }
 
 /**
@@ -107,7 +108,7 @@ export interface EncodingFacetMapping<F extends Field, ES extends ExprRef | Sign
 }
 
 export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is FacetFieldDef<F, any> {
-  return !!channelDef && 'header' in channelDef;
+  return hasProperty(channelDef, 'header');
 }
 
 /**
@@ -137,5 +138,5 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
 export type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec, FieldName>;
 
 export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any, any> {
-  return 'facet' in spec;
+  return hasProperty(spec, 'facet');
 }

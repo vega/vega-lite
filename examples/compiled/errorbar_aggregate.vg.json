@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -87,8 +87,8 @@
             "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"min_people\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
-          "yc": {"scale": "y", "field": "min_people"},
           "width": {"value": 5},
+          "yc": {"scale": "y", "field": "min_people"},
           "height": {"value": 1}
         }
       }
@@ -106,8 +106,8 @@
             "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"max_people\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
-          "yc": {"scale": "y", "field": "max_people"},
           "width": {"value": 5},
+          "yc": {"scale": "y", "field": "max_people"},
           "height": {"value": 1}
         }
       }

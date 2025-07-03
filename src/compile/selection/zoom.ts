@@ -1,19 +1,19 @@
 import {NewSignal} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {stringValue} from 'vega-util';
-import {SelectionComponent} from '.';
-import {ScaleChannel, X, Y} from '../../channel';
-import {UnitModel} from '../unit';
-import {BRUSH as INTERVAL_BRUSH} from './interval';
-import {SelectionProjection} from './project';
-import {default as scalesCompiler, domain} from './scales';
-import {SelectionCompiler} from '.';
+import {SelectionComponent} from './index.js';
+import {ScaleChannel, X, Y} from '../../channel.js';
+import {UnitModel} from '../unit.js';
+import {BRUSH as INTERVAL_BRUSH} from './interval.js';
+import {SelectionProjection} from './project.js';
+import {default as scalesCompiler, domain} from './scales.js';
+import {SelectionCompiler} from './index.js';
 
 const ANCHOR = '_zoom_anchor';
 const DELTA = '_zoom_delta';
 
 const zoom: SelectionCompiler<'interval'> = {
-  defined: selCmpt => {
+  defined: (selCmpt) => {
     return selCmpt.type === 'interval' && selCmpt.zoom;
   },
 
@@ -27,7 +27,7 @@ const zoom: SelectionCompiler<'interval'> = {
     let events = parseSelector(selCmpt.zoom, 'scope');
 
     if (!boundScales) {
-      events = events.map(e => ((e.markname = name + INTERVAL_BRUSH), e));
+      events = events.map((e) => ((e.markname = name + INTERVAL_BRUSH), e));
     }
 
     signals.push(
@@ -38,13 +38,11 @@ const zoom: SelectionCompiler<'interval'> = {
             events,
             update: !boundScales
               ? `{x: x(unit), y: y(unit)}`
-              : '{' +
-                [sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : '']
-                  .filter(expr => expr)
-                  .join(', ') +
-                '}'
-          }
-        ]
+              : `{${[sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : '']
+                  .filter((expr) => expr)
+                  .join(', ')}}`,
+          },
+        ],
       },
       {
         name: delta,
@@ -52,10 +50,10 @@ const zoom: SelectionCompiler<'interval'> = {
           {
             events,
             force: true,
-            update: 'pow(1.001, event.deltaY * pow(16, event.deltaMode))'
-          }
-        ]
-      }
+            update: 'pow(1.001, event.deltaY * pow(16, event.deltaMode))',
+          },
+        ],
+      },
     );
 
     if (x !== undefined) {
@@ -67,7 +65,7 @@ const zoom: SelectionCompiler<'interval'> = {
     }
 
     return signals;
-  }
+  },
 };
 
 export default zoom;
@@ -77,15 +75,15 @@ function onDelta(
   selCmpt: SelectionComponent,
   proj: SelectionProjection,
   size: 'width' | 'height',
-  signals: NewSignal[]
+  signals: NewSignal[],
 ) {
   const name = selCmpt.name;
   const channel = proj.channel as ScaleChannel;
   const boundScales = scalesCompiler.defined(selCmpt);
-  const signal = signals.filter(s => s.name === proj.signals[boundScales ? 'data' : 'visual'])[0];
+  const signal = signals.find((s) => s.name === proj.signals[boundScales ? 'data' : 'visual']);
   const sizeSg = model.getSizeSignalRef(size).signal;
   const scaleCmpt = model.getScaleComponent(channel);
-  const scaleType = scaleCmpt && scaleCmpt.get('type');
+  const scaleType = scaleCmpt?.get('type');
   const base = boundScales ? domain(model, channel) : signal.name;
   const delta = name + DELTA;
   const anchor = `${name}${ANCHOR}.${channel}`;
@@ -110,6 +108,6 @@ function onDelta(
 
   signal.on.push({
     events: {signal: delta},
-    update: boundScales ? update : `clampRange(${update}, 0, ${sizeSg})`
+    update: boundScales ? update : `clampRange(${update}, 0, ${sizeSg})`,
   });
 }

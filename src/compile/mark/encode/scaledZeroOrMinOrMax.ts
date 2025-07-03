@@ -1,5 +1,5 @@
-import {VgValueRef} from '../../../vega.schema';
-import {ScaleComponent} from '../../scale/component';
+import {VgValueRef} from '../../../vega.schema.js';
+import {ScaleComponent} from '../../scale/component.js';
 
 export interface ScaledZeroOrMinOrMaxProps {
   scaleName: string;
@@ -22,7 +22,7 @@ export function scaledZeroOrMinOrMax({scaleName, scale, mode}: ScaledZeroOrMinOr
   if (domainHasZero === 'definitely') {
     return {
       scale: scaleName,
-      value: 0
+      value: 0,
     };
   } else if (domainHasZero === 'maybe') {
     const nonZeroValue = mode === 'zeroOrMin' ? min : max;

@@ -1,0 +1,234 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {"name": "color_selection_store"},
+    {
+      "name": "source_0",
+      "url": "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/cars.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!length(data(\"color_selection_store\")) || vlSelectionTest(\"color_selection_store\", datum)"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "color_selection_Origin_legend",
+      "value": null,
+      "on": [
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "click",
+              "markname": "Origin_legend_symbols"
+            },
+            {
+              "source": "view",
+              "type": "click",
+              "markname": "Origin_legend_labels"
+            },
+            {
+              "source": "view",
+              "type": "click",
+              "markname": "Origin_legend_entries"
+            }
+          ],
+          "update": "isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value",
+          "force": true
+        },
+        {
+          "events": [{"source": "view", "type": "click"}],
+          "update": "!event.item || !datum ? null : color_selection_Origin_legend",
+          "force": true
+        }
+      ]
+    },
+    {
+      "name": "color_selection",
+      "update": "vlSelectionResolve(\"color_selection_store\", \"union\", true, true)"
+    },
+    {"name": "computed_domain", "update": "domain('color')"},
+    {"name": "color_domain", "react": false, "update": "computed_domain"},
+    {
+      "name": "color_selection_tuple",
+      "update": "color_selection_Origin_legend !== null ? {fields: color_selection_tuple_fields, values: [color_selection_Origin_legend]} : null"
+    },
+    {
+      "name": "color_selection_tuple_fields",
+      "value": [{"field": "Origin", "channel": "color", "type": "E"}]
+    },
+    {
+      "name": "color_selection_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": {"merge": [{"source": "view", "type": "click"}]},
+          "update": "event.shiftKey"
+        }
+      ]
+    },
+    {
+      "name": "color_selection_modify",
+      "on": [
+        {
+          "events": {"signal": "color_selection_tuple"},
+          "update": "modify(\"color_selection_store\", color_selection_toggle ? null : color_selection_tuple, color_selection_toggle ? null : true, color_selection_toggle ? color_selection_tuple : null)"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["point"],
+      "interactive": true,
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"scale": "color", "field": "Origin"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+          },
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Horsepower"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"signal": "color_domain"},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Miles_per_Gallon",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "symbolType": "circle",
+      "title": "Origin",
+      "encode": {
+        "labels": {
+          "name": "Origin_legend_labels",
+          "interactive": true,
+          "update": {
+            "opacity": [
+              {
+                "test": "(!length(data(\"color_selection_store\")) || (color_selection[\"Origin\"] && indexof(color_selection[\"Origin\"], datum.value) >= 0))",
+                "value": 1
+              },
+              {"value": 0.35}
+            ]
+          }
+        },
+        "symbols": {
+          "name": "Origin_legend_symbols",
+          "interactive": true,
+          "update": {
+            "opacity": [
+              {
+                "test": "(!length(data(\"color_selection_store\")) || (color_selection[\"Origin\"] && indexof(color_selection[\"Origin\"], datum.value) >= 0))",
+                "value": 0.7
+              },
+              {"value": 0.35}
+            ]
+          }
+        },
+        "entries": {
+          "name": "Origin_legend_entries",
+          "interactive": true,
+          "update": {"fill": {"value": "transparent"}}
+        }
+      }
+    }
+  ]
+}

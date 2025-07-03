@@ -1,10 +1,15 @@
 import {Orientation, SignalRef} from 'vega';
-import {isBinned, isBinning} from '../../bin';
-import {isFieldDef, isNumericDataDef, isUnbinnedQuantitativeFieldOrDatumDef, isTypedFieldDef} from '../../channeldef';
-import {Config} from '../../config';
-import {Encoding, isAggregate} from '../../encoding';
-import {replaceExprRef} from '../../expr';
-import * as log from '../../log';
+import {isBinned, isBinning} from '../../bin.js';
+import {
+  isFieldDef,
+  isNumericDataDef,
+  isUnbinnedQuantitativeFieldOrDatumDef,
+  isTypedFieldDef,
+} from '../../channeldef.js';
+import {Config} from '../../config.js';
+import {Encoding, isAggregate} from '../../encoding.js';
+import {replaceExprRef} from '../../expr.js';
+import * as log from '../../log/index.js';
 import {
   AREA,
   BAR,
@@ -19,11 +24,11 @@ import {
   RULE,
   SQUARE,
   TEXT,
-  TICK
-} from '../../mark';
-import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {contains, getFirstDefined} from '../../util';
-import {getMarkConfig, getMarkPropOrConfig} from '../common';
+  TICK,
+} from '../../mark.js';
+import {QUANTITATIVE, TEMPORAL} from '../../type.js';
+import {contains, getFirstDefined} from '../../util.js';
+import {getMarkConfig, getMarkPropOrConfig} from '../common.js';
 
 export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>, config: Config<SignalRef>) {
   // FIXME: markDef expects that exprRefs are replaced recursively but replaceExprRef only replaces the top level
@@ -41,7 +46,7 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
     if (cornerRadiusEnd !== undefined) {
       const newProps =
         (markDef.orient === 'horizontal' && encoding.x2) || (markDef.orient === 'vertical' && encoding.y2)
-          ? ['cornerRadius']
+          ? (['cornerRadius'] as const)
           : BAR_CORNER_RADIUS_END_INDEX[markDef.orient];
 
       for (const newProp of newProps) {

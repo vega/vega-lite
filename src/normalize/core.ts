@@ -1,37 +1,37 @@
 import type {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
-import {COLUMN, FACET, ROW} from '../channel';
-import {Field, FieldName, hasConditionalFieldOrDatumDef, isFieldOrDatumDef, isValueDef} from '../channeldef';
-import {SharedCompositeEncoding} from '../compositemark';
-import {boxPlotNormalizer} from '../compositemark/boxplot';
-import {errorBandNormalizer} from '../compositemark/errorband';
-import {errorBarNormalizer} from '../compositemark/errorbar';
-import {channelHasField, Encoding} from '../encoding';
-import {ExprRef} from '../expr';
-import * as log from '../log';
-import {Projection} from '../projection';
-import {FacetedUnitSpec, GenericSpec, LayerSpec, UnitSpec} from '../spec';
-import {GenericCompositionLayoutWithColumns} from '../spec/base';
-import {GenericConcatSpec} from '../spec/concat';
+import {COLUMN, FACET, ROW} from '../channel.js';
+import {Field, FieldName, hasConditionalFieldOrDatumDef, isFieldOrDatumDef, isValueDef} from '../channeldef.js';
+import {SharedCompositeEncoding} from '../compositemark/index.js';
+import {boxPlotNormalizer} from '../compositemark/boxplot.js';
+import {errorBandNormalizer} from '../compositemark/errorband.js';
+import {errorBarNormalizer} from '../compositemark/errorbar.js';
+import {channelHasField, Encoding} from '../encoding.js';
+import {ExprRef} from '../expr.js';
+import * as log from '../log/index.js';
+import {Projection} from '../projection.js';
+import {FacetedUnitSpec, GenericSpec, LayerSpec, UnitSpec} from '../spec/index.js';
+import {GenericCompositionLayoutWithColumns} from '../spec/base.js';
+import {GenericConcatSpec} from '../spec/concat.js';
 import {
   FacetEncodingFieldDef,
   FacetFieldDef,
   FacetMapping,
   GenericFacetSpec,
   isFacetMapping,
-  NormalizedFacetSpec
-} from '../spec/facet';
-import {NormalizedSpec} from '../spec/index';
-import {NormalizedLayerSpec} from '../spec/layer';
-import {SpecMapper} from '../spec/map';
-import {isLayerRepeatSpec, LayerRepeatSpec, NonLayerRepeatSpec, RepeatSpec} from '../spec/repeat';
-import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
-import {isEmpty, keys, omit, varName} from '../util';
-import {isSignalRef} from '../vega.schema';
-import {NonFacetUnitNormalizer, NormalizerParams} from './base';
-import {PathOverlayNormalizer} from './pathoverlay';
-import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from './repeater';
-import {RuleForRangedLineNormalizer} from './ruleforrangedline';
+  NormalizedFacetSpec,
+} from '../spec/facet.js';
+import {NormalizedSpec} from '../spec/index.js';
+import {NormalizedLayerSpec} from '../spec/layer.js';
+import {SpecMapper} from '../spec/map.js';
+import {isLayerRepeatSpec, LayerRepeatSpec, NonLayerRepeatSpec, RepeatSpec} from '../spec/repeat.js';
+import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit.js';
+import {isEmpty, keys, omit, varName} from '../util.js';
+import {isSignalRef} from '../vega.schema.js';
+import {NonFacetUnitNormalizer, NormalizerParams} from './base.js';
+import {PathOverlayNormalizer} from './pathoverlay.js';
+import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from './repeater.js';
+import {RuleForRangedLineNormalizer} from './ruleforrangedline.js';
 
 export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec<Field>, LayerSpec<Field>> {
   private nonFacetUnitNormalizers: NonFacetUnitNormalizer<any>[] = [
@@ -39,7 +39,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     errorBarNormalizer,
     errorBandNormalizer,
     new PathOverlayNormalizer(),
-    new RuleForRangedLineNormalizer()
+    new RuleForRangedLineNormalizer(),
   ];
 
   public map(spec: GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>, params: NormalizerParams) {
@@ -65,8 +65,8 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
     const specWithReplacedEncoding = {
       ...spec,
-      ...(spec.name ? {name: [params.repeaterPrefix, spec.name].filter(n => n).join('_')} : {}),
-      ...(encoding ? {encoding} : {})
+      ...(spec.name ? {name: [params.repeaterPrefix, spec.name].filter((n) => n).join('_')} : {}),
+      ...(encoding ? {encoding} : {}),
     };
 
     if (parentEncoding || parentProjection) {
@@ -86,7 +86,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
   protected mapRepeat(
     spec: RepeatSpec,
-    params: NormalizerParams
+    params: NormalizerParams,
   ): GenericConcatSpec<NormalizedSpec> | NormalizedLayerSpec {
     if (isLayerRepeatSpec(spec)) {
       return this.mapLayerRepeat(spec, params);
@@ -97,7 +97,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
   private mapLayerRepeat(
     spec: LayerRepeatSpec,
-    params: NormalizerParams
+    params: NormalizerParams,
   ): GenericConcatSpec<NormalizedSpec> | NormalizedLayerSpec {
     const {repeat, spec: childSpec, ...rest} = spec;
     const {row, column, layer} = repeat;
@@ -110,33 +110,33 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           ...spec,
           repeat: {
             ...(row ? {row} : {}),
-            ...(column ? {column} : {})
+            ...(column ? {column} : {}),
           },
           spec: {
             repeat: {layer},
-            spec: childSpec
-          }
+            spec: childSpec,
+          },
         },
-        params
+        params,
       );
     } else {
       return {
         ...rest,
-        layer: layer.map(layerValue => {
+        layer: layer.map((layerValue) => {
           const childRepeater = {
             ...repeater,
-            layer: layerValue
+            layer: layerValue,
           };
 
           const childName = `${(childSpec.name ? `${childSpec.name}_` : '') + repeaterPrefix}child__layer_${varName(
-            layerValue
+            layerValue,
           )}`;
 
           const child = this.mapLayerOrUnit(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
           child.name = childName;
 
           return child;
-        })
+        }),
       };
     }
   }
@@ -167,17 +167,14 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
             repeat: repeatValue,
             row: rowValue,
             column: columnValue,
-            layer: repeater.layer
+            layer: repeater.layer,
           };
 
-          const childName =
-            (childSpec.name ? `${childSpec.name}_` : '') +
-            repeaterPrefix +
-            'child__' +
-            (isArray(repeat)
+          const childName = `${(childSpec.name ? `${childSpec.name}_` : '') + repeaterPrefix}child__${
+            isArray(repeat)
               ? `${varName(repeatValue)}`
-              : (repeat.row ? `row_${varName(rowValue)}` : '') +
-                (repeat.column ? `column_${varName(columnValue)}` : ''));
+              : (repeat.row ? `row_${varName(rowValue)}` : '') + (repeat.column ? `column_${varName(columnValue)}` : '')
+          }`;
 
           const child = this.map(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
           child.name = childName;
@@ -194,13 +191,13 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       align: 'all',
       ...remainingProperties,
       columns,
-      concat
+      concat,
     };
   }
 
   protected mapFacet(
     spec: GenericFacetSpec<UnitSpec<Field>, LayerSpec<Field>, Field>,
-    params: NormalizerParams
+    params: NormalizerParams,
   ): GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec, FieldName> {
     const {facet} = spec;
 
@@ -215,23 +212,23 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
   private mapUnitWithParentEncodingOrProjection(
     spec: FacetedUnitSpec<Field>,
-    params: NormalizerParams
+    params: NormalizerParams,
   ): NormalizedUnitSpec | NormalizedLayerSpec {
     const {encoding, projection} = spec;
     const {parentEncoding, parentProjection, config} = params;
     const mergedProjection = mergeProjection({parentProjection, projection});
     const mergedEncoding = mergeEncoding({
       parentEncoding,
-      encoding: replaceRepeaterInEncoding(encoding, params.repeater)
+      encoding: replaceRepeaterInEncoding(encoding, params.repeater),
     });
 
     return this.mapUnit(
       {
         ...spec,
         ...(mergedProjection ? {projection: mergedProjection} : {}),
-        ...(mergedEncoding ? {encoding: mergedEncoding} : {})
+        ...(mergedEncoding ? {encoding: mergedEncoding} : {}),
       },
-      {config}
+      {config},
     );
   }
 
@@ -261,10 +258,10 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           ...(projection ? {projection} : {}),
           mark,
           encoding: newEncoding,
-          ...(params ? {params} : {})
-        }
+          ...(params ? {params} : {}),
+        },
       },
-      normParams
+      normParams,
     );
   }
 
@@ -274,7 +271,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       column: FacetEncodingFieldDef<Field>;
       facet: FacetEncodingFieldDef<Field>;
     },
-    params: NormalizerParams
+    params: NormalizerParams,
   ): {facetMapping: FacetMapping<FieldName> | FacetFieldDef<FieldName>; layout: GenericCompositionLayoutWithColumns} {
     const {row, column, facet} = facets;
 
@@ -283,8 +280,8 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
         log.warn(log.message.facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
       }
 
-      const facetMapping = {};
-      const layout = {};
+      const facetMapping: any = {};
+      const layout: any = {};
 
       for (const channel of [ROW, COLUMN]) {
         const def = facets[channel];
@@ -310,15 +307,15 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           ...(align ? {align} : {}),
           ...(center ? {center} : {}),
           ...(spacing ? {spacing} : {}),
-          ...(columns ? {columns} : {})
-        }
+          ...(columns ? {columns} : {}),
+        },
       };
     }
   }
 
   public mapLayer(
     spec: LayerSpec<Field>,
-    {parentEncoding, parentProjection, ...otherParams}: NormalizerParams
+    {parentEncoding, parentProjection, ...otherParams}: NormalizerParams,
   ): NormalizedLayerSpec {
     // Special handling for extended layer spec
 
@@ -326,14 +323,14 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     const params: NormalizerParams = {
       ...otherParams,
       parentEncoding: mergeEncoding({parentEncoding, encoding, layer: true}),
-      parentProjection: mergeProjection({parentProjection, projection})
+      parentProjection: mergeProjection({parentProjection, projection}),
     };
     return super.mapLayer(
       {
         ...rest,
-        ...(spec.name ? {name: [params.repeaterPrefix, spec.name].filter(n => n).join('_')} : {})
+        ...(spec.name ? {name: [params.repeaterPrefix, spec.name].filter((n) => n).join('_')} : {}),
       },
-      params
+      params,
     );
   }
 }
@@ -341,7 +338,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 function mergeEncoding({
   parentEncoding,
   encoding = {},
-  layer
+  layer,
 }: {
   parentEncoding: SharedCompositeEncoding<any>;
   encoding: SharedCompositeEncoding<any> | Encoding<any>;
@@ -351,7 +348,7 @@ function mergeEncoding({
   if (parentEncoding) {
     const channels = new Set([...keys(parentEncoding), ...keys(encoding)]);
     for (const channel of channels) {
-      const channelDef = encoding[channel];
+      const channelDef = (encoding as any)[channel];
       const parentChannelDef = parentEncoding[channel];
 
       if (isFieldOrDatumDef(channelDef)) {
@@ -359,7 +356,7 @@ function mergeEncoding({
         // Note that parentChannelDef doesn't have to be a field/datum def if the channelDef is already one.
         const mergedChannelDef = {
           ...parentChannelDef,
-          ...channelDef
+          ...channelDef,
         };
         merged[channel] = mergedChannelDef;
       } else if (hasConditionalFieldOrDatumDef(channelDef)) {
@@ -367,8 +364,8 @@ function mergeEncoding({
           ...channelDef,
           condition: {
             ...parentChannelDef,
-            ...channelDef.condition
-          }
+            ...channelDef.condition,
+          },
         };
       } else if (channelDef || channelDef === null) {
         merged[channel] = channelDef;

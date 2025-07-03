@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {"url": "data/barley.json"},
   "transform": [
     {
@@ -10,11 +10,11 @@
       "groupby": ["variety", "variety"]
     },
     {
-      "calculate": "datum[\"center_yield\"] + datum[\"extent_yield\"]",
+      "calculate": "datum['center_yield'] + datum['extent_yield']",
       "as": "upper_yield"
     },
     {
-      "calculate": "datum[\"center_yield\"] - datum[\"extent_yield\"]",
+      "calculate": "datum['center_yield'] - datum['extent_yield']",
       "as": "lower_yield"
     }
   ],

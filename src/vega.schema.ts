@@ -39,13 +39,13 @@ import type {
   TimeScale,
   Title as VgTitle,
   Transforms as VgTransform,
-  UnionSortField as VgUnionSortField
+  UnionSortField as VgUnionSortField,
 } from 'vega';
 import {isArray} from 'vega-util';
-import {Value} from './channeldef';
-import {ExprRef} from './expr';
-import {SortOrder} from './sort';
-import {Dict, Flag, keys} from './util';
+import {Value} from './channeldef.js';
+import {ExprRef} from './expr.js';
+import {SortOrder} from './sort.js';
+import {Dict, Flag, hasProperty, keys} from './util.js';
 
 export type {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
@@ -87,7 +87,7 @@ export type VgScaleDataRefWithSort = ScaleDataRef & {
 };
 
 export function isSignalRef(o: any): o is SignalRef {
-  return !!o?.signal;
+  return hasProperty(o, 'signal');
 }
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
@@ -121,7 +121,7 @@ export type VgMultiFieldsRefWithSort = ScaleMultiFieldsRef & {
 export type VgRange = RangeScheme | ScaleData | RangeBand | RangeRaw;
 
 export function isVgRangeStep(range: VgRange): range is VgRangeStep {
-  return !!range['step'];
+  return hasProperty(range, 'step');
 }
 
 export interface VgRangeStep {
@@ -193,21 +193,21 @@ export interface VgLayout {
 
 export function isDataRefUnionedDomain(domain: VgDomain): domain is VgScaleMultiDataRefWithSort {
   if (!isArray(domain)) {
-    return 'fields' in domain && !('data' in domain);
+    return hasProperty(domain, 'fields') && !hasProperty(domain, 'data');
   }
   return false;
 }
 
 export function isFieldRefUnionDomain(domain: VgDomain): domain is VgMultiFieldsRefWithSort {
   if (!isArray(domain)) {
-    return 'fields' in domain && 'data' in domain;
+    return hasProperty(domain, 'fields') && hasProperty(domain, 'data');
   }
   return false;
 }
 
 export function isDataRefDomain(domain: VgDomain | any): domain is VgScaleDataRefWithSort {
   if (!isArray(domain)) {
-    return 'field' in domain && 'data' in domain;
+    return hasProperty(domain, 'field') && hasProperty(domain, 'data');
   }
   return false;
 }
@@ -264,7 +264,6 @@ export type VgEncodeChannel =
   | 'fontStyle'
   | 'tooltip'
   | 'href'
-  | 'cursor'
   | 'defined'
   | 'cornerRadius'
   | 'cornerRadiusTopLeft'
@@ -343,7 +342,7 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof MarkConfig> = {
   width: 1,
   height: 1,
   url: 1,
-  smooth: 1
+  smooth: 1,
 
   // commented below are vg channel that do not have mark config.
   // x: 1,
@@ -371,7 +370,7 @@ export const VG_MARK_INDEX: Flag<Mark['type']> = {
   shape: 1,
   symbol: 1,
   text: 1,
-  trail: 1
+  trail: 1,
 };
 
 // Vega's cornerRadius channels.
@@ -380,7 +379,7 @@ export const VG_CORNERRADIUS_CHANNELS = [
   'cornerRadiusTopLeft',
   'cornerRadiusTopRight',
   'cornerRadiusBottomLeft',
-  'cornerRadiusBottomRight'
+  'cornerRadiusBottomRight',
 ] as const;
 
 export interface VgComparator {

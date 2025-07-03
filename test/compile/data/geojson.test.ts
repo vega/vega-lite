@@ -1,8 +1,8 @@
 import {FieldRef, GeoJSONTransform, Vector2} from 'vega';
-import {GeoJSONNode} from '../../../src/compile/data/geojson';
-import {contains, every} from '../../../src/util';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {GeoJSONNode} from '../../../src/compile/data/geojson.js';
+import {contains, every} from '../../../src/util.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/geojson', () => {
   it('should make transform and assemble correctly', () => {
@@ -10,20 +10,20 @@ describe('compile/data/geojson', () => {
       data: {
         url: 'data/zipcodes.csv',
         format: {
-          type: 'csv'
-        }
+          type: 'csv',
+        },
       },
       mark: 'circle',
       encoding: {
         longitude: {
           field: 'longitude',
-          type: 'quantitative'
+          type: 'quantitative',
         },
         latitude: {
           field: 'latitude',
-          type: 'quantitative'
-        }
-      }
+          type: 'quantitative',
+        },
+      },
     });
 
     const root = new PlaceholderDataFlowNode(null);
@@ -40,7 +40,7 @@ describe('compile/data/geojson', () => {
 
     expect(geoJSONTransform.type).toBe('geojson');
     expect(
-      every(['longitude', 'latitude'], field => contains(geoJSONTransform.fields as Vector2<FieldRef>, field))
+      every(['longitude', 'latitude'], (field) => contains(geoJSONTransform.fields as Vector2<FieldRef>, field)),
     ).toBe(true);
     expect(geoJSONTransform.geojson).toBeUndefined();
   });
@@ -51,8 +51,8 @@ describe('compile/data/geojson', () => {
       mark: 'geoshape',
       encoding: {
         shape: {field: 'geo', type: 'geojson'},
-        color: {field: 'state', type: 'nominal'}
-      }
+        color: {field: 'state', type: 'nominal'},
+      },
     });
 
     const root = new PlaceholderDataFlowNode(null);
@@ -67,7 +67,7 @@ describe('compile/data/geojson', () => {
 
     expect(transforms[0]).toEqual({
       type: 'filter',
-      expr: 'isValid(datum["geo"])'
+      expr: 'isValid(datum["geo"])',
     });
 
     const geoJSONTransform = transforms[1] as GeoJSONTransform;
@@ -81,24 +81,24 @@ describe('compile/data/geojson', () => {
       data: {
         url: 'data/zipcodes.csv',
         format: {
-          type: 'csv'
-        }
+          type: 'csv',
+        },
       },
       projection: {
         type: 'mercator',
-        scale: 1000
+        scale: 1000,
       },
       mark: 'circle',
       encoding: {
         longitude: {
           field: 'longitude',
-          type: 'quantitative'
+          type: 'quantitative',
         },
         latitude: {
           field: 'latitude',
-          type: 'quantitative'
-        }
-      }
+          type: 'quantitative',
+        },
+      },
     });
     model.parse();
 

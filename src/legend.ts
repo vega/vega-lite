@@ -1,17 +1,17 @@
-import {
+import type {
   BaseLegend,
   LabelOverlap,
   Legend as VgLegend,
   LegendConfig as VgLegendConfig,
   LegendOrient,
   Orientation,
-  SignalRef
+  SignalRef,
 } from 'vega';
-import {DateTime} from './datetime';
-import {ExprRef} from './expr';
-import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
-import {Flag, keys} from './util';
-import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
+import {DateTime} from './datetime.js';
+import {ExprRef} from './expr.js';
+import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide.js';
+import {Flag, keys} from './util.js';
+import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema.js';
 
 export const LEGEND_SCALE_CHANNELS = [
   'size',
@@ -20,7 +20,7 @@ export const LEGEND_SCALE_CHANNELS = [
   'stroke',
   'strokeDash',
   'strokeWidth',
-  'opacity'
+  'opacity',
 ] as const;
 
 type BaseLegendNoValueRefs<ES extends ExprRef | SignalRef> = MapExcludeValueRefAndReplaceSignalWith<BaseLegend, ES>;
@@ -138,7 +138,7 @@ interface LegendMixins<ES extends ExprRef | SignalRef> {
   /**
    * The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used. If set to `"greedy"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).
    *
-   * __Default value:__ `"greedy"` for `log scales otherwise `true`.
+   * __Default value:__ `"greedy"` for log scales otherwise `true`.
    */
   labelOverlap?: LabelOverlap | ES; // override comment since our default differs from Vega
 
@@ -195,7 +195,7 @@ export const defaultLegendConfig: LegendConfig<SignalRef> = {
   gradientHorizontalMinLength: 100,
   gradientVerticalMaxLength: 200,
   gradientVerticalMinLength: 64, // This is Vega's minimum.
-  unselectedOpacity: 0.35
+  unselectedOpacity: 0.35,
 };
 
 export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend<any>)> = {
@@ -263,7 +263,7 @@ export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend<any>)> 
   titlePadding: 1,
   type: 1,
   values: 1,
-  zindex: 1
+  zindex: 1,
 };
 
 export const LEGEND_PROPERTIES = keys(COMMON_LEGEND_PROPERTY_INDEX);

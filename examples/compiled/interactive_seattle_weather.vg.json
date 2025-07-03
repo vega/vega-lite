@@ -1,12 +1,12 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 600,
   "title": {"text": "Seattle Weather, 2012-2015", "anchor": "start"},
   "data": [
-    {"name": "brush_store"},
     {"name": "click_store"},
+    {"name": "brush_store"},
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
@@ -319,7 +319,7 @@
               ],
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Date: \" + (timeFormat(datum[\"monthdate_date\"], '%b')) + \"; Maximum Daily Temperature (C): \" + (format(datum[\"temp_max\"], \"\")) + \"; Weather: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"]) + \"; Precipitation: \" + (format(datum[\"precipitation\"], \"\"))"
+                "signal": "\"Date: \" + (timeFormat(datum[\"monthdate_date\"], \"%b\")) + \"; Maximum Daily Temperature (C): \" + (format(datum[\"temp_max\"], \"\")) + \"; Weather: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"]) + \"; Precipitation: \" + (format(datum[\"precipitation\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "monthdate_date"},
               "y": {"scale": "concat_0_y", "field": "temp_max"},

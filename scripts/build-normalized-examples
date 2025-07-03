@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-'use strict';
 
 /*
  * This script normalizes all the specs in examples/specs and
@@ -9,34 +8,35 @@
  * redundant Vega output specs.
  */
 
-const fs = require('fs');
-const vl = require('../build/vega-lite');
-const stableStringify = require('fast-json-stable-stringify');
-const compactStringify = require('json-stringify-pretty-compact');
+import fs from 'fs';
+import {normalize} from '../build/index.js';
+import stableStringify from 'fast-json-stable-stringify';
 
-const DIR = __dirname + '/..';
+const DIR = import.meta.dirname + '/..';
 const SPECS = '/examples/specs';
 const examples = fs.readdirSync(DIR + SPECS);
 
-examples.forEach(example => {
-  if (example && example.includes('.vl.json')) {
-    const path = DIR + SPECS + '/' + example;
+async function main() {
+  const {default: compactStringify} = await import('json-stringify-pretty-compact');
+
+  const vlExamples = examples.filter((example) => example.includes('.vl.json'));
+  for (const example of vlExamples) {
+    const path = `${DIR + SPECS}/${example}`;
     const spec = JSON.parse(fs.readFileSync(path));
 
     const preNormalized = stableStringify(spec);
-    const fullSpec = vl.normalize(spec);
+    const fullSpec = normalize(spec);
     const postNormalized = stableStringify(fullSpec);
 
     // console.log(preNormalized, postNormalized);
     if (preNormalized !== postNormalized) {
-      const postNormalizedOutput = compactStringify(fullSpec, null, 2);
+      const postNormalizedOutput = compactStringify(fullSpec, {indent: 2});
       // -8 is cutting .vl.json
       const newFilename = example.slice(0, -8) + '_normalized.vl.json';
-      const newFilenameAndPath = DIR + SPECS + '/normalized/' + newFilename;
-      fs.writeFile(newFilenameAndPath, postNormalizedOutput, err => {
-        if (err) return console.log(err);
-        console.log('Built:', newFilename);
-      });
+      const newFilenameAndPath = `${DIR + SPECS}/normalized/${newFilename}`;
+      fs.writeFileSync(newFilenameAndPath, postNormalizedOutput);
     }
   }
-});
+}
+
+main();

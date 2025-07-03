@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"ci1": 23.5007, "ci0": 19.6912, "center": 21.5735, "Year": 189302400000},
@@ -12,8 +12,8 @@
     {
       "transform": [
         {"timeUnit": {"unit": "year"}, "field": "Year", "as": "year_Year"},
-        {"calculate": "datum[\"ci0\"]", "as": "upper_ci1"},
-        {"calculate": "datum[\"ci1\"]", "as": "lower_ci1"}
+        {"calculate": "datum['ci0']", "as": "upper_ci1"},
+        {"calculate": "datum['ci1']", "as": "lower_ci1"}
       ],
       "layer": [
         {

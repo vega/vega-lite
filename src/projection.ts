@@ -1,6 +1,6 @@
-import {BaseProjection, SignalRef, Vector2} from 'vega';
-import {ExprRef} from './expr';
-import {MapExcludeValueRefAndReplaceSignalWith, ProjectionType} from './vega.schema';
+import type {BaseProjection, SignalRef, Vector2} from 'vega';
+import {ExprRef} from './expr.js';
+import {MapExcludeValueRefAndReplaceSignalWith, ProjectionType} from './vega.schema.js';
 
 export interface Projection<ES extends ExprRef | SignalRef>
   extends MapExcludeValueRefAndReplaceSignalWith<BaseProjection, ES> {
@@ -44,5 +44,5 @@ export const PROJECTION_PROPERTIES: (keyof Projection<ExprRef>)[] = [
   'radius',
   'ratio',
   'spacing',
-  'tilt'
+  'tilt',
 ];

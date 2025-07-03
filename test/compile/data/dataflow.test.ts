@@ -1,7 +1,7 @@
-import {OutputNode} from '../../../src/compile/data/dataflow';
-import {DataSourceType} from '../../../src/data';
-import * as log from '../../../src/log';
-import {PlaceholderDataFlowNode} from './util';
+import {OutputNode} from '../../../src/compile/data/dataflow.js';
+import {DataSourceType} from '../../../src/data.js';
+import * as log from '../../../src/log/index.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/dataflow', () => {
   describe('DataFlowNode', () => {
@@ -136,7 +136,7 @@ describe('compile/data/dataflow', () => {
 
       it(
         'should not add the same child twice',
-        log.wrap(localWrapper => {
+        log.wrap((localWrapper) => {
           const a = new PlaceholderDataFlowNode(null, 'a');
           const b = new PlaceholderDataFlowNode(null, 'b');
 
@@ -146,7 +146,7 @@ describe('compile/data/dataflow', () => {
           expect(b.parent).toBeNull();
           expect(a.children).toEqual([b]);
           expect(localWrapper.warns[0]).toEqual(log.message.ADD_SAME_CHILD_TWICE);
-        })
+        }),
       );
     });
 

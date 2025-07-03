@@ -1,20 +1,29 @@
 import {TimeUnitTransform as VgTimeUnitTransform} from 'vega';
 import {FormulaTransform as VgFormulaTransform} from 'vega';
-import {FieldName, getBandPosition, vgField} from '../../channeldef';
+import {FieldName, getBandPosition, vgField} from '../../channeldef.js';
 import {
   TimeUnitParams,
   getDateTimePartAndStep,
   getSmallestTimeUnitPart,
   getTimeUnitParts,
   isBinnedTimeUnit,
-  normalizeTimeUnit
-} from '../../timeunit';
-import {TimeUnitTransform} from '../../transform';
-import {Dict, duplicate, entries, hash, isEmpty, replacePathInField, vals} from '../../util';
-import {ModelWithField, isUnitModel} from '../model';
-import {DataFlowNode} from './dataflow';
-import {isRectBasedMark} from '../../mark';
-import {isXorY} from '../../channel';
+  normalizeTimeUnit,
+} from '../../timeunit.js';
+import {TimeUnitTransform} from '../../transform.js';
+import {
+  accessWithDatumToUnescapedPath,
+  Dict,
+  duplicate,
+  entries,
+  hash,
+  isEmpty,
+  replacePathInField,
+  vals,
+} from '../../util.js';
+import {ModelWithField, isUnitModel} from '../model.js';
+import {DataFlowNode} from './dataflow.js';
+import {isRectBasedMark} from '../../mark.js';
+import {isXorY} from '../../channel.js';
 
 export type TimeUnitComponent = (TimeUnitTransform | BinnedTimeUnitOffset) & {
   rectBandPosition?: number;
@@ -40,7 +49,7 @@ export class TimeUnitNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private timeUnits: Dict<TimeUnitComponent>
+    private timeUnits: Dict<TimeUnitComponent>,
   ) {
     super(parent);
   }
@@ -61,7 +70,7 @@ export class TimeUnitNode extends DataFlowNode {
             if (isRectBasedMark(mark) || !!bandPosition) {
               component = {
                 timeUnit: normalizeTimeUnit(timeUnit),
-                field
+                field,
               };
             }
           }
@@ -69,7 +78,7 @@ export class TimeUnitNode extends DataFlowNode {
           component = {
             as: vgField(fieldDef, {forAs: true}),
             field,
-            timeUnit
+            timeUnit,
           };
         }
 
@@ -82,7 +91,7 @@ export class TimeUnitNode extends DataFlowNode {
         }
 
         if (component) {
-          timeUnitComponent[hash(component)] = component;
+          (timeUnitComponent as any)[hash(component)] = component;
         }
       }
       return timeUnitComponent;
@@ -102,11 +111,11 @@ export class TimeUnitNode extends DataFlowNode {
 
     const component = {
       ...other,
-      timeUnit: normalizedTimeUnit
+      timeUnit: normalizedTimeUnit,
     };
 
     return new TimeUnitNode(parent, {
-      [hash(component)]: component
+      [hash(component)]: component,
     });
   }
 
@@ -137,7 +146,7 @@ export class TimeUnitNode extends DataFlowNode {
    * Remove time units coming from the other node.
    */
   public removeFormulas(fields: Set<string>) {
-    const newFormula = {};
+    const newFormula: Dict<TimeUnitComponent> = {};
 
     for (const [key, timeUnitComponent] of entries(this.timeUnits)) {
       const fieldAs = isTimeUnitTransformComponent(timeUnitComponent)
@@ -153,14 +162,14 @@ export class TimeUnitNode extends DataFlowNode {
 
   public producedFields() {
     return new Set(
-      vals(this.timeUnits).map(f => {
+      vals(this.timeUnits).map((f) => {
         return isTimeUnitTransformComponent(f) ? f.as : offsetAs(f.field);
-      })
+      }),
     );
   }
 
   public dependentFields() {
-    return new Set(vals(this.timeUnits).map(f => f.field));
+    return new Set(vals(this.timeUnits).map((f) => f.field));
   }
 
   public hash() {
@@ -186,7 +195,7 @@ export class TimeUnitNode extends DataFlowNode {
           ...(unit ? {units: getTimeUnitParts(unit)} : {}),
           ...(utc ? {timezone: 'utc'} : {}),
           ...params,
-          as: startEnd
+          as: startEnd,
         });
 
         transforms.push(...offsetedRectFormulas(startEnd, rectBandPosition, normalizedTimeUnit));
@@ -199,7 +208,7 @@ export class TimeUnitNode extends DataFlowNode {
         transforms.push({
           type: 'formula',
           expr,
-          as: endAs
+          as: endAs,
         });
 
         transforms.push(...offsetedRectFormulas([field, endAs], rectBandPosition, normalizedTimeUnit));
@@ -218,18 +227,18 @@ function offsetExpr({timeUnit, field, reverse}: {timeUnit: TimeUnitParams; field
   const smallestUnit = getSmallestTimeUnitPart(unit);
   const {part, step} = getDateTimePartAndStep(smallestUnit, timeUnit.step);
   const offsetFn = utc ? 'utcOffset' : 'timeOffset';
-  const expr = `${offsetFn}('${part}', datum['${field}'], ${reverse ? -step : step})`;
+  const expr = `${offsetFn}('${part}', ${accessWithDatumToUnescapedPath(field)}, ${reverse ? -step : step})`;
   return expr;
 }
 
 function offsetedRectFormulas(
   [startField, endField]: [string, string],
   rectBandPosition: number | undefined,
-  timeUnit: TimeUnitParams
+  timeUnit: TimeUnitParams,
 ): VgFormulaTransform[] {
   if (rectBandPosition !== undefined && rectBandPosition !== 0.5) {
-    const startExpr = `datum['${startField}']`;
-    const endExpr = `datum['${endField}']`;
+    const startExpr = accessWithDatumToUnescapedPath(startField);
+    const endExpr = accessWithDatumToUnescapedPath(endField);
     return [
       {
         type: 'formula',
@@ -238,19 +247,19 @@ function offsetedRectFormulas(
             offsetExpr({
               timeUnit,
               field: startField,
-              reverse: true
+              reverse: true,
             }),
-            startExpr
+            startExpr,
           ],
-          rectBandPosition + 0.5
+          rectBandPosition + 0.5,
         ),
-        as: `${startField}_${OFFSETTED_RECT_START_SUFFIX}`
+        as: `${startField}_${OFFSETTED_RECT_START_SUFFIX}`,
       },
       {
         type: 'formula',
         expr: interpolateExpr([startExpr, endExpr], rectBandPosition + 0.5),
-        as: `${startField}_${OFFSETTED_RECT_END_SUFFIX}`
-      }
+        as: `${startField}_${OFFSETTED_RECT_END_SUFFIX}`,
+      },
     ];
   }
   return [];

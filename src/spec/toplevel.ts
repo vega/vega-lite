@@ -1,13 +1,13 @@
-import {Color, SignalRef} from 'vega';
-import {BaseSpec} from '.';
-import {getPositionScaleChannel} from '../channel';
-import {signalRefOrValue} from '../compile/common';
-import {Config} from '../config';
-import {InlineDataset} from '../data';
-import {ExprRef} from '../expr';
-import {VariableParameter} from '../parameter';
-import {TopLevelSelectionParameter} from '../selection';
-import {Dict} from '../util';
+import type {Color, SignalRef} from 'vega';
+import {BaseSpec} from './index.js';
+import {getPositionScaleChannel} from '../channel.js';
+import {signalRefOrValue} from '../compile/common.js';
+import {Config} from '../config.js';
+import {InlineDataset} from '../data.js';
+import {ExprRef} from '../expr.js';
+import {VariableParameter} from '../parameter.js';
+import {TopLevelSelectionParameter} from '../selection.js';
+import {Dict} from '../util.js';
 
 /**
  * @minimum 0
@@ -21,7 +21,7 @@ export type TopLevelParameter = VariableParameter | TopLevelSelectionParameter;
 export type TopLevel<S extends BaseSpec> = S &
   TopLevelProperties & {
     /**
-     * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v5.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
+     * URL to [JSON schema](http://json-schema.org/) for a Vega-Lite specification. Unless you have a reason to change this, use `https://vega.github.io/schema/vega-lite/v6.json`. Setting the `$schema` property allows automatic validation and autocomplete in editors that support JSON schema.
      * @format uri
      */
     $schema?: string;
@@ -80,7 +80,7 @@ export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | S
 export type FitType = 'fit' | 'fit-x' | 'fit-y';
 
 export function isFitType(autoSizeType: AutosizeType): autoSizeType is FitType {
-  return autoSizeType === 'fit' || autoSizeType === 'fit-x' || autoSizeType === 'fit-y';
+  return ['fit', 'fit-x', 'fit-y'].includes(autoSizeType);
 }
 
 export function getFitType(sizeType?: 'width' | 'height'): FitType {
@@ -114,7 +114,7 @@ export interface AutoSizeParams {
 
 const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
   'background',
-  'padding'
+  'padding',
   // We do not include "autosize" here as it is supported by only unit and layer specs and thus need to be normalized
 ];
 
@@ -122,7 +122,7 @@ export function extractTopLevelProperties(t: TopLevelProperties, includeParams: 
   const o: TopLevelProperties<SignalRef> = {};
   for (const p of TOP_LEVEL_PROPERTIES) {
     if (t && t[p] !== undefined) {
-      o[p as any] = signalRefOrValue(t[p]);
+      (o as any)[p] = signalRefOrValue(t[p]);
     }
   }
   if (includeParams) {

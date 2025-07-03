@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 480,
@@ -56,7 +56,7 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_height", "value": 200},
+    {"name": "concat_0_height", "value": 300},
     {"name": "concat_1_height", "value": 60},
     {
       "name": "unit",
@@ -96,7 +96,7 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "date"},
               "y": {"scale": "concat_0_y", "field": "price_end"},
@@ -387,7 +387,7 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "date"},
               "y": {"scale": "concat_1_y", "field": "price_end"},

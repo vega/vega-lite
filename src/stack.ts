@@ -1,6 +1,6 @@
-import {array, isBoolean} from 'vega-util';
-import {Aggregate, SUM_OPS} from './aggregate';
-import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel';
+import {array, hasOwnProperty, isBoolean} from 'vega-util';
+import {Aggregate, SUM_OPS} from './aggregate.js';
+import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel.js';
 import {
   channelDefType,
   FieldName,
@@ -11,11 +11,11 @@ import {
   PositionDef,
   PositionFieldDef,
   TypedFieldDef,
-  vgField
-} from './channeldef';
-import {CompositeAggregate} from './compositemark';
-import {channelHasField, Encoding, isAggregate} from './encoding';
-import * as log from './log';
+  vgField,
+} from './channeldef.js';
+import {CompositeAggregate} from './compositemark/index.js';
+import {channelHasField, Encoding, isAggregate} from './encoding.js';
+import * as log from './log/index.js';
 import {
   ARC,
   AREA,
@@ -30,20 +30,20 @@ import {
   RULE,
   SQUARE,
   TEXT,
-  TICK
-} from './mark';
-import {ScaleType} from './scale';
+  TICK,
+} from './mark.js';
+import {ScaleType} from './scale.js';
 
 const STACK_OFFSET_INDEX = {
   zero: 1,
   center: 1,
-  normalize: 1
+  normalize: 1,
 } as const;
 
 export type StackOffset = keyof typeof STACK_OFFSET_INDEX;
 
 export function isStackOffset(s: string): s is StackOffset {
-  return s in STACK_OFFSET_INDEX;
+  return hasOwnProperty(STACK_OFFSET_INDEX, s);
 }
 
 export interface StackProperties {
@@ -83,7 +83,7 @@ function isUnbinnedQuantitative(channelDef: PositionDef<string>) {
 function potentialStackedChannel(
   encoding: Encoding<string>,
   x: 'x' | 'theta',
-  {orient, type: mark}: MarkDef
+  {orient, type: mark}: MarkDef,
 ): 'x' | 'y' | 'theta' | 'radius' | undefined {
   const y = x === 'x' ? 'y' : 'radius';
 
@@ -272,6 +272,6 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     fieldChannel,
     impute: stackedFieldDef.impute === null ? false : isPathMark(mark),
     stackBy,
-    offset
+    offset,
   };
 }

@@ -1,13 +1,14 @@
-import {AggregateOp} from 'vega';
-import {BinParams} from './bin';
-import {FieldName} from './channeldef';
-import {Data} from './data';
-import {ImputeParams} from './impute';
-import {LogicalComposition, normalizeLogicalComposition} from './logical';
-import {ParameterName} from './parameter';
-import {normalizePredicate, Predicate} from './predicate';
-import {SortField} from './sort';
-import {TimeUnit, TimeUnitTransformParams} from './timeunit';
+import type {AggregateOp} from 'vega';
+import {BinParams} from './bin.js';
+import {FieldName} from './channeldef.js';
+import {Data} from './data.js';
+import {ImputeParams} from './impute.js';
+import {LogicalComposition, normalizeLogicalComposition} from './logical.js';
+import {ParameterName} from './parameter.js';
+import {normalizePredicate, Predicate} from './predicate.js';
+import {SortField} from './sort.js';
+import {TimeUnit, TimeUnitTransformParams} from './timeunit.js';
+import {hasProperty} from './util.js';
 
 export interface FilterTransform {
   /**
@@ -35,7 +36,7 @@ export interface FilterTransform {
 }
 
 export function isFilter(t: Transform): t is FilterTransform {
-  return 'filter' in t;
+  return hasProperty(t, 'filter');
 }
 
 export interface CalculateTransform {
@@ -259,7 +260,7 @@ export interface ImputeSequence {
 }
 
 export function isImputeSequence(t: ImputeSequence | any[] | undefined): t is ImputeSequence {
-  return t?.['stop'] !== undefined;
+  return hasProperty(t, 'stop');
 }
 
 export interface ImputeTransform extends ImputeParams {
@@ -366,15 +367,15 @@ export interface LookupTransform {
 }
 
 export function isLookup(t: Transform): t is LookupTransform {
-  return 'lookup' in t;
+  return hasProperty(t, 'lookup');
 }
 
 export function isLookupData(from: LookupData | LookupSelection): from is LookupData {
-  return 'data' in from;
+  return hasProperty(from, 'data');
 }
 
 export function isLookupSelection(from: LookupData | LookupSelection): from is LookupSelection {
-  return 'param' in from;
+  return hasProperty(from, 'param');
 }
 
 export interface FoldTransform {
@@ -433,7 +434,7 @@ export interface PivotTransform {
 }
 
 export function isPivot(t: Transform): t is PivotTransform {
-  return 'pivot' in t;
+  return hasProperty(t, 'pivot');
 }
 
 export interface DensityTransform {
@@ -507,7 +508,7 @@ export interface DensityTransform {
 }
 
 export function isDensity(t: Transform): t is DensityTransform {
-  return 'density' in t;
+  return hasProperty(t, 'density');
 }
 
 export interface QuantileTransform {
@@ -540,7 +541,7 @@ export interface QuantileTransform {
 }
 
 export function isQuantile(t: Transform): t is QuantileTransform {
-  return 'quantile' in t;
+  return hasProperty(t, 'quantile');
 }
 
 export interface RegressionTransform {
@@ -596,7 +597,7 @@ export interface RegressionTransform {
 }
 
 export function isRegression(t: Transform): t is RegressionTransform {
-  return 'regression' in t;
+  return hasProperty(t, 'regression');
 }
 
 export interface LoessTransform {
@@ -631,54 +632,54 @@ export interface LoessTransform {
 }
 
 export function isLoess(t: Transform): t is LoessTransform {
-  return 'loess' in t;
+  return hasProperty(t, 'loess');
 }
 
 export function isSample(t: Transform): t is SampleTransform {
-  return 'sample' in t;
+  return hasProperty(t, 'sample');
 }
 
 export function isWindow(t: Transform): t is WindowTransform {
-  return 'window' in t;
+  return hasProperty(t, 'window');
 }
 
 export function isJoinAggregate(t: Transform): t is JoinAggregateTransform {
-  return 'joinaggregate' in t;
+  return hasProperty(t, 'joinaggregate');
 }
 
 export function isFlatten(t: Transform): t is FlattenTransform {
-  return 'flatten' in t;
+  return hasProperty(t, 'flatten');
 }
 export function isCalculate(t: Transform): t is CalculateTransform {
-  return 'calculate' in t;
+  return hasProperty(t, 'calculate');
 }
 
 export function isBin(t: Transform): t is BinTransform {
-  return 'bin' in t;
+  return hasProperty(t, 'bin');
 }
 
 export function isImpute(t: Transform): t is ImputeTransform {
-  return 'impute' in t;
+  return hasProperty(t, 'impute');
 }
 
 export function isTimeUnit(t: Transform): t is TimeUnitTransform {
-  return 'timeUnit' in t;
+  return hasProperty(t, 'timeUnit');
 }
 
 export function isAggregate(t: Transform): t is AggregateTransform {
-  return 'aggregate' in t;
+  return hasProperty(t, 'aggregate');
 }
 
 export function isStack(t: Transform): t is StackTransform {
-  return 'stack' in t;
+  return hasProperty(t, 'stack');
 }
 
 export function isFold(t: Transform): t is FoldTransform {
-  return 'fold' in t;
+  return hasProperty(t, 'fold');
 }
 
 export function isExtent(t: Transform): t is ExtentTransform {
-  return 'extent' in t && !('density' in t) && !('regression' in t);
+  return hasProperty(t, 'extent') && !hasProperty(t, 'density') && !hasProperty(t, 'regression');
 }
 export type Transform =
   | AggregateTransform
@@ -702,10 +703,10 @@ export type Transform =
   | PivotTransform;
 
 export function normalizeTransform(transform: Transform[]) {
-  return transform.map(t => {
+  return transform.map((t) => {
     if (isFilter(t)) {
       return {
-        filter: normalizeLogicalComposition(t.filter, normalizePredicate)
+        filter: normalizeLogicalComposition(t.filter, normalizePredicate),
       };
     }
     return t;

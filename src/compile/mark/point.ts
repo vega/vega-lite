@@ -1,8 +1,8 @@
-import {Config} from '../../config';
-import {VgEncodeEntry} from '../../vega.schema';
-import {UnitModel} from '../unit';
-import {MarkCompiler} from './base';
-import * as encode from './encode';
+import {Config} from '../../config.js';
+import {VgEncodeEntry} from '../../vega.schema.js';
+import {UnitModel} from '../unit.js';
+import {MarkCompiler} from './base.js';
+import * as encode from './encode/index.js';
 
 function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
   const {config} = model;
@@ -14,13 +14,13 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
       color: 'include',
       size: 'include',
       orient: 'ignore',
-      theta: 'ignore'
+      theta: 'ignore',
     }),
     ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
     ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
     ...encode.nonPosition('size', model),
     ...encode.nonPosition('angle', model),
-    ...shapeMixins(model, config, fixedShape)
+    ...shapeMixins(model, config, fixedShape),
   };
 }
 
@@ -35,19 +35,19 @@ export const point: MarkCompiler = {
   vgMark: 'symbol',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model);
-  }
+  },
 };
 
 export const circle: MarkCompiler = {
   vgMark: 'symbol',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'circle');
-  }
+  },
 };
 
 export const square: MarkCompiler = {
   vgMark: 'symbol',
   encodeEntry: (model: UnitModel) => {
     return encodeEntry(model, 'square');
-  }
+  },
 };

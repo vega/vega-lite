@@ -1,16 +1,16 @@
 import {Orientation} from 'vega';
 import {isNumber, isObject} from 'vega-util';
-import {getMarkPropOrConfig} from '../compile/common';
-import {Config} from '../config';
-import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';
-import * as log from '../log';
-import {isMarkDef, MarkDef} from '../mark';
-import {MarkInvalidMixins} from '../invalid';
-import {NormalizerParams} from '../normalize';
-import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
-import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
-import {isEmpty, omit, removePathFromField} from '../util';
-import {CompositeMarkNormalizer} from './base';
+import {getMarkPropOrConfig} from '../compile/common.js';
+import {Config} from '../config.js';
+import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding.js';
+import * as log from '../log/index.js';
+import {isMarkDef, MarkDef} from '../mark.js';
+import {MarkInvalidMixins} from '../invalid.js';
+import {NormalizerParams} from '../normalize/index.js';
+import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec/index.js';
+import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform.js';
+import {accessWithDatumToUnescapedPath, removePathFromField} from '../util.js';
+import {CompositeMarkNormalizer} from './base.js';
 import {
   compositeMarkContinuousAxis,
   compositeMarkOrient,
@@ -20,8 +20,8 @@ import {
   getTitle,
   makeCompositeAggregatePartFactory,
   partLayerMixins,
-  PartsMixins
-} from './common';
+  PartsMixins,
+} from './common.js';
 
 export const BOXPLOT = 'boxplot' as const;
 export type BoxPlot = typeof BOXPLOT;
@@ -82,12 +82,12 @@ export function getBoxPlotType(extent: number | 'min-max') {
 
 export function normalizeBoxPlot(
   spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
-  {config}: NormalizerParams
+  {config}: NormalizerParams,
 ): NormalizedLayerSpec {
   // Need to initEncoding first so we can infer type
   spec = {
     ...spec,
-    encoding: normalizeEncoding(spec.encoding, config)
+    encoding: normalizeEncoding(spec.encoding, config),
   };
   const {mark, encoding: _encoding, params, projection: _p, ...outerSpec} = spec;
   const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};
@@ -101,7 +101,7 @@ export function normalizeBoxPlot(
   const sizeValue = getMarkPropOrConfig(
     'size',
     markDef as any, // TODO: https://github.com/vega/vega-lite/issues/6245
-    config
+    config,
   );
 
   const invalid = markDef.invalid;
@@ -118,7 +118,7 @@ export function normalizeBoxPlot(
     encodingWithoutContinuousAxis,
     ticksOrient,
     boxOrient,
-    customTooltipWithoutAggregatedField
+    customTooltipWithoutAggregatedField,
   } = boxParams(spec, extent, config);
 
   const aliasedFieldName = removePathFromField(continuousAxisChannelDef.field);
@@ -131,7 +131,7 @@ export function normalizeBoxPlot(
       continuousAxis,
       continuousAxisChannelDef,
       sharedEncoding,
-      config.boxplot
+      config.boxplot,
     );
   };
 
@@ -143,10 +143,10 @@ export function normalizeBoxPlot(
     ...(size ? {size} : {}),
     color: {
       condition: {
-        test: `datum['lower_box_${continuousAxisChannelDef.field}'] >= datum['upper_box_${continuousAxisChannelDef.field}']`,
-        ...(color || {value: defaultBoxColor})
-      }
-    }
+        test: `${accessWithDatumToUnescapedPath(`lower_box_${continuousAxisChannelDef.field}`)} >= ${accessWithDatumToUnescapedPath(`upper_box_${continuousAxisChannelDef.field}`)}`,
+        ...(color || {value: defaultBoxColor}),
+      },
+    },
   });
 
   const fiveSummaryTooltipEncoding: Encoding<string> = getCompositeMarkTooltip(
@@ -155,10 +155,10 @@ export function normalizeBoxPlot(
       {fieldPrefix: 'upper_box_', titlePrefix: 'Q3'},
       {fieldPrefix: 'mid_box_', titlePrefix: 'Median'},
       {fieldPrefix: 'lower_box_', titlePrefix: 'Q1'},
-      {fieldPrefix: boxPlotType === 'min-max' ? 'lower_whisker_' : 'min_', titlePrefix: 'Min'}
+      {fieldPrefix: boxPlotType === 'min-max' ? 'lower_whisker_' : 'min_', titlePrefix: 'Min'},
     ],
     continuousAxisChannelDef,
-    encodingWithoutContinuousAxis
+    encodingWithoutContinuousAxis,
   );
 
   // ## Whisker Layers
@@ -171,10 +171,10 @@ export function normalizeBoxPlot(
         getCompositeMarkTooltip(
           [
             {fieldPrefix: 'upper_whisker_', titlePrefix: 'Upper Whisker'},
-            {fieldPrefix: 'lower_whisker_', titlePrefix: 'Lower Whisker'}
+            {fieldPrefix: 'lower_whisker_', titlePrefix: 'Lower Whisker'},
           ],
           continuousAxisChannelDef,
-          encodingWithoutContinuousAxis
+          encodingWithoutContinuousAxis,
         );
 
   const whiskerLayers = [
@@ -183,27 +183,27 @@ export function normalizeBoxPlot(
       mark: {type: 'rule', invalid, aria: false},
       positionPrefix: 'lower_whisker',
       endPositionPrefix: 'lower_box',
-      extraEncoding: whiskerTooltipEncoding
+      extraEncoding: whiskerTooltipEncoding,
     }),
     ...makeBoxPlotExtent({
       partName: 'rule',
       mark: {type: 'rule', invalid, aria: false},
       positionPrefix: 'upper_box',
       endPositionPrefix: 'upper_whisker',
-      extraEncoding: whiskerTooltipEncoding
+      extraEncoding: whiskerTooltipEncoding,
     }),
     ...makeBoxPlotExtent({
       partName: 'ticks',
       mark: endTick,
       positionPrefix: 'lower_whisker',
-      extraEncoding: whiskerTooltipEncoding
+      extraEncoding: whiskerTooltipEncoding,
     }),
     ...makeBoxPlotExtent({
       partName: 'ticks',
       mark: endTick,
       positionPrefix: 'upper_whisker',
-      extraEncoding: whiskerTooltipEncoding
-    })
+      extraEncoding: whiskerTooltipEncoding,
+    }),
   ];
 
   // ## Box Layers
@@ -218,11 +218,11 @@ export function normalizeBoxPlot(
         ...(sizeValue ? {size: sizeValue} : {}),
         orient: boxOrient,
         invalid,
-        ariaRoleDescription: 'box'
+        ariaRoleDescription: 'box',
       },
       positionPrefix: 'lower_box',
       endPositionPrefix: 'upper_box',
-      extraEncoding: fiveSummaryTooltipEncoding
+      extraEncoding: fiveSummaryTooltipEncoding,
     }),
     ...makeBoxPlotMidTick({
       partName: 'median',
@@ -232,76 +232,75 @@ export function normalizeBoxPlot(
         ...(isObject(config.boxplot.median) && config.boxplot.median.color ? {color: config.boxplot.median.color} : {}),
         ...(sizeValue ? {size: sizeValue} : {}),
         orient: ticksOrient,
-        aria: false
+        aria: false,
       },
       positionPrefix: 'mid_box',
-      extraEncoding: fiveSummaryTooltipEncoding
-    })
+      extraEncoding: fiveSummaryTooltipEncoding,
+    }),
   ];
 
   if (boxPlotType === 'min-max') {
     return {
       ...outerSpec,
       transform: (outerSpec.transform ?? []).concat(transform),
-      layer: boxLayers
+      layer: boxLayers,
     };
   }
 
   // Tukey Box Plot
 
-  const lowerBoxExpr = `datum["lower_box_${continuousAxisChannelDef.field}"]`;
-  const upperBoxExpr = `datum["upper_box_${continuousAxisChannelDef.field}"]`;
+  const lowerBoxExpr = accessWithDatumToUnescapedPath(`lower_box_${continuousAxisChannelDef.field}`);
+  const upperBoxExpr = accessWithDatumToUnescapedPath(`upper_box_${continuousAxisChannelDef.field}`);
   const iqrExpr = `(${upperBoxExpr} - ${lowerBoxExpr})`;
   const lowerWhiskerExpr = `${lowerBoxExpr} - ${extent} * ${iqrExpr}`;
   const upperWhiskerExpr = `${upperBoxExpr} + ${extent} * ${iqrExpr}`;
-  const fieldExpr = `datum["${continuousAxisChannelDef.field}"]`;
+  const fieldExpr = accessWithDatumToUnescapedPath(continuousAxisChannelDef.field);
 
   const joinaggregateTransform: JoinAggregateTransform = {
     joinaggregate: boxParamsQuartiles(continuousAxisChannelDef.field),
-    groupby
+    groupby,
   };
 
   const filteredWhiskerSpec: NormalizedLayerSpec = {
     transform: [
       {
-        filter: `(${lowerWhiskerExpr} <= ${fieldExpr}) && (${fieldExpr} <= ${upperWhiskerExpr})`
+        filter: `(${lowerWhiskerExpr} <= ${fieldExpr}) && (${fieldExpr} <= ${upperWhiskerExpr})`,
       },
       {
         aggregate: [
           {
             op: 'min',
             field: continuousAxisChannelDef.field,
-            as: `lower_whisker_${aliasedFieldName}`
+            as: `lower_whisker_${aliasedFieldName}`,
           },
           {
             op: 'max',
             field: continuousAxisChannelDef.field,
-            as: `upper_whisker_${aliasedFieldName}`
+            as: `upper_whisker_${aliasedFieldName}`,
           },
           // preserve lower_box / upper_box
           {
             op: 'min',
             field: `lower_box_${continuousAxisChannelDef.field}`,
-            as: `lower_box_${aliasedFieldName}`
+            as: `lower_box_${aliasedFieldName}`,
           },
           {
             op: 'max',
             field: `upper_box_${continuousAxisChannelDef.field}`,
-            as: `upper_box_${aliasedFieldName}`
+            as: `upper_box_${aliasedFieldName}`,
           },
-          ...aggregate
+          ...aggregate,
         ],
-        groupby
-      }
+        groupby,
+      },
     ],
-    layer: whiskerLayers
+    layer: whiskerLayers,
   };
 
   const {tooltip, ...encodingWithoutSizeColorContinuousAxisAndTooltip} = encodingWithoutSizeColorAndContinuousAxis;
 
   const {scale, axis} = continuousAxisChannelDef;
   const title = getTitle(continuousAxisChannelDef);
-  const axisWithoutTitle = omit(axis, ['title']);
 
   const outlierLayersMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, {
     transform: [{filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`}],
@@ -312,13 +311,12 @@ export function normalizeBoxPlot(
         type: continuousAxisChannelDef.type,
         ...(title !== undefined ? {title} : {}),
         ...(scale !== undefined ? {scale} : {}),
-        // add axis without title since we already added the title above
-        ...(isEmpty(axisWithoutTitle) ? {} : {axis: axisWithoutTitle})
+        ...(axis !== undefined ? {axis} : {}),
       },
       ...encodingWithoutSizeColorContinuousAxisAndTooltip,
       ...(color ? {color} : {}),
-      ...(customTooltipWithoutAggregatedField ? {tooltip: customTooltipWithoutAggregatedField} : {})
-    }
+      ...(customTooltipWithoutAggregatedField ? {tooltip: customTooltipWithoutAggregatedField} : {}),
+    },
   })[0];
 
   let filteredLayersMixins: NormalizedLayerSpec;
@@ -326,7 +324,7 @@ export function normalizeBoxPlot(
   if (outlierLayersMixins) {
     filteredLayersMixins = {
       transform: filteredLayersMixinsTransforms,
-      layer: [outlierLayersMixins, filteredWhiskerSpec]
+      layer: [outlierLayersMixins, filteredWhiskerSpec],
     };
   } else {
     filteredLayersMixins = filteredWhiskerSpec;
@@ -340,9 +338,9 @@ export function normalizeBoxPlot(
       {
         // boxplot
         transform,
-        layer: boxLayers
-      }
-    ]
+        layer: boxLayers,
+      },
+    ],
   };
 }
 
@@ -352,20 +350,20 @@ function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
     {
       op: 'q1',
       field: continousAxisField,
-      as: `lower_box_${aliasedFieldName}`
+      as: `lower_box_${aliasedFieldName}`,
     },
     {
       op: 'q3',
       field: continousAxisField,
-      as: `upper_box_${aliasedFieldName}`
-    }
+      as: `upper_box_${aliasedFieldName}`,
+    },
   ];
 }
 
 function boxParams(
   spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
   extent: 'min-max' | number,
-  config: Config
+  config: Config,
 ) {
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);
@@ -379,18 +377,18 @@ function boxParams(
     {
       op: 'median',
       field: continuousFieldName,
-      as: `mid_box_${aliasedFieldName}`
+      as: `mid_box_${aliasedFieldName}`,
     },
     {
       op: 'min',
       field: continuousFieldName,
-      as: (boxPlotType === 'min-max' ? 'lower_whisker_' : 'min_') + aliasedFieldName
+      as: (boxPlotType === 'min-max' ? 'lower_whisker_' : 'min_') + aliasedFieldName,
     },
     {
       op: 'max',
       field: continuousFieldName,
-      as: (boxPlotType === 'min-max' ? 'upper_whisker_' : 'max_') + aliasedFieldName
-    }
+      as: (boxPlotType === 'min-max' ? 'upper_whisker_' : 'max_') + aliasedFieldName,
+    },
   ];
 
   const postAggregateCalculates: CalculateTransform[] =
@@ -399,22 +397,22 @@ function boxParams(
       : [
           // This is for the  original k-IQR, which we do not expose
           {
-            calculate: `datum["upper_box_${aliasedFieldName}"] - datum["lower_box_${aliasedFieldName}"]`,
-            as: `iqr_${aliasedFieldName}`
+            calculate: `${accessWithDatumToUnescapedPath(`upper_box_${aliasedFieldName}`)} - ${accessWithDatumToUnescapedPath(`lower_box_${aliasedFieldName}`)}`,
+            as: `iqr_${aliasedFieldName}`,
           },
           {
-            calculate: `min(datum["upper_box_${aliasedFieldName}"] + datum["iqr_${aliasedFieldName}"] * ${extent}, datum["max_${aliasedFieldName}"])`,
-            as: `upper_whisker_${aliasedFieldName}`
+            calculate: `min(${accessWithDatumToUnescapedPath(`upper_box_${aliasedFieldName}`)} + ${accessWithDatumToUnescapedPath(`iqr_${aliasedFieldName}`)} * ${extent}, ${accessWithDatumToUnescapedPath(`max_${aliasedFieldName}`)})`,
+            as: `upper_whisker_${aliasedFieldName}`,
           },
           {
-            calculate: `max(datum["lower_box_${aliasedFieldName}"] - datum["iqr_${aliasedFieldName}"] * ${extent}, datum["min_${aliasedFieldName}"])`,
-            as: `lower_whisker_${aliasedFieldName}`
-          }
+            calculate: `max(${accessWithDatumToUnescapedPath(`lower_box_${aliasedFieldName}`)} - ${accessWithDatumToUnescapedPath(`iqr_${aliasedFieldName}`)} * ${extent}, ${accessWithDatumToUnescapedPath(`min_${aliasedFieldName}`)})`,
+            as: `lower_whisker_${aliasedFieldName}`,
+          },
         ];
 
   const {[continuousAxis]: oldContinuousAxisChannelDef, ...oldEncodingWithoutContinuousAxis} = spec.encoding;
   const {customTooltipWithoutAggregatedField, filteredEncoding} = filterTooltipWithAggregatedField(
-    oldEncodingWithoutContinuousAxis
+    oldEncodingWithoutContinuousAxis,
   );
 
   const {
@@ -422,7 +420,7 @@ function boxParams(
     timeUnits,
     aggregate,
     groupby,
-    encoding: encodingWithoutContinuousAxis
+    encoding: encodingWithoutContinuousAxis,
   } = extractTransformsFromEncoding(filteredEncoding, config);
 
   const ticksOrient: Orientation = orient === 'vertical' ? 'horizontal' : 'vertical';
@@ -433,9 +431,9 @@ function boxParams(
     ...timeUnits,
     {
       aggregate: [...aggregate, ...boxplotSpecificAggregate],
-      groupby
+      groupby,
     },
-    ...postAggregateCalculates
+    ...postAggregateCalculates,
   ];
 
   return {
@@ -449,6 +447,6 @@ function boxParams(
     encodingWithoutContinuousAxis,
     ticksOrient,
     boxOrient,
-    customTooltipWithoutAggregatedField
+    customTooltipWithoutAggregatedField,
   };
 }

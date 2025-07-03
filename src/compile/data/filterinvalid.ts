@@ -1,12 +1,12 @@
-import {FilterTransform as VgFilterTransform} from 'vega';
-import {isScaleChannel} from '../../channel';
-import {TypedFieldDef, vgField as fieldRef} from '../../channeldef';
-import {Dict, hash, keys} from '../../util';
-import {getScaleInvalidDataMode} from '../invalid/ScaleInvalidDataMode';
-import {DataSourcesForHandlingInvalidValues} from '../invalid/datasources';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
-import {isCountingAggregateOp} from '../../aggregate';
+import type {FilterTransform as VgFilterTransform} from 'vega';
+import {isScaleChannel} from '../../channel.js';
+import {TypedFieldDef, vgField as fieldRef} from '../../channeldef.js';
+import {Dict, hash, keys} from '../../util.js';
+import {getScaleInvalidDataMode} from '../invalid/ScaleInvalidDataMode.js';
+import {DataSourcesForHandlingInvalidValues} from '../invalid/datasources.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
+import {isCountingAggregateOp} from '../../aggregate.js';
 
 export class FilterInvalidNode extends DataFlowNode {
   public clone() {
@@ -15,7 +15,7 @@ export class FilterInvalidNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    public readonly filter: Dict<TypedFieldDef<string>>
+    public readonly filter: Dict<TypedFieldDef<string>>,
   ) {
     super(parent);
   }
@@ -23,7 +23,7 @@ export class FilterInvalidNode extends DataFlowNode {
   public static make(
     parent: DataFlowNode,
     model: UnitModel,
-    dataSourcesForHandlingInvalidValues: DataSourcesForHandlingInvalidValues
+    dataSourcesForHandlingInvalidValues: DataSourcesForHandlingInvalidValues,
   ): FilterInvalidNode {
     const {config, markDef} = model;
 
@@ -45,7 +45,7 @@ export class FilterInvalidNode extends DataFlowNode {
             markDef,
             config,
             scaleType,
-            isCountAggregate: isCountingAggregateOp(aggregate)
+            isCountAggregate: isCountingAggregateOp(aggregate),
           });
 
           // If the invalid data mode is include or always-valid, we don't need to filter invalid values as the scale can handle invalid values.
@@ -56,7 +56,7 @@ export class FilterInvalidNode extends DataFlowNode {
 
         return aggregator;
       },
-      {} as Dict<TypedFieldDef<string>>
+      {} as Dict<TypedFieldDef<string>>,
     );
 
     if (!keys(filter).length) {
@@ -101,7 +101,7 @@ export class FilterInvalidNode extends DataFlowNode {
     return filters.length > 0
       ? {
           type: 'filter',
-          expr: filters.join(' && ')
+          expr: filters.join(' && '),
         }
       : null;
   }

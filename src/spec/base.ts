@@ -1,18 +1,18 @@
 import {Color, Cursor, SignalRef, Text} from 'vega';
-import {isNumber, isObject} from 'vega-util';
-import {NormalizedSpec} from '.';
-import {Data} from '../data';
-import {ExprRef} from '../expr';
-import {MarkConfig} from '../mark';
-import {Resolve} from '../resolve';
-import {TitleParams} from '../title';
-import {Transform} from '../transform';
-import {Flag, keys} from '../util';
-import {LayoutAlign, RowCol} from '../vega.schema';
-import {isConcatSpec, isVConcatSpec} from './concat';
-import {isFacetMapping, isFacetSpec} from './facet';
+import {isNumber} from 'vega-util';
+import {NormalizedSpec} from './index.js';
+import {Data} from '../data.js';
+import {ExprRef} from '../expr.js';
+import {MarkConfig} from '../mark.js';
+import {Resolve} from '../resolve.js';
+import {TitleParams} from '../title.js';
+import {Transform} from '../transform.js';
+import {Flag, hasProperty, keys} from '../util.js';
+import {LayoutAlign, RowCol} from '../vega.schema.js';
+import {isConcatSpec, isVConcatSpec} from './concat.js';
+import {isFacetMapping, isFacetSpec} from './facet.js';
 
-export type {TopLevel} from './toplevel';
+export type {TopLevel} from './toplevel.js';
 
 /**
  * Common properties for all types of specification
@@ -74,7 +74,7 @@ export function getStepFor({step, offsetIsDiscrete}: {step: Step; offsetIsDiscre
 }
 
 export function isStep(size: number | Step | 'container' | 'merged'): size is Step {
-  return isObject(size) && size['step'] !== undefined;
+  return hasProperty(size, 'step');
 }
 
 // TODO(https://github.com/vega/vega-lite/issues/2503): Make this generic so we can support some form of top-down sizing.
@@ -115,7 +115,7 @@ export interface LayoutSizeMixins {
 }
 
 export function isFrameMixins(o: any): o is FrameMixins<any> {
-  return o['view'] || o['width'] || o['height'];
+  return hasProperty(o, 'view') || hasProperty(o, 'width') || hasProperty(o, 'height');
 }
 
 export interface FrameMixins<ES extends ExprRef | SignalRef = ExprRef | SignalRef> extends LayoutSizeMixins {
@@ -277,7 +277,7 @@ const COMPOSITION_LAYOUT_INDEX: Flag<keyof GenericCompositionLayoutWithColumns> 
   bounds: 1,
   center: 1,
   columns: 1,
-  spacing: 1
+  spacing: 1,
 };
 
 const COMPOSITION_LAYOUT_PROPERTIES = keys(COMPOSITION_LAYOUT_INDEX);
@@ -287,7 +287,7 @@ export type SpecType = 'unit' | 'facet' | 'layer' | 'concat';
 export function extractCompositionLayout(
   spec: NormalizedSpec,
   specType: keyof CompositionConfigMixins,
-  config: CompositionConfigMixins
+  config: CompositionConfigMixins,
 ): GenericCompositionLayoutWithColumns {
   const compositionConfig = config[specType];
   const layout: GenericCompositionLayoutWithColumns = {};
@@ -310,18 +310,18 @@ export function extractCompositionLayout(
 
   // Then copy properties from the spec
   for (const prop of COMPOSITION_LAYOUT_PROPERTIES) {
-    if (spec[prop] !== undefined) {
+    if ((spec as any)[prop] !== undefined) {
       if (prop === 'spacing') {
-        const spacing: number | RowCol<number> = spec[prop];
+        const spacing: number | RowCol<number> = (spec as any)[prop];
 
         layout[prop] = isNumber(spacing)
           ? spacing
           : {
               row: spacing.row ?? spacingConfig,
-              column: spacing.column ?? spacingConfig
+              column: spacing.column ?? spacingConfig,
             };
       } else {
-        (layout[prop] as any) = spec[prop];
+        (layout[prop] as any) = (spec as any)[prop];
       }
     }
   }

@@ -1,7 +1,7 @@
-import {initMarkdef} from '../../../src/compile/mark/init';
-import {defaultConfig} from '../../../src/config';
-import {CIRCLE, GEOSHAPE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
-import {parseUnitModelWithScaleAndLayoutSize, without} from '../../util';
+import {initMarkdef} from '../../../src/compile/mark/init.js';
+import {defaultConfig} from '../../../src/config.js';
+import {CIRCLE, GEOSHAPE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark.js';
+import {parseUnitModelWithScaleAndLayoutSize, without} from '../../util.js';
 
 describe('compile/mark/init', () => {
   describe('initMarkDef', () => {
@@ -10,28 +10,28 @@ describe('compile/mark/init', () => {
         initMarkdef(
           {type: 'bar', cornerRadiusEnd: 5},
           {x: {field: 'x', type: 'quantitative'}, x2: {field: 'x2'}},
-          defaultConfig
-        )
+          defaultConfig,
+        ),
       ).toMatchObject({cornerRadius: 5});
 
       expect(
         initMarkdef(
           {type: 'bar', cornerRadiusEnd: 5},
           {y: {field: 'x', type: 'quantitative'}, y2: {field: 'x2'}},
-          defaultConfig
-        )
+          defaultConfig,
+        ),
       ).toMatchObject({cornerRadius: 5});
     });
 
     it('applies cornerRadiusEnd to top cornerRadius for vertical bars', () => {
       expect(
-        initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {y: {field: 'x', type: 'quantitative'}}, defaultConfig)
+        initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {y: {field: 'x', type: 'quantitative'}}, defaultConfig),
       ).toMatchObject({cornerRadiusTopLeft: 5, cornerRadiusTopRight: 5});
     });
 
     it('applies cornerRadiusEnd to top cornerRadius for horizontal bars', () => {
       expect(
-        initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {x: {field: 'x', type: 'quantitative'}}, defaultConfig)
+        initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {x: {field: 'x', type: 'quantitative'}}, defaultConfig),
       ).toMatchObject({cornerRadiusBottomRight: 5, cornerRadiusTopRight: 5});
     });
   });
@@ -43,8 +43,8 @@ describe('compile/mark/init', () => {
           mark,
           encoding: {
             y: {type: 'quantitative', field: 'foo'},
-            x: {type: 'quantitative', field: 'bar'}
-          }
+            x: {type: 'quantitative', field: 'bar'},
+          },
         });
         expect(model.markDef.opacity).toBe(0.7);
       }
@@ -56,8 +56,8 @@ describe('compile/mark/init', () => {
           mark,
           encoding: {
             y: {aggregate: 'mean', type: 'quantitative', field: 'foo'},
-            x: {type: 'nominal', field: 'bar'}
-          }
+            x: {type: 'nominal', field: 'bar'},
+          },
         });
         expect(model.markDef.opacity).toBeUndefined();
       }
@@ -69,8 +69,8 @@ describe('compile/mark/init', () => {
           mark: {type: mark, opacity: 0.9},
           encoding: {
             y: {type: 'quantitative', field: 'foo'},
-            x: {type: 'quantitative', field: 'bar'}
-          }
+            x: {type: 'quantitative', field: 'bar'},
+          },
         });
         expect(model.markDef.opacity).toBe(0.9);
       }
@@ -83,8 +83,8 @@ describe('compile/mark/init', () => {
           mark,
           encoding: {
             y: {type: 'quantitative', field: 'foo'},
-            x: {type: 'nominal', field: 'bar'}
-          }
+            x: {type: 'nominal', field: 'bar'},
+          },
         });
         expect(model.markDef.opacity).toBeUndefined();
       }
@@ -97,8 +97,8 @@ describe('compile/mark/init', () => {
         mark: 'bar',
         encoding: {
           y: {type: 'quantitative', field: 'foo'},
-          x: {type: 'quantitative', field: 'bar'}
-        }
+          x: {type: 'quantitative', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -106,8 +106,8 @@ describe('compile/mark/init', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'bar',
         encoding: {
-          x: {type: 'temporal', field: 'bar'}
-        }
+          x: {type: 'temporal', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -115,7 +115,7 @@ describe('compile/mark/init', () => {
     it('should return correct default for empty plot', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'bar',
-        encoding: {}
+        encoding: {},
       });
       expect(model.markDef.orient).toBeUndefined();
     });
@@ -125,8 +125,8 @@ describe('compile/mark/init', () => {
         mark: 'bar',
         encoding: {
           x: {type: 'ordinal', field: 'foo'},
-          y: {type: 'ordinal', field: 'bar'}
-        }
+          y: {type: 'ordinal', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBeUndefined();
     });
@@ -136,8 +136,8 @@ describe('compile/mark/init', () => {
         mark: 'bar',
         encoding: {
           y: {type: 'quantitative', field: 'foo'},
-          x: {type: 'ordinal', field: 'bar'}
-        }
+          x: {type: 'ordinal', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -147,8 +147,8 @@ describe('compile/mark/init', () => {
         mark: 'bar',
         encoding: {
           x: {type: 'quantitative', field: 'foo'},
-          y: {type: 'ordinal', field: 'bar'}
-        }
+          y: {type: 'ordinal', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
@@ -158,8 +158,8 @@ describe('compile/mark/init', () => {
         mark: 'bar',
         encoding: {
           y: {type: 'quantitative', field: 'foo'},
-          x: {type: 'temporal', field: 'bar'}
-        }
+          x: {type: 'temporal', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -169,8 +169,8 @@ describe('compile/mark/init', () => {
         mark: 'bar',
         encoding: {
           x: {type: 'quantitative', field: 'foo'},
-          y: {type: 'temporal', field: 'bar'}
-        }
+          y: {type: 'temporal', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
@@ -180,8 +180,8 @@ describe('compile/mark/init', () => {
         mark: 'bar',
         encoding: {
           x: {type: 'quantitative', field: 'foo', aggregate: 'mean'},
-          y: {type: 'quantitative', field: 'bar'}
-        }
+          y: {type: 'quantitative', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
@@ -191,8 +191,8 @@ describe('compile/mark/init', () => {
         mark: 'tick',
         encoding: {
           x: {type: 'quantitative', field: 'foo'},
-          y: {type: 'ordinal', field: 'bar'}
-        }
+          y: {type: 'ordinal', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -202,8 +202,8 @@ describe('compile/mark/init', () => {
         mark: 'tick',
         encoding: {
           x: {type: 'quantitative', field: 'foo'},
-          y: {type: 'quantitative', field: 'bar', bin: true}
-        }
+          y: {type: 'quantitative', field: 'bar', bin: true},
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -213,8 +213,8 @@ describe('compile/mark/init', () => {
         mark: 'tick',
         encoding: {
           x: {type: 'temporal', field: 'foo', timeUnit: 'yearmonthdate'},
-          y: {type: 'ordinal', field: 'bar'}
-        }
+          y: {type: 'ordinal', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -224,8 +224,8 @@ describe('compile/mark/init', () => {
         mark: 'tick',
         encoding: {
           y: {type: 'quantitative', field: 'foo'},
-          x: {type: 'ordinal', field: 'bar'}
-        }
+          x: {type: 'ordinal', field: 'bar'},
+        },
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
@@ -234,8 +234,8 @@ describe('compile/mark/init', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'rule',
         encoding: {
-          x: {value: 0}
-        }
+          x: {value: 0},
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -244,8 +244,8 @@ describe('compile/mark/init', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'rule',
         encoding: {
-          y: {value: 0}
-        }
+          y: {value: 0},
+        },
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
@@ -257,8 +257,8 @@ describe('compile/mark/init', () => {
           y: {value: 0},
           x: {value: 0},
           y2: {value: 100},
-          x2: {value: 100}
-        }
+          x2: {value: 100},
+        },
       });
       expect(model.markDef.orient).toBeUndefined();
     });
@@ -268,8 +268,8 @@ describe('compile/mark/init', () => {
         mark: 'rule',
         encoding: {
           y: {value: 0},
-          x: {value: 0}
-        }
+          x: {value: 0},
+        },
       });
       expect(model.markDef.orient).toBeUndefined();
     });
@@ -279,8 +279,8 @@ describe('compile/mark/init', () => {
         mark: 'rule',
         encoding: {
           x: {field: 'b', type: 'quantitative'},
-          y: {field: 'a', type: 'ordinal'}
-        }
+          y: {field: 'a', type: 'ordinal'},
+        },
       });
 
       expect(model.markDef.orient).toBe('horizontal');
@@ -291,8 +291,8 @@ describe('compile/mark/init', () => {
         mark: 'rule',
         encoding: {
           y: {field: 'b', type: 'quantitative'},
-          x: {field: 'a', type: 'ordinal'}
-        }
+          x: {field: 'a', type: 'ordinal'},
+        },
       });
 
       expect(model.markDef.orient).toBe('vertical');
@@ -304,8 +304,8 @@ describe('compile/mark/init', () => {
         encoding: {
           x: {type: 'ordinal', field: 'foo'},
           y: {type: 'quantitative', field: 'bar'},
-          y2: {field: 'baz'}
-        }
+          y2: {field: 'baz'},
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -316,8 +316,8 @@ describe('compile/mark/init', () => {
         encoding: {
           y: {type: 'ordinal', field: 'foo'},
           x: {type: 'quantitative', field: 'bar'},
-          x2: {field: 'baz'}
-        }
+          x2: {field: 'baz'},
+        },
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
@@ -327,8 +327,8 @@ describe('compile/mark/init', () => {
         mark: 'rule',
         encoding: {
           x: {type: 'quantitative', field: 'bar'},
-          x2: {field: 'baz'}
-        }
+          x2: {field: 'baz'},
+        },
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
@@ -338,8 +338,8 @@ describe('compile/mark/init', () => {
         mark: 'rule',
         encoding: {
           y: {type: 'quantitative', field: 'bar'},
-          y2: {field: 'baz'}
-        }
+          y2: {field: 'baz'},
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -353,17 +353,17 @@ describe('compile/mark/init', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickMinStep: 2
-            }
+              tickMinStep: 2,
+            },
           },
           x2: {
-            field: 'bin_end'
+            field: 'bin_end',
           },
           y: {
             field: 'count',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -377,17 +377,17 @@ describe('compile/mark/init', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickMinStep: 2
-            }
+              tickMinStep: 2,
+            },
           },
           y2: {
-            field: 'bin_end'
+            field: 'bin_end',
           },
           x: {
             field: 'count',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
@@ -398,16 +398,16 @@ describe('compile/mark/init', () => {
         encoding: {
           x: {
             field: 'q_start',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           x2: {
-            field: 'q_end'
+            field: 'q_end',
           },
           y: {
             field: 'count',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
@@ -418,16 +418,16 @@ describe('compile/mark/init', () => {
         encoding: {
           y: {
             field: 'q_start',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           y2: {
-            field: 'q_end'
+            field: 'q_end',
           },
           x: {
             field: 'count',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -441,17 +441,17 @@ describe('compile/mark/init', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickMinStep: 2
-            }
+              tickMinStep: 2,
+            },
           },
           x2: {
-            field: 'bin_end'
+            field: 'bin_end',
           },
           y: {
             field: 'count',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       expect(model.markDef.orient).toBe('vertical');
     });
@@ -465,17 +465,17 @@ describe('compile/mark/init', () => {
             bin: 'binned',
             type: 'quantitative',
             axis: {
-              tickMinStep: 2
-            }
+              tickMinStep: 2,
+            },
           },
           y2: {
-            field: 'bin_end'
+            field: 'bin_end',
           },
           x: {
             field: 'count',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
@@ -487,8 +487,8 @@ describe('compile/mark/init', () => {
         mark: 'bar',
         encoding: {
           y: {type: 'quantitative', field: 'foo'},
-          x: {type: 'temporal', field: 'bar'}
-        }
+          x: {type: 'temporal', field: 'bar'},
+        },
       });
       expect(model.markDef.cursor).toBeUndefined();
     });
@@ -501,11 +501,11 @@ describe('compile/mark/init', () => {
           x: {field: 'a', type: 'ordinal'},
           y: {field: 'b', type: 'quantitative'},
           href: {
-            condition: {param: 'test', value: 'https://vega.github.io/schema/vega-lite/v5.json'},
+            condition: {param: 'test', value: 'https://vega.github.io/schema/vega-lite/v6.json'},
             field: 'a',
-            type: 'ordinal'
-          }
-        }
+            type: 'ordinal',
+          },
+        },
       });
       expect(model.markDef.cursor).toBe('pointer');
     });
@@ -520,9 +520,9 @@ describe('compile/mark/init', () => {
           href: {
             condition: {param: 'test', value: 'http://www.google.com'},
             field: 'a',
-            type: 'ordinal'
-          }
-        }
+            type: 'ordinal',
+          },
+        },
       });
       expect(model.markDef.cursor).toBe('auto');
     });
@@ -532,8 +532,8 @@ describe('compile/mark/init', () => {
         mark: {type: 'bar', href: 'http://www.google.com'},
         encoding: {
           y: {type: 'quantitative', field: 'foo'},
-          x: {type: 'temporal', field: 'bar'}
-        }
+          x: {type: 'temporal', field: 'bar'},
+        },
       });
       expect(model.markDef.cursor).toBe('pointer');
     });
@@ -543,8 +543,8 @@ describe('compile/mark/init', () => {
         mark: {type: 'bar', href: 'http://www.google.com', cursor: 'auto'},
         encoding: {
           y: {type: 'quantitative', field: 'foo'},
-          x: {type: 'temporal', field: 'bar'}
-        }
+          x: {type: 'temporal', field: 'bar'},
+        },
       });
       expect(model.markDef.cursor).toBe('auto');
     });
@@ -553,14 +553,14 @@ describe('compile/mark/init', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         config: {
           mark: {
-            href: 'http://www.google.com'
-          }
+            href: 'http://www.google.com',
+          },
         },
         mark: 'bar',
         encoding: {
           y: {type: 'quantitative', field: 'foo'},
-          x: {type: 'temporal', field: 'bar'}
-        }
+          x: {type: 'temporal', field: 'bar'},
+        },
       });
       expect(model.markDef.cursor).toBe('pointer');
     });
@@ -569,14 +569,14 @@ describe('compile/mark/init', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         config: {
           mark: {
-            href: 'http://www.google.com'
-          }
+            href: 'http://www.google.com',
+          },
         },
         mark: {type: 'bar', cursor: 'auto'},
         encoding: {
           y: {type: 'quantitative', field: 'foo'},
-          x: {type: 'temporal', field: 'bar'}
-        }
+          x: {type: 'temporal', field: 'bar'},
+        },
       });
       expect(model.markDef.cursor).toBe('auto');
     });
@@ -586,14 +586,14 @@ describe('compile/mark/init', () => {
         config: {
           mark: {
             href: 'http://www.google.com',
-            cursor: 'auto'
-          }
+            cursor: 'auto',
+          },
         },
         mark: 'bar',
         encoding: {
           y: {type: 'quantitative', field: 'foo'},
-          x: {type: 'temporal', field: 'bar'}
-        }
+          x: {type: 'temporal', field: 'bar'},
+        },
       });
       expect(model.markDef.cursor).toBeUndefined();
     });

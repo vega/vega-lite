@@ -1,0 +1,336 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "width": 625,
+  "height": 541.25,
+  "padding": 50,
+  "title": {
+    "text": [
+      "Population Distribution by Socioeconomic Level in Fictional Cities"
+    ],
+    "fontSize": 15,
+    "subtitleFontSize": 14,
+    "subtitleFontStyle": "italic",
+    "anchor": "start",
+    "color": "#000000",
+    "subtitleColor": "#76d9e4",
+    "offset": 50
+  },
+  "config": {
+    "view": {"stroke": "transparent"},
+    "axis": {"disable": true, "grid": false, "tickBand": "extent"}
+  },
+  "layer": [
+    {
+      "data": {
+        "values": [
+          {"x": 0.25, "y": 0.433},
+          {"x": 0.75, "y": 0.433},
+          {"x": 0.5, "y": 0}
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "fill": "#c8edf1a2",
+        "interpolate": "linear-closed",
+        "stroke": "#c8edf1a2",
+        "strokeWidth": 0.2
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"x": 0, "y": 0},
+          {"x": 0.25, "y": 0.433},
+          {"x": 0.5, "y": 0}
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "fill": "#f7b7b7",
+        "interpolate": "linear-closed",
+        "stroke": "#f7b7b7",
+        "strokeWidth": 0.2
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"x": 0, "y": 0},
+          {"x": 0.1, "y": 0.1732},
+          {"x": 0.2, "y": 0}
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "fill": "#ff7a7a",
+        "interpolate": "linear-closed",
+        "stroke": "#ff7a7a",
+        "strokeWidth": 0.2
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"x": 1, "y": 0},
+          {"x": 0.75, "y": 0.433},
+          {"x": 0.5, "y": 0}
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "fill": "#d1ffdb",
+        "interpolate": "linear-closed",
+        "stroke": "#d1ffdb",
+        "strokeWidth": 0.2
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"x": 1, "y": 0},
+          {"x": 0.9, "y": 0.1732},
+          {"x": 0.8, "y": 0}
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "fill": "#7cff98",
+        "interpolate": "linear-closed",
+        "stroke": "#7cff98",
+        "strokeWidth": 0.2
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"x": 0.5, "y": 0.866},
+          {"x": 0.25, "y": 0.433},
+          {"x": 0.75, "y": 0.433}
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "fill": "#ffd26f",
+        "interpolate": "linear-closed",
+        "stroke": "#ffd26f",
+        "strokeWidth": 0.2
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"x": 0.5, "y": 0.866},
+          {"x": 0.4, "y": 0.6928},
+          {"x": 0.6, "y": 0.6928}
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "fill": "#fff0cf",
+        "interpolate": "linear-closed",
+        "stroke": "#fff0cf",
+        "strokeWidth": 0.2
+      },
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"x": -0.05, "y": -0.05, "label": "High 100%"},
+          {"x": 1.05, "y": -0.05, "label": "Low 100%"},
+          {"x": 0.5, "y": 0.888, "label": "Medium 100%"}
+        ]
+      },
+      "mark": {"type": "text", "dy": -10, "fontSize": 13, "color": "#000000"},
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "text": {"field": "label", "type": "nominal"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"x": 0.1, "y": 0, "x2": 0.05, "y2": 0.0866},
+          {"x": 0.2, "y": 0, "x2": 0.1, "y2": 0.1732},
+          {"x": 0.3, "y": 0, "x2": 0.15, "y2": 0.2598},
+          {"x": 0.4, "y": 0, "x2": 0.2, "y2": 0.3464},
+          {"x": 0.5, "y": 0, "x2": 0.25, "y2": 0.433},
+          {"x": 0.6, "y": 0, "x2": 0.3, "y2": 0.5196},
+          {"x": 0.7, "y": 0, "x2": 0.35, "y2": 0.6062},
+          {"x": 0.8, "y": 0, "x2": 0.4, "y2": 0.6928},
+          {"x": 0.9, "y": 0, "x2": 0.45, "y2": 0.7794},
+          {"x": 0.9, "y": 0, "x2": 0.95, "y2": 0.0866},
+          {"x": 0.8, "y": 0, "x2": 0.9, "y2": 0.1732},
+          {"x": 0.7, "y": 0, "x2": 0.85, "y2": 0.2598},
+          {"x": 0.6, "y": 0, "x2": 0.8, "y2": 0.3464},
+          {"x": 0.5, "y": 0, "x2": 0.75, "y2": 0.433},
+          {"x": 0.4, "y": 0, "x2": 0.7, "y2": 0.5196},
+          {"x": 0.3, "y": 0, "x2": 0.65, "y2": 0.6062},
+          {"x": 0.2, "y": 0, "x2": 0.6, "y2": 0.6928},
+          {"x": 0.1, "y": 0, "x2": 0.55, "y2": 0.7794},
+          {"x": 0.05, "y": 0.0866, "x2": 0.95, "y2": 0.0866},
+          {"x": 0.1, "y": 0.1732, "x2": 0.9, "y2": 0.1732},
+          {"x": 0.15, "y": 0.2598, "x2": 0.85, "y2": 0.2598},
+          {"x": 0.2, "y": 0.3464, "x2": 0.8, "y2": 0.3464},
+          {"x": 0.25, "y": 0.433, "x2": 0.75, "y2": 0.433},
+          {"x": 0.3, "y": 0.5196, "x2": 0.7, "y2": 0.5196},
+          {"x": 0.35, "y": 0.6062, "x2": 0.65, "y2": 0.6062},
+          {"x": 0.4, "y": 0.6928, "x2": 0.6, "y2": 0.6928},
+          {"x": 0.45, "y": 0.7794, "x2": 0.55, "y2": 0.7794}
+        ]
+      },
+      "mark": {"type": "rule", "stroke": "#696969", "strokeDash": [2, 2]},
+      "encoding": {
+        "x": {"field": "x", "type": "quantitative"},
+        "y": {"field": "y", "type": "quantitative"},
+        "x2": {"field": "x2"},
+        "y2": {"field": "y2"}
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"City": "Luminar", "High": 5, "Medium": 50, "Low": 30},
+          {"City": "Crystalport", "High": 35, "Medium": 60, "Low": 20},
+          {"City": "Stellaheim", "High": 115, "Medium": 40, "Low": 70},
+          {"City": "Mistral Heights", "High": 30, "Medium": 45, "Low": 252},
+          {"City": "Verdancia", "High": 120, "Medium": 35, "Low": 2},
+          {"City": "Aurelian City", "High": 28, "Medium": 48, "Low": 32},
+          {"City": "Solaris Bay", "High": 32, "Medium": 458, "Low": 55},
+          {"City": "Sandspire", "High": 12, "Medium": 30, "Low": 55},
+          {"City": "Azureon", "High": 40, "Medium": 50, "Low": 15},
+          {"City": "Goldcrest", "High": 18, "Medium": 28, "Low": 35}
+        ]
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "point",
+            "opacity": 1,
+            "stroke": "#000000",
+            "strokeWidth": 1.5,
+            "strokeOpacity": 1
+          },
+          "encoding": {
+            "x": {"field": "x", "type": "quantitative"},
+            "y": {"field": "y", "type": "quantitative"},
+            "tooltip": [
+              {"field": "City", "type": "nominal", "title": "City:"},
+              {"field": "tooltip_high", "type": "nominal", "title": "🔴 High:"},
+              {
+                "field": "tooltip_medium",
+                "type": "nominal",
+                "title": "🟡 Medium:"
+              },
+              {"field": "tooltip_low", "type": "nominal", "title": "🟢 Low:"}
+            ],
+            "fill": {"field": "color", "type": "nominal", "scale": null},
+            "size": {
+              "field": "TotalLevel",
+              "type": "quantitative",
+              "legend": null,
+              "scale": {"range": [50, 500]}
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "Verdana",
+            "dy": {"expr": "datum.dy_val"},
+            "fontSize": 13,
+            "color": "#000000",
+            "fontWeight": 100
+          },
+          "encoding": {
+            "x": {"field": "x", "type": "quantitative"},
+            "y": {"field": "y", "type": "quantitative"},
+            "tooltip": [
+              {"field": "City", "type": "nominal", "title": "City:"},
+              {"field": "tooltip_high", "type": "nominal", "title": "🔴 High:"},
+              {
+                "field": "tooltip_medium",
+                "type": "nominal",
+                "title": "🟡 Medium:"
+              },
+              {"field": "tooltip_low", "type": "nominal", "title": "🟢 Low:"}
+            ],
+            "text": {"field": "City", "type": "nominal"}
+          }
+        }
+      ],
+      "transform": [
+        {
+          "calculate": "datum['High'] + datum['Medium'] + datum['Low']",
+          "as": "TotalLevel"
+        },
+        {"calculate": "datum['High']/datum.TotalLevel", "as": "high_percent"},
+        {
+          "calculate": "datum['Medium']/datum.TotalLevel",
+          "as": "medium_percent"
+        },
+        {"calculate": "datum['Low']/datum.TotalLevel", "as": "low_percent"},
+        {
+          "calculate": "0.5 * (2 * datum.low_percent + datum.medium_percent)",
+          "as": "x"
+        },
+        {"calculate": "0.866 * datum.medium_percent", "as": "y"},
+        {
+          "calculate": "toString(isValid(datum['High']) ? datum['High'] : 0) + ' (' + toString(round((isValid(datum.high_percent) ? datum.high_percent : 0) * 100, 1)) + '%)'",
+          "as": "tooltip_high"
+        },
+        {
+          "calculate": "toString(isValid(datum['Medium']) ? datum['Medium'] : 0) + ' (' + toString(round((isValid(datum.medium_percent) ? datum.medium_percent : 0) * 100, 1)) + '%)'",
+          "as": "tooltip_medium"
+        },
+        {
+          "calculate": "toString(isValid(datum['Low']) ? datum['Low'] : 0) + ' (' + toString(round((isValid(datum.low_percent) ? datum.low_percent : 0) * 100, 1)) + '%)'",
+          "as": "tooltip_low"
+        },
+        {"filter": "datum['City'] !== null"},
+        {"calculate": "length(datum['City'])", "as": "leng"},
+        {
+          "calculate": "(datum.x*100 - length(datum['City']))/100",
+          "as": "Xleng"
+        },
+        {
+          "calculate": "(datum.x*100 + length(datum['City']))/100",
+          "as": "Xleng2"
+        },
+        {
+          "calculate": "datum['high_percent'] > 0.8 ? '#FF0F0F' : datum['medium_percent'] > 0.8 ? '#FFC333' : datum['low_percent'] > 0.8 ? '#32F95D' : datum['high_percent'] > 0.5 && datum['medium_percent'] > datum['low_percent'] ? '#ff3c18' : datum['high_percent'] > 0.5 && datum['medium_percent'] < datum['low_percent'] ? '#cb4922' : datum['medium_percent'] > 0.5 && datum['high_percent'] > datum['low_percent'] ? '#ff962a' : datum['medium_percent'] > 0.5 && datum['high_percent'] < datum['low_percent'] ? '#cbd03d' : datum['low_percent'] > 0.5 && datum['medium_percent'] < datum['high_percent'] ? '#65be49' : datum['low_percent'] > 0.5 && datum['medium_percent'] > datum['high_percent'] ? '#65eb52' : '#43c1ce'",
+          "as": "color"
+        },
+        {"calculate": "datum.medium_percent > 0.9 ? 15 : -15", "as": "dy_val"}
+      ]
+    }
+  ]
+}

@@ -1,31 +1,16 @@
-import {TopLevelSpec} from '../src';
-import {SelectionType} from '../src/selection';
-import {brush, embedFn, geoSpec, hits as hitsMaster, spec, testRenderFn, tuples} from './util';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {View} from 'vega';
+import {SelectionType} from '../src/selection.js';
+import {brush, embed, getGeoSpec, getSpec, hits as hitsMaster, tuples} from './util.js';
+import {describe, expect, it} from 'vitest';
 
 describe('interval selections at runtime in unit views', () => {
-  let page: Page;
-  let embed: (specification: TopLevelSpec) => Promise<void>;
-  let testRender: (filename: string) => Promise<void>;
-
-  beforeAll(async () => {
-    page = await (global as any).__BROWSER_GLOBAL__.newPage();
-    embed = embedFn(page);
-    testRender = testRenderFn(page, `${type}/unit`);
-    await page.goto('http://0.0.0.0:8000/test-runtime/');
-  });
-
-  afterAll(async () => {
-    await page.close();
-  });
-
   const type: SelectionType = 'interval';
   const hits = hitsMaster.interval;
 
   it('should add extents to the store', async () => {
     for (let i = 0; i < hits.drag.length; i++) {
-      await embed(spec('unit', i, {type}));
-      const store = await page.evaluate(brush('drag', i));
+      const view = await embed(getSpec('unit', i, {type}));
+      const store = (await brush(view, 'drag', i)) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(2);
       expect(store[0].values).toHaveLength(2);
@@ -37,14 +22,15 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].fields[1].type).toBe('R');
       expect(store[0].values[0]).toHaveLength(2);
       expect(store[0].values[1]).toHaveLength(2);
-      await testRender(`drag_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/drag_${i}.svg`);
     }
   });
 
   it('should respect projections', async () => {
-    await embed(spec('unit', 0, {type, encodings: ['x']}));
+    const view1 = await embed(getSpec('unit', 0, {type, encodings: ['x']}));
+
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = await page.evaluate(brush('drag', i));
+      const store = (await brush(view1, 'drag', i)) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(1);
       expect(store[0].values).toHaveLength(1);
@@ -52,12 +38,12 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].fields[0].field).toBe('a');
       expect(store[0].fields[0].type).toBe('R');
       expect(store[0].values[0]).toHaveLength(2);
-      await testRender(`x_${i}`);
+      await expect(await view1.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/x_${i}.svg`);
     }
 
-    await embed(spec('unit', 1, {type, encodings: ['y']}));
+    const view2 = await embed(getSpec('unit', 1, {type, encodings: ['y']}));
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = await page.evaluate(brush('drag', i));
+      const store = (await brush(view2, 'drag', i)) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(1);
       expect(store[0].values).toHaveLength(1);
@@ -65,37 +51,37 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].fields[0].field).toBe('b');
       expect(store[0].fields[0].type).toBe('R');
       expect(store[0].values[0]).toHaveLength(2);
-      await testRender(`y_${i}`);
+      await expect(await view2.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/y_${i}.svg`);
     }
   });
 
   it('should clear out stored extents', async () => {
     for (let i = 0; i < hits.drag_clear.length; i++) {
-      await embed(spec('unit', i, {type}));
-      let store = await page.evaluate(brush('drag', i));
+      const view = await embed(getSpec('unit', i, {type}));
+      let store = (await brush(view, 'drag', i)) as [any];
       expect(store).toHaveLength(1);
 
-      store = await page.evaluate(brush('drag_clear', i));
+      store = (await brush(view, 'drag_clear', i)) as [any];
       expect(store).toHaveLength(0);
-      await testRender(`clear_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/clear_${i}.svg`);
     }
   });
 
   it('should brush over binned domains', async () => {
-    await embed(
-      spec(
+    const view = await embed(
+      getSpec(
         'unit',
         1,
         {type, encodings: ['y']},
         {
           x: {aggregate: 'count', type: 'quantitative'},
           y: {bin: true},
-          color: {value: 'steelblue', field: null, type: null}
-        }
-      )
+          color: {value: 'steelblue', field: undefined, type: undefined},
+        },
+      ),
     );
     for (let i = 0; i < hits.bins.length; i++) {
-      const store = await page.evaluate(brush('bins', i));
+      const store = (await brush(view, 'bins', i)) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(1);
       expect(store[0].values).toHaveLength(1);
@@ -103,26 +89,28 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].fields[0].field).toBe('b');
       expect(store[0].fields[0].type).toBe('R');
       expect(store[0].values[0]).toHaveLength(2);
-      await testRender(`bins_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/bins_${i}.svg`);
     }
 
-    const store = await page.evaluate(brush('bins_clear', 0));
+    const store = await brush(view, 'bins_clear', 0);
     expect(store).toHaveLength(0);
   });
 
   it('should brush over ordinal/nominal domains', async () => {
     const xextents = [
       [2, 3, 4],
-      [6, 7, 8]
+      [6, 7, 8],
     ];
     const yextents = [
       [49, 52, 53, 54, 55, 66, 67, 68, 76, 81, 87, 91],
-      [17, 19, 23, 24, 27, 28, 35, 39, 43, 48]
+      [17, 19, 23, 24, 27, 28, 35, 39, 43, 48],
     ];
 
+    let view: View;
+
     for (let i = 0; i < hits.drag.length; i++) {
-      await embed(spec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
-      const store = await page.evaluate(brush('drag', i));
+      view = await embed(getSpec('unit', i, {type}, {x: {type: 'ordinal'}, y: {type: 'nominal'}}));
+      const store = (await brush(view, 'drag', i)) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(2);
       expect(store[0].values).toHaveLength(2);
@@ -134,89 +122,91 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].fields[1].type).toBe('E');
       expect(store[0].values[0]).toEqual(expect.arrayContaining(xextents[i]));
       expect(store[0].values[1]).toEqual(expect.arrayContaining(yextents[i]));
-      await testRender(`ord_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/ord_${i}.svg`);
     }
 
-    const store = await page.evaluate(brush('drag_clear', 0));
+    const store = await brush(view, 'drag_clear', 0);
     expect(store).toHaveLength(0);
   });
 
   it('should brush over temporal domains', async () => {
-    const values = tuples.map(d => ({...d, a: new Date(2017, d.a)}));
+    const values = tuples.map((d) => ({...d, a: new Date(2017, d.a)}));
     const toNumber = (a: any) => a[0].values[0].map((d: any) => +d);
 
-    await embed(spec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
+    const view1 = await embed(getSpec('unit', 0, {type, encodings: ['x']}, {values, x: {type: 'temporal'}}));
     let extents = [
-      [1485969714000, 1493634384000],
-      [1496346498000, 1504364922000]
+      [1486009020000, 1493634384000],
+      [1496307192000, 1504325616000],
     ];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = toNumber(await page.evaluate(brush('drag', i)));
+      const store = toNumber((await brush(view1, 'drag', i)) as [any]);
       expect(store).toEqual(expect.arrayContaining(extents[i]));
-      await testRender(`temporal_${i}`);
+      await expect(await view1.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/temporal_${i}.svg`);
     }
 
-    let cleared = await page.evaluate(brush('drag_clear', 0));
+    let cleared = await brush(view1, 'drag_clear', 0);
     expect(cleared).toHaveLength(0);
 
-    await embed(spec('unit', 1, {type, encodings: ['x']}, {values, x: {type: 'temporal', timeUnit: 'day'}}));
+    const view2 = await embed(
+      getSpec('unit', 1, {type, encodings: ['x']}, {values, x: {type: 'temporal', timeUnit: 'day'}}),
+    );
 
     extents = [
-      [1325492928000, 1325664000000],
-      [1325752128000, 1325837664000]
+      [1325491200000, 1325664000000],
+      [1325750400000, 1325836800000],
     ];
     for (let i = 0; i < hits.drag.length; i++) {
-      const store = toNumber(await page.evaluate(brush('drag', i)));
+      const store = toNumber((await brush(view2, 'drag', i)) as [any]);
       expect(store).toEqual(expect.arrayContaining(extents[i]));
-      await testRender(`dayTimeUnit_${i}`);
+      await expect(await view2.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/dayTimeUnit_${i}.svg`);
     }
 
-    cleared = await page.evaluate(brush('drag_clear', 0));
+    cleared = await brush(view2, 'drag_clear', 0);
     expect(cleared).toHaveLength(0);
   });
 
   it('should brush over log/pow scales', async () => {
     for (let i = 0; i < hits.drag.length; i++) {
-      await embed(
-        spec(
+      const view = await embed(
+        getSpec(
           'unit',
           i,
           {type},
           {
             x: {scale: {type: 'pow', exponent: 1.5}},
-            y: {scale: {type: 'log'}}
-          }
-        )
+            y: {scale: {type: 'log'}},
+          },
+        ),
       );
-      const store = await page.evaluate(brush('drag', i));
+      const store = (await brush(view, 'drag', i)) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(2);
       expect(store[0].values).toHaveLength(2);
       expect(store[0].values[0]).toHaveLength(2);
       expect(store[0].values[1]).toHaveLength(2);
-      await testRender(`logpow_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/logpow_${i}.svg`);
     }
   });
 
   describe('geo-intervals', () => {
     it('should add IDs to the store', async () => {
-      await embed(geoSpec());
-      const store: any = await page.evaluate(brush('drag', 1));
+      const view = await embed(getGeoSpec());
+      const store: any = await brush(view, 'drag', 1);
       expect(store).toHaveLength(13);
       for (const t of store) {
         expect(t).toHaveProperty('_vgsid_');
       }
-      await testRender(`geo_1`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/geo_1.svg`);
     });
 
     it('should respect projections', async () => {
-      await embed(geoSpec({encodings: ['longitude']}));
-      const store: any = await page.evaluate(brush('drag', 0));
+      const view = await embed(getGeoSpec({encodings: ['longitude']}));
+      const store: any = await brush(view, 'drag', 0);
       expect(store).toHaveLength(20);
       for (const t of store) {
         expect(t).toHaveProperty('_vgsid_');
       }
-      await testRender(`geo_0`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/geo_0.svg`);
     });
   });
 });

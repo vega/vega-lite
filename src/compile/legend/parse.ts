@@ -1,20 +1,27 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
-import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel';
-import {DatumDef, FieldDef, getFieldOrDatumDef, isFieldDef, MarkPropDatumDef, MarkPropFieldDef} from '../../channeldef';
-import {LegendInternal, LEGEND_SCALE_CHANNELS} from '../../legend';
-import {normalizeTimeUnit} from '../../timeunit';
-import {GEOJSON} from '../../type';
-import {deleteNestedProperty, isEmpty, keys, varName} from '../../util';
-import {mergeTitleComponent} from '../common';
-import {guideEncodeEntry} from '../guide';
-import {isUnitModel, Model} from '../model';
-import {parseGuideResolve} from '../resolve';
-import {parseInteractiveLegend} from '../selection/legends';
-import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
-import {UnitModel} from '../unit';
-import {LegendComponent, LegendComponentIndex, LegendComponentProps, LEGEND_COMPONENT_PROPERTIES} from './component';
-import {LegendEncodeParams, legendEncodeRules} from './encode';
-import {getDirection, getLegendType, LegendRuleParams, legendRules} from './properties';
+import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel.js';
+import {
+  DatumDef,
+  FieldDef,
+  getFieldOrDatumDef,
+  isFieldDef,
+  MarkPropDatumDef,
+  MarkPropFieldDef,
+} from '../../channeldef.js';
+import {LegendInternal, LEGEND_SCALE_CHANNELS} from '../../legend.js';
+import {normalizeTimeUnit} from '../../timeunit.js';
+import {GEOJSON} from '../../type.js';
+import {deleteNestedProperty, isEmpty, keys, varName} from '../../util.js';
+import {mergeTitleComponent} from '../common.js';
+import {guideEncodeEntry} from '../guide.js';
+import {isUnitModel, Model} from '../model.js';
+import {parseGuideResolve} from '../resolve.js';
+import {parseInteractiveLegend} from '../selection/legends.js';
+import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split.js';
+import {UnitModel} from '../unit.js';
+import {LegendComponent, LegendComponentIndex, LegendComponentProps, LEGEND_COMPONENT_PROPERTIES} from './component.js';
+import {LegendEncodeParams, legendEncodeRules} from './encode.js';
+import {getDirection, getLegendType, LegendRuleParams, legendRules} from './properties.js';
 
 export function parseLegend(model: Model) {
   const legendComponent = isUnitModel(model) ? parseUnitLegend(model) : parseNonUnitLegend(model);
@@ -61,12 +68,11 @@ function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChanne
   return {[channel]: scale};
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 function isExplicit<T extends string | number | object | boolean>(
   value: T,
   property: keyof LegendComponentProps,
   legend: LegendInternal,
-  fieldDef: FieldDef<string>
+  fieldDef: FieldDef<string>,
 ) {
   switch (property) {
     case 'disable':
@@ -81,7 +87,7 @@ function isExplicit<T extends string | number | object | boolean>(
       }
   }
   // Otherwise, things are explicit if the returned value matches the specified property
-  return value === (legend || {})[property];
+  return value === (legend || ({} as any))[property];
 }
 
 export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {
@@ -121,7 +127,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
     scaleType,
     orient,
     legendType,
-    direction
+    direction,
   };
 
   for (const property of LEGEND_COMPONENT_PROPERTIES) {
@@ -132,10 +138,10 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
       continue;
     }
 
-    const value = property in legendRules ? legendRules[property](ruleParams) : legend[property];
+    const value = property in legendRules ? legendRules[property](ruleParams) : (legend as any)[property];
     if (value !== undefined) {
       const explicit = isExplicit(value, property, legend, model.fieldDef(channel));
-      if (explicit || config.legend[property] === undefined) {
+      if (explicit || (config.legend as any)[property] === undefined) {
         legendCmpt.set(property, value, explicit);
       }
     }
@@ -147,8 +153,9 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
 
   const legendEncodeParams: LegendEncodeParams = {fieldOrDatumDef, model, channel, legendCmpt, legendType};
 
-  for (const part of ['labels', 'legend', 'title', 'symbols', 'gradient', 'entries']) {
-    const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
+  for (const part of ['labels', 'legend', 'title', 'symbols', 'gradient', 'entries'] as const) {
+    // FIXME: remove as any (figure out what legendEncoding.entries is)
+    const legendEncodingPart = guideEncodeEntry((legendEncoding as any)[part] ?? {}, model);
 
     const value =
       part in legendEncodeRules
@@ -161,7 +168,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
           ? {name: `${varName(fieldOrDatumDef.field)}_legend_${part}`}
           : {}),
         ...(selections?.length ? {interactive: !!selections} : {}),
-        update: value
+        update: value,
       };
     }
   }
@@ -250,7 +257,7 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
             return makeImplicit('symbol');
         }
         return defaultTieBreaker<LegendComponentProps, any>(v1, v2, prop, 'legend');
-      }
+      },
     );
     mergedLegend.setWithExplicit(prop, mergedValueWithExplicit);
   }

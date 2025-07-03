@@ -1,6 +1,6 @@
 import {SignalRef, TimeInterval} from 'vega';
 import {isArray, isNumber} from 'vega-util';
-import {isBinned, isBinning, isBinParams} from '../../bin';
+import {isBinned, isBinning, isBinParams} from '../../bin.js';
 import {
   COLOR,
   FILL,
@@ -10,8 +10,8 @@ import {
   POLAR_POSITION_SCALE_CHANNELS,
   POSITION_SCALE_CHANNELS,
   ScaleChannel,
-  STROKE
-} from '../../channel';
+  STROKE,
+} from '../../channel.js';
 import {
   getFieldDef,
   getFieldOrDatumDef,
@@ -19,13 +19,13 @@ import {
   ScaleDatumDef,
   ScaleFieldDef,
   TypedFieldDef,
-  valueExpr
-} from '../../channeldef';
-import {Config} from '../../config';
-import {isDateTime} from '../../datetime';
-import {channelHasNestedOffsetScale} from '../../encoding';
-import * as log from '../../log';
-import {Mark, MarkDef, RectConfig} from '../../mark';
+  valueExpr,
+} from '../../channeldef.js';
+import {Config} from '../../config.js';
+import {isDateTime} from '../../datetime.js';
+import {channelHasNestedOffsetScale} from '../../encoding.js';
+import * as log from '../../log/index.js';
+import {Mark, MarkDef, RectConfig} from '../../mark.js';
 import {
   channelScalePropertyIncompatability,
   Domain,
@@ -35,20 +35,20 @@ import {
   Scale,
   ScaleConfig,
   ScaleType,
-  scaleTypeSupportProperty
-} from '../../scale';
-import {Sort} from '../../sort';
-import {Type} from '../../type';
-import * as util from '../../util';
-import {contains, getFirstDefined, keys} from '../../util';
-import {isSignalRef, VgScale} from '../../vega.schema';
-import {getBinSignalName} from '../data/bin';
-import {isUnitModel, Model} from '../model';
-import {SignalRefWrapper} from '../signal';
-import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
-import {UnitModel} from '../unit';
-import {ScaleComponentIndex, ScaleComponentProps} from './component';
-import {parseUnitScaleRange} from './range';
+  scaleTypeSupportProperty,
+} from '../../scale.js';
+import {Sort} from '../../sort.js';
+import {Type} from '../../type.js';
+import * as util from '../../util.js';
+import {contains, getFirstDefined, keys} from '../../util.js';
+import {isSignalRef, VgScale} from '../../vega.schema.js';
+import {getBinSignalName} from '../data/bin.js';
+import {isUnitModel, Model} from '../model.js';
+import {SignalRefWrapper} from '../signal.js';
+import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split.js';
+import {UnitModel} from '../unit.js';
+import {ScaleComponentIndex, ScaleComponentProps} from './component.js';
+import {parseUnitScaleRange} from './range.js';
 
 export function parseScaleProperty(model: Model, property: Exclude<keyof (Scale | ScaleComponentProps), 'range'>) {
   if (isUnitModel(model)) {
@@ -87,7 +87,7 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
     }
     if (supportedByScaleType && channelIncompatability === undefined) {
       if (specifiedValue !== undefined) {
-        const timeUnit = fieldOrDatumDef['timeUnit'];
+        const timeUnit = (fieldOrDatumDef as any).timeUnit;
         const type = fieldOrDatumDef.type;
 
         switch (property) {
@@ -103,30 +103,29 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
           default:
             localScaleCmpt.copyKeyFromObject<Omit<ScaleComponentProps, 'range' | 'domainMin' | 'domainMax'>>(
               property,
-              specifiedScale
+              specifiedScale,
             );
         }
       } else {
-        const value =
-          property in scaleRules
-            ? scaleRules[property]({
-                model,
-                channel,
-                fieldOrDatumDef,
-                scaleType,
-                scalePadding,
-                scalePaddingInner,
-                domain: specifiedScale.domain,
-                domainMin: specifiedScale.domainMin,
-                domainMax: specifiedScale.domainMax,
-                markDef,
-                config,
-                hasNestedOffsetScale: channelHasNestedOffsetScale(encoding, channel),
-                hasSecondaryRangeChannel: !!encoding[getSecondaryRangeChannel(channel)]
-              })
-            : config.scale[property];
+        const value = util.hasProperty(scaleRules, property)
+          ? scaleRules[property]({
+              model,
+              channel,
+              fieldOrDatumDef,
+              scaleType,
+              scalePadding,
+              scalePaddingInner,
+              domain: specifiedScale.domain,
+              domainMin: specifiedScale.domainMin,
+              domainMax: specifiedScale.domainMax,
+              markDef,
+              config,
+              hasNestedOffsetScale: channelHasNestedOffsetScale(encoding, channel),
+              hasSecondaryRangeChannel: !!encoding[getSecondaryRangeChannel(channel)],
+            })
+          : config.scale[property];
         if (value !== undefined) {
-          localScaleCmpt.set(property, value, false);
+          localScaleCmpt.set(property, value as any, false);
         }
       }
     }
@@ -173,7 +172,7 @@ export const scaleRules: {
     return reverse(scaleType, sort, channel, config.scale);
   },
   zero: ({channel, fieldOrDatumDef, domain, markDef, scaleType, config, hasSecondaryRangeChannel}) =>
-    zero(channel, fieldOrDatumDef, domain, markDef, scaleType, config.scale, hasSecondaryRangeChannel)
+    zero(channel, fieldOrDatumDef, domain, markDef, scaleType, config.scale, hasSecondaryRangeChannel),
 };
 
 // This method is here rather than in range.ts to avoid circular dependency.
@@ -219,7 +218,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
               // TODO: precedence rule for other properties
             }
             return 0;
-          })
+          }),
         );
       }
     }
@@ -237,7 +236,7 @@ export function bins(model: Model, fieldDef: TypedFieldDef<string>) {
   } else if (isBinned(bin) && isBinParams(bin) && bin.step !== undefined) {
     // start and stop will be determined from the scale domain
     return {
-      step: bin.step
+      step: bin.step,
     };
   }
   return undefined;
@@ -256,7 +255,7 @@ export function nice(
   specifiedDomain: Domain,
   domainMin: Scale['domainMin'],
   domainMax: Scale['domainMax'],
-  fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef
+  fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef,
 ): boolean | TimeInterval {
   if (
     getFieldDef(fieldOrDatumDef)?.bin ||
@@ -276,7 +275,7 @@ export function padding(
   scaleConfig: ScaleConfig<SignalRef>,
   fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef,
   markDef: MarkDef<Mark, SignalRef>,
-  barConfig: RectConfig<SignalRef>
+  barConfig: RectConfig<SignalRef>,
 ) {
   if (isXorY(channel)) {
     if (isContinuousToContinuous(scaleType)) {
@@ -305,7 +304,7 @@ export function paddingInner(
   mark: Mark,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig<SignalRef>,
-  hasNestedOffsetScale = false
+  hasNestedOffsetScale = false,
 ) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingInner.
@@ -317,13 +316,22 @@ export function paddingInner(
     // Basically it doesn't make sense to add padding for color and size.
 
     // paddingOuter would only be called if it's a band scale, just return the default for bandScale.
-    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner, bandWithNestedOffsetPaddingInner} = scaleConfig;
+    const {
+      bandPaddingInner,
+      barBandPaddingInner,
+      rectBandPaddingInner,
+      tickBandPaddingInner,
+      bandWithNestedOffsetPaddingInner,
+    } = scaleConfig;
 
     if (hasNestedOffsetScale) {
       return bandWithNestedOffsetPaddingInner;
     }
 
-    return getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner);
+    return getFirstDefined(
+      bandPaddingInner,
+      mark === 'bar' ? barBandPaddingInner : mark === 'tick' ? tickBandPaddingInner : rectBandPaddingInner,
+    );
   } else if (isXorYOffset(channel)) {
     if (scaleType === ScaleType.BAND) {
       return scaleConfig.offsetBandPaddingInner;
@@ -338,7 +346,7 @@ export function paddingOuter(
   scaleType: ScaleType,
   paddingInnerValue: number | SignalRef,
   scaleConfig: ScaleConfig<SignalRef>,
-  hasNestedOffsetScale = false
+  hasNestedOffsetScale = false,
 ) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingOuter.
@@ -359,7 +367,7 @@ export function paddingOuter(
           size (width/height) = step * (cardinality - paddingInner + 2 * paddingOuter).
           and we want the width/height to be integer by default.
           Note that step (by default) and cardinality are integers.) */
-        isSignalRef(paddingInnerValue) ? {signal: `${paddingInnerValue.signal}/2`} : paddingInnerValue / 2
+        isSignalRef(paddingInnerValue) ? {signal: `${paddingInnerValue.signal}/2`} : paddingInnerValue / 2,
       );
     }
   } else if (isXorYOffset(channel)) {
@@ -376,7 +384,7 @@ export function reverse(
   scaleType: ScaleType,
   sort: Sort<string>,
   channel: ScaleChannel,
-  scaleConfig: ScaleConfig<SignalRef>
+  scaleConfig: ScaleConfig<SignalRef>,
 ) {
   if (channel === 'x' && scaleConfig.xReverse !== undefined) {
     if (hasContinuousDomain(scaleType) && sort === 'descending') {
@@ -404,7 +412,7 @@ export function zero(
   markDef: MarkDef,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig<SignalRef>,
-  hasSecondaryRangeChannel: boolean
+  hasSecondaryRangeChannel: boolean,
 ) {
   // If users explicitly provide a domain, we should not augment zero as that will be unexpected.
   const hasCustomDomain = !!specifiedDomain && specifiedDomain !== 'unaggregated';

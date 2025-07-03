@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 20,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {"name": "source_0", "values": "a\n1\n2\n3\n4", "format": {"type": "csv"}},

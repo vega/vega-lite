@@ -1,13 +1,13 @@
-import {vgField} from '../../channeldef';
-import {DEFAULT_SORT_OP, isSortField} from '../../sort';
-import {FacetMapping} from '../../spec/facet';
-import {facetSortFieldName} from '../facet';
-import {DataFlowNode} from './dataflow';
-import {JoinAggregateTransformNode} from './joinaggregate';
+import {vgField} from '../../channeldef.js';
+import {DEFAULT_SORT_OP, isSortField} from '../../sort.js';
+import {FacetMapping} from '../../spec/facet.js';
+import {facetSortFieldName} from '../facet.js';
+import {DataFlowNode} from './dataflow.js';
+import {JoinAggregateTransformNode} from './joinaggregate.js';
 
 export function makeJoinAggregateFromFacet(
   parent: DataFlowNode,
-  facet: FacetMapping<string>
+  facet: FacetMapping<string>,
 ): JoinAggregateTransformNode {
   const {row, column} = facet;
   if (row && column) {
@@ -21,10 +21,10 @@ export function makeJoinAggregateFromFacet(
             {
               op,
               field,
-              as: facetSortFieldName(fieldDef, fieldDef.sort, {forAs: true})
-            }
+              as: facetSortFieldName(fieldDef, fieldDef.sort, {forAs: true}),
+            },
           ],
-          groupby: [vgField(fieldDef)]
+          groupby: [vgField(fieldDef)],
         });
       }
     }

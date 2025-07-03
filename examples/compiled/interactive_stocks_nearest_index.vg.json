@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 600,
@@ -126,7 +126,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -152,7 +152,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
@@ -163,6 +163,7 @@
       "name": "layer_1_voronoi",
       "type": "path",
       "interactive": true,
+      "aria": false,
       "from": {"data": "layer_1_marks"},
       "encode": {
         "update": {
@@ -191,7 +192,7 @@
         "update": {
           "stroke": {"value": "black"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 0},
@@ -209,11 +210,11 @@
         "update": {
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 10},
-          "text": {"signal": "timeFormat(datum[\"date\"], '%b %d, %Y')"},
+          "text": {"signal": "timeFormat(datum[\"date\"], \"%b %d, %Y\")"},
           "baseline": {"value": "middle"}
         }
       }

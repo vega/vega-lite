@@ -1,8 +1,8 @@
 import {FieldRef, GeoPointTransform as VgGeoPointTransform, Vector2} from 'vega';
-import {GeoPointNode} from '../../../src/compile/data/geopoint';
-import {contains, every} from '../../../src/util';
-import {parseUnitModel} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {GeoPointNode} from '../../../src/compile/data/geopoint.js';
+import {contains, every} from '../../../src/util.js';
+import {parseUnitModel} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/geopoint', () => {
   describe('geojson', () => {
@@ -11,20 +11,20 @@ describe('compile/data/geopoint', () => {
         data: {
           url: 'data/zipcodes.csv',
           format: {
-            type: 'csv'
-          }
+            type: 'csv',
+          },
         },
         mark: 'circle',
         encoding: {
           longitude: {
             field: 'longitude',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           latitude: {
             field: 'latitude',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       model.parse();
 
@@ -38,11 +38,11 @@ describe('compile/data/geopoint', () => {
 
         const transform: VgGeoPointTransform = (node as GeoPointNode).assemble();
         expect(transform.type).toBe('geopoint');
-        expect(every(['longitude', 'latitude'], field => contains(transform.fields as Vector2<FieldRef>, field))).toBe(
-          true
-        );
         expect(
-          every([model.getName('x'), model.getName('y')], a => contains(transform.as as Vector2<FieldRef>, a))
+          every(['longitude', 'latitude'], (field) => contains(transform.fields as Vector2<FieldRef>, field)),
+        ).toBe(true);
+        expect(
+          every([model.getName('x'), model.getName('y')], (a) => contains(transform.as as Vector2<FieldRef>, a)),
         ).toBe(true);
         expect(transform.projection).toBeDefined();
         expect(node.children.length).toBeLessThanOrEqual(1);

@@ -2,13 +2,13 @@
  * Utility files for producing Vega ValueRef for marks
  */
 import type {SignalRef} from 'vega';
-import {PolarPositionChannel, PositionChannel} from '../../../channel';
-import {Encoding} from '../../../encoding';
-import {Mark, MarkDef} from '../../../mark';
-import {VgValueRef} from '../../../vega.schema';
-import {signalOrValueRef} from '../../common';
-import {UnitModel} from '../../unit';
-import {midPoint} from './valueref';
+import {PolarPositionChannel, PositionChannel} from '../../../channel.js';
+import {Encoding} from '../../../encoding.js';
+import {Mark, MarkDef} from '../../../mark.js';
+import {VgValueRef} from '../../../vega.schema.js';
+import {signalOrValueRef} from '../../common.js';
+import {UnitModel} from '../../unit.js';
+import {midPoint} from './valueref.js';
 
 export interface Offset {
   offsetType?: 'visual' | 'encoding';
@@ -20,7 +20,7 @@ export function positionOffset({
   markDef,
   encoding = {},
   model,
-  bandPosition
+  bandPosition,
 }: {
   channel: PositionChannel | PolarPositionChannel;
   markDef: MarkDef<Mark, SignalRef>;
@@ -39,7 +39,8 @@ export function positionOffset({
     | 'radius2Offset'; // Need to cast as the type can't be inferred automatically
 
   const defaultValue = markDef[channel];
-  const channelDef = encoding[channel];
+  // FIXME: remove as any
+  const channelDef = (encoding as any)[channel];
 
   if ((channel === 'xOffset' || channel === 'yOffset') && channelDef) {
     const ref = midPoint({
@@ -51,7 +52,7 @@ export function positionOffset({
       scale: model.getScaleComponent(channel),
       stack: null,
       defaultRef: signalOrValueRef(defaultValue),
-      bandPosition
+      bandPosition,
     });
     return {offsetType: 'encoding', offset: ref};
   }

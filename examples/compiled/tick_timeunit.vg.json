@@ -1,0 +1,143 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Google's stock price over time.",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
+        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["year"],
+          "as": ["year_date", "year_date_end"]
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["year_date", "year_date_end"],
+          "ops": ["sum"],
+          "fields": ["price"],
+          "as": ["sum_price"]
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"year_date\"]) || (isValid(datum[\"year_date\"]) && isFinite(+datum[\"year_date\"]))) && isValid(datum[\"sum_price\"]) && isFinite(+datum[\"sum_price\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["tick"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "tick"},
+          "description": {
+            "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of price: \" + (format(datum[\"sum_price\"], \"\"))"
+          },
+          "x2": {
+            "scale": "x",
+            "field": "year_date",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"year_date_end\"]) - scale(\"x\", datum[\"year_date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"year_date_end\"]) - scale(\"x\", datum[\"year_date\"])))) : 0)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "year_date_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"year_date_end\"]) - scale(\"x\", datum[\"year_date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"year_date_end\"]) - scale(\"x\", datum[\"year_date\"])))) : 0)"
+            }
+          },
+          "yc": {"scale": "y", "field": "sum_price"},
+          "height": {"value": 1}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "fields": ["year_date", "year_date_end"]},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "sum_price"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (year)",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Sum of price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

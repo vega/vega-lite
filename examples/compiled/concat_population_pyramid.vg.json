@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A population pyramid for the US in 2000.",
   "background": "white",
   "padding": 5,
@@ -81,7 +81,7 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 200},
+    {"name": "concat_0_width", "value": 300},
     {"name": "concat_0_y_step", "value": 20},
     {
       "name": "concat_0_height",
@@ -93,7 +93,7 @@
       "name": "concat_1_height",
       "update": "bandspace(domain('concat_1_y').length, 1, 0.5) * concat_1_y_step"
     },
-    {"name": "concat_2_width", "value": 200},
+    {"name": "concat_2_width", "value": 300},
     {"name": "concat_2_y_step", "value": 20},
     {
       "name": "concat_2_height",

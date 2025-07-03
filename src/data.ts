@@ -2,8 +2,9 @@
  * Constants and utilities for data.
  */
 import {Vector2} from 'vega';
-import {FieldName} from './channeldef';
-import {VgData} from './vega.schema';
+import {FieldName} from './channeldef.js';
+import {VgData} from './vega.schema.js';
+import {hasProperty} from './util.js';
 
 export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
 
@@ -83,7 +84,6 @@ export type DataSource = UrlData | InlineData | NamedData;
 
 export type Data = DataSource | Generator;
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
 
 export interface DataBase {
@@ -123,15 +123,15 @@ export interface NamedData extends DataBase {
 }
 
 export function isUrlData(data: Partial<Data> | Partial<VgData>): data is UrlData {
-  return 'url' in data;
+  return hasProperty(data, 'url');
 }
 
 export function isInlineData(data: Partial<Data> | Partial<VgData>): data is InlineData {
-  return 'values' in data;
+  return hasProperty(data, 'values');
 }
 
 export function isNamedData(data: Partial<Data> | Partial<VgData>): data is NamedData {
-  return 'name' in data && !isUrlData(data) && !isInlineData(data) && !isGenerator(data);
+  return hasProperty(data, 'name') && !isUrlData(data) && !isInlineData(data) && !isGenerator(data);
 }
 
 export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Generator {
@@ -139,15 +139,15 @@ export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Gene
 }
 
 export function isSequenceGenerator(data: Partial<Data> | Partial<VgData>): data is SequenceGenerator {
-  return 'sequence' in data;
+  return hasProperty(data, 'sequence');
 }
 
 export function isSphereGenerator(data: Partial<Data> | Partial<VgData>): data is SphereGenerator {
-  return 'sphere' in data;
+  return hasProperty(data, 'sphere');
 }
 
 export function isGraticuleGenerator(data: Partial<Data> | Partial<VgData>): data is GraticuleGenerator {
-  return 'graticule' in data;
+  return hasProperty(data, 'graticule');
 }
 
 export enum DataSourceType {
@@ -161,7 +161,7 @@ export enum DataSourceType {
   PreFilterInvalid,
 
   /** Post-filter-invalid data source for scale domains */
-  PostFilterInvalid
+  PostFilterInvalid,
 }
 
 export type Generator = SequenceGenerator | SphereGenerator | GraticuleGenerator;
@@ -208,8 +208,7 @@ export interface SphereGenerator extends GeneratorBase {
   /**
    * Generate sphere GeoJSON data for the full globe.
    */
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  sphere: true | {};
+  sphere: true | object;
 }
 
 export interface GraticuleGenerator extends GeneratorBase {

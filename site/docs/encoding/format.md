@@ -72,10 +72,26 @@ Below, we override the default number formatting to use exponent notation set to
 
 ### Temporal Data
 
-In the example below we format the axis label to only show the year.
+#### Default
 
-<span class="vl-example" data-name="line"></span>
+By default, time fields may have dynamic time format that uses different formats depending on the granularity of the input date (e.g., if the tick's date lies on a year, month, date, hour, etc. boundary).
 
-The format can also contain text.
+<span class="vl-example" data-name="line_default_format"></span>
+
+#### Specifying Dynamic Time Format
+
+{:#dynamic-time-format}
+
+We can override dynamic time format by setting `format` to an object where the keys are valid [Vega time units](https://vega.github.io/vega/docs/api/time/#time-units) (e.g., `year`, `month`, etc) and the values are [d3-time-format](https://d3js.org/d3-time-format#locale_format) specifier strings.
+
+<span class="vl-example" data-name="line_override_dynamic_format"></span>
+
+#### Specifying Static Time Format
+
+If you prefer using a static time format, you can set `format` to a desired time format specifier string:
+
+<span class="vl-example" data-name="line_override_static_format"></span>
+
+Note that time format can also contain text.
 
 <span class="vl-example" data-name="bar_yearmonth_custom_format"></span>

@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A candlestick chart inspired by an example in Protovis (http://mbostock.github.io/protovis/ex/candlestick.html)",
   "background": "white",
   "padding": 5,
   "width": 400,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -46,7 +46,7 @@
             {"value": "#ae1325"}
           ],
           "description": {
-            "signal": "\"Date in 2009: \" + (timeFormat(datum[\"date\"], '%m/%d')) + \"; low: \" + (format(datum[\"low\"], \"\")) + \"; high: \" + (format(datum[\"high\"], \"\"))"
+            "signal": "\"Date in 2009: \" + (timeFormat(datum[\"date\"], \"%m/%d\")) + \"; low: \" + (format(datum[\"low\"], \"\")) + \"; high: \" + (format(datum[\"high\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "low"},
@@ -67,7 +67,7 @@
           ],
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Date in 2009: \" + (timeFormat(datum[\"date\"], '%m/%d')) + \"; open: \" + (format(datum[\"open\"], \"\")) + \"; close: \" + (format(datum[\"close\"], \"\"))"
+            "signal": "\"Date in 2009: \" + (timeFormat(datum[\"date\"], \"%m/%d\")) + \"; open: \" + (format(datum[\"open\"], \"\")) + \"; close: \" + (format(datum[\"close\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "date"},
           "width": {"value": 5},

@@ -1,5 +1,5 @@
-import {SourceNode} from '../../../src/compile/data/source';
-import {Data} from '../../../src/data';
+import {SourceNode} from '../../../src/compile/data/source.js';
+import {Data} from '../../../src/data.js';
 
 function parse(data: Data) {
   return new SourceNode(data);
@@ -11,14 +11,14 @@ describe('compile/data/source', () => {
       const source = parse({
         values: [
           {a: 1, b: 2, c: 3},
-          {a: 4, b: 5, c: 6}
-        ]
+          {a: 4, b: 5, c: 6},
+        ],
       });
 
       it('should have values', () => {
         expect(source.data.values).toEqual([
           {a: 1, b: 2, c: 3},
-          {a: 4, b: 5, c: 6}
+          {a: 4, b: 5, c: 6},
         ]);
       });
 
@@ -30,7 +30,7 @@ describe('compile/data/source', () => {
     describe('with explicit values as CSV', () => {
       const source = parse({
         values: 'a\n1\n2\n3',
-        format: {type: 'csv'}
+        format: {type: 'csv'},
       });
 
       it('should have values', () => {
@@ -44,7 +44,7 @@ describe('compile/data/source', () => {
 
     describe('with link to url', () => {
       const source = parse({
-        url: 'http://foo.bar/file.csv'
+        url: 'http://foo.bar/file.csv',
       });
 
       it('should have format.type csv', () => {
@@ -57,7 +57,7 @@ describe('compile/data/source', () => {
 
     describe('without file ending', () => {
       const source = parse({
-        url: 'http://foo.bar/file.baz'
+        url: 'http://foo.bar/file.baz',
       });
 
       it('should have format.type json', () => {
@@ -86,7 +86,7 @@ describe('compile/data/source', () => {
         it('should include property if specified', () => {
           const source = parse({
             url: 'http://foo.bar',
-            format: {type: 'json', property: 'baz'}
+            format: {type: 'json', property: 'baz'},
           });
 
           expect(source.data.format.property).toBe('baz');
@@ -97,7 +97,7 @@ describe('compile/data/source', () => {
         describe('feature property is specified', () => {
           const source = parse({
             url: 'http://foo.bar',
-            format: {type: 'topojson', feature: 'baz'}
+            format: {type: 'topojson', feature: 'baz'},
           });
 
           it('should have format.type topojson', () => {
@@ -111,7 +111,7 @@ describe('compile/data/source', () => {
         describe('mesh property is specified', () => {
           const source = parse({
             url: 'http://foo.bar',
-            format: {type: 'topojson', mesh: 'baz'}
+            format: {type: 'topojson', mesh: 'baz'},
           });
 
           it('should have format.type topojson', () => {
@@ -123,9 +123,5 @@ describe('compile/data/source', () => {
         });
       });
     });
-  });
-
-  describe('assemble', () => {
-    // TODO: write test
   });
 });

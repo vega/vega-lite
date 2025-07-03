@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A vertical box plot showing median, min, and max body mass of penguins.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -157,8 +157,8 @@
             "signal": "{\"Max of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
           },
           "xc": {"scale": "x", "field": "Species", "band": 0.5},
-          "yc": {"scale": "y", "field": "mid_box_Body Mass (g)"},
           "width": {"value": 14},
+          "yc": {"scale": "y", "field": "mid_box_Body Mass (g)"},
           "height": {"value": 1}
         }
       }

@@ -1,13 +1,13 @@
-import {Color, InitSignal, Locale, NewSignal, RangeConfig, RangeScheme, SignalRef, writeConfig} from 'vega';
-import {isObject, mergeConfig} from 'vega-util';
-import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis';
-import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common';
-import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
-import {ExprRef, replaceExprRef} from './expr';
-import {VL_ONLY_LEGEND_CONFIG} from './guide';
-import {HeaderConfigMixins, HEADER_CONFIGS} from './header';
-import {defaultLegendConfig, LegendConfig} from './legend';
-import * as mark from './mark';
+import type {Color, InitSignal, Locale, NewSignal, RangeConfig, RangeScheme, SignalRef} from 'vega';
+import {isObject, mergeConfig, writeConfig} from 'vega-util';
+import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis.js';
+import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common.js';
+import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark/index.js';
+import {ExprRef, replaceExprRef} from './expr.js';
+import {VL_ONLY_LEGEND_CONFIG} from './guide.js';
+import {HeaderConfigMixins, HEADER_CONFIGS} from './header.js';
+import {defaultLegendConfig, LegendConfig} from './legend.js';
+import * as mark from './mark.js';
 import {
   AnyMarkConfig,
   Mark,
@@ -16,22 +16,22 @@ import {
   MARK_CONFIGS,
   PRIMITIVE_MARKS,
   VL_ONLY_MARK_CONFIG_PROPERTIES,
-  VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
-} from './mark';
-import {assembleParameterSignals} from './parameter';
-import {ProjectionConfig} from './projection';
-import {defaultScaleConfig, ScaleConfig} from './scale';
-import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
-import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base';
-import {TopLevelProperties} from './spec/toplevel';
-import {extractTitleConfig, TitleConfig} from './title';
-import {duplicate, getFirstDefined, isEmpty, keys, omit} from './util';
+  VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
+} from './mark.js';
+import {assembleParameterSignals} from './parameter.js';
+import {ProjectionConfig} from './projection.js';
+import {defaultScaleConfig, ScaleConfig} from './scale.js';
+import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection.js';
+import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base.js';
+import {TopLevelProperties} from './spec/toplevel.js';
+import {extractTitleConfig, TitleConfig} from './title.js';
+import {duplicate, getFirstDefined, hasProperty, isEmpty, keys, omit} from './util.js';
 
 export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBackground<ES> {
   /**
    * The default width when the plot has a continuous field for x or longitude, or has arc marks.
    *
-   * __Default value:__ `200`
+   * __Default value:__ `300`
    */
   continuousWidth?: number;
 
@@ -45,7 +45,7 @@ export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBack
   /**
    * The default height when the plot has a continuous y-field for x or latitude, or has arc marks.
    *
-   * __Default value:__ `200`
+   * __Default value:__ `300`
    */
   continuousHeight?: number;
 
@@ -70,14 +70,14 @@ export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBack
 
 export function getViewConfigContinuousSize<ES extends ExprRef | SignalRef>(
   viewConfig: ViewConfig<ES>,
-  channel: 'width' | 'height'
+  channel: 'width' | 'height',
 ) {
-  return viewConfig[channel] ?? viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight']; // get width/height for backwards compatibility
+  return (viewConfig as any)[channel] ?? viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight']; // get width/height for backwards compatibility
 }
 
 export function getViewConfigDiscreteStep<ES extends ExprRef | SignalRef>(
   viewConfig: ViewConfig<ES>,
-  channel: 'width' | 'height'
+  channel: 'width' | 'height',
 ) {
   const size = getViewConfigDiscreteSize(viewConfig, channel);
   return isStep(size) ? size.step : DEFAULT_STEP;
@@ -85,22 +85,22 @@ export function getViewConfigDiscreteStep<ES extends ExprRef | SignalRef>(
 
 export function getViewConfigDiscreteSize<ES extends ExprRef | SignalRef>(
   viewConfig: ViewConfig<ES>,
-  channel: 'width' | 'height'
+  channel: 'width' | 'height',
 ) {
-  const size = viewConfig[channel] ?? viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight']; // get width/height for backwards compatibility
+  const size = (viewConfig as any)[channel] ?? viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight']; // get width/height for backwards compatibility
   return getFirstDefined(size, {step: viewConfig.step});
 }
 
 export const DEFAULT_STEP = 20;
 
 export const defaultViewConfig: ViewConfig<SignalRef> = {
-  continuousWidth: 200,
-  continuousHeight: 200,
-  step: DEFAULT_STEP
+  continuousWidth: 300,
+  continuousHeight: 300,
+  step: DEFAULT_STEP,
 };
 
 export function isVgScheme(rangeScheme: string[] | RangeScheme): rangeScheme is RangeScheme {
-  return rangeScheme && !!rangeScheme['scheme'];
+  return hasProperty(rangeScheme, 'scheme');
 }
 
 export type ColorConfig = Record<string, Color>;
@@ -333,20 +333,20 @@ export const defaultConfig: Config<SignalRef> = {
     median: {color: 'white'},
     outliers: {},
     rule: {},
-    ticks: null
+    ticks: null,
   },
 
   errorbar: {
     center: 'mean',
     rule: true,
-    ticks: false
+    ticks: false,
   },
 
   errorband: {
     band: {
-      opacity: 0.3
+      opacity: 0.3,
     },
-    borders: false
+    borders: false,
   },
 
   scale: defaultScaleConfig,
@@ -367,7 +367,7 @@ export const defaultConfig: Config<SignalRef> = {
   facet: {spacing: DEFAULT_SPACING},
   concat: {spacing: DEFAULT_SPACING},
 
-  normalizedNumberFormat: '.0%'
+  normalizedNumberFormat: '.0%',
 };
 
 // Tableau10 color palette, copied from `vegaScale.scheme('tableau10')`
@@ -381,7 +381,7 @@ const tab10 = [
   '#b279a2',
   '#ff9da6',
   '#9d755d',
-  '#bab0ac'
+  '#bab0ac',
 ];
 
 export const DEFAULT_FONT_SIZE = {
@@ -389,7 +389,7 @@ export const DEFAULT_FONT_SIZE = {
   guideLabel: 10,
   guideTitle: 11,
   groupTitle: 13,
-  groupSubtitle: 12
+  groupSubtitle: 12,
 };
 
 export const DEFAULT_COLOR = {
@@ -417,7 +417,7 @@ export const DEFAULT_COLOR = {
   gray12: '#ccc',
   gray13: '#ddd',
   gray14: '#eee',
-  gray15: '#fff'
+  gray15: '#fff',
 };
 
 export function colorSignalConfig(color: boolean | ColorConfig = {}): Config {
@@ -425,35 +425,35 @@ export function colorSignalConfig(color: boolean | ColorConfig = {}): Config {
     signals: [
       {
         name: 'color',
-        value: isObject(color) ? {...DEFAULT_COLOR, ...color} : DEFAULT_COLOR
-      }
+        value: isObject(color) ? {...DEFAULT_COLOR, ...color} : DEFAULT_COLOR,
+      },
     ],
     mark: {color: {signal: 'color.blue'}},
     rule: {color: {signal: 'color.gray0'}},
     text: {
-      color: {signal: 'color.gray0'}
+      color: {signal: 'color.gray0'},
     },
     style: {
       'guide-label': {
-        fill: {signal: 'color.gray0'}
+        fill: {signal: 'color.gray0'},
       },
       'guide-title': {
-        fill: {signal: 'color.gray0'}
+        fill: {signal: 'color.gray0'},
       },
       'group-title': {
-        fill: {signal: 'color.gray0'}
+        fill: {signal: 'color.gray0'},
       },
       'group-subtitle': {
-        fill: {signal: 'color.gray0'}
+        fill: {signal: 'color.gray0'},
       },
       cell: {
-        stroke: {signal: 'color.gray8'}
-      }
+        stroke: {signal: 'color.gray8'},
+      },
     },
     axis: {
       domainColor: {signal: 'color.gray13'},
       gridColor: {signal: 'color.gray8'},
-      tickColor: {signal: 'color.gray13'}
+      tickColor: {signal: 'color.gray13'},
     },
     range: {
       category: [
@@ -466,9 +466,9 @@ export function colorSignalConfig(color: boolean | ColorConfig = {}): Config {
         {signal: 'color.purple'},
         {signal: 'color.pink'},
         {signal: 'color.brown'},
-        {signal: 'color.grey8'}
-      ]
-    }
+        {signal: 'color.grey8'},
+      ],
+    },
   };
 }
 
@@ -477,26 +477,26 @@ export function fontSizeSignalConfig(fontSize: boolean | FontSizeConfig): Config
     signals: [
       {
         name: 'fontSize',
-        value: isObject(fontSize) ? {...DEFAULT_FONT_SIZE, ...fontSize} : DEFAULT_FONT_SIZE
-      }
+        value: isObject(fontSize) ? {...DEFAULT_FONT_SIZE, ...fontSize} : DEFAULT_FONT_SIZE,
+      },
     ],
     text: {
-      fontSize: {signal: 'fontSize.text'}
+      fontSize: {signal: 'fontSize.text'},
     },
     style: {
       'guide-label': {
-        fontSize: {signal: 'fontSize.guideLabel'}
+        fontSize: {signal: 'fontSize.guideLabel'},
       },
       'guide-title': {
-        fontSize: {signal: 'fontSize.guideTitle'}
+        fontSize: {signal: 'fontSize.guideTitle'},
       },
       'group-title': {
-        fontSize: {signal: 'fontSize.groupTitle'}
+        fontSize: {signal: 'fontSize.groupTitle'},
       },
       'group-subtitle': {
-        fontSize: {signal: 'fontSize.groupSubtitle'}
-      }
-    }
+        fontSize: {signal: 'fontSize.groupSubtitle'},
+      },
+    },
   };
 }
 
@@ -507,8 +507,8 @@ export function fontConfig(font: string): Config {
       'guide-label': {font},
       'guide-title': {font},
       'group-title': {font},
-      'group-subtitle': {font}
-    }
+      'group-subtitle': {font},
+    },
   };
 }
 
@@ -517,7 +517,7 @@ function getAxisConfigInternal(axisConfig: AxisConfig<ExprRef | SignalRef>) {
   const axisConfigInternal: AxisConfig<SignalRef> = {};
   for (const prop of props) {
     const val = axisConfig[prop];
-    axisConfigInternal[prop as any] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
+    (axisConfigInternal as any)[prop] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
       ? signalOrValueRefWithCondition<any>(val)
       : signalRefOrValue(val);
   }
@@ -546,7 +546,7 @@ const configPropsWithExpr = [
   'scale',
   'style',
   'title',
-  'view'
+  'view',
 ] as const;
 
 /**
@@ -561,7 +561,7 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
     font ? fontConfig(font) : {},
     color ? colorSignalConfig(color) : {},
     fontSize ? fontSizeSignalConfig(fontSize) : {},
-    restConfig || {}
+    restConfig || {},
   );
 
   // mergeConfig doesn't recurse and overrides object values.
@@ -571,9 +571,9 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   const outputConfig: Config<SignalRef> = omit(mergedConfig, configPropsWithExpr);
 
-  for (const prop of ['background', 'lineBreak', 'padding']) {
+  for (const prop of ['background', 'lineBreak', 'padding'] as const) {
     if (mergedConfig[prop]) {
-      outputConfig[prop] = signalRefOrValue(mergedConfig[prop]);
+      (outputConfig as any)[prop] = signalRefOrValue(mergedConfig[prop]);
     }
   }
 
@@ -605,7 +605,7 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
     const newScaleInvalid = replaceExprRef(invalid, {level: 1});
     outputConfig.scale = {
       ...replaceExprRef(otherScaleConfig),
-      ...(keys(newScaleInvalid).length > 0 ? {invalid: newScaleInvalid} : {})
+      ...(keys(newScaleInvalid).length > 0 ? {invalid: newScaleInvalid} : {}),
     };
   }
 
@@ -660,12 +660,12 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
 
   'scale',
   'selection',
-  'overlay' as keyof Config // FIXME: Redesign and unhide this
+  'overlay' as keyof Config, // FIXME: Redesign and unhide this
 ];
 
 const VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
   view: ['continuousWidth', 'continuousHeight', 'discreteWidth', 'discreteHeight', 'step'],
-  ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
+  ...VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX,
 };
 
 export function stripAndRedirectConfig(config: Config<SignalRef>) {
@@ -678,8 +678,8 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
   if (config.axis) {
     // delete condition axis config
     for (const prop in config.axis) {
-      if (isConditionalAxisValue(config.axis[prop])) {
-        delete config.axis[prop];
+      if (isConditionalAxisValue(config.axis[prop as keyof AxisConfig<SignalRef>])) {
+        delete config.axis[prop as keyof AxisConfig<SignalRef>];
       }
     }
   }
@@ -709,14 +709,14 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
   for (const markType of MARK_STYLES) {
     // Remove Vega-Lite-only mark config
     for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
-      delete config[markType][prop];
+      delete (config as any)[markType][prop];
     }
 
     // Remove Vega-Lite only mark-specific config
     const vlOnlyMarkSpecificConfigs = VL_ONLY_ALL_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX[markType];
     if (vlOnlyMarkSpecificConfigs) {
       for (const prop of vlOnlyMarkSpecificConfigs) {
-        delete config[markType][prop];
+        delete (config as any)[markType][prop];
       }
     }
 
@@ -728,14 +728,16 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
 
   for (const m of getAllCompositeMarks()) {
     // Clean up the composite mark config as we don't need them in the output specs anymore
-    delete config[m];
+    delete (config as any)[m];
   }
 
   redirectTitleConfig(config);
 
   // Remove empty config objects.
   for (const prop in config) {
+    // @ts-expect-error(TS7053)
     if (isObject(config[prop]) && isEmpty(config[prop])) {
+      // @ts-expect-error(TS7053)
       delete config[prop];
     }
   }
@@ -757,13 +759,13 @@ function redirectTitleConfig(config: Config<SignalRef>) {
   if (!isEmpty(titleMarkConfig)) {
     config.style['group-title'] = {
       ...config.style['group-title'],
-      ...titleMarkConfig // config.title has higher precedence than config.style.group-title in Vega
+      ...titleMarkConfig, // config.title has higher precedence than config.style.group-title in Vega
     };
   }
   if (!isEmpty(subtitleMarkConfig)) {
     config.style['group-subtitle'] = {
       ...config.style['group-subtitle'],
-      ...subtitleMarkConfig
+      ...subtitleMarkConfig,
     };
   }
 
@@ -779,9 +781,11 @@ function redirectConfigToStyleConfig(
   config: Config<SignalRef>,
   prop: Mark | 'view' | string, // string = composite mark
   toProp?: string,
-  compositeMarkPart?: string
+  compositeMarkPart?: string,
 ) {
-  const propConfig: MarkConfig<SignalRef> = compositeMarkPart ? config[prop][compositeMarkPart] : config[prop];
+  const propConfig: MarkConfig<SignalRef> = compositeMarkPart
+    ? (config as any)[prop][compositeMarkPart]
+    : config[prop as keyof Config<any>];
 
   if (prop === 'view') {
     toProp = 'cell'; // View's default style is "cell"
@@ -789,7 +793,7 @@ function redirectConfigToStyleConfig(
 
   const style: MarkConfig<SignalRef> = {
     ...propConfig,
-    ...(config.style[toProp ?? prop] as MarkConfig<SignalRef>)
+    ...(config.style[toProp ?? prop] as MarkConfig<SignalRef>),
   };
 
   // set config.style if it is not an empty object
@@ -799,6 +803,6 @@ function redirectConfigToStyleConfig(
 
   if (!compositeMarkPart) {
     // For composite mark, so don't delete the whole config yet as we have to do multiple redirections.
-    delete config[prop];
+    delete config[prop as keyof Config<any>];
   }
 }

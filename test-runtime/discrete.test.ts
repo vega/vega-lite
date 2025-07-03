@@ -1,34 +1,19 @@
-import {SelectionType, SELECTION_ID} from '../src/selection';
-import {embedFn, fill, hits as hitsMaster, pt, spec, testRenderFn} from './util';
-import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
-import {TopLevelSpec} from '../src';
+import {View} from 'vega';
+import {SelectionType, SELECTION_ID} from '../src/selection.js';
+import {embed, fill, hits as hitsMaster, pt, getSpec} from './util.js';
+import {describe, expect, it} from 'vitest';
 
 describe(`point selections at runtime in unit views`, () => {
-  let page: Page;
-  let embed: (specification: TopLevelSpec) => Promise<void>;
-  let testRender: (filename: string) => Promise<void>;
-
-  beforeAll(async () => {
-    page = await (global as any).__BROWSER_GLOBAL__.newPage();
-    embed = embedFn(page);
-    testRender = testRenderFn(page, `${type}/unit`);
-    await page.goto('http://0.0.0.0:8000/test-runtime/');
-  });
-
-  afterAll(async () => {
-    await page.close();
-  });
-
   const type: SelectionType = 'point';
   const hits = hitsMaster.discrete;
 
   it('should add values to the store', async () => {
     for (let i = 0; i < hits.qq.length; i++) {
-      await embed(spec('unit', i, {type}));
-      const store = await page.evaluate(pt('qq', i));
+      const view = await embed(getSpec('unit', i, {type}));
+      const store = (await pt(view, 'qq', i)) as [any];
       expect(store).toHaveLength(1);
       expect(store[0]).toHaveProperty(SELECTION_ID);
-      await testRender(`click_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/click_${i}.svg`);
     }
   });
 
@@ -36,17 +21,19 @@ describe(`point selections at runtime in unit views`, () => {
     let values: number[][] = [];
     let encodings: string[] = [];
     let fields: string[] = [];
-    const t = async (emb: (i: number) => void) => {
+    const t = async (emb: (i: number) => Promise<View>) => {
       for (let i = 0; i < hits.qq.length; i++) {
-        emb(i);
-        const store = await page.evaluate(pt('qq', i));
+        const view = await emb(i);
+        const store = (await pt(view, 'qq', i)) as [any];
         expect(store).toHaveLength(1);
         expect(store[0].fields).toHaveLength(fields.length);
         expect(store[0].values).toHaveLength(fields.length);
         expect(store[0].fields.map((f: any) => f.field)).toEqual(fields);
         expect(store[0].fields.map((f: any) => f.type)).toEqual(fill('E', fields.length));
         expect(store[0].values).toEqual(values[i]);
-        await testRender(`${encodings}_${fields}_${i}`);
+        await expect(await view.toSVG()).toMatchFileSnapshot(
+          `./snapshots/${type}/unit/${encodings}_${fields}_${i}.svg`,
+        );
       }
     };
 
@@ -54,28 +41,28 @@ describe(`point selections at runtime in unit views`, () => {
     fields = ['a', 'c'];
     values = [
       [2, 1],
-      [6, 0]
+      [6, 0],
     ];
-    await t(async (i: number) => await embed(spec('unit', i, {type, encodings})));
+    await t(async (i: number) => await embed(getSpec('unit', i, {type, encodings})));
 
     encodings = [];
     fields = ['c', 'a', 'b'];
     values = [
       [1, 2, 53],
-      [0, 6, 87]
+      [0, 6, 87],
     ];
-    await t(async (i: number) => await embed(spec('unit', i, {type, fields})));
+    await t(async (i: number) => await embed(getSpec('unit', i, {type, fields})));
   });
 
   it('should clear out the store', async () => {
     for (let i = 0; i < hits.qq_clear.length; i++) {
-      await embed(spec('unit', i, {type}));
-      let store = await page.evaluate(pt('qq', i));
+      const view = await embed(getSpec('unit', i, {type}));
+      let store = (await pt(view, 'qq', i)) as [any];
       expect(store).toHaveLength(1);
 
-      store = await page.evaluate(pt('qq_clear', i));
+      store = (await pt(view, 'qq_clear', i)) as [any];
       expect(store).toHaveLength(0);
-      await testRender(`clear_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/clear_${i}.svg`);
     }
   });
 
@@ -85,19 +72,19 @@ describe(`point selections at runtime in unit views`, () => {
     const types = ['R-RE', 'E', 'R-RE'];
     const values = [
       [[1, 2], 0, [40, 50]],
-      [[8, 9], 1, [10, 20]]
+      [[8, 9], 1, [10, 20]],
     ];
 
     for (let i = 0; i < hits.bins.length; i++) {
-      await embed(spec('unit', i, {type, encodings}, {x: {bin: true}, y: {bin: true}}));
-      const store = await page.evaluate(pt('bins', i));
+      const view = await embed(getSpec('unit', i, {type, encodings}, {x: {bin: true}, y: {bin: true}}));
+      const store = (await pt(view, 'bins', i)) as [any];
       expect(store).toHaveLength(1);
       expect(store[0].fields).toHaveLength(fields.length);
       expect(store[0].values).toHaveLength(fields.length);
       expect(store[0].fields.map((f: any) => f.field)).toEqual(fields);
       expect(store[0].fields.map((f: any) => f.type)).toEqual(types);
       expect(store[0].values).toEqual(values[i]);
-      await testRender(`bins_${i}`);
+      await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/bins_${i}.svg`);
     }
   });
 });

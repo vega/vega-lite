@@ -1,45 +1,45 @@
-import {FoldTransformNode} from '../../../src/compile/data/fold';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {FoldTransformNode} from '../../../src/compile/data/fold.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/fold', () => {
   describe('assemble', () => {
     it('should return a proper vg transform', () => {
       const transform: Transform = {
         fold: ['a', 'b'],
-        as: ['a', 'b']
+        as: ['a', 'b'],
       };
       const fold = new FoldTransformNode(null, transform);
       expect(fold.assemble()).toEqual({
         type: 'fold',
         fields: ['a', 'b'],
-        as: ['a', 'b']
+        as: ['a', 'b'],
       });
     });
 
     it('should handle missing "as" field', () => {
       const transform: Transform = {
-        fold: ['a', 'b']
+        fold: ['a', 'b'],
       };
 
       const fold = new FoldTransformNode(null, transform);
       expect(fold.assemble()).toEqual({
         type: 'fold',
         fields: ['a', 'b'],
-        as: ['key', 'value']
+        as: ['key', 'value'],
       });
     });
 
     it('should handle partial "as" field', () => {
       const transform: Transform = {
         fold: ['a', 'b'],
-        as: ['A'] as any
+        as: ['A'] as any,
       };
       const fold = new FoldTransformNode(null, transform);
       expect(fold.assemble()).toEqual({
         type: 'fold',
         fields: ['a', 'b'],
-        as: ['A', 'value']
+        as: ['A', 'value'],
       });
     });
   });
@@ -47,7 +47,7 @@ describe('compile/data/fold', () => {
   describe('dependentFields', () => {
     it('should return proper produced fields for no "as"', () => {
       const transform: Transform = {
-        fold: ['a', 'b']
+        fold: ['a', 'b'],
       };
       const fold = new FoldTransformNode(null, transform);
       expect(fold.dependentFields()).toEqual(new Set(['a', 'b']));
@@ -57,7 +57,7 @@ describe('compile/data/fold', () => {
   describe('producedFields', () => {
     it('should return proper produced fields for no "as"', () => {
       const transform: Transform = {
-        fold: ['a', 'b']
+        fold: ['a', 'b'],
       };
       const fold = new FoldTransformNode(null, transform);
       expect(fold.producedFields()).toEqual(new Set(['key', 'value']));
@@ -66,7 +66,7 @@ describe('compile/data/fold', () => {
     it('should return proper produced fields for complete "as"', () => {
       const transform: Transform = {
         fold: ['a', 'b'],
-        as: ['A', 'B']
+        as: ['A', 'B'],
       };
       const fold = new FoldTransformNode(null, transform);
       expect(fold.producedFields()).toEqual(new Set(['A', 'B']));
@@ -77,7 +77,7 @@ describe('compile/data/fold', () => {
     it('should generate the correct hash', () => {
       const transform: Transform = {
         fold: ['a', 'b'],
-        as: ['A', 'B']
+        as: ['A', 'B'],
       };
       const fold = new FoldTransformNode(null, transform);
       expect(fold.hash()).toBe('FoldTransform {"as":["A","B"],"fold":["a","b"]}');

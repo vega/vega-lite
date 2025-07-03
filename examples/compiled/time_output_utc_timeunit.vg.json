@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Using utc timeunit with local time input.",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -46,7 +46,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"date (year-month-date-hours-minutes): \" + (timeFormat(datum[\"utcyearmonthdatehoursminutes_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+            "signal": "\"date (year-month-date-hours-minutes): \" + (utcFormat(datum[\"utcyearmonthdatehoursminutes_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "utcyearmonthdatehoursminutes_date"},
           "y": {"scale": "y", "field": "price"},

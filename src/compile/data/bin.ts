@@ -1,23 +1,23 @@
 import {BinTransform as VgBinTransform, Transforms as VgTransform} from 'vega';
 import {isString} from 'vega-util';
-import {BinParams, binToString, isBinning, isParameterExtent} from '../../bin';
-import {Channel} from '../../channel';
-import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
-import {Config} from '../../config';
-import {BinTransform} from '../../transform';
-import {Dict, duplicate, hash, isEmpty, keys, replacePathInField, unique, vals} from '../../util';
-import {binFormatExpression} from '../format';
-import {isUnitModel, Model, ModelWithField} from '../model';
-import {parseSelectionExtent} from '../selection/parse';
-import {NonPositionScaleChannel, PositionChannel} from './../../channel';
-import {DataFlowNode} from './dataflow';
+import {BinParams, binToString, isBinning, isParameterExtent} from '../../bin.js';
+import {Channel} from '../../channel.js';
+import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef.js';
+import {Config} from '../../config.js';
+import {BinTransform} from '../../transform.js';
+import {Dict, duplicate, hash, isEmpty, keys, replacePathInField, unique, vals} from '../../util.js';
+import {binFormatExpression} from '../format.js';
+import {isUnitModel, Model, ModelWithField} from '../model.js';
+import {parseSelectionExtent} from '../selection/parse.js';
+import {NonPositionScaleChannel, PositionChannel} from './../../channel.js';
+import {DataFlowNode} from './dataflow.js';
 
 function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, channel: Channel, config: Config) {
   if (binRequiresRange(fieldDef, channel)) {
     // read format from axis or legend, if there is no format then use config.numberFormat
 
     const guide = isUnitModel(model)
-      ? model.axis(channel as PositionChannel) ?? model.legend(channel as NonPositionScaleChannel) ?? {}
+      ? (model.axis(channel as PositionChannel) ?? model.legend(channel as NonPositionScaleChannel) ?? {})
       : {};
 
     const startField = vgField(fieldDef, {expr: 'datum'});
@@ -25,7 +25,7 @@ function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, ch
 
     return {
       formulaAs: vgField(fieldDef, {binSuffix: 'range', forAs: true}),
-      formula: binFormatExpression(startField, endField, guide.format, guide.formatType, config)
+      formula: binFormatExpression(startField, endField, guide.format, guide.formatType, config),
     };
   }
   return {};
@@ -38,7 +38,7 @@ function binKey(bin: BinParams, field: string) {
 function getSignalsFromModel(model: Model, key: string) {
   return {
     signal: model.getName(`${key}_bins`),
-    extentSignal: model.getName(`${key}_extent`)
+    extentSignal: model.getName(`${key}_extent`),
   };
 }
 
@@ -78,7 +78,7 @@ function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolea
     as: [as],
     ...(signal ? {signal} : {}),
     ...(extentSignal ? {extentSignal} : {}),
-    ...(span ? {span} : {})
+    ...(span ? {span} : {}),
   };
 
   return {key, binComponent};
@@ -107,7 +107,7 @@ export class BinNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private bins: Dict<BinComponent>
+    private bins: Dict<BinComponent>,
   ) {
     super(parent);
   }
@@ -119,7 +119,7 @@ export class BinNode extends DataFlowNode {
         binComponentIndex[key] = {
           ...binComponent,
           ...binComponentIndex[key],
-          ...rangeFormula(model, fieldDef, channel, model.config)
+          ...rangeFormula(model, fieldDef, channel, model.config),
         };
       }
       return binComponentIndex;
@@ -139,7 +139,7 @@ export class BinNode extends DataFlowNode {
   public static makeFromTransform(parent: DataFlowNode, t: BinTransform, model: Model) {
     const {key, binComponent} = createBinComponent(t, t.bin, model);
     return new BinNode(parent, {
-      [key]: binComponent
+      [key]: binComponent,
     });
   }
 
@@ -168,13 +168,13 @@ export class BinNode extends DataFlowNode {
   public producedFields() {
     return new Set(
       vals(this.bins)
-        .map(c => c.as)
-        .flat(2)
+        .map((c) => c.as)
+        .flat(2),
     );
   }
 
   public dependentFields() {
-    return new Set(vals(this.bins).map(c => c.field));
+    return new Set(vals(this.bins).map((c) => c.field));
   }
 
   public hash() {
@@ -182,7 +182,7 @@ export class BinNode extends DataFlowNode {
   }
 
   public assemble(): VgTransform[] {
-    return vals(this.bins).flatMap(bin => {
+    return vals(this.bins).flatMap((bin) => {
       const transform: VgTransform[] = [];
 
       const [binAs, ...remainingAs] = bin.as;
@@ -194,14 +194,14 @@ export class BinNode extends DataFlowNode {
         signal: bin.signal,
         ...(!isParameterExtent(extent) ? {extent} : {extent: null}),
         ...(bin.span ? {span: {signal: `span(${bin.span})`}} : {}),
-        ...params
+        ...params,
       };
 
       if (!extent && bin.extentSignal) {
         transform.push({
           type: 'extent',
           field: replacePathInField(bin.field),
-          signal: bin.extentSignal
+          signal: bin.extentSignal,
         });
         binTrans.extent = {signal: bin.extentSignal};
       }
@@ -213,7 +213,7 @@ export class BinNode extends DataFlowNode {
           transform.push({
             type: 'formula',
             expr: vgField({field: binAs[i]}, {expr: 'datum'}),
-            as: as[i]
+            as: as[i],
           });
         }
       }
@@ -222,7 +222,7 @@ export class BinNode extends DataFlowNode {
         transform.push({
           type: 'formula',
           expr: bin.formula,
-          as: bin.formulaAs
+          as: bin.formulaAs,
         });
       }
       return transform;

@@ -1,11 +1,7 @@
-import type {SignalRef} from 'vega';
-import {isNumber} from 'vega-util';
-import {getViewConfigDiscreteStep} from '../../config';
-import {isVgRangeStep} from '../../vega.schema';
-import {getMarkPropOrConfig, signalOrValueRef} from '../common';
-import {UnitModel} from '../unit';
-import {MarkCompiler} from './base';
-import * as encode from './encode';
+import {getMarkPropOrConfig, signalOrValueRef} from '../common.js';
+import {UnitModel} from '../unit.js';
+import {MarkCompiler} from './base.js';
+import * as encode from './encode/index.js';
 
 export const tick: MarkCompiler = {
   vgMark: 'rect',
@@ -14,7 +10,8 @@ export const tick: MarkCompiler = {
     const {config, markDef} = model;
     const orient = markDef.orient;
 
-    const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
+    const vgSizeAxisChannel = orient === 'horizontal' ? 'x' : 'y';
+    const vgThicknessAxisChannel = orient === 'horizontal' ? 'y' : 'x';
     const vgThicknessChannel = orient === 'horizontal' ? 'height' : 'width';
 
     return {
@@ -24,42 +21,15 @@ export const tick: MarkCompiler = {
         color: 'include',
         orient: 'ignore',
         size: 'ignore',
-        theta: 'ignore'
+        theta: 'ignore',
       }),
 
-      ...encode.pointPosition('x', model, {defaultPos: 'mid', vgChannel: 'xc'}),
-      ...encode.pointPosition('y', model, {defaultPos: 'mid', vgChannel: 'yc'}),
-
-      // size / thickness => width / height
-      ...encode.nonPosition('size', model, {
-        defaultValue: defaultSize(model),
-        vgChannel: vgSizeChannel
+      ...encode.rectPosition(model, vgSizeAxisChannel),
+      ...encode.pointPosition(vgThicknessAxisChannel, model, {
+        defaultPos: 'mid',
+        vgChannel: vgThicknessAxisChannel === 'y' ? 'yc' : 'xc',
       }),
-      [vgThicknessChannel]: signalOrValueRef(getMarkPropOrConfig('thickness', markDef, config))
+      [vgThicknessChannel]: signalOrValueRef(getMarkPropOrConfig('thickness', markDef, config)),
     };
-  }
+  },
 };
-
-function defaultSize(model: UnitModel): number | SignalRef {
-  const {config, markDef} = model;
-  const {orient} = markDef;
-
-  const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
-  const scale = model.getScaleComponent(orient === 'horizontal' ? 'x' : 'y');
-
-  const markPropOrConfig =
-    getMarkPropOrConfig('size', markDef, config, {vgChannel: vgSizeChannel}) ?? config.tick.bandSize;
-
-  if (markPropOrConfig !== undefined) {
-    return markPropOrConfig;
-  } else {
-    const scaleRange = scale ? scale.get('range') : undefined;
-    if (scaleRange && isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
-      return (scaleRange.step * 3) / 4;
-    }
-
-    const defaultViewStep = getViewConfigDiscreteStep(config.view, vgSizeChannel);
-
-    return (defaultViewStep * 3) / 4;
-  }
-}

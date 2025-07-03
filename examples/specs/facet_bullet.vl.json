@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "values": [
       {"title":"Revenue", "subtitle":"US$, in thousands", "ranges":[150,225,300],"measures":[220,270],"markers":[250]},
@@ -12,7 +12,7 @@
   "facet": {
     "row": {
       "field": "title", "type": "ordinal",
-      "header": {"labelAngle": 0, "title": ""}
+      "header": {"labelAngle": 0, "title": "", "labelAlign": "left"}
     }
   },
   "spacing": 10,

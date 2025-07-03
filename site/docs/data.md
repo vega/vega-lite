@@ -79,12 +79,12 @@ For example, to create a data source named `myData`, use the following data
 You can use the [Vega view API](https://vega.github.io/vega/docs/api/view/#data) to load data at runtime and update the chart. Here is an example using [Vega-Embed](https://github.com/vega/vega-embed):
 
 ```js
-vegaEmbed('#vis', spec).then(res =>
+vegaEmbed('#vis', spec).then((res) =>
   res.view
     .insert('myData', [
       /* some data array */
     ])
-    .run()
+    .run(),
 );
 ```
 

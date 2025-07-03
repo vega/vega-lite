@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Drag a rectangular brush to show (first 20) selected points in a table.",
   "background": "white",
   "padding": 5,
@@ -51,8 +51,8 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 200},
-    {"name": "concat_0_height", "value": 200},
+    {"name": "concat_0_width", "value": 300},
+    {"name": "concat_0_height", "value": 300},
     {"name": "concat_1_childWidth", "value": 50},
     {"name": "concat_1_concat_0_y_step", "value": 20},
     {

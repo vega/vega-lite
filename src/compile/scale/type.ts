@@ -1,20 +1,21 @@
-import {isBinning} from '../../bin';
+import {isBinning} from '../../bin.js';
 import {
   getSizeChannel,
   isColorChannel,
   isScaleChannel,
+  isTime,
   isXorY,
   isXorYOffset,
   rangeType,
-  ScaleChannel
-} from '../../channel';
-import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
-import * as log from '../../log';
-import {isRelativeBandSize, MarkDef} from '../../mark';
-import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale';
-import {normalizeTimeUnit} from '../../timeunit';
-import * as util from '../../util';
-import {POLAR_POSITION_SCALE_CHANNEL_INDEX} from './../../channel';
+  ScaleChannel,
+} from '../../channel.js';
+import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef.js';
+import * as log from '../../log/index.js';
+import {isRelativeBandSize, MarkDef} from '../../mark.js';
+import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale.js';
+import {normalizeTimeUnit} from '../../timeunit.js';
+import * as util from '../../util.js';
+import {POLAR_POSITION_SCALE_CHANNEL_INDEX} from './../../channel.js';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 
@@ -28,7 +29,7 @@ export function scaleType(
   channel: ScaleChannel,
   fieldDef: TypedFieldDef<string> | DatumDef,
   mark: MarkDef,
-  hasNestedOffsetScale = false
+  hasNestedOffsetScale = false,
 ): ScaleType {
   const defaultScaleType = defaultType(channel, fieldDef, mark, hasNestedOffsetScale);
   const {type} = specifiedScale;
@@ -64,7 +65,7 @@ function defaultType(
   channel: ScaleChannel,
   fieldDef: TypedFieldDef<string> | ScaleDatumDef,
   mark: MarkDef,
-  hasNestedOffsetScale: boolean
+  hasNestedOffsetScale: boolean,
 ): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':
@@ -76,9 +77,13 @@ function defaultType(
         return 'ordinal';
       }
 
+      if (isTime(channel)) {
+        return 'band';
+      }
+
       if (isXorY(channel) || isXorYOffset(channel)) {
-        if (util.contains(['rect', 'bar', 'image', 'rule'], mark.type)) {
-          // The rect/bar mark should fit into a band.
+        if (util.contains(['rect', 'bar', 'image', 'rule', 'tick'], mark.type)) {
+          // The rect/bar/tick mark should fit into a band.
           // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
           return 'band';
         }
@@ -111,7 +116,11 @@ function defaultType(
         return 'ordinal';
       } else if (isFieldDef(fieldDef) && fieldDef.timeUnit && normalizeTimeUnit(fieldDef.timeUnit).utc) {
         return 'utc';
+      } else if (isTime(channel)) {
+        // return 'linear';
+        return 'band'; // TODO(jzong): when interpolation is implemented, this should be 'linear'
       }
+
       return 'time';
 
     case 'quantitative':
@@ -125,6 +134,9 @@ function defaultType(
         log.warn(log.message.discreteChannelCannotEncode(channel, 'quantitative'));
         // TODO: consider using quantize (equivalent to binning) once we have it
         return 'ordinal';
+      } else if (isTime(channel)) {
+        // return 'linear';
+        return 'band'; // TODO(jzong): when interpolation is implemented, this should be 'linear'
       }
 
       return 'linear';

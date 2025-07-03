@@ -1,8 +1,8 @@
-import {NONPOSITION_SCALE_CHANNELS, POSITION_SCALE_CHANNELS, SCALE_CHANNELS} from '../../../src/channel';
-import {getScaleInvalidDataMode} from '../../../src/compile/invalid/ScaleInvalidDataMode';
-import {defaultConfig} from '../../../src/config';
-import {MarkInvalidDataMode} from '../../../src/invalid';
-import {PATH_MARKS, PRIMITIVE_MARKS} from '../../../src/mark';
+import {NONPOSITION_SCALE_CHANNELS, POSITION_SCALE_CHANNELS, SCALE_CHANNELS} from '../../../src/channel.js';
+import {getScaleInvalidDataMode} from '../../../src/compile/invalid/ScaleInvalidDataMode.js';
+import {defaultConfig} from '../../../src/config.js';
+import {MarkInvalidDataMode} from '../../../src/invalid.js';
+import {PATH_MARKS, PRIMITIVE_MARKS} from '../../../src/mark.js';
 
 describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode()', () => {
   const ALL_MARK_INVALID_MODE: MarkInvalidDataMode[] = [
@@ -10,11 +10,11 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
     'break-paths-filter-domains',
     'break-paths-show-domains',
     'show',
-    'break-paths-show-path-domains'
+    'break-paths-show-path-domains',
   ];
 
-  describe.each([...PRIMITIVE_MARKS])('For all marks (%s)', mark => {
-    it.each(ALL_MARK_INVALID_MODE)('should return always valid for count', invalid => {
+  describe.each([...PRIMITIVE_MARKS])('For all marks (%s)', (mark) => {
+    it.each(ALL_MARK_INVALID_MODE)('should return always valid for count', (invalid) => {
       expect(
         getScaleInvalidDataMode({
           markDef: {type: mark, invalid},
@@ -25,14 +25,14 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
             ...defaultConfig,
             scale: {
               ...defaultConfig.scale,
-              invalid: {color: {value: 'red'}}
-            }
-          }
-        })
+              invalid: {color: {value: 'red'}},
+            },
+          },
+        }),
       ).toBe('always-valid');
     });
 
-    it.each(ALL_MARK_INVALID_MODE)('should return always valid for count', invalid => {
+    it.each(ALL_MARK_INVALID_MODE)('should return always valid for count', (invalid) => {
       expect(
         getScaleInvalidDataMode({
           markDef: {type: mark, invalid},
@@ -43,16 +43,16 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
             ...defaultConfig,
             scale: {
               ...defaultConfig.scale,
-              invalid: {color: {value: 'red'}}
-            }
-          }
-        })
+              invalid: {color: {value: 'red'}},
+            },
+          },
+        }),
       ).toBe('always-valid');
     });
 
     it.each(ALL_MARK_INVALID_MODE)(
       'should return "include" for all invalid mode (%s) if invalid output color is specified',
-      invalid => {
+      (invalid) => {
         expect(
           getScaleInvalidDataMode({
             markDef: {type: mark, invalid},
@@ -63,17 +63,17 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               ...defaultConfig,
               scale: {
                 ...defaultConfig.scale,
-                invalid: {color: {value: 'red'}}
-              }
-            }
-          })
+                invalid: {color: {value: 'red'}},
+              },
+            },
+          }),
         ).toBe('show');
-      }
+      },
     );
 
     it.each(ALL_MARK_INVALID_MODE)(
       'should return "include" for all invalid mode (%s) if invalid output size is specified',
-      invalid => {
+      (invalid) => {
         expect(
           getScaleInvalidDataMode({
             markDef: {type: mark, invalid},
@@ -84,15 +84,15 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               ...defaultConfig,
               scale: {
                 ...defaultConfig.scale,
-                invalid: {size: {value: 4}}
-              }
-            }
-          })
+                invalid: {size: {value: 4}},
+              },
+            },
+          }),
         ).toBe('show');
-      }
+      },
     );
 
-    describe.each(POSITION_SCALE_CHANNELS)('for all position scale channel (%s)', channel => {
+    describe.each(POSITION_SCALE_CHANNELS)('for all position scale channel (%s)', (channel) => {
       it('should return include by default for include mode if scale invalid config is not specified', () => {
         expect(
           getScaleInvalidDataMode({
@@ -104,15 +104,15 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               ...defaultConfig,
               scale: {
                 ...defaultConfig.scale,
-                invalid: {}
-              }
-            }
-          })
+                invalid: {},
+              },
+            },
+          }),
         ).toBe('show');
       });
     });
 
-    describe.each(NONPOSITION_SCALE_CHANNELS)('for all non-position scale channel (%s)', channel => {
+    describe.each(NONPOSITION_SCALE_CHANNELS)('for all non-position scale channel (%s)', (channel) => {
       it('should return show by default for show mode if scale invalid config is not specified', () => {
         expect(
           getScaleInvalidDataMode({
@@ -124,18 +124,18 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               ...defaultConfig,
               scale: {
                 ...defaultConfig.scale,
-                invalid: {}
-              }
-            }
-          })
+                invalid: {},
+              },
+            },
+          }),
         ).toBe('show');
       });
     });
 
-    describe.each(SCALE_CHANNELS)('for all scale channel (%s)', channel => {
+    describe.each(SCALE_CHANNELS)('for all scale channel (%s)', (channel) => {
       const OTHER_MODES: MarkInvalidDataMode[] = ['break-paths-filter-domains', 'break-paths-show-domains', 'filter'];
 
-      it.each(OTHER_MODES)('should return the mode (%s)', mode => {
+      it.each(OTHER_MODES)('should return the mode (%s)', (mode) => {
         expect(
           getScaleInvalidDataMode({
             markDef: {type: mark, invalid: mode},
@@ -146,17 +146,17 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               ...defaultConfig,
               scale: {
                 ...defaultConfig.scale,
-                invalid: {}
-              }
-            }
-          })
+                invalid: {},
+              },
+            },
+          }),
         ).toEqual(mode);
       });
     });
   });
 
-  describe.each(PATH_MARKS)('For all path marks (%s)', mark => {
-    describe.each(SCALE_CHANNELS)('for all scale channel (%s)', channel => {
+  describe.each(PATH_MARKS)('For all path marks (%s)', (mark) => {
+    describe.each(SCALE_CHANNELS)('for all scale channel (%s)', (channel) => {
       it('should return the mode (%s)', () => {
         expect(
           getScaleInvalidDataMode({
@@ -168,17 +168,17 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               ...defaultConfig,
               scale: {
                 ...defaultConfig.scale,
-                invalid: {}
-              }
-            }
-          })
+                invalid: {},
+              },
+            },
+          }),
         ).toBe('break-paths-show-domains');
       });
     });
   });
 
-  describe.each(PATH_MARKS)('For all path marks (%s)', mark => {
-    describe.each(SCALE_CHANNELS)('for all scale channel (%s)', channel => {
+  describe.each(PATH_MARKS)('For all path marks (%s)', (mark) => {
+    describe.each(SCALE_CHANNELS)('for all scale channel (%s)', (channel) => {
       it('should return the mode (%s)', () => {
         expect(
           getScaleInvalidDataMode({
@@ -190,10 +190,10 @@ describe('compile / invalid / ChannelInvalidDataMode / getChannelInvalidDataMode
               ...defaultConfig,
               scale: {
                 ...defaultConfig.scale,
-                invalid: {}
-              }
-            }
-          })
+                invalid: {},
+              },
+            },
+          }),
         ).toBe('break-paths-show-domains');
       });
     });

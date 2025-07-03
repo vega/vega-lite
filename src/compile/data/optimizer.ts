@@ -1,7 +1,7 @@
-import {DataFlowNode} from './dataflow';
-import {GraticuleNode} from './graticule';
-import {SequenceNode} from './sequence';
-import {SourceNode} from './source';
+import {DataFlowNode} from './dataflow.js';
+import {GraticuleNode} from './graticule.js';
+import {SequenceNode} from './sequence.js';
+import {SourceNode} from './source.js';
 
 /**
  * Whether this dataflow node is the source of the dataflow that produces data i.e. a source or a generator.
@@ -52,7 +52,7 @@ export abstract class BottomUpOptimizer extends Optimizer {
   private getNodeDepths(
     node: DataFlowNode,
     depth: number,
-    depths: Map<DataFlowNode, number>
+    depths: Map<DataFlowNode, number>,
   ): Map<DataFlowNode, number> {
     depths.set(node, depth);
 

@@ -1,8 +1,12 @@
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX, TimeUnitNode} from '../../../src/compile/data/timeunit';
-import {ModelWithField} from '../../../src/compile/model';
-import {TimeUnitTransform} from '../../../src/transform';
-import {parseUnitModel} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {
+  OFFSETTED_RECT_END_SUFFIX,
+  OFFSETTED_RECT_START_SUFFIX,
+  TimeUnitNode,
+} from '../../../src/compile/data/timeunit.js';
+import {ModelWithField} from '../../../src/compile/model.js';
+import {TimeUnitTransform} from '../../../src/transform.js';
+import {parseUnitModel} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 function assembleFromEncoding(model: ModelWithField) {
   return TimeUnitNode.makeFromEncoding(null, model)?.assemble();
@@ -19,8 +23,8 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
+        },
       });
 
       expect(assembleFromEncoding(model)).toEqual([
@@ -28,8 +32,8 @@ describe('compile/data/timeunit', () => {
           type: 'timeunit',
           field: 'a',
           as: ['month_a', 'month_a_end'],
-          units: ['month']
-        }
+          units: ['month'],
+        },
       ]);
     });
 
@@ -38,8 +42,8 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
+        },
       });
 
       expect(assembleFromEncoding(model)).toEqual([
@@ -47,8 +51,8 @@ describe('compile/data/timeunit', () => {
           type: 'timeunit',
           field: 'a',
           as: ['month_a', 'month_a_end'],
-          units: ['month']
-        }
+          units: ['month'],
+        },
       ]);
     });
 
@@ -57,8 +61,8 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month', bandPosition: 0}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'month', bandPosition: 0},
+        },
       });
 
       expect(assembleFromEncoding(model)).toEqual([
@@ -66,19 +70,49 @@ describe('compile/data/timeunit', () => {
           type: 'timeunit',
           field: 'a',
           as: ['month_a', 'month_a_end'],
-          units: ['month']
+          units: ['month'],
         },
         {
           type: 'formula',
           expr: "0.5 * timeOffset('month', datum['month_a'], -1) + 0.5 * datum['month_a']",
-          as: `month_a_${OFFSETTED_RECT_START_SUFFIX}`
+          as: `month_a_${OFFSETTED_RECT_START_SUFFIX}`,
         },
 
         {
           type: 'formula',
           expr: "0.5 * datum['month_a'] + 0.5 * datum['month_a_end']",
-          as: `month_a_${OFFSETTED_RECT_END_SUFFIX}`
-        }
+          as: `month_a_${OFFSETTED_RECT_END_SUFFIX}`,
+        },
+      ]);
+    });
+
+    it('should return a unit transform for bar with bandPosition=0 and escaped field name', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {field: "\\'a\\'", type: 'temporal', timeUnit: 'month', bandPosition: 0},
+        },
+      });
+
+      expect(assembleFromEncoding(model)).toEqual([
+        {
+          type: 'timeunit',
+          field: "\\'a\\'",
+          as: ["month_'a'", "month_'a'_end"],
+          units: ['month'],
+        },
+        {
+          type: 'formula',
+          expr: "0.5 * timeOffset('month', datum['month_\\'a\\''], -1) + 0.5 * datum['month_\\'a\\'']",
+          as: `month_'a'_${OFFSETTED_RECT_START_SUFFIX}`,
+        },
+
+        {
+          type: 'formula',
+          expr: "0.5 * datum['month_\\'a\\''] + 0.5 * datum['month_\\'a\\'_end']",
+          as: `month_'a'_${OFFSETTED_RECT_END_SUFFIX}`,
+        },
       ]);
     });
 
@@ -87,8 +121,8 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: {unit: 'month', step: 2}, bandPosition: 0}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: {unit: 'month', step: 2}, bandPosition: 0},
+        },
       });
 
       expect(assembleFromEncoding(model)).toEqual([
@@ -97,19 +131,19 @@ describe('compile/data/timeunit', () => {
           field: 'a',
           as: ['month_step_2_a', 'month_step_2_a_end'],
           units: ['month'],
-          step: 2
+          step: 2,
         },
         {
           type: 'formula',
           expr: "0.5 * timeOffset('month', datum['month_step_2_a'], -2) + 0.5 * datum['month_step_2_a']",
-          as: `month_step_2_a_${OFFSETTED_RECT_START_SUFFIX}`
+          as: `month_step_2_a_${OFFSETTED_RECT_START_SUFFIX}`,
         },
 
         {
           type: 'formula',
           expr: "0.5 * datum['month_step_2_a'] + 0.5 * datum['month_step_2_a_end']",
-          as: `month_step_2_a_${OFFSETTED_RECT_END_SUFFIX}`
-        }
+          as: `month_step_2_a_${OFFSETTED_RECT_END_SUFFIX}`,
+        },
       ]);
     });
 
@@ -118,16 +152,16 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'binnedyearmonth'}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'binnedyearmonth'},
+        },
       });
 
       expect(assembleFromEncoding(model)).toEqual([
         {
           type: 'formula',
           expr: `timeOffset('month', datum['a'], 1)`,
-          as: 'a_end'
-        }
+          as: 'a_end',
+        },
       ]);
     });
 
@@ -136,26 +170,26 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'binnedyearmonth', bandPosition: 0}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'binnedyearmonth', bandPosition: 0},
+        },
       });
 
       expect(assembleFromEncoding(model)).toEqual([
         {
           type: 'formula',
           expr: `timeOffset('month', datum['a'], 1)`,
-          as: 'a_end'
+          as: 'a_end',
         },
         {
           type: 'formula',
           expr: "0.5 * timeOffset('month', datum['a'], -1) + 0.5 * datum['a']",
-          as: `a_${OFFSETTED_RECT_START_SUFFIX}`
+          as: `a_${OFFSETTED_RECT_START_SUFFIX}`,
         },
         {
           type: 'formula',
           expr: "0.5 * datum['a'] + 0.5 * datum['a_end']",
-          as: `a_${OFFSETTED_RECT_END_SUFFIX}`
-        }
+          as: `a_${OFFSETTED_RECT_END_SUFFIX}`,
+        },
       ]);
     });
 
@@ -164,16 +198,16 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'bar',
         encoding: {
-          x: {field: 'a\\.b', type: 'temporal', timeUnit: 'binnedyearmonth'}
-        }
+          x: {field: 'a\\.b', type: 'temporal', timeUnit: 'binnedyearmonth'},
+        },
       });
 
       expect(assembleFromEncoding(model)).toEqual([
         {
           type: 'formula',
           expr: `timeOffset('month', datum['a.b'], 1)`,
-          as: 'a.b_end'
-        }
+          as: 'a.b_end',
+        },
       ]);
     });
 
@@ -182,16 +216,16 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'text',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'binnedyearmonth', bandPosition: 0.5}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'binnedyearmonth', bandPosition: 0.5},
+        },
       });
 
       expect(assembleFromEncoding(model)).toEqual([
         {
           type: 'formula',
           expr: `timeOffset('month', datum['a'], 1)`,
-          as: 'a_end'
-        }
+          as: 'a_end',
+        },
       ]);
     });
 
@@ -200,8 +234,8 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'binnedyearmonth'}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'binnedyearmonth'},
+        },
       });
 
       expect(assembleFromEncoding(model)).toBeUndefined();
@@ -215,8 +249,8 @@ describe('compile/data/timeunit', () => {
           type: 'timeunit',
           field: 'date',
           as: ['month_date', 'month_date_end'],
-          units: ['month']
-        }
+          units: ['month'],
+        },
       ]);
     });
 
@@ -230,8 +264,8 @@ describe('compile/data/timeunit', () => {
           timezone: 'utc',
           step: 10,
           as: ['month_date', 'month_date_end'],
-          units: ['month']
-        }
+          units: ['month'],
+        },
       ]);
     });
   });
@@ -242,12 +276,12 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
+        },
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
       expect(timeUnitNode.hash()).toBe(
-        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"unit\\":\\"month\\"}}":{"as":"month_a","field":"a","timeUnit":{"unit":"month"}}}'
+        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"unit\\":\\"month\\"}}":{"as":"month_a","field":"a","timeUnit":{"unit":"month"}}}',
       );
     });
     it('should generate the correct hash for bar', () => {
@@ -255,12 +289,12 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'month'},
+        },
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
       expect(timeUnitNode.hash()).toBe(
-        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"unit\\":\\"month\\"}}":{"as":"month_a","field":"a","timeUnit":{"unit":"month"}}}'
+        'TimeUnit {"{\\"as\\":\\"month_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"unit\\":\\"month\\"}}":{"as":"month_a","field":"a","timeUnit":{"unit":"month"}}}',
       );
     });
 
@@ -269,12 +303,12 @@ describe('compile/data/timeunit', () => {
         data: {values: []},
         mark: 'bar',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: {unit: 'month', utc: true, step: 10}}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: {unit: 'month', utc: true, step: 10}},
+        },
       });
       const timeUnitNode = TimeUnitNode.makeFromEncoding(null, model);
       expect(timeUnitNode.hash()).toBe(
-        'TimeUnit {"{\\"as\\":\\"utcmonth_step_10_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"step\\":10,\\"unit\\":\\"month\\",\\"utc\\":true}}":{"as":"utcmonth_step_10_a","field":"a","timeUnit":{"step":10,"unit":"month","utc":true}}}'
+        'TimeUnit {"{\\"as\\":\\"utcmonth_step_10_a\\",\\"field\\":\\"a\\",\\"timeUnit\\":{\\"step\\":10,\\"unit\\":\\"month\\",\\"utc\\":true}}":{"as":"utcmonth_step_10_a","field":"a","timeUnit":{"step":10,"unit":"month","utc":true}}}',
       );
     });
   });

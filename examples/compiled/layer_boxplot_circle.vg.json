@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A horizontal box plot showing median, min, and max in the US population distribution of age groups in 2000 and all raw data on the top.",
   "background": "white",
   "padding": 5,
@@ -24,7 +24,7 @@
         },
         {
           "type": "filter",
-          "expr": "(datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]) <= datum[\"people\"]) && (datum[\"people\"] <= datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
+          "expr": "(datum['lower_box_people'] - 1.5 * (datum['upper_box_people'] - datum['lower_box_people']) <= datum['people']) && (datum['people'] <= datum['upper_box_people'] + 1.5 * (datum['upper_box_people'] - datum['lower_box_people']))"
         },
         {
           "type": "aggregate",
@@ -197,9 +197,9 @@
           "tooltip": {
             "signal": "{\"Max of population\": format(datum[\"max_people\"], \"\"), \"Q3 of population\": format(datum[\"upper_box_people\"], \"\"), \"Median of population\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of population\": format(datum[\"lower_box_people\"], \"\"), \"Min of population\": format(datum[\"min_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "xc": {"scale": "x", "field": "mid_box_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
           "height": {"value": 14},
+          "xc": {"scale": "x", "field": "mid_box_people"},
           "width": {"value": 1}
         }
       }

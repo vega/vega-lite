@@ -1,0 +1,111 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Google's stock price over time.",
+  "background": "white",
+  "padding": 5,
+  "width": 400,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
+        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
+        {
+          "type": "filter",
+          "expr": "indexof([time(datetime(2006, 0, 1, 0, 0, 0, 0)),time(datetime(2007, 0, 1, 0, 0, 0, 0))], time(datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0))) !== -1"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "x"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "date"},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "price"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "format": {"year": "%y", "quarter": "%b"},
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

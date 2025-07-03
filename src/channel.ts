@@ -3,11 +3,12 @@
  * such as 'x', 'y', 'color'.
  */
 
-import {RangeType} from './compile/scale/type';
-import {Encoding} from './encoding';
-import {Mark} from './mark';
-import {EncodingFacetMapping} from './spec/facet';
-import {Flag, keys} from './util';
+import {hasOwnProperty} from 'vega-util';
+import {RangeType} from './compile/scale/type.js';
+import {Encoding} from './encoding.js';
+import {Mark} from './mark.js';
+import {EncodingFacetMapping} from './spec/facet.js';
+import {Flag, keys} from './util.js';
 
 export type Channel = keyof Encoding<any>;
 export type ExtendedChannel = Channel | FacetChannel;
@@ -39,6 +40,9 @@ export const LATITUDE = 'latitude' as const;
 export const LONGITUDE = 'longitude' as const;
 export const LATITUDE2 = 'latitude2' as const;
 export const LONGITUDE2 = 'longitude2' as const;
+
+// Time
+export const TIME = 'time' as const;
 
 // Mark property with scale
 export const COLOR = 'color' as const;
@@ -76,7 +80,7 @@ const POSITION_CHANNEL_INDEX = {
   x: 1,
   y: 1,
   x2: 1,
-  y2: 1
+  y2: 1,
 } as const;
 
 export type PositionChannel = keyof typeof POSITION_CHANNEL_INDEX;
@@ -85,20 +89,20 @@ const POLAR_POSITION_CHANNEL_INDEX = {
   theta: 1,
   theta2: 1,
   radius: 1,
-  radius2: 1
+  radius2: 1,
 } as const;
 
 export type PolarPositionChannel = keyof typeof POLAR_POSITION_CHANNEL_INDEX;
 
 export function isPolarPositionChannel(c: Channel): c is PolarPositionChannel {
-  return c in POLAR_POSITION_CHANNEL_INDEX;
+  return hasOwnProperty(POLAR_POSITION_CHANNEL_INDEX, c);
 }
 
 const GEO_POSIITON_CHANNEL_INDEX = {
   longitude: 1,
   longitude2: 1,
   latitude: 1,
-  latitude2: 1
+  latitude2: 1,
 } as const;
 
 export type GeoPositionChannel = keyof typeof GEO_POSIITON_CHANNEL_INDEX;
@@ -117,7 +121,7 @@ export function getPositionChannelFromLatLong(channel: GeoPositionChannel): Posi
 }
 
 export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
-  return c in GEO_POSIITON_CHANNEL_INDEX;
+  return hasOwnProperty(GEO_POSIITON_CHANNEL_INDEX, c);
 }
 
 export const GEOPOSITION_CHANNELS = keys(GEO_POSIITON_CHANNEL_INDEX);
@@ -134,6 +138,9 @@ const UNIT_CHANNEL_INDEX: Flag<Channel> = {
   color: 1,
   fill: 1,
   stroke: 1,
+
+  // time
+  time: 1,
 
   // other non-position with scale
   opacity: 1,
@@ -154,7 +161,7 @@ const UNIT_CHANNEL_INDEX: Flag<Channel> = {
   tooltip: 1,
   href: 1,
   url: 1,
-  description: 1
+  description: 1,
 };
 
 export type ColorChannel = 'color' | 'fill' | 'stroke';
@@ -168,14 +175,14 @@ export type FacetChannel = keyof EncodingFacetMapping<any, any>;
 const FACET_CHANNEL_INDEX: Flag<keyof EncodingFacetMapping<any, any>> = {
   row: 1,
   column: 1,
-  facet: 1
+  facet: 1,
 };
 
 export const FACET_CHANNELS = keys(FACET_CHANNEL_INDEX);
 
 const CHANNEL_INDEX = {
   ...UNIT_CHANNEL_INDEX,
-  ...FACET_CHANNEL_INDEX
+  ...FACET_CHANNEL_INDEX,
 };
 
 export const CHANNELS = keys(CHANNEL_INDEX);
@@ -200,11 +207,11 @@ export const SINGLE_DEF_UNIT_CHANNELS = keys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
 export type SingleDefUnitChannel = (typeof SINGLE_DEF_UNIT_CHANNELS)[number];
 
 export function isSingleDefUnitChannel(str: string): str is SingleDefUnitChannel {
-  return !!SINGLE_DEF_UNIT_CHANNEL_INDEX[str];
+  return hasOwnProperty(SINGLE_DEF_UNIT_CHANNEL_INDEX, str);
 }
 
 export function isChannel(str: string): str is Channel {
-  return !!CHANNEL_INDEX[str];
+  return hasOwnProperty(CHANNEL_INDEX, str);
 }
 
 export type SecondaryRangeChannel = 'x2' | 'y2' | 'latitude2' | 'longitude2' | 'theta2' | 'radius2';
@@ -393,18 +400,18 @@ export type NonPositionChannel = (typeof NONPOSITION_CHANNELS)[number];
 
 const POSITION_SCALE_CHANNEL_INDEX = {
   x: 1,
-  y: 1
+  y: 1,
 } as const;
 export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = keyof typeof POSITION_SCALE_CHANNEL_INDEX;
 
 export function isXorY(channel: ExtendedChannel): channel is PositionScaleChannel {
-  return channel in POSITION_SCALE_CHANNEL_INDEX;
+  return hasOwnProperty(POSITION_SCALE_CHANNEL_INDEX, channel);
 }
 
 export const POLAR_POSITION_SCALE_CHANNEL_INDEX = {
   theta: 1,
-  radius: 1
+  radius: 1,
 } as const;
 
 export const POLAR_POSITION_SCALE_CHANNELS = keys(POLAR_POSITION_SCALE_CHANNEL_INDEX);
@@ -421,7 +428,17 @@ export const OFFSET_SCALE_CHANNELS = keys(OFFSET_SCALE_CHANNEL_INDEX);
 export type OffsetScaleChannel = (typeof OFFSET_SCALE_CHANNELS)[0];
 
 export function isXorYOffset(channel: Channel): channel is OffsetScaleChannel {
-  return channel in OFFSET_SCALE_CHANNEL_INDEX;
+  return hasOwnProperty(OFFSET_SCALE_CHANNEL_INDEX, channel);
+}
+
+const TIME_SCALE_CHANNEL_INDEX = {
+  time: 1,
+} as const;
+export const TIME_SCALE_CHANNELS = keys(TIME_SCALE_CHANNEL_INDEX);
+export type TimeScaleChannel = keyof typeof TIME_SCALE_CHANNEL_INDEX;
+
+export function isTime(channel: ExtendedChannel): channel is TimeScaleChannel {
+  return channel in TIME_SCALE_CHANNEL_INDEX;
 }
 
 // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without position / offset
@@ -444,7 +461,7 @@ export const NONPOSITION_SCALE_CHANNELS = keys(NONPOSITION_SCALE_CHANNEL_INDEX);
 export type NonPositionScaleChannel = (typeof NONPOSITION_SCALE_CHANNELS)[number];
 
 export function isNonPositionScaleChannel(channel: Channel): channel is NonPositionScaleChannel {
-  return !!NONPOSITION_CHANNEL_INDEX[channel];
+  return hasOwnProperty(NONPOSITION_CHANNEL_INDEX, channel);
 }
 
 /**
@@ -464,6 +481,7 @@ export function supportLegend(channel: NonPositionScaleChannel) {
     case FILLOPACITY:
     case STROKEOPACITY:
     case ANGLE:
+    case TIME:
       return false;
   }
 }
@@ -473,7 +491,7 @@ const SCALE_CHANNEL_INDEX = {
   ...POSITION_SCALE_CHANNEL_INDEX,
   ...POLAR_POSITION_SCALE_CHANNEL_INDEX,
   ...OFFSET_SCALE_CHANNEL_INDEX,
-  ...NONPOSITION_SCALE_CHANNEL_INDEX
+  ...NONPOSITION_SCALE_CHANNEL_INDEX,
 };
 
 /** List of channels with scales */
@@ -481,7 +499,7 @@ export const SCALE_CHANNELS = keys(SCALE_CHANNEL_INDEX);
 export type ScaleChannel = (typeof SCALE_CHANNELS)[number];
 
 export function isScaleChannel(channel: ExtendedChannel): channel is ScaleChannel {
-  return !!SCALE_CHANNEL_INDEX[channel];
+  return hasOwnProperty(SCALE_CHANNEL_INDEX, channel);
 }
 
 export type SupportedMark = Partial<Record<Mark, 'always' | 'binned'>>;
@@ -511,7 +529,7 @@ const ALL_MARKS: Record<Mark, 'always'> = {
   square: 'always',
   trail: 'always',
   text: 'always',
-  tick: 'always'
+  tick: 'always',
 };
 
 const {geoshape: _g, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
@@ -551,6 +569,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case YOFFSET:
     case LATITUDE:
     case LONGITUDE:
+    case TIME:
       // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
       return ALL_MARKS_EXCEPT_GEOSHAPE;
     case X2:
@@ -568,7 +587,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
         square: 'binned',
         tick: 'binned',
         line: 'binned',
-        trail: 'binned'
+        trail: 'binned',
       };
     case SIZE:
       return {
@@ -580,7 +599,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
         bar: 'always',
         text: 'always',
         line: 'always',
-        trail: 'always'
+        trail: 'always',
       };
     case STROKEDASH:
       return {
@@ -591,7 +610,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
         circle: 'always',
         square: 'always',
         bar: 'always',
-        geoshape: 'always'
+        geoshape: 'always',
       };
     case SHAPE:
       return {point: 'always', geoshape: 'always'};
@@ -625,6 +644,7 @@ export function rangeType(channel: ExtendedChannel): RangeType {
     case OPACITY:
     case FILLOPACITY:
     case STROKEOPACITY:
+    case TIME:
 
     // X2 and Y2 use X and Y scales, so they similarly have continuous range. [falls through]
     case X2:

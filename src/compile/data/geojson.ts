@@ -1,12 +1,12 @@
 import {Transforms as VgTransform, Vector2} from 'vega';
 import {isString} from 'vega-util';
-import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
-import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef';
-import {GEOJSON} from '../../type';
-import {duplicate, hash} from '../../util';
-import {VgExprRef} from '../../vega.schema';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
+import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel.js';
+import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef.js';
+import {GEOJSON} from '../../type.js';
+import {duplicate, hash} from '../../util.js';
+import {VgExprRef} from '../../vega.schema.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
 
 export class GeoJSONNode extends DataFlowNode {
   public clone() {
@@ -22,9 +22,9 @@ export class GeoJSONNode extends DataFlowNode {
 
     for (const coordinates of [
       [LONGITUDE, LATITUDE],
-      [LONGITUDE2, LATITUDE2]
+      [LONGITUDE2, LATITUDE2],
     ] as Vector2<GeoPositionChannel>[]) {
-      const pair = coordinates.map(channel => {
+      const pair = coordinates.map((channel) => {
         const def = getFieldOrDatumDef(model.encoding[channel]);
         return isFieldDef(def)
           ? def.field
@@ -54,7 +54,7 @@ export class GeoJSONNode extends DataFlowNode {
     parent: DataFlowNode,
     private fields?: Vector2<string | VgExprRef>,
     private geojson?: string,
-    private signal?: string
+    private signal?: string,
   ) {
     super(parent);
   }
@@ -78,16 +78,16 @@ export class GeoJSONNode extends DataFlowNode {
         ? [
             {
               type: 'filter',
-              expr: `isValid(datum["${this.geojson}"])`
-            } as const
+              expr: `isValid(datum["${this.geojson}"])`,
+            } as const,
           ]
         : []),
       {
         type: 'geojson',
         ...(this.fields ? {fields: this.fields} : {}),
         ...(this.geojson ? {geojson: this.geojson} : {}),
-        signal: this.signal
-      }
+        signal: this.signal,
+      },
     ];
   }
 }

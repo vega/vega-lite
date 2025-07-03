@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A horizontal box plot showing median and lower and upper quartiles of the distribution of body mass of penguins.",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {
@@ -30,7 +30,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"Body Mass (g)\"] < datum[\"lower_box_Body Mass (g)\"] - 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"])) || (datum[\"Body Mass (g)\"] > datum[\"upper_box_Body Mass (g)\"] + 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]))"
+          "expr": "(datum['Body Mass (g)'] < datum['lower_box_Body Mass (g)'] - 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)'])) || (datum['Body Mass (g)'] > datum['upper_box_Body Mass (g)'] + 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)']))"
         },
         {
           "type": "filter",
@@ -44,7 +44,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"lower_box_Body Mass (g)\"] - 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]) <= datum[\"Body Mass (g)\"]) && (datum[\"Body Mass (g)\"] <= datum[\"upper_box_Body Mass (g)\"] + 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]))"
+          "expr": "(datum['lower_box_Body Mass (g)'] - 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)']) <= datum['Body Mass (g)']) && (datum['Body Mass (g)'] <= datum['upper_box_Body Mass (g)'] + 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)']))"
         },
         {
           "type": "aggregate",
@@ -232,9 +232,9 @@
           "tooltip": {
             "signal": "{\"Max of Body Mass (g)\": format(datum[\"max_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"min_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
           },
-          "xc": {"scale": "x", "field": "mid_box_Body Mass (g)"},
           "yc": {"scale": "y", "field": "Species", "band": 0.5},
           "height": {"value": 10},
+          "xc": {"scale": "x", "field": "mid_box_Body Mass (g)"},
           "width": {"value": 1}
         }
       }

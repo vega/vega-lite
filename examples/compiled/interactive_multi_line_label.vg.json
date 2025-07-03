@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 400,
@@ -149,7 +149,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -180,7 +180,7 @@
           "stroke": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
@@ -191,6 +191,7 @@
       "name": "layer_0_layer_1_voronoi",
       "type": "path",
       "interactive": true,
+      "aria": false,
       "from": {"data": "layer_0_layer_1_marks"},
       "encode": {
         "update": {
@@ -219,7 +220,7 @@
         "update": {
           "stroke": {"value": "gray"},
           "description": {
-            "signal": "\"Min of date: \" + (timeFormat(datum[\"min_date\"], '%b %d, %Y'))"
+            "signal": "\"Min of date: \" + (timeFormat(datum[\"min_date\"], \"%b %d, %Y\"))"
           },
           "x": {"scale": "x", "field": "min_date"},
           "y": {"value": 0},
@@ -242,7 +243,7 @@
           "dy": {"value": -5},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
@@ -264,7 +265,7 @@
           "dy": {"value": -5},
           "fill": {"scale": "color", "field": "symbol"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},

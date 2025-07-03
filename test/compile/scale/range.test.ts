@@ -1,15 +1,16 @@
+import {RangeRaw} from 'vega';
 import {
   defaultContinuousToDiscreteCount,
   interpolateRange,
   MAX_SIZE_RANGE_STEP_RATIO,
-  parseRangeForChannel
-} from '../../../src/compile/scale/range';
-import {makeExplicit, makeImplicit} from '../../../src/compile/split';
-import {Config, defaultConfig, DEFAULT_STEP} from '../../../src/config';
-import * as log from '../../../src/log';
-import {Mark} from '../../../src/mark';
-import {defaultScaleConfig, QUANTITATIVE_SCALES, ScaleType} from '../../../src/scale';
-import {parseUnitModelWithScaleExceptRange} from '../../util';
+  parseRangeForChannel,
+} from '../../../src/compile/scale/range.js';
+import {makeExplicit, makeImplicit} from '../../../src/compile/split.js';
+import {Config, defaultConfig, DEFAULT_STEP} from '../../../src/config.js';
+import * as log from '../../../src/log/index.js';
+import {Mark} from '../../../src/mark.js';
+import {defaultScaleConfig, QUANTITATIVE_SCALES, ScaleType} from '../../../src/scale.js';
+import {parseUnitModelWithScaleExceptRange} from '../../util.js';
 
 describe('compile/scale', () => {
   describe('parseRange()', () => {
@@ -20,8 +21,8 @@ describe('compile/scale', () => {
             mark: 'point',
             encoding: {
               x: {field: 'x', type: 'quantitative', scale: {type: scaleType}},
-              y: {field: 'y', type: 'quantitative', scale: {type: scaleType}}
-            }
+              y: {field: 'y', type: 'quantitative', scale: {type: scaleType}},
+            },
           });
 
           expect(parseRangeForChannel('x', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
@@ -38,8 +39,8 @@ describe('compile/scale', () => {
             mark: 'point',
             encoding: {
               x: {field: 'x', type: 'nominal', scale: {type: scaleType}},
-              y: {field: 'y', type: 'nominal', scale: {type: scaleType}}
-            }
+              y: {field: 'y', type: 'nominal', scale: {type: scaleType}},
+            },
           });
 
           expect(parseRangeForChannel('x', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
@@ -48,17 +49,17 @@ describe('compile/scale', () => {
         }
       });
 
-      it('should return [0, width] / [height, 0] for x/y-discrete scales with numberic config.view.discreteWidth/Height', () => {
+      it('should return [0, width] / [height, 0] for x/y-discrete scales with numeric config.view.discreteWidth/Height', () => {
         for (const scaleType of [ScaleType.BAND, ScaleType.POINT]) {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'point',
             encoding: {
               x: {field: 'x', type: 'nominal', scale: {type: scaleType}},
-              y: {field: 'y', type: 'nominal', scale: {type: scaleType}}
+              y: {field: 'y', type: 'nominal', scale: {type: scaleType}},
             },
             config: {
-              view: {discreteWidth: 200, discreteHeight: 200}
-            }
+              view: {discreteWidth: 300, discreteHeight: 300},
+            },
           });
 
           expect(parseRangeForChannel('x', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
@@ -72,8 +73,8 @@ describe('compile/scale', () => {
           mark: 'point',
           encoding: {
             x: {field: 'x', type: 'nominal', scale: {range: [40, 'width']}},
-            y: {field: 'y', type: 'nominal', scale: {range: ['height', 40]}}
-          }
+            y: {field: 'y', type: 'nominal', scale: {range: ['height', 40]}},
+          },
         });
 
         expect(parseRangeForChannel('x', model)).toEqual(makeExplicit([40, {signal: 'width'}]));
@@ -87,12 +88,12 @@ describe('compile/scale', () => {
           encoding: {
             x: {field: 'x', type: 'nominal'},
             xOffset: {field: 'xSub', type: 'nominal'},
-            y: {field: 'y', type: 'nominal'}
-          }
+            y: {field: 'y', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('x', model)).toEqual(
-          makeImplicit({step: {signal: "20 * domain('xOffset').length / (1-0.2)"}})
+          makeImplicit({step: {signal: "20 * domain('xOffset').length / (1-0.2)"}}),
         );
       });
 
@@ -102,12 +103,12 @@ describe('compile/scale', () => {
           encoding: {
             x: {field: 'x', type: 'nominal'},
             xOffset: {field: 'xSub', type: 'nominal'},
-            y: {field: 'y', type: 'nominal'}
-          }
+            y: {field: 'y', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('x', model)).toEqual(
-          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0, 0) / (1-0.2)"}})
+          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0, 0) / (1-0.2)"}}),
         );
       });
 
@@ -117,18 +118,18 @@ describe('compile/scale', () => {
           encoding: {
             x: {field: 'x', type: 'temporal', timeUnit: 'year'},
             xOffset: {field: 'xSub', type: 'nominal'},
-            y: {field: 'y', type: 'nominal'}
+            y: {field: 'y', type: 'nominal'},
           },
-          config: {scale: {bandWithNestedOffsetPaddingInner: 0}}
+          config: {scale: {bandWithNestedOffsetPaddingInner: 0}},
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(
           makeImplicit([
             0,
             {
-              signal: "scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0))"
-            }
-          ])
+              signal: "scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0))",
+            },
+          ]),
         );
       });
 
@@ -137,19 +138,19 @@ describe('compile/scale', () => {
           mark: 'bar',
           encoding: {
             xOffset: {field: 'xSub', type: 'nominal'},
-            y: {field: 'y', type: 'nominal'}
-          }
+            y: {field: 'y', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(
           makeImplicit([
             {
-              signal: '-width/2'
+              signal: '-width/2',
             },
             {
-              signal: 'width/2'
-            }
-          ])
+              signal: 'width/2',
+            },
+          ]),
         );
       });
 
@@ -158,19 +159,19 @@ describe('compile/scale', () => {
           mark: 'bar',
           encoding: {
             yOffset: {field: 'xSub', type: 'nominal'},
-            x: {field: 'y', type: 'nominal'}
-          }
+            x: {field: 'y', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('yOffset', model)).toEqual(
           makeImplicit([
             {
-              signal: '-height/2'
+              signal: '-height/2',
             },
             {
-              signal: 'height/2'
-            }
-          ])
+              signal: 'height/2',
+            },
+          ]),
         );
       });
 
@@ -180,21 +181,21 @@ describe('compile/scale', () => {
           encoding: {
             x: {field: 'x', type: 'temporal', timeUnit: 'year'},
             xOffset: {field: 'xSub', type: 'nominal'},
-            y: {field: 'y', type: 'nominal'}
-          }
+            y: {field: 'y', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(
           makeImplicit([
             {
               signal:
-                "0.1 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+                "0.1 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))",
             },
             {
               signal:
-                "0.9 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
-            }
-          ])
+                "0.9 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))",
+            },
+          ]),
         );
       });
       it('should return padded duration range when there is a nested offset with year time scale, default padding, and bandPosition=0', () => {
@@ -203,21 +204,21 @@ describe('compile/scale', () => {
           encoding: {
             x: {field: 'x', type: 'temporal', timeUnit: 'year', bandPosition: 0},
             xOffset: {field: 'xSub', type: 'nominal'},
-            y: {field: 'y', type: 'nominal'}
-          }
+            y: {field: 'y', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(
           makeImplicit([
             {
               signal:
-                "-0.4 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+                "-0.4 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))",
             },
             {
               signal:
-                "0.4 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
-            }
-          ])
+                "0.4 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))",
+            },
+          ]),
         );
       });
 
@@ -227,22 +228,22 @@ describe('compile/scale', () => {
           encoding: {
             x: {field: 'x', type: 'temporal', timeUnit: 'year'},
             xOffset: {field: 'xSub', type: 'nominal'},
-            y: {field: 'y', type: 'nominal'}
+            y: {field: 'y', type: 'nominal'},
           },
-          config: {scale: {bandWithNestedOffsetPaddingInner: {signal: 'x'}}}
+          config: {scale: {bandWithNestedOffsetPaddingInner: {signal: 'x'}}},
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(
           makeImplicit([
             {
               signal:
-                "x/2 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
+                "x/2 * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))",
             },
             {
               signal:
-                "(1 - x/2) * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))"
-            }
-          ])
+                "(1 - x/2) * (scale('x', datetime(2002, 0, 1, 0, 0, 0, 0)) - scale('x', datetime(2001, 0, 1, 0, 0, 0, 0)))",
+            },
+          ]),
         );
       });
 
@@ -252,12 +253,12 @@ describe('compile/scale', () => {
           encoding: {
             x: {field: 'x', type: 'nominal'},
             xOffset: {field: 'xSub', type: 'nominal', scale: {padding: 0.2}},
-            y: {field: 'y', type: 'nominal'}
-          }
+            y: {field: 'y', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('x', model)).toEqual(
-          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0.2, 0.2) / (1-0.2)"}})
+          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0.2, 0.2) / (1-0.2)"}}),
         );
       });
 
@@ -267,12 +268,12 @@ describe('compile/scale', () => {
           encoding: {
             x: {field: 'x', type: 'nominal'},
             xOffset: {field: 'xSub', type: 'nominal', scale: {paddingInner: 0.1, paddingOuter: 0.3}},
-            y: {field: 'y', type: 'nominal'}
-          }
+            y: {field: 'y', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('x', model)).toEqual(
-          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0.1, 0.3) / (1-0.2)"}})
+          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0.1, 0.3) / (1-0.2)"}}),
         );
       });
 
@@ -282,8 +283,8 @@ describe('compile/scale', () => {
             mark: 'point',
             encoding: {
               x: {field: 'x', type: 'nominal', scale: {type: scaleType}},
-              y: {field: 'y', type: 'nominal', scale: {type: scaleType}}
-            }
+              y: {field: 'y', type: 'nominal', scale: {type: scaleType}},
+            },
           });
 
           expect(parseRangeForChannel('x', model)).toEqual(makeImplicit({step: 20}));
@@ -300,8 +301,8 @@ describe('compile/scale', () => {
             mark: 'point',
             encoding: {
               x: {field: 'x', type: 'nominal', scale: {type: scaleType}},
-              y: {field: 'y', type: 'nominal', scale: {type: scaleType}}
-            }
+              y: {field: 'y', type: 'nominal', scale: {type: scaleType}},
+            },
           });
 
           expect(parseRangeForChannel('x', model)).toEqual(makeExplicit({step: 23}));
@@ -312,13 +313,13 @@ describe('compile/scale', () => {
 
       it('should drop rangeStep for continuous scales', () => {
         for (const scaleType of QUANTITATIVE_SCALES) {
-          log.wrap(localLogger => {
+          log.wrap((localLogger) => {
             const model = parseUnitModelWithScaleExceptRange({
               width: {step: 23},
               mark: 'point',
               encoding: {
-                x: {field: 'x', type: 'quantitative', scale: {type: scaleType}}
-              }
+                x: {field: 'x', type: 'quantitative', scale: {type: scaleType}},
+              },
             });
 
             expect(parseRangeForChannel('x', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
@@ -335,8 +336,8 @@ describe('compile/scale', () => {
           mark: 'bar',
           encoding: {
             x: {field: 'x', type: 'nominal'},
-            xOffset: {field: 'subx', type: 'nominal'}
-          }
+            xOffset: {field: 'subx', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
@@ -347,8 +348,8 @@ describe('compile/scale', () => {
           mark: 'bar',
           encoding: {
             x: {field: 'x', type: 'nominal'},
-            xOffset: {field: 'subx', type: 'nominal'}
-          }
+            xOffset: {field: 'subx', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
@@ -360,8 +361,8 @@ describe('compile/scale', () => {
           mark: 'bar',
           encoding: {
             x: {field: 'x', type: 'nominal'},
-            xOffset: {field: 'subx', type: 'nominal'}
-          }
+            xOffset: {field: 'subx', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(makeExplicit({step: 23}));
@@ -372,13 +373,13 @@ describe('compile/scale', () => {
           mark: 'bar',
           encoding: {
             x: {field: 'x', type: 'nominal'},
-            xOffset: {field: 'subx', type: 'nominal'}
+            xOffset: {field: 'subx', type: 'nominal'},
           },
           config: {
             view: {
-              discreteWidth: {step: 23}
-            }
-          }
+              discreteWidth: {step: 23},
+            },
+          },
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit({step: 23}));
@@ -390,8 +391,8 @@ describe('compile/scale', () => {
           mark: 'bar',
           encoding: {
             x: {field: 'x', type: 'nominal'},
-            xOffset: {field: 'subx', type: 'nominal'}
-          }
+            xOffset: {field: 'subx', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(makeExplicit({step: 23}));
@@ -403,8 +404,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'quantitative', scale: {scheme: 'viridis'}}
-          }
+            color: {field: 'x', type: 'quantitative', scale: {scheme: 'viridis'}},
+          },
         });
 
         expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: 'viridis'}));
@@ -414,8 +415,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'quantitative', scale: {scheme: {name: 'warmgreys', extent: [0.2, 1]}}}
-          }
+            color: {field: 'x', type: 'quantitative', scale: {scheme: {name: 'warmgreys', extent: [0.2, 1]}}},
+          },
         });
 
         expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: 'warmgreys', extent: [0.2, 1]}));
@@ -425,8 +426,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'nominal', scale: {range: ['red', 'blue']}}
-          }
+            color: {field: 'x', type: 'nominal', scale: {range: ['red', 'blue']}},
+          },
         });
         expect(parseRangeForChannel('color', model)).toEqual(makeExplicit(['red', 'blue']));
       });
@@ -435,15 +436,15 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'nominal', scale: {range: {field: 'c'}}}
-          }
+            color: {field: 'x', type: 'nominal', scale: {range: {field: 'c'}}},
+          },
         });
         expect(parseRangeForChannel('color', model)).toEqual(
           makeExplicit({
             data: 'main',
             field: 'c',
-            sort: {op: 'min', field: 'x'}
-          })
+            sort: {op: 'min', field: 'x'},
+          }),
         );
       });
 
@@ -451,8 +452,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'nominal'}
-          }
+            color: {field: 'x', type: 'nominal'},
+          },
         });
 
         expect(parseRangeForChannel('color', model)).toEqual(makeImplicit('category'));
@@ -462,8 +463,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'ordinal'}
-          }
+            color: {field: 'x', type: 'ordinal'},
+          },
         });
 
         expect(parseRangeForChannel('color', model)).toEqual(makeImplicit('ordinal'));
@@ -473,8 +474,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'quantitative'}
-          }
+            color: {field: 'x', type: 'quantitative'},
+          },
         });
 
         expect(parseRangeForChannel('color', model)).toEqual(makeImplicit('ramp'));
@@ -484,8 +485,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'quantitative', scale: {domainMid: 1}}
-          }
+            color: {field: 'x', type: 'quantitative', scale: {domainMid: 1}},
+          },
         });
 
         expect(parseRangeForChannel('color', model)).toEqual(makeImplicit('diverging'));
@@ -495,8 +496,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            color: {field: 'x', type: 'quantitative', scale: {scheme: {name: 'viridis', count: 3}}}
-          }
+            color: {field: 'x', type: 'quantitative', scale: {scheme: {name: 'viridis', count: 3}}},
+          },
         });
 
         expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: 'viridis', count: 3}));
@@ -504,12 +505,12 @@ describe('compile/scale', () => {
 
       it('should use default ramp range for quantile/quantize/threshold scales', () => {
         const scales: ScaleType[] = ['quantile', 'quantize', 'threshold'];
-        scales.forEach(discretizingScale => {
+        scales.forEach((discretizingScale) => {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'point',
             encoding: {
-              color: {field: 'x', type: 'quantitative', scale: {type: discretizingScale}}
-            }
+              color: {field: 'x', type: 'quantitative', scale: {type: discretizingScale}},
+            },
           });
 
           expect(parseRangeForChannel('color', model)).toEqual(makeImplicit('ramp'));
@@ -522,12 +523,12 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            opacity: {field: 'x', type: 'quantitative'}
-          }
+            opacity: {field: 'x', type: 'quantitative'},
+          },
         });
 
         expect(parseRangeForChannel('opacity', model)).toEqual(
-          makeImplicit([defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity])
+          makeImplicit([defaultConfig.scale.minOpacity, defaultConfig.scale.maxOpacity]),
         );
       });
     });
@@ -537,8 +538,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            angle: {field: 'x', type: 'quantitative'}
-          }
+            angle: {field: 'x', type: 'quantitative'},
+          },
         });
 
         expect(parseRangeForChannel('angle', model)).toEqual(makeImplicit([0, 360]));
@@ -547,8 +548,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            angle: {field: 'x', type: 'quantitative', scale: {rangeMin: 20}}
-          }
+            angle: {field: 'x', type: 'quantitative', scale: {rangeMin: 20}},
+          },
         });
 
         expect(parseRangeForChannel('angle', model)).toEqual(makeExplicit([20, 360]));
@@ -557,8 +558,8 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            angle: {field: 'x', type: 'quantitative', scale: {rangeMax: 90}}
-          }
+            angle: {field: 'x', type: 'quantitative', scale: {rangeMax: 90}},
+          },
         });
 
         expect(parseRangeForChannel('angle', model)).toEqual(makeExplicit([0, 90]));
@@ -570,12 +571,12 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'text',
           encoding: {
-            radius: {field: 'x', type: 'quantitative'}
-          }
+            radius: {field: 'x', type: 'quantitative'},
+          },
         });
         const r = parseRangeForChannel('radius', model);
-        expect(r.value[0]).toBe(0);
-        expect(r.value[1]).toEqual({signal: 'min(width,height)/2'});
+        expect((r.value as RangeRaw)[0]).toBe(0);
+        expect((r.value as RangeRaw)[1]).toEqual({signal: 'min(width,height)/2'});
       });
     });
 
@@ -585,11 +586,11 @@ describe('compile/scale', () => {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'bar',
             encoding: {
-              size: {field: 'x', type: 'quantitative', scale: {zero: false}}
+              size: {field: 'x', type: 'quantitative', scale: {zero: false}},
             },
             config: {
-              scale: {minBandSize: 2, maxBandSize: 9}
-            }
+              scale: {minBandSize: 2, maxBandSize: 9},
+            },
           });
 
           expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([2, 9]));
@@ -599,11 +600,11 @@ describe('compile/scale', () => {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'bar',
             encoding: {
-              size: {field: 'x', type: 'quantitative', scale: {zero: {signal: 'a'}}}
+              size: {field: 'x', type: 'quantitative', scale: {zero: {signal: 'a'}}},
             },
             config: {
-              scale: {minBandSize: 2, maxBandSize: 9}
-            }
+              scale: {minBandSize: 2, maxBandSize: 9},
+            },
           });
 
           expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([2, 9]));
@@ -613,8 +614,8 @@ describe('compile/scale', () => {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'bar',
             encoding: {
-              size: {field: 'x', type: 'quantitative', scale: {zero: false}}
-            }
+              size: {field: 'x', type: 'quantitative', scale: {zero: false}},
+            },
           });
 
           expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([2, DEFAULT_STEP - 1]));
@@ -626,11 +627,11 @@ describe('compile/scale', () => {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'tick',
             encoding: {
-              size: {field: 'x', type: 'quantitative', scale: {zero: false}}
+              size: {field: 'x', type: 'quantitative', scale: {zero: false}},
             },
             config: {
-              scale: {minBandSize: 2, maxBandSize: 9}
-            }
+              scale: {minBandSize: 2, maxBandSize: 9},
+            },
           });
 
           expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([2, 9]));
@@ -640,8 +641,8 @@ describe('compile/scale', () => {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'tick',
             encoding: {
-              size: {field: 'x', type: 'quantitative', scale: {zero: false}}
-            }
+              size: {field: 'x', type: 'quantitative', scale: {zero: false}},
+            },
           });
 
           expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([2, DEFAULT_STEP - 1]));
@@ -653,12 +654,12 @@ describe('compile/scale', () => {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'text',
             encoding: {
-              size: {field: 'x', type: 'quantitative', scale: {zero: false}}
-            }
+              size: {field: 'x', type: 'quantitative', scale: {zero: false}},
+            },
           });
 
           expect(parseRangeForChannel('size', model)).toEqual(
-            makeImplicit([defaultConfig.scale.minFontSize, defaultConfig.scale.maxFontSize])
+            makeImplicit([defaultConfig.scale.minFontSize, defaultConfig.scale.maxFontSize]),
           );
         });
       });
@@ -668,12 +669,12 @@ describe('compile/scale', () => {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'rule',
             encoding: {
-              size: {field: 'x', type: 'quantitative', scale: {zero: false}}
-            }
+              size: {field: 'x', type: 'quantitative', scale: {zero: false}},
+            },
           });
 
           expect(parseRangeForChannel('size', model)).toEqual(
-            makeImplicit([defaultConfig.scale.minStrokeWidth, defaultConfig.scale.maxStrokeWidth])
+            makeImplicit([defaultConfig.scale.minStrokeWidth, defaultConfig.scale.maxStrokeWidth]),
           );
         });
       });
@@ -684,14 +685,14 @@ describe('compile/scale', () => {
             const model = parseUnitModelWithScaleExceptRange({
               mark,
               encoding: {
-                size: {field: 'x', type: 'quantitative', scale: {zero: false}}
+                size: {field: 'x', type: 'quantitative', scale: {zero: false}},
               },
               config: {
                 scale: {
                   minSize: 5,
-                  maxSize: 25
-                }
-              }
+                  maxSize: 25,
+                },
+              },
             });
 
             expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([5, 25]));
@@ -703,14 +704,14 @@ describe('compile/scale', () => {
             const model = parseUnitModelWithScaleExceptRange({
               mark,
               encoding: {
-                size: {field: 'x', type: 'quantitative'}
+                size: {field: 'x', type: 'quantitative'},
               },
               config: {
                 scale: {
                   minSize: 5,
-                  maxSize: 25
-                }
-              }
+                  maxSize: 25,
+                },
+              },
             });
 
             expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([5, 25]));
@@ -726,14 +727,14 @@ describe('compile/scale', () => {
               encoding: {
                 x: {field: 'x', type: 'nominal'},
                 y: {field: 'y', type: 'nominal'},
-                size: {field: 'x', type: 'quantitative'}
-              }
+                size: {field: 'x', type: 'quantitative'},
+              },
             });
             expect(parseRangeForChannel('size', model)).toEqual(
               makeImplicit([
                 defaultScaleConfig.minSize,
-                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11
-              ])
+                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11,
+              ]),
             );
           }
         });
@@ -747,14 +748,14 @@ describe('compile/scale', () => {
               encoding: {
                 x: {field: 'x', type: 'nominal'},
                 y: {field: 'y', type: 'nominal'},
-                size: {field: 'x', type: 'ordinal'}
-              }
+                size: {field: 'x', type: 'ordinal'},
+              },
             });
             expect(parseRangeForChannel('size', model)).toEqual(
               makeImplicit([
                 defaultScaleConfig.minSize,
-                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11
-              ])
+                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11,
+              ]),
             );
           }
         });
@@ -768,14 +769,14 @@ describe('compile/scale', () => {
               encoding: {
                 x: {field: 'x', type: 'nominal'},
                 y: {field: 'y', type: 'nominal'},
-                size: {field: 'x', type: 'quantitative', scale: {zero: false}}
-              }
+                size: {field: 'x', type: 'quantitative', scale: {zero: false}},
+              },
             });
             expect(parseRangeForChannel('size', model)).toEqual(
               makeImplicit([
                 defaultScaleConfig.minSize,
-                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11
-              ])
+                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11,
+              ]),
             );
           }
         });
@@ -788,14 +789,14 @@ describe('compile/scale', () => {
               encoding: {
                 x: {field: 'x', type: 'nominal'},
                 y: {field: 'y', type: 'quantitative'},
-                size: {field: 'x', type: 'quantitative'}
-              }
+                size: {field: 'x', type: 'quantitative'},
+              },
             });
             expect(parseRangeForChannel('size', model)).toEqual(
               makeImplicit([
                 defaultScaleConfig.minSize,
-                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11
-              ])
+                MAX_SIZE_RANGE_STEP_RATIO * 11 * MAX_SIZE_RANGE_STEP_RATIO * 11,
+              ]),
             );
           }
         });
@@ -808,50 +809,50 @@ describe('compile/scale', () => {
               encoding: {
                 x: {field: 'x', type: 'nominal'},
                 y: {bin: true, field: 'y', type: 'quantitative'},
-                size: {field: 'x', type: 'quantitative'}
-              }
+                size: {field: 'x', type: 'quantitative'},
+              },
             });
             expect(parseRangeForChannel('size', model)).toEqual(
               makeImplicit([
                 defaultScaleConfig.minSize,
                 {
                   signal:
-                    'pow(0.95 * min(11, height / ((bin_maxbins_10_y_bins.stop - bin_maxbins_10_y_bins.start) / bin_maxbins_10_y_bins.step)), 2)'
-                }
-              ])
+                    'pow(0.95 * min(11, height / ((bin_maxbins_10_y_bins.stop - bin_maxbins_10_y_bins.start) / bin_maxbins_10_y_bins.step)), 2)',
+                },
+              ]),
             );
           }
         });
 
         it('should return range interpolation of length 4 for quantile/quantize scales', () => {
           const scales: ScaleType[] = ['quantile', 'quantize'];
-          scales.forEach(type => {
+          scales.forEach((type) => {
             const model = parseUnitModelWithScaleExceptRange({
               mark: 'point',
               encoding: {
-                size: {field: 'x', type: 'quantitative', scale: {type}}
-              }
+                size: {field: 'x', type: 'quantitative', scale: {type}},
+              },
             });
             expect(parseRangeForChannel('size', model)).toEqual(
-              makeImplicit({signal: 'sequence(4, 361 + (361 - 4) / (4 - 1), (361 - 4) / (4 - 1))'})
+              makeImplicit({signal: 'sequence(4, 361 + (361 - 4) / (4 - 1), (361 - 4) / (4 - 1))'}),
             );
           });
         });
 
         it(
           'should return range interpolation of length 4 for threshold scale',
-          log.wrap(localLogger => {
+          log.wrap((localLogger) => {
             const model = parseUnitModelWithScaleExceptRange({
               mark: 'point',
               encoding: {
-                size: {field: 'x', type: 'quantitative', scale: {type: 'threshold'}}
-              }
+                size: {field: 'x', type: 'quantitative', scale: {type: 'threshold'}},
+              },
             });
             expect(parseRangeForChannel('size', model)).toEqual(
-              makeImplicit({signal: 'sequence(4, 361 + (361 - 4) / (3 - 1), (361 - 4) / (3 - 1))'})
+              makeImplicit({signal: 'sequence(4, 361 + (361 - 4) / (3 - 1), (361 - 4) / (3 - 1))'}),
             );
             expect(localLogger.warns[0]).toEqual(log.message.domainRequiredForThresholdScale('size'));
-          })
+          }),
         );
       });
     });
@@ -861,10 +862,37 @@ describe('compile/scale', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
-            shape: {field: 'x', type: 'nominal'}
-          }
+            shape: {field: 'x', type: 'nominal'},
+          },
         });
         expect(parseRangeForChannel('shape', model)).toEqual(makeImplicit('symbol'));
+      });
+    });
+
+    describe('time', () => {
+      it('should use default time range.', () => {
+        const bandModel = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            time: {field: 'x', type: 'ordinal'},
+          },
+        });
+
+        expect(parseRangeForChannel('time', bandModel)).toEqual(
+          makeImplicit({step: 1000 / defaultConfig.scale.framesPerSecond}),
+        );
+
+        // TODO(jzong) uncomment the below when implementing linear scales for interpolation
+
+        // const linearModel = parseUnitModelWithScaleExceptRange({
+        //   mark: 'point',
+        //   encoding: {
+        //     time: {field: 'x', type: 'quantitative'}
+        //   }
+        // });
+
+        // console.log(parseRangeForChannel('time', linearModel));
+        // expect(parseRangeForChannel('time', linearModel)).toEqual(makeImplicit([0, defaultConfig.scale.animationDuration * 1000]));
       });
     });
   });
@@ -873,8 +901,8 @@ describe('compile/scale', () => {
     it('should use config.scale.quantileCount for quantile scale', () => {
       const config: Config = {
         scale: {
-          quantileCount: 4
-        }
+          quantileCount: 4,
+        },
       };
       expect(defaultContinuousToDiscreteCount('quantile', config, undefined, 'x')).toBe(4);
     });
@@ -882,8 +910,8 @@ describe('compile/scale', () => {
     it('should use config.scale.quantizeCount for quantize scale', () => {
       const config: Config = {
         scale: {
-          quantizeCount: 4
-        }
+          quantizeCount: 4,
+        },
       };
       expect(defaultContinuousToDiscreteCount('quantize', config, undefined, 'x')).toBe(4);
     });
@@ -893,7 +921,7 @@ describe('compile/scale', () => {
     });
 
     it('should throw warning and default to 4 for scale without domain', () => {
-      log.wrap(localLogger => {
+      log.wrap((localLogger) => {
         expect(defaultContinuousToDiscreteCount('quantize', {}, undefined, 'x')).toBe(4);
         expect(localLogger.warns[0]).toEqual(log.message.domainRequiredForThresholdScale('x'));
       });

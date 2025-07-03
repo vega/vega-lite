@@ -1,8 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "data": [
     {"name": "region_store"},
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
@@ -28,7 +28,7 @@
     }
   ],
   "signals": [
-    {"name": "childHeight", "value": 200},
+    {"name": "childHeight", "value": 300},
     {
       "name": "unit",
       "value": {},

@@ -2,18 +2,16 @@
 
 set -eo pipefail
 
-# Build the docs site and replace the main build with the local copy of vega-lite
-echo "Attempting install"
-# apt install rsync
+# Build the editor site and replace the main build with the local copy of vega-lite
+echo "Starting install"
 
-yarn build
-yarn link
+npm run build
+npm link
 git clone https://github.com/vega/editor.git
 
-#
 cd editor
-yarn --frozen-lockfile --ignore-scripts
-yarn link vega-lite
+npm ci --ignore-scripts
+npm link vega-lite
 
 # TODO: load in real files if we can get rsync installed in the runner someday?
 # Put index.json files in public/spec/vega-lite and public/spec/vega
@@ -32,5 +30,7 @@ cat <<EOF > public/spec/vega/index.json
 {}
 EOF
 
-# TBD if some vendor files are needed
-yarn run vite build --base /
+# Build the editor site in the dist folder
+# Disable minification to make it easier to debug, and because sourcemaps
+# exceed 25 MB limit on cloudflare
+npm run build:only -- --public-url / --no-optimize --no-source-maps

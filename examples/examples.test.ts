@@ -1,22 +1,25 @@
-import Ajv, {ErrorObject} from 'ajv';
-import addFormats from 'ajv-formats';
+import {Ajv, ErrorObject} from 'ajv';
 import draft6Schema from 'ajv/lib/refs/json-schema-draft-06.json';
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import {Spec as VgSpec} from 'vega';
-import vgSchema from 'vega/build/vega-schema.json';
+import vgSchema from '../node_modules/vega/build/vega-schema.json';
 import vlSchema from '../build/vega-lite-schema.json';
-import {compile} from '../src/compile/compile';
-import * as log from '../src/log';
-import {TopLevelSpec} from '../src/spec';
-import {duplicate} from '../src/util';
+import {compile} from '../src/compile/compile.js';
+import * as log from '../src/log/index.js';
+import {TopLevelSpec} from '../src/spec/index.js';
+import {duplicate} from '../src/util.js';
+
+// Workaround for https://github.com/ajv-validator/ajv-formats/issues/85
+import _addFormats from 'ajv-formats';
+const addFormats = _addFormats as unknown as typeof _addFormats.default;
 
 // import {inspect} from 'util';
 
 const ajv = new Ajv({
   allowUnionTypes: true,
   strictTypes: false,
-  strictTuples: false
+  strictTuples: false,
 });
 
 ajv.addFormat('color-hex', () => true);
@@ -41,7 +44,7 @@ function validateVL(spec: TopLevelSpec) {
   expect(errors?.map((err: ErrorObject) => err.message).join(', ')).toBeUndefined();
   expect(valid).toBe(true);
 
-  expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v5');
+  expect(spec.$schema.substring(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v6');
 }
 
 function validateVega(vegaSpec: VgSpec) {
@@ -59,8 +62,10 @@ function validateVega(vegaSpec: VgSpec) {
 const BROKEN_SUFFIX = '_broken.vl.json';
 const FUTURE_SUFFIX = '_future.vl.json';
 
-const examples = fs.readdirSync('examples/specs').map(file => `examples/specs/${file}`);
-const normalizedExamples = fs.readdirSync('examples/specs/normalized').map(file => `examples/specs/normalized/${file}`);
+const examples = fs.readdirSync('examples/specs').map((file) => `examples/specs/${file}`);
+const normalizedExamples = fs
+  .readdirSync('examples/specs/normalized')
+  .map((file) => `examples/specs/normalized/${file}`);
 
 for (const example of [...examples, ...normalizedExamples]) {
   if (path.extname(example) !== '.json') {
@@ -70,16 +75,14 @@ for (const example of [...examples, ...normalizedExamples]) {
   const originalSpec = duplicate(jsonSpec);
 
   describe(
-    // eslint-disable-next-line jest/valid-describe-callback, jest/valid-title
     example,
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const vegaSpec: VgSpec = compile(jsonSpec).spec;
 
       it('should not cause any side effects', () => {
         expect(jsonSpec).toEqual(originalSpec);
       });
 
-      // eslint-disable-next-line jest/expect-expect
       it('should be valid Vega-Lite with proper $schema', () => {
         if (example.endsWith(FUTURE_SUFFIX)) {
           return;
@@ -95,7 +98,6 @@ for (const example of [...examples, ...normalizedExamples]) {
         expect(localLogger.warns).toEqual([]);
       });
 
-      // eslint-disable-next-line jest/expect-expect
       it('should produce valid Vega', () => {
         if (example.endsWith(BROKEN_SUFFIX)) {
           return;
@@ -103,6 +105,6 @@ for (const example of [...examples, ...normalizedExamples]) {
 
         validateVega(vegaSpec);
       });
-    })
+    }),
   );
 }

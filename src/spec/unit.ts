@@ -1,13 +1,14 @@
-import {FieldName} from '../channeldef';
-import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark';
-import {Encoding} from '../encoding';
-import {ExprRef} from '../expr';
-import {AnyMark, Mark, MarkDef} from '../mark';
-import {Projection} from '../projection';
-import {SelectionParameter} from '../selection';
-import {Field} from './../channeldef';
-import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, ResolveMixins} from './base';
-import {TopLevel, TopLevelParameter} from './toplevel';
+import {FieldName} from '../channeldef.js';
+import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark/index.js';
+import {Encoding} from '../encoding.js';
+import {ExprRef} from '../expr.js';
+import {AnyMark, Mark, MarkDef} from '../mark.js';
+import {Projection} from '../projection.js';
+import {SelectionParameter} from '../selection.js';
+import {hasProperty} from '../util.js';
+import {Field} from './../channeldef.js';
+import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, ResolveMixins} from './base.js';
+import {TopLevel, TopLevelParameter} from './toplevel.js';
 /**
  * Base interface for a unit (single-view) specification.
  */
@@ -62,5 +63,5 @@ export type FacetedUnitSpec<F extends Field, P = SelectionParameter> = GenericUn
 export type TopLevelUnitSpec<F extends Field> = TopLevel<FacetedUnitSpec<F, TopLevelParameter>> & DataMixins;
 
 export function isUnitSpec(spec: BaseSpec): spec is FacetedUnitSpec<any> | NormalizedUnitSpec {
-  return 'mark' in spec;
+  return hasProperty(spec, 'mark');
 }

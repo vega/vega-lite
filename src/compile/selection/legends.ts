@@ -1,19 +1,19 @@
 import {isObject, MergedStream, NewSignal, Stream} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {array, isString} from 'vega-util';
-import {disableDirectManipulation, TUPLE} from '.';
-import {NonPositionScaleChannel} from '../../channel';
-import * as log from '../../log';
-import {isLegendBinding, isLegendStreamBinding, SELECTION_ID} from '../../selection';
-import {duplicate, vals, varName} from '../../util';
-import {LegendComponent} from '../legend/component';
-import {UnitModel} from '../unit';
-import {TUPLE_FIELDS} from './project';
-import {TOGGLE} from './toggle';
-import {SelectionCompiler} from '.';
+import {disableDirectManipulation, TUPLE} from './index.js';
+import {NonPositionScaleChannel} from '../../channel.js';
+import * as log from '../../log/index.js';
+import {isLegendBinding, isLegendStreamBinding, SELECTION_ID} from '../../selection.js';
+import {duplicate, vals, varName} from '../../util.js';
+import {LegendComponent} from '../legend/component.js';
+import {UnitModel} from '../unit.js';
+import {TUPLE_FIELDS} from './project.js';
+import {TOGGLE} from './toggle.js';
+import {SelectionCompiler} from './index.js';
 
 const legendBindings: SelectionCompiler<'point'> = {
-  defined: selCmpt => {
+  defined: (selCmpt) => {
     const spec = selCmpt.resolve === 'global' && selCmpt.bind && isLegendBinding(selCmpt.bind);
     const projLen = selCmpt.project.items.length === 1 && selCmpt.project.items[0].field !== SELECTION_ID;
     if (spec && !projLen) {
@@ -59,7 +59,7 @@ const legendBindings: SelectionCompiler<'point'> = {
       if (!proj.hasLegend) continue;
       const prefix = `${varName(proj.field)}_legend`;
       const sgName = `${selName}_${prefix}`;
-      const hasSignal = signals.filter(s => s.name === sgName);
+      const hasSignal = signals.filter((s) => s.name === sgName);
 
       if (hasSignal.length === 0) {
         const events = stream.merge
@@ -75,10 +75,10 @@ const legendBindings: SelectionCompiler<'point'> = {
             {
               events,
               update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
-              force: true
+              force: true,
             },
-            {events: stream.merge, update: `!event.item || !datum ? null : ${sgName}`, force: true}
-          ]
+            {events: stream.merge, update: `!event.item || !datum ? null : ${sgName}`, force: true},
+          ],
         });
       }
     }
@@ -89,16 +89,16 @@ const legendBindings: SelectionCompiler<'point'> = {
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const proj = selCmpt.project;
-    const tuple: NewSignal = signals.find(s => s.name === name + TUPLE);
+    const tuple: NewSignal = signals.find((s) => s.name === name + TUPLE);
     const fields = name + TUPLE_FIELDS;
-    const values = proj.items.filter(p => p.hasLegend).map(p => varName(`${name}_${varName(p.field)}_legend`));
-    const valid = values.map(v => `${v} !== null`).join(' && ');
+    const values = proj.items.filter((p) => p.hasLegend).map((p) => varName(`${name}_${varName(p.field)}_legend`));
+    const valid = values.map((v) => `${v} !== null`).join(' && ');
     const update = `${valid} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
 
     if (selCmpt.events && values.length > 0) {
       tuple.on.push({
-        events: values.map(signal => ({signal})),
-        update
+        events: values.map((signal) => ({signal})),
+        update,
       });
     } else if (values.length > 0) {
       tuple.update = update;
@@ -106,7 +106,7 @@ const legendBindings: SelectionCompiler<'point'> = {
       delete tuple.on;
     }
 
-    const toggle = signals.find(s => s.name === name + TOGGLE);
+    const toggle = signals.find((s) => s.name === name + TOGGLE);
     const events = isLegendStreamBinding(selCmpt.bind) && selCmpt.bind.legend;
     if (toggle) {
       if (!selCmpt.events) toggle.on[0].events = events;
@@ -114,7 +114,7 @@ const legendBindings: SelectionCompiler<'point'> = {
     }
 
     return signals;
-  }
+  },
 };
 
 export default legendBindings;
@@ -122,7 +122,7 @@ export default legendBindings;
 export function parseInteractiveLegend(
   model: UnitModel,
   channel: NonPositionScaleChannel,
-  legendCmpt: LegendComponent
+  legendCmpt: LegendComponent,
 ) {
   const field = model.fieldDef(channel)?.field;
   for (const selCmpt of vals(model.component.selection ?? {})) {

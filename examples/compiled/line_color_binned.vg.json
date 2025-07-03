@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -73,7 +73,7 @@
                 "field": "bin_maxbins_6_Acceleration"
               },
               "description": {
-                "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Mean of Horsepower: \" + (format(datum[\"mean_Horsepower\"], \"\")) + \"; Acceleration (binned): \" + (!isValid(datum[\"bin_maxbins_6_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" – \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\"))"
+                "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], \"%b %d, %Y\")) + \"; Mean of Horsepower: \" + (format(datum[\"mean_Horsepower\"], \"\")) + \"; Acceleration (binned): \" + (!isValid(datum[\"bin_maxbins_6_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" – \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\"))"
               },
               "x": {"scale": "x", "field": "Year"},
               "y": {"scale": "y", "field": "mean_Horsepower"},

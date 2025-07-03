@@ -1,9 +1,9 @@
-import {SampleTransformNode} from '../../../src/compile/data/sample';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {SampleTransformNode} from '../../../src/compile/data/sample.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 const transform: Transform = {
-  sample: 500
+  sample: 500,
 };
 
 describe('compile/data/sample', () => {
@@ -12,7 +12,7 @@ describe('compile/data/sample', () => {
       const sample = new SampleTransformNode(null, transform);
       expect(sample.assemble()).toEqual({
         type: 'sample',
-        size: 500
+        size: 500,
       });
     });
 

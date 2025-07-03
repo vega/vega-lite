@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "A vertical box plot showing median, min, and max body mass of penguins.",
   "data": {"url": "data/cars.json"},
   "layer": [
@@ -30,11 +30,11 @@
           "groupby": ["Cylinders", "Origin"]
         },
         {
-          "calculate": "datum[\"center_Acceleration\"] + datum[\"extent_Acceleration\"]",
+          "calculate": "datum['center_Acceleration'] + datum['extent_Acceleration']",
           "as": "upper_Acceleration"
         },
         {
-          "calculate": "datum[\"center_Acceleration\"] - datum[\"extent_Acceleration\"]",
+          "calculate": "datum['center_Acceleration'] - datum['extent_Acceleration']",
           "as": "lower_Acceleration"
         }
       ],

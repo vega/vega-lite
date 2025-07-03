@@ -1,6 +1,6 @@
-import {SecondaryFieldDef, TypedFieldDef} from '../../../../src/channeldef';
-import {midPoint} from '../../../../src/compile/mark/encode/valueref';
-import {defaultConfig} from '../../../../src/config';
+import {SecondaryFieldDef, TypedFieldDef} from '../../../../src/channeldef.js';
+import {midPoint} from '../../../../src/compile/mark/encode/valueref.js';
+import {defaultConfig} from '../../../../src/config.js';
 
 describe('compile/mark/encode/valueref', () => {
   describe('midPoint()', () => {
@@ -13,7 +13,7 @@ describe('compile/mark/encode/valueref', () => {
         config: defaultConfig,
         scaleName: undefined,
         scale: undefined,
-        defaultRef
+        defaultRef,
       });
       expect(ref).toEqual({field: {group: 'width'}});
     });
@@ -26,7 +26,7 @@ describe('compile/mark/encode/valueref', () => {
         config: defaultConfig,
         scaleName: undefined,
         scale: undefined,
-        defaultRef
+        defaultRef,
       });
       expect(ref).toEqual({field: {group: 'height'}});
     });
@@ -39,7 +39,7 @@ describe('compile/mark/encode/valueref', () => {
         config: defaultConfig,
         scaleName: 'x',
         scale: undefined,
-        defaultRef
+        defaultRef,
       });
       expect(ref).toEqual({scale: 'x', value: 5});
     });
@@ -52,7 +52,7 @@ describe('compile/mark/encode/valueref', () => {
         config: defaultConfig,
         scaleName: 'x',
         scale: undefined,
-        defaultRef
+        defaultRef,
       });
       expect(ref).toEqual({scale: 'x', signal: 'foo'});
     });
@@ -68,7 +68,7 @@ describe('compile/mark/encode/valueref', () => {
         config: defaultConfig,
         scaleName: 'x',
         scale: undefined,
-        defaultRef
+        defaultRef,
       });
       expect(ref).toEqual({signal: 'scale("x", 0.5 * datum["bin_start"] + 0.5 * datum["bin_end"])'});
     });

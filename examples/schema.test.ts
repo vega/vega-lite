@@ -1,4 +1,4 @@
-import Ajv from 'ajv';
+import {Ajv} from 'ajv';
 import {inspect} from 'util';
 import specSchema from '../build/vega-lite-schema.json';
 

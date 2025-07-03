@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "A scatterplot with orange overall background and yellow view background.",
   "background": "orange",
   "view": {"fill": "yellow"},

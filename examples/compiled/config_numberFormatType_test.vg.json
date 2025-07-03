@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Testing global number formatting config",
   "background": "white",
   "padding": 5,
@@ -181,13 +181,13 @@
             "update": {
               "opacity": {"value": 0.7},
               "tooltip": {
-                "signal": "{\"Year\": timeFormat(datum[\"Year\"], '%b %d, %Y'), \"Miles_per_Gallon\": pow(datum[\"Miles_per_Gallon\"], \"1.0\"), \"Acceleration\": pow(datum[\"Acceleration\"], \"1.0\"), \"Displacement (binned)\": !isValid(datum[\"bin_maxbins_6_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_6_Displacement\"]) ? \"null\" : pow(datum[\"bin_maxbins_6_Displacement\"], \"1.0\") + \" – \" + pow(datum[\"bin_maxbins_6_Displacement_end\"], \"1.0\")}"
+                "signal": "{\"Year\": timeFormat(datum[\"Year\"], \"%b %d, %Y\"), \"Miles_per_Gallon\": pow(datum[\"Miles_per_Gallon\"], \"1.0\"), \"Acceleration\": pow(datum[\"Acceleration\"], \"1.0\"), \"Displacement (binned)\": !isValid(datum[\"bin_maxbins_6_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_6_Displacement\"]) ? \"null\" : pow(datum[\"bin_maxbins_6_Displacement\"], \"1.0\") + \" – \" + pow(datum[\"bin_maxbins_6_Displacement_end\"], \"1.0\")}"
               },
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Acceleration"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Miles_per_Gallon: \" + (pow(datum[\"Miles_per_Gallon\"], \"1.0\")) + \"; Acceleration: \" + (pow(datum[\"Acceleration\"], \"1.0\")) + \"; Displacement (binned): \" + (!isValid(datum[\"bin_maxbins_6_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_6_Displacement\"]) ? \"null\" : pow(datum[\"bin_maxbins_6_Displacement\"], \"1.0\") + \" – \" + pow(datum[\"bin_maxbins_6_Displacement_end\"], \"1.0\"))"
+                "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], \"%b %d, %Y\")) + \"; Miles_per_Gallon: \" + (pow(datum[\"Miles_per_Gallon\"], \"1.0\")) + \"; Acceleration: \" + (pow(datum[\"Acceleration\"], \"1.0\")) + \"; Displacement (binned): \" + (!isValid(datum[\"bin_maxbins_6_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_6_Displacement\"]) ? \"null\" : pow(datum[\"bin_maxbins_6_Displacement\"], \"1.0\") + \" – \" + pow(datum[\"bin_maxbins_6_Displacement_end\"], \"1.0\"))"
               },
               "x": {"scale": "x", "field": "Year"},
               "y": {"scale": "y", "field": "Miles_per_Gallon"},

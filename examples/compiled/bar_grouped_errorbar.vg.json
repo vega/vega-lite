@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A vertical box plot showing median, min, and max body mass of penguins.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -30,12 +30,12 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum[\"center_Acceleration\"] + datum[\"extent_Acceleration\"]",
+          "expr": "datum['center_Acceleration'] + datum['extent_Acceleration']",
           "as": "upper_Acceleration"
         },
         {
           "type": "formula",
-          "expr": "datum[\"center_Acceleration\"] - datum[\"extent_Acceleration\"]",
+          "expr": "datum['center_Acceleration'] - datum['extent_Acceleration']",
           "as": "lower_Acceleration"
         },
         {

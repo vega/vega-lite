@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Using window transform to impute missing values in a line chart by averaging the previous and next values.",
   "width": 300,
   "data": {

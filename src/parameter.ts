@@ -1,5 +1,5 @@
-import {Binding, Expr, InitSignal, NewSignal} from 'vega';
-import {isSelectionParameter, TopLevelSelectionParameter} from './selection';
+import type {Binding, Expr, InitSignal, NewSignal} from 'vega';
+import {isSelectionParameter, TopLevelSelectionParameter} from './selection.js';
 
 export type ParameterName = string;
 
@@ -25,6 +25,13 @@ export interface VariableParameter {
    * Binds the parameter to an external input element such as a slider, selection list or radio button group.
    */
   bind?: Binding;
+
+  /**
+   *A boolean flag (default `true`) indicating if the update expression should be automatically re-evaluated when any upstream signal dependencies update. If `false`, the update expression will not register any dependencies on other signals, even for initialization.
+   *
+   * __Default value:__ `true`
+   */
+  react?: boolean;
 }
 
 export function assembleParameterSignals(params: (VariableParameter | TopLevelSelectionParameter)[]) {
@@ -40,14 +47,14 @@ export function assembleParameterSignals(params: (VariableParameter | TopLevelSe
       const signal: InitSignal = {
         ...rest,
         bind,
-        init: expr
+        init: expr,
       };
       signals.push(signal);
     } else {
       const signal: NewSignal = {
         ...rest,
         ...(expr ? {update: expr} : {}),
-        ...(bind ? {bind} : {})
+        ...(bind ? {bind} : {}),
       };
       signals.push(signal);
     }

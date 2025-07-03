@@ -1,11 +1,11 @@
-import {FacetNode} from '../../../src/compile/data/facet';
-import {parseFacetModelWithScale} from '../../util';
+import {FacetNode} from '../../../src/compile/data/facet.js';
+import {parseFacetModelWithScale} from '../../util.js';
 
 describe('compile/data/facet', () => {
   describe('assemble', () => {
     it('should calculate column distinct if child has an independent discrete scale with step', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
         description: 'A trellis bar chart showing the US population distribution of age groups and gender in 2000.',
         data: {url: 'data/population.json'},
         facet: {column: {field: 'gender', type: 'nominal'}},
@@ -16,23 +16,23 @@ describe('compile/data/facet', () => {
               aggregate: 'sum',
               field: 'people',
               type: 'quantitative',
-              axis: {title: 'population'}
+              axis: {title: 'population'},
             },
             x: {
               field: 'age',
-              type: 'ordinal'
+              type: 'ordinal',
             },
             color: {
               field: 'gender',
               type: 'nominal',
-              scale: {range: ['#EA98D2', '#659CCA']}
-            }
-          }
+              scale: {range: ['#EA98D2', '#659CCA']},
+            },
+          },
         },
         resolve: {
-          scale: {x: 'independent'}
+          scale: {x: 'independent'},
         },
-        config: {view: {fill: 'yellow'}}
+        config: {view: {fill: 'yellow'}},
       });
 
       const node = new FacetNode(null, model, 'facetName', 'dataName');
@@ -47,40 +47,40 @@ describe('compile/data/facet', () => {
             groupby: ['gender'],
             fields: ['age'],
             ops: ['distinct'],
-            as: ['distinct_age']
-          }
-        ]
+            as: ['distinct_age'],
+          },
+        ],
       });
     });
 
     it('should calculate column and row distinct if child has an independent discrete scale with step and the facet has both row and column', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
         data: {
           values: [
             {r: 'r1', c: 'c1', a: 'a1', b: 'b1'},
             {r: 'r1', c: 'c1', a: 'a2', b: 'b2'},
             {r: 'r2', c: 'c2', a: 'a1', b: 'b1'},
-            {r: 'r3', c: 'c2', a: 'a3', b: 'b2'}
-          ]
+            {r: 'r3', c: 'c2', a: 'a3', b: 'b2'},
+          ],
         },
         facet: {
           row: {field: 'r', type: 'nominal'},
-          column: {field: 'c', type: 'nominal'}
+          column: {field: 'c', type: 'nominal'},
         },
         spec: {
           mark: 'rect',
           encoding: {
             y: {field: 'b', type: 'nominal'},
-            x: {field: 'a', type: 'nominal'}
-          }
+            x: {field: 'a', type: 'nominal'},
+          },
         },
         resolve: {
           scale: {
             x: 'independent',
-            y: 'independent'
-          }
-        }
+            y: 'independent',
+          },
+        },
       });
 
       const node = new FacetNode(null, model, 'facetName', 'dataName');
@@ -95,9 +95,9 @@ describe('compile/data/facet', () => {
             type: 'aggregate',
             groupby: ['r', 'c'],
             fields: ['a', 'b'],
-            ops: ['distinct', 'distinct']
-          }
-        ]
+            ops: ['distinct', 'distinct'],
+          },
+        ],
       });
 
       expect(data[1]).toEqual({
@@ -109,9 +109,9 @@ describe('compile/data/facet', () => {
             groupby: ['c'],
             fields: ['distinct_a'],
             ops: ['max'],
-            as: ['distinct_a']
-          }
-        ]
+            as: ['distinct_a'],
+          },
+        ],
       });
 
       expect(data[2]).toEqual({
@@ -123,29 +123,29 @@ describe('compile/data/facet', () => {
             groupby: ['r'],
             fields: ['distinct_b'],
             ops: ['max'],
-            as: ['distinct_b']
-          }
-        ]
+            as: ['distinct_b'],
+          },
+        ],
       });
     });
 
     it('should calculate column and row sort array', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
         data: {
-          name: 'a'
+          name: 'a',
         },
         facet: {
           row: {field: 'r', type: 'nominal', sort: ['r1', 'r2']},
-          column: {field: 'c', type: 'nominal', sort: ['c1', 'c2']}
+          column: {field: 'c', type: 'nominal', sort: ['c1', 'c2']},
         },
         spec: {
           mark: 'rect',
           encoding: {
             y: {field: 'b', type: 'quantitative'},
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }
+            x: {field: 'a', type: 'quantitative'},
+          },
+        },
       });
 
       const node = new FacetNode(null, model, 'facetName', 'dataName');
@@ -160,9 +160,9 @@ describe('compile/data/facet', () => {
             groupby: ['c'],
             fields: ['column_c_sort_index'],
             ops: ['max'],
-            as: ['column_c_sort_index']
-          }
-        ]
+            as: ['column_c_sort_index'],
+          },
+        ],
       });
 
       expect(data[1]).toEqual({
@@ -174,29 +174,29 @@ describe('compile/data/facet', () => {
             groupby: ['r'],
             fields: ['row_r_sort_index'],
             ops: ['max'],
-            as: ['row_r_sort_index']
-          }
-        ]
+            as: ['row_r_sort_index'],
+          },
+        ],
       });
     });
 
     it('should calculate column and row sort field', () => {
       const model = parseFacetModelWithScale({
-        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
         data: {
-          name: 'a'
+          name: 'a',
         },
         facet: {
           row: {field: 'r', type: 'nominal', sort: {op: 'median', field: 'b'}},
-          column: {field: 'c', type: 'nominal', sort: {field: 'a'}}
+          column: {field: 'c', type: 'nominal', sort: {field: 'a'}},
         },
         spec: {
           mark: 'rect',
           encoding: {
             y: {field: 'b', type: 'quantitative'},
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }
+            x: {field: 'a', type: 'quantitative'},
+          },
+        },
       });
 
       const node = new FacetNode(null, model, 'facetName', 'dataName');
@@ -211,9 +211,9 @@ describe('compile/data/facet', () => {
             groupby: ['c'],
             fields: ['a'],
             ops: ['min'],
-            as: ['a']
-          }
-        ]
+            as: ['a'],
+          },
+        ],
       });
 
       expect(data[1]).toEqual({
@@ -225,9 +225,9 @@ describe('compile/data/facet', () => {
             groupby: ['r'],
             fields: ['b'],
             ops: ['median'],
-            as: ['median_b']
-          }
-        ]
+            as: ['median_b'],
+          },
+        ],
       });
     });
   });
@@ -237,19 +237,19 @@ describe('compile/data/facet', () => {
       const model = parseFacetModelWithScale({
         $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
         data: {
-          name: 'a'
+          name: 'a',
         },
         facet: {
           row: {field: 'r', type: 'nominal', sort: {op: 'median', field: 'b'}},
-          column: {field: 'c', type: 'nominal', sort: [1, 2, 3]}
+          column: {field: 'c', type: 'nominal', sort: [1, 2, 3]},
         },
         spec: {
           mark: 'rect',
           encoding: {
             y: {field: 'b', type: 'quantitative'},
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }
+            x: {field: 'a', type: 'quantitative'},
+          },
+        },
       });
 
       const facet = new FacetNode(null, model, 'facetName', 'dataName');
@@ -263,25 +263,25 @@ describe('compile/data/facet', () => {
       const model = parseFacetModelWithScale({
         $schema: 'https://vega.github.io/schema/vega-lite/v2.json',
         data: {
-          name: 'a'
+          name: 'a',
         },
         facet: {
           row: {field: 'r', type: 'nominal', sort: {op: 'median', field: 'b'}},
-          column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'a'}}
+          column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'a'}},
         },
         spec: {
           mark: 'rect',
           encoding: {
             y: {field: 'b', type: 'quantitative'},
-            x: {field: 'a', type: 'quantitative'}
-          }
-        }
+            x: {field: 'a', type: 'quantitative'},
+          },
+        },
       });
 
       const facetNode = new FacetNode(null, model, 'facetName', 'dataName');
 
       expect(facetNode.hash()).toBe(
-        'Facet r:{"fields":["r"],"name":"row_domain","sortField":{"field":"b","op":"median"}} c:{"fields":["c"],"name":"column_domain","sortField":{"field":"a","op":"median"}}'
+        'Facet r:{"fields":["r"],"name":"row_domain","sortField":{"field":"b","op":"median"}} c:{"fields":["c"],"name":"column_domain","sortField":{"field":"a","op":"median"}}',
       );
     });
   });

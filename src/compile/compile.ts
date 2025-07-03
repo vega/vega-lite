@@ -1,25 +1,25 @@
-import {AutoSizeType, LoggerInterface, Spec as VgSpec} from 'vega';
+import type {AutoSizeType, LoggerInterface, Spec as VgSpec} from 'vega';
 import {isString, mergeConfig} from 'vega-util';
-import {getPositionScaleChannel} from '../channel';
-import * as vlFieldDef from '../channeldef';
-import {Config, initConfig, stripAndRedirectConfig} from '../config';
-import * as log from '../log';
-import {normalize} from '../normalize';
-import {assembleParameterSignals} from '../parameter';
-import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
+import {getPositionScaleChannel} from '../channel.js';
+import * as vlFieldDef from '../channeldef.js';
+import {Config, initConfig, stripAndRedirectConfig} from '../config.js';
+import * as log from '../log/index.js';
+import {normalize} from '../normalize/index.js';
+import {assembleParameterSignals} from '../parameter.js';
+import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec/index.js';
 import {
   AutoSizeParams,
   Datasets,
   extractTopLevelProperties,
   getFitType,
   isFitType,
-  TopLevelProperties
-} from '../spec/toplevel';
-import {Dict, keys} from '../util';
-import {buildModel} from './buildmodel';
-import {assembleRootData} from './data/assemble';
-import {optimizeDataflow} from './data/optimize';
-import {Model} from './model';
+  TopLevelProperties,
+} from '../spec/toplevel.js';
+import {Dict, keys} from '../util.js';
+import {buildModel} from './buildmodel.js';
+import {assembleRootData} from './data/assemble.js';
+import {optimizeDataflow} from './data/optimize.js';
+import {Model} from './model.js';
 
 export interface CompileOptions {
   /**
@@ -123,12 +123,12 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
       model,
       getTopLevelProperties(inputSpec, spec.autosize, config, model),
       inputSpec.datasets,
-      inputSpec.usermeta
+      inputSpec.usermeta,
     );
 
     return {
       spec: vgSpec,
-      normalized: spec
+      normalized: spec,
     };
   } finally {
     // Reset the singleton logger if a logger is provided
@@ -146,7 +146,7 @@ function getTopLevelProperties(
   inputSpec: TopLevel<any>,
   autosize: AutoSizeType | AutoSizeParams,
   config: Config,
-  model: Model
+  model: Model,
 ) {
   const width = model.component.layoutSize.get('width');
   const height = model.component.layoutSize.get('height');
@@ -183,7 +183,7 @@ function getTopLevelProperties(
         : {autosize: autosize.type}
       : {autosize}),
     ...extractTopLevelProperties(config, false),
-    ...extractTopLevelProperties(inputSpec, true)
+    ...extractTopLevelProperties(inputSpec, true),
   };
 }
 
@@ -197,16 +197,13 @@ function assembleTopLevelModel(
   model: Model,
   topLevelProperties: TopLevelProperties & LayoutSizeMixins,
   datasets: Datasets = {},
-  usermeta: Dict<any>
+  usermeta: Dict<any>,
 ): VgSpec {
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
 
-  const data = [].concat(
-    model.assembleSelectionData([]),
-    // only assemble data in the root
-    assembleRootData(model.component.data, datasets)
-  );
+  const rootData = assembleRootData(model.component.data, datasets);
+  const data = model.assembleSelectionData(rootData);
 
   const projections = model.assembleProjections();
   const title = model.assembleTitle();
@@ -216,7 +213,7 @@ function assembleTopLevelModel(
   let layoutSignals = model.assembleLayoutSignals();
 
   // move width and height signals with values to top level
-  layoutSignals = layoutSignals.filter(signal => {
+  layoutSignals = layoutSignals.filter((signal) => {
     if ((signal.name === 'width' || signal.name === 'height') && signal.value !== undefined) {
       topLevelProperties[signal.name] = +signal.value;
       return false;
@@ -227,7 +224,7 @@ function assembleTopLevelModel(
   const {params, ...otherTopLevelProps} = topLevelProperties;
 
   return {
-    $schema: 'https://vega.github.io/schema/vega/v5.json',
+    $schema: 'https://vega.github.io/schema/vega/v6.json',
     ...(model.description ? {description: model.description} : {}),
     ...otherTopLevelProps,
     ...(title ? {title} : {}),
@@ -238,9 +235,9 @@ function assembleTopLevelModel(
     ...model.assembleGroup([
       ...layoutSignals,
       ...model.assembleSelectionTopLevelSignals([]),
-      ...assembleParameterSignals(params)
+      ...assembleParameterSignals(params),
     ]),
     ...(vgConfig ? {config: vgConfig} : {}),
-    ...(usermeta ? {usermeta} : {})
+    ...(usermeta ? {usermeta} : {}),
   };
 }

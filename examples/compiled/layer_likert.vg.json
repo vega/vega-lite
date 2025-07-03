@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Likert Scale Ratings Distributions and Medians. (Figure 9 from @jhoffswell and @zcliu's ['Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices'](https://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf))",
   "background": "white",
   "padding": 5,
@@ -271,7 +271,7 @@
             "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; Number of Ratings: \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "value"},
-          "y": {"scale": "y", "field": "name"},
+          "y": {"scale": "y", "field": "name", "band": 0.5},
           "size": {"scale": "size", "field": "__count"},
           "shape": {"value": "circle"}
         }
@@ -290,9 +290,9 @@
           "description": {
             "signal": "\"median: \" + (format(datum[\"median\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
           },
+          "y": {"scale": "y", "field": "name"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"},
           "xc": {"scale": "x", "field": "median"},
-          "yc": {"scale": "y", "field": "name"},
-          "height": {"value": 15},
           "width": {"value": 1}
         }
       }
@@ -310,7 +310,7 @@
             "signal": "\"name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; lo: \" + (isValid(datum[\"lo\"]) ? datum[\"lo\"] : \"\"+datum[\"lo\"])"
           },
           "x": {"value": -5},
-          "y": {"scale": "y", "field": "name"},
+          "y": {"scale": "y", "field": "name", "band": 0.5},
           "text": {
             "signal": "isValid(datum[\"lo\"]) ? datum[\"lo\"] : \"\"+datum[\"lo\"]"
           },
@@ -331,7 +331,7 @@
             "signal": "\"name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; hi: \" + (isValid(datum[\"hi\"]) ? datum[\"hi\"] : \"\"+datum[\"hi\"])"
           },
           "x": {"value": 255},
-          "y": {"scale": "y", "field": "name"},
+          "y": {"scale": "y", "field": "name", "band": 0.5},
           "text": {
             "signal": "isValid(datum[\"hi\"]) ? datum[\"hi\"] : \"\"+datum[\"hi\"]"
           },
@@ -350,7 +350,7 @@
     },
     {
       "name": "y",
-      "type": "point",
+      "type": "band",
       "domain": {
         "fields": [
           {"data": "data_1", "field": "name"},
@@ -359,7 +359,8 @@
         ]
       },
       "range": [0, {"signal": "height"}],
-      "padding": 0.5
+      "paddingInner": 0,
+      "paddingOuter": 0
     },
     {
       "name": "size",

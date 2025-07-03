@@ -1,10 +1,11 @@
-import {entries, isEmpty} from '../../../util';
-import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
-import {VG_MARK_INDEX} from './../../../vega.schema';
-import {UnitModel} from './../../unit';
-import {wrapCondition} from './conditional';
-import {textRef} from './text';
-import {tooltipData} from './tooltip';
+import {hasOwnProperty} from 'vega-util';
+import {entries, isEmpty} from '../../../util.js';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
+import {VG_MARK_INDEX} from './../../../vega.schema.js';
+import {UnitModel} from './../../unit.js';
+import {wrapCondition} from './conditional.js';
+import {textRef} from './text.js';
+import {tooltipData} from './tooltip.js';
 
 export function aria(model: UnitModel) {
   const {markDef, config} = model;
@@ -20,7 +21,7 @@ export function aria(model: UnitModel) {
   return {
     ...(enableAria ? {aria: enableAria} : {}),
     ...ariaRoleDescription(model),
-    ...description(model)
+    ...description(model),
   };
 }
 
@@ -37,7 +38,7 @@ function ariaRoleDescription(model: UnitModel) {
     return {ariaRoleDescription: {value: ariaRoleDesc}};
   }
 
-  return mark in VG_MARK_INDEX ? {} : {ariaRoleDescription: {value: mark}};
+  return hasOwnProperty(VG_MARK_INDEX, mark) ? {} : {ariaRoleDescription: {value: mark}};
 }
 
 export function description(model: UnitModel) {
@@ -49,8 +50,8 @@ export function description(model: UnitModel) {
       model,
       channelDef,
       vgChannel: 'description',
-      mainRefFn: cDef => textRef(cDef, model.config),
-      invalidValueRef: undefined // aria encoding doesn't have continuous scales and thus can't have invalid values
+      mainRefFn: (cDef) => textRef(cDef, model.config),
+      invalidValueRef: undefined, // aria encoding doesn't have continuous scales and thus can't have invalid values
     });
   }
 
@@ -59,7 +60,7 @@ export function description(model: UnitModel) {
   const descriptionValue = getMarkPropOrConfig('description', markDef, config);
   if (descriptionValue != null) {
     return {
-      description: signalOrValueRef(descriptionValue)
+      description: signalOrValueRef(descriptionValue),
     };
   }
 
@@ -77,7 +78,7 @@ export function description(model: UnitModel) {
     description: {
       signal: entries(data)
         .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
-        .join(' + ')
-    }
+        .join(' + '),
+    },
   };
 }

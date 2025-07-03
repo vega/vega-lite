@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
   "background": "white",
   "padding": 5,
@@ -52,7 +52,7 @@
   ],
   "signals": [
     {"name": "child_x_step", "value": 17},
-    {"name": "child_height", "value": 200}
+    {"name": "child_height", "value": 300}
   ],
   "layout": {
     "padding": 20,

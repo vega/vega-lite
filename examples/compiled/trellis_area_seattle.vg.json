@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Temperature normals in Seattle. Derived from [Seattle Annual Temperate](https://vega.github.io/vega/examples/annual-temperature/) example from the Vega example gallery.",
   "background": "white",
   "padding": 5,
@@ -166,7 +166,7 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"Month: \" + (timeFormat(datum[\"monthdate_date\"], '%b')) + \"; Mean of temperature: \" + (format(datum[\"mean_temperature\"], \"\"))"
+                "signal": "\"Month: \" + (timeFormat(datum[\"monthdate_date\"], \"%b\")) + \"; Mean of temperature: \" + (format(datum[\"mean_temperature\"], \"\"))"
               },
               "x": {"scale": "x", "field": "monthdate_date"},
               "y": {"scale": "y", "field": "mean_temperature"},

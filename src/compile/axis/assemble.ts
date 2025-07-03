@@ -1,23 +1,29 @@
 import {Axis as VgAxis, AxisEncode, NewSignal, SignalRef, Text} from 'vega';
 import {array, isArray} from 'vega-util';
-import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
-import {POSITION_SCALE_CHANNELS} from '../../channel';
-import {defaultTitle, FieldDefBase} from '../../channeldef';
-import {Config} from '../../config';
-import {isText} from '../../title';
-import {contains, getFirstDefined, isEmpty, replaceAll} from '../../util';
-import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
-import {exprFromValueRefOrSignalRef} from '../common';
-import {Model} from '../model';
-import {expression} from '../predicate';
-import {AxisComponent, AxisComponentIndex} from './component';
+import {
+  AXIS_PARTS,
+  AXIS_PROPERTY_TYPE,
+  CONDITIONAL_AXIS_PROP_INDEX,
+  ConditionalAxisProp,
+  isConditionalAxisValue,
+} from '../../axis.js';
+import {POSITION_SCALE_CHANNELS} from '../../channel.js';
+import {defaultTitle, FieldDefBase} from '../../channeldef.js';
+import {Config} from '../../config.js';
+import {isText} from '../../title.js';
+import {contains, getFirstDefined, isEmpty, replaceAll} from '../../util.js';
+import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema.js';
+import {exprFromValueRefOrSignalRef} from '../common.js';
+import {Model} from '../model.js';
+import {expression} from '../predicate.js';
+import {AxisComponent, AxisComponentIndex} from './component.js';
 
 function assembleTitle(title: Text | FieldDefBase<string>[] | SignalRef, config: Config): Text | SignalRef {
   if (!title) {
     return undefined;
   }
   if (isArray(title) && !isText(title)) {
-    return title.map(fieldDef => defaultTitle(fieldDef, config)).join(', ');
+    return title.map((fieldDef) => defaultTitle(fieldDef, config)).join(', ');
   }
   return title;
 }
@@ -26,7 +32,7 @@ function setAxisEncode(
   axis: Omit<VgAxis, 'orient' | 'scale'>,
   part: keyof AxisEncode,
   vgProp: VgEncodeChannel,
-  vgRef: VgValueRef | readonly VgValueRef[]
+  vgRef: VgValueRef | readonly VgValueRef[],
 ) {
   axis.encode ??= {};
   axis.encode[part] ??= {};
@@ -41,7 +47,7 @@ export function assembleAxis(
   config: Config<SignalRef>,
   opt: {
     header: boolean; // whether this is called via a header
-  } = {header: false}
+  } = {header: false},
 ): VgAxis {
   const {disable, orient, scale, labelExpr, title, zindex, ...axis} = axisCmpt.combine();
 
@@ -49,7 +55,8 @@ export function assembleAxis(
     return undefined;
   }
 
-  for (const prop in axis) {
+  for (const p in axis) {
+    const prop = p as keyof typeof axis;
     const propType = AXIS_PROPERTY_TYPE[prop];
     const propValue = axis[prop];
 
@@ -59,24 +66,24 @@ export function assembleAxis(
     } else if (isConditionalAxisValue<any, SignalRef>(propValue)) {
       // deal with conditional axis value
 
-      const {condition, ...valueOrSignalRef} = propValue;
+      const {condition, ...valueOrSignalRef} = propValue as any;
       const conditions = array(condition);
 
-      const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop];
+      const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop as ConditionalAxisProp];
       if (propIndex) {
         const {vgProp, part} = propIndex;
         // If there is a corresponding Vega property for the channel,
         // use Vega's custom axis encoding and delete the original axis property to avoid conflicts
 
         const vgRef = [
-          ...conditions.map(c => {
+          ...conditions.map((c) => {
             const {test, ...valueOrSignalCRef} = c;
             return {
               test: expression(null, test),
-              ...valueOrSignalCRef
+              ...valueOrSignalCRef,
             };
           }),
-          valueOrSignalRef
+          valueOrSignalRef,
         ];
         setAxisEncode(axis, part, vgProp, vgRef);
         delete axis[prop];
@@ -85,19 +92,20 @@ export function assembleAxis(
         const signalRef: SignalRef = {
           signal:
             conditions
-              .map(c => {
+              .map((c) => {
                 const {test, ...valueOrSignalCRef} = c;
                 return `${expression(null, test)} ? ${exprFromValueRefOrSignalRef(valueOrSignalCRef)} : `;
               })
-              .join('') + exprFromValueRefOrSignalRef(valueOrSignalRef)
+              .join('') + exprFromValueRefOrSignalRef(valueOrSignalRef),
         };
-        axis[prop] = signalRef;
+        (axis as any)[prop] = signalRef;
       }
     } else if (isSignalRef(propValue)) {
-      const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop];
+      const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop as ConditionalAxisProp];
       if (propIndex) {
         const {vgProp, part} = propIndex;
-        setAxisEncode(axis, part, vgProp, propValue);
+        // FIXME: remove as any
+        setAxisEncode(axis, part, vgProp, propValue as any);
         delete axis[prop];
       } // else do nothing since the property already supports signal
     }
@@ -119,7 +127,7 @@ export function assembleAxis(
       // Only need to keep encode block for grid
       const {grid} = axis.encode;
       axis.encode = {
-        ...(grid ? {grid} : {})
+        ...(grid ? {grid} : {}),
       };
 
       if (isEmpty(axis.encode)) {
@@ -140,7 +148,7 @@ export function assembleAxis(
       maxExtent: 0,
       minExtent: 0,
       ticks: false,
-      zindex: getFirstDefined(zindex, 0) // put grid behind marks by default
+      zindex: getFirstDefined(zindex, 0), // put grid behind marks by default
     };
   } else {
     // kind === 'main'
@@ -183,7 +191,7 @@ export function assembleAxis(
       ...(titleString ? {title: titleString} : {}),
       ...axis,
       ...(config.aria === false ? {aria: false} : {}),
-      zindex: getFirstDefined(zindex, 0) // put axis line above marks by default
+      zindex: getFirstDefined(zindex, 0), // put axis line above marks by default
     };
   }
 }
@@ -208,7 +216,7 @@ export function assembleAxisSignals(model: Model): NewSignal[] {
           if (sizeType !== update) {
             signals.push({
               name: sizeType,
-              update
+              update,
             });
           }
         }
@@ -221,9 +229,9 @@ export function assembleAxisSignals(model: Model): NewSignal[] {
 export function assembleAxes(axisComponents: AxisComponentIndex, config: Config<SignalRef>): VgAxis[] {
   const {x = [], y = []} = axisComponents;
   return [
-    ...x.map(a => assembleAxis(a, 'grid', config)),
-    ...y.map(a => assembleAxis(a, 'grid', config)),
-    ...x.map(a => assembleAxis(a, 'main', config)),
-    ...y.map(a => assembleAxis(a, 'main', config))
-  ].filter(a => a); // filter undefined
+    ...x.map((a) => assembleAxis(a, 'grid', config)),
+    ...y.map((a) => assembleAxis(a, 'grid', config)),
+    ...x.map((a) => assembleAxis(a, 'main', config)),
+    ...y.map((a) => assembleAxis(a, 'main', config)),
+  ].filter((a) => a); // filter undefined
 }

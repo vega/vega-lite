@@ -34,9 +34,9 @@ echo ""
 
 if git log -1 | grep "\[SVG\]" && [ "$PUSH_BRANCH" = true ]; then
   echo "As the latest commit includes [SVG]. Rebuilding all SVGs."
-  yarn build:examples-full
+  npm run build:examples-full
 else
-  yarn build:examples
+  npm run build:examples
 fi
 
 # Commit examples if outdated

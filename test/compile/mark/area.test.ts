@@ -1,9 +1,10 @@
-import {COLOR, X, Y} from '../../../src/channel';
-import {area} from '../../../src/compile/mark/area';
-import {Encoding} from '../../../src/encoding';
-import {NormalizedUnitSpec} from '../../../src/spec';
-import {internalField} from '../../../src/util';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {SignalRef} from 'vega';
+import {COLOR, X, Y} from '../../../src/channel.js';
+import {area} from '../../../src/compile/mark/area.js';
+import {Encoding} from '../../../src/encoding.js';
+import {NormalizedUnitSpec} from '../../../src/spec/index.js';
+import {internalField} from '../../../src/util.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Area', () => {
   function verticalArea(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {
@@ -12,9 +13,9 @@ describe('Mark: Area', () => {
       encoding: {
         x: {timeUnit: 'year', field: 'Year', type: 'temporal'},
         y: {aggregate: 'count', type: 'quantitative'},
-        ...moreEncoding
+        ...moreEncoding,
       },
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
     };
   }
 
@@ -23,9 +24,9 @@ describe('Mark: Area', () => {
       mark: 'area',
       encoding: {
         x: {bin: true, type: 'quantitative', field: 'IMDB_Rating'},
-        y: {scale: {type: 'log'}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'}
+        y: {scale: {type: 'log'}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'},
       },
-      data: {url: 'data/movies.json'}
+      data: {url: 'data/movies.json'},
     });
     const props = area.encodeEntry(model);
 
@@ -44,9 +45,9 @@ describe('Mark: Area', () => {
       encoding: {
         x: {bin: true, type: 'quantitative', field: 'IMDB_Rating'},
         y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
-        color: {type: 'nominal', field: 'c'}
+        color: {type: 'nominal', field: 'c'},
       },
-      data: {url: 'data/movies.json'}
+      data: {url: 'data/movies.json'},
     });
     const props = area.encodeEntry(model);
 
@@ -55,7 +56,7 @@ describe('Mark: Area', () => {
     });
 
     it('should use bin_mid for the defined check', () => {
-      expect(props.defined['signal']).toContain('bin_maxbins_10_IMDB_Rating_mid');
+      expect((props.defined as SignalRef).signal).toContain('bin_maxbins_10_IMDB_Rating_mid');
     });
   });
 
@@ -64,9 +65,9 @@ describe('Mark: Area', () => {
       mark: 'area',
       encoding: {
         x: {bin: true, type: 'quantitative', field: 'IMDB_Rating'},
-        y: {scale: {zero: false}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'}
+        y: {scale: {zero: false}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'},
       },
-      data: {url: 'data/movies.json'}
+      data: {url: 'data/movies.json'},
     });
     const props = area.encodeEntry(model);
 
@@ -116,8 +117,8 @@ describe('Mark: Area', () => {
   describe('vertical stacked area with color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(
       verticalArea({
-        color: {field: 'Origin', type: 'quantitative'}
-      })
+        color: {field: 'Origin', type: 'quantitative'},
+      }),
     );
 
     const props = area.encodeEntry(model);
@@ -142,9 +143,9 @@ describe('Mark: Area', () => {
       encoding: {
         y: {timeUnit: 'year', field: 'Year', type: 'temporal'},
         x: {aggregate: 'count', type: 'quantitative'},
-        ...moreEncoding
+        ...moreEncoding,
       },
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
     };
   }
 
@@ -170,9 +171,9 @@ describe('Mark: Area', () => {
       mark: 'area',
       encoding: {
         y: {bin: true, type: 'quantitative', field: 'IMDB_Rating'},
-        x: {scale: {type: 'log'}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'}
+        x: {scale: {type: 'log'}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'},
       },
-      data: {url: 'data/movies.json'}
+      data: {url: 'data/movies.json'},
     });
 
     const props = area.encodeEntry(model);
@@ -191,9 +192,9 @@ describe('Mark: Area', () => {
       mark: 'area',
       encoding: {
         y: {bin: true, type: 'quantitative', field: 'IMDB_Rating'},
-        x: {scale: {zero: false}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'}
+        x: {scale: {zero: false}, type: 'quantitative', field: 'US_Gross', aggregate: 'mean'},
       },
-      data: {url: 'data/movies.json'}
+      data: {url: 'data/movies.json'},
     });
 
     const props = area.encodeEntry(model);
@@ -210,8 +211,8 @@ describe('Mark: Area', () => {
   describe('horizontal stacked area with color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(
       horizontalArea({
-        color: {field: 'Origin', type: 'nominal'}
-      })
+        color: {field: 'Origin', type: 'nominal'},
+      }),
     );
 
     const props = area.encodeEntry(model);
@@ -238,8 +239,8 @@ describe('Mark: Area', () => {
         encoding: {
           x: {timeUnit: 'year', field: 'Year', type: 'temporal'},
           y: {aggregate: 'min', field: 'Weight_in_lbs', type: 'quantitative'},
-          y2: {aggregate: 'max', field: 'Weight_in_lbs'}
-        }
+          y2: {aggregate: 'max', field: 'Weight_in_lbs'},
+        },
       });
       const props = area.encodeEntry(model);
       expect(props.x).toEqual({scale: 'x', field: 'year_Year'});
@@ -254,8 +255,8 @@ describe('Mark: Area', () => {
         encoding: {
           y: {timeUnit: 'year', field: 'Year', type: 'temporal'},
           x: {aggregate: 'min', field: 'Weight_in_lbs', type: 'quantitative'},
-          x2: {aggregate: 'max', field: 'Weight_in_lbs'}
-        }
+          x2: {aggregate: 'max', field: 'Weight_in_lbs'},
+        },
       });
       const props = area.encodeEntry(model);
       expect(props.y).toEqual({scale: 'y', field: 'year_Year'});

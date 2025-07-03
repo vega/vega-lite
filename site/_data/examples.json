@@ -524,6 +524,11 @@
       {
         "name": "window_impute_null",
         "title": "Using window transform to impute missing values by averaging the previous and next values."
+      },
+      {
+        "name": "ternary",
+        "title": "Ternary chart",
+        "description": "A ternary chart example created by [Adrián Bazzana](https://www.linkedin.com/in/adrian-bazzana/)."
       }
     ]
   },

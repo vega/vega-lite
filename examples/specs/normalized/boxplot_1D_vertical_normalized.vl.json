@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "A vertical box plot showing median and lower and upper quartiles of the distribution of body mass of penguins.",
   "data": {"url": "data/penguins.json"},
   "layer": [
@@ -25,7 +25,7 @@
         {
           "transform": [
             {
-              "filter": "(datum[\"Body Mass (g)\"] < datum[\"lower_box_Body Mass (g)\"] - 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"])) || (datum[\"Body Mass (g)\"] > datum[\"upper_box_Body Mass (g)\"] + 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]))"
+              "filter": "(datum['Body Mass (g)'] < datum['lower_box_Body Mass (g)'] - 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)'])) || (datum['Body Mass (g)'] > datum['upper_box_Body Mass (g)'] + 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)']))"
             }
           ],
           "mark": {"type": "point", "style": "boxplot-outliers"},
@@ -41,7 +41,7 @@
         {
           "transform": [
             {
-              "filter": "(datum[\"lower_box_Body Mass (g)\"] - 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]) <= datum[\"Body Mass (g)\"]) && (datum[\"Body Mass (g)\"] <= datum[\"upper_box_Body Mass (g)\"] + 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]))"
+              "filter": "(datum['lower_box_Body Mass (g)'] - 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)']) <= datum['Body Mass (g)']) && (datum['Body Mass (g)'] <= datum['upper_box_Body Mass (g)'] + 1.5 * (datum['upper_box_Body Mass (g)'] - datum['lower_box_Body Mass (g)']))"
             },
             {
               "aggregate": [

@@ -1,15 +1,15 @@
-import {NonArgAggregateOp} from '../src/aggregate';
-import {DETAIL, X, Y, YOFFSET} from '../src/channel';
-import * as log from '../src/log';
-import {ARC, AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark';
-import {ScaleType} from '../src/scale';
-import {NormalizedUnitSpec, TopLevel} from '../src/spec';
-import {stack, STACKABLE_MARKS, StackOffset, STACK_BY_DEFAULT_MARKS} from '../src/stack';
+import {NonArgAggregateOp} from '../src/aggregate.js';
+import {DETAIL, X, Y, YOFFSET} from '../src/channel.js';
+import * as log from '../src/log/index.js';
+import {ARC, AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark.js';
+import {ScaleType} from '../src/scale.js';
+import {NormalizedUnitSpec, TopLevel} from '../src/spec/index.js';
+import {stack, STACKABLE_MARKS, StackOffset, STACK_BY_DEFAULT_MARKS} from '../src/stack.js';
 
 describe('stack', () => {
   const NON_STACKABLE_NON_POLAR_MARKS = [RECT];
-  const STACKABLE_NON_POLAR_MARKS = new Set([...STACKABLE_MARKS].filter(m => m != ARC));
-  const STACK_BY_DEFAULT_NON_POLAR_MARKS = new Set([...STACK_BY_DEFAULT_MARKS].filter(m => m != ARC));
+  const STACKABLE_NON_POLAR_MARKS = new Set([...STACKABLE_MARKS].filter((m) => m != ARC));
+  const STACK_BY_DEFAULT_NON_POLAR_MARKS = new Set([...STACK_BY_DEFAULT_MARKS].filter((m) => m != ARC));
 
   it('should be disabled for non-stackable marks with at least one of the stack channel', () => {
     for (const nonStackableMark of NON_STACKABLE_NON_POLAR_MARKS) {
@@ -19,8 +19,8 @@ describe('stack', () => {
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
           y: {field: 'variety', type: 'nominal'},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       };
       expect(stack(spec.mark, spec.encoding)).toBeNull();
     }
@@ -34,8 +34,8 @@ describe('stack', () => {
         encoding: {
           x: {field: 'yield', type: 'quantitative', stack: 'zero'},
           y: {field: 'variety', type: 'nominal'},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       };
       const stackProps = stack(spec.mark, spec.encoding);
       expect(stackProps.fieldChannel).toBe(X);
@@ -48,8 +48,8 @@ describe('stack', () => {
         data: {url: 'data/barley.json'},
         mark,
         encoding: {
-          x: {field: 'yield', type: 'quantitative', bin: true}
-        }
+          x: {field: 'yield', type: 'quantitative', bin: true},
+        },
       };
       const stackProps = stack(spec.mark, spec.encoding);
       expect(stackProps).toBeNull();
@@ -61,8 +61,8 @@ describe('stack', () => {
       data: {url: 'data/barley.json'},
       mark: {type: 'bar', orient: 'vertical'},
       encoding: {
-        x: {field: 'yield', type: 'quantitative'}
-      }
+        x: {field: 'yield', type: 'quantitative'},
+      },
     };
     const stackProps = stack(spec.mark, spec.encoding);
     expect(stackProps).toBeNull();
@@ -73,8 +73,8 @@ describe('stack', () => {
       data: {url: 'data/barley.json'},
       mark: {type: 'bar', orient: 'horizontal'},
       encoding: {
-        y: {field: 'yield', type: 'quantitative'}
-      }
+        y: {field: 'yield', type: 'quantitative'},
+      },
     };
     const stackProps = stack(spec.mark, spec.encoding);
     expect(stackProps).toBeNull();
@@ -88,8 +88,8 @@ describe('stack', () => {
         encoding: {
           x: {aggregate: 'mean', field: 'yield', type: 'quantitative', stack: false},
           y: {field: 'variety', type: 'nominal'},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       };
       const stackProps = stack(spec.mark, spec.encoding);
       expect(stackProps).toBeNull();
@@ -103,8 +103,8 @@ describe('stack', () => {
         mark,
         encoding: {
           x: {field: 'yield', type: 'quantitative'},
-          y: {field: 'variety', type: 'nominal'}
-        }
+          y: {field: 'variety', type: 'nominal'},
+        },
       };
       const stackProps = stack(spec.mark, spec.encoding);
       expect(stackProps.fieldChannel).toBe(X);
@@ -119,8 +119,8 @@ describe('stack', () => {
         encoding: {
           x: {field: 'yield', type: 'quantitative', stack: 'zero'},
           y: {field: 'variety', type: 'quantitative'},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       };
       const stackProps = stack(spec.mark, spec.encoding);
       expect(stackProps.fieldChannel).toBe(X);
@@ -136,8 +136,8 @@ describe('stack', () => {
           encoding: {
             x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
             y: {field: 'variety', type: 'nominal'},
-            color: {aggregate: 'count', type: 'quantitative'}
-          }
+            color: {aggregate: 'count', type: 'quantitative'},
+          },
         };
 
         const _stack = stack(spec.mark, spec.encoding);
@@ -157,8 +157,8 @@ describe('stack', () => {
             x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
             y: {field: 'variety', type: 'nominal'},
             color: {aggregate: 'count', type: 'quantitative'},
-            detail: {field: 'site', type: 'nominal'}
-          }
+            detail: {field: 'site', type: 'nominal'},
+          },
         };
 
         const _stack = stack(spec.mark, spec.encoding);
@@ -177,8 +177,8 @@ describe('stack', () => {
         x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
         y: {field: 'variety', type: 'nominal'},
         detail: {field: 'site', type: 'nominal'},
-        tooltip: {field: 'total_yield', type: 'nominal'}
-      }
+        tooltip: {field: 'total_yield', type: 'nominal'},
+      },
     };
 
     const _stack = stack(spec.mark, spec.encoding);
@@ -197,8 +197,8 @@ describe('stack', () => {
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
           y: {aggregate: 'count', type: 'quantitative'},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       };
       expect(stack(spec.mark, spec.encoding)).toBeNull();
     }
@@ -212,8 +212,8 @@ describe('stack', () => {
         encoding: {
           x: {field: 'variety', type: 'nominal'},
           y: {field: 'variety', type: 'nominal'},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       };
       expect(stack(spec.mark, spec.encoding)).toBeNull();
     }
@@ -229,8 +229,8 @@ describe('stack', () => {
             x: {field: 'a', type: 'quantitative', aggregate: 'sum'},
             x2: {field: 'a', aggregate: 'sum'},
             y: {field: 'variety', type: 'nominal'},
-            color: {field: 'site', type: 'nominal'}
-          }
+            color: {field: 'site', type: 'nominal'},
+          },
         };
         expect(stack(spec.mark, spec.encoding)).toBeNull();
       }
@@ -247,8 +247,8 @@ describe('stack', () => {
             y: {field: 'a', type: 'quantitative', aggregate: 'sum'},
             y2: {field: 'a', aggregate: 'sum'},
             x: {field: 'variety', type: 'nominal'},
-            color: {field: 'site', type: 'nominal'}
-          }
+            color: {field: 'site', type: 'nominal'},
+          },
         };
         expect(stack(spec.mark, spec.encoding)).toBeNull();
       }
@@ -257,7 +257,7 @@ describe('stack', () => {
 
   it(
     'should always return stack and only warn for non-undefined stack if the aggregated axis has non-linear scale',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       for (const s of [undefined, 'center', 'zero', 'normalize'] as const) {
         for (const scaleType of [ScaleType.LOG, ScaleType.POW, ScaleType.SQRT]) {
           const marks = s === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
@@ -268,8 +268,8 @@ describe('stack', () => {
               encoding: {
                 x: {field: 'a', type: 'quantitative', aggregate: 'sum', stack: s, scale: {type: scaleType}},
                 y: {field: 'variety', type: 'nominal'},
-                color: {field: 'site', type: 'nominal'}
-              }
+                color: {field: 'site', type: 'nominal'},
+              },
             };
             expect(stack(spec.mark, spec.encoding)).toBeTruthy();
             const warns = localLogger.warns;
@@ -282,12 +282,12 @@ describe('stack', () => {
           }
         }
       }
-    })
+    }),
   );
 
   it(
     'should throw warning if the aggregated axis has a non-summative aggregate',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       for (const stackOffset of [undefined, 'center', 'zero', 'normalize'] as const) {
         for (const aggregate of ['average', 'variance', 'q3'] as NonArgAggregateOp[]) {
           const marks = stackOffset === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
@@ -300,11 +300,11 @@ describe('stack', () => {
                   aggregate,
                   stack: stackOffset,
                   field: 'a',
-                  type: 'quantitative'
+                  type: 'quantitative',
                 },
                 y: {field: 'variety', type: 'nominal'},
-                color: {field: 'site', type: 'nominal'}
-              }
+                color: {field: 'site', type: 'nominal'},
+              },
             };
 
             stack(spec.mark, spec.encoding);
@@ -314,7 +314,7 @@ describe('stack', () => {
           }
         }
       }
-    })
+    }),
   );
 
   describe('stack().groupbyChannels, .fieldChannels', () => {
@@ -326,8 +326,8 @@ describe('stack', () => {
           encoding: {
             x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
             y: {field: 'variety', type: 'nominal'},
-            color: {field: 'site', type: 'nominal'}
-          }
+            color: {field: 'site', type: 'nominal'},
+          },
         };
         const _stack = stack(spec.mark, spec.encoding);
         expect(_stack.fieldChannel).toBe(X);
@@ -344,8 +344,8 @@ describe('stack', () => {
             x: {field: 'yield', type: 'quantitative'},
             y: {field: 'variety', type: 'nominal'},
             yOffset: {field: 'site', type: 'nominal'},
-            color: {field: 'site', type: 'nominal'}
-          }
+            color: {field: 'site', type: 'nominal'},
+          },
         };
         const _stack = stack(spec.mark, spec.encoding);
         expect(_stack.fieldChannel).toBe(X);
@@ -361,8 +361,8 @@ describe('stack', () => {
           encoding: {
             x: {field: 'yield', type: 'quantitative'},
             yOffset: {field: 'site', type: 'nominal'},
-            color: {field: 'site', type: 'nominal'}
-          }
+            color: {field: 'site', type: 'nominal'},
+          },
         };
         const _stack = stack(spec.mark, spec.encoding);
         expect(_stack.fieldChannel).toBe(X);
@@ -377,8 +377,8 @@ describe('stack', () => {
           mark: {type: mark, orient: 'vertical'}, // orient also can be inferred by init.ts
           encoding: {
             x: {field: 'IMDB Rating', type: 'quantitative'},
-            y: {field: 'Rotten Tomatoes Rating', type: 'quantitative'}
-          }
+            y: {field: 'Rotten Tomatoes Rating', type: 'quantitative'},
+          },
         };
         const stackProps = stack(spec.mark, spec.encoding);
         expect(stackProps.fieldChannel).toBe(Y);
@@ -392,8 +392,8 @@ describe('stack', () => {
           mark: stackableMark,
           encoding: {
             x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
-            color: {field: 'site', type: 'nominal'}
-          }
+            color: {field: 'site', type: 'nominal'},
+          },
         };
         const _stack = stack(spec.mark, spec.encoding);
         expect(_stack.fieldChannel).toBe(X);
@@ -409,8 +409,8 @@ describe('stack', () => {
           encoding: {
             y: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
             x: {field: 'variety', type: 'nominal'},
-            color: {field: 'site', type: 'nominal'}
-          }
+            color: {field: 'site', type: 'nominal'},
+          },
         };
         const _stack = stack(spec.mark, spec.encoding);
         expect(_stack.fieldChannel).toBe(Y);
@@ -425,8 +425,8 @@ describe('stack', () => {
           mark: stackableMark,
           encoding: {
             y: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
-            color: {field: 'site', type: 'nominal'}
-          }
+            color: {field: 'site', type: 'nominal'},
+          },
         };
         const _stack = stack(spec.mark, spec.encoding);
         expect(_stack.fieldChannel).toBe(Y);
@@ -440,8 +440,8 @@ describe('stack', () => {
         mark: 'arc',
         encoding: {
           theta: {field: 'field', type: 'quantitative'},
-          color: {field: 'id', type: 'nominal'}
-        }
+          color: {field: 'id', type: 'nominal'},
+        },
       };
       const _stack = stack(spec.mark, spec.encoding);
       expect(_stack.fieldChannel).toBe('theta');
@@ -457,9 +457,9 @@ describe('stack', () => {
           radius: {
             field: 'field',
             type: 'quantitative',
-            scale: {type: 'sqrt', zero: true, range: [20, 100]}
-          }
-        }
+            scale: {type: 'sqrt', zero: true, range: [20, 100]},
+          },
+        },
       };
       const _stack = stack(spec.mark, spec.encoding);
       expect(_stack.fieldChannel).toBe('theta');
@@ -476,8 +476,8 @@ describe('stack', () => {
             encoding: {
               x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
               y: {field: 'variety', type: 'nominal'},
-              color: {field: 'site', type: 'nominal'}
-            }
+              color: {field: 'site', type: 'nominal'},
+            },
           };
           expect(stack(spec.mark, spec.encoding).offset).toBe('zero');
         }
@@ -493,8 +493,8 @@ describe('stack', () => {
             encoding: {
               x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
               y: {field: 'variety', type: 'nominal'},
-              color: {field: 'site', type: 'nominal'}
-            }
+              color: {field: 'site', type: 'nominal'},
+            },
           };
           expect(stack(spec.mark, spec.encoding).offset).toEqual(s);
         }
@@ -508,8 +508,8 @@ describe('stack', () => {
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: 'zero'},
           y: {field: 'variety', type: 'nominal'},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       };
       expect(stack(spec.mark, spec.encoding).impute).toBeTruthy();
     });
@@ -521,8 +521,8 @@ describe('stack', () => {
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: 'zero', impute: null},
           y: {field: 'variety', type: 'nominal'},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       };
       expect(stack(spec.mark, spec.encoding).impute).toBeFalsy();
     });

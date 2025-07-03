@@ -1,7 +1,7 @@
-import {AggregateOp} from 'vega';
+import type {AggregateOp} from 'vega';
 import {array, isArray} from 'vega-util';
-import {isArgmaxDef, isArgminDef} from './aggregate';
-import {isBinned, isBinning} from './bin';
+import {isArgmaxDef, isArgminDef} from './aggregate.js';
+import {isBinned, isBinning} from './bin.js';
 import {
   ANGLE,
   Channel,
@@ -38,6 +38,7 @@ import {
   TEXT,
   THETA,
   THETA2,
+  TIME,
   TOOLTIP,
   UNIT_CHANNELS,
   URL,
@@ -46,8 +47,8 @@ import {
   XOFFSET,
   Y,
   Y2,
-  YOFFSET
-} from './channel';
+  YOFFSET,
+} from './channel.js';
 import {
   binRequiresRange,
   ChannelDef,
@@ -83,19 +84,20 @@ import {
   StringFieldDefWithCondition,
   StringValueDefWithCondition,
   TextDef,
+  TimeDef,
   title,
   TypedFieldDef,
-  vgField
-} from './channeldef';
-import {Config} from './config';
-import * as log from './log';
-import {Mark} from './mark';
-import {EncodingFacetMapping} from './spec/facet';
-import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
-import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type';
-import {keys, some} from './util';
-import {isSignalRef} from './vega.schema';
-import {isBinnedTimeUnit} from './timeunit';
+  vgField,
+} from './channeldef.js';
+import {Config} from './config.js';
+import * as log from './log/index.js';
+import {Mark} from './mark.js';
+import {EncodingFacetMapping} from './spec/facet.js';
+import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform.js';
+import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type.js';
+import {keys, some} from './util.js';
+import {isSignalRef} from './vega.schema.js';
+import {isBinnedTimeUnit} from './timeunit.js';
 
 export interface Encoding<F extends Field> {
   /**
@@ -184,6 +186,8 @@ export interface Encoding<F extends Field> {
    * The inner radius in pixels of arc marks.
    */
   radius2?: Position2Def<F>;
+
+  time?: TimeDef<F>;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
@@ -331,12 +335,12 @@ export interface EncodingWithFacet<F extends Field> extends Encoding<F>, Encodin
 
 export function channelHasField<F extends Field>(
   encoding: EncodingWithFacet<F>,
-  channel: keyof EncodingWithFacet<F>
+  channel: keyof EncodingWithFacet<F>,
 ): boolean {
-  const channelDef = encoding && encoding[channel];
+  const channelDef = encoding?.[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
-      return some(channelDef, fieldDef => !!fieldDef.field);
+      return some(channelDef, (fieldDef) => !!fieldDef.field);
     } else {
       return isFieldDef(channelDef) || hasConditionalFieldDef<Field>(channelDef);
     }
@@ -346,12 +350,12 @@ export function channelHasField<F extends Field>(
 
 export function channelHasFieldOrDatum<F extends Field>(
   encoding: EncodingWithFacet<F>,
-  channel: keyof EncodingWithFacet<F>
+  channel: keyof EncodingWithFacet<F>,
 ): boolean {
-  const channelDef = encoding && encoding[channel];
+  const channelDef = encoding?.[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
-      return some(channelDef, fieldDef => !!fieldDef.field);
+      return some(channelDef, (fieldDef) => !!fieldDef.field);
     } else {
       return isFieldDef(channelDef) || isDatumDef(channelDef) || hasConditionalFieldOrDatumDef<Field>(channelDef);
     }
@@ -361,7 +365,7 @@ export function channelHasFieldOrDatum<F extends Field>(
 
 export function channelHasNestedOffsetScale<F extends Field>(
   encoding: EncodingWithFacet<F>,
-  channel: keyof EncodingWithFacet<F>
+  channel: keyof EncodingWithFacet<F>,
 ): boolean {
   if (isXorY(channel)) {
     const fieldDef = encoding[channel];
@@ -377,11 +381,11 @@ export function channelHasNestedOffsetScale<F extends Field>(
 }
 
 export function isAggregate(encoding: EncodingWithFacet<any>) {
-  return some(CHANNELS, channel => {
+  return some(CHANNELS, (channel) => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       if (isArray(channelDef)) {
-        return some(channelDef, fieldDef => !!fieldDef.aggregate);
+        return some(channelDef, (fieldDef) => !!fieldDef.aggregate);
       } else {
         const fieldDef = getFieldDef(channelDef);
         return fieldDef && !!fieldDef.aggregate;
@@ -411,7 +415,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
           ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),
           ...remaining,
           // Always overwrite field
-          field: newField
+          field: newField,
         };
 
         if (aggOp) {
@@ -432,7 +436,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
           if (op) {
             const aggregateEntry: AggregatedFieldDef = {
               op,
-              as: newField
+              as: newField,
             };
             if (field) {
               aggregateEntry.field = field;
@@ -451,35 +455,35 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
             // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
             if (isXorY(channel)) {
               const secondaryChannel: SecondaryFieldDef<string> = {
-                field: `${newField}_end`
+                field: `${newField}_end`,
               };
               encoding[`${channel}2`] = secondaryChannel;
             }
             newFieldDef.bin = 'binned';
             if (!isSecondaryRangeChannel(channel)) {
-              newFieldDef['type'] = QUANTITATIVE;
+              (newFieldDef as any)['type'] = QUANTITATIVE;
             }
           } else if (timeUnit && !isBinnedTimeUnit(timeUnit)) {
             timeUnits.push({
               timeUnit,
               field,
-              as: newField
+              as: newField,
             });
 
             // define the format type for later compilation
             const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
             if (formatType) {
               if (channel === TEXT || channel === TOOLTIP) {
-                newFieldDef['formatType'] = formatType;
+                (newFieldDef as any)['formatType'] = formatType;
               } else if (isNonPositionScaleChannel(channel)) {
-                newFieldDef['legend'] = {
+                (newFieldDef as any)['legend'] = {
                   formatType,
-                  ...newFieldDef['legend']
+                  ...(newFieldDef as any)['legend'],
                 };
               } else if (isXorY(channel)) {
-                newFieldDef['axis'] = {
+                (newFieldDef as any)['axis'] = {
                   formatType,
-                  ...newFieldDef['axis']
+                  ...(newFieldDef as any)['axis'],
                 };
               }
             }
@@ -487,14 +491,14 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
         }
 
         // now the field should refer to post-transformed field instead
-        encoding[channel as any] = newFieldDef;
+        (encoding as any)[channel as any] = newFieldDef;
       } else {
         groupby.push(field);
-        encoding[channel as any] = oldEncoding[channel];
+        (encoding as any)[channel as any] = oldEncoding[channel];
       }
     } else {
       // For value def / signal ref / datum def, just copy
-      encoding[channel as any] = oldEncoding[channel];
+      (encoding as any)[channel as any] = oldEncoding[channel];
     }
   });
 
@@ -503,7 +507,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
     timeUnits,
     aggregate,
     groupby,
-    encoding
+    encoding,
   };
 }
 
@@ -529,7 +533,7 @@ export function initEncoding(
   encoding: Encoding<string>,
   mark: Mark,
   filled: boolean,
-  config: Config
+  config: Config,
 ): Encoding<string> {
   const normalizedEncoding: Encoding<string> = {};
   for (const key of keys(encoding)) {
@@ -610,7 +614,7 @@ export function initEncoding(
             }
             return defs;
           },
-          []
+          [],
         );
       }
     } else {
@@ -628,7 +632,7 @@ export function initEncoding(
         continue;
       }
 
-      normalizedEncoding[channel as any] = initChannelDef(channelDef as ChannelDef, channel, config);
+      (normalizedEncoding as any)[channel as any] = initChannelDef(channelDef as ChannelDef, channel, config);
     }
   }
   return normalizedEncoding;
@@ -642,7 +646,7 @@ export function normalizeEncoding(encoding: Encoding<string>, config: Config): E
 
   for (const channel of keys(encoding)) {
     const newChannelDef = initChannelDef(encoding[channel], channel, config, {compositeMark: true});
-    normalizedEncoding[channel as any] = newChannelDef;
+    (normalizedEncoding as any)[channel as any] = newChannelDef;
   }
 
   return normalizedEncoding;
@@ -669,7 +673,7 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
 export function forEach<U extends Record<any, any>>(
   mapping: U,
   f: (cd: ChannelDef, c: keyof U) => void,
-  thisArg?: any
+  thisArg?: any,
 ) {
   if (!mapping) {
     return;
@@ -691,7 +695,7 @@ export function reduce<T, U extends Record<any, any>>(
   mapping: U,
   f: (acc: any, fd: TypedFieldDef<string>, c: keyof U) => U,
   init: T,
-  thisArg?: any
+  thisArg?: any,
 ) {
   if (!mapping) {
     return init;
@@ -729,6 +733,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case THETA2:
       case RADIUS:
       case RADIUS2:
+      case TIME:
       // falls through
 
       case LATITUDE:

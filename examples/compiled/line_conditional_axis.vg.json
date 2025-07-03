@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Line chart with conditional axis ticks, labels, and grid.",
   "background": "white",
   "padding": 5,
   "width": 400,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -31,7 +31,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},

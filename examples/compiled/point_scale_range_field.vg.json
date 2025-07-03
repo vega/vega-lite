@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Using the field \"c\" as the color scale's range. Note that this only works if there is a 1:1 mapping between the color domain field (`l`) and the range field (`c`).",
   "background": "white",
   "padding": 5,

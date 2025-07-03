@@ -1,8 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {
@@ -19,7 +19,10 @@
   ],
   "signals": [
     {"name": "y_step", "value": 20},
-    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.25, 0.125) * y_step"
+    }
   ],
   "marks": [
     {
@@ -35,9 +38,9 @@
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
           },
+          "y": {"scale": "y", "field": "Cylinders"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"},
           "xc": {"scale": "x", "field": "Horsepower"},
-          "yc": {"scale": "y", "field": "Cylinders", "band": 0.5},
-          "height": {"value": 15},
           "width": {"value": 1}
         }
       }
@@ -57,8 +60,8 @@
       "type": "band",
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
       "range": {"step": {"signal": "y_step"}},
-      "paddingInner": 0,
-      "paddingOuter": 0
+      "paddingInner": 0.25,
+      "paddingOuter": 0.125
     }
   ],
   "axes": [

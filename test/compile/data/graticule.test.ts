@@ -1,7 +1,7 @@
-import {GraticuleParams} from '../../../src/data';
-import {assembleRootData} from '../../../src/compile/data/assemble';
-import {GraticuleNode} from '../../../src/compile/data/graticule';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {GraticuleParams} from '../../../src/data.js';
+import {assembleRootData} from '../../../src/compile/data/assemble.js';
+import {GraticuleNode} from '../../../src/compile/data/graticule.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('compile/data/graticule', () => {
   describe('GraticuleNode', () => {
@@ -9,13 +9,13 @@ describe('compile/data/graticule', () => {
       it('should return a proper vg transform with object param', () => {
         const params = {
           stepMinor: [15, 10],
-          precision: 2
+          precision: 2,
         } as GraticuleParams;
         const graticule = new GraticuleNode(null, params);
         expect(graticule.assemble()).toEqual({
           type: 'graticule',
           stepMinor: [15, 10],
-          precision: 2
+          precision: 2,
         });
       });
 
@@ -23,7 +23,7 @@ describe('compile/data/graticule', () => {
         const params = true;
         const graticule = new GraticuleNode(null, params);
         expect(graticule.assemble()).toEqual({
-          type: 'graticule'
+          type: 'graticule',
         });
       });
     });
@@ -46,9 +46,9 @@ describe('compile/data/graticule', () => {
   it('should parse and add generator transform correctly', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {
-        graticule: true
+        graticule: true,
       },
-      mark: 'geoshape'
+      mark: 'geoshape',
     });
     model.parseData();
 

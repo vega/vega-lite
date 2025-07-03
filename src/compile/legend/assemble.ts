@@ -1,17 +1,17 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
-import {Config} from '../../config';
-import {LEGEND_SCALE_CHANNELS} from '../../legend';
-import {keys, replaceAll, stringify, vals} from '../../util';
-import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
-import {Model} from '../model';
-import {LegendComponent} from './component';
-import {mergeLegendComponent} from './parse';
+import {Config} from '../../config.js';
+import {LEGEND_SCALE_CHANNELS} from '../../legend.js';
+import {keys, replaceAll, stringify, vals} from '../../util.js';
+import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema.js';
+import {Model} from '../model.js';
+import {LegendComponent} from './component.js';
+import {mergeLegendComponent} from './parse.js';
 
 function setLegendEncode(
   legend: VgLegend,
   part: keyof LegendEncode,
   vgProp: VgEncodeChannel,
-  vgRef: VgValueRef | VgValueRef[]
+  vgRef: VgValueRef | VgValueRef[],
 ) {
   legend.encode ??= {};
   legend.encode[part] ??= {};
@@ -42,8 +42,8 @@ export function assembleLegends(model: Model): VgLegend[] {
 
   const legends = vals(legendByDomain)
     .flat()
-    .map(l => assembleLegend(l, model.config))
-    .filter(l => l !== undefined);
+    .map((l) => assembleLegend(l, model.config))
+    .filter((l) => l !== undefined);
 
   return legends;
 }
@@ -61,7 +61,7 @@ export function assembleLegend(legendCmpt: LegendComponent, config: Config) {
 
   if (legend.encode?.symbols) {
     const out = legend.encode.symbols.update;
-    if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
+    if (out.fill && (out.fill as any)['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
       // For non color channel's legend, we need to override symbol stroke config from Vega config if stroke channel is not used.
       out.stroke = {value: 'transparent'};
     }

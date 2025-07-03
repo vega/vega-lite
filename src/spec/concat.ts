@@ -1,5 +1,6 @@
-import {GenericSpec, NormalizedSpec} from '.';
-import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
+import {GenericSpec, NormalizedSpec} from './index.js';
+import {hasProperty} from '../util.js';
+import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base.js';
 
 /**
  * Base layout mixins for V/HConcatSpec, which should not have RowCol<T> generic fo its property.
@@ -68,13 +69,13 @@ export function isAnyConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any>
 }
 
 export function isConcatSpec(spec: BaseSpec): spec is GenericConcatSpec<any> {
-  return 'concat' in spec;
+  return hasProperty(spec, 'concat');
 }
 
 export function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any> {
-  return 'vconcat' in spec;
+  return hasProperty(spec, 'vconcat');
 }
 
 export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any> {
-  return 'hconcat' in spec;
+  return hasProperty(spec, 'hconcat');
 }

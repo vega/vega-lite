@@ -1,7 +1,7 @@
-import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import toggle from '../../../src/compile/selection/toggle';
-import {parseUnitModel} from '../../util';
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import toggle from '../../../src/compile/selection/toggle.js';
+import {parseUnitModel} from '../../util.js';
 
 describe('Toggle Selection Transform', () => {
   const model = parseUnitModel({
@@ -9,15 +9,15 @@ describe('Toggle Selection Transform', () => {
     encoding: {
       x: {field: 'Horsepower', type: 'quantitative'},
       y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-      color: {field: 'Origin', type: 'nominal'}
-    }
+      color: {field: 'Origin', type: 'nominal'},
+    },
   });
 
   model.parseScale();
   const selCmpts = (model.component.selection = parseUnitSelection(model, [
     {
       name: 'one',
-      select: {type: 'point', clear: false}
+      select: {type: 'point', clear: false},
     },
     {
       name: 'two',
@@ -27,15 +27,15 @@ describe('Toggle Selection Transform', () => {
         resolve: 'union',
         on: 'pointerover',
         clear: false,
-        toggle: 'event.ctrlKey'
-      }
+        toggle: 'event.ctrlKey',
+      },
     },
     {
       name: 'three',
-      select: {type: 'point', clear: false, toggle: false}
+      select: {type: 'point', clear: false, toggle: false},
     },
     {name: 'four', select: {type: 'point', clear: false, toggle: null}},
-    {name: 'five', select: {type: 'interval', clear: false}}
+    {name: 'five', select: {type: 'interval', clear: false}},
   ]));
 
   it('identifies transform invocation', () => {
@@ -55,10 +55,10 @@ describe('Toggle Selection Transform', () => {
         on: [
           {
             events: selCmpts['one'].events,
-            update: 'event.shiftKey'
-          }
-        ]
-      }
+            update: 'event.shiftKey',
+          },
+        ],
+      },
     ]);
 
     const twoSg = toggle.signals(model, selCmpts['two'], []);
@@ -69,10 +69,10 @@ describe('Toggle Selection Transform', () => {
         on: [
           {
             events: selCmpts['two'].events,
-            update: 'event.ctrlKey'
-          }
-        ]
-      }
+            update: 'event.ctrlKey',
+          },
+        ],
+      },
     ]);
 
     const signals = assembleUnitSelectionSignals(model, []);
@@ -85,7 +85,7 @@ describe('Toggle Selection Transform', () => {
 
     const twoExpr = toggle.modifyExpr(model, selCmpts['two'], '');
     expect(twoExpr).toBe(
-      'two_toggle ? null : two_tuple, two_toggle ? null : {unit: ""}, two_toggle ? two_tuple : null'
+      'two_toggle ? null : two_tuple, two_toggle ? null : {unit: ""}, two_toggle ? two_tuple : null',
     );
 
     const signals = assembleUnitSelectionSignals(model, []);
@@ -96,20 +96,20 @@ describe('Toggle Selection Transform', () => {
           on: [
             {
               events: {signal: 'one_tuple'},
-              update: `modify("one_store", ${oneExpr})`
-            }
-          ]
+              update: `modify("one_store", ${oneExpr})`,
+            },
+          ],
         },
         {
           name: 'two_modify',
           on: [
             {
               events: {signal: 'two_tuple'},
-              update: `modify("two_store", ${twoExpr})`
-            }
-          ]
-        }
-      ])
+              update: `modify("two_store", ${twoExpr})`,
+            },
+          ],
+        },
+      ]),
     );
   });
 });

@@ -1,6 +1,6 @@
-import {SignalRef} from 'vega';
-import {ScaleChannel} from './channel';
-import {Mark, MarkDef} from './mark';
+import type {SignalRef} from 'vega';
+import {ScaleChannel} from './channel.js';
+import {Mark, MarkDef} from './mark.js';
 import {isObject} from 'vega-util';
 
 /**
@@ -71,7 +71,7 @@ export type ScaleInvalidDataShowAsValue<C extends ScaleChannel> = {
 };
 
 export function isScaleInvalidDataIncludeAsValue<C extends ScaleChannel>(
-  invalidDataMode: ScaleInvalidDataShowAs<C>
+  invalidDataMode: ScaleInvalidDataShowAs<C>,
 ): invalidDataMode is ScaleInvalidDataShowAsValue<C> {
   return isObject(invalidDataMode) && 'value' in invalidDataMode;
 }

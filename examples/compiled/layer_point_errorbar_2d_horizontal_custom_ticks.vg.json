@@ -1,8 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {
@@ -35,12 +35,12 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum[\"center_yield\"] + datum[\"extent_yield\"]",
+          "expr": "datum['center_yield'] + datum['extent_yield']",
           "as": "upper_yield"
         },
         {
           "type": "formula",
-          "expr": "datum[\"center_yield\"] - datum[\"extent_yield\"]",
+          "expr": "datum['center_yield'] - datum['extent_yield']",
           "as": "lower_yield"
         }
       ]
@@ -68,7 +68,10 @@
   ],
   "signals": [
     {"name": "y_step", "value": 20},
-    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.25, 0.125) * y_step"
+    }
   ],
   "marks": [
     {
@@ -84,9 +87,9 @@
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
           },
+          "y": {"scale": "y", "field": "variety"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"},
           "xc": {"scale": "x", "field": "lower_yield"},
-          "yc": {"scale": "y", "field": "variety", "band": 0.5},
-          "height": {"value": 15},
           "width": {"value": 1}
         }
       }
@@ -104,9 +107,9 @@
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
           },
+          "y": {"scale": "y", "field": "variety"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"},
           "xc": {"scale": "x", "field": "upper_yield"},
-          "yc": {"scale": "y", "field": "variety", "band": 0.5},
-          "height": {"value": 15},
           "width": {"value": 1}
         }
       }
@@ -178,8 +181,8 @@
         "sort": true
       },
       "range": {"step": {"signal": "y_step"}},
-      "paddingInner": 0,
-      "paddingOuter": 0
+      "paddingInner": 0.25,
+      "paddingOuter": 0.125
     }
   ],
   "axes": [

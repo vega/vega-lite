@@ -1,5 +1,5 @@
 import {LegendOrient} from 'vega';
-import * as properties from '../../../src/compile/legend/properties';
+import * as properties from '../../../src/compile/legend/properties.js';
 
 describe('compile/legend', () => {
   describe('defaultDirection()', () => {
@@ -45,7 +45,7 @@ describe('compile/legend', () => {
 
       expect(values).toEqual([
         {signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'},
-        {signal: 'datetime(1980, 0, 1, 0, 0, 0, 0)'}
+        {signal: 'datetime(1980, 0, 1, 0, 0, 0, 0)'},
       ]);
     });
 

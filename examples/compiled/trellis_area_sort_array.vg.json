@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Stock prices of four large companies as a small multiples of area charts.",
   "background": "white",
   "padding": 5,
@@ -175,7 +175,7 @@
                   "orient": {"value": "vertical"},
                   "fill": {"scale": "color", "field": "symbol"},
                   "description": {
-                    "signal": "\"Time: \" + (timeFormat(datum[\"date\"], '%Y')) + \"; Price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                    "signal": "\"Time: \" + (timeFormat(datum[\"date\"], \"%Y\")) + \"; Price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
                   },
                   "x": {"scale": "x", "field": "date"},
                   "y": {"scale": "y", "field": "price_end"},
