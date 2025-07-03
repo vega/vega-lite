@@ -16,8 +16,8 @@ function setLegendEncode(
   legend.encode ??= {};
   legend.encode[part] ??= {};
   legend.encode[part].update ??= {};
-  // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
-  (legend.encode[part].update[vgProp] as any) = vgRef;
+  // @ts-expect-error expression is too complex for typescript to understand
+  legend.encode[part].update[vgProp] = vgRef;
 }
 
 export function assembleLegends(model: Model): VgLegend[] {
