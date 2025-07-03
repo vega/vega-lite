@@ -9,7 +9,7 @@ import {isUnitSpec} from '../spec/unit.js';
 import {stack} from '../stack.js';
 import {keys, omit, pick} from '../util.js';
 import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base.js';
-import {initMarkdef} from '../compile/mark/init.js';
+import {DEFAULT_REDUCED_OPACITY, initMarkdef} from '../compile/mark/init.js';
 
 type UnitSpecWithPathOverlay = GenericUnitSpec<Encoding<string>, Mark | MarkDef<'line' | 'area' | 'rule' | 'trail'>>;
 
@@ -117,7 +117,16 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
       {
         name,
         ...(params ? {params} : {}),
-        mark: dropLineAndPoint(markDef),
+        mark: dropLineAndPoint({
+          ...(markDef.type === 'area' &&
+          markDef.opacity === undefined &&
+          markDef.fillOpacity === undefined &&
+          config[markDef.type]?.opacity === undefined &&
+          config[markDef.type]?.fillOpacity === undefined
+            ? {opacity: DEFAULT_REDUCED_OPACITY}
+            : {}),
+          ...markDef,
+        }),
         // drop shape from encoding as this might be used to trigger point overlay
         encoding: omit(encoding, ['shape']),
       },
@@ -125,7 +134,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
 
     // FIXME: determine rules for applying selections.
 
-    // Need to copy stack config to overlayed layer
+    // Need to copy stack config to overlaid layer
     // FIXME: normalizer shouldn't call `initMarkdef`, a method from an init phase.
     const stackProps = stack(initMarkdef(markDef, encoding, config), encoding);
 
