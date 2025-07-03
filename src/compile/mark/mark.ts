@@ -282,11 +282,11 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
   if (
     interactive &&
     Object.values(model.component.selection).some(
-      s =>
+      (s) =>
         s.type === 'point' &&
         !s.bind &&
         // if on is a pointerover (hover) the pointer makes less sense since the mark is not clickable.
-        (s as any).on !== 'pointerover'
+        (s as any).on !== 'pointerover',
     )
   ) {
     model.markDef.cursor ??= 'pointer';
