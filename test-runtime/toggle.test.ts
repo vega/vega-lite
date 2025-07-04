@@ -11,9 +11,15 @@ const hits = {
   composite: [1, 3, 5, 7, 8, 9],
 } as const;
 
-function toggle(view: View, key: keyof typeof hits, idx: number, shiftKey: boolean, parent?: string) {
+async function toggle(
+  view: View,
+  key: keyof typeof hits,
+  idx: number,
+  shiftKey: boolean,
+  parent?: string,
+): Promise<any[] | HTMLElement> {
   const fn = key.match('_clear') ? clear : _pt;
-  return fn(view, hits[key][idx], parent, !!shiftKey);
+  return await fn(view, hits[key][idx], parent, !!shiftKey);
 }
 
 describe('Toggle point selections at runtime', () => {
@@ -24,15 +30,15 @@ describe('Toggle point selections at runtime', () => {
     await toggle(view, 'qq', 0, false);
     await toggle(view, 'qq', 1, true);
     let store = await toggle(view, 'qq', 2, true);
-    expect(store).toHaveLength(3);
+    expect(Array.isArray(store) ? store.length : 0).toBe(3);
     await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/click_0.svg');
 
     store = await toggle(view, 'qq', 2, true);
-    expect(store).toHaveLength(2);
+    expect(Array.isArray(store) ? store.length : 0).toBe(2);
     await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/click_1.svg');
 
     store = await toggle(view, 'qq', 3, false);
-    expect(store).toHaveLength(1);
+    expect(Array.isArray(store) ? store.length : 0).toBe(1);
     await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/click_2.svg');
   });
 
@@ -45,11 +51,11 @@ describe('Toggle point selections at runtime', () => {
     await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/clear_0.svg`);
 
     let store = await toggle(view, 'qq_clear', 0, true);
-    expect(store).toHaveLength(4);
+    expect(Array.isArray(store) ? store.length : 0).toBe(4);
     await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/clear_1.svg`);
 
     store = await toggle(view, 'qq_clear', 1, false);
-    expect(store).toHaveLength(0);
+    expect(Array.isArray(store) ? store.length : 0).toBe(0);
     await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/clear_2.svg`);
   });
 
@@ -59,15 +65,15 @@ describe('Toggle point selections at runtime', () => {
     await toggle(view, 'bins', 0, false);
     await toggle(view, 'bins', 1, true);
     let store = await toggle(view, 'bins', 2, true);
-    expect(store).toHaveLength(3);
+    expect(Array.isArray(store) ? store.length : 0).toBe(3);
     await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/bins_0.svg');
 
     store = await toggle(view, 'bins', 2, true);
-    expect(store).toHaveLength(2);
+    expect(Array.isArray(store) ? store.length : 0).toBe(2);
     await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/bins_1.svg');
 
     store = await toggle(view, 'bins', 3, false);
-    expect(store).toHaveLength(1);
+    expect(Array.isArray(store) ? store.length : 0).toBe(1);
     await expect(await view.toSVG()).toMatchFileSnapshot('./snapshots/point/toggle/bins_2.svg');
   });
 
@@ -78,7 +84,7 @@ describe('Toggle point selections at runtime', () => {
       for (let i = 0; i < hits.composite.length; i++) {
         const parent = parentSelector(specType, i % 3);
         const store = await toggle(view, 'composite', i, true, parent);
-        expect((length = store.length)).toEqual(i + 1);
+        expect(Array.isArray(store) ? store.length : 0).toEqual(i + 1);
         if (i % 3 === 2) {
           await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/${specType}_${i}.svg`);
         }
@@ -88,7 +94,7 @@ describe('Toggle point selections at runtime', () => {
         const even = i % 2 === 0;
         const parent = parentSelector(specType, ~~(i / 2));
         const store = await toggle(view, 'qq_clear', 0, even, parent);
-        expect(store).toHaveLength(even ? length : (length -= 2));
+        expect(Array.isArray(store) ? store.length : 0).toBe(even ? length : (length -= 2));
         if (!even) {
           await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/point/toggle/${specType}_clear_${i}.svg`);
         }
