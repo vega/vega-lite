@@ -18,6 +18,7 @@ import {
 import {
   getFieldDef,
   getFieldOrDatumDef,
+  isFieldDef,
   isFieldOrDatumDef,
   isTypedFieldDef,
   MarkPropFieldOrDatumDef,
@@ -123,6 +124,8 @@ export class UnitModel extends ModelWithField {
 
     // Selections will be initialized upon parse.
     this.selection = (spec.params ?? []).filter((p) => isSelectionParameter(p)) as SelectionParameter[];
+
+    this.alignStackOrderWithColorDomain();
   }
 
   public get hasProjection(): boolean {
@@ -220,6 +223,34 @@ export class UnitModel extends ModelWithField {
 
       return _legend;
     }, {} as any);
+  }
+
+  /**
+   * If this unit lacks order encoding but does contain a color domain
+   * add transform and encoding that aligns the stack order with the color domain.
+   */
+  private alignStackOrderWithColorDomain() {
+    const {color, order, xOffset, yOffset} = this.encoding;
+    const colorEncoding = isFieldDef(color) ? color : undefined;
+    const field = colorEncoding?.field;
+    const scale = colorEncoding?.scale;
+    const domain = scale?.domain;
+    const offset = xOffset || yOffset;
+    const offsetEncoding = isFieldDef(offset) ? offset : undefined;
+    const orderFieldName = `_${field}_sort_index`;
+
+    if (!order && Array.isArray(domain) && typeof field === 'string') {
+      // align grouped bar order with color domain
+      if (offsetEncoding && !offsetEncoding.sort) {
+        offsetEncoding.sort = domain as [];
+      } else {
+        // align stacked bar and area order with color domain
+        const orderExpression = `indexof(${JSON.stringify(domain)}, datum.${field})`;
+        const sort = this.markDef?.orient === 'horizontal' ? 'ascending' : 'descending';
+        this.transforms.push({calculate: orderExpression, as: orderFieldName});
+        this.encoding.order = {field: orderFieldName, type: 'quantitative', sort};
+      }
+    }
   }
 
   public parseData() {
