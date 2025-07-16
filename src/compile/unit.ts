@@ -230,8 +230,9 @@ export class UnitModel extends ModelWithField {
    * add transform and encoding that aligns the stack order with the color domain.
    */
   private alignStackOrderWithColorDomain() {
-    const {color, order, xOffset, yOffset} = this.encoding;
-    const colorEncoding = isFieldDef(color) ? color : undefined;
+    const {color, fill, order, xOffset, yOffset} = this.encoding;
+    const colorField = fill || color;
+    const colorEncoding = isFieldDef(colorField) ? colorField : undefined;
     const field = colorEncoding?.field;
     const scale = colorEncoding?.scale;
     const domain = scale?.domain;
