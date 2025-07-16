@@ -104,4 +104,29 @@ describe('UnitModel', () => {
       expect(model.legend('color').labelColor).toEqual({signal: 'red'});
     });
   });
+
+  describe('alignStackOrderWithColorDomain', () => {
+    it('should add custom order if color or fill domain is specified for grouped bars', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          color: {field: 'a', scale: {domain: ['y', 'x', 'z']}},
+          xOffset: {field: 'b'},
+        },
+      });
+
+      expect(model.encoding.xOffset).toEqual({field: 'b', sort: ['y', 'x', 'z'], type: 'nominal'});
+    });
+
+    it('should add custom order if color or fill domain is specified for stacked bars', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          color: {field: 'a', scale: {domain: ['y', 'x', 'z']}},
+        },
+      });
+
+      expect(model.encoding.order).toEqual({field: '_a_sort_index', type: 'quantitative', sort: 'descending'});
+    });
+  });
 });
