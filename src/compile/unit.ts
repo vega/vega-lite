@@ -1,5 +1,5 @@
 import {NewSignal, SignalRef} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray, stringValue} from 'vega-util';
 import {Axis, AxisInternal, isConditionalAxisValue} from '../axis.js';
 import {
   Channel,
@@ -246,7 +246,7 @@ export class UnitModel extends ModelWithField {
         offsetEncoding.sort = domain as [];
       } else {
         // align stacked bar and area order with color domain
-        const orderExpression = `indexof(${JSON.stringify(domain)}, datum.${field})`;
+        const orderExpression = `indexof(${stringValue(domain)}, datum.${field})`;
         const sort = this.markDef?.orient === 'horizontal' ? 'ascending' : 'descending';
         this.transforms.push({calculate: orderExpression, as: orderFieldName});
         this.encoding.order = {field: orderFieldName, type: 'quantitative', sort};
