@@ -283,6 +283,11 @@
         {"type": "formula", "expr": "datum.v1 - datum.offset", "as": "nx"},
         {"type": "formula", "expr": "datum.v2 - datum.offset", "as": "nx2"},
         {
+          "type": "formula",
+          "expr": "indexof([\"Strongly disagree\",\"Disagree\",\"Neither agree nor disagree\",\"Agree\",\"Strongly agree\"], datum['type'])",
+          "as": "_type_sort_index"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"nx\"]) && isFinite(+datum[\"nx\"])"
         }
@@ -301,13 +306,17 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
+      "sort": {
+        "field": ["datum[\"_type_sort_index\"]"],
+        "order": ["ascending"]
+      },
       "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "type"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Percentage: \" + (format(datum[\"nx\"], \"\")) + \"; Question: \" + (isValid(datum[\"question\"]) ? datum[\"question\"] : \"\"+datum[\"question\"]) + \"; nx2: \" + (format(datum[\"nx2\"], \"\")) + \"; Response: \" + (isValid(datum[\"type\"]) ? datum[\"type\"] : \"\"+datum[\"type\"])"
+            "signal": "\"Percentage: \" + (format(datum[\"nx\"], \"\")) + \"; Question: \" + (isValid(datum[\"question\"]) ? datum[\"question\"] : \"\"+datum[\"question\"]) + \"; nx2: \" + (format(datum[\"nx2\"], \"\")) + \"; Response: \" + (isValid(datum[\"type\"]) ? datum[\"type\"] : \"\"+datum[\"type\"]) + \"; _type_sort_index: \" + (format(datum[\"_type_sort_index\"], \"\"))"
           },
           "x": {"scale": "x", "field": "nx"},
           "x2": {"scale": "x", "field": "nx2"},

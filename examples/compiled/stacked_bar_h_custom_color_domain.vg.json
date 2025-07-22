@@ -12,7 +12,7 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "indexof([\"Morris\",\"Crookston\",\"Grand Rapids\",\"University Farm\",\"Waseca\",\"Duluth\"], datum.site)",
+          "expr": "indexof([\"Morris\",\"Crookston\",\"Grand Rapids\",\"University Farm\",\"Waseca\",\"Duluth\"], datum['site'])",
           "as": "_site_sort_index"
         },
         {

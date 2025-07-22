@@ -43,6 +43,11 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "formula",
+          "expr": "indexof([30,70], datum['b'])",
+          "as": "_b_sort_index"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
         }
@@ -193,6 +198,10 @@
           "name": "concat_2_marks",
           "type": "symbol",
           "style": ["circle"],
+          "sort": {
+            "field": ["datum[\"_b_sort_index\"]"],
+            "order": ["descending"]
+          },
           "from": {"data": "data_3"},
           "encode": {
             "update": {
@@ -200,7 +209,7 @@
               "fill": {"scale": "concat_2_color", "field": "b"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
+                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"]) + \"; _b_sort_index: \" + (format(datum[\"_b_sort_index\"], \"\"))"
               },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_2_y", "field": "b"},

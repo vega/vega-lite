@@ -11,6 +11,11 @@
       "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [
         {
+          "type": "formula",
+          "expr": "indexof([\"sun\",\"fog\",\"drizzle\",\"rain\",\"snow\"], datum['weather'])",
+          "as": "_weather_sort_index"
+        },
+        {
           "field": "date",
           "type": "timeunit",
           "units": ["month"],
@@ -18,7 +23,7 @@
         },
         {
           "type": "aggregate",
-          "groupby": ["month_date", "weather"],
+          "groupby": ["month_date", "weather", "_weather_sort_index"],
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
@@ -27,7 +32,7 @@
           "type": "stack",
           "groupby": ["month_date"],
           "field": "__count",
-          "sort": {"field": ["weather"], "order": ["descending"]},
+          "sort": {"field": ["_weather_sort_index"], "order": ["descending"]},
           "as": ["__count_start", "__count_end"],
           "offset": "zero"
         }
@@ -52,7 +57,7 @@
           "fill": {"scale": "color", "field": "weather"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Month of the year: \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Weather type: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"])"
+            "signal": "\"Month of the year: \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Weather type: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"]) + \"; _weather_sort_index: \" + (format(datum[\"_weather_sort_index\"], \"\"))"
           },
           "x": {"scale": "x", "field": "month_date"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
