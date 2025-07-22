@@ -89,7 +89,7 @@
         "update": {
           "fill": {"scale": "layer_1_color", "field": "more_than_half"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; more_than_half: \" + (isValid(datum[\"more_than_half\"]) ? datum[\"more_than_half\"] : \"\"+datum[\"more_than_half\"]) + \"; num_cars: \" + (format(datum[\"num_cars\"], \"\")) + \"; _more_than_half_sort_index: \" + (format(datum[\"_more_than_half_sort_index\"], \"\"))"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; more_than_half: \" + (isValid(datum[\"more_than_half\"]) ? datum[\"more_than_half\"] : \"\"+datum[\"more_than_half\"]) + \"; num_cars: \" + (format(datum[\"num_cars\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},

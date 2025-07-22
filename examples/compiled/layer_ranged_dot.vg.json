@@ -29,11 +29,6 @@
       "source": "source_0",
       "transform": [
         {
-          "type": "formula",
-          "expr": "indexof([1955,2000], datum['year'])",
-          "as": "_year_sort_index"
-        },
-        {
           "type": "filter",
           "expr": "isValid(datum[\"life_expect\"]) && isFinite(+datum[\"life_expect\"])"
         }
@@ -91,10 +86,6 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "sort": {
-        "field": ["datum[\"_year_sort_index\"]"],
-        "order": ["descending"]
-      },
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -102,7 +93,7 @@
           "fill": {"scale": "color", "field": "year"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Life Expectancy (years): \" + (format(datum[\"life_expect\"], \"\")) + \"; Country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; Year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; _year_sort_index: \" + (format(datum[\"_year_sort_index\"], \"\"))"
+            "signal": "\"Life Expectancy (years): \" + (format(datum[\"life_expect\"], \"\")) + \"; Country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; Year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
           "x": {"scale": "x", "field": "life_expect"},
           "y": {"scale": "y", "field": "country"},
