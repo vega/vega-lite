@@ -106,7 +106,6 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     case POINT:
     case CIRCLE:
     case SQUARE:
-    case TEXT:
     case RECT:
     case IMAGE:
       // orient is meaningless for these marks.
@@ -116,6 +115,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
   const {x, y, x2, y2} = encoding;
 
   switch (mark) {
+    case TEXT:
     case BAR:
       if (isFieldDef(x) && (isBinned(x.bin) || (isFieldDef(y) && y.aggregate && !x.aggregate))) {
         return 'vertical';
