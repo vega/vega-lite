@@ -109,7 +109,7 @@
           "stroke": {"scale": "color", "field": "id"},
           "ariaRoleDescription": {"value": "geoshape"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; _id_sort_index: \" + (format(datum[\"_id_sort_index\"], \"\"))"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
           }
         }
       },

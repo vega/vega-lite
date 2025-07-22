@@ -316,7 +316,7 @@
           "fill": {"scale": "color", "field": "type"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Percentage: \" + (format(datum[\"nx\"], \"\")) + \"; Question: \" + (isValid(datum[\"question\"]) ? datum[\"question\"] : \"\"+datum[\"question\"]) + \"; nx2: \" + (format(datum[\"nx2\"], \"\")) + \"; Response: \" + (isValid(datum[\"type\"]) ? datum[\"type\"] : \"\"+datum[\"type\"]) + \"; _type_sort_index: \" + (format(datum[\"_type_sort_index\"], \"\"))"
+            "signal": "\"Percentage: \" + (format(datum[\"nx\"], \"\")) + \"; Question: \" + (isValid(datum[\"question\"]) ? datum[\"question\"] : \"\"+datum[\"question\"]) + \"; nx2: \" + (format(datum[\"nx2\"], \"\")) + \"; Response: \" + (isValid(datum[\"type\"]) ? datum[\"type\"] : \"\"+datum[\"type\"])"
           },
           "x": {"scale": "x", "field": "nx"},
           "x2": {"scale": "x", "field": "nx2"},

@@ -235,12 +235,13 @@ export class UnitModel extends ModelWithField {
     const colorEncoding = isFieldDef(colorField) ? colorField : undefined;
     const field = colorEncoding?.field;
     const scale = colorEncoding?.scale;
+    const colorEncodingType = colorEncoding?.type;
     const domain = scale?.domain;
     const offset = xOffset || yOffset;
     const offsetEncoding = isFieldDef(offset) ? offset : undefined;
     const orderFieldName = `_${field}_sort_index`;
 
-    if (!order && Array.isArray(domain) && typeof field === 'string') {
+    if (!order && Array.isArray(domain) && typeof field === 'string' && colorEncodingType === 'nominal') {
       // align grouped bar order with color domain
       if (offsetEncoding && !offsetEncoding.sort) {
         offsetEncoding.sort = domain as [];
