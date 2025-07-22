@@ -33,4 +33,4 @@ EOF
 # Build the editor site in the dist folder
 # Disable minification to make it easier to debug, and because sourcemaps
 # exceed 25 MB limit on cloudflare
-npm run build:only -- --public-url / --no-optimize --no-source-maps
+npm run build:only -- --base /
