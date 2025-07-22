@@ -61,8 +61,8 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
 
   // set opacity and filled if not specified in mark config
   const specifiedOpacity = getMarkPropOrConfig('opacity', markDef, config);
-  const specifiedfillOpacity = getMarkPropOrConfig('fillOpacity', markDef, config);
-  if (specifiedOpacity === undefined && specifiedfillOpacity === undefined) {
+  const specifiedFillOpacity = getMarkPropOrConfig('fillOpacity', markDef, config);
+  if (specifiedOpacity === undefined && specifiedFillOpacity === undefined) {
     markDef.opacity = opacity(markDef.type, encoding);
   }
 
@@ -83,12 +83,11 @@ function cursor(markDef: MarkDef<Mark, SignalRef>, encoding: Encoding<string>, c
   return markDef.cursor;
 }
 
+export const DEFAULT_REDUCED_OPACITY = 0.7;
+
 function opacity(mark: Mark, encoding: Encoding<string>) {
-  if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
-    // point-based marks
-    if (!isAggregate(encoding)) {
-      return 0.7;
-    }
+  if (contains([POINT, TICK, CIRCLE, SQUARE], mark) && !isAggregate(encoding)) {
+    return DEFAULT_REDUCED_OPACITY;
   }
   return undefined;
 }
