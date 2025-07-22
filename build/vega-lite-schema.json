@@ -315,7 +315,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Cursor",
-              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used. The default cursor depends on whether the mark is interactive or not."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -3169,7 +3169,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Cursor",
-              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used. The default cursor depends on whether the mark is interactive or not."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -14825,7 +14825,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Cursor",
-              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used. The default cursor depends on whether the mark is interactive or not."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -15990,7 +15990,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Cursor",
-              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used. The default cursor depends on whether the mark is interactive or not."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -16840,7 +16840,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Cursor",
-              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used. The default cursor depends on whether the mark is interactive or not."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -18402,7 +18402,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Cursor",
-              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used. The default cursor depends on whether the mark is interactive or not."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -20676,7 +20676,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Cursor",
-              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used. The default cursor depends on whether the mark is interactive or not."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -28504,7 +28504,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Cursor",
-              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used. The default cursor depends on whether the mark is interactive or not."
             },
             {
               "$ref": "#/definitions/ExprRef"
