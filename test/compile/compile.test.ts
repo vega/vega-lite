@@ -592,3 +592,55 @@ it('should generate right tooltip', () => {
     'extent_people',
   ]);
 });
+
+it('should generate right cursor for point selection', () => {
+  const {spec} = compile({
+    data: {url: 'data/population.json'},
+    params: [{name: 'select', select: 'point'}],
+    mark: 'bar',
+    encoding: {
+      x: {field: 'a', type: 'ordinal'},
+      y: {field: 'b', type: 'quantitative'},
+    },
+  });
+
+  expect(spec.marks[0].encode.update.cursor).toEqual({value: 'pointer'});
+});
+
+it('should not generate cursor for point selection with binding', () => {
+  const {spec} = compile({
+    data: {url: 'data/population.json'},
+    params: [
+      {
+        name: 'highlight',
+        value: [{Cylinders: 4, Year: 1977}],
+        select: {type: 'point', fields: ['Cylinders', 'Year']},
+        bind: {
+          Cylinders: {input: 'range', min: 3, max: 8, step: 1},
+          Year: {input: 'range', min: 1969, max: 1981, step: 1},
+        },
+      },
+    ],
+    mark: 'bar',
+    encoding: {
+      x: {field: 'a', type: 'ordinal'},
+      y: {field: 'b', type: 'quantitative'},
+    },
+  });
+
+  expect(spec.marks[0].encode.update.cursor).toBeUndefined();
+});
+
+it('should not generate cursor for interval selection', () => {
+  const {spec} = compile({
+    data: {url: 'data/population.json'},
+    params: [{name: 'brush', select: {type: 'interval', encodings: ['x']}}],
+    mark: 'bar',
+    encoding: {
+      x: {field: 'a', type: 'ordinal'},
+      y: {field: 'b', type: 'quantitative'},
+    },
+  });
+
+  expect(spec.marks[0].encode.update.cursor).toBeUndefined();
+});

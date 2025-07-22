@@ -101,6 +101,7 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
+          "cursor": {"value": "pointer"},
           "fill": [
             {
               "test": "!length(data(\"CylYr_store\")) || vlSelectionTest(\"CylYr_store\", datum)",

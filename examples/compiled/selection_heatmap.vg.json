@@ -95,6 +95,7 @@
       "encode": {
         "update": {
           "strokeWidth": {"value": 2},
+          "cursor": {"value": "pointer"},
           "fill": {"scale": "fill", "field": "count"},
           "stroke": [
             {
