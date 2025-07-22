@@ -77,6 +77,7 @@ export function description(model: UnitModel) {
   return {
     description: {
       signal: entries(data)
+        .filter(([key]) => !key.startsWith('_')) // remove internal/private signals from aria description
         .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
         .join(' + '),
     },
