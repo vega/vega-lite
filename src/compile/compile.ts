@@ -273,8 +273,9 @@ function findUnitByName(model: Model, name: string): UnitModel | LayerModel {
  * Add sibling marks with rectangles to Vega text marks with background properties
  *
  * TODO
- * - add bg vars to schema
- * - add bgCornerRadius for eacht corner?
+ * - refine type safety
+ * - adjust schema so bg vars are only valid in text marks
+ * - support bgCornerRadius for each corner separately?
  */
 function addTextBackground(model: Model, group: VgMarkGroup): VgMarkGroup {
   group.marks = group.marks
