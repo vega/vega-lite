@@ -16,7 +16,7 @@ import {Config} from '../../../config.js';
 import {Encoding, forEach} from '../../../encoding.js';
 import {StackProperties} from '../../../stack.js';
 import {Dict, entries} from '../../../util.js';
-import {isSignalRef} from '../../../vega.schema.js';
+import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
 import {getMarkPropOrConfig} from '../../common.js';
 import {binFormatExpression, formatSignalRef} from '../../format.js';
 import {UnitModel} from '../../unit.js';
@@ -26,13 +26,14 @@ import {textRef} from './text.js';
 export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config, stack} = model;
   const channelDef = encoding.tooltip;
+
   if (isArray(channelDef)) {
     return {tooltip: tooltipRefForEncoding({tooltip: channelDef}, stack, config, opt)};
   } else {
     const datum = opt.reactiveGeom ? 'datum.datum' : 'datum';
     const mainRefFn = (cDef: Encoding<string>['tooltip']) => {
       // use valueRef based on channelDef first
-      const tooltipRefFromChannelDef = textRef(cDef, config, datum);
+      const tooltipRefFromChannelDef = addLineBreaksToTooltip(cDef, config, datum);
       if (tooltipRefFromChannelDef) {
         return tooltipRefFromChannelDef;
       }
@@ -130,7 +131,7 @@ export function tooltipData(
       }).signal;
     }
 
-    value ??= textRef(fieldDef, formatConfig, expr).signal;
+    value ??= addLineBreaksToTooltip(fieldDef, formatConfig, expr).signal;
 
     tuples.push({channel, key, value});
   }
@@ -163,4 +164,24 @@ export function tooltipRefForEncoding(
 
   const keyValues = entries(data).map(([key, value]) => `"${key}": ${value}`);
   return keyValues.length > 0 ? {signal: `{${keyValues.join(', ')}}`} : undefined;
+}
+
+/**
+ * Transforms a tooltip value that is an array to a string with line breaks
+ */
+function addLineBreaksToTooltip(
+  channelDef: Encoding<string>['text' | 'tooltip'],
+  config: Config,
+  expr: 'datum' | 'datum.datum' = 'datum',
+): VgValueRef {
+  // tooltip fields with a format property are no strings
+  const fieldDefWithFormat = channelDef as {field: string; type: string; format: string};
+  if (fieldDefWithFormat?.type === 'nominal' && !fieldDefWithFormat.format) {
+    const fieldString = `datum["${fieldDefWithFormat.field}"]`;
+    return {
+      signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : ""+${fieldString}`,
+    };
+  }
+
+  return textRef(channelDef, config, expr);
 }
