@@ -66,7 +66,7 @@ The window transform performs calculations over sorted groups of data objects. T
 
 ## Window Only Operation Reference
 
-The valid operations include all [aggregate operations](../aggregate/#ops) plus the following window operations.
+The valid operations include all [aggregate operations](aggregate.html#ops) plus the following window operations.
 
 | Operation | Parameter | Description |
 | :-- | :-: | :-- |
