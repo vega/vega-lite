@@ -1,0 +1,179 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/driving.json",
+      "format": {"type": "json"}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"miles\"]) && isFinite(+datum[\"miles\"]) && isValid(datum[\"gas\"]) && isFinite(+datum[\"gas\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"miles: \" + (format(datum[\"miles\"], \"\")) + \"; gas: \" + (format(datum[\"gas\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+          },
+          "x": {"scale": "x", "field": "miles"},
+          "y": {"scale": "y", "field": "gas"},
+          "defined": {
+            "signal": "isValid(datum[\"miles\"]) && isFinite(+datum[\"miles\"]) && isValid(datum[\"gas\"]) && isFinite(+datum[\"gas\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 1},
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"miles: \" + (format(datum[\"miles\"], \"\")) + \"; gas: \" + (format(datum[\"gas\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+          },
+          "x": {"scale": "x", "field": "miles"},
+          "y": {"scale": "y", "field": "gas"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks_label",
+      "type": "text",
+      "style": ["text"],
+      "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
+      "from": {"data": "layer_1_marks"},
+      "encode": {
+        "update": {
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+          },
+          "text": {
+            "signal": "isValid(datum.datum[\"year\"]) ? datum.datum[\"year\"] : \"\"+datum.datum[\"year\"]"
+          }
+        }
+      },
+      "transform": [
+        {
+          "type": "label",
+          "size": {"signal": "[width, height]"},
+          "anchor": [
+            "top-right",
+            "top",
+            "top-left",
+            "left",
+            "bottom-left",
+            "bottom",
+            "bottom-right",
+            "middle"
+          ],
+          "offset": [2, 2, 2, 2, 2, 2, 2, 2, 2],
+          "avoidMarks": ["layer_0_marks"]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "miles"},
+          {"data": "data_0", "field": "miles"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "zero": false,
+      "nice": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "gas"},
+          {"data": "data_0", "field": "gas"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "zero": false,
+      "nice": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "miles",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "gas",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

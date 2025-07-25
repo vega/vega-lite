@@ -397,4 +397,302 @@ describe('PathOverlayNormalizer', () => {
       ]
     });
   });
+
+  it('correctly normalizes line with label', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'line'},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        label: {field: 'price', type: 'quantitative'}
+      }
+    };
+
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          mark: 'line',
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'}
+          }
+        },
+        {
+          mark: {type: 'point', opacity: 0, filled: true},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'},
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
+          }
+        }
+      ]
+    });
+  });
+
+  it('correctly normalizes line with label and overlay point', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: {
+        type: 'line',
+        point: true
+      },
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        label: {field: 'price', type: 'quantitative'}
+      }
+    };
+
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          mark: 'line',
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'}
+          }
+        },
+        {
+          mark: {type: 'point', opacity: 1, filled: true},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'},
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
+          }
+        }
+      ]
+    });
+  });
+
+  it('correctly normalizes multi-series line with label, and overlay point', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: {
+        type: 'line',
+        point: true
+      },
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        label: {field: 'price', type: 'quantitative'},
+        detail: {field: 'a', type: 'nominal'}
+      }
+    };
+
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          mark: 'line',
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'},
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}},
+            detail: {field: 'a', type: 'nominal'}
+          }
+        },
+        {
+          mark: {type: 'point', opacity: 1, filled: true},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'},
+            detail: {field: 'a', type: 'nominal'}
+          }
+        }
+      ]
+    });
+  });
+
+  it('correctly normalizes line with label and without overlay point', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'line'},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        label: {field: 'price', type: 'quantitative'}
+      }
+    };
+
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          mark: 'line',
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'}
+          }
+        },
+        {
+          mark: {type: 'point', opacity: 0, filled: true},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'},
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
+          }
+        }
+      ]
+    });
+  });
+
+  it('does not normalize multi-series line with label, and without overlay point', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'line'},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        label: {field: 'price', type: 'quantitative'},
+        detail: {field: 'a', type: 'nominal'}
+      }
+    };
+
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual(spec);
+  });
+
+  it('correctly normalizes area with label and overlay line', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'area', line: true},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        label: {field: 'price', type: 'quantitative'}
+      }
+    };
+
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          mark: {opacity: 0.7, type: 'area'},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'}
+          }
+        },
+        {
+          mark: {type: 'line'},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative', stack: 'zero'}
+          }
+        },
+        {
+          mark: {type: 'point', opacity: 0, filled: true},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative', stack: 'zero'},
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
+          }
+        }
+      ]
+    });
+  });
+
+  it('correctly normalizes area with label and without overlay line', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'area'},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        label: {field: 'price', type: 'quantitative'}
+      }
+    };
+
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          mark: {opacity: 0.7, type: 'area'},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'}
+          }
+        },
+        {
+          mark: {type: 'point', opacity: 0, filled: true},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative', stack: 'zero'},
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
+          }
+        }
+      ]
+    });
+  });
+
+  it('correctly normalizes stacked area with label and overlay line', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'area', line: true},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        color: {field: 'color', type: 'nominal'},
+        label: {field: 'price', type: 'quantitative'}
+      }
+    };
+
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          mark: {opacity: 0.7, type: 'area'},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'},
+            color: {field: 'color', type: 'nominal'},
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
+          }
+        },
+        {
+          mark: {type: 'line'},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative', stack: 'zero'},
+            color: {field: 'color', type: 'nominal'}
+          }
+        }
+      ]
+    });
+  });
+
+  it('correctly normalizes stacked area with label and without overlay line', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'area'},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        color: {field: 'color', type: 'nominal'},
+        label: {field: 'price', type: 'quantitative'}
+      }
+    };
+
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'area'},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        color: {field: 'color', type: 'nominal'},
+        label: {field: 'price', type: 'quantitative'}
+      }
+    });
+  });
 });

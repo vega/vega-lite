@@ -20,6 +20,7 @@ import {
   isXorY,
   isXorYOffset,
   KEY,
+  LABEL,
   LATITUDE,
   LATITUDE2,
   LONGITUDE,
@@ -66,6 +67,7 @@ import {
   isFieldDef,
   isTypedFieldDef,
   isValueDef,
+  LabelDef,
   LatLongDef,
   NumericArrayMarkPropDef,
   NumericMarkPropDef,
@@ -290,6 +292,14 @@ export interface Encoding<F extends Field> {
    * Text of the `text` mark.
    */
   text?: TextDef<F>;
+
+  /**
+   * Label as a text annotation to the mark.
+   * The position of the label is automatically configured to avoid collisions betwen labels and other marks.
+   *
+   * __Default value:__ If undefined, the mark will not be labeled.
+   */
+  label?: LabelDef<F>;
 
   /**
    * The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
@@ -706,7 +716,7 @@ export function reduce<T, U extends Record<any, any>>(
 export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): string[] {
   return keys(encoding).reduce((details, channel) => {
     switch (channel) {
-      // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, aria label, cursor should not cause lines to group
+      // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, aria label, cursor, label should not cause lines to group
       case X:
       case Y:
       case HREF:
@@ -720,6 +730,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case THETA2:
       case RADIUS:
       case RADIUS2:
+      case LABEL:
       // falls through
 
       case LATITUDE:
@@ -728,7 +739,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case LONGITUDE2:
       // TODO: case 'cursor':
 
-      // text, shape, shouldn't be a part of line/trail/area [falls through]
+      // text, label, shape, shouldn't be a part of line/trail/area [falls through]
       case TEXT:
       case SHAPE:
       case ANGLE:

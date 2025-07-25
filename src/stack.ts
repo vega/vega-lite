@@ -1,6 +1,6 @@
 import {array, isBoolean} from 'vega-util';
 import {Aggregate, SUM_OPS} from './aggregate';
-import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel';
+import {getSecondaryRangeChannel, NonPositionChannel, STACKABLE_CHANNELS} from './channel';
 import {
   channelDefType,
   FieldName,
@@ -200,9 +200,9 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   // If the dimension has offset, don't stack anymore
 
   // Should have grouping level of detail that is different from the dimension field
-  const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
-    // Ignore tooltip in stackBy (https://github.com/vega/vega-lite/issues/4001)
-    if (channel !== 'tooltip' && channelHasField(encoding, channel)) {
+  // Ignore tooltip in stackBy (https://github.com/vega/vega-lite/issues/4001)
+  const stackBy = STACKABLE_CHANNELS.reduce((sc, channel) => {
+    if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       for (const cDef of array(channelDef)) {
         const fieldDef = getFieldDef(cDef);

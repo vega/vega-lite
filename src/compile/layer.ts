@@ -11,6 +11,7 @@ import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseLayerLayoutSize} from './layoutsize/parse';
 import {assembleLegends} from './legend/assemble';
+import {isLabelMark} from './mark/mark';
 import {Model} from './model';
 import {assembleLayerSelectionMarks} from './selection/assemble';
 import {UnitModel} from './unit';
@@ -74,6 +75,14 @@ export class LayerModel extends Model {
     for (const child of this.children) {
       child.parseMarkGroup();
     }
+
+    const markNames = this.children.map((child: UnitModel | LayerModel) => child.getMarkNames());
+    const labelNames: string[][] = [];
+    this.children.forEach((child: UnitModel | LayerModel, idx) => {
+      child.avoidMarks([markNames.slice(0, idx), markNames.slice(idx + 1)].flat(3));
+      child.avoidMarks(labelNames.flat(), -Infinity);
+      labelNames.push(child.getLabelNames());
+    });
   }
 
   public parseAxesAndHeaders() {
@@ -132,17 +141,35 @@ export class LayerModel extends Model {
   }
 
   public assembleMarks(): any[] {
-    return assembleLayerSelectionMarks(
+    const marks = assembleLayerSelectionMarks(
       this,
       this.children.flatMap(child => {
         return child.assembleMarks();
       })
     );
+
+    // Move label marks to the top
+    // In Vega, a text mark with label transform can only avoid the marks that comes
+    // before itself. To be able to avoid the marks that comes after itself, we need
+    // to push the text mark to the top.
+    return [...marks.filter(mark => !isLabelMark(mark)), ...marks.filter(isLabelMark)];
   }
 
   public assembleLegends(): VgLegend[] {
     return this.children.reduce((legends, child) => {
       return legends.concat(child.assembleLegends());
     }, assembleLegends(this));
+  }
+
+  public getMarkNames(): string[] {
+    return this.children.flatMap((child: UnitModel | LayerModel) => child.getMarkNames());
+  }
+
+  public getLabelNames(): string[] {
+    return this.children.flatMap((child: UnitModel | LayerModel) => child.getLabelNames());
+  }
+
+  public avoidMarks(names: string[], level = 0) {
+    this.children.forEach((child: UnitModel | LayerModel) => child.avoidMarks(names, level + 1));
   }
 }

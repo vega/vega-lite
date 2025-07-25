@@ -1,4 +1,4 @@
-import {Gradient, ScaleType, SignalRef, Text} from 'vega';
+import {AreaLabelMethod, Gradient, LabelAnchor, LineLabelAnchor, ScaleType, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -20,6 +20,8 @@ import {
   isSecondaryRangeChannel,
   isXorY,
   KEY,
+  LABEL,
+  LabelInheritableChannel,
   LATITUDE,
   LATITUDE2,
   LONGITUDE,
@@ -197,6 +199,167 @@ export type TextDef<F extends Field> =
   | FieldOrDatumDefWithCondition<StringFieldDef<F>, Text>
   | FieldOrDatumDefWithCondition<StringDatumDef<F>, Text>
   | ValueDefWithCondition<StringFieldDef<F>, Text>;
+
+/**
+ * Position of a label relative to its base mark's position, which includes anchor direction (anchor) and distance (offset).
+ */
+export type LabelPosition = {
+  /**
+   * Distance of a label from its base mark.
+   * If negative, the label position is insize.
+   */
+  offset: number;
+
+  /**
+   * Anchor direction of a label from its base mark.
+   * The value could be one of `"left"`, `"right"`, `"top"`, `"middle",`
+   * `"bottom"`, `"top-left"`, `"top-right"`, `"bottom-left"`, or "`bottom-right"`.
+   */
+  anchor: LabelAnchor;
+};
+
+type LabelMarkDef = Omit<MarkDef<'text'>, 'type'>;
+
+type AncestorLevel = {
+  /**
+   * A number `n` means `n`th ancestor layer.
+   */
+  ancestor: number;
+};
+
+type LabelAvoid = 'all-marks' | 'base-mark' | AncestorLevel;
+
+export function getAncestorLevel(avoid: LabelAvoid): number {
+  if (!avoid || avoid === 'base-mark') {
+    return 0;
+  } else if (avoid === 'all-marks') {
+    return Infinity;
+  } else {
+    return avoid.ancestor;
+  }
+}
+
+export type LabelDefMixins = {
+  /**
+   * A list of possible positions for a label to be placed relative to its base mark.
+   * The default value depends on the mark type.
+   *
+   * __Default value:__
+   * - `bar`:
+   *   - If vertical bar chart: `[
+   *       {anchor: "top", offset: 2},
+   *       {anchor: "top", offset: -2}
+   *     ]`
+   *   - If horizontal bar chart: `[
+   *       {anchor: "right", offset: 2},
+   *       {anchor: "right", offset: -2}
+   *     ]`
+   * - `line` or `trail`:
+   *   - If vertical line/trail chart:
+   *     - If `lineAnchor` is `"begin"`: `[
+   *         {anchor: "bottom-left", offset: 2},
+   *         {anchor: "bottom", offset: 2},
+   *         {anchor: "bottom-right", offset: 2},
+   *       ]`
+   *     - If `lineAnchor` is `"end"`: `[
+   *         {anchor: "top-left", offset: 2},
+   *         {anchor: "top", offset: 2},
+   *         {anchor: "top-right", offset: 2},
+   *       ]`
+   *   - If horizontal line/trail chart:
+   *     - If `lineAnchor` is `"begin"`: `[
+   *         {anchor: "top-left", offset: 2},
+   *         {anchor: "left", offset: 2},
+   *         {anchor: "bottom-left", offset: 2},
+   *       ]`
+   *     - If `lineAnchor` is `"end"`: `[
+   *         {anchor: "top-right", offset: 2},
+   *         {anchor: "right", offset: 2},
+   *         {anchor: "bottom-right", offset: 2},
+   *       ]`
+   * - `rect`: `[{anchor: "middle", offset: 0}]`
+   * - `circle` or `point` or `square`: `[
+   *     {anchor: "top-right", offset: 2},
+   *     {anchor: "top", offset: 2},
+   *     {anchor: "top-left", offset: 2},
+   *     {anchor: "left", offset: 2},
+   *     {anchor: "bottom-left", offset: 2},
+   *     {anchor: "bottom", offset: 2},
+   *     {anchor: "bottom-right", offset: 2},
+   *     {anchor: "right", offset: 2}
+   *   ]`
+   */
+  position?: LabelPosition[];
+
+  /**
+   * Indicates the mark or group of marks that each label will avoid.
+   * - `"base-mark"`: Avoid only the mark that encodes this label.
+   * - `"all-marks"`: Avoid all the marks that are children of the root layer.
+   * - `{ancestor: number}`: Avoid all the marks that are children of the `ancestor`th ancestor layer. `{ancestor: 0}` is the same as `"base-mark"`.
+   *
+   * __Default value:__ `"base-mark"`
+   */
+  avoid?: LabelAvoid;
+
+  /**
+   * A label mark definition for customizing the label's text mark.
+   * This definition includes all [properties of a text mark](http://vega.github.io/vega-lite/docs/text.html#properties) except `type`.
+   */
+  mark?: LabelMarkDef;
+
+  /**
+   * The padding in pixels by which a label may extend past the chart bounding box.
+   * If the padding value if `null`, the padding size is infinite number of pixels.
+   * The default value depends on the mark type:
+   * - multi-series line: `null`.
+   * - Otherwise: `0`.
+   */
+  padding?: number | null;
+
+  /**
+   * The labeling method to use for stacked area marks. One of:
+   *
+   * - `"reduced-search"`: For each area, the label is placed at the center of the largest rectangle that can fit into the area.
+   * This rectangle must have the same height and width proportion as of the label.
+   * The search space is all the pixels along the line of each pair of points that represents the upper/lower bound of the area.
+   * This method is faster than the `"floodfill"`. It works better for interactive visualizations and give a good result (each label has a large surrounding empty space).
+   *
+   * - `"floodfill"`: For each area, the label is placed at the center of the largest possible rectangle that can fit into the area.
+   * This rectangle must have the same height and width proportion as of the label.
+   * The search space is every pixels in the area.
+   * This method could be slow for interactive visualizations but give the best result (each label has the largest possible surrounding empty space).
+   *
+   * - `"naive"`: For each area, the label is placed at the widest part of the area.
+   * The search space is each pixel at the middle of each pair of points that represents the upper/lower bound of the area.
+   * This method is the fastest, but it does **not** prevent labels from overlapping with each other. It works best with large area charts.
+   *
+   * __Default value:__ `"reduced-search"`
+   */
+  method?: AreaLabelMethod;
+
+  /**
+   * The anchor position of labels for line marks, where one line receives one label.
+   * One of `"start"` or `"end"` (the default).
+   * This property only applies when the mark is multi-series line or trail.
+   *
+   * __Default value:__ `"end"`
+   */
+  lineAnchor?: LineLabelAnchor;
+
+  /**
+   * Labels inherit encoding channels from its base mark.
+   * Labels can inherit `"color"`, `"fill"`, `"stroke"`, `"opacity"`,
+   * `"fillOpacity"`, `"strokeOpacity"`, `"strokeWidth"`, `"strokeDash"`,
+   * `"tooltip"`, `"href"`, and\or `"description"`.
+   *
+   * __Default value:__
+   * - line/trail mark: ["color", "opacity"]
+   * - other marks: []
+   */
+  inherit?: LabelInheritableChannel | LabelInheritableChannel[];
+};
+
+export type LabelDef<F extends Field> = TextDef<F> & LabelDefMixins;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -1261,6 +1424,7 @@ export function channelCompatibility(
     case FILL:
     case STROKE:
     case TEXT:
+    case LABEL:
     case DETAIL:
     case KEY:
     case TOOLTIP:

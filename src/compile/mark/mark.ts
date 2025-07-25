@@ -1,7 +1,8 @@
+import {LabelTransform, Mark as VGMark, BaseMark, Encodable, array} from 'vega';
 import {isArray} from 'vega-util';
-import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
+import {getAncestorLevel, FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
 import {DataSourceType} from '../../data';
-import {isAggregate, pathGroupingFields} from '../../encoding';
+import {Encoding, isAggregate, pathGroupingFields} from '../../encoding';
 import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortByEncoding, isSortField} from '../../sort';
 import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util';
@@ -20,6 +21,10 @@ import {rect} from './rect';
 import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
+import {baseEncodeEntry as encodeBaseEncodeEntry, text as encodeText, nonPosition as encodeNonPosition} from './encode';
+import {NormalizedUnitSpec} from '../../spec';
+import * as log from '../../log';
+import {LabelInheritableChannel, supportMark} from '../../channel';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -38,11 +43,21 @@ const markCompiler: Record<Mark, MarkCompiler> = {
   trail
 };
 
-export function parseMarkGroups(model: UnitModel): any[] {
+export interface LabelMark extends BaseMark, Encodable<VgEncodeEntry> {
+  type: 'text';
+  transform: [LabelTransform];
+}
+
+export function isLabelMark(mark: VGMark) {
+  return mark.type === 'text' && mark.transform?.length === 1 && mark.transform[0].type === 'label';
+}
+
+export function parseMarkGroupsAndLabels(model: UnitModel): {mark: any[]; label?: LabelMark} {
   if (contains([LINE, AREA, TRAIL], model.mark)) {
     const details = pathGroupingFields(model.mark, model.encoding);
     if (details.length > 0) {
-      return getPathGroups(model, details);
+      const label = getLabelMark(model, model.getName('pathgroup'));
+      return {mark: getPathGroups(model, details), label};
     }
     // otherwise use standard mark groups
   } else if (model.mark === BAR) {
@@ -50,11 +65,12 @@ export function parseMarkGroups(model: UnitModel): any[] {
       getMarkPropOrConfig(prop, model.markDef, model.config)
     );
     if (model.stack && !model.fieldDef('size') && hasCornerRadius) {
-      return getGroupsForStackedBarWithCornerRadius(model);
+      return {mark: getGroupsForStackedBarWithCornerRadius(model)};
     }
   }
 
-  return getMarkGroup(model);
+  const label = getLabelMark(model, model.getName('marks'));
+  return {mark: getMarkGroup(model), label};
 }
 
 const FACETED_PATH_PREFIX = 'faceted_path_';
@@ -215,6 +231,11 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
     groupUpdate.strokeOffset = {value: 0};
   }
 
+  const label = getLabelMark(model, model.getName('marks'));
+  if (model.encoding.label && getAncestorLevel(model.encoding.label.avoid) > 0) {
+    log.warn(log.message.ROUNDED_CORNERS_STACKED_BAR_WITH_AVOID);
+  }
+
   return [
     {
       type: 'group',
@@ -241,7 +262,7 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
         {
           type: 'group',
           encode: {update: innerGroupUpdate},
-          marks: [mark]
+          marks: [mark, ...(label ? [label] : [])]
         }
       ]
     }
@@ -340,6 +361,165 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
         : {})
     }
   ];
+}
+
+const LINE_ANCHOR_DEFAULTS = {
+  horizontal: {
+    anchor: {
+      begin: ['bottom-left', 'bottom', 'bottom-right'],
+      end: ['top-left', 'top', 'top-right']
+    },
+    padding: 'height * 0.2'
+  },
+  vertical: {
+    anchor: {
+      begin: ['top-left', 'left', 'bottom-left'],
+      end: ['top-right', 'right', 'bottom-right']
+    },
+    padding: 'width * 0.2'
+  }
+} as const;
+
+function getLabelInheritableChannels(
+  mark: Mark,
+  encoding: Encoding<string>,
+  inherit?: LabelInheritableChannel | LabelInheritableChannel[]
+) {
+  if (!inherit) {
+    inherit = mark === 'line' || mark === 'trail' ? ['color', 'opacity'] : [];
+  }
+
+  return Object.fromEntries(
+    array(inherit)
+      .filter(channel => encoding[channel])
+      .map(channel => [channel, encoding[channel]])
+  );
+}
+
+export function getLabelMark(model: UnitModel, data: string): LabelMark {
+  if (!model.encoding.label) {
+    return null;
+  }
+
+  const {
+    mark,
+    stack,
+    markDef: {orient}
+  } = model;
+
+  if (!supportMark('label', mark)) {
+    log.warn(log.message.incompatibleChannel('label', mark));
+    return null;
+  }
+
+  const {label: _label, ...originalEncoding} = model.originalEncoding;
+  const {label} = model.encoding;
+  const {position, avoid, mark: labelMark, method, lineAnchor, padding, inherit, ...textEncoding} = label;
+
+  const anchor = position?.map(p => p.anchor);
+  const offset = position?.map(p => p.offset);
+
+  const common: LabelTransform = {
+    type: 'label',
+    size: {signal: '[width, height]'},
+    ...(padding === undefined ? {} : {padding})
+  };
+
+  let labelTransform: LabelTransform;
+  switch (mark) {
+    case 'area':
+      labelTransform = {...common, method: method ?? 'reduced-search'};
+      break;
+    case 'bar':
+      labelTransform = {
+        ...common,
+        ...(position
+          ? {anchor, offset}
+          : stack?.stackBy?.length > 0
+          ? {anchor: ['middle'], offset: [0]}
+          : {
+              anchor: orient === 'horizontal' ? ['right', 'right'] : ['top', 'top'],
+              offset: [2, -2]
+            })
+      };
+      break;
+    case 'line':
+    case 'trail': {
+      const _lineAnchor = lineAnchor ?? 'end';
+      labelTransform = {
+        ...common,
+        lineAnchor: _lineAnchor,
+        ...(position
+          ? {anchor, offset}
+          : {
+              anchor: [...LINE_ANCHOR_DEFAULTS[orient].anchor[_lineAnchor]],
+              offset: [2, 2, 2]
+            }),
+        ...(padding === undefined ? {padding: null} : {})
+      };
+      break;
+    }
+    case 'rect':
+      labelTransform = {...common, anchor: anchor ?? ['middle'], offset: offset ?? [0]};
+      break;
+    case 'circle':
+    case 'point':
+    case 'square':
+    default:
+      labelTransform = {
+        ...common,
+        anchor: anchor ?? ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
+        offset: offset ?? [2, 2, 2, 2, 2, 2, 2, 2, 2]
+      };
+  }
+
+  const textSpec: NormalizedUnitSpec = {
+    data: null,
+    mark: {type: 'text', ...(labelMark ?? {})},
+    encoding: {text: textEncoding, ...getLabelInheritableChannels(mark, originalEncoding, inherit)}
+  };
+  const textModel = new UnitModel(textSpec, null, '', undefined, model.config);
+  textModel.parse();
+
+  const {markDef, encoding, config} = textModel;
+  const clip = getFirstDefined(markDef.clip, scaleClip(model), projectionClip(model));
+  const style = getStyles(markDef);
+  const key = encoding.key;
+  const sort = getSort(model);
+  const interactive = interactiveFlag(model);
+  const aria = getMarkPropOrConfig('aria', markDef, config);
+
+  return {
+    name: model.getName('marks_label'),
+    type: markCompiler.text.vgMark as 'text',
+    ...(clip ? {clip: true} : {}),
+    ...(style ? {style} : {}),
+    ...(key ? {key: key.field} : {}),
+    ...(sort ? {sort} : {}),
+    ...(interactive ? interactive : {}),
+    ...(aria === false ? {aria} : {}),
+    from: {data},
+    encode: {
+      update: {
+        ...omit(
+          encodeBaseEncodeEntry(textModel, {
+            align: 'ignore',
+            baseline: 'ignore',
+            color: 'include',
+            size: 'ignore',
+            orient: 'ignore',
+            theta: 'ignore'
+          }),
+          // Drop 'x', 'y', 'radius', 'theta' because the position will be overriden by label-transform.
+          // Drop 'angle' because label-transform does not work with angled text.
+          ['x', 'y', 'angle', 'radius', 'theta']
+        ),
+        ...encodeText(textModel, 'text', 'datum.datum'),
+        ...encodeNonPosition('size', textModel, {vgChannel: 'fontSize'})
+      }
+    },
+    transform: [labelTransform]
+  };
 }
 
 /**

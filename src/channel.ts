@@ -62,6 +62,7 @@ export const STROKEDASH = 'strokeDash' as const;
 
 // Non-scale channel
 export const TEXT = 'text' as const;
+export const LABEL = 'label' as const;
 export const ORDER = 'order' as const;
 export const DETAIL = 'detail' as const;
 export const KEY = 'key' as const;
@@ -149,6 +150,7 @@ const UNIT_CHANNEL_INDEX: Flag<Channel> = {
   // channels without scales
   order: 1,
   text: 1,
+  label: 1,
   detail: 1,
   key: 1,
   tooltip: 1,
@@ -391,6 +393,31 @@ const {
 export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
 export type NonPositionChannel = (typeof NONPOSITION_CHANNELS)[number];
 
+export const {
+  size: _size,
+  angle: _angle,
+  shape: _shape,
+  detail: _detail,
+  key: _key,
+  text: _text,
+  label: _label,
+  order: _order,
+  url: _url,
+  ...LABEL_INHERITABLE_CHANNEL_INDEX
+} = NONPOSITION_CHANNEL_INDEX;
+
+export const LABEL_INHERITABLE_CHANNEL = keys(LABEL_INHERITABLE_CHANNEL_INDEX);
+export type LabelInheritableChannel = typeof LABEL_INHERITABLE_CHANNEL[number];
+
+export function isLabelInheritableChannel(channel: Channel): channel is LabelInheritableChannel {
+  return !!LABEL_INHERITABLE_CHANNEL[channel];
+}
+
+const {label: __label, tooltip: _tooltip, ...STACKABLE_CHANNEL_INDEX} = NONPOSITION_CHANNEL_INDEX;
+
+export const STACKABLE_CHANNELS = keys(STACKABLE_CHANNEL_INDEX);
+export type StackableChannel = typeof STACKABLE_CHANNELS[number];
+
 const POSITION_SCALE_CHANNEL_INDEX = {
   x: 1,
   y: 1
@@ -430,6 +457,7 @@ const {
   // text and tooltip have format instead of scale,
   // href has neither format, nor scale
   text: _t,
+  label: _l,
   tooltip: _tt,
   href: _hr,
   url: _u,
@@ -597,6 +625,17 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
       return {point: 'always', geoshape: 'always'};
     case TEXT:
       return {text: 'always'};
+    case LABEL:
+      return {
+        circle: 'always',
+        point: 'always',
+        square: 'always',
+        area: 'always',
+        bar: 'always',
+        line: 'always',
+        trail: 'always',
+        rect: 'always'
+      };
     case ANGLE:
       return {point: 'always', square: 'always', text: 'always'};
     case URL:
@@ -638,8 +677,9 @@ export function rangeType(channel: ExtendedChannel): RangeType {
     case COLUMN:
     case SHAPE:
     case STROKEDASH:
-    // TEXT, TOOLTIP, URL, and HREF have no scale but have discrete output [falls through]
+    // TEXT, LABEL, TOOLTIP, URL, and HREF have no scale but have discrete output [falls through]
     case TEXT:
+    case LABEL:
     case TOOLTIP:
     case HREF:
     case URL:

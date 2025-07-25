@@ -377,3 +377,8 @@
     - [Tooltip image]({{site.baseurl}}/docs/tooltip.html#tooltip-image)
     - [Disable tooltips]({{site.baseurl}}/docs/tooltip.html#disable-tooltips)
     - [Vega Tooltip plugin]({{site.baseurl}}/docs/tooltip.html#plugin)
+- [Labeling]({{site.baseurl}}/docs/label.html)
+    - [Documentation Overview]({{site.baseurl}}/docs/label.html#documentation-overview)
+    - [Syntax]({{site.baseurl}}/docs/label.html#syntax)
+    - [Properties]({{site.baseurl}}/docs/label.html#properties)
+    - [Examples]({{site.baseurl}}/docs/label.html#examples)

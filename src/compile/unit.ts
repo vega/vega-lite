@@ -16,6 +16,7 @@ import {
   Y
 } from '../channel';
 import {
+  getAncestorLevel,
   getFieldDef,
   getFieldOrDatumDef,
   isFieldOrDatumDef,
@@ -36,7 +37,7 @@ import {isSelectionParameter, SelectionParameter} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
 import {stack, StackProperties} from '../stack';
-import {keys} from '../util';
+import {keys, unique} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {AxisInternalIndex} from './axis/component';
@@ -48,7 +49,7 @@ import {initLayoutSize} from './layoutsize/init';
 import {parseUnitLayoutSize} from './layoutsize/parse';
 import {LegendInternalIndex} from './legend/component';
 import {defaultFilled, initMarkdef} from './mark/init';
-import {parseMarkGroups} from './mark/mark';
+import {isLabelMark, LabelMark, parseMarkGroupsAndLabels} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {ScaleIndex} from './scale/component';
 import {
@@ -79,6 +80,12 @@ export class UnitModel extends ModelWithField {
   public readonly selection: SelectionParameter[] = [];
   public children: Model[] = [];
 
+  public labelMark: LabelMark;
+
+  public avoidAncestorLevel: number;
+
+  public originalEncoding: Encoding<string>;
+
   constructor(
     spec: NormalizedUnitSpec,
     parent: Model,
@@ -97,6 +104,8 @@ export class UnitModel extends ModelWithField {
         graticule: spec.data && isGraticuleGenerator(spec.data)
       });
     }
+
+    this.originalEncoding = spec.encoding;
 
     const encoding = (this.encoding = initEncoding(spec.encoding || {}, mark, markDef.filled, config));
     this.markDef = initMarkdef(markDef, encoding, config);
@@ -234,7 +243,11 @@ export class UnitModel extends ModelWithField {
   }
 
   public parseMarkGroup() {
-    this.component.mark = parseMarkGroups(this);
+    const {mark, label} = parseMarkGroupsAndLabels(this);
+    this.component.mark = mark;
+
+    this.labelMark = label;
+    this.avoidAncestorLevel = getAncestorLevel(this.encoding.label?.avoid);
   }
 
   public parseAxesAndHeaders() {
@@ -262,7 +275,15 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleMarks() {
-    let marks = this.component.mark ?? [];
+    if (this.labelMark) {
+      const {transform} = this.labelMark;
+      const [l] = transform;
+      if ('avoidMarks' in l) {
+        l.avoidMarks = unique(l.avoidMarks, m => m);
+      }
+    }
+
+    let marks = [...(this.component.mark ?? []), ...(this.labelMark ? [this.labelMark] : [])];
 
     // If this unit is part of a layer, selections should augment
     // all in concert rather than each unit individually. This
@@ -271,7 +292,9 @@ export class UnitModel extends ModelWithField {
       marks = assembleUnitSelectionMarks(this, marks);
     }
 
-    return marks.map(this.correctDataNames);
+    marks = marks.map(this.correctDataNames);
+    // move label marks to the top
+    return [...marks.filter(mark => !isLabelMark(mark)), ...marks.filter(isLabelMark)];
   }
   public assembleGroupStyle(): string | string[] {
     const {style} = this.view || {};
@@ -287,6 +310,22 @@ export class UnitModel extends ModelWithField {
 
   protected getMapping() {
     return this.encoding;
+  }
+
+  public getMarkNames(): string[] {
+    return (this.component.mark ?? []).map(m => m.name).filter(name => name);
+  }
+
+  public getLabelNames(): string[] {
+    return this.labelMark ? [this.labelMark.name] : [];
+  }
+
+  public avoidMarks(names: string[], level = 0) {
+    if (this.avoidAncestorLevel > level && this.labelMark && names.length) {
+      const [labelTransform] = this.labelMark.transform;
+      labelTransform.avoidMarks ??= [];
+      labelTransform.avoidMarks.push(...names);
+    }
   }
 
   public get mark(): Mark {

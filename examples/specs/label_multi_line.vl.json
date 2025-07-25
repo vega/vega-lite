@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/stocks.csv"},
+  "mark": "line",
+  "encoding": {
+    "x": {"timeUnit": "year", "field": "date"},
+    "y": {"aggregate":"mean", "field": "price", "type": "quantitative"},
+    "color": {"field": "symbol", "type": "nominal", "legend": null},
+    "label": {"field": "symbol"}
+  }
+}
