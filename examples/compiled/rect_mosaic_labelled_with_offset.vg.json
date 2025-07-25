@@ -192,10 +192,10 @@
               "fill": {"scale": "color", "field": "Origin"},
               "opacity": {"scale": "opacity", "field": "Cylinders"},
               "tooltip": {
-                "signal": "{\"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
+                "signal": "{\"Origin\": isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], '\\n') : datum[\"Origin\"] : \"\"+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
               },
               "description": {
-                "signal": "\"nx: \" + (format(datum[\"nx\"], \"\")) + \"; ny: \" + (format(datum[\"ny\"], \"\")) + \"; nx2: \" + (format(datum[\"nx2\"], \"\")) + \"; ny2: \" + (format(datum[\"ny2\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Cylinders: \" + (format(datum[\"Cylinders\"], \"\"))"
+                "signal": "\"nx: \" + (format(datum[\"nx\"], \"\")) + \"; ny: \" + (format(datum[\"ny\"], \"\")) + \"; nx2: \" + (format(datum[\"nx2\"], \"\")) + \"; ny2: \" + (format(datum[\"ny2\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Cylinders: \" + (format(datum[\"Cylinders\"], \"\"))"
               },
               "x": {"scale": "x", "field": "nx"},
               "x2": {"scale": "x", "field": "nx2"},
@@ -214,7 +214,7 @@
               "baseline": {"value": "middle"},
               "fill": {"value": "black"},
               "description": {
-                "signal": "\"xc: \" + (format(datum[\"xc\"], \"\")) + \"; yc: \" + (format(datum[\"yc\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
+                "signal": "\"xc: \" + (format(datum[\"xc\"], \"\")) + \"; yc: \" + (format(datum[\"yc\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
               },
               "x": {"scale": "x", "field": "xc"},
               "y": {"scale": "concat_1_y", "field": "yc"},

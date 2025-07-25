@@ -40,11 +40,11 @@
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"]"
+            "signal": "isValid(datum[\"Name\"]) ? isArray(datum[\"Name\"]) ? join(datum[\"Name\"], '\\n') : datum[\"Name\"] : \"\"+datum[\"Name\"]"
           },
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Name: \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"])"
+            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Name: \" + (isValid(datum[\"Name\"]) ? isArray(datum[\"Name\"]) ? join(datum[\"Name\"], ' ') : datum[\"Name\"] : \"\"+datum[\"Name\"])"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"}

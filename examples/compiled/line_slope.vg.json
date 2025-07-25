@@ -56,7 +56,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "site"},
               "description": {
-                "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Median of yield: \" + (format(datum[\"median_yield\"], \"\")) + \"; site: \" + (isValid(datum[\"site\"]) ? datum[\"site\"] : \"\"+datum[\"site\"])"
+                "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Median of yield: \" + (format(datum[\"median_yield\"], \"\")) + \"; site: \" + (isValid(datum[\"site\"]) ? isArray(datum[\"site\"]) ? join(datum[\"site\"], ' ') : datum[\"site\"] : \"\"+datum[\"site\"])"
               },
               "x": {"scale": "x", "field": "year"},
               "y": {"scale": "y", "field": "median_yield"},

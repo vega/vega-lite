@@ -99,7 +99,7 @@
                   "fill": {"value": "#4c78a8"},
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
-                    "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+                    "signal": "\"a: \" + (isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], ' ') : datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
                   },
                   "width": {"field": {"group": "width"}},
                   "y": {"scale": "y", "field": "b_end"},

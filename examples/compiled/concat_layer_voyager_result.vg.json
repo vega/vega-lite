@@ -138,7 +138,7 @@
             "update": {
               "stroke": {"value": "black"},
               "description": {
-                "signal": "\"lo: \" + (format(datum[\"lo\"], \"\")) + \"; study: \" + (isValid(datum[\"study\"]) ? datum[\"study\"] : \"\"+datum[\"study\"]) + \"; hi: \" + (format(datum[\"hi\"], \"\"))"
+                "signal": "\"lo: \" + (format(datum[\"lo\"], \"\")) + \"; study: \" + (isValid(datum[\"study\"]) ? isArray(datum[\"study\"]) ? join(datum[\"study\"], ' ') : datum[\"study\"] : \"\"+datum[\"study\"]) + \"; hi: \" + (format(datum[\"hi\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "lo"},
               "x2": {"scale": "concat_0_x", "field": "hi"},
@@ -158,7 +158,7 @@
               "fill": {"scale": "color", "field": "measure"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"mean: \" + (format(datum[\"mean\"], \"\")) + \"; study: \" + (isValid(datum[\"study\"]) ? datum[\"study\"] : \"\"+datum[\"study\"]) + \"; measure: \" + (isValid(datum[\"measure\"]) ? datum[\"measure\"] : \"\"+datum[\"measure\"])"
+                "signal": "\"mean: \" + (format(datum[\"mean\"], \"\")) + \"; study: \" + (isValid(datum[\"study\"]) ? isArray(datum[\"study\"]) ? join(datum[\"study\"], ' ') : datum[\"study\"] : \"\"+datum[\"study\"]) + \"; measure: \" + (isValid(datum[\"measure\"]) ? isArray(datum[\"measure\"]) ? join(datum[\"measure\"], ' ') : datum[\"measure\"] : \"\"+datum[\"measure\"])"
               },
               "x": {"scale": "concat_0_x", "field": "mean"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},

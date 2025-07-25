@@ -255,7 +255,7 @@
           "baseline": {"value": "bottom"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; day: \" + (isValid(datum[\"day\"]) ? datum[\"day\"] : \"\"+datum[\"day\"])"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; day: \" + (isValid(datum[\"day\"]) ? isArray(datum[\"day\"]) ? join(datum[\"day\"], ' ') : datum[\"day\"] : \"\"+datum[\"day\"])"
           },
           "x": {"scale": "x", "field": "id", "band": 0.5},
           "y": {"value": -5},

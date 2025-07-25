@@ -50,7 +50,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], ' ') : datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "a", "band": 0.25},
           "width": {"signal": "max(0.25, 0.5 * bandwidth('x'))"},

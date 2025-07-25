@@ -62,7 +62,7 @@
           "fill": {"scale": "color", "field": "gender"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"sum_signed_people\"], \"s\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+            "signal": "\"population: \" + (format(datum[\"sum_signed_people\"], \"s\")) + \"; age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? isArray(datum[\"gender\"]) ? join(datum[\"gender\"], ' ') : datum[\"gender\"] : \"\"+datum[\"gender\"])"
           },
           "x": {"scale": "x", "field": "sum_signed_people_end"},
           "x2": {"scale": "x", "field": "sum_signed_people_start"},

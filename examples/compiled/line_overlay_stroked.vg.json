@@ -66,7 +66,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? isArray(datum[\"symbol\"]) ? join(datum[\"symbol\"], ' ') : datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "year_date"},
               "y": {"scale": "y", "field": "mean_price"},
@@ -90,7 +90,7 @@
           "stroke": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? isArray(datum[\"symbol\"]) ? join(datum[\"symbol\"], ' ') : datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "year_date"},
           "y": {"scale": "y", "field": "mean_price"}

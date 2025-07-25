@@ -87,7 +87,7 @@
           "fill": {"scale": "color", "field": "properties\\.site"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Sum of properties.yield: \" + (format(datum[\"sum_properties.yield\"], \"\")) + \"; properties.variety: \" + (isValid(datum[\"properties.variety\"]) ? datum[\"properties.variety\"] : \"\"+datum[\"properties.variety\"]) + \"; site: \" + (isValid(datum[\"properties.site\"]) ? datum[\"properties.site\"] : \"\"+datum[\"properties.site\"])"
+            "signal": "\"Sum of properties.yield: \" + (format(datum[\"sum_properties.yield\"], \"\")) + \"; properties.variety: \" + (isValid(datum[\"properties.variety\"]) ? isArray(datum[\"properties.variety\"]) ? join(datum[\"properties.variety\"], ' ') : datum[\"properties.variety\"] : \"\"+datum[\"properties.variety\"]) + \"; site: \" + (isValid(datum[\"properties.site\"]) ? isArray(datum[\"properties.site\"]) ? join(datum[\"properties.site\"], ' ') : datum[\"properties.site\"] : \"\"+datum[\"properties.site\"])"
           },
           "x": {"scale": "x", "field": "sum_properties\\.yield_end"},
           "x2": {"scale": "x", "field": "sum_properties\\.yield_start"},

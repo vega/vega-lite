@@ -43,7 +43,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"Name: \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"]) + \"; Score: \" + (format(datum[\"Score\"], \"\"))"
+            "signal": "\"Name: \" + (isValid(datum[\"Name\"]) ? isArray(datum[\"Name\"]) ? join(datum[\"Name\"], ' ') : datum[\"Name\"] : \"\"+datum[\"Name\"]) + \"; Score: \" + (format(datum[\"Score\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Name"},
           "y": {"scale": "y", "field": "Score"},

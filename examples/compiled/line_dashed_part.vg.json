@@ -55,7 +55,7 @@
               "stroke": {"value": "#4c78a8"},
               "strokeDash": {"scale": "strokeDash", "field": "predicted"},
               "description": {
-                "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; predicted: \" + (isValid(datum[\"predicted\"]) ? datum[\"predicted\"] : \"\"+datum[\"predicted\"])"
+                "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; predicted: \" + (isValid(datum[\"predicted\"]) ? isArray(datum[\"predicted\"]) ? join(datum[\"predicted\"], ' ') : datum[\"predicted\"] : \"\"+datum[\"predicted\"])"
               },
               "x": {"scale": "x", "field": "a"},
               "y": {"scale": "y", "field": "b"},

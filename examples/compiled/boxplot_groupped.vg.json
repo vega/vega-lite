@@ -150,7 +150,7 @@
           "stroke": {"scale": "color", "field": "Origin"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
           "x": {
             "scale": "x",
@@ -171,7 +171,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Upper Whisker of Acceleration\": format(datum[\"upper_whisker_Acceleration\"], \"\"), \"Lower Whisker of Acceleration\": format(datum[\"lower_whisker_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
+            "signal": "{\"Upper Whisker of Acceleration\": format(datum[\"upper_whisker_Acceleration\"], \"\"), \"Lower Whisker of Acceleration\": format(datum[\"lower_whisker_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], '\\n') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], '\\n') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
           },
           "x": {
             "scale": "x",
@@ -193,7 +193,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Upper Whisker of Acceleration\": format(datum[\"upper_whisker_Acceleration\"], \"\"), \"Lower Whisker of Acceleration\": format(datum[\"lower_whisker_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
+            "signal": "{\"Upper Whisker of Acceleration\": format(datum[\"upper_whisker_Acceleration\"], \"\"), \"Lower Whisker of Acceleration\": format(datum[\"lower_whisker_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], '\\n') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], '\\n') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
           },
           "x": {
             "scale": "x",
@@ -215,10 +215,10 @@
           "ariaRoleDescription": {"value": "box"},
           "fill": {"scale": "color", "field": "Origin"},
           "tooltip": {
-            "signal": "{\"Max of Acceleration\": format(datum[\"max_Acceleration\"], \"\"), \"Q3 of Acceleration\": format(datum[\"upper_box_Acceleration\"], \"\"), \"Median of Acceleration\": format(datum[\"mid_box_Acceleration\"], \"\"), \"Q1 of Acceleration\": format(datum[\"lower_box_Acceleration\"], \"\"), \"Min of Acceleration\": format(datum[\"min_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
+            "signal": "{\"Max of Acceleration\": format(datum[\"max_Acceleration\"], \"\"), \"Q3 of Acceleration\": format(datum[\"upper_box_Acceleration\"], \"\"), \"Median of Acceleration\": format(datum[\"mid_box_Acceleration\"], \"\"), \"Q1 of Acceleration\": format(datum[\"lower_box_Acceleration\"], \"\"), \"Min of Acceleration\": format(datum[\"min_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], '\\n') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], '\\n') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
           },
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Acceleration: \" + (format(datum[\"lower_box_Acceleration\"], \"\")) + \"; upper_box_Acceleration: \" + (format(datum[\"upper_box_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Max of Acceleration: \" + (format(datum[\"max_Acceleration\"], \"\")) + \"; Q3 of Acceleration: \" + (format(datum[\"upper_box_Acceleration\"], \"\")) + \"; Median of Acceleration: \" + (format(datum[\"mid_box_Acceleration\"], \"\")) + \"; Q1 of Acceleration: \" + (format(datum[\"lower_box_Acceleration\"], \"\")) + \"; Min of Acceleration: \" + (format(datum[\"min_Acceleration\"], \"\"))"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Acceleration: \" + (format(datum[\"lower_box_Acceleration\"], \"\")) + \"; upper_box_Acceleration: \" + (format(datum[\"upper_box_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Max of Acceleration: \" + (format(datum[\"max_Acceleration\"], \"\")) + \"; Q3 of Acceleration: \" + (format(datum[\"upper_box_Acceleration\"], \"\")) + \"; Median of Acceleration: \" + (format(datum[\"mid_box_Acceleration\"], \"\")) + \"; Q1 of Acceleration: \" + (format(datum[\"lower_box_Acceleration\"], \"\")) + \"; Min of Acceleration: \" + (format(datum[\"min_Acceleration\"], \"\"))"
           },
           "xc": {
             "scale": "x",
@@ -249,7 +249,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"Max of Acceleration\": format(datum[\"max_Acceleration\"], \"\"), \"Q3 of Acceleration\": format(datum[\"upper_box_Acceleration\"], \"\"), \"Median of Acceleration\": format(datum[\"mid_box_Acceleration\"], \"\"), \"Q1 of Acceleration\": format(datum[\"lower_box_Acceleration\"], \"\"), \"Min of Acceleration\": format(datum[\"min_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
+            "signal": "{\"Max of Acceleration\": format(datum[\"max_Acceleration\"], \"\"), \"Q3 of Acceleration\": format(datum[\"upper_box_Acceleration\"], \"\"), \"Median of Acceleration\": format(datum[\"mid_box_Acceleration\"], \"\"), \"Q1 of Acceleration\": format(datum[\"lower_box_Acceleration\"], \"\"), \"Min of Acceleration\": format(datum[\"min_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], '\\n') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], '\\n') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
           },
           "xc": {
             "scale": "x",

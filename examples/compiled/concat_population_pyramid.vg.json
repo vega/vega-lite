@@ -124,7 +124,7 @@
               "fill": {"scale": "color", "field": "gender"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"population: \" + (format(datum[\"sum_people\"], \"s\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                "signal": "\"population: \" + (format(datum[\"sum_people\"], \"s\")) + \"; age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? isArray(datum[\"gender\"]) ? join(datum[\"gender\"], ' ') : datum[\"gender\"] : \"\"+datum[\"gender\"])"
               },
               "x": {"scale": "concat_0_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_0_x", "field": "sum_people_start"},
@@ -203,7 +203,7 @@
               "fill": {"scale": "color", "field": "gender"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"population: \" + (format(datum[\"sum_people\"], \"s\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                "signal": "\"population: \" + (format(datum[\"sum_people\"], \"s\")) + \"; age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? isArray(datum[\"gender\"]) ? join(datum[\"gender\"], ' ') : datum[\"gender\"] : \"\"+datum[\"gender\"])"
               },
               "x": {"scale": "concat_2_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_2_x", "field": "sum_people_start"},

@@ -188,7 +188,7 @@
             {"value": "white"}
           ],
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; center: \" + (format(datum[\"center\"], \"\")) + \"; text_amount: \" + (isValid(datum[\"text_amount\"]) ? datum[\"text_amount\"] : \"\"+datum[\"text_amount\"])"
+            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; center: \" + (format(datum[\"center\"], \"\")) + \"; text_amount: \" + (isValid(datum[\"text_amount\"]) ? isArray(datum[\"text_amount\"]) ? join(datum[\"text_amount\"], ' ') : datum[\"text_amount\"] : \"\"+datum[\"text_amount\"])"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "center"},
