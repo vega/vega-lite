@@ -166,7 +166,7 @@
             "update": {
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
+                "signal": "\"a: \" + (isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], ' ') : datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (isValid(datum[\"b\"]) ? isArray(datum[\"b\"]) ? join(datum[\"b\"], ' ') : datum[\"b\"] : \"\"+datum[\"b\"])"
               },
               "x": {"scale": "child_x", "field": "a"},
               "width": {"signal": "max(0.25, bandwidth('child_x'))"},

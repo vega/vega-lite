@@ -97,7 +97,7 @@
           "align": {"value": "right"},
           "fill": {"value": "firebrick"},
           "description": {
-            "signal": "\"R2: \" + (isValid(datum[\"R2\"]) ? datum[\"R2\"] : \"\"+datum[\"R2\"])"
+            "signal": "\"R2: \" + (isValid(datum[\"R2\"]) ? isArray(datum[\"R2\"]) ? join(datum[\"R2\"], ' ') : datum[\"R2\"] : \"\"+datum[\"R2\"])"
           },
           "x": {"field": {"group": "width"}},
           "y": {"value": -5},

@@ -136,7 +136,7 @@
               "cornerRadius": {"signal": "cornerRadius"},
               "fill": {"scale": "color", "field": "category"},
               "description": {
-                "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"])"
+                "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; category: \" + (isValid(datum[\"category\"]) ? isArray(datum[\"category\"]) ? join(datum[\"category\"], ' ') : datum[\"category\"] : \"\"+datum[\"category\"])"
               },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"signal": "height", "mult": 0.5},

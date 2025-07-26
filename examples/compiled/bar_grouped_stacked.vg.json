@@ -59,7 +59,7 @@
           "fill": {"scale": "color", "field": "year_Year"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Sum of Weight_in_lbs: \" + (format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Sum of Weight_in_lbs: \" + (format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Year (year): \" + (isValid(datum[\"Year\"]) ? isArray(datum[\"Year\"]) ? join(datum[\"Year\"], ' ') : datum[\"Year\"] : \"\"+datum[\"Year\"])"
           },
           "x": {
             "scale": "x",

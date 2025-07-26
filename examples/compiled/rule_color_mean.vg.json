@@ -36,7 +36,7 @@
         "update": {
           "stroke": {"scale": "color", "field": "symbol"},
           "description": {
-            "signal": "\"Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? isArray(datum[\"symbol\"]) ? join(datum[\"symbol\"], ' ') : datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
           "x": {"field": {"group": "width"}},
           "x2": {"value": 0},

@@ -37,14 +37,14 @@
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "Origin"},
           "tooltip": {
-            "signal": "isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"]"
+            "signal": "isValid(datum[\"Name\"]) ? isArray(datum[\"Name\"]) ? join(datum[\"Name\"], '\\n') : datum[\"Name\"] : \"\"+datum[\"Name\"]"
           },
           "href": {
             "signal": "isValid(datum[\"url\"]) ? datum[\"url\"] : \"\"+datum[\"url\"]"
           },
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Name: \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"]) + \"; url: \" + (isValid(datum[\"url\"]) ? datum[\"url\"] : \"\"+datum[\"url\"])"
+            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Name: \" + (isValid(datum[\"Name\"]) ? isArray(datum[\"Name\"]) ? join(datum[\"Name\"], ' ') : datum[\"Name\"] : \"\"+datum[\"Name\"]) + \"; url: \" + (isValid(datum[\"url\"]) ? isArray(datum[\"url\"]) ? join(datum[\"url\"], ' ') : datum[\"url\"] : \"\"+datum[\"url\"])"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"}

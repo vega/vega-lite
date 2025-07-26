@@ -87,7 +87,7 @@
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Name: \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"])"
+                "signal": "\"Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Name: \" + (isValid(datum[\"Name\"]) ? isArray(datum[\"Name\"]) ? join(datum[\"Name\"], ' ') : datum[\"Name\"] : \"\"+datum[\"Name\"])"
               },
               "x": {"scale": "concat_0_x", "field": "__count"},
               "x2": {"scale": "concat_0_x", "value": 0},
@@ -357,7 +357,7 @@
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Name: \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"])"
+                "signal": "\"Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; Name: \" + (isValid(datum[\"Name\"]) ? isArray(datum[\"Name\"]) ? join(datum[\"Name\"], ' ') : datum[\"Name\"] : \"\"+datum[\"Name\"])"
               },
               "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},

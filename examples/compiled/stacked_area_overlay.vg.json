@@ -79,7 +79,7 @@
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "gender"},
               "description": {
-                "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; Sum of people: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                "signal": "\"age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"]) + \"; Sum of people: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? isArray(datum[\"gender\"]) ? join(datum[\"gender\"], ' ') : datum[\"gender\"] : \"\"+datum[\"gender\"])"
               },
               "x": {"scale": "x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people_end"},
@@ -120,7 +120,7 @@
               "stroke": {"scale": "color", "field": "gender"},
               "opacity": {"value": 0.7},
               "description": {
-                "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; Sum of people: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                "signal": "\"age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"]) + \"; Sum of people: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? isArray(datum[\"gender\"]) ? join(datum[\"gender\"], ' ') : datum[\"gender\"] : \"\"+datum[\"gender\"])"
               },
               "x": {"scale": "x", "field": "age"},
               "y": {"scale": "y", "field": "sum_people_end"},

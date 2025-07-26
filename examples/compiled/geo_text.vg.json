@@ -105,7 +105,7 @@
           "dy": {"value": -10},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"lon: \" + (format(datum[\"lon\"], \"\")) + \"; lat: \" + (format(datum[\"lat\"], \"\")) + \"; city: \" + (isValid(datum[\"city\"]) ? datum[\"city\"] : \"\"+datum[\"city\"])"
+            "signal": "\"lon: \" + (format(datum[\"lon\"], \"\")) + \"; lat: \" + (format(datum[\"lat\"], \"\")) + \"; city: \" + (isValid(datum[\"city\"]) ? isArray(datum[\"city\"]) ? join(datum[\"city\"], ' ') : datum[\"city\"] : \"\"+datum[\"city\"])"
           },
           "x": {"field": "layer_1_layer_1_x"},
           "y": {"field": "layer_1_layer_1_y"},

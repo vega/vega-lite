@@ -43,7 +43,7 @@
           "fill": {"scale": "color", "field": "key"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"foo: \" + (format(datum[\"foo\"], \"\")) + \"; bar: \" + (isValid(datum[\"bar\"]) ? datum[\"bar\"] : \"\"+datum[\"bar\"]) + \"; key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+            "signal": "\"foo: \" + (format(datum[\"foo\"], \"\")) + \"; bar: \" + (isValid(datum[\"bar\"]) ? isArray(datum[\"bar\"]) ? join(datum[\"bar\"], ' ') : datum[\"bar\"] : \"\"+datum[\"bar\"]) + \"; key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"])"
           },
           "x": {"scale": "x", "field": "foo"},
           "y": {"scale": "y", "field": "bar"},

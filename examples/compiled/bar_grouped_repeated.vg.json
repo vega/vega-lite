@@ -41,7 +41,7 @@
           "fill": {"scale": "color", "value": "Worldwide Gross"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Total Gross: \" + (format(datum[\"sum_Worldwide Gross\"], \"\"))"
+            "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? isArray(datum[\"Major Genre\"]) ? join(datum[\"Major Genre\"], ' ') : datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Total Gross: \" + (format(datum[\"sum_Worldwide Gross\"], \"\"))"
           },
           "x": {
             "scale": "x",
@@ -71,7 +71,7 @@
           "fill": {"scale": "color", "value": "US Gross"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Total Gross: \" + (format(datum[\"sum_US Gross\"], \"\"))"
+            "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? isArray(datum[\"Major Genre\"]) ? join(datum[\"Major Genre\"], ' ') : datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Total Gross: \" + (format(datum[\"sum_US Gross\"], \"\"))"
           },
           "x": {
             "scale": "x",

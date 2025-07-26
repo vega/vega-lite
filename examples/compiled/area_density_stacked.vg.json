@@ -68,7 +68,7 @@
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "Species"},
               "description": {
-                "signal": "\"Body Mass (g): \" + (format(datum[\"value\"], \"\")) + \"; density: \" + (format(datum[\"density\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+                "signal": "\"Body Mass (g): \" + (format(datum[\"value\"], \"\")) + \"; density: \" + (format(datum[\"density\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density_end"},
