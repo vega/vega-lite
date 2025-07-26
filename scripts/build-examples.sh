@@ -45,4 +45,5 @@ ls examples/compiled/*.svg | parallel --no-notice --plus --halt 1 "[ -f examples
 
 ls examples/compiled/*.png | parallel --no-notice --plus --halt 1 "[ -f examples/specs/{/..}.vl.json ] || rm -f examples/compiled/{/..}.png"
 
-
+#generate edn files
+ls examples/specs/*.vl.json | parallel "cat {} | jet --from json --to edn --keywordize | puget --opts '{:map-delimiter \"\" :print-color false}' > {.}.edn"
