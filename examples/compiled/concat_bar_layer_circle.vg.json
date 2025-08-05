@@ -313,7 +313,7 @@
               ],
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+                "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? isArray(datum[\"Major Genre\"]) ? join(datum[\"Major Genre\"], ' ') : datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "Major Genre"},
               "width": {"signal": "max(0.25, bandwidth('concat_1_x'))"},

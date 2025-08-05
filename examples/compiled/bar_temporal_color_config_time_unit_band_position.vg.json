@@ -57,7 +57,7 @@
           "fill": {"scale": "color", "field": "year_date"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; Sum of price: \" + (format(datum[\"sum_price\"], \"\")) + \"; date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"symbol: \" + (isValid(datum[\"symbol\"]) ? isArray(datum[\"symbol\"]) ? join(datum[\"symbol\"], ' ') : datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; Sum of price: \" + (format(datum[\"sum_price\"], \"\")) + \"; date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
           "x": {"scale": "x", "field": "symbol"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

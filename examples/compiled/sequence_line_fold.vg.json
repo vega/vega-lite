@@ -45,7 +45,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "key"},
               "description": {
-                "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+                "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"])"
               },
               "x": {"scale": "x", "field": "x"},
               "y": {"scale": "y", "field": "value"},

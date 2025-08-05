@@ -46,7 +46,7 @@
           "fill": {"scale": "color", "field": "Origin"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Year (year-week): \" + (timeFormat(datum[\"yearweek_Year\"], timeUnitSpecifier([\"year\",\"week\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Number of Cars: \" + (format(datum[\"__count\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+            "signal": "\"Year (year-week): \" + (timeFormat(datum[\"yearweek_Year\"], timeUnitSpecifier([\"year\",\"week\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Number of Cars: \" + (format(datum[\"__count\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
           "xc": {
             "scale": "x",

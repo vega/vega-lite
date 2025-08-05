@@ -93,7 +93,7 @@
             "update": {
               "fill": {"scale": "color", "field": "site"},
               "description": {
-                "signal": "\"Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; site: \" + (isValid(datum[\"site\"]) ? datum[\"site\"] : \"\"+datum[\"site\"])"
+                "signal": "\"Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; site: \" + (isValid(datum[\"site\"]) ? isArray(datum[\"site\"]) ? join(datum[\"site\"], ' ') : datum[\"site\"] : \"\"+datum[\"site\"])"
               },
               "x": {"signal": "child_width", "mult": 0.5},
               "y": {"signal": "child_height", "mult": 0.5},

@@ -114,7 +114,7 @@
           "opacity": {"value": 0.25},
           "fill": {"value": "red"},
           "tooltip": {
-            "signal": "{\"magnitude\": isValid(datum[\"magnitude\"]) ? datum[\"magnitude\"] : \"\"+datum[\"magnitude\"]}"
+            "signal": "{\"magnitude\": isValid(datum[\"magnitude\"]) ? isArray(datum[\"magnitude\"]) ? join(datum[\"magnitude\"], '\\n') : datum[\"magnitude\"] : \"\"+datum[\"magnitude\"]}"
           },
           "ariaRoleDescription": {"value": "circle"},
           "description": {

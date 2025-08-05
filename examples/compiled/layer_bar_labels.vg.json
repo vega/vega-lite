@@ -57,7 +57,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"])"
+            "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; a: \" + (isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], ' ') : datum[\"a\"] : \"\"+datum[\"a\"])"
           },
           "x": {"scale": "x", "field": "b_end"},
           "x2": {"scale": "x", "field": "b_start"},
@@ -78,7 +78,7 @@
           "dx": {"value": 3},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"])"
+            "signal": "\"b: \" + (format(datum[\"b\"], \"\")) + \"; a: \" + (isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], ' ') : datum[\"a\"] : \"\"+datum[\"a\"])"
           },
           "x": {"scale": "x", "field": "b"},
           "y": {"scale": "y", "field": "a", "band": 0.5},
