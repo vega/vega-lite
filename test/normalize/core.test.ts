@@ -463,4 +463,147 @@ describe('normalize()', () => {
       }),
     );
   });
+
+  describe('normalizeTextWithBackground', () => {
+    it('should duplicate text mark with bgType outline and add an outline', () => {
+      const spec: any = {
+        encoding: {
+          x: {
+            field: 'date',
+            type: 'temporal',
+          },
+          y: {
+            field: 'price',
+            type: 'quantitative',
+          },
+          text: {
+            field: 'price',
+          },
+        },
+        mark: {
+          type: 'text',
+          dy: 12,
+          bgType: 'outline',
+          bgPadding: 3,
+        },
+      };
+
+      expect(normalize(spec)).toEqual({
+        layer: [
+          {
+            encoding: {
+              x: {
+                field: 'date',
+                type: 'temporal',
+              },
+              y: {
+                field: 'price',
+                type: 'quantitative',
+              },
+              text: {
+                field: 'price',
+              },
+            },
+            mark: {
+              type: 'text',
+              dy: 12,
+              bgType: 'outline',
+              bgPadding: 3,
+              align: 'center',
+              stroke: 'white',
+              strokeWidth: 3,
+            },
+          },
+          {
+            encoding: {
+              x: {
+                field: 'date',
+                type: 'temporal',
+              },
+              y: {
+                field: 'price',
+                type: 'quantitative',
+              },
+              text: {
+                field: 'price',
+              },
+            },
+            mark: {
+              type: 'text',
+              dy: 12,
+              bgType: 'outline',
+              bgPadding: 3,
+              align: 'center',
+            },
+          },
+        ],
+      });
+    });
+
+    it('add a layer with rectangles behind text marks with bgType rect and bgColor defined', () => {
+      const spec: any = {
+        encoding: {
+          x: {
+            field: 'date',
+            type: 'temporal',
+          },
+          y: {
+            field: 'price',
+            type: 'quantitative',
+          },
+          text: {
+            field: 'price',
+          },
+        },
+        mark: {
+          type: 'text',
+          dy: 12,
+          bgType: 'rect',
+          bgColor: 'red',
+          bgPadding: {top: 3},
+        },
+      };
+      expect(normalize(spec)).toEqual({
+        layer: [
+          {
+            encoding: {
+              x: {
+                field: 'date',
+                type: 'temporal',
+              },
+              y: {
+                field: 'price',
+                type: 'quantitative',
+              },
+              text: {
+                field: 'price',
+              },
+            },
+            mark: {
+              type: 'text',
+              dy: 12,
+              bgType: 'rect',
+              bgColor: 'red',
+              bgPadding: {
+                top: 3,
+              },
+            },
+            name: '_fg_text_61lam6',
+          },
+          {
+            name: '_bg_text_61lam6',
+            mark: {
+              type: 'rect',
+              fill: 'red',
+              opacity: 1,
+              cornerRadius: 0,
+              bgPadding: {
+                top: 3,
+              },
+            },
+          },
+        ],
+      });
+    });
+  });
 });

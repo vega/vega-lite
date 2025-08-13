@@ -578,4 +578,58 @@ describe('Mark', () => {
       expect(markGroup[0].clip).toBeUndefined();
     });
   });
+
+  it('should add a z-index to a text mark with rects for background', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      name: '_fg_text',
+      mark: {
+        type: 'text',
+      },
+    });
+
+    const markGroup = parseMarkGroups(model);
+    expect(markGroup[0].zindex).toEqual(1);
+  });
+
+  it('should adjust a rect mark that is a background for text', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      name: '_bg_text',
+      mark: {
+        type: 'rect',
+      },
+    });
+
+    const markGroup = parseMarkGroups(model);
+    expect(markGroup[0]).toEqual({
+      name: '_bg_text_marks',
+      type: 'rect',
+      style: ['rect'],
+      from: {
+        data: '_fg_text_marks',
+      },
+      encode: {
+        update: {
+          fill: {
+            value: '#4c78a8',
+          },
+          x: {
+            field: 'bounds.x1',
+            offset: -2,
+          },
+          x2: {
+            field: 'bounds.x2',
+            offset: 2,
+          },
+          y: {
+            field: 'bounds.y1',
+            offset: -2,
+          },
+          y2: {
+            field: 'bounds.y2',
+            offset: 2,
+          },
+        },
+      },
+    });
+  });
 });
