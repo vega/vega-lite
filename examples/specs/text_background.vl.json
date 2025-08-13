@@ -1,0 +1,90 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Google's stock price over time.",
+  "data": {
+    "url": "data/stocks.csv"
+  },
+  "transform": [
+    {
+      "filter": "datum.symbol==='GOOG'"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "temporal"
+    },
+    "y": {
+      "field": "price",
+      "type": "quantitative"
+    }
+  },
+  "layer": [
+    {
+      "mark": "line"
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": 12,
+        "bgType": "outline",
+        "bgPadding": 3
+      },
+      "transform": [
+        {
+          "filter": "+datum.price === 432.66"
+        }
+      ],
+      "encoding": {
+        "text": {
+          "field": "price"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": -12,
+        "bgColor": "red",
+        "bgOpacity": 0.5,
+        "bgCornerRadius": 4,
+        "bgPadding": {
+          "left": 6,
+          "top": 4,
+          "right": 6,
+          "bottom": 4
+        }
+      },
+      "transform": [
+        {
+          "filter": "+datum.price === 707"
+        }
+      ],
+      "encoding": {
+        "text": {
+          "field": "price"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "color": "white",
+        "fontWeight": "bold",
+        "dy": -12,
+        "bgColor": "blue",
+        "bgPadding": 4
+      },
+      "transform": [
+        {
+          "filter": "+datum.price === 619.98"
+        }
+      ],
+      "encoding": {
+        "text": {
+          "field": "price"
+        }
+      }
+    }
+  ]
+}
