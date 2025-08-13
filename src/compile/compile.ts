@@ -20,9 +20,6 @@ import {buildModel} from './buildmodel.js';
 import {assembleRootData} from './data/assemble.js';
 import {optimizeDataflow} from './data/optimize.js';
 import {Model} from './model.js';
-import {VgMarkGroup} from '../vega.schema.js';
-import {UnitModel} from './unit.js';
-import {LayerModel} from './layer.js';
 
 export interface CompileOptions {
   /**
@@ -226,14 +223,6 @@ function assembleTopLevelModel(
 
   const {params, ...otherTopLevelProps} = topLevelProperties;
 
-  const group = model.assembleGroup([
-    ...layoutSignals,
-    ...model.assembleSelectionTopLevelSignals([]),
-    ...assembleParameterSignals(params),
-  ]);
-
-  const groupWithTextBackgrounds = addTextBackground(model, group);
-
   return {
     $schema: 'https://vega.github.io/schema/vega/v6.json',
     ...(model.description ? {description: model.description} : {}),
@@ -243,74 +232,12 @@ function assembleTopLevelModel(
     ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
     data,
     ...(projections.length > 0 ? {projections} : {}),
-    ...groupWithTextBackgrounds,
+    ...model.assembleGroup([
+      ...layoutSignals,
+      ...model.assembleSelectionTopLevelSignals([]),
+      ...assembleParameterSignals(params),
+    ]),
     ...(vgConfig ? {config: vgConfig} : {}),
     ...(usermeta ? {usermeta} : {}),
   };
-}
-
-/**
- * Find a model unit by name
- */
-function findUnitByName(model: Model, name: string): UnitModel | LayerModel {
-  if (!model || typeof model !== 'object') return null;
-
-  // Check if current model is the one we are looking for
-  if (model.name === name) return model;
-
-  // Else search children recursively
-  if (Array.isArray(model.children)) {
-    for (const child of model.children) {
-      const result = findUnitByName(child, name);
-      if (result) return result;
-    }
-  }
-
-  return null;
-}
-
-/**
- * Add sibling marks with rectangles to Vega text marks with background properties
- *
- * TODO
- * - refine type safety
- * - adjust schema so bg vars are only valid in text marks
- * - support bgCornerRadius for each corner separately?
- */
-function addTextBackground(model: Model, group: VgMarkGroup): VgMarkGroup {
-  group.marks = group.marks
-    .map((mark: any, index: number) => {
-      if (mark.type === 'text') {
-        const markName = mark.name === 'marks' ? '' : mark.name.replace('_marks', '');
-        const {markDef} = findUnitByName(model, markName) as UnitModel;
-        const {bgColor, bgOpacity, bgPadding, bgCornerRadius} = markDef as any;
-
-        if (bgColor) {
-          return [
-            {...mark, zindex: group.marks.length - index},
-            {
-              name: `bg_${mark.name}`,
-              type: 'rect',
-              from: {data: `${mark.name}`},
-              encode: {
-                update: {
-                  x: {field: 'bounds.x1', offset: bgPadding?.left ? -bgPadding?.left : -bgPadding || -2},
-                  x2: {field: 'bounds.x2', offset: bgPadding?.right || bgPadding || 2},
-                  y: {field: 'bounds.y1', offset: bgPadding?.top ? -bgPadding?.top : -bgPadding || -2},
-                  y2: {field: 'bounds.y2', offset: bgPadding?.bottom || bgPadding || 2},
-                  fill: {value: bgColor},
-                  opacity: {value: bgOpacity || 1},
-                  cornerRadius: {value: bgCornerRadius || 0},
-                },
-              },
-            },
-          ];
-        }
-        return mark;
-      }
-      return mark;
-    })
-    .flat();
-
-  return group;
 }

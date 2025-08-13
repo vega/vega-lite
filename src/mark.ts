@@ -345,7 +345,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   rect: VL_ONLY_RECT_CONFIG,
   line: ['point'],
   tick: ['bandSize', 'thickness', ...VL_ONLY_RECT_CONFIG],
-  text: ['bgColor', 'bgOpacity', 'bgPadding', 'bgCornerRadius'],
+  text: ['bgType', 'bgColor', 'bgOpacity', 'bgPadding', 'bgCornerRadius'],
 };
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
@@ -674,28 +674,38 @@ export const defaultBarConfig: RectConfig<SignalRef> = {
 
 export interface TextConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES> {
   /**
+   * The type of the background of text marks: `rect` or `outline`
+   *
+   * __Default value:__  `rect`
+   */
+  bgType?: 'rect' | 'outline';
+  /**
    * The color of the background of text marks
    *
+   * __Default value:__  `white`
    */
-  bgColor?: Color;
+  bgColor?: Color | ES;
 
   /**
    * The opacity of the background of text marks
    *
+   * __Default value:__  `1`
    */
-  bgOpacity?: number;
+  bgOpacity?: number | ES;
 
   /**
-   * The padding of the background of text marks
+   * The padding of background rectangles or the stroke-width of the outline of text marks with a background
    *
+   * __Default value:__  `2`
    */
   bgPadding?: Padding;
 
   /**
    * The corner radius of the background of text marks
    *
+   * __Default value:__  `0`
    */
-  bgCornerRadius?: number;
+  bgCornerRadius?: number | ES;
 }
 
 export interface TickConfig<ES extends ExprRef | SignalRef>
