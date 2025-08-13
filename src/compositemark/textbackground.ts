@@ -1,7 +1,7 @@
+import {ExprRef} from 'vega';
 import {UnitSpec} from '../spec/index.js';
 import {TextConfig, getMarkType} from '../mark.js';
 import {Field} from '../channeldef.js';
-import {ExprRef} from 'vega';
 import {UnitModel} from '../compile/unit.js';
 import {Padding} from '../spec/toplevel.js';
 
@@ -10,7 +10,17 @@ const DEFAULT_PADDING = 2;
 const DEFAULT_OPACITY = 1;
 const DEFAULT_CORNER_RADIUS = 0;
 
-let textLayerId = 0;
+// we use this instead of hash from util.js because we also want a hash for specs < 250 chars
+function hashSpec(spec: object): string {
+  const str = JSON.stringify(spec);
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    h = (h << 5) - h + char;
+    h = h & h;
+  }
+  return Math.abs(h).toString(32);
+}
 
 function getPadding(bgPadding: Padding, side: keyof Extract<Padding, object>) {
   if (typeof bgPadding === 'number') return bgPadding;
@@ -46,8 +56,8 @@ export function normalizeTextWithBackground(spec: UnitSpec<Field>) {
     }
     // add a layer with rectangles behind the text marks
     if (bgColor) {
-      const markName = spec.name || `text_${textLayerId}`;
-      textLayerId++;
+      const hashedSpec = hashSpec(spec);
+      const markName = spec.name || `text_${hashedSpec}`;
       return {
         layer: [
           {...spec, name: `_fg_${markName}`},
