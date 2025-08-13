@@ -115,7 +115,7 @@
       }
     },
     {
-      "name": "_fg_text_0_marks",
+      "name": "_fg_text_oplhu4_marks",
       "type": "text",
       "style": ["text"],
       "from": {"data": "data_2"},
@@ -138,10 +138,10 @@
       "zindex": 1
     },
     {
-      "name": "_bg_text_0_marks",
+      "name": "_bg_text_oplhu4_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "_fg_text_0_marks"},
+      "from": {"data": "_fg_text_oplhu4_marks"},
       "encode": {
         "update": {
           "opacity": {"value": 0.5},
@@ -155,7 +155,7 @@
       }
     },
     {
-      "name": "_fg_text_1_marks",
+      "name": "_fg_text_18r05u0_marks",
       "type": "text",
       "style": ["text"],
       "from": {"data": "data_3"},
@@ -179,10 +179,10 @@
       "zindex": 1
     },
     {
-      "name": "_bg_text_1_marks",
+      "name": "_bg_text_18r05u0_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "_fg_text_1_marks"},
+      "from": {"data": "_fg_text_18r05u0_marks"},
       "encode": {
         "update": {
           "opacity": {"value": 1},

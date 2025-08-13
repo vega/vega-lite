@@ -63,10 +63,10 @@
             "text": {"field": "price"}
           },
           "transform": [{"filter": "+datum.price === 707"}],
-          "name": "_fg_text_0"
+          "name": "_fg_text_oplhu4"
         },
         {
-          "name": "_bg_text_0",
+          "name": "_bg_text_oplhu4",
           "mark": {
             "type": "rect",
             "fill": "red",
@@ -94,10 +94,10 @@
             "text": {"field": "price"}
           },
           "transform": [{"filter": "+datum.price === 619.98"}],
-          "name": "_fg_text_1"
+          "name": "_fg_text_18r05u0"
         },
         {
-          "name": "_bg_text_1",
+          "name": "_bg_text_18r05u0",
           "mark": {
             "type": "rect",
             "fill": "blue",
