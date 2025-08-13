@@ -39,7 +39,6 @@ export function normalizeTextWithBackground(spec: UnitSpec<Field>) {
 
     // duplicate text mark with bgColor as color and larger stroke-width to create an outline
     if (bgType === 'outline') {
-      textMarkConfig.align = 'center';
       return {
         layer: [
           {

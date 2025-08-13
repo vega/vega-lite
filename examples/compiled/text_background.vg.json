@@ -77,7 +77,6 @@
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 3},
-          "align": {"value": "center"},
           "dy": {"value": 12},
           "fill": {"value": "black"},
           "description": {
@@ -88,6 +87,7 @@
           "text": {
             "signal": "isValid(datum[\"price\"]) ? datum[\"price\"] : \"\"+datum[\"price\"]"
           },
+          "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }
       }
@@ -99,7 +99,6 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "align": {"value": "center"},
           "dy": {"value": 12},
           "fill": {"value": "black"},
           "description": {
@@ -110,6 +109,7 @@
           "text": {
             "signal": "isValid(datum[\"price\"]) ? datum[\"price\"] : \"\"+datum[\"price\"]"
           },
+          "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }
       }
