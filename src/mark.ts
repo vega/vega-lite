@@ -5,6 +5,7 @@ import {ExprRef} from './expr.js';
 import {MarkInvalidMixins} from './invalid.js';
 import {Flag, hasProperty, keys} from './util.js';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema.js';
+import {Padding} from './spec/toplevel.js';
 
 /**
  * All types of primitive marks.
@@ -344,6 +345,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   rect: VL_ONLY_RECT_CONFIG,
   line: ['point'],
   tick: ['bandSize', 'thickness', ...VL_ONLY_RECT_CONFIG],
+  text: ['bgType', 'bgColor', 'bgOpacity', 'bgPadding', 'bgCornerRadius'],
 };
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
@@ -359,7 +361,8 @@ export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
   | BarConfig<ES>
   | RectConfig<ES>
   | LineConfig<ES>
-  | TickConfig<ES>;
+  | TickConfig<ES>
+  | TextConfig<ES>;
 
 export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Mark Config */
@@ -398,7 +401,7 @@ export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   square?: MarkConfig<ES>;
 
   /** Text-Specific Config */
-  text?: MarkConfig<ES>;
+  text?: TextConfig<ES>;
 
   /** Tick-Specific Config */
   tick?: TickConfig<ES>;
@@ -617,7 +620,8 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
         AreaConfig<ES> &
         BarConfig<ES> & // always extends RectConfig
         LineConfig<ES> &
-        TickConfig<ES>,
+        TickConfig<ES> &
+        TextConfig<ES>,
       'startAngle' | 'endAngle' | 'width' | 'height'
     >,
     MarkDefMixins<ES> {
@@ -667,6 +671,43 @@ export const defaultBarConfig: RectConfig<SignalRef> = {
   ...defaultRectConfig,
   binSpacing: 1,
 };
+
+export interface TextConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES> {
+  /**
+   * The type of the background of text marks: `rect` or `outline`
+   *
+   * __Default value:__  `rect`
+   */
+  bgType?: 'rect' | 'outline';
+  /**
+   * The color of the background of text marks
+   *
+   * __Default value:__  `white`
+   */
+  bgColor?: Color | ES;
+
+  /**
+   * The opacity of the background of text marks
+   *
+   * __Default value:__  `1`
+   */
+  bgOpacity?: number | ES;
+
+  /**
+   * The padding of background rectangles or the stroke-width of the outline of text marks.
+   * If an object, the value should have the format {"left": 5, "top": 5, "right": 5, "bottom": 5}.
+   *
+   * __Default value:__  `2`
+   */
+  bgPadding?: Padding;
+
+  /**
+   * The corner radius of the background of text marks
+   *
+   * __Default value:__  `0`
+   */
+  bgCornerRadius?: number | ES;
+}
 
 export interface TickConfig<ES extends ExprRef | SignalRef>
   extends MarkConfig<ES>,
