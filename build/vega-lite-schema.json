@@ -16736,22 +16736,36 @@
               "$ref": "#/definitions/ExprRef"
             }
           ],
-          "description": "The color of the background of text marks"
+          "description": "The color of the background of text marks\n\n__Default value:__  `white`"
         },
         "bgCornerRadius": {
-          "description": "The corner radius of the background of text marks",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The corner radius of the background of text marks\n\n__Default value:__  `0`"
         },
         "bgOpacity": {
-          "description": "The opacity of the background of text marks",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The opacity of the background of text marks\n\n__Default value:__  `1`"
         },
         "bgPadding": {
           "$ref": "#/definitions/Padding",
-          "description": "The padding of the background of text marks"
+          "description": "The padding of background rectangles or the stroke-width of the outline of text marks. If an object, the value should have the format {\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}.\n\n__Default value:__  `2`"
         },
         "bgType": {
-          "description": "The type of the background of text marks",
+          "description": "The type of the background of text marks: `rect` or `outline`\n\n__Default value:__  `rect`",
           "enum": [
             "rect",
             "outline"
@@ -28428,22 +28442,36 @@
               "$ref": "#/definitions/ExprRef"
             }
           ],
-          "description": "The color of the background of text marks"
+          "description": "The color of the background of text marks\n\n__Default value:__  `white`"
         },
         "bgCornerRadius": {
-          "description": "The corner radius of the background of text marks",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The corner radius of the background of text marks\n\n__Default value:__  `0`"
         },
         "bgOpacity": {
-          "description": "The opacity of the background of text marks",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The opacity of the background of text marks\n\n__Default value:__  `1`"
         },
         "bgPadding": {
           "$ref": "#/definitions/Padding",
-          "description": "The padding of the background of text marks"
+          "description": "The padding of background rectangles or the stroke-width of the outline of text marks. If an object, the value should have the format {\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}.\n\n__Default value:__  `2`"
         },
         "bgType": {
-          "description": "The type of the background of text marks",
+          "description": "The type of the background of text marks: `rect` or `outline`\n\n__Default value:__  `rect`",
           "enum": [
             "rect",
             "outline"

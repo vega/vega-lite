@@ -694,7 +694,8 @@ export interface TextConfig<ES extends ExprRef | SignalRef> extends MarkConfig<E
   bgOpacity?: number | ES;
 
   /**
-   * The padding of background rectangles or the stroke-width of the outline of text marks with a background
+   * The padding of background rectangles or the stroke-width of the outline of text marks.
+   * If an object, the value should have the format {"left": 5, "top": 5, "right": 5, "bottom": 5}.
    *
    * __Default value:__  `2`
    */
