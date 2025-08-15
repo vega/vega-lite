@@ -238,7 +238,34 @@ describe('Mark: Bar', () => {
     expect(props.x).toBeUndefined();
     expect(props.width).toEqual({value: defaultBarConfig.continuousBandSize});
   });
+  describe('horizontal bar with domain w/o zero and stack false', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: {type: 'bar'},
+      encoding: {
+        x: {
+          field: 'x',
+          type: 'quantitative',
+          scale: {
+            domain: [1, 4],
+            reverse: true
+          },
+          stack: false
+        },
+        y: {field: 'y', type: 'nominal'}
+      },
+      data: {
+        values: [
+          {x: 2, y: 'A'},
+          {x: 3, y: 'B'}
+        ]
+      }
+    });
+    const props = bar.encodeEntry(model);
 
+    it('should draw bar 2 bars from zero to field value when domain that excludes zero is specified', () => {
+      expect(props.x2).toEqual({scale: 'x', value: 0});
+    });
+  });
   describe('simple horizontal with point scale', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
@@ -635,7 +662,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should end on axis and has no width', () => {
-      expect(props.x2).toEqual({value: 0});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
       expect(props.width).toBeUndefined();
     });
   });
@@ -713,7 +740,7 @@ describe('Mark: Bar', () => {
 
     const props = bar.encodeEntry(model);
     it('should end on axis and have no width', () => {
-      expect(props.x2).toEqual({value: 0});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
       expect(props.width).toBeUndefined();
     });
   });
