@@ -107,10 +107,10 @@ export class UnitModel extends ModelWithField {
       encoding,
       size: isFrameMixins(spec)
         ? {
-            ...parentGivenSize,
-            ...(spec.width ? {width: spec.width} : {}),
-            ...(spec.height ? {height: spec.height} : {}),
-          }
+          ...parentGivenSize,
+          ...(spec.width !== undefined ? {width: spec.width} : {}),
+          ...(spec.height !== undefined ? {height: spec.height} : {}),
+        }
         : parentGivenSize,
     });
 
