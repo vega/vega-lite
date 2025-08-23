@@ -804,6 +804,12 @@
         "title": "Earthquakes Example",
         "description": "Interactive globe visualization of earthquakes",
         "png": true
+      },
+      {
+        "name": "interactive_geo_facet_species",
+        "title": "Faceted County-Level Species Habitat Maps",
+        "description": "A grid of choropleth maps, each displaying the projected habitat distribution for a different species across US counties. Color intensity within each county represents the percentage of suitable habitat.",
+        "png": true
       }
     ]
   },
