@@ -307,6 +307,10 @@ export function accessWithDatumToUnescapedPath(unescapedPath: string) {
   return `datum['${singleQuoteEscapedPath}']`;
 }
 
+export function unescapeSingleQuoteAndPathDot(escapedPath: string) {
+  return escapedPath.replaceAll("\\'", "'").replaceAll('\\.', '.');
+}
+
 function escapePathAccess(string: string) {
   return string.replace(/(\[|\]|\.|'|")/g, '\\$1');
 }

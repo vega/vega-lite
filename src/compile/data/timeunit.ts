@@ -18,6 +18,7 @@ import {
   hash,
   isEmpty,
   replacePathInField,
+  unescapeSingleQuoteAndPathDot,
   vals,
 } from '../../util.js';
 import {ModelWithField, isUnitModel} from '../model.js';
@@ -202,7 +203,7 @@ export class TimeUnitNode extends DataFlowNode {
       } else if (f) {
         const {field: escapedField} = f;
         // since this is a expression, we want the unescaped field name
-        const field = escapedField.replaceAll('\\.', '.');
+        const field = unescapeSingleQuoteAndPathDot(escapedField);
         const expr = offsetExpr({timeUnit: normalizedTimeUnit, field});
         const endAs = offsetAs(field);
         transforms.push({

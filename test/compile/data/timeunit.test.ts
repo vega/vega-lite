@@ -211,6 +211,24 @@ describe('compile/data/timeunit', () => {
       ]);
     });
 
+    it('should return the proper field escaping with binnedutcyearmonth', () => {
+      const model = parseUnitModel({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {field: "monthly(DATE_TRUNC(\\'day\\',date))", type: 'temporal', timeUnit: 'binnedutcyearmonth'},
+        },
+      });
+
+      expect(assembleFromEncoding(model)).toEqual([
+        {
+          type: 'formula',
+          expr: `utcOffset('month', datum['monthly(DATE_TRUNC(\\'day\\',date))'], 1)`,
+          as: `monthly(DATE_TRUNC('day',date))_end`,
+        },
+      ]);
+    });
+
     it('should return a unit offset transforms for text with bandPosition', () => {
       const model = parseUnitModel({
         data: {values: []},
