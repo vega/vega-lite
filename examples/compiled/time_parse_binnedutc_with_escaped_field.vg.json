@@ -1,0 +1,117 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "background": "white",
+  "padding": 5,
+  "width": 20,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"monthly(date_trunc('day', date))": "2011-12-10"},
+        {"monthly(date_trunc('day', date))": "2011-10-12"}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toDate(datum[\"monthly(date_trunc('day', date))\"])",
+          "as": "monthly(date_trunc('day', date))"
+        },
+        {
+          "type": "formula",
+          "expr": "utcOffset('month', datum['monthly(date_trunc(\\\\'day\\\\', date))'], 1)",
+          "as": "monthly(date_trunc(\\'day\\', date))_end"
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"monthly(date_trunc('day', date))\"]) || (isValid(datum[\"monthly(date_trunc('day', date))\"]) && isFinite(+datum[\"monthly(date_trunc('day', date))\"])))"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"monthly(date_trunc(\\'day\\', date)): \" + (utcFormat(datum[\"monthly(date_trunc('day', date))\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+          },
+          "x": {"field": {"group": "width"}},
+          "x2": {"value": 0},
+          "y2": {
+            "scale": "y",
+            "field": "monthly(date_trunc(\\'day\\', date))",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"y\", datum[\"monthly(date_trunc('day', date))_end\"]) - scale(\"y\", datum[\"monthly(date_trunc('day', date))\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"y\", datum[\"monthly(date_trunc('day', date))_end\"]) - scale(\"y\", datum[\"monthly(date_trunc('day', date))\"])))) : -0.5)"
+            }
+          },
+          "y": {
+            "scale": "y",
+            "field": "monthly(date_trunc(\\'day\\', date))_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"y\", datum[\"monthly(date_trunc('day', date))_end\"]) - scale(\"y\", datum[\"monthly(date_trunc('day', date))\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"y\", datum[\"monthly(date_trunc('day', date))_end\"]) - scale(\"y\", datum[\"monthly(date_trunc('day', date))\"])))) : 0.5)"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "y",
+      "type": "utc",
+      "domain": {
+        "data": "data_0",
+        "fields": [
+          "monthly(date_trunc(\\'day\\', date))",
+          "monthly(date_trunc(\\'day\\', date))_end"
+        ]
+      },
+      "range": [{"signal": "height"}, 0]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "monthly(date_trunc(\\'day\\', date))",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    }
+  ]
+}
