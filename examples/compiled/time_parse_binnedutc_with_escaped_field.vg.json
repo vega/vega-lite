@@ -24,8 +24,8 @@
         },
         {
           "type": "formula",
-          "expr": "utcOffset('month', datum['monthly(date_trunc(\\\\'day\\\\', date))'], 1)",
-          "as": "monthly(date_trunc(\\'day\\', date))_end"
+          "expr": "utcOffset('month', datum['monthly(date_trunc(\\'day\\', date))'], 1)",
+          "as": "monthly(date_trunc('day', date))_end"
         },
         {
           "type": "filter",
