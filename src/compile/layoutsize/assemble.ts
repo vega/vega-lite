@@ -92,12 +92,12 @@ export function sizeExpr(scaleName: string, scaleComponent: ScaleComponent, card
   paddingInner =
     type === 'band'
       ? // only band has real paddingInner
-      paddingInner !== undefined
+        paddingInner !== undefined
         ? paddingInner
         : padding
       : // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
-      // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
-      1;
+        // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
+        1;
   return `bandspace(${cardinality}, ${signalOrStringValue(paddingInner)}, ${signalOrStringValue(
     paddingOuter,
   )}) * ${scaleName}_step`;
