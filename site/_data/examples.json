@@ -875,7 +875,7 @@
       },
       {
         "name": "interactive_multi_line_pivot_tooltip",
-        "title": "Multi Series Line Chart with Tooltip",
+        "title": "Multi Series Line Chart with Tooltip via Pivot",
         "description": "The plot displays labels for all stock prices of the hovered time. This example uses a pivot transform to compute the data for the tooltip.",
         "png": true
       },
