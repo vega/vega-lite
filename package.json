@@ -116,7 +116,7 @@
     "serve": "^14.2.4",
     "terser": "^5.43.1",
     "ts-json-schema-generator": "^2.4.0",
-    "typescript": "~5.8.3",
+    "typescript": "~5.9.2",
     "typescript-eslint": "^8.35.0",
     "vega-cli": "^6.1.2",
     "vega-datasets": "^3.1.0",
