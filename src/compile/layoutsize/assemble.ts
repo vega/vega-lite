@@ -20,7 +20,7 @@ export function assembleLayoutSignals(model: Model): NewSignal[] {
 export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal | InitSignal)[] {
   const channel = sizeType === 'width' ? 'x' : 'y';
   const size = model.component.layoutSize.get(sizeType);
-  if (!size || size === 'merged') {
+  if (size == null || size === 'merged') {
     return [];
   }
 
