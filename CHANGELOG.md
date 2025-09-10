@@ -1,5 +1,22 @@
 # Changelog
 
+## [6.3.1](https://github.com/vega/vega-lite/compare/v6.2.0...v6.3.1) (2025-09-10)
+
+
+### Bug Fixes
+
+* align stack order with color domain ([#9641](https://github.com/vega/vega-lite/issues/9641)) ([fad970f](https://github.com/vega/vega-lite/commit/fad970fd5a7fa631bfcc48070268e6a3c446866d)), closes [#1734](https://github.com/vega/vega-lite/issues/1734) [#6203](https://github.com/vega/vega-lite/issues/6203) [#9496](https://github.com/vega/vega-lite/issues/9496)
+* dedup example title ([#9650](https://github.com/vega/vega-lite/issues/9650)) ([0fd0b8d](https://github.com/vega/vega-lite/commit/0fd0b8dfbf23851999cbc296d957e251e1e6c652))
+* do not set opacity in normalized marks for path overlays if it's set in the config ([#9637](https://github.com/vega/vega-lite/issues/9637)) ([9457cea](https://github.com/vega/vega-lite/commit/9457ceafb43ed10d630a3c92d70e03b5ca487ea1))
+* unescape the field (datum access path) correctly for binned time unit ([#9660](https://github.com/vega/vega-lite/issues/9660)) ([0780bf1](https://github.com/vega/vega-lite/commit/0780bf184c6bb51d3dc7d7c3f35edcce951c2e4f))
+
+
+### Features
+
+* add interactive geographic facet visualizations for species habitat data ([#9661](https://github.com/vega/vega-lite/issues/9661)) ([5798e77](https://github.com/vega/vega-lite/commit/5798e772d072057ead0611bdc35a2f413ae6b676)), closes [#9659](https://github.com/vega/vega-lite/issues/9659)
+* align stack order only for nominal color domains ([#9645](https://github.com/vega/vega-lite/issues/9645)) ([e201a9d](https://github.com/vega/vega-lite/commit/e201a9d5f8cd50bd1a06144c7b69f305ec67981a))
+* for interactive charts, changed cursor to pointer ([#9358](https://github.com/vega/vega-lite/issues/9358)) ([ee740b5](https://github.com/vega/vega-lite/commit/ee740b5ed4190474dca91e6d694c3a85172df2b8))
+
 # [6.2.0](https://github.com/vega/vega-lite/compare/v6.1.0...v6.2.0) (2025-06-27)
 
 
