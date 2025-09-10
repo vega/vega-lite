@@ -174,10 +174,9 @@ function addLineBreaksToTooltip(
   config: Config,
   expr: 'datum' | 'datum.datum' = 'datum',
 ): VgValueRef {
-  // tooltip fields with a format property are no strings
-  const fieldDefWithFormat = channelDef as {field: string; type: string; format: string};
-  if (fieldDefWithFormat?.type === 'nominal' && !fieldDefWithFormat.format) {
-    const fieldString = `datum["${fieldDefWithFormat.field}"]`;
+  // tooltip fields that are not nominal or have a format property are no strings
+  if (isFieldDef(channelDef) && 'type' in channelDef && channelDef.type === 'nominal' && !channelDef.format) {
+    const fieldString = `datum["${channelDef.field}"]`;
     return {
       signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : ""+${fieldString}`,
     };
