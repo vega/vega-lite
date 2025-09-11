@@ -536,3 +536,16 @@ export function stringify(data: any) {
 export function hasProperty<T>(obj: T, key: string | number | symbol): key is keyof T {
   return isObject(obj) && hasOwnProperty(obj, key) && (obj as any)[key] !== undefined;
 }
+
+/**
+ * Similar to stringValue in vega-util, but handles `null` as "null" instead of `null` string.
+ */
+export function stringValueWithNullString(x: any): string {
+  return Array.isArray(x)
+    ? `[${x.map(stringValueWithNullString)}]`
+    : typeof x === 'object' || isString(x)
+      ? // Output valid JSON and JS source strings.
+        // See http://timelessrepo.com/json-isnt-a-javascript-subset
+        JSON.stringify(x).replace('\u2028', '\\u2028').replace('\u2029', '\\u2029')
+      : x;
+}
