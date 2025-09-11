@@ -22,6 +22,7 @@ import {binFormatExpression, formatSignalRef} from '../../format.js';
 import {UnitModel} from '../../unit.js';
 import {wrapCondition} from './conditional.js';
 import {textRef} from './text.js';
+import {isDiscrete} from '../../../type.js';
 
 export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config, stack} = model;
@@ -174,8 +175,7 @@ function addLineBreaksToTooltip(
   config: Config,
   expr: 'datum' | 'datum.datum' = 'datum',
 ): VgValueRef {
-  // tooltip fields that are not nominal or have a format property are no strings
-  if (isFieldDef(channelDef) && 'type' in channelDef && channelDef.type === 'nominal' && !channelDef.format) {
+  if (isFieldDef(channelDef) && 'type' in channelDef && isDiscrete(channelDef.type) && !channelDef.format) {
     const fieldString = `datum["${channelDef.field}"]`;
     return {
       signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : ""+${fieldString}`,
