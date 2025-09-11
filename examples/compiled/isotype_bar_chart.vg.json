@@ -115,7 +115,7 @@
               "fill": {"scale": "color", "field": "animal"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"col: \" + (isValid(datum[\"col\"]) ? datum[\"col\"] : \"\"+datum[\"col\"]) + \"; animal: \" + (isValid(datum[\"animal\"]) ? datum[\"animal\"] : \"\"+datum[\"animal\"])"
+                "signal": "\"col: \" + (isValid(datum[\"col\"]) ? datum[\"col\"] : \"\"+datum[\"col\"]) + \"; animal: \" + (isValid(datum[\"animal\"]) ? datum[\"animal\"] : \"\"+datum[\"animal\"]) + \"; _animal_sort_index: \" + (format(datum[\"_animal_sort_index\"], \"\"))"
               },
               "x": {"scale": "x", "field": "col"},
               "y": {"scale": "y", "field": "animal"},
