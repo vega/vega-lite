@@ -89,7 +89,7 @@
           "baseline": {"value": "middle"}
         }
       },
-      "zindex": 2
+      "zindex": 1
     },
     {
       "name": "layer_1_layer_1_marks",
@@ -137,7 +137,7 @@
           "baseline": {"value": "middle"}
         }
       },
-      "zindex": 2
+      "zindex": 1
     },
     {
       "name": "_bg_text_1r1fsuu_marks",
@@ -178,7 +178,7 @@
           "baseline": {"value": "middle"}
         }
       },
-      "zindex": 2
+      "zindex": 1
     },
     {
       "name": "_bg_text_gg0udj_marks",

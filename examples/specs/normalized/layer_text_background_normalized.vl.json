@@ -66,7 +66,7 @@
             "fill": "green",
             "opacity": 1,
             "cornerRadius": 0,
-            "binSpacing": 2
+            "padding": 2
           }
         }
       ]
@@ -101,7 +101,7 @@
             "fill": "red",
             "opacity": 0.8,
             "cornerRadius": 4,
-            "binSpacing": {"left": 8, "top": 6, "right": 8, "bottom": 6}
+            "padding": {"left": 8, "top": 6, "right": 8, "bottom": 6}
           }
         },
         {
