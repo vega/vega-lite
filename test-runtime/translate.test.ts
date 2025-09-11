@@ -40,7 +40,7 @@ describe('Translate interval selections at runtime', () => {
           const view = await embed(getSpec('unit', i, {type, ...binding}));
           const drag = ((await brush(view, 'drag', i)) as [any])[0];
           await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/interval/translate/${bind}/${i}-0.svg`);
-          const translate = ((await brush(view, 'translate', i, null, bind === unbound)) as [any])[0];
+          const translate = ((await brush(view, 'translate', i)) as [any])[0];
           expect(translate.values[0][0])[assertExtent[bind].x[i]](drag.values[0][0]);
           expect(translate.values[0][1])[assertExtent[bind].x[i]](drag.values[0][1]);
           expect(translate.values[1][0])[assertExtent[bind].y[i]](drag.values[1][0]);
@@ -67,7 +67,7 @@ describe('Translate interval selections at runtime', () => {
           await expect(await view.toSVG()).toMatchFileSnapshot(
             `./snapshots/interval/translate/${bind}/bins_${i}-0.svg`,
           );
-          const translate = ((await brush(view, 'bins_translate', i, null, bind === unbound)) as [any])[0];
+          const translate = ((await brush(view, 'bins_translate', i)) as [any])[0];
           expect(translate.values[0][0])[assertExtent[bind].y[i]](drag.values[0][0]);
           expect(translate.values[0][1])[assertExtent[bind].y[i]](drag.values[0][1]);
           await expect(await view.toSVG()).toMatchFileSnapshot(
@@ -88,7 +88,7 @@ describe('Translate interval selections at runtime', () => {
           await expect(await view.toSVG()).toMatchFileSnapshot(
             `./snapshots/interval/translate/${bind}/temporal_${i}-0.svg`,
           );
-          const translate = toNumber(await brush(view, 'translate', i, null, bind === unbound));
+          const translate = toNumber(await brush(view, 'translate', i));
           expect(translate[0])[assertExtent[bind].x[i]](drag[0]);
           expect(translate[1])[assertExtent[bind].x[i]](drag[1]);
           await expect(await view.toSVG()).toMatchFileSnapshot(
@@ -114,7 +114,7 @@ describe('Translate interval selections at runtime', () => {
           await expect(await view.toSVG()).toMatchFileSnapshot(
             `./snapshots/interval/translate/${bind}/logpow_${i}-0.svg`,
           );
-          const translate = ((await brush(view, 'translate', i, null, bind === unbound)) as [any])[0];
+          const translate = ((await brush(view, 'translate', i)) as [any])[0];
           expect(translate.values[0][0])[assertExtent[bind].x[i]](drag.values[0][0]);
           expect(translate.values[0][1])[assertExtent[bind].x[i]](drag.values[0][1]);
           expect(translate.values[1][0])[assertExtent[bind].y[i]](drag.values[1][0]);
@@ -143,7 +143,7 @@ describe('Translate interval selections at runtime', () => {
             await expect(await view.toSVG()).toMatchFileSnapshot(
               `./snapshots/interval/translate/${bind}/ord_${i}-0.svg`,
             );
-            const translate = ((await brush(view, 'translate', i, null, true)) as [any])[0];
+            const translate = ((await brush(view, 'translate', i)) as [any])[0];
             expect(translate.values[0][0])[assertExtent[bind].x[i]](drag.values[0][0]);
             expect(translate.values[0][1])[assertExtent[bind].x[i]](drag.values[0][1]);
             expect(translate.values[1][0])[assertExtent[bind].y[i]](drag.values[1][0]);
@@ -195,7 +195,7 @@ describe('Translate interval selections at runtime', () => {
     await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/interval/translate/geo-0.svg`);
 
     for (let i = 0; i < hits.translate.length; i++) {
-      const translate: any = await brush(view, 'translate', i, null, true);
+      const translate: any = await brush(view, 'translate', i);
       expect(translate.length).toBeGreaterThan(0);
       await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/interval/translate/geo-${i + 1}.svg`);
     }
