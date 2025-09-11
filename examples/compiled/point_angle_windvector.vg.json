@@ -16,11 +16,6 @@
       },
       "transform": [
         {
-          "type": "formula",
-          "expr": "indexof([0,360], datum['dir'])",
-          "as": "_dir_sort_index"
-        },
-        {
           "type": "geojson",
           "fields": ["longitude", "latitude"],
           "signal": "geojson_0"
@@ -51,10 +46,6 @@
       "name": "marks",
       "type": "symbol",
       "style": ["point"],
-      "sort": {
-        "field": ["datum[\"_dir_sort_index\"]"],
-        "order": ["descending"]
-      },
       "from": {"data": "source_0"},
       "encode": {
         "update": {

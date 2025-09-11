@@ -37,11 +37,6 @@
             "order": ["descending", "descending"]
           },
           "groupby": ["matchday"]
-        },
-        {
-          "type": "formula",
-          "expr": "indexof([\"Germany\",\"Mexico\",\"South Korea\",\"Sweden\"], datum['team'])",
-          "as": "_team_sort_index"
         }
       ]
     }
@@ -80,16 +75,13 @@
           "name": "marks",
           "type": "line",
           "style": ["line"],
-          "sort": {
-            "field": ["datum[\"_team_sort_index\"]"],
-            "order": ["descending"]
-          },
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "team"},
               "description": {
-                "signal": "\"matchday: \" + (isValid(datum[\"matchday\"]) ? datum[\"matchday\"] : \"\"+datum[\"matchday\"]) + \"; rank: \" + (isValid(datum[\"rank\"]) ? datum[\"rank\"] : \"\"+datum[\"rank\"]) + \"; team: \" + (isValid(datum[\"team\"]) ? datum[\"team\"] : \"\"+datum[\"team\"]) + \"; _team_sort_index: \" + (format(datum[\"_team_sort_index\"], \"\"))"
+                "signal": "\"matchday: \" + (isValid(datum[\"matchday\"]) ? datum[\"matchday\"] : \"\"+datum[\"matchday\"]) + \"; rank: \" + (isValid(datum[\"rank\"]) ? datum[\"rank\"] : \"\"+datum[\"rank\"]) + \"; team: \" + (isValid(datum[\"team\"]) ? datum[\"team\"] : \"\"+datum[\"team\"])"
               },
               "x": {"scale": "x", "field": "matchday"},
               "y": {"scale": "y", "field": "rank"}

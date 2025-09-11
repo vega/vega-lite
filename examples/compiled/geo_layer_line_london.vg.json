@@ -13,6 +13,11 @@
       "format": {"type": "topojson", "feature": "boroughs"}
     },
     {
+      "name": "source_2",
+      "url": "data/londonTubeLines.json",
+      "format": {"type": "topojson", "feature": "line"}
+    },
+    {
       "name": "source_1",
       "url": "data/londonCentroids.json",
       "format": {"type": "json"},
@@ -32,18 +37,6 @@
           "projection": "projection",
           "fields": ["cx", "cy"],
           "as": ["layer_1_x", "layer_1_y"]
-        }
-      ]
-    },
-    {
-      "name": "source_2",
-      "url": "data/londonTubeLines.json",
-      "format": {"type": "topojson", "feature": "line"},
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "indexof([\"Bakerloo\",\"Central\",\"Circle\",\"District\",\"DLR\",\"Hammersmith & City\",\"Jubilee\",\"Metropolitan\",\"Northern\",\"Piccadilly\",\"Victoria\",\"Waterloo & City\"], datum['id'])",
-          "as": "_id_sort_index"
         }
       ]
     }
@@ -100,7 +93,6 @@
       "name": "layer_2_marks",
       "type": "shape",
       "style": ["geoshape"],
-      "sort": {"field": ["datum[\"_id_sort_index\"]"], "order": ["descending"]},
       "from": {"data": "source_2"},
       "encode": {
         "update": {
@@ -109,7 +101,7 @@
           "stroke": {"scale": "color", "field": "id"},
           "ariaRoleDescription": {"value": "geoshape"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; _id_sort_index: \" + (format(datum[\"_id_sort_index\"], \"\"))"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
           }
         }
       },
