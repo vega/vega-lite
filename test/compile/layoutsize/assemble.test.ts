@@ -106,6 +106,19 @@ describe('compile/layout', () => {
       expect(size).toEqual([{name: 'width', value: 205}]);
     });
 
+    it('should return static view size for ordinal scale with top-level width = 0', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        width: 0,
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal'},
+        },
+      });
+
+      const size = sizeSignals(model, 'width');
+      expect(size).toEqual([{name: 'width', value: 0}]);
+    });
+
     it('should return static view width for continuous x-scale', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
@@ -128,6 +141,19 @@ describe('compile/layout', () => {
 
       const size = sizeSignals(model, 'height');
       expect(size).toEqual([{name: 'height', value: 300}]);
+    });
+
+    it('should return static view size for continuous y-scale with top-level height = 0', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        height: 0,
+        mark: 'point',
+        encoding: {
+          y: {field: 'a', type: 'quantitative'},
+        },
+      });
+
+      const size = sizeSignals(model, 'height');
+      expect(size).toEqual([{name: 'height', value: 0}]);
     });
 
     it('should return default discreteWidth/Height if axis is not mapped', () => {
