@@ -3483,6 +3483,10 @@
             }
           ]
         },
+        "padding": {
+          "$ref": "#/definitions/Padding",
+          "description": "Padding for rect marks used as text background __Default value:__ `2`"
+        },
         "radius": {
           "anyOf": [
             {
@@ -17185,6 +17189,10 @@
             }
           ]
         },
+        "padding": {
+          "$ref": "#/definitions/Padding",
+          "description": "Padding for rect marks used as text background __Default value:__ `2`"
+        },
         "point": {
           "anyOf": [
             {
@@ -21017,6 +21025,10 @@
               "$ref": "#/definitions/ExprRef"
             }
           ]
+        },
+        "padding": {
+          "$ref": "#/definitions/Padding",
+          "description": "Padding for rect marks used as text background __Default value:__ `2`"
         },
         "radius": {
           "anyOf": [
@@ -29756,6 +29768,10 @@
               "$ref": "#/definitions/ExprRef"
             }
           ]
+        },
+        "padding": {
+          "$ref": "#/definitions/Padding",
+          "description": "Padding for rect marks used as text background __Default value:__ `2`"
         },
         "radius": {
           "anyOf": [

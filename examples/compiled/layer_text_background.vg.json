@@ -69,7 +69,7 @@
       }
     },
     {
-      "name": "_fg_text_d2l4s5_marks",
+      "name": "_fg_text_1r6c46l_marks",
       "type": "text",
       "style": ["text"],
       "from": {"data": "data_1"},
@@ -116,7 +116,7 @@
       }
     },
     {
-      "name": "_fg_text_1r1fsuu_marks",
+      "name": "_fg_text_r6pp7m_marks",
       "type": "text",
       "style": ["text"],
       "from": {"data": "data_2"},
@@ -140,10 +140,10 @@
       "zindex": 1
     },
     {
-      "name": "_bg_text_1r1fsuu_marks",
+      "name": "_bg_text_r6pp7m_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "_fg_text_1r1fsuu_marks"},
+      "from": {"data": "_fg_text_r6pp7m_marks"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -157,7 +157,7 @@
       }
     },
     {
-      "name": "_fg_text_gg0udj_marks",
+      "name": "_fg_text_dgn70f_marks",
       "type": "text",
       "style": ["text"],
       "from": {"data": "data_3"},
@@ -181,10 +181,10 @@
       "zindex": 1
     },
     {
-      "name": "_bg_text_gg0udj_marks",
+      "name": "_bg_text_dgn70f_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "_fg_text_gg0udj_marks"},
+      "from": {"data": "_fg_text_dgn70f_marks"},
       "encode": {
         "update": {
           "opacity": {"value": 0.8},

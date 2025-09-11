@@ -8,21 +8,20 @@
       "mark": "line",
       "encoding": {
         "x": {"field": "date", "type": "temporal"},
-        "y": {"field": "price", "type": "quantitative"},
-        "text": {"field": "price"}
+        "y": {"field": "price", "type": "quantitative"}
       }
     },
     {
       "layer": [
         {
           "mark": {"type": "text", "fontWeight": "bold", "outline": "white"},
-          "transform": [{"filter": "+datum.price === 286"}],
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
             "y": {"field": "price", "type": "quantitative"},
             "text": {"field": "price"}
           },
-          "name": "_fg_text_d2l4s5"
+          "transform": [{"filter": "+datum.price === 286"}],
+          "name": "_fg_text_1r6c46l"
         },
         {
           "mark": {
@@ -32,12 +31,12 @@
             "stroke": "white",
             "strokeWidth": 2
           },
-          "transform": [{"filter": "+datum.price === 286"}],
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
             "y": {"field": "price", "type": "quantitative"},
             "text": {"field": "price"}
-          }
+          },
+          "transform": [{"filter": "+datum.price === 286"}]
         }
       ]
     },
@@ -51,16 +50,16 @@
             "dy": -12,
             "background": "green"
           },
-          "transform": [{"filter": "+datum.price === 707"}],
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
             "y": {"field": "price", "type": "quantitative"},
             "text": {"field": "price"}
           },
-          "name": "_fg_text_1r1fsuu"
+          "transform": [{"filter": "+datum.price === 707"}],
+          "name": "_fg_text_r6pp7m"
         },
         {
-          "name": "_bg_text_1r1fsuu",
+          "name": "_bg_text_r6pp7m",
           "mark": {
             "type": "rect",
             "fill": "green",
@@ -86,16 +85,16 @@
               "padding": {"left": 8, "top": 6, "right": 8, "bottom": 6}
             }
           },
-          "transform": [{"filter": "+datum.price === 292.96"}],
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
             "y": {"field": "price", "type": "quantitative"},
             "text": {"field": "price"}
           },
-          "name": "_fg_text_gg0udj"
+          "transform": [{"filter": "+datum.price === 292.96"}],
+          "name": "_fg_text_dgn70f"
         },
         {
-          "name": "_bg_text_gg0udj",
+          "name": "_bg_text_dgn70f",
           "mark": {
             "type": "rect",
             "fill": "red",
@@ -119,12 +118,12 @@
             "stroke": "white",
             "strokeWidth": 4
           },
-          "transform": [{"filter": "+datum.price === 292.96"}],
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
             "y": {"field": "price", "type": "quantitative"},
             "text": {"field": "price"}
-          }
+          },
+          "transform": [{"filter": "+datum.price === 292.96"}]
         }
       ]
     }
