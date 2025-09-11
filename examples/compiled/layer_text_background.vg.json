@@ -34,6 +34,17 @@
           "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
         }
       ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "+datum.price === 292.96"},
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+        }
+      ]
     }
   ],
   "marks": [
@@ -58,14 +69,12 @@
       }
     },
     {
-      "name": "layer_1_layer_0_marks",
+      "name": "_fg_text_d2l4s5_marks",
       "type": "text",
       "style": ["text"],
       "from": {"data": "data_1"},
       "encode": {
         "update": {
-          "stroke": {"value": "white"},
-          "strokeWidth": {"value": 4},
           "fontWeight": {"value": "bold"},
           "fill": {"value": "black"},
           "description": {
@@ -79,7 +88,8 @@
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }
-      }
+      },
+      "zindex": 2
     },
     {
       "name": "layer_1_layer_1_marks",
@@ -88,6 +98,8 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 2},
           "fontWeight": {"value": "bold"},
           "fill": {"value": "black"},
           "description": {
@@ -104,7 +116,7 @@
       }
     },
     {
-      "name": "_fg_text_hm0ll1_marks",
+      "name": "_fg_text_1r1fsuu_marks",
       "type": "text",
       "style": ["text"],
       "from": {"data": "data_2"},
@@ -125,22 +137,88 @@
           "baseline": {"value": "middle"}
         }
       },
-      "zindex": 1
+      "zindex": 2
     },
     {
-      "name": "_bg_text_hm0ll1_marks",
+      "name": "_bg_text_1r1fsuu_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "_fg_text_hm0ll1_marks"},
+      "from": {"data": "_fg_text_1r1fsuu_marks"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 1},
+          "fill": {"value": "green"},
+          "cornerRadius": {"value": 0},
+          "x": {"field": "bounds.x1", "offset": -2},
+          "x2": {"field": "bounds.x2", "offset": 2},
+          "y": {"field": "bounds.y1", "offset": -2},
+          "y2": {"field": "bounds.y2", "offset": 2}
+        }
+      }
+    },
+    {
+      "name": "_fg_text_gg0udj_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_3"},
+      "encode": {
+        "update": {
+          "dy": {"value": -12},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "text": {
+            "signal": "isValid(datum[\"price\"]) ? datum[\"price\"] : \"\"+datum[\"price\"]"
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
+        }
+      },
+      "zindex": 2
+    },
+    {
+      "name": "_bg_text_gg0udj_marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "_fg_text_gg0udj_marks"},
       "encode": {
         "update": {
           "opacity": {"value": 0.8},
           "fill": {"value": "red"},
           "cornerRadius": {"value": 4},
-          "x": {"field": "bounds.x1", "offset": -6},
-          "x2": {"field": "bounds.x2", "offset": 6},
-          "y": {"field": "bounds.y1", "offset": -4},
-          "y2": {"field": "bounds.y2", "offset": 4}
+          "x": {"field": "bounds.x1", "offset": -8},
+          "x2": {"field": "bounds.x2", "offset": 8},
+          "y": {"field": "bounds.y1", "offset": -6},
+          "y2": {"field": "bounds.y2", "offset": 6}
+        }
+      }
+    },
+    {
+      "name": "layer_3_layer_2_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_3"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 4},
+          "dy": {"value": -12},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "text": {
+            "signal": "isValid(datum[\"price\"]) ? datum[\"price\"] : \"\"+datum[\"price\"]"
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
         }
       }
     }
@@ -153,7 +231,8 @@
         "fields": [
           {"data": "source_0", "field": "date"},
           {"data": "data_1", "field": "date"},
-          {"data": "data_2", "field": "date"}
+          {"data": "data_2", "field": "date"},
+          {"data": "data_3", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -165,7 +244,8 @@
         "fields": [
           {"data": "source_0", "field": "price"},
           {"data": "data_1", "field": "price"},
-          {"data": "data_2", "field": "price"}
+          {"data": "data_2", "field": "price"},
+          {"data": "data_3", "field": "price"}
         ]
       },
       "range": [{"signal": "height"}, 0],

@@ -596,6 +596,9 @@ describe('Mark', () => {
       name: '_bg_text',
       mark: {
         type: 'rect',
+        padding: {
+          top: 3,
+        },
       },
     });
 
@@ -622,7 +625,7 @@ describe('Mark', () => {
           },
           y: {
             field: 'bounds.y1',
-            offset: -2,
+            offset: -3,
           },
           y2: {
             field: 'bounds.y2',

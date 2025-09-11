@@ -16711,6 +16711,20 @@
             }
           ]
         },
+        "background": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/TextBackground"
+            }
+          ],
+          "description": "Rectangular background for text marks. Can either be a color value, an expression, or an object with keys `color` (required), `opacity`, `padding`, and `cornerRadius`."
+        },
         "bandSize": {
           "description": "The width of the ticks.\n\n__Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).",
           "minimum": 0,
@@ -16726,51 +16740,6 @@
             }
           ],
           "description": "For text marks, the vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, `\"line-bottom\"`, or an expression reference that provides one of the valid values. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone.\n\nFor range marks, the vertical alignment of the marks. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Note:__ Expression reference is *not* supported for range marks."
-        },
-        "bgColor": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "The color of the background of text marks\n\n__Default value:__  `white`"
-        },
-        "bgCornerRadius": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "The corner radius of the background of text marks\n\n__Default value:__  `0`"
-        },
-        "bgOpacity": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "The opacity of the background of text marks\n\n__Default value:__  `1`"
-        },
-        "bgPadding": {
-          "$ref": "#/definitions/Padding",
-          "description": "The padding of background rectangles or the stroke-width of the outline of text marks. If an object, the value should have the format {\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}.\n\n__Default value:__  `2`"
-        },
-        "bgType": {
-          "description": "The type of the background of text marks: `rect` or `outline`\n\n__Default value:__  `rect`",
-          "enum": [
-            "rect",
-            "outline"
-          ],
-          "type": "string"
         },
         "binSpacing": {
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
@@ -17190,6 +17159,20 @@
           ],
           "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.\n\n__Default value:__ `0`",
           "minimum": 0
+        },
+        "outline": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/TextOutline"
+            }
+          ],
+          "description": "Outline for text marks. Can either be a color value, an expression, or an object with keys `color` (required), and `strokeWidth`."
         },
         "padAngle": {
           "anyOf": [
@@ -28332,6 +28315,52 @@
         }
       ]
     },
+    "TextBackground": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The color of the background of text marks __Default value:__  `white`"
+        },
+        "cornerRadius": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The corner radius of the background of text marks __Default value:__  `0`"
+        },
+        "opacity": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The opacity of the background of text marks __Default value:__  `1`"
+        },
+        "padding": {
+          "$ref": "#/definitions/Padding",
+          "description": "The padding of the background rectangles or the stroke-width of the outline of text marks. If an object, the value should have the format {\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}. __Default value:__  `2`"
+        }
+      },
+      "required": [
+        "color"
+      ],
+      "type": "object"
+    },
     "TextBaseline": {
       "anyOf": [
         {
@@ -28422,6 +28451,20 @@
             }
           ]
         },
+        "background": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/TextBackground"
+            }
+          ],
+          "description": "Rectangular background for text marks. Can either be a color value, an expression, or an object with keys `color` (required), `opacity`, `padding`, and `cornerRadius`."
+        },
         "baseline": {
           "anyOf": [
             {
@@ -28432,51 +28475,6 @@
             }
           ],
           "description": "For text marks, the vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, `\"line-bottom\"`, or an expression reference that provides one of the valid values. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone.\n\nFor range marks, the vertical alignment of the marks. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Note:__ Expression reference is *not* supported for range marks."
-        },
-        "bgColor": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "The color of the background of text marks\n\n__Default value:__  `white`"
-        },
-        "bgCornerRadius": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "The corner radius of the background of text marks\n\n__Default value:__  `0`"
-        },
-        "bgOpacity": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "The opacity of the background of text marks\n\n__Default value:__  `1`"
-        },
-        "bgPadding": {
-          "$ref": "#/definitions/Padding",
-          "description": "The padding of background rectangles or the stroke-width of the outline of text marks. If an object, the value should have the format {\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}.\n\n__Default value:__  `2`"
-        },
-        "bgType": {
-          "description": "The type of the background of text marks: `rect` or `outline`\n\n__Default value:__  `rect`",
-          "enum": [
-            "rect",
-            "outline"
-          ],
-          "type": "string"
         },
         "blend": {
           "anyOf": [
@@ -28838,6 +28836,20 @@
           ],
           "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.\n\n__Default value:__ `0`",
           "minimum": 0
+        },
+        "outline": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/TextOutline"
+            }
+          ],
+          "description": "Outline for text marks. Can either be a color value, an expression, or an object with keys `color` (required), and `strokeWidth`."
         },
         "padAngle": {
           "anyOf": [
@@ -29228,6 +29240,30 @@
         "rtl"
       ],
       "type": "string"
+    },
+    "TextOutline": {
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The color of the outline of text marks __Default value:__  `white`"
+        },
+        "strokeWidth": {
+          "description": "The stroke-width of the outline of text marks. __Default value:__  `2`",
+          "type": "number"
+        }
+      },
+      "required": [
+        "color"
+      ],
+      "type": "object"
     },
     "TickConfig": {
       "additionalProperties": false,

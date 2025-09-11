@@ -18,6 +18,9 @@
     "y": {
       "field": "price",
       "type": "quantitative"
+    },
+    "text": {
+      "field": "price"
     }
   },
   "layer": [
@@ -28,19 +31,13 @@
       "mark": {
         "type": "text",
         "fontWeight": "bold",
-        "bgType": "outline",
-        "bgPadding": 4
+        "outline": "white"
       },
       "transform": [
         {
           "filter": "+datum.price === 286"
         }
-      ],
-      "encoding": {
-        "text": {
-          "field": "price"
-        }
-      }
+      ]
     },
     {
       "mark": {
@@ -48,26 +45,40 @@
         "color": "white",
         "fontWeight": "bold",
         "dy": -12,
-        "bgColor": "red",
-        "bgOpacity": 0.8,
-        "bgCornerRadius": 4,
-        "bgPadding": {
-          "left": 6,
-          "top": 4,
-          "right": 6,
-          "bottom": 4
-        }
+        "background": "green"
       },
       "transform": [
         {
           "filter": "+datum.price === 707"
         }
-      ],
-      "encoding": {
-        "text": {
-          "field": "price"
+      ]
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontWeight": "bold",
+        "dy": -12,
+        "outline": {
+          "color": "white",
+          "strokeWidth": 4
+        },
+        "background": {
+          "color": "red",
+          "opacity": 0.8,
+          "cornerRadius": 4,
+          "padding": {
+            "left": 8,
+            "top": 6,
+            "right": 8,
+            "bottom": 6
+          }
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "+datum.price === 292.96"
+        }
+      ]
     }
   ]
 }

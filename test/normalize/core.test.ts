@@ -465,140 +465,188 @@ describe('normalize()', () => {
   });
 
   describe('normalizeTextWithBackground', () => {
-    it('should duplicate text mark with bgType outline and add an outline', () => {
+    it('should duplicate text mark with an outline', () => {
       const spec: any = {
         encoding: {
-          x: {
-            field: 'date',
-            type: 'temporal',
-          },
-          y: {
-            field: 'price',
-            type: 'quantitative',
-          },
           text: {
             field: 'price',
           },
         },
-        mark: {
-          type: 'text',
-          dy: 12,
-          bgType: 'outline',
-          bgPadding: 3,
-        },
+        layer: [
+          {
+            mark: {
+              type: 'text',
+              outline: 'white',
+            },
+          },
+          {
+            mark: {
+              type: 'text',
+              outline: {
+                color: 'white',
+                strokeWidth: 3,
+              },
+            },
+          },
+        ],
       };
 
       expect(normalize(spec)).toEqual({
         layer: [
           {
-            encoding: {
-              x: {
-                field: 'date',
-                type: 'temporal',
+            layer: [
+              {
+                mark: {
+                  type: 'text',
+                  outline: 'white',
+                },
+                encoding: {
+                  text: {
+                    field: 'price',
+                  },
+                },
+                name: '_fg_text_1lt6jti',
               },
-              y: {
-                field: 'price',
-                type: 'quantitative',
+              {
+                mark: {
+                  type: 'text',
+                  outline: 'white',
+                  stroke: 'white',
+                  strokeWidth: 2,
+                },
+                encoding: {
+                  text: {
+                    field: 'price',
+                  },
+                },
               },
-              text: {
-                field: 'price',
-              },
-            },
-            mark: {
-              type: 'text',
-              dy: 12,
-              bgType: 'outline',
-              bgPadding: 3,
-              stroke: 'white',
-              strokeWidth: 3,
-            },
+            ],
           },
           {
-            encoding: {
-              x: {
-                field: 'date',
-                type: 'temporal',
+            layer: [
+              {
+                mark: {
+                  type: 'text',
+                  outline: {
+                    color: 'white',
+                    strokeWidth: 3,
+                  },
+                },
+                encoding: {
+                  text: {field: 'price'},
+                },
+                name: '_fg_text_8qb38m',
               },
-              y: {
-                field: 'price',
-                type: 'quantitative',
+              {
+                mark: {
+                  type: 'text',
+                  outline: {
+                    color: 'white',
+                    strokeWidth: 3,
+                  },
+                  stroke: 'white',
+                  strokeWidth: 3,
+                },
+                encoding: {
+                  text: {
+                    field: 'price',
+                  },
+                },
               },
-              text: {
-                field: 'price',
-              },
-            },
-            mark: {
-              type: 'text',
-              dy: 12,
-              bgType: 'outline',
-              bgPadding: 3,
-            },
+            ],
           },
         ],
       });
     });
 
-    it('add a layer with rectangles behind text marks with bgType rect and bgColor defined', () => {
+    it('add a layer with rectangles behind text marks with a background', () => {
       const spec: any = {
         encoding: {
-          x: {
-            field: 'date',
-            type: 'temporal',
-          },
-          y: {
-            field: 'price',
-            type: 'quantitative',
-          },
           text: {
             field: 'price',
           },
         },
-        mark: {
-          type: 'text',
-          dy: 12,
-          bgType: 'rect',
-          bgColor: 'red',
-          bgPadding: {top: 3},
-        },
+        layer: [
+          {
+            mark: {
+              type: 'text',
+              background: 'red',
+            },
+          },
+          {
+            mark: {
+              type: 'text',
+              background: {
+                color: 'red',
+                padding: {
+                  top: 3,
+                },
+              },
+            },
+          },
+        ],
       };
+
       expect(normalize(spec)).toEqual({
         layer: [
           {
-            encoding: {
-              x: {
-                field: 'date',
-                type: 'temporal',
+            layer: [
+              {
+                mark: {
+                  type: 'text',
+                  background: 'red',
+                },
+                encoding: {
+                  text: {
+                    field: 'price',
+                  },
+                },
+                name: '_fg_text_1jkmohu',
               },
-              y: {
-                field: 'price',
-                type: 'quantitative',
+              {
+                name: '_bg_text_1jkmohu',
+                mark: {
+                  type: 'rect',
+                  fill: 'red',
+                  opacity: 1,
+                  cornerRadius: 0,
+                  padding: 2,
+                },
               },
-              text: {
-                field: 'price',
-              },
-            },
-            mark: {
-              type: 'text',
-              dy: 12,
-              bgType: 'rect',
-              bgColor: 'red',
-              bgPadding: {
-                top: 3,
-              },
-            },
-            name: '_fg_text_61lam6',
+            ],
           },
           {
-            name: '_bg_text_61lam6',
-            mark: {
-              type: 'rect',
-              fill: 'red',
-              opacity: 1,
-              cornerRadius: 0,
-              bgPadding: {
-                top: 3,
+            layer: [
+              {
+                mark: {
+                  type: 'text',
+                  background: {
+                    color: 'red',
+                    padding: {
+                      top: 3,
+                    },
+                  },
+                },
+                encoding: {
+                  text: {
+                    field: 'price',
+                  },
+                },
+                name: '_fg_text_1iqtq5g',
               },
-            },
+              {
+                name: '_bg_text_1iqtq5g',
+                mark: {
+                  type: 'rect',
+                  fill: 'red',
+                  opacity: 1,
+                  cornerRadius: 0,
+                  padding: {
+                    top: 3,
+                  },
+                },
+              },
+            ],
           },
         ],
       });

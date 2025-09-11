@@ -8,40 +8,36 @@
       "mark": "line",
       "encoding": {
         "x": {"field": "date", "type": "temporal"},
-        "y": {"field": "price", "type": "quantitative"}
+        "y": {"field": "price", "type": "quantitative"},
+        "text": {"field": "price"}
       }
     },
     {
       "layer": [
         {
-          "mark": {
-            "type": "text",
-            "fontWeight": "bold",
-            "bgType": "outline",
-            "bgPadding": 4,
-            "stroke": "white",
-            "strokeWidth": 4
-          },
+          "mark": {"type": "text", "fontWeight": "bold", "outline": "white"},
+          "transform": [{"filter": "+datum.price === 286"}],
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
             "y": {"field": "price", "type": "quantitative"},
             "text": {"field": "price"}
           },
-          "transform": [{"filter": "+datum.price === 286"}]
+          "name": "_fg_text_d2l4s5"
         },
         {
           "mark": {
             "type": "text",
             "fontWeight": "bold",
-            "bgType": "outline",
-            "bgPadding": 4
+            "outline": "white",
+            "stroke": "white",
+            "strokeWidth": 2
           },
+          "transform": [{"filter": "+datum.price === 286"}],
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
             "y": {"field": "price", "type": "quantitative"},
             "text": {"field": "price"}
-          },
-          "transform": [{"filter": "+datum.price === 286"}]
+          }
         }
       ]
     },
@@ -53,27 +49,81 @@
             "color": "white",
             "fontWeight": "bold",
             "dy": -12,
-            "bgColor": "red",
-            "bgOpacity": 0.8,
-            "bgCornerRadius": 4,
-            "bgPadding": {"left": 6, "top": 4, "right": 6, "bottom": 4}
+            "background": "green"
           },
+          "transform": [{"filter": "+datum.price === 707"}],
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
             "y": {"field": "price", "type": "quantitative"},
             "text": {"field": "price"}
           },
-          "transform": [{"filter": "+datum.price === 707"}],
-          "name": "_fg_text_hm0ll1"
+          "name": "_fg_text_1r1fsuu"
         },
         {
-          "name": "_bg_text_hm0ll1",
+          "name": "_bg_text_1r1fsuu",
+          "mark": {
+            "type": "rect",
+            "fill": "green",
+            "opacity": 1,
+            "cornerRadius": 0,
+            "binSpacing": 2
+          }
+        }
+      ]
+    },
+    {
+      "layer": [
+        {
+          "mark": {
+            "type": "text",
+            "fontWeight": "bold",
+            "dy": -12,
+            "outline": {"color": "white", "strokeWidth": 4},
+            "background": {
+              "color": "red",
+              "opacity": 0.8,
+              "cornerRadius": 4,
+              "padding": {"left": 8, "top": 6, "right": 8, "bottom": 6}
+            }
+          },
+          "transform": [{"filter": "+datum.price === 292.96"}],
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"},
+            "text": {"field": "price"}
+          },
+          "name": "_fg_text_gg0udj"
+        },
+        {
+          "name": "_bg_text_gg0udj",
           "mark": {
             "type": "rect",
             "fill": "red",
             "opacity": 0.8,
             "cornerRadius": 4,
-            "bgPadding": {"left": 6, "top": 4, "right": 6, "bottom": 4}
+            "binSpacing": {"left": 8, "top": 6, "right": 8, "bottom": 6}
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontWeight": "bold",
+            "dy": -12,
+            "outline": {"color": "white", "strokeWidth": 4},
+            "background": {
+              "color": "red",
+              "opacity": 0.8,
+              "cornerRadius": 4,
+              "padding": {"left": 8, "top": 6, "right": 8, "bottom": 6}
+            },
+            "stroke": "white",
+            "strokeWidth": 4
+          },
+          "transform": [{"filter": "+datum.price === 292.96"}],
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"},
+            "text": {"field": "price"}
           }
         }
       ]

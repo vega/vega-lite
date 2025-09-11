@@ -47,7 +47,7 @@ permalink: /docs/text.html
 
 A text mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
-{% include table.html props="angle,align,baseline,bgType,bgColor,bgOpacity,bgPadding,bgCornerRadius,dir,dx,dy,ellipsis,font,fontSize,fontStyle,fontWeight,limit,lineHeight,radius,text,theta" source="MarkDef" %}
+{% include table.html props="angle,align,baseline,background,outline,dir,dx,dy,ellipsis,font,fontSize,fontStyle,fontWeight,limit,lineHeight,radius,text,theta" source="MarkDef" %}
 
 ## Examples
 
@@ -75,7 +75,7 @@ By mapping geographic coordinate data to `longitude` and `latitude` channels of 
 
 ### Background
 
-You can add a background to `text` marks to increase readability or to make text stand out as annotation. There are two background types: `rect` and `outline`. The example below shows both, including some configuration options.
+You can add a background or an outline to `text` marks to increase readability or to make text stand out as annotation. The example below shows both, including some configuration options.
 
 <span class="vl-example" data-name="layer_text_background"></span>
 
