@@ -538,7 +538,9 @@ export function hasProperty<T>(obj: T, key: string | number | symbol): key is ke
 }
 
 /**
- * Similar to stringValue in vega-util, but handles `null` as "null" instead of `null` string.
+ * Similar to stringValue in vega-util, but stringify `null` to `"null"`.
+ * The diff from `stringValue` is `typeof x === 'object'` instead of `isObject(x)`, which is using `Object(x) === x`
+ * and doesn't identify null as object.
  */
 export function stringValueWithNullString(x: any): string {
   return Array.isArray(x)
