@@ -80,11 +80,11 @@
             "update": {
               "fill": {"scale": "color", "field": "habitat_yearround_pct"},
               "tooltip": {
-                "signal": "{\"County ID\": isValid(datum[\"county_id\"]) ? datum[\"county_id\"] : \"\"+datum[\"county_id\"], \"Habitat %\": format(datum[\"habitat_yearround_pct\"], \".2%\")}"
+                "signal": "{\"County ID\": isValid(datum[\"county_id\"]) ? isArray(datum[\"county_id\"]) ? join(datum[\"county_id\"], '\\n') : datum[\"county_id\"] : \"\"+datum[\"county_id\"], \"Habitat %\": format(datum[\"habitat_yearround_pct\"], \".2%\")}"
               },
               "ariaRoleDescription": {"value": "geoshape"},
               "description": {
-                "signal": "\"Suitable Habitat, % of County: \" + (format(datum[\"habitat_yearround_pct\"], \".0%\")) + \"; geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; County ID: \" + (isValid(datum[\"county_id\"]) ? datum[\"county_id\"] : \"\"+datum[\"county_id\"]) + \"; Habitat %: \" + (format(datum[\"habitat_yearround_pct\"], \".2%\"))"
+                "signal": "\"Suitable Habitat, % of County: \" + (format(datum[\"habitat_yearround_pct\"], \".0%\")) + \"; geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; County ID: \" + (isValid(datum[\"county_id\"]) ? isArray(datum[\"county_id\"]) ? join(datum[\"county_id\"], ' ') : datum[\"county_id\"] : \"\"+datum[\"county_id\"]) + \"; Habitat %: \" + (format(datum[\"habitat_yearround_pct\"], \".2%\"))"
               }
             }
           },

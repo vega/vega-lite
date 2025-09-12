@@ -242,7 +242,7 @@
           "stroke": {"value": "#000"},
           "fill": {"scale": "fill", "field": "commonwealth"},
           "description": {
-            "signal": "\"start: \" + (format(datum[\"start\"], \"d\")) + \"; y: \" + (format(datum[\"y\"], \"\")) + \"; end: \" + (format(datum[\"end\"], \"\")) + \"; offset: \" + (format(datum[\"offset\"], \"\")) + \"; commonwealth: \" + (isValid(datum[\"commonwealth\"]) ? datum[\"commonwealth\"] : \"\"+datum[\"commonwealth\"])"
+            "signal": "\"start: \" + (format(datum[\"start\"], \"d\")) + \"; y: \" + (format(datum[\"y\"], \"\")) + \"; end: \" + (format(datum[\"end\"], \"\")) + \"; offset: \" + (format(datum[\"offset\"], \"\")) + \"; commonwealth: \" + (isValid(datum[\"commonwealth\"]) ? isArray(datum[\"commonwealth\"]) ? join(datum[\"commonwealth\"], ' ') : datum[\"commonwealth\"] : \"\"+datum[\"commonwealth\"])"
           },
           "x": {"scale": "x", "field": "start"},
           "x2": {"scale": "x", "field": "end"},
@@ -263,7 +263,7 @@
           "fontStyle": {"value": "italic"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"x: \" + (format(datum[\"x\"], \"d\")) + \"; off2: \" + (format(datum[\"off2\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
+            "signal": "\"x: \" + (format(datum[\"x\"], \"d\")) + \"; off2: \" + (format(datum[\"off2\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? isArray(datum[\"name\"]) ? join(datum[\"name\"], ' ') : datum[\"name\"] : \"\"+datum[\"name\"])"
           },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "off2", "offset": 16},

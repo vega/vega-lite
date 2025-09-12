@@ -119,7 +119,7 @@
             {"value": 0}
           ],
           "description": {
-            "signal": "\"predicted: \" + (isValid(datum[\"predicted\"]) ? datum[\"predicted\"] : \"\"+datum[\"predicted\"]) + \"; actual: \" + (isValid(datum[\"actual\"]) ? datum[\"actual\"] : \"\"+datum[\"actual\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
+            "signal": "\"predicted: \" + (isValid(datum[\"predicted\"]) ? isArray(datum[\"predicted\"]) ? join(datum[\"predicted\"], ' ') : datum[\"predicted\"] : \"\"+datum[\"predicted\"]) + \"; actual: \" + (isValid(datum[\"actual\"]) ? isArray(datum[\"actual\"]) ? join(datum[\"actual\"], ' ') : datum[\"actual\"] : \"\"+datum[\"actual\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "predicted"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

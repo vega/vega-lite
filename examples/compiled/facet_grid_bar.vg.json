@@ -187,7 +187,7 @@
               "fill": {"scale": "color", "field": "c"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"p: \" + (format(datum[\"p\"], \"%\")) + \"; c: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"]) + \"; settings: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"])"
+                "signal": "\"p: \" + (format(datum[\"p\"], \"%\")) + \"; c: \" + (isValid(datum[\"c\"]) ? isArray(datum[\"c\"]) ? join(datum[\"c\"], ' ') : datum[\"c\"] : \"\"+datum[\"c\"]) + \"; settings: \" + (isValid(datum[\"c\"]) ? isArray(datum[\"c\"]) ? join(datum[\"c\"], ' ') : datum[\"c\"] : \"\"+datum[\"c\"])"
               },
               "x": {"scale": "x", "field": "p_end"},
               "x2": {"scale": "x", "field": "p_start"},

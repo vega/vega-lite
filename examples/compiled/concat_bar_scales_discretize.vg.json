@@ -92,7 +92,7 @@
               "fill": {"scale": "concat_0_color", "field": "b"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
+                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? isArray(datum[\"b\"]) ? join(datum[\"b\"], ' ') : datum[\"b\"] : \"\"+datum[\"b\"])"
               },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_0_y", "field": "b"},
@@ -145,7 +145,7 @@
               "fill": {"scale": "concat_1_color", "field": "b"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
+                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? isArray(datum[\"b\"]) ? join(datum[\"b\"], ' ') : datum[\"b\"] : \"\"+datum[\"b\"])"
               },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_1_y", "field": "b"},
@@ -200,7 +200,7 @@
               "fill": {"scale": "concat_2_color", "field": "b"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
+                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? isArray(datum[\"b\"]) ? join(datum[\"b\"], ' ') : datum[\"b\"] : \"\"+datum[\"b\"])"
               },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_2_y", "field": "b"},

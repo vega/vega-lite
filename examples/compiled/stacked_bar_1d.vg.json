@@ -44,7 +44,7 @@
           "fill": {"scale": "color", "field": "Origin"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Sum of Acceleration: \" + (format(datum[\"sum_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+            "signal": "\"Sum of Acceleration: \" + (format(datum[\"sum_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
           "x": {"scale": "x", "field": "sum_Acceleration_end"},
           "x2": {"scale": "x", "field": "sum_Acceleration_start"},

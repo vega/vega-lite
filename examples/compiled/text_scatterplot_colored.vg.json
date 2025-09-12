@@ -29,7 +29,7 @@
         "update": {
           "fill": {"scale": "color", "field": "Origin"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; OriginInitial: \" + (isValid(datum[\"OriginInitial\"]) ? datum[\"OriginInitial\"] : \"\"+datum[\"OriginInitial\"])"
+            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; OriginInitial: \" + (isValid(datum[\"OriginInitial\"]) ? isArray(datum[\"OriginInitial\"]) ? join(datum[\"OriginInitial\"], ' ') : datum[\"OriginInitial\"] : \"\"+datum[\"OriginInitial\"])"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},

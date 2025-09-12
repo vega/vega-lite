@@ -106,7 +106,7 @@
           "stroke": {"scale": "color", "field": "country"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+            "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; country: \" + (isValid(datum[\"country\"]) ? isArray(datum[\"country\"]) ? join(datum[\"country\"], ' ') : datum[\"country\"] : \"\"+datum[\"country\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
           "x": {"scale": "x", "field": "fertility"},
           "y": {"scale": "y", "field": "life_expect"}

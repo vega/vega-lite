@@ -54,7 +54,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"]) + \"; Mean of age: \" + (format(datum[\"mean_age\"], \"\"))"
+            "signal": "\"group: \" + (isValid(datum[\"group\"]) ? isArray(datum[\"group\"]) ? join(datum[\"group\"], ' ') : datum[\"group\"] : \"\"+datum[\"group\"]) + \"; Mean of age: \" + (format(datum[\"mean_age\"], \"\"))"
           },
           "x": {"scale": "x", "field": "group"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
