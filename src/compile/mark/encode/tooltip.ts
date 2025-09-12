@@ -15,7 +15,7 @@ import {
 import {Config} from '../../../config.js';
 import {Encoding, forEach} from '../../../encoding.js';
 import {StackProperties} from '../../../stack.js';
-import {Dict, entries} from '../../../util.js';
+import {Dict, entries, hasProperty} from '../../../util.js';
 import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
 import {getMarkPropOrConfig} from '../../common.js';
 import {binFormatExpression, formatSignalRef} from '../../format.js';
@@ -175,7 +175,7 @@ function addLineBreaksToTooltip(
   config: Config,
   expr: 'datum' | 'datum.datum' = 'datum',
 ): VgValueRef {
-  if (isFieldDef(channelDef) && 'type' in channelDef && isDiscrete(channelDef.type) && !channelDef.format) {
+  if (isFieldDef(channelDef) && isDiscrete(channelDef.type) && !hasProperty(channelDef, 'format')) {
     const fieldString = `datum["${channelDef.field}"]`;
     return {
       signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : ""+${fieldString}`,
