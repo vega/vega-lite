@@ -33,10 +33,10 @@
         "update": {
           "fill": {"value": "black"},
           "tooltip": {
-            "signal": "{\"image\": isValid(datum[\"image\"]) ? datum[\"image\"] : \"\"+datum[\"image\"]}"
+            "signal": "{\"image\": isValid(datum[\"image\"]) ? isArray(datum[\"image\"]) ? join(datum[\"image\"], '\\n') : datum[\"image\"] : \"\"+datum[\"image\"]}"
           },
           "description": {
-            "signal": "\"image: \" + (isValid(datum[\"image\"]) ? datum[\"image\"] : \"\"+datum[\"image\"])"
+            "signal": "\"image: \" + (isValid(datum[\"image\"]) ? isArray(datum[\"image\"]) ? join(datum[\"image\"], ' ') : datum[\"image\"] : \"\"+datum[\"image\"])"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "image"},

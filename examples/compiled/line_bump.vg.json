@@ -56,7 +56,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"build: \" + (format(datum[\"build\"], \"\")) + \"; result: \" + (isValid(datum[\"result\"]) ? datum[\"result\"] : \"\"+datum[\"result\"])"
+            "signal": "\"build: \" + (format(datum[\"build\"], \"\")) + \"; result: \" + (isValid(datum[\"result\"]) ? isArray(datum[\"result\"]) ? join(datum[\"result\"], ' ') : datum[\"result\"] : \"\"+datum[\"result\"])"
           },
           "x": {"scale": "x", "field": "build"},
           "y": {"scale": "y", "field": "result"},
@@ -78,7 +78,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"build: \" + (format(datum[\"build\"], \"\")) + \"; result: \" + (isValid(datum[\"result\"]) ? datum[\"result\"] : \"\"+datum[\"result\"])"
+            "signal": "\"build: \" + (format(datum[\"build\"], \"\")) + \"; result: \" + (isValid(datum[\"result\"]) ? isArray(datum[\"result\"]) ? join(datum[\"result\"], ' ') : datum[\"result\"] : \"\"+datum[\"result\"])"
           },
           "x": {"scale": "x", "field": "build"},
           "y": {"scale": "y", "field": "result"}

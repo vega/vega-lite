@@ -35,11 +35,11 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "isValid(datum[\"data\"]) ? datum[\"data\"] : \"\"+datum[\"data\"]"
+            "signal": "isValid(datum[\"data\"]) ? isArray(datum[\"data\"]) ? join(datum[\"data\"], '\\n') : datum[\"data\"] : \"\"+datum[\"data\"]"
           },
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"Mean of data: \" + (format(datum[\"mean_data\"], \"\")) + \"; data: \" + (isValid(datum[\"data\"]) ? datum[\"data\"] : \"\"+datum[\"data\"])"
+            "signal": "\"Mean of data: \" + (format(datum[\"mean_data\"], \"\")) + \"; data: \" + (isValid(datum[\"data\"]) ? isArray(datum[\"data\"]) ? join(datum[\"data\"], ' ') : datum[\"data\"] : \"\"+datum[\"data\"])"
           },
           "xc": {"signal": "width", "mult": 0.5},
           "width": {"signal": "0.75 * width"},

@@ -43,7 +43,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"Mean of IMDB Rating: \" + (format(datum[\"mean_IMDB Rating\"], \"\")) + \"; Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"])"
+            "signal": "\"Mean of IMDB Rating: \" + (format(datum[\"mean_IMDB Rating\"], \"\")) + \"; Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? isArray(datum[\"Major Genre\"]) ? join(datum[\"Major Genre\"], ' ') : datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"])"
           },
           "x": {"scale": "x", "field": "mean_IMDB Rating"},
           "y": {"scale": "y", "field": "Major Genre"},

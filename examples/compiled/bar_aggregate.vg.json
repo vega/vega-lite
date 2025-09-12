@@ -44,7 +44,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"sum_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
+            "signal": "\"population: \" + (format(datum[\"sum_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"])"
           },
           "x": {"scale": "x", "field": "sum_people"},
           "x2": {"scale": "x", "value": 0},

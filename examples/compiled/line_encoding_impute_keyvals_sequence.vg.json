@@ -63,7 +63,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "c"},
               "description": {
-                "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"])"
+                "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; c: \" + (isValid(datum[\"c\"]) ? isArray(datum[\"c\"]) ? join(datum[\"c\"], ' ') : datum[\"c\"] : \"\"+datum[\"c\"])"
               },
               "x": {"scale": "x", "field": "a"},
               "y": {"scale": "y", "field": "b"},

@@ -130,7 +130,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], ' ') : datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "a", "band": 0.5},
           "y": {"scale": "y", "field": "b"}
@@ -147,7 +147,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Upper Whisker of b\": format(datum[\"upper_whisker_b\"], \"\"), \"Lower Whisker of b\": format(datum[\"lower_whisker_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
+            "signal": "{\"Upper Whisker of b\": format(datum[\"upper_whisker_b\"], \"\"), \"Lower Whisker of b\": format(datum[\"lower_whisker_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], '\\n') : datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
           "x": {"scale": "x", "field": "a", "band": 0.5},
           "y": {"scale": "y", "field": "lower_whisker_b"},
@@ -165,7 +165,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Upper Whisker of b\": format(datum[\"upper_whisker_b\"], \"\"), \"Lower Whisker of b\": format(datum[\"lower_whisker_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
+            "signal": "{\"Upper Whisker of b\": format(datum[\"upper_whisker_b\"], \"\"), \"Lower Whisker of b\": format(datum[\"lower_whisker_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], '\\n') : datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
           "x": {"scale": "x", "field": "a", "band": 0.5},
           "y": {"scale": "y", "field": "upper_box_b"},
@@ -183,10 +183,10 @@
           "ariaRoleDescription": {"value": "box"},
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
+            "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], '\\n') : datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
           "description": {
-            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"lower_box_b\"], \"\")) + \"; upper_box_b: \" + (format(datum[\"upper_box_b\"], \"\")) + \"; Max of b: \" + (format(datum[\"max_b\"], \"\")) + \"; Q3 of b: \" + (format(datum[\"upper_box_b\"], \"\")) + \"; Median of b: \" + (format(datum[\"mid_box_b\"], \"\")) + \"; Q1 of b: \" + (format(datum[\"lower_box_b\"], \"\")) + \"; Min of b: \" + (format(datum[\"min_b\"], \"\"))"
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], ' ') : datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"lower_box_b\"], \"\")) + \"; upper_box_b: \" + (format(datum[\"upper_box_b\"], \"\")) + \"; Max of b: \" + (format(datum[\"max_b\"], \"\")) + \"; Q3 of b: \" + (format(datum[\"upper_box_b\"], \"\")) + \"; Median of b: \" + (format(datum[\"mid_box_b\"], \"\")) + \"; Q1 of b: \" + (format(datum[\"lower_box_b\"], \"\")) + \"; Min of b: \" + (format(datum[\"min_b\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "a", "band": 0.5},
           "width": {"value": 14},
@@ -212,7 +212,7 @@
             {"value": "white"}
           ],
           "tooltip": {
-            "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
+            "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], '\\n') : datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
           "xc": {"scale": "x", "field": "a", "band": 0.5},
           "width": {"value": 14},

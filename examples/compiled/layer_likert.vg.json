@@ -268,7 +268,7 @@
           "fill": {"value": "#6EB4FD"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; Number of Ratings: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? isArray(datum[\"name\"]) ? join(datum[\"name\"], ' ') : datum[\"name\"] : \"\"+datum[\"name\"]) + \"; Number of Ratings: \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "value"},
           "y": {"scale": "y", "field": "name", "band": 0.5},
@@ -288,7 +288,7 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"median: \" + (format(datum[\"median\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
+            "signal": "\"median: \" + (format(datum[\"median\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? isArray(datum[\"name\"]) ? join(datum[\"name\"], ' ') : datum[\"name\"] : \"\"+datum[\"name\"])"
           },
           "y": {"scale": "y", "field": "name"},
           "height": {"signal": "max(0.25, bandwidth('y'))"},
@@ -307,7 +307,7 @@
           "align": {"value": "right"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; lo: \" + (isValid(datum[\"lo\"]) ? datum[\"lo\"] : \"\"+datum[\"lo\"])"
+            "signal": "\"name: \" + (isValid(datum[\"name\"]) ? isArray(datum[\"name\"]) ? join(datum[\"name\"], ' ') : datum[\"name\"] : \"\"+datum[\"name\"]) + \"; lo: \" + (isValid(datum[\"lo\"]) ? isArray(datum[\"lo\"]) ? join(datum[\"lo\"], ' ') : datum[\"lo\"] : \"\"+datum[\"lo\"])"
           },
           "x": {"value": -5},
           "y": {"scale": "y", "field": "name", "band": 0.5},
@@ -328,7 +328,7 @@
           "align": {"value": "left"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; hi: \" + (isValid(datum[\"hi\"]) ? datum[\"hi\"] : \"\"+datum[\"hi\"])"
+            "signal": "\"name: \" + (isValid(datum[\"name\"]) ? isArray(datum[\"name\"]) ? join(datum[\"name\"], ' ') : datum[\"name\"] : \"\"+datum[\"name\"]) + \"; hi: \" + (isValid(datum[\"hi\"]) ? isArray(datum[\"hi\"]) ? join(datum[\"hi\"], ' ') : datum[\"hi\"] : \"\"+datum[\"hi\"])"
           },
           "x": {"value": 255},
           "y": {"scale": "y", "field": "name", "band": 0.5},
