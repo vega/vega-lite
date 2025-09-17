@@ -1,0 +1,171 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "background": "white",
+  "padding": 5,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {
+          "Major Genre": "Drama",
+          "MPAA Rating": "R",
+          "sum(IMDB Votes)": 12801669
+        },
+        {
+          "Major Genre": "Drama",
+          "MPAA Rating": null,
+          "sum(IMDB Votes)": 2189462
+        },
+        {
+          "Major Genre": "Drama",
+          "MPAA Rating": "PG",
+          "sum(IMDB Votes)": 1273672
+        },
+        {
+          "Major Genre": "Drama",
+          "MPAA Rating": "Not Rated",
+          "sum(IMDB Votes)": 410210
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "indexof([null,\"Action\",\"Adventure\",\"Black Comedy\",\"Comedy\",\"Concert/Performance\",\"Documentary\",\"Drama\",\"Horror\",\"Musical\",\"Romantic Comedy\",\"Thriller/Suspense\",\"Western\"], datum['Major Genre'])",
+          "as": "_Major Genre_sort_index"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 20},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "data_0",
+          "groupby": ["Major Genre"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {
+            "field": ["datum[\"_Major Genre_sort_index\"]"],
+            "order": ["descending"]
+          },
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "stroke": {"scale": "color", "field": "Major Genre"},
+              "description": {
+                "signal": "\"MPAA Rating: \" + (isValid(datum[\"MPAA Rating\"]) ? isArray(datum[\"MPAA Rating\"]) ? join(datum[\"MPAA Rating\"], ' ') : datum[\"MPAA Rating\"] : \"\"+datum[\"MPAA Rating\"]) + \"; sum(IMDB Votes): \" + (format(datum[\"sum(IMDB Votes)\"], \"\")) + \"; Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? isArray(datum[\"Major Genre\"]) ? join(datum[\"Major Genre\"], ' ') : datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"])"
+              },
+              "x": {"scale": "x", "field": "MPAA Rating"},
+              "y": {"scale": "y", "field": "sum(IMDB Votes)"},
+              "defined": {
+                "signal": "isValid(datum[\"sum(IMDB Votes)\"]) && isFinite(+datum[\"sum(IMDB Votes)\"])"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {"data": "data_0", "field": "MPAA Rating", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "sum(IMDB Votes)"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": [
+        null,
+        "Action",
+        "Adventure",
+        "Black Comedy",
+        "Comedy",
+        "Concert/Performance",
+        "Documentary",
+        "Drama",
+        "Horror",
+        "Musical",
+        "Romantic Comedy",
+        "Thriller/Suspense",
+        "Western"
+      ],
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "MPAA Rating",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "sum(IMDB Votes)",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {"title": "Major Genre", "stroke": "color", "symbolType": "stroke"}
+  ]
+}
