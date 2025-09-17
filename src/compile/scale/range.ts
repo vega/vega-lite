@@ -457,7 +457,7 @@ function getDiscretePositionSize(
 ): Step | number | 'container' {
   const sizeChannel = channel === X ? 'width' : 'height';
   const sizeValue = size[sizeChannel];
-  if (sizeValue) {
+  if (sizeValue !== undefined) {
     return sizeValue;
   }
   return getViewConfigDiscreteSize(viewConfig, sizeChannel);

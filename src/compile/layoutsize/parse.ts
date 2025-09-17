@@ -97,7 +97,7 @@ export function parseUnitLayoutSize(model: UnitModel) {
   for (const channel of POSITION_SCALE_CHANNELS) {
     const sizeType = getSizeChannel(channel);
 
-    if (size[sizeType]) {
+    if (size[sizeType] != undefined && size[sizeType] != null) {
       const specifiedSize = size[sizeType];
       component.layoutSize.set(sizeType, isStep(specifiedSize) ? 'step' : specifiedSize, true);
     } else {
