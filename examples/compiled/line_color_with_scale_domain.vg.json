@@ -29,17 +29,6 @@
           "sum(IMDB Votes)": 410210
         }
       ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "indexof([null,\"Action\",\"Adventure\",\"Black Comedy\",\"Comedy\",\"Concert/Performance\",\"Documentary\",\"Drama\",\"Horror\",\"Musical\",\"Romantic Comedy\",\"Thriller/Suspense\",\"Western\"], datum['Major Genre'])",
-          "as": "_Major Genre_sort_index"
-        }
-      ]
     }
   ],
   "signals": [
@@ -56,7 +45,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_main",
-          "data": "data_0",
+          "data": "source_0",
           "groupby": ["Major Genre"]
         }
       },
@@ -71,10 +60,7 @@
           "name": "marks",
           "type": "line",
           "style": ["line"],
-          "sort": {
-            "field": ["datum[\"_Major Genre_sort_index\"]"],
-            "order": ["descending"]
-          },
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {
@@ -97,14 +83,14 @@
     {
       "name": "x",
       "type": "point",
-      "domain": {"data": "data_0", "field": "MPAA Rating", "sort": true},
+      "domain": {"data": "source_0", "field": "MPAA Rating", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "padding": 0.5
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "sum(IMDB Votes)"},
+      "domain": {"data": "source_0", "field": "sum(IMDB Votes)"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

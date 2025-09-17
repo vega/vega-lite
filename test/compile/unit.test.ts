@@ -122,10 +122,38 @@ describe('UnitModel', () => {
       const model = parseUnitModel({
         mark: 'bar',
         encoding: {
+          y: {field: 'b', type: 'quantitative'},
           color: {field: 'a', scale: {domain: ['y', 'x', 'z']}},
         },
       });
 
+      expect(model.encoding.order).toEqual({field: '_a_sort_index', type: 'quantitative', sort: 'descending'});
+    });
+
+    it('should not add custom order if it is not stacked chart', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          color: {field: 'a', scale: {domain: ['y', 'x', 'z']}},
+        },
+      });
+
+      expect(model.encoding.order).toBeUndefined();
+    });
+
+    it('should add custom order if color or fill domain is specified with null for stacked bars', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          y: {field: 'b', type: 'quantitative'},
+          color: {field: 'a', scale: {domain: [null, 'y', 'x', 'z']}},
+        },
+      });
+
+      expect(model.transforms[0]).toEqual({
+        as: '_a_sort_index',
+        calculate: 'indexof([null,"y","x","z"], datum[\'a\'])',
+      });
       expect(model.encoding.order).toEqual({field: '_a_sort_index', type: 'quantitative', sort: 'descending'});
     });
   });

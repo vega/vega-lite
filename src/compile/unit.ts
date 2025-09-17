@@ -242,11 +242,15 @@ export class UnitModel extends ModelWithField {
     const orderFieldName = `_${field}_sort_index`;
 
     if (!order && Array.isArray(domain) && typeof field === 'string' && colorEncodingType === 'nominal') {
-      // align grouped bar order with color domain
+      // align grouped chart order with color domain
       if (offsetEncoding && !offsetEncoding.sort) {
         offsetEncoding.sort = domain as [];
       } else {
-        // align stacked bar and area order with color domain
+        // align stacked chart order with color domain
+        if (!this.stack) {
+          return;
+        }
+
         const orderExpression = `indexof(${stringValue(domain)}, datum['${field}'])`;
         const sort = this.markDef?.orient === 'horizontal' ? 'ascending' : 'descending';
         this.transforms.push({calculate: orderExpression, as: orderFieldName});
