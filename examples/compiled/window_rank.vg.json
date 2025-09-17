@@ -89,7 +89,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "team"},
               "description": {
-                "signal": "\"matchday: \" + (isValid(datum[\"matchday\"]) ? datum[\"matchday\"] : \"\"+datum[\"matchday\"]) + \"; rank: \" + (isValid(datum[\"rank\"]) ? datum[\"rank\"] : \"\"+datum[\"rank\"]) + \"; team: \" + (isValid(datum[\"team\"]) ? datum[\"team\"] : \"\"+datum[\"team\"])"
+                "signal": "\"matchday: \" + (isValid(datum[\"matchday\"]) ? isArray(datum[\"matchday\"]) ? join(datum[\"matchday\"], ' ') : datum[\"matchday\"] : \"\"+datum[\"matchday\"]) + \"; rank: \" + (isValid(datum[\"rank\"]) ? isArray(datum[\"rank\"]) ? join(datum[\"rank\"], ' ') : datum[\"rank\"] : \"\"+datum[\"rank\"]) + \"; team: \" + (isValid(datum[\"team\"]) ? isArray(datum[\"team\"]) ? join(datum[\"team\"], ' ') : datum[\"team\"] : \"\"+datum[\"team\"])"
               },
               "x": {"scale": "x", "field": "matchday"},
               "y": {"scale": "y", "field": "rank"}

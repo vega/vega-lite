@@ -76,7 +76,7 @@
           "fill": {"scale": "color", "field": "Origin"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Mean of Acceleration: \" + (format(datum[\"mean_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Mean of Acceleration: \" + (format(datum[\"mean_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
           "x": {
             "scale": "x",
@@ -99,10 +99,10 @@
           "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Mean of Acceleration\": format(datum[\"center_Acceleration\"], \"\"), \"Mean + stderr of Acceleration\": format(datum[\"upper_Acceleration\"], \"\"), \"Mean - stderr of Acceleration\": format(datum[\"lower_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
+            "signal": "{\"Mean of Acceleration\": format(datum[\"center_Acceleration\"], \"\"), \"Mean + stderr of Acceleration\": format(datum[\"upper_Acceleration\"], \"\"), \"Mean - stderr of Acceleration\": format(datum[\"lower_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], '\\n') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], '\\n') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
           },
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Acceleration: \" + (format(datum[\"lower_Acceleration\"], \"\")) + \"; upper_Acceleration: \" + (format(datum[\"upper_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Mean of Acceleration: \" + (format(datum[\"center_Acceleration\"], \"\")) + \"; Mean + stderr of Acceleration: \" + (format(datum[\"upper_Acceleration\"], \"\")) + \"; Mean - stderr of Acceleration: \" + (format(datum[\"lower_Acceleration\"], \"\"))"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Acceleration: \" + (format(datum[\"lower_Acceleration\"], \"\")) + \"; upper_Acceleration: \" + (format(datum[\"upper_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Mean of Acceleration: \" + (format(datum[\"center_Acceleration\"], \"\")) + \"; Mean + stderr of Acceleration: \" + (format(datum[\"upper_Acceleration\"], \"\")) + \"; Mean - stderr of Acceleration: \" + (format(datum[\"lower_Acceleration\"], \"\"))"
           },
           "x": {
             "scale": "x",

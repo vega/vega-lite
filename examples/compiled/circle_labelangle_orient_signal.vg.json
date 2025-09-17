@@ -80,7 +80,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"time (hours): \" + (timeFormat(datum[\"hours_time\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; time (day): \" + (timeFormat(datum[\"day_time\"], timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of count: \" + (format(datum[\"sum_count\"], \"\"))"
+            "signal": "\"time (hours): \" + (isValid(datum[\"time\"]) ? isArray(datum[\"time\"]) ? join(datum[\"time\"], ' ') : datum[\"time\"] : \"\"+datum[\"time\"]) + \"; time (day): \" + (isValid(datum[\"time\"]) ? isArray(datum[\"time\"]) ? join(datum[\"time\"], ' ') : datum[\"time\"] : \"\"+datum[\"time\"]) + \"; Sum of count: \" + (format(datum[\"sum_count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "hours_time"},
           "y": {"scale": "y", "field": "day_time"},

@@ -76,7 +76,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Day: \" + (isValid(datum[\"Day\"]) ? datum[\"Day\"] : \"\"+datum[\"Day\"]) + \"; Value: \" + (format(datum[\"Value\"], \"\"))"
+            "signal": "\"Day: \" + (isValid(datum[\"Day\"]) ? isArray(datum[\"Day\"]) ? join(datum[\"Day\"], ' ') : datum[\"Day\"] : \"\"+datum[\"Day\"]) + \"; Value: \" + (format(datum[\"Value\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Day"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
@@ -95,7 +95,7 @@
           "fill": {"value": "#e45755"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Day: \" + (isValid(datum[\"Day\"]) ? datum[\"Day\"] : \"\"+datum[\"Day\"]) + \"; PM2.5 Value: \" + (format(datum[\"baseline\"], \"\")) + \"; Value: \" + (format(datum[\"Value\"], \"\"))"
+            "signal": "\"Day: \" + (isValid(datum[\"Day\"]) ? isArray(datum[\"Day\"]) ? join(datum[\"Day\"], ' ') : datum[\"Day\"] : \"\"+datum[\"Day\"]) + \"; PM2.5 Value: \" + (format(datum[\"baseline\"], \"\")) + \"; Value: \" + (format(datum[\"Value\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Day"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

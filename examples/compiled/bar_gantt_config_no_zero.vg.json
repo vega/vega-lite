@@ -43,7 +43,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"start: \" + (format(datum[\"start\"], \"\")) + \"; task: \" + (isValid(datum[\"task\"]) ? datum[\"task\"] : \"\"+datum[\"task\"]) + \"; end: \" + (format(datum[\"end\"], \"\"))"
+            "signal": "\"start: \" + (format(datum[\"start\"], \"\")) + \"; task: \" + (isValid(datum[\"task\"]) ? isArray(datum[\"task\"]) ? join(datum[\"task\"], ' ') : datum[\"task\"] : \"\"+datum[\"task\"]) + \"; end: \" + (format(datum[\"end\"], \"\"))"
           },
           "x": {"scale": "x", "field": "start"},
           "x2": {"scale": "x", "field": "end"},

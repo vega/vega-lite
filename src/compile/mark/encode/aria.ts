@@ -78,6 +78,7 @@ export function description(model: UnitModel) {
     description: {
       signal: entries(data)
         .filter(([key]) => !key.startsWith('_')) // remove internal/private signals from aria description
+        .map(([key, value]) => [key, value.replaceAll('\\n', ' ')]) // replace newlines with spaces in aria description
         .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
         .join(' + '),
     },

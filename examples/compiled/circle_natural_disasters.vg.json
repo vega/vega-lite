@@ -33,7 +33,7 @@
           "fill": {"scale": "color", "field": "Entity"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], \"%b %d, %Y\")) + \"; Entity: \" + (isValid(datum[\"Entity\"]) ? datum[\"Entity\"] : \"\"+datum[\"Entity\"]) + \"; Annual Global Deaths: \" + (format(datum[\"Deaths\"], \"\"))"
+            "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], \"%b %d, %Y\")) + \"; Entity: \" + (isValid(datum[\"Entity\"]) ? isArray(datum[\"Entity\"]) ? join(datum[\"Entity\"], ' ') : datum[\"Entity\"] : \"\"+datum[\"Entity\"]) + \"; Annual Global Deaths: \" + (format(datum[\"Deaths\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Year"},
           "y": {"scale": "y", "field": "Entity"},

@@ -255,7 +255,7 @@
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+                "signal": "\"Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
               },
               "x": {
                 "scale": "child__row_Horsepowercolumn_Miles_per_Gallon_x",
@@ -457,7 +457,7 @@
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+                "signal": "\"Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
               },
               "x": {
                 "scale": "child__row_Horsepowercolumn_Acceleration_x",
@@ -638,7 +638,7 @@
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+                "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
               },
               "x": {
                 "scale": "child__row_Horsepowercolumn_Horsepower_x",
@@ -842,7 +842,7 @@
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+                "signal": "\"Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
               },
               "x": {
                 "scale": "child__row_Accelerationcolumn_Miles_per_Gallon_x",
@@ -1023,7 +1023,7 @@
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+                "signal": "\"Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
               },
               "x": {
                 "scale": "child__row_Accelerationcolumn_Acceleration_x",
@@ -1225,7 +1225,7 @@
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+                "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
               },
               "x": {
                 "scale": "child__row_Accelerationcolumn_Horsepower_x",
@@ -1406,7 +1406,7 @@
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+                "signal": "\"Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
               },
               "x": {
                 "scale": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon_x",
@@ -1610,7 +1610,7 @@
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+                "signal": "\"Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
               },
               "x": {
                 "scale": "child__row_Miles_per_Galloncolumn_Acceleration_x",
@@ -1814,7 +1814,7 @@
               "stroke": {"scale": "color", "field": "Origin"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+                "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
               },
               "x": {
                 "scale": "child__row_Miles_per_Galloncolumn_Horsepower_x",

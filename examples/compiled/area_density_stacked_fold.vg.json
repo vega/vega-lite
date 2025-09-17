@@ -75,7 +75,7 @@
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "Measurement"},
               "description": {
-                "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; density: \" + (format(datum[\"density\"], \"\")) + \"; Measurement: \" + (isValid(datum[\"Measurement\"]) ? datum[\"Measurement\"] : \"\"+datum[\"Measurement\"])"
+                "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; density: \" + (format(datum[\"density\"], \"\")) + \"; Measurement: \" + (isValid(datum[\"Measurement\"]) ? isArray(datum[\"Measurement\"]) ? join(datum[\"Measurement\"], ' ') : datum[\"Measurement\"] : \"\"+datum[\"Measurement\"])"
               },
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density_end"},

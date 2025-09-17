@@ -58,7 +58,7 @@
         "update": {
           "fill": {"scale": "color", "field": "max_temp_max"},
           "description": {
-            "signal": "\"Day: \" + (timeFormat(datum[\"date_date\"], \"%e\")) + \"; Month: \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Max of temp_max: \" + (format(datum[\"max_temp_max\"], \"\"))"
+            "signal": "\"Day: \" + (isValid(datum[\"date\"]) ? isArray(datum[\"date\"]) ? join(datum[\"date\"], ' ') : datum[\"date\"] : \"\"+datum[\"date\"]) + \"; Month: \" + (isValid(datum[\"date\"]) ? isArray(datum[\"date\"]) ? join(datum[\"date\"], ' ') : datum[\"date\"] : \"\"+datum[\"date\"]) + \"; Max of temp_max: \" + (format(datum[\"max_temp_max\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date_date"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

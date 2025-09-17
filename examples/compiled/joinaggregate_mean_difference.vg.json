@@ -77,7 +77,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
+            "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? isArray(datum[\"Title\"]) ? join(datum[\"Title\"], ' ') : datum[\"Title\"] : \"\"+datum[\"Title\"])"
           },
           "x": {"scale": "x", "field": "IMDB Rating_end"},
           "x2": {"scale": "x", "field": "IMDB Rating_start"},

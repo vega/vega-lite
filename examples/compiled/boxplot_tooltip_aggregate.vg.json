@@ -152,7 +152,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+            "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
           },
           "x": {"scale": "x", "field": "Body Mass (g)"},
           "y": {"scale": "y", "field": "Species", "band": 0.5}
@@ -202,7 +202,7 @@
           "fill": {"value": "#4c78a8"},
           "tooltip": {"signal": "format(datum[\"mean_Body Mass (g)\"], \"\")"},
           "description": {
-            "signal": "\"Body Mass (g): \" + (format(datum[\"lower_box_Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; upper_box_Body Mass (g): \" + (format(datum[\"upper_box_Body Mass (g)\"], \"\")) + \"; Mean of Body Mass (g): \" + (format(datum[\"mean_Body Mass (g)\"], \"\"))"
+            "signal": "\"Body Mass (g): \" + (format(datum[\"lower_box_Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; upper_box_Body Mass (g): \" + (format(datum[\"upper_box_Body Mass (g)\"], \"\")) + \"; Mean of Body Mass (g): \" + (format(datum[\"mean_Body Mass (g)\"], \"\"))"
           },
           "x": {"scale": "x", "field": "lower_box_Body Mass (g)"},
           "x2": {"scale": "x", "field": "upper_box_Body Mass (g)"},

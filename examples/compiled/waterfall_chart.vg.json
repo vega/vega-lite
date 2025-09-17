@@ -121,7 +121,7 @@
           ],
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; Amount: \" + (format(datum[\"previous_sum\"], \"\")) + \"; sum: \" + (format(datum[\"sum\"], \"\"))"
+            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? isArray(datum[\"label\"]) ? join(datum[\"label\"], ' ') : datum[\"label\"] : \"\"+datum[\"label\"]) + \"; Amount: \" + (format(datum[\"previous_sum\"], \"\")) + \"; sum: \" + (format(datum[\"sum\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "label", "band": 0.5},
           "width": {"value": 45},
@@ -141,7 +141,7 @@
           "strokeWidth": {"value": 2},
           "stroke": {"value": "#404040"},
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\")) + \"; lead: \" + (isValid(datum[\"lead\"]) ? datum[\"lead\"] : \"\"+datum[\"lead\"])"
+            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? isArray(datum[\"label\"]) ? join(datum[\"label\"], ' ') : datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\")) + \"; lead: \" + (isValid(datum[\"lead\"]) ? isArray(datum[\"lead\"]) ? join(datum[\"lead\"], ' ') : datum[\"lead\"] : \"\"+datum[\"lead\"])"
           },
           "x": {"scale": "x", "field": "label", "offset": -22.5, "band": 0.5},
           "x2": {"scale": "x", "field": "lead", "offset": 22.5, "band": 0.5},
@@ -160,7 +160,7 @@
           "dy": {"signal": "datum.amount >= 0 ? -4 : 4"},
           "fill": {"value": "#404040"},
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\"))"
+            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? isArray(datum[\"label\"]) ? join(datum[\"label\"], ' ') : datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\"))"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "sum"},
@@ -188,7 +188,7 @@
             {"value": "white"}
           ],
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; center: \" + (format(datum[\"center\"], \"\")) + \"; text_amount: \" + (isValid(datum[\"text_amount\"]) ? datum[\"text_amount\"] : \"\"+datum[\"text_amount\"])"
+            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? isArray(datum[\"label\"]) ? join(datum[\"label\"], ' ') : datum[\"label\"] : \"\"+datum[\"label\"]) + \"; center: \" + (format(datum[\"center\"], \"\")) + \"; text_amount: \" + (isValid(datum[\"text_amount\"]) ? isArray(datum[\"text_amount\"]) ? join(datum[\"text_amount\"], ' ') : datum[\"text_amount\"] : \"\"+datum[\"text_amount\"])"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "center"},

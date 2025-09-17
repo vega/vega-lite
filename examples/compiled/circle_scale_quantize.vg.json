@@ -49,7 +49,7 @@
           "fill": {"scale": "color", "field": "b"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
+            "signal": "\"b: \" + (isValid(datum[\"b\"]) ? isArray(datum[\"b\"]) ? join(datum[\"b\"], ' ') : datum[\"b\"] : \"\"+datum[\"b\"])"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "b"},

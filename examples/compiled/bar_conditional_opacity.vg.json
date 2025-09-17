@@ -47,7 +47,7 @@
           "opacity": [{"test": "false", "value": 0.2}],
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"C2: \" + (isValid(datum[\"C2\"]) ? datum[\"C2\"] : \"\"+datum[\"C2\"]) + \"; Q1_Null: \" + (format(datum[\"Q1_Null\"], \"\"))"
+            "signal": "\"C2: \" + (isValid(datum[\"C2\"]) ? isArray(datum[\"C2\"]) ? join(datum[\"C2\"], ' ') : datum[\"C2\"] : \"\"+datum[\"C2\"]) + \"; Q1_Null: \" + (format(datum[\"Q1_Null\"], \"\"))"
           },
           "x": {"scale": "x", "field": "C2"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

@@ -51,7 +51,7 @@
           "fill": {"field": "color"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"color: \" + (isValid(datum[\"color\"]) ? datum[\"color\"] : \"\"+datum[\"color\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"color: \" + (isValid(datum[\"color\"]) ? isArray(datum[\"color\"]) ? join(datum[\"color\"], ' ') : datum[\"color\"] : \"\"+datum[\"color\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "color"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

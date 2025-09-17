@@ -95,7 +95,7 @@
                   "fill": {"scale": "color", "field": "weather"},
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
-                    "signal": "\"Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; weather: \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"])"
+                    "signal": "\"Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; date (month): \" + (isValid(datum[\"date\"]) ? isArray(datum[\"date\"]) ? join(datum[\"date\"], ' ') : datum[\"date\"] : \"\"+datum[\"date\"]) + \"; weather: \" + (isValid(datum[\"weather\"]) ? isArray(datum[\"weather\"]) ? join(datum[\"weather\"], ' ') : datum[\"weather\"] : \"\"+datum[\"weather\"])"
                   },
                   "x": {"scale": "x", "field": "__count_end"},
                   "x2": {"scale": "x", "field": "__count_start"},

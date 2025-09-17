@@ -38,7 +38,7 @@
           ],
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Director: \" + (isValid(datum[\"Director\"]) ? datum[\"Director\"] : \"\"+datum[\"Director\"]) + \"; Mean of Rotten Tomatoes Rating: \" + (format(datum[\"mean_Rotten Tomatoes Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
+            "signal": "\"Director: \" + (isValid(datum[\"Director\"]) ? isArray(datum[\"Director\"]) ? join(datum[\"Director\"], ' ') : datum[\"Director\"] : \"\"+datum[\"Director\"]) + \"; Mean of Rotten Tomatoes Rating: \" + (format(datum[\"mean_Rotten Tomatoes Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? isArray(datum[\"Title\"]) ? join(datum[\"Title\"], ' ') : datum[\"Title\"] : \"\"+datum[\"Title\"])"
           },
           "x": {
             "scale": "x",

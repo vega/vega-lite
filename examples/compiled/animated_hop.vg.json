@@ -105,7 +105,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"precipitation: \" + (format(datum[\"precipitation\"], \"\")) + \"; date: \" + (isValid(datum[\"date\"]) ? datum[\"date\"] : \"\"+datum[\"date\"])"
+            "signal": "\"precipitation: \" + (format(datum[\"precipitation\"], \"\")) + \"; date: \" + (isValid(datum[\"date\"]) ? isArray(datum[\"date\"]) ? join(datum[\"date\"], ' ') : datum[\"date\"] : \"\"+datum[\"date\"])"
           },
           "xc": {"signal": "width", "mult": 0.5},
           "width": {"signal": "0.75 * width"},
