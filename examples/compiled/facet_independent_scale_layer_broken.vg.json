@@ -189,7 +189,7 @@
                 "update": {
                   "stroke": {"scale": "color", "field": "gender"},
                   "description": {
-                    "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? isArray(datum[\"gender\"]) ? join(datum[\"gender\"], ' ') : datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                    "signal": "\"age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? isArray(datum[\"gender\"]) ? join(datum[\"gender\"], ' ') : datum[\"gender\"] : \"\"+datum[\"gender\"])"
                   },
                   "x": {"scale": "child_x", "field": "age"},
                   "y": {"scale": "y", "field": "sum_people"},

@@ -200,7 +200,7 @@
               "stroke": {"scale": "trellis_barley_color", "field": "year"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Median of yield: \" + (format(datum[\"median_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"])"
+                "signal": "\"Median of yield: \" + (format(datum[\"median_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? isArray(datum[\"variety\"]) ? join(datum[\"variety\"], ' ') : datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"])"
               },
               "x": {"scale": "trellis_barley_x", "field": "median_yield"},
               "y": {"scale": "trellis_barley_y", "field": "variety"}

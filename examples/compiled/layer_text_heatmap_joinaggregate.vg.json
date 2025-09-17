@@ -67,7 +67,7 @@
         "update": {
           "fill": {"scale": "layer_0_color", "field": "num_cars"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Count of Records: \" + (format(datum[\"num_cars\"], \"\"))"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Count of Records: \" + (format(datum[\"num_cars\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
@@ -89,7 +89,7 @@
         "update": {
           "fill": {"scale": "layer_1_color", "field": "more_than_half"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; more_than_half: \" + (isValid(datum[\"more_than_half\"]) ? isArray(datum[\"more_than_half\"]) ? join(datum[\"more_than_half\"], ' ') : datum[\"more_than_half\"] : \"\"+datum[\"more_than_half\"]) + \"; num_cars: \" + (format(datum[\"num_cars\"], \"\"))"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; more_than_half: \" + (isValid(datum[\"more_than_half\"]) ? isArray(datum[\"more_than_half\"]) ? join(datum[\"more_than_half\"], ' ') : datum[\"more_than_half\"] : \"\"+datum[\"more_than_half\"]) + \"; num_cars: \" + (format(datum[\"num_cars\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},

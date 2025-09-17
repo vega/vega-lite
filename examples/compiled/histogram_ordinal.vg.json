@@ -63,7 +63,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"IMDB Rating (binned): \" + (isValid(datum[\"IMDB Rating\"]) ? isArray(datum[\"IMDB Rating\"]) ? join(datum[\"IMDB Rating\"], ' ') : datum[\"IMDB Rating\"] : \"\"+datum[\"IMDB Rating\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "bin_maxbins_10_IMDB Rating_range"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

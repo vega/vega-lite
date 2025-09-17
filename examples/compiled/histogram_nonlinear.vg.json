@@ -59,7 +59,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"startTime: \" + (isValid(datum[\"startTime\"]) ? datum[\"startTime\"] : \"\"+datum[\"startTime\"]) + \"; residency: \" + (format(datum[\"residency\"], \"\")) + \"; endTime: \" + (isValid(datum[\"endTime\"]) ? datum[\"endTime\"] : \"\"+datum[\"endTime\"])"
+            "signal": "\"startTime: \" + (isValid(datum[\"startTime\"]) ? isArray(datum[\"startTime\"]) ? join(datum[\"startTime\"], ' ') : datum[\"startTime\"] : \"\"+datum[\"startTime\"]) + \"; residency: \" + (format(datum[\"residency\"], \"\")) + \"; endTime: \" + (isValid(datum[\"endTime\"]) ? isArray(datum[\"endTime\"]) ? join(datum[\"endTime\"], ' ') : datum[\"endTime\"] : \"\"+datum[\"endTime\"])"
           },
           "x": {"scale": "x", "field": "startTime"},
           "x2": {"scale": "x", "field": "endTime"},

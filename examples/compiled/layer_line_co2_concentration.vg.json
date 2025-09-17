@@ -97,7 +97,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "decade"},
               "description": {
-                "signal": "\"Year into Decade: \" + (format(datum[\"scaled_date\"], \"\")) + \"; CO2 concentration in ppm: \" + (format(datum[\"CO2\"], \"\")) + \"; decade: \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"])"
+                "signal": "\"Year into Decade: \" + (format(datum[\"scaled_date\"], \"\")) + \"; CO2 concentration in ppm: \" + (format(datum[\"CO2\"], \"\")) + \"; decade: \" + (isValid(datum[\"decade\"]) ? isArray(datum[\"decade\"]) ? join(datum[\"decade\"], ' ') : datum[\"decade\"] : \"\"+datum[\"decade\"])"
               },
               "x": {"scale": "x", "field": "scaled_date"},
               "y": {"scale": "y", "field": "CO2"},

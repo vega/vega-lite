@@ -272,7 +272,7 @@
                 {"value": 0}
               ],
               "description": {
-                "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; country: \" + (isValid(datum[\"country\"]) ? isArray(datum[\"country\"]) ? join(datum[\"country\"], ' ') : datum[\"country\"] : \"\"+datum[\"country\"])"
+                "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"]) + \"; country: \" + (isValid(datum[\"country\"]) ? isArray(datum[\"country\"]) ? join(datum[\"country\"], ' ') : datum[\"country\"] : \"\"+datum[\"country\"])"
               },
               "x": {"scale": "x", "field": "fertility"},
               "y": {"scale": "y", "field": "life_expect"},

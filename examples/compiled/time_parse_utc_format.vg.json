@@ -51,7 +51,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"time: \" + (timeFormat(datum[\"hoursminutes_date\"], timeUnitSpecifier([\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"time: \" + (isValid(datum[\"date\"]) ? isArray(datum[\"date\"]) ? join(datum[\"date\"], ' ') : datum[\"date\"] : \"\"+datum[\"date\"])"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "hoursminutes_date"}

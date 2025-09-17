@@ -73,7 +73,7 @@
           "fill": {"scale": "color", "field": "max_bin_count_end"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"bin_Horsepower_start\"], \"\")) + \"; y: \" + (isValid(datum[\"y\"]) ? isArray(datum[\"y\"]) ? join(datum[\"y\"], ' ') : datum[\"y\"] : \"\"+datum[\"y\"]) + \"; bin_Horsepower_end: \" + (format(datum[\"bin_Horsepower_end\"], \"\")) + \"; y2: \" + (isValid(datum[\"y2\"]) ? isArray(datum[\"y2\"]) ? join(datum[\"y2\"], ' ') : datum[\"y2\"] : \"\"+datum[\"y2\"]) + \"; count: \" + (isValid(datum[\"max_bin_count_end\"]) ? datum[\"max_bin_count_end\"] : \"\"+datum[\"max_bin_count_end\"])"
+            "signal": "\"Horsepower: \" + (format(datum[\"bin_Horsepower_start\"], \"\")) + \"; y: \" + (isValid(datum[\"y\"]) ? isArray(datum[\"y\"]) ? join(datum[\"y\"], ' ') : datum[\"y\"] : \"\"+datum[\"y\"]) + \"; bin_Horsepower_end: \" + (format(datum[\"bin_Horsepower_end\"], \"\")) + \"; y2: \" + (isValid(datum[\"y2\"]) ? isArray(datum[\"y2\"]) ? join(datum[\"y2\"], ' ') : datum[\"y2\"] : \"\"+datum[\"y2\"]) + \"; count: \" + (isValid(datum[\"max_bin_count_end\"]) ? isArray(datum[\"max_bin_count_end\"]) ? join(datum[\"max_bin_count_end\"], ' ') : datum[\"max_bin_count_end\"] : \"\"+datum[\"max_bin_count_end\"])"
           },
           "x": {"scale": "x", "field": "bin_Horsepower_start", "offset": 2},
           "x2": {"scale": "x", "field": "bin_Horsepower_end", "offset": -2},
@@ -92,7 +92,7 @@
           "fill": {"scale": "color", "field": "bin_count_end"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"bin_Horsepower_start\"], \"\")) + \"; y: \" + (isValid(datum[\"y\"]) ? isArray(datum[\"y\"]) ? join(datum[\"y\"], ' ') : datum[\"y\"] : \"\"+datum[\"y\"]) + \"; bin_Horsepower_end: \" + (format(datum[\"bin_Horsepower_end\"], \"\")) + \"; y2: \" + (isValid(datum[\"y2\"]) ? isArray(datum[\"y2\"]) ? join(datum[\"y2\"], ' ') : datum[\"y2\"] : \"\"+datum[\"y2\"]) + \"; count: \" + (isValid(datum[\"bin_count_end\"]) ? datum[\"bin_count_end\"] : \"\"+datum[\"bin_count_end\"])"
+            "signal": "\"Horsepower: \" + (format(datum[\"bin_Horsepower_start\"], \"\")) + \"; y: \" + (isValid(datum[\"y\"]) ? isArray(datum[\"y\"]) ? join(datum[\"y\"], ' ') : datum[\"y\"] : \"\"+datum[\"y\"]) + \"; bin_Horsepower_end: \" + (format(datum[\"bin_Horsepower_end\"], \"\")) + \"; y2: \" + (isValid(datum[\"y2\"]) ? isArray(datum[\"y2\"]) ? join(datum[\"y2\"], ' ') : datum[\"y2\"] : \"\"+datum[\"y2\"]) + \"; count: \" + (isValid(datum[\"bin_count_end\"]) ? isArray(datum[\"bin_count_end\"]) ? join(datum[\"bin_count_end\"], ' ') : datum[\"bin_count_end\"] : \"\"+datum[\"bin_count_end\"])"
           },
           "x": {"scale": "x", "field": "bin_Horsepower_start", "offset": 2},
           "x2": {"scale": "x", "field": "bin_Horsepower_end", "offset": -2},

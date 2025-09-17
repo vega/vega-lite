@@ -65,10 +65,10 @@
           "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
+            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? isArray(datum[\"variety\"]) ? join(datum[\"variety\"], '\\n') : datum[\"variety\"] : \"\"+datum[\"variety\"]}"
           },
           "description": {
-            "signal": "\"variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Mean of yield: \" + (format(datum[\"center_yield\"], \"\")) + \"; Mean + stderr of yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Mean - stderr of yield: \" + (format(datum[\"lower_yield\"], \"\"))"
+            "signal": "\"variety: \" + (isValid(datum[\"variety\"]) ? isArray(datum[\"variety\"]) ? join(datum[\"variety\"], ' ') : datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Mean of yield: \" + (format(datum[\"center_yield\"], \"\")) + \"; Mean + stderr of yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Mean - stderr of yield: \" + (format(datum[\"lower_yield\"], \"\"))"
           },
           "x": {"scale": "x", "field": "variety", "band": 0.5},
           "y": {"scale": "y", "field": "lower_yield"},
@@ -86,7 +86,7 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; Mean of yield: \" + (format(datum[\"mean_yield\"], \"\"))"
+            "signal": "\"variety: \" + (isValid(datum[\"variety\"]) ? isArray(datum[\"variety\"]) ? join(datum[\"variety\"], ' ') : datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; Mean of yield: \" + (format(datum[\"mean_yield\"], \"\"))"
           },
           "x": {"scale": "x", "field": "variety", "band": 0.5},
           "y": {"scale": "y", "field": "mean_yield"}

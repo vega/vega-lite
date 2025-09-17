@@ -41,7 +41,7 @@
           "stroke": {"scale": "color", "field": "a"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; y: \" + (format(datum[\"y\"], \"\")) + \"; a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"])"
+            "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; y: \" + (format(datum[\"y\"], \"\")) + \"; a: \" + (isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], ' ') : datum[\"a\"] : \"\"+datum[\"a\"])"
           },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "y"}

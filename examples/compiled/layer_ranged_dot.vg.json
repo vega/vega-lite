@@ -93,7 +93,7 @@
           "fill": {"scale": "color", "field": "year"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Life Expectancy (years): \" + (format(datum[\"life_expect\"], \"\")) + \"; Country: \" + (isValid(datum[\"country\"]) ? isArray(datum[\"country\"]) ? join(datum[\"country\"], ' ') : datum[\"country\"] : \"\"+datum[\"country\"]) + \"; Year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+            "signal": "\"Life Expectancy (years): \" + (format(datum[\"life_expect\"], \"\")) + \"; Country: \" + (isValid(datum[\"country\"]) ? isArray(datum[\"country\"]) ? join(datum[\"country\"], ' ') : datum[\"country\"] : \"\"+datum[\"country\"]) + \"; Year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"])"
           },
           "x": {"scale": "x", "field": "life_expect"},
           "y": {"scale": "y", "field": "country"},

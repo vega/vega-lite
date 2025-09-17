@@ -140,7 +140,7 @@
           "fill": {"value": "#ccc"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; record.low: \" + (format(datum[\"record.low\"], \"\")) + \"; record.high: \" + (format(datum[\"record.high\"], \"\"))"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? isArray(datum[\"id\"]) ? join(datum[\"id\"], ' ') : datum[\"id\"] : \"\"+datum[\"id\"]) + \"; record.low: \" + (format(datum[\"record.low\"], \"\")) + \"; record.high: \" + (format(datum[\"record.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
@@ -159,7 +159,7 @@
           "fill": {"value": "#999"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; normal.low: \" + (format(datum[\"normal.low\"], \"\")) + \"; normal.high: \" + (format(datum[\"normal.high\"], \"\"))"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? isArray(datum[\"id\"]) ? join(datum[\"id\"], ' ') : datum[\"id\"] : \"\"+datum[\"id\"]) + \"; normal.low: \" + (format(datum[\"normal.low\"], \"\")) + \"; normal.high: \" + (format(datum[\"normal.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
@@ -178,7 +178,7 @@
           "fill": {"value": "#000"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; actual.low: \" + (format(datum[\"actual.low\"], \"\")) + \"; actual.high: \" + (format(datum[\"actual.high\"], \"\"))"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? isArray(datum[\"id\"]) ? join(datum[\"id\"], ' ') : datum[\"id\"] : \"\"+datum[\"id\"]) + \"; actual.low: \" + (format(datum[\"actual.low\"], \"\")) + \"; actual.high: \" + (format(datum[\"actual.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
@@ -197,7 +197,7 @@
           "fill": {"value": "#000"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; forecast.low.low: \" + (format(datum[\"forecast.low.low\"], \"\")) + \"; forecast.low.high: \" + (format(datum[\"forecast.low.high\"], \"\"))"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? isArray(datum[\"id\"]) ? join(datum[\"id\"], ' ') : datum[\"id\"] : \"\"+datum[\"id\"]) + \"; forecast.low.low: \" + (format(datum[\"forecast.low.low\"], \"\")) + \"; forecast.low.high: \" + (format(datum[\"forecast.low.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
@@ -216,7 +216,7 @@
           "fill": {"value": "#000"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; forecast.low.high: \" + (format(datum[\"forecast.low.high\"], \"\")) + \"; forecast.high.low: \" + (format(datum[\"forecast.high.low\"], \"\"))"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? isArray(datum[\"id\"]) ? join(datum[\"id\"], ' ') : datum[\"id\"] : \"\"+datum[\"id\"]) + \"; forecast.low.high: \" + (format(datum[\"forecast.low.high\"], \"\")) + \"; forecast.high.low: \" + (format(datum[\"forecast.high.low\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 3},
@@ -235,7 +235,7 @@
           "fill": {"value": "#000"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; forecast.high.low: \" + (format(datum[\"forecast.high.low\"], \"\")) + \"; forecast.high.high: \" + (format(datum[\"forecast.high.high\"], \"\"))"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? isArray(datum[\"id\"]) ? join(datum[\"id\"], ' ') : datum[\"id\"] : \"\"+datum[\"id\"]) + \"; forecast.high.low: \" + (format(datum[\"forecast.high.low\"], \"\")) + \"; forecast.high.high: \" + (format(datum[\"forecast.high.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
@@ -255,7 +255,7 @@
           "baseline": {"value": "bottom"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; day: \" + (isValid(datum[\"day\"]) ? isArray(datum[\"day\"]) ? join(datum[\"day\"], ' ') : datum[\"day\"] : \"\"+datum[\"day\"])"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? isArray(datum[\"id\"]) ? join(datum[\"id\"], ' ') : datum[\"id\"] : \"\"+datum[\"id\"]) + \"; day: \" + (isValid(datum[\"day\"]) ? isArray(datum[\"day\"]) ? join(datum[\"day\"], ' ') : datum[\"day\"] : \"\"+datum[\"day\"])"
           },
           "x": {"scale": "x", "field": "id", "band": 0.5},
           "y": {"value": -5},
