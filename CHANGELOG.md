@@ -1,5 +1,17 @@
 # Changelog
 
+# [6.4.0](https://github.com/vega/vega-lite/compare/v6.3.1...v6.4.0) (2025-09-17)
+
+
+### Bug Fixes
+
+* height/width of 0 ignored ([#9676](https://github.com/vega/vega-lite/issues/9676)) ([0ff8505](https://github.com/vega/vega-lite/commit/0ff85059ef1c444b78218a36678fc2af7131a7aa))
+
+
+### Features
+
+* support newlines in tooltips ([#9678](https://github.com/vega/vega-lite/issues/9678)) ([c785de5](https://github.com/vega/vega-lite/commit/c785de55325319514b08a756191407e7d173ef9a))
+
 ## [6.3.1](https://github.com/vega/vega-lite/compare/v6.2.0...v6.3.1) (2025-09-10)
 
 
