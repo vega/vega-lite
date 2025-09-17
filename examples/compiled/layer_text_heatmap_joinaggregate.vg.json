@@ -38,17 +38,6 @@
           "expr": "isValid(datum[\"num_cars\"]) && isFinite(+datum[\"num_cars\"])"
         }
       ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "formula",
-          "expr": "indexof([false,true], datum['more_than_half'])",
-          "as": "_more_than_half_sort_index"
-        }
-      ]
     }
   ],
   "signals": [
@@ -80,11 +69,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "sort": {
-        "field": ["datum[\"_more_than_half_sort_index\"]"],
-        "order": ["descending"]
-      },
-      "from": {"data": "data_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": {"scale": "layer_1_color", "field": "more_than_half"},
@@ -107,7 +92,7 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "Cylinders"},
-          {"data": "data_1", "field": "Cylinders"}
+          {"data": "source_0", "field": "Cylinders"}
         ],
         "sort": true
       },
@@ -121,7 +106,7 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "Origin"},
-          {"data": "data_1", "field": "Origin"}
+          {"data": "source_0", "field": "Origin"}
         ],
         "sort": true
       },
