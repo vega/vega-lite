@@ -15,13 +15,14 @@ import {
 import {Config} from '../../../config.js';
 import {Encoding, forEach} from '../../../encoding.js';
 import {StackProperties} from '../../../stack.js';
-import {Dict, entries} from '../../../util.js';
+import {Dict, entries, hasProperty} from '../../../util.js';
 import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
 import {getMarkPropOrConfig} from '../../common.js';
 import {binFormatExpression, formatSignalRef} from '../../format.js';
 import {UnitModel} from '../../unit.js';
 import {wrapCondition} from './conditional.js';
 import {textRef} from './text.js';
+import {isDiscrete} from '../../../type.js';
 
 export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config, stack} = model;
@@ -174,10 +175,8 @@ function addLineBreaksToTooltip(
   config: Config,
   expr: 'datum' | 'datum.datum' = 'datum',
 ): VgValueRef {
-  // tooltip fields with a format property are no strings
-  const fieldDefWithFormat = channelDef as {field: string; type: string; format: string};
-  if (fieldDefWithFormat?.type === 'nominal' && !fieldDefWithFormat.format) {
-    const fieldString = `datum["${fieldDefWithFormat.field}"]`;
+  if (isFieldDef(channelDef) && isDiscrete(channelDef.type) && !hasProperty(channelDef, 'format')) {
+    const fieldString = `datum["${channelDef.field}"]`;
     return {
       signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : ""+${fieldString}`,
     };
