@@ -283,11 +283,6 @@
         {"type": "formula", "expr": "datum.v1 - datum.offset", "as": "nx"},
         {"type": "formula", "expr": "datum.v2 - datum.offset", "as": "nx2"},
         {
-          "type": "formula",
-          "expr": "indexof([\"Strongly disagree\",\"Disagree\",\"Neither agree nor disagree\",\"Agree\",\"Strongly agree\"], datum['type'])",
-          "as": "_type_sort_index"
-        },
-        {
           "type": "filter",
           "expr": "isValid(datum[\"nx\"]) && isFinite(+datum[\"nx\"])"
         }
@@ -306,10 +301,6 @@
       "name": "marks",
       "type": "rect",
       "style": ["bar"],
-      "sort": {
-        "field": ["datum[\"_type_sort_index\"]"],
-        "order": ["ascending"]
-      },
       "from": {"data": "data_0"},
       "encode": {
         "update": {
