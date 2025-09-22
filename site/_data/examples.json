@@ -1,952 +1,300 @@
-{
-  "Single-View Plots": {
-    "Bar Charts": [
-      {
-        "name": "bar",
-        "title": "Simple Bar Chart",
-        "description": "A bar chart encodes quantitative values as the extent of rectangular bars.",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "bar_size_responsive",
-        "title": "Responsive Bar Chart",
-        "description": "The bar gets automatically resized based on container size. To see how the bar gets automatically resized try this in [the editor](https://vega.github.io/editor/#/examples/vega-lite/bar_size_responsive)."
-      },
-      {
-        "name": "bar_aggregate",
-        "title": "Aggregate Bar Chart"
-      },
-      {
-        "name": "bar_aggregate_sort_by_encoding",
-        "title": "Aggregate Bar Chart (Sorted)"
-      },
-      {
-        "name": "bar_grouped",
-        "title": "Grouped Bar Chart",
-        "description": "Read [here](https://vega.github.io/vega-lite/docs/size.html#offset-step) for more details about how to set step size for grouped bar. "
-      },
-      {
-        "name": "bar_grouped_repeated",
-        "title": "Grouped Bar Chart (Multiple Measure with Repeat)",
-        "description": "Read [here](https://vega.github.io/vega-lite/docs/size.html#offset-step) for more details about how to set step size for grouped bar. "
-      },
-      {
-        "name": "stacked_bar_weather",
-        "title": "Stacked Bar Chart"
-      },
-      {
-        "name": "stacked_bar_count_corner_radius_mark",
-        "title": "Stacked Bar Chart with Rounded Corners"
-      },
-      {
-        "name": "stacked_bar_h",
-        "title": "Horizontal Stacked Bar Chart"
-      },
-      {
-        "name": "stacked_bar_normalize",
-        "title": "Normalized (Percentage) Stacked Bar Chart"
-      },
-      {
-        "name": "stacked_bar_h_normalized_labeled",
-        "title": "Normalized (Percentage) Stacked Bar Chart With Labels"
-      },
-      {
-        "name": "bar_gantt",
-        "title": "Gantt Chart (Ranged Bar Marks)",
-        "style": "background-size: auto 75%; background-position-y: center !important;"
-      },
-      {
-        "name": "bar_color_disabled_scale",
-        "title": "A Bar Chart Encoding Color Names in the Data"
-      },
-      {
-        "name": "bar_layered_transparent",
-        "title": "Layered Bar Chart"
-      },
-      {
-        "name": "bar_diverging_stack_population_pyramid",
-        "title": "Diverging Stacked Bar Chart (Population Pyramid)"
-      },
-      {
-        "name": "bar_diverging_stack_transform",
-        "title": "Diverging Stacked Bar Chart (with Neutral Parts)"
-      },
-      {
-        "name": "layer_bar_labels",
-        "title": "Bar Chart with Labels",
-        "style": "background-size: auto 70%; background-position-y: center;"
-      },
-      {
-        "name": "layer_bar_labels_grey",
-        "title": "Bar Chart with Label Overlays"
-      },
-      {
-        "name": "bar_month_temporal_initial",
-        "title": "Bar Chart showing Initials of Month Names"
-      },
-      {
-        "name": "bar_negative",
-        "title": "Bar Chart with Negative Values and a Zero-Baseline"
-      },
-      {
-        "name": "bar_negative_horizontal_label",
-        "title": "Horizontal Bar Chart with Negative Values and Labels"
-      },
-      {
-        "name": "bar_axis_space_saving",
-        "title": "Bar Chart with a Spacing-Saving Y-Axis"
-      },
-      {
-        "name": "bar_heatlane",
-        "title": "Heat Lane Chart"
-      }
-    ],
-    "Histograms, Density Plots, and Dot Plots": [
-      {
-        "name": "histogram",
-        "title": "Histogram",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "bar_binned_data",
-        "title": "Histogram (from Binned Data)",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "histogram_log",
-        "title": "Log-scaled Histogram"
-      },
-      {
-        "name": "histogram_nonlinear",
-        "title": "Non-linear Histogram"
-      },
-      {
-        "name": "histogram_rel_freq",
-        "title": "Relative Frequency Histogram"
-      },
-      {
-        "name": "area_density",
-        "title": "Density Plot"
-      },
-      {
-        "name": "area_density_stacked",
-        "title": "Stacked Density Estimates"
-      },
-      {
-        "name": "circle_binned",
-        "title": "2D Histogram Scatterplot"
-      },
-      {
-        "name": "rect_binned_heatmap",
-        "title": "2D Histogram Heatmap"
-      },
-      {
-        "name": "area_cumulative_freq",
-        "title": "Cumulative Frequency Distribution",
-        "style": "background-size: auto 105%; background-position: center center !important;",
-        "png": true
-      },
-      {
-        "name": "layer_cumulative_histogram",
-        "title": "Layered Histogram and Cumulative Histogram",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "circle_wilkinson_dotplot",
-        "title": "Wilkinson Dot Plot"
-      },
-      {
-        "name": "isotype_bar_chart",
-        "title": "Isotype Dot Plot",
-        "description": "Inspired by this [Only An Ocean Between, 1943](http://www.thomwhite.co.uk/?p=1303). Population Live Stock, p.13. This example was created by [@jwoLondon](https://github.com/jwoLondon)."
-      },
-      {
-        "name": "isotype_bar_chart_emoji",
-        "title": "Isotype Dot Plot with Emoji",
-        "description": "This example was inspired by [@jakevdp](https://github.com/jakevdp) and Isotype Bar Chart by [@jwoLondon](https://github.com/jwoLondon)."
-      },
-      {
-        "name": "bar_percent_of_total",
-        "title": "Relative Bar Chart (Calculate Percentage of Total)"
-      }
-    ],
-    "Scatter & Strip Plots": [
-      {
-        "name": "point_2d",
-        "title": "Scatterplot",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "tick_dot",
-        "title": "1D Strip Plot",
-        "style": "background-size: auto 50%; background-position-y: center !important;"
-      },
-      {
-        "name": "tick_strip",
-        "title": "Strip Plot",
-        "style": "background-size: auto 85%; background-position-y: center !important;"
-      },
-      {
-        "name": "point_color_with_shape",
-        "title": "Colored Scatterplot"
-      },
-      {
-        "name": "circle_binned",
-        "title": "2D Histogram Scatterplot"
-      },
-      {
-        "name": "point_bubble",
-        "title": "Bubble Plot"
-      },
-      {
-        "name": "point_invalid_color",
-        "png": true,
-        "title": "Scatterplot with Null Values in Grey"
-      },
-      {
-        "name": "circle",
-        "title": "Scatterplot with Filled Circles",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "circle_bubble_health_income",
-        "title": "Bubble Plot (Gapminder)"
-      },
-      {
-        "name": "circle_natural_disasters",
-        "description": "Visualization of global deaths from natural disasters. Copy of chart from [Our World in Data](https://ourworldindata.org/natural-catastrophes).",
-        "title": "Bubble Plot (Natural Disasters)",
-        "png": true
-      },
-      {
-        "name": "text_scatterplot_colored",
-        "title": "Scatter Plot with Text Marks"
-      },
-      {
-        "name": "scatter_image",
-        "title": "Image-based Scatter Plot"
-      },
-      {
-        "name": "circle_custom_tick_labels",
-        "description": "After using the numerical values to calculate the average rating, they are replaced by string labels.",
-        "title": "Strip plot with custom axis tick labels"
-      },
-      {
-        "name": "point_offset_random",
-        "title": "Dot Plot with Jittering"
-      }
-    ],
-    "Line Charts": [
-      {
-        "name": "line",
-        "title": "Line Chart",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "line_overlay",
-        "title": "Line Chart with Point Markers",
-        "style": "background-size: auto 105%; background-position: center center !important;",
-        "description": "By setting the `point` property of the line mark definition to an object defining a property of the overlaying point marks, we can overlay point markers on top of line. \n\n Notes&#58; (1) This is equivalent to adding another layer of point marks. \n (2) While `\"point\"` marks are normally semi-transparent, the overlay point marker has `opacity` = 1 by default."
-      },
-      {
-        "name": "line_overlay_stroked",
-        "title": "Line Chart with Stroked Point Markers",
-        "style": "background-size: auto 105%; background-position: center center !important;",
-        "description": "By setting the `point` property of the line mark definition to an object defining a property of the overlaying point marks, we can overlay point markers on top of line. Here we create stroked points by setting their `\"filled\"` to `false` and their `fill` to `\"white\"`. \n\n Notes&#58; (1) This is equivalent to adding another layer of point marks. \n (2) While `\"point\"` marks are normally semi-transparent, the overlay point marker has `opacity` = 1 by default."
-      },
-      {
-        "name": "line_color",
-        "title": "Multi Series Line Chart"
-      },
-      {
-        "name": "repeat_layer",
-        "title": "Multi Series Line Chart with Repeat Operator"
-      },
-      {
-        "name": "line_color_halo",
-        "title": "Multi Series Line Chart with Halo Stroke"
-      },
-      {
-        "name": "line_slope",
-        "title": "Slope Graph",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "line_step",
-        "title": "Step Chart",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "line_monotone",
-        "title": "Line Chart with Monotone Interpolation",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "line_conditional_axis",
-        "title": "Line Chart with Conditional Axis Properties",
-        "style": "background-size: auto 105%"
-      },
-      {
-        "name": "connected_scatterplot",
-        "title": "Connected Scatterplot (Lines with Custom Paths)",
-        "description": "A connected scatterplot can be created by customizing line `order` and adding `point` overlay in the line mark definition.",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "line_bump",
-        "title": "Bump Chart"
-      },
-      {
-        "name": "trail_color",
-        "title": "Line Chart with Varying Size (using the trail mark)"
-      },
-      {
-        "name": "trail_comet",
-        "title": "A comet chart showing changes between between two states"
-      },
-      {
-        "name": "line_skip_invalid_mid_overlay",
-        "title": "Line Chart with Markers and Invalid Values",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "layer_line_co2_concentration",
-        "title": "Carbon Dioxide in the Atmosphere",
-        "description": "This example was inspired by [Gregor Aisch](https://github.com/gka)'s [Carbon Dioxide Concentration By Decade](https://www.datawrapper.de/_/OHgEm/)."
-      },
-      {
-        "name": "window_rank",
-        "title": "Line Charts Showing Ranks Over Time"
-      },
-      {
-        "name": "sequence_line_fold",
-        "title": "Drawing Sine and Cosine Curves with the Sequence Generator"
-      },
-      {
-        "name": "line_strokedash",
-        "title": "Line chart with varying stroke dash"
-      },
-      {
-        "name": "line_dashed_part",
-        "title": "Line chart with a dashed part"
-      }
-    ],
-    "Area Charts & Streamgraphs": [
-      {
-        "name": "area",
-        "title": "Area Chart"
-      },
-      {
-        "name": "area_gradient",
-        "title": "Area Chart with Gradient"
-      },
-      {
-        "name": "area_overlay",
-        "title": "Area Chart with Overlaying Lines and Point Markers"
-      },
-      {
-        "name": "stacked_area",
-        "title": "Stacked Area Chart"
-      },
-      {
-        "name": "stacked_area_normalize",
-        "title": "Normalized Stacked Area Chart"
-      },
-      {
-        "name": "stacked_area_stream",
-        "title": "Streamgraph"
-      },
-      {
-        "name": "area_horizon",
-        "title": "Horizon Graph",
-        "style": "background-size: auto 70%; background-position-y: center;"
-      }
-    ],
-    "Table-based Plots": [
-      {
-        "name": "rect_heatmap",
-        "title": "Table Heatmap",
-        "style": "background-size: auto"
-      },
-      {
-        "name": "rect_heatmap_weather",
-        "title": "Annual Weather Heatmap"
-      },
-      {
-        "name": "rect_binned_heatmap",
-        "title": "2D Histogram Heatmap"
-      },
-      {
-        "name": "circle_github_punchcard",
-        "title": "Table Bubble Plot (Github Punch Card)"
-      },
-      {
-        "name": "layer_text_heatmap",
-        "title": "Heatmap with Labels",
-        "style": "background-size: auto 55%; background-position-y: center !important;"
-      },
-      {
-        "name": "rect_lasagna",
-        "title": "Lasagna Plot (Dense Time-Series Heatmap)"
-      },
-      {
-        "name": "rect_mosaic_labelled_with_offset",
-        "title": "Mosaic Chart with Labels"
-      },
-      {
-        "name": "point_angle_windvector",
-        "title": "Wind Vector Map"
-      }
-    ],
-    "Circular Plots": [
-      {
-        "name": "arc_pie",
-        "title": "Pie Chart",
-        "description": "A pie chart encodes proportional differences among a set of numeric values as the angular extent and area of a circular slice."
-      },
-      {
-        "name": "arc_pie_normalize_tooltip",
-        "title": "Pie Chart with percentage_tooltip",
-        "description": "A pie chart with a tooltip that shows the percentage covered by the hovered slice."
-      },
-      {
-        "name": "arc_donut",
-        "title": "Donut Chart",
-        "description": "A donut chart encodes proportional differences among a set of numeric values using angular extents."
-      },
-      {
-        "name": "layer_arc_label",
-        "title": "Pie Chart with Labels",
-        "description": "Layering text over arc marks to label pie charts. For now, [you need to add `stack: true`](https://github.com/vega/vega-lite/issues/5078) to theta to force the text to apply the same polar stacking layout."
-      },
-      {
-        "name": "arc_radial",
-        "title": "Radial Plot",
-        "description": "This radial plot uses both angular and radial extent to convey multiple dimensions of data. However, this approach is not perceptually effective, as viewers will most likely be drawn to the total area of the shape, conflating the two dimensions. This example also demonstrates a way to add labels to circular plots."
-      },
-      {
-        "name": "arc_pie_pyramid",
-        "title": "Pyramid Pie Chart"
-      }
-    ],
-    "Advanced Calculations": [
-      {
-        "name": "bar_percent_of_total",
-        "title": "Relative Bar Chart (Calculate Percentage of Total)"
-      },
-      {
-        "name": "joinaggregate_mean_difference",
-        "title": "Calculate Difference from Average"
-      },
-      {
-        "name": "joinaggregate_mean_difference_by_year",
-        "title": "Calculate Difference from Annual Average"
-      },
-      {
-        "name": "joinaggregate_residual_graph",
-        "title": "Calculate Residuals",
-        "style": "background-size: auto 105%; background-position: center center !important;",
-        "png": true
-      },
-      {
-        "name": "window_rank",
-        "title": "Line Charts Showing Ranks Over Time"
-      },
-      {
-        "name": "waterfall_chart",
-        "title": "Waterfall Chart of Monthly Profit and Loss"
-      },
-      {
-        "name": "window_top_k",
-        "title": "Filtering Top-K Items",
-        "description": "Here we use window transform to derive the total number of students along with the rank of the current student to determine the top K students and display their score.",
-        "style": "background-size: 110%"
-      },
-      {
-        "name": "window_top_k_others",
-        "title": "Top-K Plot with \"Others\"",
-        "description": "By @manzt, adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
-        "style": "background-size: 110%"
-      },
-      {
-        "name": "lookup",
-        "title": "Using the lookup transform to combine data",
-        "style": "background-size: 75%; background-position-x: center;"
-      },
-      {
-        "name": "area_cumulative_freq",
-        "title": "Cumulative Frequency Distribution",
-        "style": "background-size: auto 105%; background-position: center center !important;",
-        "png": true
-      },
-      {
-        "name": "layer_cumulative_histogram",
-        "title": "Layered Histogram and Cumulative Histogram",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "parallel_coordinate",
-        "title": "Parallel Coordinate Plot",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "bar_argmax",
-        "title": "Bar Chart Showing Argmax Value"
-      },
-      {
-        "name": "layer_line_mean_point_raw",
-        "title": "Layering Averages over Raw Values"
-      },
-      {
-        "name": "layer_line_rolling_mean_point_raw",
-        "title": "Layering Rolling Averages over Raw Values"
-      },
-      {
-        "name": "layer_line_window",
-        "title": "Line Chart to Show Benchmarking Results"
-      },
-      {
-        "name": "point_quantile_quantile",
-        "title": "Quantile-Quantile Plot (QQ Plot)"
-      },
-      {
-        "name": "layer_point_line_regression",
-        "title": "Linear Regression"
-      },
-      {
-        "name": "layer_point_line_loess",
-        "title": "Loess Regression"
-      }
-    ]
+ {
+  "config": {
+    "view": {
+      "continuousHeight": 300,
+      "continuousWidth": 400
+    }
   },
-  "Composite Marks": {
-    "Error Bars & Error Bands": [
-      {
-        "name": "layer_point_errorbar_ci",
-        "title": "Error Bars Showing Confidence Interval"
+  "vconcat": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "tooltip": [
+          {
+            "field": "اسم_المشرف_ه_التربوي_ه",
+            "title": "اسم المشرف/ة"
+          },
+          {
+            "field": "عدد_الزيارات_الإجماليه",
+            "title": "إجمالي الزيارات"
+          }
+        ],
+        "x": {
+          "field": "عدد_الزيارات_الإجماليه",
+          "title": "إجمالي الزيارات"
+        },
+        "y": {
+          "field": "اسم_المشرف_ه_التربوي_ه",
+          "sort": "-x",
+          "title": "اسم المشرف/ة"
+        }
       },
-      {
-        "name": "layer_point_errorbar_stdev",
-        "title": "Error Bars Showing Standard Deviation"
+      "params": [
+        {
+          "name": "param_1",
+          "select": "point",
+          "fields": [
+            "اسم_المشرف_ه_التربوي_ه"
+          ]
+        }
+      ],
+      "title": "إجمالي الزيارات حسب المشرف/ة"
+    },
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "Visits_Count",
+          "title": "عدد الزيارات"
+        },
+        "y": {
+          "field": "اسم_المشرف_ه_التربوي_ه",
+          "sort": "-x",
+          "title": ""
+        },
+        "color": {
+          "field": "School_Type",
+          "title": "نوع المدرسة"
+        },
+        "tooltip": [
+          {
+            "field": "School_Type",
+            "title": "نوع المدرسة"
+          },
+          {
+            "field": "Visits_Count",
+            "title": "عدد الزيارات"
+          }
+        ]
       },
-      {
-        "name": "layer_line_errorband_ci",
-        "title": "Line Chart with Confidence Interval Band"
-      },
-      {
-        "name": "layer_scatter_errorband_1D_stdev_global_mean",
-        "title": "Scatterplot with Mean and Standard Deviation Overlay"
+      "transform": [
+        {
+          "filter": {
+            "param": "param_1"
+          }
+        }
+      ],
+      "data": {
+        "values": [
+          {
+            "اسم_المشرف_ه_التربوي_ه": "حسن سليمان علي غزواني",
+            "عدد_الزيارات_الإجماليه": 6,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 3
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "حسن سليمان علي غزواني",
+            "عدد_الزيارات_الإجماليه": 6,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 2
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "حسن سليمان علي غزواني",
+            "عدد_الزيارات_الإجماليه": 6,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "جابر حسن قاسم غزواني",
+            "عدد_الزيارات_الإجماليه": 5,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 3
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "جابر حسن قاسم غزواني",
+            "عدد_الزيارات_الإجماليه": 5,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "جابر حسن قاسم غزواني",
+            "عدد_الزيارات_الإجماليه": 5,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "أحمد علي حشران العبسي",
+            "عدد_الزيارات_الإجماليه": 3,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 2
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "أحمد علي حشران العبسي",
+            "عدد_الزيارات_الإجماليه": 3,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "أحمد علي حشران العبسي",
+            "عدد_الزيارات_الإجماليه": 3,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "أحمد سالم مرعي الفيفي",
+            "عدد_الزيارات_الإجماليه": 3,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 2
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "أحمد سالم مرعي الفيفي",
+            "عدد_الزيارات_الإجماليه": 3,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "أحمد سالم مرعي الفيفي",
+            "عدد_الزيارات_الإجماليه": 3,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "حسين يحيى سلمان غزواني",
+            "عدد_الزيارات_الإجماليه": 3,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 2
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "حسين يحيى سلمان غزواني",
+            "عدد_الزيارات_الإجماليه": 3,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "حسين يحيى سلمان غزواني",
+            "عدد_الزيارات_الإجماليه": 3,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "يحيى مفرح يحيى العمري",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "يحيى مفرح يحيى العمري",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "يحيى مفرح يحيى العمري",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "موسى محمد علي الفيفي",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "موسى محمد علي الفيفي",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "موسى محمد علي الفيفي",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "محمد طاهر محمد خواجي",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "محمد طاهر محمد خواجي",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "محمد طاهر محمد خواجي",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "عبد العزيز يحيى سليمان الفيفي",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "عبد العزيز يحيى سليمان الفيفي",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "عبد العزيز يحيى سليمان الفيفي",
+            "عدد_الزيارات_الإجماليه": 2,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "أحمد حسين جابر غزواني",
+            "عدد_الزيارات_الإجماليه": 1,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "أحمد حسين جابر غزواني",
+            "عدد_الزيارات_الإجماليه": 1,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "أحمد حسين جابر غزواني",
+            "عدد_الزيارات_الإجماليه": 1,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "يحي يزيد سلمان الفيفي",
+            "عدد_الزيارات_الإجماليه": 1,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "يحي يزيد سلمان الفيفي",
+            "عدد_الزيارات_الإجماليه": 1,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "يحي يزيد سلمان الفيفي",
+            "عدد_الزيارات_الإجماليه": 1,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "علي يحيى حسن الفيفي",
+            "عدد_الزيارات_الإجماليه": 1,
+            "School_Type": "عدد_المدارس_الابتدائيه_التي_تمت_زيارتها",
+            "Visits_Count": 1
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "علي يحيى حسن الفيفي",
+            "عدد_الزيارات_الإجماليه": 1,
+            "School_Type": "عدد_المدارس_المتوسطه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          },
+          {
+            "اسم_المشرف_ه_التربوي_ه": "علي يحيى حسن الفيفي",
+            "عدد_الزيارات_الإجماليه": 1,
+            "School_Type": "عدد_المدارس_الثانويه_التي_تمت_زيارتها",
+            "Visits_Count": 0
+          }
+        ]
       }
-    ],
-    "Box Plots": [
-      {
-        "name": "boxplot_minmax_2D_vertical",
-        "title": "Box Plot with Min/Max Whiskers"
-      },
-      {
-        "name": "boxplot_2D_vertical",
-        "title": "Tukey Box Plot (1.5 IQR)"
-      },
-      {
-        "name": "boxplot_preaggregated",
-        "title": "Box Plot with Pre-Calculated Summaries"
-      }
-    ]
-  },
-  "Layered Plots": {
-    "Labeling & Annotation": [
-      {
-        "name": "layer_bar_labels",
-        "title": "Simple Bar Chart with Labels",
-        "style": "background-size: auto 70%; background-position-y: center;"
-      },
-      {
-        "name": "layer_bar_fruit",
-        "title": "Simple Bar Chart with Labels and Emojis"
-      },
-      {
-        "name": "layer_text_heatmap",
-        "title": "Layering text over heatmap",
-        "style": "background-size: auto 55%; background-position-y: center !important;"
-      },
-      {
-        "name": "layer_line_co2_concentration",
-        "title": "Carbon Dioxide in the Atmosphere",
-        "description": "This example was inspired by [Gregor Aisch](https://github.com/gka)'s [Carbon Dioxide Concentration By Decade](https://www.datawrapper.de/_/OHgEm/)."
-      },
-      {
-        "name": "layer_bar_annotations",
-        "title": "Bar Chart Highlighting Values beyond a Threshold",
-        "description": "To create a bar chart that highlights values beyond a threshold, we use two `layer`s of `bar` marks. The lower layer shows all the bars while the upper layer shows bar with values above the threshold in red (`#e45755`).  We then `layer` a `rule` mark and a `text` mark over the bars to annotate the threshold value."
-      },
-      {
-        "name": "layer_precipitation_mean",
-        "title": "Mean overlay over precipitation chart"
-      },
-      {
-        "name": "layer_histogram_global_mean",
-        "title": "Histogram with a Global Mean Overlay",
-        "style": "background-size: auto 105%; background-position: center center !important;"
-      },
-      {
-        "name": "layer_falkensee",
-        "title": "Line Chart with Highlighted Rectangles",
-        "style": "background-size: auto 90%; background-position-y: center !important;"
-      },
-      {
-        "name": "layer_line_mean_point_raw",
-        "title": "Layering Averages over Raw Values"
-      },
-      {
-        "name": "layer_line_rolling_mean_point_raw",
-        "title": "Layering Rolling Averages over Raw Values"
-      },
-      {
-        "name": "layer_likert",
-        "title": "Distributions and Medians of Likert Scale Ratings",
-        "description": "Distributions and Medians of Likert Scale Ratings. (Figure 9 from @jhoffswell and @zcliu's 'Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices' -- http://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf)."
-      },
-      {
-        "name": "concat_layer_voyager_result",
-        "title": "Comparative Likert Scale Ratings",
-        "description": "Comparing Likert scale ratings between two conditions. (Figure 10. from @kanitw et al.'s \"Voyager 2: Augmenting Visual Analysis with Partial View Specifications\" -- http://idl.cs.washington.edu/files/2017-Voyager2-CHI.pdf)."
-      }
-    ],
-    "Other Layered Plots": [
-      {
-        "name": "layer_candlestick",
-        "title": "Candlestick Chart"
-      },
-      {
-        "name": "layer_ranged_dot",
-        "title": "Ranged Dot Plot",
-        "style": "background-size: auto 70%; background-position-y: center;"
-      },
-      {
-        "name": "facet_bullet",
-        "title": "Bullet Chart"
-      },
-      {
-        "name": "layer_dual_axis",
-        "title": "Layered Plot with Dual-Axis",
-        "style": "background-size: 100% auto; background-position-y: center;"
-      },
-      {
-        "name": "area_horizon",
-        "title": "Horizon Graph",
-        "style": "background-size: auto 70%; background-position-y: center;"
-      },
-      {
-        "name": "bar_layered_weather",
-        "title": "Weekly Weather Plot",
-        "description": "Inspired by <a href='https://vega.github.io/vega-editor/?mode=vega&spec=weather'>this Vega example</a>. Weekly weather data plot representing high/low ranges of record temperatures (light grey), average temperatures (dark grey), and both predicted and observed temperatures (black) for the given week. The first five days have high/low ranges of observed temperatures, and the last five days have ranges of predicted temperatures, where the upper barbell represents the range of high temperature predictions and the lower barbell represents the range of low temperature predictions. Created by @melissatdiamond."
-      },
-      {
-        "name": "wheat_wages",
-        "title": "Wheat and Wages Example",
-        "description": "A recreation of William Playfair’s classic chart visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Based on a chart by @manzt."
-      }
-    ]
-  },
-  "Multi-View Displays": {
-    "Faceting (Trellis Plot / Small Multiples)": [
-      {
-        "name": "trellis_bar",
-        "title": "Trellis Bar Chart"
-      },
-      {
-        "name": "trellis_stacked_bar",
-        "title": "Trellis Stacked Bar Chart"
-      },
-      {
-        "name": "trellis_scatter",
-        "title": "Trellis Scatter Plot (wrapped)",
-        "png": true
-      },
-      {
-        "name": "trellis_bar_histogram",
-        "title": "Trellis Histograms"
-      },
-      {
-        "name": "trellis_anscombe",
-        "title": "Trellis Scatter Plot Showing Anscombe's Quartet"
-      },
-      {
-        "name": "trellis_barley",
-        "title": "Becker's Barley Trellis Plot"
-      },
-      {
-        "name": "trellis_area",
-        "title": "Trellis Area"
-      },
-      {
-        "name": "trellis_area_seattle",
-        "title": "Trellis Area Plot Showing Annual Temperatures in Seattle"
-      },
-      {
-        "name": "area_density_facet",
-        "title": "Faceted Density Plot"
-      },
-      {
-        "name": "facet_grid_bar",
-        "title": "Compact Trellis Grid of Bar Charts"
-      }
-    ],
-    "Repeat & Concatenation": [
-      {
-        "name": "repeat_layer",
-        "title": "Repeat and Layer to Show Different Movie Measures"
-      },
-      {
-        "name": "vconcat_weather",
-        "title": "Vertical Concatenation",
-        "description": "Two vertically concatenated charts"
-      },
-      {
-        "name": "repeat_histogram",
-        "title": "Horizontally Repeated Charts",
-        "description": "Horizontally repeated charts that show the histograms of different parameters of cars in different countries."
-      },
-      {
-        "name": "interactive_splom",
-        "png": true,
-        "title": "Interactive Scatterplot Matrix"
-      },
-      {
-        "name": "concat_marginal_histograms",
-        "title": "Marginal Histograms",
-        "description": "Marginal histograms show the counts along the x and y dimension."
-      },
-      {
-        "name": "concat_bar_scales_discretize",
-        "title": "Discretizing scales",
-        "description": "Horizontally concatenated charts that show different types of discretizing scales."
-      },
-      {
-        "name": "nested_concat_align",
-        "title": "Nested View Concatenation Aligned with Axis `minExtent`"
-      },
-      {
-        "name": "concat_population_pyramid",
-        "title": "Population Pyramid"
-      }
-    ]
-  },
-  "Maps (Geographic Displays)": {
-    "": [
-      {
-        "name": "geo_choropleth",
-        "png": true,
-        "title": "Choropleth of Unemployment Rate per County"
-      },
-      {
-        "name": "geo_circle",
-        "png": true,
-        "title": "One Dot per Zipcode in the U.S."
-      },
-      {
-        "name": "geo_layer",
-        "png": true,
-        "title": "One Dot per Airport in the U.S. Overlayed on Geoshape"
-      },
-      {
-        "name": "geo_rule",
-        "png": true,
-        "title": "Rules (line segments) Connecting SEA to every Airport Reachable via Direct Flights"
-      },
-      {
-        "name": "geo_repeat",
-        "png": true,
-        "title": "Three Choropleths Representing Disjoint Data from the Same Table"
-      },
-      {
-        "name": "geo_text",
-        "png": true,
-        "title": "U.S. State Capitals Overlayed on a Map of U.S."
-      },
-      {
-        "name": "geo_line",
-        "png": true,
-        "title": "Line between Airports in the U.S."
-      },
-      {
-        "name": "geo_trellis",
-        "png": true,
-        "title": "Income in the U.S. by State, Faceted over Income Brackets"
-      },
-      {
-        "name": "geo_layer_line_london",
-        "title": "London Tube Lines",
-        "description": "This example was created by @jwoLondon.",
-        "png": true
-      },
-      {
-        "name": "geo_params_projections",
-        "title": "Projection explorer",
-        "description": "Compare different projections.",
-        "png": true
-      },
-      {
-        "name": "interactive_geo_earthquakes",
-        "title": "Earthquakes Example",
-        "description": "Interactive globe visualization of earthquakes",
-        "png": true
-      }
-    ]
-  },
-  "Interactive": {
-    "Interactive Charts": [
-      {
-        "name": "interactive_bar_select_highlight",
-        "title": "Bar Chart with Highlighting on Hover and Selection on Click"
-      },
-      {
-        "name": "interactive_histogram_full_height_hover",
-        "title": "Histogram with Full-Height Hover Targets for Tooltip"
-      },
-      {
-        "name": "interactive_legend",
-        "title": "Interactive Legend"
-      },
-      {
-        "name": "point_href",
-        "title": "Scatterplot with External Links and Tooltips"
-      },
-      {
-        "name": "interactive_brush",
-        "title": "Rectangular Brush"
-      },
-      {
-        "name": "interactive_area_brush",
-        "title": "Area Chart with Rectangular Brush",
-        "descripton": "In this example, we apply an `interval` selection to select subset of data in an area chart. The selected data is highlighted in gold by the second layer of an area mark that `filter`s its data by the `brush` selection."
-      },
-      {
-        "name": "interactive_paintbrush",
-        "title": "Paintbrush Highlight",
-        "png": true
-      },
-      {
-        "name": "selection_translate_scatterplot_drag",
-        "title": "Scatterplot Pan & Zoom"
-      },
-      {
-        "name": "selection_type_region",
-        "title": "Region (lasso) selection",
-        "description": "The plot below uses a region selection, which causes the chart to include an interactive brush."
-      },
-      {
-        "name": "selection_type_region_concat",
-        "title": "Customized region (lasso) selection",
-        "description": "The concatenated plot below uses a region selection, which causes the chart to include an interactive brush. The appearance can be customized."
-      },
-      {
-        "name": "interactive_query_widgets",
-        "title": "Query Widgets"
-      },
-      {
-        "name": "selection_layer_bar_month",
-        "title": "Interactive Average",
-        "description": "The plot below uses an interval selection, which causes the chart to include an interactive brush (shown in grey). The brush selection parameterizes the red guideline, which visualizes the average value within the selected interval."
-      },
-      {
-        "name": "interactive_line_hover",
-        "title": "Multi Series Line Chart with an Interactive Line Highlight",
-        "description": "The plot below uses argmax to position text labels at the end of line.  It also applies single selection to highlight a hovered line.  Note that we can hidden thick lines to make it easier to hover."
-      },
-      {
-        "name": "interactive_line_point_hover",
-        "title": "Multi Series Line Chart with an Interactive Point Highlight"
-      },
-      {
-        "name": "interactive_multi_line_label",
-        "title": "Multi Series Line Chart with Labels",
-        "description": "The plot displays labels for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9).",
-        "png": true
-      },
-      {
-        "name": "interactive_multi_line_pivot_tooltip",
-        "title": "Multi Series Line Chart with Tooltip",
-        "description": "The plot displays labels for all stock prices of the hovered time. This example uses a pivot transform to compute the data for the tooltip.",
-        "png": true
-      },
-      {
-        "name": "interactive_multi_line_tooltip",
-        "title": "Multi Series Line Chart with Tooltip",
-        "description": "This plot requires the data to have different series in different fields.  See [#1274](https://github.com/vega/vega-lite/issues/1274) and [#1552](https://github.com/vega/vega-lite/issues/1552) for relevant future syntax improvements.",
-        "png": true
-      },
-      {
-        "name": "isotype_grid",
-        "title": "Isotype Grid",
-        "description": "Inspired by this [D3 example by Alan Smith](http://bl.ocks.org/alansmithy/d832fc03f6e6a91e99f4). Drag region to select. This example was created by @jwoLondon.",
-        "png": true
-      },
-      {
-        "name": "brush_table",
-        "title": "Brushing Scatter Plot to show data on a table"
-      },
-      {
-        "name": "selection_heatmap",
-        "title": "Selectable Heatmap"
-      },
-      {
-        "name": "bar_count_minimap",
-        "title": "Bar Chart with a Minimap"
-      },
-      {
-        "name": "interactive_index_chart",
-        "title": "Interactive Index Chart"
-      },
-      {
-        "name": "interactive_bin_extent",
-        "title": "Focus + Context - Smooth Histogram Zooming"
-      },
-      {
-        "name": "dynamic_color_legend",
-        "title": "Dynamic Color Legend"
-      },
-      {
-        "name": "param_search_input",
-        "description": "Search to highlight the relevant car models. Regexes are supported so you can type e.g. `mazda|ford`",
-        "title": "Search Input"
-      }
-    ],
-    "Interactive Multi-View Displays": [
-      {
-        "name": "interactive_overview_detail",
-        "title": "Overview and Detail"
-      },
-      {
-        "name": "interactive_layered_crossfilter",
-        "title": "Crossfilter"
-      },
-      {
-        "name": "interactive_splom",
-        "png": true,
-        "title": "Interactive Scatterplot Matrix"
-      },
-      {
-        "name": "interactive_concat_layer",
-        "title": "Interactive Dashboard with Cross Highlight"
-      },
-      {
-        "name": "interactive_seattle_weather",
-        "title": "Seattle Weather Exploration",
-        "description": "This graph shows an interactive view of Seattle's weather, including maximum temperature, amount of precipitation, and type of weather. By clicking and dragging on the scatter plot, you can see the proportion of days in that range that have sun, rain, fog, snow, etc. Created by @jakevdp.",
-        "png": true
-      },
-      {
-        "name": "airport_connections",
-        "png": true,
-        "title": "Connections among Major U.S. Airports."
-      },
-      {
-        "name": "interactive_global_development",
-        "title": "An interactive scatter plot of global health statistics by country and year.",
-        "description": "Similar to the Vega version at https://vega.github.io/vega/examples/global-development/.",
-        "png": true
-      }
-    ]
-  }
+    }
+  ],
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json"
 }
