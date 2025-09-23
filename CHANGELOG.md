@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.4.1](https://github.com/vega/vega-lite/compare/v6.4.0...v6.4.1) (2025-09-23)
+
+
+### Bug Fixes
+
+* do not apply the color domain order for the unstacked ungrouped chart ([#9687](https://github.com/vega/vega-lite/issues/9687)) ([921fdf7](https://github.com/vega/vega-lite/commit/921fdf726789ffd8607750e7de00ded0d3756d4f))
+
 # [6.4.0](https://github.com/vega/vega-lite/compare/v6.3.1...v6.4.0) (2025-09-17)
 
 
