@@ -100,7 +100,7 @@
     "cheerio": "^1.1.2",
     "conventional-changelog-cli": "^5.0.0",
     "d3": "^7.9.0",
-    "del-cli": "^6.0.0",
+    "del-cli": "^7.0.0",
     "dotenv": "^17.2.2",
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
