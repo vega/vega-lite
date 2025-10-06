@@ -233,21 +233,11 @@
         {
           "direction": "horizontal",
           "gradientLength": 120,
-          "title": "All Movies Count",
-          "fill": "color"
-        },
-        {
-          "title": "Selected Category Count",
-          "size": "size",
+          "title": "All Movies Count, Selected Category Count",
+          "fill": "color",
           "symbolType": "circle",
-          "encode": {
-            "symbols": {
-              "update": {
-                "fill": {"value": "transparent"},
-                "stroke": {"value": "#666"}
-              }
-            }
-          }
+          "size": "size",
+          "encode": {"symbols": {"update": {"stroke": {"value": "#666"}}}}
         }
       ]
     },
