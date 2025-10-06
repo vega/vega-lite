@@ -4,7 +4,7 @@ import {LEGEND_SCALE_CHANNELS} from '../../legend.js';
 import {keys, replaceAll, stringify, vals} from '../../util.js';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema.js';
 import {isUnitModel, Model} from '../model.js';
-import {assembleDomain, getFieldFromDomain} from '../scale/domain.js';
+import {getFieldFromNonUnionDomains} from '../scale/domain.js';
 import {LegendComponent} from './component.js';
 import {mergeLegendComponent} from './parse.js';
 
@@ -43,11 +43,11 @@ function getFieldKeyForChannel(model: Model, channel: any): string | undefined {
     .map((child) => {
       const direct = getFieldKeyForChannel(child, channel);
       if (direct) return direct;
-      const owner = findModelWithLocalScale(child, channel as any);
-      if (owner) {
-        return getFieldFromDomain(assembleDomain(owner, channel as any));
-      }
-      return undefined;
+      const scales = (child as any).component?.scales;
+      const sc = scales ? (scales as any)[channel] : undefined;
+      if (!sc) return undefined;
+      const domains = sc.get('domains');
+      return getFieldFromNonUnionDomains(domains);
     })
     .filter((f): f is string => !!f);
 
@@ -59,11 +59,14 @@ function getFieldKeyForChannel(model: Model, channel: any): string | undefined {
     return undefined;
   }
 
-  // Fallback: infer from this model's assembled domain
+  // Fallback: infer from this model's local scale domains
   const owner = findModelWithLocalScale(model, channel as any);
   if (owner) {
-    const vgDomain = assembleDomain(owner, channel as any);
-    return getFieldFromDomain(vgDomain);
+    const scales = (owner as any).component?.scales;
+    const sc = scales ? (scales as any)[channel] : undefined;
+    if (sc) {
+      return getFieldFromNonUnionDomains(sc.get('domains'));
+    }
   }
   return undefined;
 }
@@ -73,10 +76,10 @@ export function assembleLegends(model: Model): VgLegend[] {
   const legendsByGroup: Record<string, LegendComponent[]> = {};
 
   for (const channel of keys(legendComponentIndex)) {
-    // 1) Prefer grouping by the underlying field used by the encoding
+    //Grouping by the underlying field used by the encoding
     const fieldKey = getFieldKeyForChannel(model, channel);
 
-    // 3) If we still cannot determine the field, fall back to the old domain-hash grouping
+    //If we still cannot determine the field, fall back to the old domain-hash grouping
     let groupKey: string;
     if (fieldKey) {
       groupKey = `field:${fieldKey}`;
