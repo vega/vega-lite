@@ -329,9 +329,9 @@ function parseSingleChannelDomain(
           sort:
             sort === true || !isObject(sort)
               ? {
-                field: model.vgField(channel, {}),
-                op: 'min',
-              }
+                  field: model.vgField(channel, {}),
+                  op: 'min',
+                }
               : sort,
         },
       ]);
