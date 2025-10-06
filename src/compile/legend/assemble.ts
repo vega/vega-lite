@@ -1,6 +1,7 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
 import {Config} from '../../config.js';
 import {LEGEND_SCALE_CHANNELS} from '../../legend.js';
+import {hasDiscreteDomain} from '../../scale.js';
 import {keys, replaceAll, stringify, vals} from '../../util.js';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema.js';
 import {isUnitModel, Model} from '../model.js';
@@ -71,9 +72,22 @@ function getFieldKeyForChannel(model: Model, channel: any): string | undefined {
   return undefined;
 }
 
+type LegendEntry = {channel: any; cmpt: LegendComponent};
+
+function legendsAreMergeCompatible(model: Model, channelA: any, channelB: any): boolean {
+  if (channelA === channelB) return true;
+  const typeA = model.getScaleType(channelA as any);
+  const typeB = model.getScaleType(channelB as any);
+  if (!typeA || !typeB) return false;
+  // Check discrete/continuous compatibility
+  const aIsDiscrete = hasDiscreteDomain(typeA);
+  const bIsDiscrete = hasDiscreteDomain(typeB);
+  return aIsDiscrete === bIsDiscrete;
+}
+
 export function assembleLegends(model: Model): VgLegend[] {
   const legendComponentIndex = model.component.legends;
-  const legendsByGroup: Record<string, LegendComponent[]> = {};
+  const legendsByGroup: Record<string, LegendEntry[]> = {};
 
   for (const channel of keys(legendComponentIndex)) {
     //Grouping by the underlying field used by the encoding
@@ -94,27 +108,30 @@ export function assembleLegends(model: Model): VgLegend[] {
     }
 
     if (!legendsByGroup[groupKey]) {
-      legendsByGroup[groupKey] = [legendComponentIndex[channel].clone()];
+      legendsByGroup[groupKey] = [{channel, cmpt: legendComponentIndex[channel].clone()}];
       continue;
     }
 
     // Within the same field group, attempt to merge legends. If merge fails, keep separate.
     let mergedIntoExisting = false;
     for (const existing of legendsByGroup[groupKey]) {
-      const merged = mergeLegendComponent(existing, legendComponentIndex[channel]);
+      if (!legendsAreMergeCompatible(model, existing.channel, channel)) {
+        continue;
+      }
+      const merged = mergeLegendComponent(existing.cmpt, legendComponentIndex[channel]);
       if (merged) {
         mergedIntoExisting = true;
         break;
       }
     }
     if (!mergedIntoExisting) {
-      legendsByGroup[groupKey].push(legendComponentIndex[channel].clone());
+      legendsByGroup[groupKey].push({channel, cmpt: legendComponentIndex[channel].clone()});
     }
   }
 
   const legends = vals(legendsByGroup)
     .flat()
-    .map((l) => assembleLegend(l, model.config))
+    .map((entry) => assembleLegend(entry.cmpt, model.config))
     .filter((l) => l !== undefined);
 
   return legends;
