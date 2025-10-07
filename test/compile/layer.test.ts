@@ -140,6 +140,30 @@ describe('Layer', () => {
       expect(hasSizeLegend).toBe(true);
       expect(legends.length).toBeGreaterThan(1);
     });
+
+    it('disagrees on explicit fields across children so parent does not use a single explicit field', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            mark: 'point',
+            encoding: {
+              color: {field: 'Genre', type: 'nominal'},
+            },
+          },
+          {
+            mark: 'point',
+            encoding: {
+              color: {field: 'Origin', type: 'nominal'},
+            },
+          },
+        ],
+      });
+
+      model.parseScale();
+      model.parseLegends();
+      const legends = model.assembleLegends();
+      expect(legends.length).toBe(2);
+    });
   });
 
   describe('dual axis chart', () => {

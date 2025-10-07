@@ -175,6 +175,49 @@ describe('legend/assemble', () => {
     expect(legends[0].title).toBe('Origin');
   });
 
+  it('uses domain-based grouping when no field is specified (aggregate count)', () => {
+    const model = parseUnitModelWithScale({
+      data: {url: 'data/cars.json'},
+      mark: 'point',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        color: {aggregate: 'count', type: 'quantitative'},
+      },
+    });
+
+    model.parseLegends();
+    const legends = model.assembleLegends();
+    expect(legends).toHaveLength(1);
+    expect(legends[0].type).toBe('gradient');
+  });
+
+  it('does not merge legends with the same explicit field when scale types are incompatible (discrete vs continuous)', () => {
+    const model = parseUnitModelWithScale({
+      data: {
+        values: [
+          {x: 0, y: 0, v: 1},
+          {x: 1, y: 1, v: 2},
+        ]
+      },
+      mark: 'point',
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+        color: {field: 'v', type: 'nominal'}, // discrete
+        size: {field: 'v', type: 'quantitative'}, // continuous
+      },
+    });
+
+    model.parseLegends();
+    const legends = model.assembleLegends();
+    expect(legends.length).toBe(2);
+    const hasColorLegend = legends.some((l) => l.stroke === 'color' || l.fill === 'color');
+    const hasSizeLegend = legends.some((l) => l.size === 'size');
+    expect(hasColorLegend).toBe(true);
+    expect(hasSizeLegend).toBe(true);
+  });
+
   it('merges legend of the same field and favor symbol legend over gradient', () => {
     const model = parseUnitModelWithScale({
       data: {
