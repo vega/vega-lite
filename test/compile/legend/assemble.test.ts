@@ -198,7 +198,7 @@ describe('legend/assemble', () => {
         values: [
           {x: 0, y: 0, v: 1},
           {x: 1, y: 1, v: 2},
-        ]
+        ],
       },
       mark: 'point',
       encoding: {
