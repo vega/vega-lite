@@ -44,7 +44,7 @@ function getFieldKeyForChannel(model: Model, channel: any): FieldKeyInfo {
     }
   }
 
-  // Prefer explicit fields from children first
+  // Use explicit fields from children first
   const childExplicit = (model.children ?? [])
     .map((child) => getFieldKeyForChannel(child, channel))
     .filter((r) => r.explicit && !!r.field)

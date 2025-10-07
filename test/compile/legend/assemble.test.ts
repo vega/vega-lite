@@ -98,6 +98,34 @@ describe('legend/assemble', () => {
     expect(legends[0].stroke).toBe('color');
   });
 
+  it('merges color and strokeDash legends when they encode the same explicit field', () => {
+    const model = parseUnitModelWithScale({
+      $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
+      data: {
+        values: [
+          {x: 0, y: 0, kind: 'a'},
+          {x: 1, y: 1, kind: 'a'},
+          {x: 0, y: 1, kind: 'b'},
+        ],
+      },
+      mark: 'line',
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+        color: {field: 'kind', type: 'nominal'},
+        strokeDash: {field: 'kind', type: 'nominal'},
+      },
+    });
+
+    model.parseLegends();
+
+    const legends = model.assembleLegends();
+    expect(legends).toHaveLength(1);
+    // Combined legend should include both color and strokeDash encodings
+    expect(legends[0].stroke).toBe('color');
+    expect(legends[0].strokeDash).toBe('strokeDash');
+  });
+
   it('merges legend of the same field and favor symbol legend over gradient', () => {
     const model = parseUnitModelWithScale({
       data: {

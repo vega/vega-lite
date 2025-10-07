@@ -1,4 +1,5 @@
 import {parseLayerModel} from '../util.js';
+import {parseModelWithScale} from '../util.js';
 
 describe('Layer', () => {
   describe('parseScale', () => {
@@ -56,6 +57,59 @@ describe('Layer', () => {
       model.parseScale();
 
       expect(model.component.scales['x'].get('domains')).toEqual([[1, 2, 3]]);
+    });
+  });
+
+  describe('legend merging behavior across channels and fields', () => {
+    it('does not merge legends for aggregate count on different channels (color vs size)', () => {
+      const model = parseModelWithScale({
+        vconcat: [
+          {
+            layer: [
+              {
+                mark: 'rect',
+                encoding: {
+                  x: {bin: {maxbins: 10}, field: 'IMDB Rating'},
+                  y: {bin: {maxbins: 10}, field: 'Rotten Tomatoes Rating'},
+                  color: {aggregate: 'count', legend: {title: 'All Movies Count'}},
+                },
+              },
+              {
+                transform: [{filter: {param: 'pts'}}],
+                mark: 'point',
+                encoding: {
+                  x: {bin: {maxbins: 10}, field: 'IMDB Rating'},
+                  y: {bin: {maxbins: 10}, field: 'Rotten Tomatoes Rating'},
+                  size: {aggregate: 'count', legend: {title: 'Selected Category Count'}},
+                  color: {value: '#666'},
+                },
+              },
+            ],
+          },
+          {
+            width: 330,
+            height: 120,
+            mark: 'bar',
+            params: [{name: 'pts', select: {type: 'point', encodings: ['x']}}],
+            encoding: {
+              x: {field: 'Major Genre', axis: {labelAngle: -40}},
+              y: {aggregate: 'count'},
+              color: {condition: {param: 'pts', value: 'steelblue'}, value: 'grey'},
+            },
+          },
+        ],
+        resolve: {legend: {color: 'independent', size: 'independent'}},
+      });
+
+      model.parseLegends();
+
+      const layerChild: any = (model as any).children?.[0];
+      const legends = layerChild ? layerChild.assembleLegends() : [];
+      const hasColorLegend = legends.some((l: any) => l.fill === 'color' || l.stroke === 'color');
+      const hasSizeLegend = legends.some((l: any) => l.size === 'size');
+      expect(hasColorLegend).toBe(true);
+      expect(hasSizeLegend).toBe(true);
+      expect(legends.length).toBeGreaterThan(1);
     });
   });
 
