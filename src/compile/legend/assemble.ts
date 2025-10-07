@@ -34,30 +34,45 @@ function findModelWithLocalScale(model: Model, channel: any): Model | undefined 
   return undefined;
 }
 
-function getFieldKeyForChannel(model: Model, channel: any): string | undefined {
+type FieldKeyInfo = {field?: string; explicit: boolean};
+
+function getFieldKeyForChannel(model: Model, channel: any): FieldKeyInfo {
   if (isUnitModel(model)) {
-    return model.fieldDef(channel as any)?.field;
+    const fd = model.fieldDef(channel as any);
+    if (fd?.field) {
+      return {field: fd.field, explicit: true};
+    }
   }
 
-  // Try to infer from children; only use if all non-empty child results agree
-  const childFields = (model.children ?? [])
+  // Prefer explicit fields from children first
+  const childExplicit = (model.children ?? [])
+    .map((child) => getFieldKeyForChannel(child, channel))
+    .filter((r) => r.explicit && !!r.field)
+    .map((r) => r.field as string);
+
+  if (childExplicit.length > 0) {
+    const unique = Array.from(new Set(childExplicit));
+    if (unique.length === 1) {
+      return {field: unique[0], explicit: true};
+    }
+    return {field: undefined, explicit: false};
+  }
+
+  // Otherwise, attempt to infer from children's local scale domains quietly
+  const childDomainFields = (model.children ?? [])
     .map((child) => {
-      const direct = getFieldKeyForChannel(child, channel);
-      if (direct) return direct;
       const scales = (child as any).component?.scales;
       const sc = scales ? (scales as any)[channel] : undefined;
       if (!sc) return undefined;
-      const domains = sc.get('domains');
-      return getFieldFromNonUnionDomains(domains);
+      return getFieldFromNonUnionDomains(sc.get('domains'));
     })
     .filter((f): f is string => !!f);
 
-  if (childFields.length > 0) {
-    const unique = Array.from(new Set(childFields));
+  if (childDomainFields.length > 0) {
+    const unique = Array.from(new Set(childDomainFields));
     if (unique.length === 1) {
-      return unique[0];
+      return {field: unique[0], explicit: false};
     }
-    return undefined;
   }
 
   // Fallback: infer from this model's local scale domains
@@ -66,10 +81,11 @@ function getFieldKeyForChannel(model: Model, channel: any): string | undefined {
     const scales = (owner as any).component?.scales;
     const sc = scales ? (scales as any)[channel] : undefined;
     if (sc) {
-      return getFieldFromNonUnionDomains(sc.get('domains'));
+      const f = getFieldFromNonUnionDomains(sc.get('domains'));
+      if (f) return {field: f, explicit: false};
     }
   }
-  return undefined;
+  return {field: undefined, explicit: false};
 }
 
 type LegendEntry = {channel: any; cmpt: LegendComponent};
@@ -91,17 +107,18 @@ export function assembleLegends(model: Model): VgLegend[] {
 
   for (const channel of keys(legendComponentIndex)) {
     //Grouping by the underlying field used by the encoding
-    const fieldKey = getFieldKeyForChannel(model, channel);
+    const {field: fieldKey, explicit: fieldExplicit} = getFieldKeyForChannel(model, channel);
 
     //If we still cannot determine the field, fall back to the old domain-hash grouping
+    //Include channel only when we don't have a field, or when the field is inferred (to avoid cross-channel merges on derived fields)
     let groupKey: string;
     if (fieldKey) {
-      groupKey = `field:${fieldKey}`;
+      groupKey = fieldExplicit ? `field:${fieldKey}` : `field:${fieldKey}:${channel}`;
     } else {
       const scaleComponent = model.getScaleComponent(channel);
       if (scaleComponent) {
         const domainHash = stringify(scaleComponent.get('domains'));
-        groupKey = `domain:${domainHash}`;
+        groupKey = `domain:${domainHash}:${channel}`;
       } else {
         groupKey = `noscale:${String(channel)}`;
       }
