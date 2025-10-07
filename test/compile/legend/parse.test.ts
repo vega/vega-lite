@@ -201,10 +201,12 @@ describe('compile/legend', () => {
   describe('legend/parse merging decisions', () => {
     it('keeps legends separate when fields differ', () => {
       const model = parseUnitModelWithScale({
-        data: {values: [
-          {x: 0, y: 0, a: 'A', b: 'X'},
-          {x: 1, y: 1, a: 'B', b: 'Y'},
-        ]},
+        data: {
+          values: [
+            {x: 0, y: 0, a: 'A', b: 'X'},
+            {x: 1, y: 1, a: 'B', b: 'Y'},
+          ],
+        },
         mark: 'point',
         encoding: {
           x: {field: 'x', type: 'quantitative'},
