@@ -134,7 +134,7 @@ describe('legend/assemble', () => {
               {x: 0, y: 0, kind: 'a'},
               {x: 1, y: 1, kind: 'a'},
               {x: 0, y: 1, kind: 'b'},
-            ]
+            ],
           },
           mark: 'line',
           encoding: {
