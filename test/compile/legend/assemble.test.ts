@@ -1,4 +1,4 @@
-import {parseUnitModelWithScale} from '../../util.js';
+import {parseLayerModel, parseUnitModelWithScale} from '../../util.js';
 
 describe('legend/assemble', () => {
   it('correctly applies labelExpr.', () => {
@@ -121,9 +121,58 @@ describe('legend/assemble', () => {
 
     const legends = model.assembleLegends();
     expect(legends).toHaveLength(1);
-    // Combined legend should include both color and strokeDash encodings
     expect(legends[0].stroke).toBe('color');
     expect(legends[0].strokeDash).toBe('strokeDash');
+  });
+
+  it('merges legends at layer parent using children explicit field across channels', () => {
+    const layerModel = parseLayerModel({
+      layer: [
+        {
+          data: {
+            values: [
+              {x: 0, y: 0, kind: 'a'},
+              {x: 1, y: 1, kind: 'a'},
+              {x: 0, y: 1, kind: 'b'},
+            ]
+          },
+          mark: 'line',
+          encoding: {
+            x: {field: 'x', type: 'quantitative'},
+            y: {field: 'y', type: 'quantitative'},
+            color: {field: 'kind', type: 'nominal'},
+            strokeDash: {field: 'kind', type: 'nominal'},
+          },
+        },
+      ],
+    });
+
+    layerModel.parseScale();
+    layerModel.parseLegends();
+
+    const legends = layerModel.assembleLegends();
+    expect(legends).toHaveLength(1);
+    expect(legends[0].stroke).toBe('color');
+    expect(legends[0].strokeDash).toBe('strokeDash');
+  });
+
+  it('falls back to noscale grouping key when scale component is missing', () => {
+    const model = parseUnitModelWithScale({
+      data: {url: 'data/cars.json'},
+      mark: 'point',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        color: {field: 'Origin', type: 'nominal'},
+      },
+    });
+    model.parseLegends();
+
+    (model as any).component.scales['color'] = undefined;
+
+    const legends = model.assembleLegends();
+    expect(legends).toHaveLength(1);
+    expect(legends[0].title).toBe('Origin');
   });
 
   it('merges legend of the same field and favor symbol legend over gradient', () => {

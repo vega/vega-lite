@@ -61,6 +61,35 @@ describe('Layer', () => {
   });
 
   describe('legend merging behavior across channels and fields', () => {
+    it('uses explicit fields from children to create a single legend across channels', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            data: {
+              values: [
+                {x: 0, y: 0, kind: 'a'},
+                {x: 1, y: 1, kind: 'a'},
+                {x: 0, y: 1, kind: 'b'},
+              ]
+            },
+            mark: 'line',
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              y: {field: 'y', type: 'quantitative'},
+              color: {field: 'kind', type: 'nominal'},
+              strokeDash: {field: 'kind', type: 'nominal'},
+            },
+          },
+        ],
+      });
+
+      model.parseScale();
+      model.parseLegends();
+      const legends = model.assembleLegends();
+      expect(legends).toHaveLength(1);
+      expect(legends[0].strokeDash).toBe('strokeDash');
+      expect(legends[0].stroke).toBe('color');
+    });
     it('does not merge legends for aggregate count on different channels (color vs size)', () => {
       const model = parseModelWithScale({
         vconcat: [
