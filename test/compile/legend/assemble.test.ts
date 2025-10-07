@@ -189,7 +189,9 @@ describe('legend/assemble', () => {
     model.parseLegends();
     const legends = model.assembleLegends();
     expect(legends).toHaveLength(1);
-    expect(legends[0].type).toBe('gradient');
+
+    expect(legends[0].encode?.symbols).toBeUndefined();
+    expect(legends[0].stroke === 'color' || legends[0].fill === 'color').toBe(true);
   });
 
   it('does not merge legends with the same explicit field when scale types are incompatible (discrete vs continuous)', () => {
