@@ -220,30 +220,3 @@ export function assembleLegend(legendCmpt: LegendComponent, config: Config) {
 
   return legend;
 }
-
-
-// {
-//   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-//   "data": {
-//     "values": [
-//       {"x": 0, "y": 0, "kind": "a"},
-//       {"x": 1, "y": 1, "kind": "b"},
-//       {"x": 2, "y": 0.5, "kind": "c"}
-//     ]
-//   },
-//   "mark": "point",
-//   "encoding": {
-//     "x": {"field": "x", "type": "quantitative"},
-//     "y": {"field": "y", "type": "quantitative"},
-//     "color": {
-//       "field": "kind",
-//       "type": "nominal",
-//       "scale": {"domain": ["a", "b"]}
-//     },
-//     "shape": {
-//       "field": "kind",
-//       "type": "nominal",
-//       "scale": {"domain": ["b", "c"]}
-//     }
-//   }
-// }
