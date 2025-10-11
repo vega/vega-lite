@@ -93,13 +93,13 @@ function extractDiscreteValuesFromDomain(domain: VgDomain): (string | number | b
 }
 
 /**
-* Compute the union of discrete values from the domains of two channels.
-*
-* @param model - The model to compute the union of discrete values for
-* @param channelA - The first channel to compute the union of discrete values for
-* @param channelB - The second channel to compute the union of discrete values for
-* @returns The union of discrete values
-*/
+ * Compute the union of discrete values from the domains of two channels.
+ *
+ * @param model - The model to compute the union of discrete values for
+ * @param channelA - The first channel to compute the union of discrete values for
+ * @param channelB - The second channel to compute the union of discrete values for
+ * @returns The union of discrete values
+ */
 function computeUnionDiscreteValues(
   model: Model,
   channelA: ScaleChannel,
@@ -120,11 +120,11 @@ function computeUnionDiscreteValues(
 }
 
 /**
-* Assemble legends for a model. We group legends by the underlying field used by the encoding.
-*
-* @param model - The model to assemble legends for
-* @returns The assembled legends
-*/
+ * Assemble legends for a model. We group legends by the underlying field used by the encoding.
+ *
+ * @param model - The model to assemble legends for
+ * @returns The assembled legends
+ */
 export function assembleLegends(model: Model): VgLegend[] {
   const legendComponentIndex = model.component.legends;
   const legendsByGroup: Record<string, LegendEntry[]> = {};
