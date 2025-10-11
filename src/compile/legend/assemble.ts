@@ -2,12 +2,14 @@ import {Legend as VgLegend, LegendEncode} from 'vega';
 import {Config} from '../../config.js';
 import {LEGEND_SCALE_CHANNELS} from '../../legend.js';
 import {hasDiscreteDomain} from '../../scale.js';
-import {keys, replaceAll, stringify, vals} from '../../util.js';
-import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema.js';
+import {keys, replaceAll, vals} from '../../util.js';
+import {isDataRefUnionedDomain, isSignalRef, VgDomain, VgEncodeChannel, VgValueRef} from '../../vega.schema.js';
 import {isUnitModel, Model} from '../model.js';
-import {getFieldFromNonUnionDomains} from '../scale/domain.js';
+import * as util from '../../util.js';
 import {LegendComponent} from './component.js';
 import {mergeLegendComponent} from './parse.js';
+import {ScaleChannel} from '../../channel.js';
+import {assembleDomain} from '../scale/domain.js';
 
 function setLegendEncode(
   legend: VgLegend,
@@ -22,106 +24,119 @@ function setLegendEncode(
   legend.encode[part].update[vgProp] = vgRef;
 }
 
-function findModelWithLocalScale(model: Model, channel: any): Model | undefined {
-  let m: Model = model;
-  while (m) {
-    const scales = (m as any).component?.scales;
-    if (scales && (scales as any)[channel]) {
-      return m;
+/**
+ * Determines the underlying field name for a given scale channel within a model hierarchy.
+ *
+ *
+ * @param model - The model to search for the field definition
+ * @param channel - The scale channel (e.g., 'color', 'size', 'shape') to find the field for
+ * @returns The field name if found; otherwise undefined
+ */
+function getFieldKeyForChannel(model: Model, channel: ScaleChannel): string | undefined {
+  if (isUnitModel(model)) {
+    const fd = model.fieldDef(channel);
+    if (fd?.field) {
+      return fd.field;
     }
-    m = (m as any).parent;
   }
+  // Use explicit fields from children
+  const childFields = (model.children ?? [])
+    .map((child) => getFieldKeyForChannel(child, channel))
+    .filter((f): f is string => !!f);
+
+  if (childFields.length > 0) {
+    const unique = util.unique(childFields, (x) => x);
+    if (unique.length === 1) {
+      return unique[0];
+    }
+    return undefined;
+  }
+
   return undefined;
 }
 
-type FieldKeyInfo = {field?: string; explicit: boolean};
+type LegendEntry = {channel: ScaleChannel; cmpt: LegendComponent};
 
-function getFieldKeyForChannel(model: Model, channel: any): FieldKeyInfo {
-  if (isUnitModel(model)) {
-    const fd = model.fieldDef(channel as any);
-    if (fd?.field) {
-      return {field: fd.field, explicit: true};
-    }
-  }
-
-  // Use explicit fields from children first
-  const childExplicit = (model.children ?? [])
-    .map((child) => getFieldKeyForChannel(child, channel))
-    .filter((r) => r.explicit && !!r.field)
-    .map((r) => r.field as string);
-
-  if (childExplicit.length > 0) {
-    const unique = Array.from(new Set(childExplicit));
-    if (unique.length === 1) {
-      return {field: unique[0], explicit: true};
-    }
-    return {field: undefined, explicit: false};
-  }
-
-  // Otherwise, attempt to infer from children's local scale domains quietly
-  const childDomainFields = (model.children ?? [])
-    .map((child) => {
-      const scales = (child as any).component?.scales;
-      const sc = scales ? (scales as any)[channel] : undefined;
-      if (!sc) return undefined;
-      return getFieldFromNonUnionDomains(sc.get('domains'));
-    })
-    .filter((f): f is string => !!f);
-
-  if (childDomainFields.length > 0) {
-    const unique = Array.from(new Set(childDomainFields));
-    if (unique.length === 1) {
-      return {field: unique[0], explicit: false};
-    }
-  }
-
-  // Fallback: infer from this model's local scale domains
-  const owner = findModelWithLocalScale(model, channel as any);
-  if (owner) {
-    const scales = (owner as any).component?.scales;
-    const sc = scales ? (scales as any)[channel] : undefined;
-    if (sc) {
-      const f = getFieldFromNonUnionDomains(sc.get('domains'));
-      if (f) return {field: f, explicit: false};
-    }
-  }
-  return {field: undefined, explicit: false};
-}
-
-type LegendEntry = {channel: any; cmpt: LegendComponent};
-
-function legendsAreMergeCompatible(model: Model, channelA: any, channelB: any): boolean {
+function legendsAreMergeCompatible(model: Model, channelA: ScaleChannel, channelB: ScaleChannel): boolean {
   if (channelA === channelB) return true;
-  const typeA = model.getScaleType(channelA as any);
-  const typeB = model.getScaleType(channelB as any);
+  const typeA = model.getScaleType(channelA);
+  const typeB = model.getScaleType(channelB);
   if (!typeA || !typeB) return false;
-  // Check discrete/continuous compatibility
+  // Only require discrete/continuous compatibility here. Domain handling is done later.
   const aIsDiscrete = hasDiscreteDomain(typeA);
   const bIsDiscrete = hasDiscreteDomain(typeB);
   return aIsDiscrete === bIsDiscrete;
 }
 
+function isPrimitive(v: unknown): v is string | number | boolean {
+  return typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
+}
+
+function extractDiscreteValuesFromDomain(domain: VgDomain): (string | number | boolean)[] | null {
+  if (Array.isArray(domain)) {
+    const primitives = domain.filter(isPrimitive) as (string | number | boolean)[];
+    return primitives.length > 0 ? primitives : null;
+  }
+
+  if (isDataRefUnionedDomain(domain)) {
+    const values: (string | number | boolean)[] = [];
+    for (const f of domain.fields) {
+      if (Array.isArray(f)) {
+        values.push(...(f.filter(isPrimitive) as (string | number | boolean)[]));
+      }
+    }
+    if (values.length > 0) {
+      return util.unique(values, (x) => util.hash(x));
+    }
+  }
+  return null;
+}
+
+/**
+* Compute the union of discrete values from the domains of two channels.
+*
+* @param model - The model to compute the union of discrete values for
+* @param channelA - The first channel to compute the union of discrete values for
+* @param channelB - The second channel to compute the union of discrete values for
+* @returns The union of discrete values
+*/
+function computeUnionDiscreteValues(
+  model: Model,
+  channelA: ScaleChannel,
+  channelB: ScaleChannel,
+): (string | number | boolean)[] | null {
+  try {
+    const dA = assembleDomain(model, channelA);
+    const dB = assembleDomain(model, channelB);
+    const vA = extractDiscreteValuesFromDomain(dA);
+    const vB = extractDiscreteValuesFromDomain(dB);
+    if (vA && vB) {
+      return util.unique([...vA, ...vB], (x) => util.hash(x));
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+* Assemble legends for a model. We group legends by the underlying field used by the encoding.
+*
+* @param model - The model to assemble legends for
+* @returns The assembled legends
+*/
 export function assembleLegends(model: Model): VgLegend[] {
   const legendComponentIndex = model.component.legends;
   const legendsByGroup: Record<string, LegendEntry[]> = {};
 
   for (const channel of keys(legendComponentIndex)) {
-    //Grouping by the underlying field used by the encoding
-    const {field: fieldKey, explicit: fieldExplicit} = getFieldKeyForChannel(model, channel);
+    const fieldKey = getFieldKeyForChannel(model, channel);
 
-    //If we still cannot determine the field, fall back to the old domain-hash grouping
-    //Include channel only when we don't have a field, or when the field is inferred (to avoid cross-channel merges on derived fields)
     let groupKey: string;
     if (fieldKey) {
-      groupKey = fieldExplicit ? `field:${fieldKey}` : `field:${fieldKey}:${channel}`;
+      groupKey = `field:${fieldKey}`;
     } else {
-      const scaleComponent = model.getScaleComponent(channel);
-      if (scaleComponent) {
-        const domainHash = stringify(scaleComponent.get('domains'));
-        groupKey = `domain:${domainHash}:${channel}`;
-      } else {
-        groupKey = `noscale:${String(channel)}`;
-      }
+      groupKey = `channel:${String(channel)}`;
     }
 
     if (!legendsByGroup[groupKey]) {
@@ -129,7 +144,6 @@ export function assembleLegends(model: Model): VgLegend[] {
       continue;
     }
 
-    // Within the same field group, attempt to merge legends. If merge fails, keep separate.
     let mergedIntoExisting = false;
     for (const existing of legendsByGroup[groupKey]) {
       if (!legendsAreMergeCompatible(model, existing.channel, channel)) {
@@ -137,6 +151,17 @@ export function assembleLegends(model: Model): VgLegend[] {
       }
       const merged = mergeLegendComponent(existing.cmpt, legendComponentIndex[channel]);
       if (merged) {
+        const typeA = model.getScaleType(existing.channel);
+        const typeB = model.getScaleType(channel);
+        if (typeA && typeB && hasDiscreteDomain(typeA) && hasDiscreteDomain(typeB)) {
+          const unionValues = computeUnionDiscreteValues(model, existing.channel, channel);
+          if (unionValues && unionValues.length > 0) {
+            const valuesProp = existing.cmpt.getWithExplicit('values');
+            if (!valuesProp?.explicit) {
+              existing.cmpt.set('values', unionValues, false);
+            }
+          }
+        }
         mergedIntoExisting = true;
         break;
       }
@@ -195,3 +220,30 @@ export function assembleLegend(legendCmpt: LegendComponent, config: Config) {
 
   return legend;
 }
+
+
+// {
+//   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+//   "data": {
+//     "values": [
+//       {"x": 0, "y": 0, "kind": "a"},
+//       {"x": 1, "y": 1, "kind": "b"},
+//       {"x": 2, "y": 0.5, "kind": "c"}
+//     ]
+//   },
+//   "mark": "point",
+//   "encoding": {
+//     "x": {"field": "x", "type": "quantitative"},
+//     "y": {"field": "y", "type": "quantitative"},
+//     "color": {
+//       "field": "kind",
+//       "type": "nominal",
+//       "scale": {"domain": ["a", "b"]}
+//     },
+//     "shape": {
+//       "field": "kind",
+//       "type": "nominal",
+//       "scale": {"domain": ["b", "c"]}
+//     }
+//   }
+// }

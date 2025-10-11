@@ -329,9 +329,9 @@ function parseSingleChannelDomain(
           sort:
             sort === true || !isObject(sort)
               ? {
-                  field: model.vgField(channel, {}),
-                  op: 'min',
-                }
+                field: model.vgField(channel, {}),
+                op: 'min',
+              }
               : sort,
         },
       ]);
@@ -693,18 +693,6 @@ export function getFieldFromDomain(domain: VgDomain): string {
   }
 
   return undefined;
-}
-
-/**
- * Quietly attempt to extract a single field from a list of non-union domains without emitting warnings.
- * Returns the field if all data-ref domains agree on the same string field; otherwise undefined.
- */
-export function getFieldFromNonUnionDomains(domains: VgNonUnionDomain[]): string | undefined {
-  const fields = domains
-    .map((d) => (isDataRefDomain(d) && isString(d.field) ? d.field : undefined))
-    .filter((f): f is string => !!f);
-  const unique = util.unique(fields, (x) => x);
-  return unique.length === 1 ? unique[0] : undefined;
 }
 
 export function assembleDomain(model: Model, channel: ScaleChannel) {
