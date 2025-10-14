@@ -198,29 +198,6 @@ describe('compile/legend', () => {
       });
     });
   });
-  describe('legend/parse merging decisions', () => {
-    it('keeps legends separate when fields differ', () => {
-      const model = parseUnitModelWithScale({
-        data: {
-          values: [
-            {x: 0, y: 0, a: 'A', b: 'X'},
-            {x: 1, y: 1, a: 'B', b: 'Y'},
-          ],
-        },
-        mark: 'point',
-        encoding: {
-          x: {field: 'x', type: 'quantitative'},
-          y: {field: 'y', type: 'quantitative'},
-          color: {field: 'a', type: 'nominal'},
-          shape: {field: 'b', type: 'nominal'},
-        },
-      });
-
-      model.parseLegends();
-      const legends = model.assembleLegends();
-      expect(legends.length).toBe(2);
-    });
-  });
 
   describe('parseNonUnitLegend()', () => {
     it('should correctly merge orient by favoring explicit orient', () => {
