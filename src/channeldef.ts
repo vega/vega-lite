@@ -1,5 +1,6 @@
 import {Gradient, ScaleType, SignalRef, Text, TimeFormatSpecifier} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
+import {isPrimitive} from './util.js';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate.js';
 import {Axis} from './axis.js';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin.js';
@@ -1073,7 +1074,7 @@ export function initChannelDef(
   config: Config,
   opt: {compositeMark?: boolean} = {},
 ): ChannelDef<string> {
-  if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
+  if (isPrimitive(channelDef)) {
     const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
     log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
     return {value: channelDef} as ValueDef<any>;

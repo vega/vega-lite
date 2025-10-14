@@ -2,7 +2,8 @@ import {Legend as VgLegend, LegendEncode} from 'vega';
 import {Config} from '../../config.js';
 import {LEGEND_SCALE_CHANNELS} from '../../legend.js';
 import {hasDiscreteDomain} from '../../scale.js';
-import {keys, replaceAll, vals} from '../../util.js';
+import {isArray} from 'vega-util';
+import {isPrimitive} from '../../util.js';
 import {isDataRefUnionedDomain, isSignalRef, VgDomain, VgEncodeChannel, VgValueRef} from '../../vega.schema.js';
 import {isUnitModel, Model} from '../model.js';
 import * as util from '../../util.js';
@@ -26,8 +27,6 @@ function setLegendEncode(
 
 /**
  * Determines the underlying field name for a given scale channel within a model hierarchy.
- *
- *
  * @param model - The model to search for the field definition
  * @param channel - The scale channel (e.g., 'color', 'size', 'shape') to find the field for
  * @returns The field name if found; otherwise undefined
@@ -68,25 +67,20 @@ function legendsAreMergeCompatible(model: Model, channelA: ScaleChannel, channel
   return aIsDiscrete === bIsDiscrete;
 }
 
-function isPrimitive(v: unknown): v is string | number | boolean {
-  return typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
+function getLegendGroupKey(fieldKey: string | undefined, channel: ScaleChannel): string {
+  return fieldKey ? `field:${fieldKey}` : `channel:${String(channel)}`;
 }
 
 function extractDiscreteValuesFromDomain(domain: VgDomain): (string | number | boolean)[] | null {
-  if (Array.isArray(domain)) {
-    const primitives = domain.filter(isPrimitive) as (string | number | boolean)[];
+  if (isArray(domain)) {
+    const primitives = domain.filter(isPrimitive);
     return primitives.length > 0 ? primitives : null;
   }
-
   if (isDataRefUnionedDomain(domain)) {
     const values: (string | number | boolean)[] = [];
-    for (const f of domain.fields) {
-      if (Array.isArray(f)) {
-        values.push(...(f.filter(isPrimitive) as (string | number | boolean)[]));
-      }
-    }
+    values.push(...domain.fields.flatMap((f) => (isArray(f) ? f.filter(isPrimitive) : [])));
     if (values.length > 0) {
-      return util.unique(values, (x) => util.hash(x));
+      return util.unique(values, util.hash);
     }
   }
   return null;
@@ -111,7 +105,7 @@ function computeUnionDiscreteValues(
     const vA = extractDiscreteValuesFromDomain(dA);
     const vB = extractDiscreteValuesFromDomain(dB);
     if (vA && vB) {
-      return util.unique([...vA, ...vB], (x) => util.hash(x));
+      return util.unique([...vA, ...vB], util.hash);
     }
     return null;
   } catch {
@@ -129,15 +123,10 @@ export function assembleLegends(model: Model): VgLegend[] {
   const legendComponentIndex = model.component.legends;
   const legendsByGroup: Record<string, LegendEntry[]> = {};
 
-  for (const channel of keys(legendComponentIndex)) {
+  for (const channel of util.keys(legendComponentIndex)) {
     const fieldKey = getFieldKeyForChannel(model, channel);
 
-    let groupKey: string;
-    if (fieldKey) {
-      groupKey = `field:${fieldKey}`;
-    } else {
-      groupKey = `channel:${String(channel)}`;
-    }
+    const groupKey = getLegendGroupKey(fieldKey, channel);
 
     if (!legendsByGroup[groupKey]) {
       legendsByGroup[groupKey] = [{channel, cmpt: legendComponentIndex[channel].clone()}];
@@ -171,7 +160,8 @@ export function assembleLegends(model: Model): VgLegend[] {
     }
   }
 
-  const legends = vals(legendsByGroup)
+  const legends = util
+    .vals(legendsByGroup)
     .flat()
     .map((entry) => assembleLegend(entry.cmpt, model.config))
     .filter((l) => l !== undefined);
@@ -213,7 +203,7 @@ export function assembleLegend(legendCmpt: LegendComponent, config: Config) {
   if (labelExpr !== undefined) {
     let expr = labelExpr;
     if (legend.encode?.labels?.update && isSignalRef(legend.encode.labels.update.text)) {
-      expr = replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
+      expr = util.replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
     }
     setLegendEncode(legend, 'labels', 'text', {signal: expr});
   }

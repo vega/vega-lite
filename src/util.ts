@@ -225,6 +225,12 @@ export function isBoolean(b: any): b is boolean {
 }
 
 /**
+ * Returns true if the value is a primitive type.
+ */
+export function isPrimitive(v: any): v is string | number | boolean {
+  return isString(v) || isNumber(v) || isBoolean(v);
+}
+/**
  * Convert a string into a valid variable name
  */
 export function varName(s: string): string {
