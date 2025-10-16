@@ -11,6 +11,7 @@ import {LegendComponent} from './component.js';
 import {mergeLegendComponent} from './parse.js';
 import {ScaleChannel} from '../../channel.js';
 import {assembleDomain} from '../scale/domain.js';
+import * as log from '../../log/index.js';
 
 function setLegendEncode(
   legend: VgLegend,
@@ -94,23 +95,53 @@ function extractDiscreteValuesFromDomain(domain: VgDomain): (string | number | b
  * @param channelB - The second channel to compute the union of discrete values for
  * @returns The union of discrete values
  */
-function computeUnionDiscreteValues(
+function getDiscreteValuesForChannel(model: Model, channel: ScaleChannel): (string | number | boolean)[] | null {
+  try {
+    const domain = assembleDomain(model, channel);
+    return extractDiscreteValuesFromDomain(domain);
+  } catch {
+    return null;
+  }
+}
+
+function unionDiscreteValuesForChannels(
   model: Model,
   channelA: ScaleChannel,
   channelB: ScaleChannel,
 ): (string | number | boolean)[] | null {
-  try {
-    const dA = assembleDomain(model, channelA);
-    const dB = assembleDomain(model, channelB);
-    const vA = extractDiscreteValuesFromDomain(dA);
-    const vB = extractDiscreteValuesFromDomain(dB);
-    if (vA && vB) {
-      return util.unique([...vA, ...vB], util.hash);
+  const vA = getDiscreteValuesForChannel(model, channelA);
+  const vB = getDiscreteValuesForChannel(model, channelB);
+  return vA && vB ? util.unique([...vA, ...vB], util.hash) : null;
+}
+
+function setImplicitLegendValues(
+  cmpt: LegendComponent,
+  values: (string | number | boolean)[] | null,
+  warnMessage?: string,
+) {
+  if (values && values.length > 0) {
+    const valuesProp = cmpt.getWithExplicit('values');
+    if (!valuesProp?.explicit) {
+      if (warnMessage) {
+        log.warn(warnMessage);
+      }
+      cmpt.set('values', values, false);
     }
-    return null;
-  } catch {
-    return null;
   }
+}
+
+function domainsExplicitAndEqual(model: Model, channelA: ScaleChannel, channelB: ScaleChannel): boolean {
+  const scA = model.getScaleComponent(channelA);
+  const scB = model.getScaleComponent(channelB);
+  if (!scA || !scB) return false;
+
+  const dA = scA.getWithExplicit('domains');
+  const dB = scB.getWithExplicit('domains');
+  if (!(dA?.explicit && dB?.explicit)) return false;
+
+  const assembledA = assembleDomain(model, channelA);
+  const assembledB = assembleDomain(model, channelB);
+  return util.hash(assembledA) === util.hash(assembledB);
 }
 
 /**
@@ -143,12 +174,15 @@ export function assembleLegends(model: Model): VgLegend[] {
         const typeA = model.getScaleType(existing.channel);
         const typeB = model.getScaleType(channel);
         if (typeA && typeB && hasDiscreteDomain(typeA) && hasDiscreteDomain(typeB)) {
-          const unionValues = computeUnionDiscreteValues(model, existing.channel, channel);
-          if (unionValues && unionValues.length > 0) {
-            const valuesProp = existing.cmpt.getWithExplicit('values');
-            if (!valuesProp?.explicit) {
-              existing.cmpt.set('values', unionValues, false);
-            }
+          if (domainsExplicitAndEqual(model, existing.channel, channel)) {
+            setImplicitLegendValues(existing.cmpt, getDiscreteValuesForChannel(model, existing.channel));
+          } else {
+            setImplicitLegendValues(
+              existing.cmpt,
+              unionDiscreteValuesForChannels(model, existing.channel, channel),
+              // Warn when unioning discrete legend values so that users are aware
+              log.message.legendValuesUnioned(existing.channel, channel),
+            );
           }
         }
         mergedIntoExisting = true;

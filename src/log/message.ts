@@ -365,6 +365,11 @@ export const FACETED_INDEPENDENT_SAME_FIELDS_DIFFERENT_SOURCES =
 export const FACETED_INDEPENDENT_SAME_SOURCE =
   'Detected faceted independent scales that union domain of multiple fields from the same data source. We will use the first field. The result view size may be incorrect.';
 
+// LEGEND
+export function legendValuesUnioned(channelA: Channel | ScaleChannel, channelB: Channel | ScaleChannel) {
+  return `Unioning discrete legend values from ${channelA} and ${channelB}.`;
+}
+
 // AXIS
 export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';
 

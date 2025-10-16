@@ -1,4 +1,5 @@
 import {parseLayerModel, parseUnitModelWithScale} from '../../util.js';
+import * as log from '../../../src/log/index.js';
 
 describe('legend/assemble', () => {
   it('correctly applies labelExpr.', () => {
@@ -188,10 +189,14 @@ describe('legend/assemble', () => {
       },
     });
 
-    model.parseLegends();
-    const legends = model.assembleLegends();
-    expect(legends).toHaveLength(1);
-    expect(legends[0].values).toEqual(['A', 'B', 'C']);
+    // Capture warning
+    log.wrap((localLogger: any) => {
+      model.parseLegends();
+      const legends = model.assembleLegends();
+      expect(localLogger.warns).toContain('Unioning discrete legend values from color and shape.');
+      expect(legends).toHaveLength(1);
+      expect(legends[0].values).toEqual(['A', 'B', 'C']);
+    })();
   });
 
   it('preserves explicit legend.values over unioned domains', () => {
