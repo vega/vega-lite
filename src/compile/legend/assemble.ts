@@ -45,7 +45,7 @@ function getFieldKeyForChannel(model: Model, channel: ScaleChannel): string | un
     .filter((f): f is string => !!f);
 
   if (childFields.length > 0) {
-    const unique = util.unique(childFields, (x) => x);
+    const unique = util.unique(childFields, util.hash);
     if (unique.length === 1) {
       return unique[0];
     }
