@@ -330,7 +330,7 @@ function parseSingleChannelDomain(
             sort === true || !isObject(sort)
               ? {
                   field: model.vgField(channel, {}),
-                  op: 'min', // min or max doesn't matter since we sort by the start of the bin range
+                  op: 'min',
                 }
               : sort,
         },

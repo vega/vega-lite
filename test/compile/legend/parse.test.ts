@@ -1,9 +1,9 @@
+import {parseLayerModel, parseUnitModelWithScale} from '../../util.js';
 import {COLOR, FILLOPACITY, OPACITY, SHAPE, SIZE, STROKEOPACITY, STROKEWIDTH} from '../../../src/channel.js';
 import {isFieldDef} from '../../../src/channeldef.js';
 import {parseLegend, parseLegendForChannel} from '../../../src/compile/legend/parse.js';
 import {NormalizedUnitSpec} from '../../../src/spec/index.js';
 import {GEOJSON} from '../../../src/type.js';
-import {parseLayerModel, parseUnitModelWithScale} from '../../util.js';
 
 describe('compile/legend', () => {
   describe('parseUnitLegend()', () => {
