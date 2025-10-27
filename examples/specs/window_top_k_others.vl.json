@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Top-K plot with \"others\" by Trevor Manz, adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
+  "description": "Top-K plot with \"others\" by Trevor Manz, adapted from https://observablehq.com/collection/@manzt/vega-vega-lite-examples.",
   "title": "Top Directors by Average Worldwide Gross",
   "data": {"url": "data/movies.json"},
   "mark": "bar",
