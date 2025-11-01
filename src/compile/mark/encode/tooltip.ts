@@ -178,7 +178,7 @@ function addLineBreaksToTooltip(
   if (isFieldDef(channelDef) && isDiscrete(channelDef.type) && !hasProperty(channelDef, 'format')) {
     const fieldString = `datum["${channelDef.field}"]`;
     return {
-      signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : ""+${fieldString}`,
+      signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : null`,
     };
   }
 

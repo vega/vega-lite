@@ -138,7 +138,7 @@ describe('compile/mark/encode/tooltip', () => {
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
         signal:
-          '{"Foobar": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : ""+datum["Foobar"]}',
+          '{"Foobar": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : null}',
       });
     });
     it('generates correct keys and values for channels with title', () => {
@@ -151,7 +151,7 @@ describe('compile/mark/encode/tooltip', () => {
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
         signal:
-          '{"baz": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : ""+datum["Foobar"]}',
+          '{"baz": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : null}',
       });
     });
 
@@ -165,7 +165,7 @@ describe('compile/mark/encode/tooltip', () => {
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
         signal:
-          '{"\\"baz\\"": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : ""+datum["Foobar"]}',
+          '{"\\"baz\\"": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : null}',
       });
     });
   });
