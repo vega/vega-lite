@@ -340,5 +340,22 @@ describe('compile/mark/encode/tooltip', () => {
         signal: `{"IMDB_Rating (binned)": !isValid(datum["bin_IMDB_rating"]) || !isFinite(+datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_IMDB_rating_end"], "")}`,
       });
     });
+
+    // Regression test for bug introduced in v6.4.0
+    // https://github.com/vega/vega-lite/issues/XXXX
+    it('should handle undefined values in discrete fields correctly (not convert to string "undefined")', () => {
+      const result = tooltipRefForEncoding(
+        {
+          category: {field: 'category', type: 'nominal'},
+          value: {field: 'value', type: 'quantitative'},
+        },
+        null,
+        defaultConfig,
+      );
+
+      // The bug: fallback ""+datum["field"] converts undefined to string "undefined"
+      // Expected behavior: undefined values should remain undefined or be null, not string "undefined"
+      expect(result.signal).not.toContain('""+datum');
+    });
   });
 });
