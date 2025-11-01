@@ -23,7 +23,7 @@ describe('compile/mark/encoding/aria', () => {
     expect(ariaMixins).toEqual({
       description: {
         signal:
-          '"category: " + (isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], \' \') : datum["category"] : ""+datum["category"]) + "; value: " + (format(datum["value"], ""))',
+          '"category: " + (isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], \' \') : datum["category"] : "") + "; value: " + (format(datum["value"], ""))',
       },
       ariaRoleDescription: {
         value: 'bar',
@@ -126,7 +126,7 @@ describe('compile/mark/encoding/aria', () => {
       },
       description: {
         signal:
-          '"category: " + (isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], \' \') : datum["category"] : ""+datum["category"])',
+          '"category: " + (isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], \' \') : datum["category"] : "")',
       },
     });
   });

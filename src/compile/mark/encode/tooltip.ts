@@ -176,9 +176,9 @@ function addLineBreaksToTooltip(
   expr: 'datum' | 'datum.datum' = 'datum',
 ): VgValueRef {
   if (isFieldDef(channelDef) && isDiscrete(channelDef.type) && !hasProperty(channelDef, 'format')) {
-    const fieldString = `datum["${channelDef.field}"]`;
+    const fieldString = `${expr}["${channelDef.field}"]`;
     return {
-      signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : null`,
+      signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : ""`,
     };
   }
 
