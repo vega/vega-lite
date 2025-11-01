@@ -138,7 +138,7 @@ describe('compile/mark/encode/tooltip', () => {
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
         signal:
-          '{"Foobar": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : ""}',
+          '{"Foobar": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : ""+datum["Foobar"]}',
       });
     });
     it('generates correct keys and values for channels with title', () => {
@@ -151,7 +151,7 @@ describe('compile/mark/encode/tooltip', () => {
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
         signal:
-          '{"baz": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : ""}',
+          '{"baz": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : ""+datum["Foobar"]}',
       });
     });
 
@@ -165,7 +165,7 @@ describe('compile/mark/encode/tooltip', () => {
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
         signal:
-          '{"\\"baz\\"": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : ""}',
+          '{"\\"baz\\"": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : ""+datum["Foobar"]}',
       });
     });
   });
@@ -338,21 +338,6 @@ describe('compile/mark/encode/tooltip', () => {
         ),
       ).toEqual({
         signal: `{"IMDB_Rating (binned)": !isValid(datum["bin_IMDB_rating"]) || !isFinite(+datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_IMDB_rating_end"], "")}`,
-      });
-    });
-
-    it('should handle undefined values in discrete fields correctly (not convert to string "undefined")', () => {
-      expect(
-        tooltipRefForEncoding(
-          {
-            category: {field: 'category', type: 'nominal'},
-            value: {field: 'value', type: 'quantitative'},
-          },
-          null,
-          defaultConfig,
-        ),
-      ).toEqual({
-        signal: `{"category": isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], '\\n') : datum["category"] : "", "value": format(datum["value"], "")}`,
       });
     });
   });

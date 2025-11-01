@@ -1,6 +1,6 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned} from '../../../bin.js';
-import {getMainRangeChannel, isXorY, Channel, THETA, RADIUS} from '../../../channel.js';
+import {Channel, getMainRangeChannel, isXorY, RADIUS, THETA} from '../../../channel.js';
 import {
   defaultTitle,
   getFieldDef,
@@ -15,6 +15,7 @@ import {
 import {Config} from '../../../config.js';
 import {Encoding, forEach} from '../../../encoding.js';
 import {StackProperties} from '../../../stack.js';
+import {isDiscrete} from '../../../type.js';
 import {Dict, entries, hasProperty} from '../../../util.js';
 import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
 import {getMarkPropOrConfig} from '../../common.js';
@@ -22,7 +23,6 @@ import {binFormatExpression, formatSignalRef} from '../../format.js';
 import {UnitModel} from '../../unit.js';
 import {wrapCondition} from './conditional.js';
 import {textRef} from './text.js';
-import {isDiscrete} from '../../../type.js';
 
 export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config, stack} = model;
@@ -177,8 +177,9 @@ function addLineBreaksToTooltip(
 ): VgValueRef {
   if (isFieldDef(channelDef) && isDiscrete(channelDef.type) && !hasProperty(channelDef, 'format')) {
     const fieldString = `${expr}["${channelDef.field}"]`;
+
     return {
-      signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : ""`,
+      signal: `isValid(${fieldString}) ? isArray(${fieldString}) ? join(${fieldString}, '\\n') : ${fieldString} : ""+${fieldString}`,
     };
   }
 
