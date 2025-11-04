@@ -146,5 +146,23 @@ function defaultType(
   }
 
   /* istanbul ignore next: should never reach this */
-  throw new Error(log.message.invalidFieldType(fieldDef.type));
+
+
+  throw new Error(
+    log.message.invalidFieldType(
+      (def as any)?.type ?? 'undefined',
+      {
+        field: (def as any)?.field ?? '(unknown)',
+        channel: (def as any)?.channel ?? '(unknown)'
+      }
+    )
+  );
+
+
+
+
+
+
+
+
 }

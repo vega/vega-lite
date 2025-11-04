@@ -134,8 +134,7 @@ export function selectionAsScaleDomainWrongEncodings(
   field: string,
 ) {
   return (
-    `${
-      !encodings.length ? 'No ' : 'Multiple '
+    `${!encodings.length ? 'No ' : 'Multiple '
     }matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.param)}. ` +
     `Using "field": ${stringValue(field)}.`
   );
@@ -194,9 +193,24 @@ export function primitiveChannelDef(
   return `Channel ${channel} is a ${type}. Converted to {value: ${stringify(value)}}.`;
 }
 
-export function invalidFieldType(type: Type) {
-  return `Invalid field type "${type}".`;
+export function invalidFieldType(
+  type: unknown,
+  opts?: {field?: string; channel?: string}
+) {
+  const field = opts?.field;
+  const channel = opts?.channel;
+
+  const prefix = `Invalid field type "${String(type)}"`;
+  const context =
+    field || channel
+      ? ` for ${field ? `field "${field}"` : ''}${field && channel ? ' on ' : ''}${channel ? `channel "${channel}"` : ''
+      }.`
+      : '.';
+
+  return prefix + context;
 }
+
+
 
 export function invalidFieldTypeForCountAggregate(type: Type, aggregate: Aggregate | string) {
   return `Invalid field type "${type}" for aggregate: "${aggregate}", using "quantitative" instead.`;
@@ -211,9 +225,8 @@ export function missingFieldType(channel: Channel, newType: Type) {
 }
 export function droppingColor(type: 'encoding' | 'property', opt: {fill?: boolean; stroke?: boolean}) {
   const {fill, stroke} = opt;
-  return `Dropping color ${type} as the plot also has ${
-    fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'
-  }.`;
+  return `Dropping color ${type} as the plot also has ${fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'
+    }.`;
 }
 
 export function relativeBandSizeNotSupported(sizeChannel: 'width' | 'height') {
@@ -258,9 +271,8 @@ export function facetChannelDropped(channels: FacetChannel[]) {
 }
 
 export function discreteChannelCannotEncode(channel: Channel, type: Type) {
-  return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${
-    type === 'ordinal' ? 'order' : 'magnitude'
-  }.`;
+  return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${type === 'ordinal' ? 'order' : 'magnitude'
+    }.`;
 }
 
 // MARK
@@ -396,9 +408,8 @@ export function droppedDay(d: DateTime | DateTimeExpr) {
 }
 
 export function errorBarCenterAndExtentAreNotNeeded(center: ErrorBarCenter, extent: ErrorBarExtent) {
-  return `${extent ? 'extent ' : ''}${extent && center ? 'and ' : ''}${center ? 'center ' : ''}${
-    extent && center ? 'are ' : 'is '
-  }not needed when data are aggregated.`;
+  return `${extent ? 'extent ' : ''}${extent && center ? 'and ' : ''}${center ? 'center ' : ''}${extent && center ? 'are ' : 'is '
+    }not needed when data are aggregated.`;
 }
 
 export function errorBarCenterIsUsedWithWrongExtent(
