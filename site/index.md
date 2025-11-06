@@ -42,7 +42,7 @@ images:
   </span>
   <span class="lead-buttons">
   [Get started<br><small>Latest Version: {{ site.data.versions.vega-lite }}</small>]({{ site.baseurl }}/tutorials/getting_started.html)
-  [Try online](https://vega.github.io/editor/#/custom/vega-lite)
+  [Try online](https://vega.github.io/editor/#/examples/vega-lite/bar)
   </span>
 </span>
 
