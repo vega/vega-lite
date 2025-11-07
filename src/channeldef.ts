@@ -135,9 +135,9 @@ export type ValueDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V ext
    * A field definition or one or more value definition(s) with a parameter predicate.
    */
   condition?:
-    | Conditional<F>
-    | Conditional<ValueDef<V | ExprRef | SignalRef>>
-    | Conditional<ValueDef<V | ExprRef | SignalRef>>[];
+  | Conditional<F>
+  | Conditional<ValueDef<V | ExprRef | SignalRef>>
+  | Conditional<ValueDef<V | ExprRef | SignalRef>>[];
 };
 
 export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
@@ -390,8 +390,8 @@ export interface DatumDef<
   F extends Field = string,
   V extends PrimitiveValue | DateTime | ExprRef | SignalRef = PrimitiveValue | DateTime | ExprRef | SignalRef,
 > extends Partial<TypeMixins<Type>>,
-    BandMixins,
-    TitleMixins {
+  BandMixins,
+  TitleMixins {
   /**
    * A constant value in data domain.
    */
@@ -665,7 +665,7 @@ export function isOrderOnlyDef<F extends Field>(
 
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
 
-export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
+export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins { }
 
 export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];
@@ -879,7 +879,16 @@ export function isDiscrete(def: TypedFieldDef<Field> | DatumDef<any, any>) {
     case 'temporal':
       return false;
   }
-  throw new Error(log.message.invalidFieldType(def.type));
+  throw new Error(
+    log.message.invalidFieldType(
+      (def as any)?.type ?? 'undefined',
+      {field: (def as any)?.field, channel: (def as any)?.channel ?? 'unknown'}
+    ) + ' [from channeldef.ts]'
+  );
+
+
+
+
 }
 
 export function isDiscretizing(def: TypedFieldDef<Field> | DatumDef<any, any>) {
