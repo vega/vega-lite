@@ -83,6 +83,25 @@ describe('compile/mark/encode/tooltip', () => {
       expect(props.tooltip).toEqual({signal: 'datum.datum'});
     });
 
+    it('generates tooltip signal for discrete encodings without a format and reactiveGeom is true', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'circle',
+          tooltip: true,
+        },
+        encoding: {
+          color: {
+            field: 'Foobar',
+            type: 'nominal',
+          },
+        },
+      });
+      expect(tooltip(model, {reactiveGeom: true}).tooltip).toEqual({
+        signal:
+          '{"Foobar": isValid(datum.datum["Foobar"]) ? isArray(datum.datum["Foobar"]) ? join(datum.datum["Foobar"], \'\\n\') : datum.datum["Foobar"] : ""+datum.datum["Foobar"]}',
+      });
+    });
+
     it('priorizes tooltip field def', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: {content: 'data'}},
