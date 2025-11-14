@@ -1,0 +1,132 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Google's stock price over time.",
+  "width": 500,
+  "data": {"url": "data/stocks.csv"},
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"}
+      }
+    },
+    {
+      "layer": [
+        {
+          "mark": {"type": "text", "fontWeight": "bold", "outline": "white"},
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"},
+            "text": {"field": "price"}
+          },
+          "transform": [{"filter": "+datum.price === 286"}],
+          "name": "_fg_text_1r6c46l"
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontWeight": "bold",
+            "outline": "white",
+            "stroke": "white",
+            "strokeWidth": 2
+          },
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"},
+            "text": {"field": "price"}
+          },
+          "transform": [{"filter": "+datum.price === 286"}]
+        }
+      ]
+    },
+    {
+      "layer": [
+        {
+          "mark": {
+            "type": "text",
+            "color": "white",
+            "fontWeight": "bold",
+            "dy": -12,
+            "background": "green"
+          },
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"},
+            "text": {"field": "price"}
+          },
+          "transform": [{"filter": "+datum.price === 707"}],
+          "name": "_fg_text_r6pp7m"
+        },
+        {
+          "name": "_bg_text_r6pp7m",
+          "mark": {
+            "type": "rect",
+            "fill": "green",
+            "opacity": 1,
+            "cornerRadius": 0,
+            "padding": 2
+          }
+        }
+      ]
+    },
+    {
+      "layer": [
+        {
+          "mark": {
+            "type": "text",
+            "fontWeight": "bold",
+            "dy": -12,
+            "outline": {"color": "white", "strokeWidth": 4},
+            "background": {
+              "color": "red",
+              "opacity": 0.8,
+              "cornerRadius": 4,
+              "padding": {"left": 8, "top": 6, "right": 8, "bottom": 6}
+            }
+          },
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"},
+            "text": {"field": "price"}
+          },
+          "transform": [{"filter": "+datum.price === 292.96"}],
+          "name": "_fg_text_dgn70f"
+        },
+        {
+          "name": "_bg_text_dgn70f",
+          "mark": {
+            "type": "rect",
+            "fill": "red",
+            "opacity": 0.8,
+            "cornerRadius": 4,
+            "padding": {"left": 8, "top": 6, "right": 8, "bottom": 6}
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "fontWeight": "bold",
+            "dy": -12,
+            "outline": {"color": "white", "strokeWidth": 4},
+            "background": {
+              "color": "red",
+              "opacity": 0.8,
+              "cornerRadius": 4,
+              "padding": {"left": 8, "top": 6, "right": 8, "bottom": 6}
+            },
+            "stroke": "white",
+            "strokeWidth": 4
+          },
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"},
+            "text": {"field": "price"}
+          },
+          "transform": [{"filter": "+datum.price === 292.96"}]
+        }
+      ]
+    }
+  ],
+  "transform": [{"filter": "datum.symbol==='GOOG'"}]
+}
