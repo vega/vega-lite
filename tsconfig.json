@@ -16,7 +16,7 @@
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "ignoreDeprecations": "5.0",
     "noEmit": true,
-    "types": ["vitest/globals", "@vitest/browser/matchers", "@vitest/browser/providers/playwright", "node"],
+    "types": ["vitest/globals", "@vitest/browser/matchers", "node"],
     "skipLibCheck": true
   },
   "files": ["src/index.ts"],
