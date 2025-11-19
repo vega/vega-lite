@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "Top-K plot with \"others\" by Trevor Manz, adapted from https://observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example.",
+  "description": "Top-K plot with \"others\" by Trevor Manz, adapted from https://observablehq.com/collection/@manzt/vega-vega-lite-examples.",
   "background": "white",
   "padding": 5,
   "width": 300,
