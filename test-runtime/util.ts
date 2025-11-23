@@ -4,7 +4,7 @@ import {IntervalSelectionConfigWithoutType, SelectionResolution, SelectionType} 
 import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec/index.js';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
-export const selectionTypes: SelectionType[] = ['point', 'interval'];
+export const selectionTypes: SelectionType[] = ['point', 'interval', 'region'];
 export const compositeTypes = ['repeat', 'facet'] as const;
 export const resolutions: SelectionResolution[] = ['union', 'intersect'];
 
@@ -50,7 +50,8 @@ const UNIT_NAMES = {
 };
 
 export const hits = {
-  discrete: {
+  // For point.test.ts
+  point: {
     qq: [8, 19],
     qq_clear: [5, 16],
 
@@ -64,6 +65,7 @@ export const hits = {
     facet_clear: [3, 4, 8],
   },
 
+  // For interval.test.ts
   interval: {
     drag: [
       [5, 14],
@@ -98,6 +100,49 @@ export const hits = {
       [4, 10],
     ],
     facet_clear: [[3], [5], [7]],
+  },
+
+  // For region.test.ts
+  region: {
+    circle: [
+      {id: 14, count: 5},
+      {id: 3, count: 2},
+      {id: 6, count: 4},
+    ],
+    circle_clear: [{id: 14}],
+
+    polygon: [
+      {
+        id: 6,
+        coords: [
+          [-30, -30],
+          [-30, 30],
+          [30, 30],
+          [30, -30],
+        ],
+        count: 4,
+      },
+      {
+        id: 14,
+        coords: [
+          [-30, -30],
+          [-30, 30],
+          [-15, 15],
+          [-15, -15],
+          [15, -15],
+          [15, 30],
+          [30, 30],
+          [30, -30],
+        ],
+        count: 2,
+      },
+    ],
+
+    facet: [2, 4, 7],
+    facet_clear: [3, 5, 8],
+
+    repeat: [5, 10, 16],
+    repeat_clear: [13, 14, 2],
   },
 } as const;
 
@@ -262,13 +307,37 @@ export async function brush(view: View, key: BrushKeys, idx: number, parent?: st
   }
 }
 
-export async function pt(view: View, key: keyof typeof hits.discrete, idx: number, parent?: string) {
-  const h = hits.discrete[key][idx] as number;
+export async function pt(view: View, key: keyof typeof hits.point, idx: number, parent?: string) {
+  const h = hits.point[key][idx] as number;
   if (key.match('_clear')) {
     return await clear(view, h, parent);
   } else {
     return await _pt(view, h, parent);
   }
+}
+
+type RegionKeys = keyof typeof hits.region;
+
+export async function multiviewRegion(
+  view: View,
+  key: RegionKeys,
+  idx: number,
+  parent?: string,
+  targetBrush?: boolean,
+) {
+  const entry = hits.region[key][idx] as any;
+
+  if (key.includes('clear')) {
+    const id = typeof entry === 'number' ? entry : entry.id;
+    return await clearRegion(view, id, parent, !!targetBrush);
+  }
+
+  if (key.startsWith('polygon')) {
+    return await polygonRegion(view, entry.id, entry.coords, parent, targetBrush);
+  }
+
+  const id = typeof entry === 'number' ? entry : entry.id;
+  return await circleRegion(view, id, parent, targetBrush, {radius: 10});
 }
 
 export function fill<T>(val: T, len: number) {
@@ -321,6 +390,17 @@ export function pointerEvt(
   );
 }
 
+function purePointerEvt(
+  type: string,
+  target: Element | Window,
+  opts?: {clientX?: number; clientY?: number; deltaX?: number; deltaY?: number; deltaZ?: number; bubbles?: boolean},
+) {
+  opts.bubbles = true;
+  target = winSrc.indexOf(type) < 0 ? target : window;
+
+  target.dispatchEvent(type === 'wheel' ? new WheelEvent('wheel', opts) : new PointerEvent(type, opts));
+}
+
 export function getMark(id: number, parent?: string): HTMLElement {
   return document.querySelector(`${parent ? `g.${parent} ` : ''}g.mark-symbol.role-mark path:nth-child(${id})`);
 }
@@ -328,6 +408,14 @@ export function getMark(id: number, parent?: string): HTMLElement {
 export function coords(el: HTMLElement) {
   const rect = el.getBoundingClientRect();
   return [Math.ceil(rect.left + rect.width / 2), Math.ceil(rect.top + rect.height / 2)];
+}
+
+function pointOnCircle(point: {clientX: number; clientY: number}, radius: number, angle: number) {
+  return {clientX: point.clientX + radius * Math.cos(angle), clientY: point.clientY + radius * Math.sin(angle)};
+}
+
+function backgroundElement(parent?: string): Element {
+  return document.querySelector(`${parent ? `g.${parent} ` : ''}path.background`);
 }
 
 function brushOrEl(el: Element, parent: string, targetBrush: boolean) {
@@ -358,13 +446,17 @@ export async function _pt(view: View, id: number, parent: string, shiftKey?: boo
 }
 
 export async function clear(view: View, id: number, parent: string, shiftKey?: boolean) {
-  const bg = document.querySelector(`${parent ? `g.${parent} ` : ''}path.background`);
+  const bg = backgroundElement(parent);
   const el = getMark(id, parent);
   let [clientX, clientY] = coords(el);
   clientX += 10;
   clientY -= 10;
   click(bg, {clientX, clientY, shiftKey});
   return (await view.runAsync()).data('sel_store');
+}
+
+export async function clearRegion(view: View, id: number, parent?: string, targetBrush?: boolean) {
+  return await clear(view, id, parent ?? '', !!targetBrush);
 }
 
 export async function zoom(view: View, id: number, delta: number, parent: string, targetBrush: boolean) {
@@ -386,3 +478,74 @@ export async function zoom(view: View, id: number, delta: number, parent: string
   });
   return (await view.runAsync()).data('sel_store');
 }
+
+export async function polygonRegion(
+  view: View,
+  id: number,
+  path: readonly (readonly [number, number])[],
+  parent?: string,
+  targetBrush?: boolean,
+  opts?: {scale?: number},
+) {
+  const scale = opts?.scale ?? window.devicePixelRatio;
+  const el0 = getMark(id, parent);
+  const [mdX, mdY] = coords(el0);
+
+  path.forEach((e, i) => {
+    const p = {clientX: mdX + e[0] * scale, clientY: mdY + e[1] * scale};
+    if (i === 0) {
+      pointerEvt('pointerdown', brushOrEl(el0, parent || '', targetBrush ?? false), p);
+    } else if (i === path.length - 1) {
+      pointerEvt('pointerup', window, p);
+    } else {
+      purePointerEvt('pointermove', el0, p);
+    }
+  });
+
+  return (await view.runAsync()).data('sel_store');
+}
+
+export async function circleRegion(
+  view: View,
+  id: number,
+  parent?: string,
+  targetBrush?: boolean,
+  opts?: {radius?: number; segments?: number},
+) {
+  const radius = opts?.radius ?? 40;
+  const segments = opts?.segments ?? 16;
+  const el0 = getMark(id, parent);
+  const [mdX, mdY] = coords(el0);
+
+  for (let i = 0; i < segments; i++) {
+    if (i === 0) {
+      pointerEvt(
+        'pointerdown',
+        brushOrEl(el0, parent || '', targetBrush ?? false),
+        pointOnCircle({clientX: mdX, clientY: mdY}, radius, 0),
+      );
+    } else if (i === segments - 1) {
+      pointerEvt(
+        'pointerup',
+        window,
+        pointOnCircle({clientX: mdX, clientY: mdY}, radius, (i / (segments / 2)) * Math.PI),
+      );
+    } else {
+      purePointerEvt(
+        'pointermove',
+        el0,
+        pointOnCircle({clientX: mdX, clientY: mdY}, radius, (i / (segments / 2)) * Math.PI),
+      );
+    }
+  }
+  return (await view.runAsync()).data('sel_store');
+}
+
+/**
+ * Compare rendered SVG of the view to a snapshot saved to disk
+ * @param view - View to use for comparison
+ * @param snapshotName - Name of snapshot (including any subdirectories)
+ */
+export const expectMatchFileSnapshot = async (view: View, snapshotName: string) => {
+  await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${snapshotName}.svg`);
+};
