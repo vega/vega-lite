@@ -4,6 +4,7 @@ import {
   hits as hitsMaster,
   parentSelector,
   pt,
+  multiviewRegion,
   resolutions,
   selectionTypes,
   getSpec,
@@ -12,10 +13,15 @@ import {
 } from './util.js';
 import {describe, expect, it} from 'vitest';
 
+const handlers = {
+  point: pt,
+  interval: brush,
+  region: multiviewRegion,
+} as const;
+
 for (const type of selectionTypes) {
-  const isInterval = type === 'interval';
-  const hits: any = isInterval ? hitsMaster.interval : hitsMaster.discrete;
-  const fn = isInterval ? brush : pt;
+  const fn = handlers[type];
+  const hits = hitsMaster[type];
 
   describe(`${type} selections at runtime`, () => {
     compositeTypes.forEach((specType) => {
@@ -28,7 +34,7 @@ for (const type of selectionTypes) {
           const selection = {
             type,
             resolve: 'global',
-            ...(specType === 'facet' ? {encodings: ['y']} : {}),
+            ...(specType === 'facet' && type !== 'region' ? {encodings: ['y']} : {}),
           };
 
           for (let i = 0; i < hits[specType].length; i++) {
@@ -53,7 +59,7 @@ for (const type of selectionTypes) {
           const selection = {
             type,
             resolve,
-            ...(specType === 'facet' ? {encodings: ['x']} : {}),
+            ...(specType === 'facet' && type !== 'region' ? {encodings: ['x']} : {}),
           };
 
           /**
@@ -73,7 +79,9 @@ for (const type of selectionTypes) {
               );
             }
 
-            const view2 = await embed(getSpec(specType, 1, {type, resolve, encodings: ['x']}));
+            const view2 = await embed(
+              getSpec(specType, 1, type === 'region' ? {type, resolve} : {type, resolve, encodings: ['x']}),
+            );
             for (let i = 0; i < hits[specType].length; i++) {
               const parent = parentSelector(specType, i);
               await fn(view2, specType, i, parent);
