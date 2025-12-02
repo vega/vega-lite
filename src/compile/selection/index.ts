@@ -17,6 +17,7 @@ import {isFacetModel, Model} from '../model.js';
 import {UnitModel} from '../unit.js';
 import interval from './interval.js';
 import point from './point.js';
+import region from './region.js';
 import {SelectionProjection, SelectionProjectionComponent} from './project.js';
 import clear from './clear.js';
 import inputs from './inputs.js';
@@ -67,6 +68,7 @@ export interface SelectionCompiler<T extends SelectionType = SelectionType> {
 export const selectionCompilers: SelectionCompiler[] = [
   point,
   interval,
+  region,
   project,
   toggle,
 
