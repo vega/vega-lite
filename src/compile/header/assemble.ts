@@ -7,8 +7,9 @@ import {isArray} from 'vega-util';
 import {FacetChannel, FACET_CHANNELS} from '../../channel.js';
 import {vgField} from '../../channeldef.js';
 import {Config} from '../../config.js';
+import {ExprRef} from '../../expr.js';
 import {
-  CoreHeader,
+  CoreHeaderInternal,
   HEADER_LABEL_PROPERTIES,
   HEADER_LABEL_PROPERTIES_MAP,
   HEADER_TITLE_PROPERTIES,
@@ -19,6 +20,7 @@ import {FacetFieldDef, isFacetMapping} from '../../spec/facet.js';
 import {contains, isEmpty, normalizeAngle, replaceAll} from '../../util.js';
 import {isSignalRef, RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema.js';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties.js';
+import {signalRefOrValue} from '../common.js';
 import {sortArrayIndexField} from '../data/calculate.js';
 import {formatSignalRef} from '../format.js';
 import {isFacetModel, Model} from '../model.js';
@@ -118,9 +120,9 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
 }
 
 export function assembleLabelTitle(
-  facetFieldDef: FacetFieldDef<string, SignalRef>,
+  facetFieldDef: FacetFieldDef<string, SignalRef | ExprRef>,
   channel: FacetChannel,
-  config: Config<SignalRef>,
+  config: Config<SignalRef | ExprRef>,
 ) {
   const {format, formatType, labelAngle, labelAnchor, labelOrient, labelExpr} = getHeaderProperties(
     ['format', 'formatType', 'labelAngle', 'labelAnchor', 'labelOrient', 'labelExpr'],
@@ -141,7 +143,7 @@ export function assembleLabelTitle(
   return {
     text: {
       signal: labelExpr
-        ? transformHeaderSignalExpression({signal: labelExpr}, facetFieldDef, titleTextExpr).signal
+        ? (transformHeaderSignalExpression({signal: labelExpr}, facetFieldDef, titleTextExpr) as SignalRef).signal
         : titleTextExpr,
     },
     ...(channel === 'row' ? {orient: 'left'} : {}),
@@ -225,7 +227,7 @@ export function assembleHeaderGroup(
   return null;
 }
 
-const LAYOUT_TITLE_BAND = {
+const LAYOUT_TITLE_BAND: Record<HeaderChannel, Record<string, 0 | 1>> = {
   column: {
     start: 0,
     end: 1,
@@ -236,15 +238,15 @@ const LAYOUT_TITLE_BAND = {
   },
 };
 
-export function getLayoutTitleBand(titleAnchor: TitleAnchor, headerChannel: HeaderChannel): 0 | 1 {
-  return (LAYOUT_TITLE_BAND[headerChannel] as any)[titleAnchor];
+export function getLayoutTitleBand(titleAnchor: TitleAnchor, headerChannel: HeaderChannel): 0 | 1 | undefined {
+  return LAYOUT_TITLE_BAND[headerChannel][titleAnchor];
 }
 
 export function assembleLayoutTitleBand(
   headerComponentIndex: LayoutHeaderComponentIndex,
-  config: Config<SignalRef>,
+  config: Config<SignalRef | ExprRef>,
 ): RowCol<number> {
-  const titleBand = {};
+  const titleBand: Partial<RowCol<number>> = {};
 
   for (const channel of FACET_CHANNELS) {
     const headerComponent = headerComponentIndex[channel];
@@ -259,7 +261,7 @@ export function assembleLayoutTitleBand(
       const headerChannel = getHeaderChannel(channel, titleOrient);
       const band = getLayoutTitleBand(titleAnchor, headerChannel);
       if (band !== undefined) {
-        (titleBand as any)[headerChannel] = band;
+        titleBand[headerChannel] = band;
       }
     }
   }
@@ -268,48 +270,42 @@ export function assembleLayoutTitleBand(
 }
 
 /**
- * Transform signal expressions in header properties to use the correct data context.
- *
- * Headers and axes handle signal expressions differently due to underlying Vega architecture:
- * - Axes compile to Vega axis objects with encoding blocks, where labels naturally have
- *   access to `datum.value` and `datum.label` in the mark encoding context.
- * - Headers compile to Vega title objects attached to group marks, where the data context
- *   is `parent` (the parent of the facet group), not `datum`.
- *
- * To maintain a consistent user-facing API (where both use `datum.value`), we transform
- * header signal expressions internally:
- * - `datum.value` → `parent["fieldName"]` (the facet field value)
- * - `datum.label` → formatted text expression (the formatted facet field value)
- *
- * This function is applied to all header label properties (labelColor, labelFont, etc.)
- * to ensure signal expressions work consistently across both headers and axes.
+ * Transform signal expressions in header properties to use parent data context.
+ * Headers compile to Vega title objects (with `parent` context), unlike axes which use `datum` context.
+ * This function rewrites expressions to maintain a consistent user-facing API:
+ * - `datum.value` → `parent["fieldName"]`
+ * - `datum.label` → formatted text expression
  */
-function transformHeaderSignalExpression(
-  value: any,
-  facetFieldDef: FacetFieldDef<string, SignalRef>,
+function transformHeaderSignalExpression<T>(
+  value: T,
+  facetFieldDef: FacetFieldDef<string, SignalRef | ExprRef>,
   titleTextExpr: string,
-): any {
-  if (isSignalRef(value)) {
+): T | SignalRef {
+  if (value === undefined) {
+    return undefined as T;
+  }
+
+  // First convert ExprRef {expr: ...} to SignalRef {signal: ...} if needed
+  const signalValue = signalRefOrValue(value);
+
+  if (isSignalRef(signalValue)) {
+    const fieldRef = vgField(facetFieldDef, {expr: 'parent'});
     return {
-      signal: replaceAll(
-        replaceAll(value.signal, 'datum.label', titleTextExpr),
-        'datum.value',
-        vgField(facetFieldDef, {expr: 'parent'}),
-      ),
+      signal: replaceAll(replaceAll(signalValue.signal, 'datum.label', titleTextExpr), 'datum.value', fieldRef),
     };
   }
-  return value;
+  return signalValue as T | SignalRef;
 }
 
 export function assembleHeaderProperties(
-  config: Config<SignalRef>,
-  facetFieldDef: FacetFieldDef<string, SignalRef>,
+  config: Config<SignalRef | ExprRef>,
+  facetFieldDef: FacetFieldDef<string, SignalRef | ExprRef>,
   channel: FacetChannel,
-  properties: (keyof CoreHeader<SignalRef>)[],
-  propertiesMap: Partial<Record<keyof CoreHeader<SignalRef>, keyof TitleConfig>>,
+  properties: (keyof CoreHeaderInternal)[],
+  propertiesMap: Partial<Record<keyof CoreHeaderInternal, keyof TitleConfig>>,
   titleTextExpr?: string,
 ): Partial<VgTitle> {
-  const props = {};
+  const props: Record<string, any> = {};
   for (const prop of properties) {
     if (!propertiesMap[prop]) {
       continue;
@@ -322,7 +318,10 @@ export function assembleHeaderProperties(
       if (titleTextExpr) {
         value = transformHeaderSignalExpression(value, facetFieldDef, titleTextExpr);
       }
-      (props as any)[propertiesMap[prop]] = value;
+      const mappedProp = propertiesMap[prop];
+      if (mappedProp) {
+        props[mappedProp] = value;
+      }
     }
   }
   return props;

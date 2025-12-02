@@ -352,7 +352,10 @@ describe('compile/header/index', () => {
         {headerColumn: {}, header: {}},
       );
 
-      expect(title.color).toEqual({signal: 'length(parent["category"]) > 5 ? "red" : "blue"'});
+      // datum.label gets replaced with the formatted text expression (includes validation logic)
+      expect(title.color).toEqual({
+        signal: 'length(isValid(parent["category"]) ? parent["category"] : ""+parent["category"]) > 5 ? "red" : "blue"',
+      });
     });
 
     it('correctly transforms multiple label properties with signal expressions', () => {
