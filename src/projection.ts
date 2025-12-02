@@ -2,8 +2,10 @@ import type {BaseProjection, SignalRef, Vector2} from 'vega';
 import {ExprRef} from './expr.js';
 import {MapExcludeValueRefAndReplaceSignalWith, ProjectionType} from './vega.schema.js';
 
-export interface Projection<ES extends ExprRef | SignalRef>
-  extends MapExcludeValueRefAndReplaceSignalWith<BaseProjection, ES> {
+export interface Projection<ES extends ExprRef | SignalRef> extends MapExcludeValueRefAndReplaceSignalWith<
+  BaseProjection,
+  ES
+> {
   /**
    * The cartographic projection to use. This value is case-insensitive, for example `"albers"` and `"Albers"` indicate the same projection type. You can find all valid projection types [in the documentation](https://vega.github.io/vega-lite/docs/projection.html#projection-types).
    *
