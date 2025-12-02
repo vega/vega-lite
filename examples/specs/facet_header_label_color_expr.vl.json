@@ -1,0 +1,38 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Test conditional header labelColor and other label properties with datum.value expressions. This demonstrates that header signal expressions (labelColor, labelFontWeight, labelFontSize) work consistently with axis signal expressions.",
+  "data": {
+    "values": [
+      {"a": "A", "b": 1, "c": "One"},
+      {"a": "A", "b": 2, "c": "One"},
+      {"a": "B", "b": 3, "c": "Two"},
+      {"a": "B", "b": 4, "c": "Two"}
+    ]
+  },
+  "facet": {
+    "column": {
+      "field": "c",
+      "type": "nominal",
+      "header": {
+        "labelExpr": "datum.value === \"One\" ? \"ONE\" : \"TWO\"",
+        "labelColor": {"expr": "datum.value === \"One\" ? \"green\" : \"purple\""},
+        "labelFontWeight": {"expr": "datum.value === \"One\" ? \"bold\" : \"normal\""},
+        "labelFontSize": {"expr": "datum.value === \"One\" ? 16 : 12"}
+      }
+    }
+  },
+  "spec": {
+    "mark": "bar",
+    "encoding": {
+      "x": {
+        "field": "a",
+        "type": "nominal",
+        "axis": {
+          "labelExpr": "datum.value === \"A\" ? \"AA\" : \"BB\"",
+          "labelColor": {"expr": "datum.value === \"A\" ? \"blue\" : \"red\""}
+        }
+      },
+      "y": {"field": "b", "type": "quantitative"}
+    }
+  }
+}

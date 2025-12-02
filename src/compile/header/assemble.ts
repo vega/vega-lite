@@ -17,7 +17,7 @@ import {
 import {isSortField} from '../../sort.js';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet.js';
 import {contains, isEmpty, normalizeAngle, replaceAll} from '../../util.js';
-import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema.js';
+import {isSignalRef, RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema.js';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties.js';
 import {sortArrayIndexField} from '../data/calculate.js';
 import {formatSignalRef} from '../format.js';
@@ -141,11 +141,7 @@ export function assembleLabelTitle(
   return {
     text: {
       signal: labelExpr
-        ? replaceAll(
-            replaceAll(labelExpr, 'datum.label', titleTextExpr),
-            'datum.value',
-            vgField(facetFieldDef, {expr: 'parent'}),
-          )
+        ? transformHeaderSignalExpression({signal: labelExpr}, facetFieldDef, titleTextExpr).signal
         : titleTextExpr,
     },
     ...(channel === 'row' ? {orient: 'left'} : {}),
@@ -153,7 +149,14 @@ export function assembleLabelTitle(
     frame: 'group',
     ...defaultHeaderGuideBaseline(labelAngle, headerChannel),
     ...defaultHeaderGuideAlign(headerChannel, labelAngle, labelAnchor),
-    ...assembleHeaderProperties(config, facetFieldDef, channel, HEADER_LABEL_PROPERTIES, HEADER_LABEL_PROPERTIES_MAP),
+    ...assembleHeaderProperties(
+      config,
+      facetFieldDef,
+      channel,
+      HEADER_LABEL_PROPERTIES,
+      HEADER_LABEL_PROPERTIES_MAP,
+      titleTextExpr,
+    ),
   };
 }
 
@@ -264,12 +267,47 @@ export function assembleLayoutTitleBand(
   return isEmpty(titleBand) ? undefined : titleBand;
 }
 
+/**
+ * Transform signal expressions in header properties to use the correct data context.
+ *
+ * Headers and axes handle signal expressions differently due to underlying Vega architecture:
+ * - Axes compile to Vega axis objects with encoding blocks, where labels naturally have
+ *   access to `datum.value` and `datum.label` in the mark encoding context.
+ * - Headers compile to Vega title objects attached to group marks, where the data context
+ *   is `parent` (the parent of the facet group), not `datum`.
+ *
+ * To maintain a consistent user-facing API (where both use `datum.value`), we transform
+ * header signal expressions internally:
+ * - `datum.value` → `parent["fieldName"]` (the facet field value)
+ * - `datum.label` → formatted text expression (the formatted facet field value)
+ *
+ * This function is applied to all header label properties (labelColor, labelFont, etc.)
+ * to ensure signal expressions work consistently across both headers and axes.
+ */
+function transformHeaderSignalExpression(
+  value: any,
+  facetFieldDef: FacetFieldDef<string, SignalRef>,
+  titleTextExpr: string,
+): any {
+  if (isSignalRef(value)) {
+    return {
+      signal: replaceAll(
+        replaceAll(value.signal, 'datum.label', titleTextExpr),
+        'datum.value',
+        vgField(facetFieldDef, {expr: 'parent'}),
+      ),
+    };
+  }
+  return value;
+}
+
 export function assembleHeaderProperties(
   config: Config<SignalRef>,
   facetFieldDef: FacetFieldDef<string, SignalRef>,
   channel: FacetChannel,
   properties: (keyof CoreHeader<SignalRef>)[],
   propertiesMap: Partial<Record<keyof CoreHeader<SignalRef>, keyof TitleConfig>>,
+  titleTextExpr?: string,
 ): Partial<VgTitle> {
   const props = {};
   for (const prop of properties) {
@@ -277,8 +315,13 @@ export function assembleHeaderProperties(
       continue;
     }
 
-    const value = getHeaderProperty(prop, facetFieldDef?.header, config, channel);
+    let value = getHeaderProperty(prop, facetFieldDef?.header, config, channel);
     if (value !== undefined) {
+      // Transform signal expressions to use parent context instead of datum context
+      // (only for label properties where titleTextExpr is provided)
+      if (titleTextExpr) {
+        value = transformHeaderSignalExpression(value, facetFieldDef, titleTextExpr);
+      }
       (props as any)[propertiesMap[prop]] = value;
     }
   }

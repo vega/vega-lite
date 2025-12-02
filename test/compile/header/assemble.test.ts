@@ -322,5 +322,75 @@ describe('compile/header/index', () => {
 
       expect(title.text).toEqual({signal: 'parent["foo"][0]'});
     });
+
+    it('correctly transforms labelColor signal expression with datum.value', () => {
+      const title = assembleLabelTitle(
+        {
+          field: 'category',
+          type: 'ordinal',
+          header: {
+            labelColor: {expr: 'datum.value === "A" ? "red" : "blue"'},
+          },
+        },
+        'column',
+        {headerColumn: {}, header: {}},
+      );
+
+      expect(title.color).toEqual({signal: 'parent["category"] === "A" ? "red" : "blue"'});
+    });
+
+    it('correctly transforms labelColor signal expression with datum.label', () => {
+      const title = assembleLabelTitle(
+        {
+          field: 'category',
+          type: 'ordinal',
+          header: {
+            labelColor: {expr: 'length(datum.label) > 5 ? "red" : "blue"'},
+          },
+        },
+        'column',
+        {headerColumn: {}, header: {}},
+      );
+
+      expect(title.color).toEqual({signal: 'length(parent["category"]) > 5 ? "red" : "blue"'});
+    });
+
+    it('correctly transforms multiple label properties with signal expressions', () => {
+      const title = assembleLabelTitle(
+        {
+          field: 'category',
+          type: 'ordinal',
+          header: {
+            labelColor: {expr: 'datum.value === "A" ? "red" : "blue"'},
+            labelFontSize: {expr: 'datum.value === "A" ? 16 : 12'},
+            labelFontWeight: {expr: 'datum.value === "A" ? "bold" : "normal"'},
+          },
+        },
+        'column',
+        {headerColumn: {}, header: {}},
+      );
+
+      expect(title.color).toEqual({signal: 'parent["category"] === "A" ? "red" : "blue"'});
+      expect(title.fontSize).toEqual({signal: 'parent["category"] === "A" ? 16 : 12'});
+      expect(title.fontWeight).toEqual({signal: 'parent["category"] === "A" ? "bold" : "normal"'});
+    });
+
+    it('correctly transforms labelExpr and labelColor together', () => {
+      const title = assembleLabelTitle(
+        {
+          field: 'category',
+          type: 'ordinal',
+          header: {
+            labelExpr: 'datum.value === "A" ? "Alpha" : "Beta"',
+            labelColor: {expr: 'datum.value === "A" ? "red" : "blue"'},
+          },
+        },
+        'column',
+        {headerColumn: {}, header: {}},
+      );
+
+      expect(title.text).toEqual({signal: 'parent["category"] === "A" ? "Alpha" : "Beta"'});
+      expect(title.color).toEqual({signal: 'parent["category"] === "A" ? "red" : "blue"'});
+    });
   });
 });
