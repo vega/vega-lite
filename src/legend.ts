@@ -86,9 +86,7 @@ export type LegendConfig<ES extends ExprRef | SignalRef> = LegendMixins<ES> &
  * Properties of a legend or boolean flag for determining whether to show it.
  */
 export interface Legend<ES extends ExprRef | SignalRef>
-  extends Omit<BaseLegendNoValueRefs<ES>, 'orient'>,
-    LegendMixins<ES>,
-    Guide {
+  extends Omit<BaseLegendNoValueRefs<ES>, 'orient'>, LegendMixins<ES>, Guide {
   /**
    * Mark definitions for custom legend encoding.
    *

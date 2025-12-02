@@ -346,8 +346,7 @@ export type AxisConfig<ES extends ExprRef | SignalRef> = Guide &
   };
 
 export interface Axis<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
-  extends AxisConfigBaseWithConditionalAndSignal<ES>,
-    Guide {
+  extends AxisConfigBaseWithConditionalAndSignal<ES>, Guide {
   /**
    * Mark definitions for custom axis encoding.
    *

@@ -10,8 +10,10 @@ import {GenericLayerSpec, NormalizedLayerSpec} from './layer.js';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit.js';
 import {hasProperty} from '../util.js';
 
-export interface FacetFieldDef<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
-  extends TypedFieldDef<F, StandardType, boolean | BinParams | null> {
+export interface FacetFieldDef<
+  F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef,
+> extends TypedFieldDef<F, StandardType, boolean | BinParams | null> {
   /**
    * An object defining properties of a facet's header.
    */
@@ -42,8 +44,10 @@ export type FacetEncodingFieldDef<
   ES extends ExprRef | SignalRef = ExprRef | SignalRef,
 > = FacetFieldDef<F, ES> & GenericCompositionLayoutWithColumns;
 
-export interface RowColumnEncodingFieldDef<F extends Field, ES extends ExprRef | SignalRef>
-  extends FacetFieldDef<F, ES> {
+export interface RowColumnEncodingFieldDef<F extends Field, ES extends ExprRef | SignalRef> extends FacetFieldDef<
+  F,
+  ES
+> {
   // Manually declarae this separated from GenericCompositionLayout as we don't support RowCol object in RowColumnEncodingFieldDef
 
   /**
@@ -97,8 +101,10 @@ export function isFacetMapping<F extends Field, ES extends ExprRef | SignalRef>(
 /**
  * Facet mapping for encoding macro
  */
-export interface EncodingFacetMapping<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
-  extends FacetMapping<F, RowColumnEncodingFieldDef<F, ES>> {
+export interface EncodingFacetMapping<
+  F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef,
+> extends FacetMapping<F, RowColumnEncodingFieldDef<F, ES>> {
   /**
    * A field definition for the (flexible) facet of trellis plots.
    *
@@ -115,9 +121,7 @@ export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<F>): cha
  * Base interface for a facet specification.
  */
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>, F extends Field>
-  extends BaseSpec,
-    GenericCompositionLayoutWithColumns,
-    ResolveMixins {
+  extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
   /**
    * Definition for how to facet the data. One of:
    * 1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)

@@ -134,22 +134,21 @@ export interface ResolveMixins {
   resolve?: Resolve;
 }
 
-export interface BaseViewBackground<ES extends ExprRef | SignalRef>
-  extends Partial<
-    Pick<
-      MarkConfig<ES>,
-      | 'cornerRadius'
-      | 'fillOpacity'
-      | 'opacity'
-      | 'strokeCap'
-      | 'strokeDash'
-      | 'strokeDashOffset'
-      | 'strokeJoin'
-      | 'strokeMiterLimit'
-      | 'strokeOpacity'
-      | 'strokeWidth'
-    >
-  > {
+export interface BaseViewBackground<ES extends ExprRef | SignalRef> extends Partial<
+  Pick<
+    MarkConfig<ES>,
+    | 'cornerRadius'
+    | 'fillOpacity'
+    | 'opacity'
+    | 'strokeCap'
+    | 'strokeDash'
+    | 'strokeDashOffset'
+    | 'strokeJoin'
+    | 'strokeMiterLimit'
+    | 'strokeOpacity'
+    | 'strokeWidth'
+  >
+> {
   // Override documentations for fill, stroke, and cursor
   /**
    * The fill color.
