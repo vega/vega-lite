@@ -27,7 +27,7 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
     },
 
     // scale signals
-    // TODO(jzong): uncomment commented signals below when implementing interpolation
+    // TODO(jzong): uncomment commented signals below when implementing interpolation https://github.com/vega/vega-lite/issues/9590
     {name: `${selectionName}_domain`, init: `domain('${scaleName}')`},
     {name: MIN_EXTENT, init: `extent(${selectionName}_domain)[0]`},
     // {name: 'max_extent', init: `extent(${selectionName}_domain)[1]`},
