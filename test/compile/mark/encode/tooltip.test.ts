@@ -59,6 +59,7 @@ describe('compile/mark/encode/tooltip', () => {
       const props = tooltip(model);
       expect(props.tooltip).toEqual({signal: 'datum'});
     });
+
     it('uses tooltip signal if specified', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: {signal: 'a'}},
@@ -81,6 +82,49 @@ describe('compile/mark/encode/tooltip', () => {
       });
       const props = tooltip(model, {reactiveGeom: true});
       expect(props.tooltip).toEqual({signal: 'datum.datum'});
+    });
+
+    it('generates tooltip signal with array check for discrete encodings without a format', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          tooltip: true,
+        },
+        encoding: {
+          x: {
+            field: 'Foo',
+            type: 'nominal',
+          },
+        },
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({
+        signal:
+          '{"Foo": isValid(datum["Foo"]) ? isArray(datum["Foo"]) ? join(datum["Foo"], \'\\n\') : datum["Foo"] : ""+datum["Foo"]}',
+      });
+    });
+
+    it('generates tooltip signal without array check for non discrete encodings or encodings with a (custom) format', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'circle',
+        },
+        encoding: {
+          tooltip: [
+            {field: 'Foo', format: '.'},
+            {field: 'Bar', type: 'quantitative'},
+            {field: 'Baz', formatType: 'customFormat'},
+          ],
+        },
+        config: {
+          customFormatTypes: true,
+        },
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({
+        signal:
+          '{"Foo": format(datum["Foo"], "."), "Bar": format(datum["Bar"], ""), "Baz": customFormat(datum["Baz"])}',
+      });
     });
 
     it('generates tooltip signal for discrete encodings without a format and reactiveGeom is true', () => {
@@ -160,6 +204,7 @@ describe('compile/mark/encode/tooltip', () => {
           '{"Foobar": isValid(datum["Foobar"]) ? isArray(datum["Foobar"]) ? join(datum["Foobar"], \'\\n\') : datum["Foobar"] : ""+datum["Foobar"]}',
       });
     });
+
     it('generates correct keys and values for channels with title', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: true},
