@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.4.2](https://github.com/vega/vega-lite/compare/v6.4.1...v6.4.2) (2026-01-14)
+
+
+### Bug Fixes
+
+* check tooltip for custom formatters ([#9735](https://github.com/vega/vega-lite/issues/9735)) ([1f3c725](https://github.com/vega/vega-lite/commit/1f3c725f88b13a6f3cae7dacb9953509476c807a))
+* merge legends on explicit color scale/range/domain ([#9696](https://github.com/vega/vega-lite/issues/9696)) ([5ba092c](https://github.com/vega/vega-lite/commit/5ba092c00a0d83091a872510487c28662b98004c)), closes [#9599](https://github.com/vega/vega-lite/issues/9599) [#5996](https://github.com/vega/vega-lite/issues/5996) [#3797](https://github.com/vega/vega-lite/issues/3797)
+* tooltip data "undefined" when using nearest hit testing ([#9707](https://github.com/vega/vega-lite/issues/9707)) ([e7f5511](https://github.com/vega/vega-lite/commit/e7f55118e7c149c42436c800d053423cdd10bb1a))
+
 ## [6.4.1](https://github.com/vega/vega-lite/compare/v6.4.0...v6.4.1) (2025-09-23)
 
 
