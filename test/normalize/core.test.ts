@@ -463,4 +463,193 @@ describe('normalize()', () => {
       }),
     );
   });
+
+  describe('normalizeTextWithBackground', () => {
+    it('should duplicate text mark with an outline', () => {
+      const spec: any = {
+        encoding: {
+          text: {
+            field: 'price',
+          },
+        },
+        layer: [
+          {
+            mark: {
+              type: 'text',
+              outline: 'white',
+            },
+          },
+          {
+            mark: {
+              type: 'text',
+              outline: {
+                color: 'white',
+                strokeWidth: 3,
+              },
+            },
+          },
+        ],
+      };
+
+      expect(normalize(spec)).toEqual({
+        layer: [
+          {
+            layer: [
+              {
+                mark: {
+                  type: 'text',
+                  outline: 'white',
+                },
+                encoding: {
+                  text: {
+                    field: 'price',
+                  },
+                },
+                name: '_fg_text_1lt6jti',
+              },
+              {
+                mark: {
+                  type: 'text',
+                  outline: 'white',
+                  stroke: 'white',
+                  strokeWidth: 2,
+                },
+                encoding: {
+                  text: {
+                    field: 'price',
+                  },
+                },
+              },
+            ],
+          },
+          {
+            layer: [
+              {
+                mark: {
+                  type: 'text',
+                  outline: {
+                    color: 'white',
+                    strokeWidth: 3,
+                  },
+                },
+                encoding: {
+                  text: {field: 'price'},
+                },
+                name: '_fg_text_8qb38m',
+              },
+              {
+                mark: {
+                  type: 'text',
+                  outline: {
+                    color: 'white',
+                    strokeWidth: 3,
+                  },
+                  stroke: 'white',
+                  strokeWidth: 3,
+                },
+                encoding: {
+                  text: {
+                    field: 'price',
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('add a layer with rectangles behind text marks with a background', () => {
+      const spec: any = {
+        encoding: {
+          text: {
+            field: 'price',
+          },
+        },
+        layer: [
+          {
+            mark: {
+              type: 'text',
+              background: 'red',
+            },
+          },
+          {
+            mark: {
+              type: 'text',
+              background: {
+                color: 'red',
+                padding: {
+                  top: 3,
+                },
+              },
+            },
+          },
+        ],
+      };
+
+      expect(normalize(spec)).toEqual({
+        layer: [
+          {
+            layer: [
+              {
+                mark: {
+                  type: 'text',
+                  background: 'red',
+                },
+                encoding: {
+                  text: {
+                    field: 'price',
+                  },
+                },
+                name: '_fg_text_1jkmohu',
+              },
+              {
+                name: '_bg_text_1jkmohu',
+                mark: {
+                  type: 'rect',
+                  fill: 'red',
+                  opacity: 1,
+                  cornerRadius: 0,
+                  padding: 2,
+                },
+              },
+            ],
+          },
+          {
+            layer: [
+              {
+                mark: {
+                  type: 'text',
+                  background: {
+                    color: 'red',
+                    padding: {
+                      top: 3,
+                    },
+                  },
+                },
+                encoding: {
+                  text: {
+                    field: 'price',
+                  },
+                },
+                name: '_fg_text_1iqtq5g',
+              },
+              {
+                name: '_bg_text_1iqtq5g',
+                mark: {
+                  type: 'rect',
+                  fill: 'red',
+                  opacity: 1,
+                  cornerRadius: 0,
+                  padding: {
+                    top: 3,
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      });
+    });
+  });
 });

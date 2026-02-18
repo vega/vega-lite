@@ -5,6 +5,7 @@ import {ExprRef} from './expr.js';
 import {MarkInvalidMixins} from './invalid.js';
 import {Flag, hasProperty, keys} from './util.js';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema.js';
+import {Padding} from './spec/toplevel.js';
 
 /**
  * All types of primitive marks.
@@ -335,6 +336,7 @@ const VL_ONLY_RECT_CONFIG: (keyof RectConfig<any>)[] = [
   'continuousBandSize',
   'discreteBandSize',
   'minBandSize',
+  'padding',
 ];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
@@ -345,6 +347,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   rect: VL_ONLY_RECT_CONFIG,
   line: ['point'],
   tick: ['bandSize', 'thickness', ...VL_ONLY_RECT_CONFIG],
+  text: ['background', 'outline'],
 };
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
@@ -360,7 +363,8 @@ export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
   | BarConfig<ES>
   | RectConfig<ES>
   | LineConfig<ES>
-  | TickConfig<ES>;
+  | TickConfig<ES>
+  | TextConfig<ES>;
 
 export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Mark Config */
@@ -399,7 +403,7 @@ export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   square?: MarkConfig<ES>;
 
   /** Text-Specific Config */
-  text?: MarkConfig<ES>;
+  text?: TextConfig<ES>;
 
   /** Tick-Specific Config */
   tick?: TickConfig<ES>;
@@ -452,6 +456,12 @@ export interface RectConfig<ES extends ExprRef | SignalRef> extends RectBinSpaci
    * __Default value:__ `0.25`
    */
   minBandSize?: number | ES;
+
+  /**
+   * Padding for rect marks used as text background
+   * __Default value:__ `2`
+   */
+  padding?: Padding;
 }
 
 export type BandSize = number | RelativeBandSize | SignalRef;
@@ -617,7 +627,8 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
         AreaConfig<ES> &
         BarConfig<ES> & // always extends RectConfig
         LineConfig<ES> &
-        TickConfig<ES>,
+        TickConfig<ES> &
+        TextConfig<ES>,
       'startAngle' | 'endAngle' | 'width' | 'height'
     >,
     MarkDefMixins<ES> {
@@ -667,6 +678,56 @@ export const defaultBarConfig: RectConfig<SignalRef> = {
   ...defaultRectConfig,
   binSpacing: 1,
 };
+
+export interface TextBackground {
+  /**
+   * The color of the background of text marks
+   * __Default value:__  `white`
+   */
+  color: Color | ExprRef;
+  /**
+   * The opacity of the background of text marks
+   * __Default value:__  `1`
+   */
+  opacity?: number | ExprRef;
+  /**
+   * The padding of the background rectangles or the stroke-width of the outline of text marks.
+   * If an object, the value should have the format {"left": 5, "top": 5, "right": 5, "bottom": 5}.
+   * __Default value:__  `2`
+   */
+  padding?: Padding;
+  /**
+   * The corner radius of the background of text marks
+   * __Default value:__  `0`
+   */
+  cornerRadius?: number | ExprRef;
+}
+
+export interface TextOutline {
+  /**
+   * The color of the outline of text marks
+   * __Default value:__  `white`
+   */
+  color: Color | ExprRef;
+  /**
+   * The stroke-width of the outline of text marks.
+   * __Default value:__  `2`
+   */
+  strokeWidth?: number;
+}
+
+export interface TextConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES> {
+  /**
+   * Rectangular background for text marks.
+   * Can either be a color value, an expression, or an object with keys `color` (required), `opacity`, `padding`, and `cornerRadius`.
+   */
+  background?: Color | ES | TextBackground;
+  /**
+   * Outline for text marks.
+   * Can either be a color value, an expression, or an object with keys `color` (required), and `strokeWidth`.
+   */
+  outline?: Color | ES | TextOutline;
+}
 
 export interface TickConfig<ES extends ExprRef | SignalRef>
   extends MarkConfig<ES>, TickThicknessMixins, RectConfig<ES> {

@@ -1,0 +1,305 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Google's stock price over time.",
+  "background": "white",
+  "padding": 5,
+  "width": 500,
+  "height": 300,
+  "style": ["cell", "view"],
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [{"type": "filter", "expr": "datum.symbol==='GOOG'"}]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "+datum.price === 286"},
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "+datum.price === 707"},
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "+datum.price === 292.96"},
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "x"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "_fg_text_1r6c46l_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "text": {
+            "signal": "isValid(datum[\"price\"]) ? datum[\"price\"] : \"\"+datum[\"price\"]"
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
+        }
+      },
+      "zindex": 1
+    },
+    {
+      "name": "layer_1_layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 2},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "text": {
+            "signal": "isValid(datum[\"price\"]) ? datum[\"price\"] : \"\"+datum[\"price\"]"
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
+        }
+      }
+    },
+    {
+      "name": "_fg_text_r6pp7m_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "dy": {"value": -12},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "white"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "text": {
+            "signal": "isValid(datum[\"price\"]) ? datum[\"price\"] : \"\"+datum[\"price\"]"
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
+        }
+      },
+      "zindex": 1
+    },
+    {
+      "name": "_bg_text_r6pp7m_marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "_fg_text_r6pp7m_marks"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 1},
+          "fill": {"value": "green"},
+          "cornerRadius": {"value": 0},
+          "x": {"field": "bounds.x1", "offset": -2},
+          "x2": {"field": "bounds.x2", "offset": 2},
+          "y": {"field": "bounds.y1", "offset": -2},
+          "y2": {"field": "bounds.y2", "offset": 2}
+        }
+      }
+    },
+    {
+      "name": "_fg_text_dgn70f_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_3"},
+      "encode": {
+        "update": {
+          "dy": {"value": -12},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "text": {
+            "signal": "isValid(datum[\"price\"]) ? datum[\"price\"] : \"\"+datum[\"price\"]"
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
+        }
+      },
+      "zindex": 1
+    },
+    {
+      "name": "_bg_text_dgn70f_marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "_fg_text_dgn70f_marks"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.8},
+          "fill": {"value": "red"},
+          "cornerRadius": {"value": 4},
+          "x": {"field": "bounds.x1", "offset": -8},
+          "x2": {"field": "bounds.x2", "offset": 8},
+          "y": {"field": "bounds.y1", "offset": -6},
+          "y2": {"field": "bounds.y2", "offset": 6}
+        }
+      }
+    },
+    {
+      "name": "layer_3_layer_2_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_3"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 4},
+          "dy": {"value": -12},
+          "fontWeight": {"value": "bold"},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "text": {
+            "signal": "isValid(datum[\"price\"]) ? datum[\"price\"] : \"\"+datum[\"price\"]"
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "date"},
+          {"data": "data_1", "field": "date"},
+          {"data": "data_2", "field": "date"},
+          {"data": "data_3", "field": "date"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "price"},
+          {"data": "data_1", "field": "price"},
+          {"data": "data_2", "field": "price"},
+          {"data": "data_3", "field": "price"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}
