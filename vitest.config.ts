@@ -26,10 +26,18 @@ export default defineConfig({
           globalSetup: './vitest.global-setup.ts',
           name: 'runtime',
           browser: {
-            provider: playwright(),
+            provider: playwright({
+              contextOptions: {
+                deviceScaleFactor: 2,
+              },
+            }),
             enabled: true,
             headless: false,
-            instances: [{browser: 'chromium'}],
+            instances: [
+              {
+                browser: 'chromium',
+              },
+            ],
           },
           globals: true,
         },

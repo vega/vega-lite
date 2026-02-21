@@ -41,7 +41,7 @@ Selection parameters define _data queries_ that are driven by direct manipulatio
 
 {:#selection-on}
 
-For both selection types, the `select` object can take the following properties:
+For all selection types, the `select` object can take the following properties:
 
 {% include table.html props="type,encodings,fields,on,clear,resolve" source="PointSelectionConfig" %}
 
@@ -51,6 +51,7 @@ A [selection's type](parameter.html#select) determines which data values fall wi
 
 - For `point` selections, only values that have been directly interacted with (e.g., those that have been clicked on) are considered to be "selected."
 - For `interval` selections, values that fall within _both_ the horizontal (`x`) and vertical (`y`) extents are considered to be "selected."
+- For `region` selections, values that fall within the freeform lasso that a user draws on the visualization are considered to be "selected."
 
 {:#project}
 
@@ -205,3 +206,15 @@ function buildTranslate() {
   changeSpec('zoom', 'selection_zoom_' + type + '_' + event);
 }
 </script>
+
+{:#region}
+
+## Region Selection Properties
+
+Region selections extend the idea of interval selections to freeform lassos that follow the pointer. In addition to all [common selection properties](#selection-props), they support the following property:
+
+{% include table.html props="mark" source="RegionSelectionConfig" %}
+
+Every region selection also adds a path mark to the visualization, to depict the shape of the lasso. The `mark` property controls the appearance of this path (fill, stroke, dash pattern, and so on). The example below customizes the lasso's appearance and uses the selection to filter a second view.
+
+<div class="vl-example" data-name="selection_type_region_concat"></div>
