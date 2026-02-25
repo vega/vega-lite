@@ -1,6 +1,6 @@
 import {GenericSpec, NormalizedSpec} from './index.js';
 import {hasProperty} from '../util.js';
-import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base.js';
+import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, LayoutSizeMixins, ResolveMixins} from './base.js';
 
 /**
  * Base layout mixins for V/HConcatSpec, which should not have RowCol<T> generic fo its property.
@@ -25,7 +25,7 @@ export interface OneDirectionalConcatLayout extends BoundsMixins, ResolveMixins 
  * Base interface for a generalized concatenation specification.
  */
 export interface GenericConcatSpec<S extends GenericSpec<any, any, any, any>>
-  extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
+  extends BaseSpec, GenericCompositionLayoutWithColumns, LayoutSizeMixins, ResolveMixins {
   /**
    * A list of views to be concatenated.
    */
@@ -36,7 +36,7 @@ export interface GenericConcatSpec<S extends GenericSpec<any, any, any, any>>
  * Base interface for a vertical concatenation specification.
  */
 export interface GenericVConcatSpec<S extends GenericSpec<any, any, any, any>>
-  extends BaseSpec, OneDirectionalConcatLayout {
+  extends BaseSpec, LayoutSizeMixins, OneDirectionalConcatLayout {
   /**
    * A list of views to be concatenated and put into a column.
    */
@@ -47,7 +47,7 @@ export interface GenericVConcatSpec<S extends GenericSpec<any, any, any, any>>
  * Base interface for a horizontal concatenation specification.
  */
 export interface GenericHConcatSpec<S extends GenericSpec<any, any, any, any>>
-  extends BaseSpec, OneDirectionalConcatLayout {
+  extends BaseSpec, LayoutSizeMixins, OneDirectionalConcatLayout {
   /**
    * A list of views to be concatenated and put into a row.
    */

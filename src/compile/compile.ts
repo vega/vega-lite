@@ -1,5 +1,5 @@
 import type {AutoSizeType, LoggerInterface, Spec as VgSpec} from 'vega';
-import {isString, mergeConfig} from 'vega-util';
+import {isNumber, isString, mergeConfig} from 'vega-util';
 import {getPositionScaleChannel} from '../channel.js';
 import * as vlFieldDef from '../channeldef.js';
 import {Config, initConfig, stripAndRedirectConfig} from '../config.js';
@@ -148,6 +148,8 @@ function getTopLevelProperties(
   config: Config,
   model: Model,
 ) {
+  const inputWidth = inputSpec.width;
+  const inputHeight = inputSpec.height;
   const width = model.component.layoutSize.get('width');
   const height = model.component.layoutSize.get('height');
   if (autosize === undefined) {
@@ -182,6 +184,8 @@ function getTopLevelProperties(
         ? {}
         : {autosize: autosize.type}
       : {autosize}),
+    ...(width === undefined && isNumber(inputWidth) ? {width: inputWidth} : {}),
+    ...(height === undefined && isNumber(inputHeight) ? {height: inputHeight} : {}),
     ...extractTopLevelProperties(config, false),
     ...extractTopLevelProperties(inputSpec, true),
   };

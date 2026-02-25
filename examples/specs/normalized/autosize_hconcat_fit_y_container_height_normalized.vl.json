@@ -1,0 +1,23 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "data": {"url": "data/movies.json"},
+  "height": 320,
+  "autosize": {"type": "fit-y"},
+  "hconcat": [
+    {
+      "mark": "tick",
+      "encoding": {
+        "y": {"field": "IMDB Rating", "type": "quantitative"},
+        "opacity": {"value": 0.25}
+      }
+    },
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {"aggregate": "count", "type": "quantitative"},
+        "y": {"bin": true, "field": "IMDB Rating", "type": "quantitative"}
+      }
+    }
+  ],
+  "resolve": {"scale": {"y": "shared"}}
+}

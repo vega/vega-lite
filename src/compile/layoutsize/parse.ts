@@ -4,6 +4,7 @@ import {hasDiscreteDomain} from '../../scale.js';
 import {isStep} from '../../spec/base.js';
 import {isVgRangeStep} from '../../vega.schema.js';
 import {ConcatModel} from '../concat.js';
+import {FacetModel} from '../facet.js';
 import {Model} from '../model.js';
 import {defaultScaleResolve} from '../resolve.js';
 import {Explicit, mergeValuesWithExplicit} from '../split.js';
@@ -20,14 +21,31 @@ export function parseLayerLayoutSize(model: Model) {
 export function parseConcatLayoutSize(model: ConcatModel) {
   parseChildrenLayoutSize(model);
 
-  // for columns === 1 (vconcat), we can completely merge width. Otherwise, we can treat merged width as childWidth.
+  // When concat has exactly one column (vconcat), we can completely merge width.
   const widthType = model.layout.columns === 1 ? 'width' : 'childWidth';
 
-  // for columns === undefined (hconcat), we can completely merge height. Otherwise, we can treat merged height as childHeight.
-  const heightType = model.layout.columns === undefined ? 'height' : 'childHeight';
+  // When concat has exactly one row (hconcat or wrapped concat with children length === columns),
+  // we can completely merge height.
+  const isSingleRow = model.layout.columns === undefined || model.children.length === model.layout.columns;
+  const heightType = isSingleRow ? 'height' : 'childHeight';
 
   parseNonUnitLayoutSizeForChannel(model, widthType);
   parseNonUnitLayoutSizeForChannel(model, heightType);
+}
+
+export function parseFacetLayoutSize(model: FacetModel) {
+  parseChildrenLayoutSize(model);
+
+  const {row, column, facet} = model.facet;
+  if (row && !column) {
+    parseNonUnitLayoutSizeForChannel(model, 'width');
+  } else if (column && !row) {
+    parseNonUnitLayoutSizeForChannel(model, 'height');
+  } else if (facet && model.layout.columns === 1) {
+    parseNonUnitLayoutSizeForChannel(model, 'width');
+  } else if (facet && model.layout.columns === undefined) {
+    parseNonUnitLayoutSizeForChannel(model, 'height');
+  }
 }
 
 export function parseChildrenLayoutSize(model: Model) {
@@ -39,7 +57,7 @@ export function parseChildrenLayoutSize(model: Model) {
 /**
  * Merge child layout size (width or height).
  */
-function parseNonUnitLayoutSizeForChannel(model: Model, layoutSizeType: LayoutSizeType) {
+export function parseNonUnitLayoutSizeForChannel(model: Model, layoutSizeType: LayoutSizeType) {
   /*
    * For concat, the parent width or height might not be the same as the children's shared height.
    * For example, hconcat's subviews may share width, but the shared width is not the hconcat view's width.

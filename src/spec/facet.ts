@@ -5,7 +5,7 @@ import {ExprRef} from '../expr.js';
 import {Header} from '../header.js';
 import {EncodingSortField, SortArray, SortOrder} from '../sort.js';
 import {StandardType} from '../type.js';
-import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base.js';
+import {BaseSpec, GenericCompositionLayoutWithColumns, LayoutSizeMixins, ResolveMixins} from './base.js';
 import {GenericLayerSpec, NormalizedLayerSpec} from './layer.js';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit.js';
 import {hasProperty} from '../util.js';
@@ -121,7 +121,7 @@ export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<F>): cha
  * Base interface for a facet specification.
  */
 export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>, F extends Field>
-  extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
+  extends BaseSpec, GenericCompositionLayoutWithColumns, LayoutSizeMixins, ResolveMixins {
   /**
    * Definition for how to facet the data. One of:
    * 1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)

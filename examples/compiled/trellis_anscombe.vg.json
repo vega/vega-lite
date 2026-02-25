@@ -3,6 +3,7 @@
   "description": "Anscombe's Quartet",
   "background": "white",
   "padding": 5,
+  "height": 300,
   "data": [
     {
       "name": "source_0",
@@ -21,10 +22,7 @@
       "transform": [{"type": "aggregate", "groupby": ["Series"]}]
     }
   ],
-  "signals": [
-    {"name": "child_width", "value": 300},
-    {"name": "child_height", "value": 300}
-  ],
+  "signals": [{"name": "child_width", "value": 300}],
   "layout": {
     "padding": 20,
     "offset": {"columnTitle": 10},
@@ -43,7 +41,7 @@
       "name": "row_header",
       "type": "group",
       "role": "row-header",
-      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "encode": {"update": {"height": {"signal": "height"}}},
       "axes": [
         {
           "scale": "y",
@@ -51,7 +49,7 @@
           "grid": false,
           "title": "Y",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -103,7 +101,7 @@
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
-          "height": {"signal": "child_height"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -147,7 +145,7 @@
           "orient": "left",
           "gridScale": "x",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -172,7 +170,7 @@
       "name": "y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Y"},
-      "range": [{"signal": "child_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     }

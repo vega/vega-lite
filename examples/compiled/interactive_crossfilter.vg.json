@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
+  "height": 300,
   "data": [
     {"name": "brush_store"},
     {
@@ -125,7 +126,6 @@
   ],
   "signals": [
     {"name": "childWidth", "value": 300},
-    {"name": "childHeight", "value": 300},
     {
       "name": "unit",
       "value": {},
@@ -147,7 +147,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "signals": [
@@ -456,7 +456,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "signals": [
@@ -765,7 +765,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "signals": [
@@ -1085,7 +1085,7 @@
       "name": "child__column_distance_y",
       "type": "linear",
       "domain": {"data": "data_3", "field": "__count"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -1105,7 +1105,7 @@
       "name": "child__column_delay_y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "__count"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -1123,7 +1123,7 @@
       "name": "child__column_time_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "__count"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     }

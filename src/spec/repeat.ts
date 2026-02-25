@@ -1,7 +1,7 @@
 import {isArray} from 'vega-util';
 import {LayerSpec, NonNormalizedSpec} from './index.js';
 import {Field} from '../channeldef.js';
-import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base.js';
+import {BaseSpec, GenericCompositionLayoutWithColumns, LayoutSizeMixins, ResolveMixins} from './base.js';
 import {UnitSpecWithFrame} from './unit.js';
 import {hasProperty} from '../util.js';
 
@@ -29,7 +29,8 @@ export type RepeatSpec = NonLayerRepeatSpec | LayerRepeatSpec;
 /**
  * Base interface for a repeat specification.
  */
-export interface NonLayerRepeatSpec extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
+export interface NonLayerRepeatSpec
+  extends BaseSpec, GenericCompositionLayoutWithColumns, LayoutSizeMixins, ResolveMixins {
   /**
    * Definition for fields to be repeated. One of:
    * 1) An array of fields to be repeated. If `"repeat"` is an array, the field can be referred to as `{"repeat": "repeat"}`. The repeated views are laid out in a wrapped row. You can set the number of columns to control the wrapping.
@@ -43,7 +44,8 @@ export interface NonLayerRepeatSpec extends BaseSpec, GenericCompositionLayoutWi
   spec: NonNormalizedSpec;
 }
 
-export interface LayerRepeatSpec extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
+export interface LayerRepeatSpec
+  extends BaseSpec, GenericCompositionLayoutWithColumns, LayoutSizeMixins, ResolveMixins {
   /**
    * Definition for fields to be repeated. One of:
    * 1) An array of fields to be repeated. If `"repeat"` is an array, the field can be referred to as `{"repeat": "repeat"}`. The repeated views are laid out in a wrapped row. You can set the number of columns to control the wrapping.

@@ -8,7 +8,7 @@ import {ExprRef, replaceExprRef} from '../expr.js';
 import * as log from '../log/index.js';
 import {hasDiscreteDomain} from '../scale.js';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort.js';
-import {NormalizedFacetSpec} from '../spec/index.js';
+import {LayoutSizeMixins, NormalizedFacetSpec} from '../spec/index.js';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet.js';
 import {hasProperty, keys, vals} from '../util.js';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema.js';
@@ -20,7 +20,8 @@ import {assembleLabelTitle} from './header/assemble.js';
 import {getHeaderChannel, getHeaderProperty} from './header/common.js';
 import {HEADER_CHANNELS, HEADER_TYPES} from './header/component.js';
 import {parseFacetHeaders} from './header/parse.js';
-import {parseChildrenLayoutSize} from './layoutsize/parse.js';
+import {assembleLayoutSignals} from './layoutsize/assemble.js';
+import {parseFacetLayoutSize} from './layoutsize/parse.js';
 import {Model, ModelWithField} from './model.js';
 import {assembleDomain, getFieldFromDomain} from './scale/domain.js';
 import {assembleFacetSignals} from './selection/assemble.js';
@@ -42,13 +43,48 @@ export class FacetModel extends ModelWithField {
 
   public readonly children: Model[];
 
-  constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, config: Config<SignalRef>) {
+  constructor(
+    spec: NormalizedFacetSpec,
+    parent: Model,
+    parentGivenName: string,
+    parentGivenSize: LayoutSizeMixins,
+    config: Config<SignalRef>,
+  ) {
     super(spec, 'facet', parent, parentGivenName, config, spec.resolve);
 
-    this.child = buildModel(spec.spec, this, this.getName('child'), undefined, config);
+    const childGivenSize = this.getChildGivenSize(spec, parentGivenSize);
+    this.child = buildModel(spec.spec, this, this.getName('child'), childGivenSize, config);
     this.children = [this.child];
 
     this.facet = this.initFacet(spec.facet);
+  }
+
+  private getChildGivenSize(spec: NormalizedFacetSpec, parentGivenSize: LayoutSizeMixins): LayoutSizeMixins {
+    const width = spec.width ?? parentGivenSize.width;
+    const height = spec.height ?? parentGivenSize.height;
+    const {facet} = spec;
+
+    if (isFacetMapping(facet)) {
+      if (facet.row && !facet.column) {
+        return width !== undefined ? {width} : {};
+      }
+
+      if (facet.column && !facet.row) {
+        return height !== undefined ? {height} : {};
+      }
+
+      return {};
+    }
+
+    if (spec.columns === 1) {
+      return width !== undefined ? {width} : {};
+    }
+
+    if (spec.columns === undefined) {
+      return height !== undefined ? {height} : {};
+    }
+
+    return {};
   }
 
   private initFacet(
@@ -106,7 +142,7 @@ export class FacetModel extends ModelWithField {
   }
 
   public parseLayoutSize() {
-    parseChildrenLayoutSize(this);
+    parseFacetLayoutSize(this);
   }
 
   public parseSelections() {
@@ -208,8 +244,7 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleLayoutSignals(): NewSignal[] {
-    // FIXME(https://github.com/vega/vega-lite/issues/1193): this can be incorrect if we have independent scales.
-    return this.child.assembleLayoutSignals();
+    return [...assembleLayoutSignals(this), ...this.child.assembleLayoutSignals()];
   }
 
   private columnDistinctSignal() {

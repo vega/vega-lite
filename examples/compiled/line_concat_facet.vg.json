@@ -57,7 +57,7 @@
   "signals": [
     {"name": "concat_0_x_step", "value": 20},
     {
-      "name": "concat_0_child_width",
+      "name": "concat_0_width",
       "update": "bandspace(domain('concat_0_x').length, 1, 0.5) * concat_0_x_step"
     },
     {"name": "concat_0_child_height", "value": 30},
@@ -110,7 +110,7 @@
           "name": "concat_0_column_footer",
           "type": "group",
           "role": "column-footer",
-          "encode": {"update": {"width": {"signal": "concat_0_child_width"}}},
+          "encode": {"update": {"width": {"signal": "concat_0_width"}}},
           "axes": [
             {
               "scale": "concat_0_x",
@@ -143,7 +143,7 @@
           "sort": {"field": ["datum[\"year_date\"]"], "order": ["ascending"]},
           "encode": {
             "update": {
-              "width": {"signal": "concat_0_child_width"},
+              "width": {"signal": "concat_0_width"},
               "height": {"signal": "concat_0_child_height"}
             }
           },

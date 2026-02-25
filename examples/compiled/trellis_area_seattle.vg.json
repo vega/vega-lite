@@ -3,6 +3,7 @@
   "description": "Temperature normals in Seattle. Derived from [Seattle Annual Temperate](https://vega.github.io/vega/examples/annual-temperature/) example from the Vega example gallery.",
   "background": "white",
   "padding": 5,
+  "width": 800,
   "title": {"text": "Seattle Temperature Normals", "anchor": "start"},
   "data": [
     {
@@ -50,10 +51,7 @@
       ]
     }
   ],
-  "signals": [
-    {"name": "child_width", "value": 800},
-    {"name": "child_height", "value": 25}
-  ],
+  "signals": [{"name": "child_height", "value": 25}],
   "layout": {
     "padding": {"row": 1, "column": 20},
     "offset": {"rowTitle": 10},
@@ -109,7 +107,7 @@
       "name": "column_footer",
       "type": "group",
       "role": "column-footer",
-      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "encode": {"update": {"width": {"signal": "width"}}},
       "axes": [
         {
           "scale": "x",
@@ -119,7 +117,7 @@
           "format": "%b",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "tickMinStep": {
             "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
           },
@@ -149,7 +147,7 @@
       },
       "encode": {
         "update": {
-          "width": {"signal": "child_width"},
+          "width": {"signal": "width"},
           "height": {"signal": "child_height"},
           "stroke": {"value": null}
         }
@@ -187,7 +185,7 @@
       "name": "x",
       "type": "time",
       "domain": {"data": "source_0", "field": "monthdate_date"},
-      "range": [0, {"signal": "child_width"}]
+      "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",

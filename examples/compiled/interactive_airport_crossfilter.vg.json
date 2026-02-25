@@ -194,16 +194,15 @@
   "projections": [
     {
       "name": "projection",
-      "size": {"signal": "[concat_0_width, concat_0_height]"},
+      "size": {"signal": "[concat_0_width, childHeight]"},
       "fit": {"signal": "[data('source_0'), concat_0_layer_1_geojson_0]"},
       "type": "albersUsa"
     }
   ],
   "signals": [
+    {"name": "childHeight", "value": 300},
     {"name": "concat_0_width", "value": 500},
-    {"name": "concat_0_height", "value": 300},
     {"name": "concat_1_childWidth", "value": 300},
-    {"name": "concat_1_childHeight", "value": 300},
     {
       "name": "unit",
       "value": {},
@@ -235,7 +234,7 @@
       "encode": {
         "update": {
           "width": {"signal": "concat_0_width"},
-          "height": {"signal": "concat_0_height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "signals": [
@@ -273,7 +272,7 @@
                   {"source": "window", "type": "pointerup"}
                 ]
               },
-              "update": "[brush_latitude_1[0], clamp(y(unit), 0, concat_0_height)]"
+              "update": "[brush_latitude_1[0], clamp(y(unit), 0, childHeight)]"
             },
             {
               "events": [{"source": "view", "type": "dblclick"}],
@@ -281,11 +280,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, concat_0_height)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, childHeight)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_latitude_1, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_0_height)"
+              "update": "clampRange(zoomLinear(brush_latitude_1, brush_zoom_anchor.y, brush_zoom_delta), 0, childHeight)"
             }
           ]
         },
@@ -576,7 +575,7 @@
           "encode": {
             "update": {
               "width": {"signal": "concat_1_childWidth"},
-              "height": {"signal": "concat_1_childHeight"}
+              "height": {"signal": "childHeight"}
             }
           },
           "marks": [
@@ -657,7 +656,7 @@
               "orient": "left",
               "gridScale": "child__column_distance_x",
               "grid": true,
-              "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
+              "tickCount": {"signal": "ceil(childHeight/40)"},
               "domain": false,
               "labels": false,
               "aria": false,
@@ -682,7 +681,7 @@
               "grid": false,
               "title": "Count of Records",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
+              "tickCount": {"signal": "ceil(childHeight/40)"},
               "zindex": 0
             }
           ]
@@ -694,7 +693,7 @@
           "encode": {
             "update": {
               "width": {"signal": "concat_1_childWidth"},
-              "height": {"signal": "concat_1_childHeight"}
+              "height": {"signal": "childHeight"}
             }
           },
           "marks": [
@@ -769,7 +768,7 @@
               "orient": "left",
               "gridScale": "child__column_delay_x",
               "grid": true,
-              "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
+              "tickCount": {"signal": "ceil(childHeight/40)"},
               "domain": false,
               "labels": false,
               "aria": false,
@@ -794,7 +793,7 @@
               "grid": false,
               "title": "Count of Records",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
+              "tickCount": {"signal": "ceil(childHeight/40)"},
               "zindex": 0
             }
           ]
@@ -831,7 +830,7 @@
           {"data": "data_3", "field": "__count"}
         ]
       },
-      "range": [{"signal": "concat_1_childHeight"}, 0],
+      "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
     },
@@ -856,7 +855,7 @@
           {"data": "data_2", "field": "__count"}
         ]
       },
-      "range": [{"signal": "concat_1_childHeight"}, 0],
+      "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
     }

@@ -21,12 +21,11 @@
     }
   ],
   "signals": [
-    {"name": "child_child_width", "value": 300},
+    {"name": "child_width", "value": 300},
     {"name": "child_child_height", "value": 300}
   ],
   "layout": {
     "padding": 20,
-    "headerBand": {"column": 0.5},
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -52,7 +51,8 @@
         "style": "guide-label",
         "frame": "group",
         "offset": 10
-      }
+      },
+      "encode": {"update": {"width": {"signal": "child_width"}}}
     },
     {
       "name": "cell",
@@ -119,7 +119,7 @@
           "name": "child_column_footer",
           "type": "group",
           "role": "column-footer",
-          "encode": {"update": {"width": {"signal": "child_child_width"}}},
+          "encode": {"update": {"width": {"signal": "child_width"}}},
           "axes": [
             {
               "scale": "x",
@@ -128,7 +128,7 @@
               "title": "Horsepower",
               "labelFlush": true,
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(child_child_width/40)"},
+              "tickCount": {"signal": "ceil(child_width/40)"},
               "zindex": 0
             }
           ]
@@ -159,7 +159,7 @@
           ],
           "encode": {
             "update": {
-              "width": {"signal": "child_child_width"},
+              "width": {"signal": "child_width"},
               "height": {"signal": "child_child_height"}
             }
           },
@@ -190,7 +190,7 @@
               "orient": "bottom",
               "gridScale": "y",
               "grid": true,
-              "tickCount": {"signal": "ceil(child_child_width/40)"},
+              "tickCount": {"signal": "ceil(child_width/40)"},
               "domain": false,
               "labels": false,
               "aria": false,
@@ -223,7 +223,7 @@
       "name": "x",
       "type": "linear",
       "domain": {"data": "data_2", "field": "Horsepower"},
-      "range": [0, {"signal": "child_child_width"}],
+      "range": [0, {"signal": "child_width"}],
       "nice": true,
       "zero": true
     },

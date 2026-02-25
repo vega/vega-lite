@@ -151,5 +151,47 @@ describe('compile/layout', () => {
       expect(model.component.layoutSize.get('height')).toBeUndefined();
       expect(model.component.layoutSize.get('childHeight')).toBe(100);
     });
+
+    it('should merge child height to parent height for single-row wrapped concat', () => {
+      const model = parseModelWithScaleAndLayoutSize({
+        data: {values: [{a: 1, b: 2}]},
+        columns: 2,
+        concat: [
+          {
+            height: 100,
+            mark: 'point',
+            encoding: {y: {field: 'a', type: 'quantitative'}},
+          },
+          {
+            height: 100,
+            mark: 'point',
+            encoding: {y: {field: 'b', type: 'quantitative'}},
+          },
+        ],
+      });
+
+      expect(model.component.layoutSize.get('height')).toBe(100);
+      expect(model.component.layoutSize.get('childHeight')).toBeUndefined();
+    });
+  });
+
+  describe('parseFacetLayoutSize', () => {
+    it('should merge child height to parent height for column facet', () => {
+      const model = parseModelWithScaleAndLayoutSize({
+        data: {values: [{c: 'A', x: 1, y: 2}]},
+        height: 300,
+        facet: {column: {field: 'c', type: 'nominal'}},
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'x', type: 'quantitative'},
+            y: {field: 'y', type: 'quantitative'},
+          },
+        },
+      });
+
+      expect(model.component.layoutSize.get('height')).toBe(300);
+      expect(model.children[0].component.layoutSize.get('height')).toBe('merged');
+    });
   });
 });

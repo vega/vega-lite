@@ -1,8 +1,10 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Stock prices of four large companies as a small multiples of area charts.",
+  "height": 40,
   "background": "white",
   "padding": 5,
+  "width": 300,
   "data": [
     {
       "name": "source_0",
@@ -34,10 +36,7 @@
       "transform": [{"type": "aggregate", "groupby": ["symbol"]}]
     }
   ],
-  "signals": [
-    {"name": "child_width", "value": 300},
-    {"name": "child_height", "value": 40}
-  ],
+  "signals": [{"name": "child_height", "value": 40}],
   "layout": {
     "padding": 20,
     "offset": {"rowTitle": 10},
@@ -89,7 +88,7 @@
       "name": "column_footer",
       "type": "group",
       "role": "column-footer",
-      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "encode": {"update": {"width": {"signal": "width"}}},
       "axes": [
         {
           "scale": "x",
@@ -98,7 +97,7 @@
           "title": "Time",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         }
       ]
@@ -113,7 +112,7 @@
       "sort": {"field": ["datum[\"symbol\"]"], "order": ["ascending"]},
       "encode": {
         "update": {
-          "width": {"signal": "child_width"},
+          "width": {"signal": "width"},
           "height": {"signal": "child_height"}
         }
       },
@@ -167,7 +166,7 @@
       "name": "x",
       "type": "time",
       "domain": {"data": "source_0", "field": "date"},
-      "range": [0, {"signal": "child_width"}]
+      "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",

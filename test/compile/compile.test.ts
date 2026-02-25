@@ -331,8 +331,8 @@ describe('compile/compile', () => {
           },
         ],
       });
-      expect(localLogger.warns[0]).toBe(log.message.containerSizeNonSingle('width'));
-      expect(spec.autosize).toBeUndefined();
+      expect(localLogger.warns).toEqual([]);
+      expect(spec.autosize).toEqual({type: 'fit-x', contains: 'padding'});
     }),
   );
 
@@ -366,8 +366,211 @@ describe('compile/compile', () => {
           },
         ],
       });
-      expect(localLogger.warns[0]).toBe(log.message.FIT_NON_SINGLE);
-      expect(spec.autosize).toBe('fit');
+      expect(localLogger.warns[0]).toBe(log.message.droppingFit('y'));
+      expect(spec.autosize).toBe('fit-x');
+    }),
+  );
+
+  it('allows fit-x with top-level width=container for vconcat', () => {
+    const {spec} = compile({
+      width: 'container',
+      autosize: 'fit-x',
+      vconcat: [
+        {mark: 'point', encoding: {}},
+        {mark: 'point', encoding: {}},
+      ],
+    });
+
+    expect(spec.autosize).toEqual({type: 'fit-x', contains: 'padding'});
+    expect(spec.signals).toContainEqual({
+      name: 'width',
+      init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300',
+      on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300'}],
+    });
+  });
+
+  it(
+    'warns for fit-y with top-level width=container for vconcat',
+    log.wrap((localLogger) => {
+      compile({
+        width: 'container',
+        autosize: 'fit-y',
+        vconcat: [
+          {mark: 'point', encoding: {}},
+          {mark: 'point', encoding: {}},
+        ],
+      });
+
+      expect(localLogger.warns[0]).toBe(log.message.containerSizeNotCompatibleWithAutosize('width'));
+    }),
+  );
+
+  it('allows fit-y with top-level height=container for hconcat', () => {
+    const {spec} = compile({
+      height: 'container',
+      autosize: 'fit-y',
+      hconcat: [
+        {mark: 'point', encoding: {}},
+        {mark: 'point', encoding: {}},
+      ],
+    });
+
+    expect(spec.autosize).toEqual({type: 'fit-y', contains: 'padding'});
+    expect(spec.signals).toContainEqual({
+      name: 'height',
+      init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
+      on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'}],
+    });
+  });
+
+  it(
+    'warns for fit-x with top-level height=container for hconcat',
+    log.wrap((localLogger) => {
+      compile({
+        height: 'container',
+        autosize: 'fit-x',
+        hconcat: [
+          {mark: 'point', encoding: {}},
+          {mark: 'point', encoding: {}},
+        ],
+      });
+
+      expect(localLogger.warns[0]).toBe(log.message.containerSizeNotCompatibleWithAutosize('height'));
+    }),
+  );
+
+  it('allows fit-x with top-level width=container for row facet', () => {
+    const {spec} = compile({
+      data: {values: [{r: 'A', v: 1}]},
+      width: 'container',
+      autosize: 'fit-x',
+      facet: {row: {field: 'r', type: 'nominal'}},
+      spec: {
+        mark: 'point',
+        encoding: {x: {field: 'v', type: 'quantitative'}},
+      },
+    });
+
+    expect(spec.autosize).toEqual({type: 'fit-x', contains: 'padding'});
+    expect(spec.signals).toContainEqual({
+      name: 'width',
+      init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300',
+      on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300'}],
+    });
+  });
+
+  it('allows fit-y with top-level height=container for column facet', () => {
+    const {spec} = compile({
+      data: {values: [{c: 'A', v: 1}]},
+      height: 'container',
+      autosize: 'fit-y',
+      facet: {column: {field: 'c', type: 'nominal'}},
+      spec: {
+        mark: 'point',
+        encoding: {y: {field: 'v', type: 'quantitative'}},
+      },
+    });
+
+    expect(spec.autosize).toEqual({type: 'fit-y', contains: 'padding'});
+    expect(spec.signals).toContainEqual({
+      name: 'height',
+      init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
+      on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'}],
+    });
+  });
+
+  it('keeps explicit top-level height for fit-y in column facet', () => {
+    const {spec} = compile({
+      data: {values: [{c: 'A', v: 1}]},
+      height: 320,
+      autosize: 'fit-y',
+      facet: {column: {field: 'c', type: 'nominal'}},
+      spec: {
+        mark: 'point',
+        encoding: {
+          x: {field: 'v', type: 'quantitative'},
+          y: {field: 'v', type: 'quantitative'},
+        },
+      },
+    });
+
+    expect(spec.height).toBe(320);
+    expect(spec.autosize).toBe('fit-y');
+  });
+
+  it(
+    'warns for fit-y with top-level width=container for row facet',
+    log.wrap((localLogger) => {
+      compile({
+        data: {values: [{r: 'A', v: 1}]},
+        width: 'container',
+        autosize: 'fit-y',
+        facet: {row: {field: 'r', type: 'nominal'}},
+        spec: {
+          mark: 'point',
+          encoding: {x: {field: 'v', type: 'quantitative'}},
+        },
+      });
+
+      expect(localLogger.warns[0]).toBe(log.message.containerSizeNotCompatibleWithAutosize('width'));
+    }),
+  );
+
+  it('allows fit-x with top-level width=container for repeat row', () => {
+    const {spec} = compile({
+      width: 'container',
+      autosize: 'fit-x',
+      repeat: {row: ['a', 'b']},
+      spec: {
+        data: {values: [{a: 1, b: 2}]},
+        mark: 'point',
+        encoding: {x: {field: {repeat: 'row'}, type: 'quantitative'}},
+      },
+    });
+
+    expect(spec.autosize).toEqual({type: 'fit-x', contains: 'padding'});
+    expect(spec.signals).toContainEqual({
+      name: 'width',
+      init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300',
+      on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300'}],
+    });
+  });
+
+  it('allows fit-y with top-level height=container for repeat column', () => {
+    const {spec} = compile({
+      height: 'container',
+      autosize: 'fit-y',
+      repeat: {column: ['a', 'b']},
+      spec: {
+        data: {values: [{a: 1, b: 2}]},
+        mark: 'point',
+        encoding: {y: {field: {repeat: 'column'}, type: 'quantitative'}},
+      },
+    });
+
+    expect(spec.autosize).toEqual({type: 'fit-y', contains: 'padding'});
+    expect(spec.signals).toContainEqual({
+      name: 'height',
+      init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
+      on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'}],
+    });
+  });
+
+  it(
+    'warns for fit-x with top-level height=container for repeat column',
+    log.wrap((localLogger) => {
+      compile({
+        height: 'container',
+        autosize: 'fit-x',
+        repeat: {column: ['a', 'b']},
+        spec: {
+          data: {values: [{a: 1, b: 2}]},
+          mark: 'point',
+          encoding: {y: {field: {repeat: 'column'}, type: 'quantitative'}},
+        },
+      });
+
+      expect(localLogger.warns[0]).toBe(log.message.containerSizeNotCompatibleWithAutosize('height'));
     }),
   );
 

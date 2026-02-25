@@ -3,6 +3,7 @@
   "description": "Stock price mean per quarter broken down by years.",
   "background": "white",
   "padding": 5,
+  "height": 300,
   "data": [
     {
       "name": "source_0",
@@ -45,8 +46,7 @@
     {
       "name": "child_width",
       "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
-    },
-    {"name": "child_height", "value": 300}
+    }
   ],
   "layout": {
     "padding": 20,
@@ -66,7 +66,7 @@
       "name": "row_header",
       "type": "group",
       "role": "row-header",
-      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "encode": {"update": {"height": {"signal": "height"}}},
       "axes": [
         {
           "scale": "y",
@@ -74,7 +74,7 @@
           "grid": false,
           "title": "Mean of price",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -131,7 +131,7 @@
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
-          "height": {"signal": "child_height"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -160,7 +160,7 @@
           "orient": "left",
           "gridScale": "x",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -184,7 +184,7 @@
       "name": "y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "mean_price"},
-      "range": [{"signal": "child_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },

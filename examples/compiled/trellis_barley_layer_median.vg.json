@@ -3,6 +3,7 @@
   "description": "The Trellis display by Becker et al. helped establish small multiples as a “powerful mechanism for understanding interactions in studies of how a response depends on explanatory variables”. Here we reproduce a trellis of Barley yields from the 1930s, complete with main-effects ordering to facilitate comparison.",
   "background": "white",
   "padding": 5,
+  "width": 300,
   "data": [
     {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
@@ -54,7 +55,6 @@
     }
   ],
   "signals": [
-    {"name": "trellis_barley_child_width", "value": 300},
     {"name": "trellis_barley_y_step", "value": 12},
     {
       "name": "trellis_barley_child_height",
@@ -112,7 +112,7 @@
       "name": "trellis_barley_column_footer",
       "type": "group",
       "role": "column-footer",
-      "encode": {"update": {"width": {"signal": "trellis_barley_child_width"}}},
+      "encode": {"update": {"width": {"signal": "width"}}},
       "axes": [
         {
           "scale": "trellis_barley_x",
@@ -121,7 +121,7 @@
           "title": "Median of yield",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         }
       ]
@@ -184,7 +184,7 @@
       ],
       "encode": {
         "update": {
-          "width": {"signal": "trellis_barley_child_width"},
+          "width": {"signal": "width"},
           "height": {"signal": "trellis_barley_child_height"}
         }
       },
@@ -231,7 +231,7 @@
           "orient": "bottom",
           "gridScale": "trellis_barley_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -253,7 +253,7 @@
           {"data": "data_3", "field": "median_yield"}
         ]
       },
-      "range": [0, {"signal": "trellis_barley_child_width"}],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },

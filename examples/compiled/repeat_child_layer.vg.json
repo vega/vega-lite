@@ -3,6 +3,7 @@
   "description": "Summarized and per year weather information for Seatle and New York.",
   "background": "white",
   "padding": 5,
+  "height": 300,
   "data": [
     {
       "name": "source_0",
@@ -51,7 +52,6 @@
     }
   ],
   "signals": [
-    {"name": "childHeight", "value": 300},
     {"name": "child__column_temp_max_x_step", "value": 20},
     {
       "name": "child__column_temp_max_width",
@@ -77,7 +77,7 @@
       "encode": {
         "update": {
           "width": {"signal": "child__column_temp_max_width"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -183,7 +183,7 @@
           "orient": "left",
           "gridScale": "child__column_temp_max_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -213,7 +213,7 @@
           "grid": false,
           "title": "Mean of temp_max",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -225,7 +225,7 @@
       "encode": {
         "update": {
           "width": {"signal": "child__column_precipitation_width"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -331,7 +331,7 @@
           "orient": "left",
           "gridScale": "child__column_precipitation_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -361,7 +361,7 @@
           "grid": false,
           "title": "Mean of precipitation",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -373,7 +373,7 @@
       "encode": {
         "update": {
           "width": {"signal": "child__column_wind_width"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -463,7 +463,7 @@
           "orient": "left",
           "gridScale": "child__column_wind_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -493,7 +493,7 @@
           "grid": false,
           "title": "Mean of wind",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -534,7 +534,7 @@
           {"data": "data_0", "field": "mean_temp_max"}
         ]
       },
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -560,7 +560,7 @@
           {"data": "data_0", "field": "mean_precipitation"}
         ]
       },
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -586,7 +586,7 @@
           {"data": "data_0", "field": "mean_wind"}
         ]
       },
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     }

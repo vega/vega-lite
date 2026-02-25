@@ -34,15 +34,15 @@
     }
   ],
   "signals": [
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    },
     {"name": "x_step", "value": 20},
     {
       "name": "child_width",
       "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
-    },
-    {"name": "y_step", "value": 20},
-    {
-      "name": "child_height",
-      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
     }
   ],
   "layout": {
@@ -63,7 +63,7 @@
       "name": "row_header",
       "type": "group",
       "role": "row-header",
-      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "encode": {"update": {"height": {"signal": "height"}}},
       "axes": [
         {
           "scale": "y",
@@ -120,7 +120,7 @@
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
-          "height": {"signal": "child_height"},
+          "height": {"signal": "height"},
           "stroke": {"value": null}
         }
       },
