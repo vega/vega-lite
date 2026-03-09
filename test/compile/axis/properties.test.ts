@@ -493,5 +493,13 @@ describe('compile/axis/properties', () => {
     it('returns 1 for discrete axes of rect marks', () => {
       expect(properties.defaultZindex('rect', {field: 'a', type: 'nominal'})).toBe(1);
     });
+
+    it('returns 1 for quantitative axes of rect marks (horizontal bar charts)', () => {
+      expect(properties.defaultZindex('rect', {field: 'x', type: 'quantitative'})).toBe(1);
+    });
+
+    it('returns 0 for non-rect marks', () => {
+      expect(properties.defaultZindex('point', {field: 'a', type: 'nominal'})).toBe(0);
+    });
   });
 });
