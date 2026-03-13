@@ -11,6 +11,7 @@ import {parseFacetModel, parseFacetModelWithScale} from '../util.js';
 
 function getCellItems(view: View) {
   const cells: {x: number; y: number; datum: Record<string, unknown>}[] = [];
+  const scenegraph = view.scenegraph() as unknown as {root: unknown};
 
   function walk(item: any) {
     if (!item) {
@@ -28,7 +29,7 @@ function getCellItems(view: View) {
     }
   }
 
-  walk(view.scenegraph().root);
+  walk(scenegraph.root);
 
   return cells.sort((a, b) => a.y - b.y || a.x - b.x);
 }
