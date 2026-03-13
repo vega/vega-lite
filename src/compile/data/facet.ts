@@ -1,5 +1,5 @@
 import type {AggregateOp} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray, stringValue} from 'vega-util';
 import {isBinning} from '../../bin.js';
 import {COLUMN, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../../channel.js';
 import {vgField} from '../../channeldef.js';
@@ -8,7 +8,7 @@ import {hasDiscreteDomain} from '../../scale.js';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField} from '../../sort.js';
 import {hash} from '../../util.js';
 import {isVgRangeStep, VgData} from '../../vega.schema.js';
-import {FacetModel} from '../facet.js';
+import type {FacetModel} from '../facet.js';
 import {HEADER_CHANNELS, HEADER_TYPES} from '../header/component.js';
 import {Model} from '../model.js';
 import {assembleDomain, getFieldFromDomain} from '../scale/domain.js';
@@ -18,6 +18,15 @@ import {DataFlowNode} from './dataflow.js';
 interface ChildIndependentFieldsWithStep {
   x?: string;
   y?: string;
+}
+
+function isCrossedFacetWithCustomSort(model: FacetModel) {
+  const {row, column} = model.facet;
+  return !!(row && column && (isCustomSortField(row) || isCustomSortField(column)));
+}
+
+function isCustomSortField(fieldDef?: FacetModel['facet']['row']) {
+  return !!fieldDef && (isSortField(fieldDef.sort) || Array.isArray(fieldDef.sort));
 }
 
 interface FacetChannelInfo {
@@ -61,7 +70,7 @@ export class FacetNode extends DataFlowNode {
           name: model.getName(`${channel}_domain`),
           fields: [vgField(fieldDef), ...(isBinning(bin) ? [vgField(fieldDef, {binSuffix: 'end'})] : [])],
           ...(isSortField(sort)
-            ? {sortField: sort}
+            ? {sortField: sort as EncodingSortField<string>}
             : isArray(sort)
               ? {sortIndexField: sortArrayIndexField(fieldDef, channel)}
               : {}),
@@ -128,7 +137,6 @@ export class FacetNode extends DataFlowNode {
     for (const channel of POSITION_SCALE_CHANNELS) {
       const childScaleComponent = this.childModel.component.scales[channel];
       if (childScaleComponent && !childScaleComponent.merged) {
-        // independent scale
         const type = childScaleComponent.get('type');
         const range = childScaleComponent.get('range');
 
@@ -256,6 +264,45 @@ export class FacetNode extends DataFlowNode {
     return data;
   }
 
+  private getFacetLookupField(channel: 'row' | 'column') {
+    return this.model.getName(`${channel}_facet_key`);
+  }
+
+  private getFacetLookupKeyExpr(fields: string[], datum: string) {
+    return `join([${fields
+      .map((field) => {
+        const fieldRef = `${datum}[${stringValue(field)}]`;
+        return `isValid(${fieldRef}) ? length(toString(${fieldRef})) + ':' + toString(${fieldRef}) : '-1:'`;
+      })
+      .join(', ')}], '|')`;
+  }
+
+  private assembleFacetLookupDomainData(channel: 'row' | 'column'): VgData | null {
+    const facetChannel = this[channel];
+
+    if (!facetChannel || (!facetChannel.sortField && !facetChannel.sortIndexField)) {
+      return null;
+    }
+
+    return {
+      name: this.model.getName(`${channel}_lookup_domain`),
+      source: facetChannel.name,
+      transform: [
+        {
+          type: 'formula',
+          expr: this.getFacetLookupKeyExpr(facetChannel.fields, 'datum'),
+          as: this.getFacetLookupField(channel),
+        },
+      ],
+    };
+  }
+
+  private assembleFacetSortLookupData(): VgData[] {
+    return ([ROW, COLUMN] as const)
+      .map((channel) => this.assembleFacetLookupDomainData(channel))
+      .filter((lookupData): lookupData is VgData => lookupData !== null);
+  }
+
   public assemble() {
     const data: VgData[] = [];
     let crossedDataName = null;
@@ -291,6 +338,10 @@ export class FacetNode extends DataFlowNode {
       if (this[channel]) {
         data.push(this.assembleRowColumnHeaderData(channel, crossedDataName, childIndependentFieldsWithStep));
       }
+    }
+
+    if (isCrossedFacetWithCustomSort(this.model)) {
+      data.push(...this.assembleFacetSortLookupData());
     }
 
     if (facet) {
