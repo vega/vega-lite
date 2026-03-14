@@ -178,6 +178,7 @@ function addLineBreaksToTooltip(
   if (
     isFieldDef(channelDef) &&
     isDiscrete(channelDef.type) &&
+    !channelDef.timeUnit &&
     !getFormatMixins(channelDef).format &&
     !getFormatMixins(channelDef).formatType
   ) {

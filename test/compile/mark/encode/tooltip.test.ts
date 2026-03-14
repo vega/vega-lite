@@ -219,6 +219,23 @@ describe('compile/mark/encode/tooltip', () => {
       });
     });
 
+    it('generates tooltip via textRef for discrete fields with timeUnit', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'bar', tooltip: true},
+        encoding: {
+          x: {field: 'date', timeUnit: 'yearmonth', type: 'nominal'},
+          y: {aggregate: 'count', type: 'quantitative'},
+        },
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toBeDefined();
+      const sig = (props.tooltip as {signal: string}).signal;
+      // Should use the transformed field name (yearmonth_date) via textRef,
+      // not the raw field name (date) from the shortcut path
+      expect(sig).not.toContain('datum["date"]');
+      expect(sig).toContain('yearmonth_date');
+    });
+
     it('generates correct keys and values for channels with title with quotes', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: true},
