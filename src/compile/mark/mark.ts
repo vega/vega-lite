@@ -19,6 +19,7 @@ import {rect} from './rect.js';
 import {rule} from './rule.js';
 import {text} from './text.js';
 import {tick} from './tick.js';
+import {treemap} from './treemap.js';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -35,6 +36,7 @@ const markCompiler: Record<Mark, MarkCompiler> = {
   text,
   tick,
   trail,
+  treemap,
 };
 
 export function parseMarkGroups(model: UnitModel): any[] {

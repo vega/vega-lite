@@ -24,6 +24,7 @@ export const Mark = {
   circle: 'circle',
   square: 'square',
   geoshape: 'geoshape',
+  treemap: 'treemap',
 } as const;
 
 export const ARC = Mark.arc;
@@ -40,6 +41,7 @@ export const TRAIL = Mark.trail;
 export const CIRCLE = Mark.circle;
 export const SQUARE = Mark.square;
 export const GEOSHAPE = Mark.geoshape;
+export const TREEMAP = Mark.treemap;
 
 export type Mark = keyof typeof Mark;
 
@@ -360,7 +362,96 @@ export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
   | BarConfig<ES>
   | RectConfig<ES>
   | LineConfig<ES>
-  | TickConfig<ES>;
+  | TickConfig<ES>
+  | TreemapConfig<ES>;
+
+export type TreemapMethod = 'squarify' | 'resquarify' | 'binary' | 'dice' | 'slice' | 'slicedice';
+
+export type TreemapNodes = 'leaves' | 'internal' | 'all';
+
+export interface TreemapLayoutMixins {
+  /**
+   * Which tree nodes to render.
+   *
+   * - `"leaves"` — only nodes without children
+   * - `"internal"` — only nodes with children (root + intermediates)
+   * - `"all"` — every node in the tree
+   *
+   * __Default value:__ `"leaves"`
+   */
+  nodes?: TreemapNodes;
+
+  /**
+   * Layout algorithm for treemap.
+   *
+   * __Default value:__ `"squarify"`
+   */
+  method?: TreemapMethod;
+
+  /**
+   * Sets both paddingInner and paddingOuter for treemap.
+   *
+   * __Default value:__ `0`
+   * @minimum 0
+   */
+  padding?: number;
+
+  /**
+   * Space between sibling nodes in treemap.
+   *
+   * __Default value:__ `0`
+   * @minimum 0
+   */
+  paddingInner?: number;
+
+  /**
+   * Space between parent boundary and children in treemap.
+   *
+   * __Default value:__ `0`
+   * @minimum 0
+   */
+  paddingOuter?: number;
+
+  /**
+   * Padding at the top of parent nodes in treemap.
+   * @minimum 0
+   */
+  paddingTop?: number;
+
+  /**
+   * Padding at the right of parent nodes in treemap.
+   * @minimum 0
+   */
+  paddingRight?: number;
+
+  /**
+   * Padding at the bottom of parent nodes in treemap.
+   * @minimum 0
+   */
+  paddingBottom?: number;
+
+  /**
+   * Padding at the left of parent nodes in treemap.
+   * @minimum 0
+   */
+  paddingLeft?: number;
+
+  /**
+   * Target aspect ratio for squarify/resquarify layout.
+   *
+   * __Default value:__ golden ratio (~1.618)
+   */
+  ratio?: number;
+
+  /**
+   * Whether to round treemap coordinates to integers.
+   *
+   * __Default value:__ `false`
+   */
+  round?: boolean;
+}
+
+export interface TreemapConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, TreemapLayoutMixins {}
 
 export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Mark Config */
@@ -409,6 +500,9 @@ export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
 
   /** Geoshape-Specific Config */
   geoshape?: MarkConfig<ES>;
+
+  /** Treemap-Specific Config */
+  treemap?: TreemapConfig<ES>;
 }
 
 const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
@@ -427,6 +521,7 @@ const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
   tick: 1,
   trail: 1,
   geoshape: 1,
+  treemap: 1,
 };
 
 export const MARK_CONFIGS = keys(MARK_CONFIG_INDEX);
@@ -617,7 +712,8 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
         AreaConfig<ES> &
         BarConfig<ES> & // always extends RectConfig
         LineConfig<ES> &
-        TickConfig<ES>,
+        TickConfig<ES> &
+        TreemapConfig<ES>,
       'startAngle' | 'endAngle' | 'width' | 'height'
     >,
     MarkDefMixins<ES> {

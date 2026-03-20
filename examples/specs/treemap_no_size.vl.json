@@ -1,0 +1,22 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A treemap without size encoding (equally weighted leaves)",
+  "width": 960,
+  "height": 500,
+  "data": {
+    "url": "data/flare.json"
+  },
+  "mark": {
+    "type": "treemap",
+    "stroke": "#fff",
+    "strokeWidth": 1
+  },
+  "encoding": {
+    "hierarchy": {
+      "key": {"field": "id"},
+      "parentKey": {"field": "parent"}
+    },
+    "color": {"field": "name", "type": "nominal", "legend": null},
+    "tooltip": {"field": "name", "type": "nominal"}
+  }
+}

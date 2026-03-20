@@ -6,7 +6,7 @@ import {SharedCompositeEncoding} from '../compositemark/index.js';
 import {boxPlotNormalizer} from '../compositemark/boxplot.js';
 import {errorBandNormalizer} from '../compositemark/errorband.js';
 import {errorBarNormalizer} from '../compositemark/errorbar.js';
-import {channelHasField, Encoding} from '../encoding.js';
+import {channelHasField, Encoding, isHierarchyDef} from '../encoding.js';
 import {ExprRef} from '../expr.js';
 import * as log from '../log/index.js';
 import {Projection} from '../projection.js';
@@ -371,6 +371,7 @@ function mergeEncoding({
         merged[channel] = channelDef;
       } else if (
         layer ||
+        isHierarchyDef(parentChannelDef) ||
         isValueDef(parentChannelDef) ||
         isSignalRef(parentChannelDef) ||
         isFieldOrDatumDef(parentChannelDef) ||
