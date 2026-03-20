@@ -15,7 +15,6 @@
         {"type": "stratify", "key": "id", "parentKey": "parent"},
         {
           "type": "treemap",
-          "method": "squarify",
           "field": "size",
           "size": [{"signal": "width"}, {"signal": "height"}],
           "round": true
@@ -30,7 +29,6 @@
         {"type": "stratify", "key": "id", "parentKey": "parent"},
         {
           "type": "treemap",
-          "method": "squarify",
           "field": "size",
           "size": [{"signal": "width"}, {"signal": "height"}],
           "round": true

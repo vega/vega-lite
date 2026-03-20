@@ -15,7 +15,6 @@
         {"type": "nest", "keys": ["Origin", "Cylinders"]},
         {
           "type": "treemap",
-          "method": "squarify",
           "field": "Horsepower",
           "size": [{"signal": "width"}, {"signal": "height"}]
         },
