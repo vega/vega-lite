@@ -50,12 +50,17 @@
       },
       "transform": [
         {
+          "type": "formula",
+          "as": "__wordcloud_rotate",
+          "expr": "~~(random() * 3) * 45 - 45"
+        },
+        {
           "type": "wordcloud",
           "size": [{"signal": "width"}, {"signal": "height"}],
           "text": {"field": "datum.text"},
           "fontSize": {"field": "datum.count"},
           "fontSizeRange": [14, 56],
-          "rotate": {"expr": "~~(random() * 3) * 45 - 45"},
+          "rotate": {"field": "__wordcloud_rotate"},
           "padding": 2
         }
       ]
