@@ -66,13 +66,13 @@ Unlike `treemap`, the wordcloud mark does not require hierarchy transforms — i
 
 The proposed `wordcloud` mark would compile to a Vega `text` mark. It injects Vega's `wordcloud` transform as a **post-encoding transform** — the same mechanism `geoshape` uses to inject its `geoshape` transform. This is different from `treemap`, which injects transforms into the data pipeline.
 
-| Aspect              | `geoshape` (existing)             | `wordcloud` (proposed)                |
-| ------------------- | --------------------------------- | ------------------------------------- |
-| Mark enum           | `Mark.geoshape`                   | `Mark.wordcloud`                      |
-| Vega mark type      | `shape`                           | `text`                                |
-| Transform location  | `postEncodingTransform`           | `postEncodingTransform`               |
-| Internal transforms | `geoshape`                        | `wordcloud`                           |
-| Layout sizing       | projection                        | `size: [{signal: "width"}, {signal: "height"}]` |
+| Aspect              | `geoshape` (existing)   | `wordcloud` (proposed)                          |
+| ------------------- | ----------------------- | ----------------------------------------------- |
+| Mark enum           | `Mark.geoshape`         | `Mark.wordcloud`                                |
+| Vega mark type      | `shape`                 | `text`                                          |
+| Transform location  | `postEncodingTransform` | `postEncodingTransform`                         |
+| Internal transforms | `geoshape`              | `wordcloud`                                     |
+| Layout sizing       | projection              | `size: [{signal: "width"}, {signal: "height"}]` |
 
 The Vega `wordcloud` transform computes `x`, `y`, `fontSize`, `fontStyle`, `fontWeight`, `angle`, and `font` for each word. It reads its sizing from the `size` parameter (set to `[{signal: "width"}, {signal: "height"}]` so the layout fills the view). The layout algorithm places words to avoid overlap using a spiral placement strategy.
 
@@ -82,15 +82,15 @@ The Vega `wordcloud` transform computes `x`, `y`, `fontSize`, `fontStyle`, `font
 
 The wordcloud mark would support the following encoding channels:
 
-| Channel     | Required | Maps to                         | Scale generated |
-| ----------- | -------- | ------------------------------- | --------------- |
-| `text`      | Yes      | Wordcloud `text` param + text mark `text` encoding | No |
-| `size`      | No       | Wordcloud `fontSize` param; `scale.range` → `fontSizeRange` | Yes (range only — see [Decision: Size mapping](#size-mapping-scale-range-to-fontsizerange)) |
-| `color`     | No       | Text mark `fill`                | Yes (standard)  |
-| `angle`     | No       | Wordcloud `rotate` param        | No              |
-| `opacity`   | No       | Text mark `fillOpacity`         | Yes (standard)  |
-| `tooltip`   | No       | Standard tooltip                | —               |
-| `href`      | No       | Standard href                   | —               |
+| Channel | Required | Maps to | Scale generated |
+| --- | --- | --- | --- |
+| `text` | Yes | Wordcloud `text` param + text mark `text` encoding | No |
+| `size` | No | Wordcloud `fontSize` param; `scale.range` → `fontSizeRange` | Yes (range only — see [Decision: Size mapping](#size-mapping-scale-range-to-fontsizerange)) |
+| `color` | No | Text mark `fill` | Yes (standard) |
+| `angle` | No | Wordcloud `rotate` param | No |
+| `opacity` | No | Text mark `fillOpacity` | Yes (standard) |
+| `tooltip` | No | Standard tooltip | — |
+| `href` | No | Standard href | — |
 
 **Blocked channels:** `x`, `y`, `x2`, `y2`, `xOffset`, `yOffset`, `latitude`, `longitude` — positions come from the layout, not from user encoding. This follows the same pattern as `treemap` blocking `x`/`y`.
 
@@ -102,15 +102,15 @@ If `size` is omitted, all words are rendered at the same font size (using the ma
 
 These layout parameters would go on the mark def (e.g. `"mark": {"type": "wordcloud", "spiral": "rectangular"}`). They control the wordcloud layout algorithm. All defaults match Vega's defaults.
 
-| Property        | Type                           | Default         | Description |
-| --------------- | ------------------------------ | --------------- | ----------- |
-| `font`          | String                         | `"Helvetica Neue, Arial"` | Font family for all words |
-| `fontStyle`     | String                         | `"normal"`      | Font style for all words |
-| `fontWeight`    | String \| Number               | `"normal"`      | Font weight for all words |
-| `fontSize`      | Number                         | `14`            | Uniform font size when no `size` encoding is specified |
-| `padding`       | Number                         | `2`             | Pixel padding between words |
-| `spiral`        | `"archimedean"` \| `"rectangular"` | `"archimedean"` | Spiral layout method for word placement |
-| `rotate`        | Number                         | `0`             | Default rotation angle (degrees) when no `angle` encoding is specified |
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `font` | String | `"Helvetica Neue, Arial"` | Font family for all words |
+| `fontStyle` | String | `"normal"` | Font style for all words |
+| `fontWeight` | String \| Number | `"normal"` | Font weight for all words |
+| `fontSize` | Number | `14` | Uniform font size when no `size` encoding is specified |
+| `padding` | Number | `2` | Pixel padding between words |
+| `spiral` | `"archimedean"` \| `"rectangular"` | `"archimedean"` | Spiral layout method for word placement |
+| `rotate` | Number | `0` | Default rotation angle (degrees) when no `angle` encoding is specified |
 
 Font size scaling range is controlled via `scale.range` on the `size` encoding (e.g. `"size": {"field": "count", "scale": {"range": [10, 56]}}`), not via a mark def property. The mark compiler reads this range and passes it to the Vega transform's `fontSizeRange`. Default range is `[10, 56]`.
 
@@ -133,13 +133,7 @@ Per-datum `font`/`fontWeight`/`fontStyle` via encoding would require new VL chan
 ```json
 {
   "data": {
-    "values": [
-      {"word": "Vega"},
-      {"word": "Lite"},
-      {"word": "Data"},
-      {"word": "Visualization"},
-      {"word": "Grammar"}
-    ]
+    "values": [{"word": "Vega"}, {"word": "Lite"}, {"word": "Data"}, {"word": "Visualization"}, {"word": "Grammar"}]
   },
   "mark": "wordcloud",
   "encoding": {
@@ -329,9 +323,7 @@ For `angle`, the raw field values are passed to the transform's `rotate` paramet
 
 ```json
 {
-  "transform": [
-    {"calculate": "[-45, 0, 45][floor(random() * 3)]", "as": "angle"}
-  ],
+  "transform": [{"calculate": "[-45, 0, 45][floor(random() * 3)]", "as": "angle"}],
   "encoding": {
     "angle": {"field": "angle", "type": "quantitative"}
   }
@@ -356,14 +348,14 @@ For the initial implementation, users would prepare word-frequency data external
 
 The wordcloud mark is the second instance of the "mark as layout" pattern proposed in the [treemap design doc](2026-03-18-treemap.md#beyond-hierarchies-the-mark-as-layout-pattern). It validates the pattern by demonstrating that it works for non-hierarchical layouts:
 
-| Aspect              | `treemap`                    | `wordcloud`                  |
-| ------------------- | ---------------------------- | ---------------------------- |
-| Input data          | Hierarchical (flat + hierarchy encoding) | Flat (no hierarchy needed) |
-| Layout transform    | Data pipeline (`treemap`)    | Post-encoding (`wordcloud`)  |
-| Vega mark type      | `rect`                       | `text`                       |
-| Position channels   | `x`/`y` blocked              | `x`/`y` blocked              |
-| Size channel        | Area of rectangle            | Font size                    |
-| Scale for size      | Skipped (layout handles it)  | `scale.range` → transform `fontSizeRange` |
+| Aspect            | `treemap`                                | `wordcloud`                               |
+| ----------------- | ---------------------------------------- | ----------------------------------------- |
+| Input data        | Hierarchical (flat + hierarchy encoding) | Flat (no hierarchy needed)                |
+| Layout transform  | Data pipeline (`treemap`)                | Post-encoding (`wordcloud`)               |
+| Vega mark type    | `rect`                                   | `text`                                    |
+| Position channels | `x`/`y` blocked                          | `x`/`y` blocked                           |
+| Size channel      | Area of rectangle                        | Font size                                 |
+| Scale for size    | Skipped (layout handles it)              | `scale.range` → transform `fontSizeRange` |
 
 ---
 
