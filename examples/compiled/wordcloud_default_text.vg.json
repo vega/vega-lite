@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "A word cloud using the default text field (no text encoding specified).",
+  "description": "A word cloud with no text encoding — all words show the constant 'text' placeholder.",
   "background": "white",
   "padding": 5,
   "width": 600,
@@ -10,26 +10,16 @@
     {
       "name": "source_0",
       "values": [
-        {"text": "visualization", "count": 80},
-        {"text": "data", "count": 72},
-        {"text": "chart", "count": 60},
-        {"text": "graph", "count": 55},
-        {"text": "analysis", "count": 50},
-        {"text": "statistics", "count": 45},
-        {"text": "interactive", "count": 42},
-        {"text": "dashboard", "count": 38},
-        {"text": "plot", "count": 35},
-        {"text": "encoding", "count": 32},
-        {"text": "scale", "count": 30},
-        {"text": "axis", "count": 28},
-        {"text": "legend", "count": 25},
-        {"text": "color", "count": 22},
-        {"text": "mark", "count": 20},
-        {"text": "transform", "count": 18},
-        {"text": "filter", "count": 16},
-        {"text": "aggregate", "count": 15},
-        {"text": "selection", "count": 14},
-        {"text": "tooltip", "count": 12}
+        {"category": "A", "count": 80},
+        {"category": "B", "count": 72},
+        {"category": "C", "count": 60},
+        {"category": "D", "count": 55},
+        {"category": "E", "count": 50},
+        {"category": "F", "count": 45},
+        {"category": "G", "count": 42},
+        {"category": "H", "count": 38},
+        {"category": "I", "count": 35},
+        {"category": "J", "count": 32}
       ]
     }
   ],
@@ -41,12 +31,12 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "text"},
+          "fill": {"scale": "color", "field": "category"},
           "ariaRoleDescription": {"value": "wordcloud"},
           "description": {
-            "signal": "\"text: \" + (isValid(datum[\"text\"]) ? isArray(datum[\"text\"]) ? join(datum[\"text\"], ' ') : datum[\"text\"] : \"\"+datum[\"text\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
+            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? isArray(datum[\"category\"]) ? join(datum[\"category\"], ' ') : datum[\"category\"] : \"\"+datum[\"category\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
           },
-          "text": {"field": "text"},
+          "text": {"value": "text"},
           "align": {"value": "center"},
           "baseline": {"value": "alphabetic"},
           "x": {"field": "x"},
@@ -75,7 +65,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "text", "sort": true},
+      "domain": {"data": "source_0", "field": "category", "sort": true},
       "range": "category"
     }
   ]
