@@ -19,7 +19,10 @@ export {rectPosition} from './position-rect.js';
 export {text} from './text.js';
 export {tooltip} from './tooltip.js';
 
-export type Ignore = Record<'color' | 'size' | 'orient' | 'align' | 'baseline' | 'theta' | 'angle', 'ignore' | 'include'>;
+export type Ignore = Record<
+  'color' | 'size' | 'orient' | 'align' | 'baseline' | 'theta' | 'angle',
+  'ignore' | 'include'
+>;
 
 const ALWAYS_IGNORE = new Set(['aria', 'width', 'height']);
 
