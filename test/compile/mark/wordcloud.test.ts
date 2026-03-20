@@ -71,7 +71,7 @@ describe('Mark: Wordcloud', () => {
   });
 
   describe('postEncodingTransform', () => {
-    it('should produce a wordcloud transform with text field', () => {
+    it('should produce a wordcloud transform with text field and default random rotation', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'wordcloud',
         encoding: {
@@ -82,9 +82,10 @@ describe('Mark: Wordcloud', () => {
       const transforms = wordcloud.postEncodingTransform(model);
 
       expect(transforms).toHaveLength(1);
-      const t = transforms[0];
+      const t = transforms[0] as any;
       expect(t.type).toBe('wordcloud');
-      expect((t as any).text).toEqual({field: 'datum.word'});
+      expect(t.text).toEqual({field: 'datum.word'});
+      expect(t.rotate).toEqual({signal: '~~(random() * 3) * 45 - 45'});
     });
 
     it('should set fontSize and fontSizeRange from size encoding with scale.range', () => {
@@ -115,6 +116,20 @@ describe('Mark: Wordcloud', () => {
       const t = transforms[0] as any;
 
       expect(t.fontSize).toBe(14);
+    });
+
+    it('should use constant rotate when angle is set on markDef', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'wordcloud', angle: 0},
+        encoding: {
+          text: {field: 'word', type: 'nominal'},
+        },
+        data: {values: [{word: 'hello'}]},
+      });
+      const transforms = wordcloud.postEncodingTransform(model);
+      const t = transforms[0] as any;
+
+      expect(t.rotate).toBe(0);
     });
 
     it('should set rotate from angle encoding', () => {
