@@ -24,6 +24,7 @@ export const Mark = {
   circle: 'circle',
   square: 'square',
   geoshape: 'geoshape',
+  wordcloud: 'wordcloud',
 } as const;
 
 export const ARC = Mark.arc;
@@ -40,6 +41,7 @@ export const TRAIL = Mark.trail;
 export const CIRCLE = Mark.circle;
 export const SQUARE = Mark.square;
 export const GEOSHAPE = Mark.geoshape;
+export const WORDCLOUD = Mark.wordcloud;
 
 export type Mark = keyof typeof Mark;
 
@@ -345,6 +347,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   rect: VL_ONLY_RECT_CONFIG,
   line: ['point'],
   tick: ['bandSize', 'thickness', ...VL_ONLY_RECT_CONFIG],
+  wordcloud: ['padding', 'spiral'],
 };
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
@@ -360,7 +363,8 @@ export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
   | BarConfig<ES>
   | RectConfig<ES>
   | LineConfig<ES>
-  | TickConfig<ES>;
+  | TickConfig<ES>
+  | (MarkConfig<ES> & WordcloudDef);
 
 export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Mark Config */
@@ -409,6 +413,9 @@ export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
 
   /** Geoshape-Specific Config */
   geoshape?: MarkConfig<ES>;
+
+  /** Wordcloud-Specific Config */
+  wordcloud?: MarkConfig<ES> & WordcloudDef;
 }
 
 const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
@@ -427,6 +434,7 @@ const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
   tick: 1,
   trail: 1,
   geoshape: 1,
+  wordcloud: 1,
 };
 
 export const MARK_CONFIGS = keys(MARK_CONFIG_INDEX);
@@ -608,6 +616,20 @@ export interface RelativeBandSize {
   band: number;
 }
 
+export interface WordcloudDef {
+  /**
+   * Padding between words in the word cloud layout, in pixels.
+   *
+   * __Default value:__ `2`
+   */
+  padding?: number;
+
+  /**
+   * The spiral layout method for positioning words. One of `"archimedean"` (default) or `"rectangular"`.
+   */
+  spiral?: 'archimedean' | 'rectangular';
+}
+
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   extends
@@ -620,7 +642,8 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
         TickConfig<ES>,
       'startAngle' | 'endAngle' | 'width' | 'height'
     >,
-    MarkDefMixins<ES> {
+    MarkDefMixins<ES>,
+    WordcloudDef {
   // Omit startAngle/endAngle since we use theta/theta2 from Vega-Lite schema to avoid confusion
   // We still support start/endAngle  only in config, just in case people use Vega config with Vega-Lite.
 
