@@ -292,7 +292,7 @@ export interface VgWordcloudTransform {
   fontWeight?: string | number;
   fontSize?: number | {field: string};
   fontSizeRange?: [number, number];
-  rotate?: number | {field: string};
+  rotate?: number | {field: string} | SignalRef;
   padding?: number;
   spiral?: 'archimedean' | 'rectangular';
   as?: string[];

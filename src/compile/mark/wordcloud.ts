@@ -67,6 +67,7 @@ export const wordcloud: MarkCompiler = {
 
     // Angle encoding → rotate on the transform. Conceptually an identity scale:
     // raw data values pass through to the transform as rotation degrees.
+    // Default: random from [-45, 0, 45] (matching Vega's wordcloud example).
     const angleDef = encoding.angle;
     if (isFieldDef(angleDef)) {
       transform.rotate = {field: `datum.${vgField(angleDef)}`};
@@ -74,6 +75,8 @@ export const wordcloud: MarkCompiler = {
       const angle = getMarkPropOrConfig('angle', markDef, config);
       if (isNumber(angle)) {
         transform.rotate = angle;
+      } else {
+        transform.rotate = {signal: '~~(random() * 3) * 45 - 45'};
       }
     }
 
