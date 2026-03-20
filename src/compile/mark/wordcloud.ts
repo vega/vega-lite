@@ -21,7 +21,7 @@ export const wordcloud: MarkCompiler = {
         theta: 'ignore',
         angle: 'ignore',
       }),
-      ...(encoding.text ? encode.text(model) : {text: {field: 'text'}}),
+      ...(encoding.text ? encode.text(model) : {text: {value: 'text'}}),
       ...encode.valueIfDefined('align', 'center'),
       ...encode.valueIfDefined('baseline', 'alphabetic'),
       x: {field: 'x'},

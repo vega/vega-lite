@@ -1,30 +1,20 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "A word cloud using the default text field (no text encoding specified).",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A word cloud with no text encoding — all words show the constant 'text' placeholder.",
   "width": 600,
   "height": 400,
   "data": {
     "values": [
-      {"text": "visualization", "count": 80},
-      {"text": "data", "count": 72},
-      {"text": "chart", "count": 60},
-      {"text": "graph", "count": 55},
-      {"text": "analysis", "count": 50},
-      {"text": "statistics", "count": 45},
-      {"text": "interactive", "count": 42},
-      {"text": "dashboard", "count": 38},
-      {"text": "plot", "count": 35},
-      {"text": "encoding", "count": 32},
-      {"text": "scale", "count": 30},
-      {"text": "axis", "count": 28},
-      {"text": "legend", "count": 25},
-      {"text": "color", "count": 22},
-      {"text": "mark", "count": 20},
-      {"text": "transform", "count": 18},
-      {"text": "filter", "count": 16},
-      {"text": "aggregate", "count": 15},
-      {"text": "selection", "count": 14},
-      {"text": "tooltip", "count": 12}
+      {"category": "A", "count": 80},
+      {"category": "B", "count": 72},
+      {"category": "C", "count": 60},
+      {"category": "D", "count": 55},
+      {"category": "E", "count": 50},
+      {"category": "F", "count": 45},
+      {"category": "G", "count": 42},
+      {"category": "H", "count": 38},
+      {"category": "I", "count": 35},
+      {"category": "J", "count": 32}
     ]
   },
   "mark": {"type": "wordcloud", "padding": 2},
@@ -34,6 +24,6 @@
       "type": "quantitative",
       "scale": {"range": [14, 56]}
     },
-    "color": {"field": "text", "type": "nominal", "legend": null}
+    "color": {"field": "category", "type": "nominal", "legend": null}
   }
 }
