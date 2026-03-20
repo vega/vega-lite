@@ -55,7 +55,7 @@
           "text": {"field": "datum.text"},
           "fontSize": {"field": "datum.count"},
           "fontSizeRange": [14, 56],
-          "rotate": {"signal": "~~(random() * 3) * 45 - 45"},
+          "rotate": {"expr": "~~(random() * 3) * 45 - 45"},
           "padding": 2
         }
       ]
