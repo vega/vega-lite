@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "A word cloud showing word frequency.",
+  "description": "A horizontal word cloud with all words at 0 degrees.",
   "background": "white",
   "padding": 5,
   "width": 600,
@@ -67,7 +67,7 @@
           "text": {"field": "datum.word"},
           "fontSize": {"field": "datum.count"},
           "fontSizeRange": [14, 56],
-          "rotate": {"signal": "~~(random() * 3) * 45 - 45"},
+          "rotate": 0,
           "padding": 2
         }
       ]
