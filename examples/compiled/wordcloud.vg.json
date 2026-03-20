@@ -1,0 +1,83 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "A word cloud showing word frequency.",
+  "background": "white",
+  "padding": 5,
+  "width": 600,
+  "height": 400,
+  "style": "view",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"word": "visualization", "count": 80},
+        {"word": "data", "count": 72},
+        {"word": "chart", "count": 60},
+        {"word": "graph", "count": 55},
+        {"word": "analysis", "count": 50},
+        {"word": "statistics", "count": 45},
+        {"word": "interactive", "count": 42},
+        {"word": "dashboard", "count": 38},
+        {"word": "plot", "count": 35},
+        {"word": "encoding", "count": 32},
+        {"word": "scale", "count": 30},
+        {"word": "axis", "count": 28},
+        {"word": "legend", "count": 25},
+        {"word": "color", "count": 22},
+        {"word": "mark", "count": 20},
+        {"word": "transform", "count": 18},
+        {"word": "filter", "count": 16},
+        {"word": "aggregate", "count": 15},
+        {"word": "selection", "count": 14},
+        {"word": "tooltip", "count": 12}
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "text",
+      "style": ["wordcloud"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "word"},
+          "ariaRoleDescription": {"value": "wordcloud"},
+          "description": {
+            "signal": "\"word: \" + (isValid(datum[\"word\"]) ? isArray(datum[\"word\"]) ? join(datum[\"word\"], ' ') : datum[\"word\"] : \"\"+datum[\"word\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
+          },
+          "text": {
+            "signal": "isValid(datum[\"word\"]) ? datum[\"word\"] : \"\"+datum[\"word\"]"
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "alphabetic"},
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "fontSize": {"field": "fontSize"},
+          "angle": {"field": "rotate"},
+          "font": {"field": "font"},
+          "fontStyle": {"field": "fontStyle"},
+          "fontWeight": {"field": "fontWeight"}
+        }
+      },
+      "transform": [
+        {
+          "type": "wordcloud",
+          "size": [{"signal": "width"}, {"signal": "height"}],
+          "text": {"field": "datum.word"},
+          "fontSize": {"field": "datum.count"},
+          "fontSizeRange": [14, 56],
+          "padding": 2
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "word", "sort": true},
+      "range": "category"
+    }
+  ]
+}
