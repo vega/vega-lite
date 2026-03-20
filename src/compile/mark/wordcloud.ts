@@ -10,6 +10,7 @@ export const wordcloud: MarkCompiler = {
   vgMark: 'text',
 
   encodeEntry: (model: UnitModel) => {
+    const {encoding} = model;
     return {
       ...encode.baseEncodeEntry(model, {
         align: 'ignore',
@@ -20,7 +21,7 @@ export const wordcloud: MarkCompiler = {
         theta: 'ignore',
         angle: 'ignore',
       }),
-      ...encode.text(model),
+      ...(encoding.text ? encode.text(model) : {text: {field: 'text'}}),
       ...encode.valueIfDefined('align', 'center'),
       ...encode.valueIfDefined('baseline', 'alphabetic'),
       x: {field: 'x'},

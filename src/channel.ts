@@ -533,7 +533,8 @@ const ALL_MARKS: Record<Mark, 'always'> = {
   wordcloud: 'always',
 };
 
-const {geoshape: _g, wordcloud: _wc, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
+// Layout marks use a transform for positioning (not user-specified x/y).
+const {geoshape: _g, wordcloud: _wc, ...POSITIONAL_MARKS} = ALL_MARKS;
 
 /**
  * Return a dictionary showing whether a channel supports mark type.
@@ -571,8 +572,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case LATITUDE:
     case LONGITUDE:
     case TIME:
-      // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
-      return ALL_MARKS_EXCEPT_GEOSHAPE;
+      return POSITIONAL_MARKS;
     case X2:
     case Y2:
     case LATITUDE2:
