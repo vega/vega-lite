@@ -292,13 +292,19 @@ export interface VgWordcloudTransform {
   fontWeight?: string | number;
   fontSize?: number | {field: string};
   fontSizeRange?: [number, number];
-  rotate?: number | {field: string} | SignalRef | VgExprRef;
+  rotate?: number | {field: string} | SignalRef;
   padding?: number;
   spiral?: 'archimedean' | 'rectangular';
   as?: string[];
 }
 
-export type VgPostEncodingTransform = VgGeoShapeTransform | VgWordcloudTransform;
+export interface VgFormulaTransform {
+  type: 'formula';
+  as: string;
+  expr: string;
+}
+
+export type VgPostEncodingTransform = VgGeoShapeTransform | VgWordcloudTransform | VgFormulaTransform;
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof MarkConfig> = {
   aria: 1,

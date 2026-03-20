@@ -1,6 +1,6 @@
 import {isArray, isNumber, isString} from 'vega-util';
 import {isFieldDef, vgField} from '../../channeldef.js';
-import {VgPostEncodingTransform, VgWordcloudTransform} from '../../vega.schema.js';
+import {VgFormulaTransform, VgPostEncodingTransform, VgWordcloudTransform} from '../../vega.schema.js';
 import {getMarkPropOrConfig} from '../common.js';
 import {UnitModel} from '../unit.js';
 import {MarkCompiler} from './base.js';
@@ -68,8 +68,10 @@ export const wordcloud: MarkCompiler = {
 
     // Angle encoding → rotate on the transform. Conceptually an identity scale:
     // raw data values pass through to the transform as rotation degrees.
-    // Default: random from [-45, 0, 45] (matching Vega's wordcloud example).
+    // Default: derive a random angle from [-45, 0, 45] per datum via a formula
+    // transform (stable across wordcloud re-runs, e.g. on resize).
     const angleDef = encoding.angle;
+    let formulaTransform: VgFormulaTransform | undefined;
     if (isFieldDef(angleDef)) {
       transform.rotate = {field: `datum.${vgField(angleDef)}`};
     } else {
@@ -77,7 +79,12 @@ export const wordcloud: MarkCompiler = {
       if (isNumber(angle)) {
         transform.rotate = angle;
       } else {
-        transform.rotate = {expr: '~~(random() * 3) * 45 - 45'};
+        formulaTransform = {
+          type: 'formula',
+          as: '__wordcloud_rotate',
+          expr: '~~(random() * 3) * 45 - 45',
+        };
+        transform.rotate = {field: '__wordcloud_rotate'};
       }
     }
 
@@ -104,6 +111,6 @@ export const wordcloud: MarkCompiler = {
       transform.spiral = markDef.spiral;
     }
 
-    return [transform];
+    return [...(formulaTransform ? [formulaTransform] : []), transform];
   },
 };

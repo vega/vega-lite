@@ -71,7 +71,7 @@ describe('Mark: Wordcloud', () => {
   });
 
   describe('postEncodingTransform', () => {
-    it('should produce a wordcloud transform with text field and default random rotation', () => {
+    it('should derive a random rotation column and reference it from the wordcloud transform', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'wordcloud',
         encoding: {
@@ -81,11 +81,16 @@ describe('Mark: Wordcloud', () => {
       });
       const transforms = wordcloud.postEncodingTransform(model);
 
-      expect(transforms).toHaveLength(1);
-      const t = transforms[0] as any;
-      expect(t.type).toBe('wordcloud');
-      expect(t.text).toEqual({field: 'datum.word'});
-      expect(t.rotate).toEqual({expr: '~~(random() * 3) * 45 - 45'});
+      expect(transforms).toHaveLength(2);
+      const formula = transforms[0] as any;
+      expect(formula.type).toBe('formula');
+      expect(formula.as).toBe('__wordcloud_rotate');
+      expect(formula.expr).toBe('~~(random() * 3) * 45 - 45');
+
+      const wc = transforms[1] as any;
+      expect(wc.type).toBe('wordcloud');
+      expect(wc.text).toEqual({field: 'datum.word'});
+      expect(wc.rotate).toEqual({field: '__wordcloud_rotate'});
     });
 
     it('should set fontSize and fontSizeRange from size encoding with scale.range', () => {
@@ -98,10 +103,10 @@ describe('Mark: Wordcloud', () => {
         data: {values: [{word: 'hello', count: 10}]},
       });
       const transforms = wordcloud.postEncodingTransform(model);
-      const t = transforms[0] as any;
+      const wc = transforms.find((t: any) => t.type === 'wordcloud') as any;
 
-      expect(t.fontSize).toEqual({field: 'datum.count'});
-      expect(t.fontSizeRange).toEqual([10, 56]);
+      expect(wc.fontSize).toEqual({field: 'datum.count'});
+      expect(wc.fontSizeRange).toEqual([10, 56]);
     });
 
     it('should use markDef fontSize when no size encoding', () => {
@@ -113,9 +118,9 @@ describe('Mark: Wordcloud', () => {
         data: {values: [{word: 'hello'}]},
       });
       const transforms = wordcloud.postEncodingTransform(model);
-      const t = transforms[0] as any;
+      const wc = transforms.find((t: any) => t.type === 'wordcloud') as any;
 
-      expect(t.fontSize).toBe(14);
+      expect(wc.fontSize).toBe(14);
     });
 
     it('should use constant rotate when angle is set on markDef', () => {
@@ -156,11 +161,11 @@ describe('Mark: Wordcloud', () => {
         data: {values: [{word: 'hello'}]},
       });
       const transforms = wordcloud.postEncodingTransform(model);
-      const t = transforms[0] as any;
+      const wc = transforms.find((t: any) => t.type === 'wordcloud') as any;
 
-      expect(t.font).toBe('Helvetica');
-      expect(t.fontStyle).toBe('italic');
-      expect(t.fontWeight).toBe('bold');
+      expect(wc.font).toBe('Helvetica');
+      expect(wc.fontStyle).toBe('italic');
+      expect(wc.fontWeight).toBe('bold');
     });
 
     it('should pass wordcloud-specific properties', () => {
@@ -172,10 +177,10 @@ describe('Mark: Wordcloud', () => {
         data: {values: [{word: 'hello'}]},
       });
       const transforms = wordcloud.postEncodingTransform(model);
-      const t = transforms[0] as any;
+      const wc = transforms.find((t: any) => t.type === 'wordcloud') as any;
 
-      expect(t.padding).toBe(4);
-      expect(t.spiral).toBe('rectangular');
+      expect(wc.padding).toBe(4);
+      expect(wc.spiral).toBe('rectangular');
     });
 
     it('should use width/height signal refs for transform size', () => {
@@ -187,11 +192,11 @@ describe('Mark: Wordcloud', () => {
         data: {values: [{word: 'hello'}]},
       });
       const transforms = wordcloud.postEncodingTransform(model);
-      const t = transforms[0] as any;
+      const wc = transforms.find((t: any) => t.type === 'wordcloud') as any;
 
-      expect(t.size).toHaveLength(2);
-      expect(t.size[0]).toHaveProperty('signal');
-      expect(t.size[1]).toHaveProperty('signal');
+      expect(wc.size).toHaveLength(2);
+      expect(wc.size[0]).toHaveProperty('signal');
+      expect(wc.size[1]).toHaveProperty('signal');
     });
   });
 
@@ -210,7 +215,7 @@ describe('Mark: Wordcloud', () => {
       expect(marks).toHaveLength(1);
       expect(marks[0].type).toBe('text');
       expect(marks[0].transform).toBeDefined();
-      expect(marks[0].transform[0].type).toBe('wordcloud');
+      expect(marks[0].transform.some((t: any) => t.type === 'wordcloud')).toBe(true);
     });
 
     it('should not generate a scale for size', () => {
