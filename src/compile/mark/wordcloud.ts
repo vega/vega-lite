@@ -77,7 +77,7 @@ export const wordcloud: MarkCompiler = {
       if (isNumber(angle)) {
         transform.rotate = angle;
       } else {
-        transform.rotate = {signal: '~~(random() * 3) * 45 - 45'};
+        transform.rotate = {expr: '~~(random() * 3) * 45 - 45'};
       }
     }
 
