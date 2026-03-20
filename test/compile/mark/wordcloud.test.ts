@@ -85,7 +85,7 @@ describe('Mark: Wordcloud', () => {
       const t = transforms[0] as any;
       expect(t.type).toBe('wordcloud');
       expect(t.text).toEqual({field: 'datum.word'});
-      expect(t.rotate).toEqual({signal: '~~(random() * 3) * 45 - 45'});
+      expect(t.rotate).toEqual({expr: '~~(random() * 3) * 45 - 45'});
     });
 
     it('should set fontSize and fontSizeRange from size encoding with scale.range', () => {
