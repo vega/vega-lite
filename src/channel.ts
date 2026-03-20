@@ -530,9 +530,10 @@ const ALL_MARKS: Record<Mark, 'always'> = {
   trail: 'always',
   text: 'always',
   tick: 'always',
+  wordcloud: 'always',
 };
 
-const {geoshape: _g, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
+const {geoshape: _g, wordcloud: _wc, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
 
 /**
  * Return a dictionary showing whether a channel supports mark type.
@@ -600,6 +601,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
         text: 'always',
         line: 'always',
         trail: 'always',
+        wordcloud: 'always',
       };
     case STROKEDASH:
       return {
@@ -615,9 +617,9 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case SHAPE:
       return {point: 'always', geoshape: 'always'};
     case TEXT:
-      return {text: 'always'};
+      return {text: 'always', wordcloud: 'always'};
     case ANGLE:
-      return {point: 'always', square: 'always', text: 'always'};
+      return {point: 'always', square: 'always', text: 'always', wordcloud: 'always'};
     case URL:
       return {image: 'always'};
     case THETA:

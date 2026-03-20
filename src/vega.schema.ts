@@ -283,7 +283,22 @@ export type VgEncodeEntry = Partial<Record<VgEncodeChannel, VgValueRef | (VgValu
 //  ...
 // }
 
-export type VgPostEncodingTransform = VgGeoShapeTransform;
+export interface VgWordcloudTransform {
+  type: 'wordcloud';
+  size: [SignalRef, SignalRef];
+  text: {field: string};
+  font?: string;
+  fontStyle?: string;
+  fontWeight?: string | number;
+  fontSize?: number | {field: string};
+  fontSizeRange?: [number, number];
+  rotate?: number | {field: string};
+  padding?: number;
+  spiral?: 'archimedean' | 'rectangular';
+  as?: string[];
+}
+
+export type VgPostEncodingTransform = VgGeoShapeTransform | VgWordcloudTransform;
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof MarkConfig> = {
   aria: 1,

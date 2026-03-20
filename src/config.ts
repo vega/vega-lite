@@ -317,6 +317,7 @@ export const defaultConfig: Config<SignalRef> = {
   bar: mark.defaultBarConfig,
   circle: {},
   geoshape: {},
+  wordcloud: {},
   image: {},
   line: {},
   point: {},
