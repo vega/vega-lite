@@ -28,8 +28,13 @@ export default defineConfig({
           browser: {
             provider: playwright({
               contextOptions: {
-                deviceScaleFactor: 2,
                 timezoneId: 'America/Los_Angeles',
+              },
+              // --force-device-scale-factor sets window.devicePixelRatio === 2,
+              // simulating a retina display. util.ts reads devicePixelRatio to
+              // scale pointer event coordinates for brush/drag interactions.
+              launchOptions: {
+                args: ['--force-device-scale-factor=2'],
               },
             }),
             enabled: true,
