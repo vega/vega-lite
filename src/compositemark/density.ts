@@ -97,6 +97,12 @@ export type DensityDef = GenericCompositeMarkDef<Density> &
      * Orientation of the density. This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.
      */
     orient?: Orientation;
+    /**
+     * Whether to draw the density as a line (true) or a filled area (false).
+     *
+     * __Default value:__ `false`
+     */
+    line?: boolean;
   };
 
 export interface DensityConfigMixins {
@@ -132,11 +138,11 @@ export function normalizeDensity(
 
   const aliasedFieldName = continuousAxisChannelDef.field;
 
-  const {orient} = markDef;
+  const {orient, line} = markDef;
   const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
 
   const densityMark: MarkDef = {
-    type: 'area',
+    type: line ? 'line' : 'area',
     orient: orient ?? markOrient,
     ...(markDef.opacity !== undefined ? {opacity: markDef.opacity} : {}),
     ...(markDef.color !== undefined ? {color: markDef.color} : {}),
@@ -154,6 +160,16 @@ export function normalizeDensity(
     ? continuousAxisChannelDef.title
     : aliasedFieldName;
 
+  const densityEncoding: any = {
+    field: densityField,
+    type: 'quantitative',
+  };
+
+  // Don't stack density values
+  if (!line) {
+    densityEncoding.stack = null;
+  }
+
   const layer = [
     {
       mark: densityMark,
@@ -165,10 +181,7 @@ export function normalizeDensity(
           ...(hasProperty(continuousAxisChannelDef, 'scale') ? {scale: continuousAxisChannelDef.scale} : {}),
           ...(hasProperty(continuousAxisChannelDef, 'axis') ? {axis: continuousAxisChannelDef.axis} : {}),
         },
-        [continuousAxis === 'x' ? 'y' : 'x']: {
-          field: densityField,
-          type: 'quantitative',
-        },
+        [continuousAxis === 'x' ? 'y' : 'x']: densityEncoding,
         ...encodingWithoutContinuousAxis,
       },
     },

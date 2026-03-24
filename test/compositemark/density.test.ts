@@ -42,6 +42,7 @@ describe('normalizeDensity', () => {
         y: {
           field: 'density',
           type: 'quantitative',
+          stack: null,
         },
       });
     }
@@ -283,7 +284,7 @@ describe('normalizeDensity', () => {
     if ('encoding' in layer0) {
       expect(layer0.encoding).toEqual({
         y: {field: 'value', type: 'quantitative', title: 'IMDB Rating'},
-        x: {field: 'density', type: 'quantitative'},
+        x: {field: 'density', type: 'quantitative', stack: null},
       });
     }
   });
@@ -338,5 +339,50 @@ describe('normalizeDensity', () => {
       bandwidth: 1.0,
       steps: 50,
     });
+  });
+
+  it('should render as line when line: true', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {type: 'density', line: true},
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      expect(layer0.mark).toEqual({
+        type: 'line',
+        orient: 'vertical',
+      });
+    }
+    if ('encoding' in layer0) {
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBeUndefined();
+    }
+  });
+
+  it('should not stack when grouping by color', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: 'density',
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          color: {field: 'Genre', type: 'nominal'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('encoding' in layer0) {
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(null);
+    }
   });
 });
