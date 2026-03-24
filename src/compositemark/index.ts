@@ -24,10 +24,12 @@ import {
   ErrorExtraEncoding,
   normalizeErrorBar,
 } from './errorbar.js';
+import {DENSITY, Density, DensityConfigMixins, DensityDef, DENSITY_PARTS, normalizeDensity} from './density.js';
 
 export type {BoxPlotConfig} from './boxplot.js';
 export type {ErrorBandConfigMixins} from './errorband.js';
 export type {ErrorBarConfigMixins} from './errorbar.js';
+export type {DensityConfigMixins} from './density.js';
 
 export type CompositeMarkNormalizerRun = (
   spec: GenericUnitSpec<any, any>,
@@ -66,18 +68,20 @@ export type SharedCompositeEncoding<F extends Field> = PartialIndex<
 
 export type FacetedCompositeEncoding<F extends Field> = Encoding<F> & ErrorExtraEncoding<F> & EncodingFacetMapping<F>;
 
-export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
+export type CompositeMark = BoxPlot | ErrorBar | ErrorBand | Density;
 
 export function getAllCompositeMarks() {
   return keys(compositeMarkRegistry);
 }
 
-export type CompositeMarkDef = BoxPlotDef | ErrorBarDef | ErrorBandDef;
+export type CompositeMarkDef = BoxPlotDef | ErrorBarDef | ErrorBandDef | DensityDef;
 
 export type CompositeAggregate = BoxPlot | ErrorBar | ErrorBand;
 
-export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins, ErrorBandConfigMixins {}
+export interface CompositeMarkConfigMixins
+  extends BoxPlotConfigMixins, ErrorBarConfigMixins, ErrorBandConfigMixins, DensityConfigMixins {}
 
 add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
 add(ERRORBAR, normalizeErrorBar, ERRORBAR_PARTS);
 add(ERRORBAND, normalizeErrorBand, ERRORBAND_PARTS);
+add(DENSITY, normalizeDensity, DENSITY_PARTS);
