@@ -132,8 +132,12 @@ export function normalizeDensity(
 
   const aliasedFieldName = continuousAxisChannelDef.field;
 
+  const {orient} = markDef;
+  const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
+
   const densityMark: MarkDef = {
     type: 'area',
+    orient: orient ?? markOrient,
     ...(markDef.opacity !== undefined ? {opacity: markDef.opacity} : {}),
     ...(markDef.color !== undefined ? {color: markDef.color} : {}),
     ...(markDef.interpolate !== undefined ? {interpolate: markDef.interpolate} : {}),

@@ -32,7 +32,7 @@ describe('normalizeDensity', () => {
     expect(output.layer!.length).toBe(1);
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
-      expect(layer0.mark).toEqual({type: 'area'});
+      expect(layer0.mark).toEqual({type: 'area', orient: 'vertical'});
       expect(layer0.encoding).toEqual({
         x: {
           field: 'value',
@@ -205,6 +205,7 @@ describe('normalizeDensity', () => {
     if ('mark' in layer0) {
       expect(layer0.mark).toEqual({
         type: 'area',
+        orient: 'vertical',
         interpolate: 'monotone',
       });
     }
@@ -227,6 +228,7 @@ describe('normalizeDensity', () => {
     if ('mark' in layer0) {
       expect(layer0.mark).toEqual({
         type: 'area',
+        orient: 'vertical',
         opacity: 0.5,
       });
     }
@@ -249,6 +251,7 @@ describe('normalizeDensity', () => {
     if ('mark' in layer0) {
       expect(layer0.mark).toEqual({
         type: 'area',
+        orient: 'vertical',
         tension: 0.8,
       });
     }
@@ -271,6 +274,12 @@ describe('normalizeDensity', () => {
       density: 'IMDB Rating',
     });
     const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      expect(layer0.mark).toEqual({
+        type: 'area',
+        orient: 'horizontal',
+      });
+    }
     if ('encoding' in layer0) {
       expect(layer0.encoding).toEqual({
         y: {field: 'value', type: 'quantitative', title: 'IMDB Rating'},
