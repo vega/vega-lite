@@ -27,15 +27,23 @@ export default defineConfig({
           name: 'runtime',
           browser: {
             provider: playwright({
-              // --force-device-scale-factor sets window.devicePixelRatio === 2,
-              // simulating a retina display. util.ts reads devicePixelRatio to
-              // scale pointer event coordinates for brush/drag interactions.
-              launchOptions: {
-                args: ['--force-device-scale-factor=2'],
+              contextOptions: {
+                // deviceScaleFactor sets window.devicePixelRatio === 2 inside
+                // the browser context, simulating a retina display. util.ts
+                // reads devicePixelRatio to scale pointer event coordinates for
+                // brush/drag interactions. viewport must be non-null when
+                // deviceScaleFactor is set (Playwright API constraint).
+                deviceScaleFactor: 2,
+                viewport: {width: 1280, height: 720},
               },
             }),
             enabled: true,
             headless: false,
+            // Disable vitest's iframe-based UI runner. When ui is enabled,
+            // @vitest/browser-playwright forces viewport: null on the context,
+            // which conflicts with the deviceScaleFactor contextOption above.
+            // vitest defaults ui to !isCI (true locally), so we must opt out.
+            ui: false,
             instances: [
               {
                 browser: 'chromium',
