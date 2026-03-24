@@ -3,13 +3,14 @@ import {isContinuousFieldOrDatumDef, isFieldDef, PositionFieldDef} from '../chan
 import {Config} from '../config.js';
 import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding.js';
 import * as log from '../log/index.js';
-import {isMarkDef, MarkDef} from '../mark.js';
+import {GenericMarkDef, isMarkDef, MarkDef, OverlayMarkDef} from '../mark.js';
 import {NormalizerParams} from '../normalize/index.js';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
 import {DensityTransform, Transform} from '../transform.js';
+import {ExprRef} from '../expr.js';
 import {hasProperty} from '../util.js';
 import {CompositeMarkNormalizer} from './base.js';
-import {compositeMarkOrient, GenericCompositeMarkDef, PartsMixins} from './common.js';
+import {compositeMarkOrient, PartsMixins} from './common.js';
 
 export const DENSITY = 'density' as const;
 export type Density = typeof DENSITY;
@@ -91,7 +92,7 @@ export interface DensityConfig extends DensityPartsMixins {
   tension?: number;
 }
 
-export type DensityDef = GenericCompositeMarkDef<Density> &
+export type DensityDef = GenericMarkDef<Density> &
   DensityConfig & {
     /**
      * Orientation of the density. This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous.
@@ -103,6 +104,73 @@ export type DensityDef = GenericCompositeMarkDef<Density> &
      * __Default value:__ `false`
      */
     line?: boolean;
+    /**
+     * Default color.
+     */
+    color?: string;
+    /**
+     * Whether the mark's color should be used as fill color instead of stroke color.
+     *
+     * __Default value:__ `false` when `line` is `true`, `true` otherwise.
+     */
+    filled?: boolean;
+    /**
+     * Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.
+     */
+    fill?: string | null;
+    /**
+     * Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.
+     */
+    stroke?: string | null;
+    /**
+     * The stroke width in pixels.
+     *
+     * @minimum 0
+     */
+    strokeWidth?: number;
+    /**
+     * The stroke opacity (value between [0,1]).
+     *
+     * @minimum 0
+     * @maximum 1
+     */
+    strokeOpacity?: number;
+    /**
+     * The fill opacity (value between [0,1]). This property only applies when `line` is `false` (area).
+     *
+     * @minimum 0
+     * @maximum 1
+     */
+    fillOpacity?: number;
+    /**
+     * An array of alternating stroke length and space lengths for creating dashed lines.
+     */
+    strokeDash?: number[];
+    /**
+     * The offset for stroke dash pattern.
+     */
+    strokeDashOffset?: number;
+    /**
+     * A flag for overlaying points on top of the density line or area, or an object defining properties of the overlayed points.
+     *
+     * - If this property is `"transparent"`, transparent points will be used (for enhancing tooltips and selections).
+     * - If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.
+     * - If this property is `false`, no points would be automatically added.
+     *
+     * __Default value:__ `false`.
+     */
+    point?: boolean | OverlayMarkDef<ExprRef> | 'transparent';
+    /**
+     * The opacity (value between [0,1]) of the mark.
+     *
+     * @minimum 0
+     * @maximum 1
+     */
+    opacity?: number;
+    /**
+     * Whether a composite mark be clipped to the enclosing group's width and height.
+     */
+    clip?: boolean;
   };
 
 export interface DensityConfigMixins {
@@ -138,7 +206,7 @@ export function normalizeDensity(
 
   const aliasedFieldName = continuousAxisChannelDef.field;
 
-  const {orient, line} = markDef;
+  const {orient, line, point} = markDef;
   const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
 
   const densityMark: MarkDef = {
@@ -149,6 +217,17 @@ export function normalizeDensity(
     ...(markDef.interpolate !== undefined ? {interpolate: markDef.interpolate} : {}),
     ...(markDef.tension !== undefined ? {tension: markDef.tension} : {}),
     ...(markDef.clip !== undefined ? {clip: markDef.clip} : {}),
+    // Stroke properties work for both line and area
+    ...(markDef.stroke !== undefined ? {stroke: markDef.stroke} : {}),
+    ...(markDef.strokeWidth !== undefined ? {strokeWidth: markDef.strokeWidth} : {}),
+    ...(markDef.strokeOpacity !== undefined ? {strokeOpacity: markDef.strokeOpacity} : {}),
+    ...(markDef.strokeDash !== undefined ? {strokeDash: markDef.strokeDash} : {}),
+    ...(markDef.strokeDashOffset !== undefined ? {strokeDashOffset: markDef.strokeDashOffset} : {}),
+    // Fill and fillOpacity only apply when line is false (area mark)
+    ...(!line && markDef.fill !== undefined ? {fill: markDef.fill} : {}),
+    ...(!line && markDef.fillOpacity !== undefined ? {fillOpacity: markDef.fillOpacity} : {}),
+    // Point overlay
+    ...(point !== undefined ? {point} : {}),
   };
 
   // Density transform outputs "value" and "density" by default

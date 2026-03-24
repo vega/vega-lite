@@ -8161,22 +8161,12 @@
           "type": "number"
         },
         "clip": {
-          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
+          "description": "Whether a composite mark be clipped to the enclosing group's width and height.",
           "type": "boolean"
         },
         "color": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color"
-            },
-            {
-              "$ref": "#/definitions/Gradient"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
+          "description": "Default color.",
+          "type": "string"
         },
         "counts": {
           "description": "A boolean flag indicating if the output values should be probability estimates (false) or smoothed counts (true).\n\n__Default value:** `false`",
@@ -8205,6 +8195,23 @@
           "minItems": 2,
           "type": "array"
         },
+        "fill": {
+          "description": "Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fillOpacity": {
+          "description": "The fill opacity (value between [0,1]). This property only applies when `line` is `false` (area).",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "filled": {
+          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `false` when `line` is `true`, `true` otherwise.",
+          "type": "boolean"
+        },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
           "description": "The line interpolation method for the density area. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes at the midpoint of each pair of adjacent x-values.\n- `\"step-before\"`: a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes before the x-value.\n- `\"step-after\"`: a piecewise constant function (a step function) consisting of alternating horizontal and vertical lines. The y-value changes after the x-value.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
@@ -8231,8 +8238,52 @@
           "$ref": "#/definitions/Orientation",
           "description": "Orientation of the density. This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous."
         },
+        "point": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/OverlayMarkDef"
+            },
+            {
+              "const": "transparent",
+              "type": "string"
+            }
+          ],
+          "description": "A flag for overlaying points on top of the density line or area, or an object defining properties of the overlayed points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n- If this property is `false`, no points would be automatically added.\n\n__Default value:__ `false`."
+        },
         "steps": {
           "description": "The exact number of samples to take along the extent domain for plotting the density. If specified, overrides both minsteps and maxsteps to set an exact number of uniform samples.",
+          "type": "number"
+        },
+        "stroke": {
+          "description": "Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "strokeDash": {
+          "description": "An array of alternating stroke length and space lengths for creating dashed lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "description": "The offset for stroke dash pattern.",
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "description": "The stroke opacity (value between [0,1]).",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "strokeWidth": {
+          "description": "The stroke width in pixels.",
+          "minimum": 0,
           "type": "number"
         },
         "tension": {

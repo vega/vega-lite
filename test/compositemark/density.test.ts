@@ -385,4 +385,117 @@ describe('normalizeDensity', () => {
       expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(null);
     }
   });
+
+  it('should support stroke properties for line density', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {
+          type: 'density',
+          line: true,
+          strokeWidth: 2,
+          strokeDash: [5, 3],
+        },
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      expect(layer0.mark).toEqual({
+        type: 'line',
+        orient: 'vertical',
+        strokeWidth: 2,
+        strokeDash: [5, 3],
+      });
+    }
+  });
+
+  it('should support fill properties for area density', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {
+          type: 'density',
+          fill: 'steelblue',
+          fillOpacity: 0.5,
+        },
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      expect(layer0.mark).toMatchObject({
+        type: 'area',
+        orient: 'vertical',
+        fill: 'steelblue',
+        fillOpacity: 0.5,
+      });
+    }
+  });
+
+  it('should support point overlay', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {
+          type: 'density',
+          point: true,
+        },
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      expect(layer0.mark).toMatchObject({
+        type: 'area',
+        orient: 'vertical',
+        point: true,
+      });
+    }
+  });
+
+  it('should not pass fill properties when line is true', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {
+          type: 'density',
+          line: true,
+          fill: 'steelblue',
+          fillOpacity: 0.5,
+        },
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      expect(layer0.mark).toEqual({
+        type: 'line',
+        orient: 'vertical',
+      });
+      // fill and fillOpacity should not be present
+      expect((layer0.mark as any).fill).toBeUndefined();
+      expect((layer0.mark as any).fillOpacity).toBeUndefined();
+    }
+  });
 });
