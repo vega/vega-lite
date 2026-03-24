@@ -498,4 +498,88 @@ describe('normalizeDensity', () => {
       expect((layer0.mark as any).fillOpacity).toBeUndefined();
     }
   });
+
+  it('should support stacked density with stack: "center" for stream graph', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {type: 'density', stack: 'center'},
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          color: {field: 'Genre', type: 'nominal'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    expect(output.transform![0]).toEqual({
+      density: 'IMDB Rating',
+      groupby: ['Genre'],
+    });
+    const layer0 = output.layer![0];
+    if ('encoding' in layer0) {
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe('center');
+    }
+  });
+
+  it('should support stacked density with stack: "normalize" for normalized stream', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {type: 'density', stack: 'normalize'},
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          color: {field: 'Genre', type: 'nominal'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('encoding' in layer0) {
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe('normalize');
+    }
+  });
+
+  it('should support stacked density with stack: "zero" for baseline stacking', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {type: 'density', stack: 'zero'},
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          color: {field: 'Genre', type: 'nominal'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('encoding' in layer0) {
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe('zero');
+    }
+  });
+
+  it('should default to no stacking when stack is not specified', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: 'density',
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          color: {field: 'Genre', type: 'nominal'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('encoding' in layer0) {
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(null);
+    }
+  });
 });
