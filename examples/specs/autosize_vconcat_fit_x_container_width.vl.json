@@ -1,0 +1,23 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "data": {"url": "data/movies.json"},
+  "width": "container",
+  "autosize": "fit-x",
+  "vconcat": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {"bin": true, "field": "Worldwide Gross", "type": "quantitative", "axis": null},
+        "y": {"aggregate": "count", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": "tick",
+      "encoding": {
+        "x": {"field": "Worldwide Gross", "type": "quantitative"},
+        "opacity": {"value": 0.25}
+      }
+    }
+  ],
+  "resolve": {"scale": {"x": "shared"}}
+}

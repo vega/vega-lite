@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
+  "width": 300,
   "data": [
     {
       "name": "source_0",
@@ -44,10 +45,7 @@
       "transform": [{"type": "aggregate", "groupby": ["Origin"]}]
     }
   ],
-  "signals": [
-    {"name": "child_width", "value": 300},
-    {"name": "child_height", "value": 300}
-  ],
+  "signals": [{"name": "child_height", "value": 300}],
   "layout": {
     "padding": 20,
     "offset": {"rowTitle": 10},
@@ -99,7 +97,7 @@
       "name": "column_footer",
       "type": "group",
       "role": "column-footer",
-      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "encode": {"update": {"width": {"signal": "width"}}},
       "axes": [
         {
           "scale": "x",
@@ -108,7 +106,7 @@
           "title": "Horsepower (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/10)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "zindex": 0
         }
       ]
@@ -123,7 +121,7 @@
       "sort": {"field": ["datum[\"Origin\"]"], "order": ["ascending"]},
       "encode": {
         "update": {
-          "width": {"signal": "child_width"},
+          "width": {"signal": "width"},
           "height": {"signal": "child_height"}
         }
       },
@@ -185,7 +183,7 @@
       "domain": {
         "signal": "[child_bin_maxbins_15_Horsepower_bins.start, child_bin_maxbins_15_Horsepower_bins.stop]"
       },
-      "range": [0, {"signal": "child_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {"signal": "child_bin_maxbins_15_Horsepower_bins"},
       "zero": false
     },

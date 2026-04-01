@@ -45,7 +45,7 @@
   "signals": [
     {"name": "x_step", "value": 17},
     {
-      "name": "child_width",
+      "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
     },
     {"name": "child_height", "value": 300}
@@ -75,7 +75,7 @@
       "name": "column_footer",
       "type": "group",
       "role": "column-footer",
-      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "encode": {"update": {"width": {"signal": "width"}}},
       "axes": [
         {
           "scale": "x",
@@ -99,7 +99,7 @@
       "sort": {"field": ["datum[\"gender\"]"], "order": ["ascending"]},
       "encode": {
         "update": {
-          "width": {"signal": "child_width"},
+          "width": {"signal": "width"},
           "height": {"signal": "child_height"}
         }
       },

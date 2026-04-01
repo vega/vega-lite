@@ -1,7 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "height": 80,
   "background": "white",
   "padding": 5,
+  "width": 400,
   "title": {"text": "Distribution of Body Mass of Penguins", "anchor": "start"},
   "data": [
     {
@@ -41,10 +43,7 @@
       "transform": [{"type": "aggregate", "groupby": ["Species"]}]
     }
   ],
-  "signals": [
-    {"name": "child_width", "value": 400},
-    {"name": "child_height", "value": 80}
-  ],
+  "signals": [{"name": "child_height", "value": 80}],
   "layout": {
     "padding": 20,
     "offset": {"rowTitle": 10},
@@ -96,7 +95,7 @@
       "name": "column_footer",
       "type": "group",
       "role": "column-footer",
-      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "encode": {"update": {"width": {"signal": "width"}}},
       "axes": [
         {
           "scale": "x",
@@ -105,7 +104,7 @@
           "title": "Body Mass (g)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         }
       ]
@@ -120,7 +119,7 @@
       "sort": {"field": ["datum[\"Species\"]"], "order": ["ascending"]},
       "encode": {
         "update": {
-          "width": {"signal": "child_width"},
+          "width": {"signal": "width"},
           "height": {"signal": "child_height"}
         }
       },
@@ -154,7 +153,7 @@
           "orient": "bottom",
           "gridScale": "y",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -185,7 +184,7 @@
       "name": "x",
       "type": "linear",
       "domain": {"data": "source_0", "field": "value"},
-      "range": [0, {"signal": "child_width"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": false
     },

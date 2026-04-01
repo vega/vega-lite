@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
+  "height": 300,
   "data": [
     {
       "name": "source_0",
@@ -35,10 +36,7 @@
       "transform": [{"type": "aggregate", "groupby": ["year"]}]
     }
   ],
-  "signals": [
-    {"name": "child_width", "value": 300},
-    {"name": "child_height", "value": 300}
-  ],
+  "signals": [{"name": "child_width", "value": 300}],
   "layout": {
     "padding": 20,
     "offset": {"columnTitle": 10},
@@ -80,7 +78,7 @@
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
-          "height": {"signal": "child_height"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -96,8 +94,8 @@
                 "signal": "\"Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; site: \" + (isValid(datum[\"site\"]) ? isArray(datum[\"site\"]) ? join(datum[\"site\"], ' ') : datum[\"site\"] : \"\"+datum[\"site\"])"
               },
               "x": {"signal": "child_width", "mult": 0.5},
-              "y": {"signal": "child_height", "mult": 0.5},
-              "outerRadius": {"signal": "min(child_width,child_height)/2"},
+              "y": {"signal": "height", "mult": 0.5},
+              "outerRadius": {"signal": "min(child_width,height)/2"},
               "innerRadius": {"value": 0},
               "startAngle": {"scale": "child_theta", "field": "sum_yield_end"},
               "endAngle": {"scale": "child_theta", "field": "sum_yield_start"}

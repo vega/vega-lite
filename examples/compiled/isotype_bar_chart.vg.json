@@ -1,7 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "height": 200,
   "background": "white",
   "padding": 5,
+  "width": 800,
   "data": [
     {
       "name": "source_0",
@@ -51,10 +53,7 @@
       "transform": [{"type": "aggregate", "groupby": ["country"]}]
     }
   ],
-  "signals": [
-    {"name": "child_width", "value": 800},
-    {"name": "child_height", "value": 200}
-  ],
+  "signals": [{"name": "child_height", "value": 200}],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "all"},
   "marks": [
     {
@@ -84,7 +83,7 @@
       "sort": {"field": ["datum[\"country\"]"], "order": ["ascending"]},
       "encode": {
         "update": {
-          "width": {"signal": "child_width"},
+          "width": {"signal": "width"},
           "height": {"signal": "child_height"}
         }
       },
@@ -117,7 +116,7 @@
       "name": "x",
       "type": "point",
       "domain": {"data": "source_0", "field": "col", "sort": true},
-      "range": [0, {"signal": "child_width"}],
+      "range": [0, {"signal": "width"}],
       "padding": 0.5
     },
     {

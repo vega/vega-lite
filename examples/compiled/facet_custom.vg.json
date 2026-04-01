@@ -3,6 +3,7 @@
   "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
   "background": "white",
   "padding": 5,
+  "height": 300,
   "data": [
     {
       "name": "source_0",
@@ -47,8 +48,7 @@
     {
       "name": "child_width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
-    },
-    {"name": "child_height", "value": 300}
+    }
   ],
   "layout": {
     "padding": 20,
@@ -73,7 +73,7 @@
       "name": "row_header",
       "type": "group",
       "role": "row-header",
-      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "encode": {"update": {"height": {"signal": "height"}}},
       "axes": [
         {
           "scale": "y",
@@ -81,7 +81,7 @@
           "grid": false,
           "title": "population",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -134,7 +134,7 @@
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
-          "height": {"signal": "child_height"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -164,7 +164,7 @@
           "orient": "left",
           "gridScale": "x",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -192,7 +192,7 @@
         "data": "source_0",
         "fields": ["sum_people_start", "sum_people_end"]
       },
-      "range": [{"signal": "child_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },

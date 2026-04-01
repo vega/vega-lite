@@ -78,7 +78,7 @@ export function parseLayerModel(spec: TopLevel<NormalizedLayerSpec>) {
 }
 
 export function parseFacetModel(spec: TopLevel<NormalizedFacetSpec>) {
-  return new FacetModel(spec, null, '', initConfig(spec.config));
+  return new FacetModel(spec, null, '', {}, initConfig(spec.config));
 }
 
 export function parseFacetModelWithScale(spec: TopLevel<NormalizedFacetSpec>) {
@@ -88,7 +88,7 @@ export function parseFacetModelWithScale(spec: TopLevel<NormalizedFacetSpec>) {
 }
 
 export function parseConcatModel(spec: TopLevel<NormalizedConcatSpec>) {
-  return new ConcatModel(spec, null, '', initConfig(spec.config));
+  return new ConcatModel(spec, null, '', {}, initConfig(spec.config));
 }
 
 export function assertIsUnitSpec(spec: BaseSpec): asserts spec is FacetedUnitSpec<Field> | NormalizedUnitSpec {

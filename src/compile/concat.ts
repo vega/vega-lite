@@ -1,7 +1,7 @@
 import {NewSignal, SignalRef} from 'vega';
 import {Config} from '../config.js';
 import * as log from '../log/index.js';
-import {isHConcatSpec, isVConcatSpec, NormalizedConcatSpec, NormalizedSpec} from '../spec/index.js';
+import {isHConcatSpec, isVConcatSpec, LayoutSizeMixins, NormalizedConcatSpec, NormalizedSpec} from '../spec/index.js';
 import {keys, vals} from '../util.js';
 import {VgData, VgLayout} from '../vega.schema.js';
 import {buildModel} from './buildmodel.js';
@@ -15,15 +15,22 @@ import {isTimerSelection} from './selection/index.js';
 export class ConcatModel extends Model {
   public readonly children: Model[];
 
-  constructor(spec: NormalizedConcatSpec, parent: Model, parentGivenName: string, config: Config<SignalRef>) {
+  constructor(
+    spec: NormalizedConcatSpec,
+    parent: Model,
+    parentGivenName: string,
+    parentGivenSize: LayoutSizeMixins,
+    config: Config<SignalRef>,
+  ) {
     super(spec, 'concat', parent, parentGivenName, config, spec.resolve);
 
     if (spec.resolve?.axis?.x === 'shared' || spec.resolve?.axis?.y === 'shared') {
       log.warn(log.message.CONCAT_CANNOT_SHARE_AXIS);
     }
 
+    const childGivenSize = this.getChildGivenSize(spec, parentGivenSize);
     this.children = this.getChildren(spec).map((child, i) => {
-      return buildModel(child, this, this.getName(`concat_${i}`), undefined, config);
+      return buildModel(child, this, this.getName(`concat_${i}`), childGivenSize, config);
     });
   }
 
@@ -72,6 +79,25 @@ export class ConcatModel extends Model {
       return spec.hconcat;
     }
     return spec.concat;
+  }
+
+  private getChildGivenSize(spec: NormalizedConcatSpec, parentGivenSize: LayoutSizeMixins): LayoutSizeMixins {
+    const width = spec.width ?? parentGivenSize.width;
+    const height = spec.height ?? parentGivenSize.height;
+
+    if (isVConcatSpec(spec) || (!isHConcatSpec(spec) && spec.columns === 1)) {
+      return width !== undefined ? {width} : {};
+    }
+
+    if (
+      isHConcatSpec(spec) ||
+      (!isVConcatSpec(spec) &&
+        (spec.columns === undefined || (spec.columns > 1 && spec.concat.length === spec.columns)))
+    ) {
+      return height !== undefined ? {height} : {};
+    }
+
+    return {};
   }
 
   public parseLayoutSize() {

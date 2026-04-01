@@ -54,7 +54,8 @@ After setting `width` or `height` to `"container"`, you need to ensure that the 
 
 **Limitations:**
 
-- This responsive mode is available only for single view or layer specifications.
+- Top-level responsive `width: "container"` and `height: "container"` are fully supported for single and layered specifications.
+- For multi-view specifications, container sizing is supported only with directional autosize (`fit-x` or `fit-y`) in compatible layouts (see [Directional Fit in Multi-View Displays](#directional-fit-in-multi-view-displays)).
 - Vega listens to the `window.resize` event to update plot size from container size. This should cover many use cases. However, if you change the container size programmatically (e.g., you build a custom divider view), you'll need to trigger `window.resize` manually. In a modern browser, you can do: `window.dispatchEvent(new Event('resize'));`.
 
 ### Specifying Width and Height per Discrete Step
@@ -99,7 +100,11 @@ The total size of a Vega-Lite visualization may be determined by multiple factor
 
 In order to `fit` a chart into specified dimensions, it has to satisfy two requirements:
 
-- The view must be either a [single](spec.html#single) view or a [layered](layer.html) view. Fit does not work with other kinds of composed views (`facet`/`hconcat`/`vconcat`/`repeat`).
+- Full `fit` (both dimensions) requires a [single](spec.html#single) view or a [layered](layer.html) view.
+- For composed views, directional fitting is supported:
+  - `fit-x` with top-level `width` works for `vconcat`, one-column `concat`, row facet, and row repeat.
+  - `fit-y` with top-level `height` works for `hconcat`, one-row `concat`, column facet, and column repeat.
+  - If both dimensions are composed (`concat` grids, faceting with both row and column), `fit` is not supported.
 - The width and height of the chart cannot depend on an explicitly specified `step` of a discrete scale. Discrete scale `step` has higher precendence than `fit`, and the respective channel of fit will be dropped. E.g., an explicit `step` on a `width` will drop `x` from `fit` and make it `fit-y`.
 
 #### Example
@@ -114,8 +119,28 @@ The width and height of multi-view displays including [concatenated](concat.html
 
 For example, you can adjust `width` and `height` of the inner single view specification to adjust the size of a faceted plot.
 
-<span class="vl-example" data-name="normalized/trellis_scatter_small_normalized"></span>
+<span class="vl-example" data-name="facet_inner_size_small"></span>
 
 **Note:** If you use the `row` or `column` channel to create a faceted plot, `width` and `height` will be applied to the inner single-view plot. For example, this specification is equivalent to the specification above.
 
 <span class="vl-example" data-name="trellis_scatter_small"></span>
+
+### Directional Fit in Multi-View Displays
+
+Directional autosize with top-level sizes is supported for compatible composed layouts:
+
+- `fit-x` with top-level `width`:
+
+<span class="vl-example vl-example-responsive" data-name="autosize_vconcat_fit_x_container_width"></span>
+
+<span class="vl-example" data-name="autosize_row_facet_fit_x_container_width"></span>
+
+<span class="vl-example" data-name="autosize_repeat_row_fit_x_container_width"></span>
+
+- `fit-y` with top-level `height`:
+
+<span class="vl-example" data-name="autosize_hconcat_fit_y_container_height"></span>
+
+<span class="vl-example" data-name="autosize_column_facet_fit_y_container_height"></span>
+
+<span class="vl-example" data-name="autosize_repeat_column_fit_y_container_height"></span>

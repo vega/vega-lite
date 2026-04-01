@@ -1,6 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Testing global number formatting config",
+  "width": 150,
+  "height": 150,
   "background": "white",
   "padding": 5,
   "data": [

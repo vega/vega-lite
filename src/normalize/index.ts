@@ -5,14 +5,18 @@ import {Config, initConfig} from '../config.js';
 import * as log from '../log/index.js';
 import {
   FacetedUnitSpec,
+  isFacetSpec,
+  isHConcatSpec,
   isLayerSpec,
   isUnitSpec,
+  isVConcatSpec,
   LayoutSizeMixins,
   NonNormalizedSpec,
   NormalizedSpec,
   RepeatSpec,
   TopLevelSpec,
 } from '../spec/index.js';
+import {isFacetMapping} from '../spec/facet.js';
 import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel.js';
 import {deepEqual} from '../util.js';
 import {NormalizerParams} from './base.js';
@@ -62,6 +66,57 @@ function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
   return isString(autosize) ? {type: autosize} : (autosize ?? {});
 }
 
+type FitCompatibility = {
+  x: boolean;
+  y: boolean;
+};
+
+function getFitCompatibility(spec: TopLevel<NormalizedSpec>): FitCompatibility {
+  if (isUnitSpec(spec) || isLayerSpec(spec)) {
+    return {x: true, y: true};
+  }
+
+  if (isVConcatSpec(spec) || (!isHConcatSpec(spec) && !isFacetSpec(spec) && spec.columns === 1)) {
+    return {x: true, y: false};
+  }
+
+  if (
+    isHConcatSpec(spec) ||
+    (!isVConcatSpec(spec) &&
+      !isFacetSpec(spec) &&
+      (spec.columns === undefined || (spec.columns > 1 && spec.concat.length === spec.columns)))
+  ) {
+    return {x: false, y: true};
+  }
+
+  if (isFacetSpec(spec)) {
+    if (isFacetMapping(spec.facet)) {
+      const hasRow = spec.facet.row !== undefined;
+      const hasColumn = spec.facet.column !== undefined;
+
+      if (hasRow && !hasColumn) {
+        return {x: true, y: false};
+      }
+
+      if (hasColumn && !hasRow) {
+        return {x: false, y: true};
+      }
+
+      return {x: false, y: false};
+    }
+
+    if (spec.columns === 1) {
+      return {x: true, y: false};
+    }
+
+    if (spec.columns === undefined) {
+      return {x: false, y: true};
+    }
+  }
+
+  return {x: false, y: false};
+}
+
 /**
  * Normalize autosize and deal with width or height == "container".
  */
@@ -72,31 +127,37 @@ export function normalizeAutoSize(
 ) {
   let {width, height} = sizeInfo;
 
-  const isFitCompatible = isUnitSpec(spec) || isLayerSpec(spec);
+  const fitCompatibility = getFitCompatibility(spec);
   const autosizeDefault: AutoSizeParams = {};
 
-  if (!isFitCompatible) {
-    // If spec is not compatible with autosize == "fit", discard width/height == container
-    if (width == 'container') {
-      log.warn(log.message.containerSizeNonSingle('width'));
-      width = undefined;
-    }
-    if (height == 'container') {
-      log.warn(log.message.containerSizeNonSingle('height'));
-      height = undefined;
-    }
-  } else {
-    // Default autosize parameters to fit when width/height is "container"
-    if (width == 'container' && height == 'container') {
+  // If a dimension is incompatible, discard container size for that dimension.
+  if (width == 'container' && !fitCompatibility.x) {
+    log.warn(log.message.containerSizeNonSingle('width'));
+    width = undefined;
+  }
+  if (height == 'container' && !fitCompatibility.y) {
+    log.warn(log.message.containerSizeNonSingle('height'));
+    height = undefined;
+  }
+
+  // Default autosize parameters to fit when width/height is "container"
+  if (width == 'container' && height == 'container') {
+    if (fitCompatibility.x && fitCompatibility.y) {
       autosizeDefault.type = 'fit';
       autosizeDefault.contains = 'padding';
-    } else if (width == 'container') {
+    } else if (fitCompatibility.x) {
       autosizeDefault.type = 'fit-x';
       autosizeDefault.contains = 'padding';
-    } else if (height == 'container') {
+    } else if (fitCompatibility.y) {
       autosizeDefault.type = 'fit-y';
       autosizeDefault.contains = 'padding';
     }
+  } else if (width == 'container' && fitCompatibility.x) {
+    autosizeDefault.type = 'fit-x';
+    autosizeDefault.contains = 'padding';
+  } else if (height == 'container' && fitCompatibility.y) {
+    autosizeDefault.type = 'fit-y';
+    autosizeDefault.contains = 'padding';
   }
 
   const autosize: AutoSizeParams = {
@@ -106,9 +167,14 @@ export function normalizeAutoSize(
     ..._normalizeAutoSize(spec.autosize),
   };
 
-  if (autosize.type === 'fit' && !isFitCompatible) {
-    log.warn(log.message.FIT_NON_SINGLE);
-    autosize.type = 'pad';
+  if (autosize.type === 'fit' && !(fitCompatibility.x && fitCompatibility.y)) {
+    if (fitCompatibility.x || fitCompatibility.y) {
+      autosize.type = fitCompatibility.x ? 'fit-x' : 'fit-y';
+      log.warn(log.message.droppingFit(fitCompatibility.x ? 'y' : 'x'));
+    } else {
+      log.warn(log.message.FIT_NON_SINGLE);
+      autosize.type = 'pad';
+    }
   }
 
   if (width == 'container' && !(autosize.type == 'fit' || autosize.type == 'fit-x')) {

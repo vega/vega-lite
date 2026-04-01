@@ -3,6 +3,7 @@
   "description": "Anscombe's Quartet",
   "background": "white",
   "padding": 5,
+  "height": 300,
   "data": [
     {"name": "brush_store"},
     {"name": "grid_store"},
@@ -26,7 +27,6 @@
   ],
   "signals": [
     {"name": "child_width", "value": 300},
-    {"name": "child_height", "value": 300},
     {
       "name": "unit",
       "value": {},
@@ -81,7 +81,7 @@
       "name": "row_header",
       "type": "group",
       "role": "row-header",
-      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "encode": {"update": {"height": {"signal": "height"}}},
       "axes": [
         {
           "scale": "y",
@@ -89,7 +89,7 @@
           "grid": false,
           "title": "Y",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -141,7 +141,7 @@
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
-          "height": {"signal": "child_height"}
+          "height": {"signal": "height"}
         }
       },
       "signals": [
@@ -348,7 +348,7 @@
             },
             {
               "events": {"signal": "grid_translate_delta"},
-              "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / child_height)"
+              "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / height)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
@@ -526,7 +526,7 @@
               "type": "voronoi",
               "x": {"expr": "datum.datum.x || 0"},
               "y": {"expr": "datum.datum.y || 0"},
-              "size": [{"signal": "child_width"}, {"signal": "child_height"}]
+              "size": [{"signal": "child_width"}, {"signal": "height"}]
             }
           ]
         },
@@ -572,7 +572,7 @@
           "orient": "left",
           "gridScale": "x",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -599,7 +599,7 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "Y"},
       "domainRaw": {"signal": "grid[\"Y\"]"},
-      "range": [{"signal": "child_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     }

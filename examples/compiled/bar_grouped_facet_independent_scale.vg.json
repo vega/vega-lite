@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
+  "height": 300,
   "data": [
     {
       "name": "source_0",
@@ -46,10 +47,7 @@
       ]
     }
   ],
-  "signals": [
-    {"name": "child_x_step", "value": 20},
-    {"name": "child_height", "value": 300}
-  ],
+  "signals": [{"name": "child_x_step", "value": 20}],
   "layout": {
     "padding": 20,
     "titleAnchor": {"column": "end"},
@@ -74,7 +72,7 @@
       "name": "row_header",
       "type": "group",
       "role": "row-header",
-      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "encode": {"update": {"height": {"signal": "height"}}},
       "axes": [
         {
           "scale": "y",
@@ -82,7 +80,7 @@
           "grid": false,
           "title": "value",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -132,7 +130,7 @@
           "width": {
             "signal": "bandspace(datum[\"distinct_group\"], 0.1, 0.05) * child_x_step"
           },
-          "height": {"signal": "child_height"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -172,7 +170,7 @@
           "orient": "left",
           "gridScale": "child_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(child_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "aria": false,
@@ -189,7 +187,7 @@
       "name": "y",
       "type": "linear",
       "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
-      "range": [{"signal": "child_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
