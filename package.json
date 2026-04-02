@@ -79,7 +79,11 @@
     "test:runtime": "vitest run test-runtime/",
     "watch": "rollup -c -w",
     "watch:site": "npm run build:site -- -w",
-    "release": "release-it"
+    "release": "release-it",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,ts,mjs,cjs}": "eslint --fix"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.4",
@@ -108,6 +112,8 @@
     "eslint-plugin-prettier": "^5.5.4",
     "fast-json-stable-stringify": "~2.1.0",
     "highlight.js": "^11.11.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "pako": "^2.1.0",
     "playwright": "^1.57.0",
     "prettier": "^3.7.4",
