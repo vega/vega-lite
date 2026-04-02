@@ -203,6 +203,10 @@ export function normalizeDensity(
     log.warn(log.message.selectionNotSupported('density'));
   }
 
+  if ((markDef as any).as !== undefined) {
+    log.warn(log.message.densityMarkAsNotSupported());
+  }
+
   const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = densityParams(
     spec,
     markDef,

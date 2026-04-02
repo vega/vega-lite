@@ -78,6 +78,10 @@ export function selectionNotSupported(mark: CompositeMark) {
   return `Selection not supported for ${mark} yet.`;
 }
 
+export function densityMarkAsNotSupported() {
+  return 'The "as" property is not supported on the density mark. Output fields are always named "value" and "density".';
+}
+
 export function selectionNotFound(name: string) {
   return `Cannot find a selection named "${name}".`;
 }

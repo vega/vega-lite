@@ -1,4 +1,5 @@
 import {defaultConfig} from '../../src/config.js';
+import * as log from '../../src/log/index.js';
 import {normalize} from '../../src/normalize/index.js';
 import {assertIsLayerSpec} from '../util.js';
 
@@ -653,6 +654,22 @@ describe('normalizeDensity', () => {
       density: 'IMDB Rating',
       groupby: ['Genre'],
       resolve: 'shared',
+    });
+  });
+
+  it('should warn when "as" is specified on the density mark', () => {
+    log.wrap((localLogger) => {
+      normalize(
+        {
+          data: {url: 'data/movies.json'},
+          mark: {type: 'density', as: ['x', 'y']} as any,
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+          },
+        },
+        defaultConfig,
+      );
+      expect(localLogger.warns[0]).toEqual(log.message.densityMarkAsNotSupported());
     });
   });
 });
