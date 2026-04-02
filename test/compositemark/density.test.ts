@@ -342,7 +342,7 @@ describe('normalizeDensity', () => {
     });
   });
 
-  it('should render as line when line: true', () => {
+  it('should render as a stroke-only area with y2 trick when line: true', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
@@ -355,16 +355,54 @@ describe('normalizeDensity', () => {
     );
 
     assertIsLayerSpec(output);
+
+    // Three extra transforms after the density transform: two window + one calculate
+    expect(output.transform).toBeDefined();
+    expect(output.transform!.length).toBe(4);
+    expect(output.transform![1]).toMatchObject({window: [{op: 'row_number', as: '_density_rn'}]});
+    expect(output.transform![2]).toMatchObject({window: [{op: 'count', as: '_density_n'}], frame: [null, null]});
+    expect(output.transform![3]).toMatchObject({calculate: expect.stringContaining('_density_rn'), as: '_density_y2'});
+
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
       expect(layer0.mark).toEqual({
-        type: 'line',
+        type: 'area',
         orient: 'vertical',
+        filled: false,
       });
     }
     if ('encoding' in layer0) {
-      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBeUndefined();
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(null);
+      // y2 uses the computed field that suppresses the baseline stroke
+      expect((layer0.encoding!.y2 as {field?: string}).field).toBe('_density_y2');
     }
+  });
+
+  it('should include groupby on window transforms for line:true with color groupby', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {type: 'density', line: true},
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          color: {field: 'Genre', type: 'nominal'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    expect(output.transform!.length).toBe(4);
+    // window transforms must groupby the same field as the density transform
+    expect(output.transform![1]).toMatchObject({
+      window: [{op: 'row_number', as: '_density_rn'}],
+      groupby: ['Genre'],
+    });
+    expect(output.transform![2]).toMatchObject({
+      window: [{op: 'count', as: '_density_n'}],
+      frame: [null, null],
+      groupby: ['Genre'],
+    });
   });
 
   it('should not stack when grouping by color', () => {
@@ -408,8 +446,9 @@ describe('normalizeDensity', () => {
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
       expect(layer0.mark).toEqual({
-        type: 'line',
+        type: 'area',
         orient: 'vertical',
+        filled: false,
         strokeWidth: 2,
         strokeDash: [5, 3],
       });
@@ -470,7 +509,7 @@ describe('normalizeDensity', () => {
     }
   });
 
-  it('should not pass fill properties when line is true', () => {
+  it('should not forward fill/fillOpacity in line mode since filled:false uses stroke', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
@@ -490,11 +529,12 @@ describe('normalizeDensity', () => {
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
+      // line:true uses filled:false — fill/fillOpacity are not forwarded
       expect(layer0.mark).toEqual({
-        type: 'line',
+        type: 'area',
         orient: 'vertical',
+        filled: false,
       });
-      // fill and fillOpacity should not be present
       expect((layer0.mark as any).fill).toBeUndefined();
       expect((layer0.mark as any).fillOpacity).toBeUndefined();
     }

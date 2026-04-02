@@ -5,6 +5,7 @@ import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../enc
 import * as log from '../log/index.js';
 import {isMarkDef} from '../mark.js';
 import {NormalizerParams} from '../normalize/index.js';
+import {NormalizeLayerOrUnit} from '../normalize/base.js';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
 import {DensityTransform, Transform} from '../transform.js';
 import {CompositeMarkNormalizer} from './base.js';
@@ -190,6 +191,7 @@ const AREA_ONLY_PROPS = ['fill', 'fillOpacity'] as const;
 export function normalizeDensity(
   spec: GenericUnitSpec<Encoding<string>, Density | DensityDef>,
   {config}: NormalizerParams,
+  normalize: NormalizeLayerOrUnit,
 ): NormalizedLayerSpec {
   spec = {
     ...spec,
@@ -207,21 +209,61 @@ export function normalizeDensity(
     log.warn(log.message.densityMarkAsNotSupported());
   }
 
-  const {transform, continuousAxisChannelDef, continuousAxis, encodingWithoutContinuousAxis} = densityParams(
-    spec,
-    markDef,
-    config,
-  );
+  const {
+    transform: densityTransforms,
+    continuousAxisChannelDef,
+    continuousAxis,
+    encodingWithoutContinuousAxis,
+    groupby,
+  } = densityParams(spec, markDef, config);
 
   const {line, point, stack} = markDef;
   const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
   const useLine = line ?? false;
+  const densityAxis = continuousAxis === 'x' ? 'y' : 'x';
 
-  // Build mark object, forwarding applicable visual properties from the markDef
+  // When line:true, inject window + calculate transforms after the density transform
+  // to compute a _y2 (or _x2) field used to suppress the baseline stroke while keeping
+  // the vertical drops at both endpoints of the KDE curve.
+  // Strategy: set density-axis-baseline = 0 for the first and last row of each group,
+  // and = density for all interior rows. This makes the area's closed SVG path:
+  //   top curve → right drop → retrace top curve backwards → left drop → close
+  // The retrace overlaps the top curve exactly, so the baseline segment disappears.
+  const Y2_FIELD = '_density_y2';
+  const RN_FIELD = '_density_rn';
+  const N_FIELD = '_density_n';
+
+  const lineTransforms: Transform[] = useLine
+    ? [
+        {
+          window: [{op: 'row_number', as: RN_FIELD}],
+          sort: [{field: 'value'}],
+          ...(groupby.length > 0 ? {groupby} : {}),
+        } as Transform,
+        {
+          window: [{op: 'count', as: N_FIELD}],
+          frame: [null, null] as [null, null],
+          ...(groupby.length > 0 ? {groupby} : {}),
+        } as Transform,
+        {
+          calculate: `(datum.${RN_FIELD} === 1 || datum.${RN_FIELD} === datum.${N_FIELD}) ? 0 : datum.density`,
+          as: Y2_FIELD,
+        } as Transform,
+      ]
+    : [];
+
+  const transform = [...densityTransforms, ...lineTransforms];
+
+  // Build mark object, forwarding applicable visual properties from the markDef.
+  // When line:true, use a stroke-only area mark (filled:false). The y2 encoding
+  // uses the _density_y2 field which is 0 at the curve endpoints and equals
+  // density at interior points — this produces the top KDE curve + vertical drops
+  // at both ends, but suppresses the horizontal baseline stroke.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const densityMark: any = {
-    type: useLine ? 'line' : 'area',
+    type: 'area',
     orient: markOrient,
+    ...(useLine ? {filled: false} : {}),
   };
 
   for (const prop of SHARED_MARK_PROPS) {
@@ -230,6 +272,8 @@ export function normalizeDensity(
     }
   }
 
+  // Forward area-only props (fill/fillOpacity) for area mode.
+  // In line mode these are ignored since filled:false makes stroke the primary channel.
   if (!useLine) {
     for (const prop of AREA_ONLY_PROPS) {
       if (markDef[prop] !== undefined) {
@@ -242,8 +286,9 @@ export function normalizeDensity(
     densityMark.point = point;
   }
 
-  // Determine stacking: default to null (no stacking) for area, omit for line
-  const stackEncoding: {stack?: 'zero' | 'center' | 'normalize' | null} = useLine ? {} : {stack: stack ?? null};
+  // Determine stacking: default to null (no stacking) for both area and line-mode.
+  // Stack only takes effect when an explicit non-null value is given.
+  const stackEncoding: {stack?: 'zero' | 'center' | 'normalize' | null} = {stack: stack ?? null};
 
   const layer = [
     {
@@ -256,21 +301,26 @@ export function normalizeDensity(
           ...(continuousAxisChannelDef.scale !== undefined ? {scale: continuousAxisChannelDef.scale} : {}),
           ...(continuousAxisChannelDef.axis !== undefined ? {axis: continuousAxisChannelDef.axis} : {}),
         },
-        [continuousAxis === 'x' ? 'y' : 'x']: {
+        [densityAxis]: {
           field: 'density',
           type: 'quantitative',
           ...stackEncoding,
         },
+        // When line:true, y2/x2 uses the computed field that suppresses the baseline
+        ...(useLine ? {[`${densityAxis}2`]: {field: Y2_FIELD}} : {}),
         ...encodingWithoutContinuousAxis,
       },
     },
   ];
 
-  return {
-    ...outerSpec,
-    transform,
-    layer,
-  };
+  return normalize(
+    {
+      ...outerSpec,
+      transform,
+      layer,
+    },
+    {config},
+  ) as NormalizedLayerSpec;
 }
 
 function densityParams(
@@ -282,6 +332,7 @@ function densityParams(
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>;
+  groupby: string[];
 } {
   const orient = compositeMarkOrient(spec, DENSITY);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, DENSITY);
@@ -335,5 +386,6 @@ function densityParams(
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis: normalizedEncodingWithoutContinuousAxis,
+    groupby,
   };
 }

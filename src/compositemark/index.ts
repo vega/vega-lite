@@ -1,6 +1,7 @@
 import {Field} from '../channeldef.js';
 import {Encoding} from '../encoding.js';
 import {NormalizerParams} from '../normalize/index.js';
+import {NormalizeLayerOrUnit} from '../normalize/base.js';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
 import {EncodingFacetMapping} from '../spec/facet.js';
 import {NormalizedUnitSpec} from '../spec/unit.js';
@@ -34,6 +35,7 @@ export type {DensityConfigMixins} from './density.js';
 export type CompositeMarkNormalizerRun = (
   spec: GenericUnitSpec<any, any>,
   params: NormalizerParams,
+  normalize: NormalizeLayerOrUnit,
 ) => NormalizedLayerSpec | NormalizedUnitSpec;
 
 /**
