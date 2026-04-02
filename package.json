@@ -82,6 +82,7 @@
     "release": "release-it"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@release-it/conventional-changelog": "^10.0.6",
     "@rollup/plugin-alias": "^6.0.0",
     "@rollup/plugin-commonjs": "^29.0.2",
@@ -103,10 +104,11 @@
     "d3": "^7.9.0",
     "del-cli": "^7.0.0",
     "dotenv": "^17.4.0",
-    "eslint": "^9.39.2",
+    "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "fast-json-stable-stringify": "~2.1.0",
+    "globals": "^17.4.0",
     "highlight.js": "^11.11.1",
     "pako": "^2.1.0",
     "playwright": "^1.57.0",

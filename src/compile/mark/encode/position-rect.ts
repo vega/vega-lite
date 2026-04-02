@@ -105,7 +105,6 @@ function defaultSizeRef(
         return {signal: minBandSize ? `max(${signalOrStringValue(minBandSize)}, ${bandWidth})` : bandWidth};
       } else if (bandSize.band !== 1) {
         log.warn(log.message.cannotUseRelativeBandSizeWithNonBandScale(scaleType));
-        bandSize = undefined;
       }
     } else {
       return {
