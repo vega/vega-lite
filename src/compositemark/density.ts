@@ -1,5 +1,5 @@
 import {Interpolate, Orientation} from 'vega';
-import {isContinuousFieldOrDatumDef, isFieldDef, PositionFieldDef} from '../channeldef.js';
+import {PositionFieldDef} from '../channeldef.js';
 import {Config} from '../config.js';
 import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding.js';
 import * as log from '../log/index.js';
@@ -7,18 +7,15 @@ import {isMarkDef} from '../mark.js';
 import {NormalizerParams} from '../normalize/index.js';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
 import {Transform} from '../transform.js';
-import {hasProperty} from '../util.js';
 import {CompositeMarkNormalizer} from './base.js';
-import {compositeMarkOrient, GenericCompositeMarkDef, PartsMixins} from './common.js';
+import {compositeMarkContinuousAxis, compositeMarkOrient, GenericCompositeMarkDef, getTitle} from './common.js';
 
 export const DENSITY = 'density' as const;
 export type Density = typeof DENSITY;
 
 export const DENSITY_PARTS = ['density'] as const;
-type DensityPart = (typeof DENSITY_PARTS)[number];
-export type DensityPartsMixins = PartsMixins<DensityPart>;
 
-export interface DensityConfig extends DensityPartsMixins {
+export interface DensityConfig {
   /**
    * The bandwidth (standard deviation) of the Gaussian kernel. If unspecified or set to zero, the bandwidth value is automatically estimated from the input data using Scott's rule.
    */
@@ -203,25 +200,23 @@ export function normalizeDensity(
     config,
   );
 
-  const {orient, line, point, stack} = markDef;
+  const {line, point, stack} = markDef;
   const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
   const useLine = line ?? false;
 
-  // Build mark type
+  // Build mark object, forwarding applicable visual properties from the markDef
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const densityMark: any = {
     type: useLine ? 'line' : 'area',
-    orient: orient ?? markOrient,
+    orient: markOrient,
   };
 
-  // Pass through shared mark properties
   for (const prop of SHARED_MARK_PROPS) {
     if (markDef[prop] !== undefined) {
       densityMark[prop] = markDef[prop];
     }
   }
 
-  // Pass through area-only properties
   if (!useLine) {
     for (const prop of AREA_ONLY_PROPS) {
       if (markDef[prop] !== undefined) {
@@ -230,31 +225,12 @@ export function normalizeDensity(
     }
   }
 
-  // Pass through point overlay
   if (point !== undefined) {
     densityMark.point = point;
   }
 
-  // Preserve the original field's title if it was specified
-  const valueFieldTitle = hasProperty(continuousAxisChannelDef, 'title')
-    ? continuousAxisChannelDef.title
-    : continuousAxisChannelDef.field;
-
-  // Determine stacking behavior
-  // - If line is true, stacking doesn't apply (line marks don't stack)
-  // - If stack is explicitly set, use that value
-  // - Otherwise default to no stacking (null)
-  let stackEncoding: {stack: 'zero' | 'center' | 'normalize' | null} | Record<string, never>;
-  if (useLine) {
-    // Line marks don't support stacking, don't include stack in encoding
-    stackEncoding = {};
-  } else if (stack !== undefined) {
-    // Use explicit stack value if provided
-    stackEncoding = {stack: stack};
-  } else {
-    // Default: no stacking for density
-    stackEncoding = {stack: null};
-  }
+  // Determine stacking: default to null (no stacking) for area, omit for line
+  const stackEncoding: {stack?: 'zero' | 'center' | 'normalize' | null} = useLine ? {} : {stack: stack ?? null};
 
   const layer = [
     {
@@ -263,9 +239,9 @@ export function normalizeDensity(
         [continuousAxis]: {
           field: 'value',
           type: continuousAxisChannelDef.type,
-          title: valueFieldTitle,
-          ...(hasProperty(continuousAxisChannelDef, 'scale') ? {scale: continuousAxisChannelDef.scale} : {}),
-          ...(hasProperty(continuousAxisChannelDef, 'axis') ? {axis: continuousAxisChannelDef.axis} : {}),
+          title: getTitle(continuousAxisChannelDef),
+          ...(continuousAxisChannelDef.scale !== undefined ? {scale: continuousAxisChannelDef.scale} : {}),
+          ...(continuousAxisChannelDef.axis !== undefined ? {axis: continuousAxisChannelDef.axis} : {}),
         },
         [continuousAxis === 'x' ? 'y' : 'x']: {
           field: 'density',
@@ -295,7 +271,7 @@ function densityParams(
   encodingWithoutContinuousAxis: Encoding<string>;
 } {
   const orient = compositeMarkOrient(spec, DENSITY);
-  const {continuousAxisChannelDef, continuousAxis} = getDensityContinuousAxis(spec, orient);
+  const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, DENSITY);
 
   const {[continuousAxis]: _oldContinuousAxisChannelDef, ...encodingWithoutContinuousAxis} = spec.encoding;
 
@@ -307,14 +283,13 @@ function densityParams(
     encoding: normalizedEncodingWithoutContinuousAxis,
   } = extractTransformsFromEncoding(encodingWithoutContinuousAxis, config);
 
-  const groupbyFields = groupby;
   const densityConfig = (config as {density?: DensityConfig}).density;
 
   // Build density transform with precedence: markDef > config
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const densityTransform: any = {
     density: continuousAxisChannelDef.field,
-    groupby: groupbyFields.length > 0 ? groupbyFields : undefined,
+    groupby: groupby.length > 0 ? groupby : undefined,
   };
 
   const transformProps = ['bandwidth', 'extent', 'minsteps', 'maxsteps', 'steps', 'cumulative', 'counts'] as const;
@@ -329,7 +304,7 @@ function densityParams(
     ...(spec.transform ?? []),
     ...bins,
     ...timeUnits,
-    ...(oldAggregate.length > 0 ? [{aggregate: oldAggregate, groupby: groupbyFields}] : []),
+    ...(oldAggregate.length > 0 ? [{aggregate: oldAggregate, groupby}] : []),
     densityTransform,
   ];
 
@@ -339,24 +314,4 @@ function densityParams(
     continuousAxis,
     encodingWithoutContinuousAxis: normalizedEncodingWithoutContinuousAxis,
   };
-}
-
-function getDensityContinuousAxis(
-  spec: GenericUnitSpec<Encoding<string>, Density | DensityDef>,
-  orient: Orientation,
-): {
-  continuousAxisChannelDef: PositionFieldDef<string>;
-  continuousAxis: 'x' | 'y';
-} {
-  const {encoding} = spec;
-  const continuousAxis: 'x' | 'y' = orient === 'vertical' ? 'y' : 'x';
-  const continuousAxisChannelDef = encoding[continuousAxis];
-
-  if (!isFieldDef(continuousAxisChannelDef) || !isContinuousFieldOrDatumDef(continuousAxisChannelDef)) {
-    throw new Error(
-      `The ${continuousAxis} channel for a density mark must be a continuous field. Received ${JSON.stringify(continuousAxisChannelDef)}`,
-    );
-  }
-
-  return {continuousAxisChannelDef, continuousAxis};
 }
