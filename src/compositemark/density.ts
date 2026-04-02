@@ -6,7 +6,7 @@ import * as log from '../log/index.js';
 import {isMarkDef} from '../mark.js';
 import {NormalizerParams} from '../normalize/index.js';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
-import {Transform} from '../transform.js';
+import {DensityTransform, Transform} from '../transform.js';
 import {CompositeMarkNormalizer} from './base.js';
 import {compositeMarkContinuousAxis, compositeMarkOrient, GenericCompositeMarkDef, getTitle} from './common.js';
 
@@ -71,6 +71,15 @@ export interface DensityConfig {
    * @maximum 1
    */
   tension?: number;
+
+  /**
+   * Indicates how parameters for multiple densities should be resolved.
+   * If `"independent"`, each density may have its own domain extent and dynamic number of curve sample steps.
+   * If `"shared"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.
+   *
+   * __Default value:__ `"shared"`
+   */
+  resolve?: 'independent' | 'shared';
 }
 
 export type DensityDef = GenericCompositeMarkDef<Density> &
@@ -286,19 +295,28 @@ function densityParams(
   const densityConfig = (config as {density?: DensityConfig}).density;
 
   // Build density transform with precedence: markDef > config
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const densityTransform: any = {
-    density: continuousAxisChannelDef.field,
-    groupby: groupby.length > 0 ? groupby : undefined,
-  };
+  const transformProps = [
+    'bandwidth',
+    'extent',
+    'minsteps',
+    'maxsteps',
+    'steps',
+    'cumulative',
+    'counts',
+    'resolve',
+  ] as const;
+  const transformOverrides = Object.fromEntries(
+    transformProps.flatMap((prop) => {
+      const value = markDef[prop] ?? densityConfig?.[prop];
+      return value !== undefined ? [[prop, value]] : [];
+    }),
+  );
 
-  const transformProps = ['bandwidth', 'extent', 'minsteps', 'maxsteps', 'steps', 'cumulative', 'counts'] as const;
-  for (const prop of transformProps) {
-    const value = markDef[prop] ?? densityConfig?.[prop];
-    if (value !== undefined) {
-      densityTransform[prop] = value;
-    }
-  }
+  const densityTransform: DensityTransform = {
+    density: continuousAxisChannelDef.field,
+    ...(groupby.length > 0 ? {groupby} : {}),
+    ...transformOverrides,
+  };
 
   const transform: Transform[] = [
     ...(spec.transform ?? []),

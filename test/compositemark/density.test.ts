@@ -582,4 +582,77 @@ describe('normalizeDensity', () => {
       expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(null);
     }
   });
+
+  it('should support resolve parameter', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {type: 'density', resolve: 'independent'},
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          color: {field: 'Genre', type: 'nominal'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    expect(output.transform![0]).toEqual({
+      density: 'IMDB Rating',
+      groupby: ['Genre'],
+      resolve: 'independent',
+    });
+  });
+
+  it('should apply resolve from config', () => {
+    const config = {
+      density: {
+        resolve: 'independent' as const,
+      },
+    };
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: 'density',
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          color: {field: 'Genre', type: 'nominal'},
+        },
+      },
+      config,
+    );
+
+    assertIsLayerSpec(output);
+    expect(output.transform![0]).toEqual({
+      density: 'IMDB Rating',
+      groupby: ['Genre'],
+      resolve: 'independent',
+    });
+  });
+
+  it('should allow mark resolve to override config resolve', () => {
+    const config = {
+      density: {
+        resolve: 'independent' as const,
+      },
+    };
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: {type: 'density', resolve: 'shared'},
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          color: {field: 'Genre', type: 'nominal'},
+        },
+      },
+      config,
+    );
+
+    assertIsLayerSpec(output);
+    expect(output.transform![0]).toEqual({
+      density: 'IMDB Rating',
+      groupby: ['Genre'],
+      resolve: 'shared',
+    });
+  });
 });
