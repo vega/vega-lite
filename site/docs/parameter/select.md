@@ -80,7 +80,13 @@ function buildProjection(id) { buildSpecOpts(id, 'selection_project_'); }
 
 The `on` property modifies the event that triggers the selection.
 
+This property accepts a [Vega event stream selector](https://vega.github.io/vega/docs/event-streams/). For point selections, a single event such as `pointerover` or `click` is enough. For interval selections, the event stream must define both a start and an end event.
+
 For instance, a single rectangle in the heatmap below can now be selected on mouse hover instead.
+
+```json
+"select": {"type": "point", "on": "pointerover"}
+```
 
 <div class="vl-example" data-name="selection_type_single_pointerover"></div>
 
@@ -88,11 +94,17 @@ For instance, a single rectangle in the heatmap below can now be selected on mou
 
 The `clear` property identifies which events must fire to empty a selection of all selected values (the [`empty`](selection.html#selection-properties) property can be used to further determine the behavior of empty selections).
 
+Like `on`, `clear` accepts a Vega event stream selector or `false` to disable clearing entirely. The default is `dblclick`.
+
 The following visualization demonstrates the default clearing behavior: select a square on click and clear out the selection on double click.
 
 <div class="vl-example" data-name="selection_heatmap"></div>
 
 The following example clears the brush when the mouse button is released.
+
+```json
+"select": {"type": "interval", "clear": "pointerup"}
+```
 
 <div class="vl-example" data-name="selection_clear_brush"></div>
 
@@ -178,6 +190,15 @@ For example, the spec below imagines two users, Alex and Morgan, who can each dr
 
 The `translate` property allows a user to interactively move an interval selection back-and-forth.
 
+Set `translate` to `false` to disable panning, leave it as `true` to use the default drag interaction, or provide a Vega event stream to require a modifier key or custom gesture. For example, the following event stream only translates while dragging with the shift key pressed:
+
+```json
+"select": {
+  "type": "interval",
+  "translate": "[pointerdown[event.shiftKey], window:pointerup] > window:pointermove!"
+}
+```
+
 For example, try to pan the <select id="type_translate" onchange="buildTranslate()"><option>brush</option><option>scatterplot</option></select> on <select id="event_translate" onchange="buildTranslate()"><option>drag</option><option>shift-drag</option></select>.
 
 <div id="translate" class="vl-example" data-name="selection_translate_brush_drag"></div>
@@ -194,12 +215,21 @@ function buildTranslate() {
 
 The `zoom` property allows a user to interactively resize an interval selection.
 
-For example, you can zoom the <select id="type_zoom" onchange="buildTranslate()"><option>brush</option><option>scatterplot</option></select> on <select id="event_zoom" onchange="buildTranslate()"><option>wheel</option><option>shift-wheel</option></select>.
+Set `zoom` to `false` to disable resizing, keep the default `true` to use `wheel!`, or provide a filtered wheel event stream. For example, the following configuration only zooms while the shift key is pressed:
+
+```json
+"select": {
+  "type": "interval",
+  "zoom": "wheel![event.shiftKey]"
+}
+```
+
+For example, you can zoom the <select id="type_zoom" onchange="buildZoom()"><option>brush</option><option>scatterplot</option></select> on <select id="event_zoom" onchange="buildZoom()"><option>wheel</option><option>shift-wheel</option></select>.
 
 <div id="zoom" class="vl-example" data-name="selection_zoom_brush_wheel"></div>
 
 <script type="text/javascript">
-function buildTranslate() {
+function buildZoom() {
   const type = document.getElementById('type_zoom').value;
   const event = document.getElementById('event_zoom').value;
   changeSpec('zoom', 'selection_zoom_' + type + '_' + event);
