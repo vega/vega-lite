@@ -8109,16 +8109,6 @@
           "description": "A boolean flag indicating whether to produce density estimates (false) or cumulative density estimates (true).\n\n__Default value:__ `false`",
           "type": "boolean"
         },
-        "density": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/AnyMarkConfig"
-            }
-          ]
-        },
         "extent": {
           "description": "A [min, max] domain from which to sample the distribution. If unspecified, the extent will be determined by the observed minimum and maximum values of the density value field.",
           "items": {
@@ -8139,6 +8129,14 @@
         "minsteps": {
           "description": "The minimum number of samples to take along the extent domain for plotting the density.\n\n__Default value:__ `25`",
           "type": "number"
+        },
+        "resolve": {
+          "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`",
+          "enum": [
+            "independent",
+            "shared"
+          ],
+          "type": "string"
         },
         "steps": {
           "description": "The exact number of samples to take along the extent domain for plotting the density. If specified, overrides both minsteps and maxsteps to set an exact number of uniform samples.",
@@ -8186,16 +8184,6 @@
           "description": "A boolean flag indicating whether to produce density estimates (false) or cumulative density estimates (true).\n\n__Default value:__ `false`",
           "type": "boolean"
         },
-        "density": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/AnyMarkConfig"
-            }
-          ]
-        },
         "extent": {
           "description": "A [min, max] domain from which to sample the distribution. If unspecified, the extent will be determined by the observed minimum and maximum values of the density value field.",
           "items": {
@@ -8206,14 +8194,14 @@
           "type": "array"
         },
         "fill": {
-          "description": "Default fill color. Only applies when `line` is `false` (area mark).",
+          "description": "Default fill color. Setting `fill` (or `fillOpacity`) causes the density to render as a filled area mark. When neither `fill` nor `fillOpacity` is set, the density renders as a line mark.",
           "type": [
             "string",
             "null"
           ]
         },
         "fillOpacity": {
-          "description": "The fill opacity (value between [0,1]). Only applies when `line` is `false` (area mark).",
+          "description": "The fill opacity (value between [0,1]). Setting `fillOpacity` (or `fill`) causes the density to render as a filled area mark. When neither `fill` nor `fillOpacity` is set, the density renders as a line mark.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
@@ -8221,10 +8209,6 @@
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
           "description": "The line interpolation method for the density curve/area."
-        },
-        "line": {
-          "description": "Whether to draw the density as a line (true) or a filled area (false).\n\n__Default value:__ `false`",
-          "type": "boolean"
         },
         "maxsteps": {
           "description": "The maximum number of samples to take along the extent domain for plotting the density.\n\n__Default value:__ `200`",
@@ -8258,10 +8242,18 @@
               "type": "string"
             }
           ],
-          "description": "A flag for overlaying points on top of the density line or area, or an object defining properties of the overlayed points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n- If this property is `false`, no points would be automatically added.\n\n__Default value:__ `false`."
+          "description": "A flag for overlaying points on top of the density curve, or an object defining properties of the overlayed points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n- If this property is `false`, no points would be automatically added.\n\n__Default value:__ `false`."
+        },
+        "resolve": {
+          "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`",
+          "enum": [
+            "independent",
+            "shared"
+          ],
+          "type": "string"
         },
         "stack": {
-          "description": "Type of stacking offset for the density area. One of `\"zero\"` (default), `\"center\"`, or `\"normalize\"`.\n- `\"zero\"`: stacking with a baseline at the bottom of the chart (default stacking)\n- `\"center\"`: stream graphs with a baseline at the middle of the chart\n- `\"normalize\"`: stacked normalized percentages\n\n__Note:__ This is only applicable with `line: false` and when grouping by a field (e.g., `color`).",
+          "description": "Type of stacking offset for the density area. One of `\"zero\"` (default), `\"center\"`, or `\"normalize\"`.\n- `\"zero\"`: stacking with a baseline at the bottom of the chart (default stacking)\n- `\"center\"`: stream graphs with a baseline at the middle of the chart\n- `\"normalize\"`: stacked normalized percentages\n\n__Note:__ Stacking is only applicable for area marks (i.e., when `fill` or `fillOpacity` is set) and when grouping by a field (e.g., `color`).",
           "enum": [
             "zero",
             "center",

@@ -33,7 +33,7 @@ describe('normalizeDensity', () => {
     expect(output.layer!.length).toBe(1);
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
-      expect(layer0.mark).toEqual({type: 'area', orient: 'vertical'});
+      expect(layer0.mark).toEqual({type: 'line', orient: 'vertical'});
       expect(layer0.encoding).toEqual({
         x: {
           field: 'value',
@@ -43,7 +43,6 @@ describe('normalizeDensity', () => {
         y: {
           field: 'density',
           type: 'quantitative',
-          stack: null,
         },
       });
     }
@@ -206,7 +205,7 @@ describe('normalizeDensity', () => {
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
       expect(layer0.mark).toEqual({
-        type: 'area',
+        type: 'line',
         orient: 'vertical',
         interpolate: 'monotone',
       });
@@ -229,7 +228,7 @@ describe('normalizeDensity', () => {
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
       expect(layer0.mark).toEqual({
-        type: 'area',
+        type: 'line',
         orient: 'vertical',
         opacity: 0.5,
       });
@@ -252,7 +251,7 @@ describe('normalizeDensity', () => {
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
       expect(layer0.mark).toEqual({
-        type: 'area',
+        type: 'line',
         orient: 'vertical',
         tension: 0.8,
       });
@@ -278,14 +277,14 @@ describe('normalizeDensity', () => {
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
       expect(layer0.mark).toEqual({
-        type: 'area',
+        type: 'line',
         orient: 'horizontal',
       });
     }
     if ('encoding' in layer0) {
       expect(layer0.encoding).toEqual({
         y: {field: 'value', type: 'quantitative', title: 'IMDB Rating'},
-        x: {field: 'density', type: 'quantitative', stack: null},
+        x: {field: 'density', type: 'quantitative'},
       });
     }
   });
@@ -342,11 +341,11 @@ describe('normalizeDensity', () => {
     });
   });
 
-  it('should render as a stroke-only area with y2 trick when line: true', () => {
+  it('should produce a line mark by default (no fill or fillOpacity set)', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
-        mark: {type: 'density', line: true},
+        mark: 'density',
         encoding: {
           x: {field: 'IMDB Rating', type: 'quantitative'},
         },
@@ -356,33 +355,25 @@ describe('normalizeDensity', () => {
 
     assertIsLayerSpec(output);
 
-    // Three extra transforms after the density transform: two window + one calculate
+    // Default: no fill/fillOpacity → line mark, no stack on density axis
     expect(output.transform).toBeDefined();
-    expect(output.transform!.length).toBe(4);
-    expect(output.transform![1]).toMatchObject({window: [{op: 'row_number', as: '_density_rn'}]});
-    expect(output.transform![2]).toMatchObject({window: [{op: 'count', as: '_density_n'}], frame: [null, null]});
-    expect(output.transform![3]).toMatchObject({calculate: expect.stringContaining('_density_rn'), as: '_density_y2'});
+    expect(output.transform!.length).toBe(1);
 
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
-      expect(layer0.mark).toEqual({
-        type: 'area',
-        orient: 'vertical',
-        filled: false,
-      });
+      expect(layer0.mark).toEqual({type: 'line', orient: 'vertical'});
     }
     if ('encoding' in layer0) {
-      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(null);
-      // y2 uses the computed field that suppresses the baseline stroke
-      expect((layer0.encoding!.y2 as {field?: string}).field).toBe('_density_y2');
+      // No stack property on y encoding for line marks
+      expect((layer0.encoding!.y as any).stack).toBeUndefined();
     }
   });
 
-  it('should include groupby on window transforms for line:true with color groupby', () => {
+  it('should produce a line mark with groupby color when no fill is set', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
-        mark: {type: 'density', line: true},
+        mark: 'density',
         encoding: {
           x: {field: 'IMDB Rating', type: 'quantitative'},
           color: {field: 'Genre', type: 'nominal'},
@@ -392,20 +383,19 @@ describe('normalizeDensity', () => {
     );
 
     assertIsLayerSpec(output);
-    expect(output.transform!.length).toBe(4);
-    // window transforms must groupby the same field as the density transform
-    expect(output.transform![1]).toMatchObject({
-      window: [{op: 'row_number', as: '_density_rn'}],
+    // Only the density transform — no window transforms
+    expect(output.transform!.length).toBe(1);
+    expect(output.transform![0]).toEqual({
+      density: 'IMDB Rating',
       groupby: ['Genre'],
     });
-    expect(output.transform![2]).toMatchObject({
-      window: [{op: 'count', as: '_density_n'}],
-      frame: [null, null],
-      groupby: ['Genre'],
-    });
+    const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      expect((layer0.mark as any).type).toBe('line');
+    }
   });
 
-  it('should not stack when grouping by color', () => {
+  it('should not stack when grouping by color (line mark has no stack)', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
@@ -420,18 +410,22 @@ describe('normalizeDensity', () => {
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      // Default (no fill) → line mark
+      expect((layer0.mark as any).type).toBe('line');
+    }
     if ('encoding' in layer0) {
-      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(null);
+      // Line marks have no stack encoding
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBeUndefined();
     }
   });
 
-  it('should support stroke properties for line density', () => {
+  it('should support stroke properties and produce a line mark when no fill is set', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
         mark: {
           type: 'density',
-          line: true,
           strokeWidth: 2,
           strokeDash: [5, 3],
         },
@@ -446,9 +440,8 @@ describe('normalizeDensity', () => {
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
       expect(layer0.mark).toEqual({
-        type: 'area',
+        type: 'line',
         orient: 'vertical',
-        filled: false,
         strokeWidth: 2,
         strokeDash: [5, 3],
       });
@@ -502,21 +495,19 @@ describe('normalizeDensity', () => {
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
       expect(layer0.mark).toMatchObject({
-        type: 'area',
+        type: 'line',
         orient: 'vertical',
         point: true,
       });
     }
   });
 
-  it('should not forward fill/fillOpacity in line mode since filled:false uses stroke', () => {
+  it('should produce an area mark when fill or fillOpacity is set', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
         mark: {
           type: 'density',
-          line: true,
-          fill: 'steelblue',
           fillOpacity: 0.5,
         },
         encoding: {
@@ -529,14 +520,38 @@ describe('normalizeDensity', () => {
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
-      // line:true uses filled:false — fill/fillOpacity are not forwarded
-      expect(layer0.mark).toEqual({
-        type: 'area',
-        orient: 'vertical',
-        filled: false,
-      });
-      expect((layer0.mark as any).fill).toBeUndefined();
-      expect((layer0.mark as any).fillOpacity).toBeUndefined();
+      // fillOpacity set → area mark with stack: null
+      expect((layer0.mark as any).type).toBe('area');
+      expect((layer0.mark as any).fillOpacity).toBe(0.5);
+      expect((layer0.mark as any).filled).toBeUndefined();
+    }
+    if ('encoding' in layer0) {
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(null);
+    }
+  });
+
+  it('should produce an area mark when fill is set as an encoding channel', () => {
+    const output = normalize(
+      {
+        data: {url: 'data/movies.json'},
+        mark: 'density',
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          fill: {field: 'Genre', type: 'nominal'},
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      // fill encoding channel → area mark
+      expect((layer0.mark as any).type).toBe('area');
+    }
+    if ('encoding' in layer0) {
+      // area mark → stack: null on density axis
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(null);
     }
   });
 
@@ -544,7 +559,7 @@ describe('normalizeDensity', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
-        mark: {type: 'density', stack: 'center'},
+        mark: {type: 'density', stack: 'center', fill: 'steelblue'},
         encoding: {
           x: {field: 'IMDB Rating', type: 'quantitative'},
           color: {field: 'Genre', type: 'nominal'},
@@ -568,7 +583,7 @@ describe('normalizeDensity', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
-        mark: {type: 'density', stack: 'normalize'},
+        mark: {type: 'density', stack: 'normalize', fill: 'steelblue'},
         encoding: {
           x: {field: 'IMDB Rating', type: 'quantitative'},
           color: {field: 'Genre', type: 'nominal'},
@@ -588,7 +603,7 @@ describe('normalizeDensity', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
-        mark: {type: 'density', stack: 'zero'},
+        mark: {type: 'density', stack: 'zero', fill: 'steelblue'},
         encoding: {
           x: {field: 'IMDB Rating', type: 'quantitative'},
           color: {field: 'Genre', type: 'nominal'},
@@ -604,7 +619,7 @@ describe('normalizeDensity', () => {
     }
   });
 
-  it('should default to no stacking when stack is not specified', () => {
+  it('should default to no stacking when stack is not specified (line mark)', () => {
     const output = normalize(
       {
         data: {url: 'data/movies.json'},
@@ -619,8 +634,12 @@ describe('normalizeDensity', () => {
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      // No fill → line mark, no stack property on density axis
+      expect((layer0.mark as any).type).toBe('line');
+    }
     if ('encoding' in layer0) {
-      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(null);
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBeUndefined();
     }
   });
 
@@ -710,6 +729,156 @@ describe('normalizeDensity', () => {
         defaultConfig,
       );
       expect(localLogger.warns[0]).toEqual(log.message.densityMarkAsNotSupported());
+    });
+  });
+
+  describe('overlay and fill opacity', () => {
+    it('should default fillOpacity to 0.6 when fill is set on the mark', () => {
+      const output = normalize(
+        {
+          data: {url: 'data/movies.json'},
+          mark: {type: 'density', fill: 'steelblue'},
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+          },
+        },
+        defaultConfig,
+      );
+
+      assertIsLayerSpec(output);
+      expect(output.layer.length).toBe(1);
+      const layer0 = output.layer[0];
+      if ('mark' in layer0) {
+        expect((layer0.mark as any).type).toBe('area');
+        expect((layer0.mark as any).fillOpacity).toBe(0.6);
+        expect((layer0.mark as any).fill).toBe('steelblue');
+      }
+    });
+
+    it('should default fillOpacity to 0.6 when fill is set as an encoding channel', () => {
+      const output = normalize(
+        {
+          data: {url: 'data/movies.json'},
+          mark: 'density',
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+            fill: {field: 'Genre', type: 'nominal'},
+          },
+        },
+        defaultConfig,
+      );
+
+      assertIsLayerSpec(output);
+      expect(output.layer.length).toBe(1);
+      const layer0 = output.layer[0];
+      if ('mark' in layer0) {
+        expect((layer0.mark as any).type).toBe('area');
+        expect((layer0.mark as any).fillOpacity).toBe(0.6);
+      }
+    });
+
+    it('should respect explicit fillOpacity and not default it', () => {
+      const output = normalize(
+        {
+          data: {url: 'data/movies.json'},
+          mark: {type: 'density', fill: 'steelblue', fillOpacity: 0.3},
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+          },
+        },
+        defaultConfig,
+      );
+
+      assertIsLayerSpec(output);
+      const layer0 = output.layer[0];
+      if ('mark' in layer0) {
+        expect((layer0.mark as any).fillOpacity).toBe(0.3);
+      }
+    });
+
+    it('should produce 2-layer spec (area + line) when fill and color are both set', () => {
+      const output = normalize(
+        {
+          data: {url: 'data/movies.json'},
+          mark: {type: 'density', fill: 'steelblue'},
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+            color: {field: 'Genre', type: 'nominal'},
+          },
+        },
+        defaultConfig,
+      );
+
+      assertIsLayerSpec(output);
+      expect(output.layer.length).toBe(2);
+
+      const [areaLayer, lineLayer] = output.layer as any[];
+      // Layer 0: area with fill, no color
+      expect(areaLayer.mark.type).toBe('area');
+      expect(areaLayer.mark.fill).toBe('steelblue');
+      expect(areaLayer.mark.fillOpacity).toBe(0.6);
+      expect(areaLayer.encoding.fill).toBeUndefined();
+      expect(areaLayer.encoding.color).toBeUndefined();
+
+      // Layer 1: line with color encoding, no fill
+      expect(lineLayer.mark.type).toBe('line');
+      expect(lineLayer.encoding.color).toEqual({field: 'Genre', type: 'nominal'});
+      // Line layer density axis has no stack
+      expect(lineLayer.encoding.y.stack).toBeUndefined();
+    });
+
+    it('should produce 2-layer spec when fill encoding and color encoding are both set', () => {
+      const output = normalize(
+        {
+          data: {url: 'data/movies.json'},
+          mark: 'density',
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+            fill: {field: 'Genre', type: 'nominal'},
+            color: {field: 'Genre', type: 'nominal'},
+          },
+        },
+        defaultConfig,
+      );
+
+      assertIsLayerSpec(output);
+      expect(output.layer.length).toBe(2);
+
+      const [areaLayer, lineLayer] = output.layer as any[];
+      expect(areaLayer.mark.type).toBe('area');
+      expect(areaLayer.encoding.fill).toEqual({field: 'Genre', type: 'nominal'});
+      expect(areaLayer.encoding.color).toBeUndefined();
+
+      expect(lineLayer.mark.type).toBe('line');
+      expect(lineLayer.encoding.color).toEqual({field: 'Genre', type: 'nominal'});
+      expect(lineLayer.encoding.fill).toBeUndefined();
+    });
+
+    it('should produce 2-layer spec when fill mark prop and stroke markDef prop are both set', () => {
+      const output = normalize(
+        {
+          data: {url: 'data/movies.json'},
+          mark: {type: 'density', fill: 'steelblue', stroke: 'black', strokeWidth: 2},
+          encoding: {
+            x: {field: 'IMDB Rating', type: 'quantitative'},
+          },
+        },
+        defaultConfig,
+      );
+
+      assertIsLayerSpec(output);
+      expect(output.layer.length).toBe(2);
+
+      const [areaLayer, lineLayer] = output.layer as any[];
+      expect(areaLayer.mark.type).toBe('area');
+      expect(areaLayer.mark.fill).toBe('steelblue');
+      // stroke props not forwarded to area
+      expect(areaLayer.mark.stroke).toBeUndefined();
+      expect(areaLayer.mark.strokeWidth).toBeUndefined();
+
+      expect(lineLayer.mark.type).toBe('line');
+      expect(lineLayer.mark.stroke).toBe('black');
+      expect(lineLayer.mark.strokeWidth).toBe(2);
     });
   });
 });

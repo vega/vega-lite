@@ -91,14 +91,7 @@ export type DensityDef = GenericCompositeMarkDef<Density> &
     orient?: Orientation;
 
     /**
-     * Whether to draw the density as a line (true) or a filled area (false).
-     *
-     * __Default value:__ `false`
-     */
-    line?: boolean;
-
-    /**
-     * A flag for overlaying points on top of the density line or area, or an object defining properties of the overlayed points.
+     * A flag for overlaying points on top of the density curve, or an object defining properties of the overlaid points.
      *
      * - If this property is `"transparent"`, transparent points will be used (for enhancing tooltips and selections).
      * - If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.
@@ -139,12 +132,14 @@ export type DensityDef = GenericCompositeMarkDef<Density> &
     strokeDashOffset?: number;
 
     /**
-     * Default fill color. Only applies when `line` is `false` (area mark).
+     * Default fill color. Setting `fill` (or `fillOpacity`) causes the density to render as a filled area mark.
+     * When neither `fill` nor `fillOpacity` is set, the density renders as a line mark.
      */
     fill?: string | null;
 
     /**
-     * The fill opacity (value between [0,1]). Only applies when `line` is `false` (area mark).
+     * The fill opacity (value between [0,1]). Setting `fillOpacity` (or `fill`) causes the density to render as a filled area mark.
+     * When neither `fill` nor `fillOpacity` is set, the density renders as a line mark.
      *
      * @minimum 0
      * @maximum 1
@@ -157,7 +152,7 @@ export type DensityDef = GenericCompositeMarkDef<Density> &
      * - `"center"`: stream graphs with a baseline at the middle of the chart
      * - `"normalize"`: stacked normalized percentages
      *
-     * __Note:__ This is only applicable with `line: false` and when grouping by a field (e.g., `color`).
+     * __Note:__ Stacking is only applicable for area marks (i.e., when `fill` or `fillOpacity` is set) and when grouping by a field (e.g., `color`).
      */
     stack?: 'zero' | 'center' | 'normalize' | null;
   };
@@ -188,6 +183,29 @@ const SHARED_MARK_PROPS = [
 // Properties that only apply to area
 const AREA_ONLY_PROPS = ['fill', 'fillOpacity'] as const;
 
+const AREA_SHARED_MARK_PROPS = ['opacity', 'interpolate', 'tension', 'clip'] as const;
+
+// Encoding channels that only apply to area (fill side)
+const AREA_ONLY_ENCODING_CHANNELS = ['fill', 'fillOpacity'] as const;
+const AREA_ONLY_ENCODING_CHANNEL_SET = new Set<string>(AREA_ONLY_ENCODING_CHANNELS);
+
+// Encoding channels that only apply to line (stroke side)
+const LINE_ONLY_ENCODING_CHANNELS = ['color', 'stroke', 'strokeWidth', 'strokeOpacity', 'strokeDash'] as const;
+const LINE_ONLY_ENCODING_CHANNEL_SET = new Set<string>(LINE_ONLY_ENCODING_CHANNELS);
+
+const LINE_OVERLAY_MARK_PROPS = [
+  'color',
+  'stroke',
+  'strokeWidth',
+  'strokeOpacity',
+  'strokeDash',
+  'strokeDashOffset',
+] as const;
+
+const LINE_OVERLAY_ENCODING_CHANNELS = ['color', 'stroke', 'strokeWidth', 'strokeOpacity', 'strokeDash'] as const;
+
+const DEFAULT_DENSITY_FILL_OPACITY = 0.6;
+
 export function normalizeDensity(
   spec: GenericUnitSpec<Encoding<string>, Density | DensityDef>,
   {config}: NormalizerParams,
@@ -214,56 +232,116 @@ export function normalizeDensity(
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis,
-    groupby,
   } = densityParams(spec, markDef, config);
 
-  const {line, point, stack} = markDef;
+  const {point, stack} = markDef;
   const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
-  const useLine = line ?? false;
   const densityAxis = continuousAxis === 'x' ? 'y' : 'x';
 
-  // When line:true, inject window + calculate transforms after the density transform
-  // to compute a _y2 (or _x2) field used to suppress the baseline stroke while keeping
-  // the vertical drops at both endpoints of the KDE curve.
-  // Strategy: set density-axis-baseline = 0 for the first and last row of each group,
-  // and = density for all interior rows. This makes the area's closed SVG path:
-  //   top curve → right drop → retrace top curve backwards → left drop → close
-  // The retrace overlaps the top curve exactly, so the baseline segment disappears.
-  const Y2_FIELD = '_density_y2';
-  const RN_FIELD = '_density_rn';
-  const N_FIELD = '_density_n';
+  // Infer mark type: use area if fill or fillOpacity is set — either as a mark property
+  // or as an encoding channel (e.g. fill: {field: 'Species', type: 'nominal'}).
+  const useArea =
+    markDef.fill !== undefined ||
+    markDef.fillOpacity !== undefined ||
+    spec.encoding.fill !== undefined ||
+    spec.encoding.fillOpacity !== undefined;
 
-  const lineTransforms: Transform[] = useLine
-    ? [
-        {
-          window: [{op: 'row_number', as: RN_FIELD}],
-          sort: [{field: 'value'}],
-          ...(groupby.length > 0 ? {groupby} : {}),
-        } as Transform,
-        {
-          window: [{op: 'count', as: N_FIELD}],
-          frame: [null, null] as [null, null],
-          ...(groupby.length > 0 ? {groupby} : {}),
-        } as Transform,
-        {
-          calculate: `(datum.${RN_FIELD} === 1 || datum.${RN_FIELD} === datum.${N_FIELD}) ? 0 : datum.density`,
-          as: Y2_FIELD,
-        } as Transform,
-      ]
-    : [];
+  // Use a line overlay on top of the area when stroke/color properties are also present.
+  const useLineOverlay =
+    useArea &&
+    (LINE_OVERLAY_MARK_PROPS.some((prop) => markDef[prop] !== undefined) ||
+      LINE_OVERLAY_ENCODING_CHANNELS.some((channel) => spec.encoding[channel] !== undefined));
 
-  const transform = [...densityTransforms, ...lineTransforms];
+  // Default fillOpacity of 0.6 when the user hasn't set it explicitly, so overlapping
+  // densities remain visible.
+  const defaultedFillOpacity =
+    useArea && markDef.fillOpacity === undefined && spec.encoding.fillOpacity === undefined
+      ? DEFAULT_DENSITY_FILL_OPACITY
+      : undefined;
 
-  // Build mark object, forwarding applicable visual properties from the markDef.
-  // When line:true, use a stroke-only area mark (filled:false). The y2 encoding
-  // uses the _density_y2 field which is 0 at the curve endpoints and equals
-  // density at interior points — this produces the top KDE curve + vertical drops
-  // at both ends, but suppresses the horizontal baseline stroke.
+  // Build the shared positional encoding used by all layers.
+  const continuousAxisEncoding = {
+    field: 'value',
+    type: continuousAxisChannelDef.type,
+    title: getTitle(continuousAxisChannelDef),
+    ...(continuousAxisChannelDef.scale !== undefined ? {scale: continuousAxisChannelDef.scale} : {}),
+    ...(continuousAxisChannelDef.axis !== undefined ? {axis: continuousAxisChannelDef.axis} : {}),
+  };
+
+  // Stack only applies to area marks; for line marks omit the stack encoding entirely.
+  const densityAxisEncoding = useArea
+    ? {field: 'density', type: 'quantitative', stack: stack ?? null}
+    : {field: 'density', type: 'quantitative'};
+
+  if (useLineOverlay) {
+    // Split encodingWithoutContinuousAxis into fill-side and stroke-side.
+    const areaEncoding: Record<string, unknown> = {};
+    const lineEncoding: Record<string, unknown> = {};
+    for (const [ch, def] of Object.entries(encodingWithoutContinuousAxis)) {
+      if (AREA_ONLY_ENCODING_CHANNEL_SET.has(ch)) {
+        areaEncoding[ch] = def;
+      } else if (LINE_ONLY_ENCODING_CHANNEL_SET.has(ch)) {
+        lineEncoding[ch] = def;
+      } else {
+        // Shared channels (e.g. tooltip, detail) go on both layers.
+        areaEncoding[ch] = def;
+        lineEncoding[ch] = def;
+      }
+    }
+
+    // Area mark — forward fill/fillOpacity from markDef; suppress stroke properties.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const areaMark: any = {type: 'area', orient: markOrient};
+    for (const prop of AREA_SHARED_MARK_PROPS) {
+      if (markDef[prop] !== undefined) areaMark[prop] = markDef[prop];
+    }
+    for (const prop of AREA_ONLY_PROPS) {
+      if (markDef[prop] !== undefined) areaMark[prop] = markDef[prop];
+    }
+    if (defaultedFillOpacity !== undefined) areaMark.fillOpacity = defaultedFillOpacity;
+
+    // Line mark — forward stroke/color properties from markDef.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const lineMark: any = {type: 'line', orient: markOrient};
+    for (const prop of SHARED_MARK_PROPS) {
+      if (markDef[prop] !== undefined) lineMark[prop] = markDef[prop];
+    }
+    if (point !== undefined) lineMark.point = point;
+
+    const layer = [
+      {
+        mark: areaMark,
+        encoding: {
+          [continuousAxis]: continuousAxisEncoding,
+          [densityAxis]: densityAxisEncoding,
+          ...areaEncoding,
+        },
+      },
+      {
+        mark: lineMark,
+        encoding: {
+          [continuousAxis]: continuousAxisEncoding,
+          [densityAxis]: {field: 'density', type: 'quantitative'},
+          ...lineEncoding,
+        },
+      },
+    ];
+
+    return normalize(
+      {
+        ...outerSpec,
+        transform: densityTransforms,
+        layer,
+      },
+      {config},
+    ) as NormalizedLayerSpec;
+  }
+
+  // Single mark (area or line).
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const densityMark: any = {
-    type: 'area',
+    type: useArea ? 'area' : 'line',
     orient: markOrient,
-    ...(useLine ? {filled: false} : {}),
   };
 
   for (const prop of SHARED_MARK_PROPS) {
@@ -272,13 +350,15 @@ export function normalizeDensity(
     }
   }
 
-  // Forward area-only props (fill/fillOpacity) for area mode.
-  // In line mode these are ignored since filled:false makes stroke the primary channel.
-  if (!useLine) {
+  // Forward fill/fillOpacity only for area marks.
+  if (useArea) {
     for (const prop of AREA_ONLY_PROPS) {
       if (markDef[prop] !== undefined) {
         densityMark[prop] = markDef[prop];
       }
+    }
+    if (defaultedFillOpacity !== undefined) {
+      densityMark.fillOpacity = defaultedFillOpacity;
     }
   }
 
@@ -286,28 +366,12 @@ export function normalizeDensity(
     densityMark.point = point;
   }
 
-  // Determine stacking: default to null (no stacking) for both area and line-mode.
-  // Stack only takes effect when an explicit non-null value is given.
-  const stackEncoding: {stack?: 'zero' | 'center' | 'normalize' | null} = {stack: stack ?? null};
-
   const layer = [
     {
       mark: densityMark,
       encoding: {
-        [continuousAxis]: {
-          field: 'value',
-          type: continuousAxisChannelDef.type,
-          title: getTitle(continuousAxisChannelDef),
-          ...(continuousAxisChannelDef.scale !== undefined ? {scale: continuousAxisChannelDef.scale} : {}),
-          ...(continuousAxisChannelDef.axis !== undefined ? {axis: continuousAxisChannelDef.axis} : {}),
-        },
-        [densityAxis]: {
-          field: 'density',
-          type: 'quantitative',
-          ...stackEncoding,
-        },
-        // When line:true, y2/x2 uses the computed field that suppresses the baseline
-        ...(useLine ? {[`${densityAxis}2`]: {field: Y2_FIELD}} : {}),
+        [continuousAxis]: continuousAxisEncoding,
+        [densityAxis]: densityAxisEncoding,
         ...encodingWithoutContinuousAxis,
       },
     },
@@ -316,7 +380,7 @@ export function normalizeDensity(
   return normalize(
     {
       ...outerSpec,
-      transform,
+      transform: densityTransforms,
       layer,
     },
     {config},
@@ -332,7 +396,6 @@ function densityParams(
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>;
-  groupby: string[];
 } {
   const orient = compositeMarkOrient(spec, DENSITY);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, DENSITY);
@@ -386,6 +449,5 @@ function densityParams(
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis: normalizedEncodingWithoutContinuousAxis,
-    groupby,
   };
 }
