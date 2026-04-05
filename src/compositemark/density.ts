@@ -286,7 +286,7 @@ export function normalizeDensity(
     }
 
     // Area mark — forward fill/fillOpacity from markDef; suppress stroke properties.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const areaMark: any = {type: 'area', orient: markOrient};
     for (const prop of AREA_SHARED_MARK_PROPS) {
       if (markDef[prop] !== undefined) areaMark[prop] = markDef[prop];
@@ -297,7 +297,7 @@ export function normalizeDensity(
     if (defaultedFillOpacity !== undefined) areaMark.fillOpacity = defaultedFillOpacity;
 
     // Line mark — forward stroke/color properties from markDef.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const lineMark: any = {type: 'line', orient: markOrient};
     for (const prop of SHARED_MARK_PROPS) {
       if (markDef[prop] !== undefined) lineMark[prop] = markDef[prop];
@@ -332,7 +332,7 @@ export function normalizeDensity(
   }
 
   // Single mark (area or line).
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   const densityMark: any = {
     type: useArea ? 'area' : 'line',
     orient: markOrient,
