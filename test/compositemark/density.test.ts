@@ -638,5 +638,35 @@ describe('normalizeDensity', () => {
       expect(lineLayer.mark.stroke).toBe('black');
       expect(lineLayer.mark.strokeWidth).toBe(2);
     });
+
+    it('should preserve grouping in both layers when fill and stroke come from density config', () => {
+      const output = normalizeDensitySpec(
+        {
+          mark: 'density',
+          encoding: {
+            ...defaultEncoding,
+            color: {field: 'Genre', type: 'nominal'},
+          },
+        },
+        {
+          density: {
+            fill: 'steelblue',
+            stroke: 'black',
+          },
+        },
+      );
+
+      assertIsLayerSpec(output);
+      expect(output.layer.length).toBe(2);
+
+      const [areaLayer, lineLayer] = output.layer as any[];
+
+      expect(areaLayer.mark.type).toBe('area');
+      expect(lineLayer.mark.type).toBe('line');
+
+      // Grouping field stays present for both layers (line via color, area via injected detail)
+      expect(lineLayer.encoding.color).toEqual({field: 'Genre', type: 'nominal'});
+      expect(areaLayer.encoding.detail).toEqual({field: 'Genre'});
+    });
   });
 });

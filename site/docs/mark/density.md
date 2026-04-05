@@ -57,6 +57,10 @@ Area + line overlay behavior:
 
 <div class="vl-example" data-name="density_mark_area_line_overlay"></div>
 
+Area + line overlay with mark-level `fill` and encoded `stroke`:
+
+<div class="vl-example" data-name="density_mark_fill_stroke_overlay"></div>
+
 {:#density-parameters}
 
 ## Density Parameters

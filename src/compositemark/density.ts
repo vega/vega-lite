@@ -87,6 +87,56 @@ export interface DensityConfig {
    * This implicit default applies only when `resolve` is not explicitly set in the mark definition or config.
    */
   resolve?: 'independent' | 'shared';
+
+  /**
+   * The opacity (value between [0,1]) of the density mark.
+   */
+  opacity?: number;
+
+  /**
+   * Whether the density mark should be clipped to the enclosing group’s width and height.
+   */
+  clip?: boolean;
+
+  /**
+   * Default stroke color.
+   */
+  stroke?: string | null;
+
+  /**
+   * The stroke width in pixels.
+   */
+  strokeWidth?: number;
+
+  /**
+   * The stroke opacity (value between [0,1]).
+   */
+  strokeOpacity?: number;
+
+  /**
+   * An array of alternating stroke length and space lengths for creating dashed lines.
+   */
+  strokeDash?: number[];
+
+  /**
+   * The offset for stroke dash pattern.
+   */
+  strokeDashOffset?: number;
+
+  /**
+   * Default fill color.
+   */
+  fill?: string | null;
+
+  /**
+   * The fill opacity (value between [0,1]).
+   */
+  fillOpacity?: number;
+
+  /**
+   * Type of stacking offset for the density area.
+   */
+  stack?: 'zero' | 'center' | 'normalize' | null;
 }
 
 export type DensityDef = GenericCompositeMarkDef<Density> &
@@ -213,6 +263,11 @@ export function normalizeDensity(
 
   const {mark, encoding: _encoding, params, projection: _p, ...outerSpec} = spec;
   const markDef: DensityDef = isMarkDef(mark) ? mark : {type: mark};
+  const densityConfig = (config as {density?: DensityConfig}).density;
+  const densityMarkDef: DensityDef = {
+    ...(densityConfig as Partial<DensityDef>),
+    ...markDef,
+  };
 
   if (params) {
     log.warn(log.message.selectionNotSupported('density'));
@@ -222,13 +277,13 @@ export function normalizeDensity(
     log.warn(log.message.densityMarkAsNotSupported());
   }
 
-  const {stack} = markDef;
+  const {stack} = densityMarkDef;
 
   // Infer mark type: use area if fill or fillOpacity is set — either as a mark property
   // or as an encoding channel (e.g. fill: {field: 'Species', type: 'nominal'}).
   const useArea =
-    markDef.fill !== undefined ||
-    markDef.fillOpacity !== undefined ||
+    densityMarkDef.fill !== undefined ||
+    densityMarkDef.fillOpacity !== undefined ||
     spec.encoding.fill !== undefined ||
     spec.encoding.fillOpacity !== undefined;
 
@@ -237,7 +292,8 @@ export function normalizeDensity(
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis,
-  } = densityParams(spec, markDef, config, useArea);
+    groupby,
+  } = densityParams(spec, densityMarkDef, config, useArea);
 
   const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
   const densityAxis = continuousAxis === 'x' ? 'y' : 'x';
@@ -245,13 +301,13 @@ export function normalizeDensity(
   // Use a line overlay on top of the area when stroke/color properties are also present.
   const useLineOverlay =
     useArea &&
-    (LINE_OVERLAY_MARK_PROPS.some((prop) => markDef[prop] !== undefined) ||
+    (LINE_OVERLAY_MARK_PROPS.some((prop) => densityMarkDef[prop] !== undefined) ||
       LINE_OVERLAY_ENCODING_CHANNELS.some((channel) => spec.encoding[channel] !== undefined));
 
   // Default fillOpacity of 0.5 when the user hasn't set it explicitly, so overlapping
   // densities remain visible.
   const defaultedFillOpacity =
-    useArea && markDef.fillOpacity === undefined && spec.encoding.fillOpacity === undefined
+    useArea && densityMarkDef.fillOpacity === undefined && spec.encoding.fillOpacity === undefined
       ? DEFAULT_DENSITY_FILL_OPACITY
       : undefined;
 
@@ -285,14 +341,17 @@ export function normalizeDensity(
       }
     }
 
+    ensureDetailForGroupby(areaEncoding, groupby);
+    ensureDetailForGroupby(lineEncoding, groupby);
+
     // Area mark — forward fill/fillOpacity from markDef; suppress stroke properties.
 
     const areaMark: any = {type: 'area', orient: markOrient};
     for (const prop of AREA_SHARED_MARK_PROPS) {
-      if (markDef[prop] !== undefined) areaMark[prop] = markDef[prop];
+      if (densityMarkDef[prop] !== undefined) areaMark[prop] = densityMarkDef[prop];
     }
     for (const prop of AREA_ONLY_PROPS) {
-      if (markDef[prop] !== undefined) areaMark[prop] = markDef[prop];
+      if (densityMarkDef[prop] !== undefined) areaMark[prop] = densityMarkDef[prop];
     }
     if (defaultedFillOpacity !== undefined) areaMark.fillOpacity = defaultedFillOpacity;
 
@@ -300,7 +359,7 @@ export function normalizeDensity(
 
     const lineMark: any = {type: 'line', orient: markOrient};
     for (const prop of SHARED_MARK_PROPS) {
-      if (markDef[prop] !== undefined) lineMark[prop] = markDef[prop];
+      if (densityMarkDef[prop] !== undefined) lineMark[prop] = densityMarkDef[prop];
     }
     const layer = [
       {
@@ -339,16 +398,16 @@ export function normalizeDensity(
   };
 
   for (const prop of SHARED_MARK_PROPS) {
-    if (markDef[prop] !== undefined) {
-      densityMark[prop] = markDef[prop];
+    if (densityMarkDef[prop] !== undefined) {
+      densityMark[prop] = densityMarkDef[prop];
     }
   }
 
   // Forward fill/fillOpacity only for area marks.
   if (useArea) {
     for (const prop of AREA_ONLY_PROPS) {
-      if (markDef[prop] !== undefined) {
-        densityMark[prop] = markDef[prop];
+      if (densityMarkDef[prop] !== undefined) {
+        densityMark[prop] = densityMarkDef[prop];
       }
     }
     if (defaultedFillOpacity !== undefined) {
@@ -387,6 +446,7 @@ function densityParams(
   continuousAxisChannelDef: PositionFieldDef<string>;
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>;
+  groupby: string[];
 } {
   const orient = compositeMarkOrient(spec, DENSITY);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, DENSITY);
@@ -448,5 +508,44 @@ function densityParams(
     continuousAxisChannelDef,
     continuousAxis,
     encodingWithoutContinuousAxis: normalizedEncodingWithoutContinuousAxis,
+    groupby,
   };
+}
+
+function channelHasField(channelDef: unknown, field: string): boolean {
+  if (Array.isArray(channelDef)) {
+    return channelDef.some((def) => channelHasField(def, field));
+  }
+
+  return !!(
+    channelDef &&
+    typeof channelDef === 'object' &&
+    'field' in channelDef &&
+    (channelDef as any).field === field
+  );
+}
+
+function ensureDetailForGroupby(encoding: Record<string, unknown>, groupby: string[]) {
+  if (groupby.length === 0) {
+    return;
+  }
+
+  const missingFields = groupby.filter(
+    (field) => !Object.values(encoding).some((channelDef) => channelHasField(channelDef, field)),
+  );
+
+  if (missingFields.length === 0) {
+    return;
+  }
+
+  const missingDetails = missingFields.map((field) => ({field}));
+  const existingDetail = encoding.detail;
+
+  if (existingDetail === undefined) {
+    encoding.detail = missingDetails.length === 1 ? missingDetails[0] : missingDetails;
+  } else if (Array.isArray(existingDetail)) {
+    encoding.detail = [...existingDetail, ...missingDetails];
+  } else {
+    encoding.detail = [existingDetail, ...missingDetails];
+  }
 }
