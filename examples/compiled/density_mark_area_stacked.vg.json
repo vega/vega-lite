@@ -16,8 +16,8 @@
           "type": "kde",
           "field": "Body Mass (g)",
           "groupby": ["Species"],
-          "resolve": "independent",
-          "as": ["value", "density"]
+          "as": ["value", "density"],
+          "resolve": "shared"
         },
         {
           "type": "impute",

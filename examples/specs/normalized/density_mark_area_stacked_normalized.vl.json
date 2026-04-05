@@ -4,13 +4,7 @@
   "width": 420,
   "height": 180,
   "data": {"url": "data/penguins.json"},
-  "transform": [
-    {
-      "density": "Body Mass (g)",
-      "groupby": ["Species"],
-      "resolve": "independent"
-    }
-  ],
+  "transform": [{"density": "Body Mass (g)", "groupby": ["Species"]}],
   "layer": [
     {
       "mark": {"type": "area", "orient": "vertical", "fillOpacity": 0.5},
