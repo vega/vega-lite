@@ -84,7 +84,8 @@ The `stack` property applies only to area densities.
 - Area densities support `"zero"`, `"center"`, `"normalize"`, and `null`.
 - Line densities do not include stack on the density axis.
 - Grouped line densities default to `resolve: "independent"` unless `resolve` is explicitly set.
-- Grouped area densities with `stack: "zero"` or `stack: null` also default to `resolve: "independent"` unless `resolve` is explicitly set.
+- Grouped area densities with `stack: null` default to `resolve: "independent"` unless `resolve` is explicitly set.
+- Grouped area densities with `stack: "zero"` keep shared resolution by default.
 
 Stacking is most useful when grouping by a discrete field (for example `color`).
 

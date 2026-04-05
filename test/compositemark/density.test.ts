@@ -386,7 +386,7 @@ describe('normalizeDensity', () => {
   it.each([
     ['center', undefined],
     ['normalize', undefined],
-    ['zero', 'independent'],
+    ['zero', undefined],
   ] as const)('should support stacked density with stack: "%s"', (stack, expectedResolve) => {
     const output = normalizeDensitySpec({
       mark: {type: 'density', stack, fill: 'steelblue'},
@@ -416,6 +416,19 @@ describe('normalizeDensity', () => {
       density: 'IMDB Rating',
       groupby: ['Genre'],
       resolve: 'independent',
+    });
+  });
+
+  it('should keep shared resolve by default for area density with stack: zero', () => {
+    const output = normalizeDensitySpec({
+      mark: {type: 'density', fill: 'steelblue', stack: 'zero'},
+      encoding: colorEncoding,
+    });
+
+    assertIsLayerSpec(output);
+    expect(output.transform![0]).toEqual({
+      density: 'IMDB Rating',
+      groupby: ['Genre'],
     });
   });
 

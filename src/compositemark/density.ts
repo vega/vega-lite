@@ -82,7 +82,7 @@ export interface DensityConfig {
    *
    * For grouped densities, the implicit default is `"independent"` when either:
    * - the density renders as a line mark, or
-   * - the density renders as an area mark with `stack: "zero"` or `stack: null`.
+   * - the density renders as an area mark with `stack: null`.
    *
    * This implicit default applies only when `resolve` is not explicitly set in the mark definition or config.
    */
@@ -484,9 +484,7 @@ function densityParams(
   const resolvedStack = markDef.stack ?? null;
   const hasExplicitResolve = markDef.resolve !== undefined || densityConfig?.resolve !== undefined;
   const defaultResolveForStack =
-    !hasExplicitResolve && groupby.length > 0 && (!useArea || resolvedStack === 'zero' || resolvedStack === null)
-      ? 'independent'
-      : undefined;
+    !hasExplicitResolve && groupby.length > 0 && (!useArea || resolvedStack === null) ? 'independent' : undefined;
 
   const densityTransform: DensityTransform = {
     density: continuousAxisChannelDef.field,
