@@ -8131,7 +8131,7 @@
           "type": "number"
         },
         "resolve": {
-          "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`",
+          "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`.\n\nFor grouped densities, the implicit default is `\"independent\"` when either:\n- the density renders as a line mark, or\n- the density renders as an area mark with `stack: \"zero\"` or `stack: null`.\n\nThis implicit default applies only when `resolve` is not explicitly set in the mark definition or config.",
           "enum": [
             "independent",
             "shared"
@@ -8228,24 +8228,8 @@
           "$ref": "#/definitions/Orientation",
           "description": "Orientation of the density. This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous."
         },
-        "point": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "additionalProperties": {},
-              "type": "object"
-            },
-            {
-              "const": "transparent",
-              "type": "string"
-            }
-          ],
-          "description": "A flag for overlaying points on top of the density curve, or an object defining properties of the overlaid points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n- If this property is `false`, no points would be automatically added.\n\n__Default value:__ `false`."
-        },
         "resolve": {
-          "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`",
+          "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`.\n\nFor grouped densities, the implicit default is `\"independent\"` when either:\n- the density renders as a line mark, or\n- the density renders as an area mark with `stack: \"zero\"` or `stack: null`.\n\nThis implicit default applies only when `resolve` is not explicitly set in the mark definition or config.",
           "enum": [
             "independent",
             "shared"
