@@ -45,9 +45,17 @@ The density mark chooses line or area output based on fill properties:
 1. If neither `fill` nor `fillOpacity` is set (in mark definition or encoding), the density renders as a **line**.
 2. If either `fill` or `fillOpacity` is set, the density renders as an **area**.
 
-When rendered as an area, `fillOpacity` defaults to `0.6` unless explicitly provided.
+When rendered as an area, `fillOpacity` defaults to `0.5` unless explicitly provided.
 
 If both fill-side and stroke-side styling are present (for example `fill` with `color`), Vega-Lite expands the density mark into layered area + line marks.
+
+Default line behavior:
+
+<div class="vl-example" data-name="density_mark_line"></div>
+
+Area + line overlay behavior:
+
+<div class="vl-example" data-name="density_mark_area_line_overlay"></div>
 
 {:#stacking}
 
@@ -60,6 +68,10 @@ The `stack` property applies only to area densities.
 
 Stacking is most useful when grouping by a discrete field (for example `color`).
 
+Stacked area density by species:
+
+<div class="vl-example" data-name="density_mark_area_stacked"></div>
+
 {:#orient}
 
 ## Orientation
@@ -71,50 +83,9 @@ The density mark orientation is inferred from the continuous axis:
 
 You can set `orient` explicitly if the orientation is ambiguous.
 
-{:#examples}
+Horizontal orientation (continuous field on `y`):
 
-## Examples
-
-Density line by default:
-
-```json
-{
-  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "data": {"url": "data/movies.json"},
-  "mark": "density",
-  "encoding": {
-    "x": {"field": "IMDB Rating", "type": "quantitative"}
-  }
-}
-```
-
-Density area with stacking by group:
-
-```json
-{
-  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "data": {"url": "data/movies.json"},
-  "mark": {"type": "density", "fill": "steelblue", "stack": "center"},
-  "encoding": {
-    "x": {"field": "IMDB Rating", "type": "quantitative"},
-    "color": {"field": "Major Genre", "type": "nominal"}
-  }
-}
-```
-
-Density area + line overlay:
-
-```json
-{
-  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "data": {"url": "data/penguins.json"},
-  "mark": {"type": "density", "fill": "steelblue", "stroke": "black"},
-  "encoding": {
-    "x": {"field": "Body Mass (g)", "type": "quantitative"},
-    "color": {"field": "Species", "type": "nominal"}
-  }
-}
-```
+<div class="vl-example" data-name="density_mark_horizontal"></div>
 
 {:#config}
 
