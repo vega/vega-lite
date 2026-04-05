@@ -4,22 +4,25 @@ import {normalize} from '../../src/normalize/index.js';
 import {assertIsLayerSpec} from '../util.js';
 
 describe('normalizeDensity', () => {
-  it('should produce correct layered specs for density with default settings', () => {
-    const output = normalize(
+  const defaultEncoding = {
+    x: {field: 'IMDB Rating', type: 'quantitative'},
+  };
+
+  function normalizeDensitySpec(spec: Record<string, unknown>, config = defaultConfig) {
+    return normalize(
       {
-        data: {
-          url: 'data/movies.json',
-        },
-        mark: 'density',
-        encoding: {
-          x: {
-            field: 'IMDB Rating',
-            type: 'quantitative',
-          },
-        },
-      },
-      defaultConfig,
+        data: {url: 'data/movies.json'},
+        ...spec,
+      } as any,
+      config as any,
     );
+  }
+
+  it('should produce correct layered specs for density with default settings', () => {
+    const output = normalizeDensitySpec({
+      mark: 'density',
+      encoding: defaultEncoding,
+    });
 
     assertIsLayerSpec(output);
 
@@ -48,133 +51,34 @@ describe('normalizeDensity', () => {
     }
   });
 
-  it('should support bandwidth parameter', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', bandwidth: 0.3},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
-      },
-      defaultConfig,
-    );
-
-    assertIsLayerSpec(output);
-    expect(output.transform![0]).toEqual({
-      density: 'IMDB Rating',
-      bandwidth: 0.3,
+  it.each([
+    ['bandwidth', {bandwidth: 0.3}],
+    ['extent', {extent: [0, 10]}],
+    ['cumulative', {cumulative: true}],
+    ['counts', {counts: true}],
+    ['steps', {steps: 100}],
+    ['minsteps and maxsteps', {minsteps: 50, maxsteps: 300}],
+  ])('should support %s parameter', (_label, transformProps) => {
+    const output = normalizeDensitySpec({
+      mark: {type: 'density', ...transformProps},
+      encoding: defaultEncoding,
     });
-  });
-
-  it('should support extent parameter', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', extent: [0, 10]},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
-      },
-      defaultConfig,
-    );
 
     assertIsLayerSpec(output);
     expect(output.transform![0]).toEqual({
       density: 'IMDB Rating',
-      extent: [0, 10],
-    });
-  });
-
-  it('should support cumulative parameter', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', cumulative: true},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
-      },
-      defaultConfig,
-    );
-
-    assertIsLayerSpec(output);
-    expect(output.transform![0]).toEqual({
-      density: 'IMDB Rating',
-      cumulative: true,
-    });
-  });
-
-  it('should support counts parameter', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', counts: true},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
-      },
-      defaultConfig,
-    );
-
-    assertIsLayerSpec(output);
-    expect(output.transform![0]).toEqual({
-      density: 'IMDB Rating',
-      counts: true,
-    });
-  });
-
-  it('should support steps parameter', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', steps: 100},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
-      },
-      defaultConfig,
-    );
-
-    assertIsLayerSpec(output);
-    expect(output.transform![0]).toEqual({
-      density: 'IMDB Rating',
-      steps: 100,
-    });
-  });
-
-  it('should support minsteps and maxsteps parameters', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', minsteps: 50, maxsteps: 300},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
-      },
-      defaultConfig,
-    );
-
-    assertIsLayerSpec(output);
-    expect(output.transform![0]).toEqual({
-      density: 'IMDB Rating',
-      minsteps: 50,
-      maxsteps: 300,
+      ...transformProps,
     });
   });
 
   it('should support groupby via color encoding', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: 'density',
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          color: {field: 'Genre', type: 'nominal'},
-        },
+    const output = normalizeDensitySpec({
+      mark: 'density',
+      encoding: {
+        ...defaultEncoding,
+        color: {field: 'Genre', type: 'nominal'},
       },
-      defaultConfig,
-    );
+    });
 
     assertIsLayerSpec(output);
     expect(output.transform![0]).toEqual({
@@ -190,16 +94,10 @@ describe('normalizeDensity', () => {
   });
 
   it('should support additional area mark properties like interpolate', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', interpolate: 'monotone'},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
-      },
-      defaultConfig,
-    );
+    const output = normalizeDensitySpec({
+      mark: {type: 'density', interpolate: 'monotone'},
+      encoding: defaultEncoding,
+    });
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
@@ -213,16 +111,10 @@ describe('normalizeDensity', () => {
   });
 
   it('should support opacity on the density mark', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', opacity: 0.5},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
-      },
-      defaultConfig,
-    );
+    const output = normalizeDensitySpec({
+      mark: {type: 'density', opacity: 0.5},
+      encoding: defaultEncoding,
+    });
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
@@ -236,16 +128,10 @@ describe('normalizeDensity', () => {
   });
 
   it('should support tension parameter', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', tension: 0.8},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
-      },
-      defaultConfig,
-    );
+    const output = normalizeDensitySpec({
+      mark: {type: 'density', tension: 0.8},
+      encoding: defaultEncoding,
+    });
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
