@@ -4676,7 +4676,7 @@
         },
         "type": {
           "$ref": "#/definitions/BoxPlot",
-          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"density\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [
@@ -8242,7 +8242,7 @@
               "type": "string"
             }
           ],
-          "description": "A flag for overlaying points on top of the density curve, or an object defining properties of the overlayed points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n- If this property is `false`, no points would be automatically added.\n\n__Default value:__ `false`."
+          "description": "A flag for overlaying points on top of the density curve, or an object defining properties of the overlaid points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n- If this property is `false`, no points would be automatically added.\n\n__Default value:__ `false`."
         },
         "resolve": {
           "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`",
@@ -8306,7 +8306,7 @@
         },
         "type": {
           "$ref": "#/definitions/Density",
-          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"density\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [
@@ -8757,7 +8757,7 @@
         },
         "type": {
           "$ref": "#/definitions/ErrorBand",
-          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"density\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [
@@ -8872,7 +8872,7 @@
         },
         "type": {
           "$ref": "#/definitions/ErrorBar",
-          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"density\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [
@@ -17731,7 +17731,7 @@
         },
         "type": {
           "$ref": "#/definitions/Mark",
-          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"density\"`, `\"errorband\"`, `\"errorbar\"`)."
         },
         "url": {
           "anyOf": [
