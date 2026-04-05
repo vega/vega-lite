@@ -510,7 +510,7 @@ describe('normalizeDensity', () => {
   });
 
   describe('overlay and fill opacity', () => {
-    it('should default fillOpacity to 0.6 when fill is set on the mark', () => {
+    it('should default fillOpacity to 0.5 when fill is set on the mark', () => {
       const output = normalizeDensitySpec({
         mark: {type: 'density', fill: 'steelblue'},
         encoding: defaultEncoding,
@@ -521,12 +521,12 @@ describe('normalizeDensity', () => {
       const layer0 = output.layer[0];
       if ('mark' in layer0) {
         expect((layer0.mark as any).type).toBe('area');
-        expect((layer0.mark as any).fillOpacity).toBe(0.6);
+        expect((layer0.mark as any).fillOpacity).toBe(0.5);
         expect((layer0.mark as any).fill).toBe('steelblue');
       }
     });
 
-    it('should default fillOpacity to 0.6 when fill is set as an encoding channel', () => {
+    it('should default fillOpacity to 0.5 when fill is set as an encoding channel', () => {
       const output = normalizeDensitySpec({
         mark: 'density',
         encoding: {
@@ -540,7 +540,7 @@ describe('normalizeDensity', () => {
       const layer0 = output.layer[0];
       if ('mark' in layer0) {
         expect((layer0.mark as any).type).toBe('area');
-        expect((layer0.mark as any).fillOpacity).toBe(0.6);
+        expect((layer0.mark as any).fillOpacity).toBe(0.5);
       }
     });
 
@@ -570,7 +570,7 @@ describe('normalizeDensity', () => {
       // Layer 0: area with fill, no color
       expect(areaLayer.mark.type).toBe('area');
       expect(areaLayer.mark.fill).toBe('steelblue');
-      expect(areaLayer.mark.fillOpacity).toBe(0.6);
+      expect(areaLayer.mark.fillOpacity).toBe(0.5);
       expect(areaLayer.encoding.fill).toBeUndefined();
       expect(areaLayer.encoding.color).toBeUndefined();
 

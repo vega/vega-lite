@@ -204,7 +204,7 @@ const LINE_OVERLAY_MARK_PROPS = [
 
 const LINE_OVERLAY_ENCODING_CHANNELS = ['color', 'stroke', 'strokeWidth', 'strokeOpacity', 'strokeDash'] as const;
 
-const DEFAULT_DENSITY_FILL_OPACITY = 0.6;
+const DEFAULT_DENSITY_FILL_OPACITY = 0.5;
 
 export function normalizeDensity(
   spec: GenericUnitSpec<Encoding<string>, Density | DensityDef>,
@@ -252,7 +252,7 @@ export function normalizeDensity(
     (LINE_OVERLAY_MARK_PROPS.some((prop) => markDef[prop] !== undefined) ||
       LINE_OVERLAY_ENCODING_CHANNELS.some((channel) => spec.encoding[channel] !== undefined));
 
-  // Default fillOpacity of 0.6 when the user hasn't set it explicitly, so overlapping
+  // Default fillOpacity of 0.5 when the user hasn't set it explicitly, so overlapping
   // densities remain visible.
   const defaultedFillOpacity =
     useArea && markDef.fillOpacity === undefined && spec.encoding.fillOpacity === undefined
