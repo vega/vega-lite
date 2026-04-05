@@ -8101,6 +8101,10 @@
           "description": "The bandwidth (standard deviation) of the Gaussian kernel. If unspecified or set to zero, the bandwidth value is automatically estimated from the input data using Scott's rule.",
           "type": "number"
         },
+        "clip": {
+          "description": "Whether the density mark should be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
         "counts": {
           "description": "A boolean flag indicating if the output values should be probability estimates (false) or smoothed counts (true).\n\n__Default value:__ `false`",
           "type": "boolean"
@@ -8118,6 +8122,17 @@
           "minItems": 2,
           "type": "array"
         },
+        "fill": {
+          "description": "Default fill color.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fillOpacity": {
+          "description": "The fill opacity (value between [0,1]).",
+          "type": "number"
+        },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
           "description": "The line interpolation method for the density curve/area."
@@ -8130,6 +8145,10 @@
           "description": "The minimum number of samples to take along the extent domain for plotting the density.\n\n__Default value:__ `25`",
           "type": "number"
         },
+        "opacity": {
+          "description": "The opacity (value between [0,1]) of the density mark.",
+          "type": "number"
+        },
         "resolve": {
           "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`.\n\nFor grouped densities, the implicit default is `\"independent\"` when either:\n- the density renders as a line mark, or\n- the density renders as an area mark with `stack: \"zero\"` or `stack: null`.\n\nThis implicit default applies only when `resolve` is not explicitly set in the mark definition or config.",
           "enum": [
@@ -8138,8 +8157,47 @@
           ],
           "type": "string"
         },
+        "stack": {
+          "description": "Type of stacking offset for the density area.",
+          "enum": [
+            "zero",
+            "center",
+            "normalize",
+            null
+          ],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "steps": {
           "description": "The exact number of samples to take along the extent domain for plotting the density. If specified, overrides both minsteps and maxsteps to set an exact number of uniform samples.",
+          "type": "number"
+        },
+        "stroke": {
+          "description": "Default stroke color.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "strokeDash": {
+          "description": "An array of alternating stroke length and space lengths for creating dashed lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "description": "The offset for stroke dash pattern.",
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "description": "The stroke opacity (value between [0,1]).",
+          "type": "number"
+        },
+        "strokeWidth": {
+          "description": "The stroke width in pixels.",
           "type": "number"
         },
         "tension": {
@@ -8194,16 +8252,14 @@
           "type": "array"
         },
         "fill": {
-          "description": "Default fill color. Setting `fill` (or `fillOpacity`) causes the density to render as a filled area mark. When neither `fill` nor `fillOpacity` is set, the density renders as a line mark.",
+          "description": "Default fill color.",
           "type": [
             "string",
             "null"
           ]
         },
         "fillOpacity": {
-          "description": "The fill opacity (value between [0,1]). Setting `fillOpacity` (or `fill`) causes the density to render as a filled area mark. When neither `fill` nor `fillOpacity` is set, the density renders as a line mark.",
-          "maximum": 1,
-          "minimum": 0,
+          "description": "The fill opacity (value between [0,1]).",
           "type": "number"
         },
         "interpolate": {
@@ -8237,7 +8293,7 @@
           "type": "string"
         },
         "stack": {
-          "description": "Type of stacking offset for the density area. One of `\"zero\"` (default), `\"center\"`, or `\"normalize\"`.\n- `\"zero\"`: stacking with a baseline at the bottom of the chart (default stacking)\n- `\"center\"`: stream graphs with a baseline at the middle of the chart\n- `\"normalize\"`: stacked normalized percentages\n\n__Note:__ Stacking is only applicable for area marks (i.e., when `fill` or `fillOpacity` is set) and when grouping by a field (e.g., `color`).",
+          "description": "Type of stacking offset for the density area.",
           "enum": [
             "zero",
             "center",
@@ -8273,13 +8329,10 @@
         },
         "strokeOpacity": {
           "description": "The stroke opacity (value between [0,1]).",
-          "maximum": 1,
-          "minimum": 0,
           "type": "number"
         },
         "strokeWidth": {
           "description": "The stroke width in pixels.",
-          "minimum": 0,
           "type": "number"
         },
         "tension": {
