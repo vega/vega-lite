@@ -34,7 +34,7 @@ To create a density mark, set `mark` to `"density"`.
 
 A density mark definition can contain the following properties:
 
-{% include table.html props="type,bandwidth,cumulative,counts,extent,minsteps,maxsteps,steps,resolve,orient,point,color,opacity,interpolate,tension,clip,stroke,strokeWidth,strokeOpacity,strokeDash,strokeDashOffset,fill,fillOpacity,stack" source="DensityDef" %}
+{% include table.html props="type,bandwidth,cumulative,counts,extent,minsteps,maxsteps,steps,resolve,orient,color,opacity,interpolate,tension,clip,stroke,strokeWidth,strokeOpacity,strokeDash,strokeDashOffset,fill,fillOpacity,stack" source="DensityDef" %}
 
 {:#line-vs-area}
 

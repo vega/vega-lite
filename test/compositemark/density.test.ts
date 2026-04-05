@@ -338,26 +338,6 @@ describe('normalizeDensity', () => {
     }
   });
 
-  it('should support point overlay', () => {
-    const output = normalizeDensitySpec({
-      mark: {
-        type: 'density',
-        point: true,
-      },
-      encoding: defaultEncoding,
-    });
-
-    assertIsLayerSpec(output);
-    const layer0 = output.layer![0];
-    if ('mark' in layer0) {
-      expect(layer0.mark).toMatchObject({
-        type: 'line',
-        orient: 'vertical',
-        point: true,
-      });
-    }
-  });
-
   it('should produce an area mark when fill or fillOpacity is set', () => {
     const output = normalizeDensitySpec({
       mark: {

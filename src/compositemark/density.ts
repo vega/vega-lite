@@ -91,17 +91,6 @@ export type DensityDef = GenericCompositeMarkDef<Density> &
     orient?: Orientation;
 
     /**
-     * A flag for overlaying points on top of the density curve, or an object defining properties of the overlaid points.
-     *
-     * - If this property is `"transparent"`, transparent points will be used (for enhancing tooltips and selections).
-     * - If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.
-     * - If this property is `false`, no points would be automatically added.
-     *
-     * __Default value:__ `false`.
-     */
-    point?: boolean | Record<string, unknown> | 'transparent';
-
-    /**
      * Default stroke color.
      */
     stroke?: string | null;
@@ -234,7 +223,7 @@ export function normalizeDensity(
     encodingWithoutContinuousAxis,
   } = densityParams(spec, markDef, config);
 
-  const {point, stack} = markDef;
+  const {stack} = markDef;
   const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
   const densityAxis = continuousAxis === 'x' ? 'y' : 'x';
 
@@ -306,8 +295,6 @@ export function normalizeDensity(
     for (const prop of SHARED_MARK_PROPS) {
       if (markDef[prop] !== undefined) lineMark[prop] = markDef[prop];
     }
-    if (point !== undefined) lineMark.point = point;
-
     const layer = [
       {
         mark: areaMark,
@@ -360,10 +347,6 @@ export function normalizeDensity(
     if (defaultedFillOpacity !== undefined) {
       densityMark.fillOpacity = defaultedFillOpacity;
     }
-  }
-
-  if (point !== undefined) {
-    densityMark.point = point;
   }
 
   const layer = [
