@@ -681,5 +681,69 @@ describe('normalizeDensity', () => {
       expect(lineLayer.encoding.color).toEqual({field: 'Genre', type: 'nominal'});
       expect(areaLayer.encoding.detail).toEqual({field: 'Genre'});
     });
+
+    it('should append missing groupby field to existing detail object in overlay area layer', () => {
+      const output = normalizeDensitySpec(
+        {
+          mark: 'density',
+          encoding: {
+            ...defaultEncoding,
+            color: {field: 'Genre', type: 'nominal'},
+            detail: {field: 'Origin', type: 'nominal'},
+          },
+        },
+        {
+          density: {
+            fill: 'steelblue',
+            stroke: 'black',
+          },
+        },
+      );
+
+      assertIsLayerSpec(output);
+      const [areaLayer, lineLayer] = output.layer as any[];
+
+      expect(areaLayer.mark.type).toBe('area');
+      expect(lineLayer.mark.type).toBe('line');
+      expect(areaLayer.encoding.detail).toEqual([{field: 'Origin', type: 'nominal'}, {field: 'Genre'}]);
+      expect(lineLayer.encoding.detail).toEqual({field: 'Origin', type: 'nominal'});
+    });
+
+    it('should append missing groupby field to existing detail array in overlay area layer', () => {
+      const output = normalizeDensitySpec(
+        {
+          mark: 'density',
+          encoding: {
+            ...defaultEncoding,
+            color: {field: 'Genre', type: 'nominal'},
+            detail: [
+              {field: 'Origin', type: 'nominal'},
+              {field: 'MPAA Rating', type: 'nominal'},
+            ],
+          },
+        },
+        {
+          density: {
+            fill: 'steelblue',
+            stroke: 'black',
+          },
+        },
+      );
+
+      assertIsLayerSpec(output);
+      const [areaLayer, lineLayer] = output.layer as any[];
+
+      expect(areaLayer.mark.type).toBe('area');
+      expect(lineLayer.mark.type).toBe('line');
+      expect(areaLayer.encoding.detail).toEqual([
+        {field: 'Origin', type: 'nominal'},
+        {field: 'MPAA Rating', type: 'nominal'},
+        {field: 'Genre'},
+      ]);
+      expect(lineLayer.encoding.detail).toEqual([
+        {field: 'Origin', type: 'nominal'},
+        {field: 'MPAA Rating', type: 'nominal'},
+      ]);
+    });
   });
 });
