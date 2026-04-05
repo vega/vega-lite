@@ -78,7 +78,13 @@ export interface DensityConfig {
    * If `"independent"`, each density may have its own domain extent and dynamic number of curve sample steps.
    * If `"shared"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.
    *
-   * __Default value:__ `"shared"`
+   * __Default value:__ `"shared"`.
+   *
+   * For grouped densities, the implicit default is `"independent"` when either:
+   * - the density renders as a line mark, or
+   * - the density renders as an area mark with `stack: "zero"` or `stack: null`.
+   *
+   * This implicit default applies only when `resolve` is not explicitly set in the mark definition or config.
    */
   resolve?: 'independent' | 'shared';
 }
@@ -216,16 +222,7 @@ export function normalizeDensity(
     log.warn(log.message.densityMarkAsNotSupported());
   }
 
-  const {
-    transform: densityTransforms,
-    continuousAxisChannelDef,
-    continuousAxis,
-    encodingWithoutContinuousAxis,
-  } = densityParams(spec, markDef, config);
-
   const {stack} = markDef;
-  const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
-  const densityAxis = continuousAxis === 'x' ? 'y' : 'x';
 
   // Infer mark type: use area if fill or fillOpacity is set — either as a mark property
   // or as an encoding channel (e.g. fill: {field: 'Species', type: 'nominal'}).
@@ -234,6 +231,16 @@ export function normalizeDensity(
     markDef.fillOpacity !== undefined ||
     spec.encoding.fill !== undefined ||
     spec.encoding.fillOpacity !== undefined;
+
+  const {
+    transform: densityTransforms,
+    continuousAxisChannelDef,
+    continuousAxis,
+    encodingWithoutContinuousAxis,
+  } = densityParams(spec, markDef, config, useArea);
+
+  const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
+  const densityAxis = continuousAxis === 'x' ? 'y' : 'x';
 
   // Use a line overlay on top of the area when stroke/color properties are also present.
   const useLineOverlay =
@@ -374,6 +381,7 @@ function densityParams(
   spec: GenericUnitSpec<Encoding<string>, Density | DensityDef>,
   markDef: DensityDef,
   config: Config,
+  useArea: boolean,
 ): {
   transform: Transform[];
   continuousAxisChannelDef: PositionFieldDef<string>;
@@ -413,10 +421,18 @@ function densityParams(
     }),
   );
 
+  const resolvedStack = markDef.stack ?? null;
+  const hasExplicitResolve = markDef.resolve !== undefined || densityConfig?.resolve !== undefined;
+  const defaultResolveForStack =
+    !hasExplicitResolve && groupby.length > 0 && (!useArea || resolvedStack === 'zero' || resolvedStack === null)
+      ? 'independent'
+      : undefined;
+
   const densityTransform: DensityTransform = {
     density: continuousAxisChannelDef.field,
     ...(groupby.length > 0 ? {groupby} : {}),
     ...transformOverrides,
+    ...(defaultResolveForStack !== undefined ? {resolve: defaultResolveForStack} : {}),
   };
 
   const transform: Transform[] = [

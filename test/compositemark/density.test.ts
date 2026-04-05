@@ -92,6 +92,7 @@ describe('normalizeDensity', () => {
     expect(output.transform![0]).toEqual({
       density: 'IMDB Rating',
       groupby: ['Genre'],
+      resolve: 'independent',
     });
     const layer0 = output.layer![0];
     if ('encoding' in layer0) {
@@ -269,6 +270,7 @@ describe('normalizeDensity', () => {
     expect(output.transform![0]).toEqual({
       density: 'IMDB Rating',
       groupby: ['Genre'],
+      resolve: 'independent',
     });
     const layer0 = output.layer![0];
     if ('mark' in layer0) {
@@ -381,7 +383,11 @@ describe('normalizeDensity', () => {
     }
   });
 
-  it.each(['center', 'normalize', 'zero'] as const)('should support stacked density with stack: "%s"', (stack) => {
+  it.each([
+    ['center', undefined],
+    ['normalize', undefined],
+    ['zero', 'independent'],
+  ] as const)('should support stacked density with stack: "%s"', (stack, expectedResolve) => {
     const output = normalizeDensitySpec({
       mark: {type: 'density', stack, fill: 'steelblue'},
       encoding: colorEncoding,
@@ -391,11 +397,26 @@ describe('normalizeDensity', () => {
     expect(output.transform![0]).toEqual({
       density: 'IMDB Rating',
       groupby: ['Genre'],
+      ...(expectedResolve ? {resolve: expectedResolve} : {}),
     });
     const layer0 = output.layer![0];
     if ('encoding' in layer0) {
       expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(stack);
     }
+  });
+
+  it('should default resolve to independent for area density with stack omitted', () => {
+    const output = normalizeDensitySpec({
+      mark: {type: 'density', fill: 'steelblue'},
+      encoding: colorEncoding,
+    });
+
+    assertIsLayerSpec(output);
+    expect(output.transform![0]).toEqual({
+      density: 'IMDB Rating',
+      groupby: ['Genre'],
+      resolve: 'independent',
+    });
   });
 
   it('should default to no stacking when stack is not specified (line mark)', () => {
@@ -413,6 +434,20 @@ describe('normalizeDensity', () => {
     if ('encoding' in layer0) {
       expect((layer0.encoding!.y as {stack?: unknown}).stack).toBeUndefined();
     }
+  });
+
+  it('should default resolve to independent for grouped line density', () => {
+    const output = normalizeDensitySpec({
+      mark: 'density',
+      encoding: colorEncoding,
+    });
+
+    assertIsLayerSpec(output);
+    expect(output.transform![0]).toEqual({
+      density: 'IMDB Rating',
+      groupby: ['Genre'],
+      resolve: 'independent',
+    });
   });
 
   it('should support resolve parameter', () => {
