@@ -57,6 +57,20 @@ Area + line overlay behavior:
 
 <div class="vl-example" data-name="density_mark_area_line_overlay"></div>
 
+{:#density-parameters}
+
+## Density Parameters
+
+You can tune the kernel estimation with parameters such as `bandwidth` and `cumulative`.
+
+Line density with custom `bandwidth`:
+
+<div class="vl-example" data-name="density_mark_bandwidth"></div>
+
+Line density with `cumulative: true`:
+
+<div class="vl-example" data-name="density_mark_cumulative"></div>
+
 {:#stacking}
 
 ## Stacking
@@ -71,6 +85,10 @@ Stacking is most useful when grouping by a discrete field (for example `color`).
 Stacked area density by species:
 
 <div class="vl-example" data-name="density_mark_area_stacked"></div>
+
+Normalized stacked area density (`stack: "normalize"`):
+
+<div class="vl-example" data-name="density_mark_stack_normalize"></div>
 
 {:#orient}
 
