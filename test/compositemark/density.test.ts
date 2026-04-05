@@ -8,13 +8,21 @@ describe('normalizeDensity', () => {
     x: {field: 'IMDB Rating', type: 'quantitative'},
   };
 
-  function normalizeDensitySpec(spec: Record<string, unknown>, config = defaultConfig) {
+  const colorEncoding = {
+    ...defaultEncoding,
+    color: {field: 'Genre', type: 'nominal'},
+  };
+
+  type NormalizeInput = Parameters<typeof normalize>[0];
+  type NormalizeConfig = Parameters<typeof normalize>[1];
+
+  function normalizeDensitySpec(spec: Record<string, unknown>, config: NormalizeConfig = defaultConfig) {
     return normalize(
       {
         data: {url: 'data/movies.json'},
         ...spec,
-      } as any,
-      config as any,
+      } as NormalizeInput,
+      config,
     );
   }
 
@@ -228,16 +236,10 @@ describe('normalizeDensity', () => {
   });
 
   it('should produce a line mark by default (no fill or fillOpacity set)', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: 'density',
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
-      },
-      defaultConfig,
-    );
+    const output = normalizeDensitySpec({
+      mark: 'density',
+      encoding: defaultEncoding,
+    });
 
     assertIsLayerSpec(output);
 
@@ -256,17 +258,10 @@ describe('normalizeDensity', () => {
   });
 
   it('should produce a line mark with groupby color when no fill is set', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: 'density',
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          color: {field: 'Genre', type: 'nominal'},
-        },
-      },
-      defaultConfig,
-    );
+    const output = normalizeDensitySpec({
+      mark: 'density',
+      encoding: colorEncoding,
+    });
 
     assertIsLayerSpec(output);
     // Only the density transform — no window transforms
@@ -282,17 +277,10 @@ describe('normalizeDensity', () => {
   });
 
   it('should not stack when grouping by color (line mark has no stack)', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: 'density',
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          color: {field: 'Genre', type: 'nominal'},
-        },
-      },
-      defaultConfig,
-    );
+    const output = normalizeDensitySpec({
+      mark: 'density',
+      encoding: colorEncoding,
+    });
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
@@ -307,20 +295,14 @@ describe('normalizeDensity', () => {
   });
 
   it('should support stroke properties and produce a line mark when no fill is set', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {
-          type: 'density',
-          strokeWidth: 2,
-          strokeDash: [5, 3],
-        },
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
+    const output = normalizeDensitySpec({
+      mark: {
+        type: 'density',
+        strokeWidth: 2,
+        strokeDash: [5, 3],
       },
-      defaultConfig,
-    );
+      encoding: defaultEncoding,
+    });
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
@@ -335,20 +317,14 @@ describe('normalizeDensity', () => {
   });
 
   it('should support fill properties for area density', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {
-          type: 'density',
-          fill: 'steelblue',
-          fillOpacity: 0.5,
-        },
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
+    const output = normalizeDensitySpec({
+      mark: {
+        type: 'density',
+        fill: 'steelblue',
+        fillOpacity: 0.5,
       },
-      defaultConfig,
-    );
+      encoding: defaultEncoding,
+    });
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
@@ -363,19 +339,13 @@ describe('normalizeDensity', () => {
   });
 
   it('should support point overlay', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {
-          type: 'density',
-          point: true,
-        },
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
+    const output = normalizeDensitySpec({
+      mark: {
+        type: 'density',
+        point: true,
       },
-      defaultConfig,
-    );
+      encoding: defaultEncoding,
+    });
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
@@ -389,19 +359,13 @@ describe('normalizeDensity', () => {
   });
 
   it('should produce an area mark when fill or fillOpacity is set', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {
-          type: 'density',
-          fillOpacity: 0.5,
-        },
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-        },
+    const output = normalizeDensitySpec({
+      mark: {
+        type: 'density',
+        fillOpacity: 0.5,
       },
-      defaultConfig,
-    );
+      encoding: defaultEncoding,
+    });
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
@@ -417,17 +381,13 @@ describe('normalizeDensity', () => {
   });
 
   it('should produce an area mark when fill is set as an encoding channel', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: 'density',
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          fill: {field: 'Genre', type: 'nominal'},
-        },
+    const output = normalizeDensitySpec({
+      mark: 'density',
+      encoding: {
+        ...defaultEncoding,
+        fill: {field: 'Genre', type: 'nominal'},
       },
-      defaultConfig,
-    );
+    });
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
@@ -441,18 +401,11 @@ describe('normalizeDensity', () => {
     }
   });
 
-  it('should support stacked density with stack: "center" for stream graph', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', stack: 'center', fill: 'steelblue'},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          color: {field: 'Genre', type: 'nominal'},
-        },
-      },
-      defaultConfig,
-    );
+  it.each(['center', 'normalize', 'zero'] as const)('should support stacked density with stack: "%s"', (stack) => {
+    const output = normalizeDensitySpec({
+      mark: {type: 'density', stack, fill: 'steelblue'},
+      encoding: colorEncoding,
+    });
 
     assertIsLayerSpec(output);
     expect(output.transform![0]).toEqual({
@@ -461,62 +414,15 @@ describe('normalizeDensity', () => {
     });
     const layer0 = output.layer![0];
     if ('encoding' in layer0) {
-      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe('center');
-    }
-  });
-
-  it('should support stacked density with stack: "normalize" for normalized stream', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', stack: 'normalize', fill: 'steelblue'},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          color: {field: 'Genre', type: 'nominal'},
-        },
-      },
-      defaultConfig,
-    );
-
-    assertIsLayerSpec(output);
-    const layer0 = output.layer![0];
-    if ('encoding' in layer0) {
-      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe('normalize');
-    }
-  });
-
-  it('should support stacked density with stack: "zero" for baseline stacking', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', stack: 'zero', fill: 'steelblue'},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          color: {field: 'Genre', type: 'nominal'},
-        },
-      },
-      defaultConfig,
-    );
-
-    assertIsLayerSpec(output);
-    const layer0 = output.layer![0];
-    if ('encoding' in layer0) {
-      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe('zero');
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe(stack);
     }
   });
 
   it('should default to no stacking when stack is not specified (line mark)', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: 'density',
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          color: {field: 'Genre', type: 'nominal'},
-        },
-      },
-      defaultConfig,
-    );
+    const output = normalizeDensitySpec({
+      mark: 'density',
+      encoding: colorEncoding,
+    });
 
     assertIsLayerSpec(output);
     const layer0 = output.layer![0];
@@ -530,17 +436,10 @@ describe('normalizeDensity', () => {
   });
 
   it('should support resolve parameter', () => {
-    const output = normalize(
-      {
-        data: {url: 'data/movies.json'},
-        mark: {type: 'density', resolve: 'independent'},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          color: {field: 'Genre', type: 'nominal'},
-        },
-      },
-      defaultConfig,
-    );
+    const output = normalizeDensitySpec({
+      mark: {type: 'density', resolve: 'independent'},
+      encoding: colorEncoding,
+    });
 
     assertIsLayerSpec(output);
     expect(output.transform![0]).toEqual({
@@ -556,14 +455,10 @@ describe('normalizeDensity', () => {
         resolve: 'independent' as const,
       },
     };
-    const output = normalize(
+    const output = normalizeDensitySpec(
       {
-        data: {url: 'data/movies.json'},
         mark: 'density',
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          color: {field: 'Genre', type: 'nominal'},
-        },
+        encoding: colorEncoding,
       },
       config,
     );
@@ -582,14 +477,10 @@ describe('normalizeDensity', () => {
         resolve: 'independent' as const,
       },
     };
-    const output = normalize(
+    const output = normalizeDensitySpec(
       {
-        data: {url: 'data/movies.json'},
         mark: {type: 'density', resolve: 'shared'},
-        encoding: {
-          x: {field: 'IMDB Rating', type: 'quantitative'},
-          color: {field: 'Genre', type: 'nominal'},
-        },
+        encoding: colorEncoding,
       },
       config,
     );
@@ -620,16 +511,10 @@ describe('normalizeDensity', () => {
 
   describe('overlay and fill opacity', () => {
     it('should default fillOpacity to 0.6 when fill is set on the mark', () => {
-      const output = normalize(
-        {
-          data: {url: 'data/movies.json'},
-          mark: {type: 'density', fill: 'steelblue'},
-          encoding: {
-            x: {field: 'IMDB Rating', type: 'quantitative'},
-          },
-        },
-        defaultConfig,
-      );
+      const output = normalizeDensitySpec({
+        mark: {type: 'density', fill: 'steelblue'},
+        encoding: defaultEncoding,
+      });
 
       assertIsLayerSpec(output);
       expect(output.layer.length).toBe(1);
@@ -642,17 +527,13 @@ describe('normalizeDensity', () => {
     });
 
     it('should default fillOpacity to 0.6 when fill is set as an encoding channel', () => {
-      const output = normalize(
-        {
-          data: {url: 'data/movies.json'},
-          mark: 'density',
-          encoding: {
-            x: {field: 'IMDB Rating', type: 'quantitative'},
-            fill: {field: 'Genre', type: 'nominal'},
-          },
+      const output = normalizeDensitySpec({
+        mark: 'density',
+        encoding: {
+          ...defaultEncoding,
+          fill: {field: 'Genre', type: 'nominal'},
         },
-        defaultConfig,
-      );
+      });
 
       assertIsLayerSpec(output);
       expect(output.layer.length).toBe(1);
@@ -664,16 +545,10 @@ describe('normalizeDensity', () => {
     });
 
     it('should respect explicit fillOpacity and not default it', () => {
-      const output = normalize(
-        {
-          data: {url: 'data/movies.json'},
-          mark: {type: 'density', fill: 'steelblue', fillOpacity: 0.3},
-          encoding: {
-            x: {field: 'IMDB Rating', type: 'quantitative'},
-          },
-        },
-        defaultConfig,
-      );
+      const output = normalizeDensitySpec({
+        mark: {type: 'density', fill: 'steelblue', fillOpacity: 0.3},
+        encoding: defaultEncoding,
+      });
 
       assertIsLayerSpec(output);
       const layer0 = output.layer[0];
@@ -683,17 +558,10 @@ describe('normalizeDensity', () => {
     });
 
     it('should produce 2-layer spec (area + line) when fill and color are both set', () => {
-      const output = normalize(
-        {
-          data: {url: 'data/movies.json'},
-          mark: {type: 'density', fill: 'steelblue'},
-          encoding: {
-            x: {field: 'IMDB Rating', type: 'quantitative'},
-            color: {field: 'Genre', type: 'nominal'},
-          },
-        },
-        defaultConfig,
-      );
+      const output = normalizeDensitySpec({
+        mark: {type: 'density', fill: 'steelblue'},
+        encoding: colorEncoding,
+      });
 
       assertIsLayerSpec(output);
       expect(output.layer.length).toBe(2);
@@ -714,18 +582,13 @@ describe('normalizeDensity', () => {
     });
 
     it('should produce 2-layer spec when fill encoding and color encoding are both set', () => {
-      const output = normalize(
-        {
-          data: {url: 'data/movies.json'},
-          mark: 'density',
-          encoding: {
-            x: {field: 'IMDB Rating', type: 'quantitative'},
-            fill: {field: 'Genre', type: 'nominal'},
-            color: {field: 'Genre', type: 'nominal'},
-          },
+      const output = normalizeDensitySpec({
+        mark: 'density',
+        encoding: {
+          ...colorEncoding,
+          fill: {field: 'Genre', type: 'nominal'},
         },
-        defaultConfig,
-      );
+      });
 
       assertIsLayerSpec(output);
       expect(output.layer.length).toBe(2);
@@ -741,16 +604,10 @@ describe('normalizeDensity', () => {
     });
 
     it('should produce 2-layer spec when fill mark prop and stroke markDef prop are both set', () => {
-      const output = normalize(
-        {
-          data: {url: 'data/movies.json'},
-          mark: {type: 'density', fill: 'steelblue', stroke: 'black', strokeWidth: 2},
-          encoding: {
-            x: {field: 'IMDB Rating', type: 'quantitative'},
-          },
-        },
-        defaultConfig,
-      );
+      const output = normalizeDensitySpec({
+        mark: {type: 'density', fill: 'steelblue', stroke: 'black', strokeWidth: 2},
+        encoding: defaultEncoding,
+      });
 
       assertIsLayerSpec(output);
       expect(output.layer.length).toBe(2);
