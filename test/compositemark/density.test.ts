@@ -1,6 +1,5 @@
 import {defaultConfig} from '../../src/config.js';
 import {compile} from '../../src/compile/compile.js';
-import * as log from '../../src/log/index.js';
 import {normalize} from '../../src/normalize/index.js';
 import {assertIsLayerSpec} from '../util.js';
 
@@ -542,20 +541,24 @@ describe('normalizeDensity', () => {
     });
   });
 
-  it('should warn when "as" is specified on the density mark', () => {
-    log.wrap((localLogger) => {
-      normalize(
-        {
-          data: {url: 'data/movies.json'},
-          mark: {type: 'density', as: ['x', 'y']} as any,
-          encoding: {
-            x: {field: 'IMDB Rating', type: 'quantitative'},
-          },
-        },
-        defaultConfig,
-      );
-      expect(localLogger.warns[0]).toEqual(log.message.densityMarkAsNotSupported());
+  it('should support custom output field names via as', () => {
+    const output = normalizeDensitySpec({
+      mark: {type: 'density', as: ['mass_value', 'mass_density']},
+      encoding: defaultEncoding,
     });
+
+    assertIsLayerSpec(output);
+    expect(output.transform![0]).toEqual({
+      density: 'IMDB Rating',
+      as: ['mass_value', 'mass_density'],
+    });
+    const layer0 = output.layer![0];
+    if ('encoding' in layer0) {
+      expect(layer0.encoding).toMatchObject({
+        x: {field: 'mass_value', type: 'quantitative', title: 'IMDB Rating'},
+        y: {field: 'mass_density', type: 'quantitative'},
+      });
+    }
   });
 
   describe('overlay and fill opacity', () => {

@@ -61,6 +61,13 @@ export interface DensityConfig {
   steps?: number;
 
   /**
+   * The output fields for the sample value and corresponding density estimate.
+   *
+   * __Default value:__ `["value", "density"]`
+   */
+  as?: [string, string];
+
+  /**
    * The line interpolation method for the density curve/area.
    */
   interpolate?: Interpolate;
@@ -273,10 +280,6 @@ export function normalizeDensity(
     log.warn(log.message.selectionNotSupported('density'));
   }
 
-  if ((markDef as any).as !== undefined) {
-    log.warn(log.message.densityMarkAsNotSupported());
-  }
-
   const {stack} = densityMarkDef;
 
   // Infer mark type: use area if fill or fillOpacity is set — either as a mark property
@@ -293,7 +296,10 @@ export function normalizeDensity(
     continuousAxis,
     encodingWithoutContinuousAxis,
     groupby,
+    densityAs,
   } = densityParams(spec, densityMarkDef, config, useArea);
+
+  const [densityValueField, densityEstimateField] = densityAs;
 
   const markOrient = continuousAxis === 'y' ? 'horizontal' : 'vertical';
   const densityAxis = continuousAxis === 'x' ? 'y' : 'x';
@@ -313,7 +319,7 @@ export function normalizeDensity(
 
   // Build the shared positional encoding used by all layers.
   const continuousAxisEncoding = {
-    field: 'value',
+    field: densityValueField,
     type: continuousAxisChannelDef.type,
     title: getTitle(continuousAxisChannelDef),
     ...(continuousAxisChannelDef.scale !== undefined ? {scale: continuousAxisChannelDef.scale} : {}),
@@ -322,13 +328,15 @@ export function normalizeDensity(
 
   // Area densities default to unstacked (`stack: null`) when stack is unspecified.
   const densityAxisEncoding = useArea
-    ? {field: 'density', type: 'quantitative', stack: stack ?? null}
+    ? {field: densityEstimateField, type: 'quantitative', stack: stack ?? null}
     : stack !== undefined
-      ? {field: 'density', type: 'quantitative', stack}
-      : {field: 'density', type: 'quantitative'};
+      ? {field: densityEstimateField, type: 'quantitative', stack}
+      : {field: densityEstimateField, type: 'quantitative'};
 
   const lineDensityAxisEncoding =
-    stack !== undefined ? {field: 'density', type: 'quantitative', stack} : {field: 'density', type: 'quantitative'};
+    stack !== undefined
+      ? {field: densityEstimateField, type: 'quantitative', stack}
+      : {field: densityEstimateField, type: 'quantitative'};
 
   if (useLineOverlay) {
     // Split encodingWithoutContinuousAxis into fill-side and stroke-side.
@@ -452,6 +460,7 @@ function densityParams(
   continuousAxis: 'x' | 'y';
   encodingWithoutContinuousAxis: Encoding<string>;
   groupby: string[];
+  densityAs: [string, string];
 } {
   const orient = compositeMarkOrient(spec, DENSITY);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, DENSITY);
@@ -475,6 +484,7 @@ function densityParams(
     'minsteps',
     'maxsteps',
     'steps',
+    'as',
     'cumulative',
     'counts',
     'resolve',
@@ -512,6 +522,7 @@ function densityParams(
     continuousAxis,
     encodingWithoutContinuousAxis: normalizedEncodingWithoutContinuousAxis,
     groupby,
+    densityAs: densityTransform.as ?? ['value', 'density'],
   };
 }
 

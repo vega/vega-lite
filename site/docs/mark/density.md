@@ -36,6 +36,8 @@ A density mark definition can contain the following properties:
 
 {% include table.html props="type,bandwidth,cumulative,counts,extent,minsteps,maxsteps,steps,resolve,orient,color,opacity,interpolate,tension,clip,stroke,strokeWidth,strokeOpacity,strokeDash,strokeDashOffset,fill,fillOpacity,stack" source="DensityDef" %}
 
+You can optionally set `as` to customize the generated density output field names (default: `"value"` and `"density"`).
+
 {:#line-vs-area}
 
 ## Line vs Area Behavior
@@ -74,6 +76,10 @@ Line density with custom `bandwidth`:
 Line density with `cumulative: true`:
 
 <div class="vl-example" data-name="density_mark_cumulative"></div>
+
+Custom output field names with `as`:
+
+<div class="vl-example" data-name="density_mark_as"></div>
 
 {:#stacking}
 
