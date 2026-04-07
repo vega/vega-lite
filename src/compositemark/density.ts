@@ -297,7 +297,7 @@ export function normalizeDensity(
     encodingWithoutContinuousAxis,
     groupby,
     densityAs,
-  } = densityParams(spec, densityMarkDef, config, useArea);
+  } = densityParams(spec, densityMarkDef, config);
 
   const [densityValueField, densityEstimateField] = densityAs;
 
@@ -453,7 +453,6 @@ function densityParams(
   spec: GenericUnitSpec<Encoding<string>, Density | DensityDef>,
   markDef: DensityDef,
   config: Config,
-  useArea: boolean,
 ): {
   transform: Transform[];
   continuousAxisChannelDef: PositionFieldDef<string>;
