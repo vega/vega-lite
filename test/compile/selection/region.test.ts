@@ -102,7 +102,7 @@ describe('Region selections (compile)', () => {
           update: {
             path: [
               {
-                test: `${store}.length && ${store}[0].unit === ${unitName(model)}`,
+                test: `lasso${SCREEN_PATH}.length && (${store}.length ? ${store}[0].unit === ${unitName(model)} : true)`,
                 ...path,
               },
               {value: '[]'},

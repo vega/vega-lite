@@ -95,7 +95,7 @@ const region: SelectionCompiler<'region'> = {
               selCmpt.resolve === 'global'
                 ? [
                     {
-                      test: `${store}.length && ${store}[0].unit === ${unitName(model)}`,
+                      test: `${screenPathName}.length && (${store}.length ? ${store}[0].unit === ${unitName(model)} : true)`,
                       ...path,
                     },
                     {
