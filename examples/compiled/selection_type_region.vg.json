@@ -92,7 +92,7 @@
         "update": {
           "path": [
             {
-              "test": "data(\"brush_store\").length && data(\"brush_store\")[0].unit === \"\"",
+              "test": "brush_screen_path.length && (data(\"brush_store\").length ? data(\"brush_store\")[0].unit === \"\" : true)",
               "signal": "lassoPath(brush_screen_path)"
             },
             {"value": "[]"}
