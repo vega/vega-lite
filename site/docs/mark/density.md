@@ -79,10 +79,10 @@ Line density with `cumulative: true`:
 
 ## Stacking
 
-The `stack` property applies only to area densities.
+The `stack` property affects both line and area densities when explicitly provided.
 
 - Area densities support `"zero"`, `"center"`, `"normalize"`, and `null`.
-- Line densities do not include stack on the density axis.
+- Line densities are unstacked by default, but an explicit `stack` value is forwarded when provided.
 - Grouped line densities default to `resolve: "independent"` unless `resolve` is explicitly set.
 - Grouped area densities with `stack: null` default to `resolve: "independent"` unless `resolve` is explicitly set.
 - Grouped area densities with `stack: "zero"` keep shared resolution by default.

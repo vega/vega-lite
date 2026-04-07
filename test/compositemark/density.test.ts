@@ -1,4 +1,5 @@
 import {defaultConfig} from '../../src/config.js';
+import {compile} from '../../src/compile/compile.js';
 import * as log from '../../src/log/index.js';
 import {normalize} from '../../src/normalize/index.js';
 import {assertIsLayerSpec} from '../util.js';
@@ -449,6 +450,26 @@ describe('normalizeDensity', () => {
     }
   });
 
+  it('should allow stacking on line density when stack is explicitly specified', () => {
+    const output = normalizeDensitySpec({
+      mark: {type: 'density', stack: 'zero'},
+      encoding: colorEncoding,
+    });
+
+    assertIsLayerSpec(output);
+    const layer0 = output.layer![0];
+    if ('mark' in layer0) {
+      expect((layer0.mark as any).type).toBe('line');
+    }
+    if ('encoding' in layer0) {
+      expect((layer0.encoding!.y as {stack?: unknown}).stack).toBe('zero');
+    }
+    expect(output.transform![0]).toEqual({
+      density: 'IMDB Rating',
+      groupby: ['Genre'],
+    });
+  });
+
   it('should default resolve to independent for grouped line density', () => {
     const output = normalizeDensitySpec({
       mark: 'density',
@@ -650,6 +671,66 @@ describe('normalizeDensity', () => {
       expect(lineLayer.mark.type).toBe('line');
       expect(lineLayer.mark.stroke).toBe('black');
       expect(lineLayer.mark.strokeWidth).toBe(2);
+    });
+
+    it('should allow stacked area with stacked line outline when stack is explicitly set', () => {
+      const output = normalizeDensitySpec({
+        mark: {type: 'density', fill: 'steelblue', stroke: 'black', stack: 'zero'},
+        encoding: colorEncoding,
+      });
+
+      assertIsLayerSpec(output);
+      expect(output.layer.length).toBe(2);
+
+      const [areaLayer, lineLayer] = output.layer as any[];
+      expect(areaLayer.mark.type).toBe('area');
+      expect(lineLayer.mark.type).toBe('line');
+      expect(areaLayer.encoding.y.stack).toBe('zero');
+      expect(lineLayer.encoding.y.stack).toBe('zero');
+    });
+
+    it('should allow stacked line outline with fill and stroke encodings when stack is explicitly set', () => {
+      const output = normalizeDensitySpec({
+        mark: {type: 'density', stack: 'zero'},
+        encoding: {
+          ...defaultEncoding,
+          fill: {field: 'Genre', type: 'nominal'},
+          stroke: {field: 'Genre', type: 'nominal'},
+        },
+      });
+
+      assertIsLayerSpec(output);
+      expect(output.layer.length).toBe(2);
+
+      const [areaLayer, lineLayer] = output.layer as any[];
+      expect(areaLayer.mark.type).toBe('area');
+      expect(lineLayer.mark.type).toBe('line');
+      expect(areaLayer.encoding.y.stack).toBe('zero');
+      expect(lineLayer.encoding.y.stack).toBe('zero');
+      expect(areaLayer.encoding.stroke).toBeUndefined();
+      expect(lineLayer.encoding.stroke).toEqual({field: 'Genre', type: 'nominal'});
+    });
+
+    it('should compile stacked fill+stroke overlay to stacked y fields for both area and line', () => {
+      const {spec: compiled} = compile({
+        data: {url: 'data/movies.json'},
+        mark: {type: 'density', stack: 'zero'},
+        encoding: {
+          x: {field: 'IMDB Rating', type: 'quantitative'},
+          fill: {field: 'Genre', type: 'nominal'},
+          stroke: {field: 'Genre', type: 'nominal'},
+        },
+      } as any);
+
+      const groups = (compiled.marks ?? []) as any[];
+      const innerMarks = groups.map((g) => g.marks?.[0]).filter(Boolean);
+      const areaMark = innerMarks.find((m) => m.type === 'area');
+      const lineMark = innerMarks.find((m) => m.type === 'line');
+
+      expect(areaMark).toBeDefined();
+      expect(lineMark).toBeDefined();
+      expect(areaMark.encode.update.y.field).toMatch(/_end$/);
+      expect(lineMark.encode.update.y.field).toMatch(/_end$/);
     });
 
     it('should preserve grouping in both layers when fill and stroke come from density config', () => {

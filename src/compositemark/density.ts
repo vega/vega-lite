@@ -81,7 +81,7 @@ export interface DensityConfig {
    * __Default value:__ `"shared"`.
    *
    * For grouped densities, the implicit default is `"independent"` when either:
-   * - the density renders as a line mark, or
+   * - the density renders as a line mark with no explicit non-null `stack`, or
    * - the density renders as an area mark with `stack: null`.
    *
    * This implicit default applies only when `resolve` is not explicitly set in the mark definition or config.
@@ -134,7 +134,7 @@ export interface DensityConfig {
   fillOpacity?: number;
 
   /**
-   * Type of stacking offset for the density area.
+   * Type of stacking offset for the density.
    */
   stack?: 'zero' | 'center' | 'normalize' | null;
 }
@@ -320,10 +320,15 @@ export function normalizeDensity(
     ...(continuousAxisChannelDef.axis !== undefined ? {axis: continuousAxisChannelDef.axis} : {}),
   };
 
-  // Stack only applies to area marks; for line marks omit the stack encoding entirely.
+  // Area densities default to unstacked (`stack: null`) when stack is unspecified.
   const densityAxisEncoding = useArea
     ? {field: 'density', type: 'quantitative', stack: stack ?? null}
-    : {field: 'density', type: 'quantitative'};
+    : stack !== undefined
+      ? {field: 'density', type: 'quantitative', stack}
+      : {field: 'density', type: 'quantitative'};
+
+  const lineDensityAxisEncoding =
+    stack !== undefined ? {field: 'density', type: 'quantitative', stack} : {field: 'density', type: 'quantitative'};
 
   if (useLineOverlay) {
     // Split encodingWithoutContinuousAxis into fill-side and stroke-side.
@@ -374,7 +379,7 @@ export function normalizeDensity(
         mark: lineMark,
         encoding: {
           [continuousAxis]: continuousAxisEncoding,
-          [densityAxis]: {field: 'density', type: 'quantitative'},
+          [densityAxis]: lineDensityAxisEncoding,
           ...lineEncoding,
         },
       },
@@ -484,7 +489,7 @@ function densityParams(
   const resolvedStack = markDef.stack ?? null;
   const hasExplicitResolve = markDef.resolve !== undefined || densityConfig?.resolve !== undefined;
   const defaultResolveForStack =
-    !hasExplicitResolve && groupby.length > 0 && (!useArea || resolvedStack === null) ? 'independent' : undefined;
+    !hasExplicitResolve && groupby.length > 0 && resolvedStack === null ? 'independent' : undefined;
 
   const densityTransform: DensityTransform = {
     density: continuousAxisChannelDef.field,
