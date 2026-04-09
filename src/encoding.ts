@@ -727,12 +727,14 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case URL:
       case X2:
       case Y2:
+        return details;
+
       case XOFFSET:
       case YOFFSET: {
         if (mark === 'line' || mark === 'area' || mark === 'trail') {
           const offsetDef = encoding[channel];
           if (isFieldDef(offsetDef)) {
-            const mainChannel = getMainChannelFromOffsetChannel(channel as typeof XOFFSET | typeof YOFFSET);
+            const mainChannel = channel === XOFFSET ? X : Y;
             const mainDef = encoding[mainChannel];
             if (isFieldDef(mainDef) && !mainDef.aggregate && !offsetDef.aggregate) {
               const mainField = vgField(mainDef, {});
