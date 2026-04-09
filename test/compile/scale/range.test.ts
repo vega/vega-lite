@@ -342,6 +342,19 @@ describe('compile/scale', () => {
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
       });
+
+      it("returns [bandwidth('y'), 0] for continuous yOffset nested in band y", () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'},
+            yOffset: {field: 'ysub', type: 'quantitative'},
+          },
+        });
+
+        expect(parseRangeForChannel('yOffset', model)).toEqual(makeImplicit([{signal: "bandwidth('y')"}, 0]));
+      });
       it("returns [0, bandwidth('x')] if x has a fixed step for position", () => {
         const model = parseUnitModelWithScaleExceptRange({
           width: {step: 23, for: 'position'},
