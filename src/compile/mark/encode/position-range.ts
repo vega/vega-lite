@@ -1,8 +1,16 @@
 import type {SignalRef} from 'vega';
-import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel.js';
-import {isFieldOrDatumDef} from '../../../channeldef.js';
+import {
+  getMainRangeChannel,
+  getOffsetScaleChannel,
+  getSecondaryRangeChannel,
+  getSizeChannel,
+  getVgPositionChannel,
+} from '../../../channel.js';
+import {isFieldDef, isFieldOrDatumDef} from '../../../channeldef.js';
 import * as log from '../../../log/index.js';
 import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark.js';
+import {hasDiscreteDomain} from '../../../scale.js';
+import {isContinuous} from '../../../type.js';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
 import {getMarkStyleConfig} from '../../common.js';
 import {UnitModel} from '../../unit.js';
@@ -131,16 +139,33 @@ function pointPosition2OrSize(
       [sizeChannel]: getMarkStyleConfig(sizeChannel, markDef, config.style),
     }) ||
     position2orSize(channel, config[mark]) ||
-    position2orSize(channel, config.mark) || {
-      [vgChannel]: pointPositionDefaultRef({
-        model,
-        defaultPos,
-        channel,
-        scaleName,
-        scale,
-      })(),
-    }
+    position2orSize(channel, config.mark) ||
+    (isFieldOrDatumDef(channelDef) &&
+    hasDiscreteDomain(scale?.get('type')) &&
+    hasContinuousOffset(encoding, baseChannel)
+      ? {
+          [vgChannel]: ref.valueRefForFieldOrDatumDef(channelDef, scaleName, {}, {}),
+        }
+      : {
+          [vgChannel]: pointPositionDefaultRef({
+            model,
+            defaultPos,
+            channel,
+            scaleName,
+            scale,
+          })(),
+        })
   );
+}
+
+function hasContinuousOffset(encoding: UnitModel['encoding'], channel: 'x' | 'y' | 'theta' | 'radius'): boolean {
+  const offsetChannel = getOffsetScaleChannel(channel);
+  if (!offsetChannel) {
+    return false;
+  }
+
+  const offsetDef = encoding[offsetChannel];
+  return isFieldDef(offsetDef) && isContinuous(offsetDef.type);
 }
 
 export function position2Ref({

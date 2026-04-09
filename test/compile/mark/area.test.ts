@@ -114,6 +114,24 @@ describe('Mark: Area', () => {
     });
   });
 
+  describe('vertical area with discrete y and continuous yOffset', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {timeUnit: 'year', field: 'Year', type: 'temporal'},
+        y: {field: 'Origin', type: 'nominal'},
+        yOffset: {field: 'US_Gross', type: 'quantitative'},
+      },
+      data: {url: 'data/movies.json'},
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use y as one edge and baseline at the band start', () => {
+      expect(props.y).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross'}});
+      expect(props.y2).toEqual({scale: 'y', field: 'Origin'});
+    });
+  });
+
   describe('vertical stacked area with color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(
       verticalArea({

@@ -441,6 +441,12 @@ export function zero(
     return true;
   }
 
+  // 1.5) using quantitative offset for non-ranged charts
+  // Offset channels should include zero so layered marks align to a shared in-band baseline.
+  if (isXorYOffset(channel) && fieldDef.type === 'quantitative') {
+    return !hasSecondaryRangeChannel;
+  }
+
   // 2) non-binned, quantitative x-scale or y-scale
   // (For binning, we should not include zero by default because binning are calculated without zero.)
   // (For area/bar charts with ratio scale chart, we should always include zero.)

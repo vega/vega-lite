@@ -24,6 +24,7 @@ import {Encoding} from '../../../encoding.js';
 import * as log from '../../../log/index.js';
 import {BandSize, isRelativeBandSize} from '../../../mark.js';
 import {hasDiscreteDomain} from '../../../scale.js';
+import {isContinuous} from '../../../type.js';
 import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
 import {getMarkConfig, getMarkPropOrConfig, signalOrStringValue, signalOrValueRef} from '../../common.js';
 import {ScaleComponent} from '../../scale/component.js';
@@ -77,11 +78,29 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
       channel,
       model,
     });
+  } else if (
+    mark === 'bar' &&
+    isFieldOrDatumDef(channelDef) &&
+    hasDiscreteDomain(scaleType) &&
+    !channelDef2 &&
+    hasContinuousOffset(encoding, channel)
+  ) {
+    return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
   } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarOrTickBand) && !channelDef2) {
     return positionAndSize(channelDef, channel, model);
   } else {
     return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
   }
+}
+
+function hasContinuousOffset(encoding: Encoding<string>, channel: PositionChannel | PolarPositionChannel): boolean {
+  const offsetChannel = getOffsetScaleChannel(channel);
+  if (!offsetChannel) {
+    return false;
+  }
+
+  const offsetDef = encoding[offsetChannel];
+  return isFieldDef(offsetDef) && isContinuous(offsetDef.type);
 }
 
 function defaultSizeRef(

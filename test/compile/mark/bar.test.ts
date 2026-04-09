@@ -43,6 +43,23 @@ describe('Mark: Bar', () => {
     expect(props.height).toBeUndefined();
   });
 
+  it('should draw ranged bars within a discrete y band when yOffset is continuous', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'bar',
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        y: {field: 'Cylinders', type: 'ordinal'},
+        yOffset: {field: 'Acceleration', type: 'quantitative'},
+      },
+    });
+    const props = bar.encodeEntry(model);
+
+    expect(props.y).toEqual({scale: 'y', field: 'Cylinders', offset: {scale: 'yOffset', field: 'Acceleration'}});
+    expect(props.y2).toEqual({scale: 'y', field: 'Cylinders'});
+    expect(props.height).toBeUndefined();
+  });
+
   it('should draw horizontal bar, with y from zero to field value and bar with quantitative x, x2, and y', () => {
     const x: PositionFieldDef<string> = {field: 'q_start', type: 'quantitative'};
     const x2: SecondaryFieldDef<string> = {field: 'q_end'};

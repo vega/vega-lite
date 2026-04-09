@@ -233,6 +233,56 @@ describe('compile/compile', () => {
     expect(spec.autosize).toBe('fit');
   });
 
+  it('should align layered bar/line/point marks on a shared quantitative yOffset baseline', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {cat: 'A', v: 10, g: 'x'},
+          {cat: 'B', v: 30, g: 'x'},
+        ],
+      },
+      layer: [
+        {
+          mark: 'bar',
+          encoding: {
+            x: {field: 'cat', type: 'nominal'},
+            y: {field: 'g', type: 'nominal'},
+            yOffset: {field: 'v', type: 'quantitative'},
+          },
+        },
+        {
+          mark: 'line',
+          encoding: {
+            x: {field: 'cat', type: 'nominal'},
+            y: {field: 'g', type: 'nominal'},
+            yOffset: {field: 'v', type: 'quantitative'},
+          },
+        },
+        {
+          mark: 'point',
+          encoding: {
+            x: {field: 'cat', type: 'nominal'},
+            y: {field: 'g', type: 'nominal'},
+            yOffset: {field: 'v', type: 'quantitative'},
+          },
+        },
+      ],
+    });
+
+    const yOffsetScale = spec.scales.find((s: any) => s.name === 'yOffset') as any;
+    expect(yOffsetScale.zero).toBe(true);
+
+    const bar = spec.marks[0].encode.update;
+    const line = spec.marks[1].encode.update;
+    const point = spec.marks[2].encode.update;
+
+    expect(bar.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
+    expect(bar.y2).toEqual({scale: 'y', field: 'g'});
+
+    expect(line.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
+    expect(point.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
+  });
+
   it('should use containerSize for width and autosize to fit-x/padding', () => {
     const {spec} = compile({
       width: 'container',
