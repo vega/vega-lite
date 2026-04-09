@@ -144,7 +144,19 @@ function pointPosition2OrSize(
     hasDiscreteDomain(scale?.get('type')) &&
     hasContinuousOffset(encoding, baseChannel)
       ? {
-          [vgChannel]: ref.valueRefForFieldOrDatumDef(channelDef, scaleName, {}, {}),
+          [vgChannel]: ref.valueRefForFieldOrDatumDef(
+            channelDef,
+            scaleName,
+            {},
+            {
+              offset: ref.valueRefForFieldOrDatumDef(
+                {datum: 0},
+                model.scaleName(getOffsetScaleChannel(baseChannel)),
+                {},
+                {},
+              ),
+            },
+          ),
         }
       : {
           [vgChannel]: pointPositionDefaultRef({

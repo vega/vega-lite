@@ -277,7 +277,7 @@ describe('compile/compile', () => {
     const point = spec.marks[2].encode.update;
 
     expect(bar.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
-    expect(bar.y2).toEqual({scale: 'y', field: 'g'});
+    expect(bar.y2).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', value: 0}});
 
     expect(line.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
     expect(point.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});

@@ -56,7 +56,11 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     expect(props.y).toEqual({scale: 'y', field: 'Cylinders', offset: {scale: 'yOffset', field: 'Acceleration'}});
-    expect(props.y2).toEqual({scale: 'y', field: 'Cylinders'});
+    expect(props.y2).toEqual({
+      scale: 'y',
+      field: 'Cylinders',
+      offset: {scale: 'yOffset', value: 0},
+    });
     expect(props.height).toBeUndefined();
   });
 

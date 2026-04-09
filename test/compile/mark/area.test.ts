@@ -126,9 +126,9 @@ describe('Mark: Area', () => {
     });
     const props = area.encodeEntry(model);
 
-    it('should use y as one edge and baseline at the band start', () => {
+    it('should use y as one edge and baseline at offset zero', () => {
       expect(props.y).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross'}});
-      expect(props.y2).toEqual({scale: 'y', field: 'Origin'});
+      expect(props.y2).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', value: 0}});
     });
   });
 
