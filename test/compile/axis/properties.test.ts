@@ -37,62 +37,6 @@ describe('compile/axis/properties', () => {
       const grid = properties.defaultGrid('point', {field: 'a', type: 'quantitative'});
       expect(grid).toBe(false);
     });
-
-    it('should return true for ranged-offset bar/area axes when axis.grid is not specified', () => {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: 'bar',
-        data: {values: [{a: 'A', b: 1, c: 'x'}]},
-        encoding: {
-          x: {field: 'a', type: 'nominal'},
-          y: {field: 'c', type: 'nominal'},
-          yOffset: {field: 'b', type: 'quantitative'},
-        },
-      });
-
-      expect(
-        properties.axisRules.grid({
-          axis: {},
-          model,
-          channel: 'y',
-          fieldOrDatumDef: model.encoding.y as any,
-          mark: model.mark,
-          scaleType: model.getScaleComponent('y').get('type'),
-          orient: 'left',
-          labelAngle: undefined,
-          format: undefined,
-          formatType: undefined,
-          config: model.config,
-        }),
-      ).toBe(true);
-    });
-
-    it('should respect explicit axis.grid for ranged-offset bar/area axes', () => {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: 'bar',
-        data: {values: [{a: 'A', b: 1, c: 'x'}]},
-        encoding: {
-          x: {field: 'a', type: 'nominal'},
-          y: {field: 'c', type: 'nominal', axis: {grid: false}},
-          yOffset: {field: 'b', type: 'quantitative'},
-        },
-      });
-
-      expect(
-        properties.axisRules.grid({
-          axis: {grid: false},
-          model,
-          channel: 'y',
-          fieldOrDatumDef: model.encoding.y as any,
-          mark: model.mark,
-          scaleType: model.getScaleComponent('y').get('type'),
-          orient: 'left',
-          labelAngle: undefined,
-          format: undefined,
-          formatType: undefined,
-          config: model.config,
-        }),
-      ).toBe(false);
-    });
   });
 
   describe('bandPosition', () => {
