@@ -297,8 +297,8 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
             return [0, (laneRange as {step: number | SignalRef}).step];
           }
 
-          const min = minXYStep(size, {x: getBinStepSignal(model, 'x'), y: getBinStepSignal(model, 'y')}, config.view);
-          return [0, min];
+          const laneScaleName = model.scaleName(laneChannel);
+          return [0, {signal: `span(range('${laneScaleName}')) / max(1, domain('${laneScaleName}').length)`}];
         }
 
         const fallbackChannel = laneChannel === 'x' ? 'y' : 'x';

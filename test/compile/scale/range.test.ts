@@ -762,7 +762,9 @@ describe('compile/scale', () => {
             },
           });
 
-          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, DEFAULT_STEP]));
+          expect(parseRangeForChannel('size', model)).toEqual(
+            makeImplicit([0, {signal: "span(range('y')) / max(1, domain('y').length)"}]),
+          );
         });
 
         it('should return [0, step] for horizontal area size-thickness ribbons with point x', () => {
@@ -775,7 +777,9 @@ describe('compile/scale', () => {
             },
           });
 
-          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, DEFAULT_STEP]));
+          expect(parseRangeForChannel('size', model)).toEqual(
+            makeImplicit([0, {signal: "span(range('x')) / max(1, domain('x').length)"}]),
+          );
         });
       });
 
