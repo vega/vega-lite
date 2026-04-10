@@ -73,7 +73,7 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "random"},
       "range": [0, {"signal": "bandwidth('y')"}],
-      "zero": false
+      "zero": true
     }
   ],
   "axes": [
