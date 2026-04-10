@@ -273,7 +273,7 @@ describe('compile/compile', () => {
     expect(yOffsetScale.zero).toBe(true);
 
     const bar = spec.marks[0].encode.update;
-    const line = spec.marks[1].encode.update;
+    const line = (spec.marks[1] as any).marks[0].encode.update;
     const point = spec.marks[2].encode.update;
 
     expect(bar.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
@@ -300,6 +300,36 @@ describe('compile/compile', () => {
       },
     ]);
     expect(spec.width).toBeUndefined();
+  });
+
+  it('should compile area with discrete y and quantitative yOffset as faceted ranged paths', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {a: 'A', b: 28, c: 'x'},
+          {a: 'B', b: 55, c: 'x'},
+          {a: 'C', b: 43, c: 'x'},
+          {a: 'D', b: 91, c: 'x'},
+          {a: 'A', b: 88, c: 'y'},
+          {a: 'B', b: 55, c: 'y'},
+          {a: 'C', b: 43, c: 'y'},
+          {a: 'D', b: 55, c: 'y'},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'a'},
+        y: {field: 'c'},
+        yOffset: {field: 'b', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['c']);
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y).toEqual({scale: 'y', field: 'c', offset: {scale: 'yOffset', field: 'b'}});
+    expect(update.y2).toEqual({scale: 'y', field: 'c', offset: {scale: 'yOffset', value: 0}});
   });
 
   it('should use containerSize for width and autosize to fit-y/padding', () => {

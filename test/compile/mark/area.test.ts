@@ -130,6 +130,11 @@ describe('Mark: Area', () => {
       expect(props.y).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross'}});
       expect(props.y2).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', value: 0}});
     });
+
+    it('should not collapse to line geometry', () => {
+      expect(props.x2).toBeUndefined();
+      expect(props.y2).toBeDefined();
+    });
   });
 
   describe('vertical stacked area with color', () => {
