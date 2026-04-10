@@ -41,7 +41,21 @@ function hasContinuousOffsetRange(model: UnitModel, channel: 'x' | 'y'): boolean
   const channelDef = encoding[channel];
   const channel2 = getSecondaryRangeChannel(channel);
 
-  if (!isFieldOrDatumDef(channelDef) || encoding[channel2]) {
+  if (encoding[channel2]) {
+    return false;
+  }
+
+  const offsetChannel = getOffsetScaleChannel(channel);
+  const offsetDef = encoding[offsetChannel];
+  if (!(isFieldDef(offsetDef) && isContinuous(offsetDef.type))) {
+    return false;
+  }
+
+  if (channelDef === undefined) {
+    return true;
+  }
+
+  if (!isFieldOrDatumDef(channelDef)) {
     return false;
   }
 
@@ -50,7 +64,5 @@ function hasContinuousOffsetRange(model: UnitModel, channel: 'x' | 'y'): boolean
     return false;
   }
 
-  const offsetChannel = getOffsetScaleChannel(channel);
-  const offsetDef = encoding[offsetChannel];
-  return isFieldDef(offsetDef) && isContinuous(offsetDef.type);
+  return true;
 }

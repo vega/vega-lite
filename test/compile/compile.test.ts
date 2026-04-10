@@ -332,6 +332,32 @@ describe('compile/compile', () => {
     expect(update.y2).toEqual({scale: 'y', field: 'c', offset: {scale: 'yOffset', value: 0}});
   });
 
+  it('should compile area with aggregated yOffset and no y as ranged geometry', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {a: 'A', b: 28, c: 'x', d: 'm'},
+          {a: 'B', b: 55, c: 'x', d: 'm'},
+          {a: 'C', b: 43, c: 'x', d: 'n'},
+          {a: 'D', b: 91, c: 'x', d: 'n'},
+          {a: 'A', b: 88, c: 'y', d: 'm'},
+          {a: 'B', b: 55, c: 'y', d: 'm'},
+          {a: 'C', b: 43, c: 'y', d: 'n'},
+          {a: 'D', b: 55, c: 'y', d: 'n'},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'a'},
+        yOffset: {field: 'b', aggregate: 'sum', type: 'quantitative'},
+      },
+    });
+
+    const update = spec.marks[0].encode.update;
+    expect(update.y).toEqual({field: {group: 'height'}, offset: {scale: 'yOffset', field: 'sum_b'}});
+    expect(update.y2).toEqual({field: {group: 'height'}});
+  });
+
   it('should use containerSize for width and autosize to fit-y/padding', () => {
     const {spec} = compile({
       height: 'container',
