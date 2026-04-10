@@ -102,8 +102,52 @@ function halfThicknessRef(thickness: VgValueRef, factor: number): VgValueRef {
 }
 
 function withOffset(baseRef: VgValueRef, offset: VgValueRef): VgValueRef {
+  if (baseRef.offset) {
+    return {
+      ...baseRef,
+      offset: {
+        signal: `${valueRefExpr(baseRef.offset as VgValueRef)} + ${valueRefExpr(offset)}`,
+      },
+    };
+  }
+
   return {
     ...baseRef,
     offset,
   };
+}
+
+function valueRefExpr(v: VgValueRef): string {
+  let base: string;
+
+  if ('signal' in v && v.signal !== undefined) {
+    base = `(${v.signal})`;
+  } else if ('scale' in v && v.scale) {
+    if ('field' in v && v.field !== undefined) {
+      const field =
+        typeof v.field === 'string'
+          ? `datum['${v.field}']`
+          : 'field' in v.field && typeof v.field.field === 'string'
+            ? `datum['${v.field.field}']`
+            : '0';
+      base = `scale('${v.scale}', ${field})`;
+    } else if ('value' in v && v.value !== undefined) {
+      base = `scale('${v.scale}', ${v.value})`;
+    } else {
+      base = `scale('${v.scale}', 0)`;
+    }
+  } else if ('value' in v && v.value !== undefined) {
+    base = `${v.value}`;
+  } else {
+    base = '0';
+  }
+
+  if ('mult' in v && v.mult !== undefined) {
+    base = `(${base}) * (${v.mult})`;
+  }
+  if ('offset' in v && v.offset !== undefined) {
+    base = `(${base}) + (${valueRefExpr(v.offset as VgValueRef)})`;
+  }
+
+  return base;
 }

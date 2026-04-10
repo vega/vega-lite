@@ -278,6 +278,32 @@ describe('compile/compile', () => {
     expect((spec.marks[0] as any).from.facet.groupby).toEqual(['species']);
   });
 
+  it('should combine nominal yOffset and size thickness for area ribbons', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 3000, density: 0.2, island: 'Biscoe', species: 'Adelie'},
+          {value: 3300, density: 0.4, island: 'Biscoe', species: 'Chinstrap'},
+          {value: 3600, density: 0.3, island: 'Dream', species: 'Adelie'},
+        ],
+      },
+      mark: {type: 'area', opacity: 0.4},
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'island', type: 'nominal'},
+        yOffset: {field: 'species', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative'},
+        color: {field: 'species', type: 'nominal'},
+      },
+    });
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y.offset.signal).toContain("scale('yOffset'");
+    expect(update.y.offset.signal).toContain("scale('size'");
+    expect(update.y2.offset.signal).toContain("scale('yOffset'");
+    expect(update.y2.offset.signal).toContain("scale('size'");
+  });
+
   it('should use containerSize for width and autosize to fit-x/padding', () => {
     const {spec} = compile({
       width: 'container',
