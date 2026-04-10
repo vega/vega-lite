@@ -784,12 +784,27 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
           const sizeDef = encoding.size;
           if (isFieldDef(sizeDef)) {
             const sizeField = vgField(sizeDef, {});
+            const addDetail = (field: string) => {
+              if (field && !details.includes(field)) {
+                details.push(field);
+              }
+            };
+
+            for (const offsetChannel of [XOFFSET, YOFFSET] as const) {
+              const offsetDef = encoding[offsetChannel];
+              if (isFieldDef(offsetDef) && !offsetDef.aggregate) {
+                const offsetField = vgField(offsetDef, {});
+                if (offsetField !== sizeField) {
+                  addDetail(offsetField);
+                }
+              }
+            }
 
             const yDef = encoding.y;
             if (isFieldDef(yDef) && !yDef.aggregate && channelDefType(yDef) !== 'quantitative') {
               const yField = vgField(yDef, {});
               if (yField !== sizeField) {
-                details.push(yField);
+                addDetail(yField);
                 return details;
               }
             }
@@ -798,7 +813,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
             if (isFieldDef(xDef) && !xDef.aggregate && channelDefType(xDef) !== 'quantitative') {
               const xField = vgField(xDef, {});
               if (xField !== sizeField) {
-                details.push(xField);
+                addDetail(xField);
                 return details;
               }
             }

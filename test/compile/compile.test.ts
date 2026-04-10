@@ -334,6 +334,28 @@ describe('compile/compile', () => {
     expect(update.x2.offset.signal).toContain("domain('xOffset').length");
   });
 
+  it('should facet horizontal area size-thickness ribbons by xOffset groups', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 3000, density: 0.2, island: 'Biscoe', species: 'Adelie'},
+          {value: 3300, density: 0.4, island: 'Biscoe', species: 'Chinstrap'},
+          {value: 3600, density: 0.3, island: 'Dream', species: 'Adelie'},
+        ],
+      },
+      mark: {type: 'area', opacity: 0.4},
+      encoding: {
+        y: {field: 'value', type: 'quantitative'},
+        x: {field: 'island', type: 'nominal'},
+        xOffset: {field: 'species', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['island', 'species']);
+  });
+
   it('should use containerSize for width and autosize to fit-x/padding', () => {
     const {spec} = compile({
       width: 'container',
