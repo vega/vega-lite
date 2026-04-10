@@ -306,6 +306,34 @@ describe('compile/compile', () => {
     expect(update.y2.offset.signal).toContain("domain('yOffset').length");
   });
 
+  it('should combine nominal xOffset and size thickness for horizontal area ribbons', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 3000, density: 0.2, island: 'Biscoe', species: 'Adelie'},
+          {value: 3300, density: 0.4, island: 'Biscoe', species: 'Chinstrap'},
+          {value: 3600, density: 0.3, island: 'Dream', species: 'Adelie'},
+        ],
+      },
+      mark: {type: 'area', opacity: 0.4},
+      encoding: {
+        x: {field: 'island', type: 'nominal'},
+        y: {field: 'value', type: 'quantitative'},
+        xOffset: {field: 'species', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative'},
+        color: {field: 'species', type: 'nominal'},
+      },
+    });
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.x.offset.signal).toContain("scale('xOffset'");
+    expect(update.x.offset.signal).toContain("scale('size'");
+    expect(update.x.offset.signal).toContain("domain('xOffset').length");
+    expect(update.x2.offset.signal).toContain("scale('xOffset'");
+    expect(update.x2.offset.signal).toContain("scale('size'");
+    expect(update.x2.offset.signal).toContain("domain('xOffset').length");
+  });
+
   it('should use containerSize for width and autosize to fit-x/padding', () => {
     const {spec} = compile({
       width: 'container',

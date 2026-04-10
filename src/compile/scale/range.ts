@@ -284,23 +284,27 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
 
     case SIZE: {
       if (mark === 'area' && !encoding.x2 && !encoding.y2) {
-        const yScaleType = model.getScaleComponent('y')?.get('type');
-        if (encoding.y && yScaleType === 'band') {
-          return [0, {signal: `bandwidth('y')`}];
+        const laneChannel = model.markDef.orient === 'horizontal' ? 'x' : 'y';
+        const laneScaleType = model.getScaleComponent(laneChannel)?.get('type');
+
+        if (encoding[laneChannel] && laneScaleType === 'band') {
+          return [0, {signal: `bandwidth('${laneChannel}')`}];
         }
-        if (encoding.y && yScaleType === 'point') {
-          const yRange = model.getScaleComponent('y').get('range');
-          if (isObject(yRange) && 'step' in yRange) {
-            return [0, (yRange as {step: number | SignalRef}).step];
+
+        if (encoding[laneChannel] && laneScaleType === 'point') {
+          const laneRange = model.getScaleComponent(laneChannel).get('range');
+          if (isObject(laneRange) && 'step' in laneRange) {
+            return [0, (laneRange as {step: number | SignalRef}).step];
           }
 
           const min = minXYStep(size, {x: getBinStepSignal(model, 'x'), y: getBinStepSignal(model, 'y')}, config.view);
           return [0, min];
         }
 
-        const xScaleType = model.getScaleComponent('x')?.get('type');
-        if (encoding.x && xScaleType === 'band') {
-          return [0, {signal: `bandwidth('x')`}];
+        const fallbackChannel = laneChannel === 'x' ? 'y' : 'x';
+        const fallbackScaleType = model.getScaleComponent(fallbackChannel)?.get('type');
+        if (encoding[fallbackChannel] && fallbackScaleType === 'band') {
+          return [0, {signal: `bandwidth('${fallbackChannel}')`}];
         }
       }
 

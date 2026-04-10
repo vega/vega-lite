@@ -764,6 +764,19 @@ describe('compile/scale', () => {
 
           expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, DEFAULT_STEP]));
         });
+
+        it('should return [0, step] for horizontal area size-thickness ribbons with point x', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'g', type: 'nominal'},
+              y: {field: 'v', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, DEFAULT_STEP]));
+        });
       });
 
       describe('point, square, circle', () => {
