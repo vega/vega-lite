@@ -1,5 +1,5 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
-import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel.js';
+import {COLOR, NonPositionScaleChannel, SHAPE, SIZE} from '../../channel.js';
 import {
   DatumDef,
   FieldDef,
@@ -98,7 +98,8 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
   parseInteractiveLegend(model, channel, legendCmpt);
 
-  const disable = legend !== undefined ? !legend : legendConfig.disable;
+  const disableByDefaultForAreaSize = channel === SIZE && model.mark === 'area';
+  const disable = legend !== undefined ? !legend : disableByDefaultForAreaSize || legendConfig.disable;
   legendCmpt.set('disable', disable, legend !== undefined);
   if (disable) {
     return legendCmpt;
