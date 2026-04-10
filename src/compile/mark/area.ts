@@ -1,6 +1,7 @@
 import {UnitModel} from '../unit.js';
 import {getSecondaryRangeChannel} from '../../channel.js';
-import {isFieldOrDatumDef, isValueDef} from '../../channeldef.js';
+import {isFieldDef, isFieldOrDatumDef, isValueDef} from '../../channeldef.js';
+import {isContinuous} from '../../type.js';
 import {VgValueRef} from '../../vega.schema.js';
 import {MarkCompiler} from './base.js';
 import * as encode from './encode/index.js';
@@ -12,6 +13,7 @@ export const area: MarkCompiler = {
 
     if (thickness && hasThicknessRangeFromSize(model, 'y')) {
       const yCenter = encode.pointPosition('y', model, {defaultPos: 'mid'}).y as VgValueRef;
+      const yDivisor = offsetThicknessDivisor(model, 'y');
       return {
         ...encode.baseEncodeEntry(model, {
           align: 'ignore',
@@ -22,14 +24,15 @@ export const area: MarkCompiler = {
           theta: 'ignore',
         }),
         ...encode.pointPosition('x', model, {defaultPos: 'zeroOrMin'}),
-        y: withOffset(yCenter, halfThicknessRef(thickness, 0.5)),
-        y2: withOffset(yCenter, halfThicknessRef(thickness, -0.5)),
+        y: withOffset(yCenter, thicknessOffsetRef(thickness, 0.5, yDivisor)),
+        y2: withOffset(yCenter, thicknessOffsetRef(thickness, -0.5, yDivisor)),
         ...encode.defined(model),
       };
     }
 
     if (thickness && hasThicknessRangeFromSize(model, 'x')) {
       const xCenter = encode.pointPosition('x', model, {defaultPos: 'mid'}).x as VgValueRef;
+      const xDivisor = offsetThicknessDivisor(model, 'x');
       return {
         ...encode.baseEncodeEntry(model, {
           align: 'ignore',
@@ -40,8 +43,8 @@ export const area: MarkCompiler = {
           theta: 'ignore',
         }),
         ...encode.pointPosition('y', model, {defaultPos: 'zeroOrMin'}),
-        x: withOffset(xCenter, halfThicknessRef(thickness, 0.5)),
-        x2: withOffset(xCenter, halfThicknessRef(thickness, -0.5)),
+        x: withOffset(xCenter, thicknessOffsetRef(thickness, 0.5, xDivisor)),
+        x2: withOffset(xCenter, thicknessOffsetRef(thickness, -0.5, xDivisor)),
         ...encode.defined(model),
       };
     }
@@ -99,6 +102,30 @@ function halfThicknessRef(thickness: VgValueRef, factor: number): VgValueRef {
     ...thickness,
     mult: (thickness.mult ?? 1) * factor,
   };
+}
+
+function thicknessOffsetRef(thickness: VgValueRef, factor: number, divisorExpr?: string): VgValueRef {
+  const half = halfThicknessRef(thickness, factor);
+  if (!divisorExpr) {
+    return half;
+  }
+
+  return {
+    signal: `(${valueRefExpr(half)}) / (${divisorExpr})`,
+  };
+}
+
+function offsetThicknessDivisor(model: UnitModel, channel: 'x' | 'y'): string | undefined {
+  const {encoding} = model;
+  const offsetChannel = channel === 'y' ? 'yOffset' : 'xOffset';
+  const offsetDef = encoding[offsetChannel];
+
+  if (isFieldDef(offsetDef) && !isContinuous(offsetDef.type)) {
+    const offsetScaleName = model.scaleName(offsetChannel);
+    return `max(1, domain('${offsetScaleName}').length)`;
+  }
+
+  return undefined;
 }
 
 function withOffset(baseRef: VgValueRef, offset: VgValueRef): VgValueRef {

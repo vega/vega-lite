@@ -300,8 +300,10 @@ describe('compile/compile', () => {
     const update = (spec.marks[0] as any).marks[0].encode.update;
     expect(update.y.offset.signal).toContain("scale('yOffset'");
     expect(update.y.offset.signal).toContain("scale('size'");
+    expect(update.y.offset.signal).toContain("domain('yOffset').length");
     expect(update.y2.offset.signal).toContain("scale('yOffset'");
     expect(update.y2.offset.signal).toContain("scale('size'");
+    expect(update.y2.offset.signal).toContain("domain('yOffset').length");
   });
 
   it('should use containerSize for width and autosize to fit-x/padding', () => {
