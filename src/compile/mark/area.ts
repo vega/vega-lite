@@ -10,6 +10,26 @@ export const area: MarkCompiler = {
   vgMark: 'area',
   encodeEntry: (model: UnitModel) => {
     const thickness = getAreaThicknessRef(model);
+    const preferXThickness = model.markDef.orient === 'horizontal';
+
+    if (thickness && preferXThickness && hasThicknessRangeFromSize(model, 'x')) {
+      const xCenter = encode.pointPosition('x', model, {defaultPos: 'mid'}).x as VgValueRef;
+      const xDivisor = offsetThicknessDivisor(model, 'x');
+      return {
+        ...encode.baseEncodeEntry(model, {
+          align: 'ignore',
+          baseline: 'ignore',
+          color: 'include',
+          orient: 'include',
+          size: 'ignore',
+          theta: 'ignore',
+        }),
+        ...encode.pointPosition('y', model, {defaultPos: 'zeroOrMin'}),
+        x: withOffset(xCenter, thicknessOffsetRef(thickness, 0.5, xDivisor)),
+        x2: withOffset(xCenter, thicknessOffsetRef(thickness, -0.5, xDivisor)),
+        ...encode.defined(model),
+      };
+    }
 
     if (thickness && hasThicknessRangeFromSize(model, 'y')) {
       const yCenter = encode.pointPosition('y', model, {defaultPos: 'mid'}).y as VgValueRef;
@@ -90,7 +110,7 @@ function hasThicknessRangeFromSize(model: UnitModel, channel: 'x' | 'y'): boolea
     return !!encoding.x;
   }
 
-  return !encoding.y && !!encoding.x;
+  return !!encoding.y;
 }
 
 function getAreaThicknessRef(model: UnitModel): VgValueRef {

@@ -135,6 +135,17 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
           return 'horizontal';
         }
         if (x && y) {
+          const xIsMeasure = isUnbinnedQuantitativeFieldOrDatumDef(x);
+          const yIsMeasure = isUnbinnedQuantitativeFieldOrDatumDef(y);
+
+          if (xIsMeasure && !yIsMeasure) {
+            return 'vertical';
+          }
+          if (!xIsMeasure && yIsMeasure) {
+            const xIsTemporal = isTypedFieldDef(x) && x.type === TEMPORAL;
+            return xIsTemporal ? 'vertical' : 'horizontal';
+          }
+
           return 'vertical';
         }
       }

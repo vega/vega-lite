@@ -491,6 +491,31 @@ describe('compile/mark/init', () => {
       });
       expect(model.markDef.orient).toBe('vertical');
     });
+
+    it('should return horizontal orient for area with quantitative y and nominal x in size-thickness mode', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'Species', type: 'nominal'},
+          y: {field: 'value', type: 'quantitative'},
+          xOffset: {field: 'Sex', type: 'nominal'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
+    it('should return vertical orient for area with quantitative y and temporal x in size-thickness mode', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'Year', type: 'temporal'},
+          y: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
   });
 
   describe('cursor', () => {

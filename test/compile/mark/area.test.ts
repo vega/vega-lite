@@ -150,6 +150,26 @@ describe('Mark: Area', () => {
     });
   });
 
+  describe('horizontal area with size encoding for thickness', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'Species', type: 'nominal'},
+        y: {field: 'value', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+      data: {url: 'data/penguins.json'},
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use x/x2 around the centerline based on size', () => {
+      expect((props.x as any).scale).toBe('x');
+      expect((props.x as any).offset).toEqual({scale: 'size', field: 'density', mult: 0.5});
+      expect((props.x2 as any).scale).toBe('x');
+      expect((props.x2 as any).offset).toEqual({scale: 'size', field: 'density', mult: -0.5});
+    });
+  });
+
   describe('vertical stacked area with color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(
       verticalArea({
