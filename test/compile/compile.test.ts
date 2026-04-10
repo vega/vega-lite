@@ -281,6 +281,7 @@ describe('compile/compile', () => {
 
     expect(line.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
     expect(point.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
+  });
 
   it('should auto-group line paths by the base channel when yOffset is aggregated', () => {
     const {spec} = compile({
@@ -306,6 +307,39 @@ describe('compile/compile', () => {
 
     expect(spec.marks[0].type).toBe('group');
     expect((spec.marks[0] as any).from.facet.groupby).toEqual(['c']);
+  });
+
+  it('should not default-stack x when only yOffset is present for density-like plots', () => {
+    const data = {
+      values: [
+        {value: 3000, density: 0.0002},
+        {value: 3500, density: 0.0005},
+        {value: 4000, density: 0.0003},
+      ],
+    };
+
+    for (const mark of ['bar', 'area'] as const) {
+      const {spec} = compile({
+        data,
+        mark,
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          yOffset: {field: 'density', type: 'quantitative'},
+        },
+      });
+
+      const update = spec.marks[0].encode.update;
+      if (mark === 'bar') {
+        expect(update.xc).toEqual({scale: 'x', field: 'value'});
+        expect(update.x).toBeUndefined();
+      } else {
+        expect(update.orient).toEqual({value: 'vertical'});
+        expect(update.x).toEqual({scale: 'x', field: 'value'});
+      }
+      if (update.x2 && (update.x2 as any).field) {
+        expect((update.x2 as any).field).not.toBe('value_start');
+      }
+    }
   });
 
   it('should use containerSize for width and autosize to fit-x/padding', () => {
