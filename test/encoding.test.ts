@@ -520,6 +520,25 @@ describe('encoding', () => {
     it('should not include fields from tooltip', () => {
       expect(pathGroupingFields('line', {tooltip: {field: 'a', type: 'nominal'}})).toEqual([]);
     });
+
+    it('should not group line/area/trail by the main channel when using an offset field', () => {
+      for (const mark of ['line', 'area', 'trail'] as const) {
+        expect(
+          pathGroupingFields(mark, {
+            x: {field: 'a', type: 'nominal'},
+            y: {field: 'c', type: 'nominal'},
+            yOffset: {field: 'b', type: 'quantitative'},
+          }),
+        ).not.toEqual(['c']);
+        expect(
+          pathGroupingFields(mark, {
+            x: {field: 'a', type: 'nominal'},
+            y: {field: 'c', type: 'nominal'},
+            xOffset: {field: 'b', type: 'quantitative'},
+          }),
+        ).not.toEqual(['a']);
+      }
+    });
   });
 
   describe('fieldDefs', () => {
