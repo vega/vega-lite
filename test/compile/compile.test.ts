@@ -354,7 +354,7 @@ describe('compile/compile', () => {
     });
 
     const update = spec.marks[0].encode.update;
-    expect(update.y).toEqual({field: {group: 'height'}, offset: {scale: 'yOffset', field: 'sum_b'}});
+    expect(update.y).toEqual({value: 0, offset: {scale: 'yOffset', field: 'sum_b'}});
     expect(update.y2).toEqual({field: {group: 'height'}});
   });
 

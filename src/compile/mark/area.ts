@@ -11,6 +11,7 @@ export const area: MarkCompiler = {
   encodeEntry: (model: UnitModel) => {
     const xRangeFromOffset = hasContinuousOffsetRange(model, 'x');
     const yRangeFromOffset = hasContinuousOffsetRange(model, 'y');
+    const yDefaultPos = yRangeFromOffset && !model.encoding.y ? 'zeroOrMax' : 'zeroOrMin';
 
     return {
       ...encode.baseEncodeEntry(model, {
@@ -27,7 +28,7 @@ export const area: MarkCompiler = {
         range: model.markDef.orient === 'horizontal' || xRangeFromOffset,
       }),
       ...encode.pointOrRangePosition('y', model, {
-        defaultPos: 'zeroOrMin',
+        defaultPos: yDefaultPos,
         defaultPos2: 'zeroOrMin',
         range: model.markDef.orient === 'vertical' || yRangeFromOffset,
       }),
