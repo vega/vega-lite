@@ -93,6 +93,22 @@ Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged a
 
 <span class="vl-example" data-name="area_temperature_range"></span>
 
+### Area Ribbons with `size`
+
+Area marks also support quantitative `size` to encode ribbon thickness around a centerline. This is useful for density-ribbon style charts, where one axis shows the measured value and `size` controls how thick the area becomes at each point.
+
+In the example below, `x` (`value`) defines the centerline position, `y` (`Species`) places each group on its own lane, and `size` (`density`) controls the vertical thickness of each ribbon.
+
+<span class="vl-example" data-name="area_density_ribbon_vertical_simple"></span>
+
+When using `size` with area marks:
+
+- use a quantitative field for `size` (for example `density`),
+- use one positional channel for the centerline trajectory (often quantitative),
+- use the other positional channel for grouping lanes (often nominal).
+
+By default, `size` legends are disabled for area ribbons. You can explicitly enable one with `"size": {"legend": { ... }}` if needed.
+
 {:#config}
 
 ## Area Config
