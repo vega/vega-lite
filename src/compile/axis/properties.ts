@@ -53,7 +53,16 @@ export const axisRules: {
 
   formatType: ({formatType}) => formatType, // we already calculate this in parse
 
-  grid: ({fieldOrDatumDef, axis, scaleType}) => axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef),
+  grid: ({fieldOrDatumDef, axis, scaleType, model, channel, mark}) =>
+    axis.grid ??
+    (defaultBandPosition({
+      model,
+      channel,
+      mark,
+      scaleType,
+    }) !== undefined
+      ? true
+      : defaultGrid(scaleType, fieldOrDatumDef)),
 
   gridScale: ({model, channel}) => gridScale(model, channel),
 
