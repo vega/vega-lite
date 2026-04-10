@@ -2,11 +2,12 @@ import {Align, AxisOrient, Orient, SignalRef} from 'vega';
 import {isArray, isObject} from 'vega-util';
 import {AxisInternal} from '../../axis.js';
 import {isBinned, isBinning} from '../../bin.js';
-import {PositionScaleChannel, X} from '../../channel.js';
+import {getOffsetScaleChannel, getSecondaryRangeChannel, PositionScaleChannel, X} from '../../channel.js';
 import {
   DatumDef,
   isDiscrete,
   isFieldDef,
+  isFieldOrDatumDef,
   PositionDatumDef,
   PositionFieldDef,
   toFieldDefBase,
@@ -18,7 +19,7 @@ import {Mark} from '../../mark.js';
 import {hasDiscreteDomain} from '../../scale.js';
 import {Sort} from '../../sort.js';
 import {durationExpr, normalizeTimeUnit} from '../../timeunit.js';
-import {NOMINAL, ORDINAL, Type} from '../../type.js';
+import {isContinuous, NOMINAL, ORDINAL, Type} from '../../type.js';
 import {contains, normalizeAngle} from '../../util.js';
 import {isSignalRef} from '../../vega.schema.js';
 import {mergeTitle, mergeTitleFieldDefs} from '../common.js';
@@ -75,6 +76,15 @@ export const axisRules: {
       isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined,
     ),
 
+  bandPosition: ({axis, model, channel, mark, scaleType}) =>
+    axis.bandPosition ??
+    defaultBandPosition({
+      model,
+      channel,
+      mark,
+      scaleType,
+    }),
+
   // we already calculate orient in parse
   orient: ({orient}) => orient as AxisOrient, // Need to cast until Vega supports signal
 
@@ -118,6 +128,31 @@ export const axisRules: {
 
 export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string> | DatumDef) {
   return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef?.bin) && !isBinned(fieldDef?.bin);
+}
+
+export function defaultBandPosition({
+  model,
+  channel,
+  mark,
+  scaleType,
+}: Pick<AxisRuleParams, 'model' | 'channel' | 'mark' | 'scaleType'>) {
+  if (!hasDiscreteDomain(scaleType) || !contains(['bar', 'area'], mark)) {
+    return undefined;
+  }
+
+  const channelDef = model.encoding[channel];
+  const channel2 = getSecondaryRangeChannel(channel);
+  if (!isFieldOrDatumDef(channelDef) || model.encoding[channel2]) {
+    return undefined;
+  }
+
+  const offsetChannel = getOffsetScaleChannel(channel);
+  const offsetDef = model.encoding[offsetChannel];
+  if (isFieldDef(offsetDef) && isContinuous(offsetDef.type)) {
+    return channel === 'x' ? 0 : 1;
+  }
+
+  return undefined;
 }
 
 export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
