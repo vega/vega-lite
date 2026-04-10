@@ -751,6 +751,21 @@ describe('compile/scale', () => {
         });
       });
 
+      describe('area', () => {
+        it('should return [0, step] for area size-thickness ribbons with point y', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              y: {field: 'g', type: 'nominal'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, DEFAULT_STEP]));
+        });
+      });
+
       describe('point, square, circle', () => {
         it('should return [minSize, maxSize] when zero is excluded', () => {
           for (const mark of ['point', 'square', 'circle'] as Mark[]) {

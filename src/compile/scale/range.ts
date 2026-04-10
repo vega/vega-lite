@@ -283,6 +283,27 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       return getOffsetRange(channel, model, scaleType);
 
     case SIZE: {
+      if (mark === 'area' && !encoding.x2 && !encoding.y2) {
+        const yScaleType = model.getScaleComponent('y')?.get('type');
+        if (encoding.y && yScaleType === 'band') {
+          return [0, {signal: `bandwidth('y')`}];
+        }
+        if (encoding.y && yScaleType === 'point') {
+          const yRange = model.getScaleComponent('y').get('range');
+          if (isObject(yRange) && 'step' in yRange) {
+            return [0, (yRange as {step: number | SignalRef}).step];
+          }
+
+          const min = minXYStep(size, {x: getBinStepSignal(model, 'x'), y: getBinStepSignal(model, 'y')}, config.view);
+          return [0, min];
+        }
+
+        const xScaleType = model.getScaleComponent('x')?.get('type');
+        if (encoding.x && xScaleType === 'band') {
+          return [0, {signal: `bandwidth('x')`}];
+        }
+      }
+
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, config);
       const rangeMax = sizeRangeMax(mark, size, model, config);
