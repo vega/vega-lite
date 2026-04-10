@@ -127,6 +127,17 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
 
     // falls through
     case AREA:
+      if (encoding.size && !x2 && !y2) {
+        if (x && !y) {
+          return 'vertical';
+        }
+        if (y && !x) {
+          return 'horizontal';
+        }
+        if (x && y) {
+          return 'vertical';
+        }
+      }
       // If there are range for both x and y, y (vertical) has higher precedence.
       if (y2) {
         if (isFieldDef(y) && isBinned(y.bin)) {

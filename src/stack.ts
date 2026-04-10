@@ -169,6 +169,16 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
 
+  if (
+    stackedFieldDef.stack === undefined &&
+    mark === AREA &&
+    channelHasField(encoding, 'size') &&
+    !isFieldOrDatumDef(encoding.x2) &&
+    !isFieldOrDatumDef(encoding.y2)
+  ) {
+    return null;
+  }
+
   const dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
   const groupbyChannels: StackProperties['groupbyChannels'] = [];
   const groupbyFields: Set<FieldName> = new Set();

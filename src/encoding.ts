@@ -50,6 +50,7 @@ import {
 } from './channel.js';
 import {
   binRequiresRange,
+  channelDefType,
   ChannelDef,
   ColorDef,
   Field,
@@ -776,6 +777,32 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case SIZE:
         if (mark === 'trail') {
           // For trail, size should not group trail lines.
+          return details;
+        }
+
+        if (mark === 'area') {
+          const sizeDef = encoding.size;
+          if (isFieldDef(sizeDef)) {
+            const sizeField = vgField(sizeDef, {});
+
+            const yDef = encoding.y;
+            if (isFieldDef(yDef) && !yDef.aggregate && channelDefType(yDef) !== 'quantitative') {
+              const yField = vgField(yDef, {});
+              if (yField !== sizeField) {
+                details.push(yField);
+                return details;
+              }
+            }
+
+            const xDef = encoding.x;
+            if (isFieldDef(xDef) && !xDef.aggregate && channelDefType(xDef) !== 'quantitative') {
+              const xField = vgField(xDef, {});
+              if (xField !== sizeField) {
+                details.push(xField);
+                return details;
+              }
+            }
+          }
           return details;
         }
       // For line, size should group lines.

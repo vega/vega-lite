@@ -233,6 +233,51 @@ describe('compile/compile', () => {
     expect(spec.autosize).toBe('fit');
   });
 
+  it('should compile area size-thickness ribbons with vertical orient', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 3000, density: 0.0002},
+          {value: 3500, density: 0.0005},
+          {value: 4000, density: 0.0003},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {value: 60},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    const update = spec.marks[0].encode.update;
+    expect(update.orient).toEqual({value: 'vertical'});
+    expect(update.x).toEqual({scale: 'x', field: 'value'});
+    expect(update.y).toEqual({value: 60, offset: {scale: 'size', field: 'density', mult: 0.5}});
+    expect(update.y2).toEqual({value: 60, offset: {scale: 'size', field: 'density', mult: -0.5}});
+  });
+
+  it('should facet area size-thickness ribbons by nominal y groups', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 3000, density: 0.0002, species: 'Adelie'},
+          {value: 3300, density: 0.00045, species: 'Adelie'},
+          {value: 3600, density: 0.0007, species: 'Chinstrap'},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'species', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['species']);
+  });
+
   it('should use containerSize for width and autosize to fit-x/padding', () => {
     const {spec} = compile({
       width: 'container',

@@ -114,6 +114,42 @@ describe('Mark: Area', () => {
     });
   });
 
+  describe('vertical area with size encoding for thickness', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'Year', type: 'temporal'},
+        y: {field: 'Worldwide_Gross', type: 'quantitative'},
+        size: {field: 'US_Gross', type: 'quantitative'},
+      },
+      data: {url: 'data/movies.json'},
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use y/y2 around the centerline based on size', () => {
+      expect((props.y as any).scale).toBe('y');
+      expect((props.y as any).offset).toEqual({scale: 'size', field: 'US_Gross', mult: 0.5});
+      expect((props.y2 as any).scale).toBe('y');
+      expect((props.y2 as any).offset).toEqual({scale: 'size', field: 'US_Gross', mult: -0.5});
+    });
+
+    it('should also support value centerlines', () => {
+      const valueCenterModel = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'Year', type: 'temporal'},
+          y: {value: 60},
+          size: {field: 'US_Gross', type: 'quantitative'},
+        },
+        data: {url: 'data/movies.json'},
+      });
+      const valueCenterProps = area.encodeEntry(valueCenterModel);
+
+      expect(valueCenterProps.y).toEqual({value: 60, offset: {scale: 'size', field: 'US_Gross', mult: 0.5}});
+      expect(valueCenterProps.y2).toEqual({value: 60, offset: {scale: 'size', field: 'US_Gross', mult: -0.5}});
+    });
+  });
+
   describe('vertical stacked area with color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(
       verticalArea({

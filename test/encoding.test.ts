@@ -574,6 +574,16 @@ describe('encoding', () => {
       expect(pathGroupingFields('trail', {size: {field: 'a', type: 'nominal'}})).toEqual([]);
     });
 
+    it('should group area size-thickness paths by nominal x/y if present.', () => {
+      expect(
+        pathGroupingFields('area', {y: {field: 'g', type: 'nominal'}, size: {field: 'a', type: 'quantitative'}}),
+      ).toEqual(['g']);
+      expect(
+        pathGroupingFields('area', {x: {field: 'g', type: 'nominal'}, size: {field: 'a', type: 'quantitative'}}),
+      ).toEqual(['g']);
+      expect(pathGroupingFields('area', {size: {field: 'a', type: 'nominal'}})).toEqual([]);
+    });
+
     it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', () => {
       for (const channel of [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
         expect(pathGroupingFields('line', {[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}})).toEqual([]);

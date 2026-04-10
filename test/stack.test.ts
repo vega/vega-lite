@@ -127,6 +127,16 @@ describe('stack', () => {
     }
   });
 
+  it('should disable default area stacking when size is used for thickness', () => {
+    expect(
+      stack(AREA, {
+        x: {field: 'value', type: 'quantitative'},
+        y: {value: 60},
+        size: {field: 'density', type: 'quantitative'},
+      }),
+    ).toBeNull();
+  });
+
   it('should always be disabled if the stackby channel is aggregated', () => {
     for (const s of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       for (const mark of PRIMITIVE_MARKS) {

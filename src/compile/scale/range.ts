@@ -520,6 +520,7 @@ function sizeRangeMin(mark: Mark, config: Config): number | SignalRef {
     case 'tick':
       return config.scale.minBandSize;
     case 'line':
+    case 'area':
     case 'trail':
     case 'rule':
       return config.scale.minStrokeWidth;
@@ -563,6 +564,7 @@ function sizeRangeMax(
       }
     }
     case 'line':
+    case 'area':
     case 'trail':
     case 'rule':
       return config.scale.maxStrokeWidth;

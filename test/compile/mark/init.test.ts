@@ -479,6 +479,18 @@ describe('compile/mark/init', () => {
       });
       expect(model.markDef.orient).toBe('horizontal');
     });
+
+    it('should return vertical orient for area with x and size thickness encoding', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          y: {value: 60},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
   });
 
   describe('cursor', () => {
