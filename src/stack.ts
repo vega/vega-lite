@@ -178,12 +178,19 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
     const hasSameDimensionAndStackedField = dimensionField && dimensionField === stackedField;
 
-    // For polar coordinates, do not set a groupBy when working with quantitative fields.
+    // Arc serves as both the polar analog of rect (a positioned shape) and of bar
+    // (a stackable interval). In cartesian coords these roles are split: rect does
+    // not stack, bar does. Because arc combines both, we need a coordinate-aware
+    // check: in polar coords, an unbinned quantitative dimension (e.g. radius)
+    // encodes magnitude, not a grouping category, so it must stay out of groupBy.
+    // In cartesian coords, the dimension always groups unless it is the same
+    // transformed field as the stacked channel.
     const isPolar = isPolarPositionChannel(fieldChannel) || isPolarPositionChannel(dimensionChannel);
-    const shouldAddPolarGroupBy = !isUnbinnedQuantitative(dimensionDef);
+    const shouldAddGroupBy = isPolar
+      ? !isUnbinnedQuantitative(dimensionDef)
+      : !hasSameDimensionAndStackedField;
 
-    if (isPolar ? shouldAddPolarGroupBy : !hasSameDimensionAndStackedField) {
-      // avoid grouping by the stacked field
+    if (shouldAddGroupBy) {
       groupbyChannels.push(dimensionChannel);
       groupbyFields.add(dimensionField);
     }
