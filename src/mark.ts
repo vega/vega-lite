@@ -581,6 +581,14 @@ export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
   y2Offset?: number | ES;
 
   /**
+   * Controls automatic path grouping when `xOffset`/`yOffset` is used with path marks (`line`, `area`, `trail`).
+   *
+   * - `"auto"` (default) adds grouping by the corresponding base channel (`x` or `y`) to keep paths confined within lanes.
+   * - `"none"` disables this automatic grouping so only explicitly encoded grouping channels (`detail`, `color`, etc.) are used.
+   */
+  offsetGroup?: 'auto' | 'none';
+
+  /**
    * Offset for theta.
    */
   thetaOffset?: number | ES;

@@ -233,6 +233,58 @@ describe('compile/compile', () => {
     expect(spec.autosize).toBe('fit');
   });
 
+  it('should auto-group line paths by the base channel when yOffset is aggregated', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {a: 'A', b: 28, c: 'x', d: 'm'},
+          {a: 'B', b: 55, c: 'x', d: 'm'},
+          {a: 'C', b: 43, c: 'x', d: 'n'},
+          {a: 'D', b: 91, c: 'x', d: 'n'},
+          {a: 'A', b: 88, c: 'y', d: 'm'},
+          {a: 'B', b: 55, c: 'y', d: 'm'},
+          {a: 'C', b: 43, c: 'y', d: 'n'},
+          {a: 'D', b: 55, c: 'y', d: 'n'},
+        ],
+      },
+      mark: 'line',
+      encoding: {
+        x: {field: 'a'},
+        y: {field: 'c'},
+        yOffset: {field: 'b', aggregate: 'sum', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['c']);
+  });
+
+  it('should disable offset auto-grouping for line paths when mark.offsetGroup is none', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {a: 'A', b: 28, c: 'x', d: 'm'},
+          {a: 'B', b: 55, c: 'x', d: 'm'},
+          {a: 'C', b: 43, c: 'x', d: 'n'},
+          {a: 'D', b: 91, c: 'x', d: 'n'},
+          {a: 'A', b: 88, c: 'y', d: 'm'},
+          {a: 'B', b: 55, c: 'y', d: 'm'},
+          {a: 'C', b: 43, c: 'y', d: 'n'},
+          {a: 'D', b: 55, c: 'y', d: 'n'},
+        ],
+      },
+      mark: {type: 'line', offsetGroup: 'none'},
+      encoding: {
+        x: {field: 'a'},
+        y: {field: 'c'},
+        yOffset: {field: 'b', type: 'quantitative'},
+        detail: {field: 'd', type: 'nominal'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['d']);
+  });
   it('should use containerSize for width and autosize to fit-x/padding', () => {
     const {spec} = compile({
       width: 'container',
