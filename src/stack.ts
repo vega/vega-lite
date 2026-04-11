@@ -186,9 +186,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     // In cartesian coords, the dimension always groups unless it is the same
     // transformed field as the stacked channel.
     const isPolar = isPolarPositionChannel(fieldChannel) || isPolarPositionChannel(dimensionChannel);
-    const shouldAddGroupBy = isPolar
-      ? !isUnbinnedQuantitative(dimensionDef)
-      : !hasSameDimensionAndStackedField;
+    const shouldAddGroupBy = isPolar ? !isUnbinnedQuantitative(dimensionDef) : !hasSameDimensionAndStackedField;
 
     if (shouldAddGroupBy) {
       groupbyChannels.push(dimensionChannel);
