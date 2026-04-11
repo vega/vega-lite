@@ -13,7 +13,15 @@ import {UnitModel} from '../unit.js';
 import {AxisComponent, AxisComponentIndex, AxisComponentProps, AXIS_COMPONENT_PROPERTIES} from './component.js';
 import {getAxisConfig, getAxisConfigs} from './config.js';
 import * as encode from './encode.js';
-import {AxisRuleParams, axisRules, defaultOrient, getFieldDefTitle, getLabelAngle} from './properties.js';
+import {
+  AxisRuleParams,
+  axisRules,
+  defaultLabelAlign,
+  defaultLabelBaseline,
+  defaultOrient,
+  getFieldDefTitle,
+  getLabelAngle,
+} from './properties.js';
 import {guideFormat, guideFormatType} from '../format.js';
 
 export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
@@ -81,6 +89,35 @@ export function parseLayerAxes(model: LayerModel) {
             const oppositeOrient = OPPOSITE_ORIENT[orient];
             if (axisCount[orient] > axisCount[oppositeOrient]) {
               axisComponent.set('orient', oppositeOrient, false);
+
+              // Recalculate orient-dependent label properties for the new orient
+              // (https://github.com/vega/vega-lite/issues/3773)
+              let labelAngle: number | SignalRef | undefined;
+              if (child instanceof UnitModel) {
+                const fieldOrDatumDef = getFieldOrDatumDef(child.encoding[channel]) as
+                  | PositionFieldDef<string>
+                  | PositionDatumDef<string>;
+                const axis = child.axis(channel) || {};
+                const scaleType = child.getScaleComponent(channel)?.get('type');
+                if (fieldOrDatumDef && scaleType) {
+                  const axisConfigs = getAxisConfigs(channel, scaleType, orient, child.config);
+                  labelAngle = getLabelAngle(fieldOrDatumDef, axis, channel, child.config.style, axisConfigs);
+                }
+              }
+              if (labelAngle !== undefined) {
+                if (!axisComponent.getWithExplicit('labelAlign').explicit) {
+                  const newAlign = defaultLabelAlign(labelAngle, oppositeOrient, channel);
+                  if (newAlign !== undefined) {
+                    axisComponent.set('labelAlign', newAlign, false);
+                  }
+                }
+                if (!axisComponent.getWithExplicit('labelBaseline').explicit) {
+                  const newBaseline = defaultLabelBaseline(labelAngle, oppositeOrient, channel);
+                  if (newBaseline !== undefined) {
+                    axisComponent.set('labelBaseline', newBaseline, false);
+                  }
+                }
+              }
             }
           }
           axisCount[orient]++;
