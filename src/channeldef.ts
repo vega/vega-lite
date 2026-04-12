@@ -581,6 +581,13 @@ export function getBandSize({
     return size;
   }
 
+  if (mark.type === 'tick') {
+    const tickBandSize = getMarkPropOrConfig('bandSize', mark, config);
+    if (tickBandSize !== undefined) {
+      return tickBandSize;
+    }
+  }
+
   if (isFieldDef(fieldDef)) {
     const {timeUnit, bin} = fieldDef;
 
