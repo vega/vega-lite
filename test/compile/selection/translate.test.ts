@@ -345,10 +345,6 @@ describe('Translate Selection Transform', () => {
       expect(projTranslate.on).toEqual(
         expect.arrayContaining([
           {
-            events: parseSelector('pointerdown', 'scope'),
-            update: 'geo_translate_anchor.translate',
-          },
-          {
             events: {signal: 'geo_translate_delta'},
             update:
               '[geo_translate_anchor.translate[0] - geo_translate_delta.x, geo_translate_anchor.translate[1] - geo_translate_delta.y]',
@@ -361,7 +357,7 @@ describe('Translate Selection Transform', () => {
       expect(fit.on).toEqual(
         expect.arrayContaining([
           {
-            events: parseSelector('pointerdown', 'scope'),
+            events: {signal: 'geo_translate_delta'},
             update: 'null',
           },
         ]),

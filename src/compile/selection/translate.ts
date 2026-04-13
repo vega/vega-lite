@@ -79,11 +79,6 @@ const translate: SelectionCompiler<'interval'> = {
       });
 
       translateSg.on.push({
-        events: events.map((e) => e.between[0]),
-        update: `${anchor}.translate`,
-      });
-
-      translateSg.on.push({
         events: {signal: name + DELTA},
         update: `[${anchor}.translate[0] - ${name + DELTA}.x, ${anchor}.translate[1] - ${name + DELTA}.y]`,
       });
@@ -92,7 +87,7 @@ const translate: SelectionCompiler<'interval'> = {
         fitSg.on = [
           ...(fitSg.on ?? []),
           {
-            events: events.map((e) => e.between[0]),
+            events: {signal: name + DELTA},
             update: 'null',
           },
         ];
