@@ -104,4 +104,25 @@ describe('compile/projection/assemble', () => {
       expect(projection.fit).toBeUndefined();
     });
   });
+
+  describe('assembleInteractiveProjectionForModel', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/airports.csv'},
+      mark: 'circle',
+      projection: {type: 'albersUsa'},
+      params: [{name: 'geo', select: {type: 'interval'}, bind: 'scales'}],
+      encoding: {
+        longitude: {field: 'longitude', type: 'quantitative'},
+        latitude: {field: 'latitude', type: 'quantitative'},
+      },
+    });
+    model.parse();
+
+    it('uses projection parameter signals', () => {
+      const projection = assembleProjectionForModel(model)[0];
+      expect(projection.scale).toEqual({signal: 'geo_projection_scale'});
+      expect(projection.translate).toEqual({signal: 'geo_projection_translate'});
+      expect(projection.fit).toEqual({signal: 'geo_projection_fit'});
+    });
+  });
 });

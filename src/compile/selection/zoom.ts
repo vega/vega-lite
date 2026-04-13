@@ -6,7 +6,14 @@ import {ScaleChannel, X, Y} from '../../channel.js';
 import {UnitModel} from '../unit.js';
 import {BRUSH as INTERVAL_BRUSH} from './interval.js';
 import {SelectionProjection} from './project.js';
-import {default as scalesCompiler, domain} from './scales.js';
+import {
+  default as scalesCompiler,
+  domain,
+  isProjectionBoundInterval,
+  projectionFitName,
+  projectionScaleName,
+  projectionTranslateName,
+} from './scales.js';
 import {SelectionCompiler} from './index.js';
 
 const ANCHOR = '_zoom_anchor';
@@ -20,6 +27,7 @@ const zoom: SelectionCompiler<'interval'> = {
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const boundScales = scalesCompiler.defined(selCmpt);
+    const projectionBound = isProjectionBoundInterval(model, selCmpt);
     const delta = name + DELTA;
     const {x, y} = selCmpt.project.hasChannel;
     const sx = stringValue(model.scaleName(X));
@@ -36,11 +44,13 @@ const zoom: SelectionCompiler<'interval'> = {
         on: [
           {
             events,
-            update: !boundScales
-              ? `{x: x(unit), y: y(unit)}`
-              : `{${[sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : '']
-                  .filter((expr) => expr)
-                  .join(', ')}}`,
+            update: projectionBound
+              ? `{x: x(unit), y: y(unit), scale: ${projectionScaleName(name)}, translate: ${projectionTranslateName(name)}}`
+              : !boundScales
+                ? `{x: x(unit), y: y(unit)}`
+                : `{${[sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : '']
+                    .filter((expr) => expr)
+                    .join(', ')}}`,
           },
         ],
       },
@@ -55,6 +65,40 @@ const zoom: SelectionCompiler<'interval'> = {
         ],
       },
     );
+
+    if (projectionBound) {
+      const anchorSignal: any = signals.find((s) => s.name === name + ANCHOR);
+      const scaleSg = signals.find((s) => s.name === projectionScaleName(name));
+      const translateSg = signals.find((s) => s.name === projectionTranslateName(name));
+      const fitSg = signals.find((s) => s.name === projectionFitName(name));
+      const anchorSg = `${name}${ANCHOR}`;
+
+      anchorSignal.value = {x: 0, y: 0, scale: 1, translate: [0, 0]};
+      scaleSg.on ??= [];
+      translateSg.on ??= [];
+
+      scaleSg.on.push({
+        events: {signal: delta},
+        update: `${anchorSg}.scale / ${delta}`,
+      });
+
+      translateSg.on.push({
+        events: {signal: delta},
+        update: `[${anchorSg}.x + (${anchorSg}.translate[0] - ${anchorSg}.x) / ${delta}, ${anchorSg}.y + (${anchorSg}.translate[1] - ${anchorSg}.y) / ${delta}]`,
+      });
+
+      if (fitSg) {
+        fitSg.on = [
+          ...(fitSg.on ?? []),
+          {
+            events,
+            update: 'null',
+          },
+        ];
+      }
+
+      return signals;
+    }
 
     if (x !== undefined) {
       onDelta(model, selCmpt, x, 'width', signals);
