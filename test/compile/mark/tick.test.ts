@@ -206,21 +206,21 @@ describe('Mark: Tick', () => {
     });
   });
 
-    describe('vertical ticks with both size and bandSize in mark def', () => {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: {type: 'tick', size: 5, bandSize: 7},
-        encoding: {
-          x: {field: 'Horsepower', type: 'quantitative'},
-          y: {field: 'Cylinders', type: 'ordinal'},
-        },
-        data: {url: 'data/cars.json'},
-      });
-      const props = tick.encodeEntry(model);
-
-      it('prefers size over bandSize in Vega', () => {
-        expect(props.height).toEqual({value: 5});
-      });
+  describe('vertical ticks with both size and bandSize in mark def', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: {type: 'tick', size: 5, bandSize: 7},
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Cylinders', type: 'ordinal'},
+      },
+      data: {url: 'data/cars.json'},
     });
+    const props = tick.encodeEntry(model);
+
+    it('prefers size over bandSize in Vega', () => {
+      expect(props.height).toEqual({value: 5});
+    });
+  });
 
   describe('vertical ticks (implicit)', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
