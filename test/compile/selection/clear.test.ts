@@ -1,5 +1,5 @@
 import {parseSelector} from 'vega-event-selector';
-import {assembleTopLevelSignals} from '../../../src/compile/selection/assemble.js';
+import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
 import interval from '../../../src/compile/selection/interval.js';
 import point from '../../../src/compile/selection/point.js';
 import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
@@ -238,6 +238,67 @@ describe('Clear selection transform, interval type', () => {
               update: '[0, 0]',
             },
           ],
+        },
+      ]),
+    );
+  });
+});
+
+describe('Clear selection transform, projection-bound interval', () => {
+  const model = parseUnitModel({
+    data: {url: 'data/airports.csv'},
+    mark: 'circle',
+    projection: {type: 'albersUsa'},
+    encoding: {
+      longitude: {field: 'longitude', type: 'quantitative'},
+      latitude: {field: 'latitude', type: 'quantitative'},
+    },
+  });
+
+  model.parseScale();
+  model.component.selection = parseUnitSelection(model, [
+    {
+      name: 'geo',
+      select: {type: 'interval'},
+      bind: 'scales',
+    },
+  ]);
+  model.parseProjection();
+
+  it('resets projection fit on clear', () => {
+    const signals = assembleUnitSelectionSignals(model, []);
+
+    const scale: any = signals.find((s) => s.name === 'geo_projection_scale');
+    expect(scale.on).toEqual(
+      expect.arrayContaining([
+        {
+          events: parseSelector('dblclick', 'view'),
+          update: 'geoScale("projection")',
+        },
+      ]),
+    );
+
+    const translate: any = signals.find((s) => s.name === 'geo_projection_translate');
+    expect(translate.on).toEqual(
+      expect.arrayContaining([
+        {
+          events: parseSelector('dblclick', 'view'),
+          update: '[width / 2, height / 2]',
+        },
+      ]),
+    );
+
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'geo_projection_fit',
+          init: 'geojson_0',
+          on: expect.arrayContaining([
+            {
+              events: parseSelector('dblclick', 'view'),
+              update: 'geojson_0',
+            },
+          ]),
         },
       ]),
     );

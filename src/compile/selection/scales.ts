@@ -149,7 +149,7 @@ function isTopLevelLayer(model: Model): boolean {
   return model.parent && isLayerModel(model.parent) && (!model.parent.parent || isTopLevelLayer(model.parent.parent));
 }
 
-function projectionFitExpr(model: UnitModel) {
+export function projectionFitExpr(model: UnitModel) {
   const projection = model.component.projection;
   if (!projection?.data) {
     return null;
