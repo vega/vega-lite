@@ -98,30 +98,32 @@ After you push a new branch to GitHub, the CI will automatically run `npm run bu
 1. Make sure you have [node.js](https://nodejs.org/en/) installed using any method you prefer (e.g. a cross-platform package manager like [mise](https://mise.jdx.dev/lang/node.html), or an installation method specific to your OS such as [homebrew](http://brew.sh) for Mac users).
 
 2. Clone this repository and cd into your local clone of the repository, and install all the npm dependencies:
-    ```sh
-    git clone https://github.com/vega/vega-lite.git
-    cd vega-lite
-    npm install
-    ```
 
-    Now you should be able to build and test the code.
+   ```sh
+   git clone https://github.com/vega/vega-lite.git
+   cd vega-lite
+   npm install
+   ```
+
+   Now you should be able to build and test the code.
 
 3. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/) and [bundler](http://bundler.io/). You can install ruby using any method you prefer (e.g. a cross-platform package manager like [mise](https://mise.jdx.dev/lang/ruby.html), or an installation method specific to your OS such as [homebrew](http://brew.sh) for Mac users). After installing `ruby`, you can install `bundler`:
-    ```sh
-    gem install bundler
-    ```
 
-    Or to install the same version that was used to create the bundle:
+   ```sh
+   gem install bundler
+   ```
 
-    ```sh
-    gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
-    ```
+   Or to install the same version that was used to create the bundle:
 
-    For Jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
+   ```sh
+   gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
+   ```
 
-    ```sh
-    bundle install --gemfile site/Gemfile
-    ```
+   For Jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
+
+   ```sh
+   bundle install --gemfile site/Gemfile
+   ```
 
 ## Directory Structure
 
