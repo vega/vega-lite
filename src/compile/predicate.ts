@@ -60,7 +60,7 @@ function resolveSelectionParameterValueExpr(model: Model, v: any): string {
     return undefined;
   }
 
-  const store = stringValue(v.param + '_store');
+  const store = stringValue(`${v.param}_store`);
   const idx = fieldProjection.index;
   return `(length(data(${store})) ? data(${store})[0].values[${idx}] : null)`;
 }
@@ -97,7 +97,7 @@ function applyEmptySelectionSemantics(model: Model, predicate: FieldPredicate, e
     return expr;
   }
 
-  const store = stringValue(valueRef.param + '_store');
+  const store = stringValue(`${valueRef.param}_store`);
   const isEmptyExpr = `!length(data(${store}))`;
   const empty = valueRef.empty ?? true;
   return empty ? `(${isEmptyExpr} || (${expr}))` : `(!${isEmptyExpr} && (${expr}))`;
