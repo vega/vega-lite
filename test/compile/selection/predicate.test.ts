@@ -157,4 +157,37 @@ describe('Selection Predicate', () => {
       '(!length(data("bar_click_store")) || (datum["year"]<=(length(data("bar_click_store")) ? data("bar_click_store")[0].values[0] : null)))',
     );
   });
+
+  it('supports all comparator operators with selection param refs', () => {
+    const opModel = parseUnitModel({
+      mark: 'point',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+      },
+    });
+    opModel.parseScale();
+    opModel.component.selection = parseUnitSelection(opModel, [
+      {name: 'pick', select: {type: 'point', fields: ['Horsepower']}},
+    ]);
+
+    expect(expression(opModel, {field: 'Horsepower', equal: {param: 'pick', field: 'Horsepower'}})).toBe(
+      '(!length(data("pick_store")) || (datum["Horsepower"]===(length(data("pick_store")) ? data("pick_store")[0].values[0] : null)))',
+    );
+    expect(expression(opModel, {field: 'Horsepower', lt: {param: 'pick', field: 'Horsepower'}})).toBe(
+      '(!length(data("pick_store")) || (datum["Horsepower"]<(length(data("pick_store")) ? data("pick_store")[0].values[0] : null)))',
+    );
+    expect(expression(opModel, {field: 'Horsepower', gt: {param: 'pick', field: 'Horsepower'}})).toBe(
+      '(!length(data("pick_store")) || (datum["Horsepower"]>(length(data("pick_store")) ? data("pick_store")[0].values[0] : null)))',
+    );
+    expect(expression(opModel, {field: 'Horsepower', gte: {param: 'pick', field: 'Horsepower'}})).toBe(
+      '(!length(data("pick_store")) || (datum["Horsepower"]>=(length(data("pick_store")) ? data("pick_store")[0].values[0] : null)))',
+    );
+  });
+
+  it('falls back to plain parameter access when no matching selection exists', () => {
+    expect(expression(model, {field: 'Horsepower', lte: {param: 'missing', field: 'Horsepower', empty: false}})).toBe(
+      'datum["Horsepower"]<=missing["Horsepower"]',
+    );
+  });
 });
