@@ -1,0 +1,313 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "background": "white",
+  "padding": 5,
+  "width": 400,
+  "data": [
+    {"name": "bar_click_store"},
+    {
+      "name": "source_0",
+      "url": "https://cdn.jsdelivr.net/npm/vega-datasets@v3.2.1/data/population.json",
+      "format": {"type": "json"}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "(!!length(data(\"bar_click_store\")) && (datum[\"year\"]<=(length(data(\"bar_click_store\")) ? data(\"bar_click_store\")[0].values[0] : null)))"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["age", "year"],
+          "ops": ["sum"],
+          "fields": ["people"],
+          "as": ["sum_people"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["year"],
+          "ops": ["sum"],
+          "fields": ["people"],
+          "as": ["sum_people"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_people\"]) && isFinite(+datum[\"sum_people\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "concat_0_height", "value": 200},
+    {"name": "bar_view_height", "value": 100},
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "bar_click",
+      "update": "vlSelectionResolve(\"bar_click_store\", \"union\", true, true)"
+    }
+  ],
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
+  "marks": [
+    {
+      "type": "group",
+      "name": "concat_0_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "width"},
+          "height": {"signal": "concat_0_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "concat_0_pathgroup",
+          "type": "group",
+          "from": {
+            "facet": {
+              "name": "faceted_path_concat_0_main",
+              "data": "data_0",
+              "groupby": ["year"]
+            }
+          },
+          "encode": {
+            "update": {
+              "width": {"field": {"group": "width"}},
+              "height": {"field": {"group": "height"}}
+            }
+          },
+          "marks": [
+            {
+              "name": "concat_0_marks",
+              "type": "line",
+              "style": ["line"],
+              "sort": {"field": "x"},
+              "interactive": false,
+              "from": {"data": "faceted_path_concat_0_main"},
+              "encode": {
+                "update": {
+                  "stroke": {"scale": "color", "field": "year"},
+                  "description": {
+                    "signal": "\"age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"]) + \"; Sum of people: \" + (format(datum[\"sum_people\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"])"
+                  },
+                  "x": {"scale": "concat_0_x", "field": "age"},
+                  "y": {"scale": "concat_0_y", "field": "sum_people"},
+                  "defined": {
+                    "signal": "isValid(datum[\"sum_people\"]) && isFinite(+datum[\"sum_people\"])"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "gridScale": "concat_0_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "age",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Sum of people",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "bar_view_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "width"},
+          "height": {"signal": "bar_view_height"}
+        }
+      },
+      "signals": [
+        {
+          "name": "bar_click_tuple",
+          "on": [
+            {
+              "events": [{"source": "scope", "type": "click"}],
+              "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"bar_view\", fields: bar_click_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"year\"]]} : null",
+              "force": true
+            },
+            {
+              "events": [{"source": "view", "type": "dblclick"}],
+              "update": "null"
+            }
+          ]
+        },
+        {
+          "name": "bar_click_tuple_fields",
+          "value": [{"type": "E", "field": "year"}]
+        },
+        {
+          "name": "bar_click_toggle",
+          "value": false,
+          "on": [
+            {
+              "events": [{"source": "scope", "type": "click"}],
+              "update": "event.shiftKey"
+            },
+            {
+              "events": [{"source": "view", "type": "dblclick"}],
+              "update": "false"
+            }
+          ]
+        },
+        {
+          "name": "bar_click_modify",
+          "on": [
+            {
+              "events": {"signal": "bar_click_tuple"},
+              "update": "modify(\"bar_click_store\", bar_click_toggle ? null : bar_click_tuple, bar_click_toggle ? null : true, bar_click_toggle ? bar_click_tuple : null)"
+            }
+          ]
+        }
+      ],
+      "marks": [
+        {
+          "name": "bar_view_marks",
+          "type": "rect",
+          "style": ["bar"],
+          "interactive": true,
+          "from": {"data": "data_1"},
+          "encode": {
+            "update": {
+              "cursor": {"value": "pointer"},
+              "fill": [
+                {
+                  "test": "(!!length(data(\"bar_click_store\")) && (datum[\"year\"]<=(length(data(\"bar_click_store\")) ? data(\"bar_click_store\")[0].values[0] : null)))",
+                  "value": "steelblue"
+                },
+                {"value": "lightgray"}
+              ],
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Sum of people: \" + (format(datum[\"sum_people\"], \"\"))"
+              },
+              "x": {"scale": "bar_view_x", "field": "year"},
+              "width": {"signal": "max(0.25, bandwidth('bar_view_x'))"},
+              "y": {"scale": "bar_view_y", "field": "sum_people"},
+              "y2": {"scale": "bar_view_y", "value": 0}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "bar_view_y",
+          "orient": "left",
+          "gridScale": "bar_view_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(bar_view_height/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "bar_view_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "year",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "zindex": 0
+        },
+        {
+          "scale": "bar_view_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Sum of people",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(bar_view_height/40)"},
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "year", "sort": true},
+      "range": "ordinal",
+      "interpolate": "hcl"
+    },
+    {
+      "name": "concat_0_x",
+      "type": "point",
+      "domain": {"data": "data_0", "field": "age", "sort": true},
+      "range": [0, {"signal": "width"}],
+      "padding": 0.5
+    },
+    {
+      "name": "concat_0_y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "sum_people"},
+      "range": [{"signal": "concat_0_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "bar_view_x",
+      "type": "band",
+      "domain": {"data": "data_1", "field": "year", "sort": true},
+      "range": [0, {"signal": "width"}],
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "bar_view_y",
+      "type": "linear",
+      "domain": {"data": "data_1", "field": "sum_people"},
+      "range": [{"signal": "bar_view_height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "year"}]
+}
