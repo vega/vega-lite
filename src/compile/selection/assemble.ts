@@ -155,9 +155,10 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
       const sourceName = model.lookupDataSource(model.getDataName(DataSourceType.Main));
       const sourceData = data.find((d) => d.name === sourceName);
 
-      // find the filter transform for the current selection
-      const sourceDataFilter = sourceData.transform.find(
-        (t) => t.type === 'filter' && t.expr.includes('vlSelectionTest'),
+      // find animation-related filters to be applied on the per-frame dataset
+      const timerValueSignal = `${selCmpt.name}_value`;
+      const sourceDataFilters = sourceData.transform.filter(
+        (t) => t.type === 'filter' && (t.expr.includes('vlSelectionTest') || t.expr.includes(timerValueSignal)),
       );
 
       // create dataset to hold current animation frame
@@ -166,11 +167,11 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
         source: sourceData.name,
       };
 
-      if (sourceDataFilter) {
+      if (sourceDataFilters.length > 0) {
         // remove it from the original dataset
-        sourceData.transform = sourceData.transform.filter((t) => t !== sourceDataFilter);
-        // add the selection filter to the animation dataset
-        currentFrame.transform = [sourceDataFilter];
+        sourceData.transform = sourceData.transform.filter((t) => !sourceDataFilters.includes(t));
+        // add the animation filters to the animation dataset
+        currentFrame.transform = sourceDataFilters;
       }
 
       animationData.push(currentFrame);

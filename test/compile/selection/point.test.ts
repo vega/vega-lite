@@ -450,6 +450,7 @@ describe('Animated Selection', () => {
         {name: 'max_range_extent', init: "extent(range('time'))[1]"},
         // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
         {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
+        {name: 'avl_value', update: 'anim_value'},
       ]),
     );
   });
@@ -502,6 +503,58 @@ describe('Animated Selection', () => {
           ],
         },
       ]),
+    );
+  });
+
+  it('moves timer value filters onto animation frame dataset', () => {
+    const valueFilterModel = parseUnitModelWithScaleAndSelection({
+      data: {
+        url: 'data/gapminder.json',
+      },
+      params: [
+        {
+          name: 'avl',
+          select: {
+            type: 'point',
+            fields: ['year'],
+            on: 'timer',
+          },
+        },
+      ],
+      transform: [
+        {
+          filter: 'datum.year <= avl_value',
+        },
+      ],
+      mark: 'point',
+      encoding: {
+        x: {
+          field: 'fertility',
+          type: 'quantitative',
+        },
+        y: {
+          field: 'life_expect',
+          type: 'quantitative',
+        },
+        time: {
+          field: 'year',
+          type: 'ordinal',
+        },
+      },
+    });
+
+    valueFilterModel.parseData();
+    optimizeDataflow(valueFilterModel.component.data, valueFilterModel);
+
+    const datasets = assembleUnitSelectionData(valueFilterModel, assembleRootData(valueFilterModel.component.data, {}));
+    const source = datasets.find((d) => d.name === 'source_0');
+    const currentFrame = datasets.find((d) => d.name === 'source_0_curr');
+
+    expect(source.transform).toEqual(
+      expect.not.arrayContaining([expect.objectContaining({expr: 'datum.year <= avl_value'})]),
+    );
+    expect(currentFrame.transform).toEqual(
+      expect.arrayContaining([expect.objectContaining({expr: 'datum.year <= avl_value'})]),
     );
   });
 
@@ -576,6 +629,7 @@ describe('Animated Selection', () => {
           {name: 'max_range_extent', init: "extent(range('time'))[1]"},
           // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
           {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
+          {name: 'avl_value', update: 'anim_value'},
         ]),
       );
       expect(localLogger.warns).toHaveLength(1);
