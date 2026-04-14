@@ -8,7 +8,8 @@
     "x": {
       "field": "year",
       "type": "ordinal",
-      "scale": {"padding": 0.5}
+      "scale": {"padding": 0.5},
+      "axis": {"labelAngle": 0}
     },
     "y": {
       "aggregate": "median",
