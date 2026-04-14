@@ -564,6 +564,58 @@ describe('Animated Selection', () => {
     expect(marks[0].from.data).toBe('source_0_curr');
   });
 
+  it('assigns correct animation frame dataset to faceted path groups', () => {
+    const groupedLineModel = parseUnitModelWithScaleAndSelection({
+      data: {
+        values: [
+          {z: 'a', x: 0, y: 0},
+          {z: 'a', x: 1, y: 0.2},
+          {z: 'a', x: 2, y: 0.39},
+          {z: 'b', x: 2, y: 1.0},
+          {z: 'b', x: 1, y: 0.8},
+          {z: 'b', x: 0, y: 0.6},
+        ],
+      },
+      params: [
+        {
+          name: 'avl',
+          select: {
+            type: 'point',
+            fields: ['x'],
+            on: 'timer',
+          },
+        },
+      ],
+      transform: [{filter: 'datum.x <= avl_value'}],
+      mark: 'line',
+      encoding: {
+        x: {
+          field: 'x',
+          type: 'quantitative',
+        },
+        y: {
+          field: 'y',
+          type: 'quantitative',
+        },
+        color: {
+          field: 'z',
+          type: 'nominal',
+        },
+        time: {
+          field: 'x',
+          type: 'ordinal',
+        },
+      },
+    });
+
+    groupedLineModel.parseData();
+    optimizeDataflow(groupedLineModel.component.data, groupedLineModel);
+    groupedLineModel.parseMarkGroup();
+
+    const marks = groupedLineModel.assembleMarks();
+    expect(marks[0].from.facet.data).toMatch(/_curr$/);
+  });
+
   it(
     'does not build extra signals for duplicate selection',
     log.wrap((localLogger) => {
