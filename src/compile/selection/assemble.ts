@@ -161,12 +161,14 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
       // find animation-related filters to be applied on the per-frame dataset
       const timerValueSignal = `${selCmpt.name}_value`;
       const timerObjectSignal = `${selCmpt.name}[`;
+      const timerStoreSignal = `${selCmpt.name}_store`;
       const sourceDataFilters = sourceData.transform.filter(
         (t) =>
           t.type === 'filter' &&
           (t.expr.includes('vlSelectionTest') ||
             t.expr.includes(timerValueSignal) ||
-            t.expr.includes(timerObjectSignal)),
+            t.expr.includes(timerObjectSignal) ||
+            t.expr.includes(timerStoreSignal)),
       );
 
       if (sourceDataFilters.length > 0) {
