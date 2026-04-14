@@ -58,6 +58,7 @@ import {
   assembleUnitSelectionMarks,
   assembleUnitSelectionSignals,
 } from './selection/assemble.js';
+import {isTimerSelection} from './selection/index.js';
 import {parseUnitSelection} from './selection/parse.js';
 import {CURR} from './selection/point.js';
 
@@ -303,10 +304,14 @@ export class UnitModel extends ModelWithField {
    * Corrects the data references in marks after assemble.
    */
   public correctDataNames = (mark: VgMarkGroup) => {
+    const hasTimerAnimation = keys(this.component.selection ?? {}).some((name) =>
+      isTimerSelection(this.component.selection[name]),
+    );
+
     // for normal data references
     if (mark.from?.data) {
       mark.from.data = this.lookupDataSource(mark.from.data);
-      if ('time' in this.encoding) {
+      if (hasTimerAnimation && 'time' in this.encoding) {
         mark.from.data = mark.from.data + CURR;
       }
     }
