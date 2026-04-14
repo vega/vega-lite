@@ -1,4 +1,5 @@
 import {nonPosition} from '../../../src/compile/mark/encode/index.js';
+import {compile} from '../../../src/compile/compile.js';
 import {expression} from '../../../src/compile/predicate.js';
 import {parseSelectionPredicate as predicate, parseUnitSelection} from '../../../src/compile/selection/parse.js';
 import {parseUnitModel} from '../../util.js';
@@ -109,5 +110,51 @@ describe('Selection Predicate', () => {
     );
 
     expect(expression(model, {not: {param: 'varHelloWorld'}})).toBe('!(!!varHelloWorld)');
+  });
+
+  it('resolves selection comparator refs across composed views', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {year: 2000, age: 0, people: 1},
+          {year: 2001, age: 1, people: 2},
+        ],
+      },
+      params: [
+        {
+          name: 'bar_click',
+          select: {type: 'point', fields: ['year']},
+          views: ['bars'],
+        },
+      ],
+      vconcat: [
+        {
+          transform: [{filter: {field: 'year', lte: {param: 'bar_click', field: 'year'}}}],
+          mark: 'line',
+          encoding: {
+            x: {field: 'age', type: 'ordinal'},
+            y: {aggregate: 'sum', field: 'people', type: 'quantitative'},
+            color: {field: 'year', type: 'ordinal'},
+          },
+        },
+        {
+          name: 'bars',
+          mark: 'bar',
+          encoding: {
+            x: {field: 'year', type: 'ordinal'},
+            y: {aggregate: 'sum', field: 'people', type: 'quantitative'},
+          },
+        },
+      ],
+    } as any);
+
+    const filterExprs = spec.data
+      .flatMap((d: any) => d.transform ?? [])
+      .filter((t: any) => t.type === 'filter')
+      .map((t: any) => t.expr);
+
+    expect(filterExprs).toContain(
+      '(!length(data("bar_click_store")) || (datum["year"]<=(length(data("bar_click_store")) ? data("bar_click_store")[0].values[0] : null)))',
+    );
   });
 });
