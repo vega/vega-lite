@@ -58,7 +58,7 @@ function getParameterValueRef(predicate: FieldPredicate): ParameterValueRef {
 function applyEmptySelectionSemantics(model: Model, predicate: FieldPredicate, expr: string): string {
   const valueRef = getParameterValueRef(predicate);
 
-  if (!valueRef || valueRef.empty === undefined) {
+  if (!valueRef) {
     return expr;
   }
 
@@ -69,7 +69,8 @@ function applyEmptySelectionSemantics(model: Model, predicate: FieldPredicate, e
 
   const store = stringValue(valueRef.param + '_store');
   const isEmptyExpr = `!length(data(${store}))`;
-  return valueRef.empty ? `(${isEmptyExpr} || (${expr}))` : `(!${isEmptyExpr} && (${expr}))`;
+  const empty = valueRef.empty ?? true;
+  return empty ? `(${isEmptyExpr} || (${expr}))` : `(!${isEmptyExpr} && (${expr}))`;
 }
 
 /**

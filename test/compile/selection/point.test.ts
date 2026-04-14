@@ -335,7 +335,7 @@ describe('Multi Selection', () => {
     expect(currentFrame.transform).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          expr: 'datum["year"]<=(length(data("avl_store")) ? data("avl_store")[0].values[0] : null)',
+          expr: '(!length(data("avl_store")) || (datum["year"]<=(length(data("avl_store")) ? data("avl_store")[0].values[0] : null)))',
         }),
       ]),
     );
@@ -380,6 +380,56 @@ describe('Multi Selection', () => {
     const datasets = assembleUnitSelectionData(
       modelWithEmptyTrue,
       assembleRootData(modelWithEmptyTrue.component.data, {}),
+    );
+    const source = datasets.find((d) => d.name === 'data_0');
+    expect(source.transform).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          expr: '(!length(data("pick_store")) || (datum["x"]<=(length(data("pick_store")) ? data("pick_store")[0].values[0] : null)))',
+        }),
+      ]),
+    );
+  });
+
+  it('defaults to empty=true semantics for selection param field refs', () => {
+    const modelWithDefaultEmpty = parseUnitModelWithScaleAndSelection({
+      data: {
+        values: [
+          {x: 0, y: 0},
+          {x: 1, y: 1},
+        ],
+      },
+      params: [
+        {
+          name: 'pick',
+          select: {
+            type: 'point',
+            fields: ['x'],
+            on: 'click',
+          },
+        },
+      ],
+      transform: [
+        {
+          filter: {
+            field: 'x',
+            lte: {param: 'pick', field: 'x'},
+          },
+        },
+      ],
+      mark: 'point',
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+      },
+    });
+
+    modelWithDefaultEmpty.parseData();
+    optimizeDataflow(modelWithDefaultEmpty.component.data, modelWithDefaultEmpty);
+
+    const datasets = assembleUnitSelectionData(
+      modelWithDefaultEmpty,
+      assembleRootData(modelWithDefaultEmpty.component.data, {}),
     );
     const source = datasets.find((d) => d.name === 'data_0');
     expect(source.transform).toEqual(
