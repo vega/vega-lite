@@ -267,6 +267,56 @@ describe('Multi Selection', () => {
     );
   });
 
+  it('supports param field refs in filter predicates', () => {
+    const paramFieldModel = parseUnitModelWithScaleAndSelection({
+      data: {
+        url: 'data/gapminder.json',
+      },
+      params: [
+        {
+          name: 'avl',
+          select: {
+            type: 'point',
+            fields: ['year'],
+            on: 'timer',
+          },
+        },
+      ],
+      transform: [
+        {
+          filter: {
+            field: 'year',
+            lte: {param: 'avl', field: 'year'},
+          },
+        },
+      ],
+      mark: 'point',
+      encoding: {
+        x: {
+          field: 'fertility',
+          type: 'quantitative',
+        },
+        y: {
+          field: 'life_expect',
+          type: 'quantitative',
+        },
+        time: {
+          field: 'year',
+          type: 'ordinal',
+        },
+      },
+    });
+
+    paramFieldModel.parseData();
+    optimizeDataflow(paramFieldModel.component.data, paramFieldModel);
+
+    const datasets = assembleUnitSelectionData(paramFieldModel, assembleRootData(paramFieldModel.component.data, {}));
+    const currentFrame = datasets.find((d) => d.name === 'source_0_curr');
+    expect(currentFrame.transform).toEqual(
+      expect.arrayContaining([expect.objectContaining({expr: 'datum["year"]<=avl["year"]'})]),
+    );
+  });
+
   it('builds unit datasets', () => {
     expect(assembleUnitSelectionData(model, [])).toEqual([
       {
@@ -477,7 +527,7 @@ describe('Animated Selection', () => {
       expect.arrayContaining([
         {
           name: 'avl',
-          update: 'vlSelectionResolve("avl_store", "union", true, true)',
+          update: '{"year": avl_value}',
         },
         {
           name: 'unit',

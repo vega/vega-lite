@@ -93,9 +93,12 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
     if (hasSg.length === 0) {
       const resolve = selCmpt.resolve === 'global' ? 'union' : selCmpt.resolve;
       const isPoint = selCmpt.type === 'point' ? ', true, true)' : ')';
+      const timerField = isTimerSelection(selCmpt) ? selCmpt.project.items[0]?.field : undefined;
       signals.push({
         name: selCmpt.name,
-        update: `${VL_SELECTION_RESOLVE}(${store}, ${stringValue(resolve)}${isPoint}`,
+        update: timerField
+          ? `{${stringValue(timerField)}: ${selCmpt.name}_value}`
+          : `${VL_SELECTION_RESOLVE}(${store}, ${stringValue(resolve)}${isPoint}`,
       });
     }
     hasSelections = true;
@@ -155,20 +158,26 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
       const sourceName = model.lookupDataSource(model.getDataName(DataSourceType.Main));
       const sourceData = data.find((d) => d.name === sourceName);
 
-      // find the filter transform for the current selection
-      const sourceDataFilter = sourceData.transform.find(
-        (t) => t.type === 'filter' && t.expr.includes('vlSelectionTest'),
+      // find animation-related filters to be applied on the per-frame dataset
+      const timerValueSignal = `${selCmpt.name}_value`;
+      const timerObjectSignal = `${selCmpt.name}[`;
+      const sourceDataFilters = sourceData.transform.filter(
+        (t) =>
+          t.type === 'filter' &&
+          (t.expr.includes('vlSelectionTest') ||
+            t.expr.includes(timerValueSignal) ||
+            t.expr.includes(timerObjectSignal)),
       );
 
-      if (sourceDataFilter) {
-        // remove it from the original dataset
-        sourceData.transform = sourceData.transform.filter((t) => t !== sourceDataFilter);
+      if (sourceDataFilters.length > 0) {
+        // remove animation-related filters from the original dataset
+        sourceData.transform = sourceData.transform.filter((t) => !sourceDataFilters.includes(t));
 
         // create dataset to hold current animation frame
         const currentFrame: VgData = {
           name: sourceData.name + CURR,
           source: sourceData.name,
-          transform: [sourceDataFilter], // add the selection filter to the animation dataset
+          transform: sourceDataFilters,
         };
 
         animationData.push(currentFrame);

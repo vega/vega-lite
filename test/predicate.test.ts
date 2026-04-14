@@ -114,6 +114,16 @@ describe('filter', () => {
       expect(expr).toBe('datum["x"]<="zyzzyva"');
     });
 
+    it('should return correct expression for lessThanEquals with param value ref', () => {
+      const expr = expression(null, {field: 'x', lte: {param: 'cutoff'}});
+      expect(expr).toBe('datum["x"]<=cutoff');
+    });
+
+    it('should return correct expression for lessThanEquals with param field value ref', () => {
+      const expr = expression(null, {field: 'x', lte: {param: 'ANIM', field: 'x'}});
+      expect(expr).toBe('datum["x"]<=ANIM["x"]');
+    });
+
     it('should return correct expression for greaterThanEquals', () => {
       const expr = expression(null, {field: 'x', gte: 1});
       expect(expr).toBe('datum["x"]>=1');

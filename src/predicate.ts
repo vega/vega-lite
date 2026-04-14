@@ -53,6 +53,18 @@ export interface ParameterPredicate {
   empty?: boolean;
 }
 
+export interface ParameterValueRef {
+  /**
+   * Parameter to use as a value in a field predicate comparison.
+   */
+  param: ParameterName;
+
+  /**
+   * Optional field key to read from an object-valued parameter.
+   */
+  field?: FieldName;
+}
+
 export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is ParameterPredicate {
   return hasProperty(predicate, 'param');
 }
@@ -75,7 +87,7 @@ export interface FieldEqualPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be equal to.
    */
-  equal: string | number | boolean | DateTime | ExprRef | SignalRef;
+  equal: string | number | boolean | DateTime | ExprRef | SignalRef | ParameterValueRef;
 }
 
 export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPredicate {
@@ -86,7 +98,7 @@ export interface FieldLTPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be less than.
    */
-  lt: string | number | DateTime | ExprRef | SignalRef;
+  lt: string | number | DateTime | ExprRef | SignalRef | ParameterValueRef;
 }
 
 export function isFieldLTPredicate(predicate: any): predicate is FieldLTPredicate {
@@ -97,7 +109,7 @@ export interface FieldLTEPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be less than or equals to.
    */
-  lte: string | number | DateTime | ExprRef | SignalRef;
+  lte: string | number | DateTime | ExprRef | SignalRef | ParameterValueRef;
 }
 
 export function isFieldLTEPredicate(predicate: any): predicate is FieldLTEPredicate {
@@ -108,7 +120,7 @@ export interface FieldGTPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be greater than.
    */
-  gt: string | number | DateTime | ExprRef | SignalRef;
+  gt: string | number | DateTime | ExprRef | SignalRef | ParameterValueRef;
 }
 
 export function isFieldGTPredicate(predicate: any): predicate is FieldGTPredicate {
@@ -119,7 +131,7 @@ export interface FieldGTEPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be greater than or equals to.
    */
-  gte: string | number | DateTime | ExprRef | SignalRef;
+  gte: string | number | DateTime | ExprRef | SignalRef | ParameterValueRef;
 }
 
 export function isFieldGTEPredicate(predicate: any): predicate is FieldGTEPredicate {
@@ -193,7 +205,22 @@ export function isFieldPredicate(
   );
 }
 
-function predicateValueExpr(v: number | string | boolean | DateTime | ExprRef | SignalRef, timeUnit: TimeUnit) {
+export function isParameterValueRef(v: any): v is ParameterValueRef {
+  return !!v?.param;
+}
+
+function parameterValueExpr(v: ParameterValueRef): string {
+  return v.field ? `${v.param}[${stringify(v.field)}]` : `${v.param}`;
+}
+
+function predicateValueExpr(
+  v: number | string | boolean | DateTime | ExprRef | SignalRef | ParameterValueRef,
+  timeUnit: TimeUnit,
+) {
+  if (isParameterValueRef(v)) {
+    return parameterValueExpr(v);
+  }
+
   return valueExpr(v, {timeUnit, wrapTime: true});
 }
 

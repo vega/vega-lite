@@ -22,6 +22,7 @@ import {
   isFieldLTEPredicate,
   isFieldLTPredicate,
   isFieldOneOfPredicate,
+  isParameterValueRef,
   isFieldPredicate,
   isFieldRangePredicate,
 } from '../../predicate.js';
@@ -82,15 +83,15 @@ export function getImplicitFromFilterTransform(transform: FilterTransform) {
       // For RangeFilter and OneOfFilter, all array members should have
       // the same type, so we only use the first one.
       if (isFieldEqualPredicate(filter)) {
-        val = signalRefOrValue(filter.equal);
+        val = isParameterValueRef(filter.equal) ? null : signalRefOrValue(filter.equal);
       } else if (isFieldLTEPredicate(filter)) {
-        val = signalRefOrValue(filter.lte);
+        val = isParameterValueRef(filter.lte) ? null : signalRefOrValue(filter.lte);
       } else if (isFieldLTPredicate(filter)) {
-        val = signalRefOrValue(filter.lt);
+        val = isParameterValueRef(filter.lt) ? null : signalRefOrValue(filter.lt);
       } else if (isFieldGTPredicate(filter)) {
-        val = signalRefOrValue(filter.gt);
+        val = isParameterValueRef(filter.gt) ? null : signalRefOrValue(filter.gt);
       } else if (isFieldGTEPredicate(filter)) {
-        val = signalRefOrValue(filter.gte);
+        val = isParameterValueRef(filter.gte) ? null : signalRefOrValue(filter.gte);
       } else if (isFieldRangePredicate(filter)) {
         // FIXME: remove as any
         val = (filter as any).range[0];
