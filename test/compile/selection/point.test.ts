@@ -701,7 +701,7 @@ describe('Animated Selection', () => {
       expect.arrayContaining([
         {
           name: 'avl',
-          update: '{"year": avl_value}',
+          update: 'vlSelectionResolve("avl_store", "union", true, true)',
         },
         {
           name: 'unit',

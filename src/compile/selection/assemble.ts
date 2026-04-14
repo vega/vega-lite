@@ -93,12 +93,9 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
     if (hasSg.length === 0) {
       const resolve = selCmpt.resolve === 'global' ? 'union' : selCmpt.resolve;
       const isPoint = selCmpt.type === 'point' ? ', true, true)' : ')';
-      const timerField = isTimerSelection(selCmpt) ? selCmpt.project.items[0]?.field : undefined;
       signals.push({
         name: selCmpt.name,
-        update: timerField
-          ? `{${stringValue(timerField)}: ${selCmpt.name}_value}`
-          : `${VL_SELECTION_RESOLVE}(${store}, ${stringValue(resolve)}${isPoint}`,
+        update: `${VL_SELECTION_RESOLVE}(${store}, ${stringValue(resolve)}${isPoint}`,
       });
     }
     hasSelections = true;
