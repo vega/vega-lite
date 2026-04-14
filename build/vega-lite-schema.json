@@ -9603,6 +9603,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/ParameterValueRef"
             }
           ],
           "description": "The value that the field should be equal to."
@@ -9652,6 +9655,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/ParameterValueRef"
             }
           ],
           "description": "The value that the field should be greater than or equals to."
@@ -9697,6 +9703,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/ParameterValueRef"
             }
           ],
           "description": "The value that the field should be greater than."
@@ -9742,6 +9751,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/ParameterValueRef"
             }
           ],
           "description": "The value that the field should be less than or equals to."
@@ -9787,6 +9799,9 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "$ref": "#/definitions/ParameterValueRef"
             }
           ],
           "description": "The value that the field should be less than."
@@ -19228,6 +19243,27 @@
         "param": {
           "$ref": "#/definitions/ParameterName",
           "description": "Filter using a parameter name."
+        }
+      },
+      "required": [
+        "param"
+      ],
+      "type": "object"
+    },
+    "ParameterValueRef": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "How empty selection values should be treated when `param` references a selection parameter. If true, an empty selection evaluates to true. If false, an empty selection evaluates to false.",
+          "type": "boolean"
+        },
+        "field": {
+          "$ref": "#/definitions/FieldName",
+          "description": "Optional field key to read from an object-valued parameter."
+        },
+        "param": {
+          "$ref": "#/definitions/ParameterName",
+          "description": "Parameter to use as a value in a field predicate comparison."
         }
       },
       "required": [
