@@ -341,6 +341,106 @@ describe('Multi Selection', () => {
     );
   });
 
+  it('supports empty=true semantics for selection param field refs', () => {
+    const modelWithEmptyTrue = parseUnitModelWithScaleAndSelection({
+      data: {
+        values: [
+          {x: 0, y: 0},
+          {x: 1, y: 1},
+        ],
+      },
+      params: [
+        {
+          name: 'pick',
+          select: {
+            type: 'point',
+            fields: ['x'],
+            on: 'click',
+          },
+        },
+      ],
+      transform: [
+        {
+          filter: {
+            field: 'x',
+            lte: {param: 'pick', field: 'x', empty: true},
+          },
+        },
+      ],
+      mark: 'point',
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+      },
+    });
+
+    modelWithEmptyTrue.parseData();
+    optimizeDataflow(modelWithEmptyTrue.component.data, modelWithEmptyTrue);
+
+    const datasets = assembleUnitSelectionData(
+      modelWithEmptyTrue,
+      assembleRootData(modelWithEmptyTrue.component.data, {}),
+    );
+    const source = datasets.find((d) => d.name === 'data_0');
+    expect(source.transform).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          expr: '(!length(data("pick_store")) || (datum["x"]<=(length(data("pick_store")) ? data("pick_store")[0].values[0] : null)))',
+        }),
+      ]),
+    );
+  });
+
+  it('supports empty=false semantics for selection param field refs', () => {
+    const modelWithEmptyFalse = parseUnitModelWithScaleAndSelection({
+      data: {
+        values: [
+          {x: 0, y: 0},
+          {x: 1, y: 1},
+        ],
+      },
+      params: [
+        {
+          name: 'pick',
+          select: {
+            type: 'point',
+            fields: ['x'],
+            on: 'click',
+          },
+        },
+      ],
+      transform: [
+        {
+          filter: {
+            field: 'x',
+            lte: {param: 'pick', field: 'x', empty: false},
+          },
+        },
+      ],
+      mark: 'point',
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+      },
+    });
+
+    modelWithEmptyFalse.parseData();
+    optimizeDataflow(modelWithEmptyFalse.component.data, modelWithEmptyFalse);
+
+    const datasets = assembleUnitSelectionData(
+      modelWithEmptyFalse,
+      assembleRootData(modelWithEmptyFalse.component.data, {}),
+    );
+    const source = datasets.find((d) => d.name === 'data_0');
+    expect(source.transform).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          expr: '(!!length(data("pick_store")) && (datum["x"]<=(length(data("pick_store")) ? data("pick_store")[0].values[0] : null)))',
+        }),
+      ]),
+    );
+  });
+
   it('builds unit datasets', () => {
     expect(assembleUnitSelectionData(model, [])).toEqual([
       {

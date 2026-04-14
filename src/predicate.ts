@@ -63,6 +63,13 @@ export interface ParameterValueRef {
    * Optional field key to read from an object-valued parameter.
    */
   field?: FieldName;
+
+  /**
+   * How empty selection values should be treated when `param` references
+   * a selection parameter. If true, an empty selection evaluates to true.
+   * If false, an empty selection evaluates to false.
+   */
+  empty?: boolean;
 }
 
 export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is ParameterPredicate {
