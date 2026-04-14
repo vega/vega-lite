@@ -936,6 +936,11 @@
         "title": "Crossfilter (Filter)"
       },
       {
+        "name": "interactive_param_comparator_crossview",
+        "title": "Cross-View Filtering with Parameter Comparators",
+        "description": "Click bars to set a selection parameter and use comparator predicates with `{param, field}` in both a line view filter and conditional bar color."
+      },
+      {
         "name": "interactive_layered_crossfilter",
         "title": "Crossfilter (Highlight)"
       },

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "vconcat": [
+    {
+      "mark": {"type": "line"},
+      "encoding": {
+        "color": {"field": "year", "type": "ordinal"},
+        "x": {"field": "age", "type": "ordinal"},
+        "y": {"aggregate": "sum", "field": "people", "type": "quantitative"}
+      },
+      "height": 200,
+      "transform": [
+        {
+          "filter": {
+            "field": "year",
+            "lte": {
+              "param": "bar_click",
+              "field": "year",
+              "empty": false
+            }
+          }
+        }
+      ],
+      "width": 400
+    },
+    {
+      "mark": {"type": "bar"},
+      "encoding": {
+        "color": {
+          "condition": [
+            {
+              "test": {
+                "field": "year",
+                "lte": {
+                  "param": "bar_click",
+                  "field": "year",
+                  "empty": false
+                }
+              },
+              "value": "steelblue"
+            }
+          ],
+          "value": "lightgray"
+        },
+        "x": {"field": "year", "type": "ordinal"},
+        "y": {"aggregate": "sum", "field": "people", "type": "quantitative"}
+      },
+      "height": 100,
+      "name": "bar_view",
+      "width": 400
+    }
+  ],
+  "data": {
+    "url": "https://cdn.jsdelivr.net/npm/vega-datasets@v3.2.1/data/population.json"
+  },
+  "params": [
+    {
+      "name": "bar_click",
+      "select": {
+        "type": "point",
+        "fields": ["year"]
+      },
+      "views": ["bar_view"]
+    }
+  ]
+}
