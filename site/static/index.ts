@@ -27,6 +27,74 @@ hljs.registerLanguage('html', xml);
 hljs.registerLanguage('css', css);
 hljs.registerLanguage('diff', diff);
 
+const COPY_FEEDBACK_TIMEOUT_MS = 2000;
+
+async function copyText(text: string) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.setAttribute('readonly', 'readonly');
+  textArea.style.position = 'fixed';
+  textArea.style.opacity = '0';
+  textArea.style.pointerEvents = 'none';
+  document.body.appendChild(textArea);
+  textArea.select();
+
+  const copied = document.execCommand('copy');
+  document.body.removeChild(textArea);
+
+  if (!copied) {
+    throw new Error('Copy command failed');
+  }
+}
+
+hljs.addPlugin({
+  'after:highlightElement': ({el, text}: {el: HTMLElement; text: string}) => {
+    const pre = el.parentElement;
+
+    if (!pre || pre.tagName !== 'PRE' || pre.querySelector('.code-copy-button')) {
+      return;
+    }
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'code-copy-button';
+    button.setAttribute('aria-label', 'Copy code to clipboard');
+    button.innerHTML =
+      '<span class="code-copy-label">Copy</span><span class="octicon octicon-clippy code-copy-icon-copy" aria-hidden="true"></span><span class="octicon octicon-check code-copy-icon-check" aria-hidden="true"></span>';
+
+    const label = button.querySelector('.code-copy-label') as HTMLSpanElement;
+    let resetTimeoutId: number | undefined;
+
+    button.addEventListener('click', async () => {
+      try {
+        await copyText(text);
+
+        if (resetTimeoutId !== undefined) {
+          window.clearTimeout(resetTimeoutId);
+        }
+
+        button.setAttribute('data-copied', 'true');
+        label.textContent = 'Copied';
+
+        resetTimeoutId = window.setTimeout(() => {
+          button.removeAttribute('data-copied');
+          label.textContent = 'Copy';
+        }, COPY_FEEDBACK_TIMEOUT_MS);
+      } catch (error) {
+        console.error('Failed to copy code block', error);
+      }
+    });
+
+    pre.classList.add('code-copy-wrapper');
+    pre.appendChild(button);
+  },
+});
+
 // highlight jekyll code blocks
 hljs.highlightAll();
 
