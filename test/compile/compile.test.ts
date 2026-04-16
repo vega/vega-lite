@@ -222,6 +222,109 @@ describe('compile/compile', () => {
     expect(spec.autosize).toEqual({type: 'fit', contains: 'content'});
   });
 
+  it('should rewrite sorted domain expressions to use helper scales', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {x: 1, y: 1, c: 'b'},
+          {x: 2, y: 2, c: 'a'},
+          {x: 3, y: 3, c: 'c'},
+        ],
+      },
+      params: [
+        {name: 'computed_domain', expr: "sort(domain('color'))"},
+        {name: 'color_domain', react: false, expr: 'computed_domain'},
+      ],
+      mark: 'point',
+      encoding: {
+        color: {
+          field: 'c',
+          type: 'nominal',
+          scale: {domain: {expr: 'color_domain'}},
+        },
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.signals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'computed_domain',
+          update: "sort(domain('__color_domain_source'))",
+        }),
+      ]),
+    );
+
+    expect(spec.scales).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: '__color_domain_source',
+          type: 'ordinal',
+          domain: {data: 'data_0', field: 'c'},
+        }),
+      ]),
+    );
+  });
+
+  it('should rewrite parameter domain expressions even without sort', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {x: 1, y: 1, c: 'b'},
+          {x: 2, y: 2, c: 'a'},
+        ],
+      },
+      params: [
+        {name: 'computed_domain', expr: "sort(domain('color'))"},
+        {name: 'color_domain', react: false, expr: 'computed_domain'},
+        {name: 'domain_len', expr: "domain('color').length"},
+      ],
+      mark: 'point',
+      encoding: {
+        color: {
+          field: 'c',
+          type: 'nominal',
+          scale: {domain: {expr: 'color_domain'}},
+        },
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.signals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'domain_len',
+          update: "domain('__color_domain_source').length",
+        }),
+      ]),
+    );
+  });
+
+  it('should compile non-reactive parameter references to one-time updates', () => {
+    const {spec} = compile({
+      data: {values: [{x: 1}]},
+      mark: 'point',
+      encoding: {x: {field: 'x', type: 'quantitative'}},
+      params: [
+        {name: 'a', expr: '5'},
+        {name: 'b', expr: 'a', react: false},
+      ],
+    });
+
+    expect(spec.signals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({name: 'a', update: '5'}),
+        expect.objectContaining({
+          name: 'b',
+          value: {__vl_b_sentinel: true},
+          update: 'b && b.__vl_b_sentinel ? (a) : b',
+        }),
+      ]),
+    );
+  });
+
   it('should set autosize to fit if requested', () => {
     const {spec} = compile({
       autosize: 'fit',
