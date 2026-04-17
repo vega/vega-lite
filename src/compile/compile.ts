@@ -304,11 +304,13 @@ type ScaleFieldRef = {data: string; field: string} | null;
 
 function findScaleFieldRef(marks: any[], scaleName: string, inheritedData: string): ScaleFieldRef {
   for (const mark of marks || []) {
-    const dataName = mark.from?.data || inheritedData;
+    const facetDataName = mark.from?.facet?.data;
+    const fromDataName = mark.from?.data;
+    const dataName = fromDataName === 'facet' ? inheritedData : fromDataName || facetDataName || inheritedData;
     const found = findScaleFieldInEncode(mark.encode, scaleName, dataName);
     if (found) return found;
 
-    const nested = findScaleFieldRef(mark.marks, scaleName, dataName);
+    const nested = findScaleFieldRef(mark.marks, scaleName, facetDataName || dataName);
     if (nested) return nested;
   }
   return null;
