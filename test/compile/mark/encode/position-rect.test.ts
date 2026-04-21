@@ -75,6 +75,83 @@ describe('compile/mark/encode/position-rect', () => {
       expect((props.x2 as any).field).toBe(`yearmonth_date_${OFFSETTED_RECT_START_SUFFIX}`);
     });
 
+    it('produces correct xc for tick with explicit size and timeUnitBandPosition = 0', () => {
+      // https://github.com/vega/vega-lite/issues/9836
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: {type: 'tick', size: {expr: '20'}},
+        encoding: {
+          x: {timeUnit: 'binnedutcyear', field: 'date', type: 'temporal'},
+          y: {field: 'v', type: 'quantitative'},
+        },
+        config: {tick: {timeUnitBandPosition: 0}},
+      });
+
+      const props = rectPosition(model, 'x');
+      // With bandPosition=0, the tick center should sit on the bin start
+      // (the raw `date` field), matching the bar's center under the same
+      // timeUnitBandPosition: 0 config.
+      expect((props.xc as any).scale).toBe('x');
+      expect((props.xc as any).field).toBe('date');
+    });
+
+    it('uses bandPosition 0 for a centered bar with explicit size and xOffset encoding', () => {
+      // Exercises the `offsetType === 'encoding' ? 0 : 0.5` branch of
+      // `positionAndSize`. The explicit `size` forces center alignment; the
+      // sub-band shift then comes from the xOffset encoding.
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: {type: 'bar', size: 20},
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          xOffset: {field: 'b', type: 'nominal'},
+          y: {field: 'c', type: 'quantitative'},
+        },
+      });
+
+      const props = rectPosition(model, 'x');
+      expect((props.xc as any).scale).toBe('x');
+      expect((props.xc as any).field).toBe('a');
+      expect((props.xc as any).offset?.scale).toBe('xOffset');
+      expect((props.xc as any).offset?.field).toBe('b');
+    });
+
+    it('produces correct x for a left-aligned bar with signal bandSize', () => {
+      // Exercises the `isSignalRef(bandSize)` branch of the
+      // non-center position expression in `positionAndSize`.
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: {type: 'bar', align: 'left', size: {signal: 's'}},
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          y: {field: 'b', type: 'quantitative'},
+        },
+      });
+
+      const props = rectPosition(model, 'x');
+      // A signal-valued band size drops into the `(1-${bandSize})/2` branch.
+      expect((props.x as any).band?.signal).toContain('(1-');
+      expect((props.width as any).signal).toBe('s');
+    });
+
+    it('produces correct x for a left-aligned bar with numeric size', () => {
+      // Exercises the final `: 0` fallback branch of the non-center
+      // position expression in `positionAndSize`.
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: {type: 'bar', align: 'left', size: 20},
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          y: {field: 'b', type: 'quantitative'},
+        },
+      });
+
+      const props = rectPosition(model, 'x');
+      expect((props.x as any).scale).toBe('x');
+      expect((props.x as any).field).toBe('a');
+      expect(props.width).toEqual({value: 20});
+    });
+
     it('produces correct x-mixins for binned data with step and start field, without end field', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         data: {values: []},

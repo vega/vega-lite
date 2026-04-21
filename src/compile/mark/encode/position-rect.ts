@@ -222,6 +222,27 @@ function positionAndSize(
   const center = vgChannel === 'xc' || vgChannel === 'yc';
   const {offset, offsetType} = positionOffset({channel, markDef, encoding, model, bandPosition: center ? 0.5 : 0});
 
+  // When a rect-based mark has an explicit size on a timeUnit-binned field,
+  // honor `timeUnitBandPosition` so this path stays aligned with the
+  // `rectBinPosition` path used by bars without an explicit size.
+  // See https://github.com/vega/vega-lite/issues/9836.
+  const timeUnitBandPosition =
+    isFieldDef(fieldDef) && fieldDef.timeUnit && !encoding[channel2]
+      ? getBandPosition({fieldDef, markDef, config})
+      : undefined;
+
+  const bandPosition =
+    timeUnitBandPosition ??
+    (center
+      ? offsetType === 'encoding'
+        ? 0
+        : 0.5
+      : isSignalRef(bandSize)
+        ? {signal: `(1-${bandSize})/2`}
+        : isRelativeBandSize(bandSize)
+          ? (1 - bandSize.band) / 2
+          : 0);
+
   const posRef = ref.midPointRefWithPositionInvalidTest({
     channel,
     channelDef: fieldDef,
@@ -232,15 +253,7 @@ function positionAndSize(
     stack,
     offset,
     defaultRef: pointPositionDefaultRef({model, defaultPos: 'mid', channel, scaleName, scale}),
-    bandPosition: center
-      ? offsetType === 'encoding'
-        ? 0
-        : 0.5
-      : isSignalRef(bandSize)
-        ? {signal: `(1-${bandSize})/2`}
-        : isRelativeBandSize(bandSize)
-          ? (1 - bandSize.band) / 2
-          : 0,
+    bandPosition,
   });
 
   if (vgSizeChannel) {

@@ -111,9 +111,7 @@
           "description": {
             "signal": "\"date: \" + (utcFormat(datum[\"date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; v: \" + (format(datum[\"v\"], \"\"))"
           },
-          "xc": {
-            "signal": "scale(\"x\", 0.5 * datum[\"date\"] + 0.5 * datum[\"date_end\"])"
-          },
+          "xc": {"scale": "x", "field": "date"},
           "width": {"signal": "20"},
           "yc": {"scale": "y", "field": "v"},
           "height": {"value": 1}
