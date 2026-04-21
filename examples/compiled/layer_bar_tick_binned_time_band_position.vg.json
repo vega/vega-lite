@@ -1,0 +1,211 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Bar and tick layered on the same binned-time-unit encoding. With `timeUnitBandPosition: 0`, both marks should be centered at the year start.",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"date": "2020-01-01T00:00:00Z", "v": 10},
+        {"date": "2021-01-01T00:00:00Z", "v": 20},
+        {"date": "2022-01-01T00:00:00Z", "v": 15}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
+        {
+          "type": "formula",
+          "expr": "utcOffset('year', datum['date'], 1)",
+          "as": "date_end"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * utcOffset('year', datum['date'], -1) + 0.5 * datum['date']",
+          "as": "date_offsetted_rect_start"
+        },
+        {
+          "type": "formula",
+          "expr": "0.5 * datum['date'] + 0.5 * datum['date_end']",
+          "as": "date_offsetted_rect_end"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"v\"]) && isFinite(+datum[\"v\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["date"],
+          "field": "v",
+          "sort": {"field": [], "order": []},
+          "as": ["v_start", "v_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"v\"]) && isFinite(+datum[\"v\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"date: \" + (utcFormat(datum[\"date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; v: \" + (format(datum[\"v\"], \"\"))"
+          },
+          "x2": {
+            "scale": "x",
+            "field": "date_offsetted_rect_start",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])) < 0.25 ? -0.5 * (0.25 - (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])))) : 0.5)"
+            }
+          },
+          "x": {
+            "scale": "x",
+            "field": "date_offsetted_rect_end",
+            "offset": {
+              "signal": "0.5 + (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])) < 0.25 ? 0.5 * (0.25 - (abs(scale(\"x\", datum[\"date_end\"]) - scale(\"x\", datum[\"date\"])))) : -0.5)"
+            }
+          },
+          "y": {"scale": "y", "field": "v_end"},
+          "y2": {"scale": "y", "field": "v_start"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rect",
+      "style": ["tick"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "tick"},
+          "description": {
+            "signal": "\"date: \" + (utcFormat(datum[\"date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; v: \" + (format(datum[\"v\"], \"\"))"
+          },
+          "xc": {
+            "signal": "scale(\"x\", 0.5 * datum[\"date\"] + 0.5 * datum[\"date_end\"])"
+          },
+          "width": {"signal": "20"},
+          "yc": {"scale": "y", "field": "v"},
+          "height": {"value": 1}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "utc",
+      "domain": {
+        "fields": [
+          {"data": "data_2", "field": "date_offsetted_rect_start"},
+          {"data": "data_2", "field": "date_offsetted_rect_end"},
+          {"data": "data_1", "field": "date_offsetted_rect_start"},
+          {"data": "data_1", "field": "date_offsetted_rect_end"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_2", "field": "v_start"},
+          {"data": "data_2", "field": "v_end"},
+          {"data": "data_1", "field": "v"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "tickMinStep": {
+        "signal": "datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "v",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}
