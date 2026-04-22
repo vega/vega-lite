@@ -231,11 +231,7 @@ function positionAndSize(
   //   positions the mark at the band's leading edge.
   // See https://github.com/vega/vega-lite/issues/9836.
   const timeUnitBandPosition =
-    center &&
-    offsetType !== 'encoding' &&
-    isFieldDef(fieldDef) &&
-    fieldDef.timeUnit &&
-    !encoding[channel2]
+    center && offsetType !== 'encoding' && isFieldDef(fieldDef) && fieldDef.timeUnit && !encoding[channel2]
       ? getBandPosition({fieldDef, markDef, config})
       : undefined;
 
