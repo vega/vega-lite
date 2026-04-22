@@ -95,6 +95,25 @@ describe('compile/mark/encode/position-rect', () => {
       expect((props.xc as any).field).toBe('date');
     });
 
+    it('does not apply timeUnitBandPosition to a non-centered bar on a band scale', () => {
+      // Regression guard: a normal timeUnit-ordinal bar (e.g., `bar_month`)
+      // flows through `positionAndSize` with vgChannel='x' (non-centered) and
+      // must keep bandPosition=0 so bars align to the band's leading edge.
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {timeUnit: 'month', field: 'date', type: 'ordinal'},
+          y: {aggregate: 'mean', field: 'precipitation'},
+        },
+      });
+
+      const props = rectPosition(model, 'x');
+      expect((props.x as any).scale).toBe('x');
+      expect((props.x as any).field).toBe('month_date');
+      expect((props.x as any).band).toBeUndefined();
+    });
+
     it('uses bandPosition 0 for a centered bar with explicit size and xOffset encoding', () => {
       // Exercises the `offsetType === 'encoding' ? 0 : 0.5` branch of
       // `positionAndSize`. The explicit `size` forces center alignment; the
