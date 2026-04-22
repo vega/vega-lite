@@ -1,19 +1,16 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "title": "Body Mass Density Ribbons by Species",
-  "width": 420,
-  "height": {"step": 70},
+  "width": 300,
   "data": {"url": "data/penguins.json"},
   "transform": [
-    {"filter": {"field": "Species", "oneOf": ["Adelie", "Gentoo"]}},
     {
       "density": "Body Mass (g)",
       "groupby": ["Species"],
-      "resolve": "independent",
-      "extent": [2500, 6500]
+      "resolve": "independent"
     }
   ],
-  "mark": {"type": "area", "opacity": 0.45},
+  "mark": {"type": "area"},
   "encoding": {
     "x": {
       "field": "value",

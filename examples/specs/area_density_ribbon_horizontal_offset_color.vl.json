@@ -1,19 +1,19 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "title": "Body Mass Density Ribbons by Species and Sex",
-  "width": {"step": 90},
+  "width": {"step": 70},
   "height": 240,
   "data": {"url": "data/penguins.json"},
   "transform": [
-    {"filter": {"field": "Species", "oneOf": ["Adelie", "Gentoo"]}},
+    {"filter": {"field": "Sex", "oneOf": ["MALE", "FEMALE"]}},
     {
       "density": "Body Mass (g)",
       "groupby": ["Species", "Sex"],
       "resolve": "independent",
-      "extent": [2500, 6500]
+      "bandwidth": 100
     }
   ],
-  "mark": {"type": "area", "opacity": 0.45},
+  "mark": {"type": "area", "opacity": 0.9},
   "encoding": {
     "y": {
       "field": "value",
