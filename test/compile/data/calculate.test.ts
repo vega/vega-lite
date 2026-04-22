@@ -32,6 +32,62 @@ describe('compile/data/calculate', () => {
         as: 'x_a_sort_index',
       });
     });
+
+    it('produces formula transform for order field sort array', () => {
+      const model = parseUnitModel({
+        data: {
+          values: [
+            {a: 'A', b: 28},
+            {a: 'B', b: 55},
+            {a: 'C', b: 43},
+          ],
+        },
+        mark: 'line',
+        encoding: {
+          x: {field: 'a', type: 'ordinal'},
+          y: {field: 'b', type: 'quantitative'},
+          order: {field: 'a', type: 'nominal', sort: ['B', 'A', 'C']},
+        },
+      });
+      const nodes = assembleFromSortArray(model);
+      expect(nodes).toEqual({
+        type: 'formula',
+        expr: 'datum["a"]==="B" ? 0 : datum["a"]==="A" ? 1 : datum["a"]==="C" ? 2 : 3',
+        as: 'order_a_0_sort_index',
+      });
+    });
+
+    it('produces unique formula fields for multiple order sort arrays', () => {
+      const model = parseUnitModel({
+        data: {
+          values: [
+            {a: 'A', b: 28, c: 'foo'},
+            {a: 'B', b: 55, c: 'bar'},
+            {a: 'C', b: 43, c: 'baz'},
+          ],
+        },
+        mark: 'line',
+        encoding: {
+          x: {field: 'a', type: 'ordinal'},
+          y: {field: 'b', type: 'quantitative'},
+          order: [
+            {field: 'a', type: 'nominal', sort: ['B', 'A', 'C']},
+            {field: 'c', type: 'nominal', sort: ['baz', 'bar', 'foo']},
+          ],
+        },
+      });
+      const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
+      expect(node.assemble()).toEqual({
+        type: 'formula',
+        expr: 'datum["c"]==="baz" ? 0 : datum["c"]==="bar" ? 1 : datum["c"]==="foo" ? 2 : 3',
+        as: 'order_c_1_sort_index',
+      });
+      expect((node.parent as CalculateNode).assemble()).toEqual({
+        type: 'formula',
+        expr: 'datum["a"]==="B" ? 0 : datum["a"]==="A" ? 1 : datum["a"]==="C" ? 2 : 3',
+        as: 'order_a_0_sort_index',
+      });
+    });
   });
 
   describe('dependentFields and producedFields', () => {

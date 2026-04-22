@@ -1,12 +1,12 @@
 import {FormulaTransform as VgFormulaTransform} from 'vega';
 import {SingleDefChannel} from '../../channel.js';
-import {FieldRefOption, isScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef.js';
+import {FieldRefOption, isFieldDef, isScaleFieldDef, isValueDef, TypedFieldDef, vgField} from '../../channeldef.js';
 import {DateTime} from '../../datetime.js';
 import {fieldFilterExpression} from '../../predicate.js';
 import {isSortArray} from '../../sort.js';
 import {CalculateTransform} from '../../transform.js';
 import {duplicate, hash} from '../../util.js';
-import {ModelWithField} from '../model.js';
+import {isUnitModel, ModelWithField} from '../model.js';
 import {DataFlowNode} from './dataflow.js';
 import {getDependentFields} from './expressions.js';
 
@@ -49,6 +49,32 @@ export class CalculateNode extends DataFlowNode {
         });
       }
     });
+
+    if (isUnitModel(model)) {
+      const orderDef = model.encoding.order;
+      if (!isValueDef(orderDef)) {
+        for (const [index, orderChannelDef] of [orderDef].flat().entries()) {
+          if (!isFieldDef(orderChannelDef) || !isSortArray(orderChannelDef.sort)) {
+            continue;
+          }
+
+          const {field, timeUnit} = orderChannelDef;
+          const sort: (number | string | boolean | DateTime)[] = orderChannelDef.sort;
+          const calculate =
+            sort
+              .map((sortValue, i) => {
+                return `${fieldFilterExpression({field, timeUnit, equal: sortValue})} ? ${i} : `;
+              })
+              .join('') + sort.length;
+
+          parent = new CalculateNode(parent, {
+            calculate,
+            as: sortArrayIndexField(orderChannelDef, 'order', index, {forAs: true}),
+          });
+        }
+      }
+    }
+
     return parent;
   }
 
@@ -73,6 +99,14 @@ export class CalculateNode extends DataFlowNode {
   }
 }
 
-export function sortArrayIndexField(fieldDef: TypedFieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption) {
-  return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', ...opt});
+export function sortArrayIndexField(
+  fieldDef: TypedFieldDef<string>,
+  channel: SingleDefChannel | 'order',
+  optOrOrderIndex?: FieldRefOption | number,
+  opt?: FieldRefOption,
+) {
+  const orderIndex = typeof optOrOrderIndex === 'number' ? optOrOrderIndex : undefined;
+  const fieldRefOption = typeof optOrOrderIndex === 'number' ? opt : optOrOrderIndex;
+  const suffix = orderIndex === undefined ? 'sort_index' : `${orderIndex}_sort_index`;
+  return vgField(fieldDef, {prefix: channel, suffix, ...fieldRefOption});
 }

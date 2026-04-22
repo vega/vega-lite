@@ -15,11 +15,12 @@ import {
 import {Config, StyleConfigIndex} from '../config.js';
 import {isExprRef} from '../expr.js';
 import {Mark, MarkConfig, MarkDef} from '../mark.js';
-import {SortFields} from '../sort.js';
+import {isSortArray, SortFields} from '../sort.js';
 import {isText} from '../title.js';
 import {deepEqual, getFirstDefined, hasProperty} from '../util.js';
 import {isSignalRef, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../vega.schema.js';
 import {AxisComponentProps} from './axis/component.js';
+import {sortArrayIndexField} from './data/calculate.js';
 import {Explicit} from './split.js';
 import {UnitModel} from './unit.js';
 
@@ -181,9 +182,14 @@ export function sortParams(
   fieldRefOption?: FieldRefOption,
 ): SortFields {
   return array(orderDef).reduce(
-    (s, orderChannelDef) => {
-      s.field.push(vgField(orderChannelDef, fieldRefOption));
-      s.order.push(orderChannelDef.sort ?? 'ascending');
+    (s, orderChannelDef, orderIndex) => {
+      if (isSortArray(orderChannelDef.sort)) {
+        s.field.push(sortArrayIndexField(orderChannelDef, 'order', orderIndex, fieldRefOption));
+        s.order.push('ascending');
+      } else {
+        s.field.push(vgField(orderChannelDef, fieldRefOption));
+        s.order.push(orderChannelDef.sort ?? 'ascending');
+      }
       return s;
     },
     {field: [], order: []},

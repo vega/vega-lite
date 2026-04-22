@@ -593,7 +593,7 @@ export function initEncoding(
 
     if (
       channel === DETAIL ||
-      (channel === ORDER && !isArray(channelDef) && !isValueDef(channelDef)) ||
+      (channel === ORDER && !isValueDef(channelDef)) ||
       (channel === TOOLTIP && isArray(channelDef))
     ) {
       if (channelDef) {

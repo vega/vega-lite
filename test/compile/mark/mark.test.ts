@@ -341,6 +341,41 @@ describe('Mark', () => {
       });
     });
 
+    it('should order by derived sort index for order sort array', () => {
+      const model = parseUnitModel({
+        data: {url: 'data/driving.json'},
+        mark: 'line',
+        encoding: {
+          x: {field: 'miles', type: 'quantitative', scale: {zero: false}},
+          y: {field: 'gas', type: 'quantitative', scale: {zero: false}},
+          order: {field: 'symbol', type: 'nominal', sort: ['triangle', 'circle', 'square']},
+        },
+      });
+      expect(getSort(model)).toEqual({
+        field: ['datum["order_symbol_0_sort_index"]'],
+        order: ['ascending'],
+      });
+    });
+
+    it('should order by unique derived sort indexes for multiple order sort arrays', () => {
+      const model = parseUnitModel({
+        data: {url: 'data/driving.json'},
+        mark: 'line',
+        encoding: {
+          x: {field: 'miles', type: 'quantitative', scale: {zero: false}},
+          y: {field: 'gas', type: 'quantitative', scale: {zero: false}},
+          order: [
+            {field: 'symbol', type: 'nominal', sort: ['triangle', 'circle', 'square']},
+            {field: 'year', type: 'quantitative', sort: [1970, 1980, 1990]},
+          ],
+        },
+      });
+      expect(getSort(model)).toEqual({
+        field: ['datum["order_symbol_0_sort_index"]', 'datum["order_year_1_sort_index"]'],
+        order: ['ascending', 'ascending'],
+      });
+    });
+
     it('should have no sort if order = {value: null}', () => {
       const model = parseUnitModel({
         data: {url: 'data/driving.json'},
