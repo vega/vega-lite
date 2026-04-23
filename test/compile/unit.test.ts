@@ -118,6 +118,18 @@ describe('UnitModel', () => {
       expect(model.encoding.xOffset).toEqual({field: 'b', sort: ['y', 'x', 'z'], type: 'nominal'});
     });
 
+    it('should add custom order if color sort is specified for grouped bars', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          color: {field: 'a', sort: ['y', 'x', 'z']},
+          xOffset: {field: 'b'},
+        },
+      });
+
+      expect(model.encoding.xOffset).toEqual({field: 'b', sort: ['y', 'x', 'z'], type: 'nominal'});
+    });
+
     it('should add custom order if color or fill domain is specified for stacked bars', () => {
       const model = parseUnitModel({
         mark: 'bar',
@@ -128,6 +140,35 @@ describe('UnitModel', () => {
       });
 
       expect(model.encoding.order).toEqual({field: '_a_sort_index', type: 'quantitative', sort: 'descending'});
+    });
+
+    it('should add custom order if color sort is specified for stacked bars', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          y: {field: 'b', type: 'quantitative'},
+          color: {field: 'a', sort: ['y', 'x', 'z']},
+        },
+      });
+
+      expect(model.transforms[0]).toEqual({
+        as: '_a_sort_index',
+        calculate: 'indexof(["y","x","z"], datum[\'a\'])',
+      });
+      expect(model.encoding.order).toEqual({field: '_a_sort_index', type: 'quantitative', sort: 'descending'});
+    });
+
+    it('should inherit color sort array when order field matches and has no sort', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          y: {field: 'b', type: 'quantitative'},
+          color: {field: 'a', sort: ['y', 'x', 'z']},
+          order: {field: 'a', type: 'nominal'},
+        },
+      });
+
+      expect(model.encoding.order).toEqual([{field: 'a', type: 'nominal', sort: ['y', 'x', 'z']}]);
     });
 
     it('should not add custom order if it is not stacked chart', () => {

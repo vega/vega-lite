@@ -175,6 +175,32 @@ describe('compile/data/stack', () => {
       ]);
     });
 
+    it('should inherit color sort array for stack order when matching order field has no sort', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'area',
+        encoding: {
+          x: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal'},
+          color: {field: 'c', type: 'nominal', sort: ['high', 'mid', 'low']},
+          order: {field: 'c', type: 'nominal'},
+        },
+      });
+
+      expect(parse(model)).toEqual({
+        dimensionFieldDefs: [{field: 'b', type: 'nominal'}],
+        facetby: [],
+        stackField: 'sum_a',
+        stackby: ['c'],
+        sort: {
+          field: ['order_c_0_sort_index'],
+          order: ['ascending'],
+        },
+        offset: 'zero',
+        impute: true,
+        as: ['sum_a_start', 'sum_a_end'],
+      });
+    });
+
     it('should use derived sort index for stack order sort arrays', () => {
       const model = parseUnitModelWithScale({
         mark: 'area',

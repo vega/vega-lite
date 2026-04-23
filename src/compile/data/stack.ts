@@ -15,7 +15,7 @@ function getStackByFields(model: UnitModel): string[] {
     const fieldDef = by.fieldDef;
 
     const _field = vgField(fieldDef);
-    if (_field) {
+    if (_field && !fields.includes(_field)) {
       fields.push(_field);
     }
     return fields;
