@@ -665,7 +665,9 @@ export interface OrderOnlyDef {
 export function isOrderOnlyDef<F extends Field>(
   orderDef: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef,
 ): orderDef is OrderOnlyDef {
-  return hasProperty(orderDef, 'sort') && !hasProperty(orderDef, 'field') && !isSortArray((orderDef as OrderOnlyDef).sort);
+  return (
+    hasProperty(orderDef, 'sort') && !hasProperty(orderDef, 'field') && !isSortArray((orderDef as OrderOnlyDef).sort)
+  );
 }
 
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
