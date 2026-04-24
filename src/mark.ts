@@ -344,7 +344,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   bar: VL_ONLY_RECT_CONFIG,
   rect: VL_ONLY_RECT_CONFIG,
   line: ['point'],
-  tick: ['bandSize', 'thickness', ...VL_ONLY_RECT_CONFIG],
+  tick: ['thickness', ...VL_ONLY_RECT_CONFIG],
 };
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
@@ -676,7 +676,6 @@ export interface TickConfig<ES extends ExprRef | SignalRef>
    * __Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).
    * @minimum 0
    */
-  bandSize?: number;
 }
 
 export const defaultTickConfig: TickConfig<SignalRef> = {
