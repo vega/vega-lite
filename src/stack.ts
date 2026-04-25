@@ -1,6 +1,6 @@
 import {array, hasOwnProperty, isBoolean} from 'vega-util';
 import {Aggregate, SUM_OPS} from './aggregate.js';
-import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel.js';
+import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS, isPolarPositionChannel} from './channel.js';
 import {
   channelDefType,
   FieldName,
@@ -176,9 +176,19 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   if (encoding[dimensionChannel]) {
     const dimensionDef = encoding[dimensionChannel];
     const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
+    const hasSameDimensionAndStackedField = dimensionField && dimensionField === stackedField;
 
-    if (dimensionField && dimensionField !== stackedField) {
-      // avoid grouping by the stacked field
+    // Arc serves as both the polar analog of rect (a positioned shape) and of bar
+    // (a stackable interval). In cartesian coords these roles are split: rect does
+    // not stack, bar does. Because arc combines both, we need a coordinate-aware
+    // check: in polar coords, an unbinned quantitative dimension (e.g. radius)
+    // encodes magnitude, not a grouping category, so it must stay out of groupBy.
+    // In cartesian coords, the dimension always groups unless it is the same
+    // transformed field as the stacked channel.
+    const isPolar = isPolarPositionChannel(fieldChannel) || isPolarPositionChannel(dimensionChannel);
+    const shouldAddGroupBy = isPolar ? !isUnbinnedQuantitative(dimensionDef) : !hasSameDimensionAndStackedField;
+
+    if (shouldAddGroupBy) {
       groupbyChannels.push(dimensionChannel);
       groupbyFields.add(dimensionField);
     }
@@ -237,7 +247,6 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   if (!offset || !isStackOffset(offset)) {
     return null;
   }
-
   if (isAggregate(encoding) && stackBy.length === 0) {
     return null;
   }
