@@ -6,6 +6,7 @@ import {Config, initConfig, stripAndRedirectConfig} from '../config.js';
 import * as log from '../log/index.js';
 import {normalize} from '../normalize/index.js';
 import {assembleParameterSignals} from '../parameter.js';
+import {isSelectionParameter} from '../selection.js';
 import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec/index.js';
 import {
   AutoSizeParams,
@@ -222,6 +223,17 @@ function assembleTopLevelModel(
   });
 
   const {params, ...otherTopLevelProps} = topLevelProperties;
+  const group = model.assembleGroup([
+    ...layoutSignals,
+    ...model.assembleSelectionTopLevelSignals([]),
+    ...assembleParameterSignals(params),
+  ]);
+
+  const parameterSignalNames = new Set(
+    (params || []).filter((param) => !isSelectionParameter(param)).map((param) => param.name),
+  );
+
+  rewriteSignalDomainRefs(group, parameterSignalNames);
 
   return {
     $schema: 'https://vega.github.io/schema/vega/v6.json',
@@ -232,12 +244,87 @@ function assembleTopLevelModel(
     ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
     data,
     ...(projections.length > 0 ? {projections} : {}),
-    ...model.assembleGroup([
-      ...layoutSignals,
-      ...model.assembleSelectionTopLevelSignals([]),
-      ...assembleParameterSignals(params),
-    ]),
+    ...group,
     ...(vgConfig ? {config: vgConfig} : {}),
     ...(usermeta ? {usermeta} : {}),
   };
+}
+
+function rewriteSignalDomainRefs(group: any, parameterSignalNames: Set<string>) {
+  if (!group?.signals || !group?.scales) return;
+
+  const helperScaleName = new Map<string, string>();
+
+  for (const signal of group.signals) {
+    if (!parameterSignalNames.has(signal.name)) continue;
+
+    for (const key of ['init', 'update']) {
+      const expr = signal[key];
+      if (!isString(expr) || expr.indexOf('domain(') < 0) continue;
+
+      signal[key] = expr.replace(/domain\((['"])([^'"]+)\1\)/g, (match: string, _quote: string, scaleName: string) => {
+        const helper = helperScaleFor(scaleName, group, helperScaleName, parameterSignalNames);
+        return helper ? `domain('${helper}')` : match;
+      });
+    }
+  }
+}
+
+function helperScaleFor(
+  scaleName: string,
+  group: any,
+  helperScaleName: Map<string, string>,
+  parameterSignalNames: Set<string>,
+) {
+  if (helperScaleName.has(scaleName)) {
+    return helperScaleName.get(scaleName);
+  }
+
+  const scale = (group.scales as any[]).find((s) => s.name === scaleName);
+  if (!scale || !scale.domain || !scale.domain.signal) return null;
+  if (!parameterSignalNames.has(scale.domain.signal)) return null;
+
+  const ref = findScaleFieldRef(group.marks, scaleName, undefined);
+  if (!ref) return null;
+
+  const helper = `__${scaleName}_domain_source`;
+  if (!(group.scales as any[]).some((s) => s.name === helper)) {
+    group.scales.push({
+      name: helper,
+      type: scale.type,
+      domain: {data: ref.data, field: ref.field},
+    });
+  }
+
+  helperScaleName.set(scaleName, helper);
+  return helper;
+}
+
+type ScaleFieldRef = {data: string; field: string} | null;
+
+function findScaleFieldRef(marks: any[], scaleName: string, inheritedData: string): ScaleFieldRef {
+  for (const mark of marks || []) {
+    const facetDataName = mark.from?.facet?.data;
+    const fromDataName = mark.from?.data;
+    const dataName = fromDataName === 'facet' ? inheritedData : fromDataName || facetDataName || inheritedData;
+    const found = findScaleFieldInEncode(mark.encode, scaleName, dataName);
+    if (found) return found;
+
+    const nested = findScaleFieldRef(mark.marks, scaleName, facetDataName || dataName);
+    if (nested) return nested;
+  }
+  return null;
+}
+
+function findScaleFieldInEncode(encode: any, scaleName: string, dataName: string): ScaleFieldRef {
+  for (const blockName of keys(encode || {})) {
+    const block = encode[blockName] || {};
+    for (const key of keys(block)) {
+      const value = block[key];
+      if (value?.scale === scaleName && isString(value.field) && dataName) {
+        return {data: dataName, field: value.field};
+      }
+    }
+  }
+  return null;
 }
