@@ -1,5 +1,5 @@
 import type {AggregateOp} from 'vega';
-import {array, isArray} from 'vega-util';
+import {array, isArray, isObject} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate.js';
 import {isBinned, isBinning} from './bin.js';
 import {
@@ -13,6 +13,7 @@ import {
   FILLOPACITY,
   getMainChannelFromOffsetChannel,
   getOffsetScaleChannel,
+  HIERARCHY,
   HREF,
   isChannel,
   isNonPositionScaleChannel,
@@ -98,6 +99,78 @@ import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type.js';
 import {keys, some} from './util.js';
 import {isSignalRef} from './vega.schema.js';
 import {isBinnedTimeUnit} from './timeunit.js';
+
+/**
+ * Stratify mode: flat data with explicit parent-child ID references.
+ */
+export interface HierarchyStratifyDef<F extends Field> {
+  /**
+   * Field identifying each node (maps to Vega stratify `key`).
+   */
+  key: TypedFieldDef<F>;
+
+  /**
+   * Field identifying each node's parent (maps to Vega stratify `parentKey`).
+   */
+  parentKey: TypedFieldDef<F>;
+}
+
+/**
+ * Nest mode: flat data grouped by categorical fields to form a hierarchy.
+ * The `nest` array order goes from root to leaf.
+ */
+export interface HierarchyNestDef<F extends Field> {
+  /**
+   * Categorical fields defining grouping levels from root to leaf (maps to Vega `nest` transform `keys`).
+   */
+  nest: TypedFieldDef<F>[];
+}
+
+/**
+ * The `hierarchy` encoding channel specifies how flat data should be converted into a tree.
+ * - **Object with `key` + `parentKey`**: injects Vega `stratify` transform.
+ * - **Object with `nest`**: injects Vega `nest` transform.
+ */
+export type HierarchyDef<F extends Field> = HierarchyStratifyDef<F> | HierarchyNestDef<F>;
+
+export function isHierarchyDef<F extends Field>(def: Partial<ChannelDef<F>>): def is HierarchyDef<F> {
+  if (!isObject(def)) return false;
+  return isHierarchyStratifyDef(def) || isHierarchyNestDef(def);
+}
+
+export function isHierarchyStratifyDef<F extends Field>(def: HierarchyDef<F>): def is HierarchyStratifyDef<F>;
+export function isHierarchyStratifyDef(def: object): boolean;
+export function isHierarchyStratifyDef(def: object): boolean {
+  return 'key' in def && 'parentKey' in def;
+}
+
+export function isHierarchyNestDef<F extends Field>(def: HierarchyDef<F>): def is HierarchyNestDef<F>;
+export function isHierarchyNestDef(def: object): boolean;
+export function isHierarchyNestDef(def: object): boolean {
+  return 'nest' in def;
+}
+
+/**
+ * Extract all field defs from a HierarchyDef (stratify's key/parentKey or nest's field array).
+ */
+function hierarchyFields<F extends Field>(def: HierarchyDef<F>): TypedFieldDef<F>[] {
+  if (isHierarchyStratifyDef(def)) {
+    return [def.key, def.parentKey];
+  }
+  return [...def.nest];
+}
+
+function initHierarchyDef(def: HierarchyDef<string>, opt: {compositeMark?: boolean} = {}): HierarchyDef<string> {
+  if (isHierarchyStratifyDef(def)) {
+    return {
+      key: initFieldDef(def.key, HIERARCHY, opt),
+      parentKey: initFieldDef(def.parentKey, HIERARCHY, opt),
+    };
+  }
+  return {
+    nest: def.nest.map((fd) => initFieldDef(fd, HIERARCHY, opt)),
+  };
+}
 
 export interface Encoding<F extends Field> {
   /**
@@ -294,6 +367,14 @@ export interface Encoding<F extends Field> {
   key?: FieldDefWithoutScale<F>;
 
   /**
+   * Specifies how flat data should be converted into a tree structure for hierarchy-based marks (e.g. `treemap`).
+   *
+   * - **Stratify**: `{"key": {"field": "id"}, "parentKey": {"field": "parent"}}` — each row has an ID and parent ID.
+   * - **Nest**: `{"nest": [{"field": "Origin"}, {"field": "Cylinders"}]}` — categorical fields defining grouping levels from root to leaf.
+   */
+  hierarchy?: HierarchyDef<F>;
+
+  /**
    * Text of the `text` mark.
    */
   text?: TextDef<F>;
@@ -339,6 +420,7 @@ export function channelHasField<F extends Field>(
 ): boolean {
   const channelDef = encoding?.[channel];
   if (channelDef) {
+    if (isHierarchyDef(channelDef)) return hierarchyFields(channelDef).length > 0;
     if (isArray(channelDef)) {
       return some(channelDef, (fieldDef) => !!fieldDef.field);
     } else {
@@ -354,6 +436,7 @@ export function channelHasFieldOrDatum<F extends Field>(
 ): boolean {
   const channelDef = encoding?.[channel];
   if (channelDef) {
+    if (isHierarchyDef(channelDef)) return hierarchyFields(channelDef).length > 0;
     if (isArray(channelDef)) {
       return some(channelDef, (fieldDef) => !!fieldDef.field);
     } else {
@@ -384,6 +467,7 @@ export function isAggregate(encoding: EncodingWithFacet<any>) {
   return some(CHANNELS, (channel) => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
+      if (isHierarchyDef(channelDef)) return false;
       if (isArray(channelDef)) {
         return some(channelDef, (fieldDef) => !!fieldDef.aggregate);
       } else {
@@ -402,7 +486,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
   const aggregate: AggregatedFieldDef[] = [];
   const encoding: Encoding<string> = {};
 
-  forEach(oldEncoding, (channelDef, channel) => {
+  forEach(oldEncoding, (channelDef, channel: Channel) => {
     // Extract potential embedded transformations along with remaining properties
     if (isFieldDef(channelDef)) {
       const {field, aggregate: aggOp, bin, timeUnit, ...remaining} = channelDef;
@@ -538,7 +622,6 @@ export function initEncoding(
   const normalizedEncoding: Encoding<string> = {};
   for (const key of keys(encoding)) {
     if (!isChannel(key)) {
-      // Drop invalid channel
       log.warn(log.message.invalidEncodingChannel(key));
     }
   }
@@ -621,6 +704,8 @@ export function initEncoding(
       if (channel === TOOLTIP && channelDef === null) {
         // Preserve null so we can use it to disable tooltip
         normalizedEncoding[channel] = null;
+      } else if (isHierarchyDef(channelDef)) {
+        normalizedEncoding.hierarchy = initHierarchyDef(channelDef);
       } else if (
         !isFieldDef(channelDef) &&
         !isDatumDef(channelDef) &&
@@ -631,10 +716,10 @@ export function initEncoding(
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         continue;
       }
-
-      (normalizedEncoding as any)[channel as any] = initChannelDef(channelDef as ChannelDef, channel, config);
+      (normalizedEncoding as any)[channel as any] = initChannelDef(channelDef, channel, config);
     }
   }
+
   return normalizedEncoding;
 }
 
@@ -645,7 +730,12 @@ export function normalizeEncoding(encoding: Encoding<string>, config: Config): E
   const normalizedEncoding: Encoding<string> = {};
 
   for (const channel of keys(encoding)) {
-    const newChannelDef = initChannelDef(encoding[channel], channel, config, {compositeMark: true});
+    const channelDef = encoding[channel];
+    if (isHierarchyDef(channelDef)) {
+      normalizedEncoding.hierarchy = initHierarchyDef(channelDef, {compositeMark: true});
+      continue;
+    }
+    const newChannelDef = initChannelDef(channelDef, channel, config, {compositeMark: true});
     (normalizedEncoding as any)[channel as any] = newChannelDef;
   }
 
@@ -657,6 +747,10 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
   for (const channel of keys(encoding)) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
+      if (isHierarchyDef(channelDef)) {
+        arr.push(...hierarchyFields(channelDef));
+        continue;
+      }
       const channelDefArray = array(channelDef);
       for (const def of channelDefArray) {
         if (isFieldDef(def)) {
@@ -766,7 +860,10 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case ANGLE:
       // falls through
 
-      // tooltip fields should not be added to group by [falls through]
+      // hierarchy is for treemap, not path marks [falls through]
+      case HIERARCHY:
+
+      // tooltip should not be added to group by [falls through]
       case TOOLTIP:
         return details;
 

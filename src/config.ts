@@ -326,6 +326,7 @@ export const defaultConfig: Config<SignalRef> = {
   text: {color: 'black'}, // Need this to override default color in mark config
   tick: mark.defaultTickConfig,
   trail: {},
+  treemap: {},
 
   boxplot: {
     size: 14,

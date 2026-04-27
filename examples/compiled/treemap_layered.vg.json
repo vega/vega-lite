@@ -1,0 +1,114 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "A layered treemap with colored category backgrounds and white-stroked leaf cells",
+  "background": "white",
+  "padding": 5,
+  "width": 960,
+  "height": 500,
+  "style": "view",
+  "data": [
+    {"name": "source_0", "url": "data/flare.json", "format": {"type": "json"}},
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "stratify", "key": "id", "parentKey": "parent"},
+        {
+          "type": "treemap",
+          "field": "size",
+          "size": [{"signal": "width"}, {"signal": "height"}],
+          "round": true
+        },
+        {"type": "filter", "expr": "datum.children"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {"type": "stratify", "key": "id", "parentKey": "parent"},
+        {
+          "type": "treemap",
+          "field": "size",
+          "size": [{"signal": "width"}, {"signal": "height"}],
+          "round": true
+        },
+        {"type": "filter", "expr": "!datum.children"}
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["treemap"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "name"},
+          "ariaRoleDescription": {"value": "treemap"},
+          "description": {
+            "signal": "\"name: \" + (isValid(datum[\"name\"]) ? isArray(datum[\"name\"]) ? join(datum[\"name\"], ' ') : datum[\"name\"] : \"\"+datum[\"name\"]) + \"; size: \" + (format(datum[\"size\"], \"\"))"
+          },
+          "x": {"field": "x0"},
+          "x2": {"field": "x1"},
+          "y": {"field": "y0"},
+          "y2": {"field": "y1"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rect",
+      "style": ["treemap"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#fff"},
+          "strokeWidth": {"value": 1},
+          "tooltip": {
+            "signal": "{\"name\": isValid(datum[\"name\"]) ? isArray(datum[\"name\"]) ? join(datum[\"name\"], '\\n') : datum[\"name\"] : \"\"+datum[\"name\"], \"size\": format(datum[\"size\"], \"\")}"
+          },
+          "ariaRoleDescription": {"value": "treemap"},
+          "description": {
+            "signal": "\"size: \" + (format(datum[\"size\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? isArray(datum[\"name\"]) ? join(datum[\"name\"], ' ') : datum[\"name\"] : \"\"+datum[\"name\"])"
+          },
+          "x": {"field": "x0"},
+          "x2": {"field": "x1"},
+          "y": {"field": "y0"},
+          "y2": {"field": "y1"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "name", "sort": true},
+      "range": [
+        "#3182bd",
+        "#6baed6",
+        "#9ecae1",
+        "#c6dbef",
+        "#e6550d",
+        "#fd8d3c",
+        "#fdae6b",
+        "#fdd0a2",
+        "#31a354",
+        "#74c476",
+        "#a1d99b",
+        "#c7e9c0",
+        "#756bb1",
+        "#9e9ac8",
+        "#bcbddc",
+        "#dadaeb",
+        "#636363",
+        "#969696",
+        "#bdbdbd",
+        "#d9d9d9"
+      ]
+    }
+  ]
+}

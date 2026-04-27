@@ -1,0 +1,67 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "A treemap of car data using nesting by Origin and Cylinders, sized by Horsepower.",
+  "background": "white",
+  "padding": 5,
+  "width": 600,
+  "height": 400,
+  "style": "view",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
+      "transform": [
+        {"type": "nest", "keys": ["Origin", "Cylinders"]},
+        {
+          "type": "treemap",
+          "field": "Horsepower",
+          "size": [{"signal": "width"}, {"signal": "height"}]
+        },
+        {"type": "filter", "expr": "!datum.children"}
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["treemap"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#fff"},
+          "strokeWidth": {"value": 0.5},
+          "fill": {"scale": "color", "field": "Origin"},
+          "tooltip": {
+            "signal": "{\"Name\": isValid(datum[\"Name\"]) ? isArray(datum[\"Name\"]) ? join(datum[\"Name\"], '\\n') : datum[\"Name\"] : \"\"+datum[\"Name\"], \"Origin\": isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], '\\n') : datum[\"Origin\"] : \"\"+datum[\"Origin\"], \"Cylinders\": isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], '\\n') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Horsepower\": format(datum[\"Horsepower\"], \"\")}"
+          },
+          "ariaRoleDescription": {"value": "treemap"},
+          "description": {
+            "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Name: \" + (isValid(datum[\"Name\"]) ? isArray(datum[\"Name\"]) ? join(datum[\"Name\"], ' ') : datum[\"Name\"] : \"\"+datum[\"Name\"]) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
+          },
+          "x": {"field": "x0"},
+          "x2": {"field": "x1"},
+          "y": {"field": "y0"},
+          "y2": {"field": "y1"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "range": "category"
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "symbolType": "square",
+      "title": "Origin",
+      "encode": {"symbols": {"update": {"stroke": {"value": "#fff"}}}}
+    }
+  ]
+}

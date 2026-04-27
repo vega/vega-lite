@@ -110,6 +110,7 @@ export function defaultSymbolType(
     case 'rect':
     case 'image':
     case 'square':
+    case 'treemap':
       return 'square';
     case 'line':
     case 'trail':

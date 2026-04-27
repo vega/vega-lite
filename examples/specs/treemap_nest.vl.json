@@ -1,0 +1,25 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A treemap of car data using nesting by Origin and Cylinders, sized by Horsepower.",
+  "width": 600,
+  "height": 400,
+  "data": {
+    "url": "data/cars.json"
+  },
+  "mark": {
+    "type": "treemap",
+    "stroke": "#fff",
+    "strokeWidth": 0.5
+  },
+  "encoding": {
+    "hierarchy": {"nest": [{"field": "Origin"}, {"field": "Cylinders"}]},
+    "size": {"field": "Horsepower", "type": "quantitative"},
+    "color": {"field": "Origin", "type": "nominal"},
+    "tooltip": [
+      {"field": "Name", "type": "nominal"},
+      {"field": "Origin", "type": "nominal"},
+      {"field": "Cylinders", "type": "ordinal"},
+      {"field": "Horsepower", "type": "quantitative"}
+    ]
+  }
+}

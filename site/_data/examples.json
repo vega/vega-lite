@@ -433,6 +433,24 @@
         "title": "Pyramid Pie Chart"
       }
     ],
+    "Hierarchical Plots": [
+      {
+        "name": "treemap_simple",
+        "title": "Simple Treemap (Parent-Child)"
+      },
+      {
+        "name": "treemap_no_size",
+        "title": "Treemap without Size (Parent-Child)"
+      },
+      {
+        "name": "treemap_layered",
+        "title": "Layered Treemap (Parent-Child)"
+      },
+      {
+        "name": "treemap_nest",
+        "title": "Treemap (Nesting)"
+      }
+    ],
     "Advanced Calculations": [
       {
         "name": "bar_percent_of_total",

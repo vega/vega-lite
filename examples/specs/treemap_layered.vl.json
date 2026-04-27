@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A layered treemap with colored category backgrounds and white-stroked leaf cells",
+  "width": 960,
+  "height": 500,
+  "data": {
+    "url": "data/flare.json"
+  },
+  "encoding": {
+    "hierarchy": {
+      "key": {"field": "id"},
+      "parentKey": {"field": "parent"}
+    },
+    "size": {"field": "size", "type": "quantitative"}
+  },
+  "layer": [
+    {
+      "mark": {"type": "treemap", "nodes": "internal", "round": true},
+      "encoding": {
+        "color": {
+          "field": "name",
+          "type": "nominal",
+          "legend": null,
+          "scale": {
+            "range": [
+              "#3182bd", "#6baed6", "#9ecae1", "#c6dbef", "#e6550d",
+              "#fd8d3c", "#fdae6b", "#fdd0a2", "#31a354", "#74c476",
+              "#a1d99b", "#c7e9c0", "#756bb1", "#9e9ac8", "#bcbddc",
+              "#dadaeb", "#636363", "#969696", "#bdbdbd", "#d9d9d9"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "treemap",
+        "nodes": "leaves",
+        "round": true,
+        "fill": "transparent",
+        "stroke": "#fff",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "tooltip": [
+          {"field": "name", "type": "nominal"},
+          {"field": "size", "type": "quantitative"}
+        ]
+      }
+    }
+  ]
+}

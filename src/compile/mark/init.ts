@@ -25,6 +25,7 @@ import {
   SQUARE,
   TEXT,
   TICK,
+  TREEMAP,
 } from '../../mark.js';
 import {QUANTITATIVE, TEMPORAL} from '../../type.js';
 import {contains, getFirstDefined} from '../../util.js';
@@ -108,6 +109,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     case SQUARE:
     case RECT:
     case IMAGE:
+    case TREEMAP:
       // orient is meaningless for these marks.
       return undefined;
   }

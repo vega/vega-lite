@@ -73,6 +73,7 @@ import {SequenceNode} from './sequence.js';
 import {SourceNode} from './source.js';
 import {StackNode} from './stack.js';
 import {TimeUnitNode} from './timeunit.js';
+import {TreemapNode} from './treemap.js';
 import {WindowTransformNode} from './window.js';
 
 export function findSource(data: Data, sources: SourceNode[]) {
@@ -397,6 +398,7 @@ export function parseData(model: Model): DataComponent {
     }
     head = ImputeNode.makeFromEncoding(head, model) ?? head;
     head = StackNode.makeFromEncoding(head, model) ?? head;
+    head = TreemapNode.makeFromEncoding(head, model) ?? head;
   }
 
   let preFilterInvalid: OutputNode | undefined;
