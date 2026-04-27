@@ -450,6 +450,7 @@ describe('Animated Selection', () => {
         {name: 'max_range_extent', init: "extent(range('time'))[1]"},
         // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
         {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
+        {name: 'avl_value', update: 'anim_value'},
       ]),
     );
   });
@@ -505,10 +506,114 @@ describe('Animated Selection', () => {
     );
   });
 
+  it('moves timer value filters onto animation frame dataset', () => {
+    const valueFilterModel = parseUnitModelWithScaleAndSelection({
+      data: {
+        url: 'data/gapminder.json',
+      },
+      params: [
+        {
+          name: 'avl',
+          select: {
+            type: 'point',
+            fields: ['year'],
+            on: 'timer',
+          },
+        },
+      ],
+      transform: [
+        {
+          filter: 'datum.year <= avl_value',
+        },
+      ],
+      mark: 'point',
+      encoding: {
+        x: {
+          field: 'fertility',
+          type: 'quantitative',
+        },
+        y: {
+          field: 'life_expect',
+          type: 'quantitative',
+        },
+        time: {
+          field: 'year',
+          type: 'ordinal',
+        },
+      },
+    });
+
+    valueFilterModel.parseData();
+    optimizeDataflow(valueFilterModel.component.data, valueFilterModel);
+
+    const datasets = assembleUnitSelectionData(valueFilterModel, assembleRootData(valueFilterModel.component.data, {}));
+    const source = datasets.find((d) => d.name === 'source_0');
+    const currentFrame = datasets.find((d) => d.name === 'source_0_curr');
+
+    expect(source.transform).toEqual(
+      expect.not.arrayContaining([expect.objectContaining({expr: 'datum.year <= avl_value'})]),
+    );
+    expect(currentFrame.transform).toEqual(
+      expect.arrayContaining([expect.objectContaining({expr: 'datum.year <= avl_value'})]),
+    );
+  });
+
   it('assigns correct animation frame dataset to marks', () => {
     model.parseMarkGroup();
     const marks = model.assembleMarks();
     expect(marks[0].from.data).toBe('source_0_curr');
+  });
+
+  it('assigns correct animation frame dataset to faceted path groups', () => {
+    const groupedLineModel = parseUnitModelWithScaleAndSelection({
+      data: {
+        values: [
+          {z: 'a', x: 0, y: 0},
+          {z: 'a', x: 1, y: 0.2},
+          {z: 'a', x: 2, y: 0.39},
+          {z: 'b', x: 2, y: 1.0},
+          {z: 'b', x: 1, y: 0.8},
+          {z: 'b', x: 0, y: 0.6},
+        ],
+      },
+      params: [
+        {
+          name: 'avl',
+          select: {
+            type: 'point',
+            fields: ['x'],
+            on: 'timer',
+          },
+        },
+      ],
+      transform: [{filter: 'datum.x <= avl_value'}],
+      mark: 'line',
+      encoding: {
+        x: {
+          field: 'x',
+          type: 'quantitative',
+        },
+        y: {
+          field: 'y',
+          type: 'quantitative',
+        },
+        color: {
+          field: 'z',
+          type: 'nominal',
+        },
+        time: {
+          field: 'x',
+          type: 'ordinal',
+        },
+      },
+    });
+
+    groupedLineModel.parseData();
+    optimizeDataflow(groupedLineModel.component.data, groupedLineModel);
+    groupedLineModel.parseMarkGroup();
+
+    const marks = groupedLineModel.assembleMarks();
+    expect(marks[0].from.facet.data).toMatch(/_curr$/);
   });
 
   it(
@@ -576,6 +681,7 @@ describe('Animated Selection', () => {
           {name: 'max_range_extent', init: "extent(range('time'))[1]"},
           // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
           {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
+          {name: 'avl_value', update: 'anim_value'},
         ]),
       );
       expect(localLogger.warns).toHaveLength(1);

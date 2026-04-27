@@ -67,6 +67,7 @@
     {"name": "min_extent", "init": "extent(animation_frame_domain)[0]"},
     {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
     {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
+    {"name": "animation_frame_value", "update": "anim_value"},
     {
       "name": "animation_frame_tuple",
       "on": [
