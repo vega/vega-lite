@@ -61,7 +61,7 @@ describe('Clear selection transform, point types', () => {
           {
             events: selCmpts['one'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
             force: true,
           },
           {events: parseSelector('dblclick', 'view'), update: 'null'},
@@ -78,7 +78,7 @@ describe('Clear selection transform, point types', () => {
           {
             events: selCmpts['three'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
             force: true,
           },
           {events: parseSelector('pointerout', 'view'), update: 'null'},
@@ -95,7 +95,7 @@ describe('Clear selection transform, point types', () => {
           {
             events: selCmpts['four'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
             force: true,
           },
           {events: parseSelector('pointerout', 'view'), update: 'null'},

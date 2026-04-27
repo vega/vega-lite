@@ -373,6 +373,7 @@
         - [Field Predicate]({{site.baseurl}}/docs/predicate.html#field-predicate)
         - [Parameter Predicate]({{site.baseurl}}/docs/predicate.html#selection-predicate)
         - [Predicate Composition]({{site.baseurl}}/docs/predicate.html#composition)
+        - [Comparator Predicates with Parameters]({{site.baseurl}}/docs/predicate.html#comparator-predicates-with-parameters)
 - [Tooltip]({{site.baseurl}}/docs/tooltip.html)
     - [Documentation Overview]({{site.baseurl}}/docs/tooltip.html#documentation-overview)
     - [Tooltip Based on Encoding]({{site.baseurl}}/docs/tooltip.html#encoding)

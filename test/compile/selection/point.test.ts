@@ -110,7 +110,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['one'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
             force: true,
           },
         ],
@@ -125,7 +125,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['two'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: two_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon"], (item().isVoronoi ? datum.datum : datum)["bin_maxbins_10_Miles_per_Gallon_end"]], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"\", fields: two_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_10_Miles_per_Gallon_end\"]], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]]} : null",
             force: true,
           },
         ],
@@ -140,7 +140,7 @@ describe('Multi Selection', () => {
           {
             events: [{source: 'scope', type: 'click'}],
             update:
-              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: thr_ee_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"]]} : null',
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"\", fields: thr_ee_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Horsepower\"]]} : null",
             force: true,
           },
         ],
@@ -155,7 +155,7 @@ describe('Multi Selection', () => {
           {
             events: [{source: 'scope', type: 'click'}],
             update:
-              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Horsepower"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"\", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Horsepower\"], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]]} : null",
             force: true,
           },
         ],
@@ -170,7 +170,7 @@ describe('Multi Selection', () => {
           {
             events: [{source: 'scope', type: 'click'}],
             update:
-              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: five_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Year"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"\", fields: five_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Year\"], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]]} : null",
             force: true,
           },
         ],
@@ -185,7 +185,7 @@ describe('Multi Selection', () => {
           {
             events: [{source: 'scope', type: 'click'}],
             update:
-              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: six_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["nested.a"], (item().isVoronoi ? datum.datum : datum)["nested.b"]]} : null',
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"\", fields: six_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"nested.a\"], (item().isVoronoi ? datum.datum : datum)[\"nested.b\"]]} : null",
             force: true,
           },
         ],
@@ -211,7 +211,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['one'].events,
             update:
-              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(item().mark.name, 'two_brush') < 0 && indexof(item().mark.name, 'three_brush') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 && indexof(item().mark.name, 'two_brush') < 0 && indexof(item().mark.name, 'three_brush') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
             force: true,
           },
         ],
@@ -246,6 +246,26 @@ describe('Multi Selection', () => {
     );
   });
 
+  it('makes point-style symbol marks interactive with pointer cursor', () => {
+    const marks = [
+      {
+        type: 'symbol',
+        style: ['point'],
+        interactive: false,
+        encode: {update: {}},
+      },
+      {
+        type: 'line',
+        style: ['line'],
+        interactive: true,
+      },
+    ];
+
+    const updated = point.marks(model, selCmpts['one'], marks);
+    expect(updated[0].interactive).toBe(true);
+    expect(updated[0].encode.update.cursor).toEqual({value: 'pointer'});
+  });
+
   it('builds top-level signals', () => {
     const signals = assembleTopLevelSignals(model, []);
     expect(signals).toEqual(
@@ -263,6 +283,210 @@ describe('Multi Selection', () => {
           value: {},
           on: [{events: 'pointermove', update: 'isTuple(group()) ? group() : unit'}],
         },
+      ]),
+    );
+  });
+
+  it('supports param field refs in filter predicates', () => {
+    const paramFieldModel = parseUnitModelWithScaleAndSelection({
+      data: {
+        url: 'data/gapminder.json',
+      },
+      params: [
+        {
+          name: 'avl',
+          select: {
+            type: 'point',
+            fields: ['year'],
+            on: 'timer',
+          },
+        },
+      ],
+      transform: [
+        {
+          filter: {
+            field: 'year',
+            lte: {param: 'avl', field: 'year'},
+          },
+        },
+      ],
+      mark: 'point',
+      encoding: {
+        x: {
+          field: 'fertility',
+          type: 'quantitative',
+        },
+        y: {
+          field: 'life_expect',
+          type: 'quantitative',
+        },
+        time: {
+          field: 'year',
+          type: 'ordinal',
+        },
+      },
+    });
+
+    paramFieldModel.parseData();
+    optimizeDataflow(paramFieldModel.component.data, paramFieldModel);
+
+    const datasets = assembleUnitSelectionData(paramFieldModel, assembleRootData(paramFieldModel.component.data, {}));
+    const currentFrame = datasets.find((d) => d.name === 'source_0_curr');
+    expect(currentFrame.transform).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          expr: '(!length(data("avl_store")) || (datum["year"]<=(length(data("avl_store")) ? data("avl_store")[0].values[0] : null)))',
+        }),
+      ]),
+    );
+  });
+
+  it('supports empty=true semantics for selection param field refs', () => {
+    const modelWithEmptyTrue = parseUnitModelWithScaleAndSelection({
+      data: {
+        values: [
+          {x: 0, y: 0},
+          {x: 1, y: 1},
+        ],
+      },
+      params: [
+        {
+          name: 'pick',
+          select: {
+            type: 'point',
+            fields: ['x'],
+            on: 'click',
+          },
+        },
+      ],
+      transform: [
+        {
+          filter: {
+            field: 'x',
+            lte: {param: 'pick', field: 'x', empty: true},
+          },
+        },
+      ],
+      mark: 'point',
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+      },
+    });
+
+    modelWithEmptyTrue.parseData();
+    optimizeDataflow(modelWithEmptyTrue.component.data, modelWithEmptyTrue);
+
+    const datasets = assembleUnitSelectionData(
+      modelWithEmptyTrue,
+      assembleRootData(modelWithEmptyTrue.component.data, {}),
+    );
+    const source = datasets.find((d) => d.name === 'data_0');
+    expect(source.transform).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          expr: '(!length(data("pick_store")) || (datum["x"]<=(length(data("pick_store")) ? data("pick_store")[0].values[0] : null)))',
+        }),
+      ]),
+    );
+  });
+
+  it('defaults to empty=true semantics for selection param field refs', () => {
+    const modelWithDefaultEmpty = parseUnitModelWithScaleAndSelection({
+      data: {
+        values: [
+          {x: 0, y: 0},
+          {x: 1, y: 1},
+        ],
+      },
+      params: [
+        {
+          name: 'pick',
+          select: {
+            type: 'point',
+            fields: ['x'],
+            on: 'click',
+          },
+        },
+      ],
+      transform: [
+        {
+          filter: {
+            field: 'x',
+            lte: {param: 'pick', field: 'x'},
+          },
+        },
+      ],
+      mark: 'point',
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+      },
+    });
+
+    modelWithDefaultEmpty.parseData();
+    optimizeDataflow(modelWithDefaultEmpty.component.data, modelWithDefaultEmpty);
+
+    const datasets = assembleUnitSelectionData(
+      modelWithDefaultEmpty,
+      assembleRootData(modelWithDefaultEmpty.component.data, {}),
+    );
+    const source = datasets.find((d) => d.name === 'data_0');
+    expect(source.transform).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          expr: '(!length(data("pick_store")) || (datum["x"]<=(length(data("pick_store")) ? data("pick_store")[0].values[0] : null)))',
+        }),
+      ]),
+    );
+  });
+
+  it('supports empty=false semantics for selection param field refs', () => {
+    const modelWithEmptyFalse = parseUnitModelWithScaleAndSelection({
+      data: {
+        values: [
+          {x: 0, y: 0},
+          {x: 1, y: 1},
+        ],
+      },
+      params: [
+        {
+          name: 'pick',
+          select: {
+            type: 'point',
+            fields: ['x'],
+            on: 'click',
+          },
+        },
+      ],
+      transform: [
+        {
+          filter: {
+            field: 'x',
+            lte: {param: 'pick', field: 'x', empty: false},
+          },
+        },
+      ],
+      mark: 'point',
+      encoding: {
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+      },
+    });
+
+    modelWithEmptyFalse.parseData();
+    optimizeDataflow(modelWithEmptyFalse.component.data, modelWithEmptyFalse);
+
+    const datasets = assembleUnitSelectionData(
+      modelWithEmptyFalse,
+      assembleRootData(modelWithEmptyFalse.component.data, {}),
+    );
+    const source = datasets.find((d) => d.name === 'data_0');
+    expect(source.transform).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          expr: '(!!length(data("pick_store")) && (datum["x"]<=(length(data("pick_store")) ? data("pick_store")[0].values[0] : null)))',
+        }),
       ]),
     );
   });
