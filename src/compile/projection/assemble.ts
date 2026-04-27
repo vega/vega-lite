@@ -2,6 +2,7 @@ import {Projection as VgProjection, SignalRef} from 'vega';
 import {contains} from '../../util.js';
 import {isSignalRef} from '../../vega.schema.js';
 import {isConcatModel, isLayerModel, Model} from '../model.js';
+import {projectionFitName, projectionScaleName, projectionTranslateName} from '../selection/scales.js';
 
 export function assembleProjections(model: Model): VgProjection[] {
   if (isLayerModel(model) || isConcatModel(model)) {
@@ -25,6 +26,7 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
 
   const projection = component.combine();
   const {name} = projection; // we need to extract name so that it is always present in the output and pass TS type validation
+  const selectionName = component.interactiveSelection;
 
   if (!component.data) {
     // generate custom projection, no automatic fitting
@@ -35,6 +37,12 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
         translate: {signal: '[width / 2, height / 2]'},
         // parameters, overwrite default translate if specified
         ...projection,
+        ...(selectionName
+          ? {
+              scale: {signal: projectionScaleName(selectionName)},
+              translate: {signal: projectionTranslateName(selectionName)},
+            }
+          : {}),
       },
     ];
   } else {
@@ -60,10 +68,20 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
       {
         name,
         size,
-        fit: {
-          signal: fits.length > 1 ? `[${fits.join(', ')}]` : fits[0],
-        },
+        fit: selectionName
+          ? {
+              signal: projectionFitName(selectionName),
+            }
+          : {
+              signal: fits.length > 1 ? `[${fits.join(', ')}]` : fits[0],
+            },
         ...projection,
+        ...(selectionName
+          ? {
+              scale: {signal: projectionScaleName(selectionName)},
+              translate: {signal: projectionTranslateName(selectionName)},
+            }
+          : {}),
       },
     ];
   }

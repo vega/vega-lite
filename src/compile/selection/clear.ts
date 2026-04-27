@@ -6,6 +6,15 @@ import {varName} from '../../util.js';
 import inputBindings from './inputs.js';
 import toggle, {TOGGLE} from './toggle.js';
 import {SelectionCompiler} from './index.js';
+import {
+  isProjectionBoundInterval,
+  projectionFitExpr,
+  projectionFitName,
+  projectionScaleName,
+  projectionTranslateName,
+} from './scales.js';
+import {UnitModel} from '../unit.js';
+import {stringValue} from 'vega-util';
 
 const clear: SelectionCompiler = {
   defined: (selCmpt) => {
@@ -33,13 +42,32 @@ const clear: SelectionCompiler = {
 
   signals: (model, selCmpt, signals) => {
     function addClear(idx: number, update: Update) {
-      if (idx !== -1 && signals[idx].on) {
-        signals[idx].on.push({events: selCmpt.clear, update});
+      if (idx !== -1) {
+        (signals[idx].on ??= []).push({events: selCmpt.clear, update});
       }
     }
 
     // Be as minimalist as possible when adding clear triggers to minimize dataflow execution.
     if (selCmpt.type === 'interval') {
+      if (isProjectionBoundInterval(model as UnitModel, selCmpt as any)) {
+        const unit = model as UnitModel;
+        const fitExpr = projectionFitExpr(model as UnitModel);
+        const scaleIdx = signals.findIndex((n) => n.name === projectionScaleName(selCmpt.name));
+        const translateIdx = signals.findIndex((n) => n.name === projectionTranslateName(selCmpt.name));
+        const projection = stringValue(unit.projectionName());
+
+        addClear(scaleIdx, `geoScale(${projection})`);
+        addClear(
+          translateIdx,
+          `[${unit.getSizeSignalRef('width').signal} / 2, ${unit.getSizeSignalRef('height').signal} / 2]`,
+        );
+
+        if (fitExpr) {
+          const fitIdx = signals.findIndex((n) => n.name === projectionFitName(selCmpt.name));
+          addClear(fitIdx, fitExpr);
+        }
+      }
+
       for (const proj of selCmpt.project.items) {
         const vIdx = signals.findIndex((n) => n.name === proj.signals.visual);
         addClear(vIdx, '[0, 0]');

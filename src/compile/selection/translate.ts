@@ -5,8 +5,15 @@ import {ScaleChannel, X, Y} from '../../channel.js';
 import {UnitModel} from '../unit.js';
 import {BRUSH as INTERVAL_BRUSH} from './interval.js';
 import {SelectionProjection} from './project.js';
-import scalesCompiler, {domain} from './scales.js';
+import scalesCompiler, {
+  domain,
+  isProjectionBoundInterval,
+  projectionFitName,
+  projectionScaleName,
+  projectionTranslateName,
+} from './scales.js';
 import {SelectionCompiler} from './index.js';
+import {stringValue} from 'vega-util';
 
 const ANCHOR = '_translate_anchor';
 const DELTA = '_translate_delta';
@@ -19,6 +26,7 @@ const translate: SelectionCompiler<'interval'> = {
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const boundScales = scalesCompiler.defined(selCmpt);
+    const projectionBound = isProjectionBoundInterval(model, selCmpt);
     const anchor = name + ANCHOR;
     const {x, y} = selCmpt.project.hasChannel;
     let events = parseSelector(selCmpt.translate, 'scope');
@@ -34,9 +42,11 @@ const translate: SelectionCompiler<'interval'> = {
         on: [
           {
             events: events.map((e) => e.between[0]),
-            update: `{x: x(unit), y: y(unit)${
-              x !== undefined ? `, extent_x: ${boundScales ? domain(model, X) : `slice(${x.signals.visual})`}` : ''
-            }${y !== undefined ? `, extent_y: ${boundScales ? domain(model, Y) : `slice(${y.signals.visual})`}` : ''}}`,
+            update: projectionBound
+              ? `{x: x(unit), y: y(unit), translate: ${projectionTranslateName(name)}}`
+              : `{x: x(unit), y: y(unit)${
+                  x !== undefined ? `, extent_x: ${boundScales ? domain(model, X) : `slice(${x.signals.visual})`}` : ''
+                }${y !== undefined ? `, extent_y: ${boundScales ? domain(model, Y) : `slice(${y.signals.visual})`}` : ''}}`,
           },
         ],
       },
@@ -51,6 +61,40 @@ const translate: SelectionCompiler<'interval'> = {
         ],
       },
     );
+
+    if (projectionBound) {
+      const anchorSg: any = signals.find((s) => s.name === anchor);
+      const scaleSg = signals.find((s) => s.name === projectionScaleName(name));
+      const translateSg = signals.find((s) => s.name === projectionTranslateName(name));
+      const fitSg = signals.find((s) => s.name === projectionFitName(name));
+      const projection = stringValue(model.projectionName());
+
+      anchorSg.value = {x: 0, y: 0, translate: [0, 0]};
+      scaleSg.on ??= [];
+      translateSg.on ??= [];
+
+      scaleSg.on.push({
+        events: events.map((e) => e.between[0]),
+        update: `geoScale(${projection})`,
+      });
+
+      translateSg.on.push({
+        events: {signal: name + DELTA},
+        update: `[${anchor}.translate[0] - ${name + DELTA}.x, ${anchor}.translate[1] - ${name + DELTA}.y]`,
+      });
+
+      if (fitSg) {
+        fitSg.on = [
+          ...(fitSg.on ?? []),
+          {
+            events: {signal: name + DELTA},
+            update: 'null',
+          },
+        ];
+      }
+
+      return signals;
+    }
 
     if (x !== undefined) {
       onDelta(model, selCmpt, x, 'width', signals);

@@ -297,4 +297,71 @@ describe('Translate Selection Transform', () => {
       });
     });
   });
+
+  describe('projection-bound intervals', () => {
+    it('builds projection translate/scale updates', () => {
+      const model = parseUnitModel({
+        mark: 'circle',
+        projection: {type: 'albersUsa'},
+        encoding: {
+          longitude: {field: 'longitude', type: 'quantitative'},
+          latitude: {field: 'latitude', type: 'quantitative'},
+        },
+        params: [{name: 'geo', select: {type: 'interval'}, bind: 'scales'}],
+      });
+
+      model.parseScale();
+      model.component.selection = parseUnitSelection(model, model.selection);
+      model.parseProjection();
+
+      const signals = assembleUnitSelectionSignals(model, []);
+      const anchor: any = signals.find((s) => s.name === 'geo_translate_anchor');
+      expect(anchor).toEqual(
+        expect.objectContaining({
+          value: {x: 0, y: 0, translate: [0, 0]},
+          on: [
+            {
+              events: parseSelector('pointerdown', 'scope'),
+              update: '{x: x(unit), y: y(unit), translate: geo_projection_translate}',
+            },
+          ],
+        }),
+      );
+
+      const scale: any = signals.find((s) => s.name === 'geo_projection_scale');
+      expect(scale.value).toBe(1);
+      expect(scale.on).toEqual(
+        expect.arrayContaining([
+          {
+            events: parseSelector('pointerdown', 'scope'),
+            update: 'geoScale("projection")',
+          },
+        ]),
+      );
+
+      const projTranslate: any = signals.find((s) => s.name === 'geo_projection_translate');
+      expect(projTranslate.value).toEqual([0, 0]);
+      expect(projTranslate.update).toBe('[width / 2, height / 2]');
+      expect(projTranslate.on).toEqual(
+        expect.arrayContaining([
+          {
+            events: {signal: 'geo_translate_delta'},
+            update:
+              '[geo_translate_anchor.translate[0] - geo_translate_delta.x, geo_translate_anchor.translate[1] - geo_translate_delta.y]',
+          },
+        ]),
+      );
+
+      const fit: any = signals.find((s) => s.name === 'geo_projection_fit');
+      expect(fit.init).toBe('geojson_0');
+      expect(fit.on).toEqual(
+        expect.arrayContaining([
+          {
+            events: {signal: 'geo_translate_delta'},
+            update: 'null',
+          },
+        ]),
+      );
+    });
+  });
 });
