@@ -1,0 +1,23 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "title": "Density Mark: Bandwidth",
+  "width": 420,
+  "height": 180,
+  "data": {
+    "url": "data/penguins.json"
+  },
+  "mark": {
+    "type": "density",
+    "bandwidth": 120
+  },
+  "encoding": {
+    "x": {
+      "field": "Body Mass (g)",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "Species",
+      "type": "nominal"
+    }
+  }
+}

@@ -4676,7 +4676,7 @@
         },
         "type": {
           "$ref": "#/definitions/BoxPlot",
-          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"density\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [
@@ -5209,6 +5209,9 @@
         },
         {
           "$ref": "#/definitions/ErrorBand"
+        },
+        {
+          "$ref": "#/definitions/Density"
         }
       ]
     },
@@ -5222,6 +5225,9 @@
         },
         {
           "$ref": "#/definitions/ErrorBandDef"
+        },
+        {
+          "$ref": "#/definitions/DensityDef"
         }
       ]
     },
@@ -7662,6 +7668,10 @@
           "description": "Allow the `formatType` property for text marks and guides to accept a custom formatter function [registered as a Vega expression](https://vega.github.io/vega-lite/usage/compile.html#format-type).",
           "type": "boolean"
         },
+        "density": {
+          "$ref": "#/definitions/DensityConfig",
+          "description": "Density Config"
+        },
         "errorband": {
           "$ref": "#/definitions/ErrorBandConfig",
           "description": "ErrorBand Config"
@@ -8079,6 +8089,285 @@
       "maximum": 7,
       "minimum": 1,
       "type": "number"
+    },
+    "Density": {
+      "const": "density",
+      "type": "string"
+    },
+    "DensityConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output fields for the sample value and corresponding density estimate.\n\n__Default value:__ `[\"value\", \"density\"]`",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "bandwidth": {
+          "description": "The bandwidth (standard deviation) of the Gaussian kernel. If unspecified or set to zero, the bandwidth value is automatically estimated from the input data using Scott's rule.",
+          "type": "number"
+        },
+        "clip": {
+          "description": "Whether the density mark should be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
+        "counts": {
+          "description": "A boolean flag indicating if the output values should be probability estimates (false) or smoothed counts (true).\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
+        "cumulative": {
+          "description": "A boolean flag indicating whether to produce density estimates (false) or cumulative density estimates (true).\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
+        "extent": {
+          "description": "A [min, max] domain from which to sample the distribution. If unspecified, the extent will be determined by the observed minimum and maximum values of the density value field.",
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "fill": {
+          "description": "Default fill color.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fillOpacity": {
+          "description": "The fill opacity (value between [0,1]).",
+          "type": "number"
+        },
+        "interpolate": {
+          "$ref": "#/definitions/Interpolate",
+          "description": "The line interpolation method for the density curve/area."
+        },
+        "maxsteps": {
+          "description": "The maximum number of samples to take along the extent domain for plotting the density.\n\n__Default value:__ `200`",
+          "type": "number"
+        },
+        "minsteps": {
+          "description": "The minimum number of samples to take along the extent domain for plotting the density.\n\n__Default value:__ `25`",
+          "type": "number"
+        },
+        "opacity": {
+          "description": "The opacity (value between [0,1]) of the density mark.",
+          "type": "number"
+        },
+        "resolve": {
+          "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`.\n\nFor grouped densities, the implicit default is `\"independent\"` when either:\n- the density renders as a line mark with no explicit non-null `stack`, or\n- the density renders as an area mark with `stack: null`.\n\nThis implicit default applies only when `resolve` is not explicitly set in the mark definition or config.",
+          "enum": [
+            "independent",
+            "shared"
+          ],
+          "type": "string"
+        },
+        "stack": {
+          "description": "Type of stacking offset for the density.",
+          "enum": [
+            "zero",
+            "center",
+            "normalize",
+            null
+          ],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "steps": {
+          "description": "The exact number of samples to take along the extent domain for plotting the density. If specified, overrides both minsteps and maxsteps to set an exact number of uniform samples.",
+          "type": "number"
+        },
+        "stroke": {
+          "description": "Default stroke color.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "strokeDash": {
+          "description": "An array of alternating stroke length and space lengths for creating dashed lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "description": "The offset for stroke dash pattern.",
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "description": "The stroke opacity (value between [0,1]).",
+          "type": "number"
+        },
+        "strokeWidth": {
+          "description": "The stroke width in pixels.",
+          "type": "number"
+        },
+        "tension": {
+          "description": "The tension parameter for the interpolation type of the density curve/area.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "DensityDef": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output fields for the sample value and corresponding density estimate.\n\n__Default value:__ `[\"value\", \"density\"]`",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "bandwidth": {
+          "description": "The bandwidth (standard deviation) of the Gaussian kernel. If unspecified or set to zero, the bandwidth value is automatically estimated from the input data using Scott's rule.",
+          "type": "number"
+        },
+        "clip": {
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
+        },
+        "counts": {
+          "description": "A boolean flag indicating if the output values should be probability estimates (false) or smoothed counts (true).\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
+        "cumulative": {
+          "description": "A boolean flag indicating whether to produce density estimates (false) or cumulative density estimates (true).\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
+        "extent": {
+          "description": "A [min, max] domain from which to sample the distribution. If unspecified, the extent will be determined by the observed minimum and maximum values of the density value field.",
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "fill": {
+          "description": "Default fill color.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fillOpacity": {
+          "description": "The fill opacity (value between [0,1]).",
+          "type": "number"
+        },
+        "interpolate": {
+          "$ref": "#/definitions/Interpolate",
+          "description": "The line interpolation method for the density curve/area."
+        },
+        "maxsteps": {
+          "description": "The maximum number of samples to take along the extent domain for plotting the density.\n\n__Default value:__ `200`",
+          "type": "number"
+        },
+        "minsteps": {
+          "description": "The minimum number of samples to take along the extent domain for plotting the density.\n\n__Default value:__ `25`",
+          "type": "number"
+        },
+        "opacity": {
+          "description": "The opacity (value between [0,1]) of the mark.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orientation",
+          "description": "Orientation of the density. This is normally automatically determined based on types of fields on x and y channels. However, an explicit `orient` be specified when the orientation is ambiguous."
+        },
+        "resolve": {
+          "description": "Indicates how parameters for multiple densities should be resolved. If `\"independent\"`, each density may have its own domain extent and dynamic number of curve sample steps. If `\"shared\"`, the KDE transform will ensure that all densities are defined over a shared domain and curve steps, enabling stacking.\n\n__Default value:__ `\"shared\"`.\n\nFor grouped densities, the implicit default is `\"independent\"` when either:\n- the density renders as a line mark with no explicit non-null `stack`, or\n- the density renders as an area mark with `stack: null`.\n\nThis implicit default applies only when `resolve` is not explicitly set in the mark definition or config.",
+          "enum": [
+            "independent",
+            "shared"
+          ],
+          "type": "string"
+        },
+        "stack": {
+          "description": "Type of stacking offset for the density.",
+          "enum": [
+            "zero",
+            "center",
+            "normalize",
+            null
+          ],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "steps": {
+          "description": "The exact number of samples to take along the extent domain for plotting the density. If specified, overrides both minsteps and maxsteps to set an exact number of uniform samples.",
+          "type": "number"
+        },
+        "stroke": {
+          "description": "Default stroke color.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "strokeDash": {
+          "description": "An array of alternating stroke length and space lengths for creating dashed lines.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "strokeDashOffset": {
+          "description": "The offset for stroke dash pattern.",
+          "type": "number"
+        },
+        "strokeOpacity": {
+          "description": "The stroke opacity (value between [0,1]).",
+          "type": "number"
+        },
+        "strokeWidth": {
+          "description": "The stroke width in pixels.",
+          "type": "number"
+        },
+        "tension": {
+          "description": "The tension parameter for the interpolation type of the density curve/area.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "type": {
+          "$ref": "#/definitions/Density",
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"density\"`, `\"errorband\"`, `\"errorbar\"`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
     },
     "DensityTransform": {
       "additionalProperties": false,
@@ -8523,7 +8812,7 @@
         },
         "type": {
           "$ref": "#/definitions/ErrorBand",
-          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"density\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [
@@ -8638,7 +8927,7 @@
         },
         "type": {
           "$ref": "#/definitions/ErrorBar",
-          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"density\"`, `\"errorband\"`, `\"errorbar\"`)."
         }
       },
       "required": [
@@ -17497,7 +17786,7 @@
         },
         "type": {
           "$ref": "#/definitions/Mark",
-          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"density\"`, `\"errorband\"`, `\"errorbar\"`)."
         },
         "url": {
           "anyOf": [

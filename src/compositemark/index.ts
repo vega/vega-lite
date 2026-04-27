@@ -1,6 +1,7 @@
 import {Field} from '../channeldef.js';
 import {Encoding} from '../encoding.js';
 import {NormalizerParams} from '../normalize/index.js';
+import {NormalizeLayerOrUnit} from '../normalize/base.js';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
 import {EncodingFacetMapping} from '../spec/facet.js';
 import {NormalizedUnitSpec} from '../spec/unit.js';
@@ -24,14 +25,17 @@ import {
   ErrorExtraEncoding,
   normalizeErrorBar,
 } from './errorbar.js';
+import {DENSITY, Density, DensityConfigMixins, DensityDef, DENSITY_PARTS, normalizeDensity} from './density.js';
 
 export type {BoxPlotConfig} from './boxplot.js';
 export type {ErrorBandConfigMixins} from './errorband.js';
 export type {ErrorBarConfigMixins} from './errorbar.js';
+export type {DensityConfigMixins} from './density.js';
 
 export type CompositeMarkNormalizerRun = (
   spec: GenericUnitSpec<any, any>,
   params: NormalizerParams,
+  normalize: NormalizeLayerOrUnit,
 ) => NormalizedLayerSpec | NormalizedUnitSpec;
 
 /**
@@ -66,18 +70,20 @@ export type SharedCompositeEncoding<F extends Field> = PartialIndex<
 
 export type FacetedCompositeEncoding<F extends Field> = Encoding<F> & ErrorExtraEncoding<F> & EncodingFacetMapping<F>;
 
-export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
+export type CompositeMark = BoxPlot | ErrorBar | ErrorBand | Density;
 
 export function getAllCompositeMarks() {
   return keys(compositeMarkRegistry);
 }
 
-export type CompositeMarkDef = BoxPlotDef | ErrorBarDef | ErrorBandDef;
+export type CompositeMarkDef = BoxPlotDef | ErrorBarDef | ErrorBandDef | DensityDef;
 
 export type CompositeAggregate = BoxPlot | ErrorBar | ErrorBand;
 
-export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins, ErrorBandConfigMixins {}
+export interface CompositeMarkConfigMixins
+  extends BoxPlotConfigMixins, ErrorBarConfigMixins, ErrorBandConfigMixins, DensityConfigMixins {}
 
 add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
 add(ERRORBAR, normalizeErrorBar, ERRORBAR_PARTS);
 add(ERRORBAND, normalizeErrorBand, ERRORBAND_PARTS);
+add(DENSITY, normalizeDensity, DENSITY_PARTS);

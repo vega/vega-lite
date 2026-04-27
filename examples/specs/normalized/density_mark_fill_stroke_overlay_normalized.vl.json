@@ -1,0 +1,46 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "title": "Density Mark: Bandwidth",
+  "width": 420,
+  "height": 180,
+  "data": {"url": "data/penguins.json"},
+  "transform": [
+    {
+      "density": "Body Mass (g)",
+      "groupby": ["Species"],
+      "bandwidth": 120,
+      "resolve": "independent"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "area",
+        "orient": "vertical",
+        "fill": "grey",
+        "fillOpacity": 0.5
+      },
+      "encoding": {
+        "x": {
+          "field": "value",
+          "type": "quantitative",
+          "title": "Body Mass (g)"
+        },
+        "y": {"field": "density", "type": "quantitative", "stack": null},
+        "detail": {"field": "Species"}
+      }
+    },
+    {
+      "mark": {"type": "line", "orient": "vertical"},
+      "encoding": {
+        "x": {
+          "field": "value",
+          "type": "quantitative",
+          "title": "Body Mass (g)"
+        },
+        "y": {"field": "density", "type": "quantitative"},
+        "stroke": {"field": "Species", "type": "nominal"}
+      }
+    }
+  ]
+}
