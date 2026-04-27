@@ -17107,6 +17107,14 @@
           ],
           "description": "The minimum band size for bar and rectangle marks. __Default value:__ `0.25`"
         },
+        "offsetGroup": {
+          "description": "Controls automatic path grouping when `xOffset`/`yOffset` is used with path marks (`line`, `area`, `trail`).\n\n- `\"auto\"` (default) adds grouping by the corresponding base channel (`x` or `y`) to keep paths confined within lanes.\n- `\"none\"` disables this automatic grouping so only explicitly encoded grouping channels (`detail`, `color`, etc.) are used.",
+          "enum": [
+            "auto",
+            "none"
+          ],
+          "type": "string"
+        },
         "opacity": {
           "anyOf": [
             {
@@ -18642,6 +18650,14 @@
               "$ref": "#/definitions/ExprRef"
             }
           ]
+        },
+        "offsetGroup": {
+          "description": "Controls automatic path grouping when `xOffset`/`yOffset` is used with path marks (`line`, `area`, `trail`).\n\n- `\"auto\"` (default) adds grouping by the corresponding base channel (`x` or `y`) to keep paths confined within lanes.\n- `\"none\"` disables this automatic grouping so only explicitly encoded grouping channels (`detail`, `color`, etc.) are used.",
+          "enum": [
+            "auto",
+            "none"
+          ],
+          "type": "string"
         },
         "opacity": {
           "anyOf": [
