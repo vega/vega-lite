@@ -1,0 +1,138 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "background": "white",
+  "padding": 5,
+  "title": {"text": "Ranged Bars Driven by yOffset", "frame": "group"},
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"quarter": "Q1", "team": "A", "score": 12},
+        {"quarter": "Q2", "team": "A", "score": 18},
+        {"quarter": "Q3", "team": "A", "score": 9},
+        {"quarter": "Q4", "team": "A", "score": 15},
+        {"quarter": "Q1", "team": "B", "score": 8},
+        {"quarter": "Q2", "team": "B", "score": 14},
+        {"quarter": "Q3", "team": "B", "score": 11},
+        {"quarter": "Q4", "team": "B", "score": 17}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"score\"]) && isFinite(+datum[\"score\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 46},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    },
+    {"name": "y_step", "value": 40},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.2, 0.2) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.8},
+          "fill": {"scale": "color", "field": "team"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"quarter: \" + (isValid(datum[\"quarter\"]) ? isArray(datum[\"quarter\"]) ? join(datum[\"quarter\"], ' ') : datum[\"quarter\"] : \"\"+datum[\"quarter\"]) + \"; team: \" + (isValid(datum[\"team\"]) ? isArray(datum[\"team\"]) ? join(datum[\"team\"], ' ') : datum[\"team\"] : \"\"+datum[\"team\"]) + \"; score: \" + (format(datum[\"score\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "quarter"},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
+          "y": {
+            "scale": "y",
+            "field": "team",
+            "offset": {"scale": "yOffset", "field": "score"}
+          },
+          "y2": {
+            "scale": "y",
+            "field": "team",
+            "offset": {"scale": "yOffset", "value": 0}
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "quarter", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "team", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0.2,
+      "paddingOuter": 0.2
+    },
+    {
+      "name": "yOffset",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "score"},
+      "range": [0, {"signal": "bandwidth('y')"}],
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "team", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "quarter",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "team",
+      "bandPosition": 1,
+      "encode": {
+        "labels": {
+          "update": {"y": {"scale": "y", "signal": "datum.value", "band": 1}}
+        }
+      },
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "symbolType": "square",
+      "title": "team",
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.8}}}}
+    }
+  ]
+}

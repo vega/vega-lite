@@ -127,6 +127,35 @@ describe('stack', () => {
     }
   });
 
+  it('should disable default x/y stacking when only offset is present on the orthogonal axis', () => {
+    for (const mark of [BAR, AREA]) {
+      expect(
+        stack(mark, {
+          x: {field: 'value', type: 'quantitative'},
+          yOffset: {field: 'density', type: 'quantitative'},
+        }),
+      ).toBeNull();
+
+      expect(
+        stack(mark, {
+          y: {field: 'value', type: 'quantitative'},
+          xOffset: {field: 'density', type: 'quantitative'},
+        }),
+      ).toBeNull();
+    }
+  });
+
+  it('should still allow explicit stacking on x/y when offset is present', () => {
+    for (const mark of [BAR, AREA]) {
+      const stackProps = stack(mark, {
+        x: {field: 'value', type: 'quantitative', stack: 'zero'},
+        yOffset: {field: 'density', type: 'quantitative'},
+        color: {field: 'site', type: 'nominal'},
+      });
+      expect(stackProps?.fieldChannel).toBe(X);
+    }
+  });
+
   it('should always be disabled if the stackby channel is aggregated', () => {
     for (const s of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       for (const mark of PRIMITIVE_MARKS) {

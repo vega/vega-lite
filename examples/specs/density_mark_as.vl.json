@@ -1,0 +1,31 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "title": "Density Transform: Custom Output Field Names",
+  "width": 420,
+  "height": 180,
+  "data": {
+    "url": "data/penguins.json"
+  },
+  "transform": [
+    {
+      "density": "Body Mass (g)",
+      "groupby": ["Species"],
+      "as": ["mass_value", "mass_density"]
+    }
+  ],
+  "mark": "area",
+  "encoding": {
+    "x": {
+      "field": "mass_value",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "mass_density",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "Species",
+      "type": "nominal"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import {NONPOSITION_SCALE_CHANNELS, OFFSET_SCALE_CHANNELS} from '../../../src/channel.js';
 import * as rules from '../../../src/compile/scale/properties.js';
-import {AREA, BAR, LINE} from '../../../src/mark.js';
+import {ARC, AREA, BAR, CIRCLE, IMAGE, LINE, POINT, RECT, RULE, SQUARE, TEXT, TICK, TRAIL} from '../../../src/mark.js';
 import {ScaleType} from '../../../src/scale.js';
 
 describe('compile/scale', () => {
@@ -368,6 +368,32 @@ describe('compile/scale', () => {
           false,
         ),
       ).toBe(true);
+    });
+
+    it('should return true for quantitative offset scales of non-ranged charts', () => {
+      for (const mark of [ARC, AREA, BAR, CIRCLE, IMAGE, LINE, POINT, RECT, RULE, SQUARE, TEXT, TICK, TRAIL]) {
+        for (const channel of ['xOffset', 'yOffset'] as const) {
+          expect(
+            rules.zero(
+              channel,
+              {field: 'a', type: 'quantitative'},
+              undefined,
+              {type: mark},
+              'linear',
+              {zero: false},
+              false,
+            ),
+          ).toBe(true);
+        }
+      }
+    });
+
+    it('should return false for quantitative offset scales of ranged charts', () => {
+      for (const channel of ['xOffset', 'yOffset'] as const) {
+        expect(
+          rules.zero(channel, {field: 'a', type: 'quantitative'}, undefined, {type: BAR}, 'linear', {zero: true}, true),
+        ).toBe(false);
+      }
     });
   });
 });

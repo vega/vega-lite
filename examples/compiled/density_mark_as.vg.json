@@ -1,0 +1,164 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "background": "white",
+  "padding": 5,
+  "width": 420,
+  "height": 180,
+  "title": {
+    "text": "Density Transform: Custom Output Field Names",
+    "frame": "group"
+  },
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/penguins.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "kde",
+          "field": "Body Mass (g)",
+          "groupby": ["Species"],
+          "as": ["mass_value", "mass_density"],
+          "resolve": "shared"
+        },
+        {
+          "type": "impute",
+          "field": "mass_density",
+          "groupby": ["Species"],
+          "key": "mass_value",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["mass_value"],
+          "field": "mass_density",
+          "sort": {"field": ["Species"], "order": ["descending"]},
+          "as": ["mass_density_start", "mass_density_end"],
+          "offset": "zero"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "source_0",
+          "groupby": ["Species"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "area",
+          "style": ["area"],
+          "sort": {"field": "x"},
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "orient": {"value": "vertical"},
+              "fill": {"scale": "color", "field": "Species"},
+              "description": {
+                "signal": "\"mass_value: \" + (format(datum[\"mass_value\"], \"\")) + \"; mass_density: \" + (format(datum[\"mass_density\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
+              },
+              "x": {"scale": "x", "field": "mass_value"},
+              "y": {"scale": "y", "field": "mass_density_end"},
+              "y2": {"scale": "y", "field": "mass_density_start"},
+              "defined": {
+                "signal": "isValid(datum[\"mass_value\"]) && isFinite(+datum[\"mass_value\"]) && isValid(datum[\"mass_density\"]) && isFinite(+datum[\"mass_density\"])"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "mass_value"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": false
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["mass_density_start", "mass_density_end"]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Species", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "mass_value",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "mass_density",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "Species"}]
+}

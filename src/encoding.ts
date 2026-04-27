@@ -736,7 +736,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
           if (isFieldDef(offsetDef)) {
             const mainChannel = channel === XOFFSET ? X : Y;
             const mainDef = encoding[mainChannel];
-            if (isFieldDef(mainDef) && !mainDef.aggregate && !offsetDef.aggregate) {
+            if (isFieldDef(mainDef) && !mainDef.aggregate) {
               const mainField = vgField(mainDef, {});
               const offsetField = vgField(offsetDef, {});
               if (mainField && offsetField && mainField !== offsetField) {

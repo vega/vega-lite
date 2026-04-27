@@ -113,10 +113,18 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
   }
 
   const {x, y, x2, y2} = encoding;
+  const xOffsetIsMeasure = isUnbinnedQuantitativeFieldOrDatumDef(encoding.xOffset);
+  const yOffsetIsMeasure = isUnbinnedQuantitativeFieldOrDatumDef(encoding.yOffset);
 
   switch (mark) {
     case TEXT:
     case BAR:
+      if (!y && yOffsetIsMeasure) {
+        return 'vertical';
+      }
+      if (!x && xOffsetIsMeasure) {
+        return 'horizontal';
+      }
       if (isFieldDef(x) && (isBinned(x.bin) || (isFieldDef(y) && y.aggregate && !x.aggregate))) {
         return 'vertical';
       }
@@ -160,6 +168,12 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
 
     // falls through
     case AREA:
+      if (!y && yOffsetIsMeasure) {
+        return 'vertical';
+      }
+      if (!x && xOffsetIsMeasure) {
+        return 'horizontal';
+      }
       // If there are range for both x and y, y (vertical) has higher precedence.
       if (y2) {
         if (isFieldDef(y) && isBinned(y.bin)) {

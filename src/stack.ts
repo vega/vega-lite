@@ -33,6 +33,7 @@ import {
   TICK,
 } from './mark.js';
 import {ScaleType} from './scale.js';
+import {isContinuous} from './type.js';
 
 const STACK_OFFSET_INDEX = {
   zero: 1,
@@ -168,6 +169,14 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
+
+  if (
+    stackedFieldDef.stack === undefined &&
+    ((fieldChannel === 'x' && !encoding.y && isFieldDef(encoding.yOffset) && isContinuous(encoding.yOffset.type)) ||
+      (fieldChannel === 'y' && !encoding.x && isFieldDef(encoding.xOffset) && isContinuous(encoding.xOffset.type)))
+  ) {
+    return null;
+  }
 
   const dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
   const groupbyChannels: StackProperties['groupbyChannels'] = [];

@@ -101,5 +101,37 @@ describe('compile/axis/encode', () => {
       const labels = encode.labels(model, 'x', {});
       expect(labels).toEqual({});
     });
+
+    it('positions y-axis labels at inferred bandPosition for ranged yOffset marks', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          y: {field: 'c', type: 'nominal'},
+          yOffset: {field: 'b', type: 'quantitative'},
+        },
+      });
+
+      const labels = encode.labels(model, 'y', {});
+      expect(labels).toEqual({
+        y: {scale: 'y', signal: 'datum.value', band: 1},
+      });
+    });
+
+    it('respects explicit axis bandPosition when positioning labels', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          y: {field: 'c', type: 'nominal', axis: {bandPosition: 0.3}},
+          yOffset: {field: 'b', type: 'quantitative'},
+        },
+      });
+
+      const labels = encode.labels(model, 'y', {});
+      expect(labels).toEqual({
+        y: {scale: 'y', signal: 'datum.value', band: 0.3},
+      });
+    });
   });
 });
