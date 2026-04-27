@@ -1,0 +1,203 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"first": "A", "second": "a", "value": "A/a"},
+        {"first": "B", "second": "a", "value": "B/a"},
+        {"first": "C", "second": "a", "value": "C/a"},
+        {"first": "A", "second": "b", "value": "A/b"},
+        {"first": "B", "second": "b", "value": "B/b"}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum[\"second\"]===\"a\" ? 0 : datum[\"second\"]===\"b\" ? 1 : 2",
+          "as": "row_second_sort_index"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"first\"]===\"A\" ? 0 : datum[\"first\"]===\"B\" ? 1 : datum[\"first\"]===\"C\" ? 2 : 3",
+          "as": "column_first_sort_index"
+        }
+      ]
+    },
+    {
+      "name": "column_domain",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["first"],
+          "fields": ["column_first_sort_index"],
+          "ops": ["max"],
+          "as": ["column_first_sort_index"]
+        }
+      ]
+    },
+    {
+      "name": "row_domain",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["second"],
+          "fields": ["row_second_sort_index"],
+          "ops": ["max"],
+          "as": ["row_second_sort_index"]
+        }
+      ]
+    },
+    {
+      "name": "row_lookup_domain",
+      "source": "row_domain",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "join([isValid(datum[\"second\"]) ? length(toString(datum[\"second\"])) + ':' + toString(datum[\"second\"]) : '-1:'], '|')",
+          "as": "row_facet_key"
+        }
+      ]
+    },
+    {
+      "name": "column_lookup_domain",
+      "source": "column_domain",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "join([isValid(datum[\"first\"]) ? length(toString(datum[\"first\"])) + ':' + toString(datum[\"first\"]) : '-1:'], '|')",
+          "as": "column_facet_key"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "child_width", "value": 50},
+    {"name": "child_height", "value": 50}
+  ],
+  "layout": {
+    "padding": 20,
+    "offset": {"rowTitle": 10, "columnTitle": 10},
+    "columns": {"signal": "length(data('column_domain'))"},
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "row-title",
+      "type": "group",
+      "role": "row-title",
+      "title": {
+        "text": "second",
+        "orient": "left",
+        "style": "guide-title",
+        "offset": 10
+      }
+    },
+    {
+      "name": "column-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {"text": "first", "style": "guide-title", "offset": 10}
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {"data": "row_domain"},
+      "sort": {
+        "field": "datum[\"row_second_sort_index\"]",
+        "order": "ascending"
+      },
+      "title": {
+        "text": {
+          "signal": "isValid(parent[\"second\"]) ? parent[\"second\"] : \"\"+parent[\"second\"]"
+        },
+        "orient": "left",
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "encode": {"update": {"height": {"signal": "child_height"}}}
+    },
+    {
+      "name": "column_header",
+      "type": "group",
+      "role": "column-header",
+      "from": {"data": "column_domain"},
+      "sort": {
+        "field": "datum[\"column_first_sort_index\"]",
+        "order": "ascending"
+      },
+      "title": {
+        "text": {
+          "signal": "isValid(parent[\"first\"]) ? parent[\"first\"] : \"\"+parent[\"first\"]"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "encode": {"update": {"width": {"signal": "child_width"}}}
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "data_0",
+          "groupby": ["second", "first"],
+          "aggregate": {"cross": true}
+        }
+      },
+      "sort": {
+        "field": [
+          {
+            "expr": "indexof(pluck(data(\"row_lookup_domain\"), \"row_facet_key\"), join([isValid(datum[\"second\"]) ? length(toString(datum[\"second\"])) + ':' + toString(datum[\"second\"]) : '-1:'], '|')) >= 0 ? data(\"row_lookup_domain\")[indexof(pluck(data(\"row_lookup_domain\"), \"row_facet_key\"), join([isValid(datum[\"second\"]) ? length(toString(datum[\"second\"])) + ':' + toString(datum[\"second\"]) : '-1:'], '|'))][\"row_second_sort_index\"] : null"
+          },
+          {
+            "expr": "indexof(pluck(data(\"column_lookup_domain\"), \"column_facet_key\"), join([isValid(datum[\"first\"]) ? length(toString(datum[\"first\"])) + ':' + toString(datum[\"first\"]) : '-1:'], '|')) >= 0 ? data(\"column_lookup_domain\")[indexof(pluck(data(\"column_lookup_domain\"), \"column_facet_key\"), join([isValid(datum[\"first\"]) ? length(toString(datum[\"first\"])) + ':' + toString(datum[\"first\"]) : '-1:'], '|'))][\"column_first_sort_index\"] : null"
+          }
+        ],
+        "order": ["ascending", "ascending"]
+      },
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_layer_0_marks",
+          "type": "text",
+          "style": ["text"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "fill": {"value": "black"},
+              "description": {
+                "signal": "\"value: \" + (isValid(datum[\"value\"]) ? isArray(datum[\"value\"]) ? join(datum[\"value\"], ' ') : datum[\"value\"] : \"\"+datum[\"value\"])"
+              },
+              "x": {"value": 25},
+              "y": {"value": 25},
+              "text": {
+                "signal": "isValid(datum[\"value\"]) ? datum[\"value\"] : \"\"+datum[\"value\"]"
+              },
+              "align": {"value": "center"},
+              "baseline": {"value": "middle"}
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

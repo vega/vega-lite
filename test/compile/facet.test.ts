@@ -1,5 +1,6 @@
-import type {SignalRef} from 'vega';
+import {parse, type SignalRef, View} from 'vega';
 import {ROW} from '../../src/channel.js';
+import {compile} from '../../src/compile/compile.js';
 import {FacetModel} from '../../src/compile/facet.js';
 import {assembleLabelTitle} from '../../src/compile/header/assemble.js';
 import * as log from '../../src/log/index.js';
@@ -7,6 +8,31 @@ import {DEFAULT_SPACING} from '../../src/spec/base.js';
 import {FacetFieldDef, FacetMapping} from '../../src/spec/facet.js';
 import {ORDINAL} from '../../src/type.js';
 import {parseFacetModel, parseFacetModelWithScale} from '../util.js';
+
+function getCellItems(view: View) {
+  const cells: {x: number; y: number; datum: Record<string, unknown>}[] = [];
+  const scenegraph = view.scenegraph() as unknown as {root: unknown};
+
+  function walk(item: any) {
+    if (!item) {
+      return;
+    }
+
+    if (item.mark?.name === 'cell' && item.datum) {
+      cells.push(item);
+    }
+
+    if (Array.isArray(item.items)) {
+      for (const child of item.items) {
+        walk(child);
+      }
+    }
+  }
+
+  walk(scenegraph.root);
+
+  return cells.sort((a, b) => a.y - b.y || a.x - b.x);
+}
 
 describe('FacetModel', () => {
   describe('initFacet', () => {
@@ -480,9 +506,18 @@ describe('FacetModel', () => {
 
       const marks = model.assembleMarks();
 
-      expect(marks[0].from.facet.aggregate.cross).toBeTruthy();
+      expect(marks[0].from).toEqual({
+        facet: expect.objectContaining({
+          name: 'facet',
+          groupby: ['a', 'b'],
+          aggregate: {cross: true},
+        }),
+      });
       expect(marks[0].sort).toEqual({
-        field: ['datum["row_a_sort_index"]', 'datum["column_b_sort_index"]'],
+        field: [
+          expect.objectContaining({expr: expect.stringContaining('["row_a_sort_index"]')}),
+          expect.objectContaining({expr: expect.stringContaining('["column_b_sort_index"]')}),
+        ],
         order: ['ascending', 'ascending'],
       });
     });
@@ -504,17 +539,99 @@ describe('FacetModel', () => {
 
       const marks = model.assembleMarks();
 
-      expect(marks[0].from.facet.aggregate).toEqual({
-        cross: true,
-        fields: ['median_d_by_a', 'median_e_by_b'],
-        ops: ['max', 'max'],
-        as: ['median_d_by_a', 'median_e_by_b'],
+      expect(marks[0].from).toEqual({
+        facet: expect.objectContaining({
+          name: 'facet',
+          groupby: ['a', 'b'],
+          aggregate: {cross: true},
+        }),
       });
 
       expect(marks[0].sort).toEqual({
-        field: ['datum["median_d_by_a"]', 'datum["median_e_by_b"]'],
+        field: [
+          expect.objectContaining({expr: expect.stringContaining('["median_d"]')}),
+          expect.objectContaining({expr: expect.stringContaining('["median_e"]')}),
+        ],
         order: ['ascending', 'ascending'],
       });
+    });
+
+    it('should create one crossed facet tuple per row-column pair at runtime', async () => {
+      const {spec} = compile({
+        data: {
+          values: [
+            {first: 'A', second: 'a', value: 'A/a'},
+            {first: 'B', second: 'a', value: 'B/a'},
+            {first: 'C', second: 'a', value: 'C/a'},
+            {first: 'A', second: 'b', value: 'A/b'},
+            {first: 'B', second: 'b', value: 'B/b'},
+          ],
+        },
+        facet: {
+          row: {field: 'second', type: 'ordinal', sort: ['a', 'b']},
+          column: {field: 'first', type: 'ordinal', sort: ['A', 'B', 'C']},
+        },
+        spec: {
+          mark: 'text',
+          encoding: {
+            text: {field: 'value'},
+          },
+        },
+      });
+
+      const view = new View(parse(spec), {renderer: 'none'});
+      await view.runAsync();
+
+      const cellItems = getCellItems(view);
+
+      expect(cellItems).toHaveLength(6);
+      expect(cellItems.map((item) => item.datum)).toEqual([
+        expect.objectContaining({first: 'A', second: 'a'}),
+        expect.objectContaining({first: 'B', second: 'a'}),
+        expect.objectContaining({first: 'C', second: 'a'}),
+        expect.objectContaining({first: 'A', second: 'b'}),
+        expect.objectContaining({first: 'B', second: 'b'}),
+        expect.objectContaining({first: 'C', second: 'b'}),
+      ]);
+    });
+
+    it('should populate sort field metadata for missing crossed facet tuples at runtime', async () => {
+      const {spec} = compile({
+        data: {
+          values: [
+            {first: 'A', second: 'a', row_order: 0, column_order: 0, value: 'A/a'},
+            {first: 'B', second: 'a', row_order: 0, column_order: 1, value: 'B/a'},
+            {first: 'C', second: 'a', row_order: 0, column_order: 2, value: 'C/a'},
+            {first: 'A', second: 'b', row_order: 1, column_order: 0, value: 'A/b'},
+            {first: 'B', second: 'b', row_order: 1, column_order: 1, value: 'B/b'},
+          ],
+        },
+        facet: {
+          row: {field: 'second', type: 'ordinal', sort: {field: 'row_order', op: 'max'}},
+          column: {field: 'first', type: 'ordinal', sort: {field: 'column_order', op: 'max'}},
+        },
+        spec: {
+          mark: 'text',
+          encoding: {
+            text: {field: 'value'},
+          },
+        },
+      });
+
+      const view = new View(parse(spec), {renderer: 'none'});
+      await view.runAsync();
+
+      const cellItems = getCellItems(view);
+
+      expect(cellItems).toHaveLength(6);
+      expect(cellItems.map((item) => item.datum)).toEqual([
+        expect.objectContaining({first: 'A', second: 'a'}),
+        expect.objectContaining({first: 'B', second: 'a'}),
+        expect.objectContaining({first: 'C', second: 'a'}),
+        expect.objectContaining({first: 'A', second: 'b'}),
+        expect.objectContaining({first: 'B', second: 'b'}),
+        expect.objectContaining({first: 'C', second: 'b'}),
+      ]);
     });
 
     it('should add calculate cardinality for independent scales', () => {

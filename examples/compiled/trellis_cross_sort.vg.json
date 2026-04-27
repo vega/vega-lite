@@ -78,6 +78,28 @@
       ]
     },
     {
+      "name": "row_lookup_domain",
+      "source": "row_domain",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "join([isValid(datum[\"b\"]) ? length(toString(datum[\"b\"])) + ':' + toString(datum[\"b\"]) : '-1:'], '|')",
+          "as": "row_facet_key"
+        }
+      ]
+    },
+    {
+      "name": "column_lookup_domain",
+      "source": "column_domain",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "join([isValid(datum[\"a\"]) ? length(toString(datum[\"a\"])) + ':' + toString(datum[\"a\"]) : '-1:'], '|')",
+          "as": "column_facet_key"
+        }
+      ]
+    },
+    {
       "name": "data_2",
       "source": "data_0",
       "transform": [
@@ -223,16 +245,18 @@
           "name": "facet",
           "data": "data_0",
           "groupby": ["b", "a"],
-          "aggregate": {
-            "cross": true,
-            "fields": ["median_y_by_b", "median_x_by_a"],
-            "ops": ["max", "max"],
-            "as": ["median_y_by_b", "median_x_by_a"]
-          }
+          "aggregate": {"cross": true}
         }
       },
       "sort": {
-        "field": ["datum[\"median_y_by_b\"]", "datum[\"median_x_by_a\"]"],
+        "field": [
+          {
+            "expr": "indexof(pluck(data(\"row_lookup_domain\"), \"row_facet_key\"), join([isValid(datum[\"b\"]) ? length(toString(datum[\"b\"])) + ':' + toString(datum[\"b\"]) : '-1:'], '|')) >= 0 ? data(\"row_lookup_domain\")[indexof(pluck(data(\"row_lookup_domain\"), \"row_facet_key\"), join([isValid(datum[\"b\"]) ? length(toString(datum[\"b\"])) + ':' + toString(datum[\"b\"]) : '-1:'], '|'))][\"median_y\"] : null"
+          },
+          {
+            "expr": "indexof(pluck(data(\"column_lookup_domain\"), \"column_facet_key\"), join([isValid(datum[\"a\"]) ? length(toString(datum[\"a\"])) + ':' + toString(datum[\"a\"]) : '-1:'], '|')) >= 0 ? data(\"column_lookup_domain\")[indexof(pluck(data(\"column_lookup_domain\"), \"column_facet_key\"), join([isValid(datum[\"a\"]) ? length(toString(datum[\"a\"])) + ':' + toString(datum[\"a\"]) : '-1:'], '|'))][\"median_x\"] : null"
+          }
+        ],
         "order": ["ascending", "ascending"]
       },
       "data": [
