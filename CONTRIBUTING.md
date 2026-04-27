@@ -95,47 +95,35 @@ After you push a new branch to GitHub, the CI will automatically run `npm run bu
 
 ## Repository Setup
 
-1. Make sure you have [node.js](https://nodejs.org/en/). For mac users, we recommend using [homebrew](http://brew.sh) and simply run:
-
-```sh
-brew install node
-```
+1. Make sure you have [node.js](https://nodejs.org/en/) installed using any method you prefer (e.g. a cross-platform package manager like [mise](https://mise.jdx.dev/lang/node.html), or an installation method specific to your OS such as [homebrew](http://brew.sh) for Mac users).
 
 2. Clone this repository and cd into your local clone of the repository, and install all the npm dependencies:
 
-```sh
-git clone https://github.com/vega/vega-lite.git
-cd vega-lite
-npm install
-```
+   ```sh
+   git clone https://github.com/vega/vega-lite.git
+   cd vega-lite
+   npm install
+   ```
 
-Now you should be able to build and test the code.
+   Now you should be able to build and test the code.
 
-3. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/) and [bundler](http://bundler.io/).
+3. To serve the website and documentation, you will need [ruby](https://www.ruby-lang.org/en/) and [bundler](http://bundler.io/). You can install ruby using any method you prefer (e.g. a cross-platform package manager like [mise](https://mise.jdx.dev/lang/ruby.html), or an installation method specific to your OS such as [homebrew](http://brew.sh) for Mac users). After installing `ruby`, you can install `bundler`:
 
-For ruby, Mac users can use [homebrew](http://brew.sh) to add it:
+   ```sh
+   gem install bundler
+   ```
 
-```sh
-brew install ruby
-```
+   Or to install the same version that was used to create the bundle:
 
-For bundler:
+   ```sh
+   gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
+   ```
 
-```sh
-gem install bundler
-```
+   For Jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
 
-Or to install the same version that was used to create the bundle:
-
-```sh
-gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
-```
-
-For Jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
-
-```sh
-pushd site && bundle install && popd
-```
+   ```sh
+   bundle install --gemfile site/Gemfile
+   ```
 
 ## Directory Structure
 
