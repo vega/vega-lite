@@ -1,0 +1,77 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "A word cloud with no text encoding — all words show the constant 'text' placeholder.",
+  "background": "white",
+  "padding": 5,
+  "width": 600,
+  "height": 400,
+  "style": "view",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"category": "A", "count": 80},
+        {"category": "B", "count": 72},
+        {"category": "C", "count": 60},
+        {"category": "D", "count": 55},
+        {"category": "E", "count": 50},
+        {"category": "F", "count": 45},
+        {"category": "G", "count": 42},
+        {"category": "H", "count": 38},
+        {"category": "I", "count": 35},
+        {"category": "J", "count": 32}
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "text",
+      "style": ["wordcloud"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "category"},
+          "ariaRoleDescription": {"value": "wordcloud"},
+          "description": {
+            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? isArray(datum[\"category\"]) ? join(datum[\"category\"], ' ') : datum[\"category\"] : \"\"+datum[\"category\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
+          },
+          "text": {"value": "text"},
+          "align": {"value": "center"},
+          "baseline": {"value": "alphabetic"},
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "fontSize": {"field": "fontSize"},
+          "angle": {"field": "rotate"},
+          "font": {"field": "font"},
+          "fontStyle": {"field": "fontStyle"},
+          "fontWeight": {"field": "fontWeight"}
+        }
+      },
+      "transform": [
+        {
+          "type": "formula",
+          "as": "__wordcloud_rotate",
+          "expr": "~~(random() * 3) * 45 - 45"
+        },
+        {
+          "type": "wordcloud",
+          "size": [{"signal": "width"}, {"signal": "height"}],
+          "text": {"field": "datum.text"},
+          "fontSize": {"field": "datum.count"},
+          "fontSizeRange": [14, 56],
+          "rotate": {"field": "__wordcloud_rotate"},
+          "padding": 2
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "category", "sort": true},
+      "range": "category"
+    }
+  ]
+}
