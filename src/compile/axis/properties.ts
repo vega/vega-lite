@@ -5,7 +5,6 @@ import {isBinned, isBinning} from '../../bin.js';
 import {PositionScaleChannel, X} from '../../channel.js';
 import {
   DatumDef,
-  isDiscrete,
   isFieldDef,
   PositionDatumDef,
   PositionFieldDef,
@@ -367,8 +366,10 @@ export function values(axis: AxisInternal, fieldOrDatumDef: TypedFieldDef<string
   return undefined;
 }
 
+// Signature kept for API consistency; second arg unused after fix for #9514.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function defaultZindex(mark: Mark, fieldDef: TypedFieldDef<string> | DatumDef) {
-  if (mark === 'rect' && isDiscrete(fieldDef)) {
+  if (mark === 'rect') {
     return 1;
   }
   return 0;
