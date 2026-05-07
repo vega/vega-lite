@@ -83,7 +83,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@release-it/conventional-changelog": "^10.0.6",
+    "@release-it/conventional-changelog": "^11.0.0",
     "@rollup/plugin-alias": "^6.0.0",
     "@rollup/plugin-commonjs": "^29.0.2",
     "@rollup/plugin-json": "^6.1.0",
@@ -113,7 +113,7 @@
     "pako": "^2.1.0",
     "playwright": "^1.57.0",
     "prettier": "^3.8.1",
-    "release-it": "19.2.4",
+    "release-it": "20.0.1",
     "rollup": "^4.60.1",
     "rollup-plugin-bundle-size": "^1.0.3",
     "serve": "^14.2.6",
