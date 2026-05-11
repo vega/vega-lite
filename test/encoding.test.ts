@@ -13,6 +13,7 @@ import {
 import {isPositionFieldOrDatumDef} from '../src/channeldef.js';
 import {defaultConfig} from '../src/config.js';
 import {
+  channelHasNestedOffsetScale,
   Encoding,
   extractTransformsFromEncoding,
   fieldDefs,
@@ -122,6 +123,20 @@ describe('encoding', () => {
         x: {field: 'a', type: 'temporal', timeUnit: {unit: 'year'}},
         xOffset: {field: 'b', type: 'nominal'},
       });
+    });
+
+    it('does not drop xOffset if x is binned quantitative (treated as discrete)', () => {
+      const encoding = initEncoding(
+        {
+          x: {field: 'a', type: 'quantitative', bin: true},
+          xOffset: {field: 'b', type: 'nominal'},
+        },
+        'point',
+        false,
+        defaultConfig,
+      );
+
+      expect(encoding.xOffset).toBeDefined();
     });
   });
 
@@ -559,6 +574,69 @@ describe('encoding', () => {
         {field: 'foo', type: 'quantitative'},
         {field: 'bar', test: 'datum.val > 12', type: 'quantitative'},
       ]);
+    });
+  });
+
+  describe('channelHasNestedOffsetScale', () => {
+    it('returns true for nominal x with xOffset', () => {
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'nominal'}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(true);
+    });
+
+    it('returns true for ordinal x with xOffset', () => {
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'ordinal'}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(true);
+    });
+
+    it('returns true for binned quantitative x with xOffset (treated as discrete)', () => {
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'quantitative', bin: true}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(true);
+    });
+
+    it('returns false for unbinned quantitative x with xOffset', () => {
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'quantitative'}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(false);
+    });
+
+    it('returns false when offset channel is missing', () => {
+      expect(channelHasNestedOffsetScale<string>({x: {field: 'a', type: 'nominal'}}, 'x')).toBe(false);
+    });
+
+    it('returns true for temporal x with timeUnit and xOffset', () => {
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'temporal', timeUnit: 'year'}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(true);
+    });
+
+    it('treats geojson x as discrete with xOffset (rarely used on position channels)', () => {
+      // geojson is not typically used as a position channel; this asserts that
+      // the field-aware isDiscrete migration treats it consistently with how
+      // channeldef.isDiscrete classifies it (true).
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'geojson'}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(true);
     });
   });
 });

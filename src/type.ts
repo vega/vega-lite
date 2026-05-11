@@ -18,9 +18,11 @@ export function isType(t: any): t is Type {
   return hasOwnProperty(Type, t);
 }
 
-export function isContinuous(type: Type): type is 'quantitative' | 'temporal' {
-  return type === 'quantitative' || type === 'temporal';
-}
+/**
+ * Type-only discrete check (does not consider binning).
+ * For a field-aware version that treats binned quantitative as discrete,
+ * use `isDiscrete` from `./channeldef.js`.
+ */
 export function isDiscrete(type: Type): type is 'ordinal' | 'nominal' {
   return type === 'ordinal' || type === 'nominal';
 }
