@@ -7,6 +7,8 @@ import {
   defaultType,
   functionalTitleFormatter,
   initChannelDef,
+  isContinuous,
+  isDiscrete,
   TypedFieldDef,
   vgField,
 } from '../src/channeldef.js';
@@ -344,5 +346,81 @@ describe('fieldDef', () => {
       const fieldDef = {field: 'f', type: TEMPORAL};
       expect(defaultTitle(fieldDef, {})).toBe('f');
     });
+  });
+});
+
+describe('isDiscrete()', () => {
+  it('returns true for nominal field def', () => {
+    expect(isDiscrete({field: 'f', type: 'nominal'})).toBe(true);
+  });
+
+  it('returns true for ordinal field def', () => {
+    expect(isDiscrete({field: 'f', type: 'ordinal'})).toBe(true);
+  });
+
+  it('returns true for geojson field def', () => {
+    expect(isDiscrete({field: 'f', type: 'geojson'})).toBe(true);
+  });
+
+  it('returns false for temporal field def', () => {
+    expect(isDiscrete({field: 'f', type: 'temporal'})).toBe(false);
+  });
+
+  it('returns false for unbinned quantitative field def', () => {
+    expect(isDiscrete({field: 'f', type: 'quantitative'})).toBe(false);
+  });
+
+  it('returns true for binned quantitative field def (bin: true)', () => {
+    expect(isDiscrete({field: 'f', type: 'quantitative', bin: true})).toBe(true);
+  });
+
+  it('returns true for pre-binned quantitative field def (bin: "binned")', () => {
+    expect(isDiscrete({field: 'f', type: 'quantitative', bin: 'binned'})).toBe(true);
+  });
+
+  it('returns true for quantitative field def with bin params', () => {
+    expect(isDiscrete({field: 'f', type: 'quantitative', bin: {maxbins: 10}})).toBe(true);
+  });
+
+  it('returns false for quantitative datum def (datum defs cannot be binned)', () => {
+    expect(isDiscrete({datum: 1, type: 'quantitative'})).toBe(false);
+  });
+
+  it('returns true for nominal datum def', () => {
+    expect(isDiscrete({datum: 'a', type: 'nominal'})).toBe(true);
+  });
+
+  it('returns false for datum def without explicit type', () => {
+    expect(isDiscrete({datum: 1} as any)).toBe(false);
+  });
+});
+
+describe('isContinuous()', () => {
+  it('returns true for unbinned quantitative field def', () => {
+    expect(isContinuous({field: 'f', type: 'quantitative'})).toBe(true);
+  });
+
+  it('returns true for temporal field def', () => {
+    expect(isContinuous({field: 'f', type: 'temporal'})).toBe(true);
+  });
+
+  it('returns false for binned quantitative field def', () => {
+    expect(isContinuous({field: 'f', type: 'quantitative', bin: true})).toBe(false);
+  });
+
+  it('returns false for nominal field def', () => {
+    expect(isContinuous({field: 'f', type: 'nominal'})).toBe(false);
+  });
+
+  it('returns false for ordinal field def', () => {
+    expect(isContinuous({field: 'f', type: 'ordinal'})).toBe(false);
+  });
+
+  it('returns false for geojson field def', () => {
+    expect(isContinuous({field: 'f', type: 'geojson'})).toBe(false);
+  });
+
+  it('returns false for datum def without explicit type', () => {
+    expect(isContinuous({datum: 1} as any)).toBe(false);
   });
 });

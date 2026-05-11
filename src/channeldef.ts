@@ -868,6 +868,7 @@ export function vgField(
 }
 
 export function isDiscrete(def: TypedFieldDef<Field> | DatumDef<any, any>) {
+  if (!def.type) return false;
   switch (def.type) {
     case 'nominal':
     case 'ordinal':
@@ -879,6 +880,10 @@ export function isDiscrete(def: TypedFieldDef<Field> | DatumDef<any, any>) {
       return false;
   }
   throw new Error(log.message.invalidFieldType(def.type));
+}
+
+export function isContinuous(def: TypedFieldDef<Field> | DatumDef<any, any>) {
+  return !!def.type && !isDiscrete(def);
 }
 
 export function isDiscretizing(def: TypedFieldDef<Field> | DatumDef<any, any>) {
