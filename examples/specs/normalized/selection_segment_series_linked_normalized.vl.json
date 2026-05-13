@@ -1,0 +1,104 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Drag a segment across the top chart to select line series whose paths cross it, then inspect the linked summary below.",
+  "data": {
+    "values": [
+      {"series": "Alpha", "group": "North", "step": 0, "value": 1},
+      {"series": "Alpha", "group": "North", "step": 1, "value": 3},
+      {"series": "Alpha", "group": "North", "step": 2, "value": 2},
+      {"series": "Alpha", "group": "North", "step": 3, "value": 4},
+      {"series": "Beta", "group": "North", "step": 0, "value": 4},
+      {"series": "Beta", "group": "North", "step": 1, "value": 2},
+      {"series": "Beta", "group": "North", "step": 2, "value": 3},
+      {"series": "Beta", "group": "North", "step": 3, "value": 1},
+      {"series": "Gamma", "group": "South", "step": 0, "value": 2},
+      {"series": "Gamma", "group": "South", "step": 1, "value": 1},
+      {"series": "Gamma", "group": "South", "step": 2, "value": 4},
+      {"series": "Gamma", "group": "South", "step": 3, "value": 3},
+      {"series": "Delta", "group": "South", "step": 0, "value": 3},
+      {"series": "Delta", "group": "South", "step": 1, "value": 4},
+      {"series": "Delta", "group": "South", "step": 2, "value": 1},
+      {"series": "Delta", "group": "South", "step": 3, "value": 2}
+    ]
+  },
+  "vconcat": [
+    {
+      "width": 420,
+      "height": 220,
+      "layer": [
+        {
+          "params": [
+            {
+              "name": "seg_brush",
+              "select": {
+                "type": "segment",
+                "mark": {"stroke": "#b9381c", "strokeWidth": 3}
+              }
+            }
+          ],
+          "mark": {"type": "line", "strokeWidth": 10, "stroke": "transparent"},
+          "encoding": {
+            "x": {
+              "field": "step",
+              "type": "quantitative",
+              "axis": {"tickMinStep": 1}
+            },
+            "y": {"field": "value", "type": "quantitative"},
+            "detail": {"field": "series"},
+            "tooltip": [
+              {"field": "series", "type": "nominal"},
+              {"field": "group", "type": "nominal"}
+            ]
+          }
+        },
+        {
+          "mark": {"type": "line", "strokeWidth": 2.5},
+          "encoding": {
+            "x": {
+              "field": "step",
+              "type": "quantitative",
+              "axis": {"tickMinStep": 1}
+            },
+            "y": {"field": "value", "type": "quantitative"},
+            "detail": {"field": "series"},
+            "tooltip": [
+              {"field": "series", "type": "nominal"},
+              {"field": "group", "type": "nominal"}
+            ],
+            "color": {
+              "condition": {
+                "param": "seg_brush",
+                "field": "group",
+                "type": "nominal",
+                "legend": null
+              },
+              "value": "#d0d0d0"
+            },
+            "opacity": {
+              "condition": {"param": "seg_brush", "value": 1},
+              "value": 0.35
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 420,
+      "height": 120,
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "series", "type": "nominal", "title": "Selected Series"},
+        "y": {"field": "peak", "type": "quantitative", "title": "Peak Value"},
+        "color": {"field": "group", "type": "nominal"}
+      },
+      "transform": [
+        {"filter": {"param": "seg_brush"}},
+        {
+          "aggregate": [{"op": "max", "field": "value", "as": "peak"}],
+          "groupby": ["series", "group"]
+        }
+      ]
+    }
+  ],
+  "config": {"view": {"stroke": null}}
+}

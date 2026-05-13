@@ -13,6 +13,7 @@ import {
 import {getDataSourcesForHandlingInvalidValues, DataSourcesForHandlingInvalidValues} from '../invalid/datasources.js';
 import * as log from '../../log/index.js';
 import {isPathMark} from '../../mark.js';
+import {stringValue} from 'vega-util';
 import {
   isAggregate,
   isBin,
@@ -39,6 +40,7 @@ import {getMarkPropOrConfig} from '../common.js';
 import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model.js';
 import {requiresSelectionId} from '../selection/index.js';
 import {materializeSelections} from '../selection/parse.js';
+import {segmentScopeValue, isSegmentPathSelection} from '../selection/segment.js';
 import {AggregateNode} from './aggregate.js';
 import {BinNode} from './bin.js';
 import {CalculateNode} from './calculate.js';
@@ -249,6 +251,28 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
   return head;
 }
 
+function addSegmentScopeFields(head: DataFlowNode, model: Model) {
+  for (const selCmpt of Object.values(model.component.selection ?? {})) {
+    const inheritedFromLayerParent =
+      isLayerModel(model.parent) &&
+      model.parent.component.selection?.[selCmpt.name]?.segment?.scopeField === selCmpt.segment?.scopeField;
+
+    if (
+      selCmpt.type === 'segment' &&
+      isSegmentPathSelection(selCmpt) &&
+      selCmpt.segment.scopeField &&
+      !inheritedFromLayerParent
+    ) {
+      head = new CalculateNode(head, {
+        calculate: stringValue(segmentScopeValue(model)),
+        as: selCmpt.segment.scopeField,
+      });
+    }
+  }
+
+  return head;
+}
+
 /*
 Description of the dataflow (http://asciiflow.com/):
      +--------+
@@ -363,6 +387,8 @@ export function parseData(model: Model): DataComponent {
   if (model.transforms.length > 0) {
     head = parseTransformArray(head, model, ancestorParse);
   }
+
+  head = addSegmentScopeFields(head, model);
 
   // create parse nodes for fields that need to be parsed (or flattened) implicitly
   const implicitSelection = getImplicitFromSelection(model);

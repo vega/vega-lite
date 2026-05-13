@@ -16,6 +16,7 @@ import {parseSelectionExtent} from './parse.js';
 import {SelectionProjection} from './project.js';
 import {CURR} from './point.js';
 import {DataSourceType} from '../../data.js';
+import {SEGMENT_TUPLES, isSegmentPathSelection, segmentIntersectionExpr, segmentPathSort} from './segment.js';
 
 export function assembleProjection(proj: SelectionProjection) {
   const {signals, hasLegend, index, ...rest} = proj;
@@ -90,7 +91,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
     const name = selCmpt.name;
     const store = stringValue(name + STORE);
     const hasSg = signals.filter((s) => s.name === name);
-    if (hasSg.length === 0) {
+    if (hasSg.length === 0 && selCmpt.type !== 'segment') {
       const resolve = selCmpt.resolve === 'global' ? 'union' : selCmpt.resolve;
       const isPoint = selCmpt.type === 'point' ? ', true, true)' : ')';
       signals.push({
@@ -122,8 +123,9 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
 }
 
 export function assembleUnitSelectionData(model: UnitModel, data: readonly VgData[]): VgData[] {
-  const selectionData = [];
-  const animationData = [];
+  const selectionData: VgData[] = [];
+  const derivedSelectionData: VgData[] = [];
+  const animationData: VgData[] = [];
   const unit = unitName(model, {escape: false});
 
   for (const selCmpt of vals(model.component.selection ?? {})) {
@@ -144,6 +146,68 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
     const contains = [...selectionData, ...data].filter((d) => d.name === selCmpt.name + STORE);
     if (!contains.length) {
       selectionData.push(store);
+    }
+
+    const pathFields = selCmpt.type === 'segment' && isSegmentPathSelection(selCmpt) ? selCmpt.segment.fields : [];
+    if (pathFields?.length) {
+      const source = model.lookupDataSource(model.getDataName(DataSourceType.Main));
+      const x = selCmpt.project.hasChannel.x;
+      const y = selCmpt.project.hasChannel.y;
+      const sort = segmentPathSort(model);
+      const xField = model.vgField('x');
+      const yField = model.vgField('y');
+
+      if (source && x && y && sort?.length && xField && yField) {
+        const nextX = `${selCmpt.name}${SEGMENT_TUPLES}_next_x`;
+        const nextY = `${selCmpt.name}${SEGMENT_TUPLES}_next_y`;
+        const x0 = `${x.signals.data}[0]`;
+        const y0 = `${y.signals.data}[0]`;
+        const x1 = `${x.signals.data}[1]`;
+        const y1 = `${y.signals.data}[1]`;
+        const rowX = `+(datum[${stringValue(xField)}])`;
+        const rowY = `+(datum[${stringValue(yField)}])`;
+        const leadX = `+(datum[${stringValue(nextX)}])`;
+        const leadY = `+(datum[${stringValue(nextY)}])`;
+        const fields = pathFields.map((field) => ({type: 'E', field: replacePathInField(field)}));
+        const values = `[${pathFields.map((field) => `datum[${stringValue(field)}]`).join(', ')}]`;
+
+        const segmentTuples: VgData = {
+          name: selCmpt.name + SEGMENT_TUPLES,
+          source,
+          transform: [
+            {
+              type: 'window',
+              ops: ['lead', 'lead'],
+              fields: [xField, yField],
+              params: [1, 1],
+              as: [nextX, nextY],
+              sort: {
+                field: sort.map((sortField) => sortField.field),
+                order: sort.map((sortField) => sortField.order ?? 'ascending'),
+              },
+              groupby: pathFields,
+            },
+            {
+              type: 'filter',
+              expr:
+                `${x.signals.data} && ${y.signals.data} && isValid(datum[${stringValue(nextX)}]) && isValid(datum[${stringValue(nextY)}]) && ` +
+                segmentIntersectionExpr(x0, y0, x1, y1, rowX, rowY, leadX, leadY),
+            },
+            {
+              type: 'aggregate',
+              groupby: pathFields,
+              fields: [null],
+              ops: ['count'],
+              as: ['count'],
+            },
+            {type: 'formula', expr: unitName(model), as: 'unit'},
+            {type: 'formula', expr: stringify(fields), as: 'fields'},
+            {type: 'formula', expr: values, as: 'values'},
+          ] as any,
+        };
+
+        derivedSelectionData.push(segmentTuples);
+      }
     }
 
     if (isTimerSelection(selCmpt) && data.length) {
@@ -176,7 +240,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
     }
   }
 
-  return selectionData.concat(data, animationData);
+  return selectionData.concat(data, derivedSelectionData, animationData);
 }
 
 export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {

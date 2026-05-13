@@ -106,6 +106,26 @@ export const NEEDS_SAME_SELECTION = 'The same selection must be used to override
 export const INTERVAL_INITIALIZED_WITH_POS =
   'Interval selections should be initialized using "x", "y", "longitude", or "latitude" keys.';
 
+export function segmentSelectionRequiresCartesianXY() {
+  return 'Segment selections currently require cartesian x and y scales.';
+}
+
+export function segmentSelectionRequiresXYProjection() {
+  return 'Segment selections require projections over both x and y channels.';
+}
+
+export function segmentSelectionOnlySupportsXYProjection() {
+  return 'Segment selections currently support only x/y projections.';
+}
+
+export function segmentSelectionPredicateRequiresDatum() {
+  return 'Segment selection predicates currently support datum-based contexts only.';
+}
+
+export function segmentSelectionUnsupportedMark(mark: Mark) {
+  return `Segment selections are only supported for line, trail, and rule marks. "${mark}" will never match the selection predicate.`;
+}
+
 // REPEAT
 export function noSuchRepeatedValue(field: string) {
   return `Unknown repeated value "${field}".`;

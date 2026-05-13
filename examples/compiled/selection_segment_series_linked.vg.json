@@ -1,0 +1,540 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Drag a segment across the top chart to select line series whose paths cross it, then inspect the linked summary below.",
+  "background": "white",
+  "padding": 5,
+  "width": 420,
+  "data": [
+    {"name": "seg_brush_store"},
+    {
+      "name": "source_0",
+      "values": [
+        {"series": "Alpha", "group": "North", "step": 0, "value": 1},
+        {"series": "Alpha", "group": "North", "step": 1, "value": 3},
+        {"series": "Alpha", "group": "North", "step": 2, "value": 2},
+        {"series": "Alpha", "group": "North", "step": 3, "value": 4},
+        {"series": "Beta", "group": "North", "step": 0, "value": 4},
+        {"series": "Beta", "group": "North", "step": 1, "value": 2},
+        {"series": "Beta", "group": "North", "step": 2, "value": 3},
+        {"series": "Beta", "group": "North", "step": 3, "value": 1},
+        {"series": "Gamma", "group": "South", "step": 0, "value": 2},
+        {"series": "Gamma", "group": "South", "step": 1, "value": 1},
+        {"series": "Gamma", "group": "South", "step": 2, "value": 4},
+        {"series": "Gamma", "group": "South", "step": 3, "value": 3},
+        {"series": "Delta", "group": "South", "step": 0, "value": 3},
+        {"series": "Delta", "group": "South", "step": 1, "value": 4},
+        {"series": "Delta", "group": "South", "step": 2, "value": 1},
+        {"series": "Delta", "group": "South", "step": 3, "value": 2}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"step\"])", "as": "step"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!length(data(\"seg_brush_store\")) || vlSelectionTest(\"seg_brush_store\", datum)"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["series", "group"],
+          "ops": ["max"],
+          "fields": ["value"],
+          "as": ["peak"]
+        },
+        {
+          "type": "stack",
+          "groupby": ["series"],
+          "field": "peak",
+          "sort": {"field": ["group"], "order": ["descending"]},
+          "as": ["peak_start", "peak_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"peak\"]) && isFinite(+datum[\"peak\"])"
+        }
+      ]
+    },
+    {
+      "name": "seg_brush_tuples",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "window",
+          "ops": ["lead", "lead"],
+          "fields": ["step", "value"],
+          "params": [1, 1],
+          "as": ["seg_brush_tuples_next_x", "seg_brush_tuples_next_y"],
+          "sort": {"field": ["step"], "order": ["ascending"]},
+          "groupby": ["series"]
+        },
+        {
+          "type": "filter",
+          "expr": "seg_brush_step && seg_brush_value && isValid(datum[\"seg_brush_tuples_next_x\"]) && isValid(datum[\"seg_brush_tuples_next_y\"]) && (max(min(seg_brush_step[0], seg_brush_step[1]), min(+(datum[\"step\"]), +(datum[\"seg_brush_tuples_next_x\"]))) <= min(max(seg_brush_step[0], seg_brush_step[1]), max(+(datum[\"step\"]), +(datum[\"seg_brush_tuples_next_x\"]))) && max(min(seg_brush_value[0], seg_brush_value[1]), min(+(datum[\"value\"]), +(datum[\"seg_brush_tuples_next_y\"]))) <= min(max(seg_brush_value[0], seg_brush_value[1]), max(+(datum[\"value\"]), +(datum[\"seg_brush_tuples_next_y\"])))) && (((+(datum[\"seg_brush_tuples_next_x\"]) - +(datum[\"step\"])) * (seg_brush_value[0] - +(datum[\"value\"])) - (+(datum[\"seg_brush_tuples_next_y\"]) - +(datum[\"value\"])) * (seg_brush_step[0] - +(datum[\"step\"])))) * (((+(datum[\"seg_brush_tuples_next_x\"]) - +(datum[\"step\"])) * (seg_brush_value[1] - +(datum[\"value\"])) - (+(datum[\"seg_brush_tuples_next_y\"]) - +(datum[\"value\"])) * (seg_brush_step[1] - +(datum[\"step\"])))) <= 0 && (((seg_brush_step[1] - seg_brush_step[0]) * (+(datum[\"value\"]) - seg_brush_value[0]) - (seg_brush_value[1] - seg_brush_value[0]) * (+(datum[\"step\"]) - seg_brush_step[0]))) * (((seg_brush_step[1] - seg_brush_step[0]) * (+(datum[\"seg_brush_tuples_next_y\"]) - seg_brush_value[0]) - (seg_brush_value[1] - seg_brush_value[0]) * (+(datum[\"seg_brush_tuples_next_x\"]) - seg_brush_step[0]))) <= 0"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["series"],
+          "fields": [null],
+          "ops": ["count"],
+          "as": ["count"]
+        },
+        {"type": "formula", "expr": "\"concat_0_layer_0\"", "as": "unit"},
+        {
+          "type": "formula",
+          "expr": "[{\"field\":\"series\",\"type\":\"E\"}]",
+          "as": "fields"
+        },
+        {"type": "formula", "expr": "[datum[\"series\"]]", "as": "values"}
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "concat_0_height", "value": 220},
+    {"name": "concat_1_height", "value": 120},
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {"name": "seg_brush_step"},
+    {"name": "seg_brush_value"},
+    {
+      "name": "seg_brush",
+      "update": "vlSelectionResolve(\"seg_brush_store\", \"union\", true, true)"
+    }
+  ],
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
+  "marks": [
+    {
+      "type": "group",
+      "name": "concat_0_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "width"},
+          "height": {"signal": "concat_0_height"}
+        }
+      },
+      "signals": [
+        {
+          "name": "seg_brush_tuple_fields",
+          "value": [
+            {"field": "step", "channel": "x", "type": "E"},
+            {"field": "value", "channel": "y", "type": "E"}
+          ]
+        },
+        {
+          "name": "seg_brush_x",
+          "value": [],
+          "on": [
+            {
+              "events": {"source": "scope", "type": "pointerdown"},
+              "update": "[x(unit), x(unit)]"
+            },
+            {
+              "events": {
+                "source": "window",
+                "type": "pointermove",
+                "consume": true,
+                "between": [
+                  {"source": "scope", "type": "pointerdown"},
+                  {"source": "window", "type": "pointerup"}
+                ]
+              },
+              "update": "[seg_brush_x[0], clamp(x(unit), 0, width)]"
+            },
+            {
+              "events": [{"source": "view", "type": "dblclick"}],
+              "update": "[0, 0]"
+            }
+          ]
+        },
+        {
+          "name": "seg_brush_step",
+          "on": [
+            {
+              "events": {"signal": "seg_brush_x"},
+              "update": "invert(\"concat_0_x\", seg_brush_x)"
+            }
+          ],
+          "push": "outer"
+        },
+        {
+          "name": "seg_brush_y",
+          "value": [],
+          "on": [
+            {
+              "events": {"source": "scope", "type": "pointerdown"},
+              "update": "[y(unit), y(unit)]"
+            },
+            {
+              "events": {
+                "source": "window",
+                "type": "pointermove",
+                "consume": true,
+                "between": [
+                  {"source": "scope", "type": "pointerdown"},
+                  {"source": "window", "type": "pointerup"}
+                ]
+              },
+              "update": "[seg_brush_y[0], clamp(y(unit), 0, concat_0_height)]"
+            },
+            {
+              "events": [{"source": "view", "type": "dblclick"}],
+              "update": "[0, 0]"
+            }
+          ]
+        },
+        {
+          "name": "seg_brush_value",
+          "on": [
+            {
+              "events": {"signal": "seg_brush_y"},
+              "update": "invert(\"concat_0_y\", seg_brush_y)"
+            }
+          ],
+          "push": "outer"
+        },
+        {
+          "name": "seg_brush_tuple",
+          "on": [
+            {
+              "events": [{"signal": "seg_brush_step || seg_brush_value"}],
+              "update": "seg_brush_step && seg_brush_value ? data(\"seg_brush_tuples\") : []"
+            }
+          ]
+        },
+        {
+          "name": "seg_brush_modify",
+          "on": [
+            {
+              "events": {"signal": "seg_brush_tuple"},
+              "update": "modify(\"seg_brush_store\", seg_brush_tuple, true)"
+            }
+          ]
+        }
+      ],
+      "marks": [
+        {
+          "name": "concat_0_layer_0_pathgroup",
+          "type": "group",
+          "from": {
+            "facet": {
+              "name": "faceted_path_concat_0_layer_0_main",
+              "data": "data_0",
+              "groupby": ["series"]
+            }
+          },
+          "encode": {
+            "update": {
+              "width": {"field": {"group": "width"}},
+              "height": {"field": {"group": "height"}}
+            }
+          },
+          "marks": [
+            {
+              "name": "concat_0_layer_0_marks",
+              "type": "line",
+              "style": ["line"],
+              "sort": {"field": "x"},
+              "interactive": true,
+              "from": {"data": "faceted_path_concat_0_layer_0_main"},
+              "encode": {
+                "update": {
+                  "stroke": {"value": "transparent"},
+                  "strokeWidth": {"value": 10},
+                  "tooltip": {
+                    "signal": "{\"series\": isValid(datum[\"series\"]) ? isArray(datum[\"series\"]) ? join(datum[\"series\"], '\\n') : datum[\"series\"] : \"\"+datum[\"series\"], \"group\": isValid(datum[\"group\"]) ? isArray(datum[\"group\"]) ? join(datum[\"group\"], '\\n') : datum[\"group\"] : \"\"+datum[\"group\"]}"
+                  },
+                  "description": {
+                    "signal": "\"step: \" + (format(datum[\"step\"], \"\")) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; series: \" + (isValid(datum[\"series\"]) ? isArray(datum[\"series\"]) ? join(datum[\"series\"], ' ') : datum[\"series\"] : \"\"+datum[\"series\"]) + \"; group: \" + (isValid(datum[\"group\"]) ? isArray(datum[\"group\"]) ? join(datum[\"group\"], ' ') : datum[\"group\"] : \"\"+datum[\"group\"])"
+                  },
+                  "x": {"scale": "concat_0_x", "field": "step"},
+                  "y": {"scale": "concat_0_y", "field": "value"},
+                  "defined": {
+                    "signal": "isValid(datum[\"step\"]) && isFinite(+datum[\"step\"]) && isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "concat_0_layer_1_pathgroup",
+          "type": "group",
+          "from": {
+            "facet": {
+              "name": "faceted_path_concat_0_layer_1_main",
+              "data": "data_0",
+              "groupby": ["group", "series"]
+            }
+          },
+          "encode": {
+            "update": {
+              "width": {"field": {"group": "width"}},
+              "height": {"field": {"group": "height"}}
+            }
+          },
+          "marks": [
+            {
+              "name": "concat_0_layer_1_marks",
+              "type": "line",
+              "style": ["line"],
+              "sort": {"field": "x"},
+              "interactive": true,
+              "from": {"data": "faceted_path_concat_0_layer_1_main"},
+              "encode": {
+                "update": {
+                  "strokeWidth": {"value": 2.5},
+                  "stroke": [
+                    {
+                      "test": "!length(data(\"seg_brush_store\")) || vlSelectionTest(\"seg_brush_store\", datum)",
+                      "scale": "color",
+                      "field": "group"
+                    },
+                    {"value": "#d0d0d0"}
+                  ],
+                  "opacity": [
+                    {
+                      "test": "!length(data(\"seg_brush_store\")) || vlSelectionTest(\"seg_brush_store\", datum)",
+                      "value": 1
+                    },
+                    {"value": 0.35}
+                  ],
+                  "tooltip": {
+                    "signal": "{\"series\": isValid(datum[\"series\"]) ? isArray(datum[\"series\"]) ? join(datum[\"series\"], '\\n') : datum[\"series\"] : \"\"+datum[\"series\"], \"group\": isValid(datum[\"group\"]) ? isArray(datum[\"group\"]) ? join(datum[\"group\"], '\\n') : datum[\"group\"] : \"\"+datum[\"group\"]}"
+                  },
+                  "description": {
+                    "signal": "\"step: \" + (format(datum[\"step\"], \"\")) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? isArray(datum[\"group\"]) ? join(datum[\"group\"], ' ') : datum[\"group\"] : \"\"+datum[\"group\"]) + \"; series: \" + (isValid(datum[\"series\"]) ? isArray(datum[\"series\"]) ? join(datum[\"series\"], ' ') : datum[\"series\"] : \"\"+datum[\"series\"])"
+                  },
+                  "x": {"scale": "concat_0_x", "field": "step"},
+                  "y": {"scale": "concat_0_y", "field": "value"},
+                  "defined": {
+                    "signal": "isValid(datum[\"step\"]) && isFinite(+datum[\"step\"]) && isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "seg_brush_segment",
+          "type": "rule",
+          "clip": true,
+          "encode": {
+            "enter": {},
+            "update": {
+              "x": [
+                {
+                  "test": "data(\"seg_brush_store\").length && data(\"seg_brush_store\")[0].unit === \"concat_0_layer_0\"",
+                  "signal": "seg_brush_x[0]"
+                },
+                {"value": 0}
+              ],
+              "y": [
+                {
+                  "test": "data(\"seg_brush_store\").length && data(\"seg_brush_store\")[0].unit === \"concat_0_layer_0\"",
+                  "signal": "seg_brush_y[0]"
+                },
+                {"value": 0}
+              ],
+              "x2": [
+                {
+                  "test": "data(\"seg_brush_store\").length && data(\"seg_brush_store\")[0].unit === \"concat_0_layer_0\"",
+                  "signal": "seg_brush_x[1]"
+                },
+                {"value": 0}
+              ],
+              "y2": [
+                {
+                  "test": "data(\"seg_brush_store\").length && data(\"seg_brush_store\")[0].unit === \"concat_0_layer_0\"",
+                  "signal": "seg_brush_y[1]"
+                },
+                {"value": 0}
+              ],
+              "stroke": {"value": "#b9381c"},
+              "strokeWidth": {"value": 3}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "tickMinStep": 1,
+          "gridScale": "concat_0_y",
+          "grid": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "gridScale": "concat_0_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "step",
+          "tickMinStep": 1,
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(width/40)"},
+          "zindex": 0
+        },
+        {
+          "scale": "concat_0_y",
+          "orient": "left",
+          "grid": false,
+          "title": "value",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "concat_1_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "width"},
+          "height": {"signal": "concat_1_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "concat_1_marks",
+          "type": "rect",
+          "style": ["bar"],
+          "interactive": false,
+          "from": {"data": "data_1"},
+          "encode": {
+            "update": {
+              "fill": {"scale": "color", "field": "group"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"Selected Series: \" + (isValid(datum[\"series\"]) ? isArray(datum[\"series\"]) ? join(datum[\"series\"], ' ') : datum[\"series\"] : \"\"+datum[\"series\"]) + \"; Peak Value: \" + (format(datum[\"peak\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? isArray(datum[\"group\"]) ? join(datum[\"group\"], ' ') : datum[\"group\"] : \"\"+datum[\"group\"])"
+              },
+              "x": {"scale": "concat_1_x", "field": "series"},
+              "width": {"signal": "max(0.25, bandwidth('concat_1_x'))"},
+              "y": {"scale": "concat_1_y", "field": "peak_end"},
+              "y2": {"scale": "concat_1_y", "field": "peak_start"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "gridScale": "concat_1_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Selected Series",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": false,
+          "title": "Peak Value",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "group"},
+          {"data": "data_1", "field": "group"}
+        ],
+        "sort": true
+      },
+      "range": "category"
+    },
+    {
+      "name": "concat_0_x",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "step"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": false
+    },
+    {
+      "name": "concat_0_y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "value"},
+      "range": [{"signal": "concat_0_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "concat_1_x",
+      "type": "band",
+      "domain": {"data": "data_1", "field": "series", "sort": true},
+      "range": [0, {"signal": "width"}],
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "concat_1_y",
+      "type": "linear",
+      "domain": {"data": "data_1", "fields": ["peak_start", "peak_end"]},
+      "range": [{"signal": "concat_1_height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "config": {"style": {"cell": {"stroke": null}}}
+}
