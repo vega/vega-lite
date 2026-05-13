@@ -189,9 +189,16 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
             },
             {
               type: 'filter',
-              expr:
-                `${x.signals.data} && ${y.signals.data} && isValid(datum[${stringValue(nextX)}]) && isValid(datum[${stringValue(nextY)}]) && ` +
-                segmentIntersectionExpr(x0, y0, x1, y1, rowX, rowY, leadX, leadY),
+              expr: `${x.signals.data} && ${y.signals.data} && isValid(datum[${stringValue(nextX)}]) && isValid(datum[${stringValue(nextY)}]) && ${segmentIntersectionExpr(
+                x0,
+                y0,
+                x1,
+                y1,
+                rowX,
+                rowY,
+                leadX,
+                leadY,
+              )}`,
             },
             {
               type: 'aggregate',
