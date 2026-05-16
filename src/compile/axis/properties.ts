@@ -19,7 +19,7 @@ import {hasDiscreteDomain} from '../../scale.js';
 import {Sort} from '../../sort.js';
 import {durationExpr, normalizeTimeUnit} from '../../timeunit.js';
 import {NOMINAL, ORDINAL, Type} from '../../type.js';
-import {contains, normalizeAngle} from '../../util.js';
+import {contains, normalizeAngle, stringify} from '../../util.js';
 import {isSignalRef} from '../../vega.schema.js';
 import {mergeTitle, mergeTitleFieldDefs} from '../common.js';
 import {guideFormatType} from '../format.js';
@@ -65,6 +65,9 @@ export const axisRules: {
     axis.labelBaseline || defaultLabelBaseline(labelAngle, orient, channel),
 
   labelFlush: ({axis, fieldOrDatumDef, channel}) => axis.labelFlush ?? defaultLabelFlush(fieldOrDatumDef.type, channel),
+
+  labelExpr: ({axis, config, channel, fieldOrDatumDef, model, scaleType}) =>
+    axis.labelExpr ?? defaultMultiYearTemporalLabelExpr({axis, config, channel, fieldOrDatumDef, model, scaleType}),
 
   labelOverlap: ({axis, fieldOrDatumDef, scaleType}) =>
     axis.labelOverlap ??
@@ -275,6 +278,50 @@ export function defaultLabelOverlap(type: Type, scaleType: ScaleType, hasTimeUni
     return true;
   }
   return undefined;
+}
+
+export function defaultMultiYearTemporalLabelExpr({
+  axis,
+  config,
+  channel,
+  fieldOrDatumDef,
+  model,
+  scaleType,
+}: Pick<AxisRuleParams, 'axis' | 'config' | 'channel' | 'fieldOrDatumDef' | 'model' | 'scaleType'>) {
+  if (
+    axis.format !== undefined ||
+    axis.formatType !== undefined ||
+    axis.encoding?.labels?.text !== undefined ||
+    (config.customFormatTypes && config.timeFormatType) ||
+    !isFieldDef(fieldOrDatumDef) ||
+    fieldOrDatumDef.timeUnit ||
+    fieldOrDatumDef.type !== 'temporal' ||
+    (scaleType !== ScaleType.TIME && scaleType !== ScaleType.UTC)
+  ) {
+    return undefined;
+  }
+
+  const scaleDomain = `domain(${stringify(model.scaleName(channel))})`;
+  const utc = scaleType === ScaleType.UTC ? 'utc' : '';
+  const year = `${utc}year`;
+  const month = `${utc}month`;
+  const date = `${utc}date`;
+  const hours = `${utc}hours`;
+  const minutes = `${utc}minutes`;
+  const seconds = `${utc}seconds`;
+  const milliseconds = `${utc}milliseconds`;
+  const format = `${utc || 'time'}Format`;
+  const isYearBoundary = [
+    `${month}(datum.value) === 0`,
+    `${date}(datum.value) === 1`,
+    `${hours}(datum.value) === 0`,
+    `${minutes}(datum.value) === 0`,
+    `${seconds}(datum.value) === 0`,
+    `${milliseconds}(datum.value) === 0`,
+  ].join(' && ');
+  const labelWithYear = `${isYearBoundary} ? datum.label : datum.label + " " + ${format}(datum.value, "%Y")`;
+
+  return `${year}(${scaleDomain}[0]) === ${year}(${scaleDomain}[1]) ? datum.label : ${labelWithYear}`;
 }
 
 export function defaultOrient(channel: PositionScaleChannel) {
