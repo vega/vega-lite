@@ -7,7 +7,7 @@ import {ParameterName} from './parameter.js';
 import {Dict} from './util.js';
 
 export const SELECTION_ID = '_vgsid_';
-export type SelectionType = 'point' | 'interval';
+export type SelectionType = 'point' | 'interval' | 'segment';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
 export type SelectionInit = PrimitiveValue | DateTime;
@@ -21,10 +21,11 @@ export type LegendBinding = 'legend' | LegendStreamBinding;
 
 export interface BaseSelectionConfig<T extends SelectionType = SelectionType> {
   /**
-   * Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:
+   * Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:
    *
    * - `"point"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click.
    * - `"interval"` -- to select a continuous range of data values on `drag`.
+   * - `"segment"` -- to define a line segment on `drag`.
    */
   type: T;
 
@@ -200,6 +201,14 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
   mark?: BrushConfig;
 }
 
+export interface SegmentSelectionConfig extends BaseSelectionConfig<'segment'> {
+  /**
+   * A segment selection adds a rule mark to depict the segment.
+   * The `mark` property can be used to customize the appearance of the mark.
+   */
+  mark?: BrushConfig;
+}
+
 export interface SelectionParameter<T extends SelectionType = SelectionType> {
   /**
    * Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
@@ -207,12 +216,21 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
   name: ParameterName;
 
   /**
-   * Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:
+   * Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:
    *
    * - `"point"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click.
    * - `"interval"` -- to select a continuous range of data values on `drag`.
+   * - `"segment"` -- to define a line segment on `drag`.
    */
-  select: T | (T extends 'point' ? PointSelectionConfig : T extends 'interval' ? IntervalSelectionConfig : never);
+  select:
+    | T
+    | (T extends 'point'
+        ? PointSelectionConfig
+        : T extends 'interval'
+          ? IntervalSelectionConfig
+          : T extends 'segment'
+            ? SegmentSelectionConfig
+            : never);
 
   /**
    * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/selection.html#project) and initial values.
@@ -241,7 +259,9 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
     ? Binding | Record<string, Binding> | LegendBinding
     : T extends 'interval'
       ? 'scales'
-      : never;
+      : T extends 'segment'
+        ? never
+        : never;
 }
 
 export type TopLevelSelectionParameter = SelectionParameter & {
@@ -281,6 +301,7 @@ export type ParameterExtent =
 export type PointSelectionConfigWithoutType = Omit<PointSelectionConfig, 'type'>;
 
 export type IntervalSelectionConfigWithoutType = Omit<IntervalSelectionConfig, 'type'>;
+export type SegmentSelectionConfigWithoutType = Omit<SegmentSelectionConfig, 'type'>;
 
 export interface SelectionConfig {
   /**
@@ -299,6 +320,12 @@ export interface SelectionConfig {
    * interval selections by default.
    */
   interval?: IntervalSelectionConfigWithoutType;
+
+  /**
+   * The default definition for a `segment` selection. All properties for a
+   * segment selection definition (except `type`) may be specified here.
+   */
+  segment?: SegmentSelectionConfigWithoutType;
 }
 
 export const defaultConfig: SelectionConfig = {
@@ -315,6 +342,13 @@ export const defaultConfig: SelectionConfig = {
     translate: '[pointerdown, window:pointerup] > window:pointermove!',
     zoom: 'wheel!',
     mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
+    resolve: 'global',
+    clear: 'dblclick',
+  },
+  segment: {
+    on: '[pointerdown, window:pointerup] > window:pointermove!',
+    encodings: ['x', 'y'],
+    mark: {stroke: 'white', strokeWidth: 2},
     resolve: 'global',
     clear: 'dblclick',
   },
