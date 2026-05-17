@@ -581,6 +581,10 @@ export function getBandSize({
     return size;
   }
 
+  if (mark.type === 'tick' && useVlSizeChannel && config.tick?.bandSize !== undefined) {
+    return config.tick.bandSize;
+  }
+
   if (isFieldDef(fieldDef)) {
     const {timeUnit, bin} = fieldDef;
 

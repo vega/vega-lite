@@ -671,7 +671,7 @@ export const defaultBarConfig: RectConfig<SignalRef> = {
 export interface TickConfig<ES extends ExprRef | SignalRef>
   extends MarkConfig<ES>, TickThicknessMixins, RectConfig<ES> {
   /**
-   * The width of the ticks.
+   * The length of the ticks.
    *
    * __Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).
    * @minimum 0
