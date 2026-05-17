@@ -24,7 +24,7 @@
   ],
   "marks": [
     {
-      "name": "child__layer_AAPL_layer_0_marks",
+      "name": "child__layer_0_AAPL_layer_0_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -45,7 +45,7 @@
       }
     },
     {
-      "name": "child__layer_AAPL_layer_1_marks",
+      "name": "child__layer_0_AAPL_layer_1_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -65,7 +65,7 @@
       }
     },
     {
-      "name": "child__layer_AMZN_layer_0_marks",
+      "name": "child__layer_1_AMZN_layer_0_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -86,7 +86,7 @@
       }
     },
     {
-      "name": "child__layer_AMZN_layer_1_marks",
+      "name": "child__layer_1_AMZN_layer_1_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -106,7 +106,7 @@
       }
     },
     {
-      "name": "child__layer_GOOG_layer_0_marks",
+      "name": "child__layer_2_GOOG_layer_0_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -127,7 +127,7 @@
       }
     },
     {
-      "name": "child__layer_GOOG_layer_1_marks",
+      "name": "child__layer_2_GOOG_layer_1_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -147,7 +147,7 @@
       }
     },
     {
-      "name": "child__layer_IBM_layer_0_marks",
+      "name": "child__layer_3_IBM_layer_0_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -168,7 +168,7 @@
       }
     },
     {
-      "name": "child__layer_IBM_layer_1_marks",
+      "name": "child__layer_3_IBM_layer_1_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -188,7 +188,7 @@
       }
     },
     {
-      "name": "child__layer_MSFT_layer_0_marks",
+      "name": "child__layer_4_MSFT_layer_0_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -209,7 +209,7 @@
       }
     },
     {
-      "name": "child__layer_MSFT_layer_1_marks",
+      "name": "child__layer_4_MSFT_layer_1_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},

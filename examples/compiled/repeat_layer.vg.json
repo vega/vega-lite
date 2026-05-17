@@ -14,7 +14,7 @@
         {
           "type": "extent",
           "field": "IMDB Rating",
-          "signal": "child__layer_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_extent"
+          "signal": "child__layer_1_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_extent"
         },
         {
           "type": "bin",
@@ -23,9 +23,9 @@
             "bin_maxbins_10_IMDB Rating",
             "bin_maxbins_10_IMDB Rating_end"
           ],
-          "signal": "child__layer_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_bins",
+          "signal": "child__layer_1_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_bins",
           "extent": {
-            "signal": "child__layer_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_extent"
+            "signal": "child__layer_1_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_extent"
           },
           "maxbins": 10
         },
@@ -44,7 +44,7 @@
   ],
   "marks": [
     {
-      "name": "child__layer_US_Gross_marks",
+      "name": "child__layer_0_US_Gross_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -66,7 +66,7 @@
       }
     },
     {
-      "name": "child__layer_Worldwide_Gross_marks",
+      "name": "child__layer_1_Worldwide_Gross_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "x"},
@@ -93,11 +93,11 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "signal": "[child__layer_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_bins.start, child__layer_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_bins.stop]"
+        "signal": "[child__layer_1_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_bins.start, child__layer_1_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
       "bins": {
-        "signal": "child__layer_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_bins"
+        "signal": "child__layer_1_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_bins"
       },
       "zero": false
     },
