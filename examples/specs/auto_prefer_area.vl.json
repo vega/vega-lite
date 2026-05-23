@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Setting `prefer` constrains the family `auto` chooses. `\"area\"` is only ever produced when explicitly requested via `prefer`.",
+  "data": {"url": "data/stocks.csv"},
+  "transform": [{"filter": "datum.symbol==='GOOG'"}],
+  "mark": {"type": "auto", "prefer": "area"},
+  "encoding": {
+    "x": {"field": "date", "type": "temporal"},
+    "y": {"field": "price", "type": "quantitative"}
+  }
+}

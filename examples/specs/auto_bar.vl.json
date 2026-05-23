@@ -1,0 +1,9 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "With a single discrete field, the `auto` mark counts records per category and renders a bar chart.",
+  "data": {"url": "data/cars.json"},
+  "mark": "auto",
+  "encoding": {
+    "x": {"field": "Origin", "type": "nominal"}
+  }
+}

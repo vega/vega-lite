@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "With two discrete positional channels and a quantitative measure on `color`, the `auto` mark resolves to a `rect` heatmap.",
+  "data": {"url": "data/cars.json"},
+  "mark": "auto",
+  "encoding": {
+    "x": {"field": "Cylinders", "type": "ordinal"},
+    "y": {"field": "Origin", "type": "nominal"},
+    "color": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+  }
+}
