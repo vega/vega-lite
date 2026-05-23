@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "With a single quantitative field, the `auto` mark bins the field and counts to produce a histogram.",
+  "description": "Histogram of IMDB ratings produced by the auto mark from a single quantitative field.",
   "data": {"url": "data/movies.json"},
   "mark": "auto",
   "encoding": {

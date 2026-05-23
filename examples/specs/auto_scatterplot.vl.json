@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "An `auto` mark resolves to a `point` mark when both positional channels are quantitative.",
+  "description": "A scatterplot of horsepower and miles per gallon, produced by the auto mark from two quantitative encodings.",
   "data": {"url": "data/cars.json"},
   "mark": "auto",
   "encoding": {

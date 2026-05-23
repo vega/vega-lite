@@ -110,6 +110,12 @@ WindowOnlyOp:
 AnyMark:
   name: Mark
   link: mark.html
+AutoMark:
+  name: String
+  link: 'auto.html'
+AutoPreferredMark:
+  name: String
+  link: 'auto.html#prefer'
 OverlayMarkDef:
   name: Object
 

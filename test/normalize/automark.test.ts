@@ -206,6 +206,13 @@ describe('AutoMarkNormalizer', () => {
         expect(localLogger.warns[0]).toEqual(log.message.autoMarkUndetermined());
       }),
     );
+
+    // Gradual specification: an intermediate `mark: "auto"` spec with no encoding
+    // should still produce a valid normalized spec (rather than throwing).
+    it('normalizes a mark:"auto" spec with no encoding without throwing', () => {
+      const normalized = normalize({data: {url: 'data/values.json'}, mark: 'auto'} as any) as any;
+      expect(normalized.mark).toBe('point');
+    });
   });
 
   describe('equivalence with explicit marks', () => {

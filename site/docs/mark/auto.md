@@ -28,7 +28,7 @@ Because Vega-Lite compiles without access to the data, the choice is made purely
 
 <!--prettier-ignore-end-->
 
-{:#selection}
+{:#decision}
 
 ## How the Mark Is Chosen
 

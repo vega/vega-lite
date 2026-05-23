@@ -29,6 +29,8 @@ export interface AutoMarkDef {
    * stacking, and any binning/aggregation, but always uses the requested family.
    *
    * __Note:__ `"area"` is only ever produced when explicitly requested via `prefer`.
+   *
+   * __Default value:__ Inferred from the encodings.
    */
   prefer?: AutoPreferredMark;
 }

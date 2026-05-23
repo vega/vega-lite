@@ -119,7 +119,7 @@
         - [Area Config]({{site.baseurl}}/docs/area.html#config)
     - [Auto]({{site.baseurl}}/docs/auto.html)
         - [Documentation Overview]({{site.baseurl}}/docs/auto.html#documentation-overview)
-        - [How the Mark Is Chosen]({{site.baseurl}}/docs/auto.html#selection)
+        - [How the Mark Is Chosen]({{site.baseurl}}/docs/auto.html#decision)
         - [Auto Mark Properties]({{site.baseurl}}/docs/auto.html#properties)
         - [Examples]({{site.baseurl}}/docs/auto.html#examples)
     - [Bar]({{site.baseurl}}/docs/bar.html)

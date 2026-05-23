@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "An `auto` mark resolves to a `line` mark when one positional channel is temporal.",
+  "description": "Google's stock price over time, produced by the auto mark from a temporal and a quantitative encoding.",
   "data": {"url": "data/stocks.csv"},
   "transform": [{"filter": "datum.symbol==='GOOG'"}],
   "mark": "auto",
