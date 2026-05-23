@@ -13,17 +13,8 @@ import {NonFacetUnitNormalizer, Normalize, NormalizerParams} from './base.js';
 
 type AutoUnitSpec = GenericUnitSpec<Encoding<string>, AutoMark | AutoMarkDef>;
 
-/** Classification of a positional (x/y) field for the purpose of choosing a mark. */
 type PositionClass = 'none' | 'continuous' | 'discrete';
 
-/**
- * Normalizer for the `"auto"` mark. Picks the primitive mark that best matches the encodings and
- * their declared/inferred data types, then re-runs normalization so that downstream normalizers
- * (e.g. path overlay) still apply.
- *
- * Because Vega-Lite compiles without access to the data, the decision is made purely from the
- * declared (or inferred) channel types — not from data values.
- */
 export class AutoMarkNormalizer implements NonFacetUnitNormalizer<AutoUnitSpec> {
   public name = 'AutoMark';
 
@@ -88,7 +79,6 @@ function isTemporal(fieldDef: TypedFieldDef<string> | undefined): boolean {
   return fieldDef?.type === 'temporal';
 }
 
-/** A field def carries a measure if it is quantitative or is aggregated. */
 function isMeasureChannel(encoding: Encoding<string>, channel: string): boolean {
   const fieldDef = getTypedFieldDef(encoding, channel);
   if (!fieldDef) {
@@ -106,10 +96,6 @@ function hasGeojson(encoding: Encoding<string>): boolean {
   return false;
 }
 
-/**
- * For a 1D spec (exactly one positional field), synthesize a `count` on the empty axis and bin the
- * present field if it is continuous-quantitative — i.e. turn it into a histogram / count bar.
- */
 function injectCount(
   encoding: Encoding<string>,
   presentChannel: typeof X | typeof Y,
@@ -128,16 +114,11 @@ function injectCount(
   return result;
 }
 
-/**
- * Choose a primitive mark (and possibly augment the encoding with binning/aggregation) from the
- * declared/inferred encoding types. When `prefer` is set, only the family selection is overridden;
- * the structural decisions (binning/aggregation) are still applied.
- */
 export function chooseMark(
   encoding: Encoding<string>,
   prefer: AutoPreferredMark | undefined,
 ): {mark: Mark; encoding: Encoding<string>} {
-  // 1. Geo overrides everything.
+  // Geo overrides everything else.
   if (hasGeojson(encoding)) {
     return {mark: 'geoshape', encoding};
   }
@@ -153,13 +134,12 @@ export function chooseMark(
   const hasY = yClass !== 'none';
   const oneD = hasX !== hasY; // exactly one positional field
 
-  // 2. Structural injection (independent of family).
+  // Structural injection (bin/count) applies independently of the family choice.
   let newEncoding = encoding;
   if (oneD) {
     newEncoding = injectCount(encoding, hasX ? X : Y, hasX ? x : y, hasX ? xClass : yClass);
   }
 
-  // 3. Family selection.
   const mark = prefer ?? inferFamily(encoding, {x, y, xClass, yClass, hasX, hasY, oneD});
 
   return {mark, encoding: newEncoding};

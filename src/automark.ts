@@ -1,18 +1,10 @@
 import {isString} from 'vega-util';
 import {hasProperty} from './util.js';
 
-/**
- * The `"auto"` mark type. Unlike primitive marks, `auto` is not rendered directly: during
- * normalization it is replaced with the primitive mark that best fits the encodings and their
- * (declared or inferred) data types.
- */
 export const AUTO = 'auto' as const;
 
 export type AutoMark = typeof AUTO;
 
-/**
- * The primitive mark families that `auto` may be constrained to via the `prefer` property.
- */
 export const AUTO_PREFERRED_MARKS = ['point', 'line', 'area', 'bar', 'rule'] as const;
 
 export type AutoPreferredMark = (typeof AUTO_PREFERRED_MARKS)[number];

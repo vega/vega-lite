@@ -4,7 +4,6 @@ import {chooseMark} from '../../src/normalize/automark.js';
 import {normalize} from '../../src/normalize/index.js';
 import {TopLevelSpec} from '../../src/spec/index.js';
 
-/** Normalize an `auto` spec and return the resolved mark type. */
 function resolvedMark(encoding: any, mark: any = 'auto'): any {
   const spec: TopLevelSpec = {
     data: {url: 'data/values.json'},
@@ -207,8 +206,7 @@ describe('AutoMarkNormalizer', () => {
       }),
     );
 
-    // Gradual specification: an intermediate `mark: "auto"` spec with no encoding
-    // should still produce a valid normalized spec (rather than throwing).
+    // Gradual specification: an intermediate mark:"auto" spec must still normalize.
     it('normalizes a mark:"auto" spec with no encoding without throwing', () => {
       const normalized = normalize({data: {url: 'data/values.json'}, mark: 'auto'} as any) as any;
       expect(normalized.mark).toBe('point');
