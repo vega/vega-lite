@@ -131,6 +131,35 @@ describe('compile/mark/encoding/aria', () => {
     });
   });
 
+  it('omits internal/private fields from the generated description', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        x: {
+          field: 'category',
+          type: 'ordinal',
+        },
+        detail: {
+          field: '__self_highlight_key',
+          type: 'nominal',
+        },
+      },
+      data: {values: []},
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      description: {
+        signal:
+          '"category: " + (isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], \' \') : datum["category"] : ""+datum["category"])',
+      },
+      ariaRoleDescription: {
+        value: 'bar',
+      },
+    });
+  });
+
   it('omits a filtered tooltip field from the generated description when its predicate fails', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'bar',

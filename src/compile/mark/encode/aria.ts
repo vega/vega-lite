@@ -68,7 +68,9 @@ export function description(model: UnitModel) {
     return {};
   }
 
-  const data = tooltipDataTuples(encoding, stack, config);
+  const data = tooltipDataTuples(encoding, stack, config)
+    // remove internal/private signals from aria description
+    .filter(({key}) => !key.startsWith('_'));
 
   if (data.length === 0) {
     return undefined;
@@ -84,7 +86,7 @@ export function description(model: UnitModel) {
 function ariaDescription(data: TooltipTuple[]) {
   if (data.every(({test}) => !test)) {
     return data
-      .map(({key, value}) => [key, value.replaceAll('\\n', ' ')])
+      .map(({key, value}) => [key, value.replaceAll('\\n', ' ')]) // replace newlines with spaces in aria description
       .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
       .join(' + ');
   }
