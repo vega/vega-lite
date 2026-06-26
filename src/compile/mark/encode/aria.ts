@@ -92,6 +92,7 @@ function ariaDescription(data: TooltipTuple[]) {
   }
 
   const segments: string[] = [];
+  // Track whether prior conditional fields are included so separators only appear between visible fields.
   let priorIncluded: string | undefined;
 
   for (const {key, value, test} of data) {
