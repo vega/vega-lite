@@ -64,7 +64,7 @@ describe('compile/mark/encode/tooltip', () => {
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
         signal:
-          'merge({"Date": isValid(datum["Date"]) ? isArray(datum["Date"]) ? join(datum["Date"], \'\\n\') : datum["Date"] : ""+datum["Date"]}, (datum["type1"] != 0) ? {"type1": format(datum["type1"], "")} : {}, (isValid(datum["type2"])) ? {"type2": format(datum["type2"], "")} : {}, (datum["type3"] > 0) ? {"type3": format(datum["type3"], "")} : {})',
+          'merge({"Date": isValid(datum["Date"]) ? isArray(datum["Date"]) ? join(datum["Date"], \'\\n\') : datum["Date"] : ""+datum["Date"]}, (!(datum["type1"]===0)) ? {"type1": format(datum["type1"], "")} : {}, (isValid(datum["type2"]) && isFinite(+datum["type2"])) ? {"type2": format(datum["type2"], "")} : {}, (datum["type3"]>0) ? {"type3": format(datum["type3"], "")} : {})',
       });
     });
 
@@ -194,7 +194,7 @@ describe('compile/mark/encode/tooltip', () => {
         },
       });
       expect(tooltip(model, {reactiveGeom: true}).tooltip).toEqual({
-        signal: 'merge((datum.datum["Foobar"] != 0) ? {"Foobar": format(datum.datum["Foobar"], "")} : {})',
+        signal: '(!(datum.datum["Foobar"]===0)) ? {"Foobar": format(datum.datum["Foobar"], "")} : null',
       });
     });
 
@@ -471,6 +471,50 @@ describe('compile/mark/encode/tooltip', () => {
         ),
       ).toEqual({
         signal: `{"IMDB_Rating (binned)": !isValid(datum["bin_IMDB_rating"]) || !isFinite(+datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_IMDB_rating_end"], "")}`,
+      });
+    });
+
+    it('does not include the secondary binned field when the primary binned field hides its tooltip', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            x: {
+              bin: 'binned',
+              field: 'bin_IMDB_rating',
+              type: 'quantitative',
+              tooltip: false,
+            },
+            x2: {
+              field: 'bin_IMDB_rating_end',
+            },
+            y: {
+              field: 'count',
+              type: 'quantitative',
+            },
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal: '{"count": format(datum["count"], "")}',
+      });
+    });
+
+    it('returns null when all tooltip fields are filtered out at runtime', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [
+              {field: 'type1', type: 'quantitative', tooltip: {filter: {operator: '!=', value: 0}}},
+              {field: 'type2', type: 'quantitative', tooltip: {filter: 'valid'}},
+            ],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal:
+          '((!(datum["type1"]===0)) || (isValid(datum["type2"]) && isFinite(+datum["type2"]))) ? merge((!(datum["type1"]===0)) ? {"type1": format(datum["type1"], "")} : {}, (isValid(datum["type2"]) && isFinite(+datum["type2"])) ? {"type2": format(datum["type2"], "")} : {}) : null',
       });
     });
   });

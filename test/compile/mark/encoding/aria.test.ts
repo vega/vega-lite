@@ -130,4 +130,34 @@ describe('compile/mark/encoding/aria', () => {
       },
     });
   });
+
+  it('omits a filtered tooltip field from the generated description when its predicate fails', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        x: {
+          field: 'Date',
+          type: 'nominal',
+        },
+        y: {
+          field: 'type2',
+          type: 'quantitative',
+          tooltip: {filter: 'valid'},
+        },
+      },
+      data: {values: []},
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      description: {
+        signal:
+          '"Date: " + (isValid(datum["Date"]) ? isArray(datum["Date"]) ? join(datum["Date"], \' \') : datum["Date"] : ""+datum["Date"]) + ((isValid(datum["type2"]) && isFinite(+datum["type2"])) ? ("; " + "type2: " + (format(datum["type2"], ""))) : "")',
+      },
+      ariaRoleDescription: {
+        value: 'bar',
+      },
+    });
+  });
 });

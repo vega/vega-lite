@@ -201,17 +201,21 @@ function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], tim
   return vals.map((v) => predicateValueExpr(v, timeUnit));
 }
 
-// This method is used by Voyager. Do not change its behavior without changing Voyager.
-export function fieldFilterExpression(predicate: FieldPredicate, useInRange = true) {
+// This method is used by Voyager. Do not change its default behavior without changing Voyager.
+export function fieldFilterExpression(
+  predicate: FieldPredicate,
+  useInRange = true,
+  expr: 'datum' | 'parent' | 'datum.datum' = 'datum',
+) {
   const {field} = predicate;
   const normalizedTimeUnit = normalizeTimeUnit(predicate.timeUnit);
   const {unit, binned} = normalizedTimeUnit || {};
-  const rawFieldExpr = vgField(predicate, {expr: 'datum'});
+  const rawFieldExpr = vgField(predicate, {expr});
   const fieldExpr = unit
     ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
       // TODO: support utc
-      `time(${!binned ? timeUnitFieldExpr(unit, field) : rawFieldExpr})`
+      `time(${!binned ? timeUnitFieldExpr(unit, field, {datum: expr}) : rawFieldExpr})`
     : rawFieldExpr;
 
   if (isFieldEqualPredicate(predicate)) {

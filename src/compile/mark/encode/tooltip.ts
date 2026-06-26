@@ -15,9 +15,10 @@ import {
 } from '../../../channeldef.js';
 import {Config} from '../../../config.js';
 import {Encoding, forEach} from '../../../encoding.js';
+import {fieldFilterExpression} from '../../../predicate.js';
 import {StackProperties} from '../../../stack.js';
 import {isDiscrete} from '../../../type.js';
-import {Dict, stringify} from '../../../util.js';
+import {Dict} from '../../../util.js';
 import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
 import {getMarkPropOrConfig} from '../../common.js';
 import {binFormatExpression, formatSignalRef} from '../../format.js';
@@ -84,7 +85,7 @@ export function tooltipData(
   {reactiveGeom}: {reactiveGeom?: boolean} = {},
 ) {
   const out: Dict<string> = {};
-  for (const {key, value, test} of tooltipTuples(encoding, stack, config, {reactiveGeom})) {
+  for (const {key, value, test} of tooltipDataTuples(encoding, stack, config, {reactiveGeom})) {
     out[key] = test ? `(${test}) ? ${value} : ""` : value;
   }
 
@@ -93,9 +94,9 @@ export function tooltipData(
 
 const TOOLTIP_FILTER_OPERATORS = new Set(['==', '!=', '<', '<=', '>', '>=']);
 
-type TooltipTuple = {channel: Channel; key: string; value: string; test?: string};
+export type TooltipTuple = {channel: Channel; key: string; value: string; test?: string};
 
-function tooltipTuples(
+export function tooltipDataTuples(
   encoding: Encoding<string>,
   stack: StackProperties,
   config: Config,
@@ -116,12 +117,6 @@ function tooltipTuples(
           type: (encoding[mainChannel] as TypedFieldDef<any>).type, // for secondary field def, copy type from main channel
         };
 
-    const fieldValue = vgField(fieldDef, {expr});
-    const test = tooltipFieldFilterExpression(fieldDef.tooltip, fieldValue);
-    if (test === false) {
-      return;
-    }
-
     const title = fieldDef.title || defaultTitle(fieldDef, formatConfig);
     const key = array(title).join(', ').replaceAll(/"/g, '\\"');
 
@@ -132,11 +127,24 @@ function tooltipTuples(
       const fieldDef2 = getFieldDef(encoding[channel2]);
 
       if (isBinned(fieldDef.bin) && fieldDef2) {
+        toSkip.add(channel2);
+      }
+    }
+
+    const test = tooltipFieldFilterExpression(fieldDef.tooltip, fieldDef, expr);
+    if (test === false) {
+      return;
+    }
+
+    if (isXorY(channel)) {
+      const channel2 = channel === 'x' ? 'x2' : 'y2';
+      const fieldDef2 = getFieldDef(encoding[channel2]);
+
+      if (isBinned(fieldDef.bin) && fieldDef2) {
         const startField = vgField(fieldDef, {expr});
         const endField = vgField(fieldDef2, {expr});
         const {format, formatType} = getFormatMixins(fieldDef);
         value = binFormatExpression(startField, endField, format, formatType, formatConfig);
-        toSkip.add(channel2);
       }
     }
 
@@ -184,7 +192,8 @@ function tooltipTuples(
 
 function tooltipFieldFilterExpression(
   tooltipControl: TypedFieldDef<string>['tooltip'],
-  value: string,
+  fieldDef: TypedFieldDef<string>,
+  expr: 'datum' | 'datum.datum',
 ): string | false | undefined {
   if (tooltipControl === false) {
     return false;
@@ -194,12 +203,16 @@ function tooltipFieldFilterExpression(
     return undefined;
   }
 
-  return filterExpression(tooltipControl.filter, value);
+  return filterExpression(tooltipControl.filter, fieldDef, expr);
 }
 
-function filterExpression(filter: TooltipFieldFilter, value: string): string | undefined {
+function filterExpression(
+  filter: TooltipFieldFilter,
+  fieldDef: TypedFieldDef<string>,
+  expr: 'datum' | 'datum.datum',
+): string | undefined {
   if (filter === 'valid') {
-    return `isValid(${value})`;
+    return fieldFilterExpression({...fieldDef, valid: true}, true, expr);
   } else if (!isObject(filter)) {
     return undefined;
   }
@@ -208,7 +221,36 @@ function filterExpression(filter: TooltipFieldFilter, value: string): string | u
     return undefined;
   }
 
-  return `${value} ${filter.operator} ${stringify(filter.value)}`;
+  if (filter.value === null) {
+    const field = vgField(fieldDef, {expr});
+    const operator = filter.operator === '==' ? '===' : filter.operator === '!=' ? '!==' : filter.operator;
+    return `${field}${operator}null`;
+  }
+
+  switch (filter.operator) {
+    case '==':
+      return fieldFilterExpression({...fieldDef, equal: filter.value}, true, expr);
+    case '!=':
+      return `!(${fieldFilterExpression({...fieldDef, equal: filter.value}, true, expr)})`;
+    case '<':
+      return typeof filter.value === 'boolean'
+        ? undefined
+        : fieldFilterExpression({...fieldDef, lt: filter.value}, true, expr);
+    case '<=':
+      return typeof filter.value === 'boolean'
+        ? undefined
+        : fieldFilterExpression({...fieldDef, lte: filter.value}, true, expr);
+    case '>':
+      return typeof filter.value === 'boolean'
+        ? undefined
+        : fieldFilterExpression({...fieldDef, gt: filter.value}, true, expr);
+    case '>=':
+      return typeof filter.value === 'boolean'
+        ? undefined
+        : fieldFilterExpression({...fieldDef, gte: filter.value}, true, expr);
+  }
+
+  return undefined;
 }
 
 export function tooltipRefForEncoding(
@@ -217,17 +259,25 @@ export function tooltipRefForEncoding(
   config: Config,
   {reactiveGeom}: {reactiveGeom?: boolean} = {},
 ) {
-  const tuples = tooltipTuples(encoding, stack, config, {reactiveGeom});
+  const tuples = tooltipDataTuples(encoding, stack, config, {reactiveGeom});
   if (tuples.length === 0) {
     return undefined;
   }
 
   const objectExpr = ({key, value}: TooltipTuple) => `{"${key}": ${value}}`;
   if (tuples.some(({test}) => !!test)) {
+    if (tuples.length === 1 && tuples[0].test) {
+      return {signal: `(${tuples[0].test}) ? ${objectExpr(tuples[0])} : null`};
+    }
+
     const keyValues = tuples.map((tuple) =>
       tuple.test ? `(${tuple.test}) ? ${objectExpr(tuple)} : {}` : objectExpr(tuple),
     );
-    return {signal: `merge(${keyValues.join(', ')})`};
+    const filteredOnly = tuples.every(({test}) => !!test);
+    const value = `merge(${keyValues.join(', ')})`;
+    return {
+      signal: filteredOnly ? `(${tuples.map(({test}) => `(${test})`).join(' || ')}) ? ${value} : null` : value,
+    };
   }
 
   const keyValues = tuples.map(({key, value}) => `"${key}": ${value}`);

@@ -1,11 +1,11 @@
 import {hasOwnProperty} from 'vega-util';
-import {entries, isEmpty} from '../../../util.js';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
 import {VG_MARK_INDEX} from './../../../vega.schema.js';
 import {UnitModel} from './../../unit.js';
 import {wrapCondition} from './conditional.js';
 import {textRef} from './text.js';
-import {tooltipData} from './tooltip.js';
+import {tooltipDataTuples} from './tooltip.js';
+import type {TooltipTuple} from './tooltip.js';
 
 export function aria(model: UnitModel) {
   const {markDef, config} = model;
@@ -68,19 +68,46 @@ export function description(model: UnitModel) {
     return {};
   }
 
-  const data = tooltipData(encoding, stack, config);
+  const data = tooltipDataTuples(encoding, stack, config).filter(({key}) => !key.startsWith('_'));
 
-  if (isEmpty(data)) {
+  if (data.length === 0) {
     return undefined;
   }
 
   return {
     description: {
-      signal: entries(data)
-        .filter(([key]) => !key.startsWith('_')) // remove internal/private signals from aria description
-        .map(([key, value]) => [key, value.replaceAll('\\n', ' ')]) // replace newlines with spaces in aria description
-        .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
-        .join(' + '),
+      signal: ariaDescription(data),
     },
   };
+}
+
+function ariaDescription(data: TooltipTuple[]) {
+  if (data.every(({test}) => !test)) {
+    return data
+      .map(({key, value}) => [key, value.replaceAll('\\n', ' ')])
+      .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
+      .join(' + ');
+  }
+
+  const segments: string[] = [];
+  let priorIncluded: string | undefined;
+
+  for (const {key, value, test} of data) {
+    const segment = `"${key}: " + (${value.replaceAll('\\n', ' ')})`;
+    const prefix = priorIncluded ? (priorIncluded === 'true' ? '"; " + ' : `((${priorIncluded}) ? "; " : "") + `) : '';
+
+    if (test) {
+      segments.push(`((${test}) ? (${prefix}${segment}) : "")`);
+      priorIncluded = priorIncluded
+        ? priorIncluded === 'true'
+          ? 'true'
+          : `${priorIncluded} || (${test})`
+        : `(${test})`;
+    } else {
+      segments.push(`${prefix}${segment}`);
+      priorIncluded = 'true';
+    }
+  }
+
+  return segments.join(' + ');
 }
