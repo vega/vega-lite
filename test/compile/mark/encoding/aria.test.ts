@@ -140,7 +140,7 @@ describe('compile/mark/encoding/aria', () => {
           type: 'ordinal',
         },
         detail: {
-          field: '__self_highlight_key',
+          field: '__internal_key',
           type: 'nominal',
         },
       },

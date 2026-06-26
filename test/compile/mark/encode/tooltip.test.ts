@@ -40,7 +40,7 @@ describe('compile/mark/encode/tooltip', () => {
         mark: {type: 'point', tooltip: true},
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
-          detail: {field: '__self_highlight_key', type: 'nominal', tooltip: false},
+          detail: {field: '__internal_key', type: 'nominal', tooltip: false},
         },
       });
       const props = tooltip(model);
