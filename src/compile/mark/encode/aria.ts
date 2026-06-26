@@ -68,7 +68,7 @@ export function description(model: UnitModel) {
     return {};
   }
 
-  const data = tooltipDataTuples(encoding, stack, config).filter(({key}) => !key.startsWith('_'));
+  const data = tooltipDataTuples(encoding, stack, config);
 
   if (data.length === 0) {
     return undefined;
