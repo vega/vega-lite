@@ -211,8 +211,14 @@ function filterExpression(
   fieldDef: TypedFieldDef<string>,
   expr: 'datum' | 'datum.datum',
 ): string | undefined {
+  if (!fieldDef.field) {
+    return undefined;
+  }
+
+  const fieldPredicate = {...fieldDef, field: fieldDef.field};
+
   if (filter === 'valid') {
-    return fieldFilterExpression({...fieldDef, valid: true}, true, expr);
+    return fieldFilterExpression({...fieldPredicate, valid: true}, true, expr);
   } else if (!isObject(filter)) {
     return undefined;
   }
@@ -222,32 +228,32 @@ function filterExpression(
   }
 
   if (filter.value === null) {
-    const field = vgField(fieldDef, {expr});
+    const field = vgField(fieldPredicate, {expr});
     const operator = filter.operator === '==' ? '===' : filter.operator === '!=' ? '!==' : filter.operator;
     return `${field}${operator}null`;
   }
 
   switch (filter.operator) {
     case '==':
-      return fieldFilterExpression({...fieldDef, equal: filter.value}, true, expr);
+      return fieldFilterExpression({...fieldPredicate, equal: filter.value}, true, expr);
     case '!=':
-      return `!(${fieldFilterExpression({...fieldDef, equal: filter.value}, true, expr)})`;
+      return `!(${fieldFilterExpression({...fieldPredicate, equal: filter.value}, true, expr)})`;
     case '<':
       return typeof filter.value === 'boolean'
         ? undefined
-        : fieldFilterExpression({...fieldDef, lt: filter.value}, true, expr);
+        : fieldFilterExpression({...fieldPredicate, lt: filter.value}, true, expr);
     case '<=':
       return typeof filter.value === 'boolean'
         ? undefined
-        : fieldFilterExpression({...fieldDef, lte: filter.value}, true, expr);
+        : fieldFilterExpression({...fieldPredicate, lte: filter.value}, true, expr);
     case '>':
       return typeof filter.value === 'boolean'
         ? undefined
-        : fieldFilterExpression({...fieldDef, gt: filter.value}, true, expr);
+        : fieldFilterExpression({...fieldPredicate, gt: filter.value}, true, expr);
     case '>=':
       return typeof filter.value === 'boolean'
         ? undefined
-        : fieldFilterExpression({...fieldDef, gte: filter.value}, true, expr);
+        : fieldFilterExpression({...fieldPredicate, gte: filter.value}, true, expr);
   }
 
   return undefined;
@@ -266,17 +272,15 @@ export function tooltipRefForEncoding(
 
   const objectExpr = ({key, value}: TooltipTuple) => `{"${key}": ${value}}`;
   if (tuples.some(({test}) => !!test)) {
-    if (tuples.length === 1 && tuples[0].test) {
-      return {signal: `(${tuples[0].test}) ? ${objectExpr(tuples[0])} : null`};
-    }
-
     const keyValues = tuples.map((tuple) =>
       tuple.test ? `(${tuple.test}) ? ${objectExpr(tuple)} : {}` : objectExpr(tuple),
     );
     const filteredOnly = tuples.every(({test}) => !!test);
     const value = `merge(${keyValues.join(', ')})`;
+    const tests = tuples.map(({test}) => test).filter(isString);
+    const hasVisibleField = tests.length === 1 ? tests[0] : tests.map((test) => `(${test})`).join(' || ');
     return {
-      signal: filteredOnly ? `(${tuples.map(({test}) => `(${test})`).join(' || ')}) ? ${value} : null` : value,
+      signal: filteredOnly ? `(${hasVisibleField}) ? ${value} : null` : value,
     };
   }
 

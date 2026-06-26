@@ -194,7 +194,8 @@ describe('compile/mark/encode/tooltip', () => {
         },
       });
       expect(tooltip(model, {reactiveGeom: true}).tooltip).toEqual({
-        signal: '(!(datum.datum["Foobar"]===0)) ? {"Foobar": format(datum.datum["Foobar"], "")} : null',
+        signal:
+          '(!(datum.datum["Foobar"]===0)) ? merge((!(datum.datum["Foobar"]===0)) ? {"Foobar": format(datum.datum["Foobar"], "")} : {}) : null',
       });
     });
 
