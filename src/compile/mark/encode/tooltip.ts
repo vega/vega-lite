@@ -9,6 +9,7 @@ import {
   isFieldDef,
   isTypedFieldDef,
   SecondaryFieldDef,
+  TooltipFieldFilter,
   TypedFieldDef,
   vgField,
 } from '../../../channeldef.js';
@@ -16,7 +17,7 @@ import {Config} from '../../../config.js';
 import {Encoding, forEach} from '../../../encoding.js';
 import {StackProperties} from '../../../stack.js';
 import {isDiscrete} from '../../../type.js';
-import {Dict, entries} from '../../../util.js';
+import {Dict, stringify} from '../../../util.js';
 import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
 import {getMarkPropOrConfig} from '../../common.js';
 import {binFormatExpression, formatSignalRef} from '../../format.js';
@@ -82,10 +83,28 @@ export function tooltipData(
   config: Config,
   {reactiveGeom}: {reactiveGeom?: boolean} = {},
 ) {
+  const out: Dict<string> = {};
+  for (const {key, value, test} of tooltipTuples(encoding, stack, config, {reactiveGeom})) {
+    out[key] = test ? `(${test}) ? ${value} : ""` : value;
+  }
+
+  return out;
+}
+
+const TOOLTIP_FILTER_OPERATORS = new Set(['==', '!=', '<', '<=', '>', '>=']);
+
+type TooltipTuple = {channel: Channel; key: string; value: string; test?: string};
+
+function tooltipTuples(
+  encoding: Encoding<string>,
+  stack: StackProperties,
+  config: Config,
+  {reactiveGeom}: {reactiveGeom?: boolean} = {},
+) {
   const formatConfig = {...config, ...config.tooltipFormat};
   const toSkip = new Set();
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
-  const tuples: {channel: Channel; key: string; value: string}[] = [];
+  const tuples: TooltipTuple[] = [];
 
   function add(fDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
@@ -96,6 +115,12 @@ export function tooltipData(
           ...fDef,
           type: (encoding[mainChannel] as TypedFieldDef<any>).type, // for secondary field def, copy type from main channel
         };
+
+    const fieldValue = vgField(fieldDef, {expr});
+    const test = tooltipFieldFilterExpression(fieldDef.tooltip, fieldValue);
+    if (test === false) {
+      return;
+    }
 
     const title = fieldDef.title || defaultTitle(fieldDef, formatConfig);
     const key = array(title).join(', ').replaceAll(/"/g, '\\"');
@@ -134,7 +159,7 @@ export function tooltipData(
 
     value ??= addLineBreaksToTooltip(fieldDef, formatConfig, expr).signal;
 
-    tuples.push({channel, key, value});
+    tuples.push({channel, key, value, test});
   }
 
   forEach(encoding, (channelDef, channel) => {
@@ -145,14 +170,45 @@ export function tooltipData(
     }
   });
 
-  const out: Dict<string> = {};
-  for (const {channel, key, value} of tuples) {
-    if (!toSkip.has(channel) && !out[key]) {
-      out[key] = value;
+  const out: TooltipTuple[] = [];
+  const keys = new Set<string>();
+  for (const {channel, key, value, test} of tuples) {
+    if (!toSkip.has(channel) && !keys.has(key)) {
+      out.push({channel, key, value, test});
+      keys.add(key);
     }
   }
 
   return out;
+}
+
+function tooltipFieldFilterExpression(
+  tooltipControl: TypedFieldDef<string>['tooltip'],
+  value: string,
+): string | false | undefined {
+  if (tooltipControl === false) {
+    return false;
+  }
+
+  if (!isObject(tooltipControl) || !('filter' in tooltipControl)) {
+    return undefined;
+  }
+
+  return filterExpression(tooltipControl.filter, value);
+}
+
+function filterExpression(filter: TooltipFieldFilter, value: string): string | undefined {
+  if (filter === 'valid') {
+    return `isValid(${value})`;
+  } else if (!isObject(filter)) {
+    return undefined;
+  }
+
+  if (!TOOLTIP_FILTER_OPERATORS.has(filter.operator) || filter.value === undefined) {
+    return undefined;
+  }
+
+  return `${value} ${filter.operator} ${stringify(filter.value)}`;
 }
 
 export function tooltipRefForEncoding(
@@ -161,10 +217,21 @@ export function tooltipRefForEncoding(
   config: Config,
   {reactiveGeom}: {reactiveGeom?: boolean} = {},
 ) {
-  const data = tooltipData(encoding, stack, config, {reactiveGeom});
+  const tuples = tooltipTuples(encoding, stack, config, {reactiveGeom});
+  if (tuples.length === 0) {
+    return undefined;
+  }
 
-  const keyValues = entries(data).map(([key, value]) => `"${key}": ${value}`);
-  return keyValues.length > 0 ? {signal: `{${keyValues.join(', ')}}`} : undefined;
+  const objectExpr = ({key, value}: TooltipTuple) => `{"${key}": ${value}}`;
+  if (tuples.some(({test}) => !!test)) {
+    const keyValues = tuples.map((tuple) =>
+      tuple.test ? `(${tuple.test}) ? ${objectExpr(tuple)} : {}` : objectExpr(tuple),
+    );
+    return {signal: `merge(${keyValues.join(', ')})`};
+  }
+
+  const keyValues = tuples.map(({key, value}) => `"${key}": ${value}`);
+  return {signal: `{${keyValues.join(', ')}}`};
 }
 
 /**

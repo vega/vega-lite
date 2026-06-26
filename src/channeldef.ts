@@ -97,6 +97,30 @@ import {isSignalRef} from './vega.schema.js';
 
 export type PrimitiveValue = number | string | boolean | null;
 
+export type TooltipFieldFilter =
+  | 'valid'
+  | {
+      /**
+       * Comparison operator for the unformatted field value.
+       */
+      operator: '==' | '!=' | '<' | '<=' | '>' | '>=';
+
+      /**
+       * Literal value to compare against the unformatted field value.
+       */
+      value: PrimitiveValue;
+    };
+
+export interface TooltipFieldControl {
+  /**
+   * Predicate for including this field in generated tooltips.
+   *
+   * - `"valid"` includes values that are not null, undefined, or NaN.
+   * - An operator/value object compares the unformatted field value to a literal.
+   */
+  filter: TooltipFieldFilter;
+}
+
 export type Value<ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
   | PrimitiveValue
   | number[]
@@ -242,6 +266,16 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
    * 2) `field` is not required if `aggregate` is `count`.
    */
   field?: F;
+
+  /**
+   * Controls whether this field appears in generated tooltips.
+   *
+   * Set to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this
+   * field when its unformatted value does not pass the filter.
+   *
+   * __Default value:__ `true`
+   */
+  tooltip?: boolean | TooltipFieldControl;
 
   // function
 

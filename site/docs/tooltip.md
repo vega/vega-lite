@@ -28,6 +28,18 @@ Setting the `tooltip` property of the [mark definition]({{site.baseurl}}/docs/ma
 
 **Note:** This is equivalent to setting the `tooltip` property of the mark definition to `{"content": "encoding"}`.
 
+To omit an encoding field from generated encoding-based tooltips while still using it for grouping, selection, or another channel, set the field definition's `tooltip` property to `false`.
+
+```js
+{
+  "mark": {"type": "point", "tooltip": true},
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "detail": {"field": "__internal_key", "type": "nominal", "tooltip": false}
+  }
+}
+```
+
 {:#data}
 
 ## Tooltip Based on Underlying Data Point
@@ -47,6 +59,20 @@ To create a tooltip, Vega-Lite's [`tooltip`](encoding.html#mark-properties-chann
 To show more than one field, you can provide an array of field definitions. [Vega tooltip](https://github.com/vega/vega-tooltip/) will display a table that shows the name of the field and its value. Here is an example.
 
 <div class="vl-example" data-name="bar_tooltip_multi"></div>
+
+Tooltip field definitions can include `tooltip: {"filter": ...}` to omit individual fields when their value does not pass the filter. Supported filters are `"valid"` or an object with an `operator` (`"=="`, `"!="`, `"<"`, `"<="`, `">"`, or `">="`) and a literal `value`.
+
+```js
+{
+  "encoding": {
+    "tooltip": [
+      {"field": "Date", "type": "nominal"},
+      {"field": "type1", "type": "quantitative", "tooltip": {"filter": {"operator": "!=", "value": 0}}},
+      {"field": "type2", "type": "quantitative", "tooltip": {"filter": {"operator": ">", "value": 0}}}
+    ]
+  }
+}
+```
 
 Alternatively, you can [calculate](calculate.html) a new field that concatenates multiple fields (and use a single field definition).
 

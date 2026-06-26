@@ -35,6 +35,39 @@ describe('compile/mark/encode/tooltip', () => {
       });
     });
 
+    it('omits encoding fields with tooltip false from generated tooltip objects', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: true},
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          detail: {field: '__self_highlight_key', type: 'nominal', tooltip: false},
+        },
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({
+        signal: '{"Horsepower": format(datum["Horsepower"], "")}',
+      });
+    });
+
+    it('filters explicit tooltip fields by their unformatted values', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'point',
+        encoding: {
+          tooltip: [
+            {field: 'Date', type: 'nominal'},
+            {field: 'type1', type: 'quantitative', tooltip: {filter: {operator: '!=', value: 0}}},
+            {field: 'type2', type: 'quantitative', tooltip: {filter: 'valid'}},
+            {field: 'type3', type: 'quantitative', tooltip: {filter: {operator: '>', value: 0}}},
+          ],
+        },
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({
+        signal:
+          'merge({"Date": isValid(datum["Date"]) ? isArray(datum["Date"]) ? join(datum["Date"], \'\\n\') : datum["Date"] : ""+datum["Date"]}, (datum["type1"] != 0) ? {"type1": format(datum["type1"], "")} : {}, (isValid(datum["type2"])) ? {"type2": format(datum["type2"], "")} : {}, (datum["type3"] > 0) ? {"type3": format(datum["type3"], "")} : {})',
+      });
+    });
+
     it('generates no tooltip if encoding.tooltip === null', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
@@ -143,6 +176,25 @@ describe('compile/mark/encode/tooltip', () => {
       expect(tooltip(model, {reactiveGeom: true}).tooltip).toEqual({
         signal:
           '{"Foobar": isValid(datum.datum["Foobar"]) ? isArray(datum.datum["Foobar"]) ? join(datum.datum["Foobar"], \'\\n\') : datum.datum["Foobar"] : ""+datum.datum["Foobar"]}',
+      });
+    });
+
+    it('filters generated tooltip objects with reactiveGeom references', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'circle',
+          tooltip: true,
+        },
+        encoding: {
+          color: {
+            field: 'Foobar',
+            type: 'quantitative',
+            tooltip: {filter: {operator: '!=', value: 0}},
+          },
+        },
+      });
+      expect(tooltip(model, {reactiveGeom: true}).tooltip).toEqual({
+        signal: 'merge((datum.datum["Foobar"] != 0) ? {"Foobar": format(datum.datum["Foobar"], "")} : {})',
       });
     });
 
