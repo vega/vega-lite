@@ -62,6 +62,8 @@ To show more than one field, you can provide an array of field definitions. [Veg
 
 Tooltip field definitions can include `tooltip: {"filter": ...}` to omit individual fields when their value does not pass the filter. Supported filters are `"valid"` or an object with an `operator` (`"=="`, `"!="`, `"<"`, `"<="`, `">"`, or `">="`) and a literal `value`.
 
+<div class="vl-example" data-name="point_tooltip_filter"></div>
+
 ```js
 {
   "encoding": {
