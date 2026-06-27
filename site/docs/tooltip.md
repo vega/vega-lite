@@ -35,7 +35,7 @@ To omit an encoding field from generated encoding-based tooltips while still usi
   "mark": {"type": "point", "tooltip": true},
   "encoding": {
     "x": {"field": "Horsepower", "type": "quantitative"},
-    "detail": {"field": "__internal_key", "type": "nominal", "tooltip": false}
+    "detail": {"field": "disabledTooltip", "type": "nominal", "tooltip": false}
   }
 }
 ```
@@ -60,22 +60,6 @@ To show more than one field, you can provide an array of field definitions. [Veg
 
 <div class="vl-example" data-name="bar_tooltip_multi"></div>
 
-Tooltip field definitions can include `tooltip: {"filter": ...}` to omit individual fields when their value does not pass the filter. Supported filters are `"valid"` or an object with an `operator` (`"=="`, `"!="`, `"<"`, `"<="`, `">"`, or `">="`) and a literal `value`.
-
-<div class="vl-example" data-name="bar_tooltip_filter"></div>
-
-```js
-{
-  "encoding": {
-    "tooltip": [
-      {"field": "Date", "type": "nominal"},
-      {"field": "type1", "type": "quantitative", "tooltip": {"filter": {"operator": "!=", "value": 0}}},
-      {"field": "type2", "type": "quantitative", "tooltip": {"filter": {"operator": ">", "value": 0}}}
-    ]
-  }
-}
-```
-
 Alternatively, you can [calculate](calculate.html) a new field that concatenates multiple fields (and use a single field definition).
 
 To give the fields in the tooltip a label that is different from the field name, set the `title` parameter.
@@ -91,6 +75,27 @@ In the example below, adding the tooltip for b means that b becomes part of the 
 To avoid that the tooltips groups the data, add an aggregate to the tooltip encoding.
 
 <div class="vl-example" data-name="bar_tooltip_aggregate"></div>
+
+Tooltip field definitions can include `tooltip: {"filter": ...}` to omit individual fields when their value does not pass the filter or `tooltip: false` to omit the field entirely. Supported filters are `"valid"` or an object with an `operator` (`"=="`, `"!="`, `"<"`, `"<="`, `">"`, or `">="`) and a literal `value`.
+
+<div class="vl-example" data-name="bar_tooltip_filter"></div>
+
+```js
+{
+  "mark": {"type": "bar", "tooltip": true},
+  "encoding": {
+    "x": {"field": "category", "type": "nominal"},
+    "y": {"field": "plotValue", "type": "quantitative"},
+    "color": {"field": "nonZeroTooltip", "type": "quantitative"},
+    "tooltip": [
+      {"field": "category", "type": "nominal"},
+      {"field": "validTooltip", "type": "quantitative", "tooltip": {"filter": "valid"}},
+      {"field": "nonZeroTooltip", "type": "quantitative", "tooltip": {"filter": {"operator": "!=", "value": 0}}},
+      {"field": "disabledTooltip", "type": "nominal", "tooltip": false}
+    ]
+  }
+}
+```
 
 ## Tooltip image
 
