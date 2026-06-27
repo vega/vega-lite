@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "A scatterplot with fields that are conditionally omitted from generated tooltips.",
+  "description": "A bar chart with fields that are conditionally omitted from generated tooltips.",
   "width": 420,
   "height": 260,
   "data": {
@@ -13,7 +13,7 @@
       {"category": "F", "plotValue": 6, "value": 6, "nonZeroTooltip": 4, "status": "all visible", "__internal_key": "hidden-f"}
     ]
   },
-  "mark": {"type": "circle", "tooltip": true, "size": 180},
+  "mark": {"type": "bar", "tooltip": true},
   "encoding": {
     "x": {"field": "category", "type": "nominal"},
     "y": {"field": "plotValue", "type": "quantitative"},
