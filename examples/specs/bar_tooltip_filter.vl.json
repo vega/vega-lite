@@ -5,12 +5,12 @@
   "height": 260,
   "data": {
     "values": [
-      {"category": "A", "plotValue": 10, "value": 10, "nonZeroTooltip": 0, "__internal_key": "hidden-a"},
-      {"category": "B", "plotValue": 7, "value": 7, "nonZeroTooltip": 1, "__internal_key": "hidden-b"},
-      {"category": "C", "plotValue": 5, "value": null, "nonZeroTooltip": 2, "__internal_key": "hidden-c"},
-      {"category": "D", "plotValue": 4, "value": 4, "nonZeroTooltip": 0, "__internal_key": "hidden-d"},
-      {"category": "E", "plotValue": 12, "value": 12, "nonZeroTooltip": 3, "__internal_key": "hidden-e"},
-      {"category": "F", "plotValue": 6, "value": 6, "nonZeroTooltip": 4, "__internal_key": "hidden-f"}
+      {"category": "A", "plotValue": 10, "validTooltip": 10, "nonZeroTooltip": 0, "__internal_key": "hidden-a"},
+      {"category": "B", "plotValue": 7, "validTooltip": 7, "nonZeroTooltip": 1, "__internal_key": "hidden-b"},
+      {"category": "C", "plotValue": 5, "validTooltip": null, "nonZeroTooltip": 1, "__internal_key": "hidden-c"},
+      {"category": "D", "plotValue": 4, "validTooltip": 4, "nonZeroTooltip": 0, "__internal_key": "hidden-d"},
+      {"category": "E", "plotValue": 12, "validTooltip": 12, "nonZeroTooltip": 1, "__internal_key": "hidden-e"},
+      {"category": "F", "plotValue": 6, "validTooltip": 6, "nonZeroTooltip": 1, "__internal_key": "hidden-f"}
     ]
   },
   "mark": {"type": "bar", "tooltip": true},
@@ -20,7 +20,7 @@
     "color": {"field": "nonZeroTooltip", "type": "quantitative"},
     "tooltip": [
       {"field": "category", "type": "nominal"},
-      {"field": "value", "type": "quantitative", "tooltip": {"filter": "valid"}},
+      {"field": "validTooltip", "type": "quantitative", "tooltip": {"filter": "valid"}},
       {"field": "nonZeroTooltip", "type": "quantitative", "tooltip": {"filter": {"operator": "!=", "value": 0}}},
       {"field": "__internal_key", "type": "nominal", "tooltip": false}
     ]
