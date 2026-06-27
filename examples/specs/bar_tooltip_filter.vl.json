@@ -5,94 +5,24 @@
   "height": 260,
   "data": {
     "values": [
-      {
-        "category": "A",
-        "plotValue": 10,
-        "validTooltip": 10,
-        "nonZeroTooltip": 0,
-        "disabledTooltip": "hidden-a"
-      },
-      {
-        "category": "B",
-        "plotValue": 7,
-        "validTooltip": 7,
-        "nonZeroTooltip": 1,
-        "disabledTooltip": "hidden-b"
-      },
-      {
-        "category": "C",
-        "plotValue": 5,
-        "validTooltip": null,
-        "nonZeroTooltip": 1,
-        "disabledTooltip": "hidden-c"
-      },
-      {
-        "category": "D",
-        "plotValue": 4,
-        "validTooltip": 4,
-        "nonZeroTooltip": 0,
-        "disabledTooltip": "hidden-d"
-      },
-      {
-        "category": "E",
-        "plotValue": 12,
-        "validTooltip": 12,
-        "nonZeroTooltip": 1,
-        "disabledTooltip": "hidden-e"
-      },
-      {
-        "category": "F",
-        "plotValue": 6,
-        "validTooltip": 6,
-        "nonZeroTooltip": 1,
-        "disabledTooltip": "hidden-f"
-      }
+      {"category": "A", "plotValue": 10, "validTooltip": 10, "nonZeroTooltip": 0, "disabledTooltip": "hidden-a"},
+      {"category": "B", "plotValue": 7, "validTooltip": 7, "nonZeroTooltip": 1, "disabledTooltip": "hidden-b"},
+      {"category": "C", "plotValue": 5, "validTooltip": null, "nonZeroTooltip": 1, "disabledTooltip": "hidden-c"},
+      {"category": "D", "plotValue": 4, "validTooltip": 4, "nonZeroTooltip": 0, "disabledTooltip": "hidden-d"},
+      {"category": "E", "plotValue": 12, "validTooltip": 12, "nonZeroTooltip": 1, "disabledTooltip": "hidden-e"},
+      {"category": "F", "plotValue": 6, "validTooltip": 6, "nonZeroTooltip": 1, "disabledTooltip": "hidden-f"}
     ]
   },
-  "mark": {
-    "type": "bar",
-    "tooltip": true
-  },
+  "mark": {"type": "bar", "tooltip": true},
   "encoding": {
-    "x": {
-      "field": "category",
-      "type": "nominal"
-    },
-    "y": {
-      "field": "plotValue",
-      "type": "quantitative"
-    },
-    "color": {
-      "field": "nonZeroTooltip",
-      "type": "quantitative"
-    },
+    "x": {"field": "category", "type": "nominal"},
+    "y": {"field": "plotValue", "type": "quantitative"},
+    "color": {"field": "nonZeroTooltip", "type": "quantitative"},
     "tooltip": [
-      {
-        "field": "category",
-        "type": "nominal"
-      },
-      {
-        "field": "validTooltip",
-        "type": "quantitative",
-        "tooltip": {
-          "filter": "valid"
-        }
-      },
-      {
-        "field": "nonZeroTooltip",
-        "type": "quantitative",
-        "tooltip": {
-          "filter": {
-            "operator": "!=",
-            "value": 0
-          }
-        }
-      },
-      {
-        "field": "disabledTooltip",
-        "type": "nominal",
-        "tooltip": false
-      }
+      {"field": "category", "type": "nominal"},
+      {"field": "validTooltip", "type": "quantitative", "tooltip": {"filter": "valid"}},
+      {"field": "nonZeroTooltip", "type": "quantitative", "tooltip": {"filter": {"operator": "!=", "value": 0}}},
+      {"field": "disabledTooltip", "type": "nominal", "tooltip": false}
     ]
   }
 }
