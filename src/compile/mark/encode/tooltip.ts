@@ -255,8 +255,6 @@ function filterExpression(
         ? undefined
         : fieldFilterExpression({...fieldPredicate, gte: filter.value}, true, expr);
   }
-
-  return undefined;
 }
 
 export function tooltipRefForEncoding(

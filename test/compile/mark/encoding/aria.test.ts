@@ -103,6 +103,29 @@ describe('compile/mark/encoding/aria', () => {
     });
   });
 
+  it('should support description encoding', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        description: {
+          value: 'An encoded description',
+        },
+      },
+      data: {values: []},
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      ariaRoleDescription: {
+        value: 'bar',
+      },
+      description: {
+        value: 'An encoded description',
+      },
+    });
+  });
+
   it('should support custom ariaRoleDescription', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: {

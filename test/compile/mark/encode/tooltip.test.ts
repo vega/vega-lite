@@ -1,7 +1,12 @@
 import {BIN_RANGE_DELIMITER} from '../../../../src/compile/common.js';
-import {tooltip, tooltipRefForEncoding} from '../../../../src/compile/mark/encode/index.js';
+import {tooltip} from '../../../../src/compile/mark/encode/index.js';
+import {tooltipData, tooltipRefForEncoding} from '../../../../src/compile/mark/encode/tooltip.js';
 import {defaultConfig} from '../../../../src/config.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
+
+function filteredTooltipSignal(field: string, test: string) {
+  return `(${test}) ? merge((${test}) ? {"${field}": format(datum["${field}"], "")} : {}) : null`;
+}
 
 describe('compile/mark/encode/tooltip', () => {
   describe('tooltip', () => {
@@ -77,8 +82,20 @@ describe('compile/mark/encode/tooltip', () => {
           tooltip: null,
         },
       });
+      model.encoding.tooltip = null;
       const props = tooltip(model);
       expect(props.tooltip).toBeUndefined();
+    });
+
+    it('uses mark tooltip strings as static tooltip values', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: 'static tooltip'},
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+        },
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({value: 'static tooltip'});
     });
 
     it('generates tooltip object signal for all data if specified', () => {
@@ -305,6 +322,40 @@ describe('compile/mark/encode/tooltip', () => {
   });
 
   describe('tooltipForEncoding', () => {
+    it('returns no tooltip when all encoding fields hide their tooltip', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            x: {
+              field: 'Horsepower',
+              type: 'quantitative',
+              tooltip: false,
+            },
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toBeUndefined();
+    });
+
+    it('returns filtered values for tooltip data', () => {
+      expect(
+        tooltipData(
+          {
+            tooltip: [
+              {field: 'visible', type: 'quantitative'},
+              {field: 'positive', type: 'quantitative', tooltip: {filter: {operator: '>', value: 0}}},
+            ],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        visible: 'format(datum["visible"], "")',
+        positive: '(datum["positive"]>0) ? format(datum["positive"], "") : ""',
+      });
+    });
+
     it('returns correct tooltip signal for binned field', () => {
       expect(
         tooltipRefForEncoding(
@@ -516,6 +567,108 @@ describe('compile/mark/encode/tooltip', () => {
       ).toEqual({
         signal:
           '((!(datum["type1"]===0)) || (isValid(datum["type2"]) && isFinite(+datum["type2"]))) ? merge((!(datum["type1"]===0)) ? {"type1": format(datum["type1"], "")} : {}, (isValid(datum["type2"]) && isFinite(+datum["type2"])) ? {"type2": format(datum["type2"], "")} : {}) : null',
+      });
+    });
+
+    it('filters tooltip fields with comparison operators', () => {
+      const cases = [
+        {field: 'eq', operator: '==', value: 10, test: 'datum["eq"]===10'},
+        {field: 'lt', operator: '<', value: 10, test: 'datum["lt"]<10'},
+        {field: 'lte', operator: '<=', value: 10, test: 'datum["lte"]<=10'},
+        {field: 'gte', operator: '>=', value: 10, test: 'datum["gte"]>=10'},
+      ] as const;
+
+      for (const {field, operator, value, test} of cases) {
+        expect(
+          tooltipRefForEncoding(
+            {
+              tooltip: [{field, type: 'quantitative', tooltip: {filter: {operator, value}}}],
+            },
+            null,
+            defaultConfig,
+          ),
+        ).toEqual({
+          signal: filteredTooltipSignal(field, test),
+        });
+      }
+    });
+
+    it('filters tooltip fields against null values', () => {
+      const cases = [
+        {field: 'missing', operator: '==', test: 'datum["missing"]===null'},
+        {field: 'present', operator: '!=', test: 'datum["present"]!==null'},
+        {field: 'after', operator: '>', test: 'datum["after"]>null'},
+      ] as const;
+
+      for (const {field, operator, test} of cases) {
+        expect(
+          tooltipRefForEncoding(
+            {
+              tooltip: [{field, type: 'quantitative', tooltip: {filter: {operator, value: null}}}],
+            },
+            null,
+            defaultConfig,
+          ),
+        ).toEqual({
+          signal: filteredTooltipSignal(field, test),
+        });
+      }
+    });
+
+    it('ignores unsupported tooltip filters', () => {
+      const unsupportedFilter = JSON.parse('"missing"');
+      const unsupportedOperatorFilter = JSON.parse('{"operator":"===","value":0}');
+      const missingValueFilter = JSON.parse('{"operator":"=="}');
+
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [
+              {field: 'unsupported', type: 'quantitative', tooltip: {filter: unsupportedFilter}},
+              {field: 'operator', type: 'quantitative', tooltip: {filter: unsupportedOperatorFilter}},
+              {field: 'missingValue', type: 'quantitative', tooltip: {filter: missingValueFilter}},
+            ],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal:
+          '{"unsupported": format(datum["unsupported"], ""), "operator": format(datum["operator"], ""), "missingValue": format(datum["missingValue"], "")}',
+      });
+    });
+
+    it('ignores ordered comparisons against boolean filter values', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [
+              {field: 'lt', type: 'quantitative', tooltip: {filter: {operator: '<', value: true}}},
+              {field: 'lte', type: 'quantitative', tooltip: {filter: {operator: '<=', value: true}}},
+              {field: 'gt', type: 'quantitative', tooltip: {filter: {operator: '>', value: true}}},
+              {field: 'gte', type: 'quantitative', tooltip: {filter: {operator: '>=', value: true}}},
+            ],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal:
+          '{"lt": format(datum["lt"], ""), "lte": format(datum["lte"], ""), "gt": format(datum["gt"], ""), "gte": format(datum["gte"], "")}',
+      });
+    });
+
+    it('ignores tooltip filters on fieldless aggregate fields', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [{aggregate: 'count', type: 'quantitative', tooltip: {filter: 'valid'}}],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal: '{"Count of Records": format(datum["__count"], "")}',
       });
     });
   });
