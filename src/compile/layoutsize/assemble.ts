@@ -63,7 +63,16 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
     const expr = isWidth ? 'containerSize()[0]' : 'containerSize()[1]';
     const defaultValue = getViewConfigContinuousSize(model.config.view, isWidth ? 'width' : 'height');
     const safeExpr = `isFinite(${expr}) ? ${expr} : ${defaultValue}`;
-    return [{name, init: safeExpr, on: [{update: safeExpr, events: 'window:resize'}]}];
+    return [
+      {
+        name,
+        init: safeExpr,
+        on: [
+          {update: safeExpr, events: 'window:resize'},
+          {update: safeExpr, events: {signal: 'autosize'}},
+        ],
+      },
+    ];
   } else {
     return [
       {
