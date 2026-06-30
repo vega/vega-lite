@@ -7,7 +7,7 @@
   "layer": [
     {
       "mark": {"type": "rule", "color": "#ccc"},
-      "encoding": {"detail": {"aggregate": "count"}, "x": {"field": "key"}}
+      "encoding": {"detail": {"aggregate": "count"}, "x": {"field": "key", "axis": {"title": null}}}
     },
     {
       "mark": "line",
@@ -15,7 +15,7 @@
         "color": {"type": "nominal", "field": "Species"},
         "detail": {"type": "nominal", "field": "index"},
         "opacity": {"value": 0.3},
-        "x": {"type": "nominal", "field": "key"},
+        "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
         "y": {"type": "quantitative", "field": "norm_val", "axis": null},
         "tooltip": [
           {"type": "quantitative", "field": "Beak Length (mm)"},
@@ -30,7 +30,7 @@
         {
           "mark": {"type": "text", "style": "label"},
           "encoding": {
-            "x": {"type": "nominal", "field": "key"},
+            "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
             "y": {"value": 0},
             "text": {"aggregate": "max", "field": "max"}
           }
@@ -38,7 +38,7 @@
         {
           "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"},
           "encoding": {
-            "x": {"type": "nominal", "field": "key"},
+            "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
             "y": {"value": 0}
           }
         }
@@ -49,7 +49,7 @@
         {
           "mark": {"type": "text", "style": "label"},
           "encoding": {
-            "x": {"type": "nominal", "field": "key"},
+            "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
             "y": {"value": 150},
             "text": {"aggregate": "min", "field": "mid"}
           }
@@ -57,7 +57,7 @@
         {
           "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"},
           "encoding": {
-            "x": {"type": "nominal", "field": "key"},
+            "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
             "y": {"value": 150}
           }
         }
@@ -68,7 +68,7 @@
         {
           "mark": {"type": "text", "style": "label"},
           "encoding": {
-            "x": {"type": "nominal", "field": "key"},
+            "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
             "y": {"value": 300},
             "text": {"aggregate": "min", "field": "min"}
           }
@@ -76,7 +76,7 @@
         {
           "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"},
           "encoding": {
-            "x": {"type": "nominal", "field": "key"},
+            "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
             "y": {"value": 300}
           }
         }
@@ -87,8 +87,7 @@
     "axisX": {
       "domain": false,
       "labelAngle": 0,
-      "tickColor": "#ccc",
-      "title": null
+      "tickColor": "#ccc"
     },
     "view": {"stroke": null},
     "style": {

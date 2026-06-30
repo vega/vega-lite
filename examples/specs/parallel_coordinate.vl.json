@@ -30,7 +30,7 @@
     "mark": {"type": "rule", "color": "#ccc"},
     "encoding": {
       "detail": {"aggregate": "count"},
-      "x": {"field": "key"}
+      "x": {"field": "key", "axis": {"title": null}}
     }
   }, {
     "mark": "line",
@@ -38,7 +38,7 @@
       "color": {"type": "nominal", "field": "Species"},
       "detail": {"type": "nominal", "field": "index"},
       "opacity": {"value": 0.3},
-      "x": {"type": "nominal", "field": "key"},
+      "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
       "y": {"type": "quantitative", "field": "norm_val", "axis": null},
       "tooltip": [{
         "type": "quantitative",
@@ -56,7 +56,7 @@
     }
   }, {
     "encoding": {
-      "x": {"type": "nominal", "field": "key"},
+      "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
       "y": {"value": 0}
     },
     "layer": [{
@@ -69,7 +69,7 @@
     }]
   }, {
     "encoding": {
-      "x": {"type": "nominal", "field": "key"},
+      "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
       "y": {"value": 150}
     },
     "layer": [{
@@ -82,7 +82,7 @@
     }]
   }, {
     "encoding": {
-      "x": {"type": "nominal", "field": "key"},
+      "x": {"type": "nominal", "field": "key", "axis": {"title": null}},
       "y": {"value": 300}
     },
     "layer": [{
@@ -95,7 +95,7 @@
     }]
   }],
   "config": {
-    "axisX": {"domain": false, "labelAngle": 0, "tickColor": "#ccc", "title": null},
+    "axisX": {"domain": false, "labelAngle": 0, "tickColor": "#ccc"},
     "view": {"stroke": null},
     "style": {
       "label": {"baseline": "middle", "align": "right", "dx": -5},

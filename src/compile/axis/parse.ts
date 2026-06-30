@@ -276,7 +276,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       axisComponent.set(property, value, explicit);
     } else {
       const {configValue = undefined, configFrom = undefined} =
-        isAxisProperty(property) && property !== 'values'
+        isAxisProperty(property) && property !== 'values' && property !== 'title'
           ? getAxisConfig(property, config.style, axis.style, axisConfigs)
           : {};
       const hasConfigValue = configValue !== undefined;

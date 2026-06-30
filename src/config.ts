@@ -513,10 +513,13 @@ export function fontConfig(font: string): Config {
   };
 }
 
-function getAxisConfigInternal(axisConfig: AxisConfig<ExprRef | SignalRef>) {
+function getAxisConfigInternal(axisConfig: AxisConfig<ExprRef | SignalRef> & {title?: unknown}) {
   const props = keys(axisConfig || {});
   const axisConfigInternal: AxisConfig<SignalRef> = {};
   for (const prop of props) {
+    if (prop === 'title') {
+      continue;
+    }
     const val = axisConfig[prop];
     (axisConfigInternal as any)[prop] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
       ? signalOrValueRefWithCondition<any>(val)

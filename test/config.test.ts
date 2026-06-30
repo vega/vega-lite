@@ -136,6 +136,10 @@ describe('config', () => {
       expect(cfg.selection.point).toHaveProperty('toggle', 'event.shiftKey');
       expect(cfg.selection.interval).toHaveProperty('zoom', 'wheel!');
     });
+
+    it('drops title from axis config', () => {
+      expect(initConfig({axisX: {title: 'foo', labelAngle: 0} as any}).axisX).toEqual({labelAngle: 0});
+    });
   });
 
   describe('stripAndRedirectConfig', () => {
