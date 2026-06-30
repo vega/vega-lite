@@ -39,6 +39,31 @@ function isTimeUnitTransformComponent(timeUnitComponent: TimeUnitComponent): tim
   return (timeUnitComponent as TimeUnitTransform).as !== undefined;
 }
 
+function isISOWeekTimeUnit({unit}: TimeUnitParams) {
+  return unit === 'week' || unit === 'yearweek';
+}
+
+function isoWeekStartExpr({date, timeUnit}: {date: string; timeUnit: TimeUnitParams}) {
+  const {unit, utc, step = 1} = timeUnit;
+  const dateFn = utc ? 'utc' : 'datetime';
+  const dayFn = utc ? 'utcday' : 'day';
+  const formatFn = utc ? 'utcFormat' : 'timeFormat';
+  const offsetFn = utc ? 'utcOffset' : 'timeOffset';
+  const isoYear = unit === 'yearweek' ? `toNumber(${formatFn}(${date}, "%G"))` : '2012';
+  const isoWeek = `toNumber(${formatFn}(${date}, "%V"))`;
+  const steppedIsoWeek = step === 1 ? isoWeek : `1 + ${step} * floor((${isoWeek} - 1) / ${step})`;
+  const jan4 = `${dateFn}(${isoYear}, 0, 4, 0, 0, 0, 0)`;
+  const isoWeek1 = `${dateFn}(${isoYear}, 0, 4 - ((${dayFn}(${jan4}) + 6) % 7), 0, 0, 0, 0)`;
+
+  return `${offsetFn}('day', ${isoWeek1}, (${steppedIsoWeek} - 1) * 7)`;
+}
+
+function isoWeekEndExpr({start, timeUnit}: {start: string; timeUnit: TimeUnitParams}) {
+  const {utc, step = 1} = timeUnit;
+  const offsetFn = utc ? 'utcOffset' : 'timeOffset';
+  return `${offsetFn}('day', ${start}, ${step * 7})`;
+}
+
 function offsetAs(field: FieldName) {
   return `${field}_end`;
 }
@@ -190,14 +215,33 @@ export class TimeUnitNode extends DataFlowNode {
 
         const startEnd: [string, string] = [as, `${as}_end`];
 
-        transforms.push({
-          field: replacePathInField(field),
-          type: 'timeunit',
-          ...(unit ? {units: getTimeUnitParts(unit)} : {}),
-          ...(utc ? {timezone: 'utc'} : {}),
-          ...params,
-          as: startEnd,
-        });
+        if (isISOWeekTimeUnit(normalizedTimeUnit)) {
+          const unescapedField = unescapeSingleQuoteAndPathDot(field);
+          const start = accessWithDatumToUnescapedPath(startEnd[0]);
+
+          transforms.push({
+            type: 'formula',
+            expr: isoWeekStartExpr({
+              date: `toDate(${accessWithDatumToUnescapedPath(unescapedField)})`,
+              timeUnit: normalizedTimeUnit,
+            }),
+            as: startEnd[0],
+          });
+          transforms.push({
+            type: 'formula',
+            expr: isoWeekEndExpr({start, timeUnit: normalizedTimeUnit}),
+            as: startEnd[1],
+          });
+        } else {
+          transforms.push({
+            field: replacePathInField(field),
+            type: 'timeunit',
+            ...(unit ? {units: getTimeUnitParts(unit)} : {}),
+            ...(utc ? {timezone: 'utc'} : {}),
+            ...params,
+            as: startEnd,
+          });
+        }
 
         transforms.push(...offsetedRectFormulas(startEnd, rectBandPosition, normalizedTimeUnit));
       } else if (f) {

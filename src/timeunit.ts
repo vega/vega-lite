@@ -213,6 +213,7 @@ export type TimeUnit = SingleTimeUnit | MultiTimeUnit;
 
 export type TimeUnitFormat =
   | 'year'
+  | 'year-week'
   | 'year-month'
   | 'year-month-date'
   | 'quarter'
@@ -269,6 +270,16 @@ export const VEGALITE_TIMEFORMAT: TimeFormatConfig = {
   'year-month': '%b %Y ',
   'year-month-date': '%b %d, %Y ',
 };
+
+const ISO_WEEK_TIMEFORMAT: TimeFormatConfig = {
+  week: 'W%V ',
+  'year-week': '%G W%V ',
+};
+
+function isISOWeekFormatTimeUnit(timeUnit: TimeUnit) {
+  const localTimeUnit = isUTCTimeUnit(timeUnit) ? getLocalTimeUnitFromUTCTimeUnit(timeUnit) : timeUnit;
+  return localTimeUnit === 'week' || localTimeUnit === 'yearweek';
+}
 
 export function getTimeUnitParts(timeUnit: TimeUnit): LocalSingleTimeUnit[] {
   return TIMEUNIT_PARTS.filter((part) => containsTimeUnit(timeUnit, part));
@@ -348,7 +359,10 @@ export function timeUnitSpecifierExpression(timeUnit: TimeUnit) {
   }
 
   const timeUnitParts = getTimeUnitParts(timeUnit);
-  return `timeUnitSpecifier(${stringify(timeUnitParts)}, ${stringify(VEGALITE_TIMEFORMAT)})`;
+  const timeFormat = isISOWeekFormatTimeUnit(timeUnit)
+    ? {...VEGALITE_TIMEFORMAT, ...ISO_WEEK_TIMEFORMAT}
+    : VEGALITE_TIMEFORMAT;
+  return `timeUnitSpecifier(${stringify(timeUnitParts)}, ${stringify(timeFormat)})`;
 }
 
 /**
