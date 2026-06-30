@@ -100,6 +100,15 @@ describe('compile/axis/assemble', () => {
     expect(axis.aria).toBe(false);
   });
 
+  it('encodes description on the axis group for aria labels', () => {
+    const axisCmpt = new AxisComponent({
+      orient: 'bottom',
+      description: 'Custom x-axis label',
+    });
+    const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
+    expect(axis.encode.axis.update.description).toEqual({value: 'Custom x-axis label'});
+  });
+
   it('correctly applies custom formatter to labelExpr.', () => {
     const model = parseUnitModelWithScale({
       data: {url: 'data/cars.json'},

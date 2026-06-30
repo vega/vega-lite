@@ -170,6 +170,10 @@ export function assembleAxis(
       delete axis.labelAlign;
     }
 
+    if (axis.description !== undefined) {
+      setAxisEncode(axis, 'axis', 'description', {value: axis.description});
+    }
+
     // Remove unnecessary encode block
     if (axis.encode) {
       for (const part of AXIS_PARTS) {
