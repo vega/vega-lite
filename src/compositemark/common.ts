@@ -272,8 +272,8 @@ export function compositeMarkOrient<M extends CompositeMark>(
   const {mark, encoding} = spec;
   const {x, y} = encoding;
 
-  if (isMarkDef(mark) && mark.orient) {
-    return mark.orient;
+  if (isMarkDef(mark) && 'orient' in mark && (mark as any).orient) {
+    return (mark as any).orient;
   }
 
   if (isContinuousFieldOrDatumDef(x)) {

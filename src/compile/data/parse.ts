@@ -33,6 +33,7 @@ import {
   isStack,
   isTimeUnit,
   isWindow,
+  isWordcloud,
 } from '../../transform.js';
 import {deepEqual, mergeDeep} from '../../util.js';
 import {getMarkPropOrConfig} from '../common.js';
@@ -74,6 +75,7 @@ import {SourceNode} from './source.js';
 import {StackNode} from './stack.js';
 import {TimeUnitNode} from './timeunit.js';
 import {WindowTransformNode} from './window.js';
+import {WordcloudTransformNode} from './wordcloud.js';
 
 export function findSource(data: Data, sources: SourceNode[]) {
   for (const other of sources) {
@@ -233,6 +235,9 @@ export function parseTransformArray(head: DataFlowNode, model: Model, ancestorPa
       derivedType = 'derived';
     } else if (isLoess(t)) {
       transformNode = head = new LoessTransformNode(head, t);
+      derivedType = 'derived';
+    } else if (isWordcloud(t)) {
+      transformNode = head = new WordcloudTransformNode(head, t);
       derivedType = 'derived';
     } else {
       log.warn(log.message.invalidTransformIgnored(t));
