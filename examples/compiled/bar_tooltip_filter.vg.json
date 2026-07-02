@@ -1,0 +1,171 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "A bar chart with fields that are conditionally omitted from generated tooltips.",
+  "background": "white",
+  "padding": 5,
+  "width": 420,
+  "height": 260,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {
+          "category": "A",
+          "plotValue": 10,
+          "validTooltip": 10,
+          "nonZeroTooltip": 0,
+          "disabledTooltip": "hidden-a"
+        },
+        {
+          "category": "B",
+          "plotValue": 7,
+          "validTooltip": 7,
+          "nonZeroTooltip": 1,
+          "disabledTooltip": "hidden-b"
+        },
+        {
+          "category": "C",
+          "plotValue": 5,
+          "validTooltip": null,
+          "nonZeroTooltip": 1,
+          "disabledTooltip": "hidden-c"
+        },
+        {
+          "category": "D",
+          "plotValue": 4,
+          "validTooltip": 4,
+          "nonZeroTooltip": 0,
+          "disabledTooltip": "hidden-d"
+        },
+        {
+          "category": "E",
+          "plotValue": 12,
+          "validTooltip": 12,
+          "nonZeroTooltip": 1,
+          "disabledTooltip": "hidden-e"
+        },
+        {
+          "category": "F",
+          "plotValue": 6,
+          "validTooltip": 6,
+          "nonZeroTooltip": 1,
+          "disabledTooltip": "hidden-f"
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["category"],
+          "field": "plotValue",
+          "sort": {"field": ["nonZeroTooltip"], "order": ["descending"]},
+          "as": ["plotValue_start", "plotValue_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"plotValue\"]) && isFinite(+datum[\"plotValue\"]) && isValid(datum[\"nonZeroTooltip\"]) && isFinite(+datum[\"nonZeroTooltip\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "tooltip": {
+            "signal": "merge({\"category\": isValid(datum[\"category\"]) ? isArray(datum[\"category\"]) ? join(datum[\"category\"], '\\n') : datum[\"category\"] : \"\"+datum[\"category\"]}, (isValid(datum[\"validTooltip\"]) && isFinite(+datum[\"validTooltip\"])) ? {\"validTooltip\": format(datum[\"validTooltip\"], \"\")} : {}, (!(datum[\"nonZeroTooltip\"]===0)) ? {\"nonZeroTooltip\": format(datum[\"nonZeroTooltip\"], \"\")} : {})"
+          },
+          "fill": {"scale": "color", "field": "nonZeroTooltip"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? isArray(datum[\"category\"]) ? join(datum[\"category\"], ' ') : datum[\"category\"] : \"\"+datum[\"category\"]) + \"; \" + \"plotValue: \" + (format(datum[\"plotValue\"], \"\")) + \"; \" + \"nonZeroTooltip: \" + (format(datum[\"nonZeroTooltip\"], \"\")) + ((isValid(datum[\"validTooltip\"]) && isFinite(+datum[\"validTooltip\"])) ? (\"; \" + \"validTooltip: \" + (format(datum[\"validTooltip\"], \"\"))) : \"\")"
+          },
+          "x": {"scale": "x", "field": "category"},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
+          "y": {"scale": "y", "field": "plotValue_end"},
+          "y2": {"scale": "y", "field": "plotValue_start"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "category", "sort": true},
+      "range": [0, {"signal": "width"}],
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "data_0",
+        "fields": ["plotValue_start", "plotValue_end"]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "nonZeroTooltip"},
+      "range": "ramp",
+      "interpolate": "hcl",
+      "zero": false
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "category",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "plotValue",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "nonZeroTooltip"
+    }
+  ]
+}
