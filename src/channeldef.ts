@@ -16,6 +16,7 @@ import {
   FILL,
   FILLOPACITY,
   getSizeChannel,
+  HIERARCHY,
   HREF,
   isScaleChannel,
   isSecondaryRangeChannel,
@@ -1139,6 +1140,16 @@ function initDatumDef(datumDef: DatumDef): DatumDef {
 }
 
 export function initFieldDef(
+  fd: TypedFieldDef<string>,
+  channel: ExtendedChannel,
+  opt?: {compositeMark?: boolean},
+): TypedFieldDef<string>;
+export function initFieldDef(
+  fd: FieldDef<string, any>,
+  channel: ExtendedChannel,
+  opt?: {compositeMark?: boolean},
+): FieldDef<string, any>;
+export function initFieldDef(
   fd: FieldDef<string, any>,
   channel: ExtendedChannel,
   {compositeMark = false}: {compositeMark?: boolean} = {},
@@ -1340,6 +1351,9 @@ export function channelCompatibility(
           warning: `Channel order is inappropriate for nominal field, which has no inherent order.`,
         };
       }
+      return COMPATIBLE;
+
+    case HIERARCHY:
       return COMPATIBLE;
   }
 }

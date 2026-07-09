@@ -29,6 +29,7 @@ import {SequenceNode} from './sequence.js';
 import {SourceNode} from './source.js';
 import {StackNode} from './stack.js';
 import {TimeUnitNode} from './timeunit.js';
+import {TreemapNode} from './treemap.js';
 import {WindowTransformNode} from './window.js';
 import {DataComponent} from './index.js';
 
@@ -118,6 +119,7 @@ function makeWalkTree(data: VgData[]) {
       node instanceof TimeUnitNode ||
       node instanceof ImputeNode ||
       node instanceof StackNode ||
+      node instanceof TreemapNode ||
       node instanceof GeoJSONNode
     ) {
       dataSource.transform.push(...node.assemble());

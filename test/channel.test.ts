@@ -17,13 +17,13 @@ describe('channel', () => {
   });
 
   describe('SINGLE_DEF_CHANNELS', () => {
-    it('should be CHANNELS without detail and order', () => {
-      expect(SINGLE_DEF_CHANNELS).toEqual(without(CHANNELS, ['detail', 'order', 'tooltip']));
+    it('should be CHANNELS without detail, order, tooltip, and hierarchy', () => {
+      expect(SINGLE_DEF_CHANNELS).toEqual(without(CHANNELS, ['detail', 'order', 'tooltip', 'hierarchy']));
     });
   });
 
   describe('SCALE_CHANNELS', () => {
-    it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, TOOLTIP', () => {
+    it('should exclude non-scale channels', () => {
       expect(SCALE_CHANNELS).toEqual(
         without(UNIT_CHANNELS, [
           'x2',
@@ -46,6 +46,7 @@ describe('channel', () => {
           'href',
           'url',
           'description',
+          'hierarchy',
         ]),
       );
     });

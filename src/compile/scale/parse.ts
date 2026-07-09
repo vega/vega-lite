@@ -1,7 +1,7 @@
-import {ScaleChannel, SCALE_CHANNELS, SHAPE} from '../../channel.js';
+import {ScaleChannel, SCALE_CHANNELS, SHAPE, SIZE} from '../../channel.js';
 import {getFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef.js';
 import {channelHasNestedOffsetScale} from '../../encoding.js';
-import {GEOSHAPE} from '../../mark.js';
+import {GEOSHAPE, TREEMAP} from '../../mark.js';
 import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
   scaleCompatible,
@@ -51,6 +51,11 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
 
     // Don't generate scale for shape of geoshape
     if (fieldOrDatumDef && mark === GEOSHAPE && channel === SHAPE && fieldOrDatumDef.type === GEOJSON) {
+      continue;
+    }
+
+    // Don't generate scale for size of treemap — the layout transform handles sizing
+    if (fieldOrDatumDef && mark === TREEMAP && channel === SIZE) {
       continue;
     }
 

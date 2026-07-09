@@ -137,7 +137,7 @@ export function tooltipData(
     tuples.push({channel, key, value});
   }
 
-  forEach(encoding, (channelDef, channel) => {
+  forEach(encoding, (channelDef, channel: Channel) => {
     if (isFieldDef(channelDef)) {
       add(channelDef, channel);
     } else if (hasConditionalFieldDef(channelDef)) {

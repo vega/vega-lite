@@ -11,6 +11,7 @@ import {EncodingFacetMapping} from './spec/facet.js';
 import {Flag, keys} from './util.js';
 
 export type Channel = keyof Encoding<any>;
+
 export type ExtendedChannel = Channel | FacetChannel;
 
 // Facet
@@ -75,6 +76,9 @@ export const HREF = 'href' as const;
 
 export const URL = 'url' as const;
 export const DESCRIPTION = 'description' as const;
+
+// Structural channel
+export const HIERARCHY = 'hierarchy' as const;
 
 const POSITION_CHANNEL_INDEX = {
   x: 1,
@@ -162,6 +166,9 @@ const UNIT_CHANNEL_INDEX: Flag<Channel> = {
   href: 1,
   url: 1,
   description: 1,
+
+  // structural
+  [HIERARCHY]: 1,
 };
 
 export type ColorChannel = 'color' | 'fill' | 'stroke';
@@ -187,7 +194,7 @@ const CHANNEL_INDEX = {
 
 export const CHANNELS = keys(CHANNEL_INDEX);
 
-const {order: _o, detail: _d, tooltip: _tt1, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
+const {order: _o, detail: _d, tooltip: _tt1, [HIERARCHY]: _hi, ...SINGLE_DEF_CHANNEL_INDEX} = CHANNEL_INDEX;
 const {row: _r, column: _c, facet: _f, ...SINGLE_DEF_UNIT_CHANNEL_INDEX} = SINGLE_DEF_CHANNEL_INDEX;
 /**
  * Channels that cannot have an array of channelDef.
@@ -373,7 +380,7 @@ export function getMainChannelFromOffsetChannel(channel: OffsetScaleChannel): Po
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = keys(UNIT_CHANNEL_INDEX);
 
-// NONPOSITION_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
+// NONPOSITION_CHANNELS = Unit channels without position channels
 const {
   x: _x,
   y: _y,
@@ -391,6 +398,7 @@ const {
   theta2: _theta2,
   radius: _radius,
   radius2: _radius2,
+  [HIERARCHY]: _hierarchy,
   // The rest of unit channels then have scale
   ...NONPOSITION_CHANNEL_INDEX
 } = UNIT_CHANNEL_INDEX;
@@ -530,9 +538,10 @@ const ALL_MARKS: Record<Mark, 'always'> = {
   trail: 'always',
   text: 'always',
   tick: 'always',
+  treemap: 'always',
 };
 
-const {geoshape: _g, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
+const {geoshape: _g, treemap: _tm, ...ALL_MARKS_EXCEPT_GEOSHAPE_AND_TREEMAP} = ALL_MARKS;
 
 /**
  * Return a dictionary showing whether a channel supports mark type.
@@ -570,8 +579,8 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case LATITUDE:
     case LONGITUDE:
     case TIME:
-      // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
-      return ALL_MARKS_EXCEPT_GEOSHAPE;
+      // all marks except geoshape (uses projection) and treemap (positions from layout)
+      return ALL_MARKS_EXCEPT_GEOSHAPE_AND_TREEMAP;
     case X2:
     case Y2:
     case LATITUDE2:
@@ -600,6 +609,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
         text: 'always',
         line: 'always',
         trail: 'always',
+        treemap: 'always',
       };
     case STROKEDASH:
       return {
@@ -627,6 +637,8 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case THETA2:
     case RADIUS2:
       return {arc: 'always'};
+    case HIERARCHY:
+      return {treemap: 'always'};
   }
 }
 
@@ -681,6 +693,7 @@ export function rangeType(channel: ExtendedChannel): RangeType {
     case DETAIL:
     case KEY:
     case ORDER:
+    case HIERARCHY:
       return undefined;
   }
 }
