@@ -53,6 +53,25 @@ export interface ParameterPredicate {
   empty?: boolean;
 }
 
+export interface ParameterValueRef {
+  /**
+   * Parameter to use as a value in a field predicate comparison.
+   */
+  param: ParameterName;
+
+  /**
+   * Optional field key to read from an object-valued parameter.
+   */
+  field?: FieldName;
+
+  /**
+   * How empty selection values should be treated when `param` references
+   * a selection parameter. If true, an empty selection evaluates to true.
+   * If false, an empty selection evaluates to false.
+   */
+  empty?: boolean;
+}
+
 export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is ParameterPredicate {
   return hasProperty(predicate, 'param');
 }
@@ -75,7 +94,7 @@ export interface FieldEqualPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be equal to.
    */
-  equal: string | number | boolean | DateTime | ExprRef | SignalRef;
+  equal: string | number | boolean | DateTime | ExprRef | SignalRef | ParameterValueRef;
 }
 
 export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPredicate {
@@ -86,7 +105,7 @@ export interface FieldLTPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be less than.
    */
-  lt: string | number | DateTime | ExprRef | SignalRef;
+  lt: string | number | DateTime | ExprRef | SignalRef | ParameterValueRef;
 }
 
 export function isFieldLTPredicate(predicate: any): predicate is FieldLTPredicate {
@@ -97,7 +116,7 @@ export interface FieldLTEPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be less than or equals to.
    */
-  lte: string | number | DateTime | ExprRef | SignalRef;
+  lte: string | number | DateTime | ExprRef | SignalRef | ParameterValueRef;
 }
 
 export function isFieldLTEPredicate(predicate: any): predicate is FieldLTEPredicate {
@@ -108,7 +127,7 @@ export interface FieldGTPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be greater than.
    */
-  gt: string | number | DateTime | ExprRef | SignalRef;
+  gt: string | number | DateTime | ExprRef | SignalRef | ParameterValueRef;
 }
 
 export function isFieldGTPredicate(predicate: any): predicate is FieldGTPredicate {
@@ -119,7 +138,7 @@ export interface FieldGTEPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be greater than or equals to.
    */
-  gte: string | number | DateTime | ExprRef | SignalRef;
+  gte: string | number | DateTime | ExprRef | SignalRef | ParameterValueRef;
 }
 
 export function isFieldGTEPredicate(predicate: any): predicate is FieldGTEPredicate {
@@ -193,7 +212,28 @@ export function isFieldPredicate(
   );
 }
 
-function predicateValueExpr(v: number | string | boolean | DateTime | ExprRef | SignalRef, timeUnit: TimeUnit) {
+export function isParameterValueRef(v: any): v is ParameterValueRef {
+  return !!v?.param;
+}
+
+function parameterValueExpr(v: ParameterValueRef): string {
+  return v.field ? `${v.param}[${stringify(v.field)}]` : `${v.param}`;
+}
+
+export type ParameterValueExprResolver = (v: ParameterValueRef) => string;
+
+function predicateValueExpr(
+  v: number | string | boolean | DateTime | ExprRef | SignalRef | ParameterValueRef,
+  timeUnit: TimeUnit,
+  resolveParameterValueExpr?: ParameterValueExprResolver,
+) {
+  if (isParameterValueRef(v)) {
+    if (resolveParameterValueExpr) {
+      return resolveParameterValueExpr(v) ?? parameterValueExpr(v);
+    }
+    return parameterValueExpr(v);
+  }
+
   return valueExpr(v, {timeUnit, wrapTime: true});
 }
 
@@ -202,7 +242,11 @@ function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], tim
 }
 
 // This method is used by Voyager. Do not change its behavior without changing Voyager.
-export function fieldFilterExpression(predicate: FieldPredicate, useInRange = true) {
+export function fieldFilterExpression(
+  predicate: FieldPredicate,
+  useInRange = true,
+  resolveParameterValueExpr?: ParameterValueExprResolver,
+) {
   const {field} = predicate;
   const normalizedTimeUnit = normalizeTimeUnit(predicate.timeUnit);
   const {unit, binned} = normalizedTimeUnit || {};
@@ -215,19 +259,19 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
     : rawFieldExpr;
 
   if (isFieldEqualPredicate(predicate)) {
-    return `${fieldExpr}===${predicateValueExpr(predicate.equal, unit)}`;
+    return `${fieldExpr}===${predicateValueExpr(predicate.equal, unit, resolveParameterValueExpr)}`;
   } else if (isFieldLTPredicate(predicate)) {
     const upper = predicate.lt;
-    return `${fieldExpr}<${predicateValueExpr(upper, unit)}`;
+    return `${fieldExpr}<${predicateValueExpr(upper, unit, resolveParameterValueExpr)}`;
   } else if (isFieldGTPredicate(predicate)) {
     const lower = predicate.gt;
-    return `${fieldExpr}>${predicateValueExpr(lower, unit)}`;
+    return `${fieldExpr}>${predicateValueExpr(lower, unit, resolveParameterValueExpr)}`;
   } else if (isFieldLTEPredicate(predicate)) {
     const upper = predicate.lte;
-    return `${fieldExpr}<=${predicateValueExpr(upper, unit)}`;
+    return `${fieldExpr}<=${predicateValueExpr(upper, unit, resolveParameterValueExpr)}`;
   } else if (isFieldGTEPredicate(predicate)) {
     const lower = predicate.gte;
-    return `${fieldExpr}>=${predicateValueExpr(lower, unit)}`;
+    return `${fieldExpr}>=${predicateValueExpr(lower, unit, resolveParameterValueExpr)}`;
   } else if (isFieldOneOfPredicate(predicate)) {
     return `indexof([${predicateValuesExpr(predicate.oneOf, unit).join(',')}], ${fieldExpr}) !== -1`;
   } else if (isFieldValidPredicate(predicate)) {
@@ -238,15 +282,15 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
     const upper = isSignalRef(range) ? {signal: `${range.signal}[1]`} : range[1];
 
     if (lower !== null && upper !== null && useInRange) {
-      return `inrange(${fieldExpr}, [${predicateValueExpr(lower, unit)}, ${predicateValueExpr(upper, unit)}])`;
+      return `inrange(${fieldExpr}, [${predicateValueExpr(lower, unit, resolveParameterValueExpr)}, ${predicateValueExpr(upper, unit, resolveParameterValueExpr)}])`;
     }
 
     const exprs = [];
     if (lower !== null) {
-      exprs.push(`${fieldExpr} >= ${predicateValueExpr(lower, unit)}`);
+      exprs.push(`${fieldExpr} >= ${predicateValueExpr(lower, unit, resolveParameterValueExpr)}`);
     }
     if (upper !== null) {
-      exprs.push(`${fieldExpr} <= ${predicateValueExpr(upper, unit)}`);
+      exprs.push(`${fieldExpr} <= ${predicateValueExpr(upper, unit, resolveParameterValueExpr)}`);
     }
 
     return exprs.length > 0 ? exprs.join(' && ') : 'true';

@@ -98,7 +98,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "pointerover"}],
-              "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"concat_0_layer_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
+              "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"concat_0_layer_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
               "force": true
             },
             {
@@ -156,7 +156,7 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "interactive": false,
+          "interactive": true,
           "from": {"data": "data_2"},
           "encode": {
             "update": {
@@ -168,7 +168,8 @@
                 "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "Horsepower"},
-              "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"}
+              "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"},
+              "cursor": {"value": "pointer"}
             }
           }
         }
@@ -239,7 +240,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "pointerover"}],
-              "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"concat_1_layer_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
+              "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0 ? {unit: \"concat_1_layer_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
               "force": true
             },
             {
@@ -297,7 +298,7 @@
           "name": "concat_1_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "interactive": false,
+          "interactive": true,
           "from": {"data": "data_3"},
           "encode": {
             "update": {
@@ -309,7 +310,8 @@
                 "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "Horsepower"},
-              "y": {"scale": "concat_1_y", "field": "Acceleration"}
+              "y": {"scale": "concat_1_y", "field": "Acceleration"},
+              "cursor": {"value": "pointer"}
             }
           }
         }

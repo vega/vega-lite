@@ -40,6 +40,29 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
 const point: SelectionCompiler<'point'> = {
   defined: (selCmpt) => selCmpt.type === 'point',
 
+  marks: (model, selCmpt, marks) => {
+    if (isTimerSelection(selCmpt)) {
+      return marks;
+    }
+
+    const makePointSymbolsInteractive = (markList: any[]) => {
+      for (const mark of markList) {
+        if (mark.type === 'symbol' && mark.style && mark.style.includes('point') && mark.interactive === false) {
+          mark.interactive = true;
+          const update = (mark.encode ??= {}).update ?? ((mark.encode ??= {}).update = {});
+          update.cursor ??= {value: 'pointer'};
+        }
+
+        if (mark.marks) {
+          makePointSymbolsInteractive(mark.marks);
+        }
+      }
+    };
+
+    makePointSymbolsInteractive(marks);
+    return marks;
+  },
+
   topLevelSignals: (model, selCmpt, signals) => {
     if (isTimerSelection(selCmpt)) {
       signals = signals.concat([
@@ -88,7 +111,7 @@ const point: SelectionCompiler<'point'> = {
       .map((b) => `indexof(item().mark.name, '${b}') < 0`)
       .join(' && ');
 
-    const test = `datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0${
+    const test = `datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 && indexof(['line', 'trail', 'area'], item().mark.marktype) < 0${
       brushes ? ` && ${brushes}` : ''
     }`;
 

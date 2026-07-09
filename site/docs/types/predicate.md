@@ -135,3 +135,66 @@ We can also use the logical composition operators (`and`, `or`, `not`) to combin
 
 - `{"and": [{"field": "height", "gt": 0}, {"field": "height", "lt": 180}]}` checks if the field `"height"` is between 0 and 180.
 - `{"not": {"field": "x", "range": [0, 5]}}}` checks if the `x` field's value is _not_ in range [0,5] (0 ≤ x ≤ 5).
+
+## Comparator Predicates with Parameters
+
+For field comparator predicates (`equal`, `lt`, `lte`, `gt`, `gte`), you can reference a parameter value by using a parameter value object:
+
+```json
+{"field": "x", "gte": {"param": "PICK", "field": "x", "empty": true}}
+```
+
+This is useful for both transforms and conditional tests:
+
+- in transforms, e.g. `{"filter": {"field": "x", "gte": {"param": "PICK", "field": "x"}}}`
+- in conditions, e.g. `{"test": {"field": "x", "lte": {"param": "PICK", "field": "x"}}}`
+
+When the referenced parameter is a selection parameter:
+
+- `empty: true` means an empty selection passes the predicate
+- `empty: false` means an empty selection fails the predicate
+- if omitted, `empty` defaults to `true`
+
+Example:
+
+```json
+{
+  "data": {
+    "values": [
+      {"x": 0, "y": 0.0},
+      {"x": 1, "y": 0.2},
+      {"x": 2, "y": 0.39},
+      {"x": 3, "y": 0.56},
+      {"x": 4, "y": 0.72},
+      {"x": 5, "y": 0.84},
+      {"x": 6, "y": 0.93},
+      {"x": 7, "y": 0.98},
+      {"x": 8, "y": 1.0},
+      {"x": 9, "y": 0.97}
+    ]
+  },
+  "params": [
+    {
+      "name": "PICK",
+      "select": {"type": "point", "fields": ["x"], "on": "click", "clear": "dblclick"}
+    }
+  ],
+  "transform": [
+    {
+      "filter": {
+        "field": "x",
+        "gte": {
+          "param": "PICK",
+          "field": "x",
+          "empty": true
+        }
+      }
+    }
+  ],
+  "mark": {"type": "line", "point": {"color": "coral", "size": 80}},
+  "encoding": {
+    "x": {"field": "x", "type": "quantitative"},
+    "y": {"field": "y", "type": "quantitative"}
+  }
+}
+```
