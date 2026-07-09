@@ -14,43 +14,37 @@
           "category": "A",
           "plotValue": 10,
           "validTooltip": 10,
-          "nonZeroTooltip": 0,
-          "disabledTooltip": "hidden-a"
+          "nonZeroTooltip": 0
         },
         {
           "category": "B",
           "plotValue": 7,
           "validTooltip": 7,
-          "nonZeroTooltip": 1,
-          "disabledTooltip": "hidden-b"
+          "nonZeroTooltip": 1
         },
         {
           "category": "C",
           "plotValue": 5,
           "validTooltip": null,
-          "nonZeroTooltip": 1,
-          "disabledTooltip": "hidden-c"
+          "nonZeroTooltip": 1
         },
         {
           "category": "D",
           "plotValue": 4,
           "validTooltip": 4,
-          "nonZeroTooltip": 0,
-          "disabledTooltip": "hidden-d"
+          "nonZeroTooltip": 0
         },
         {
           "category": "E",
           "plotValue": 12,
           "validTooltip": 12,
-          "nonZeroTooltip": 1,
-          "disabledTooltip": "hidden-e"
+          "nonZeroTooltip": 1
         },
         {
           "category": "F",
           "plotValue": 6,
           "validTooltip": 6,
-          "nonZeroTooltip": 1,
-          "disabledTooltip": "hidden-f"
+          "nonZeroTooltip": 1
         }
       ]
     },

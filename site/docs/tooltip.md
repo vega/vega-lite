@@ -76,7 +76,7 @@ To avoid that the tooltips groups the data, add an aggregate to the tooltip enco
 
 <div class="vl-example" data-name="bar_tooltip_aggregate"></div>
 
-Tooltip field definitions can include `tooltip: {"filter": ...}` to omit individual fields when their value does not pass the filter or `tooltip: false` to omit the field entirely. Supported filters are `"valid"` or an object with an `operator` (`"=="`, `"!="`, `"<"`, `"<="`, `">"`, or `">="`) and a literal `value`.
+Tooltip field definitions can include a `filter` predicate to omit individual fields when their value does not pass the filter. The filter applies to the tooltip field it is defined on, so `{"field": "validTooltip", "filter": {"valid": true}}` includes `validTooltip` in the tooltip only when its value is valid.
 
 <div class="vl-example" data-name="bar_tooltip_filter"></div>
 
@@ -89,9 +89,8 @@ Tooltip field definitions can include `tooltip: {"filter": ...}` to omit individ
     "color": {"field": "nonZeroTooltip", "type": "quantitative"},
     "tooltip": [
       {"field": "category", "type": "nominal"},
-      {"field": "validTooltip", "type": "quantitative", "tooltip": {"filter": "valid"}},
-      {"field": "nonZeroTooltip", "type": "quantitative", "tooltip": {"filter": {"operator": "!=", "value": 0}}},
-      {"field": "disabledTooltip", "type": "nominal", "tooltip": false}
+      {"field": "validTooltip", "type": "quantitative", "filter": {"valid": true}},
+      {"field": "nonZeroTooltip", "type": "quantitative", "filter": {"not": {"equal": 0}}}
     ]
   }
 }

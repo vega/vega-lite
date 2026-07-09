@@ -5100,14 +5100,14 @@
         "tooltip": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/TooltipFieldDefWithCondition"
             },
             {
               "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
-                "$ref": "#/definitions/StringFieldDef"
+                "$ref": "#/definitions/TooltipFieldDef"
               },
               "type": "array"
             },
@@ -5971,15 +5971,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/StandardType",
@@ -6163,15 +6156,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/TypeForShape",
@@ -6339,15 +6325,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -7027,15 +7006,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/StandardType",
@@ -7211,15 +7183,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/TypeForShape",
@@ -7379,15 +7344,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -9022,15 +8980,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -9124,15 +9075,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -9316,14 +9260,14 @@
         "tooltip": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/TooltipFieldDefWithCondition"
             },
             {
               "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
-                "$ref": "#/definitions/StringFieldDef"
+                "$ref": "#/definitions/TooltipFieldDef"
               },
               "type": "array"
             },
@@ -10294,15 +10238,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -10409,15 +10346,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -10524,15 +10454,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -10639,15 +10562,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/TypeForShape",
@@ -10807,15 +10723,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -10908,15 +10817,106 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
+        },
+        "type": {
+          "$ref": "#/definitions/StandardType",
+          "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `\"ordinal\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+        }
+      },
+      "type": "object"
+    },
+    "FieldOrDatumDefWithCondition<TooltipFieldDef,string>": {
+      "additionalProperties": false,
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+        },
+        "bandPosition": {
+          "description": "Relative position on a band of a stacked, binned, time unit, or band scale. For example, the marks will be positioned at the beginning of the band if set to `0`, and at the middle of the band if set to `0.5`.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "bin": {
           "anyOf": [
             {
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/TooltipFieldControl"
+              "$ref": "#/definitions/BinParams"
+            },
+            {
+              "const": "binned",
+              "type": "string"
+            },
+            {
+              "type": "null"
             }
           ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#bin-parameters), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html#bin-parameters) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+        },
+        "field": {
+          "$ref": "#/definitions/Field",
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
+        },
+        "filter": {
+          "$ref": "#/definitions/TooltipFieldFilter",
+          "description": "Predicate for including this field in generated tooltips."
+        },
+        "format": {
+          "$ref": "#/definitions/Format",
+          "description": "The text format specifier for formatting number and date/time in labels of guides (axes, legends, headers) and text marks.\n\nIf the format type is `\"number\"` (e.g., for quantitative fields), this is a D3's [number format pattern string](https://github.com/d3/d3-format#locale_format).\n\nIf the format type is `\"time\"` (e.g., for temporal fields), this is either:   a) D3's [time format pattern](https://d3js.org/d3-time-format#locale_format) if you desire to set a static time format.\n\n  b) [dynamic time format specifier object](https://vega.github.io/vega-lite/docs/format.html#dynamic-time-format) if you desire to set a dynamic time format that uses different formats depending on the granularity of the input date (e.g., if the date lies on a year, month, date, hour, etc. boundary).\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/docs/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
+        },
+        "formatType": {
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
+          "type": "string"
+        },
+        "timeUnit": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field. or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
+        },
+        "title": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
+        },
+        "tooltip": {
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -12856,15 +12856,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "const": "quantitative",
@@ -15834,6 +15827,21 @@
       ],
       "type": "object"
     },
+    "LogicalAnd<TooltipFieldPredicate>": {
+      "additionalProperties": false,
+      "properties": {
+        "and": {
+          "items": {
+            "$ref": "#/definitions/LogicalComposition<TooltipFieldPredicate>"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "and"
+      ],
+      "type": "object"
+    },
     "PredicateComposition": {
       "anyOf": [
         {
@@ -15850,11 +15858,39 @@
         }
       ]
     },
+    "LogicalComposition<TooltipFieldPredicate>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/LogicalNot<TooltipFieldPredicate>"
+        },
+        {
+          "$ref": "#/definitions/LogicalAnd<TooltipFieldPredicate>"
+        },
+        {
+          "$ref": "#/definitions/LogicalOr<TooltipFieldPredicate>"
+        },
+        {
+          "$ref": "#/definitions/TooltipFieldPredicate"
+        }
+      ]
+    },
     "LogicalNot<Predicate>": {
       "additionalProperties": false,
       "properties": {
         "not": {
           "$ref": "#/definitions/PredicateComposition"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "type": "object"
+    },
+    "LogicalNot<TooltipFieldPredicate>": {
+      "additionalProperties": false,
+      "properties": {
+        "not": {
+          "$ref": "#/definitions/LogicalComposition<TooltipFieldPredicate>"
         }
       },
       "required": [
@@ -15868,6 +15904,21 @@
         "or": {
           "items": {
             "$ref": "#/definitions/PredicateComposition"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "or"
+      ],
+      "type": "object"
+    },
+    "LogicalOr<TooltipFieldPredicate>": {
+      "additionalProperties": false,
+      "properties": {
+        "or": {
+          "items": {
+            "$ref": "#/definitions/LogicalComposition<TooltipFieldPredicate>"
           },
           "type": "array"
         }
@@ -18324,15 +18375,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -19954,15 +19998,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -20061,15 +20098,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -21825,15 +21855,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -22610,15 +22633,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -23316,15 +23332,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         }
       },
       "type": "object"
@@ -23867,15 +23876,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -24040,15 +24042,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -24188,15 +24183,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/StandardType",
@@ -24369,15 +24357,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -24548,15 +24529,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -24690,15 +24664,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/StandardType",
@@ -24782,15 +24749,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/StandardType",
@@ -24863,15 +24823,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -24954,15 +24907,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/Type",
@@ -25054,15 +25000,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -25145,15 +25084,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/Type",
@@ -25317,15 +25249,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -25481,15 +25406,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -25590,15 +25508,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/Type",
@@ -25762,15 +25673,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -25938,15 +25842,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -26111,15 +26008,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -26290,15 +26180,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -26466,15 +26349,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -26639,15 +26515,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -26798,15 +26667,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -26942,15 +26804,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -27051,15 +26906,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/Type",
@@ -27162,15 +27010,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/StandardType",
@@ -27182,14 +27023,14 @@
         "tooltip": {
           "anyOf": [
             {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
+              "$ref": "#/definitions/TooltipFieldDefWithCondition"
             },
             {
               "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
-                "$ref": "#/definitions/StringFieldDef"
+                "$ref": "#/definitions/TooltipFieldDef"
               },
               "type": "array"
             },
@@ -27304,15 +27145,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/StandardType",
@@ -27464,15 +27298,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -27573,15 +27400,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/Type",
@@ -27656,15 +27476,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "value": {
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
@@ -27720,15 +27533,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "value": {
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
@@ -27826,15 +27632,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -27985,15 +27784,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -28094,15 +27886,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "$ref": "#/definitions/Type",
@@ -28177,15 +27962,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "value": {
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
@@ -28241,15 +28019,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "value": {
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
@@ -28347,15 +28118,8 @@
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
             },
             "tooltip": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/TooltipFieldControl"
-                }
-              ],
-              "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+              "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+              "type": "boolean"
             },
             "type": {
               "anyOf": [
@@ -28695,92 +28459,6 @@
           "$ref": "#/definitions/MergedStream"
         }
       ]
-    },
-    "StringFieldDef": {
-      "additionalProperties": false,
-      "properties": {
-        "aggregate": {
-          "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
-        },
-        "bandPosition": {
-          "description": "Relative position on a band of a stacked, binned, time unit, or band scale. For example, the marks will be positioned at the beginning of the band if set to `0`, and at the middle of the band if set to `0.5`.",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            },
-            {
-              "const": "binned",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#bin-parameters), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html#bin-parameters) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
-        },
-        "field": {
-          "$ref": "#/definitions/Field",
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
-        },
-        "format": {
-          "$ref": "#/definitions/Format",
-          "description": "The text format specifier for formatting number and date/time in labels of guides (axes, legends, headers) and text marks.\n\nIf the format type is `\"number\"` (e.g., for quantitative fields), this is a D3's [number format pattern string](https://github.com/d3/d3-format#locale_format).\n\nIf the format type is `\"time\"` (e.g., for temporal fields), this is either:   a) D3's [time format pattern](https://d3js.org/d3-time-format#locale_format) if you desire to set a static time format.\n\n  b) [dynamic time format specifier object](https://vega.github.io/vega-lite/docs/format.html#dynamic-time-format) if you desire to set a dynamic time format that uses different formats depending on the granularity of the input date (e.g., if the date lies on a year, month, date, hour, etc. boundary).\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/docs/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
-        },
-        "formatType": {
-          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
-          "type": "string"
-        },
-        "timeUnit": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TimeUnit"
-            },
-            {
-              "$ref": "#/definitions/BinnedTimeUnit"
-            },
-            {
-              "$ref": "#/definitions/TimeUnitParams"
-            }
-          ],
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field. or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
-        },
-        "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
-        },
-        "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
-        },
-        "type": {
-          "$ref": "#/definitions/StandardType",
-          "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `\"ordinal\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
-        }
-      },
-      "type": "object"
     },
     "StringFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<StringFieldDef,string>"
@@ -29897,15 +29575,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",
@@ -30475,48 +30146,316 @@
       ],
       "type": "object"
     },
-    "TooltipFieldControl": {
+    "TooltipFieldDef": {
       "additionalProperties": false,
       "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+        },
+        "bandPosition": {
+          "description": "Relative position on a band of a stacked, binned, time unit, or band scale. For example, the marks will be positioned at the beginning of the band if set to `0`, and at the middle of the band if set to `0.5`.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            },
+            {
+              "const": "binned",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#bin-parameters), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html#bin-parameters) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+        },
+        "field": {
+          "$ref": "#/definitions/Field",
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
+        },
         "filter": {
           "$ref": "#/definitions/TooltipFieldFilter",
-          "description": "Predicate for including this field in generated tooltips.\n\n- `\"valid\"` includes values that are not null, undefined, or NaN.\n- An operator/value object compares the unformatted field value to a literal."
+          "description": "Predicate for including this field in generated tooltips."
+        },
+        "format": {
+          "$ref": "#/definitions/Format",
+          "description": "The text format specifier for formatting number and date/time in labels of guides (axes, legends, headers) and text marks.\n\nIf the format type is `\"number\"` (e.g., for quantitative fields), this is a D3's [number format pattern string](https://github.com/d3/d3-format#locale_format).\n\nIf the format type is `\"time\"` (e.g., for temporal fields), this is either:   a) D3's [time format pattern](https://d3js.org/d3-time-format#locale_format) if you desire to set a static time format.\n\n  b) [dynamic time format specifier object](https://vega.github.io/vega-lite/docs/format.html#dynamic-time-format) if you desire to set a dynamic time format that uses different formats depending on the granularity of the input date (e.g., if the date lies on a year, month, date, hour, etc. boundary).\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/docs/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
+        },
+        "formatType": {
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
+          "type": "string"
+        },
+        "timeUnit": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/BinnedTimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field. or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
+        },
+        "title": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
+        },
+        "tooltip": {
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
+        },
+        "type": {
+          "$ref": "#/definitions/StandardType",
+          "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `\"ordinal\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
         }
       },
-      "required": [
-        "filter"
-      ],
       "type": "object"
     },
+    "TooltipFieldDefWithCondition": {
+      "$ref": "#/definitions/FieldOrDatumDefWithCondition<TooltipFieldDef,string>"
+    },
     "TooltipFieldFilter": {
+      "$ref": "#/definitions/LogicalComposition<TooltipFieldPredicate>"
+    },
+    "TooltipFieldPredicate": {
       "anyOf": [
         {
-          "const": "valid",
-          "type": "string"
+          "additionalProperties": false,
+          "properties": {
+            "equal": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "The value that the field should be equal to."
+            }
+          },
+          "required": [
+            "equal"
+          ],
+          "type": "object"
         },
         {
           "additionalProperties": false,
           "properties": {
-            "operator": {
-              "description": "Comparison operator for the unformatted field value.",
-              "enum": [
-                "==",
-                "!=",
-                "<",
-                "<=",
-                ">",
-                ">="
+            "lt": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
               ],
-              "type": "string"
-            },
-            "value": {
-              "$ref": "#/definitions/PrimitiveValue",
-              "description": "Literal value to compare against the unformatted field value."
+              "description": "The value that the field should be less than."
             }
           },
           "required": [
-            "operator",
-            "value"
+            "lt"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "gt": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "The value that the field should be greater than."
+            }
+          },
+          "required": [
+            "gt"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "lte": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "The value that the field should be less than or equals to."
+            }
+          },
+          "required": [
+            "lte"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "gte": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "The value that the field should be greater than or equals to."
+            }
+          },
+          "required": [
+            "gte"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "range": {
+              "anyOf": [
+                {
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "$ref": "#/definitions/DateTime"
+                      },
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "$ref": "#/definitions/ExprRef"
+                      }
+                    ]
+                  },
+                  "type": "array"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "An array of inclusive minimum and maximum values for a field value of a data item to be included in the filtered data.",
+              "maxItems": 2,
+              "minItems": 2
+            }
+          },
+          "required": [
+            "range"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "oneOf": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                {
+                  "items": {
+                    "type": "boolean"
+                  },
+                  "type": "array"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/DateTime"
+                  },
+                  "type": "array"
+                }
+              ],
+              "description": "A set of values that the `field`'s value should be a member of, for a data item included in the filtered data."
+            }
+          },
+          "required": [
+            "oneOf"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "valid": {
+              "description": "If set to true the field's value has to be valid, meaning both not `null` and not [`NaN`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN).",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "valid"
           ],
           "type": "object"
         }
@@ -32099,15 +32038,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "tooltip": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipFieldControl"
-            }
-          ],
-          "description": "Controls whether this field appears in generated tooltips.\n\nSet to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this field when its unformatted value does not pass the filter.\n\n__Default value:__ `true`"
+          "description": "Controls whether this field appears in tooltips generated from the encoding.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "type": {
           "$ref": "#/definitions/StandardType",

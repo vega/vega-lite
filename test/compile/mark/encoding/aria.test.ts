@@ -187,15 +187,17 @@ describe('compile/mark/encoding/aria', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'bar',
       encoding: {
-        x: {
-          field: 'Date',
-          type: 'nominal',
-        },
-        y: {
-          field: 'type2',
-          type: 'quantitative',
-          tooltip: {filter: 'valid'},
-        },
+        tooltip: [
+          {
+            field: 'Date',
+            type: 'nominal',
+          },
+          {
+            field: 'type2',
+            type: 'quantitative',
+            filter: {valid: true},
+          },
+        ],
       },
       data: {values: []},
     });

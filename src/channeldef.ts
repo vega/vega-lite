@@ -64,7 +64,19 @@ import {Legend} from './legend.js';
 import * as log from './log/index.js';
 import {LogicalComposition} from './logical.js';
 import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark.js';
-import {ParameterPredicate, Predicate} from './predicate.js';
+import {
+  FieldEqualPredicate,
+  FieldGTEPredicate,
+  FieldGTPredicate,
+  FieldLTEPredicate,
+  FieldLTPredicate,
+  FieldOneOfPredicate,
+  FieldPredicate,
+  FieldRangePredicate,
+  FieldValidPredicate,
+  ParameterPredicate,
+  Predicate,
+} from './predicate.js';
 import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale.js';
 import {isSortByChannel, Sort, SortOrder} from './sort.js';
 import {isFacetFieldDef} from './spec/facet.js';
@@ -97,29 +109,19 @@ import {isSignalRef} from './vega.schema.js';
 
 export type PrimitiveValue = number | string | boolean | null;
 
-export type TooltipFieldFilter =
-  | 'valid'
-  | {
-      /**
-       * Comparison operator for the unformatted field value.
-       */
-      operator: '==' | '!=' | '<' | '<=' | '>' | '>=';
+type TooltipPredicate<P extends FieldPredicate> = Omit<P, 'field' | 'timeUnit'>;
 
-      /**
-       * Literal value to compare against the unformatted field value.
-       */
-      value: PrimitiveValue;
-    };
+export type TooltipFieldPredicate =
+  | TooltipPredicate<FieldEqualPredicate>
+  | TooltipPredicate<FieldLTPredicate>
+  | TooltipPredicate<FieldGTPredicate>
+  | TooltipPredicate<FieldLTEPredicate>
+  | TooltipPredicate<FieldGTEPredicate>
+  | TooltipPredicate<FieldRangePredicate>
+  | TooltipPredicate<FieldOneOfPredicate>
+  | TooltipPredicate<FieldValidPredicate>;
 
-export interface TooltipFieldControl {
-  /**
-   * Predicate for including this field in generated tooltips.
-   *
-   * - `"valid"` includes values that are not null, undefined, or NaN.
-   * - An operator/value object compares the unformatted field value to a literal.
-   */
-  filter: TooltipFieldFilter;
-}
+export type TooltipFieldFilter = LogicalComposition<TooltipFieldPredicate>;
 
 export type Value<ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
   | PrimitiveValue
@@ -268,14 +270,11 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
   field?: F;
 
   /**
-   * Controls whether this field appears in generated tooltips.
-   *
-   * Set to `false` to omit this field from tooltips generated from the encoding. Set to a filter object to omit this
-   * field when its unformatted value does not pass the filter.
+   * Controls whether this field appears in tooltips generated from the encoding.
    *
    * __Default value:__ `true`
    */
-  tooltip?: boolean | TooltipFieldControl;
+  tooltip?: boolean;
 
   // function
 
@@ -699,6 +698,13 @@ export function isOrderOnlyDef<F extends Field>(
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
 
 export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
+export interface TooltipFieldDef<F extends Field> extends StringFieldDef<F> {
+  /**
+   * Predicate for including this field in generated tooltips.
+   */
+  filter?: TooltipFieldFilter;
+}
+export type TooltipFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<TooltipFieldDef<F>, string>;
 
 export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];

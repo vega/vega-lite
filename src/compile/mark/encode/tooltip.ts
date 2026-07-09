@@ -1,6 +1,6 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned} from '../../../bin.js';
-import {Channel, getMainRangeChannel, isXorY, RADIUS, THETA} from '../../../channel.js';
+import {Channel, getMainRangeChannel, isXorY, RADIUS, THETA, TOOLTIP} from '../../../channel.js';
 import {
   defaultTitle,
   getFieldDef,
@@ -10,15 +10,28 @@ import {
   isTypedFieldDef,
   SecondaryFieldDef,
   TooltipFieldFilter,
+  TooltipFieldPredicate,
   TypedFieldDef,
   vgField,
 } from '../../../channeldef.js';
 import {Config} from '../../../config.js';
 import {Encoding, forEach} from '../../../encoding.js';
-import {fieldFilterExpression} from '../../../predicate.js';
+import * as log from '../../../log/index.js';
+import {
+  fieldFilterExpression,
+  FieldPredicate,
+  isFieldEqualPredicate,
+  isFieldGTEPredicate,
+  isFieldGTPredicate,
+  isFieldLTEPredicate,
+  isFieldLTPredicate,
+  isFieldOneOfPredicate,
+  isFieldRangePredicate,
+  isFieldValidPredicate,
+} from '../../../predicate.js';
 import {StackProperties} from '../../../stack.js';
 import {isDiscrete} from '../../../type.js';
-import {Dict} from '../../../util.js';
+import {Dict, hasProperty, logicalExpr} from '../../../util.js';
 import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
 import {getMarkPropOrConfig} from '../../common.js';
 import {binFormatExpression, formatSignalRef} from '../../format.js';
@@ -92,9 +105,11 @@ export function tooltipData(
   return out;
 }
 
-const TOOLTIP_FILTER_OPERATORS = new Set(['==', '!=', '<', '<=', '>', '>=']);
-
 export type TooltipTuple = {channel: Channel; key: string; value: string; test?: string};
+
+type FilterableTooltipFieldDef = (TypedFieldDef<string> | SecondaryFieldDef<string>) & {
+  filter?: TooltipFieldFilter;
+};
 
 export function tooltipDataTuples(
   encoding: Encoding<string>,
@@ -107,7 +122,7 @@ export function tooltipDataTuples(
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
   const tuples: TooltipTuple[] = [];
 
-  function add(fDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
+  function add(fDef: FilterableTooltipFieldDef, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
 
     const fieldDef: TypedFieldDef<string> = isTypedFieldDef(fDef)
@@ -131,7 +146,7 @@ export function tooltipDataTuples(
       }
     }
 
-    const test = tooltipFieldFilterExpression(fieldDef.tooltip, fieldDef, expr);
+    const test = tooltipFieldFilterExpression(fieldDef, channel, expr);
     if (test === false) {
       return;
     }
@@ -191,70 +206,91 @@ export function tooltipDataTuples(
 }
 
 function tooltipFieldFilterExpression(
-  tooltipControl: TypedFieldDef<string>['tooltip'],
-  fieldDef: TypedFieldDef<string>,
+  fieldDef: FilterableTooltipFieldDef,
+  channel: Channel,
   expr: 'datum' | 'datum.datum',
 ): string | false | undefined {
-  if (tooltipControl === false) {
+  if (fieldDef.tooltip === false) {
+    // Omit field entirely
     return false;
   }
 
-  if (!isObject(tooltipControl) || !('filter' in tooltipControl)) {
+  if (channel !== TOOLTIP || !hasProperty(fieldDef, 'filter')) {
     return undefined;
   }
 
-  return filterExpression(tooltipControl.filter, fieldDef, expr);
+  if (!fieldDef.field) {
+    log.warn(log.message.tooltipFilterRequiresField());
+    return undefined;
+  }
+
+  const test = filterExpression(fieldDef.filter, {...fieldDef, field: fieldDef.field}, expr);
+  if (!test) {
+    log.warn(log.message.invalidTooltipFilter(fieldDef.filter));
+  }
+  return test;
 }
 
+// Converts a tooltip filter for the given field into a Vega expression, undefined when invalid.
 function filterExpression(
   filter: TooltipFieldFilter,
-  fieldDef: TypedFieldDef<string>,
+  fieldDef: TypedFieldDef<string> & {field: string},
   expr: 'datum' | 'datum.datum',
 ): string | undefined {
-  if (!fieldDef.field) {
+  let valid = true;
+  let leafCount = 0;
+  const expression = logicalExpr(filter, (predicate: TooltipFieldPredicate) => {
+    leafCount++;
+    const predicateExpression = tooltipFieldPredicateExpression(predicate, fieldDef, expr);
+    if (!predicateExpression) {
+      valid = false;
+      return '';
+    }
+    return predicateExpression;
+  });
+
+  return valid && leafCount > 0 ? expression : undefined;
+}
+
+function tooltipFieldPredicateExpression(
+  predicate: TooltipFieldPredicate,
+  fieldDef: TypedFieldDef<string> & {field: string},
+  expr: 'datum' | 'datum.datum',
+): string | undefined {
+  if (!isObject(predicate)) {
     return undefined;
   }
 
-  const fieldPredicate = {...fieldDef, field: fieldDef.field};
+  const fieldPredicate = {...fieldDef, ...predicate, field: fieldDef.field};
 
-  if (filter === 'valid') {
-    return fieldFilterExpression({...fieldPredicate, valid: true}, true, expr);
-  } else if (!isObject(filter)) {
-    return undefined;
+  if (isFieldEqualPredicate(fieldPredicate)) {
+    if (fieldPredicate.equal === null) {
+      return `${vgField(fieldPredicate, {expr})}===null`;
+    }
   }
 
-  if (!TOOLTIP_FILTER_OPERATORS.has(filter.operator) || filter.value === undefined) {
-    return undefined;
+  if (isValidTooltipFieldPredicate(fieldPredicate)) {
+    return fieldFilterExpression(fieldPredicate, true, expr);
   }
 
-  if (filter.value === null) {
-    const field = vgField(fieldPredicate, {expr});
-    const operator = filter.operator === '==' ? '===' : filter.operator === '!=' ? '!==' : filter.operator;
-    return `${field}${operator}null`;
-  }
+  return undefined;
+}
 
-  switch (filter.operator) {
-    case '==':
-      return fieldFilterExpression({...fieldPredicate, equal: filter.value}, true, expr);
-    case '!=':
-      return `!(${fieldFilterExpression({...fieldPredicate, equal: filter.value}, true, expr)})`;
-    case '<':
-      return typeof filter.value === 'boolean'
-        ? undefined
-        : fieldFilterExpression({...fieldPredicate, lt: filter.value}, true, expr);
-    case '<=':
-      return typeof filter.value === 'boolean'
-        ? undefined
-        : fieldFilterExpression({...fieldPredicate, lte: filter.value}, true, expr);
-    case '>':
-      return typeof filter.value === 'boolean'
-        ? undefined
-        : fieldFilterExpression({...fieldPredicate, gt: filter.value}, true, expr);
-    case '>=':
-      return typeof filter.value === 'boolean'
-        ? undefined
-        : fieldFilterExpression({...fieldPredicate, gte: filter.value}, true, expr);
-  }
+function isValidTooltipFieldPredicate(predicate: unknown): predicate is FieldPredicate {
+  return (
+    isFieldEqualPredicate(predicate) ||
+    (isFieldLTPredicate(predicate) && isOrderablePredicateValue(predicate.lt)) ||
+    (isFieldLTEPredicate(predicate) && isOrderablePredicateValue(predicate.lte)) ||
+    (isFieldGTPredicate(predicate) && isOrderablePredicateValue(predicate.gt)) ||
+    (isFieldGTEPredicate(predicate) && isOrderablePredicateValue(predicate.gte)) ||
+    isFieldRangePredicate(predicate) ||
+    (isFieldOneOfPredicate(predicate) && isArray(predicate.oneOf)) ||
+    (isFieldValidPredicate(predicate) && typeof predicate.valid === 'boolean')
+  );
+}
+
+function isOrderablePredicateValue(value: unknown) {
+  return value !== undefined && value !== null && typeof value !== 'boolean';
 }
 
 export function tooltipRefForEncoding(
