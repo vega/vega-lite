@@ -251,6 +251,64 @@ describe('Mark', () => {
       expect(markGroup[0].from.facet.groupby).toEqual(['bar']);
     });
 
+    it('should round the left or right end of horizontal stacked bar groups', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          cornerRadiusEnd: 5,
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo', aggregate: 'sum'},
+          y: {type: 'nominal', field: 'bar'},
+          color: {type: 'nominal', field: 'series'},
+        },
+      });
+
+      const markGroup = parseMarkGroups(model);
+      const update = markGroup[0].encode.update;
+
+      const rightEnd = 'scale("x", datum["max_sum_foo_end"]) > scale("x", datum["max_sum_foo_start"])';
+      const leftEnd = 'scale("x", datum["min_sum_foo_end"]) < scale("x", datum["min_sum_foo_start"])';
+      const roundRight = [{test: rightEnd, value: 5}, {value: 0}];
+      const roundLeft = [{test: leftEnd, value: 5}, {value: 0}];
+
+      expect(update).toMatchObject({
+        cornerRadiusTopRight: roundRight,
+        cornerRadiusBottomRight: roundRight,
+        cornerRadiusTopLeft: roundLeft,
+        cornerRadiusBottomLeft: roundLeft,
+      });
+    });
+
+    it('should round the top or bottom end of vertical stacked bar groups', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          cornerRadiusEnd: 5,
+        },
+        encoding: {
+          x: {type: 'nominal', field: 'bar'},
+          y: {type: 'quantitative', field: 'foo', aggregate: 'sum'},
+          color: {type: 'nominal', field: 'series'},
+        },
+      });
+
+      const markGroup = parseMarkGroups(model);
+      const update = markGroup[0].encode.update;
+
+      const topEnd = 'scale("y", datum["max_sum_foo_end"]) < scale("y", datum["max_sum_foo_start"])';
+      const bottomEnd = 'scale("y", datum["min_sum_foo_end"]) > scale("y", datum["min_sum_foo_start"])';
+      const roundTop = [{test: topEnd, value: 5}, {value: 0}];
+      const roundBottom = [{test: bottomEnd, value: 5}, {value: 0}];
+
+      expect(update).toMatchObject({
+        cornerRadiusTopLeft: roundTop,
+        cornerRadiusTopRight: roundTop,
+        cornerRadiusBottomLeft: roundBottom,
+        cornerRadiusBottomRight: roundBottom,
+      });
+    });
+
     describe('interactiveFlag', () => {
       it('should not contain flag if no selections', () => {
         const model = parseUnitModelWithScaleAndSelection({

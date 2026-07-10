@@ -10,22 +10,7 @@ import {Config} from '../../config.js';
 import {Encoding, isAggregate} from '../../encoding.js';
 import {replaceExprRef} from '../../expr.js';
 import * as log from '../../log/index.js';
-import {
-  AREA,
-  BAR,
-  BAR_CORNER_RADIUS_INDEX as BAR_CORNER_RADIUS_END_INDEX,
-  CIRCLE,
-  IMAGE,
-  LINE,
-  Mark,
-  MarkDef,
-  POINT,
-  RECT,
-  RULE,
-  SQUARE,
-  TEXT,
-  TICK,
-} from '../../mark.js';
+import {AREA, BAR, CIRCLE, IMAGE, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark.js';
 import {QUANTITATIVE, TEMPORAL} from '../../type.js';
 import {contains, getFirstDefined} from '../../util.js';
 import {getMarkConfig, getMarkPropOrConfig} from '../common.js';
@@ -43,16 +28,11 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
 
   if (markDef.type === 'bar' && markDef.orient) {
     const cornerRadiusEnd = getMarkPropOrConfig('cornerRadiusEnd', markDef, config);
-    if (cornerRadiusEnd !== undefined) {
-      const newProps =
-        (markDef.orient === 'horizontal' && encoding.x2) || (markDef.orient === 'vertical' && encoding.y2)
-          ? (['cornerRadius'] as const)
-          : BAR_CORNER_RADIUS_END_INDEX[markDef.orient];
-
-      for (const newProp of newProps) {
-        markDef[newProp] = cornerRadiusEnd;
-      }
-
+    if (
+      cornerRadiusEnd !== undefined &&
+      ((markDef.orient === 'horizontal' && encoding.x2) || (markDef.orient === 'vertical' && encoding.y2))
+    ) {
+      markDef.cornerRadius = cornerRadiusEnd;
       if (markDef.cornerRadiusEnd !== undefined) {
         delete markDef.cornerRadiusEnd; // no need to keep the original cap cornerRadius
       }

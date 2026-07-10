@@ -203,6 +203,48 @@ describe('Mark: Bar', () => {
     });
   });
 
+  it('should round the left or right end of horizontal bars', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'bar', cornerRadiusEnd: 5},
+      encoding: {
+        y: {field: 'Origin', type: 'nominal'},
+        x: {field: 'Acceleration', type: 'quantitative', stack: null},
+      },
+    });
+    const props = bar.encodeEntry(model);
+    const roundRight = [{test: 'scale("x", datum["Acceleration"]) > scale("x", 0)', value: 5}, {value: 0}];
+    const roundLeft = [{test: 'scale("x", datum["Acceleration"]) < scale("x", 0)', value: 5}, {value: 0}];
+
+    expect(props).toMatchObject({
+      cornerRadiusTopRight: roundRight,
+      cornerRadiusBottomRight: roundRight,
+      cornerRadiusTopLeft: roundLeft,
+      cornerRadiusBottomLeft: roundLeft,
+    });
+  });
+
+  it('should round the top or bottom end of vertical bars', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'bar', cornerRadiusEnd: 5},
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        y: {field: 'Acceleration', type: 'quantitative', stack: null},
+      },
+    });
+    const props = bar.encodeEntry(model);
+    const roundTop = [{test: 'scale("y", datum["Acceleration"]) < scale("y", 0)', value: 5}, {value: 0}];
+    const roundBottom = [{test: 'scale("y", datum["Acceleration"]) > scale("y", 0)', value: 5}, {value: 0}];
+
+    expect(props).toMatchObject({
+      cornerRadiusTopLeft: roundTop,
+      cornerRadiusTopRight: roundTop,
+      cornerRadiusBottomLeft: roundBottom,
+      cornerRadiusBottomRight: roundBottom,
+    });
+  });
+
   describe('simple horizontal with height band', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
@@ -1024,6 +1066,24 @@ describe('Mark: Bar', () => {
       expect(props.y).toEqual({scale: 'y', field: 'age'});
       expect(props.x).toEqual({scale: 'x', field: 'q1_people'});
       expect(props.x2).toEqual({scale: 'x', field: 'q3_people'});
+    });
+
+    it('should apply config cornerRadiusEnd to all corners for ranged bars', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {url: 'data/population.json'},
+        mark: 'bar',
+        encoding: {
+          y: {field: 'age', type: 'ordinal'},
+          x: {field: 'people', aggregate: 'q1', type: 'quantitative'},
+          x2: {field: 'people', aggregate: 'q3'},
+        },
+        config: {bar: {cornerRadiusEnd: 5}},
+      });
+
+      const props = bar.encodeEntry(model);
+      expect(props.cornerRadius).toEqual({value: 5});
+      expect(props.cornerRadiusTopRight).toBeUndefined();
+      expect(props.cornerRadiusBottomRight).toBeUndefined();
     });
   });
 

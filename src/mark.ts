@@ -467,21 +467,9 @@ export function isRelativeBandSize(o: number | RelativeBandSize | ExprRef | Sign
   return hasProperty(o, 'band');
 }
 
-export const BAR_CORNER_RADIUS_INDEX: Partial<
-  Record<
-    Orientation,
-    ('cornerRadiusTopLeft' | 'cornerRadiusTopRight' | 'cornerRadiusBottomLeft' | 'cornerRadiusBottomRight')[]
-  >
-> = {
-  horizontal: ['cornerRadiusTopRight', 'cornerRadiusBottomRight'],
-  vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight'],
-};
-
 export interface BarCornerRadiusMixins<ES extends ExprRef | SignalRef> {
   /**
-   * - For vertical bars, top-left and top-right corner radius.
-   *
-   * - For horizontal bars, top-right and bottom-right corner radius.
+   * Corner radius of the value-end side.
    */
   cornerRadiusEnd?: number | ES;
 }

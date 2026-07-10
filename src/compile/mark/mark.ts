@@ -19,6 +19,7 @@ import {rect} from './rect.js';
 import {rule} from './rule.js';
 import {text} from './text.js';
 import {tick} from './tick.js';
+import {cornerRadiusEndForStackedBar} from './encode/corner-radius.js';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -45,9 +46,9 @@ export function parseMarkGroups(model: UnitModel): any[] {
     }
     // otherwise use standard mark groups
   } else if (model.mark === BAR) {
-    const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some((prop) =>
-      getMarkPropOrConfig(prop, model.markDef, model.config),
-    );
+    const hasCornerRadius =
+      VG_CORNERRADIUS_CHANNELS.some((prop) => getMarkPropOrConfig(prop, model.markDef, model.config)) ||
+      getMarkPropOrConfig('cornerRadiusEnd', model.markDef, model.config);
     if (model.stack && !model.fieldDef('size') && hasCornerRadius) {
       return getGroupsForStackedBarWithCornerRadius(model);
     }
@@ -165,6 +166,15 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
       mark.encode.update[key] = {value: 0};
     }
   }
+  groupUpdate = {
+    ...groupUpdate,
+    ...cornerRadiusEndForStackedBar(model, fieldScale, {
+      minStart: stackField({prefix: 'min', suffix: 'start'}),
+      maxStart: stackField({prefix: 'max', suffix: 'start'}),
+      minEnd: stackField({prefix: 'min', suffix: 'end'}),
+      maxEnd: stackField({prefix: 'max', suffix: 'end'}),
+    }),
+  };
 
   const groupby: string[] = [];
 
