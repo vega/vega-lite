@@ -47,7 +47,7 @@ permalink: /docs/text.html
 
 A text mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
-{% include table.html props="angle,align,baseline,dir,dx,dy,ellipsis,font,fontSize,fontStyle,fontWeight,limit,lineHeight,radius,text,theta" source="MarkDef" %}
+{% include table.html props="angle,align,baseline,background,outline,dir,dx,dy,ellipsis,font,fontSize,fontStyle,fontWeight,limit,lineHeight,radius,text,theta" source="MarkDef" %}
 
 ## Examples
 
@@ -72,6 +72,12 @@ Mapping a field to `text` channel of text mark sets the mark's text value. For e
 By mapping geographic coordinate data to `longitude` and `latitude` channels of a corresponding [projection](projection.html), we can show text at accurate locations. The example below shows the name of every US state capital at the location of the capital.
 
 <span class="vl-example" data-name="geo_text"></span>
+
+### Background
+
+You can add a background or an outline to `text` marks to increase readability or to make text stand out as annotation. The example below shows both, including some configuration options.
+
+<span class="vl-example" data-name="layer_text_background"></span>
 
 {:#config}
 

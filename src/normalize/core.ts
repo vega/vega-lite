@@ -6,6 +6,7 @@ import {SharedCompositeEncoding} from '../compositemark/index.js';
 import {boxPlotNormalizer} from '../compositemark/boxplot.js';
 import {errorBandNormalizer} from '../compositemark/errorband.js';
 import {errorBarNormalizer} from '../compositemark/errorbar.js';
+import {normalizeTextWithBackground} from '../compositemark/textbackground.js';
 import {channelHasField, Encoding} from '../encoding.js';
 import {ExprRef} from '../expr.js';
 import * as log from '../log/index.js';
@@ -81,7 +82,10 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       }
     }
 
-    return specWithReplacedEncoding as NormalizedUnitSpec;
+    // Normalize text marks with background properties
+    const normalizedSpec = normalizeTextWithBackground(specWithReplacedEncoding);
+
+    return normalizedSpec as NormalizedUnitSpec;
   }
 
   protected mapRepeat(

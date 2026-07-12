@@ -19,6 +19,7 @@ import {rect} from './rect.js';
 import {rule} from './rule.js';
 import {text} from './text.js';
 import {tick} from './tick.js';
+import {parseVgTextBackgroundMarks} from '../../compositemark/textbackground.js';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -53,7 +54,12 @@ export function parseMarkGroups(model: UnitModel): any[] {
     }
   }
 
-  return getMarkGroup(model);
+  const markGroup = getMarkGroup(model);
+
+  // Post-process Vega marks with text foreground or background
+  const processedMarkGroup = parseVgTextBackgroundMarks(markGroup, model);
+
+  return processedMarkGroup;
 }
 
 const FACETED_PATH_PREFIX = 'faceted_path_';
