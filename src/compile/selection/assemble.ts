@@ -1,6 +1,6 @@
 import {Signal, SignalRef} from 'vega';
 import {parseSelector} from 'vega-event-selector';
-import {identity, isArray, stringValue} from 'vega-util';
+import {isArray, stringValue} from 'vega-util';
 import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers, isTimerSelection} from './index.js';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime.js';
 import {hasContinuousDomain} from '../../scale.js';
@@ -26,7 +26,7 @@ export function assembleProjection(proj: SelectionProjection) {
 export function assembleInit(
   init: readonly (SelectionInit | readonly SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
   isExpr = true,
-  wrap: (str: string | number) => string | number = identity,
+  wrap: (str: string | number) => string | number = (x) => x,
 ): any {
   if (isArray(init)) {
     const assembled = init.map((v) => assembleInit(v, isExpr, wrap));
