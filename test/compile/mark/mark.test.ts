@@ -309,6 +309,29 @@ describe('Mark', () => {
       });
     });
 
+    it('should not let a config cornerRadiusEnd override a mark cornerRadius on stacked bar groups', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          cornerRadius: 2,
+        },
+        encoding: {
+          x: {type: 'nominal', field: 'bar'},
+          y: {type: 'quantitative', field: 'foo', aggregate: 'sum'},
+          color: {type: 'nominal', field: 'series'},
+        },
+        config: {bar: {cornerRadiusEnd: 5}},
+      });
+
+      const markGroup = parseMarkGroups(model);
+      const update = markGroup[0].encode.update;
+
+      // The mark-level cornerRadius wins, so no conditional value-end rounding is emitted.
+      expect(update.cornerRadius).toEqual({value: 2});
+      expect(update.cornerRadiusTopLeft).toBeUndefined();
+      expect(update.cornerRadiusBottomRight).toBeUndefined();
+    });
+
     describe('interactiveFlag', () => {
       it('should not contain flag if no selections', () => {
         const model = parseUnitModelWithScaleAndSelection({
