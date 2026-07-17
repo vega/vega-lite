@@ -84,33 +84,18 @@ export function description(model: UnitModel) {
 }
 
 function ariaDescription(data: TooltipTuple[]) {
-  if (data.every(({test}) => !test)) {
-    return data
-      .map(({key, value}) => [key, value.replaceAll('\\n', ' ')]) // replace newlines with spaces in aria description
-      .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
-      .join(' + ');
+  // replace newlines with spaces in aria description
+  const entries = data.map(({key, value, test}) => ({key, value: value.replaceAll('\\n', ' '), test}));
+
+  if (entries.every(({test}) => !test)) {
+    return entries.map(({key, value}, index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`).join(' + ');
   }
 
-  const segments: string[] = [];
-  // Track whether prior conditional fields are included so separators only appear between visible fields.
-  let priorIncluded: string | undefined;
-
-  for (const {key, value, test} of data) {
-    const segment = `"${key}: " + (${value.replaceAll('\\n', ' ')})`;
-    const prefix = priorIncluded ? (priorIncluded === 'true' ? '"; " + ' : `((${priorIncluded}) ? "; " : "") + `) : '';
-
-    if (test) {
-      segments.push(`((${test}) ? (${prefix}${segment}) : "")`);
-      priorIncluded = priorIncluded
-        ? priorIncluded === 'true'
-          ? 'true'
-          : `${priorIncluded} || (${test})`
-        : `(${test})`;
-    } else {
-      segments.push(`${prefix}${segment}`);
-      priorIncluded = 'true';
-    }
-  }
-
-  return segments.join(' + ');
+  // Prefix every field with a separator and strip the leading separator so that
+  // separators only appear between fields that pass their tests.
+  const segments = entries.map(({key, value, test}) => {
+    const segment = `"; ${key}: " + (${value})`;
+    return test ? `((${test}) ? ${segment} : "")` : segment;
+  });
+  return `slice(${segments.join(' + ')}, 2)`;
 }

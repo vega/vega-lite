@@ -9,8 +9,6 @@ import {
   isFieldDef,
   isTypedFieldDef,
   SecondaryFieldDef,
-  TooltipFieldFilter,
-  TooltipFieldPredicate,
   TypedFieldDef,
   vgField,
 } from '../../../channeldef.js';
@@ -19,19 +17,14 @@ import {Encoding, forEach} from '../../../encoding.js';
 import * as log from '../../../log/index.js';
 import {
   fieldFilterExpression,
-  FieldPredicate,
-  isFieldEqualPredicate,
-  isFieldGTEPredicate,
-  isFieldGTPredicate,
-  isFieldLTEPredicate,
-  isFieldLTPredicate,
-  isFieldOneOfPredicate,
-  isFieldRangePredicate,
+  isFieldPredicate,
   isFieldValidPredicate,
+  TooltipFieldFilter,
+  TooltipFieldPredicate,
 } from '../../../predicate.js';
 import {StackProperties} from '../../../stack.js';
 import {isDiscrete} from '../../../type.js';
-import {Dict, hasProperty, logicalExpr} from '../../../util.js';
+import {hasProperty, logicalExpr} from '../../../util.js';
 import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
 import {getMarkPropOrConfig} from '../../common.js';
 import {binFormatExpression, formatSignalRef} from '../../format.js';
@@ -91,20 +84,6 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   }
 }
 
-export function tooltipData(
-  encoding: Encoding<string>,
-  stack: StackProperties,
-  config: Config,
-  {reactiveGeom}: {reactiveGeom?: boolean} = {},
-) {
-  const out: Dict<string> = {};
-  for (const {key, value, test} of tooltipDataTuples(encoding, stack, config, {reactiveGeom})) {
-    out[key] = test ? `(${test}) ? ${value} : ""` : value;
-  }
-
-  return out;
-}
-
 export type TooltipTuple = {channel: Channel; key: string; value: string; test?: string};
 
 type FilterableTooltipFieldDef = (TypedFieldDef<string> | SecondaryFieldDef<string>) & {
@@ -142,6 +121,10 @@ export function tooltipDataTuples(
       const fieldDef2 = getFieldDef(encoding[channel2]);
 
       if (isBinned(fieldDef.bin) && fieldDef2) {
+        const startField = vgField(fieldDef, {expr});
+        const endField = vgField(fieldDef2, {expr});
+        const {format, formatType} = getFormatMixins(fieldDef);
+        value = binFormatExpression(startField, endField, format, formatType, formatConfig);
         toSkip.add(channel2);
       }
     }
@@ -149,18 +132,6 @@ export function tooltipDataTuples(
     const test = tooltipFieldFilterExpression(fieldDef, channel, expr);
     if (test === false) {
       return;
-    }
-
-    if (isXorY(channel)) {
-      const channel2 = channel === 'x' ? 'x2' : 'y2';
-      const fieldDef2 = getFieldDef(encoding[channel2]);
-
-      if (isBinned(fieldDef.bin) && fieldDef2) {
-        const startField = vgField(fieldDef, {expr});
-        const endField = vgField(fieldDef2, {expr});
-        const {format, formatType} = getFormatMixins(fieldDef);
-        value = binFormatExpression(startField, endField, format, formatType, formatConfig);
-      }
     }
 
     if (
@@ -261,36 +232,14 @@ function tooltipFieldPredicateExpression(
     return undefined;
   }
 
+  // Bind the predicate to the tooltip field so it is compiled with the field definition's aggregate, bin, and timeUnit.
   const fieldPredicate = {...fieldDef, ...predicate, field: fieldDef.field};
 
-  if (isFieldEqualPredicate(fieldPredicate)) {
-    if (fieldPredicate.equal === null) {
-      return `${vgField(fieldPredicate, {expr})}===null`;
-    }
-  }
-
-  if (isValidTooltipFieldPredicate(fieldPredicate)) {
+  if (isFieldPredicate(fieldPredicate) || isFieldValidPredicate(fieldPredicate)) {
     return fieldFilterExpression(fieldPredicate, true, expr);
   }
 
   return undefined;
-}
-
-function isValidTooltipFieldPredicate(predicate: unknown): predicate is FieldPredicate {
-  return (
-    isFieldEqualPredicate(predicate) ||
-    (isFieldLTPredicate(predicate) && isOrderablePredicateValue(predicate.lt)) ||
-    (isFieldLTEPredicate(predicate) && isOrderablePredicateValue(predicate.lte)) ||
-    (isFieldGTPredicate(predicate) && isOrderablePredicateValue(predicate.gt)) ||
-    (isFieldGTEPredicate(predicate) && isOrderablePredicateValue(predicate.gte)) ||
-    isFieldRangePredicate(predicate) ||
-    (isFieldOneOfPredicate(predicate) && isArray(predicate.oneOf)) ||
-    (isFieldValidPredicate(predicate) && typeof predicate.valid === 'boolean')
-  );
-}
-
-function isOrderablePredicateValue(value: unknown) {
-  return value !== undefined && value !== null && typeof value !== 'boolean';
 }
 
 export function tooltipRefForEncoding(
@@ -306,16 +255,21 @@ export function tooltipRefForEncoding(
 
   const objectExpr = ({key, value}: TooltipTuple) => `{"${key}": ${value}}`;
   if (tuples.some(({test}) => !!test)) {
+    if (tuples.length === 1) {
+      return {signal: `(${tuples[0].test}) ? ${objectExpr(tuples[0])} : null`};
+    }
+
     const keyValues = tuples.map((tuple) =>
       tuple.test ? `(${tuple.test}) ? ${objectExpr(tuple)} : {}` : objectExpr(tuple),
     );
-    const filteredOnly = tuples.every(({test}) => !!test);
     const value = `merge(${keyValues.join(', ')})`;
-    const tests = tuples.map(({test}) => test).filter(isString);
-    const hasVisibleField = tests.length === 1 ? tests[0] : tests.map((test) => `(${test})`).join(' || ');
-    return {
-      signal: filteredOnly ? `(${hasVisibleField}) ? ${value} : null` : value,
-    };
+
+    if (tuples.every(({test}) => !!test)) {
+      // With all fields filtered, return null instead of an empty object so that no tooltip is shown.
+      const anyVisible = tuples.map(({test}) => `(${test})`).join(' || ');
+      return {signal: `(${anyVisible}) ? ${value} : null`};
+    }
+    return {signal: value};
   }
 
   const keyValues = tuples.map(({key, value}) => `"${key}": ${value}`);

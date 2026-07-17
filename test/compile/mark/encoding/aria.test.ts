@@ -207,7 +207,7 @@ describe('compile/mark/encoding/aria', () => {
     expect(ariaMixins).toEqual({
       description: {
         signal:
-          '"Date: " + (isValid(datum["Date"]) ? isArray(datum["Date"]) ? join(datum["Date"], \' \') : datum["Date"] : ""+datum["Date"]) + ((isValid(datum["type2"]) && isFinite(+datum["type2"])) ? ("; " + "type2: " + (format(datum["type2"], ""))) : "")',
+          'slice("; Date: " + (isValid(datum["Date"]) ? isArray(datum["Date"]) ? join(datum["Date"], \' \') : datum["Date"] : ""+datum["Date"]) + ((isValid(datum["type2"]) && isFinite(+datum["type2"])) ? "; type2: " + (format(datum["type2"], "")) : ""), 2)',
       },
       ariaRoleDescription: {
         value: 'bar',

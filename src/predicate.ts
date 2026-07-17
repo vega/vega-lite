@@ -41,6 +41,23 @@ export type FieldPredicate =
   | FieldOneOfPredicate
   | FieldValidPredicate;
 
+/**
+ * A field predicate without `field` and `timeUnit`, which are implied by the tooltip field definition that the filter is defined on.
+ */
+type TooltipPredicate<P extends FieldPredicate> = Omit<P, 'field' | 'timeUnit'>;
+
+export type TooltipFieldPredicate =
+  | TooltipPredicate<FieldEqualPredicate>
+  | TooltipPredicate<FieldLTPredicate>
+  | TooltipPredicate<FieldGTPredicate>
+  | TooltipPredicate<FieldLTEPredicate>
+  | TooltipPredicate<FieldGTEPredicate>
+  | TooltipPredicate<FieldRangePredicate>
+  | TooltipPredicate<FieldOneOfPredicate>
+  | TooltipPredicate<FieldValidPredicate>;
+
+export type TooltipFieldFilter = LogicalComposition<TooltipFieldPredicate>;
+
 export interface ParameterPredicate {
   /**
    * Filter using a parameter name.

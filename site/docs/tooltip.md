@@ -76,7 +76,7 @@ To avoid that the tooltips groups the data, add an aggregate to the tooltip enco
 
 <div class="vl-example" data-name="bar_tooltip_aggregate"></div>
 
-Tooltip field definitions can include a `filter` predicate to omit individual fields when their value does not pass the filter. The filter applies to the tooltip field it is defined on, so `{"field": "validTooltip", "filter": {"valid": true}}` includes `validTooltip` in the tooltip only when its value is valid.
+Tooltip field definitions in the array can include a `filter` [predicate]({{site.baseurl}}/docs/predicate.html) to omit individual fields when their value does not pass the filter. The predicate is tested against the tooltip field it is defined on, so it does not need the `field` and `timeUnit` properties. For example, `{"field": "validTooltip", "filter": {"valid": true}}` includes `validTooltip` in the tooltip only when its value is valid and `{"filter": {"not": {"equal": 0}}}` omits a field when its value is zero.
 
 <div class="vl-example" data-name="bar_tooltip_filter"></div>
 

@@ -1,15 +1,15 @@
 import {BIN_RANGE_DELIMITER} from '../../../../src/compile/common.js';
 import {tooltip} from '../../../../src/compile/mark/encode/index.js';
-import {tooltipData, tooltipRefForEncoding} from '../../../../src/compile/mark/encode/tooltip.js';
+import {tooltipRefForEncoding} from '../../../../src/compile/mark/encode/tooltip.js';
 import {defaultConfig} from '../../../../src/config.js';
-import {TooltipFieldFilter} from '../../../../src/channeldef.js';
+import {TooltipFieldFilter} from '../../../../src/predicate.js';
 import * as log from '../../../../src/log/index.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 type TooltipFilterCase = {field: string; filter: TooltipFieldFilter; test: string};
 
 function filteredTooltipSignal(field: string, test: string) {
-  return `(${test}) ? merge((${test}) ? {"${field}": format(datum["${field}"], "")} : {}) : null`;
+  return `(${test}) ? {"${field}": format(datum["${field}"], "")} : null`;
 }
 
 describe('compile/mark/encode/tooltip', () => {
@@ -210,8 +210,7 @@ describe('compile/mark/encode/tooltip', () => {
         },
       });
       expect(tooltip(model, {reactiveGeom: true}).tooltip).toEqual({
-        signal:
-          '(!(datum.datum["Foobar"]===0)) ? merge((!(datum.datum["Foobar"]===0)) ? {"Foobar": format(datum.datum["Foobar"], "")} : {}) : null',
+        signal: '(!(datum.datum["Foobar"]===0)) ? {"Foobar": format(datum.datum["Foobar"], "")} : null',
       });
     });
 
@@ -335,24 +334,6 @@ describe('compile/mark/encode/tooltip', () => {
           defaultConfig,
         ),
       ).toBeUndefined();
-    });
-
-    it('returns filtered values for tooltip data', () => {
-      expect(
-        tooltipData(
-          {
-            tooltip: [
-              {field: 'visible', type: 'quantitative'},
-              {field: 'positive', type: 'quantitative', filter: {gt: 0}},
-            ],
-          },
-          null,
-          defaultConfig,
-        ),
-      ).toEqual({
-        visible: 'format(datum["visible"], "")',
-        positive: '(datum["positive"]>0) ? format(datum["positive"], "") : ""',
-      });
     });
 
     it('returns correct tooltip signal for binned field', () => {
@@ -665,42 +646,6 @@ describe('compile/mark/encode/tooltip', () => {
       log.wrap((localLogger) => {
         const unsupportedFilter = JSON.parse('"missing"');
         const unsupportedOperatorFilter = JSON.parse('{"operator":"===","value":0}');
-        const missingValueFilter = JSON.parse('{"operator":"=="}');
-        const invalidRangeFilter = JSON.parse('{"range":[0]}');
-        const invalidValidFilter = JSON.parse('{"valid":"yes"}');
-
-        expect(
-          tooltipRefForEncoding(
-            {
-              tooltip: [
-                {field: 'unsupported', type: 'quantitative', filter: unsupportedFilter},
-                {field: 'operator', type: 'quantitative', filter: unsupportedOperatorFilter},
-                {field: 'missingValue', type: 'quantitative', filter: missingValueFilter},
-                {field: 'range', type: 'quantitative', filter: invalidRangeFilter},
-                {field: 'valid', type: 'quantitative', filter: invalidValidFilter},
-              ],
-            },
-            null,
-            defaultConfig,
-          ),
-        ).toEqual({
-          signal:
-            '{"unsupported": format(datum["unsupported"], ""), "operator": format(datum["operator"], ""), "missingValue": format(datum["missingValue"], ""), "range": format(datum["range"], ""), "valid": format(datum["valid"], "")}',
-        });
-        expect(localLogger.warns).toEqual([
-          'Ignoring an invalid tooltip filter: "missing".',
-          'Ignoring an invalid tooltip filter: {"operator":"===","value":0}.',
-          'Ignoring an invalid tooltip filter: {"operator":"=="}.',
-          'Ignoring an invalid tooltip filter: {"range":[0]}.',
-          'Ignoring an invalid tooltip filter: {"valid":"yes"}.',
-        ]);
-      }),
-    );
-
-    it(
-      'ignores invalid logical tooltip filters with warnings',
-      log.wrap((localLogger) => {
-        const mixedFilter = JSON.parse('{"and":[{"gt":0},{"valid":"yes"}]}');
         const emptyAndFilter = JSON.parse('{"and":[]}');
         const emptyOrFilter = JSON.parse('{"or":[]}');
 
@@ -708,7 +653,8 @@ describe('compile/mark/encode/tooltip', () => {
           tooltipRefForEncoding(
             {
               tooltip: [
-                {field: 'mixed', type: 'quantitative', filter: mixedFilter},
+                {field: 'unsupported', type: 'quantitative', filter: unsupportedFilter},
+                {field: 'operator', type: 'quantitative', filter: unsupportedOperatorFilter},
                 {field: 'emptyAnd', type: 'quantitative', filter: emptyAndFilter},
                 {field: 'emptyOr', type: 'quantitative', filter: emptyOrFilter},
               ],
@@ -718,48 +664,13 @@ describe('compile/mark/encode/tooltip', () => {
           ),
         ).toEqual({
           signal:
-            '{"mixed": format(datum["mixed"], ""), "emptyAnd": format(datum["emptyAnd"], ""), "emptyOr": format(datum["emptyOr"], "")}',
+            '{"unsupported": format(datum["unsupported"], ""), "operator": format(datum["operator"], ""), "emptyAnd": format(datum["emptyAnd"], ""), "emptyOr": format(datum["emptyOr"], "")}',
         });
         expect(localLogger.warns).toEqual([
-          'Ignoring an invalid tooltip filter: {"and":[{"gt":0},{"valid":"yes"}]}.',
+          'Ignoring an invalid tooltip filter: "missing".',
+          'Ignoring an invalid tooltip filter: {"operator":"===","value":0}.',
           'Ignoring an invalid tooltip filter: {"and":[]}.',
           'Ignoring an invalid tooltip filter: {"or":[]}.',
-        ]);
-      }),
-    );
-
-    it(
-      'ignores ordered comparisons against boolean filter values with warnings',
-      log.wrap((localLogger) => {
-        const filters = [
-          JSON.parse('{"lt":true}'),
-          JSON.parse('{"lte":true}'),
-          JSON.parse('{"gt":true}'),
-          JSON.parse('{"gte":true}'),
-        ];
-
-        expect(
-          tooltipRefForEncoding(
-            {
-              tooltip: [
-                {field: 'lt', type: 'quantitative', filter: filters[0]},
-                {field: 'lte', type: 'quantitative', filter: filters[1]},
-                {field: 'gt', type: 'quantitative', filter: filters[2]},
-                {field: 'gte', type: 'quantitative', filter: filters[3]},
-              ],
-            },
-            null,
-            defaultConfig,
-          ),
-        ).toEqual({
-          signal:
-            '{"lt": format(datum["lt"], ""), "lte": format(datum["lte"], ""), "gt": format(datum["gt"], ""), "gte": format(datum["gte"], "")}',
-        });
-        expect(localLogger.warns).toEqual([
-          'Ignoring an invalid tooltip filter: {"lt":true}.',
-          'Ignoring an invalid tooltip filter: {"lte":true}.',
-          'Ignoring an invalid tooltip filter: {"gt":true}.',
-          'Ignoring an invalid tooltip filter: {"gte":true}.',
         ]);
       }),
     );

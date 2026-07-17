@@ -64,19 +64,7 @@ import {Legend} from './legend.js';
 import * as log from './log/index.js';
 import {LogicalComposition} from './logical.js';
 import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark.js';
-import {
-  FieldEqualPredicate,
-  FieldGTEPredicate,
-  FieldGTPredicate,
-  FieldLTEPredicate,
-  FieldLTPredicate,
-  FieldOneOfPredicate,
-  FieldPredicate,
-  FieldRangePredicate,
-  FieldValidPredicate,
-  ParameterPredicate,
-  Predicate,
-} from './predicate.js';
+import {ParameterPredicate, Predicate, TooltipFieldFilter} from './predicate.js';
 import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale.js';
 import {isSortByChannel, Sort, SortOrder} from './sort.js';
 import {isFacetFieldDef} from './spec/facet.js';
@@ -108,20 +96,6 @@ import {
 import {isSignalRef} from './vega.schema.js';
 
 export type PrimitiveValue = number | string | boolean | null;
-
-type TooltipPredicate<P extends FieldPredicate> = Omit<P, 'field' | 'timeUnit'>;
-
-export type TooltipFieldPredicate =
-  | TooltipPredicate<FieldEqualPredicate>
-  | TooltipPredicate<FieldLTPredicate>
-  | TooltipPredicate<FieldGTPredicate>
-  | TooltipPredicate<FieldLTEPredicate>
-  | TooltipPredicate<FieldGTEPredicate>
-  | TooltipPredicate<FieldRangePredicate>
-  | TooltipPredicate<FieldOneOfPredicate>
-  | TooltipPredicate<FieldValidPredicate>;
-
-export type TooltipFieldFilter = LogicalComposition<TooltipFieldPredicate>;
 
 export type Value<ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
   | PrimitiveValue
@@ -700,11 +674,10 @@ export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
 export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
 export interface TooltipFieldDef<F extends Field> extends StringFieldDef<F> {
   /**
-   * Predicate for including this field in generated tooltips.
+   * A [predicate](https://vega.github.io/vega-lite/docs/predicate.html) for including this field in the generated tooltip. The predicate is tested against this field's value, so it does not need `field` or `timeUnit` properties. For example, `"filter": {"gt": 0}` includes the field only when its value is positive and `"filter": {"valid": true}` includes it only when it is not `null` and not `NaN`.
    */
   filter?: TooltipFieldFilter;
 }
-export type TooltipFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<TooltipFieldDef<F>, string>;
 
 export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];
