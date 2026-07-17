@@ -1,4 +1,5 @@
 import {array, isArray, isObject, isString} from 'vega-util';
+import {isArgmaxDef, isArgminDef} from '../../../aggregate.js';
 import {isBinned} from '../../../bin.js';
 import {Channel, getMainRangeChannel, isXorY, RADIUS, THETA, TOOLTIP} from '../../../channel.js';
 import {
@@ -6,6 +7,7 @@ import {
   getFieldDef,
   getFormatMixins,
   hasConditionalFieldDef,
+  isCount,
   isFieldDef,
   isTypedFieldDef,
   SecondaryFieldDef,
@@ -190,7 +192,7 @@ function tooltipFilterExpression(
 
   const {filter} = fieldDef;
 
-  if (!fieldDef.field) {
+  if (isArgminDef(fieldDef.aggregate) || isArgmaxDef(fieldDef.aggregate) || (!fieldDef.field && !isCount(fieldDef))) {
     log.warn(log.message.TOOLTIP_FILTER_REQUIRES_FIELD);
     return undefined;
   }

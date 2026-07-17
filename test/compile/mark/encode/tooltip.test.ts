@@ -732,21 +732,37 @@ describe('compile/mark/encode/tooltip', () => {
       }),
     );
 
+    it('filters count aggregate fields against the count datum field', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [{aggregate: 'count', type: 'quantitative', filter: {gt: 100}}],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal: '(datum["__count"]>100) ? {"Count of Records": format(datum["__count"], "")} : null',
+      });
+    });
+
     it(
-      'ignores tooltip filters on fieldless aggregate fields with a warning',
+      'ignores tooltip filters on argmax fields with a warning',
       log.wrap((localLogger) => {
         expect(
           tooltipRefForEncoding(
             {
-              tooltip: [{aggregate: 'count', type: 'quantitative', filter: {valid: true}}],
+              tooltip: [{aggregate: {argmax: 'y'}, field: 'x', type: 'quantitative', filter: {gt: 0}}],
             },
             null,
             defaultConfig,
           ),
         ).toEqual({
-          signal: '{"Count of Records": format(datum["__count"], "")}',
+          signal: '{"x for max y": format(datum["argmax_y"]["x"], "")}',
         });
-        expect(localLogger.warns).toEqual(['Ignoring tooltip filter because it requires a field.']);
+        expect(localLogger.warns).toEqual([
+          'Ignoring tooltip filter because it requires a field (argmin and argmax fields are not supported).',
+        ]);
       }),
     );
   });
