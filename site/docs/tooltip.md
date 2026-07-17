@@ -28,6 +28,18 @@ Setting the `tooltip` property of the [mark definition]({{site.baseurl}}/docs/ma
 
 **Note:** This is equivalent to setting the `tooltip` property of the mark definition to `{"content": "encoding"}`.
 
+To omit an encoding field from generated encoding-based tooltips while still using it for grouping, selection, or another channel, set the field definition's `tooltip` property to `false`.
+
+```js
+{
+  "mark": {"type": "point", "tooltip": true},
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "detail": {"field": "disabledTooltip", "type": "nominal", "tooltip": false}
+  }
+}
+```
+
 {:#data}
 
 ## Tooltip Based on Underlying Data Point
@@ -63,6 +75,10 @@ In the example below, adding the tooltip for b means that b becomes part of the 
 To avoid that the tooltips groups the data, add an aggregate to the tooltip encoding.
 
 <div class="vl-example" data-name="bar_tooltip_aggregate"></div>
+
+Tooltip field definitions in the array can include a `filter` [predicate]({{site.baseurl}}/docs/predicate.html) to omit individual fields when their value does not pass the filter. The predicate is tested against the tooltip field it is defined on and must not include the `field` and `timeUnit` properties. For example, `{"field": "validTooltip", "filter": {"valid": true}}` includes `validTooltip` in the tooltip only when its value is not `null` and not `NaN`, and `{"filter": {"not": {"equal": 0}}}` omits a field when its value is zero. Filtered fields are also omitted from the mark's generated ARIA [`description`]({{site.baseurl}}/docs/mark.html#mark-def), as are fields with `"tooltip": false`.
+
+<div class="vl-example" data-name="bar_tooltip_filter"></div>
 
 ## Tooltip image
 

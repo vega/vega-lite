@@ -34,10 +34,10 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Year\": timeFormat(datum[\"Year\"], \"%b %d, %Y\"), \"Average of Miles_per_Gallon\": format(datum[\"average_Miles_per_Gallon\"], \".8f\")}"
           },
-          "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
             "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], \"%b %d, %Y\")) + \"; Average of Miles_per_Gallon: \" + (format(datum[\"average_Miles_per_Gallon\"], \".8f\"))"

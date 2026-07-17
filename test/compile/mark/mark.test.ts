@@ -332,6 +332,31 @@ describe('Mark', () => {
       expect(update.cornerRadiusBottomRight).toBeUndefined();
     });
 
+    it('should not emit the raw markDef tooltip directive when the generated tooltip is empty', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: true},
+        encoding: {
+          x: {field: 'a', type: 'quantitative', tooltip: false},
+          y: {field: 'b', type: 'quantitative', tooltip: false},
+        },
+      });
+
+      const update = parseMarkGroups(model)[0].encode.update;
+      expect(update.tooltip).toBeUndefined();
+    });
+
+    it('should pass static markDef tooltip values through', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: 'static tooltip'},
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+        },
+      });
+
+      const update = parseMarkGroups(model)[0].encode.update;
+      expect(update.tooltip).toEqual({value: 'static tooltip'});
+    });
+
     describe('interactiveFlag', () => {
       it('should not contain flag if no selections', () => {
         const model = parseUnitModelWithScaleAndSelection({
