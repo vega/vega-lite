@@ -56,10 +56,10 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "stroke": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Average of price\": format(datum[\"average_price\"], \"\")}"
           },
-          "stroke": {"value": "#4c78a8"},
           "description": {
             "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (format(datum[\"average_price\"], \"\"))"
           },
@@ -79,10 +79,10 @@
       "encode": {
         "update": {
           "opacity": {"value": 1},
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Average of price\": format(datum[\"average_price\"], \"\")}"
           },
-          "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (format(datum[\"average_price\"], \"\"))"
