@@ -716,7 +716,7 @@ export function reduce<T, U extends Record<any, any>>(
 /**
  * Returns list of path grouping fields for the given encoding
  */
-export function pathGroupingFields(mark: Mark, encoding: Encoding<string>, offsetGroup = true): string[] {
+export function pathGroupingFields(mark: Mark, encoding: Encoding<string>, groupByOffset = true): string[] {
   return keys(encoding).reduce((details, channel) => {
     switch (channel) {
       // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, aria label, cursor should not cause lines to group
@@ -731,7 +731,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>, offse
 
       case XOFFSET:
       case YOFFSET: {
-        if (offsetGroup && (mark === 'line' || mark === 'area' || mark === 'trail')) {
+        if (groupByOffset && (mark === 'line' || mark === 'area' || mark === 'trail')) {
           const offsetDef = encoding[channel];
           if (isFieldDef(offsetDef)) {
             const mainChannel = channel === XOFFSET ? X : Y;

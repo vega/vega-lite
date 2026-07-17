@@ -259,8 +259,8 @@ describe('compile/compile', () => {
     expect((spec.marks[0] as any).from.facet.groupby).toEqual(['c']);
   });
 
-  for (const offsetGroup of [false, null] as const) {
-    it(`should disable offset auto-grouping for line paths when mark.offsetGroup is ${offsetGroup}`, () => {
+  for (const groupByOffset of [false, null] as const) {
+    it(`should disable offset auto-grouping for line paths when mark.groupByOffset is ${groupByOffset}`, () => {
       const {spec} = compile({
         data: {
           values: [
@@ -274,7 +274,7 @@ describe('compile/compile', () => {
             {a: 'D', b: 55, c: 'y', d: 'n'},
           ],
         },
-        mark: {type: 'line', offsetGroup},
+        mark: {type: 'line', groupByOffset},
         encoding: {
           x: {field: 'a'},
           y: {field: 'c'},

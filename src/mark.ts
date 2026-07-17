@@ -585,7 +585,7 @@ export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
    *
    * __Default value:__ `true`
    */
-  offsetGroup?: boolean | null;
+  groupByOffset?: boolean | null;
 
   /**
    * Offset for theta.

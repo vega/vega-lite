@@ -16993,6 +16993,13 @@
             }
           ]
         },
+        "groupByOffset": {
+          "description": "For path marks (`line`, `area`, `trail`) with an `xOffset`/`yOffset` field, whether each path is grouped by the corresponding position channel (`x` or `y`) so it stays within its own offset lane. Set to `false` or `null` to disable this grouping and let paths connect across the position channel, using only explicitly encoded grouping channels (`detail`, `color`, etc.).\n\n__Default value:__ `true`",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
         "height": {
           "anyOf": [
             {
@@ -17106,13 +17113,6 @@
             }
           ],
           "description": "The minimum band size for bar and rectangle marks. __Default value:__ `0.25`"
-        },
-        "offsetGroup": {
-          "description": "For path marks (`line`, `area`, `trail`) with an `xOffset`/`yOffset` field, whether each path is grouped by the corresponding position channel (`x` or `y`) so it stays within its own offset lane. Set to `false` or `null` to disable this grouping and let paths connect across the position channel, using only explicitly encoded grouping channels (`detail`, `color`, etc.).\n\n__Default value:__ `true`",
-          "type": [
-            "boolean",
-            "null"
-          ]
         },
         "opacity": {
           "anyOf": [
@@ -18561,6 +18561,13 @@
             }
           ]
         },
+        "groupByOffset": {
+          "description": "For path marks (`line`, `area`, `trail`) with an `xOffset`/`yOffset` field, whether each path is grouped by the corresponding position channel (`x` or `y`) so it stays within its own offset lane. Set to `false` or `null` to disable this grouping and let paths connect across the position channel, using only explicitly encoded grouping channels (`detail`, `color`, etc.).\n\n__Default value:__ `true`",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
         "height": {
           "anyOf": [
             {
@@ -18648,13 +18655,6 @@
             {
               "$ref": "#/definitions/ExprRef"
             }
-          ]
-        },
-        "offsetGroup": {
-          "description": "For path marks (`line`, `area`, `trail`) with an `xOffset`/`yOffset` field, whether each path is grouped by the corresponding position channel (`x` or `y`) so it stays within its own offset lane. Set to `false` or `null` to disable this grouping and let paths connect across the position channel, using only explicitly encoded grouping channels (`detail`, `color`, etc.).\n\n__Default value:__ `true`",
-          "type": [
-            "boolean",
-            "null"
           ]
         },
         "opacity": {
