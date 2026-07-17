@@ -1,5 +1,5 @@
 import type {SignalRef} from 'vega';
-import {hasOwnProperty, isObject, isString} from 'vega-util';
+import {hasOwnProperty, isArray, isObject, isString} from 'vega-util';
 import {
   Aggregate,
   isAggregateOp,
@@ -214,26 +214,15 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }
 
-function mapDomainToDataSignal(
-  domain: (number | string | boolean | DateTime | ExprRef | SignalRef | number[])[],
-  type: Type,
-  timeUnit: TimeUnit,
-) {
-  return domain.map((v) => {
-    const data = valueExpr(v, {timeUnit, type});
-    return {signal: `{data: ${data}}`};
-  });
-}
-
 function convertDomainIfItIsDateTime(
   domain: (number | string | boolean | DateTime | ExprRef | SignalRef | number[])[],
   type: Type,
   timeUnit: TimeUnit | TimeUnitTransformParams,
-): [number[]] | [string[]] | [boolean[]] | SignalRef[] {
+): [number[]] | [string[]] | [boolean[]] | [SignalRef[]] {
   // explicit value
   const normalizedTimeUnit = normalizeTimeUnit(timeUnit)?.unit;
   if (type === 'temporal' || normalizedTimeUnit) {
-    return mapDomainToDataSignal(domain, type, normalizedTimeUnit);
+    return [domain.map((v) => ({signal: valueExpr(v, {timeUnit: normalizedTimeUnit, type})}))];
   }
 
   return [domain] as [number[]] | [string[]] | [boolean[]]; // Date time won't make sense
@@ -662,7 +651,13 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     return domain;
   }
 
-  return {fields: uniqueDomains, ...(sort ? {sort} : {})};
+  const fields = uniqueDomains.map((d) =>
+    // Wrap signal values as objects with a data field as Vega reads union domain signals via `field: "data"`
+    // (primitives are wrapped automatically during ingestion, but dates are objects and thus are not).
+    isArray(d) && d.every(isSignalRef) ? {signal: `[${d.map((s) => `{data: ${s.signal}}`).join(', ')}]`} : d,
+  );
+
+  return {fields, ...(sort ? {sort} : {})};
 }
 
 /**
