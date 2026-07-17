@@ -25,4 +25,5 @@ You are encouraged to prototype multiple alternative syntaxes for your proposed 
   <summary><h2>Checklist</h2></summary>
 
 - [ ] I checked for duplicate issues.
+
 </details>

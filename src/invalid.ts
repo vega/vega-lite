@@ -37,11 +37,7 @@ export interface MarkInvalidMixins {
 }
 
 export type MarkInvalidDataMode =
-  | 'filter'
-  | 'break-paths-filter-domains'
-  | 'break-paths-show-domains'
-  | 'break-paths-show-path-domains'
-  | 'show';
+  'filter' | 'break-paths-filter-domains' | 'break-paths-show-domains' | 'break-paths-show-path-domains' | 'show';
 
 /**
  * Mixins for Vega-Lite Spec's config.scale

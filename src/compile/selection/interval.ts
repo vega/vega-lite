@@ -46,9 +46,10 @@ const interval: SelectionCompiler<'interval'> = {
           continue;
         }
 
-        const filters = array((evt.between[0].filter ??= []));
+        const between = evt.between[0];
+        const filters = array(between.filter ?? []);
         if (!filters.includes(filterExpr)) {
-          filters.push(filterExpr);
+          between.filter = [...filters, filterExpr];
         }
       }
     }

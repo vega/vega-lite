@@ -64,12 +64,10 @@ export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
     if (node instanceof IdentifierNode) {
       // Only preserve IdentifierNodes if we have default discrete selections
       // in our model tree, and if the nodes come after tuple producing nodes.
-      if (
-        !(
-          this.requiresSelectionId &&
-          (isDataSourceNode(node.parent) || node.parent instanceof AggregateNode || node.parent instanceof ParseNode)
-        )
-      ) {
+      if (!(
+        this.requiresSelectionId &&
+        (isDataSourceNode(node.parent) || node.parent instanceof AggregateNode || node.parent instanceof ParseNode)
+      )) {
         this.setModified();
         node.remove();
       }

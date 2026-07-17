@@ -1,5 +1,5 @@
 import type {Color, InitSignal, Locale, NewSignal, RangeConfig, RangeScheme, SignalRef} from 'vega';
-import {isObject, mergeConfig, writeConfig} from 'vega-util';
+import {isObject} from 'vega-util';
 import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis.js';
 import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common.js';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark/index.js';
@@ -25,7 +25,7 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base.js';
 import {TopLevelProperties} from './spec/toplevel.js';
 import {extractTitleConfig, TitleConfig} from './title.js';
-import {duplicate, getFirstDefined, hasProperty, isEmpty, keys, omit} from './util.js';
+import {duplicate, getFirstDefined, hasProperty, isEmpty, keys, mergeConfig, omit, writeConfig} from './util.js';
 
 export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBackground<ES> {
   /**
