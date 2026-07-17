@@ -124,6 +124,35 @@ describe('ConcatModel', () => {
   });
 
   describe('resolve', () => {
+    it('resolves xOffset and yOffset scales independently by default', () => {
+      const model = parseConcatModel({
+        hconcat: [
+          {
+            mark: 'bar',
+            encoding: {
+              x: {field: 'a', type: 'nominal'},
+              xOffset: {field: 'b', type: 'nominal'},
+              y: {field: 'c', type: 'quantitative'},
+            },
+          },
+          {
+            mark: 'bar',
+            encoding: {
+              x: {field: 'a', type: 'nominal'},
+              xOffset: {field: 'b', type: 'nominal'},
+              y: {field: 'c', type: 'quantitative'},
+            },
+          },
+        ],
+      });
+      model.parseScale();
+
+      expect(model.component.resolve.scale.xOffset).toBe('independent');
+      expect(model.component.scales.xOffset).toBeUndefined();
+      expect(model.children[0].getScaleComponent('xOffset').get('name')).toBe('concat_0_xOffset');
+      expect(model.children[1].getScaleComponent('xOffset').get('name')).toBe('concat_1_xOffset');
+    });
+
     it(
       'cannot share axes',
       log.wrap((localLogger) => {
