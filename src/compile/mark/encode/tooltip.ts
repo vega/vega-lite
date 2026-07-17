@@ -178,6 +178,7 @@ export function tooltipDataTuples(
   return out;
 }
 
+// Converts a tooltip filter for the given field into a Vega expression, undefined when absent or invalid.
 function tooltipFilterExpression(
   fieldDef: FilterableTooltipFieldDef,
   channel: Channel,
@@ -187,62 +188,38 @@ function tooltipFilterExpression(
     return undefined;
   }
 
+  const {filter} = fieldDef;
+
   if (!fieldDef.field) {
     log.warn(log.message.TOOLTIP_FILTER_REQUIRES_FIELD);
     return undefined;
   }
 
-  const test = filterExpression(fieldDef.filter, {...fieldDef, field: fieldDef.field}, expr);
-  if (!test) {
-    log.warn(log.message.invalidTooltipFilter(fieldDef.filter));
-  }
-  return test;
-}
-
-// Converts a tooltip filter for the given field into a Vega expression, undefined when invalid.
-function filterExpression(
-  filter: TooltipFieldFilter,
-  fieldDef: TypedFieldDef<string> & {field: string},
-  expr: 'datum' | 'datum.datum',
-): string | undefined {
-  let valid = true;
-  let leafCount = 0;
-  const expression = logicalExpr(filter, (predicate: TooltipFieldPredicate) => {
-    leafCount++;
-    const predicateExpression = tooltipFieldPredicateExpression(predicate, fieldDef, expr);
-    if (!predicateExpression) {
-      valid = false;
-      return '';
-    }
-    return predicateExpression;
-  });
-
-  return valid && leafCount > 0 ? expression : undefined;
-}
-
-function tooltipFieldPredicateExpression(
-  predicate: TooltipFieldPredicate,
-  fieldDef: TypedFieldDef<string> & {field: string},
-  expr: 'datum' | 'datum.datum',
-): string | undefined {
-  if (!isObject(predicate)) {
-    return undefined;
-  }
-
-  // The predicate tests the mark's datum, where aggregate, bin, and time unit are already applied
+  // The predicates test the mark's datum, where aggregate, bin, and time unit are already applied
   // (the raw field may not even exist after aggregation), so resolve the datum field upfront and
   // mark time units as binned so they are not recomputed from the raw field.
   const timeUnit = normalizeTimeUnit(fieldDef.timeUnit);
-  const fieldPredicate = {
-    ...predicate,
-    field: vgField(fieldDef),
-    ...(timeUnit ? {timeUnit: {...timeUnit, binned: true}} : {}),
-  };
+  const boundFieldDef = {field: vgField(fieldDef), ...(timeUnit ? {timeUnit: {...timeUnit, binned: true}} : {})};
 
-  if (isFieldPredicate(fieldPredicate) || isFieldValidPredicate(fieldPredicate)) {
-    return fieldFilterExpression(fieldPredicate, true, expr);
+  let valid = true;
+  let leafCount = 0;
+  const test = logicalExpr(filter, (predicate: TooltipFieldPredicate) => {
+    leafCount++;
+    if (isObject(predicate)) {
+      const fieldPredicate = {...predicate, ...boundFieldDef};
+      if (isFieldPredicate(fieldPredicate) || isFieldValidPredicate(fieldPredicate)) {
+        return fieldFilterExpression(fieldPredicate, true, expr);
+      }
+    }
+    valid = false;
+    return '';
+  });
+
+  if (valid && leafCount > 0) {
+    return test;
   }
 
+  log.warn(log.message.invalidTooltipFilter(filter));
   return undefined;
 }
 
