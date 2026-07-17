@@ -158,12 +158,11 @@ export function getMarkStyleConfig<P extends keyof MarkDef, ES extends ExprRef |
 
 export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig<SignalRef>>(
   p: P,
-  styles: string | string[],
+  styles: string | readonly string[],
   styleConfigIndex: StyleConfigIndex<SignalRef>,
 ) {
-  styles = array(styles);
   let value;
-  for (const style of styles) {
+  for (const style of array(styles)) {
     const styleConfig = styleConfigIndex[style];
 
     if (hasProperty(styleConfig, p)) {

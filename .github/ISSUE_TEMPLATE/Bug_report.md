@@ -23,4 +23,5 @@ If applicable, include error messages and screenshots, videos, or working exampl
   <summary><h2>Checklist</h2></summary>
 
 - [ ] I checked for duplicate issues.
+
 </details>

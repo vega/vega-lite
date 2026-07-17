@@ -34,15 +34,15 @@ const legendBindings: SelectionCompiler<'point'> = {
     if (isObject(selDef.select) && (selDef.select.on || selDef.select.clear)) {
       const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
       for (const evt of selCmpt.events) {
-        evt.filter = array(evt.filter ?? []);
-        if (!evt.filter.includes(legendFilter)) {
-          evt.filter.push(legendFilter);
+        const filters = array(evt.filter ?? []);
+        if (!filters.includes(legendFilter)) {
+          evt.filter = [...filters, legendFilter];
         }
       }
     }
 
     const evt = isLegendStreamBinding(selCmpt.bind) ? selCmpt.bind.legend : 'click';
-    const stream: Stream[] = isString(evt) ? parseSelector(evt, 'view') : array(evt);
+    const stream: Stream[] = isString(evt) ? parseSelector(evt, 'view') : [...array(evt)];
     selCmpt.bind = {legend: {merge: stream}};
   },
 

@@ -98,11 +98,7 @@ import {isSignalRef} from './vega.schema.js';
 export type PrimitiveValue = number | string | boolean | null;
 
 export type Value<ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
-  | PrimitiveValue
-  | number[]
-  | Gradient
-  | Text
-  | ES;
+  PrimitiveValue | number[] | Gradient | Text | ES;
 
 /**
  * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.
@@ -135,9 +131,7 @@ export type ValueDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V ext
    * A field definition or one or more value definition(s) with a parameter predicate.
    */
   condition?:
-    | Conditional<F>
-    | Conditional<ValueDef<V | ExprRef | SignalRef>>
-    | Conditional<ValueDef<V | ExprRef | SignalRef>>[];
+    Conditional<F> | Conditional<ValueDef<V | ExprRef | SignalRef>> | Conditional<ValueDef<V | ExprRef | SignalRef>>[];
 };
 
 export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
@@ -389,9 +383,7 @@ export interface ScaleMixins {
 }
 
 export type OffsetDef<F extends Field, T extends Type = StandardType> =
-  | ScaleFieldDef<F, T>
-  | ScaleDatumDef<F>
-  | ValueDef<number>;
+  ScaleFieldDef<F, T> | ScaleDatumDef<F> | ValueDef<number>;
 
 export interface DatumDef<
   F extends Field = string,
@@ -635,8 +627,7 @@ export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFiel
 export type MarkPropDatumDef<F extends Field> = LegendMixins & ScaleDatumDef<F>;
 
 export type MarkPropFieldOrDatumDef<F extends Field, T extends Type = Type> =
-  | MarkPropFieldDef<F, T>
-  | MarkPropDatumDef<F>;
+  MarkPropFieldDef<F, T> | MarkPropDatumDef<F>;
 
 export interface LegendMixins {
   /**
