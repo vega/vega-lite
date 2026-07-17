@@ -42,7 +42,7 @@ export type FieldPredicate =
   | FieldValidPredicate;
 
 /**
- * A field predicate without `field` and `timeUnit`, which are implied by the tooltip field definition that the filter is defined on.
+ * A field predicate without `field` and `timeUnit`, which are implied by the tooltip field definition that the filter is defined on and must not be specified.
  */
 type TooltipPredicate<P extends FieldPredicate> = Omit<P, 'field' | 'timeUnit'>;
 
@@ -222,7 +222,7 @@ function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], tim
 export function fieldFilterExpression(
   predicate: FieldPredicate,
   useInRange = true,
-  expr: 'datum' | 'parent' | 'datum.datum' = 'datum',
+  expr: 'datum' | 'datum.datum' = 'datum',
 ) {
   const {field} = predicate;
   const normalizedTimeUnit = normalizeTimeUnit(predicate.timeUnit);
@@ -232,7 +232,7 @@ export function fieldFilterExpression(
     ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
       // TODO: support utc
-      `time(${!binned ? timeUnitFieldExpr(unit, field, {datum: expr}) : rawFieldExpr})`
+      `time(${!binned ? timeUnitFieldExpr(unit, field, {expr}) : rawFieldExpr})`
     : rawFieldExpr;
 
   if (isFieldEqualPredicate(predicate)) {

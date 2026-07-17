@@ -1,9 +1,8 @@
 import {BIN_RANGE_DELIMITER} from '../../../../src/compile/common.js';
-import {tooltip} from '../../../../src/compile/mark/encode/index.js';
-import {tooltipRefForEncoding} from '../../../../src/compile/mark/encode/tooltip.js';
+import {tooltip, tooltipRefForEncoding} from '../../../../src/compile/mark/encode/index.js';
 import {defaultConfig} from '../../../../src/config.js';
-import {TooltipFieldFilter} from '../../../../src/predicate.js';
 import * as log from '../../../../src/log/index.js';
+import {TooltipFieldFilter} from '../../../../src/predicate.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 type TooltipFilterCase = {field: string; filter: TooltipFieldFilter; test: string};
@@ -641,13 +640,71 @@ describe('compile/mark/encode/tooltip', () => {
       }
     });
 
+    it('filters aggregated tooltip fields against the aggregated datum field', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [{aggregate: 'mean', field: 'agg', type: 'quantitative', filter: {gt: 10}}],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal: '(datum["mean_agg"]>10) ? {"Mean of agg": format(datum["mean_agg"], "")} : null',
+      });
+    });
+
+    it('filters binned tooltip fields against the bin start field', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [{bin: true, field: 'binval', type: 'quantitative', filter: {lt: 5}}],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal: `(datum["bin_maxbins_10_binval"]<5) ? {"binval (binned)": !isValid(datum["bin_maxbins_10_binval"]) || !isFinite(+datum["bin_maxbins_10_binval"]) ? "null" : format(datum["bin_maxbins_10_binval"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_binval_end"], "")} : null`,
+      });
+    });
+
+    it('filters tooltip fields with a timeUnit against the time unit datum field', () => {
+      // The time unit field is tested directly (as if binned) because the raw field may not exist in the datum, e.g. after aggregation.
+      const ref = tooltipRefForEncoding(
+        {
+          tooltip: [{field: 'date', timeUnit: 'month', type: 'ordinal', filter: {equal: {month: 'jan'}}}],
+        },
+        null,
+        defaultConfig,
+      );
+      expect(ref.signal).toContain(
+        '(time(datum["month_date"])===time(datetime(2012, 0, 1, 0, 0, 0, 0))) ? {"date (month)": ',
+      );
+      expect(ref.signal).not.toContain('datum["date"]');
+    });
+
+    it('omits a tooltip array entry with tooltip false even when it has a filter', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [
+              {field: 'shown', type: 'quantitative'},
+              {field: 'hidden', type: 'quantitative', tooltip: false, filter: {gt: 0}},
+            ],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({signal: '{"shown": format(datum["shown"], "")}'});
+    });
+
     it(
       'ignores unsupported tooltip filters with warnings',
       log.wrap((localLogger) => {
-        const unsupportedFilter = JSON.parse('"missing"');
-        const unsupportedOperatorFilter = JSON.parse('{"operator":"===","value":0}');
-        const emptyAndFilter = JSON.parse('{"and":[]}');
-        const emptyOrFilter = JSON.parse('{"or":[]}');
+        const unsupportedFilter = 'missing' as any;
+        const unsupportedOperatorFilter = {operator: '===', value: 0} as any;
+        const emptyAndFilter = {and: []} as any;
+        const emptyOrFilter = {or: []} as any;
 
         expect(
           tooltipRefForEncoding(

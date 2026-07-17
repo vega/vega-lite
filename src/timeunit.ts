@@ -309,9 +309,9 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
 export function fieldExpr(
   fullTimeUnit: TimeUnit,
   field: string,
-  {end = false, datum = 'datum'}: {end?: boolean; datum?: string} = {},
+  {end = false, expr = 'datum'}: {end?: boolean; expr?: 'datum' | 'datum.datum'} = {},
 ): string {
-  const fieldRef = accessPathWithDatum(field, datum);
+  const fieldRef = accessPathWithDatum(field, expr);
 
   const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
 

@@ -76,25 +76,9 @@ To avoid that the tooltips groups the data, add an aggregate to the tooltip enco
 
 <div class="vl-example" data-name="bar_tooltip_aggregate"></div>
 
-Tooltip field definitions in the array can include a `filter` [predicate]({{site.baseurl}}/docs/predicate.html) to omit individual fields when their value does not pass the filter. The predicate is tested against the tooltip field it is defined on, so it does not need the `field` and `timeUnit` properties. For example, `{"field": "validTooltip", "filter": {"valid": true}}` includes `validTooltip` in the tooltip only when its value is valid and `{"filter": {"not": {"equal": 0}}}` omits a field when its value is zero.
+Tooltip field definitions in the array can include a `filter` [predicate]({{site.baseurl}}/docs/predicate.html) to omit individual fields when their value does not pass the filter. The predicate is tested against the tooltip field it is defined on and must not include the `field` and `timeUnit` properties. For example, `{"field": "validTooltip", "filter": {"valid": true}}` includes `validTooltip` in the tooltip only when its value is not `null` and not `NaN`, and `{"filter": {"not": {"equal": 0}}}` omits a field when its value is zero. Filtered fields are also omitted from the mark's generated ARIA [`description`]({{site.baseurl}}/docs/mark.html#mark-def), as are fields with `"tooltip": false`.
 
 <div class="vl-example" data-name="bar_tooltip_filter"></div>
-
-```js
-{
-  "mark": {"type": "bar", "tooltip": true},
-  "encoding": {
-    "x": {"field": "category", "type": "nominal"},
-    "y": {"field": "plotValue", "type": "quantitative"},
-    "color": {"field": "nonZeroTooltip", "type": "quantitative"},
-    "tooltip": [
-      {"field": "category", "type": "nominal"},
-      {"field": "validTooltip", "type": "quantitative", "filter": {"valid": true}},
-      {"field": "nonZeroTooltip", "type": "quantitative", "filter": {"not": {"equal": 0}}}
-    ]
-  }
-}
-```
 
 ## Tooltip image
 

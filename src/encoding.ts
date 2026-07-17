@@ -84,8 +84,8 @@ import {
   StringValueDefWithCondition,
   TextDef,
   TimeDef,
-  TooltipFieldDef,
   title,
+  TooltipFieldDef,
   TypedFieldDef,
   vgField,
 } from './channeldef.js';

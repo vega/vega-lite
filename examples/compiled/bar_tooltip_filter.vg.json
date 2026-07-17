@@ -62,7 +62,7 @@
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"plotValue\"]) && isFinite(+datum[\"plotValue\"]) && isValid(datum[\"nonZeroTooltip\"]) && isFinite(+datum[\"nonZeroTooltip\"])"
+          "expr": "isValid(datum[\"plotValue\"]) && isFinite(+datum[\"plotValue\"])"
         }
       ]
     }
@@ -75,13 +75,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
+          "fill": {"scale": "color", "field": "nonZeroTooltip"},
           "tooltip": {
             "signal": "merge({\"category\": isValid(datum[\"category\"]) ? isArray(datum[\"category\"]) ? join(datum[\"category\"], '\\n') : datum[\"category\"] : \"\"+datum[\"category\"]}, (isValid(datum[\"validTooltip\"]) && isFinite(+datum[\"validTooltip\"])) ? {\"validTooltip\": format(datum[\"validTooltip\"], \"\")} : {}, (!(datum[\"nonZeroTooltip\"]===0)) ? {\"nonZeroTooltip\": format(datum[\"nonZeroTooltip\"], \"\")} : {})"
           },
-          "fill": {"scale": "color", "field": "nonZeroTooltip"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "slice(\"; category: \" + (isValid(datum[\"category\"]) ? isArray(datum[\"category\"]) ? join(datum[\"category\"], ' ') : datum[\"category\"] : \"\"+datum[\"category\"]) + \"; plotValue: \" + (format(datum[\"plotValue\"], \"\")) + \"; nonZeroTooltip: \" + (format(datum[\"nonZeroTooltip\"], \"\")) + ((isValid(datum[\"validTooltip\"]) && isFinite(+datum[\"validTooltip\"])) ? \"; validTooltip: \" + (format(datum[\"validTooltip\"], \"\")) : \"\"), 2)"
+            "signal": "slice(\"; category: \" + (isValid(datum[\"category\"]) ? isArray(datum[\"category\"]) ? join(datum[\"category\"], ' ') : datum[\"category\"] : \"\"+datum[\"category\"]) + \"; plotValue: \" + (format(datum[\"plotValue\"], \"\")) + \"; nonZeroTooltip: \" + (isValid(datum[\"nonZeroTooltip\"]) ? isArray(datum[\"nonZeroTooltip\"]) ? join(datum[\"nonZeroTooltip\"], ' ') : datum[\"nonZeroTooltip\"] : \"\"+datum[\"nonZeroTooltip\"]) + ((isValid(datum[\"validTooltip\"]) && isFinite(+datum[\"validTooltip\"])) ? \"; validTooltip: \" + (format(datum[\"validTooltip\"], \"\")) : \"\"), 2)"
           },
           "x": {"scale": "x", "field": "category"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
@@ -113,11 +113,9 @@
     },
     {
       "name": "color",
-      "type": "linear",
-      "domain": {"data": "data_0", "field": "nonZeroTooltip"},
-      "range": "ramp",
-      "interpolate": "hcl",
-      "zero": false
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "nonZeroTooltip", "sort": true},
+      "range": "category"
     }
   ],
   "axes": [
@@ -156,10 +154,6 @@
     }
   ],
   "legends": [
-    {
-      "fill": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "title": "nonZeroTooltip"
-    }
+    {"fill": "color", "symbolType": "square", "title": "nonZeroTooltip"}
   ]
 }

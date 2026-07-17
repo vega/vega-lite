@@ -4,8 +4,7 @@ import {VG_MARK_INDEX} from './../../../vega.schema.js';
 import {UnitModel} from './../../unit.js';
 import {wrapCondition} from './conditional.js';
 import {textRef} from './text.js';
-import {tooltipDataTuples} from './tooltip.js';
-import type {TooltipTuple} from './tooltip.js';
+import {tooltipDataTuples, TooltipTuple} from './tooltip.js';
 
 export function aria(model: UnitModel) {
   const {markDef, config} = model;

@@ -13,11 +13,11 @@
       {"category": "F", "plotValue": 6, "validTooltip": 6, "nonZeroTooltip": 1}
     ]
   },
-  "mark": {"type": "bar", "tooltip": true},
+  "mark": "bar",
   "encoding": {
     "x": {"field": "category", "type": "nominal"},
     "y": {"field": "plotValue", "type": "quantitative"},
-    "color": {"field": "nonZeroTooltip", "type": "quantitative"},
+    "color": {"field": "nonZeroTooltip", "type": "nominal"},
     "tooltip": [
       {"field": "category", "type": "nominal"},
       {"field": "validTooltip", "type": "quantitative", "filter": {"valid": true}},

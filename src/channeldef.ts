@@ -238,9 +238,11 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
   field?: F;
 
   /**
-   * Controls whether this field appears in tooltips generated from the encoding.
+   * Controls whether this field appears in tooltips and ARIA descriptions generated from the encoding (e.g., when the mark definition's `tooltip` property is `true`).
    *
    * __Default value:__ `true`
+   *
+   * __See also:__ [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html#encoding) documentation.
    */
   tooltip?: boolean;
 
@@ -665,7 +667,9 @@ export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
 export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
 export interface TooltipFieldDef<F extends Field> extends StringFieldDef<F> {
   /**
-   * A [predicate](https://vega.github.io/vega-lite/docs/predicate.html) for including this field in the generated tooltip. The predicate is tested against this field's value, so it does not need `field` or `timeUnit` properties. For example, `"filter": {"gt": 0}` includes the field only when its value is positive and `"filter": {"valid": true}` includes it only when it is not `null` and not `NaN`.
+   * A [predicate](https://vega.github.io/vega-lite/docs/predicate.html) for including this field in the generated tooltip and ARIA description. The predicate is tested against this field's value and must not include `field` or `timeUnit` properties. For example, `"filter": {"gt": 0}` includes the field only when its value is positive, and `"filter": {"valid": true}` includes it only when it is not `null` and not `NaN`.
+   *
+   * __See also:__ [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html#channel) documentation.
    */
   filter?: TooltipFieldFilter;
 }

@@ -23,6 +23,7 @@ import {
   TooltipFieldPredicate,
 } from '../../../predicate.js';
 import {StackProperties} from '../../../stack.js';
+import {normalizeTimeUnit} from '../../../timeunit.js';
 import {isDiscrete} from '../../../type.js';
 import {hasProperty, logicalExpr} from '../../../util.js';
 import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
@@ -129,10 +130,11 @@ export function tooltipDataTuples(
       }
     }
 
-    const test = tooltipFieldFilterExpression(fieldDef, channel, expr);
-    if (test === false) {
+    if (fieldDef.tooltip === false) {
       return;
     }
+
+    const test = tooltipFilterExpression(fieldDef, channel, expr);
 
     if (
       (isXorY(channel) || channel === THETA || channel === RADIUS) &&
@@ -176,22 +178,17 @@ export function tooltipDataTuples(
   return out;
 }
 
-function tooltipFieldFilterExpression(
+function tooltipFilterExpression(
   fieldDef: FilterableTooltipFieldDef,
   channel: Channel,
   expr: 'datum' | 'datum.datum',
-): string | false | undefined {
-  if (fieldDef.tooltip === false) {
-    // Omit field entirely
-    return false;
-  }
-
+): string | undefined {
   if (channel !== TOOLTIP || !hasProperty(fieldDef, 'filter')) {
     return undefined;
   }
 
   if (!fieldDef.field) {
-    log.warn(log.message.tooltipFilterRequiresField());
+    log.warn(log.message.TOOLTIP_FILTER_REQUIRES_FIELD);
     return undefined;
   }
 
@@ -232,8 +229,15 @@ function tooltipFieldPredicateExpression(
     return undefined;
   }
 
-  // Bind the predicate to the tooltip field so it is compiled with the field definition's aggregate, bin, and timeUnit.
-  const fieldPredicate = {...fieldDef, ...predicate, field: fieldDef.field};
+  // The predicate tests the mark's datum, where aggregate, bin, and time unit are already applied
+  // (the raw field may not even exist after aggregation), so resolve the datum field upfront and
+  // mark time units as binned so they are not recomputed from the raw field.
+  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit);
+  const fieldPredicate = {
+    ...predicate,
+    field: vgField(fieldDef),
+    ...(timeUnit ? {timeUnit: {...timeUnit, binned: true}} : {}),
+  };
 
   if (isFieldPredicate(fieldPredicate) || isFieldValidPredicate(fieldPredicate)) {
     return fieldFilterExpression(fieldPredicate, true, expr);

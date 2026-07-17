@@ -161,14 +161,6 @@ export function invalidTransformIgnored(transform: any) {
   return `Ignoring an invalid transform: ${stringify(transform)}.`;
 }
 
-export function invalidTooltipFilter(filter: any) {
-  return `Ignoring an invalid tooltip filter: ${stringify(filter)}.`;
-}
-
-export function tooltipFilterRequiresField() {
-  return 'Ignoring tooltip filter because it requires a field.';
-}
-
 export const NO_FIELDS_NEEDS_AS =
   'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the data from the secondary source.';
 
@@ -177,6 +169,12 @@ export const NO_FIELDS_NEEDS_AS =
 export function customFormatTypeNotAllowed(channel: ExtendedChannel) {
   return `Config.customFormatTypes is not true, thus custom format type and format for channel ${channel} are dropped.`;
 }
+
+export function invalidTooltipFilter(filter: any) {
+  return `Ignoring an invalid tooltip filter: ${stringify(filter)}.`;
+}
+
+export const TOOLTIP_FILTER_REQUIRES_FIELD = 'Ignoring tooltip filter because it requires a field.';
 
 export function projectionOverridden<ES extends ExprRef | SignalRef>(opt: {
   parentProjection: Projection<ES>;
