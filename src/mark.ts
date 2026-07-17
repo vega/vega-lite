@@ -355,12 +355,7 @@ export const defaultMarkConfig: MarkConfig<SignalRef> = {
 
 // TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
 export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
-  | MarkConfig<ES>
-  | AreaConfig<ES>
-  | BarConfig<ES>
-  | RectConfig<ES>
-  | LineConfig<ES>
-  | TickConfig<ES>;
+  MarkConfig<ES> | AreaConfig<ES> | BarConfig<ES> | RectConfig<ES> | LineConfig<ES> | TickConfig<ES>;
 
 export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Mark Config */
@@ -581,12 +576,11 @@ export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
   y2Offset?: number | ES;
 
   /**
-   * Controls automatic path grouping when `xOffset`/`yOffset` is used with path marks (`line`, `area`, `trail`).
+   * For path marks (`line`, `area`, `trail`) with an `xOffset`/`yOffset` field, whether each path is grouped by the corresponding position channel (`x` or `y`) so it stays within its own offset lane. Set to `false` or `null` to disable this grouping and let paths connect across the position channel, using only explicitly encoded grouping channels (`detail`, `color`, etc.).
    *
-   * - `"auto"` (default) adds grouping by the corresponding base channel (`x` or `y`) to keep paths confined within lanes.
-   * - `"none"` disables this automatic grouping so only explicitly encoded grouping channels (`detail`, `color`, etc.) are used.
+   * __Default value:__ `true`
    */
-  offsetGroup?: 'auto' | 'none';
+  offsetGroup?: boolean | null;
 
   /**
    * Offset for theta.

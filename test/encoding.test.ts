@@ -551,7 +551,7 @@ describe('encoding', () => {
       }
     });
 
-    it('should skip automatic main-channel grouping when offsetGroup is none', () => {
+    it('should skip automatic main-channel grouping when offsetGroup is false', () => {
       for (const mark of ['line', 'area', 'trail'] as const) {
         expect(
           pathGroupingFields(
@@ -562,10 +562,20 @@ describe('encoding', () => {
               yOffset: {field: 'b', type: 'quantitative'},
               detail: {field: 'd', type: 'nominal'},
             },
-            'none',
+            false,
           ),
         ).toEqual(['d']);
       }
+    });
+
+    it('should default to automatic main-channel grouping when offsetGroup is omitted', () => {
+      expect(
+        pathGroupingFields('line', {
+          x: {field: 'a', type: 'nominal'},
+          y: {field: 'c', type: 'nominal'},
+          yOffset: {field: 'b', type: 'quantitative'},
+        }),
+      ).toEqual(['c']);
     });
   });
 

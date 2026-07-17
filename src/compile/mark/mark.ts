@@ -39,7 +39,8 @@ const markCompiler: Record<Mark, MarkCompiler> = {
 
 export function parseMarkGroups(model: UnitModel): any[] {
   if (contains([LINE, AREA, TRAIL], model.mark)) {
-    const details = pathGroupingFields(model.mark, model.encoding, model.markDef.offsetGroup ?? 'auto');
+    const offsetGroup = model.markDef.offsetGroup !== false && model.markDef.offsetGroup !== null;
+    const details = pathGroupingFields(model.mark, model.encoding, offsetGroup);
     if (details.length > 0) {
       return getPathGroups(model, details);
     }
