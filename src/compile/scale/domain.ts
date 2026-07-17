@@ -214,6 +214,14 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }
 
+function mapDomainToSignals(
+  domain: (number | string | boolean | DateTime | ExprRef | SignalRef | number[])[],
+  type: Type,
+  timeUnit: TimeUnit,
+): SignalRef[] {
+  return domain.map((v) => ({signal: valueExpr(v, {timeUnit, type})}));
+}
+
 function convertDomainIfItIsDateTime(
   domain: (number | string | boolean | DateTime | ExprRef | SignalRef | number[])[],
   type: Type,
@@ -222,7 +230,7 @@ function convertDomainIfItIsDateTime(
   // explicit value
   const normalizedTimeUnit = normalizeTimeUnit(timeUnit)?.unit;
   if (type === 'temporal' || normalizedTimeUnit) {
-    return [domain.map((v) => ({signal: valueExpr(v, {timeUnit: normalizedTimeUnit, type})}))];
+    return [mapDomainToSignals(domain, type, normalizedTimeUnit)];
   }
 
   return [domain] as [number[]] | [string[]] | [boolean[]]; // Date time won't make sense
