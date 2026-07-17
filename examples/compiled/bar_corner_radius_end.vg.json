@@ -71,8 +71,34 @@
             "signal": "max(scale('y',datum[\"min_b_start\"]),scale('y',datum[\"max_b_start\"]),scale('y',datum[\"min_b_end\"]),scale('y',datum[\"max_b_end\"]))"
           },
           "clip": {"value": true},
-          "cornerRadiusTopLeft": {"value": 4},
-          "cornerRadiusTopRight": {"value": 4}
+          "cornerRadiusTopLeft": [
+            {
+              "test": "scale(\"y\", datum[\"max_b_end\"]) < scale(\"y\", datum[\"max_b_start\"])",
+              "value": 4
+            },
+            {"value": 0}
+          ],
+          "cornerRadiusTopRight": [
+            {
+              "test": "scale(\"y\", datum[\"max_b_end\"]) < scale(\"y\", datum[\"max_b_start\"])",
+              "value": 4
+            },
+            {"value": 0}
+          ],
+          "cornerRadiusBottomLeft": [
+            {
+              "test": "scale(\"y\", datum[\"min_b_end\"]) > scale(\"y\", datum[\"min_b_start\"])",
+              "value": 4
+            },
+            {"value": 0}
+          ],
+          "cornerRadiusBottomRight": [
+            {
+              "test": "scale(\"y\", datum[\"min_b_end\"]) > scale(\"y\", datum[\"min_b_start\"])",
+              "value": 4
+            },
+            {"value": 0}
+          ]
         }
       },
       "marks": [

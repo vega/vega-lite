@@ -3141,7 +3141,7 @@
               "$ref": "#/definitions/ExprRef"
             }
           ],
-          "description": "- For vertical bars, top-left and top-right corner radius.\n\n- For horizontal bars, top-right and bottom-right corner radius."
+          "description": "Corner radius of the value-end side."
         },
         "cornerRadiusTopLeft": {
           "anyOf": [
@@ -16812,7 +16812,7 @@
               "$ref": "#/definitions/ExprRef"
             }
           ],
-          "description": "- For vertical bars, top-left and top-right corner radius.\n\n- For horizontal bars, top-right and bottom-right corner radius."
+          "description": "Corner radius of the value-end side."
         },
         "cornerRadiusTopLeft": {
           "anyOf": [

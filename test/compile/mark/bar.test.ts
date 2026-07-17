@@ -203,6 +203,121 @@ describe('Mark: Bar', () => {
     });
   });
 
+  it('should round the left or right end of horizontal bars', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'bar', cornerRadiusEnd: 5},
+      encoding: {
+        y: {field: 'Origin', type: 'nominal'},
+        x: {field: 'Acceleration', type: 'quantitative', stack: null},
+      },
+    });
+    const props = bar.encodeEntry(model);
+    const roundRight = [{test: 'scale("x", datum["Acceleration"]) > scale("x", 0)', value: 5}, {value: 0}];
+    const roundLeft = [{test: 'scale("x", datum["Acceleration"]) < scale("x", 0)', value: 5}, {value: 0}];
+
+    expect(props).toMatchObject({
+      cornerRadiusTopRight: roundRight,
+      cornerRadiusBottomRight: roundRight,
+      cornerRadiusTopLeft: roundLeft,
+      cornerRadiusBottomLeft: roundLeft,
+    });
+  });
+
+  it('should round the top or bottom end of vertical bars', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'bar', cornerRadiusEnd: 5},
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        y: {field: 'Acceleration', type: 'quantitative', stack: null},
+      },
+    });
+    const props = bar.encodeEntry(model);
+    const roundTop = [{test: 'scale("y", datum["Acceleration"]) < scale("y", 0)', value: 5}, {value: 0}];
+    const roundBottom = [{test: 'scale("y", datum["Acceleration"]) > scale("y", 0)', value: 5}, {value: 0}];
+
+    expect(props).toMatchObject({
+      cornerRadiusTopLeft: roundTop,
+      cornerRadiusTopRight: roundTop,
+      cornerRadiusBottomLeft: roundBottom,
+      cornerRadiusBottomRight: roundBottom,
+    });
+  });
+
+  it('should fall back to explicit corner and generic cornerRadius properties at the non-value end', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'bar', cornerRadiusEnd: 5, cornerRadiusBottomLeft: 8, cornerRadius: 2},
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        y: {field: 'Acceleration', type: 'quantitative', stack: null},
+      },
+    });
+    const props = bar.encodeEntry(model);
+    const topEnd = 'scale("y", datum["Acceleration"]) < scale("y", 0)';
+    const bottomEnd = 'scale("y", datum["Acceleration"]) > scale("y", 0)';
+
+    expect(props).toMatchObject({
+      // cornerRadiusEnd overrides the value end; other corners keep their own radius.
+      cornerRadiusTopLeft: [{test: topEnd, value: 5}, {value: 2}],
+      cornerRadiusTopRight: [{test: topEnd, value: 5}, {value: 2}],
+      cornerRadiusBottomLeft: [{test: bottomEnd, value: 5}, {value: 8}],
+      cornerRadiusBottomRight: [{test: bottomEnd, value: 5}, {value: 2}],
+    });
+  });
+
+  it('should not let a config cornerRadiusEnd override mark corner radii', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'bar', cornerRadius: 2, cornerRadiusTopLeft: 8},
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        y: {field: 'Acceleration', type: 'quantitative', stack: null},
+      },
+      config: {bar: {cornerRadiusEnd: 5}},
+    });
+    const props = bar.encodeEntry(model);
+
+    // Mark-level properties beat the config-level cornerRadiusEnd.
+    expect(props.cornerRadiusTopLeft).toEqual({value: 8});
+    expect(props.cornerRadius).toEqual({value: 2});
+    expect(props.cornerRadiusBottomLeft).toBeUndefined();
+  });
+
+  it('should apply mark cornerRadiusEnd to all corners for ranged bars', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/population.json'},
+      mark: {type: 'bar', cornerRadiusEnd: 5},
+      encoding: {
+        y: {field: 'age', type: 'ordinal'},
+        x: {field: 'people', aggregate: 'q1', type: 'quantitative'},
+        x2: {field: 'people', aggregate: 'q3'},
+      },
+    });
+
+    const props = bar.encodeEntry(model);
+    expect(props.cornerRadius).toEqual({value: 5});
+    expect(props.cornerRadiusTopRight).toBeUndefined();
+    expect(props.cornerRadiusBottomRight).toBeUndefined();
+  });
+
+  it('should not let a config cornerRadiusEnd override the mark cornerRadius of ranged bars', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/population.json'},
+      mark: {type: 'bar', cornerRadius: 2},
+      encoding: {
+        y: {field: 'age', type: 'ordinal'},
+        x: {field: 'people', aggregate: 'q1', type: 'quantitative'},
+        x2: {field: 'people', aggregate: 'q3'},
+      },
+      config: {bar: {cornerRadiusEnd: 5}},
+    });
+
+    const props = bar.encodeEntry(model);
+    expect(props.cornerRadius).toEqual({value: 2});
+  });
+
   describe('simple horizontal with height band', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
@@ -1024,6 +1139,24 @@ describe('Mark: Bar', () => {
       expect(props.y).toEqual({scale: 'y', field: 'age'});
       expect(props.x).toEqual({scale: 'x', field: 'q1_people'});
       expect(props.x2).toEqual({scale: 'x', field: 'q3_people'});
+    });
+
+    it('should apply config cornerRadiusEnd to all corners for ranged bars', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {url: 'data/population.json'},
+        mark: 'bar',
+        encoding: {
+          y: {field: 'age', type: 'ordinal'},
+          x: {field: 'people', aggregate: 'q1', type: 'quantitative'},
+          x2: {field: 'people', aggregate: 'q3'},
+        },
+        config: {bar: {cornerRadiusEnd: 5}},
+      });
+
+      const props = bar.encodeEntry(model);
+      expect(props.cornerRadius).toEqual({value: 5});
+      expect(props.cornerRadiusTopRight).toBeUndefined();
+      expect(props.cornerRadiusBottomRight).toBeUndefined();
     });
   });
 

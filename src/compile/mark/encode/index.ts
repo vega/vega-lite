@@ -1,6 +1,7 @@
 export {aria} from './aria.js';
 export {baseEncodeEntry} from './base.js';
 export {color} from './color.js';
+export {cornerRadiusEnd, cornerRadiusEndForStackedBar} from './corner-radius.js';
 export {defined, valueIfDefined} from './defined.js';
 export {nonPosition} from './nonposition.js';
 export {pointPosition} from './position-point.js';
