@@ -26,19 +26,6 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
     log.warn(log.message.orientOverridden(markDef.orient, specifiedOrient));
   }
 
-  if (markDef.type === 'bar' && markDef.orient) {
-    const cornerRadiusEnd = getMarkPropOrConfig('cornerRadiusEnd', markDef, config);
-    if (
-      cornerRadiusEnd !== undefined &&
-      ((markDef.orient === 'horizontal' && encoding.x2) || (markDef.orient === 'vertical' && encoding.y2))
-    ) {
-      markDef.cornerRadius = cornerRadiusEnd;
-      if (markDef.cornerRadiusEnd !== undefined) {
-        delete markDef.cornerRadiusEnd; // no need to keep the original cap cornerRadius
-      }
-    }
-  }
-
   // set opacity and filled if not specified in mark config
   const specifiedOpacity = getMarkPropOrConfig('opacity', markDef, config);
   const specifiedFillOpacity = getMarkPropOrConfig('fillOpacity', markDef, config);

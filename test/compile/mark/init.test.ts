@@ -5,14 +5,14 @@ import {parseUnitModelWithScaleAndLayoutSize, without} from '../../util.js';
 
 describe('compile/mark/init', () => {
   describe('initMarkDef', () => {
-    it('applies cornerRadiusEnd to all cornerRadius for ranged bars', () => {
+    it('preserves cornerRadiusEnd for ranged bars', () => {
       expect(
         initMarkdef(
           {type: 'bar', cornerRadiusEnd: 5},
           {x: {field: 'x', type: 'quantitative'}, x2: {field: 'x2'}},
           defaultConfig,
         ),
-      ).toMatchObject({cornerRadius: 5});
+      ).toMatchObject({cornerRadiusEnd: 5});
 
       expect(
         initMarkdef(
@@ -20,7 +20,7 @@ describe('compile/mark/init', () => {
           {y: {field: 'x', type: 'quantitative'}, y2: {field: 'x2'}},
           defaultConfig,
         ),
-      ).toMatchObject({cornerRadius: 5});
+      ).toMatchObject({cornerRadiusEnd: 5});
     });
 
     it('preserves cornerRadiusEnd for vertical bars', () => {
