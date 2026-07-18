@@ -73,14 +73,14 @@
                 "scale": "x",
                 "field": "Species",
                 "offset": {
-                  "signal": "scale(\"xOffset\", datum[\"Sex\"]) + (scale(\"size\", datum[\"density\"])) * (0.5)"
+                  "signal": "scale(\"xOffset\", datum[\"Sex\"]) + 0.5 * (scale(\"size\", datum[\"density\"]))"
                 }
               },
               "x2": {
                 "scale": "x",
                 "field": "Species",
                 "offset": {
-                  "signal": "scale(\"xOffset\", datum[\"Sex\"]) + (scale(\"size\", datum[\"density\"])) * (-0.5)"
+                  "signal": "scale(\"xOffset\", datum[\"Sex\"]) + -0.5 * (scale(\"size\", datum[\"density\"]))"
                 }
               },
               "defined": {
