@@ -169,10 +169,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
 
-  if (
-    stackedFieldDef.stack === undefined &&
-    isAreaSizeThickness(mark, encoding)
-  ) {
+  if (stackedFieldDef.stack === undefined && isAreaSizeThickness(mark, encoding)) {
     return null;
   }
 

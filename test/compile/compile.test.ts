@@ -391,6 +391,22 @@ describe('compile/compile', () => {
     expect(update.y.offset.signal).not.toContain("domain('yOffset').length");
   });
 
+  it('should center area ribbons within band offset groups', () => {
+    const {spec} = compile({
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {field: 'subgroup', type: 'nominal', scale: {type: 'band'}},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y.offset.signal).toContain('bandwidth("yOffset") * (0.5)');
+    expect(spec.scales.find((scale) => scale.name === 'size').range).toEqual([0, {signal: "bandwidth('yOffset')"}]);
+  });
+
   it('should escape field names when composing ribbon and positional offsets', () => {
     const {spec} = compile({
       data: {values: [{value: 1, group: 'A', subgroup: 'B', "density'quoted": 0.5}]},

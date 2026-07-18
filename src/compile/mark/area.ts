@@ -190,6 +190,10 @@ function valueRefExpr(v: VgValueRef): string {
     base = '0';
   }
 
+  if ('band' in v && v.band !== undefined && 'scale' in v && v.scale) {
+    const band = typeof v.band === 'object' ? valueRefExpr(v.band) : stringValue(v.band);
+    base = `(${base}) + bandwidth(${stringValue(v.scale)}) * (${band})`;
+  }
   if ('mult' in v && v.mult !== undefined) {
     base = `(${base}) * (${v.mult})`;
   }
