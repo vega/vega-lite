@@ -1,7 +1,15 @@
 import {BIN_RANGE_DELIMITER} from '../../../../src/compile/common.js';
 import {tooltip, tooltipRefForEncoding} from '../../../../src/compile/mark/encode/index.js';
 import {defaultConfig} from '../../../../src/config.js';
+import * as log from '../../../../src/log/index.js';
+import {TooltipFieldFilter} from '../../../../src/predicate.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
+
+type TooltipFilterCase = {field: string; filter: TooltipFieldFilter; test: string};
+
+function filteredTooltipSignal(field: string, test: string) {
+  return `(${test}) ? {"${field}": format(datum["${field}"], "")} : null`;
+}
 
 describe('compile/mark/encode/tooltip', () => {
   describe('tooltip', () => {
@@ -35,6 +43,39 @@ describe('compile/mark/encode/tooltip', () => {
       });
     });
 
+    it('omits encoding fields with tooltip false from generated tooltip objects', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: true},
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          detail: {field: '__internal_key', type: 'nominal', tooltip: false},
+        },
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({
+        signal: '{"Horsepower": format(datum["Horsepower"], "")}',
+      });
+    });
+
+    it('filters explicit tooltip fields by their unformatted values', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'point',
+        encoding: {
+          tooltip: [
+            {field: 'Date', type: 'nominal'},
+            {field: 'type1', type: 'quantitative', filter: {not: {equal: 0}}},
+            {field: 'type2', type: 'quantitative', filter: {valid: true}},
+            {field: 'type3', type: 'quantitative', filter: {gt: 0}},
+          ],
+        },
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({
+        signal:
+          'merge({"Date": isValid(datum["Date"]) ? isArray(datum["Date"]) ? join(datum["Date"], \'\\n\') : datum["Date"] : ""+datum["Date"]}, (!(datum["type1"]===0)) ? {"type1": format(datum["type1"], "")} : {}, (isValid(datum["type2"]) && isFinite(+datum["type2"])) ? {"type2": format(datum["type2"], "")} : {}, (datum["type3"]>0) ? {"type3": format(datum["type3"], "")} : {})',
+      });
+    });
+
     it('generates no tooltip if encoding.tooltip === null', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'point',
@@ -44,8 +85,20 @@ describe('compile/mark/encode/tooltip', () => {
           tooltip: null,
         },
       });
+      model.encoding.tooltip = null;
       const props = tooltip(model);
       expect(props.tooltip).toBeUndefined();
+    });
+
+    it('uses mark tooltip strings as static tooltip values', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: 'static tooltip'},
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+        },
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toEqual({value: 'static tooltip'});
     });
 
     it('generates tooltip object signal for all data if specified', () => {
@@ -146,6 +199,20 @@ describe('compile/mark/encode/tooltip', () => {
       });
     });
 
+    it('filters generated tooltip objects with reactiveGeom references', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'circle',
+        },
+        encoding: {
+          tooltip: [{field: 'Foobar', type: 'quantitative', filter: {not: {equal: 0}}}],
+        },
+      });
+      expect(tooltip(model, {reactiveGeom: true}).tooltip).toEqual({
+        signal: '(!(datum.datum["Foobar"]===0)) ? {"Foobar": format(datum.datum["Foobar"], "")} : null',
+      });
+    });
+
     it('priorizes tooltip field def', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: {content: 'data'}},
@@ -219,6 +286,23 @@ describe('compile/mark/encode/tooltip', () => {
       });
     });
 
+    it('generates tooltip via textRef for discrete fields with timeUnit', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'bar', tooltip: true},
+        encoding: {
+          x: {field: 'date', timeUnit: 'yearmonth', type: 'nominal'},
+          y: {aggregate: 'count', type: 'quantitative'},
+        },
+      });
+      const props = tooltip(model);
+      expect(props.tooltip).toBeDefined();
+      const sig = (props.tooltip as {signal: string}).signal;
+      // Should use the transformed field name (yearmonth_date) via textRef,
+      // not the raw field name (date) from the shortcut path
+      expect(sig).not.toContain('datum["date"]');
+      expect(sig).toContain('yearmonth_date');
+    });
+
     it('generates correct keys and values for channels with title with quotes', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: true},
@@ -235,6 +319,22 @@ describe('compile/mark/encode/tooltip', () => {
   });
 
   describe('tooltipForEncoding', () => {
+    it('returns no tooltip when all encoding fields hide their tooltip', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            x: {
+              field: 'Horsepower',
+              type: 'quantitative',
+              tooltip: false,
+            },
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toBeUndefined();
+    });
+
     it('returns correct tooltip signal for binned field', () => {
       expect(
         tooltipRefForEncoding(
@@ -404,5 +504,266 @@ describe('compile/mark/encode/tooltip', () => {
         signal: `{"IMDB_Rating (binned)": !isValid(datum["bin_IMDB_rating"]) || !isFinite(+datum["bin_IMDB_rating"]) ? "null" : format(datum["bin_IMDB_rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_IMDB_rating_end"], "")}`,
       });
     });
+
+    it('does not include the secondary binned field when the primary binned field hides its tooltip', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            x: {
+              bin: 'binned',
+              field: 'bin_IMDB_rating',
+              type: 'quantitative',
+              tooltip: false,
+            },
+            x2: {
+              field: 'bin_IMDB_rating_end',
+            },
+            y: {
+              field: 'count',
+              type: 'quantitative',
+            },
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal: '{"count": format(datum["count"], "")}',
+      });
+    });
+
+    it('returns null when all tooltip fields are filtered out at runtime', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [
+              {field: 'type1', type: 'quantitative', filter: {not: {equal: 0}}},
+              {field: 'type2', type: 'quantitative', filter: {valid: true}},
+            ],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal:
+          '((!(datum["type1"]===0)) || (isValid(datum["type2"]) && isFinite(+datum["type2"]))) ? merge((!(datum["type1"]===0)) ? {"type1": format(datum["type1"], "")} : {}, (isValid(datum["type2"]) && isFinite(+datum["type2"])) ? {"type2": format(datum["type2"], "")} : {}) : null',
+      });
+    });
+
+    it('filters tooltip fields with comparison operators', () => {
+      const cases: TooltipFilterCase[] = [
+        {field: 'eq', filter: {equal: 10}, test: 'datum["eq"]===10'},
+        {field: 'lt', filter: {lt: 10}, test: 'datum["lt"]<10'},
+        {field: 'lte', filter: {lte: 10}, test: 'datum["lte"]<=10'},
+        {field: 'gte', filter: {gte: 10}, test: 'datum["gte"]>=10'},
+      ];
+
+      for (const {field, filter, test} of cases) {
+        expect(
+          tooltipRefForEncoding(
+            {
+              tooltip: [{field, type: 'quantitative', filter}],
+            },
+            null,
+            defaultConfig,
+          ),
+        ).toEqual({
+          signal: filteredTooltipSignal(field, test),
+        });
+      }
+    });
+
+    it('filters tooltip fields against null values', () => {
+      const cases: TooltipFilterCase[] = [
+        {field: 'missing', filter: {equal: null}, test: 'datum["missing"]===null'},
+        {field: 'present', filter: {not: {equal: null}}, test: '!(datum["present"]===null)'},
+      ];
+
+      for (const {field, filter, test} of cases) {
+        expect(
+          tooltipRefForEncoding(
+            {
+              tooltip: [{field, type: 'quantitative', filter}],
+            },
+            null,
+            defaultConfig,
+          ),
+        ).toEqual({
+          signal: filteredTooltipSignal(field, test),
+        });
+      }
+    });
+
+    it('filters tooltip fields with composed predicates', () => {
+      const cases: TooltipFilterCase[] = [
+        {field: 'between', filter: {and: [{gt: 0}, {lt: 10}]}, test: '(datum["between"]>0) && (datum["between"]<10)'},
+        {
+          field: 'oneOrTwo',
+          filter: {or: [{equal: 1}, {equal: 2}]},
+          test: '(datum["oneOrTwo"]===1) || (datum["oneOrTwo"]===2)',
+        },
+      ];
+
+      for (const {field, filter, test} of cases) {
+        expect(
+          tooltipRefForEncoding(
+            {
+              tooltip: [{field, type: 'quantitative', filter}],
+            },
+            null,
+            defaultConfig,
+          ),
+        ).toEqual({
+          signal: filteredTooltipSignal(field, test),
+        });
+      }
+    });
+
+    it('filters tooltip fields with range, oneOf, and invalid-value predicates', () => {
+      const cases: TooltipFilterCase[] = [
+        {field: 'ranged', filter: {range: [1, 10]}, test: 'inrange(datum["ranged"], [1, 10])'},
+        {field: 'bucket', filter: {oneOf: ['A', 'B']}, test: 'indexof(["A","B"], datum["bucket"]) !== -1'},
+        {field: 'invalid', filter: {valid: false}, test: '!isValid(datum["invalid"]) || !isFinite(+datum["invalid"])'},
+      ];
+
+      for (const {field, filter, test} of cases) {
+        expect(
+          tooltipRefForEncoding(
+            {
+              tooltip: [{field, type: 'quantitative', filter}],
+            },
+            null,
+            defaultConfig,
+          ),
+        ).toEqual({
+          signal: filteredTooltipSignal(field, test),
+        });
+      }
+    });
+
+    it('filters aggregated tooltip fields against the aggregated datum field', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [{aggregate: 'mean', field: 'agg', type: 'quantitative', filter: {gt: 10}}],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal: '(datum["mean_agg"]>10) ? {"Mean of agg": format(datum["mean_agg"], "")} : null',
+      });
+    });
+
+    it('filters binned tooltip fields against the bin start field', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [{bin: true, field: 'binval', type: 'quantitative', filter: {lt: 5}}],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal: `(datum["bin_maxbins_10_binval"]<5) ? {"binval (binned)": !isValid(datum["bin_maxbins_10_binval"]) || !isFinite(+datum["bin_maxbins_10_binval"]) ? "null" : format(datum["bin_maxbins_10_binval"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_binval_end"], "")} : null`,
+      });
+    });
+
+    it('filters tooltip fields with a timeUnit against the time unit datum field', () => {
+      // The time unit field is tested directly (as if binned) because the raw field may not exist in the datum, e.g. after aggregation.
+      const ref = tooltipRefForEncoding(
+        {
+          tooltip: [{field: 'date', timeUnit: 'month', type: 'ordinal', filter: {equal: {month: 'jan'}}}],
+        },
+        null,
+        defaultConfig,
+      );
+      expect(ref.signal).toContain(
+        '(time(datum["month_date"])===time(datetime(2012, 0, 1, 0, 0, 0, 0))) ? {"date (month)": ',
+      );
+      expect(ref.signal).not.toContain('datum["date"]');
+    });
+
+    it('omits a tooltip array entry with tooltip false even when it has a filter', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [
+              {field: 'shown', type: 'quantitative'},
+              {field: 'hidden', type: 'quantitative', tooltip: false, filter: {gt: 0}},
+            ],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({signal: '{"shown": format(datum["shown"], "")}'});
+    });
+
+    it(
+      'ignores unsupported tooltip filters with warnings',
+      log.wrap((localLogger) => {
+        const unsupportedFilter = 'missing' as any;
+        const unsupportedOperatorFilter = {operator: '===', value: 0} as any;
+        const emptyAndFilter = {and: []} as any;
+        const emptyOrFilter = {or: []} as any;
+
+        expect(
+          tooltipRefForEncoding(
+            {
+              tooltip: [
+                {field: 'unsupported', type: 'quantitative', filter: unsupportedFilter},
+                {field: 'operator', type: 'quantitative', filter: unsupportedOperatorFilter},
+                {field: 'emptyAnd', type: 'quantitative', filter: emptyAndFilter},
+                {field: 'emptyOr', type: 'quantitative', filter: emptyOrFilter},
+              ],
+            },
+            null,
+            defaultConfig,
+          ),
+        ).toEqual({
+          signal:
+            '{"unsupported": format(datum["unsupported"], ""), "operator": format(datum["operator"], ""), "emptyAnd": format(datum["emptyAnd"], ""), "emptyOr": format(datum["emptyOr"], "")}',
+        });
+        expect(localLogger.warns).toEqual([
+          'Ignoring an invalid tooltip filter: "missing".',
+          'Ignoring an invalid tooltip filter: {"operator":"===","value":0}.',
+          'Ignoring an invalid tooltip filter: {"and":[]}.',
+          'Ignoring an invalid tooltip filter: {"or":[]}.',
+        ]);
+      }),
+    );
+
+    it('filters count aggregate fields against the count datum field', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            tooltip: [{aggregate: 'count', type: 'quantitative', filter: {gt: 100}}],
+          },
+          null,
+          defaultConfig,
+        ),
+      ).toEqual({
+        signal: '(datum["__count"]>100) ? {"Count of Records": format(datum["__count"], "")} : null',
+      });
+    });
+
+    it(
+      'ignores tooltip filters on argmax fields with a warning',
+      log.wrap((localLogger) => {
+        expect(
+          tooltipRefForEncoding(
+            {
+              tooltip: [{aggregate: {argmax: 'y'}, field: 'x', type: 'quantitative', filter: {gt: 0}}],
+            },
+            null,
+            defaultConfig,
+          ),
+        ).toEqual({
+          signal: '{"x for max y": format(datum["argmax_y"]["x"], "")}',
+        });
+        expect(localLogger.warns).toEqual([
+          'Ignoring tooltip filter because it requires a field (argmin and argmax fields are not supported).',
+        ]);
+      }),
+    );
   });
 });

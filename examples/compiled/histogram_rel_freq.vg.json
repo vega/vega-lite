@@ -66,10 +66,10 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Horsepower\": !isValid(datum[\"bin_Horsepwoer\"]) || !isFinite(+datum[\"bin_Horsepwoer\"]) ? \"null\" : format(datum[\"bin_Horsepwoer\"], \"\") + \" – \" + format(datum[\"bin_Horsepwoer_end\"], \"\"), \"Relative Frequency\": format(datum[\"PercentOfTotal\"], \".1~%\")}"
           },
-          "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
             "signal": "\"Horsepower: \" + (!isValid(datum[\"bin_Horsepwoer\"]) || !isFinite(+datum[\"bin_Horsepwoer\"]) ? \"null\" : format(datum[\"bin_Horsepwoer\"], \"\") + \" – \" + format(datum[\"bin_Horsepwoer_end\"], \"\")) + \"; Relative Frequency: \" + (format(datum[\"PercentOfTotal\"], \".1~%\"))"

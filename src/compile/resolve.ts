@@ -1,4 +1,4 @@
-import {isXorY, ScaleChannel} from '../channel.js';
+import {isPolarPositionChannel, isXorY, isXorYOffset, ScaleChannel} from '../channel.js';
 import * as log from '../log/index.js';
 import {Resolve, ResolveMode} from '../resolve.js';
 import {isConcatModel, isFacetModel, isLayerModel, Model} from './model.js';
@@ -9,7 +9,7 @@ export function defaultScaleResolve(channel: ScaleChannel, model: Model): Resolv
   } else if (isLayerModel(model)) {
     return 'shared';
   } else if (isConcatModel(model)) {
-    return isXorY(channel) || channel === 'theta' || channel === 'radius' ? 'independent' : 'shared';
+    return isXorY(channel) || isXorYOffset(channel) || isPolarPositionChannel(channel) ? 'independent' : 'shared';
   }
   /* istanbul ignore next: should never reach here. */
   throw new Error('invalid model type for resolve');

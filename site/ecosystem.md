@@ -115,6 +115,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [PyGWalker](https://github.com/Kanaries/pygwalker) A python library that turns your data into an interactive visual exploration app with one line of code.
 - [GWalkR](https://github.com/Kanaries/GWalkR) An R library that turns your dataframe into an interactive visual exploration app in RStudio.
 - [graphic-walker](https://github.com/Kanaries/graphic-walker), an open-source alternative to Tableau, is a versatile visualization tool for data exploration and no-code Vega-Lite editing, that can be easily embedded as a component in web apps.
+- [KoliStat](https://kolistat.com), a browser-native suite of clinical and tabular data analysis tools whose the-stats-duck DuckDB extension compiles a plot grammar to Vega-Lite.
 
 ## Tools for Embedding Vega-Lite Visualizations
 

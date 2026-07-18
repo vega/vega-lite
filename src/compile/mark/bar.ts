@@ -5,7 +5,7 @@ import * as encode from './encode/index.js';
 export const bar: MarkCompiler = {
   vgMark: 'rect',
   encodeEntry: (model: UnitModel) => {
-    return {
+    const encodeEntry = {
       ...encode.baseEncodeEntry(model, {
         align: 'ignore',
         baseline: 'ignore',
@@ -16,6 +16,11 @@ export const bar: MarkCompiler = {
       }),
       ...encode.rectPosition(model, 'x'),
       ...encode.rectPosition(model, 'y'),
+    };
+
+    return {
+      ...encodeEntry,
+      ...encode.cornerRadiusEnd(model, encodeEntry),
     };
   },
 };

@@ -80,12 +80,12 @@ import {
   PositionDef,
   SecondaryFieldDef,
   ShapeDef,
-  StringFieldDef,
   StringFieldDefWithCondition,
   StringValueDefWithCondition,
   TextDef,
   TimeDef,
   title,
+  TooltipFieldDef,
   TypedFieldDef,
   vgField,
 } from './channeldef.js';
@@ -303,7 +303,7 @@ export interface Encoding<F extends Field> {
    *
    * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
-  tooltip?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[] | null;
+  tooltip?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | TooltipFieldDef<F>[] | null;
 
   /**
    * A URL to load upon mouse click.

@@ -3,14 +3,18 @@ name: Check
 on:
   workflow_dispatch:
   push:
+  pull_request:
 
 jobs:
   check:
     name: Format, Schema, and Examples
     runs-on: ubuntu-latest
+    # Internal branches are handled by the push event; only run for pull requests from forks.
+    if: >-
+      github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           token: ${{ secrets.GH_PAT || github.token }}
           ref: ${{ github.ref }}

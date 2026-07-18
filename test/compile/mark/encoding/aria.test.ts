@@ -103,6 +103,29 @@ describe('compile/mark/encoding/aria', () => {
     });
   });
 
+  it('should support description encoding', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        description: {
+          value: 'An encoded description',
+        },
+      },
+      data: {values: []},
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      ariaRoleDescription: {
+        value: 'bar',
+      },
+      description: {
+        value: 'An encoded description',
+      },
+    });
+  });
+
   it('should support custom ariaRoleDescription', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: {
@@ -127,6 +150,67 @@ describe('compile/mark/encoding/aria', () => {
       description: {
         signal:
           '"category: " + (isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], \' \') : datum["category"] : ""+datum["category"])',
+      },
+    });
+  });
+
+  it('omits internal/private fields from the generated description', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        x: {
+          field: 'category',
+          type: 'ordinal',
+        },
+        detail: {
+          field: '__internal_key',
+          type: 'nominal',
+        },
+      },
+      data: {values: []},
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      description: {
+        signal:
+          '"category: " + (isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], \' \') : datum["category"] : ""+datum["category"])',
+      },
+      ariaRoleDescription: {
+        value: 'bar',
+      },
+    });
+  });
+
+  it('omits a filtered tooltip field from the generated description when its predicate fails', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        tooltip: [
+          {
+            field: 'Date',
+            type: 'nominal',
+          },
+          {
+            field: 'type2',
+            type: 'quantitative',
+            filter: {valid: true},
+          },
+        ],
+      },
+      data: {values: []},
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      description: {
+        signal:
+          'slice("; Date: " + (isValid(datum["Date"]) ? isArray(datum["Date"]) ? join(datum["Date"], \' \') : datum["Date"] : ""+datum["Date"]) + ((isValid(datum["type2"]) && isFinite(+datum["type2"])) ? "; type2: " + (format(datum["type2"], "")) : ""), 2)',
+      },
+      ariaRoleDescription: {
+        value: 'bar',
       },
     });
   });

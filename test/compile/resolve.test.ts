@@ -10,6 +10,8 @@ describe('compile/resolve', () => {
       });
       expect(defaultScaleResolve('x', model)).toBe('shared');
       expect(defaultScaleResolve('y', model)).toBe('shared');
+      expect(defaultScaleResolve('xOffset', model)).toBe('shared');
+      expect(defaultScaleResolve('yOffset', model)).toBe('shared');
       expect(defaultScaleResolve('color', model)).toBe('shared');
       expect(defaultScaleResolve('theta', model)).toBe('shared');
       expect(defaultScaleResolve('radius', model)).toBe('shared');
@@ -24,6 +26,8 @@ describe('compile/resolve', () => {
       });
       expect(defaultScaleResolve('x', model)).toBe('shared');
       expect(defaultScaleResolve('y', model)).toBe('shared');
+      expect(defaultScaleResolve('xOffset', model)).toBe('shared');
+      expect(defaultScaleResolve('yOffset', model)).toBe('shared');
       expect(defaultScaleResolve('color', model)).toBe('shared');
       expect(defaultScaleResolve('radius', model)).toBe('shared');
     });
@@ -38,12 +42,14 @@ describe('compile/resolve', () => {
       expect(defaultScaleResolve('theta', model)).toBe('independent');
     });
 
-    it('separates x, y, theta, and radius scales for concat model by default.', () => {
+    it('separates x, y, xOffset, yOffset, theta, and radius scales for concat model by default.', () => {
       const model = parseConcatModel({
         hconcat: [],
       });
       expect(defaultScaleResolve('x', model)).toBe('independent');
       expect(defaultScaleResolve('y', model)).toBe('independent');
+      expect(defaultScaleResolve('xOffset', model)).toBe('independent');
+      expect(defaultScaleResolve('yOffset', model)).toBe('independent');
       expect(defaultScaleResolve('theta', model)).toBe('independent');
       expect(defaultScaleResolve('radius', model)).toBe('independent');
     });
@@ -55,7 +61,7 @@ describe('compile/resolve', () => {
       expect(defaultScaleResolve('color', model)).toBe('shared');
     });
 
-    it('separates x, y, theta, and radius scales for repeat model by default.', () => {
+    it('separates x, y, xOffset, yOffset, theta, and radius scales for repeat model by default.', () => {
       const model = parseModel({
         repeat: {
           row: ['a', 'b'],
@@ -70,6 +76,8 @@ describe('compile/resolve', () => {
       });
       expect(defaultScaleResolve('x', model)).toBe('independent');
       expect(defaultScaleResolve('y', model)).toBe('independent');
+      expect(defaultScaleResolve('xOffset', model)).toBe('independent');
+      expect(defaultScaleResolve('yOffset', model)).toBe('independent');
       expect(defaultScaleResolve('theta', model)).toBe('independent');
       expect(defaultScaleResolve('radius', model)).toBe('independent');
     });
