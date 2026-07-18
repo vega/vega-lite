@@ -283,6 +283,21 @@ describe('compile/compile', () => {
     expect(point.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
   });
 
+  it('should include zero in the offset scale of a ranged bar but not a jittered point', () => {
+    const encoding = {
+      x: {field: 'cat', type: 'nominal'},
+      y: {field: 'g', type: 'nominal'},
+      yOffset: {field: 'v', type: 'quantitative'},
+    } as const;
+    const data = {values: [{cat: 'A', v: 10, g: 'x'}]};
+
+    const {spec: barSpec} = compile({data, mark: 'bar', encoding});
+    expect((barSpec.scales.find((s: any) => s.name === 'yOffset') as any).zero).toBe(true);
+
+    const {spec: pointSpec} = compile({data, mark: 'point', encoding});
+    expect((pointSpec.scales.find((s: any) => s.name === 'yOffset') as any).zero).toBe(false);
+  });
+
   it('should group line paths by an explicit detail field when yOffset is aggregated', () => {
     const {spec} = compile({
       data: {

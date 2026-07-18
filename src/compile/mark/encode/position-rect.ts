@@ -20,7 +20,7 @@ import {
   vgField,
 } from '../../../channeldef.js';
 import {Config, getViewConfigDiscreteStep} from '../../../config.js';
-import {channelHasQuantitativeOffset, Encoding} from '../../../encoding.js';
+import {Encoding} from '../../../encoding.js';
 import * as log from '../../../log/index.js';
 import {BandSize, isRelativeBandSize} from '../../../mark.js';
 import {hasDiscreteDomain} from '../../../scale.js';
@@ -79,13 +79,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
       channel,
       model,
     });
-  } else if (
-    mark === 'bar' &&
-    isFieldOrDatumDef(channelDef) &&
-    hasDiscreteDomain(scaleType) &&
-    !channelDef2 &&
-    channelHasQuantitativeOffset(encoding, channel)
-  ) {
+  } else if (isFieldOrDatumDef(channelDef) && model.isRangedOffset(channel)) {
     return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
   } else if (isImage && channelDef && !hasSizeDef && !channelDef2) {
     // Images without an explicit size use their natural dimensions, which Vega only knows at render time.

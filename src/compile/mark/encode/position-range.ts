@@ -7,12 +7,9 @@ import {
   getVgPositionChannel,
 } from '../../../channel.js';
 import {isFieldOrDatumDef} from '../../../channeldef.js';
-import {channelHasQuantitativeOffset} from '../../../encoding.js';
 import * as log from '../../../log/index.js';
 import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark.js';
-import {hasDiscreteDomain} from '../../../scale.js';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
-import {contains} from '../../../util.js';
 import {getMarkStyleConfig} from '../../common.js';
 import {UnitModel} from '../../unit.js';
 import {positionOffset} from './offset.js';
@@ -141,10 +138,7 @@ function pointPosition2OrSize(
     }) ||
     position2orSize(channel, config[mark]) ||
     position2orSize(channel, config.mark) ||
-    (contains(['bar', 'area'], mark) &&
-    isFieldOrDatumDef(channelDef) &&
-    hasDiscreteDomain(scale?.get('type')) &&
-    channelHasQuantitativeOffset(encoding, baseChannel)
+    (isFieldOrDatumDef(channelDef) && model.isRangedOffset(baseChannel)
       ? {
           [vgChannel]: ref.valueRefForFieldOrDatumDef(
             channelDef,

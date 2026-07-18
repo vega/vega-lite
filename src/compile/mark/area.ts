@@ -1,16 +1,12 @@
 import {UnitModel} from '../unit.js';
-import {getSecondaryRangeChannel} from '../../channel.js';
-import {isFieldOrDatumDef} from '../../channeldef.js';
-import {channelHasQuantitativeOffset} from '../../encoding.js';
-import {hasDiscreteDomain} from '../../scale.js';
 import {MarkCompiler} from './base.js';
 import * as encode from './encode/index.js';
 
 export const area: MarkCompiler = {
   vgMark: 'area',
   encodeEntry: (model: UnitModel) => {
-    const xRangeFromOffset = hasContinuousOffsetRange(model, 'x');
-    const yRangeFromOffset = hasContinuousOffsetRange(model, 'y');
+    const xRangeFromOffset = model.isRangedOffset('x');
+    const yRangeFromOffset = model.isRangedOffset('y');
     const hasOffsetDrivenRange = xRangeFromOffset || yRangeFromOffset;
     const xIsRange = xRangeFromOffset || (!hasOffsetDrivenRange && model.markDef.orient === 'horizontal');
     const yIsRange = yRangeFromOffset || (!hasOffsetDrivenRange && model.markDef.orient === 'vertical');
@@ -39,32 +35,3 @@ export const area: MarkCompiler = {
     };
   },
 };
-
-function hasContinuousOffsetRange(model: UnitModel, channel: 'x' | 'y'): boolean {
-  const {encoding} = model;
-  const channelDef = encoding[channel];
-  const channel2 = getSecondaryRangeChannel(channel);
-
-  if (encoding[channel2]) {
-    return false;
-  }
-
-  if (!channelHasQuantitativeOffset(encoding, channel)) {
-    return false;
-  }
-
-  if (channelDef === undefined) {
-    return true;
-  }
-
-  if (!isFieldOrDatumDef(channelDef)) {
-    return false;
-  }
-
-  const scaleType = model.getScaleComponent(channel)?.get('type');
-  if (!hasDiscreteDomain(scaleType)) {
-    return false;
-  }
-
-  return true;
-}

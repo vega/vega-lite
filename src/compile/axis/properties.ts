@@ -2,12 +2,11 @@ import {Align, AxisOrient, Orient, SignalRef} from 'vega';
 import {isArray, isObject} from 'vega-util';
 import {AxisInternal} from '../../axis.js';
 import {isBinned, isBinning} from '../../bin.js';
-import {getSecondaryRangeChannel, PositionScaleChannel, X} from '../../channel.js';
+import {PositionScaleChannel, X} from '../../channel.js';
 import {
   DatumDef,
   isDiscrete,
   isFieldDef,
-  isFieldOrDatumDef,
   PositionDatumDef,
   PositionFieldDef,
   toFieldDefBase,
@@ -15,7 +14,6 @@ import {
   valueArray,
 } from '../../channeldef.js';
 import {Config, StyleConfigIndex} from '../../config.js';
-import {channelHasQuantitativeOffset} from '../../encoding.js';
 import {Mark} from '../../mark.js';
 import {hasDiscreteDomain} from '../../scale.js';
 import {Sort} from '../../sort.js';
@@ -77,14 +75,7 @@ export const axisRules: {
       isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined,
     ),
 
-  bandPosition: ({axis, model, channel, mark, scaleType}) =>
-    axis.bandPosition ??
-    defaultBandPosition({
-      model,
-      channel,
-      mark,
-      scaleType,
-    }),
+  bandPosition: ({axis, model, channel}) => axis.bandPosition ?? defaultBandPosition(model, channel),
 
   // we already calculate orient in parse
   orient: ({orient}) => orient as AxisOrient, // Need to cast until Vega supports signal
@@ -131,26 +122,10 @@ export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string
   return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef?.bin) && !isBinned(fieldDef?.bin);
 }
 
-export function defaultBandPosition({
-  model,
-  channel,
-  mark,
-  scaleType,
-}: Pick<AxisRuleParams, 'model' | 'channel' | 'mark' | 'scaleType'>) {
-  if (!hasDiscreteDomain(scaleType) || !contains(['bar', 'area'], mark)) {
-    return undefined;
-  }
-
-  const channelDef = model.encoding[channel];
-  const channel2 = getSecondaryRangeChannel(channel);
-  if (!isFieldOrDatumDef(channelDef) || model.encoding[channel2]) {
-    return undefined;
-  }
-
-  if (channelHasQuantitativeOffset(model.encoding, channel)) {
+export function defaultBandPosition(model: UnitModel, channel: PositionScaleChannel) {
+  if (model.isRangedOffset(channel)) {
     return channel === 'x' ? 0 : 1;
   }
-
   return undefined;
 }
 

@@ -5,6 +5,10 @@ import {UnitModel} from '../unit.js';
 import {defaultBandPosition} from './properties.js';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
+  return labelsPositionSpec(model, channel, labelsTextSpec(model, channel, specifiedLabelsSpec));
+}
+
+function labelsTextSpec(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
   const {encoding, config} = model;
 
   const fieldOrDatumDef =
@@ -13,7 +17,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   const {format, formatType} = axis;
 
   if (isCustomFormatType(formatType)) {
-    const labelsSpec = {
+    return {
       text: formatCustomType({
         fieldOrDatumDef,
         field: 'datum.value',
@@ -23,7 +27,6 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
       }),
       ...specifiedLabelsSpec,
     };
-    return labelsPositionSpec(model, channel, labelsSpec);
   } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
     if (channelDefType(fieldOrDatumDef) === 'quantitative') {
       if (
@@ -31,7 +34,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
         fieldOrDatumDef.stack === 'normalize' &&
         config.normalizedNumberFormatType
       ) {
-        const labelsSpec = {
+        return {
           text: formatCustomType({
             fieldOrDatumDef,
             field: 'datum.value',
@@ -41,9 +44,8 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
           }),
           ...specifiedLabelsSpec,
         };
-        return labelsPositionSpec(model, channel, labelsSpec);
       } else if (config.numberFormatType) {
-        const labelsSpec = {
+        return {
           text: formatCustomType({
             fieldOrDatumDef,
             field: 'datum.value',
@@ -53,7 +55,6 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
           }),
           ...specifiedLabelsSpec,
         };
-        return labelsPositionSpec(model, channel, labelsSpec);
       }
     }
     if (
@@ -62,7 +63,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
       isFieldDef(fieldOrDatumDef) &&
       !fieldOrDatumDef.timeUnit
     ) {
-      const labelsSpec = {
+      return {
         text: formatCustomType({
           fieldOrDatumDef,
           field: 'datum.value',
@@ -72,41 +73,38 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
         }),
         ...specifiedLabelsSpec,
       };
-      return labelsPositionSpec(model, channel, labelsSpec);
     }
   }
-  return labelsPositionSpec(model, channel, specifiedLabelsSpec);
+  return specifiedLabelsSpec;
 }
 
+/**
+ * Vega positions band-scale axis labels at the band center regardless of the axis `bandPosition`
+ * (only ticks and grid lines move), so ranged offset marks need an explicit label position
+ * override to anchor the labels at the in-band baseline.
+ */
 function labelsPositionSpec(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
   if ('x' in specifiedLabelsSpec || 'y' in specifiedLabelsSpec) {
     return specifiedLabelsSpec;
   }
 
-  const scaleType = model.getScaleComponent(channel)?.get('type');
-  const inferredBandPosition = defaultBandPosition({
-    model,
-    channel,
-    mark: model.mark,
-    scaleType,
-  });
+  const inferredBandPosition = defaultBandPosition(model, channel);
 
   if (inferredBandPosition === undefined) {
     // Without an offset-driven band position, Vega's axis handles any specified bandPosition natively.
     return specifiedLabelsSpec;
   }
 
-  const axisBandPosition = model.axis(channel)?.bandPosition ?? inferredBandPosition;
+  const bandPosition = model.axis(channel)?.bandPosition ?? inferredBandPosition;
 
-  if (axisBandPosition === 0.5) {
+  if (bandPosition === 0.5) {
     return specifiedLabelsSpec;
   }
 
-  const scaleName = model.scaleName(channel);
   const positionRef = {
-    scale: scaleName,
+    scale: model.scaleName(channel),
     signal: 'datum.value',
-    band: axisBandPosition,
+    band: bandPosition,
   };
 
   return {
