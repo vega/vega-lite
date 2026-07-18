@@ -1,4 +1,4 @@
-import {AggregateTransform} from 'vega';
+import {AggregateTransform, parse} from 'vega';
 import {compile} from '../../src/compile/compile.js';
 import * as log from '../../src/log/index.js';
 
@@ -329,12 +329,17 @@ describe('compile/compile', () => {
     });
 
     const update = (spec.marks[0] as any).marks[0].encode.update;
-    expect(update.y.offset.signal).toContain("scale('yOffset'");
-    expect(update.y.offset.signal).toContain("scale('size'");
-    expect(update.y.offset.signal).toContain("domain('yOffset').length");
-    expect(update.y2.offset.signal).toContain("scale('yOffset'");
-    expect(update.y2.offset.signal).toContain("scale('size'");
-    expect(update.y2.offset.signal).toContain("domain('yOffset').length");
+    expect(update.y.offset.signal).toContain('scale("yOffset"');
+    expect(update.y.offset.signal).toContain('scale("size"');
+    expect(update.y2.offset.signal).toContain('scale("yOffset"');
+    expect(update.y2.offset.signal).toContain('scale("size"');
+    expect(spec.scales.find((scale) => scale.name === 'size').range).toEqual([
+      0,
+      {
+        signal:
+          "domain('yOffset').length > 1 ? abs(scale('yOffset', domain('yOffset')[1]) - scale('yOffset', domain('yOffset')[0])) : span(range('yOffset'))",
+      },
+    ]);
   });
 
   it('should combine nominal xOffset and size thickness for horizontal area ribbons', () => {
@@ -357,12 +362,48 @@ describe('compile/compile', () => {
     });
 
     const update = (spec.marks[0] as any).marks[0].encode.update;
-    expect(update.x.offset.signal).toContain("scale('xOffset'");
-    expect(update.x.offset.signal).toContain("scale('size'");
-    expect(update.x.offset.signal).toContain("domain('xOffset').length");
-    expect(update.x2.offset.signal).toContain("scale('xOffset'");
-    expect(update.x2.offset.signal).toContain("scale('size'");
-    expect(update.x2.offset.signal).toContain("domain('xOffset').length");
+    expect(update.x.offset.signal).toContain('scale("xOffset"');
+    expect(update.x.offset.signal).toContain('scale("size"');
+    expect(update.x2.offset.signal).toContain('scale("xOffset"');
+    expect(update.x2.offset.signal).toContain('scale("size"');
+    expect(spec.scales.find((scale) => scale.name === 'size').range).toEqual([
+      0,
+      {
+        signal:
+          "domain('xOffset').length > 1 ? abs(scale('xOffset', domain('xOffset')[1]) - scale('xOffset', domain('xOffset')[0])) : span(range('xOffset'))",
+      },
+    ]);
+  });
+
+  it('should preserve explicit area thickness ranges with discrete offsets', () => {
+    const {spec} = compile({
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {field: 'subgroup', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative', scale: {range: [0, 40]}},
+      },
+    });
+
+    expect(spec.scales.find((scale) => scale.name === 'size').range).toEqual([0, 40]);
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y.offset.signal).not.toContain("domain('yOffset').length");
+  });
+
+  it('should escape field names when composing ribbon and positional offsets', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, group: 'A', subgroup: 'B', "density'quoted": 0.5}]},
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {field: 'subgroup', type: 'nominal'},
+        size: {field: "density\\'quoted", type: 'quantitative'},
+      },
+    });
+
+    expect(() => parse(spec)).not.toThrow();
   });
 
   it('should facet horizontal area size-thickness ribbons by xOffset groups', () => {

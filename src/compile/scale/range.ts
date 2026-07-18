@@ -285,6 +285,22 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
     case SIZE: {
       if (isAreaSizeThickness(mark, encoding)) {
         const laneChannel = model.markDef.orient === 'horizontal' ? 'x' : 'y';
+        const offsetChannel = laneChannel === 'x' ? XOFFSET : YOFFSET;
+        const offsetScaleType = model.getScaleComponent(offsetChannel)?.get('type');
+
+        if (encoding[offsetChannel] && (offsetScaleType === 'band' || offsetScaleType === 'point')) {
+          const offsetScaleName = model.scaleName(offsetChannel);
+          if (offsetScaleType === 'band') {
+            return [0, {signal: `bandwidth('${offsetScaleName}')`}];
+          }
+          return [
+            0,
+            {
+              signal: `domain('${offsetScaleName}').length > 1 ? abs(scale('${offsetScaleName}', domain('${offsetScaleName}')[1]) - scale('${offsetScaleName}', domain('${offsetScaleName}')[0])) : span(range('${offsetScaleName}'))`,
+            },
+          ];
+        }
+
         const laneScaleType = model.getScaleComponent(laneChannel)?.get('type');
         const laneScaleName = model.scaleName(laneChannel);
 
