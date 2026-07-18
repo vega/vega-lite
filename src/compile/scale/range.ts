@@ -286,9 +286,10 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       if (isAreaSizeThickness(mark, encoding)) {
         const laneChannel = model.markDef.orient === 'horizontal' ? 'x' : 'y';
         const laneScaleType = model.getScaleComponent(laneChannel)?.get('type');
+        const laneScaleName = model.scaleName(laneChannel);
 
         if (encoding[laneChannel] && laneScaleType === 'band') {
-          return [0, {signal: `bandwidth('${laneChannel}')`}];
+          return [0, {signal: `bandwidth('${laneScaleName}')`}];
         }
 
         if (encoding[laneChannel] && laneScaleType === 'point') {
@@ -297,14 +298,13 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
             return [0, (laneRange as {step: number | SignalRef}).step];
           }
 
-          const laneScaleName = model.scaleName(laneChannel);
           return [0, {signal: `span(range('${laneScaleName}')) / max(1, domain('${laneScaleName}').length)`}];
         }
 
         const fallbackChannel = laneChannel === 'x' ? 'y' : 'x';
         const fallbackScaleType = model.getScaleComponent(fallbackChannel)?.get('type');
         if (encoding[fallbackChannel] && fallbackScaleType === 'band') {
-          return [0, {signal: `bandwidth('${fallbackChannel}')`}];
+          return [0, {signal: `bandwidth('${model.scaleName(fallbackChannel)}')`}];
         }
       }
 

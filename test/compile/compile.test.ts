@@ -278,6 +278,37 @@ describe('compile/compile', () => {
     expect((spec.marks[0] as any).from.facet.groupby).toEqual(['species']);
   });
 
+  it('should use renamed band scales for area size-thickness ranges in layered views', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, density: 0.5, group: 'A'}]},
+      layer: [
+        {
+          mark: 'area',
+          encoding: {
+            x: {field: 'value', type: 'quantitative'},
+            y: {field: 'group', type: 'nominal', scale: {type: 'band'}},
+            size: {field: 'density', type: 'quantitative'},
+          },
+        },
+        {
+          mark: 'area',
+          encoding: {
+            x: {field: 'value', type: 'quantitative'},
+            y: {field: 'group', type: 'nominal', scale: {type: 'band'}},
+            size: {field: 'density', type: 'quantitative'},
+          },
+        },
+      ],
+      resolve: {scale: {y: 'independent', size: 'independent'}},
+    });
+
+    const sizeScales = spec.scales.filter((scale) => scale.name.endsWith('_size'));
+    expect(sizeScales.map((scale) => scale.range)).toEqual([
+      [0, {signal: "bandwidth('layer_0_y')"}],
+      [0, {signal: "bandwidth('layer_1_y')"}],
+    ]);
+  });
+
   it('should combine nominal yOffset and size thickness for area ribbons', () => {
     const {spec} = compile({
       data: {
@@ -353,7 +384,7 @@ describe('compile/compile', () => {
     });
 
     expect(spec.marks[0].type).toBe('group');
-    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['island', 'species']);
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['species', 'island']);
   });
 
   it('should use containerSize for width and autosize to fit-x/padding', () => {
