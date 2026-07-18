@@ -343,18 +343,6 @@ describe('compile/scale', () => {
         expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
       });
 
-      it("returns [bandwidth('y'), 0] for continuous yOffset nested in band y", () => {
-        const model = parseUnitModelWithScaleExceptRange({
-          mark: 'bar',
-          encoding: {
-            x: {field: 'x', type: 'nominal'},
-            y: {field: 'y', type: 'nominal'},
-            yOffset: {field: 'ysub', type: 'quantitative'},
-          },
-        });
-
-        expect(parseRangeForChannel('yOffset', model)).toEqual(makeImplicit([{signal: "bandwidth('y')"}, 0]));
-      });
       it("returns [0, bandwidth('x')] if x has a fixed step for position", () => {
         const model = parseUnitModelWithScaleExceptRange({
           width: {step: 23, for: 'position'},
@@ -409,6 +397,63 @@ describe('compile/scale', () => {
         });
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(makeExplicit({step: 23}));
+      });
+    });
+
+    describe('yOffset', () => {
+      it("returns [bandwidth('y'), 0] for continuous yOffset nested in band y", () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'},
+            yOffset: {field: 'ysub', type: 'quantitative'},
+          },
+        });
+
+        expect(parseRangeForChannel('yOffset', model)).toEqual(makeImplicit([{signal: "bandwidth('y')"}, 0]));
+      });
+
+      it("returns [0, bandwidth('y')] for discrete yOffset nested in band y", () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          height: 500,
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'},
+            yOffset: {field: 'ysub', type: 'nominal'},
+          },
+        });
+
+        expect(parseRangeForChannel('yOffset', model)).toEqual(makeImplicit([0, {signal: "bandwidth('y')"}]));
+      });
+
+      it("keeps the range [bandwidth('y'), 0] and sets reverse for continuous yOffset with reversed scale", () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'},
+            yOffset: {field: 'ysub', type: 'quantitative', scale: {reverse: true}},
+          },
+        });
+
+        expect(parseRangeForChannel('yOffset', model)).toEqual(makeImplicit([{signal: "bandwidth('y')"}, 0]));
+        expect(model.getScaleComponent('yOffset').get('reverse')).toBe(true);
+      });
+
+      it("keeps the range [bandwidth('y'), 0] and sets reverse for continuous yOffset with descending sort", () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'},
+            yOffset: {field: 'ysub', type: 'quantitative', sort: 'descending'},
+          },
+        });
+
+        expect(parseRangeForChannel('yOffset', model)).toEqual(makeImplicit([{signal: "bandwidth('y')"}, 0]));
+        expect(model.getScaleComponent('yOffset').get('reverse')).toBe(true);
       });
     });
 
