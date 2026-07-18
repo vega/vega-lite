@@ -33,14 +33,14 @@ import * as vlEncoding from '../encoding.js';
 import {Encoding, initEncoding} from '../encoding.js';
 import {ExprRef, replaceExprRef} from '../expr.js';
 import {LegendInternal} from '../legend.js';
-import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark.js';
+import {GEOSHAPE, isBarOrArea, isMarkDef, Mark, MarkDef} from '../mark.js';
 import {Projection} from '../projection.js';
 import {Domain, hasDiscreteDomain, Scale} from '../scale.js';
 import {isSelectionParameter, SelectionParameter} from '../selection.js';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec/index.js';
 import {isFrameMixins} from '../spec/base.js';
 import {stack, StackProperties} from '../stack.js';
-import {contains, keys} from '../util.js';
+import {keys} from '../util.js';
 import {VgData, VgLayout, VgMarkGroup} from '../vega.schema.js';
 import {assembleAxisSignals} from './axis/assemble.js';
 import {AxisInternalIndex} from './axis/component.js';
@@ -158,7 +158,7 @@ export class UnitModel extends ModelWithField {
    */
   public isRangedOffset(channel: PositionScaleChannel | PolarPositionScaleChannel): boolean {
     const {encoding, markDef} = this;
-    if (!contains(['bar', 'area'], markDef.type)) {
+    if (!isBarOrArea(markDef.type)) {
       return false;
     }
     if (encoding[getSecondaryRangeChannel(channel)] || !vlEncoding.channelHasQuantitativeOffset(encoding, channel)) {

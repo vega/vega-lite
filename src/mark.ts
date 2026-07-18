@@ -59,6 +59,19 @@ export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 
   return ['rect', 'bar', 'image', 'arc', 'tick' /* arc is rect/interval in polar coordinate */].includes(m);
 }
 
+/**
+ * Marks that span from a baseline to a value (e.g., for zero baselines and stacking).
+ */
+export const BAR_AREA_MARKS = ['bar', 'area'] as const;
+
+export type BarAreaMark = (typeof BAR_AREA_MARKS)[number];
+
+const BAR_AREA_MARK_SET: ReadonlySet<Mark | CompositeMark> = new Set(BAR_AREA_MARKS);
+
+export function isBarOrArea(m: Mark | CompositeMark): m is BarAreaMark {
+  return BAR_AREA_MARK_SET.has(m);
+}
+
 export const PRIMITIVE_MARKS = new Set(keys(Mark));
 
 export interface ColorMixins<ES extends ExprRef | SignalRef> {

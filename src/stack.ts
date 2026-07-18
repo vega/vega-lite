@@ -21,6 +21,7 @@ import {
   AREA,
   BAR,
   CIRCLE,
+  isBarOrArea,
   isMarkDef,
   isPathMark,
   LINE,
@@ -87,7 +88,7 @@ function potentialStackedChannel(
 ): 'x' | 'y' | 'theta' | 'radius' | undefined {
   const y = x === 'x' ? 'y' : 'radius';
 
-  const isCartesianBarOrArea = x === 'x' && ['bar', 'area'].includes(mark);
+  const isCartesianBarOrArea = x === 'x' && isBarOrArea(mark);
 
   const xDef = encoding[x];
   const yDef = encoding[y];

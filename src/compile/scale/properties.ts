@@ -26,7 +26,7 @@ import {Config} from '../../config.js';
 import {isDateTime} from '../../datetime.js';
 import {channelHasNestedOffsetScale} from '../../encoding.js';
 import * as log from '../../log/index.js';
-import {Mark, MarkDef, RectConfig} from '../../mark.js';
+import {isBarOrArea, Mark, MarkDef, RectConfig} from '../../mark.js';
 import {
   channelScalePropertyIncompatability,
   Domain,
@@ -471,7 +471,7 @@ export function zero(
       }
     }
 
-    if (contains(['bar', 'area'], type) && !hasSecondaryRangeChannel) {
+    if (isBarOrArea(type) && !hasSecondaryRangeChannel) {
       return true;
     }
 
