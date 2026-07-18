@@ -29,7 +29,14 @@ export function positionOffset({
   bandPosition?: number;
 }): Offset {
   const channel = `${baseChannel}Offset` as
-    'xOffset' | 'yOffset' | 'x2Offset' | 'y2Offset' | 'thetaOffset' | 'radiusOffset' | 'theta2Offset' | 'radius2Offset'; // Need to cast as the type can't be inferred automatically
+    | 'xOffset'
+    | 'yOffset'
+    | 'x2Offset'
+    | 'y2Offset'
+    | 'thetaOffset'
+    | 'radiusOffset'
+    | 'theta2Offset'
+    | 'radius2Offset'; // Need to cast as the type can't be inferred automatically
 
   const defaultValue = markDef[channel];
   // FIXME: remove as any

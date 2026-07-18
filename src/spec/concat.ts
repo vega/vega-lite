@@ -56,7 +56,9 @@ export interface GenericHConcatSpec<S extends GenericSpec<any, any, any, any>>
 
 /** A concat spec without any shortcut/expansion syntax */
 export type NormalizedConcatSpec =
-  GenericConcatSpec<NormalizedSpec> | GenericVConcatSpec<NormalizedSpec> | GenericHConcatSpec<NormalizedSpec>;
+  | GenericConcatSpec<NormalizedSpec>
+  | GenericVConcatSpec<NormalizedSpec>
+  | GenericHConcatSpec<NormalizedSpec>;
 
 export function isAnyConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any> | GenericHConcatSpec<any> {
   return isVConcatSpec(spec) || isHConcatSpec(spec) || isConcatSpec(spec);

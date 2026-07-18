@@ -57,7 +57,9 @@ export function filterTooltipWithAggregatedField<F extends Field>(
   oldEncoding: Encoding<F>,
 ): {
   customTooltipWithoutAggregatedField?:
-    StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[];
+    | StringFieldDefWithCondition<F>
+    | StringValueDefWithCondition<F>
+    | StringFieldDef<F>[];
   filteredEncoding: Encoding<F>;
 } {
   const {tooltip, ...filteredEncoding} = oldEncoding;
@@ -66,9 +68,13 @@ export function filterTooltipWithAggregatedField<F extends Field>(
   }
 
   let customTooltipWithAggregatedField:
-    StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[];
+    | StringFieldDefWithCondition<F>
+    | StringValueDefWithCondition<F>
+    | StringFieldDef<F>[];
   let customTooltipWithoutAggregatedField:
-    StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[];
+    | StringFieldDefWithCondition<F>
+    | StringValueDefWithCondition<F>
+    | StringFieldDef<F>[];
 
   if (isArray(tooltip)) {
     for (const t of tooltip) {
