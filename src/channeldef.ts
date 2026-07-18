@@ -1,7 +1,15 @@
 import {Gradient, ScaleType, SignalRef, Text, TimeFormatSpecifier} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {isPrimitive} from './util.js';
-import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate.js';
+import {
+  Aggregate,
+  getAggregateOp,
+  isAggregateOp,
+  isArgmaxDef,
+  isArgminDef,
+  isCountingAggregateOp,
+  isParameterizedAggregateDef,
+} from './aggregate.js';
 import {Axis} from './axis.js';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin.js';
 import {
@@ -828,7 +836,7 @@ export function vgField(
 
     if (!opt.nofn) {
       if (isOpFieldDef(fieldDef)) {
-        fn = fieldDef.op;
+        fn = getAggregateOp(fieldDef.op);
       } else {
         const {bin, aggregate, timeUnit} = fieldDef;
         if (isBinning(bin)) {
@@ -842,7 +850,7 @@ export function vgField(
             argAccessor = `["${field}"]`;
             field = `argmin_${aggregate.argmin}`;
           } else {
-            fn = String(aggregate);
+            fn = getAggregateOp(aggregate);
           }
         } else if (timeUnit && !isBinnedTimeUnit(timeUnit)) {
           fn = timeUnitToString(timeUnit);
@@ -916,7 +924,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
     } else if (isArgminDef(aggregate)) {
       return `${field} for min ${aggregate.argmin}`;
     } else {
-      return `${titleCase(aggregate)} of ${field}`;
+      return `${titleCase(getAggregateOp(aggregate))} of ${field}`;
     }
   }
   return field;
@@ -932,7 +940,11 @@ export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
 
   const timeUnitParams = timeUnit && !isBinnedTimeUnit(timeUnit) ? normalizeTimeUnit(timeUnit) : undefined;
 
-  const fn = aggregate || timeUnitParams?.unit || (timeUnitParams?.maxbins && 'timeunit') || (isBinning(bin) && 'bin');
+  const fn =
+    getAggregateOp(aggregate) ||
+    timeUnitParams?.unit ||
+    (timeUnitParams?.maxbins && 'timeunit') ||
+    (isBinning(bin) && 'bin');
   return fn ? `${fn.toUpperCase()}(${field})` : field;
 }
 
@@ -1155,7 +1167,14 @@ export function initFieldDef(
   const fieldDef = {...fd};
 
   // Drop invalid aggregate
-  if (!compositeMark && aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
+  if (
+    !compositeMark &&
+    aggregate &&
+    !isAggregateOp(aggregate) &&
+    !isArgmaxDef(aggregate) &&
+    !isArgminDef(aggregate) &&
+    !isParameterizedAggregateDef(aggregate)
+  ) {
     log.warn(log.message.invalidAggregate(aggregate));
     delete fieldDef.aggregate;
   }

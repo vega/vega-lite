@@ -341,6 +341,70 @@ describe('encoding', () => {
         },
       });
     });
+    it('should extract aggregates with exponential operations from encoding', () => {
+      const output = extractTransformsFromEncoding(
+        initEncoding(
+          {
+            x: {field: 'a', type: 'quantitative'},
+            y: {
+              aggregate: {exponential: 0.3},
+              field: 'b',
+              type: 'quantitative',
+            },
+          },
+          'line',
+          false,
+          defaultConfig,
+        ),
+        defaultConfig,
+      );
+      expect(output).toEqual({
+        bins: [],
+        timeUnits: [],
+        aggregate: [{op: {exponential: 0.3}, field: 'b', as: 'exponential_b'}],
+        groupby: ['a'],
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {
+            field: 'exponential_b',
+            type: 'quantitative',
+            title: 'Exponential of b',
+          },
+        },
+      });
+    });
+    it('should extract aggregates with exponentialb operations from encoding', () => {
+      const output = extractTransformsFromEncoding(
+        initEncoding(
+          {
+            x: {field: 'a', type: 'quantitative'},
+            y: {
+              aggregate: {exponentialb: 0.3},
+              field: 'b',
+              type: 'quantitative',
+            },
+          },
+          'line',
+          false,
+          defaultConfig,
+        ),
+        defaultConfig,
+      );
+      expect(output).toEqual({
+        bins: [],
+        timeUnits: [],
+        aggregate: [{op: {exponentialb: 0.3}, field: 'b', as: 'exponentialb_b'}],
+        groupby: ['a'],
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {
+            field: 'exponentialb_b',
+            type: 'quantitative',
+            title: 'Exponentialb of b',
+          },
+        },
+      });
+    });
     it('should extract binning from encoding', () => {
       const output = extractTransformsFromEncoding(
         initEncoding(

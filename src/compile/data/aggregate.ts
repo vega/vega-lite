@@ -1,5 +1,11 @@
 import {AggregateOp, AggregateTransform as VgAggregateTransform} from 'vega';
-import {isArgmaxDef, isArgminDef} from '../../aggregate.js';
+import {
+  getAggregateOp,
+  getAggregateParam,
+  isArgmaxDef,
+  isArgminDef,
+  isParameterizedAggregateDef,
+} from '../../aggregate.js';
 import {
   Channel,
   getPositionChannelFromLatLong,
@@ -27,7 +33,7 @@ import {DataFlowNode} from './dataflow.js';
 import {isRectBasedMark} from '../../mark.js';
 import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from './timeunit.js';
 
-type Measures = Dict<Partial<Record<AggregateOp, Set<string>>>>;
+type Measures = Dict<Partial<Record<AggregateOp, {aliases: Set<string>; aggregateParam?: number}>>>;
 
 function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>, model: ModelWithField) {
   const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
@@ -71,7 +77,21 @@ function mergeMeasures(parentMeasures: Measures, childMeasures: Measures) {
     for (const op of keys(ops)) {
       if (field in parentMeasures) {
         // add operator to existing measure field
-        parentMeasures[field][op] = new Set([...(parentMeasures[field][op] ?? []), ...ops[op]]);
+        const parentAggregateParam = parentMeasures[field][op]?.aggregateParam;
+        const childAggregateParam = ops[op].aggregateParam;
+
+        if (
+          parentAggregateParam !== undefined &&
+          childAggregateParam !== undefined &&
+          parentAggregateParam !== childAggregateParam
+        ) {
+          log.warn(log.message.conflictingAggregateParam(op, field, parentAggregateParam, childAggregateParam));
+        }
+
+        parentMeasures[field][op] = {
+          aliases: new Set([...(parentMeasures[field][op]?.aliases ?? []), ...ops[op].aliases]),
+          aggregateParam: childAggregateParam ?? parentAggregateParam,
+        };
       } else {
         parentMeasures[field] = {[op]: ops[op]};
       }
@@ -121,23 +141,29 @@ export class AggregateNode extends DataFlowNode {
       if (aggregate) {
         if (aggregate === 'count') {
           meas['*'] ??= {};
-          meas['*']['count'] = new Set([vgField(fieldDef, {forAs: true})]);
+          meas['*']['count'] = {aliases: new Set([vgField(fieldDef, {forAs: true})])};
         } else {
           if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
             const op = isArgminDef(aggregate) ? 'argmin' : 'argmax';
             const argField = (aggregate as any)[op];
             meas[argField] ??= {};
-            meas[argField][op] = new Set([vgField({op, field: argField}, {forAs: true})]);
+            meas[argField][op] = {aliases: new Set([vgField({op, field: argField}, {forAs: true})])};
+          } else if (isParameterizedAggregateDef(aggregate)) {
+            meas[field] ??= {};
+            meas[field][getAggregateOp(aggregate)] = {
+              aliases: new Set([vgField(fieldDef, {forAs: true})]),
+              aggregateParam: getAggregateParam(aggregate),
+            };
           } else {
             meas[field] ??= {};
-            (meas[field] as any)[aggregate] = new Set([vgField(fieldDef, {forAs: true})]);
+            (meas[field] as any)[aggregate] = {aliases: new Set([vgField(fieldDef, {forAs: true})])};
           }
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
           if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
             meas[field] ??= {};
-            meas[field]['min'] = new Set([vgField({field, aggregate: 'min'}, {forAs: true})]);
-            meas[field]['max'] = new Set([vgField({field, aggregate: 'max'}, {forAs: true})]);
+            meas[field]['min'] = {aliases: new Set([vgField({field, aggregate: 'min'}, {forAs: true})])};
+            meas[field]['max'] = {aliases: new Set([vgField({field, aggregate: 'max'}, {forAs: true})])};
           }
         }
       } else {
@@ -159,13 +185,15 @@ export class AggregateNode extends DataFlowNode {
     for (const s of t.aggregate) {
       const {op, field, as} = s;
       if (op) {
+        const alias = as ? as : vgField(s, {forAs: true});
         if (op === 'count') {
           meas['*'] ??= {};
-          meas['*']['count'] = new Set([as ? as : vgField(s, {forAs: true})]);
+          meas['*']['count'] = {aliases: new Set([alias])};
         } else {
+          const opName = getAggregateOp(op);
           meas[field] ??= {};
-          meas[field][op] ??= new Set();
-          meas[field][op].add(as ? as : vgField(s, {forAs: true}));
+          meas[field][opName] ??= {aliases: new Set(), aggregateParam: getAggregateParam(op)};
+          meas[field][opName].aliases.add(alias);
         }
       }
     }
@@ -203,7 +231,7 @@ export class AggregateNode extends DataFlowNode {
 
     for (const field of keys(this.measures)) {
       for (const op of keys(this.measures[field])) {
-        const m = this.measures[field][op];
+        const m = this.measures[field][op].aliases;
         if (m.size === 0) {
           out.add(`${op}_${field}`);
         } else {
@@ -223,13 +251,15 @@ export class AggregateNode extends DataFlowNode {
     const ops: AggregateOp[] = [];
     const fields: string[] = [];
     const as: string[] = [];
+    const aggregateParams: (number | null)[] = [];
 
     for (const field of keys(this.measures)) {
       for (const op of keys(this.measures[field])) {
-        for (const alias of this.measures[field][op]) {
+        for (const alias of this.measures[field][op].aliases) {
           as.push(alias);
           ops.push(op);
           fields.push(field === '*' ? null : replacePathInField(field));
+          aggregateParams.push(this.measures[field][op].aggregateParam ?? null);
         }
       }
     }
@@ -241,6 +271,10 @@ export class AggregateNode extends DataFlowNode {
       fields,
       as,
     };
+
+    if (aggregateParams.some((param) => typeof param === 'number')) {
+      result.aggregate_params = aggregateParams;
+    }
 
     return result;
   }

@@ -40,6 +40,18 @@ describe('fieldDef', () => {
       );
     });
 
+    it('should support exponential operations', () => {
+      expect(vgField({aggregate: {exponential: 0.23}, field: 'a'}, {expr: 'datum'})).toBe('datum["exponential_a"]');
+
+      expect(vgField({op: {exponential: 0.54}, field: 'a', as: 'b'})).toBe('exponential_a');
+    });
+
+    it('should support exponentialb operations', () => {
+      expect(vgField({aggregate: {exponentialb: 0.23}, field: 'a'}, {expr: 'datum'})).toBe('datum["exponentialb_a"]');
+
+      expect(vgField({op: {exponentialb: 0.54}, field: 'a', as: 'b'})).toBe('exponentialb_a');
+    });
+
     it('should support prefix and field names with space', () => {
       expect(vgField({field: 'foo bar'}, {prefix: 'prefix'})).toBe('prefix_foo bar');
     });
@@ -293,6 +305,12 @@ describe('fieldDef', () => {
     it('should return correct title for aggregate', () => {
       expect(functionalTitleFormatter({field: 'f', aggregate: {argmax: 'a'}})).toBe('f for argmax(a)');
     });
+    it('should return correct title for exponential', () => {
+      expect(functionalTitleFormatter({field: 'f', aggregate: {exponential: 0.5}})).toBe('EXPONENTIAL(f)');
+    });
+    it('should return correct title for exponentialb', () => {
+      expect(functionalTitleFormatter({field: 'f', aggregate: {exponentialb: 0.5}})).toBe('EXPONENTIALB(f)');
+    });
   });
 
   describe('defaultTitle()', () => {
@@ -305,6 +323,13 @@ describe('fieldDef', () => {
     });
     it('should return correct title for argmax', () => {
       expect(defaultTitle({field: 'f', aggregate: {argmax: 'a'}}, {})).toBe('f for max a');
+    });
+
+    it('should return correct title for exponential', () => {
+      expect(defaultTitle({field: 'f', aggregate: {exponential: 0.5}}, {})).toBe('Exponential of f');
+    });
+    it('should return correct title for exponentialb', () => {
+      expect(defaultTitle({field: 'f', aggregate: {exponentialb: 0.5}}, {})).toBe('Exponentialb of f');
     });
 
     it('should return correct title for count', () => {

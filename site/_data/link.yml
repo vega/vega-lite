@@ -65,6 +65,12 @@ AggregatedFieldDef:
 NonArgAggregateOp:
   name: AggregateOp
   link: 'aggregate.html#ops'
+AggregateFieldOp:
+  name: AggregateOp
+  link: 'aggregate.html#ops'
+NonArgAggregateFieldOp:
+  name: AggregateOp
+  link: 'aggregate.html#ops'
 AggregateOpDef:
   link: 'transform.html#aggregate-op-def'
 
