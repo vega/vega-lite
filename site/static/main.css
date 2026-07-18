@@ -235,6 +235,67 @@ pre {
   padding: 8px 10px;
 }
 
+pre.code-copy-wrapper {
+  position: relative;
+  padding-right: 72px;
+}
+
+.code-copy-button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  background: #fff;
+  color: #24292f;
+  font-size: 0.75em;
+  line-height: 1;
+  padding: 4px 6px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+}
+
+pre.code-copy-wrapper:hover .code-copy-button,
+.code-copy-button:focus-visible,
+.code-copy-button[data-copied='true'] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.code-copy-button .code-copy-icon-check {
+  display: none;
+  color: #1a7f37;
+}
+
+.code-copy-button[data-copied='true'] {
+  border-color: #1a7f37;
+  color: #1a7f37;
+}
+
+.code-copy-button[data-copied='true'] .code-copy-icon-copy {
+  display: none;
+}
+
+.code-copy-button[data-copied='true'] .code-copy-icon-check {
+  display: inline-block;
+}
+
+.code-copy-button:focus-visible {
+  outline: 2px solid #0969da;
+  outline-offset: 2px;
+}
+
+@media (hover: none) {
+  .code-copy-button {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 .hljs {
   padding: 0;
   background-color: transparent;

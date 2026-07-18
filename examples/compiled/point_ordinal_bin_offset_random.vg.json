@@ -96,8 +96,8 @@
       "name": "yOffset",
       "type": "linear",
       "domain": {"data": "source_0", "field": "random"},
-      "range": [0, {"signal": "bandwidth('y')"}],
-      "zero": true
+      "range": [{"signal": "bandwidth('y')"}, 0],
+      "zero": false
     }
   ],
   "axes": [

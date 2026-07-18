@@ -64,7 +64,7 @@ import {Legend} from './legend.js';
 import * as log from './log/index.js';
 import {LogicalComposition} from './logical.js';
 import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark.js';
-import {ParameterPredicate, Predicate} from './predicate.js';
+import {ParameterPredicate, Predicate, TooltipFieldFilter} from './predicate.js';
 import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale.js';
 import {isSortByChannel, Sort, SortOrder} from './sort.js';
 import {isFacetFieldDef} from './spec/facet.js';
@@ -98,11 +98,7 @@ import {isSignalRef} from './vega.schema.js';
 export type PrimitiveValue = number | string | boolean | null;
 
 export type Value<ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
-  | PrimitiveValue
-  | number[]
-  | Gradient
-  | Text
-  | ES;
+  PrimitiveValue | number[] | Gradient | Text | ES;
 
 /**
  * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.
@@ -135,9 +131,7 @@ export type ValueDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V ext
    * A field definition or one or more value definition(s) with a parameter predicate.
    */
   condition?:
-    | Conditional<F>
-    | Conditional<ValueDef<V | ExprRef | SignalRef>>
-    | Conditional<ValueDef<V | ExprRef | SignalRef>>[];
+    Conditional<F> | Conditional<ValueDef<V | ExprRef | SignalRef>> | Conditional<ValueDef<V | ExprRef | SignalRef>>[];
 };
 
 export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
@@ -242,6 +236,15 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
    * 2) `field` is not required if `aggregate` is `count`.
    */
   field?: F;
+
+  /**
+   * Controls whether this field appears in tooltips and ARIA descriptions generated from the encoding (e.g., when the mark definition's `tooltip` property is `true`).
+   *
+   * __Default value:__ `true`
+   *
+   * __See also:__ [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html#encoding) documentation.
+   */
+  tooltip?: boolean;
 
   // function
 
@@ -382,9 +385,7 @@ export interface ScaleMixins {
 }
 
 export type OffsetDef<F extends Field, T extends Type = StandardType> =
-  | ScaleFieldDef<F, T>
-  | ScaleDatumDef<F>
-  | ValueDef<number>;
+  ScaleFieldDef<F, T> | ScaleDatumDef<F> | ValueDef<number>;
 
 export interface DatumDef<
   F extends Field = string,
@@ -628,8 +629,7 @@ export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFiel
 export type MarkPropDatumDef<F extends Field> = LegendMixins & ScaleDatumDef<F>;
 
 export type MarkPropFieldOrDatumDef<F extends Field, T extends Type = Type> =
-  | MarkPropFieldDef<F, T>
-  | MarkPropDatumDef<F>;
+  MarkPropFieldDef<F, T> | MarkPropDatumDef<F>;
 
 export interface LegendMixins {
   /**
@@ -665,6 +665,14 @@ export function isOrderOnlyDef<F extends Field>(
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
 
 export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
+export interface TooltipFieldDef<F extends Field> extends StringFieldDef<F> {
+  /**
+   * A [predicate](https://vega.github.io/vega-lite/docs/predicate.html) for including this field in the generated tooltip and ARIA description. The predicate is tested against this field's value and must not include `field` or `timeUnit` properties. For example, `"filter": {"gt": 0}` includes the field only when its value is positive, and `"filter": {"valid": true}` includes it only when it is not `null` and not `NaN`.
+   *
+   * __See also:__ [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html#channel) documentation.
+   */
+  filter?: TooltipFieldFilter;
+}
 
 export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];

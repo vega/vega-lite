@@ -82,7 +82,7 @@ export class LookupNode extends DataFlowNode {
       // lookup a few fields and add create a flat output
       foreign = {
         values: this.transform.from.fields,
-        ...(this.transform.as ? {as: array(this.transform.as)} : {}),
+        ...(this.transform.as ? {as: [...array(this.transform.as)]} : {}),
       };
     } else {
       // lookup full record and nest it

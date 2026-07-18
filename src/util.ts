@@ -1,7 +1,24 @@
-import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig, isObject} from 'vega-util';
+import {
+  hasOwnProperty,
+  isNumber,
+  isString,
+  mergeConfig as mergeConfig_,
+  splitAccessPath,
+  stringValue,
+  writeConfig as writeConfig_,
+  isObject,
+} from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical.js';
 
 export const duplicate = structuredClone;
+
+export function mergeConfig<C extends object>(...configs: C[]): C {
+  return mergeConfig_(...(configs as any[])) as C;
+}
+
+export function writeConfig<C extends object>(config: C, key: string, value: any, recurse?: boolean | object): void {
+  writeConfig_(config as any, key, value, recurse as any);
+}
 
 export function never(message: string): never {
   throw new Error(message);
@@ -433,7 +450,7 @@ export function deepEqual(a: any, b: any) {
     if (Array.isArray(a)) {
       length = a.length;
       if (length != b.length) return false;
-      for (i = length; i-- !== 0; ) if (!deepEqual(a[i], b[i])) return false;
+      for (i = length; i-- !== 0;) if (!deepEqual(a[i], b[i])) return false;
       return true;
     }
 
@@ -453,7 +470,7 @@ export function deepEqual(a: any, b: any) {
     if (ArrayBuffer.isView(a) && ArrayBuffer.isView(b)) {
       length = (a as any).length;
       if (length != (b as any).length) return false;
-      for (i = length; i-- !== 0; ) if ((a as any)[i] !== (b as any)[i]) return false;
+      for (i = length; i-- !== 0;) if ((a as any)[i] !== (b as any)[i]) return false;
       return true;
     }
 
@@ -467,9 +484,9 @@ export function deepEqual(a: any, b: any) {
     length = ks.length;
     if (length !== Object.keys(b).length) return false;
 
-    for (i = length; i-- !== 0; ) if (!Object.prototype.hasOwnProperty.call(b, ks[i])) return false;
+    for (i = length; i-- !== 0;) if (!Object.prototype.hasOwnProperty.call(b, ks[i])) return false;
 
-    for (i = length; i-- !== 0; ) {
+    for (i = length; i-- !== 0;) {
       const key = ks[i];
 
       if (!deepEqual(a[key], b[key])) return false;

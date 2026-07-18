@@ -1,5 +1,5 @@
 import type {AutoSizeType, LoggerInterface, Spec as VgSpec} from 'vega';
-import {isString, mergeConfig} from 'vega-util';
+import {isString} from 'vega-util';
 import {getPositionScaleChannel} from '../channel.js';
 import * as vlFieldDef from '../channeldef.js';
 import {Config, initConfig, stripAndRedirectConfig} from '../config.js';
@@ -15,7 +15,7 @@ import {
   isFitType,
   TopLevelProperties,
 } from '../spec/toplevel.js';
-import {Dict, keys} from '../util.js';
+import {Dict, keys, mergeConfig} from '../util.js';
 import {buildModel} from './buildmodel.js';
 import {assembleRootData} from './data/assemble.js';
 import {optimizeDataflow} from './data/optimize.js';

@@ -80,12 +80,12 @@ import {
   PositionDef,
   SecondaryFieldDef,
   ShapeDef,
-  StringFieldDef,
   StringFieldDefWithCondition,
   StringValueDefWithCondition,
   TextDef,
   TimeDef,
   title,
+  TooltipFieldDef,
   TypedFieldDef,
   vgField,
 } from './channeldef.js';
@@ -303,7 +303,7 @@ export interface Encoding<F extends Field> {
    *
    * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
-  tooltip?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[] | null;
+  tooltip?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | TooltipFieldDef<F>[] | null;
 
   /**
    * A URL to load upon mouse click.
@@ -727,26 +727,8 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case URL:
       case X2:
       case Y2:
-        return details;
-
       case XOFFSET:
-      case YOFFSET: {
-        if (mark === 'line' || mark === 'area' || mark === 'trail') {
-          const offsetDef = encoding[channel];
-          if (isFieldDef(offsetDef)) {
-            const mainChannel = channel === XOFFSET ? X : Y;
-            const mainDef = encoding[mainChannel];
-            if (isFieldDef(mainDef) && !mainDef.aggregate) {
-              const mainField = vgField(mainDef, {});
-              const offsetField = vgField(offsetDef, {});
-              if (mainField && offsetField && mainField !== offsetField) {
-                details.push(mainField);
-              }
-            }
-          }
-        }
-        return details;
-      }
+      case YOFFSET:
       case THETA:
       case THETA2:
       case RADIUS:
