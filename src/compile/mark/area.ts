@@ -1,6 +1,5 @@
 import {UnitModel} from '../unit.js';
 import {stringValue} from 'vega-util';
-import {getSecondaryRangeChannel} from '../../channel.js';
 import {isFieldOrDatumDef, isValueDef} from '../../channeldef.js';
 import {isAreaSizeThickness} from '../../encoding.js';
 import {flatAccessWithDatum} from '../../util.js';
@@ -50,24 +49,6 @@ export const area: MarkCompiler = {
       };
     }
 
-    if (thickness && hasThicknessRangeFromSize(model, 'x')) {
-      const xCenter = encode.pointPosition('x', model, {defaultPos: 'mid'}).x as AreaValueRef;
-      return {
-        ...encode.baseEncodeEntry(model, {
-          align: 'ignore',
-          baseline: 'ignore',
-          color: 'include',
-          orient: 'include',
-          size: 'ignore',
-          theta: 'ignore',
-        }),
-        ...encode.pointPosition('y', model, {defaultPos: 'zeroOrMin'}),
-        x: withThicknessOffset(xCenter, thickness, 0.5),
-        x2: withThicknessOffset(xCenter, thickness, -0.5),
-        ...encode.defined(model),
-      };
-    }
-
     return {
       ...encode.baseEncodeEntry(model, {
         align: 'ignore',
@@ -95,11 +76,6 @@ export const area: MarkCompiler = {
 function hasThicknessRangeFromSize(model: UnitModel, channel: 'x' | 'y'): boolean {
   const {encoding} = model;
   const channelDef = encoding[channel];
-  const channel2 = getSecondaryRangeChannel(channel);
-
-  if (!isAreaSizeThickness(model.mark, encoding) || encoding[channel2]) {
-    return false;
-  }
 
   if (!(isFieldOrDatumDef(channelDef) || isValueDef(channelDef))) {
     return false;
@@ -151,10 +127,12 @@ function withThicknessOffset(center: AreaValueRef, thickness: AreaValueRef, fact
 
 function withOffset(baseRef: VgValueRef, offset: VgValueRef): VgValueRef {
   if (baseRef.offset) {
+    const baseOffset =
+      typeof baseRef.offset === 'number' ? stringValue(baseRef.offset) : valueRefExpr(baseRef.offset as VgValueRef);
     return {
       ...baseRef,
       offset: {
-        signal: `${valueRefExpr(baseRef.offset as VgValueRef)} + ${valueRefExpr(offset)}`,
+        signal: `${baseOffset} + ${valueRefExpr(offset)}`,
       },
     };
   }

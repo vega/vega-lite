@@ -131,12 +131,6 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
         if (specifiedOrient) {
           return specifiedOrient;
         }
-        if (x && !y) {
-          return 'vertical';
-        }
-        if (y && !x) {
-          return 'horizontal';
-        }
         if (x && y) {
           const xIsMeasure = isUnbinnedQuantitativeFieldOrDatumDef(x);
           const yIsMeasure = isUnbinnedQuantitativeFieldOrDatumDef(y);

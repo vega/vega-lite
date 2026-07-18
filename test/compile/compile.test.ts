@@ -427,6 +427,54 @@ describe('compile/compile', () => {
     expect(() => parse(spec)).not.toThrow();
   });
 
+  it('should compose constant thickness with a numeric mark offset', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, center: 2}]},
+      mark: {type: 'area', yOffset: 5},
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'center', type: 'quantitative'},
+        size: {value: 10},
+      },
+    });
+
+    const update = (spec.marks[0] as any).encode.update;
+    expect(update.y.offset.signal).toBe('5 + (10) * (0.5)');
+    expect(update.y2.offset.signal).toBe('5 + (10) * (-0.5)');
+  });
+
+  it('should compose field thickness with a signal mark offset', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, center: 2, density: 3}]},
+      mark: {type: 'area', yOffset: {expr: 'datum.shift'}},
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'center', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    const update = (spec.marks[0] as any).encode.update;
+    expect(update.y.offset.signal).toContain('(datum.shift)');
+    expect(update.y.offset.signal).toContain('scale("size", datum["density"])');
+  });
+
+  it('should compose field thickness with a scaled datum offset', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, group: 'A', density: 3}]},
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {datum: 'B', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y.offset.signal).toContain('scale("yOffset", "B")');
+  });
+
   it('should facet horizontal area size-thickness ribbons by xOffset groups', () => {
     const {spec} = compile({
       data: {

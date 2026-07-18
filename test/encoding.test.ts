@@ -576,10 +576,18 @@ describe('encoding', () => {
 
     it('should group area size-thickness paths by nominal x/y if present.', () => {
       expect(
-        pathGroupingFields('area', {y: {field: 'g', type: 'nominal'}, size: {field: 'a', type: 'quantitative'}}),
+        pathGroupingFields('area', {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'g', type: 'nominal'},
+          size: {field: 'a', type: 'quantitative'},
+        }),
       ).toEqual(['g']);
       expect(
-        pathGroupingFields('area', {x: {field: 'g', type: 'nominal'}, size: {field: 'a', type: 'quantitative'}}),
+        pathGroupingFields('area', {
+          x: {field: 'g', type: 'nominal'},
+          y: {field: 'value', type: 'quantitative'},
+          size: {field: 'a', type: 'quantitative'},
+        }),
       ).toEqual(['g']);
       expect(pathGroupingFields('area', {size: {field: 'a', type: 'nominal'}})).toEqual([]);
 
@@ -590,6 +598,19 @@ describe('encoding', () => {
           size: {value: 10},
         }),
       ).toEqual(['group']);
+    });
+
+    it('should require both position channels for area size-thickness mode', () => {
+      expect(
+        markChannelCompatible(
+          {
+            x: {field: 'value', type: 'quantitative'},
+            size: {field: 'density', type: 'quantitative'},
+          },
+          SIZE,
+          'area',
+        ),
+      ).toBe(false);
     });
 
     it('should group area size-thickness paths by discrete offset channels.', () => {

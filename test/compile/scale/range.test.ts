@@ -793,6 +793,19 @@ describe('compile/scale', () => {
             ]),
           );
         });
+
+        it('should fall back to the opposite band scale for an explicitly oriented ribbon', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: {type: 'area', orient: 'vertical'},
+            encoding: {
+              x: {field: 'g', type: 'nominal', scale: {type: 'band'}},
+              y: {field: 'v', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
+        });
       });
 
       describe('point, square, circle', () => {
