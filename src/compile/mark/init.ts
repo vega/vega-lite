@@ -7,7 +7,7 @@ import {
   isTypedFieldDef,
 } from '../../channeldef.js';
 import {Config} from '../../config.js';
-import {Encoding, isAggregate} from '../../encoding.js';
+import {Encoding, isAggregate, isAreaSizeThickness} from '../../encoding.js';
 import {replaceExprRef} from '../../expr.js';
 import * as log from '../../log/index.js';
 import {AREA, BAR, CIRCLE, IMAGE, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark.js';
@@ -127,7 +127,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
 
     // falls through
     case AREA:
-      if (encoding.size && !x2 && !y2) {
+      if (isAreaSizeThickness(mark, encoding)) {
         if (x && !y) {
           return 'vertical';
         }

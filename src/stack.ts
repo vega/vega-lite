@@ -14,7 +14,7 @@ import {
   vgField,
 } from './channeldef.js';
 import {CompositeAggregate} from './compositemark/index.js';
-import {channelHasField, Encoding, isAggregate} from './encoding.js';
+import {channelHasField, Encoding, isAggregate, isAreaSizeThickness} from './encoding.js';
 import * as log from './log/index.js';
 import {
   ARC,
@@ -171,10 +171,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   if (
     stackedFieldDef.stack === undefined &&
-    mark === AREA &&
-    channelHasField(encoding, 'size') &&
-    !isFieldOrDatumDef(encoding.x2) &&
-    !isFieldOrDatumDef(encoding.y2)
+    isAreaSizeThickness(mark, encoding)
   ) {
     return null;
   }

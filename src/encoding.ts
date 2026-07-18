@@ -91,7 +91,7 @@ import {
 } from './channeldef.js';
 import {Config} from './config.js';
 import * as log from './log/index.js';
-import {Mark} from './mark.js';
+import {AREA, Mark} from './mark.js';
 import {EncodingFacetMapping} from './spec/facet.js';
 import {AggregatedFieldDef, BinTransform, AggregateFieldOp, TimeUnitTransform} from './transform.js';
 import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type.js';
@@ -333,6 +333,10 @@ export interface Encoding<F extends Field> {
 
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
 
+export function isAreaSizeThickness(mark: Mark, encoding: Encoding<string>): boolean {
+  return mark === AREA && !!encoding.size && !encoding.x2 && !encoding.y2;
+}
+
 export function channelHasField<F extends Field>(
   encoding: EncodingWithFacet<F>,
   channel: keyof EncodingWithFacet<F>,
@@ -528,7 +532,7 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
       return false;
     }
   }
-  return true;
+  return channel !== SIZE || mark !== AREA || isAreaSizeThickness(mark, encoding);
 }
 
 export function initEncoding(

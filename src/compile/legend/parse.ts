@@ -8,6 +8,7 @@ import {
   MarkPropDatumDef,
   MarkPropFieldDef,
 } from '../../channeldef.js';
+import {isAreaSizeThickness} from '../../encoding.js';
 import {LegendInternal, LEGEND_SCALE_CHANNELS} from '../../legend.js';
 import {normalizeTimeUnit} from '../../timeunit.js';
 import {GEOJSON} from '../../type.js';
@@ -98,7 +99,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
   parseInteractiveLegend(model, channel, legendCmpt);
 
-  const disableByDefaultForAreaSize = channel === SIZE && model.mark === 'area';
+  const disableByDefaultForAreaSize = channel === SIZE && isAreaSizeThickness(model.mark, model.encoding);
   const disable = legend !== undefined ? !legend : disableByDefaultForAreaSize || legendConfig.disable;
   legendCmpt.set('disable', disable, legend !== undefined);
   if (disable) {

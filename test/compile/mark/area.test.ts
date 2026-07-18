@@ -170,6 +170,25 @@ describe('Mark: Area', () => {
     });
   });
 
+  describe('ranged area with size encoding', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'Year', type: 'temporal'},
+        y: {field: 'low', type: 'quantitative'},
+        y2: {field: 'high'},
+        size: {field: 'uncertainty', type: 'quantitative'},
+      },
+    });
+    const props = area.encodeEntry(model);
+
+    it('should preserve the explicit range instead of using size as thickness', () => {
+      expect(model.encoding.size).toBeUndefined();
+      expect(props.y).toEqual({scale: 'y', field: 'low'});
+      expect(props.y2).toEqual({scale: 'y', field: 'high'});
+    });
+  });
+
   describe('vertical stacked area with color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(
       verticalArea({

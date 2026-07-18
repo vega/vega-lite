@@ -38,7 +38,7 @@ import {
 } from '../../channeldef.js';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config.js';
 import {DataSourceType} from '../../data.js';
-import {channelHasFieldOrDatum} from '../../encoding.js';
+import {channelHasFieldOrDatum, isAreaSizeThickness} from '../../encoding.js';
 import * as log from '../../log/index.js';
 import {Mark} from '../../mark.js';
 import {
@@ -283,7 +283,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       return getOffsetRange(channel, model, scaleType);
 
     case SIZE: {
-      if (mark === 'area' && !encoding.x2 && !encoding.y2) {
+      if (isAreaSizeThickness(mark, encoding)) {
         const laneChannel = model.markDef.orient === 'horizontal' ? 'x' : 'y';
         const laneScaleType = model.getScaleComponent(laneChannel)?.get('type');
 

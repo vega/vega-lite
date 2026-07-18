@@ -1,6 +1,7 @@
 import {UnitModel} from '../unit.js';
 import {getSecondaryRangeChannel} from '../../channel.js';
 import {isFieldDef, isFieldOrDatumDef, isValueDef} from '../../channeldef.js';
+import {isAreaSizeThickness} from '../../encoding.js';
 import {isContinuous} from '../../type.js';
 import {VgValueRef} from '../../vega.schema.js';
 import {MarkCompiler} from './base.js';
@@ -9,7 +10,7 @@ import * as encode from './encode/index.js';
 export const area: MarkCompiler = {
   vgMark: 'area',
   encodeEntry: (model: UnitModel) => {
-    const thickness = getAreaThicknessRef(model);
+    const thickness = isAreaSizeThickness(model.mark, model.encoding) ? getAreaThicknessRef(model) : undefined;
     const preferXThickness = model.markDef.orient === 'horizontal';
 
     if (thickness && preferXThickness && hasThicknessRangeFromSize(model, 'x')) {
@@ -98,7 +99,7 @@ function hasThicknessRangeFromSize(model: UnitModel, channel: 'x' | 'y'): boolea
   const channelDef = encoding[channel];
   const channel2 = getSecondaryRangeChannel(channel);
 
-  if (!encoding.size || encoding[channel2]) {
+  if (!isAreaSizeThickness(model.mark, encoding) || encoding[channel2]) {
     return false;
   }
 

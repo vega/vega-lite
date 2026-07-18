@@ -592,7 +592,7 @@ describe('encoding', () => {
           xOffset: {field: 'Sex', type: 'nominal'},
           size: {field: 'density', type: 'quantitative'},
         }),
-      ).toEqual(['Species', 'Sex']);
+      ).toEqual(['Sex', 'Species']);
 
       expect(
         pathGroupingFields('area', {
@@ -601,7 +601,7 @@ describe('encoding', () => {
           yOffset: {field: 'Sex', type: 'nominal'},
           size: {field: 'density', type: 'quantitative'},
         }),
-      ).toEqual(['Species', 'Sex']);
+      ).toEqual(['Sex', 'Species']);
     });
 
     it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', () => {
