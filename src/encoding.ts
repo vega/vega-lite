@@ -786,8 +786,8 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
 
         if (mark === 'area') {
           const sizeDef = encoding.size;
-          if (isFieldDef(sizeDef)) {
-            const sizeField = vgField(sizeDef, {});
+          if (isAreaSizeThickness(mark, encoding)) {
+            const sizeField = isFieldDef(sizeDef) ? vgField(sizeDef, {}) : undefined;
             const addDetail = (field: string) => {
               if (field && !details.includes(field)) {
                 details.push(field);
@@ -798,7 +798,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
               const offsetDef = encoding[offsetChannel];
               if (isFieldDef(offsetDef) && !offsetDef.aggregate) {
                 const offsetField = vgField(offsetDef, {});
-                if (offsetField !== sizeField) {
+                if (!sizeField || offsetField !== sizeField) {
                   addDetail(offsetField);
                 }
               }
@@ -807,7 +807,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
             const yDef = encoding.y;
             if (isFieldDef(yDef) && !yDef.aggregate && channelDefType(yDef) !== 'quantitative') {
               const yField = vgField(yDef, {});
-              if (yField !== sizeField) {
+              if (!sizeField || yField !== sizeField) {
                 addDetail(yField);
                 return details;
               }
@@ -816,7 +816,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
             const xDef = encoding.x;
             if (isFieldDef(xDef) && !xDef.aggregate && channelDefType(xDef) !== 'quantitative') {
               const xField = vgField(xDef, {});
-              if (xField !== sizeField) {
+              if (!sizeField || xField !== sizeField) {
                 addDetail(xField);
                 return details;
               }

@@ -582,6 +582,14 @@ describe('encoding', () => {
         pathGroupingFields('area', {x: {field: 'g', type: 'nominal'}, size: {field: 'a', type: 'quantitative'}}),
       ).toEqual(['g']);
       expect(pathGroupingFields('area', {size: {field: 'a', type: 'nominal'}})).toEqual([]);
+
+      expect(
+        pathGroupingFields('area', {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'group', type: 'nominal'},
+          size: {value: 10},
+        }),
+      ).toEqual(['group']);
     });
 
     it('should group area size-thickness paths by discrete offset channels.', () => {

@@ -148,6 +148,41 @@ describe('Mark: Area', () => {
       expect(valueCenterProps.y).toEqual({value: 60, offset: {scale: 'size', field: 'US_Gross', mult: 0.5}});
       expect(valueCenterProps.y2).toEqual({value: 60, offset: {scale: 'size', field: 'US_Gross', mult: -0.5}});
     });
+
+    it('should preserve conditional size production rules for both edges', () => {
+      const conditionalModel = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'Year', type: 'temporal'},
+          y: {field: 'Worldwide_Gross', type: 'quantitative'},
+          size: {
+            condition: {test: 'datum.highlight', field: 'US_Gross', type: 'quantitative'},
+            value: 10,
+          },
+        },
+        data: {url: 'data/movies.json'},
+      });
+      const conditionalProps = area.encodeEntry(conditionalModel);
+
+      expect(conditionalProps.y).toEqual([
+        {
+          test: 'datum.highlight',
+          scale: 'y',
+          field: 'Worldwide_Gross',
+          offset: {scale: 'size', field: 'US_Gross', mult: 0.5},
+        },
+        {scale: 'y', field: 'Worldwide_Gross', offset: {value: 10, mult: 0.5}},
+      ]);
+      expect(conditionalProps.y2).toEqual([
+        {
+          test: 'datum.highlight',
+          scale: 'y',
+          field: 'Worldwide_Gross',
+          offset: {scale: 'size', field: 'US_Gross', mult: -0.5},
+        },
+        {scale: 'y', field: 'Worldwide_Gross', offset: {value: 10, mult: -0.5}},
+      ]);
+    });
   });
 
   describe('horizontal area with size encoding for thickness', () => {

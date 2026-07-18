@@ -14,7 +14,7 @@ export const area: MarkCompiler = {
     const preferXThickness = model.markDef.orient === 'horizontal';
 
     if (thickness && preferXThickness && hasThicknessRangeFromSize(model, 'x')) {
-      const xCenter = encode.pointPosition('x', model, {defaultPos: 'mid'}).x as VgValueRef;
+      const xCenter = encode.pointPosition('x', model, {defaultPos: 'mid'}).x as AreaValueRef;
       const xDivisor = offsetThicknessDivisor(model, 'x');
       return {
         ...encode.baseEncodeEntry(model, {
@@ -26,14 +26,14 @@ export const area: MarkCompiler = {
           theta: 'ignore',
         }),
         ...encode.pointPosition('y', model, {defaultPos: 'zeroOrMin'}),
-        x: withOffset(xCenter, thicknessOffsetRef(thickness, 0.5, xDivisor)),
-        x2: withOffset(xCenter, thicknessOffsetRef(thickness, -0.5, xDivisor)),
+        x: withThicknessOffset(xCenter, thickness, 0.5, xDivisor),
+        x2: withThicknessOffset(xCenter, thickness, -0.5, xDivisor),
         ...encode.defined(model),
       };
     }
 
     if (thickness && hasThicknessRangeFromSize(model, 'y')) {
-      const yCenter = encode.pointPosition('y', model, {defaultPos: 'mid'}).y as VgValueRef;
+      const yCenter = encode.pointPosition('y', model, {defaultPos: 'mid'}).y as AreaValueRef;
       const yDivisor = offsetThicknessDivisor(model, 'y');
       return {
         ...encode.baseEncodeEntry(model, {
@@ -45,14 +45,14 @@ export const area: MarkCompiler = {
           theta: 'ignore',
         }),
         ...encode.pointPosition('x', model, {defaultPos: 'zeroOrMin'}),
-        y: withOffset(yCenter, thicknessOffsetRef(thickness, 0.5, yDivisor)),
-        y2: withOffset(yCenter, thicknessOffsetRef(thickness, -0.5, yDivisor)),
+        y: withThicknessOffset(yCenter, thickness, 0.5, yDivisor),
+        y2: withThicknessOffset(yCenter, thickness, -0.5, yDivisor),
         ...encode.defined(model),
       };
     }
 
     if (thickness && hasThicknessRangeFromSize(model, 'x')) {
-      const xCenter = encode.pointPosition('x', model, {defaultPos: 'mid'}).x as VgValueRef;
+      const xCenter = encode.pointPosition('x', model, {defaultPos: 'mid'}).x as AreaValueRef;
       const xDivisor = offsetThicknessDivisor(model, 'x');
       return {
         ...encode.baseEncodeEntry(model, {
@@ -64,8 +64,8 @@ export const area: MarkCompiler = {
           theta: 'ignore',
         }),
         ...encode.pointPosition('y', model, {defaultPos: 'zeroOrMin'}),
-        x: withOffset(xCenter, thicknessOffsetRef(thickness, 0.5, xDivisor)),
-        x2: withOffset(xCenter, thicknessOffsetRef(thickness, -0.5, xDivisor)),
+        x: withThicknessOffset(xCenter, thickness, 0.5, xDivisor),
+        x2: withThicknessOffset(xCenter, thickness, -0.5, xDivisor),
         ...encode.defined(model),
       };
     }
@@ -114,8 +114,10 @@ function hasThicknessRangeFromSize(model: UnitModel, channel: 'x' | 'y'): boolea
   return !!encoding.y;
 }
 
-function getAreaThicknessRef(model: UnitModel): VgValueRef {
-  return encode.nonPosition('size', model).size as VgValueRef;
+type AreaValueRef = VgValueRef | VgValueRef[];
+
+function getAreaThicknessRef(model: UnitModel): AreaValueRef {
+  return encode.nonPosition('size', model).size as AreaValueRef;
 }
 
 function halfThicknessRef(thickness: VgValueRef, factor: number): VgValueRef {
@@ -134,6 +136,31 @@ function thicknessOffsetRef(thickness: VgValueRef, factor: number, divisorExpr?:
   return {
     signal: `(${valueRefExpr(half)}) / (${divisorExpr})`,
   };
+}
+
+function withThicknessOffset(
+  center: AreaValueRef,
+  thickness: AreaValueRef,
+  factor: number,
+  divisorExpr?: string,
+): AreaValueRef {
+  const refs: VgValueRef[] = [];
+
+  for (const centerRef of Array.isArray(center) ? center : [center]) {
+    for (const thicknessRef of Array.isArray(thickness) ? thickness : [thickness]) {
+      const centerTest = centerRef.test;
+      const thicknessTest = thicknessRef.test;
+      const test = centerTest && thicknessTest ? `(${centerTest}) && (${thicknessTest})` : centerTest || thicknessTest;
+      const {test: _centerTest, ...centerWithoutTest} = centerRef;
+      const {test: _thicknessTest, ...thicknessWithoutTest} = thicknessRef;
+      refs.push({
+        ...(test ? {test} : {}),
+        ...withOffset(centerWithoutTest, thicknessOffsetRef(thicknessWithoutTest, factor, divisorExpr)),
+      });
+    }
+  }
+
+  return refs.length === 1 ? refs[0] : refs;
 }
 
 function offsetThicknessDivisor(model: UnitModel, channel: 'x' | 'y'): string | undefined {
