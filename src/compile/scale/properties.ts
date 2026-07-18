@@ -4,6 +4,7 @@ import {isBinned, isBinning, isBinParams} from '../../bin.js';
 import {
   COLOR,
   FILL,
+  getMainChannelFromOffsetChannel,
   getSecondaryRangeChannel,
   isXorY,
   isXorYOffset,
@@ -25,7 +26,7 @@ import {Config} from '../../config.js';
 import {isDateTime} from '../../datetime.js';
 import {channelHasNestedOffsetScale} from '../../encoding.js';
 import * as log from '../../log/index.js';
-import {Mark, MarkDef, RectConfig} from '../../mark.js';
+import {isBarOrArea, Mark, MarkDef, RectConfig} from '../../mark.js';
 import {
   channelScalePropertyIncompatability,
   Domain,
@@ -171,8 +172,17 @@ export const scaleRules: {
     const sort = isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined;
     return reverse(scaleType, sort, channel, config.scale);
   },
-  zero: ({channel, fieldOrDatumDef, domain, markDef, scaleType, config, hasSecondaryRangeChannel}) =>
-    zero(channel, fieldOrDatumDef, domain, markDef, scaleType, config.scale, hasSecondaryRangeChannel),
+  zero: ({model, channel, fieldOrDatumDef, domain, markDef, scaleType, config, hasSecondaryRangeChannel}) =>
+    zero(
+      channel,
+      fieldOrDatumDef,
+      domain,
+      markDef,
+      scaleType,
+      config.scale,
+      hasSecondaryRangeChannel,
+      isXorYOffset(channel) && (model as UnitModel).isRangedOffset(getMainChannelFromOffsetChannel(channel)),
+    ),
 };
 
 // This method is here rather than in range.ts to avoid circular dependency.
@@ -413,6 +423,7 @@ export function zero(
   scaleType: ScaleType,
   scaleConfig: ScaleConfig<SignalRef>,
   hasSecondaryRangeChannel: boolean,
+  hasRangedOffset = false,
 ) {
   // If users explicitly provide a domain, we should not augment zero as that will be unexpected.
   const hasCustomDomain = !!specifiedDomain && specifiedDomain !== 'unaggregated';
@@ -441,6 +452,11 @@ export function zero(
     return true;
   }
 
+  // 1.5) the offset scale of a ranged offset mark, so all marks in the band share the in-band zero baseline
+  if (isXorYOffset(channel)) {
+    return hasRangedOffset;
+  }
+
   // 2) non-binned, quantitative x-scale or y-scale
   // (For binning, we should not include zero by default because binning are calculated without zero.)
   // (For area/bar charts with ratio scale chart, we should always include zero.)
@@ -455,7 +471,7 @@ export function zero(
       }
     }
 
-    if (contains(['bar', 'area'], type) && !hasSecondaryRangeChannel) {
+    if (isBarOrArea(type) && !hasSecondaryRangeChannel) {
       return true;
     }
 

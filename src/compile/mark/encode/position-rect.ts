@@ -79,6 +79,8 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
       channel,
       model,
     });
+  } else if (isFieldOrDatumDef(channelDef) && model.isRangedOffset(channel)) {
+    return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
   } else if (isImage && channelDef && !hasSizeDef && !channelDef2) {
     // Images without an explicit size use their natural dimensions, which Vega only knows at render time.
     // Thus, we cannot use xc/yc and instead output a point position with the image mark's own

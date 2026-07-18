@@ -624,6 +624,19 @@ describe('encoding', () => {
         ).not.toEqual(['a']);
       }
     });
+
+    it('should group by an explicit detail field when using an offset field', () => {
+      for (const mark of ['line', 'area', 'trail'] as const) {
+        expect(
+          pathGroupingFields(mark, {
+            x: {field: 'a', type: 'nominal'},
+            y: {field: 'c', type: 'nominal'},
+            yOffset: {field: 'b', aggregate: 'sum', type: 'quantitative'},
+            detail: {field: 'c', type: 'nominal'},
+          }),
+        ).toEqual(['c']);
+      }
+    });
   });
 
   describe('fieldDefs', () => {

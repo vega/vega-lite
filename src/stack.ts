@@ -14,13 +14,14 @@ import {
   vgField,
 } from './channeldef.js';
 import {CompositeAggregate} from './compositemark/index.js';
-import {channelHasField, Encoding, isAggregate} from './encoding.js';
+import {channelHasField, channelHasQuantitativeOffset, Encoding, isAggregate} from './encoding.js';
 import * as log from './log/index.js';
 import {
   ARC,
   AREA,
   BAR,
   CIRCLE,
+  isBarOrArea,
   isMarkDef,
   isPathMark,
   LINE,
@@ -87,7 +88,7 @@ function potentialStackedChannel(
 ): 'x' | 'y' | 'theta' | 'radius' | undefined {
   const y = x === 'x' ? 'y' : 'radius';
 
-  const isCartesianBarOrArea = x === 'x' && ['bar', 'area'].includes(mark);
+  const isCartesianBarOrArea = x === 'x' && isBarOrArea(mark);
 
   const xDef = encoding[x];
   const yDef = encoding[y];
@@ -168,6 +169,14 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
+
+  if (
+    stackedFieldDef.stack === undefined &&
+    ((fieldChannel === 'x' && !encoding.y && channelHasQuantitativeOffset(encoding, 'y')) ||
+      (fieldChannel === 'y' && !encoding.x && channelHasQuantitativeOffset(encoding, 'x')))
+  ) {
+    return null;
+  }
 
   const dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
   const groupbyChannels: StackProperties['groupbyChannels'] = [];

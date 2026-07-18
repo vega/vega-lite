@@ -1,0 +1,25 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "title": "Ranged Bars Driven by yOffset",
+  "width": {"step": 46},
+  "height": {"step": 40},
+  "data": {
+    "values": [
+      {"quarter": "Q1", "team": "A", "score": 12},
+      {"quarter": "Q2", "team": "A", "score": 18},
+      {"quarter": "Q3", "team": "A", "score": 9},
+      {"quarter": "Q4", "team": "A", "score": 15},
+      {"quarter": "Q1", "team": "B", "score": 8},
+      {"quarter": "Q2", "team": "B", "score": 14},
+      {"quarter": "Q3", "team": "B", "score": 11},
+      {"quarter": "Q4", "team": "B", "score": 17}
+    ]
+  },
+  "mark": {"type": "bar", "opacity": 0.8},
+  "encoding": {
+    "x": {"field": "quarter", "type": "ordinal"},
+    "y": {"field": "team", "type": "nominal"},
+    "yOffset": {"field": "score", "type": "quantitative"},
+    "color": {"field": "team", "type": "nominal"}
+  }
+}
