@@ -293,12 +293,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
           if (offsetScaleType === 'band') {
             return [0, {signal: `bandwidth('${offsetScaleName}')`}];
           }
-          return [
-            0,
-            {
-              signal: `domain('${offsetScaleName}').length > 1 ? abs(scale('${offsetScaleName}', domain('${offsetScaleName}')[1]) - scale('${offsetScaleName}', domain('${offsetScaleName}')[0])) : span(range('${offsetScaleName}'))`,
-            },
-          ];
+          return [0, pointScaleStep(offsetScaleName)];
         }
 
         const laneScaleType = model.getScaleComponent(laneChannel)?.get('type');
@@ -314,7 +309,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
             return [0, (laneRange as {step: number | SignalRef}).step];
           }
 
-          return [0, {signal: `span(range('${laneScaleName}')) / max(1, domain('${laneScaleName}').length)`}];
+          return [0, pointScaleStep(laneScaleName)];
         }
 
         const fallbackChannel = laneChannel === 'x' ? 'y' : 'x';
@@ -399,6 +394,12 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minOpacity, config.scale.maxOpacity];
   }
+}
+
+function pointScaleStep(scaleName: string): SignalRef {
+  return {
+    signal: `domain('${scaleName}').length > 1 ? abs(scale('${scaleName}', domain('${scaleName}')[1]) - scale('${scaleName}', domain('${scaleName}')[0])) : span(range('${scaleName}'))`,
+  };
 }
 
 function getPositionStep(step: Step, model: UnitModel, channel: PositionScaleChannel): number | SignalRef {

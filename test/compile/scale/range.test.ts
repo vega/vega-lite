@@ -763,7 +763,13 @@ describe('compile/scale', () => {
           });
 
           expect(parseRangeForChannel('size', model)).toEqual(
-            makeImplicit([0, {signal: "span(range('y')) / max(1, domain('y').length)"}]),
+            makeImplicit([
+              0,
+              {
+                signal:
+                  "domain('y').length > 1 ? abs(scale('y', domain('y')[1]) - scale('y', domain('y')[0])) : span(range('y'))",
+              },
+            ]),
           );
         });
 
@@ -778,7 +784,13 @@ describe('compile/scale', () => {
           });
 
           expect(parseRangeForChannel('size', model)).toEqual(
-            makeImplicit([0, {signal: "span(range('x')) / max(1, domain('x').length)"}]),
+            makeImplicit([
+              0,
+              {
+                signal:
+                  "domain('x').length > 1 ? abs(scale('x', domain('x')[1]) - scale('x', domain('x')[0])) : span(range('x'))",
+              },
+            ]),
           );
         });
       });
