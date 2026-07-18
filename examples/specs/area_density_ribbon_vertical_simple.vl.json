@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "title": "Body Mass Density Ribbons by Species",
+  "title": "Body Mass Violin Plot by Species",
   "width": 300,
   "data": {"url": "data/penguins.json"},
   "transform": [

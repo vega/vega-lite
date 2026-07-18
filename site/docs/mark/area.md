@@ -89,35 +89,28 @@ We can also shift the stacked area chart's baseline to center and produces a [st
 
 ### Ranged Area
 
-Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged areas. For example, we can use ranged area with the `ci0` and `ci1` [aggregation operators](aggregate.html#ops) to highlight 95% confidence interval of a line chart that shows mean values over time.
+#### With defined endpoints
+
+Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged areas (or "ribbons"). Ranged areas via `x2` or `y2` encodes the endpoints of the area independently in the positional scale's data domain. This is appropriate when both boundaries are meaningful data values.
+
+For example, we can use a ranged area with the `ci0` and `ci1` [aggregation operators](aggregate.html#ops) to highlight 95% confidence interval of a line chart that shows mean values over time. We could also use the `min` and `max` aggregation operators to show the range of values, as in the chart below.
 
 <span class="vl-example" data-name="area_temperature_range"></span>
 
-Ranged areas encode their two boundaries independently in the positional scale's data domain. This is appropriate when both boundaries are meaningful data values, such as the lower and upper bounds of a confidence interval. The boundaries do not need to be symmetric around a centerline.
 
-### Ribbons and Violins
+#### With defined thickness around a centerline
 
-Area marks also support quantitative `size` to encode symmetric ribbon thickness around a centerline. Unlike a ranged area, this parameterization describes one center position and a visual width rather than two independent data-domain boundaries. The centerline may be a field that varies for every datum, a categorical lane, a datum, or a constant value.
+Area marks also support a quantitative `size` encoding for symmetric area thickness around a centerline. This parameterization describes one center position and a visual thickness rather than two independent data-domain boundaries. The centerline may be a field that varies for every datum, a categorical lane, a datum, or a constant value.
 
-In the example below, `x` (`value`) defines the trajectory of each area, `y` (`Species`) places its centerline in a categorical lane, and `size` (`density`) controls its vertical thickness to create a violin plot.
+The `size` encoding is particularly useful when visualizing how a magnitude varies along a quantitative field. A canonical example of this is a violin plot, where the density estimate's magnitude is visualized as the thickness of the area. In the example below, `x` (`value`) defines the trajectory of each area, `y` (`Species`) places its centerline in a categorical lane, and `size` (`density`) controls its thickness to create a violin plot.
 
 <span class="vl-example" data-name="area_density_ribbon_vertical_simple"></span>
 
-When using `size` with area marks:
-
-- use a quantitative field for `size` (for example `density`),
-- use one positional channel for the centerline trajectory (often quantitative),
-- use the other positional channel for grouping lanes (often nominal).
-
-The ribbon expands symmetrically around the centerline on the axis selected by the area's orientation. Vega-Lite infers the orientation from the positional encodings, or you can set [`orient`](mark.html#mark-def) explicitly when both axes are quantitative. This mode applies when neither `x2` nor `y2` is encoded; use those channels instead for areas with independently defined boundaries.
-
-Although Vega-Lite compiles the two ribbon edges to Vega `x`/`x2` or `y`/`y2` position references, `size` is scaled as a visual offset from the centerline. This distinction is particularly useful for categorical violins: positional range channels share one positional scale, so they cannot directly combine a nominal lane center (such as a species) with a quantitative width (such as density). An equivalent ranged-area specification would need to precompute numeric lane positions and both boundaries, losing the categorical band's automatic sizing and offset behavior.
-
-As a rule of thumb, use `x2` or `y2` when both boundaries have values in the positional data domain. Use `size` when the data provides a centerline and a visual magnitude, or when thickness should adapt to the available categorical lane width.
-
-By default, `size` legends are disabled for area ribbons. You can explicitly enable one with `"size": {"legend": { ... }}` if needed.
+The ribbon expands symmetrically around the centerline on the axis selected by the area's orientation. Vega-Lite infers the orientation from the positional encodings, or you can set [`orient`](mark.html#mark-def) explicitly when both axes are quantitative.
 
 <span class="vl-example" data-name="area_density_ribbon_horizontal_offset_color"></span>
+
+By default, `size` legends are disabled for area ribbons. You can explicitly enable one with `"size": {"legend": { ... }}` if needed.
 
 {:#config}
 
