@@ -7,10 +7,7 @@ import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
 import {UnitModel} from '../../unit.js';
 
 type CornerRadius =
-  | 'cornerRadiusTopLeft'
-  | 'cornerRadiusTopRight'
-  | 'cornerRadiusBottomLeft'
-  | 'cornerRadiusBottomRight';
+  'cornerRadiusTopLeft' | 'cornerRadiusTopRight' | 'cornerRadiusBottomLeft' | 'cornerRadiusBottomRight';
 export type CornerRadiusEnd = NonNullable<MarkDef<Mark, SignalRef>['cornerRadiusEnd']>;
 
 interface StackedBarCornerRadiusFields {
