@@ -7,7 +7,10 @@ import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
 import {UnitModel} from '../../unit.js';
 
 type CornerRadius =
-  'cornerRadiusTopLeft' | 'cornerRadiusTopRight' | 'cornerRadiusBottomLeft' | 'cornerRadiusBottomRight';
+  | 'cornerRadiusTopLeft'
+  | 'cornerRadiusTopRight'
+  | 'cornerRadiusBottomLeft'
+  | 'cornerRadiusBottomRight';
 export type CornerRadiusEnd = NonNullable<MarkDef<Mark, SignalRef>['cornerRadiusEnd']>;
 
 interface StackedBarCornerRadiusFields {
@@ -126,7 +129,7 @@ function positionRefToExpr(ref: VgEncodeEntry['x']): string | undefined {
   return ref ? valueRefToExpr(ref) : undefined;
 }
 
-function valueRefToExpr(ref: VgValueRef): string | undefined {
+export function valueRefToExpr(ref: VgValueRef): string | undefined {
   let expr: string | undefined;
 
   if (ref.scale) {
@@ -145,6 +148,13 @@ function valueRefToExpr(ref: VgValueRef): string | undefined {
 
   if (expr === undefined) {
     return undefined;
+  }
+
+  if (ref.band !== undefined && ref.scale) {
+    const band = typeof ref.band === 'object' ? valueRefToExpr(ref.band) : stringValue(ref.band);
+    if (band !== undefined) {
+      expr = `${expr} + bandwidth(${stringValue(ref.scale)}) * (${band})`;
+    }
   }
 
   if (ref.mult !== undefined) {

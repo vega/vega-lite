@@ -439,8 +439,8 @@ describe('compile/compile', () => {
     });
 
     const update = (spec.marks[0] as any).encode.update;
-    expect(update.y.offset.signal).toBe('5 + (10) * (0.5)');
-    expect(update.y2.offset.signal).toBe('5 + (10) * (-0.5)');
+    expect(update.y.offset.signal).toBe('5 + 0.5 * (10)');
+    expect(update.y2.offset.signal).toBe('5 + -0.5 * (10)');
   });
 
   it('should compose field thickness with a signal mark offset', () => {
