@@ -516,6 +516,18 @@ describe('compile/mark/init', () => {
       });
       expect(model.markDef.orient).toBe('vertical');
     });
+
+    it('should respect explicit orient for area size-thickness with two quantitative axes', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'area', orient: 'horizontal'},
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
   });
 
   describe('cursor', () => {
