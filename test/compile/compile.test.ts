@@ -644,3 +644,60 @@ it('should not generate cursor for interval selection', () => {
 
   expect(spec.marks[0].encode.update.cursor).toBeUndefined();
 });
+
+describe('compile with binned position and offset channel', () => {
+  it(
+    'drops xOffset for binned x (bin: true) and compiles without an xOffset scale',
+    log.wrap((localLogger) => {
+      const {spec} = compile({
+        data: {values: [{a: 1, b: 'P'}]},
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', bin: true},
+          y: {aggregate: 'count', type: 'quantitative'},
+          xOffset: {field: 'b', type: 'nominal'},
+        },
+      });
+
+      expect(localLogger.warns).toContain(log.message.offsetNestedInsideContinuousPositionScaleDropped('x'));
+      expect((spec.scales ?? []).map((s) => s.name)).not.toContain('xOffset');
+    }),
+  );
+
+  it(
+    'drops xOffset for pre-binned x (bin: "binned") and compiles without an xOffset scale',
+    log.wrap((localLogger) => {
+      const {spec} = compile({
+        data: {values: [{a: 1, a_end: 2, b: 'P'}]},
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', bin: 'binned', type: 'quantitative'},
+          x2: {field: 'a_end'},
+          y: {aggregate: 'count', type: 'quantitative'},
+          xOffset: {field: 'b', type: 'nominal'},
+        },
+      });
+
+      expect(localLogger.warns).toContain(log.message.offsetNestedInsideContinuousPositionScaleDropped('x'));
+      expect((spec.scales ?? []).map((s) => s.name)).not.toContain('xOffset');
+    }),
+  );
+
+  it(
+    'drops yOffset for binned y and compiles without a yOffset scale',
+    log.wrap((localLogger) => {
+      const {spec} = compile({
+        data: {values: [{a: 1, b: 'P'}]},
+        mark: 'bar',
+        encoding: {
+          y: {field: 'a', type: 'quantitative', bin: true},
+          x: {aggregate: 'count', type: 'quantitative'},
+          yOffset: {field: 'b', type: 'nominal'},
+        },
+      });
+
+      expect(localLogger.warns).toContain(log.message.offsetNestedInsideContinuousPositionScaleDropped('y'));
+      expect((spec.scales ?? []).map((s) => s.name)).not.toContain('yOffset');
+    }),
+  );
+});

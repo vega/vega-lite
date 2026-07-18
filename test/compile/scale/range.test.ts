@@ -311,6 +311,20 @@ describe('compile/scale', () => {
         }
       });
 
+      it('should return a plain step (not an offset-based signal) when the offset field is binned quantitative', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          width: {step: 20},
+          mark: 'bar',
+          encoding: {
+            x: {field: 'b', type: 'nominal'},
+            y: {aggregate: 'count', type: 'quantitative'},
+            xOffset: {field: 'a', type: 'quantitative', bin: true},
+          },
+        });
+
+        expect(parseRangeForChannel('x', model)).toEqual(makeExplicit({step: 20}));
+      });
+
       it('should drop rangeStep for continuous scales', () => {
         for (const scaleType of QUANTITATIVE_SCALES) {
           log.wrap((localLogger) => {
