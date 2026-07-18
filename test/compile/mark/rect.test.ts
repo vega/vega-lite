@@ -1,7 +1,7 @@
-import {PositionFieldDef} from '../../../src/channeldef';
-import {rect} from '../../../src/compile/mark/rect';
-import * as log from '../../../src/log';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {PositionFieldDef} from '../../../src/channeldef.js';
+import {rect} from '../../../src/compile/mark/rect.js';
+import * as log from '../../../src/log/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Rect', () => {
   describe('simple with width and height', () => {
@@ -10,8 +10,8 @@ describe('Mark: Rect', () => {
       mark: {type: 'rect', width: 50, height: 49},
       encoding: {
         x: {field: 'x', type: 'quantitative'},
-        y: {type: 'quantitative', field: 'y'}
-      }
+        y: {type: 'quantitative', field: 'y'},
+      },
     });
     const props = rect.encodeEntry(model);
 
@@ -29,8 +29,8 @@ describe('Mark: Rect', () => {
       mark: {type: 'rect', width: 50, height: 49, align: 'left', baseline: 'top'},
       encoding: {
         x: {field: 'x', type: 'quantitative'},
-        y: {type: 'quantitative', field: 'y'}
-      }
+        y: {type: 'quantitative', field: 'y'},
+      },
     });
     const props = rect.encodeEntry(model);
 
@@ -44,19 +44,19 @@ describe('Mark: Rect', () => {
 
   it(
     'should throw warning if align is expression',
-    log.wrap(localLogger => {
+    log.wrap((localLogger) => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         data: {url: 'data/cars.json'},
         mark: {type: 'rect', width: 50, height: 49, align: {expr: 'test'}, baseline: 'top'},
         encoding: {
           x: {field: 'x', type: 'quantitative'},
-          y: {type: 'quantitative', field: 'y'}
-        }
+          y: {type: 'quantitative', field: 'y'},
+        },
       });
       rect.encodeEntry(model);
 
       expect(localLogger.warns[0]).toEqual(log.message.rangeMarkAlignmentCannotBeExpression('align'));
-    })
+    }),
   );
 
   describe('simple with width and height with right align and bottom baseline', () => {
@@ -65,8 +65,8 @@ describe('Mark: Rect', () => {
       mark: {type: 'rect', width: 50, height: 49, align: 'right', baseline: 'bottom'},
       encoding: {
         x: {field: 'x', type: 'quantitative'},
-        y: {type: 'quantitative', field: 'y'}
-      }
+        y: {type: 'quantitative', field: 'y'},
+      },
     });
     const props = rect.encodeEntry(model);
 
@@ -84,8 +84,8 @@ describe('Mark: Rect', () => {
       mark: {type: 'rect', x2: -1, y2: -2},
       encoding: {
         x: {field: 'x', type: 'quantitative'},
-        y: {type: 'quantitative', field: 'y'}
-      }
+        y: {type: 'quantitative', field: 'y'},
+      },
     });
     const props = rect.encodeEntry(model);
 
@@ -103,8 +103,8 @@ describe('Mark: Rect', () => {
       mark: 'rect',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
+      },
     });
     const props = rect.encodeEntry(model);
 
@@ -123,8 +123,8 @@ describe('Mark: Rect', () => {
       mark: {type: 'rect', width: {expr: 'a'}},
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
+      },
     });
     const props = rect.encodeEntry(model);
 
@@ -142,8 +142,8 @@ describe('Mark: Rect', () => {
       data: {url: 'data/cars.json'},
       mark: 'rect',
       encoding: {
-        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
-      }
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'},
+      },
     });
     const props = rect.encodeEntry(model);
 
@@ -152,7 +152,7 @@ describe('Mark: Rect', () => {
         x: {field: {group: 'width'}},
         x2: {value: 0},
         y: {scale: 'y', field: 'mean_Acceleration'},
-        y2: {scale: 'y', value: 0}
+        y2: {scale: 'y', value: 0},
       });
     });
   });
@@ -163,8 +163,8 @@ describe('Mark: Rect', () => {
       mark: 'rect',
       encoding: {
         y: {field: 'Origin', type: 'nominal'},
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
-      }
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+      },
     });
     const props = rect.encodeEntry(model);
 
@@ -180,15 +180,15 @@ describe('Mark: Rect', () => {
   describe('simple horizontal with size field', () => {
     it(
       'should draw bar from zero to field value and with band value for x/width',
-      log.wrap(localLogger => {
+      log.wrap((localLogger) => {
         const model = parseUnitModelWithScaleAndLayoutSize({
           data: {url: 'data/cars.json'},
           mark: 'rect',
           encoding: {
             y: {field: 'Origin', type: 'nominal'},
             x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
-            size: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'}
-          }
+            size: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'},
+          },
         });
         const props = rect.encodeEntry(model);
         expect(props.y).toEqual({scale: 'y', field: 'Origin'});
@@ -198,7 +198,7 @@ describe('Mark: Rect', () => {
         expect(props.width).toBeUndefined();
 
         expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel('size', 'rect'));
-      })
+      }),
     );
   });
 
@@ -209,9 +209,9 @@ describe('Mark: Rect', () => {
       mark: 'rect',
       encoding: {
         y,
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {rect: {minBandSize: null}}
+      config: {rect: {minBandSize: null}},
     });
     const props = rect.encodeEntry(model);
 
@@ -229,9 +229,9 @@ describe('Mark: Rect', () => {
       mark: 'rect',
       encoding: {
         x,
-        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+        y: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
       },
-      config: {rect: {minBandSize: null}}
+      config: {rect: {minBandSize: null}},
     });
     const props = rect.encodeEntry(model);
 
@@ -250,8 +250,8 @@ describe('Mark: Rect', () => {
         y: {field: 'hp1', type: 'quantitative'},
         y2: {field: 'hp2'},
         x: {field: 'origin1', type: 'ordinal'},
-        x2: {field: 'origin2'}
-      }
+        x2: {field: 'origin2'},
+      },
     });
     const props = rect.encodeEntry(model);
 
@@ -270,8 +270,8 @@ describe('Mark: Rect', () => {
       encoding: {
         y: {field: 'Origin', type: 'ordinal'},
         x: {field: 'Cylinders', type: 'ordinal'},
-        color: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'}
-      }
+        color: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'},
+      },
     });
     const props = rect.encodeEntry(model);
 
@@ -292,18 +292,18 @@ describe('Mark: Rect', () => {
           bin: 'binned',
           type: 'quantitative',
           axis: {
-            tickMinStep: 2
-          }
+            tickMinStep: 2,
+          },
         },
         x2: {
-          field: 'bin_end'
+          field: 'bin_end',
         },
         y: {
           field: 'count',
-          type: 'quantitative'
-        }
+          type: 'quantitative',
+        },
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = rect.encodeEntry(model);
 
@@ -325,18 +325,18 @@ describe('Mark: Rect', () => {
           bin: 'binned',
           type: 'quantitative',
           axis: {
-            tickMinStep: 2
-          }
+            tickMinStep: 2,
+          },
         },
         y2: {
-          field: 'bin_end'
+          field: 'bin_end',
         },
         x: {
           field: 'count',
-          type: 'quantitative'
-        }
+          type: 'quantitative',
+        },
       },
-      config: {bar: {minBandSize: null}}
+      config: {bar: {minBandSize: null}},
     });
     const props = rect.encodeEntry(model);
 
@@ -355,16 +355,16 @@ describe('Mark: Rect', () => {
       mark: {type: 'rect', width: 50, height: 49, size: 20},
       encoding: {
         x: {field: 'x', type: 'ordinal'},
-        y: {field: 'y', type: 'ordinal'}
-      }
+        y: {field: 'y', type: 'ordinal'},
+      },
     });
 
     it(
       'should throw warning',
-      log.wrap(localLogger => {
+      log.wrap((localLogger) => {
         rect.encodeEntry(model);
         expect(localLogger.warns[0]).toEqual(log.message.cannotApplySizeToNonOrientedMark('rect'));
-      })
+      }),
     );
   });
 });

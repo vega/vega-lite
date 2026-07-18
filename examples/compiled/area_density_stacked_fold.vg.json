@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 400,
@@ -68,14 +68,14 @@
           "name": "marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"value\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "Measurement"},
               "description": {
-                "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; density: \" + (format(datum[\"density\"], \"\")) + \"; Measurement: \" + (isValid(datum[\"Measurement\"]) ? datum[\"Measurement\"] : \"\"+datum[\"Measurement\"])"
+                "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; density: \" + (format(datum[\"density\"], \"\")) + \"; Measurement: \" + (isValid(datum[\"Measurement\"]) ? isArray(datum[\"Measurement\"]) ? join(datum[\"Measurement\"], ' ') : datum[\"Measurement\"] : \"\"+datum[\"Measurement\"])"
               },
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density_end"},

@@ -1,7 +1,7 @@
-import {FoldTransform as VgFoldTransform} from 'vega';
-import {FoldTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import type {FoldTransform as VgFoldTransform} from 'vega';
+import {FoldTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for flatten transform nodes
@@ -13,7 +13,7 @@ export class FoldTransformNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private transform: FoldTransform
+    private transform: FoldTransform,
   ) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
@@ -38,7 +38,7 @@ export class FoldTransformNode extends DataFlowNode {
     const result: VgFoldTransform = {
       type: 'fold',
       fields: fold,
-      as
+      as,
     };
     return result;
   }

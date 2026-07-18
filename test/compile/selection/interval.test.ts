@@ -1,8 +1,8 @@
 import {parseSelector} from 'vega-event-selector';
-import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import interval, {GEO_INIT_TICK} from '../../../src/compile/selection/interval';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import interval, {GEO_INIT_TICK} from '../../../src/compile/selection/interval.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import {parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Interval Selections', () => {
   describe('Scaled intervals', () => {
@@ -11,14 +11,14 @@ describe('Interval Selections', () => {
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
         y: {field: 'Miles-per-Gallon', type: 'quantitative'},
-        color: {field: 'Origin', type: 'nominal'}
-      }
+        color: {field: 'Origin', type: 'nominal'},
+      },
     });
 
     const selCmpts = (model.component.selection = parseUnitSelection(model, [
       {
         name: 'one',
-        select: {type: 'interval', encodings: ['x'], clear: false, translate: false, zoom: false}
+        select: {type: 'interval', encodings: ['x'], clear: false, translate: false, zoom: false},
       },
       {
         name: 'two',
@@ -27,9 +27,9 @@ describe('Interval Selections', () => {
           encodings: ['y'],
           clear: false,
           translate: false,
-          zoom: false
+          zoom: false,
         },
-        bind: 'scales'
+        bind: 'scales',
       },
       {
         name: 'thr-ee',
@@ -47,9 +47,9 @@ describe('Interval Selections', () => {
             strokeWidth: 4,
             strokeDash: [10, 5],
             strokeDashOffset: 3,
-            strokeOpacity: 0.25
-          }
-        }
+            strokeOpacity: 0.25,
+          },
+        },
       },
       {
         name: 'four',
@@ -59,8 +59,8 @@ describe('Interval Selections', () => {
           encodings: ['x'],
           clear: false,
           translate: false,
-          zoom: false
-        }
+          zoom: false,
+        },
       },
       {
         name: 'five',
@@ -69,25 +69,25 @@ describe('Interval Selections', () => {
           type: 'interval',
           clear: false,
           translate: false,
-          zoom: false
-        }
+          zoom: false,
+        },
       },
       {
         name: 'six',
         value: {
           x: [
             {year: 2000, month: 10, date: 5},
-            {year: 2001, month: 1, date: 13}
-          ]
+            {year: 2001, month: 1, date: 13},
+          ],
         },
         select: {
           type: 'interval',
           clear: false,
           translate: false,
           zoom: false,
-          encodings: ['x']
-        }
-      }
+          encodings: ['x'],
+        },
+      },
     ]));
 
     describe('Tuple Signals', () => {
@@ -101,26 +101,26 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[x(unit), x(unit)]'
+                  update: '[x(unit), x(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[one_x[0], clamp(x(unit), 0, width)]'
+                  update: '[one_x[0], clamp(x(unit), 0, width)]',
                 },
                 {
                   events: {signal: 'one_scale_trigger'},
-                  update: '[scale("x", one_Horsepower[0]), scale("x", one_Horsepower[1])]'
-                }
-              ]
+                  update: '[scale("x", one_Horsepower[0]), scale("x", one_Horsepower[1])]',
+                },
+              ],
             },
             {
               name: 'one_Horsepower',
               on: [
                 {
                   events: {signal: 'one_x'},
-                  update: 'one_x[0] === one_x[1] ? null : invert("x", one_x)'
-                }
-              ]
+                  update: 'one_x[0] === one_x[1] ? null : invert("x", one_x)',
+                },
+              ],
             },
             {
               name: 'one_scale_trigger',
@@ -129,17 +129,17 @@ describe('Interval Selections', () => {
                 {
                   events: [{scale: 'x'}],
                   update:
-                    '(!isArray(one_Horsepower) || (+invert("x", one_x)[0] === +one_Horsepower[0] && +invert("x", one_x)[1] === +one_Horsepower[1])) ? one_scale_trigger : {}'
-                }
-              ]
-            }
-          ])
+                    '(!isArray(one_Horsepower) || (+invert("x", one_x)[0] === +one_Horsepower[0] && +invert("x", one_x)[1] === +one_Horsepower[1])) ? one_scale_trigger : {}',
+                },
+              ],
+            },
+          ]),
         );
 
         const twoSg = interval.signals(model, selCmpts['two'], []);
         expect(twoSg).toContainEqual({
           name: 'two_Miles_per_Gallon',
-          on: []
+          on: [],
         });
 
         const threeSg = interval.signals(model, selCmpts['thr_ee'], []);
@@ -151,34 +151,34 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[x(unit), x(unit)]'
+                  update: '[x(unit), x(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, pointerup] > pointermove', 'scope')[0],
-                  update: '[thr_ee_x[0], clamp(x(unit), 0, width)]'
+                  update: '[thr_ee_x[0], clamp(x(unit), 0, width)]',
                 },
                 {
                   events: parseSelector('keydown', 'scope')[0],
-                  update: '[x(unit), x(unit)]'
+                  update: '[x(unit), x(unit)]',
                 },
                 {
                   events: parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-                  update: '[thr_ee_x[0], clamp(x(unit), 0, width)]'
+                  update: '[thr_ee_x[0], clamp(x(unit), 0, width)]',
                 },
                 {
                   events: {signal: 'thr_ee_scale_trigger'},
-                  update: '[scale("x", thr_ee_Horsepower[0]), scale("x", thr_ee_Horsepower[1])]'
-                }
-              ]
+                  update: '[scale("x", thr_ee_Horsepower[0]), scale("x", thr_ee_Horsepower[1])]',
+                },
+              ],
             },
             {
               name: 'thr_ee_Horsepower',
               on: [
                 {
                   events: {signal: 'thr_ee_x'},
-                  update: 'thr_ee_x[0] === thr_ee_x[1] ? null : invert("x", thr_ee_x)'
-                }
-              ]
+                  update: 'thr_ee_x[0] === thr_ee_x[1] ? null : invert("x", thr_ee_x)',
+                },
+              ],
             },
             {
               name: 'thr_ee_y',
@@ -186,34 +186,34 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[y(unit), y(unit)]'
+                  update: '[y(unit), y(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, pointerup] > pointermove', 'scope')[0],
-                  update: '[thr_ee_y[0], clamp(y(unit), 0, height)]'
+                  update: '[thr_ee_y[0], clamp(y(unit), 0, height)]',
                 },
                 {
                   events: parseSelector('keydown', 'scope')[0],
-                  update: '[y(unit), y(unit)]'
+                  update: '[y(unit), y(unit)]',
                 },
                 {
                   events: parseSelector('[keydown, keyup] > keypress', 'scope')[0],
-                  update: '[thr_ee_y[0], clamp(y(unit), 0, height)]'
+                  update: '[thr_ee_y[0], clamp(y(unit), 0, height)]',
                 },
                 {
                   events: {signal: 'thr_ee_scale_trigger'},
-                  update: '[scale("y", thr_ee_Miles_per_Gallon[0]), scale("y", thr_ee_Miles_per_Gallon[1])]'
-                }
-              ]
+                  update: '[scale("y", thr_ee_Miles_per_Gallon[0]), scale("y", thr_ee_Miles_per_Gallon[1])]',
+                },
+              ],
             },
             {
               name: 'thr_ee_Miles_per_Gallon',
               on: [
                 {
                   events: {signal: 'thr_ee_y'},
-                  update: 'thr_ee_y[0] === thr_ee_y[1] ? null : invert("y", thr_ee_y)'
-                }
-              ]
+                  update: 'thr_ee_y[0] === thr_ee_y[1] ? null : invert("y", thr_ee_y)',
+                },
+              ],
             },
             {
               name: 'thr_ee_scale_trigger',
@@ -222,11 +222,11 @@ describe('Interval Selections', () => {
                 {
                   events: [{scale: 'x'}, {scale: 'y'}],
                   update:
-                    '(!isArray(thr_ee_Horsepower) || (+invert("x", thr_ee_x)[0] === +thr_ee_Horsepower[0] && +invert("x", thr_ee_x)[1] === +thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (+invert("y", thr_ee_y)[0] === +thr_ee_Miles_per_Gallon[0] && +invert("y", thr_ee_y)[1] === +thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}'
-                }
-              ]
-            }
-          ])
+                    '(!isArray(thr_ee_Horsepower) || (+invert("x", thr_ee_x)[0] === +thr_ee_Horsepower[0] && +invert("x", thr_ee_x)[1] === +thr_ee_Horsepower[1])) && (!isArray(thr_ee_Miles_per_Gallon) || (+invert("y", thr_ee_y)[0] === +thr_ee_Miles_per_Gallon[0] && +invert("y", thr_ee_y)[1] === +thr_ee_Miles_per_Gallon[1])) ? thr_ee_scale_trigger : {}',
+                },
+              ],
+            },
+          ]),
         );
 
         const fourSg = interval.signals(model, selCmpts['four'], []);
@@ -238,17 +238,17 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[x(unit), x(unit)]'
+                  update: '[x(unit), x(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[four_x[0], clamp(x(unit), 0, width)]'
+                  update: '[four_x[0], clamp(x(unit), 0, width)]',
                 },
                 {
                   events: {signal: 'four_scale_trigger'},
-                  update: '[scale("x", four_Horsepower[0]), scale("x", four_Horsepower[1])]'
-                }
-              ]
+                  update: '[scale("x", four_Horsepower[0]), scale("x", four_Horsepower[1])]',
+                },
+              ],
             },
             {
               name: 'four_Horsepower',
@@ -256,9 +256,9 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'four_x'},
-                  update: 'four_x[0] === four_x[1] ? null : invert("x", four_x)'
-                }
-              ]
+                  update: 'four_x[0] === four_x[1] ? null : invert("x", four_x)',
+                },
+              ],
             },
             {
               name: 'four_scale_trigger',
@@ -267,11 +267,11 @@ describe('Interval Selections', () => {
                 {
                   events: [{scale: 'x'}],
                   update:
-                    '(!isArray(four_Horsepower) || (+invert("x", four_x)[0] === +four_Horsepower[0] && +invert("x", four_x)[1] === +four_Horsepower[1])) ? four_scale_trigger : {}'
-                }
-              ]
-            }
-          ])
+                    '(!isArray(four_Horsepower) || (+invert("x", four_x)[0] === +four_Horsepower[0] && +invert("x", four_x)[1] === +four_Horsepower[1])) ? four_scale_trigger : {}',
+                },
+              ],
+            },
+          ]),
         );
 
         const fiveSg = interval.signals(model, selCmpts['five'], []);
@@ -283,17 +283,17 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[x(unit), x(unit)]'
+                  update: '[x(unit), x(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[five_x[0], clamp(x(unit), 0, width)]'
+                  update: '[five_x[0], clamp(x(unit), 0, width)]',
                 },
                 {
                   events: {signal: 'five_scale_trigger'},
-                  update: '[scale("x", five_Horsepower[0]), scale("x", five_Horsepower[1])]'
-                }
-              ]
+                  update: '[scale("x", five_Horsepower[0]), scale("x", five_Horsepower[1])]',
+                },
+              ],
             },
             {
               name: 'five_Horsepower',
@@ -301,9 +301,9 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'five_x'},
-                  update: 'five_x[0] === five_x[1] ? null : invert("x", five_x)'
-                }
-              ]
+                  update: 'five_x[0] === five_x[1] ? null : invert("x", five_x)',
+                },
+              ],
             },
             {
               name: 'five_y',
@@ -311,17 +311,17 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[y(unit), y(unit)]'
+                  update: '[y(unit), y(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[five_y[0], clamp(y(unit), 0, height)]'
+                  update: '[five_y[0], clamp(y(unit), 0, height)]',
                 },
                 {
                   events: {signal: 'five_scale_trigger'},
-                  update: '[scale("y", five_Miles_per_Gallon[0]), scale("y", five_Miles_per_Gallon[1])]'
-                }
-              ]
+                  update: '[scale("y", five_Miles_per_Gallon[0]), scale("y", five_Miles_per_Gallon[1])]',
+                },
+              ],
             },
             {
               name: 'five_Miles_per_Gallon',
@@ -329,9 +329,9 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'five_y'},
-                  update: 'five_y[0] === five_y[1] ? null : invert("y", five_y)'
-                }
-              ]
+                  update: 'five_y[0] === five_y[1] ? null : invert("y", five_y)',
+                },
+              ],
             },
             {
               name: 'five_scale_trigger',
@@ -340,11 +340,11 @@ describe('Interval Selections', () => {
                 {
                   events: [{scale: 'x'}, {scale: 'y'}],
                   update:
-                    '(!isArray(five_Horsepower) || (+invert("x", five_x)[0] === +five_Horsepower[0] && +invert("x", five_x)[1] === +five_Horsepower[1])) && (!isArray(five_Miles_per_Gallon) || (+invert("y", five_y)[0] === +five_Miles_per_Gallon[0] && +invert("y", five_y)[1] === +five_Miles_per_Gallon[1])) ? five_scale_trigger : {}'
-                }
-              ]
-            }
-          ])
+                    '(!isArray(five_Horsepower) || (+invert("x", five_x)[0] === +five_Horsepower[0] && +invert("x", five_x)[1] === +five_Horsepower[1])) && (!isArray(five_Miles_per_Gallon) || (+invert("y", five_y)[0] === +five_Miles_per_Gallon[0] && +invert("y", five_y)[1] === +five_Miles_per_Gallon[1])) ? five_scale_trigger : {}',
+                },
+              ],
+            },
+          ]),
         );
 
         const sixSg = interval.signals(model, selCmpts['six'], []);
@@ -356,17 +356,17 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[x(unit), x(unit)]'
+                  update: '[x(unit), x(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[six_x[0], clamp(x(unit), 0, width)]'
+                  update: '[six_x[0], clamp(x(unit), 0, width)]',
                 },
                 {
                   events: {signal: 'six_scale_trigger'},
-                  update: '[scale("x", six_Horsepower[0]), scale("x", six_Horsepower[1])]'
-                }
-              ]
+                  update: '[scale("x", six_Horsepower[0]), scale("x", six_Horsepower[1])]',
+                },
+              ],
             },
             {
               name: 'six_Horsepower',
@@ -374,9 +374,9 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'six_x'},
-                  update: 'six_x[0] === six_x[1] ? null : invert("x", six_x)'
-                }
-              ]
+                  update: 'six_x[0] === six_x[1] ? null : invert("x", six_x)',
+                },
+              ],
             },
             {
               name: 'six_scale_trigger',
@@ -385,11 +385,11 @@ describe('Interval Selections', () => {
                 {
                   events: [{scale: 'x'}],
                   update:
-                    '(!isArray(six_Horsepower) || (+invert("x", six_x)[0] === +six_Horsepower[0] && +invert("x", six_x)[1] === +six_Horsepower[1])) ? six_scale_trigger : {}'
-                }
-              ]
-            }
-          ])
+                    '(!isArray(six_Horsepower) || (+invert("x", six_x)[0] === +six_Horsepower[0] && +invert("x", six_x)[1] === +six_Horsepower[1])) ? six_scale_trigger : {}',
+                },
+              ],
+            },
+          ]),
         );
       });
 
@@ -400,9 +400,9 @@ describe('Interval Selections', () => {
           on: [
             {
               events: [{signal: 'one_Horsepower'}],
-              update: 'one_Horsepower ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower]} : null'
-            }
-          ]
+              update: 'one_Horsepower ? {unit: "", fields: one_tuple_fields, values: [one_Horsepower]} : null',
+            },
+          ],
         });
 
         const twoSg = interval.signals(model, selCmpts['two'], []);
@@ -412,9 +412,9 @@ describe('Interval Selections', () => {
             {
               events: [{signal: 'two_Miles_per_Gallon'}],
               update:
-                'two_Miles_per_Gallon ? {unit: "", fields: two_tuple_fields, values: [two_Miles_per_Gallon]} : null'
-            }
-          ]
+                'two_Miles_per_Gallon ? {unit: "", fields: two_tuple_fields, values: [two_Miles_per_Gallon]} : null',
+            },
+          ],
         });
 
         const threeSg = interval.signals(model, selCmpts['thr_ee'], []);
@@ -424,9 +424,9 @@ describe('Interval Selections', () => {
             {
               events: [{signal: 'thr_ee_Horsepower || thr_ee_Miles_per_Gallon'}],
               update:
-                'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", fields: thr_ee_tuple_fields, values: [thr_ee_Horsepower,thr_ee_Miles_per_Gallon]} : null'
-            }
-          ]
+                'thr_ee_Horsepower && thr_ee_Miles_per_Gallon ? {unit: "", fields: thr_ee_tuple_fields, values: [thr_ee_Horsepower,thr_ee_Miles_per_Gallon]} : null',
+            },
+          ],
         });
 
         const fourSg = interval.signals(model, selCmpts['four'], []);
@@ -436,9 +436,9 @@ describe('Interval Selections', () => {
           on: [
             {
               events: [{signal: 'four_Horsepower'}],
-              update: 'four_Horsepower ? {unit: "", fields: four_tuple_fields, values: [four_Horsepower]} : null'
-            }
-          ]
+              update: 'four_Horsepower ? {unit: "", fields: four_tuple_fields, values: [four_Horsepower]} : null',
+            },
+          ],
         });
 
         const fiveSg = interval.signals(model, selCmpts['five'], []);
@@ -449,9 +449,9 @@ describe('Interval Selections', () => {
             {
               events: [{signal: 'five_Horsepower || five_Miles_per_Gallon'}],
               update:
-                'five_Horsepower && five_Miles_per_Gallon ? {unit: "", fields: five_tuple_fields, values: [five_Horsepower,five_Miles_per_Gallon]} : null'
-            }
-          ]
+                'five_Horsepower && five_Miles_per_Gallon ? {unit: "", fields: five_tuple_fields, values: [five_Horsepower,five_Miles_per_Gallon]} : null',
+            },
+          ],
         });
       });
 
@@ -460,8 +460,8 @@ describe('Interval Selections', () => {
           mark: 'circle',
           encoding: {
             x: {field: 'x', type: 'quantitative'},
-            y: {field: 'y', type: 'quantitative'}
-          }
+            y: {field: 'y', type: 'quantitative'},
+          },
         });
 
         model2.parseScale();
@@ -473,9 +473,9 @@ describe('Interval Selections', () => {
               type: 'interval',
               encodings: ['x'],
               translate: false,
-              zoom: false
-            }
-          }
+              zoom: false,
+            },
+          },
         ]));
 
         const sg = interval.signals(model, selCmpts2['one'], []);
@@ -493,29 +493,29 @@ describe('Interval Selections', () => {
             on: [
               {
                 events: {signal: 'one_tuple'},
-                update: `modify("one_store", one_tuple, true)`
-              }
-            ]
+                update: `modify("one_store", one_tuple, true)`,
+              },
+            ],
           },
           {
             name: 'two_modify',
             on: [
               {
                 events: {signal: 'two_tuple'},
-                update: `modify("two_store", two_tuple, true)`
-              }
-            ]
+                update: `modify("two_store", two_tuple, true)`,
+              },
+            ],
           },
           {
             name: 'thr_ee_modify',
             on: [
               {
                 events: {signal: 'thr_ee_tuple'},
-                update: `modify("thr_ee_store", thr_ee_tuple, {unit: ""})`
-              }
-            ]
-          }
-        ])
+                update: `modify("thr_ee_store", thr_ee_tuple, {unit: ""})`,
+              },
+            ],
+          },
+        ]),
       );
     });
 
@@ -529,49 +529,49 @@ describe('Interval Selections', () => {
           encode: {
             enter: {
               fill: {value: '#333'},
-              fillOpacity: {value: 0.125}
+              fillOpacity: {value: 0.125},
             },
             update: {
               x: [
                 {
                   test: 'data("one_store").length && data("one_store")[0].unit === ""',
-                  signal: 'one_x[0]'
+                  signal: 'one_x[0]',
                 },
                 {
-                  value: 0
-                }
+                  value: 0,
+                },
               ],
               y: [
                 {
                   test: 'data("one_store").length && data("one_store")[0].unit === ""',
-                  value: 0
+                  value: 0,
                 },
                 {
-                  value: 0
-                }
+                  value: 0,
+                },
               ],
               x2: [
                 {
                   test: 'data("one_store").length && data("one_store")[0].unit === ""',
-                  signal: 'one_x[1]'
+                  signal: 'one_x[1]',
                 },
                 {
-                  value: 0
-                }
+                  value: 0,
+                },
               ],
               y2: [
                 {
                   test: 'data("one_store").length && data("one_store")[0].unit === ""',
                   field: {
-                    group: 'height'
-                  }
+                    group: 'height',
+                  },
                 },
                 {
-                  value: 0
-                }
-              ]
-            }
-          }
+                  value: 0,
+                },
+              ],
+            },
+          },
         },
         {hello: 'world'},
         {
@@ -580,59 +580,59 @@ describe('Interval Selections', () => {
           clip: true,
           encode: {
             enter: {
-              fill: {value: 'transparent'}
+              fill: {value: 'transparent'},
             },
             update: {
               stroke: [
                 {
                   test: 'one_x[0] !== one_x[1]',
-                  value: 'white'
+                  value: 'white',
                 },
                 {
-                  value: null
-                }
+                  value: null,
+                },
               ],
               x: [
                 {
                   test: 'data("one_store").length && data("one_store")[0].unit === ""',
-                  signal: 'one_x[0]'
+                  signal: 'one_x[0]',
                 },
                 {
-                  value: 0
-                }
+                  value: 0,
+                },
               ],
               y: [
                 {
                   test: 'data("one_store").length && data("one_store")[0].unit === ""',
-                  value: 0
+                  value: 0,
                 },
                 {
-                  value: 0
-                }
+                  value: 0,
+                },
               ],
               x2: [
                 {
                   test: 'data("one_store").length && data("one_store")[0].unit === ""',
-                  signal: 'one_x[1]'
+                  signal: 'one_x[1]',
                 },
                 {
-                  value: 0
-                }
+                  value: 0,
+                },
               ],
               y2: [
                 {
                   test: 'data("one_store").length && data("one_store")[0].unit === ""',
                   field: {
-                    group: 'height'
-                  }
+                    group: 'height',
+                  },
                 },
                 {
-                  value: 0
-                }
-              ]
-            }
-          }
-        }
+                  value: 0,
+                },
+              ],
+            },
+          },
+        },
       ]);
 
       // Scale-bound interval selections should not add a brush mark.
@@ -646,23 +646,23 @@ describe('Interval Selections', () => {
           encode: {
             enter: {
               fill: {value: 'red'},
-              fillOpacity: {value: 0.75}
+              fillOpacity: {value: 0.75},
             },
             update: {
               x: {
-                signal: 'thr_ee_x[0]'
+                signal: 'thr_ee_x[0]',
               },
               y: {
-                signal: 'thr_ee_y[0]'
+                signal: 'thr_ee_y[0]',
               },
               x2: {
-                signal: 'thr_ee_x[1]'
+                signal: 'thr_ee_x[1]',
               },
               y2: {
-                signal: 'thr_ee_y[1]'
-              }
-            }
-          }
+                signal: 'thr_ee_y[1]',
+              },
+            },
+          },
         },
         {hello: 'world'},
         {
@@ -671,59 +671,59 @@ describe('Interval Selections', () => {
           clip: true,
           encode: {
             enter: {
-              fill: {value: 'transparent'}
+              fill: {value: 'transparent'},
             },
             update: {
               stroke: [
                 {
                   test: 'thr_ee_x[0] !== thr_ee_x[1] && thr_ee_y[0] !== thr_ee_y[1]',
-                  value: 'black'
+                  value: 'black',
                 },
-                {value: null}
+                {value: null},
               ],
               strokeWidth: [
                 {
                   test: 'thr_ee_x[0] !== thr_ee_x[1] && thr_ee_y[0] !== thr_ee_y[1]',
-                  value: 4
+                  value: 4,
                 },
-                {value: null}
+                {value: null},
               ],
               strokeDash: [
                 {
                   test: 'thr_ee_x[0] !== thr_ee_x[1] && thr_ee_y[0] !== thr_ee_y[1]',
-                  value: [10, 5]
+                  value: [10, 5],
                 },
-                {value: null}
+                {value: null},
               ],
               strokeDashOffset: [
                 {
                   test: 'thr_ee_x[0] !== thr_ee_x[1] && thr_ee_y[0] !== thr_ee_y[1]',
-                  value: 3
+                  value: 3,
                 },
-                {value: null}
+                {value: null},
               ],
               strokeOpacity: [
                 {
                   test: 'thr_ee_x[0] !== thr_ee_x[1] && thr_ee_y[0] !== thr_ee_y[1]',
-                  value: 0.25
+                  value: 0.25,
                 },
-                {value: null}
+                {value: null},
               ],
               x: {
-                signal: 'thr_ee_x[0]'
+                signal: 'thr_ee_x[0]',
               },
               y: {
-                signal: 'thr_ee_y[0]'
+                signal: 'thr_ee_y[0]',
               },
               x2: {
-                signal: 'thr_ee_x[1]'
+                signal: 'thr_ee_x[1]',
               },
               y2: {
-                signal: 'thr_ee_y[1]'
-              }
-            }
-          }
-        }
+                signal: 'thr_ee_y[1]',
+              },
+            },
+          },
+        },
       ]);
     });
 
@@ -732,20 +732,20 @@ describe('Interval Selections', () => {
         mark: 'circle',
         encoding: {
           x: {field: 'x', type: 'quantitative'},
-          y: {field: 'y', type: 'quantitative'}
-        }
+          y: {field: 'y', type: 'quantitative'},
+        },
       });
       nameModel.parseScale();
 
       const nameSelCmpts = (nameModel.component.selection = parseUnitSelection(nameModel, [
         {
           name: 'brush',
-          select: 'interval'
-        }
+          select: 'interval',
+        },
       ]));
 
       const signals = interval.signals(nameModel, nameSelCmpts['brush'], []);
-      const names = signals.map(s => s.name);
+      const names = signals.map((s) => s.name);
       expect(names).toEqual(expect.arrayContaining(['brush_x_1', 'brush_x', 'brush_y_1', 'brush_y']));
 
       const marks: any[] = [{hello: 'world'}];
@@ -760,33 +760,33 @@ describe('Interval Selections', () => {
               x: [
                 {
                   test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
-                  signal: 'brush_x_1[0]'
+                  signal: 'brush_x_1[0]',
                 },
-                {value: 0}
+                {value: 0},
               ],
               y: [
                 {
                   test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
-                  signal: 'brush_y_1[0]'
+                  signal: 'brush_y_1[0]',
                 },
-                {value: 0}
+                {value: 0},
               ],
               x2: [
                 {
                   test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
-                  signal: 'brush_x_1[1]'
+                  signal: 'brush_x_1[1]',
                 },
-                {value: 0}
+                {value: 0},
               ],
               y2: [
                 {
                   test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
-                  signal: 'brush_y_1[1]'
+                  signal: 'brush_y_1[1]',
                 },
-                {value: 0}
-              ]
-            }
-          }
+                {value: 0},
+              ],
+            },
+          },
         },
         {hello: 'world'},
         {
@@ -799,53 +799,53 @@ describe('Interval Selections', () => {
               x: [
                 {
                   test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
-                  signal: 'brush_x_1[0]'
+                  signal: 'brush_x_1[0]',
                 },
-                {value: 0}
+                {value: 0},
               ],
               y: [
                 {
                   test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
-                  signal: 'brush_y_1[0]'
+                  signal: 'brush_y_1[0]',
                 },
-                {value: 0}
+                {value: 0},
               ],
               x2: [
                 {
                   test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
-                  signal: 'brush_x_1[1]'
+                  signal: 'brush_x_1[1]',
                 },
-                {value: 0}
+                {value: 0},
               ],
               y2: [
                 {
                   test: 'data("brush_store").length && data("brush_store")[0].unit === ""',
-                  signal: 'brush_y_1[1]'
+                  signal: 'brush_y_1[1]',
                 },
-                {value: 0}
+                {value: 0},
               ],
               stroke: [
                 {
                   test: 'brush_x_1[0] !== brush_x_1[1] && brush_y_1[0] !== brush_y_1[1]',
-                  value: 'white'
+                  value: 'white',
                 },
-                {value: null}
-              ]
-            }
-          }
-        }
+                {value: null},
+              ],
+            },
+          },
+        },
       ]);
     });
 
     const brushSelCmpts = parseUnitSelection(model, [
       {
         name: 'crosshair',
-        select: {type: 'interval', clear: false, translate: true, zoom: false, mark: {cursor: 'crosshair'}}
+        select: {type: 'interval', clear: false, translate: true, zoom: false, mark: {cursor: 'crosshair'}},
       },
       {
         name: 'disabled',
-        select: {type: 'interval', clear: false, translate: false, zoom: false}
-      }
+        select: {type: 'interval', clear: false, translate: false, zoom: false},
+      },
     ]);
 
     it('should not override manual cursor assignment', () => {
@@ -853,13 +853,13 @@ describe('Interval Selections', () => {
         mark: 'circle',
         encoding: {
           x: {field: 'x', type: 'quantitative'},
-          y: {field: 'y', type: 'quantitative'}
-        }
+          y: {field: 'y', type: 'quantitative'},
+        },
       });
       nameModel.parseScale();
 
       expect(interval.marks(nameModel, brushSelCmpts['crosshair'], [])[1].encode.enter.cursor).toEqual({
-        value: 'crosshair'
+        value: 'crosshair',
       });
     });
 
@@ -868,13 +868,13 @@ describe('Interval Selections', () => {
         mark: 'circle',
         encoding: {
           x: {field: 'x', type: 'quantitative'},
-          y: {field: 'y', type: 'quantitative'}
-        }
+          y: {field: 'y', type: 'quantitative'},
+        },
       });
       nameModel.parseScale();
 
       expect(interval.marks(model, brushSelCmpts['disabled'], [])[1].encode.enter).toEqual({
-        fill: {value: 'transparent'}
+        fill: {value: 'transparent'},
       });
     });
   });
@@ -884,48 +884,48 @@ describe('Interval Selections', () => {
       data: {
         url: 'data/airports.csv',
         format: {
-          type: 'csv'
-        }
+          type: 'csv',
+        },
       },
       mark: 'circle',
       projection: {
-        type: 'albersUsa'
+        type: 'albersUsa',
       },
       encoding: {
         longitude: {
           field: 'longitude',
-          type: 'quantitative'
+          type: 'quantitative',
         },
         latitude: {
           field: 'latitude',
-          type: 'quantitative'
-        }
-      }
+          type: 'quantitative',
+        },
+      },
     });
     model.parseProjection();
 
     const selCmpts = (model.component.selection = parseUnitSelection(model, [
       {
         name: 'one',
-        select: {type: 'interval', clear: false, translate: false, zoom: false}
+        select: {type: 'interval', clear: false, translate: false, zoom: false},
       },
       {
         name: 'two',
-        select: {type: 'interval', encodings: ['longitude'], clear: false, translate: false, zoom: false}
+        select: {type: 'interval', encodings: ['longitude'], clear: false, translate: false, zoom: false},
       },
       {
         name: 'three',
         select: {type: 'interval', clear: false, translate: false, zoom: false},
         value: {
           latitude: [30, 40],
-          longitude: [-86, -118]
-        }
+          longitude: [-86, -118],
+        },
       },
       {
         name: 'four',
         select: {type: 'interval', clear: false, translate: false, zoom: false},
-        value: {latitude: [30, 40]}
-      }
+        value: {latitude: [30, 40]},
+      },
     ]));
 
     describe('Tuple Signals', () => {
@@ -939,13 +939,13 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[y(unit), y(unit)]'
+                  update: '[y(unit), y(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[one_latitude_1[0], clamp(y(unit), 0, height)]'
-                }
-              ]
+                  update: '[one_latitude_1[0], clamp(y(unit), 0, height)]',
+                },
+              ],
             },
             {
               name: 'one_longitude_1',
@@ -953,15 +953,15 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[x(unit), x(unit)]'
+                  update: '[x(unit), x(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[one_longitude_1[0], clamp(x(unit), 0, width)]'
-                }
-              ]
-            }
-          ])
+                  update: '[one_longitude_1[0], clamp(x(unit), 0, width)]',
+                },
+              ],
+            },
+          ]),
         );
 
         const twoSg = interval.signals(model, selCmpts['two'], []);
@@ -973,15 +973,15 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[x(unit), x(unit)]'
+                  update: '[x(unit), x(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[two_longitude_1[0], clamp(x(unit), 0, width)]'
-                }
-              ]
-            }
-          ])
+                  update: '[two_longitude_1[0], clamp(x(unit), 0, width)]',
+                },
+              ],
+            },
+          ]),
         );
 
         const threeSg = interval.signals(model, selCmpts['three'], []);
@@ -989,7 +989,7 @@ describe('Interval Selections', () => {
           expect.arrayContaining([
             {
               name: 'three_init',
-              init: '[scale("projection", [-86, 30]), scale("projection", [-118, 40])]'
+              init: '[scale("projection", [-86, 30]), scale("projection", [-118, 40])]',
             },
             {
               name: 'three_latitude_1',
@@ -997,13 +997,13 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[y(unit), y(unit)]'
+                  update: '[y(unit), y(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[three_latitude_1[0], clamp(y(unit), 0, height)]'
-                }
-              ]
+                  update: '[three_latitude_1[0], clamp(y(unit), 0, height)]',
+                },
+              ],
             },
             {
               name: 'three_longitude_1',
@@ -1011,15 +1011,15 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[x(unit), x(unit)]'
+                  update: '[x(unit), x(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[three_longitude_1[0], clamp(x(unit), 0, width)]'
-                }
-              ]
-            }
-          ])
+                  update: '[three_longitude_1[0], clamp(x(unit), 0, width)]',
+                },
+              ],
+            },
+          ]),
         );
 
         const fourSg = interval.signals(model, selCmpts['four'], []);
@@ -1027,11 +1027,11 @@ describe('Interval Selections', () => {
           expect.arrayContaining([
             {
               name: 'projection_center',
-              update: 'invert("projection", [width/2, height/2])'
+              update: 'invert("projection", [width/2, height/2])',
             },
             {
               name: 'four_init',
-              init: '[scale("projection", [projection_center[0], 30]), scale("projection", [projection_center[0], 40])]'
+              init: '[scale("projection", [projection_center[0], 30]), scale("projection", [projection_center[0], 40])]',
             },
             {
               name: 'four_latitude_1',
@@ -1039,15 +1039,15 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: parseSelector('pointerdown', 'scope')[0],
-                  update: '[y(unit), y(unit)]'
+                  update: '[y(unit), y(unit)]',
                 },
                 {
                   events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-                  update: '[four_latitude_1[0], clamp(y(unit), 0, height)]'
-                }
-              ]
-            }
-          ])
+                  update: '[four_latitude_1[0], clamp(y(unit), 0, height)]',
+                },
+              ],
+            },
+          ]),
         );
       });
 
@@ -1059,9 +1059,9 @@ describe('Interval Selections', () => {
             {
               events: [{signal: 'one_longitude_1 || one_latitude_1'}],
               update:
-                'vlSelectionTuples(intersect([[one_longitude_1[0], one_latitude_1[0]],[one_longitude_1[1], one_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})'
-            }
-          ]
+                'vlSelectionTuples(intersect([[one_longitude_1[0], one_latitude_1[0]],[one_longitude_1[1], one_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})',
+            },
+          ],
         });
 
         const twoSg = interval.signals(model, selCmpts['two'], []);
@@ -1071,9 +1071,9 @@ describe('Interval Selections', () => {
             {
               events: [{signal: 'two_longitude_1'}],
               update:
-                'vlSelectionTuples(intersect([[two_longitude_1[0], 0],[two_longitude_1[1], height]], {markname: "marks"}, unit.mark), {unit: ""})'
-            }
-          ]
+                'vlSelectionTuples(intersect([[two_longitude_1[0], 0],[two_longitude_1[1], height]], {markname: "marks"}, unit.mark), {unit: ""})',
+            },
+          ],
         });
 
         const threeSg = interval.signals(model, selCmpts['three'], []);
@@ -1081,7 +1081,7 @@ describe('Interval Selections', () => {
           'vlSelectionTuples(intersect([[three_longitude_1[0], three_latitude_1[0]],[three_longitude_1[1], three_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})';
         expect(threeSg).toContainEqual({
           name: 'three_tuple',
-          on: [{events: [{signal: 'three_latitude_1 || three_longitude_1'}, {signal: GEO_INIT_TICK}], update}]
+          on: [{events: [{signal: 'three_latitude_1 || three_longitude_1'}, {signal: GEO_INIT_TICK}], update}],
         });
 
         const fourSg = interval.signals(model, selCmpts['four'], []);
@@ -1089,7 +1089,7 @@ describe('Interval Selections', () => {
           'vlSelectionTuples(intersect([[0, four_latitude_1[0]],[width, four_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})';
         expect(fourSg).toContainEqual({
           name: 'four_tuple',
-          on: [{events: [{signal: 'four_latitude_1'}, {signal: GEO_INIT_TICK}], update}]
+          on: [{events: [{signal: 'four_latitude_1'}, {signal: GEO_INIT_TICK}], update}],
         });
       });
     });

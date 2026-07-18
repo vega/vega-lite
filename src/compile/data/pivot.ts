@@ -1,7 +1,7 @@
-import {PivotTransform} from '../../transform';
-import {duplicate, hash, unique} from '../../util';
+import {PivotTransform} from '../../transform.js';
+import {duplicate, hash, unique} from '../../util.js';
 import {PivotTransform as VgPivotTransform} from 'vega';
-import {DataFlowNode} from './dataflow';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for pivot transform nodes.
@@ -13,13 +13,13 @@ export class PivotTransformNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private transform: PivotTransform
+    private transform: PivotTransform,
   ) {
     super(parent);
   }
 
   public addDimensions(fields: readonly string[]) {
-    this.transform.groupby = unique((this.transform.groupby ?? []).concat(fields), d => d);
+    this.transform.groupby = unique((this.transform.groupby ?? []).concat(fields), (d) => d);
   }
 
   public producedFields(): undefined {
@@ -42,7 +42,7 @@ export class PivotTransformNode extends DataFlowNode {
       value,
       ...(limit !== undefined ? {limit} : {}),
       ...(op !== undefined ? {op} : {}),
-      ...(groupby !== undefined ? {groupby} : {})
+      ...(groupby !== undefined ? {groupby} : {}),
     };
   }
 }

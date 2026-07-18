@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "A simple radial chart with embedded data.",
   "data": {
     "values": [12, 23, 47, 6, 52, 19]

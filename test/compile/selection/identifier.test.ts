@@ -1,10 +1,10 @@
 import {Transforms as VgTransform} from 'vega';
-import {assembleRootData} from '../../../src/compile/data/assemble';
-import {IdentifierNode} from '../../../src/compile/data/identifier';
-import {optimizeDataflow} from '../../../src/compile/data/optimize';
-import {Mark} from '../../../src/mark';
-import {SELECTION_ID} from '../../../src/selection';
-import {parseConcatModel, parseUnitModelWithScaleAndSelection} from '../../util';
+import {assembleRootData} from '../../../src/compile/data/assemble.js';
+import {IdentifierNode} from '../../../src/compile/data/identifier.js';
+import {optimizeDataflow} from '../../../src/compile/data/optimize.js';
+import {Mark} from '../../../src/mark.js';
+import {SELECTION_ID} from '../../../src/selection.js';
+import {parseConcatModel, parseUnitModelWithScaleAndSelection} from '../../util.js';
 
 function getVgData(params: any, x?: any, y?: any, mark?: Mark, enc?: any, transform?: any) {
   const model = parseUnitModelWithScaleAndSelection({
@@ -16,8 +16,8 @@ function getVgData(params: any, x?: any, y?: any, mark?: Mark, enc?: any, transf
       x: {field: 'Horsepower', type: 'quantitative', ...x},
       y: {field: 'Miles-per-Gallon', type: 'quantitative', ...y},
       color: {field: 'Origin', type: 'nominal'},
-      ...enc
-    }
+      ...enc,
+    },
   });
   model.parseData();
   optimizeDataflow(model.component.data, model);
@@ -30,7 +30,7 @@ describe('compile/data/identifier', () => {
       function run(selDef?: any) {
         const data = getVgData(selDef);
         for (const d of data) {
-          expect(d.transform?.some(t => t.type === 'identifier')).not.toBe(true);
+          expect(d.transform?.some((t) => t.type === 'identifier')).not.toBe(true);
         }
       }
 
@@ -61,7 +61,7 @@ describe('compile/data/identifier', () => {
 
     it('is added before any user-specified transforms', () => {
       const data = getVgData([{name: 'pt', select: 'point'}], null, null, null, null, [
-        {calculate: 'datum.Horsepower * 2', as: 'foo'}
+        {calculate: 'datum.Horsepower * 2', as: 'foo'},
       ]);
       let calc = -1;
       data[0].transform.some((t, i) => ((calc = i), t.type === 'formula' && t.as === 'foo'));
@@ -77,25 +77,25 @@ describe('compile/data/identifier', () => {
               params: [
                 {
                   name: 'pt',
-                  select: 'point'
-                }
+                  select: 'point',
+                },
               ],
               mark: 'circle',
               encoding: {
                 x: {field: 'Horsepower', type: 'quantitative'},
                 y: {field: 'Miles-per-Gallon', type: 'quantitative'},
-                color: {field: 'Year', type: 'temporal'}
-              }
+                color: {field: 'Year', type: 'temporal'},
+              },
             },
             {
               mark: 'circle',
               encoding: {
                 x: {field: 'Horsepower', type: 'quantitative', bin},
                 y: {field: 'Miles-per-Gallon', type: 'quantitative'},
-                color: {field: 'Origin', type: 'nominal'}
-              }
-            }
-          ]
+                color: {field: 'Origin', type: 'nominal'},
+              },
+            },
+          ],
         });
         model.parseScale();
         model.parseSelections();

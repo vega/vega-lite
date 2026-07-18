@@ -1,6 +1,6 @@
-import {assembleScaleRange, assembleScales} from '../../../src/compile/scale/assemble';
-import {SignalRefWrapper} from '../../../src/compile/signal';
-import {parseConcatModel, parseFacetModelWithScale, parseLayerModel, parseUnitModelWithScale} from '../../util';
+import {assembleScaleRange, assembleScales} from '../../../src/compile/scale/assemble.js';
+import {SignalRefWrapper} from '../../../src/compile/signal.js';
+import {parseConcatModel, parseFacetModelWithScale, parseLayerModel, parseUnitModelWithScale} from '../../util.js';
 
 describe('compile/scale/assemble', () => {
   describe('assembleScales', () => {
@@ -10,17 +10,17 @@ describe('compile/scale/assemble', () => {
           {
             mark: 'point',
             encoding: {
-              x: {field: 'a', type: 'ordinal'}
-            }
+              x: {field: 'a', type: 'ordinal'},
+            },
           },
           {
             mark: 'bar',
             encoding: {
               x: {field: 'b', type: 'ordinal'},
-              y: {field: 'c', type: 'quantitative'}
-            }
-          }
-        ]
+              y: {field: 'c', type: 'quantitative'},
+            },
+          },
+        ],
       });
 
       model.parseScale();
@@ -35,22 +35,22 @@ describe('compile/scale/assemble', () => {
             mark: 'point',
             encoding: {
               x: {field: 'a', type: 'quantitative'},
-              y: {field: 'c', type: 'quantitative'}
-            }
+              y: {field: 'c', type: 'quantitative'},
+            },
           },
           {
             mark: 'point',
             encoding: {
               x: {field: 'b', type: 'quantitative'},
-              y: {field: 'c', type: 'quantitative'}
-            }
-          }
+              y: {field: 'c', type: 'quantitative'},
+            },
+          },
         ],
         resolve: {
           scale: {
-            x: 'independent'
-          }
-        }
+            x: 'independent',
+          },
+        },
       });
 
       model.parseScale();
@@ -61,18 +61,18 @@ describe('compile/scale/assemble', () => {
     it('includes shared scales, but not independent scales (as they are nested) for facet.', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'nominal', header: {format: 'd'}}
+          column: {field: 'a', type: 'nominal', header: {format: 'd'}},
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
+            y: {field: 'c', type: 'quantitative'},
+          },
         },
         resolve: {
-          scale: {x: 'independent'}
-        }
+          scale: {x: 'independent'},
+        },
       });
 
       const scales = assembleScales(model);
@@ -90,15 +90,15 @@ describe('compile/scale/assemble', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'x', type: 'quantitative'}
-        }
+          x: {field: 'x', type: 'quantitative'},
+        },
       });
 
       // mock renaming
       model.renameSignal('width', 'new_width');
 
       expect(
-        assembleScaleRange([0, SignalRefWrapper.fromName(model.getSignalName.bind(model), 'width')], 'x', 'x')
+        assembleScaleRange([0, SignalRefWrapper.fromName(model.getSignalName.bind(model), 'width')], 'x', 'x'),
       ).toEqual([0, {signal: 'new_width'}]);
     });
 
@@ -106,15 +106,15 @@ describe('compile/scale/assemble', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'y', type: 'quantitative'}
-        }
+          x: {field: 'y', type: 'quantitative'},
+        },
       });
 
       // mock renaming
       model.renameSignal('height', 'new_height');
 
       expect(
-        assembleScaleRange([0, SignalRefWrapper.fromName(model.getSignalName.bind(model), 'height')], 'x', 'x')
+        assembleScaleRange([0, SignalRefWrapper.fromName(model.getSignalName.bind(model), 'height')], 'x', 'x'),
       ).toEqual([0, {signal: 'new_height'}]);
     });
   });

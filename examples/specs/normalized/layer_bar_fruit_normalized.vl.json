@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Vega-Lite version of bar chart from https://observablehq.com/@d3/learn-d3-scales.",
   "width": 400,
   "data": {

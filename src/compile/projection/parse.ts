@@ -1,15 +1,15 @@
 import type {SignalRef} from 'vega';
 import {hasOwnProperty} from 'vega-util';
-import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
-import {getFieldOrDatumDef} from '../../channeldef';
-import {DataSourceType} from '../../data';
-import {replaceExprRef} from '../../expr';
-import {PROJECTION_PROPERTIES} from '../../projection';
-import {GEOJSON} from '../../type';
-import {deepEqual, duplicate, every} from '../../util';
-import {isUnitModel, Model} from '../model';
-import {UnitModel} from '../unit';
-import {ProjectionComponent} from './component';
+import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel.js';
+import {getFieldOrDatumDef} from '../../channeldef.js';
+import {DataSourceType} from '../../data.js';
+import {replaceExprRef} from '../../expr.js';
+import {PROJECTION_PROPERTIES} from '../../projection.js';
+import {GEOJSON} from '../../type.js';
+import {deepEqual, duplicate, every} from '../../util.js';
+import {isUnitModel, Model} from '../model.js';
+import {UnitModel} from '../unit.js';
+import {ProjectionComponent} from './component.js';
 
 export function parseProjection(model: Model) {
   model.component.projection = isUnitModel(model) ? parseUnitProjection(model) : parseNonUnitProjections(model);
@@ -26,10 +26,10 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
       model.projectionName(true),
       {
         ...replaceExprRef(model.config.projection),
-        ...proj
+        ...proj,
       },
       size,
-      data
+      data,
     );
 
     if (!projComp.get('type')) {
@@ -49,18 +49,18 @@ function gatherFitData(model: UnitModel) {
 
   for (const posssiblePair of [
     [LONGITUDE, LATITUDE],
-    [LONGITUDE2, LATITUDE2]
+    [LONGITUDE2, LATITUDE2],
   ]) {
     if (getFieldOrDatumDef(encoding[posssiblePair[0]]) || getFieldOrDatumDef(encoding[posssiblePair[1]])) {
       data.push({
-        signal: model.getName(`geojson_${data.length}`)
+        signal: model.getName(`geojson_${data.length}`),
       });
     }
   }
 
   if (model.channelHasField(SHAPE) && model.typedFieldDef(SHAPE).type === GEOJSON) {
     data.push({
-      signal: model.getName(`geojson_${data.length}`)
+      signal: model.getName(`geojson_${data.length}`),
     });
   }
 
@@ -73,7 +73,7 @@ function gatherFitData(model: UnitModel) {
 }
 
 function mergeIfNoConflict(first: ProjectionComponent, second: ProjectionComponent): ProjectionComponent {
-  const allPropertiesShared = every(PROJECTION_PROPERTIES, prop => {
+  const allPropertiesShared = every(PROJECTION_PROPERTIES, (prop) => {
     // neither has the property
     if (!hasOwnProperty(first.explicit, prop) && !hasOwnProperty(second.explicit, prop)) {
       return true;
@@ -118,7 +118,7 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
   }
 
   // analyze parsed projections, attempt to merge
-  const mergable = every(model.children, child => {
+  const mergable = every(model.children, (child) => {
     const projection = child.component.projection;
     if (!projection) {
       // child layer does not use a projection
@@ -144,7 +144,7 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
       name,
       nonUnitProjection.specifiedProjection,
       nonUnitProjection.size,
-      duplicate(nonUnitProjection.data)
+      duplicate(nonUnitProjection.data),
     );
 
     // rename and assign all others as merged

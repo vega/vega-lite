@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "An interactive scatter plot of global health statistics by country and year.",
   "data": {"url": "data/gapminder.json"},
   "width": 800,

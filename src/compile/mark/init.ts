@@ -1,29 +1,19 @@
 import {Orientation, SignalRef} from 'vega';
-import {isBinned, isBinning} from '../../bin';
-import {isFieldDef, isNumericDataDef, isUnbinnedQuantitativeFieldOrDatumDef, isTypedFieldDef} from '../../channeldef';
-import {Config} from '../../config';
-import {Encoding, isAggregate} from '../../encoding';
-import {replaceExprRef} from '../../expr';
-import * as log from '../../log';
+import {isBinned, isBinning} from '../../bin.js';
 import {
-  AREA,
-  BAR,
-  BAR_CORNER_RADIUS_INDEX as BAR_CORNER_RADIUS_END_INDEX,
-  CIRCLE,
-  IMAGE,
-  LINE,
-  Mark,
-  MarkDef,
-  POINT,
-  RECT,
-  RULE,
-  SQUARE,
-  TEXT,
-  TICK
-} from '../../mark';
-import {QUANTITATIVE, TEMPORAL} from '../../type';
-import {contains, getFirstDefined} from '../../util';
-import {getMarkConfig, getMarkPropOrConfig} from '../common';
+  isFieldDef,
+  isNumericDataDef,
+  isUnbinnedQuantitativeFieldOrDatumDef,
+  isTypedFieldDef,
+} from '../../channeldef.js';
+import {Config} from '../../config.js';
+import {Encoding, isAggregate} from '../../encoding.js';
+import {replaceExprRef} from '../../expr.js';
+import * as log from '../../log/index.js';
+import {AREA, BAR, CIRCLE, IMAGE, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark.js';
+import {QUANTITATIVE, TEMPORAL} from '../../type.js';
+import {contains, getFirstDefined} from '../../util.js';
+import {getMarkConfig, getMarkPropOrConfig} from '../common.js';
 
 export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>, config: Config<SignalRef>) {
   // FIXME: markDef expects that exprRefs are replaced recursively but replaceExprRef only replaces the top level
@@ -36,32 +26,15 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
     log.warn(log.message.orientOverridden(markDef.orient, specifiedOrient));
   }
 
-  if (markDef.type === 'bar' && markDef.orient) {
-    const cornerRadiusEnd = getMarkPropOrConfig('cornerRadiusEnd', markDef, config);
-    if (cornerRadiusEnd !== undefined) {
-      const newProps =
-        (markDef.orient === 'horizontal' && encoding.x2) || (markDef.orient === 'vertical' && encoding.y2)
-          ? ['cornerRadius']
-          : BAR_CORNER_RADIUS_END_INDEX[markDef.orient];
-
-      for (const newProp of newProps) {
-        markDef[newProp] = cornerRadiusEnd;
-      }
-
-      if (markDef.cornerRadiusEnd !== undefined) {
-        delete markDef.cornerRadiusEnd; // no need to keep the original cap cornerRadius
-      }
-    }
-  }
-
   // set opacity and filled if not specified in mark config
   const specifiedOpacity = getMarkPropOrConfig('opacity', markDef, config);
-  const specifiedfillOpacity = getMarkPropOrConfig('fillOpacity', markDef, config);
-  if (specifiedOpacity === undefined && specifiedfillOpacity === undefined) {
+  const specifiedFillOpacity = getMarkPropOrConfig('fillOpacity', markDef, config);
+  if (specifiedOpacity === undefined && specifiedFillOpacity === undefined) {
     markDef.opacity = opacity(markDef.type, encoding);
   }
 
-  // set cursor, which should be pointer if href channel is present unless otherwise specified
+  // Set cursor, which should be pointer if href channel is present unless otherwise specified.
+  // We will also set the cursor in parse via getMarkGroup since we need access to the selections.
   const specifiedCursor = getMarkPropOrConfig('cursor', markDef, config);
   if (specifiedCursor === undefined) {
     markDef.cursor = cursor(markDef, encoding, config);
@@ -77,12 +50,11 @@ function cursor(markDef: MarkDef<Mark, SignalRef>, encoding: Encoding<string>, c
   return markDef.cursor;
 }
 
+export const DEFAULT_REDUCED_OPACITY = 0.7;
+
 function opacity(mark: Mark, encoding: Encoding<string>) {
-  if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
-    // point-based marks
-    if (!isAggregate(encoding)) {
-      return 0.7;
-    }
+  if (contains([POINT, TICK, CIRCLE, SQUARE], mark) && !isAggregate(encoding)) {
+    return DEFAULT_REDUCED_OPACITY;
   }
   return undefined;
 }
@@ -101,7 +73,6 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     case POINT:
     case CIRCLE:
     case SQUARE:
-    case TEXT:
     case RECT:
     case IMAGE:
       // orient is meaningless for these marks.
@@ -111,6 +82,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
   const {x, y, x2, y2} = encoding;
 
   switch (mark) {
+    case TEXT:
     case BAR:
       if (isFieldDef(x) && (isBinned(x.bin) || (isFieldDef(y) && y.aggregate && !x.aggregate))) {
         return 'vertical';

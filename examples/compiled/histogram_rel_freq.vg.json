@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Relative frequency histogram. The data is binned with first transform. The number of values per bin and the total number are calculated in the second and third transform to calculate the relative frequency in the last transformation step.",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -66,10 +66,10 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Horsepower\": !isValid(datum[\"bin_Horsepwoer\"]) || !isFinite(+datum[\"bin_Horsepwoer\"]) ? \"null\" : format(datum[\"bin_Horsepwoer\"], \"\") + \" – \" + format(datum[\"bin_Horsepwoer_end\"], \"\"), \"Relative Frequency\": format(datum[\"PercentOfTotal\"], \".1~%\")}"
           },
-          "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
             "signal": "\"Horsepower: \" + (!isValid(datum[\"bin_Horsepwoer\"]) || !isFinite(+datum[\"bin_Horsepwoer\"]) ? \"null\" : format(datum[\"bin_Horsepwoer\"], \"\") + \" – \" + format(datum[\"bin_Horsepwoer_end\"], \"\")) + \"; Relative Frequency: \" + (format(datum[\"PercentOfTotal\"], \".1~%\"))"
@@ -103,6 +103,7 @@
         "fields": ["bin_Horsepwoer", "bin_Horsepwoer_end"]
       },
       "range": [0, {"signal": "width"}],
+      "bins": {"step": 60},
       "zero": false
     },
     {

@@ -1,8 +1,12 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "build",
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "noEmit": false,
+
+    "declarationDir": "build",
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,

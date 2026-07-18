@@ -1,13 +1,19 @@
 import type {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
-import {FieldName, valueExpr, vgField} from './channeldef';
-import {DateTime} from './datetime';
-import {ExprRef} from './expr';
-import {LogicalComposition} from './logical';
-import {ParameterName} from './parameter';
-import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams, BinnedTimeUnit} from './timeunit';
-import {stringify} from './util';
-import {isSignalRef} from './vega.schema';
+import {FieldName, valueExpr, vgField} from './channeldef.js';
+import {DateTime} from './datetime.js';
+import {ExprRef, replaceExprRef} from './expr.js';
+import {LogicalComposition} from './logical.js';
+import {ParameterName} from './parameter.js';
+import {
+  fieldExpr as timeUnitFieldExpr,
+  normalizeTimeUnit,
+  TimeUnit,
+  TimeUnitParams,
+  BinnedTimeUnit,
+} from './timeunit.js';
+import {hasProperty, stringify} from './util.js';
+import {isSignalRef} from './vega.schema.js';
 
 export type Predicate =
   // a) FieldPredicate (but we don't type FieldFilter here so the schema has no nesting
@@ -35,6 +41,23 @@ export type FieldPredicate =
   | FieldOneOfPredicate
   | FieldValidPredicate;
 
+/**
+ * A field predicate without `field` and `timeUnit`, which are implied by the tooltip field definition that the filter is defined on and must not be specified.
+ */
+type TooltipPredicate<P extends FieldPredicate> = Omit<P, 'field' | 'timeUnit'>;
+
+export type TooltipFieldPredicate =
+  | TooltipPredicate<FieldEqualPredicate>
+  | TooltipPredicate<FieldLTPredicate>
+  | TooltipPredicate<FieldGTPredicate>
+  | TooltipPredicate<FieldLTEPredicate>
+  | TooltipPredicate<FieldGTEPredicate>
+  | TooltipPredicate<FieldRangePredicate>
+  | TooltipPredicate<FieldOneOfPredicate>
+  | TooltipPredicate<FieldValidPredicate>;
+
+export type TooltipFieldFilter = LogicalComposition<TooltipFieldPredicate>;
+
 export interface ParameterPredicate {
   /**
    * Filter using a parameter name.
@@ -48,7 +71,7 @@ export interface ParameterPredicate {
 }
 
 export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is ParameterPredicate {
-  return predicate?.['param'];
+  return hasProperty(predicate, 'param');
 }
 
 export interface FieldPredicateBase {
@@ -167,7 +190,7 @@ export function isFieldValidPredicate(predicate: any): predicate is FieldValidPr
 }
 
 export function isFieldPredicate(
-  predicate: Predicate
+  predicate: Predicate,
 ): predicate is
   | FieldOneOfPredicate
   | FieldEqualPredicate
@@ -192,20 +215,24 @@ function predicateValueExpr(v: number | string | boolean | DateTime | ExprRef | 
 }
 
 function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], timeUnit: TimeUnit) {
-  return vals.map(v => predicateValueExpr(v, timeUnit));
+  return vals.map((v) => predicateValueExpr(v, timeUnit));
 }
 
-// This method is used by Voyager. Do not change its behavior without changing Voyager.
-export function fieldFilterExpression(predicate: FieldPredicate, useInRange = true) {
+// This method is used by Voyager. Do not change its default behavior without changing Voyager.
+export function fieldFilterExpression(
+  predicate: FieldPredicate,
+  useInRange = true,
+  expr: 'datum' | 'datum.datum' = 'datum',
+) {
   const {field} = predicate;
   const normalizedTimeUnit = normalizeTimeUnit(predicate.timeUnit);
   const {unit, binned} = normalizedTimeUnit || {};
-  const rawFieldExpr = vgField(predicate, {expr: 'datum'});
+  const rawFieldExpr = vgField(predicate, {expr});
   const fieldExpr = unit
     ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
       // TODO: support utc
-      `time(${!binned ? timeUnitFieldExpr(unit, field) : rawFieldExpr})`
+      `time(${!binned ? timeUnitFieldExpr(unit, field, {expr}) : rawFieldExpr})`
     : rawFieldExpr;
 
   if (isFieldEqualPredicate(predicate)) {
@@ -227,14 +254,12 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
   } else if (isFieldValidPredicate(predicate)) {
     return fieldValidPredicate(fieldExpr, predicate.valid);
   } else if (isFieldRangePredicate(predicate)) {
-    const {range} = predicate;
+    const {range} = replaceExprRef(predicate);
     const lower = isSignalRef(range) ? {signal: `${range.signal}[0]`} : range[0];
     const upper = isSignalRef(range) ? {signal: `${range.signal}[1]`} : range[1];
 
     if (lower !== null && upper !== null && useInRange) {
-      return (
-        'inrange(' + fieldExpr + ', [' + predicateValueExpr(lower, unit) + ', ' + predicateValueExpr(upper, unit) + '])'
-      );
+      return `inrange(${fieldExpr}, [${predicateValueExpr(lower, unit)}, ${predicateValueExpr(upper, unit)}])`;
     }
 
     const exprs = [];
@@ -264,7 +289,7 @@ export function normalizePredicate(f: Predicate): Predicate {
   if (isFieldPredicate(f) && f.timeUnit) {
     return {
       ...f,
-      timeUnit: normalizeTimeUnit(f.timeUnit)
+      timeUnit: normalizeTimeUnit(f.timeUnit),
     };
   }
   return f;

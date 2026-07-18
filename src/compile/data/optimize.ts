@@ -1,10 +1,10 @@
-import {DataComponent} from '.';
-import * as log from '../../log';
-import {Model} from '../model';
-import {DataFlowNode} from './dataflow';
-import {Optimizer} from './optimizer';
-import * as optimizers from './optimizers';
-import {moveFacetDown} from './subtree';
+import {DataComponent} from './index.js';
+import * as log from '../../log/index.js';
+import {Model} from '../model.js';
+import {DataFlowNode} from './dataflow.js';
+import {Optimizer} from './optimizer.js';
+import * as optimizers from './optimizers.js';
+import {moveFacetDown} from './subtree.js';
 
 export const FACET_SCALE_PREFIX = 'scale_';
 export const MAX_OPTIMIZATION_RUNS = 5;
@@ -53,11 +53,11 @@ function optimizationDataflowHelper(dataComponent: DataComponent, model: Model, 
   modified = runOptimizer(new optimizers.RemoveUnnecessaryIdentifierNodes(model), roots) || modified;
 
   // remove source nodes that don't have any children because they also don't have output nodes
-  roots = roots.filter(r => r.numChildren() > 0);
+  roots = roots.filter((r) => r.numChildren() > 0);
 
   modified = runOptimizer(new optimizers.RemoveUnusedSubtrees(), roots) || modified;
 
-  roots = roots.filter(r => r.numChildren() > 0);
+  roots = roots.filter((r) => r.numChildren() > 0);
 
   if (!firstPass) {
     // Only run these optimizations after the optimizer has moved down the facet node.

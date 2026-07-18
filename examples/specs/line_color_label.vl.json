@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Multi-series line chart with labels.",
   "data": {"url": "data/stocks.csv"},
   "transform": [{"filter": "datum.symbol!=='IBM'"}],

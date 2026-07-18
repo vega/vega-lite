@@ -1,6 +1,6 @@
-import {Y} from '../../../src/channel';
-import {parseLayerAxes, parseUnitAxes} from '../../../src/compile/axis/parse';
-import {parseLayerModel, parseUnitModelWithScale} from '../../util';
+import {Y} from '../../../src/channel.js';
+import {parseLayerAxes, parseUnitAxes} from '../../../src/compile/axis/parse.js';
+import {parseLayerModel, parseUnitModelWithScale} from '../../util.js';
 
 describe('Axis', () => {
   // TODO: move this to model.test.ts
@@ -9,17 +9,17 @@ describe('Axis', () => {
       const model1 = parseUnitModelWithScale({
         mark: 'bar',
         encoding: {
-          y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}
+          y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
         },
-        data: {url: 'data/movies.json'}
+        data: {url: 'data/movies.json'},
       });
 
       const model2 = parseUnitModelWithScale({
         mark: 'bar',
         encoding: {
-          y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}
+          y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'},
         },
-        data: {url: 'data/movies.json'}
+        data: {url: 'data/movies.json'},
       });
       expect(model1.axis(Y)).toEqual(model2.axis(Y));
     });
@@ -32,9 +32,9 @@ describe('Axis', () => {
           x: {
             field: 'a',
             type: 'quantitative',
-            axis: {grid: true, gridColor: 'blue', gridWidth: 20}
-          }
-        }
+            axis: {grid: true, gridColor: 'blue', gridWidth: 20},
+          },
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -47,10 +47,10 @@ describe('Axis', () => {
         encoding: {
           x: {
             field: 'a',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
-        config: {axisQuantitative: {labelAlign: 'right'}}
+        config: {axisQuantitative: {labelAlign: 'right'}},
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -63,10 +63,10 @@ describe('Axis', () => {
         encoding: {
           x: {
             field: 'a',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
-        config: {axisX: {grid: true, orient: 'right', tickCount: 20, labelExpr: 'abc'}}
+        config: {axisX: {grid: true, orient: 'right', tickCount: 20, labelExpr: 'abc'}},
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -82,29 +82,29 @@ describe('Axis', () => {
         encoding: {
           x: {
             field: 'a',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
         config: {
           axisX: {
             gridDash: {
               condition: {
                 test: {field: 'value', timeUnit: 'monthdate', equal: {month: 1, date: 1}},
-                value: null
+                value: null,
               },
-              value: [2, 2]
-            }
-          }
-        }
+              value: [2, 2],
+            },
+          },
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].implicit.gridDash).toEqual({
         condition: {
           test: {field: 'value', timeUnit: 'monthdate', equal: {month: 1, date: 1}},
-          value: null
+          value: null,
         },
-        value: [2, 2]
+        value: [2, 2],
       });
     });
 
@@ -115,14 +115,14 @@ describe('Axis', () => {
           x: {
             field: 'a',
             type: 'quantitative',
-            axis: {style: 'foo'}
-          }
+            axis: {style: 'foo'},
+          },
         },
         config: {
           style: {
-            foo: {labelColor: 'red'}
-          }
-        }
+            foo: {labelColor: 'red'},
+          },
+        },
       });
 
       const axisComponent = parseUnitAxes(model);
@@ -136,15 +136,15 @@ describe('Axis', () => {
         encoding: {
           x: {
             field: 'a',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
         config: {
           axis: {style: 'foo'},
           style: {
-            foo: {labelColor: 'red'}
-          }
-        }
+            foo: {labelColor: 'red'},
+          },
+        },
       });
 
       const axisComponent = parseUnitAxes(model);
@@ -158,12 +158,12 @@ describe('Axis', () => {
         encoding: {
           x: {
             field: 'a',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
         config: {
-          axisXQuantitative: {labelColor: 'red'}
-        }
+          axisXQuantitative: {labelColor: 'red'},
+        },
       });
 
       const axisComponent = parseUnitAxes(model);
@@ -177,16 +177,16 @@ describe('Axis', () => {
         encoding: {
           x: {
             field: 'a',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
         config: {
           axis: {style: 'foo'},
           axisX: {labelColor: 'blue'},
           style: {
-            foo: {labelColor: 'red'}
-          }
-        }
+            foo: {labelColor: 'red'},
+          },
+        },
       });
 
       const axisComponent = parseUnitAxes(model);
@@ -202,9 +202,9 @@ describe('Axis', () => {
           x: {
             field: 'a',
             type: 'quantitative',
-            axis: {grid: false, gridColor: 'blue', gridWidth: 20}
-          }
-        }
+            axis: {grid: false, gridColor: 'blue', gridWidth: 20},
+          },
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -217,13 +217,13 @@ describe('Axis', () => {
         encoding: {
           longitude: {
             field: 'a',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           latitude: {
             field: 'b',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toBeUndefined();
@@ -236,10 +236,10 @@ describe('Axis', () => {
         encoding: {
           x: {
             field: 'a',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
-        config: {axisX: {grid: false}}
+        config: {axisX: {grid: false}},
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -252,10 +252,10 @@ describe('Axis', () => {
         encoding: {
           x: {
             field: 'a',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
-        config: {axis: {grid: false}}
+        config: {axis: {grid: false}},
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -270,9 +270,9 @@ describe('Axis', () => {
             x: {
               field: 'a',
               type: 'quantitative',
-              axis: {title: val as any} // Need to cast as false is not valid, but we want to fall back gracefully
-            }
-          }
+              axis: {title: val as any}, // Need to cast as false is not valid, but we want to fall back gracefully
+            },
+          },
         });
         const axisComponent = parseUnitAxes(model);
         expect(axisComponent['x']).toHaveLength(1);
@@ -288,9 +288,9 @@ describe('Axis', () => {
             x: {
               field: 'a',
               type: 'quantitative',
-              title: val as any // Need to cast as false is not valid, but we want to fall back gracefully
-            }
-          }
+              title: val as any, // Need to cast as false is not valid, but we want to fall back gracefully
+            },
+          },
         });
         const axisComponent = parseUnitAxes(model);
         expect(axisComponent['x']).toHaveLength(1);
@@ -305,9 +305,9 @@ describe('Axis', () => {
           x: {
             field: 'a',
             type: 'quantitative',
-            title: 'foo'
-          }
-        }
+            title: 'foo',
+          },
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -325,12 +325,12 @@ describe('Axis', () => {
               encoding: {
                 labels: {
                   dx: {value: {signal: 'a'}},
-                  dy: {value: 2}
-                }
-              }
-            }
-          }
-        }
+                  dy: {value: 2},
+                },
+              },
+            },
+          },
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -338,9 +338,9 @@ describe('Axis', () => {
         labels: {
           update: {
             dx: {signal: 'a'},
-            dy: {value: 2}
-          }
-        }
+            dy: {value: 2},
+          },
+        },
       });
     });
 
@@ -351,13 +351,13 @@ describe('Axis', () => {
           x: {
             field: 'a',
             type: 'quantitative',
-            title: 'foo'
+            title: 'foo',
           },
           x2: {
             field: 'b',
-            title: 'bar'
-          }
-        }
+            title: 'bar',
+          },
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -370,13 +370,13 @@ describe('Axis', () => {
         encoding: {
           x: {
             field: 'a',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           x2: {
             field: 'b',
-            title: 'bar'
-          }
-        }
+            title: 'bar',
+          },
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -388,8 +388,8 @@ describe('Axis', () => {
         mark: 'rule',
         encoding: {
           x: {field: 'a', type: 'quantitative'},
-          x2: {field: 'a2'}
-        }
+          x2: {field: 'a2'},
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -400,13 +400,13 @@ describe('Axis', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'quarter'}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'quarter'},
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].get('format')).toEqual({
-        signal: 'timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+        signal: 'timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})',
       });
     });
 
@@ -414,8 +414,8 @@ describe('Axis', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'ordinal', timeUnit: 'month'}
-        }
+          x: {field: 'a', type: 'ordinal', timeUnit: 'month'},
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -426,9 +426,9 @@ describe('Axis', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'ordinal', timeUnit: 'month', axis: {format: 'x', formatType: 'foo'}}
+          x: {field: 'a', type: 'ordinal', timeUnit: 'month', axis: {format: 'x', formatType: 'foo'}},
         },
-        config: {customFormatTypes: true}
+        config: {customFormatTypes: true},
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
@@ -440,13 +440,13 @@ describe('Axis', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'yearquartermonth'}
-        }
+          x: {field: 'a', type: 'temporal', timeUnit: 'yearquartermonth'},
+        },
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].get('format')).toEqual({
-        signal: 'timeUnitSpecifier(["year","quarter","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+        signal: 'timeUnitSpecifier(["year","quarter","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})',
       });
     });
   });
@@ -460,9 +460,9 @@ describe('Axis', () => {
             y: {
               aggregate: 'mean',
               field: 'a',
-              type: 'quantitative'
-            }
-          }
+              type: 'quantitative',
+            },
+          },
         },
         {
           mark: 'line',
@@ -470,16 +470,16 @@ describe('Axis', () => {
             y: {
               aggregate: 'mean',
               field: 'a',
-              type: 'quantitative'
+              type: 'quantitative',
             },
             x: {
               timeUnit: 'month',
               type: 'temporal',
-              field: 'date'
-            }
-          }
-        }
-      ]
+              field: 'date',
+            },
+          },
+        },
+      ],
     });
     globalRuleOverlay.parseScale();
     globalRuleOverlay.parseLayoutSize();
@@ -507,10 +507,10 @@ describe('Axis', () => {
               y: {
                 aggregate: 'max',
                 field: 'Horsepower',
-                type: 'quantitative'
+                type: 'quantitative',
               },
-              color: {value: 'darkred'}
-            }
+              color: {value: 'darkred'},
+            },
           },
           {
             data: {url: 'data/cars.json'},
@@ -520,11 +520,11 @@ describe('Axis', () => {
               y: {
                 aggregate: 'min',
                 field: 'Horsepower',
-                type: 'quantitative'
-              }
-            }
-          }
-        ]
+                type: 'quantitative',
+              },
+            },
+          },
+        ],
       });
       model.parseScale();
       parseLayerAxes(model);
@@ -532,7 +532,7 @@ describe('Axis', () => {
 
       expect(axisComponents.y[0].get('title')).toEqual([
         {aggregate: 'max', field: 'Horsepower'},
-        {aggregate: 'min', field: 'Horsepower'}
+        {aggregate: 'min', field: 'Horsepower'},
       ]);
     });
 
@@ -548,10 +548,10 @@ describe('Axis', () => {
                 aggregate: 'max',
                 field: 'Horsepower',
                 type: 'quantitative',
-                title: 'HP'
+                title: 'HP',
               },
-              color: {value: 'darkred'}
-            }
+              color: {value: 'darkred'},
+            },
           },
           {
             data: {url: 'data/cars.json'},
@@ -562,11 +562,11 @@ describe('Axis', () => {
                 aggregate: 'min',
                 field: 'Horsepower',
                 type: 'quantitative',
-                title: null // remove the title entirely
-              }
-            }
-          }
-        ]
+                title: null, // remove the title entirely
+              },
+            },
+          },
+        ],
       });
       model.parseScale();
       parseLayerAxes(model);

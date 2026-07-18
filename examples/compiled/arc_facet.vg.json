@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "data": [
@@ -36,8 +36,8 @@
     }
   ],
   "signals": [
-    {"name": "child_width", "value": 200},
-    {"name": "child_height", "value": 200}
+    {"name": "child_width", "value": 300},
+    {"name": "child_height", "value": 300}
   ],
   "layout": {
     "padding": 20,
@@ -93,7 +93,7 @@
             "update": {
               "fill": {"scale": "color", "field": "site"},
               "description": {
-                "signal": "\"Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; site: \" + (isValid(datum[\"site\"]) ? datum[\"site\"] : \"\"+datum[\"site\"])"
+                "signal": "\"Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; site: \" + (isValid(datum[\"site\"]) ? isArray(datum[\"site\"]) ? join(datum[\"site\"], ' ') : datum[\"site\"] : \"\"+datum[\"site\"])"
               },
               "x": {"signal": "child_width", "mult": 0.5},
               "y": {"signal": "child_height", "mult": 0.5},

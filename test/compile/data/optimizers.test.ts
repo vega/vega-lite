@@ -1,11 +1,11 @@
-import {ParseNode} from '../../../src/compile/data/formatparse';
-import {ImputeNode} from '../../../src/compile/data/impute';
-import {MergeIdenticalNodes, MergeParse, MergeTimeUnits} from '../../../src/compile/data/optimizers';
-import {TimeUnitComponent, TimeUnitNode} from '../../../src/compile/data/timeunit';
-import {Transform} from '../../../src/transform';
-import {hash} from '../../../src/util';
-import {FilterNode} from '../../../src/compile/data/filter';
-import {PlaceholderDataFlowNode} from './util';
+import {ParseNode} from '../../../src/compile/data/formatparse.js';
+import {ImputeNode} from '../../../src/compile/data/impute.js';
+import {MergeIdenticalNodes, MergeParse, MergeTimeUnits} from '../../../src/compile/data/optimizers.js';
+import {TimeUnitComponent, TimeUnitNode} from '../../../src/compile/data/timeunit.js';
+import {Transform} from '../../../src/transform.js';
+import {hash} from '../../../src/util.js';
+import {FilterNode} from '../../../src/compile/data/filter.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/optimizer', () => {
   describe('mergeIdenticalNodes', () => {
@@ -14,7 +14,7 @@ describe('compile/data/optimizer', () => {
         impute: 'y',
         key: 'x',
         method: 'value',
-        value: 200
+        value: 200,
       };
       const root = new PlaceholderDataFlowNode(null, 'root');
       const transform1 = new ImputeNode(root, transform);
@@ -33,7 +33,7 @@ describe('compile/data/optimizer', () => {
         impute: 'y',
         key: 'x',
         method: 'value',
-        value: 200
+        value: 200,
       };
       const root = new PlaceholderDataFlowNode(null, 'root');
       const transform1 = new ImputeNode(root, transform);
@@ -89,17 +89,17 @@ describe('compile/data/optimizer', () => {
       const c1: TimeUnitComponent = {
         as: 'a_yr',
         timeUnit: 'year',
-        field: 'a'
+        field: 'a',
       };
       const c2: TimeUnitComponent = {
         as: 'b_yr',
         timeUnit: 'year',
-        field: 'b'
+        field: 'b',
       };
       const c3: TimeUnitComponent = {
         as: 'c_yr',
         timeUnit: 'year',
-        field: 'c'
+        field: 'c',
       };
 
       new TimeUnitNode(parent, {[hash(c1)]: c1, [hash(c2)]: c2});
@@ -117,7 +117,7 @@ describe('compile/data/optimizer', () => {
       expect(mergedNode.assemble()).toEqual([
         {field: 'a', as: ['a_yr', 'a_yr_end'], units: ['year'], type: 'timeunit'},
         {field: 'c', as: ['c_yr', 'c_yr_end'], units: ['year'], type: 'timeunit'},
-        {field: 'b', as: ['b_yr', 'b_yr_end'], units: ['year'], type: 'timeunit'}
+        {field: 'b', as: ['b_yr', 'b_yr_end'], units: ['year'], type: 'timeunit'},
       ]);
     });
   });

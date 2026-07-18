@@ -1,7 +1,7 @@
-import {normalize} from '../../src';
-import {NormalizerParams} from '../../src/normalize';
-import {SelectionCompatibilityNormalizer} from '../../src/normalize/selectioncompat';
-import {NormalizedUnitSpec} from '../../src/spec';
+import {normalize} from '../../src/index.js';
+import {NormalizerParams} from '../../src/normalize/index.js';
+import {SelectionCompatibilityNormalizer} from '../../src/normalize/selectioncompat.js';
+import {NormalizedUnitSpec} from '../../src/spec/index.js';
 
 const normParams: NormalizerParams = {config: {}, emptySelections: {}, selectionPredicates: {}};
 const selectionCompatNormalizer = new SelectionCompatibilityNormalizer();
@@ -10,8 +10,8 @@ const unit: NormalizedUnitSpec = {
   mark: 'point',
   encoding: {
     x: {field: 'Horsepower', type: 'quantitative'},
-    y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-  }
+    y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+  },
 };
 
 describe('SelectionCompatibilityNormalizer', () => {
@@ -24,9 +24,9 @@ describe('SelectionCompatibilityNormalizer', () => {
           fields: ['Cylinders', 'Year'],
           init: {Cylinders: 4, Year: 1977},
           bind: {input: 'range', step: 1},
-          nearest: true
-        }
-      }
+          nearest: true,
+        },
+      },
     };
 
     const normedUnit = selectionCompatNormalizer.mapUnit(spec, normParams);
@@ -39,7 +39,7 @@ describe('SelectionCompatibilityNormalizer', () => {
       type: 'point',
       fields: ['Cylinders', 'Year'],
       toggle: false,
-      nearest: true
+      nearest: true,
     });
   });
 
@@ -51,9 +51,9 @@ describe('SelectionCompatibilityNormalizer', () => {
           type: 'multi',
           fields: ['Origin'],
           init: {Origin: 'Japan'},
-          bind: 'legend'
-        }
-      }
+          bind: 'legend',
+        },
+      },
     };
 
     const normedUnit = selectionCompatNormalizer.mapUnit(spec, normParams);
@@ -64,7 +64,7 @@ describe('SelectionCompatibilityNormalizer', () => {
     expect(normedUnit.params[0]).toHaveProperty('bind', 'legend');
     expect(normedUnit.params[0]).toHaveProperty('select', {
       type: 'point',
-      fields: ['Origin']
+      fields: ['Origin'],
     });
   });
 
@@ -74,13 +74,13 @@ describe('SelectionCompatibilityNormalizer', () => {
       selection: {
         brush: {
           type: 'interval',
-          init: {x: [55, 160], y: [13, 37]}
+          init: {x: [55, 160], y: [13, 37]},
         },
         grid: {
           type: 'interval',
-          bind: 'scales'
-        }
-      }
+          bind: 'scales',
+        },
+      },
     };
 
     const normedUnit = selectionCompatNormalizer.mapUnit(spec, normParams);
@@ -98,12 +98,12 @@ describe('SelectionCompatibilityNormalizer', () => {
       transform: [
         {filter: {selection: 'foo'}},
         {filter: {selection: {and: ['foo', 'bar']}}},
-        {filter: {or: [{selection: {not: 'foo'}}, 'false']}}
+        {filter: {or: [{selection: {not: 'foo'}}, 'false']}},
       ],
       selection: {
         foo: {type: 'single', empty: 'all'},
         bar: {type: 'multi', empty: 'none'},
-        brush: {type: 'interval'}
+        brush: {type: 'interval'},
       },
       mark: 'line',
       encoding: {
@@ -112,38 +112,38 @@ describe('SelectionCompatibilityNormalizer', () => {
           type: 'quantitative',
           condition: {
             selection: 'bar',
-            value: 5
-          }
+            value: 5,
+          },
         },
         y: {
           value: 10,
           condition: {
             selection: {or: ['foo', 'brush']},
             field: 'Miles_per_Gallon',
-            type: 'quantitative'
-          }
+            type: 'quantitative',
+          },
         },
         color: {
           condition: {
             test: {and: [{selection: {not: 'foo'}}, 'true']},
             field: 'Cylinders',
-            type: 'ordinal'
+            type: 'ordinal',
           },
-          value: 'grey'
+          value: 'grey',
         },
         strokeWidth: {
           condition: [
             {
               test: {
-                and: [{selection: 'foo'}, 'length(data("foo_store"))']
+                and: [{selection: 'foo'}, 'length(data("foo_store"))'],
               },
-              value: 2
+              value: 2,
             },
-            {selection: 'bar', value: 1}
+            {selection: 'bar', value: 1},
           ],
-          value: 0
-        }
-      }
+          value: 0,
+        },
+      },
     };
 
     const normalized = normalize(spec) as any;
@@ -154,32 +154,32 @@ describe('SelectionCompatibilityNormalizer', () => {
           filter: {
             and: [
               {param: 'foo', empty: true},
-              {param: 'bar', empty: false}
-            ]
-          }
+              {param: 'bar', empty: false},
+            ],
+          },
         },
-        {filter: {or: [{not: {param: 'foo', empty: true}}, 'false']}}
-      ])
+        {filter: {or: [{not: {param: 'foo', empty: true}}, 'false']}},
+      ]),
     );
     expect(normalized.encoding.x.condition.test).toEqual({param: 'bar', empty: false});
     expect(normalized.encoding.y.condition.test).toEqual({
       or: [
         {param: 'foo', empty: true},
-        {param: 'brush', empty: true}
-      ]
+        {param: 'brush', empty: true},
+      ],
     });
     expect(normalized.encoding.color.condition.test).toEqual({
-      and: [{not: {param: 'foo', empty: true}}, 'true']
+      and: [{not: {param: 'foo', empty: true}}, 'true'],
     });
     expect(normalized.encoding.strokeWidth.condition).toEqual([
       {
         value: 2,
-        test: {and: [{param: 'foo', empty: true}, 'length(data("foo_store"))']}
+        test: {and: [{param: 'foo', empty: true}, 'length(data("foo_store"))']},
       },
       {
         value: 1,
-        test: {param: 'bar', empty: false}
-      }
+        test: {param: 'bar', empty: false},
+      },
     ]);
 
     // And make sure we didn't delete any properties by mistake
@@ -200,29 +200,29 @@ describe('SelectionCompatibilityNormalizer', () => {
       transform: [
         {bin: true, field: 'Horsepower', as: 'bin_HP'},
         {bin: {extent: {selection: 'foo'}, nice: true}, field: 'Miles_per_Gallon', as: 'bin_MPG'},
-        {bin: {extent: {selection: 'bar', field: 'Accl'}, nice: false}, field: 'Acceleration', as: 'bin_Accl'}
+        {bin: {extent: {selection: 'bar', field: 'Accl'}, nice: false}, field: 'Acceleration', as: 'bin_Accl'},
       ],
       selection: {
         foo: {type: 'single'},
         bar: {type: 'multi'},
-        brush: {type: 'interval'}
+        brush: {type: 'interval'},
       },
       mark: 'line',
       encoding: {
         x: {
           field: 'Horsepower',
           type: 'quantitative',
-          bin: true
+          bin: true,
         },
         y: {
           field: 'Miles_per_Gallon',
           type: 'quantitative',
-          bin: {extent: {selection: 'foo'}, nice: true}
+          bin: {extent: {selection: 'foo'}, nice: true},
         },
         color: {
           field: 'Acceleration',
           type: 'quantitative',
-          bin: {extent: {selection: 'foo', encoding: 'x'}, nice: false}
+          bin: {extent: {selection: 'foo', encoding: 'x'}, nice: false},
         },
         size: {
           value: 50,
@@ -230,8 +230,8 @@ describe('SelectionCompatibilityNormalizer', () => {
             selection: 'bar',
             field: 'Displacement',
             type: 'quantitative',
-            bin: true
-          }
+            bin: true,
+          },
         },
         opacity: {
           value: 1,
@@ -239,10 +239,10 @@ describe('SelectionCompatibilityNormalizer', () => {
             selection: 'foo',
             field: 'Weight_in_lbs',
             type: 'quantitative',
-            bin: {extent: {selection: 'brush', field: 'Lbs'}, nice: true}
-          }
-        }
-      }
+            bin: {extent: {selection: 'brush', field: 'Lbs'}, nice: true},
+          },
+        },
+      },
     };
 
     const normalized = normalize(spec) as any;
@@ -250,8 +250,8 @@ describe('SelectionCompatibilityNormalizer', () => {
       expect.arrayContaining([
         {bin: true, field: 'Horsepower', as: 'bin_HP'},
         {bin: {extent: {param: 'foo'}, nice: true}, field: 'Miles_per_Gallon', as: 'bin_MPG'},
-        {bin: {extent: {param: 'bar', field: 'Accl'}, nice: false}, field: 'Acceleration', as: 'bin_Accl'}
-      ])
+        {bin: {extent: {param: 'bar', field: 'Accl'}, nice: false}, field: 'Acceleration', as: 'bin_Accl'},
+      ]),
     );
 
     expect(normalized.encoding.x.bin).toBe(true);
@@ -267,19 +267,19 @@ describe('SelectionCompatibilityNormalizer', () => {
       selection: {
         foo: {type: 'single'},
         bar: {type: 'multi'},
-        brush: {type: 'interval'}
+        brush: {type: 'interval'},
       },
       mark: 'line',
       encoding: {
         x: {
           field: 'Horsepower',
           type: 'quantitative',
-          scale: {domain: {selection: 'brush'}, reverse: true}
+          scale: {domain: {selection: 'brush'}, reverse: true},
         },
         y: {
           field: 'Miles_per_Gallon',
           type: 'quantitative',
-          scale: {domain: {selection: 'bar', field: 'MPG'}, round: true}
+          scale: {domain: {selection: 'bar', field: 'MPG'}, round: true},
         },
         size: {
           value: 50,
@@ -287,8 +287,8 @@ describe('SelectionCompatibilityNormalizer', () => {
             selection: 'bar',
             field: 'Displacement',
             type: 'quantitative',
-            scale: {domain: {selection: 'foo'}, reverse: true}
-          }
+            scale: {domain: {selection: 'foo'}, reverse: true},
+          },
         },
         opacity: {
           value: 1,
@@ -296,10 +296,10 @@ describe('SelectionCompatibilityNormalizer', () => {
             selection: 'foo',
             field: 'Weight_in_lbs',
             type: 'quantitative',
-            scale: {domain: {selection: 'foo', encoding: 'y'}, round: true}
-          }
-        }
-      }
+            scale: {domain: {selection: 'foo', encoding: 'y'}, round: true},
+          },
+        },
+      },
     };
 
     const normalized = normalize(spec) as any;
@@ -318,31 +318,31 @@ describe('SelectionCompatibilityNormalizer', () => {
           from: {
             data: {url: 'data/lookup_people.csv'},
             key: 'name',
-            fields: ['age', 'height']
-          }
+            fields: ['age', 'height'],
+          },
         },
         {
           lookup: 'symbol',
           from: {selection: 'index', key: 'symbol'},
-          default: 5
-        }
+          default: 5,
+        },
       ],
       selection: {
         foo: {type: 'single'},
         bar: {type: 'multi'},
-        brush: {type: 'interval'}
+        brush: {type: 'interval'},
       },
       mark: 'line',
       encoding: {
         x: {
           field: 'Horsepower',
-          type: 'quantitative'
+          type: 'quantitative',
         },
         y: {
           field: 'Miles_per_Gallon',
-          type: 'quantitative'
-        }
-      }
+          type: 'quantitative',
+        },
+      },
     };
 
     const normalized = normalize(spec) as any;
@@ -353,15 +353,15 @@ describe('SelectionCompatibilityNormalizer', () => {
           from: {
             data: {url: 'data/lookup_people.csv'},
             key: 'name',
-            fields: ['age', 'height']
-          }
+            fields: ['age', 'height'],
+          },
         },
         {
           lookup: 'symbol',
           from: {param: 'index', key: 'symbol'},
-          default: 5
-        }
-      ])
+          default: 5,
+        },
+      ]),
     );
   });
 
@@ -371,8 +371,8 @@ describe('SelectionCompatibilityNormalizer', () => {
       selection: {
         brush: {
           type: 'interval',
-          init: {x: [55, 160], y: [13, 37]}
-        }
+          init: {x: [55, 160], y: [13, 37]},
+        },
       },
       mark: {type: 'line', point: true},
       encoding: {
@@ -381,9 +381,9 @@ describe('SelectionCompatibilityNormalizer', () => {
         y: {field: 'Miles_per_Gallon', type: 'quantitative'},
         color: {
           condition: {selection: 'brush', field: 'Cylinders', type: 'ordinal'},
-          value: 'grey'
-        }
-      }
+          value: 'grey',
+        },
+      },
     };
 
     const normalized = normalize(spec) as any;
@@ -399,16 +399,16 @@ describe('SelectionCompatibilityNormalizer', () => {
           condition: {
             selection: 'hover',
             field: 'symbol',
-            type: 'nominal'
+            type: 'nominal',
           },
-          value: 'grey'
-        }
+          value: 'grey',
+        },
       },
       layer: [
         {
           encoding: {
             x: {field: 'date', type: 'temporal', title: 'date'},
-            y: {field: 'price', type: 'quantitative', title: 'price'}
+            y: {field: 'price', type: 'quantitative', title: 'price'},
           },
           layer: [
             {
@@ -418,24 +418,24 @@ describe('SelectionCompatibilityNormalizer', () => {
                   on: 'pointerover',
                   empty: 'all',
                   fields: ['symbol'],
-                  init: {symbol: 'AAPL'}
-                }
+                  init: {symbol: 'AAPL'},
+                },
               },
-              mark: {type: 'line', strokeWidth: 8, stroke: 'transparent'}
+              mark: {type: 'line', strokeWidth: 8, stroke: 'transparent'},
             },
             {
-              mark: 'line'
-            }
-          ]
+              mark: 'line',
+            },
+          ],
         },
         {
           mark: {type: 'circle'},
           encoding: {
             x: {aggregate: 'max', field: 'date', type: 'temporal'},
-            y: {aggregate: {argmax: 'date'}, field: 'price', type: 'quantitative'}
-          }
-        }
-      ]
+            y: {aggregate: {argmax: 'date'}, field: 'price', type: 'quantitative'},
+          },
+        },
+      ],
     };
 
     expect(normalize(spec)).toEqual({
@@ -453,22 +453,22 @@ describe('SelectionCompatibilityNormalizer', () => {
                     type: 'point',
                     on: 'pointerover',
                     fields: ['symbol'],
-                    toggle: false
-                  }
-                }
+                    toggle: false,
+                  },
+                },
               ],
               encoding: {
                 color: {
                   condition: {
                     field: 'symbol',
                     type: 'nominal',
-                    test: {param: 'hover', empty: true}
+                    test: {param: 'hover', empty: true},
                   },
-                  value: 'grey'
+                  value: 'grey',
                 },
                 x: {field: 'date', type: 'temporal', title: 'date'},
-                y: {field: 'price', type: 'quantitative', title: 'price'}
-              }
+                y: {field: 'price', type: 'quantitative', title: 'price'},
+              },
             },
             {
               mark: 'line',
@@ -477,15 +477,15 @@ describe('SelectionCompatibilityNormalizer', () => {
                   condition: {
                     field: 'symbol',
                     type: 'nominal',
-                    test: {param: 'hover', empty: true}
+                    test: {param: 'hover', empty: true},
                   },
-                  value: 'grey'
+                  value: 'grey',
                 },
                 x: {field: 'date', type: 'temporal', title: 'date'},
-                y: {field: 'price', type: 'quantitative', title: 'price'}
-              }
-            }
-          ]
+                y: {field: 'price', type: 'quantitative', title: 'price'},
+              },
+            },
+          ],
         },
         {
           mark: {type: 'circle'},
@@ -494,19 +494,19 @@ describe('SelectionCompatibilityNormalizer', () => {
               condition: {
                 field: 'symbol',
                 type: 'nominal',
-                test: {param: 'hover', empty: true}
+                test: {param: 'hover', empty: true},
               },
-              value: 'grey'
+              value: 'grey',
             },
             x: {aggregate: 'max', field: 'date', type: 'temporal'},
             y: {
               aggregate: {argmax: 'date'},
               field: 'price',
-              type: 'quantitative'
-            }
-          }
-        }
-      ]
+              type: 'quantitative',
+            },
+          },
+        },
+      ],
     });
   });
 });

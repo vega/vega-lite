@@ -66,7 +66,7 @@ Note: If [mark property encoding channels](encoding.html#mark-prop) are specifie
 
 ### General Mark Properties
 
-{% include table.html props="type,aria,description,style,tooltip,clip,invalid,order" source="MarkDef" %}
+{% include table.html props="type,aria,cursor,description,style,tooltip,clip,invalid,order" source="MarkDef" %}
 
 {:#offset}
 
@@ -96,7 +96,7 @@ Here is an example to the usage of the stroke dash where 6 is the size of dashes
 
 Marks can act as hyperlinks when the `href` property or [channel](encoding.html#href) is defined. When the `href` property is specified, the [`cursor` mark property](mark.html#hyperlink) is set to `"pointer"` by default to serve as affordance for hyperlinks.
 
-{% include table.html props="href,cursor" source="MarkDef" %}
+{% include table.html props="href" source="MarkDef" %}
 
 <span class="vl-example" data-name="point_href"></span>
 

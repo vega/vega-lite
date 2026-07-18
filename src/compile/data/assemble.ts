@@ -1,36 +1,36 @@
-import {InlineDataset, isUrlData} from '../../data';
-import {Dict} from '../../util';
-import {VgData} from '../../vega.schema';
-import {DataComponent} from './';
-import {AggregateNode} from './aggregate';
-import {BinNode} from './bin';
-import {CalculateNode} from './calculate';
-import {DataFlowNode, OutputNode} from './dataflow';
-import {DensityTransformNode} from './density';
-import {ExtentTransformNode} from './extent';
-import {FacetNode} from './facet';
-import {FilterNode} from './filter';
-import {FilterInvalidNode} from './filterinvalid';
-import {FlattenTransformNode} from './flatten';
-import {FoldTransformNode} from './fold';
-import {ParseNode} from './formatparse';
-import {GeoJSONNode} from './geojson';
-import {GeoPointNode} from './geopoint';
-import {GraticuleNode} from './graticule';
-import {IdentifierNode} from './identifier';
-import {ImputeNode} from './impute';
-import {JoinAggregateTransformNode} from './joinaggregate';
-import {LoessTransformNode} from './loess';
-import {LookupNode} from './lookup';
-import {QuantileTransformNode} from './quantile';
-import {RegressionTransformNode} from './regression';
-import {PivotTransformNode} from './pivot';
-import {SampleTransformNode} from './sample';
-import {SequenceNode} from './sequence';
-import {SourceNode} from './source';
-import {StackNode} from './stack';
-import {TimeUnitNode} from './timeunit';
-import {WindowTransformNode} from './window';
+import {InlineDataset, isUrlData} from '../../data.js';
+import {Dict} from '../../util.js';
+import {VgData} from '../../vega.schema.js';
+import {AggregateNode} from './aggregate.js';
+import {BinNode} from './bin.js';
+import {CalculateNode} from './calculate.js';
+import {DataFlowNode, OutputNode} from './dataflow.js';
+import {DensityTransformNode} from './density.js';
+import {ExtentTransformNode} from './extent.js';
+import {FacetNode} from './facet.js';
+import {FilterNode} from './filter.js';
+import {FilterInvalidNode} from './filterinvalid.js';
+import {FlattenTransformNode} from './flatten.js';
+import {FoldTransformNode} from './fold.js';
+import {ParseNode} from './formatparse.js';
+import {GeoJSONNode} from './geojson.js';
+import {GeoPointNode} from './geopoint.js';
+import {GraticuleNode} from './graticule.js';
+import {IdentifierNode} from './identifier.js';
+import {ImputeNode} from './impute.js';
+import {JoinAggregateTransformNode} from './joinaggregate.js';
+import {LoessTransformNode} from './loess.js';
+import {LookupNode} from './lookup.js';
+import {QuantileTransformNode} from './quantile.js';
+import {RegressionTransformNode} from './regression.js';
+import {PivotTransformNode} from './pivot.js';
+import {SampleTransformNode} from './sample.js';
+import {SequenceNode} from './sequence.js';
+import {SourceNode} from './source.js';
+import {StackNode} from './stack.js';
+import {TimeUnitNode} from './timeunit.js';
+import {WindowTransformNode} from './window.js';
+import {DataComponent} from './index.js';
 
 function makeWalkTree(data: VgData[]) {
   // to name datasources
@@ -48,7 +48,7 @@ function makeWalkTree(data: VgData[]) {
         const newData: VgData = {
           name: null,
           source: dataSource.name,
-          transform: []
+          transform: [],
         };
         dataSource = newData;
       }
@@ -59,7 +59,7 @@ function makeWalkTree(data: VgData[]) {
         // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
         dataSource.format = {
           ...dataSource.format,
-          parse: node.assembleFormatParse()
+          parse: node.assembleFormatParse(),
         };
 
         // add calculates for all nested fields
@@ -145,7 +145,7 @@ function makeWalkTree(data: VgData[]) {
           const newData: VgData = {
             name: null,
             source: dataSource.name,
-            transform: []
+            transform: [],
           };
           dataSource = newData;
         }
@@ -179,7 +179,7 @@ function makeWalkTree(data: VgData[]) {
           const newData: VgData = {
             name: null,
             source,
-            transform: []
+            transform: [],
           };
           walkTree(child, newData);
         }
@@ -202,7 +202,7 @@ export function assembleFacetData(root: FacetNode): VgData[] {
     walkTree(child, {
       source: root.name,
       name: null,
-      transform: []
+      transform: [],
     });
   }
 

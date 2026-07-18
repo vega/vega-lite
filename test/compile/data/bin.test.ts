@@ -1,10 +1,10 @@
 import {BinTransform as VgBinTransform} from 'vega';
-import {BIN_RANGE_DELIMITER} from '../../../src/compile/common';
-import {BinNode, getBinSignalName} from '../../../src/compile/data/bin';
-import {Model, ModelWithField} from '../../../src/compile/model';
-import {BinTransform} from '../../../src/transform';
-import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {BIN_RANGE_DELIMITER} from '../../../src/compile/common.js';
+import {BinNode, getBinSignalName} from '../../../src/compile/data/bin.js';
+import {Model, ModelWithField} from '../../../src/compile/model.js';
+import {BinTransform} from '../../../src/transform.js';
+import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 function assembleFromEncoding(model: ModelWithField) {
   return BinNode.makeFromEncoding(null, model).assemble();
@@ -22,13 +22,13 @@ function makeMovieExample(t: BinTransform) {
     encoding: {
       x: {
         field: 'Rotten_Tomatoes_Rating',
-        type: 'quantitative'
+        type: 'quantitative',
       },
       color: {
         field: 'Rotten_Tomatoes_Rating',
-        type: 'quantitative'
-      }
-    }
+        type: 'quantitative',
+      },
+    },
   });
 }
 
@@ -41,17 +41,17 @@ function makeMovieExampleWithSelection(t: BinTransform) {
     encoding: {
       x: {
         field: 'Rotten_Tomatoes_Rating',
-        type: 'quantitative'
+        type: 'quantitative',
       },
       y: {
         field: 'Rotten_Tomatoes_Rating',
-        type: 'quantitative'
+        type: 'quantitative',
       },
       color: {
         field: 'Rotten_Tomatoes_Rating',
-        type: 'quantitative'
-      }
-    }
+        type: 'quantitative',
+      },
+    },
   });
 }
 
@@ -64,9 +64,9 @@ describe('compile/data/bin', () => {
           y: {
             bin: {extent: [0, 100]},
             field: 'Acceleration',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
 
       expect(assembleFromEncoding(model)[0]).toEqual({
@@ -75,7 +75,7 @@ describe('compile/data/bin', () => {
         as: ['bin_extent_0_100_maxbins_10_Acceleration', 'bin_extent_0_100_maxbins_10_Acceleration_end'],
         maxbins: 10,
         extent: [0, 100],
-        signal: 'bin_extent_0_100_maxbins_10_Acceleration_bins'
+        signal: 'bin_extent_0_100_maxbins_10_Acceleration_bins',
       });
     });
 
@@ -86,16 +86,16 @@ describe('compile/data/bin', () => {
           y: {
             bin: true,
             field: 'Acceleration',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       const transform = assembleFromEncoding(model);
       expect(transform).toHaveLength(2);
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Acceleration',
-        signal: 'bin_maxbins_10_Acceleration_extent'
+        signal: 'bin_maxbins_10_Acceleration_extent',
       });
       expect(transform[1]).toEqual({
         type: 'bin',
@@ -103,7 +103,7 @@ describe('compile/data/bin', () => {
         as: ['bin_maxbins_10_Acceleration', 'bin_maxbins_10_Acceleration_end'],
         maxbins: 10,
         signal: 'bin_maxbins_10_Acceleration_bins',
-        extent: {signal: 'bin_maxbins_10_Acceleration_extent'}
+        extent: {signal: 'bin_maxbins_10_Acceleration_extent'},
       });
     });
 
@@ -115,21 +115,21 @@ describe('compile/data/bin', () => {
           x: {
             bin: {extent: {param: 'foo'}},
             field: 'Acceleration',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           y: {
             bin: {extent: {param: 'foo'}},
             field: 'mpg',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       const transform = assembleFromEncoding(model);
       expect(transform).toHaveLength(4);
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Acceleration',
-        signal: 'bin_extent_param_foo_maxbins_10_Acceleration_extent'
+        signal: 'bin_extent_param_foo_maxbins_10_Acceleration_extent',
       });
       expect(transform[1]).toEqual({
         type: 'bin',
@@ -138,7 +138,7 @@ describe('compile/data/bin', () => {
         maxbins: 10,
         signal: 'bin_extent_param_foo_maxbins_10_Acceleration_bins',
         extent: {signal: 'bin_extent_param_foo_maxbins_10_Acceleration_extent'},
-        span: {signal: 'span(foo["Acceleration"])'}
+        span: {signal: 'span(foo["Acceleration"])'},
       });
     });
 
@@ -150,33 +150,33 @@ describe('compile/data/bin', () => {
           y: {
             bin: {extent: {param: 'foo', field: 'bar'}},
             field: 'Acceleration',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           x: {
             bin: {extent: {param: 'foo', field: 'bar'}},
             field: 'Acceleration',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       const transform = assembleFromEncoding(model);
       expect(transform).toHaveLength(2);
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Acceleration',
-        signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_extent'
+        signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_extent',
       });
       expect(transform[1]).toEqual({
         type: 'bin',
         field: 'Acceleration',
         as: [
           'bin_extent_param_foo_field_bar_maxbins_10_Acceleration',
-          'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_end'
+          'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_end',
         ],
         maxbins: 10,
         signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_bins',
         extent: {signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_extent'},
-        span: {signal: 'span(foo["bar"])'}
+        span: {signal: 'span(foo["bar"])'},
       });
     });
 
@@ -188,21 +188,21 @@ describe('compile/data/bin', () => {
           x: {
             bin: true,
             field: 'Rotten_Tomatoes_Rating',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           color: {
             bin: {maxbins: 10},
             field: 'Rotten_Tomatoes_Rating',
-            type: 'ordinal'
-          }
-        }
+            type: 'ordinal',
+          },
+        },
       });
       const transform = assembleFromEncoding(model);
       expect(transform).toHaveLength(3);
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Rotten_Tomatoes_Rating',
-        signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent'
+        signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent',
       });
       expect(transform[1]).toEqual({
         type: 'bin',
@@ -210,12 +210,12 @@ describe('compile/data/bin', () => {
         as: ['bin_maxbins_10_Rotten_Tomatoes_Rating', 'bin_maxbins_10_Rotten_Tomatoes_Rating_end'],
         signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_bins',
         maxbins: 10,
-        extent: {signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent'}
+        extent: {signal: 'bin_maxbins_10_Rotten_Tomatoes_Rating_extent'},
       });
       expect(transform[2]).toEqual({
         type: 'formula',
         as: 'bin_maxbins_10_Rotten_Tomatoes_Rating_range',
-        expr: `!isValid(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) || !isFinite(+datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) ? "null" : format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], "")`
+        expr: `!isValid(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) || !isFinite(+datum["bin_maxbins_10_Rotten_Tomatoes_Rating"]) ? "null" : format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_Rotten_Tomatoes_Rating_end"], "")`,
       });
     });
   });
@@ -225,7 +225,7 @@ describe('compile/data/bin', () => {
       const t: BinTransform = {
         bin: {extent: [0, 100]},
         field: 'Acceleration',
-        as: 'binned_acceleration'
+        as: 'binned_acceleration',
       };
       const model = makeMovieExample(t);
 
@@ -235,7 +235,7 @@ describe('compile/data/bin', () => {
         maxbins: 10,
         as: ['binned_acceleration', 'binned_acceleration_end'],
         extent: [0, 100],
-        signal: 'bin_extent_0_100_maxbins_10_Acceleration_bins'
+        signal: 'bin_extent_0_100_maxbins_10_Acceleration_bins',
       });
     });
 
@@ -243,7 +243,7 @@ describe('compile/data/bin', () => {
       const t: BinTransform = {
         bin: {extent: [0, 100], maxbins: 20},
         field: 'Acceleration',
-        as: 'binned_acceleration'
+        as: 'binned_acceleration',
       };
       const model = makeMovieExample(t);
 
@@ -253,7 +253,7 @@ describe('compile/data/bin', () => {
         maxbins: 20,
         as: ['binned_acceleration', 'binned_acceleration_end'],
         extent: [0, 100],
-        signal: 'bin_extent_0_100_maxbins_20_Acceleration_bins'
+        signal: 'bin_extent_0_100_maxbins_20_Acceleration_bins',
       });
     });
 
@@ -261,7 +261,7 @@ describe('compile/data/bin', () => {
       const t: BinTransform = {
         bin: {extent: {param: 'foo'}},
         field: 'Acceleration',
-        as: 'binned_acceleration'
+        as: 'binned_acceleration',
       };
       const model = makeMovieExampleWithSelection(t);
 
@@ -269,7 +269,7 @@ describe('compile/data/bin', () => {
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Acceleration',
-        signal: 'bin_extent_param_foo_maxbins_10_Acceleration_extent'
+        signal: 'bin_extent_param_foo_maxbins_10_Acceleration_extent',
       });
       expect(transform[1]).toEqual({
         type: 'bin',
@@ -278,7 +278,7 @@ describe('compile/data/bin', () => {
         maxbins: 10,
         signal: 'bin_extent_param_foo_maxbins_10_Acceleration_bins',
         extent: {signal: 'bin_extent_param_foo_maxbins_10_Acceleration_extent'},
-        span: {signal: 'span(foo["Rotten_Tomatoes_Rating"])'}
+        span: {signal: 'span(foo["Rotten_Tomatoes_Rating"])'},
       });
     });
 
@@ -286,7 +286,7 @@ describe('compile/data/bin', () => {
       const t: BinTransform = {
         bin: {extent: {param: 'foo', field: 'bar'}},
         field: 'Acceleration',
-        as: 'binned_acceleration'
+        as: 'binned_acceleration',
       };
       const model = makeMovieExampleWithSelection(t);
 
@@ -294,7 +294,7 @@ describe('compile/data/bin', () => {
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Acceleration',
-        signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_extent'
+        signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_extent',
       });
       expect(transform[1]).toEqual({
         type: 'bin',
@@ -303,7 +303,7 @@ describe('compile/data/bin', () => {
         maxbins: 10,
         signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_bins',
         extent: {signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_extent'},
-        span: {signal: 'span(foo["bar"])'}
+        span: {signal: 'span(foo["bar"])'},
       });
     });
 
@@ -311,7 +311,7 @@ describe('compile/data/bin', () => {
       const t: BinTransform = {
         bin: {extent: [0, 100], anchor: 6},
         field: 'Acceleration',
-        as: 'binned_acceleration'
+        as: 'binned_acceleration',
       };
       const model = makeMovieExample(t);
 
@@ -322,7 +322,7 @@ describe('compile/data/bin', () => {
         maxbins: 10,
         as: ['binned_acceleration', 'binned_acceleration_end'],
         extent: [0, 100],
-        signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
+        signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins',
       });
     });
 
@@ -330,7 +330,7 @@ describe('compile/data/bin', () => {
       const t: BinTransform = {
         bin: {extent: [0, 100], anchor: 6},
         field: 'Acceleration',
-        as: ['binned_acceleration_start', 'binned_acceleration_stop']
+        as: ['binned_acceleration_start', 'binned_acceleration_stop'],
       };
       const model = makeMovieExample(t);
 
@@ -341,7 +341,7 @@ describe('compile/data/bin', () => {
         maxbins: 10,
         as: ['binned_acceleration_start', 'binned_acceleration_stop'],
         extent: [0, 100],
-        signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
+        signal: 'bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins',
       });
     });
   });
@@ -351,7 +351,7 @@ describe('compile/data/bin', () => {
       const t: BinTransform = {
         bin: {extent: [0, 100], anchor: 6},
         field: 'Acceleration',
-        as: ['binned_acceleration_start', 'binned_acceleration_stop']
+        as: ['binned_acceleration_start', 'binned_acceleration_stop'],
       };
       const model = makeMovieExample(t);
 
@@ -363,7 +363,7 @@ describe('compile/data/bin', () => {
       const t: BinTransform = {
         bin: {extent: [0, 100], anchor: 6},
         field: 'Acceleration',
-        as: ['binned_acceleration_start', 'binned_acceleration_stop']
+        as: ['binned_acceleration_start', 'binned_acceleration_stop'],
       };
       const model = makeMovieExample(t);
 
@@ -375,7 +375,7 @@ describe('compile/data/bin', () => {
       const t: BinTransform = {
         bin: {extent: [0, 100], anchor: 6},
         field: 'Acceleration',
-        as: ['binned_acceleration_start', 'binned_acceleration_stop']
+        as: ['binned_acceleration_start', 'binned_acceleration_stop'],
       };
       const model = makeMovieExample(t);
 
@@ -405,10 +405,10 @@ describe('compile/data/bin', () => {
             field: 'foo',
             as: [
               ['foo', 'foo_end'],
-              ['bar', 'bar_end']
-            ]
-          }
-        })
+              ['bar', 'bar_end'],
+            ],
+          },
+        }),
       );
     });
 
@@ -421,9 +421,9 @@ describe('compile/data/bin', () => {
           field: 'foo',
           as: [
             ['foo', 'foo_end'],
-            ['bar', 'bar_end']
-          ]
-        }
+            ['bar', 'bar_end'],
+          ],
+        },
       });
 
       binNodeA.merge(binNodeB, () => {
@@ -436,10 +436,10 @@ describe('compile/data/bin', () => {
             field: 'foo',
             as: [
               ['foo', 'foo_end'],
-              ['bar', 'bar_end']
-            ]
-          }
-        })
+              ['bar', 'bar_end'],
+            ],
+          },
+        }),
       );
     });
 
@@ -451,9 +451,9 @@ describe('compile/data/bin', () => {
           field: 'foo',
           as: [
             ['foo', 'foo_end'],
-            ['bar', 'bar_end']
-          ]
-        }
+            ['bar', 'bar_end'],
+          ],
+        },
       });
       const transforms = binNode.assemble();
 
@@ -489,8 +489,8 @@ describe('compile/data/bin', () => {
       expect(binNodeA).toEqual(
         new BinNode(parent, {
           foo: {bin: {}, field: 'foo', as: [['foo', 'foo_end']]},
-          bar: {bin: {}, field: 'bar', as: [['bar', 'bar_end']]}
-        })
+          bar: {bin: {}, field: 'bar', as: [['bar', 'bar_end']]},
+        }),
       );
     });
   });
@@ -498,7 +498,7 @@ describe('compile/data/bin', () => {
   describe('getBinSignalName', () => {
     it('should genrate correct names', () => {
       const model = parseUnitModelWithScale({
-        mark: 'point'
+        mark: 'point',
       });
 
       expect(getBinSignalName(model, 'foo.bar', true)).toBe('bin_maxbins_10_foo_bar_bins');
@@ -513,9 +513,9 @@ describe('compile/data/bin', () => {
           y: {
             bin: true,
             field: 'foo.bar',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
 
       const signal = getBinSignalName(model, 'foo.bar', true);

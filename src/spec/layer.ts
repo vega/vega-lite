@@ -1,9 +1,10 @@
-import {Field} from '../channeldef';
-import {SharedCompositeEncoding} from '../compositemark';
-import {ExprRef} from '../expr';
-import {Projection} from '../projection';
-import {BaseSpec, FrameMixins, ResolveMixins} from './base';
-import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
+import {Field} from '../channeldef.js';
+import {SharedCompositeEncoding} from '../compositemark/index.js';
+import {ExprRef} from '../expr.js';
+import {Projection} from '../projection.js';
+import {hasProperty} from '../util.js';
+import {BaseSpec, FrameMixins, ResolveMixins} from './base.js';
+import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit.js';
 
 /**
  * Base interface for a layer specification.
@@ -45,5 +46,5 @@ export interface LayerSpec<F extends Field> extends BaseSpec, FrameMixins, Resol
 export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 
 export function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<any> {
-  return 'layer' in spec;
+  return hasProperty(spec, 'layer');
 }

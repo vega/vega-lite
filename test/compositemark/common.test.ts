@@ -1,21 +1,21 @@
 import {Orientation} from 'vega';
-import {compositeMarkOrient} from '../../src/compositemark/common';
-import {isMarkDef, MarkDef} from '../../src/mark';
-import {normalize} from '../../src/normalize';
-import {isLayerSpec, isUnitSpec, TopLevelSpec} from '../../src/spec';
-import {NormalizedUnitSpec} from '../../src/spec/unit';
-import {isAggregate, isCalculate} from '../../src/transform';
-import {some} from '../../src/util';
-import {defaultConfig} from '.././../src/config';
-import {assertIsUnitSpec} from '../util';
-import {AggregateTransform} from './../../src/transform';
+import {compositeMarkOrient} from '../../src/compositemark/common.js';
+import {isMarkDef, MarkDef} from '../../src/mark.js';
+import {normalize} from '../../src/normalize/index.js';
+import {isLayerSpec, isUnitSpec, TopLevelSpec} from '../../src/spec/index.js';
+import {NormalizedUnitSpec} from '../../src/spec/unit.js';
+import {isAggregate, isCalculate} from '../../src/transform.js';
+import {some} from '../../src/util.js';
+import {defaultConfig} from '.././../src/config.js';
+import {assertIsUnitSpec} from '../util.js';
+import {AggregateTransform} from './../../src/transform.js';
 
 describe('common', () => {
   it('should clip all parts when clip property in composite mark def is true', () => {
     const outputSpec = normalize({
       data: {url: 'data/barley.json'},
       mark: {type: 'errorbar', ticks: true, clip: true},
-      encoding: {x: {field: 'yield', type: 'quantitative'}}
+      encoding: {x: {field: 'yield', type: 'quantitative'}},
     });
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
@@ -34,8 +34,8 @@ describe('common', () => {
       encoding: {
         y: {field: 'Miles_per_Gallon', type: 'quantitative'},
         x: {field: 'Origin', type: 'nominal'},
-        color: {field: 'Origin', type: 'nominal'}
-      }
+        color: {field: 'Origin', type: 'nominal'},
+      },
     });
 
     assertIsUnitSpec(outputSpec);
@@ -51,8 +51,8 @@ describe('common', () => {
       mark: 'errorbar',
       encoding: {
         y: {field: 'Miles_per_Gallon', type: 'quantitative', axis: {title: 'Hello Vega', grid: false}},
-        x: {field: 'Origin', type: 'nominal'}
-      }
+        x: {field: 'Origin', type: 'nominal'},
+      },
     });
 
     assertIsUnitSpec(outputSpec);
@@ -69,8 +69,8 @@ describe('common', () => {
       mark: 'errorbar',
       encoding: {
         y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-        x: {field: 'Year', type: 'ordinal', timeUnit: 'year'}
-      }
+        x: {field: 'Year', type: 'ordinal', timeUnit: 'year'},
+      },
     });
 
     assertIsUnitSpec(outputSpec);
@@ -82,8 +82,8 @@ describe('common', () => {
       type: 'ordinal',
       field: 'year_Year',
       axis: {
-        formatType: 'time'
-      }
+        formatType: 'time',
+      },
     });
   });
 
@@ -91,19 +91,19 @@ describe('common', () => {
     const outputSpec = normalize({
       data: {url: 'data/barley.json'},
       mark: 'errorbar',
-      encoding: {x: {field: 'yield space,punctuation', type: 'quantitative'}}
+      encoding: {x: {field: 'yield space,punctuation', type: 'quantitative'}},
     });
     const transforms = outputSpec.transform;
     expect(transforms).toBeTruthy();
 
     const upperCalculate = transforms[1];
     expect(isCalculate(upperCalculate) && upperCalculate.calculate).toBe(
-      'datum["center_yield space,punctuation"] + datum["extent_yield space,punctuation"]'
+      "datum['center_yield space,punctuation'] + datum['extent_yield space,punctuation']",
     );
 
     const lowerCalculate = transforms[2];
     expect(isCalculate(lowerCalculate) && lowerCalculate.calculate).toBe(
-      'datum["center_yield space,punctuation"] - datum["extent_yield space,punctuation"]'
+      "datum['center_yield space,punctuation'] - datum['extent_yield space,punctuation']",
     );
   });
 
@@ -114,8 +114,8 @@ describe('common', () => {
       encoding: {
         y: {field: 'Miles_per_Gallon', type: 'quantitative'},
         x: {field: 'a_field', type: 'ordinal'},
-        tooltip: {field: 'a_field', type: 'ordinal'}
-      }
+        tooltip: {field: 'a_field', type: 'ordinal'},
+      },
     };
     const outputSpec = normalize(spec, defaultConfig);
 
@@ -129,8 +129,8 @@ describe('common', () => {
       mark: 'errorbar',
       encoding: {
         y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-        tooltip: null
-      }
+        tooltip: null,
+      },
     };
     const outputSpec = normalize(spec, defaultConfig);
 
@@ -156,8 +156,8 @@ describe('common', () => {
         mark: {type: 'errorbar'},
         encoding: {
           x: {field: 'x-field', type: xType, aggregate: xAgg},
-          y: {field: 'y-field', type: yType, aggregate: yAgg}
-        }
+          y: {field: 'y-field', type: yType, aggregate: yAgg},
+        },
       } as const;
       const outputSpec = normalize(spec, defaultConfig);
 
@@ -167,12 +167,12 @@ describe('common', () => {
 
       expect(isAggregate(aggregateTransform)).toBeTruthy();
       expect(
-        some(aggregateTransform.aggregate, aggregateFieldDef => {
+        some(aggregateTransform.aggregate, (aggregateFieldDef) => {
           return (
             aggregateFieldDef.field === aggField &&
             (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
           );
-        })
+        }),
       ).toBe(true);
     });
   }
@@ -190,7 +190,7 @@ describe('common', () => {
     {xType: 'quantitative', xAgg: undefined, yType: 'quantitative', yAgg: 'errorbar', orient: 'vertical'},
     {xType: 'ordinal', xAgg: 'errorbar', yType: 'temporal', yAgg: undefined, orient: 'vertical'},
     {xType: 'ordinal', xAgg: 'errorbar', yType: 'quantitative', yAgg: undefined, orient: 'vertical'},
-    {xType: 'quantitative', xAgg: undefined, yType: 'temporal', yAgg: 'errorbar', orient: 'vertical'}
+    {xType: 'quantitative', xAgg: undefined, yType: 'temporal', yAgg: 'errorbar', orient: 'vertical'},
   ];
 
   const horizontal: TestErrorbarOrientParam[] = [
@@ -204,7 +204,7 @@ describe('common', () => {
     {xType: 'temporal', xAgg: 'errorbar', yType: 'ordinal', yAgg: undefined, orient: 'horizontal'},
     {xType: 'temporal', xAgg: 'errorbar', yType: 'temporal', yAgg: undefined, orient: 'horizontal'},
     {xType: 'quantitative', xAgg: 'errorbar', yType: 'quantitative', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'temporal', xAgg: 'errorbar', yType: 'quantitative', yAgg: undefined, orient: 'horizontal'}
+    {xType: 'temporal', xAgg: 'errorbar', yType: 'quantitative', yAgg: undefined, orient: 'horizontal'},
   ];
 
   for (const p of vertical) {

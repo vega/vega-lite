@@ -1,7 +1,10 @@
 build/
 coverage/
+examples/compiled/*
 examples/specs/*.vl.json
+examples/specs/normalized/*
 site/_includes/*
 site/examples/*
 site/_site/*
+site/_layouts/*
 CHANGELOG.md

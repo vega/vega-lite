@@ -1,7 +1,7 @@
-import {assembleAxis} from '../../../src/compile/axis/assemble';
-import {AxisComponent} from '../../../src/compile/axis/component';
-import {defaultConfig} from '../../../src/config';
-import {parseUnitModelWithScale} from '../../util';
+import {assembleAxis} from '../../../src/compile/axis/assemble.js';
+import {AxisComponent} from '../../../src/compile/axis/component.js';
+import {defaultConfig} from '../../../src/config.js';
+import {parseUnitModelWithScale} from '../../util.js';
 
 describe('compile/axis/assemble', () => {
   describe('assembleAxis()', () => {
@@ -11,8 +11,8 @@ describe('compile/axis/assemble', () => {
         grid: true,
         encode: {
           grid: {update: {stroke: {value: 'red'}}},
-          labels: {update: {fill: {value: 'red'}}}
-        }
+          labels: {update: {fill: {value: 'red'}}},
+        },
       });
       const axis = assembleAxis(axisCmpt, 'grid', defaultConfig);
       expect(axis.encode.labels).toBeUndefined();
@@ -22,7 +22,7 @@ describe('compile/axis/assemble', () => {
       const axisCmpt = new AxisComponent({
         orient: 'left',
         grid: true,
-        zindex: 3
+        zindex: 3,
       });
       const axis = assembleAxis(axisCmpt, 'grid', defaultConfig);
       expect(axis.zindex).toBe(3);
@@ -33,8 +33,8 @@ describe('compile/axis/assemble', () => {
         orient: 'left',
         encode: {
           grid: {update: {stroke: {value: 'red'}}},
-          labels: {update: {fill: {value: 'red'}}}
-        }
+          labels: {update: {fill: {value: 'red'}}},
+        },
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       expect(axis.encode.grid).toBeUndefined();
@@ -45,8 +45,8 @@ describe('compile/axis/assemble', () => {
         orient: 'left',
         title: [
           {aggregate: 'max', field: 'a'},
-          {aggregate: 'min', field: 'b'}
-        ]
+          {aggregate: 'min', field: 'b'},
+        ],
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       expect(axis.title).toBe('Max of a, Min of b');
@@ -54,7 +54,7 @@ describe('compile/axis/assemble', () => {
 
     it('correctly redirect color signal', () => {
       const axisCmpt = new AxisComponent({
-        labelColor: {signal: 'a'}
+        labelColor: {signal: 'a'},
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       expect(axis.encode.labels.update.fill).toEqual({signal: 'a'});
@@ -64,8 +64,8 @@ describe('compile/axis/assemble', () => {
       const axisCmpt = new AxisComponent({
         tickSize: {
           condition: {test: 'datum.index === 0 || datum.index === 1', value: 4},
-          value: 2
-        }
+          value: 2,
+        },
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       expect(axis.tickSize).toEqual({signal: 'datum.index === 0 || datum.index === 1 ? 4 : 2'});
@@ -75,8 +75,8 @@ describe('compile/axis/assemble', () => {
       const axisCmpt = new AxisComponent({
         tickSize: {
           condition: {test: 'datum.index === 0 || datum.index === 1', signal: 'a'},
-          signal: 'b'
-        }
+          signal: 'b',
+        },
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       expect(axis.tickSize).toEqual({signal: 'datum.index === 0 || datum.index === 1 ? a : b'});
@@ -86,7 +86,7 @@ describe('compile/axis/assemble', () => {
   it('outputs grid axis with aria false', () => {
     const axisCmpt = new AxisComponent({
       orient: 'left',
-      grid: true
+      grid: true,
     });
     const axis = assembleAxis(axisCmpt, 'grid', defaultConfig);
     expect(axis.aria).toBe(false);
@@ -94,7 +94,7 @@ describe('compile/axis/assemble', () => {
 
   it('outputs aria false if set in config', () => {
     const axisCmpt = new AxisComponent({
-      orient: 'left'
+      orient: 'left',
     });
     const axis = assembleAxis(axisCmpt, 'main', {...defaultConfig, aria: false});
     expect(axis.aria).toBe(false);
@@ -111,17 +111,17 @@ describe('compile/axis/assemble', () => {
           axis: {
             format: {a: 'b'},
             formatType: 'myFormat',
-            labelExpr: 'datum.label[0]'
-          }
-        }
+            labelExpr: 'datum.label[0]',
+          },
+        },
       },
-      config: {customFormatTypes: true}
+      config: {customFormatTypes: true},
     });
     model.parseAxesAndHeaders();
 
     const axes = model.assembleAxes();
     expect(axes[1].encode.labels.update.text).toEqual({
-      signal: 'myFormat(datum.value, {"a":"b"})[0]'
+      signal: 'myFormat(datum.value, {"a":"b"})[0]',
     });
   });
 });

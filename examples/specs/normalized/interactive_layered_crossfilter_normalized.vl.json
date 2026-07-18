@@ -4,7 +4,7 @@
     "format": {"parse": {"date": "date"}}
   },
   "align": "all",
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "transform": [{"calculate": "hours(datum.date)", "as": "time"}],
   "columns": 3,
   "concat": [

@@ -1,76 +1,76 @@
 import type {SignalRef} from 'vega';
-import {ROW} from '../../src/channel';
-import {FacetModel} from '../../src/compile/facet';
-import {assembleLabelTitle} from '../../src/compile/header/assemble';
-import * as log from '../../src/log';
-import {DEFAULT_SPACING} from '../../src/spec/base';
-import {FacetFieldDef, FacetMapping} from '../../src/spec/facet';
-import {ORDINAL} from '../../src/type';
-import {parseFacetModel, parseFacetModelWithScale} from '../util';
+import {ROW} from '../../src/channel.js';
+import {FacetModel} from '../../src/compile/facet.js';
+import {assembleLabelTitle} from '../../src/compile/header/assemble.js';
+import * as log from '../../src/log/index.js';
+import {DEFAULT_SPACING} from '../../src/spec/base.js';
+import {FacetFieldDef, FacetMapping} from '../../src/spec/facet.js';
+import {ORDINAL} from '../../src/type.js';
+import {parseFacetModel, parseFacetModelWithScale} from '../util.js';
 
 describe('FacetModel', () => {
   describe('initFacet', () => {
     it(
       'should drop channel without field and value and throws warning',
-      log.wrap(localLogger => {
+      log.wrap((localLogger) => {
         const model = parseFacetModel({
           facet: {
-            row: {type: 'ordinal'}
+            row: {type: 'ordinal'},
           },
           spec: {
             mark: 'point',
-            encoding: {}
-          }
+            encoding: {},
+          },
         });
         expect(model.facet).not.toHaveProperty('row');
         expect(localLogger.warns[0]).toEqual(log.message.emptyFieldDef({type: ORDINAL}, ROW));
-      })
+      }),
     );
 
     it(
       'should throw warning about quantitative field used for faceting',
-      log.wrap(localLogger => {
+      log.wrap((localLogger) => {
         const model = parseFacetModel({
           facet: {
-            row: {field: 'a', type: 'quantitative'}
+            row: {field: 'a', type: 'quantitative'},
           },
           spec: {
             mark: 'point',
-            encoding: {}
-          }
+            encoding: {},
+          },
         });
         expect(model.facet).toEqual({row: {field: 'a', type: 'quantitative'}});
         expect(localLogger.warns[0]).toEqual(log.message.channelShouldBeDiscrete(ROW));
-      })
+      }),
     );
 
     it('converts orient to titleOrient and labelOrient', () => {
       const model = parseFacetModel({
         facet: {
-          row: {field: 'a', type: 'nominal', header: {orient: 'right'}}
+          row: {field: 'a', type: 'nominal', header: {orient: 'right'}},
         },
         spec: {
           mark: 'point',
-          encoding: {}
-        }
+          encoding: {},
+        },
       });
       expect(model.facet).toEqual({
-        row: {field: 'a', type: 'nominal', header: {titleOrient: 'right', labelOrient: 'right'}}
+        row: {field: 'a', type: 'nominal', header: {titleOrient: 'right', labelOrient: 'right'}},
       });
     });
 
     it('keeps header: null', () => {
       const model = parseFacetModel({
         facet: {
-          row: {field: 'a', type: 'nominal', header: null}
+          row: {field: 'a', type: 'nominal', header: null},
         },
         spec: {
           mark: 'point',
-          encoding: {}
-        }
+          encoding: {},
+        },
       });
       expect(model.facet).toEqual({
-        row: {field: 'a', type: 'nominal', header: null}
+        row: {field: 'a', type: 'nominal', header: null},
       });
     });
   });
@@ -83,19 +83,19 @@ describe('FacetModel', () => {
     it('applies text format to the fieldref of a temporal field', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {timeUnit: 'year', field: 'date', type: 'ordinal'}
+          column: {timeUnit: 'year', field: 'date', type: 'ordinal'},
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }
+            y: {field: 'c', type: 'quantitative'},
+          },
+        },
       });
       model.parseAxesAndHeaders();
       const headerMarks = model.assembleHeaderMarks();
-      const columnHeader = headerMarks.filter(d => {
+      const columnHeader = headerMarks.filter((d) => {
         return d.name === 'column_header';
       })[0];
 
@@ -105,19 +105,19 @@ describe('FacetModel', () => {
     it('applies number format for fieldref of a quantitative field', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'nominal', header: {format: 'd'}}
+          column: {field: 'a', type: 'nominal', header: {format: 'd'}},
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }
+            y: {field: 'c', type: 'quantitative'},
+          },
+        },
       });
       model.parseAxesAndHeaders();
       const headerMarks = model.assembleHeaderMarks();
-      const columnHeader = headerMarks.filter(d => {
+      const columnHeader = headerMarks.filter((d) => {
         return d.name === 'column_header';
       })[0];
 
@@ -127,19 +127,19 @@ describe('FacetModel', () => {
     it('ignores number format for fieldref of a binned field', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {bin: true, field: 'a', type: 'quantitative'}
+          column: {bin: true, field: 'a', type: 'quantitative'},
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }
+            y: {field: 'c', type: 'quantitative'},
+          },
+        },
       });
       model.parseAxesAndHeaders();
       const headerMarks = model.assembleHeaderMarks();
-      const columnHeader = headerMarks.filter(d => {
+      const columnHeader = headerMarks.filter((d) => {
         return d.name === 'column_header';
       })[0];
 
@@ -151,14 +151,14 @@ describe('FacetModel', () => {
     it('should correctly set scale component for a model', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          row: {field: 'a', type: 'ordinal'}
+          row: {field: 'a', type: 'ordinal'},
         },
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'b', type: 'quantitative'}
-          }
-        }
+            x: {field: 'b', type: 'quantitative'},
+          },
+        },
       });
 
       expect(model.component.scales['x']).toBeTruthy();
@@ -167,19 +167,19 @@ describe('FacetModel', () => {
     it('should create independent scales if resolve is set to independent', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          row: {field: 'a', type: 'ordinal'}
+          row: {field: 'a', type: 'ordinal'},
         },
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'b', type: 'quantitative'}
-          }
+            x: {field: 'b', type: 'quantitative'},
+          },
         },
         resolve: {
           scale: {
-            x: 'independent'
-          }
-        }
+            x: 'independent',
+          },
+        },
       });
 
       expect(!model.component.scales['x']).toBeTruthy();
@@ -190,20 +190,20 @@ describe('FacetModel', () => {
     it('should sort headers in ascending order', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'ordinal'}
+          column: {field: 'a', type: 'ordinal'},
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: 'b', type: 'quantitative'},
-            y: {field: 'c', type: 'quantitative'}
-          }
-        }
+            y: {field: 'c', type: 'quantitative'},
+          },
+        },
       });
       model.parseAxesAndHeaders();
 
       const headerMarks = model.assembleHeaderMarks();
-      const columnHeader = headerMarks.filter(d => {
+      const columnHeader = headerMarks.filter((d) => {
         return d.name === 'column_header';
       })[0];
 
@@ -215,19 +215,19 @@ describe('FacetModel', () => {
     it('includes a columns fields in the encode block for facet with column that parent is also a facet.', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'ordinal'}
+          column: {field: 'a', type: 'ordinal'},
         },
         spec: {
           facet: {
-            column: {field: 'c', type: 'ordinal'}
+            column: {field: 'c', type: 'ordinal'},
           },
           spec: {
             mark: 'point',
             encoding: {
-              x: {field: 'b', type: 'quantitative'}
-            }
-          }
-        }
+              x: {field: 'b', type: 'quantitative'},
+            },
+          },
+        },
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       } as any);
       model.parseData();
@@ -240,96 +240,96 @@ describe('FacetModel', () => {
     it('returns a layout with a column signal for facet with column', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'ordinal'}
+          column: {field: 'a', type: 'ordinal'},
         },
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'b', type: 'quantitative'}
-          }
-        }
+            x: {field: 'b', type: 'quantitative'},
+          },
+        },
       });
       const layout = model.assembleLayout();
       expect(layout).toEqual({
         padding: DEFAULT_SPACING,
         columns: {
-          signal: "length(data('column_domain'))"
+          signal: "length(data('column_domain'))",
         },
         bounds: 'full',
-        align: 'all'
+        align: 'all',
       });
     });
 
     it('should not align independent scales for column', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'ordinal'}
+          column: {field: 'a', type: 'ordinal'},
         },
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'b', type: 'ordinal'}
-          }
+            x: {field: 'b', type: 'ordinal'},
+          },
         },
         resolve: {
           scale: {
-            x: 'independent'
-          }
-        }
+            x: 'independent',
+          },
+        },
       });
       const layout = model.assembleLayout();
       expect(layout).toEqual({
         padding: DEFAULT_SPACING,
         columns: {
-          signal: "length(data('column_domain'))"
+          signal: "length(data('column_domain'))",
         },
         bounds: 'full',
-        align: 'none'
+        align: 'none',
       });
     });
 
     it('should not align independent scales for row', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          row: {field: 'a', type: 'ordinal'}
+          row: {field: 'a', type: 'ordinal'},
         },
         spec: {
           mark: 'point',
           encoding: {
-            y: {field: 'b', type: 'ordinal'}
-          }
+            y: {field: 'b', type: 'ordinal'},
+          },
         },
         resolve: {
           scale: {
-            y: 'independent'
-          }
-        }
+            y: 'independent',
+          },
+        },
       });
       const layout = model.assembleLayout();
       expect(layout).toEqual({
         padding: DEFAULT_SPACING,
         columns: 1,
         bounds: 'full',
-        align: 'none'
+        align: 'none',
       });
     });
 
     it('returns a layout without a column signal for facet with column that parent is also a facet.', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'ordinal'}
+          column: {field: 'a', type: 'ordinal'},
         },
         spec: {
           facet: {
-            column: {field: 'c', type: 'ordinal'}
+            column: {field: 'c', type: 'ordinal'},
           },
           spec: {
             mark: 'point',
             encoding: {
-              x: {field: 'b', type: 'quantitative'}
-            }
-          }
-        }
+              x: {field: 'b', type: 'quantitative'},
+            },
+          },
+        },
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       } as any);
       const layout = model.child.assembleLayout();
@@ -341,16 +341,16 @@ describe('FacetModel', () => {
         facet: {field: 'a', type: 'ordinal'},
         spec: {
           facet: {
-            column: {field: 'c', type: 'ordinal'}
+            column: {field: 'c', type: 'ordinal'},
           },
           spec: {
             mark: 'point',
             encoding: {
-              x: {field: 'b', type: 'quantitative'}
-            }
-          }
+              x: {field: 'b', type: 'quantitative'},
+            },
+          },
         },
-        config: {facet: {columns: 3}}
+        config: {facet: {columns: 3}},
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       } as any);
 
@@ -367,10 +367,10 @@ describe('FacetModel', () => {
             mark: 'point',
             encoding: {
               x: {field: 'Horsepower', type: 'quantitative'},
-              y: {field: 'Acceleration', type: 'quantitative'}
-            }
-          }
-        }
+              y: {field: 'Acceleration', type: 'quantitative'},
+            },
+          },
+        },
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       } as any);
       model.parseLayoutSize();
@@ -387,9 +387,9 @@ describe('FacetModel', () => {
           mark: 'point',
           encoding: {
             x: {field: 'Horsepower', type: 'quantitative'},
-            y: {field: 'Acceleration', type: 'quantitative'}
-          }
-        }
+            y: {field: 'Acceleration', type: 'quantitative'},
+          },
+        },
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       } as any);
       model.parseLayoutSize();
@@ -406,9 +406,9 @@ describe('FacetModel', () => {
           mark: 'point',
           encoding: {
             x: {field: 'Horsepower', type: 'quantitative'},
-            y: {field: 'Acceleration', type: 'quantitative'}
-          }
-        }
+            y: {field: 'Acceleration', type: 'quantitative'},
+          },
+        },
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       } as any);
       model.parseLayoutSize();
@@ -421,16 +421,16 @@ describe('FacetModel', () => {
   describe('assembleMarks', () => {
     it('add label title for orthogonal orient label', () => {
       const facet: FacetMapping<string, FacetFieldDef<string, SignalRef>> = {
-        row: {field: 'a', type: 'ordinal', header: {labelOrient: 'top'}}
+        row: {field: 'a', type: 'ordinal', header: {labelOrient: 'top'}},
       };
       const model: FacetModel = parseFacetModelWithScale({
         facet,
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'c', type: 'quantitative'}
-          }
-        }
+            x: {field: 'c', type: 'quantitative'},
+          },
+        },
       });
       model.parse();
 
@@ -443,14 +443,14 @@ describe('FacetModel', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
           row: {field: 'a', type: 'ordinal'},
-          column: {field: 'b', type: 'ordinal'}
+          column: {field: 'b', type: 'ordinal'},
         },
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'c', type: 'quantitative'}
-          }
-        }
+            x: {field: 'c', type: 'quantitative'},
+          },
+        },
       });
       model.parse();
 
@@ -459,7 +459,7 @@ describe('FacetModel', () => {
       expect(marks[0].from.facet.aggregate.cross).toBeTruthy();
       expect(marks[0].sort).toEqual({
         field: ['datum["a"]', 'datum["b"]'],
-        order: ['ascending', 'ascending']
+        order: ['ascending', 'ascending'],
       });
     });
 
@@ -467,14 +467,14 @@ describe('FacetModel', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
           row: {field: 'a', type: 'ordinal', sort: ['a1', 'a2']},
-          column: {field: 'b', type: 'ordinal', sort: ['b1', 'b2']}
+          column: {field: 'b', type: 'ordinal', sort: ['b1', 'b2']},
         },
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'c', type: 'quantitative'}
-          }
-        }
+            x: {field: 'c', type: 'quantitative'},
+          },
+        },
       });
       model.parse();
 
@@ -483,7 +483,7 @@ describe('FacetModel', () => {
       expect(marks[0].from.facet.aggregate.cross).toBeTruthy();
       expect(marks[0].sort).toEqual({
         field: ['datum["row_a_sort_index"]', 'datum["column_b_sort_index"]'],
-        order: ['ascending', 'ascending']
+        order: ['ascending', 'ascending'],
       });
     });
 
@@ -491,14 +491,14 @@ describe('FacetModel', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
           row: {field: 'a', type: 'ordinal', sort: {field: 'd', op: 'median'}},
-          column: {field: 'b', type: 'ordinal', sort: {field: 'e', op: 'median'}}
+          column: {field: 'b', type: 'ordinal', sort: {field: 'e', op: 'median'}},
         },
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'c', type: 'quantitative'}
-          }
-        }
+            x: {field: 'c', type: 'quantitative'},
+          },
+        },
       });
       model.parse();
 
@@ -508,33 +508,33 @@ describe('FacetModel', () => {
         cross: true,
         fields: ['median_d_by_a', 'median_e_by_b'],
         ops: ['max', 'max'],
-        as: ['median_d_by_a', 'median_e_by_b']
+        as: ['median_d_by_a', 'median_e_by_b'],
       });
 
       expect(marks[0].sort).toEqual({
         field: ['datum["median_d_by_a"]', 'datum["median_e_by_b"]'],
-        order: ['ascending', 'ascending']
+        order: ['ascending', 'ascending'],
       });
     });
 
     it('should add calculate cardinality for independent scales', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
-          row: {field: 'a', type: 'ordinal'}
+          row: {field: 'a', type: 'ordinal'},
         },
         spec: {
           mark: 'rect',
           encoding: {
             x: {field: 'b', type: 'nominal'},
-            y: {field: 'c', type: 'nominal'}
-          }
+            y: {field: 'c', type: 'nominal'},
+          },
         },
         resolve: {
           scale: {
             x: 'independent',
-            y: 'independent'
-          }
-        }
+            y: 'independent',
+          },
+        },
       });
       model.parse();
 
@@ -543,26 +543,26 @@ describe('FacetModel', () => {
       expect(marks[0].from.facet.aggregate).toEqual({
         fields: ['b', 'c'],
         ops: ['distinct', 'distinct'],
-        as: ['distinct_b', 'distinct_c']
+        as: ['distinct_b', 'distinct_c'],
       });
     });
 
     it('should add calculate cardinality for child column facet', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'nominal'}
+          column: {field: 'a', type: 'nominal'},
         },
         spec: {
           facet: {
-            column: {field: 'c', type: 'nominal'}
+            column: {field: 'c', type: 'nominal'},
           },
           spec: {
             mark: 'point',
             encoding: {
-              x: {field: 'b', type: 'quantitative'}
-            }
-          }
-        }
+              x: {field: 'b', type: 'quantitative'},
+            },
+          },
+        },
         // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       } as any);
       model.parse();
@@ -572,21 +572,21 @@ describe('FacetModel', () => {
       expect(marks[0].from.facet.aggregate).toEqual({
         fields: ['c'],
         ops: ['distinct'],
-        as: ['distinct_c']
+        as: ['distinct_c'],
       });
     });
 
     it('includes both bin start and end in the facet groupby', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
-          column: {bin: true, field: 'a', type: 'quantitative'}
+          column: {bin: true, field: 'a', type: 'quantitative'},
         },
         spec: {
           mark: 'point',
           encoding: {
-            x: {field: 'b', type: 'quantitative'}
-          }
-        }
+            x: {field: 'b', type: 'quantitative'},
+          },
+        },
       });
       model.parse();
 

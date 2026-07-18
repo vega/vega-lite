@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Plots two functions using a generated sequence.",
   "background": "white",
   "padding": 5,
@@ -39,13 +39,13 @@
           "name": "marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"x\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "key"},
               "description": {
-                "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+                "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"])"
               },
               "x": {"scale": "x", "field": "x"},
               "y": {"scale": "y", "field": "value"},

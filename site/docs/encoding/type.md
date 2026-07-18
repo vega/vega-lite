@@ -20,7 +20,7 @@ Quantitative data can represent either the ratio or interval [level of measureme
 
 ## Temporal
 
-Temporal data supports date-times and times such as `"2015-03-07 12:32:17"`, `"17:01"`, `"2015-03-16"`. `"2015"`, `1552199579097` (timestamp).
+Temporal data supports date-times and times such as `"2015-03-07 12:32:17"`, `"17:01"`, `"2015-03-16"`, `"2015"`, `1552199579097` (timestamp).
 
 Note that when a `"temporal"` type is used for a field, Vega-Lite will treat it as a continuous field and thus will use a [`time` scale](scale.html#time) to map its data to visual values. For example, the following bar chart shows the mean precipitation for different months.
 
@@ -42,7 +42,7 @@ To use an ordinal field with a sort order other than the natural order, you may 
 
 ### Casting a Temporal Field as an Ordinal Field
 
-To treat a date-time field with `timeUnit` as a discrete field, you can cast it be an `"ordinal"` field. This type casting can be useful for time units with low cardinality such as `"month"`.
+To treat a date-time field with `timeUnit` as a discrete field, you can cast it to be an `"ordinal"` field. This type casting can be useful for time units with low cardinality such as `"month"`.
 
 <span class="vl-example" data-name="bar_month"></span>
 
@@ -58,7 +58,7 @@ Setting a binned field's `type` to `"ordinal"` produces a histogram with an ordi
 
 ## Nominal
 
-Nominal data, also known as categorical data, differentiates between values based only on their names or categories. For example, gender, nationality, music genre, and name are nominal data. Numbers maybe used to represent the variables but the number do not determine magnitude or ordering. For example, if a nominal variable contains three values 1, 2, and 3. We cannot claim that 1 is less than 2 nor 3.
+Nominal data, also known as categorical data, differentiates between values based only on their names or categories. For example, gender, nationality, music genre, and name are nominal data. Numbers may be used to represent the variables but the number do not determine magnitude or ordering. For example, if a nominal variable contains three values 1, 2, and 3. We cannot claim that 1 is less than 2 nor 3.
 
 {:#geojson}
 

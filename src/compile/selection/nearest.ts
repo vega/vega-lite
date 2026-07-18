@@ -1,12 +1,12 @@
-import * as log from '../../log';
-import {isPathMark} from '../../mark';
-import {tooltip} from '../mark/encode';
-import {SelectionCompiler} from '.';
+import * as log from '../../log/index.js';
+import {isPathMark} from '../../mark.js';
+import {tooltip} from '../mark/encode/index.js';
+import {SelectionCompiler} from './index.js';
 
 const VORONOI = 'voronoi';
 
 const nearest: SelectionCompiler<'point'> = {
-  defined: selCmpt => {
+  defined: (selCmpt) => {
     return selCmpt.type === 'point' && selCmpt.nearest;
   },
 
@@ -32,6 +32,7 @@ const nearest: SelectionCompiler<'point'> = {
       name: model.getName(VORONOI),
       type: 'path',
       interactive: true,
+      aria: false,
       from: {data: model.getName('marks')},
       encode: {
         update: {
@@ -39,17 +40,17 @@ const nearest: SelectionCompiler<'point'> = {
           strokeWidth: {value: 0.35},
           stroke: {value: 'transparent'},
           isVoronoi: {value: true},
-          ...tooltip(model, {reactiveGeom: true})
-        }
+          ...tooltip(model, {reactiveGeom: true}),
+        },
       },
       transform: [
         {
           type: 'voronoi',
           x: {expr: x || !y ? 'datum.datum.x || 0' : '0'},
           y: {expr: y || !x ? 'datum.datum.y || 0' : '0'},
-          size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')]
-        }
-      ]
+          size: [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')],
+        },
+      ],
     };
 
     let index = 0;
@@ -58,7 +59,7 @@ const nearest: SelectionCompiler<'point'> = {
       const name = mark.name ?? '';
       if (name === model.component.mark[0].name) {
         index = i;
-      } else if (name.indexOf(VORONOI) >= 0) {
+      } else if (name.includes(VORONOI)) {
         exists = true;
       }
     });
@@ -68,7 +69,7 @@ const nearest: SelectionCompiler<'point'> = {
     }
 
     return marks;
-  }
+  },
 };
 
 export default nearest;

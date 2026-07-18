@@ -2,7 +2,7 @@
  * Utility for generating row / column headers
  */
 import {Axis as VgAxis, SignalRef, Text} from 'vega';
-import {FacetFieldDef} from '../../spec/facet';
+import {FacetFieldDef} from '../../spec/facet.js';
 
 export type HeaderChannel = 'row' | 'column';
 export const HEADER_CHANNELS: HeaderChannel[] = ['row', 'column'];

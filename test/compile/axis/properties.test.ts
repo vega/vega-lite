@@ -1,20 +1,20 @@
 import {AxisOrient, Orient, SignalRef} from 'vega';
 import {codegenExpression, parseExpression} from 'vega-expression';
 import {stringValue} from 'vega-util';
-import {getAxisConfigs} from '../../../src/compile/axis/config';
-import * as properties from '../../../src/compile/axis/properties';
-import {defaultLabelAlign, defaultLabelBaseline, getLabelAngle} from '../../../src/compile/axis/properties';
-import {TimeUnit, TimeUnitTransformParams} from '../../../src/timeunit';
-import {normalizeAngle} from '../../../src/util';
-import {isSignalRef} from '../../../src/vega.schema';
-import {range} from '../../util';
+import {getAxisConfigs} from '../../../src/compile/axis/config.js';
+import * as properties from '../../../src/compile/axis/properties.js';
+import {defaultLabelAlign, defaultLabelBaseline, getLabelAngle} from '../../../src/compile/axis/properties.js';
+import {TimeUnit, TimeUnitTransformParams} from '../../../src/timeunit.js';
+import {normalizeAngle} from '../../../src/util.js';
+import {isSignalRef} from '../../../src/vega.schema.js';
+import {range} from '../../util.js';
 
 describe('compile/axis/properties', () => {
   function evalValueOrSignal(valueOrSignalRef: string | SignalRef, o: Orient) {
     if (isSignalRef(valueOrSignalRef)) {
       const ast = parseExpression(valueOrSignalRef.signal);
       const {code} = codegenExpression({
-        globalvar: ((v: string) => (v === 'o' ? stringValue(o) : undefined)) as any
+        globalvar: ((v: string) => (v === 'o' ? stringValue(o) : undefined)) as any,
       })(ast);
       return eval(code);
     }
@@ -55,7 +55,7 @@ describe('compile/axis/properties', () => {
       const tickCount = properties.defaultTickCount({
         fieldOrDatumDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
         scaleType: 'linear',
-        size: {signal: 'a'}
+        size: {signal: 'a'},
       });
       expect(tickCount).toEqual({signal: 'ceil(a/10)'});
     });
@@ -65,7 +65,7 @@ describe('compile/axis/properties', () => {
         fieldOrDatumDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
         scaleType: 'linear',
         size: {signal: 'a'},
-        values: [1, 2, 3]
+        values: [1, 2, 3],
       });
       expect(tickCount).toBeUndefined();
     });
@@ -75,7 +75,7 @@ describe('compile/axis/properties', () => {
         const tickCount = properties.defaultTickCount({
           fieldOrDatumDef: {timeUnit, field: 'a', type: 'temporal'},
           scaleType: 'linear',
-          size: {signal: 'a'}
+          size: {signal: 'a'},
         });
         expect(tickCount).toBeUndefined();
       });
@@ -85,7 +85,7 @@ describe('compile/axis/properties', () => {
       const tickCount = properties.defaultTickCount({
         fieldOrDatumDef: {field: 'a', type: 'quantitative'},
         scaleType: 'linear',
-        size: {signal: 'a'}
+        size: {signal: 'a'},
       });
       expect(tickCount).toEqual({signal: 'ceil(a/40)'});
     });
@@ -93,7 +93,7 @@ describe('compile/axis/properties', () => {
     it('should return undefined by default for log scale', () => {
       const tickCount = properties.defaultTickCount({
         fieldOrDatumDef: {field: 'a', type: 'quantitative'},
-        scaleType: 'log'
+        scaleType: 'log',
       });
       expect(tickCount).toBeUndefined();
     });
@@ -101,7 +101,7 @@ describe('compile/axis/properties', () => {
     it('should return undefined by default for point scale', () => {
       const tickCount = properties.defaultTickCount({
         fieldOrDatumDef: {field: 'a', type: 'quantitative'},
-        scaleType: 'point'
+        scaleType: 'point',
       });
       expect(tickCount).toBeUndefined();
     });
@@ -110,7 +110,7 @@ describe('compile/axis/properties', () => {
     it('should return 1 for integer', () => {
       const tickMinStep = properties.defaultTickMinStep({
         fieldOrDatumDef: {field: 'a', type: 'quantitative'},
-        format: 'd'
+        format: 'd',
       });
       expect(tickMinStep).toBe(1);
     });
@@ -118,38 +118,38 @@ describe('compile/axis/properties', () => {
     const TIMEUNIT_CASES: {timeUnit: TimeUnit | TimeUnitTransformParams; signal: string}[] = [
       {
         timeUnit: 'year',
-        signal: 'datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)'
+        signal: 'datetime(2002, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)',
       },
       {
         timeUnit: {unit: 'year', step: 2},
-        signal: 'datetime(2003, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)'
+        signal: 'datetime(2003, 0, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)',
       },
       {
         timeUnit: 'yearmonth',
-        signal: 'datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)'
+        signal: 'datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)',
       },
       {
         timeUnit: {unit: 'yearmonth', step: 4},
-        signal: 'datetime(2001, 4, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)'
+        signal: 'datetime(2001, 4, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)',
       },
       {
         timeUnit: 'month',
-        signal: 'datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)'
+        signal: 'datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)',
       },
       {
         timeUnit: 'yearquarter',
-        signal: 'datetime(2001, 3, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)'
+        signal: 'datetime(2001, 3, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)',
       },
       {
         timeUnit: 'yearmonthdate',
-        signal: 'datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)'
-      }
+        signal: 'datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)',
+      },
     ];
 
     it.each(TIMEUNIT_CASES)('should return timestamp duration for $timeUnit', ({timeUnit, signal}) => {
       const tickMinStep = properties.defaultTickMinStep({
         fieldOrDatumDef: {timeUnit, field: 'a', type: 'temporal'},
-        format: undefined
+        format: undefined,
       });
       expect(tickMinStep).toEqual({signal});
     });
@@ -161,7 +161,7 @@ describe('compile/axis/properties', () => {
 
       expect(values).toEqual([
         {signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'},
-        {signal: 'datetime(1980, 0, 1, 0, 0, 0, 0)'}
+        {signal: 'datetime(1980, 0, 1, 0, 0, 0, 0)'},
       ]);
     });
 
@@ -181,8 +181,8 @@ describe('compile/axis/properties', () => {
         {
           type: 'quantitative',
           field: 'US_Gross',
-          bin: {extent: [0, 1]}
-        }
+          bin: {extent: [0, 1]},
+        },
       );
 
       expect(values).toBeUndefined();
@@ -199,7 +199,7 @@ describe('compile/axis/properties', () => {
     it('should return the correct labelAngle from the axis config definition', () => {
       const axisConfigs = getAxisConfigs('y', 'linear', 'left', configWithLabelAngle);
       expect(140).toEqual(
-        getLabelAngle({type: 'quantitative', field: 'US_Gross'}, {}, 'y', configWithLabelAngle, axisConfigs)
+        getLabelAngle({type: 'quantitative', field: 'US_Gross'}, {}, 'y', configWithLabelAngle, axisConfigs),
       );
     });
 
@@ -209,7 +209,7 @@ describe('compile/axis/properties', () => {
 
     it('should return the labelAngle declared in the axis when both the axis and axis config have labelAngle', () => {
       expect(240).toEqual(
-        getLabelAngle({type: 'quantitative', field: 'US_Gross', axis}, axis, 'y', configWithLabelAngle)
+        getLabelAngle({type: 'quantitative', field: 'US_Gross', axis}, axis, 'y', configWithLabelAngle),
       );
     });
 
@@ -278,14 +278,14 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align y-axis labels for labelAngle and orient signals', () => {
-      const ast = parseExpression(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
+      const ast = parseExpression((defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y') as any).signal);
       let a: number;
       let o: AxisOrient;
       // test all angles
       for (a of range(-360, 375, 15)) {
         for (o of ['left', 'right'] as AxisOrient[]) {
           const {code} = codegenExpression({
-            globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
+            globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any,
           })(ast);
 
           const result = eval(code);
@@ -296,15 +296,15 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align x-axis labels for labelAngle and orient signals', () => {
-      return new Promise<void>(done => {
-        const ast = parseExpression(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
+      return new Promise<void>((done) => {
+        const ast = parseExpression((defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'x') as any).signal);
         let a: number;
         let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           for (o of ['top', 'bottom'] as AxisOrient[]) {
             const {code} = codegenExpression({
-              globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
+              globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any,
             })(ast);
 
             const result = eval(code);
@@ -317,7 +317,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align y-axis labels for orient signal', () => {
-      return new Promise<void>(done => {
+      return new Promise<void>((done) => {
         let a: number;
         let o: AxisOrient;
         // test all angles
@@ -335,7 +335,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align x-axis labels for orient signal', () => {
-      return new Promise<void>(done => {
+      return new Promise<void>((done) => {
         let a: number;
         let o: AxisOrient;
         // test all angles
@@ -389,15 +389,15 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align y-axis labels for labelAngle and orient signals', () => {
-      return new Promise<void>(done => {
-        const ast = parseExpression(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
+      return new Promise<void>((done) => {
+        const ast = parseExpression((defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'y') as any).signal);
         let a: number;
         let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           for (o of ['left', 'right'] as AxisOrient[]) {
             const {code} = codegenExpression({
-              globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
+              globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any,
             })(ast);
 
             const result = eval(code);
@@ -410,15 +410,15 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align x-axis labels for labelAngle and orient signals', () => {
-      return new Promise<void>(done => {
-        const ast = parseExpression(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
+      return new Promise<void>((done) => {
+        const ast = parseExpression((defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'x') as any).signal);
         let a: number;
         let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           for (o of ['top', 'bottom'] as AxisOrient[]) {
             const {code} = codegenExpression({
-              globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
+              globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any,
             })(ast);
 
             const result = eval(code);
@@ -431,7 +431,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align y-axis labels for orient signal', () => {
-      return new Promise<void>(done => {
+      return new Promise<void>((done) => {
         let a: number;
         let o: AxisOrient;
         // test all angles
@@ -451,7 +451,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align x-axis labels for orient signal', () => {
-      return new Promise<void>(done => {
+      return new Promise<void>((done) => {
         let a: number;
         let o: AxisOrient;
         // test all angles

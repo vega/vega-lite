@@ -4,8 +4,8 @@ set -euo pipefail
 
 GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
 
-# Only push on human pull request branches. Exclude release, prerelease, and bot branches.
-if [ "$GIT_BRANCH" != "stable" ] && [ "$GIT_BRANCH" != "main" ] && [[ "$GIT_BRANCH" != dependabot/* ]]; then
+# Only push on internal push builds. Fork pull requests (detached merge ref, no write access), release, prerelease, and bot branches only verify.
+if [ "${GITHUB_EVENT_NAME:-}" != "pull_request" ] && [ "$GIT_BRANCH" != "stable" ] && [ "$GIT_BRANCH" != "main" ] && [[ "$GIT_BRANCH" != dependabot/* ]]; then
   PUSH_BRANCH=true
   echo "Will try to push changes."
 else
@@ -34,9 +34,9 @@ echo ""
 
 if git log -1 | grep "\[SVG\]" && [ "$PUSH_BRANCH" = true ]; then
   echo "As the latest commit includes [SVG]. Rebuilding all SVGs."
-  yarn build:examples-full
+  npm run build:examples-full
 else
-  yarn build:examples
+  npm run build:examples
 fi
 
 # Commit examples if outdated

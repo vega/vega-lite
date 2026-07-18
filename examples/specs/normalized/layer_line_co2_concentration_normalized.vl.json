@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "url": "data/co2-concentration.csv",
     "format": {"parse": {"Date": "utc:'%Y-%m-%d'"}}

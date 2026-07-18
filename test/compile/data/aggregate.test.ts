@@ -1,9 +1,9 @@
-import {AggregateNode} from '../../../src/compile/data/aggregate';
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../src/compile/data/timeunit';
-import {AggregateTransform} from '../../../src/transform';
-import {internalField} from '../../../src/util';
-import {parseUnitModel} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {AggregateNode} from '../../../src/compile/data/aggregate.js';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../src/compile/data/timeunit.js';
+import {AggregateTransform} from '../../../src/transform.js';
+import {internalField} from '../../../src/util.js';
+import {parseUnitModel} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/aggregate', () => {
   describe('clone', () => {
@@ -37,21 +37,21 @@ describe('compile/data/aggregate', () => {
           y: {
             aggregate: 'sum',
             field: 'Acceleration',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           x: {
             field: 'Origin',
-            type: 'ordinal'
+            type: 'ordinal',
           },
-          color: {type: 'quantitative', aggregate: 'count'}
-        }
+          color: {type: 'quantitative', aggregate: 'count'},
+        },
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
       expect(agg.hash()).toBe(
         `Aggregate {"dimensions":"Set(\\"Origin\\")","measures":{"*":{"count":"Set(\\"${internalField(
-          'count'
-        )}\\")"},"Acceleration":{"sum":"Set(\\"sum_Acceleration\\")"}}}`
+          'count',
+        )}\\")"},"Acceleration":{"sum":"Set(\\"sum_Acceleration\\")"}}}`,
       );
     });
   });
@@ -64,14 +64,14 @@ describe('compile/data/aggregate', () => {
           y: {
             aggregate: 'sum',
             field: 'Acceleration',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           x: {
             field: 'Origin',
-            type: 'ordinal'
+            type: 'ordinal',
           },
-          color: {type: 'quantitative', aggregate: 'count'}
-        }
+          color: {type: 'quantitative', aggregate: 'count'},
+        },
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
@@ -80,7 +80,7 @@ describe('compile/data/aggregate', () => {
         groupby: ['Origin'],
         ops: ['sum', 'count'],
         fields: ['Acceleration', null],
-        as: ['sum_Acceleration', internalField('count')]
+        as: ['sum_Acceleration', internalField('count')],
       });
     });
 
@@ -91,15 +91,15 @@ describe('compile/data/aggregate', () => {
           y: {
             aggregate: 'sum',
             field: 'Acceleration',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           x: {
             timeUnit: 'yearmonth',
             field: 'date',
             type: 'temporal',
-            bandPosition: 0
-          }
-        }
+            bandPosition: 0,
+          },
+        },
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
@@ -109,11 +109,11 @@ describe('compile/data/aggregate', () => {
           'yearmonth_date',
           'yearmonth_date_end',
           `yearmonth_date_${OFFSETTED_RECT_START_SUFFIX}`,
-          `yearmonth_date_${OFFSETTED_RECT_END_SUFFIX}`
+          `yearmonth_date_${OFFSETTED_RECT_END_SUFFIX}`,
         ],
         ops: ['sum'],
         fields: ['Acceleration'],
-        as: ['sum_Acceleration']
+        as: ['sum_Acceleration'],
       });
     });
 
@@ -127,9 +127,9 @@ describe('compile/data/aggregate', () => {
           longitude2: {field: 'longitude2'},
           color: {
             aggregate: 'count',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
@@ -138,7 +138,7 @@ describe('compile/data/aggregate', () => {
         groupby: ['x', 'x2', 'y', 'y2'],
         ops: ['count'],
         fields: [null],
-        as: [internalField('count')]
+        as: [internalField('count')],
       });
     });
 
@@ -149,9 +149,9 @@ describe('compile/data/aggregate', () => {
           x: {aggregate: 'mean', field: 'Displacement', type: 'quantitative'},
           detail: [
             {field: 'Origin', type: 'ordinal'},
-            {field: 'Cylinders', type: 'quantitative'}
-          ]
-        }
+            {field: 'Cylinders', type: 'quantitative'},
+          ],
+        },
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
@@ -160,7 +160,7 @@ describe('compile/data/aggregate', () => {
         groupby: ['Origin', 'Cylinders'],
         ops: ['mean'],
         fields: ['Displacement'],
-        as: ['mean_Displacement']
+        as: ['mean_Displacement'],
       });
     });
 
@@ -171,9 +171,9 @@ describe('compile/data/aggregate', () => {
           x: {aggregate: 'mean', field: 'Displacement', type: 'quantitative'},
           color: {
             condition: {param: 'a', field: 'Origin', type: 'ordinal'},
-            value: 'red'
-          }
-        }
+            value: 'red',
+          },
+        },
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
@@ -182,7 +182,7 @@ describe('compile/data/aggregate', () => {
         groupby: ['Origin'],
         ops: ['mean'],
         fields: ['Displacement'],
-        as: ['mean_Displacement']
+        as: ['mean_Displacement'],
       });
     });
 
@@ -190,8 +190,8 @@ describe('compile/data/aggregate', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          x: {aggregate: 'mean', field: 'Displacement', type: 'quantitative', scale: {domain: 'unaggregated'}}
-        }
+          x: {aggregate: 'mean', field: 'Displacement', type: 'quantitative', scale: {domain: 'unaggregated'}},
+        },
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
@@ -200,7 +200,7 @@ describe('compile/data/aggregate', () => {
         groupby: [],
         ops: ['mean', 'min', 'max'],
         fields: ['Displacement', 'Displacement', 'Displacement'],
-        as: ['mean_Displacement', 'min_Displacement', 'max_Displacement']
+        as: ['mean_Displacement', 'min_Displacement', 'max_Displacement'],
       });
     });
 
@@ -210,8 +210,8 @@ describe('compile/data/aggregate', () => {
         encoding: {
           x: {bin: true, field: 'Displacement', type: 'quantitative'},
           y: {bin: true, field: 'Acceleration', type: 'ordinal'},
-          color: {aggregate: 'count', type: 'quantitative'}
-        }
+          color: {aggregate: 'count', type: 'quantitative'},
+        },
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
@@ -222,11 +222,11 @@ describe('compile/data/aggregate', () => {
           'bin_maxbins_10_Displacement_end',
           'bin_maxbins_10_Acceleration',
           'bin_maxbins_10_Acceleration_end',
-          'bin_maxbins_10_Acceleration_range'
+          'bin_maxbins_10_Acceleration_range',
         ],
         ops: ['count'],
         fields: [null],
-        as: [internalField('count')]
+        as: [internalField('count')],
       });
     });
 
@@ -236,8 +236,8 @@ describe('compile/data/aggregate', () => {
         encoding: {
           x: {timeUnit: 'year', field: 'date'},
           y: {aggregate: 'mean', field: 'Displacement', type: 'quantitative'},
-          color: {field: 'symbol', type: 'nominal', scale: {range: {field: 'color'}}}
-        }
+          color: {field: 'symbol', type: 'nominal', scale: {range: {field: 'color'}}},
+        },
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
@@ -246,7 +246,7 @@ describe('compile/data/aggregate', () => {
         groupby: ['year_date', 'symbol', 'color'],
         ops: ['mean'],
         fields: ['Displacement'],
-        as: ['mean_Displacement']
+        as: ['mean_Displacement'],
       });
     });
 
@@ -255,8 +255,8 @@ describe('compile/data/aggregate', () => {
         mark: 'point',
         encoding: {
           x: {aggregate: {argmin: 'a'}, field: 'b', type: 'quantitative'},
-          y: {aggregate: {argmax: 'c'}, field: 'd', type: 'quantitative'}
-        }
+          y: {aggregate: {argmax: 'c'}, field: 'd', type: 'quantitative'},
+        },
       });
 
       const agg = AggregateNode.makeFromEncoding(null, model);
@@ -265,7 +265,7 @@ describe('compile/data/aggregate', () => {
         groupby: [],
         ops: ['argmin', 'argmax'],
         fields: ['a', 'c'],
-        as: ['argmin_a', 'argmax_c']
+        as: ['argmin_a', 'argmax_c'],
       });
     });
   });
@@ -275,9 +275,9 @@ describe('compile/data/aggregate', () => {
       const t: AggregateTransform = {
         aggregate: [
           {op: 'mean', field: 'Displacement', as: 'Displacement_mean'},
-          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
+          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'},
         ],
-        groupby: ['Group']
+        groupby: ['Group'],
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
@@ -286,7 +286,7 @@ describe('compile/data/aggregate', () => {
         groupby: ['Group'],
         ops: ['mean', 'sum'],
         fields: ['Displacement', 'Acceleration'],
-        as: ['Displacement_mean', 'Acceleration_sum']
+        as: ['Displacement_mean', 'Acceleration_sum'],
       });
     });
 
@@ -295,9 +295,9 @@ describe('compile/data/aggregate', () => {
         aggregate: [
           {op: 'mean', field: 'Displacement', as: 'Displacement_mean'},
           {op: 'max', field: 'Displacement', as: 'Displacement_max'},
-          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
+          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'},
         ],
-        groupby: ['Group']
+        groupby: ['Group'],
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
@@ -306,7 +306,7 @@ describe('compile/data/aggregate', () => {
         groupby: ['Group'],
         ops: ['mean', 'max', 'sum'],
         fields: ['Displacement', 'Displacement', 'Acceleration'],
-        as: ['Displacement_mean', 'Displacement_max', 'Acceleration_sum']
+        as: ['Displacement_mean', 'Displacement_max', 'Acceleration_sum'],
       });
     });
   });
@@ -316,9 +316,9 @@ describe('compile/data/aggregate', () => {
       const t: AggregateTransform = {
         aggregate: [
           {op: 'mean', field: 'Displacement', as: 'AvgDisplacement'},
-          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'}
+          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'},
         ],
-        groupby: ['Group']
+        groupby: ['Group'],
       };
 
       const agg = AggregateNode.makeFromTransform(null, t);
@@ -352,7 +352,7 @@ describe('compile/data/aggregate', () => {
         fields: ['foo\\.baz'],
         groupby: ['foo\\.bar'],
         ops: ['mean'],
-        type: 'aggregate'
+        type: 'aggregate',
       });
     });
   });

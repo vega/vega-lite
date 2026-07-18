@@ -163,7 +163,7 @@ By default, Vega-Lite assigns different [default color schemes](#range-config) b
 
 <div class="vl-example" data-name="point_color_ordinal"></div>
 
-- _Quantitative_ and _temporal_ fields use the [pre-defined named color range](#range-config) `"heatmap"` (the [`"viridis"`](https://vega.github.io/vega/docs/schemes/#viridis) scheme by default) for rect marks and `"ramp"` (the [`"blues"`](https://vega.github.io/vega/docs/schemes/#blues) scheme by default) for other marks.
+- _Quantitative_ and _temporal_ fields use the [pre-defined named color range](#range-config) `"heatmap"` (the [`"yellowgreenblue"`](https://vega.github.io/vega/docs/schemes/#yellowgreenblue) scheme by default) for rect marks and `"ramp"` (the [`"blues"`](https://vega.github.io/vega/docs/schemes/#blues) scheme by default) for other marks.
 
 <div class="vl-example" data-name="rect_heatmap"></div>
 
@@ -453,6 +453,10 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 #### Range
 
 {% include table.html props="maxBandSize,minBandSize,maxFontSize,minFontSize,maxOpacity,minOpacity,maxSize,minSize,maxStrokeWidth,minStrokeWidth" source="ScaleConfig" %}
+
+#### Scale Output for Invalid Values
+
+{% include table.html props="invalid" source="ScaleConfig" %}
 
 #### Other
 

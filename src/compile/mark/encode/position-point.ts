@@ -5,17 +5,19 @@ import {
   getVgPositionChannel,
   isXorY,
   PolarPositionChannel,
-  PositionChannel
-} from '../../../channel';
-import {isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef';
-import {ScaleType} from '../../../scale';
-import {contains} from '../../../util';
-import {VgValueRef} from '../../../vega.schema';
-import {getMarkPropOrConfig} from '../../common';
-import {ScaleComponent} from '../../scale/component';
-import {UnitModel} from '../../unit';
-import {positionOffset} from './offset';
-import * as ref from './valueref';
+  PolarPositionScaleChannel,
+  PositionChannel,
+  PositionScaleChannel,
+} from '../../../channel.js';
+import {isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef.js';
+import {Config} from '../../../config.js';
+import {VgValueRef} from '../../../vega.schema.js';
+import {getMarkPropOrConfig} from '../../common.js';
+import {ScaleComponent} from '../../scale/component.js';
+import {UnitModel} from '../../unit.js';
+import {positionOffset} from './offset.js';
+import * as ref from './valueref.js';
+import {scaledZeroOrMinOrMax, ScaledZeroOrMinOrMaxProps} from './scaledZeroOrMinOrMax.js';
 
 /**
  * Return encode for point (non-band) position channels.
@@ -25,11 +27,11 @@ export function pointPosition(
   model: UnitModel,
   {
     defaultPos,
-    vgChannel
+    vgChannel,
   }: {
     defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null;
     vgChannel?: 'x' | 'y' | 'xc' | 'yc';
-  }
+  },
 ) {
   const {encoding, markDef, config, stack} = model;
 
@@ -43,7 +45,7 @@ export function pointPosition(
     markDef,
     encoding,
     model,
-    bandPosition: 0.5
+    bandPosition: 0.5,
   });
 
   // Get default position or position from mark def
@@ -52,7 +54,7 @@ export function pointPosition(
     defaultPos,
     channel,
     scaleName,
-    scale
+    scale,
   });
 
   const valueRef =
@@ -70,7 +72,7 @@ export function pointPosition(
           stack,
           offset,
           defaultRef,
-          bandPosition: offsetType === 'encoding' ? 0 : undefined
+          bandPosition: offsetType === 'encoding' ? 0 : undefined,
         });
 
   return valueRef ? {[vgChannel || channel]: valueRef} : undefined;
@@ -85,7 +87,7 @@ export function pointPosition(
 export function positionRef(
   params: ref.MidPointParams & {
     channel: 'x' | 'y' | 'radius' | 'theta';
-  }
+  },
 ): VgValueRef | VgValueRef[] {
   const {channel, channelDef, scaleName, stack, offset, markDef} = params;
 
@@ -106,7 +108,7 @@ export function positionRef(
           fieldOrDatumDef: channelDef as TypedFieldDef<string>, // positionRef always have type
           startSuffix: 'start',
           bandPosition,
-          offset
+          offset,
         });
       }
     }
@@ -122,7 +124,7 @@ export function pointPositionDefaultRef({
   defaultPos,
   channel,
   scaleName,
-  scale
+  scale,
 }: {
   model: UnitModel;
   defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null;
@@ -142,43 +144,15 @@ export function pointPositionDefaultRef({
 
     switch (defaultPos) {
       case 'zeroOrMin':
+        return zeroOrMinOrMaxPosition({scaleName, scale, mode: 'zeroOrMin', mainChannel, config});
       case 'zeroOrMax':
-        if (scaleName) {
-          const scaleType = scale.get('type');
-          if (contains([ScaleType.LOG, ScaleType.TIME, ScaleType.UTC], scaleType)) {
-            // Log scales cannot have zero.
-            // Zero in time scale is arbitrary, and does not affect ratio.
-            // (Time is an interval level of measurement, not ratio).
-            // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
-          } else {
-            if (scale.domainDefinitelyIncludesZero()) {
-              return {
-                scale: scaleName,
-                value: 0
-              };
-            }
-          }
-        }
-
-        if (defaultPos === 'zeroOrMin') {
-          return mainChannel === 'y' ? {field: {group: 'height'}} : {value: 0};
-        } else {
-          // zeroOrMax
-          switch (mainChannel) {
-            case 'radius':
-              // max of radius is min(width, height) / 2
-              return {
-                signal: `min(${model.width.signal},${model.height.signal})/2`
-              };
-            case 'theta':
-              return {signal: '2*PI'};
-            case 'x':
-              return {field: {group: 'width'}};
-            case 'y':
-              return {value: 0};
-          }
-        }
-        break;
+        return zeroOrMinOrMaxPosition({
+          scaleName,
+          scale,
+          mode: {zeroOrMax: {widthSignal: model.width.signal, heightSignal: model.height.signal}},
+          mainChannel,
+          config,
+        });
       case 'mid': {
         const sizeRef = model[getSizeChannel(channel)];
         return {...sizeRef, mult: 0.5};
@@ -187,4 +161,39 @@ export function pointPositionDefaultRef({
     // defaultPos === null
     return undefined;
   };
+}
+
+function zeroOrMinOrMaxPosition({
+  mainChannel,
+  config,
+  ...otherProps
+}: ScaledZeroOrMinOrMaxProps & {
+  mainChannel: PositionScaleChannel | PolarPositionScaleChannel;
+  config: Config;
+}): VgValueRef {
+  const scaledValueRef = scaledZeroOrMinOrMax(otherProps);
+  const {mode} = otherProps;
+
+  if (scaledValueRef) {
+    return scaledValueRef;
+  }
+
+  switch (mainChannel) {
+    case 'radius': {
+      if (mode === 'zeroOrMin') {
+        return {value: 0}; // min value
+      }
+      const {widthSignal, heightSignal} = mode.zeroOrMax;
+      // max of radius is min(width, height) / 2
+      return {
+        signal: `min(${widthSignal},${heightSignal})/2`,
+      };
+    }
+    case 'theta':
+      return mode === 'zeroOrMin' ? {value: 0} : {signal: '2*PI'};
+    case 'x':
+      return mode === 'zeroOrMin' ? {value: 0} : {field: {group: 'width'}};
+    case 'y':
+      return mode === 'zeroOrMin' ? {field: {group: 'height'}} : {value: 0};
+  }
 }

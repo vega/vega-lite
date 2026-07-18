@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "The production budget of the movie that has the highest US Gross in each major genre.",
   "data": {"url": "data/movies.json"},
   "transform": [{

@@ -1,6 +1,6 @@
-import {DensityTransformNode} from '../../../src/compile/data/density';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {DensityTransformNode} from '../../../src/compile/data/density.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/fold', () => {
   describe('assemble', () => {
@@ -14,7 +14,7 @@ describe('compile/data/fold', () => {
         extent: [0, 10],
         minsteps: 25,
         maxsteps: 200,
-        as: ['x', 'y']
+        as: ['x', 'y'],
       };
       const density = new DensityTransformNode(null, transform);
       expect(density.assemble()).toEqual({
@@ -28,48 +28,51 @@ describe('compile/data/fold', () => {
         minsteps: 25,
         maxsteps: 200,
         resolve: 'shared',
-        as: ['x', 'y']
+        as: ['x', 'y'],
       });
     });
 
     it('should handle missing "as" field', () => {
       const transform: Transform = {
-        density: 'v'
+        density: 'v',
       };
 
       const density = new DensityTransformNode(null, transform);
       expect(density.assemble()).toEqual({
         type: 'kde',
         field: 'v',
-        as: ['value', 'density']
+        resolve: 'shared',
+        as: ['value', 'density'],
       });
     });
 
     it('should handle partial "as" field', () => {
       const transform: Transform = {
         density: 'v',
-        as: ['A'] as any
+        as: ['A'] as any,
       };
       const density = new DensityTransformNode(null, transform);
       expect(density.assemble()).toEqual({
         type: 'kde',
         field: 'v',
-        as: ['A', 'density']
+        resolve: 'shared',
+        as: ['A', 'density'],
       });
     });
 
-    it('should add resolve shared if we group', () => {
+    it('should add resolve "independent" if we set it explicitly', () => {
       const transform: Transform = {
         density: 'v',
-        groupby: ['a']
+        groupby: ['a'],
+        resolve: 'independent',
       };
       const density = new DensityTransformNode(null, transform);
       expect(density.assemble()).toEqual({
         type: 'kde',
         groupby: ['a'],
         field: 'v',
-        resolve: 'shared',
-        as: ['value', 'density']
+        resolve: 'independent',
+        as: ['value', 'density'],
       });
     });
   });
@@ -78,7 +81,7 @@ describe('compile/data/fold', () => {
     it('should return proper dependent fields', () => {
       const transform: Transform = {
         density: 'v',
-        groupby: ['f', 'g']
+        groupby: ['f', 'g'],
       };
       const density = new DensityTransformNode(null, transform);
       expect(density.dependentFields()).toEqual(new Set(['v', 'f', 'g']));
@@ -86,7 +89,7 @@ describe('compile/data/fold', () => {
 
     it('should return proper dependent fields without groupby', () => {
       const transform: Transform = {
-        density: 'v'
+        density: 'v',
       };
       const density = new DensityTransformNode(null, transform);
       expect(density.dependentFields()).toEqual(new Set(['v']));
@@ -96,7 +99,7 @@ describe('compile/data/fold', () => {
   describe('producedFields', () => {
     it('should return proper produced fields for no "as"', () => {
       const transform: Transform = {
-        density: 'v'
+        density: 'v',
       };
       const density = new DensityTransformNode(null, transform);
       expect(density.producedFields()).toEqual(new Set(['value', 'density']));
@@ -105,7 +108,7 @@ describe('compile/data/fold', () => {
     it('should return proper produced fields for complete "as"', () => {
       const transform: Transform = {
         density: 'v',
-        as: ['A', 'B']
+        as: ['A', 'B'],
       };
       const density = new DensityTransformNode(null, transform);
       expect(density.producedFields()).toEqual(new Set(['A', 'B']));
@@ -116,10 +119,10 @@ describe('compile/data/fold', () => {
     it('should generate the correct hash', () => {
       const transform: Transform = {
         density: 'v',
-        as: ['A', 'B']
+        as: ['A', 'B'],
       };
       const density = new DensityTransformNode(null, transform);
-      expect(density.hash()).toBe('DensityTransform {"as":["A","B"],"density":"v"}');
+      expect(density.hash()).toBe('DensityTransform {"as":["A","B"],"density":"v","resolve":"shared"}');
     });
   });
 

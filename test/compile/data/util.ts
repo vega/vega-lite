@@ -1,5 +1,5 @@
-import {DataFlowNode} from '../../../src/compile/data/dataflow';
-import {uniqueId} from '../../../src/util';
+import {DataFlowNode} from '../../../src/compile/data/dataflow.js';
+import {uniqueId} from '../../../src/util.js';
 
 /**
  * A dataflow node class that implements required functions.

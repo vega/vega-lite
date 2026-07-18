@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "data": [
@@ -100,7 +100,7 @@
               "fill": {"scale": "color", "field": "animal"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"col: \" + (isValid(datum[\"col\"]) ? datum[\"col\"] : \"\"+datum[\"col\"]) + \"; animal: \" + (isValid(datum[\"animal\"]) ? datum[\"animal\"] : \"\"+datum[\"animal\"])"
+                "signal": "\"col: \" + (isValid(datum[\"col\"]) ? isArray(datum[\"col\"]) ? join(datum[\"col\"], ' ') : datum[\"col\"] : \"\"+datum[\"col\"]) + \"; animal: \" + (isValid(datum[\"animal\"]) ? isArray(datum[\"animal\"]) ? join(datum[\"animal\"], ' ') : datum[\"animal\"] : \"\"+datum[\"animal\"])"
               },
               "x": {"scale": "x", "field": "col"},
               "y": {"scale": "y", "field": "animal"},

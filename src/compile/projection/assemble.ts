@@ -1,7 +1,7 @@
 import {Projection as VgProjection, SignalRef} from 'vega';
-import {contains} from '../../util';
-import {isSignalRef} from '../../vega.schema';
-import {isConcatModel, isLayerModel, Model} from '../model';
+import {contains} from '../../util.js';
+import {isSignalRef} from '../../vega.schema.js';
+import {isConcatModel, isLayerModel, Model} from '../model.js';
 
 export function assembleProjections(model: Model): VgProjection[] {
   if (isLayerModel(model) || isConcatModel(model)) {
@@ -34,13 +34,13 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
         // translate to center by default
         translate: {signal: '[width / 2, height / 2]'},
         // parameters, overwrite default translate if specified
-        ...projection
-      }
+        ...projection,
+      },
     ];
   } else {
     // generate projection that uses extent fitting
     const size: SignalRef = {
-      signal: `[${component.size.map(ref => ref.signal).join(', ')}]`
+      signal: `[${component.size.map((ref) => ref.signal).join(', ')}]`,
     };
 
     const fits: string[] = component.data.reduce((sources, data) => {
@@ -61,10 +61,10 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
         name,
         size,
         fit: {
-          signal: fits.length > 1 ? `[${fits.join(', ')}]` : fits[0]
+          signal: fits.length > 1 ? `[${fits.join(', ')}]` : fits[0],
         },
-        ...projection
-      }
+        ...projection,
+      },
     ];
   }
 }

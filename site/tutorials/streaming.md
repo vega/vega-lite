@@ -43,15 +43,15 @@ Below is the JavaScript code to run this example. Make sure your html contains a
 
 ```js
 var vlSpec = {
-  $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+  $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
   data: {name: 'table'},
   width: 400,
   mark: 'line',
   encoding: {
     x: {field: 'x', type: 'quantitative', scale: {zero: false}},
     y: {field: 'y', type: 'quantitative'},
-    color: {field: 'category', type: 'nominal'}
-  }
+    color: {field: 'category', type: 'nominal'},
+  },
 };
 vegaEmbed('#chart', vlSpec).then(function (res) {
   /**
@@ -66,7 +66,7 @@ vegaEmbed('#chart', vlSpec).then(function (res) {
         return {
           x: counter,
           y: v + Math.round(Math.random() * 10 - c * 3),
-          category: c
+          category: c,
         };
       });
       previousY = newVals.map(function (v) {

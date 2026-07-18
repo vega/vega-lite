@@ -3,7 +3,7 @@
  */
 
 import {Debug, Error as ErrorLevel, Info, logger, LoggerInterface, Warn} from 'vega-util';
-export * as message from './message';
+export * as message from './message.js';
 
 /**
  * Main (default) Vega Logger instance for Vega-Lite.

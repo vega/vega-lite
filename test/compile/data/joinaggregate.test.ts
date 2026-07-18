@@ -1,13 +1,13 @@
-import {JoinAggregateTransformNode} from '../../../src/compile/data/joinaggregate';
-import {makeJoinAggregateFromFacet} from '../../../src/compile/data/joinaggregatefacet';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {JoinAggregateTransformNode} from '../../../src/compile/data/joinaggregate.js';
+import {makeJoinAggregateFromFacet} from '../../../src/compile/data/joinaggregatefacet.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/joinaggregate', () => {
   it('creates correct joinaggregate nodes for calculating sort field of crossed facet', () => {
     const joinaggregate = makeJoinAggregateFromFacet(null, {
       row: {field: 'r', type: 'nominal'},
-      column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'x'}}
+      column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'x'}},
     });
 
     expect(joinaggregate.assemble()).toEqual({
@@ -15,15 +15,15 @@ describe('compile/data/joinaggregate', () => {
       ops: ['median'],
       fields: ['x'],
       as: ['median_x_by_c'],
-      groupby: ['c']
+      groupby: ['c'],
     });
   });
 
   it('does not create any joinaggregate nodes for crossed facet', () => {
     expect(
       makeJoinAggregateFromFacet(null, {
-        row: {field: 'a', type: 'nominal'}
-      })
+        row: {field: 'a', type: 'nominal'},
+      }),
     ).toBeNull();
   });
 
@@ -32,10 +32,10 @@ describe('compile/data/joinaggregate', () => {
       joinaggregate: [
         {
           op: 'count',
-          as: 'join_count'
-        }
+          as: 'join_count',
+        },
       ],
-      groupby: ['f']
+      groupby: ['f'],
     };
     const joinaggregate = new JoinAggregateTransformNode(null, transform);
     expect(joinaggregate.assemble()).toEqual({
@@ -43,7 +43,7 @@ describe('compile/data/joinaggregate', () => {
       ops: ['count'],
       fields: [null],
       as: ['join_count'],
-      groupby: ['f']
+      groupby: ['f'],
     });
   });
 
@@ -52,10 +52,10 @@ describe('compile/data/joinaggregate', () => {
       joinaggregate: [
         {
           op: 'count',
-          as: undefined // intentionally omit for testing
-        }
+          as: undefined, // intentionally omit for testing
+        },
       ],
-      groupby: ['f']
+      groupby: ['f'],
     };
     const joinaggregate = new JoinAggregateTransformNode(null, transform);
     expect(joinaggregate.assemble()).toEqual({
@@ -63,7 +63,7 @@ describe('compile/data/joinaggregate', () => {
       ops: ['count'],
       fields: [null],
       as: ['count'],
-      groupby: ['f']
+      groupby: ['f'],
     });
   });
 
@@ -72,13 +72,13 @@ describe('compile/data/joinaggregate', () => {
       joinaggregate: [
         {
           op: 'count',
-          as: 'count_field'
+          as: 'count_field',
         },
         {
           op: 'sum',
-          as: 'sum_field'
-        }
-      ]
+          as: 'sum_field',
+        },
+      ],
     };
     const joinaggregate = new JoinAggregateTransformNode(null, transform);
     expect(joinaggregate.producedFields()).toEqual(new Set(['count_field', 'sum_field']));
@@ -90,10 +90,10 @@ describe('compile/data/joinaggregate', () => {
         {
           field: 'f',
           op: 'mean',
-          as: 'mean_f'
-        }
+          as: 'mean_f',
+        },
       ],
-      groupby: ['g']
+      groupby: ['g'],
     };
     const joinaggregate = new JoinAggregateTransformNode(null, transform);
     expect(joinaggregate.dependentFields()).toEqual(new Set(['g', 'f']));
@@ -105,9 +105,9 @@ describe('compile/data/joinaggregate', () => {
         {
           field: 'f',
           op: 'mean',
-          as: 'mean_f'
-        }
-      ]
+          as: 'mean_f',
+        },
+      ],
     };
     const joinaggregate = new JoinAggregateTransformNode(null, transform);
     expect(joinaggregate.dependentFields()).toEqual(new Set(['f']));
@@ -118,10 +118,10 @@ describe('compile/data/joinaggregate', () => {
       joinaggregate: [
         {
           op: 'count',
-          as: 'count'
-        }
+          as: 'count',
+        },
       ],
-      groupby: ['f']
+      groupby: ['f'],
     };
     const joinaggregate = new JoinAggregateTransformNode(null, transform);
     expect(joinaggregate).toEqual(joinaggregate.clone());
@@ -138,10 +138,10 @@ describe('compile/data/joinaggregate', () => {
       joinaggregate: [
         {
           op: 'count',
-          as: 'count'
-        }
+          as: 'count',
+        },
       ],
-      groupby: ['f']
+      groupby: ['f'],
     };
     const joinaggregate = new JoinAggregateTransformNode(null, transform);
     const hash = joinaggregate.hash();

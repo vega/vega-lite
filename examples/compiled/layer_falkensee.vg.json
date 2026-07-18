@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "The population of the German city of Falkensee over time",
   "background": "white",
   "padding": 5,
   "width": 500,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -127,7 +127,7 @@
         "update": {
           "fill": {"scale": "color", "field": "event"},
           "description": {
-            "signal": "\"start (year): \" + (timeFormat(datum[\"year_start\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; end (year): \" + (timeFormat(datum[\"year_end\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; event: \" + (isValid(datum[\"event\"]) ? datum[\"event\"] : \"\"+datum[\"event\"])"
+            "signal": "\"start (year): \" + (timeFormat(datum[\"year_start\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; end (year): \" + (timeFormat(datum[\"year_end\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; event: \" + (isValid(datum[\"event\"]) ? isArray(datum[\"event\"]) ? join(datum[\"event\"], ' ') : datum[\"event\"] : \"\"+datum[\"event\"])"
           },
           "x": {"scale": "x", "field": "year_start"},
           "x2": {"scale": "x", "field": "year_end"},
@@ -140,7 +140,7 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"year_year\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {

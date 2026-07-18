@@ -1,10 +1,10 @@
 import {parseSelector} from 'vega-event-selector';
-import {assembleTopLevelSignals} from '../../../src/compile/selection/assemble';
-import interval from '../../../src/compile/selection/interval';
-import point from '../../../src/compile/selection/point';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import clear from '../../../src/compile/selection/clear';
-import {parseUnitModel} from '../../util';
+import {assembleTopLevelSignals} from '../../../src/compile/selection/assemble.js';
+import interval from '../../../src/compile/selection/interval.js';
+import point from '../../../src/compile/selection/point.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import clear from '../../../src/compile/selection/clear.js';
+import {parseUnitModel} from '../../util.js';
 
 describe('Clear selection transform, point types', () => {
   const model = parseUnitModel({
@@ -12,8 +12,8 @@ describe('Clear selection transform, point types', () => {
     encoding: {
       x: {field: 'Horsepower', type: 'quantitative'},
       y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-      color: {field: 'Origin', type: 'nominal'}
-    }
+      color: {field: 'Origin', type: 'nominal'},
+    },
   });
 
   model.parseScale();
@@ -27,20 +27,20 @@ describe('Clear selection transform, point types', () => {
       name: 'seven',
       select: {type: 'point', fields: ['Year']},
       bind: {
-        Year: {input: 'range', min: 1970, max: 1980, step: 1}
-      }
+        Year: {input: 'range', min: 1970, max: 1980, step: 1},
+      },
     },
     {
       name: 'eight',
       select: {
         type: 'point',
         fields: ['Year'],
-        clear: 'click'
+        clear: 'click',
       },
       bind: {
-        Year: {input: 'range', min: 1970, max: 1980, step: 1}
-      }
-    }
+        Year: {input: 'range', min: 1970, max: 1980, step: 1},
+      },
+    },
   ]));
 
   it('identifies transform invocation', () => {
@@ -62,11 +62,11 @@ describe('Clear selection transform, point types', () => {
             events: selCmpts['one'].events,
             update:
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
-            force: true
+            force: true,
           },
-          {events: parseSelector('dblclick', 'view'), update: 'null'}
-        ]
-      }
+          {events: parseSelector('dblclick', 'view'), update: 'null'},
+        ],
+      },
     ]);
 
     const singleThreeSg = point.signals(model, selCmpts['three'], []);
@@ -79,11 +79,11 @@ describe('Clear selection transform, point types', () => {
             events: selCmpts['three'].events,
             update:
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
-            force: true
+            force: true,
           },
-          {events: parseSelector('pointerout', 'view'), update: 'null'}
-        ]
-      }
+          {events: parseSelector('pointerout', 'view'), update: 'null'},
+        ],
+      },
     ]);
 
     const multiFourSg = point.signals(model, selCmpts['four'], []);
@@ -96,11 +96,11 @@ describe('Clear selection transform, point types', () => {
             events: selCmpts['four'].events,
             update:
               'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
-            force: true
+            force: true,
           },
-          {events: parseSelector('pointerout', 'view'), update: 'null'}
-        ]
-      }
+          {events: parseSelector('pointerout', 'view'), update: 'null'},
+        ],
+      },
     ]);
   });
 
@@ -110,9 +110,9 @@ describe('Clear selection transform, point types', () => {
         {
           name: 'seven_Year',
           value: null,
-          bind: {input: 'range', min: 1970, max: 1980, step: 1}
-        }
-      ])
+          bind: {input: 'range', min: 1970, max: 1980, step: 1},
+        },
+      ]),
     );
   });
 
@@ -123,9 +123,9 @@ describe('Clear selection transform, point types', () => {
           name: 'eight_Year',
           value: null,
           on: [{events: parseSelector('click', 'view'), update: 'null'}],
-          bind: {input: 'range', min: 1970, max: 1980, step: 1}
-        }
-      ])
+          bind: {input: 'range', min: 1970, max: 1980, step: 1},
+        },
+      ]),
     );
   });
 });
@@ -136,8 +136,8 @@ describe('Clear selection transform, interval type', () => {
     encoding: {
       x: {field: 'Horsepower', type: 'quantitative'},
       y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-      color: {field: 'Origin', type: 'nominal'}
-    }
+      color: {field: 'Origin', type: 'nominal'},
+    },
   });
 
   model.parseScale();
@@ -145,16 +145,16 @@ describe('Clear selection transform, interval type', () => {
     {
       name: 'one',
       select: {type: 'interval', encodings: ['x', 'y'], translate: false, zoom: false},
-      bind: 'scales'
+      bind: 'scales',
     },
     {
       name: 'two',
-      select: {type: 'interval', translate: false, zoom: false}
+      select: {type: 'interval', translate: false, zoom: false},
     },
     {
       name: 'three',
-      select: {type: 'interval', encodings: ['x', 'y'], clear: false, translate: false, zoom: false}
-    }
+      select: {type: 'interval', encodings: ['x', 'y'], clear: false, translate: false, zoom: false},
+    },
   ]));
 
   it('identifies transform invocation', () => {
@@ -173,20 +173,20 @@ describe('Clear selection transform, interval type', () => {
           on: [
             {
               events: parseSelector('dblclick', 'view'),
-              update: 'null'
-            }
-          ]
+              update: 'null',
+            },
+          ],
         },
         {
           name: 'one_Miles_per_Gallon',
           on: [
             {
               events: parseSelector('dblclick', 'view'),
-              update: 'null'
-            }
-          ]
-        }
-      ])
+              update: 'null',
+            },
+          ],
+        },
+      ]),
     );
   });
 
@@ -201,21 +201,21 @@ describe('Clear selection transform, interval type', () => {
           on: [
             {
               events: parseSelector('pointerdown', 'scope')[0],
-              update: '[x(unit), x(unit)]'
+              update: '[x(unit), x(unit)]',
             },
             {
               events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-              update: '[two_x[0], clamp(x(unit), 0, width)]'
+              update: '[two_x[0], clamp(x(unit), 0, width)]',
             },
             {
               events: {signal: 'two_scale_trigger'},
-              update: '[scale("x", two_Horsepower[0]), scale("x", two_Horsepower[1])]'
+              update: '[scale("x", two_Horsepower[0]), scale("x", two_Horsepower[1])]',
             },
             {
               events: parseSelector('dblclick', 'view'),
-              update: '[0, 0]'
-            }
-          ]
+              update: '[0, 0]',
+            },
+          ],
         },
         {
           name: 'two_y',
@@ -223,23 +223,23 @@ describe('Clear selection transform, interval type', () => {
           on: [
             {
               events: parseSelector('pointerdown', 'scope')[0],
-              update: '[y(unit), y(unit)]'
+              update: '[y(unit), y(unit)]',
             },
             {
               events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope')[0],
-              update: '[two_y[0], clamp(y(unit), 0, height)]'
+              update: '[two_y[0], clamp(y(unit), 0, height)]',
             },
             {
               events: {signal: 'two_scale_trigger'},
-              update: '[scale("y", two_Miles_per_Gallon[0]), scale("y", two_Miles_per_Gallon[1])]'
+              update: '[scale("y", two_Miles_per_Gallon[0]), scale("y", two_Miles_per_Gallon[1])]',
             },
             {
               events: parseSelector('dblclick', 'view'),
-              update: '[0, 0]'
-            }
-          ]
-        }
-      ])
+              update: '[0, 0]',
+            },
+          ],
+        },
+      ]),
     );
   });
 });

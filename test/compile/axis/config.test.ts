@@ -1,4 +1,4 @@
-import {getAxisConfigs} from '../../../src/compile/axis/config';
+import {getAxisConfigs} from '../../../src/compile/axis/config.js';
 
 describe('getAxisConfigs', () => {
   it('correctly get axis types for orient signal', () => {
@@ -8,13 +8,13 @@ describe('getAxisConfigs', () => {
       {signal: 'a'},
       {
         axisTop: {labelBaseline: 'line-bottom', labelPadding: 2},
-        axisBottom: {labelBaseline: {signal: 'a'}}
-      }
+        axisBottom: {labelBaseline: {signal: 'a'}},
+      },
     );
 
     expect(vgAxisConfig).toEqual({
       labelBaseline: {signal: 'a === "bottom" ? a : "line-bottom"'},
-      labelPadding: {signal: 'a === "bottom" ? null : 2'}
+      labelPadding: {signal: 'a === "bottom" ? null : 2'},
     });
   });
 });

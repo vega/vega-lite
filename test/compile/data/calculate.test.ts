@@ -1,7 +1,7 @@
-import {CalculateNode} from '../../../src/compile/data/calculate';
-import {ModelWithField} from '../../../src/compile/model';
-import {parseUnitModel} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {CalculateNode} from '../../../src/compile/data/calculate.js';
+import {ModelWithField} from '../../../src/compile/model.js';
+import {parseUnitModel} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 function assembleFromSortArray(model: ModelWithField) {
   const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
@@ -16,20 +16,20 @@ describe('compile/data/calculate', () => {
           values: [
             {a: 'A', b: 28},
             {a: 'B', b: 55},
-            {a: 'C', b: 43}
-          ]
+            {a: 'C', b: 43},
+          ],
         },
         mark: 'bar',
         encoding: {
           x: {field: 'a', type: 'ordinal', sort: ['B', 'A', 'C']},
-          y: {field: 'b', type: 'quantitative'}
-        }
+          y: {field: 'b', type: 'quantitative'},
+        },
       });
       const nodes = assembleFromSortArray(model);
       expect(nodes).toEqual({
         type: 'formula',
         expr: 'datum["a"]==="B" ? 0 : datum["a"]==="A" ? 1 : datum["a"]==="C" ? 2 : 3',
-        as: 'x_a_sort_index'
+        as: 'x_a_sort_index',
       });
     });
   });
@@ -38,7 +38,7 @@ describe('compile/data/calculate', () => {
     it('returns the right fields', () => {
       const node = new CalculateNode(null, {
         calculate: 'datum.foo + 2',
-        as: 'bar'
+        as: 'bar',
       });
 
       expect(node.dependentFields()).toEqual(new Set(['foo']));
@@ -53,18 +53,18 @@ describe('compile/data/calculate', () => {
           values: [
             {a: 'A', b: 28},
             {a: 'B', b: 55},
-            {a: 'C', b: 43}
-          ]
+            {a: 'C', b: 43},
+          ],
         },
         mark: 'bar',
         encoding: {
           x: {field: 'a', type: 'ordinal', sort: ['B', 'A', 'C']},
-          y: {field: 'b', type: 'quantitative'}
-        }
+          y: {field: 'b', type: 'quantitative'},
+        },
       });
       const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
       expect(node.hash()).toBe(
-        'Calculate {"as":"x_a_sort_index","calculate":"datum[\\"a\\"]===\\"B\\" ? 0 : datum[\\"a\\"]===\\"A\\" ? 1 : datum[\\"a\\"]===\\"C\\" ? 2 : 3"}'
+        'Calculate {"as":"x_a_sort_index","calculate":"datum[\\"a\\"]===\\"B\\" ? 0 : datum[\\"a\\"]===\\"A\\" ? 1 : datum[\\"a\\"]===\\"C\\" ? 2 : 3"}',
       );
     });
   });

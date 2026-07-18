@@ -1,0 +1,23 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Bar and tick layered on the same binned-time-unit encoding. With `timeUnitBandPosition: 0`, both marks should be centered at the year start.",
+  "config": {
+    "bar": {"timeUnitBandPosition": 0},
+    "tick": {"timeUnitBandPosition": 0}
+  },
+  "data": {
+    "values": [
+      {"date": "2020-01-01T00:00:00Z", "v": 10},
+      {"date": "2021-01-01T00:00:00Z", "v": 20},
+      {"date": "2022-01-01T00:00:00Z", "v": 15}
+    ]
+  },
+  "encoding": {
+    "x": {"timeUnit": "binnedutcyear", "field": "date", "type": "temporal"},
+    "y": {"field": "v", "type": "quantitative"}
+  },
+  "layer": [
+    {"mark": "bar"},
+    {"mark": {"type": "tick", "size": {"expr": "20"}}}
+  ]
+}

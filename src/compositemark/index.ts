@@ -1,20 +1,20 @@
-import {Field} from '../channeldef';
-import {Encoding} from '../encoding';
-import {NormalizerParams} from '../normalize';
-import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
-import {EncodingFacetMapping} from '../spec/facet';
-import {NormalizedUnitSpec} from '../spec/unit';
-import {keys} from '../util';
-import {CompositeMarkNormalizer} from './base';
-import {BOXPLOT, BoxPlot, BoxPlotConfigMixins, BoxPlotDef, BOXPLOT_PARTS, normalizeBoxPlot} from './boxplot';
+import {Field} from '../channeldef.js';
+import {Encoding} from '../encoding.js';
+import {NormalizerParams} from '../normalize/index.js';
+import {GenericUnitSpec, NormalizedLayerSpec} from '../spec/index.js';
+import {EncodingFacetMapping} from '../spec/facet.js';
+import {NormalizedUnitSpec} from '../spec/unit.js';
+import {keys} from '../util.js';
+import {CompositeMarkNormalizer} from './base.js';
+import {BOXPLOT, BoxPlot, BoxPlotConfigMixins, BoxPlotDef, BOXPLOT_PARTS, normalizeBoxPlot} from './boxplot.js';
 import {
   ERRORBAND,
   ErrorBand,
   ErrorBandConfigMixins,
   ErrorBandDef,
   ERRORBAND_PARTS,
-  normalizeErrorBand
-} from './errorband';
+  normalizeErrorBand,
+} from './errorband.js';
 import {
   ERRORBAR,
   ErrorBar,
@@ -22,16 +22,16 @@ import {
   ErrorBarDef,
   ERRORBAR_PARTS,
   ErrorExtraEncoding,
-  normalizeErrorBar
-} from './errorbar';
+  normalizeErrorBar,
+} from './errorbar.js';
 
-export type {BoxPlotConfig} from './boxplot';
-export type {ErrorBandConfigMixins} from './errorband';
-export type {ErrorBarConfigMixins} from './errorbar';
+export type {BoxPlotConfig} from './boxplot.js';
+export type {ErrorBandConfigMixins} from './errorband.js';
+export type {ErrorBarConfigMixins} from './errorbar.js';
 
 export type CompositeMarkNormalizerRun = (
   spec: GenericUnitSpec<any, any>,
-  params: NormalizerParams
+  params: NormalizerParams,
 ) => NormalizedLayerSpec | NormalizedUnitSpec;
 
 /**

@@ -1,11 +1,11 @@
-import {DataSourceType} from '../../data';
-import {AggregateNode} from './aggregate';
-import {DataFlowNode, OutputNode} from './dataflow';
-import {FacetNode} from './facet';
-import {JoinAggregateTransformNode} from './joinaggregate';
-import {FACET_SCALE_PREFIX} from './optimize';
-import {StackNode} from './stack';
-import {WindowTransformNode} from './window';
+import {DataSourceType} from '../../data.js';
+import {AggregateNode} from './aggregate.js';
+import {DataFlowNode, OutputNode} from './dataflow.js';
+import {FacetNode} from './facet.js';
+import {JoinAggregateTransformNode} from './joinaggregate.js';
+import {FACET_SCALE_PREFIX} from './optimize.js';
+import {StackNode} from './stack.js';
+import {WindowTransformNode} from './window.js';
 
 /**
  * Clones the subtree and ignores output nodes except for the leaves, which are renamed.

@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Bar graph showing the best films for the year they were produced, where best is defined by at least 2.5 points above average for that year. The red point shows the average rating for a film in that year, and the bar is the rating that the film recieved.",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {
@@ -79,7 +79,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
+            "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? isArray(datum[\"Title\"]) ? join(datum[\"Title\"], ' ') : datum[\"Title\"] : \"\"+datum[\"Title\"])"
           },
           "x": {"scale": "x", "field": "IMDB Rating_end"},
           "x2": {"scale": "x", "field": "IMDB Rating_start"},
@@ -99,11 +99,11 @@
           "fill": {"value": "red"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"AverageYearRating: \" + (format(datum[\"AverageYearRating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
+            "signal": "\"AverageYearRating: \" + (format(datum[\"AverageYearRating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? isArray(datum[\"Title\"]) ? join(datum[\"Title\"], ' ') : datum[\"Title\"] : \"\"+datum[\"Title\"])"
           },
+          "y": {"scale": "y", "field": "Title"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"},
           "xc": {"scale": "x", "field": "AverageYearRating"},
-          "yc": {"scale": "y", "field": "Title", "band": 0.5},
-          "height": {"value": 15},
           "width": {"value": 1}
         }
       }

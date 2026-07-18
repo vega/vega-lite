@@ -4,9 +4,9 @@
 //
 // After finishing all test, make sure all lines in mark-tick.ts is tested
 // (except the scaffold labels() method)
-import {SIZE, X, Y} from '../../../src/channel';
-import {tick} from '../../../src/compile/mark/tick';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {SIZE, X, Y} from '../../../src/channel.js';
+import {tick} from '../../../src/compile/mark/tick.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Tick', () => {
   describe('with stacked x', () => {
@@ -16,9 +16,9 @@ describe('Mark: Tick', () => {
       mark: 'tick',
       encoding: {
         x: {aggregate: 'sum', field: 'a', type: 'quantitative', stack: 'zero'},
-        color: {field: 'b', type: 'ordinal'}
+        color: {field: 'b', type: 'ordinal'},
       },
-      data: {url: 'data/barley.json'}
+      data: {url: 'data/barley.json'},
     });
 
     const props = tick.encodeEntry(model);
@@ -35,9 +35,9 @@ describe('Mark: Tick', () => {
       mark: 'tick',
       encoding: {
         y: {aggregate: 'sum', field: 'a', type: 'quantitative', stack: 'zero'},
-        color: {field: 'b', type: 'ordinal'}
+        color: {field: 'b', type: 'ordinal'},
       },
-      data: {url: 'data/barley.json'}
+      data: {url: 'data/barley.json'},
     });
 
     const props = tick.encodeEntry(model);
@@ -51,14 +51,14 @@ describe('Mark: Tick', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'tick',
       encoding: {x: {field: 'Horsepower', type: 'quantitative'}},
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
     });
 
     const props = tick.encodeEntry(model);
     it('should be centered on y', () => {
       expect(props.yc).toEqual({
         mult: 0.5,
-        signal: 'height'
+        signal: 'height',
       });
     });
 
@@ -75,14 +75,14 @@ describe('Mark: Tick', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'tick',
       encoding: {y: {field: 'Cylinders', type: 'quantitative'}},
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
     });
 
     const props = tick.encodeEntry(model);
     it('should be centered on x', () => {
       expect(props.xc).toEqual({
         mult: 0.5,
-        signal: 'width'
+        signal: 'width',
       });
     });
 
@@ -100,9 +100,9 @@ describe('Mark: Tick', () => {
       mark: 'tick',
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
-        y: {field: 'Cylinders', type: 'ordinal'}
+        y: {field: 'Cylinders', type: 'ordinal'},
       },
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
     });
     const props = tick.encodeEntry(model);
 
@@ -111,7 +111,7 @@ describe('Mark: Tick', () => {
     });
 
     it('should scale on y', () => {
-      expect(props.yc).toEqual({scale: Y, field: 'Cylinders'});
+      expect(props.y).toEqual({scale: Y, field: 'Cylinders'});
     });
 
     it('width should be tick thickness with default orient vertical', () => {
@@ -119,7 +119,42 @@ describe('Mark: Tick', () => {
     });
 
     it('height should be matched to field with default orient vertical', () => {
-      expect(props.height).toEqual({value: 15});
+      expect(props.height).toEqual({signal: "max(0.25, bandwidth('y'))"});
+    });
+  });
+  describe('with quantitative x and ordinal y with yOffset', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'tick',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Cylinders', type: 'ordinal'},
+        yOffset: {field: 'Acceleration', type: 'ordinal'},
+      },
+      data: {url: 'data/cars.json'},
+    });
+    const props = tick.encodeEntry(model);
+
+    it('should scale on x', () => {
+      expect(props.xc).toEqual({scale: X, field: 'Horsepower'});
+    });
+
+    it('should scale on y', () => {
+      expect(props.y).toEqual({
+        scale: Y,
+        field: 'Cylinders',
+        offset: {
+          field: 'Acceleration',
+          scale: 'yOffset',
+        },
+      });
+    });
+
+    it('width should be tick thickness with default orient vertical', () => {
+      expect(props.width).toEqual({value: 1});
+    });
+
+    it('height should be matched to field with default orient vertical', () => {
+      expect(props.height).toEqual({signal: "max(0.25, bandwidth('yOffset'))"});
     });
   });
 
@@ -130,9 +165,9 @@ describe('Mark: Tick', () => {
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
         y: {field: 'Cylinders', type: 'ordinal'},
-        size: {field: 'Acceleration', type: 'quantitative'}
+        size: {field: 'Acceleration', type: 'quantitative'},
       },
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
     });
     const props = tick.encodeEntry(model);
     it('maps size to height', () => {
@@ -145,9 +180,9 @@ describe('Mark: Tick', () => {
       mark: {type: 'tick', size: 5},
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
-        y: {field: 'Cylinders', type: 'ordinal'}
+        y: {field: 'Cylinders', type: 'ordinal'},
       },
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
     });
     const props = tick.encodeEntry(model);
     it('maps size to height in Vega', () => {
@@ -161,13 +196,41 @@ describe('Mark: Tick', () => {
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
         y: {field: 'Cylinders', type: 'ordinal'},
-        size: {field: 'Acceleration', type: 'quantitative'}
+        size: {field: 'Acceleration', type: 'quantitative'},
       },
-      data: {url: 'data/cars.json'}
+      data: {url: 'data/cars.json'},
     });
     const props = tick.encodeEntry(model);
     it('maps size to height in Vega', () => {
       expect(props.height).toEqual({field: 'Acceleration', scale: SIZE});
+    });
+  });
+
+  describe('vertical ticks without Y', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'tick',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+      },
+      data: {url: 'data/cars.json'},
+    });
+    const props = tick.encodeEntry(model);
+    it('sets mark height to (1-tickBandPaddingInner) * plot_height', () => {
+      expect(props.height).toEqual({signal: '0.75 * height'});
+    });
+  });
+
+  describe('horizontal ticks without X', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'tick',
+      encoding: {
+        y: {field: 'Horsepower', type: 'quantitative'},
+      },
+      data: {url: 'data/cars.json'},
+    });
+    const props = tick.encodeEntry(model);
+    it('sets mark width to (1-tickBandPaddingInner) * plot_width', () => {
+      expect(props.width).toEqual({signal: '0.75 * width'});
     });
   });
 });

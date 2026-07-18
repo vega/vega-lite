@@ -1,16 +1,21 @@
-import {GuideEncodingEntry} from '../guide';
-import {keys} from '../util';
-import {VgEncodeChannel} from '../vega.schema';
-import {signalOrValueRef} from './common';
-import {wrapCondition} from './mark/encode';
-import {UnitModel} from './unit';
+import {GuideEncodingEntry} from '../guide.js';
+import {keys} from '../util.js';
+import {VgEncodeChannel} from '../vega.schema.js';
+import {signalOrValueRef} from './common.js';
+import {wrapCondition} from './mark/encode/conditional.js';
+import {UnitModel} from './unit.js';
 
 export function guideEncodeEntry(encoding: GuideEncodingEntry, model: UnitModel) {
   return keys(encoding).reduce((encode, channel: VgEncodeChannel) => {
-    const valueDef = encoding[channel];
     return {
       ...encode,
-      ...wrapCondition(model, valueDef, channel, def => signalOrValueRef(def.value))
+      ...wrapCondition({
+        model,
+        channelDef: encoding[channel],
+        vgChannel: channel,
+        mainRefFn: (def) => signalOrValueRef(def.value),
+        invalidValueRef: undefined, // guide encoding won't show invalid values for the scale
+      }),
     };
   }, {});
 }

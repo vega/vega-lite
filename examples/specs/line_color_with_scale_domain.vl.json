@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "encoding": {
+    "x": { "field": "MPAA Rating",      "type": "nominal"},
+    "y": {"field": "sum(IMDB Votes)", "type": "quantitative"},
+    "color": {
+      "field": "Major Genre",
+      "title": "Major Genre",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          null,
+          "Action",
+          "Adventure",
+          "Black Comedy",
+          "Comedy",
+          "Concert/Performance",
+          "Documentary",
+          "Drama",
+          "Horror",
+          "Musical",
+          "Romantic Comedy",
+          "Thriller/Suspense",
+          "Western"
+        ]
+      }
+    }
+  },
+  "mark": "line",
+  "data": {
+    "values": [
+      {"Major Genre": "Drama", "MPAA Rating": "R", "sum(IMDB Votes)": 12801669},
+      {"Major Genre": "Drama", "MPAA Rating": null, "sum(IMDB Votes)": 2189462},
+      {"Major Genre": "Drama", "MPAA Rating": "PG", "sum(IMDB Votes)": 1273672},
+      {
+        "Major Genre": "Drama",
+        "MPAA Rating": "Not Rated",
+        "sum(IMDB Votes)": 410210
+      }
+    ]
+  }
+}

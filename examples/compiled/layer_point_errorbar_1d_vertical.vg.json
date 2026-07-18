@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 20,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -36,12 +36,12 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "datum[\"center_yield\"] + datum[\"extent_yield\"]",
+          "expr": "datum['center_yield'] + datum['extent_yield']",
           "as": "upper_yield"
         },
         {
           "type": "formula",
-          "expr": "datum[\"center_yield\"] - datum[\"extent_yield\"]",
+          "expr": "datum['center_yield'] - datum['extent_yield']",
           "as": "lower_yield"
         },
         {

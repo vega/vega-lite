@@ -1,8 +1,10 @@
-import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
-import {CompositeMark, CompositeMarkDef} from './compositemark';
-import {ExprRef} from './expr';
-import {Flag, keys} from './util';
-import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
+import type {Align, Color, Gradient, Orientation, SignalRef, TextBaseline, MarkConfig as VgMarkConfig} from 'vega';
+import {hasOwnProperty} from 'vega-util';
+import {CompositeMark, CompositeMarkDef} from './compositemark/index.js';
+import {ExprRef} from './expr.js';
+import {MarkInvalidMixins} from './invalid.js';
+import {Flag, hasProperty, keys} from './util.js';
+import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema.js';
 
 /**
  * All types of primitive marks.
@@ -21,7 +23,7 @@ export const Mark = {
   trail: 'trail',
   circle: 'circle',
   square: 'square',
-  geoshape: 'geoshape'
+  geoshape: 'geoshape',
 } as const;
 
 export const ARC = Mark.arc;
@@ -42,15 +44,19 @@ export const GEOSHAPE = Mark.geoshape;
 export type Mark = keyof typeof Mark;
 
 export function isMark(m: string): m is Mark {
-  return m in Mark;
+  return hasOwnProperty(Mark, m);
 }
 
-export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'trail' {
+export const PATH_MARKS = ['line', 'area', 'trail'] as const;
+
+export type PathMark = (typeof PATH_MARKS)[number];
+
+export function isPathMark(m: Mark | CompositeMark): m is PathMark {
   return ['line', 'area', 'trail'].includes(m);
 }
 
-export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' | 'arc' {
-  return ['rect', 'bar', 'image', 'arc' /* arc is rect/interval in polar coordinate */].includes(m);
+export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' | 'arc' | 'tick' {
+  return ['rect', 'bar', 'image', 'arc', 'tick' /* arc is rect/interval in polar coordinate */].includes(m);
 }
 
 export const PRIMITIVE_MARKS = new Set(keys(Mark));
@@ -70,18 +76,6 @@ export interface ColorMixins<ES extends ExprRef | SignalRef> {
 
 export interface TooltipContent {
   content: 'encoding' | 'data';
-}
-
-/** @hidden */
-export type Hide = 'hide';
-
-export interface MarkInvalidMixins {
-  /**
-   * Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`).
-   * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
-   * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
-   */
-  invalid?: 'filter' | Hide | null;
 }
 
 export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorMixins<ES>, MarkInvalidMixins {
@@ -127,7 +121,8 @@ export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorM
 }
 
 export interface MarkConfig<ES extends ExprRef | SignalRef>
-  extends VLOnlyMarkConfig<ES>,
+  extends
+    VLOnlyMarkConfig<ES>,
     MapExcludeValueRefAndReplaceSignalWith<Omit<VgMarkConfig, 'tooltip' | 'fill' | 'stroke'>, ES> {
   // ========== Overriding Vega ==========
 
@@ -187,6 +182,8 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
   y2?: number | 'height' | ES; // Vega doesn't have 'height'
+
+  time?: number | ES;
 
   /**
    * Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.
@@ -298,7 +295,7 @@ export interface RectBinSpacingMixins {
 export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
 
 export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any> {
-  return mark['type'];
+  return hasProperty(mark, 'type');
 }
 
 export function isPrimitiveMark(mark: AnyMark): mark is Mark {
@@ -313,7 +310,7 @@ export const STROKE_CONFIG = [
   'strokeDashOffset',
   'strokeOpacity',
   'strokeJoin',
-  'strokeMiterLimit'
+  'strokeMiterLimit',
 ] as const;
 
 export const FILL_CONFIG = ['fill', 'fillOpacity'] as const;
@@ -328,35 +325,37 @@ const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig<any>> = {
   radius2: 1,
   theta2: 1,
   timeUnitBandSize: 1,
-  timeUnitBandPosition: 1
+  timeUnitBandPosition: 1,
 };
 
 export const VL_ONLY_MARK_CONFIG_PROPERTIES = keys(VL_ONLY_MARK_CONFIG_INDEX);
+
+const VL_ONLY_RECT_CONFIG: (keyof RectConfig<any>)[] = [
+  'binSpacing',
+  'continuousBandSize',
+  'discreteBandSize',
+  'minBandSize',
+];
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in Mark]?: (keyof Required<MarkConfigMixins<any>>[k])[];
 } = {
   area: ['line', 'point'],
-  bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
-  rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize', 'minBandSize'],
+  bar: VL_ONLY_RECT_CONFIG,
+  rect: VL_ONLY_RECT_CONFIG,
   line: ['point'],
-  tick: ['bandSize', 'thickness']
+  tick: ['bandSize', 'thickness', ...VL_ONLY_RECT_CONFIG],
 };
 
 export const defaultMarkConfig: MarkConfig<SignalRef> = {
   color: '#4c78a8',
-  invalid: 'filter',
-  timeUnitBandSize: 1
+  invalid: 'break-paths-show-path-domains',
+  timeUnitBandSize: 1,
 };
 
 // TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
 export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
-  | MarkConfig<ES>
-  | AreaConfig<ES>
-  | BarConfig<ES>
-  | RectConfig<ES>
-  | LineConfig<ES>
-  | TickConfig<ES>;
+  MarkConfig<ES> | AreaConfig<ES> | BarConfig<ES> | RectConfig<ES> | LineConfig<ES> | TickConfig<ES>;
 
 export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Mark Config */
@@ -422,7 +421,7 @@ const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
   text: 1,
   tick: 1,
   trail: 1,
-  geoshape: 1
+  geoshape: 1,
 };
 
 export const MARK_CONFIGS = keys(MARK_CONFIG_INDEX);
@@ -460,24 +459,12 @@ export interface RelativeBandSize {
 }
 
 export function isRelativeBandSize(o: number | RelativeBandSize | ExprRef | SignalRef): o is RelativeBandSize {
-  return o && o['band'] != undefined;
+  return hasProperty(o, 'band');
 }
-
-export const BAR_CORNER_RADIUS_INDEX: Partial<
-  Record<
-    Orientation,
-    ('cornerRadiusTopLeft' | 'cornerRadiusTopRight' | 'cornerRadiusBottomLeft' | 'cornerRadiusBottomRight')[]
-  >
-> = {
-  horizontal: ['cornerRadiusTopRight', 'cornerRadiusBottomRight'],
-  vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight']
-};
 
 export interface BarCornerRadiusMixins<ES extends ExprRef | SignalRef> {
   /**
-   * - For vertical bars, top-left and top-right corner radius.
-   *
-   * - For horizontal bars, top-right and bottom-right corner radius.
+   * Corner radius of the value-end side.
    */
   cornerRadiusEnd?: number | ES;
 }
@@ -517,9 +504,7 @@ export interface LineOverlayMixins<ES extends ExprRef | SignalRef> {
 }
 
 export interface AreaConfig<ES extends ExprRef | SignalRef>
-  extends MarkConfig<ES>,
-    PointOverlayMixins<ES>,
-    LineOverlayMixins<ES> {}
+  extends MarkConfig<ES>, PointOverlayMixins<ES>, LineOverlayMixins<ES> {}
 
 export interface TickThicknessMixins {
   /**
@@ -554,7 +539,7 @@ export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
   /**
    * Whether a mark be clipped to the enclosing group’s width and height.
    */
-  clip?: boolean;
+  clip?: boolean | ES;
 
   // Offset properties should not be a part of config
 
@@ -608,7 +593,8 @@ export interface RelativeBandSize {
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
-  extends GenericMarkDef<M>,
+  extends
+    GenericMarkDef<M>,
     Omit<
       MarkConfig<ES> &
         AreaConfig<ES> &
@@ -653,21 +639,20 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
 
 const DEFAULT_RECT_BAND_SIZE = 5;
 
-export const defaultBarConfig: RectConfig<SignalRef> = {
-  binSpacing: 1,
-  continuousBandSize: DEFAULT_RECT_BAND_SIZE,
-  minBandSize: 0.25,
-  timeUnitBandPosition: 0.5
-};
-
 export const defaultRectConfig: RectConfig<SignalRef> = {
   binSpacing: 0,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
   minBandSize: 0.25,
-  timeUnitBandPosition: 0.5
+  timeUnitBandPosition: 0.5,
 };
 
-export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, TickThicknessMixins {
+export const defaultBarConfig: RectConfig<SignalRef> = {
+  ...defaultRectConfig,
+  binSpacing: 1,
+};
+
+export interface TickConfig<ES extends ExprRef | SignalRef>
+  extends MarkConfig<ES>, TickThicknessMixins, RectConfig<ES> {
   /**
    * The width of the ticks.
    *
@@ -678,7 +663,8 @@ export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<E
 }
 
 export const defaultTickConfig: TickConfig<SignalRef> = {
-  thickness: 1
+  ...defaultRectConfig,
+  thickness: 1,
 };
 
 export function getMarkType(m: string | GenericMarkDef<any>) {

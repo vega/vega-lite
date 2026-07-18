@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Google's stock price over time.",
+  "data": {"url": "data/stocks.csv"},
+  "transform": [{"filter": "datum.symbol==='GOOG'"}],
+  "mark": "tick",
+  "encoding": {
+    "x": {"timeUnit": "year", "field": "date", "type": "temporal"},
+    "y": {"aggregate": "sum", "field": "price", "type": "quantitative"}
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "data": [
@@ -40,7 +40,7 @@
   ],
   "signals": [
     {"name": "child_width", "value": 100},
-    {"name": "child_height", "value": 200}
+    {"name": "child_height", "value": 300}
   ],
   "layout": {
     "padding": 20,
@@ -121,7 +121,7 @@
               "fill": {"scale": "color", "field": "group"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"]) + \"; value: \" + (format(datum[\"value\"], \"\"))"
+                "signal": "\"group: \" + (isValid(datum[\"group\"]) ? isArray(datum[\"group\"]) ? join(datum[\"group\"], ' ') : datum[\"group\"] : \"\"+datum[\"group\"]) + \"; value: \" + (format(datum[\"value\"], \"\"))"
               },
               "x": {"scale": "child_x", "field": "group"},
               "width": {"signal": "max(0.25, bandwidth('child_x'))"},

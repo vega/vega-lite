@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Nested concatenation aligned by setting axis minExtent",
   "data": {
     "url": "data/movies.json"

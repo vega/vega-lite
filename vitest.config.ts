@@ -1,0 +1,39 @@
+import {defineConfig} from 'vitest/config';
+import {playwright} from '@vitest/browser-playwright';
+
+export default defineConfig({
+  test: {
+    projects: [
+      {
+        test: {
+          include: ['examples/**/*.test.ts'],
+          name: 'examples',
+          environment: 'node',
+          globals: true,
+        },
+      },
+      {
+        test: {
+          include: ['test/**/*.test.ts'],
+          name: 'unit',
+          environment: 'node',
+          globals: true,
+        },
+      },
+      {
+        test: {
+          include: ['test-runtime/**/*.test.ts'],
+          globalSetup: './vitest.global-setup.ts',
+          name: 'runtime',
+          browser: {
+            provider: playwright(),
+            enabled: true,
+            headless: false,
+            instances: [{browser: 'chromium'}],
+          },
+          globals: true,
+        },
+      },
+    ],
+  },
+});

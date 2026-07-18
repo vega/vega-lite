@@ -1,7 +1,7 @@
-import {ImputeNode} from '../../../src/compile/data/impute';
-import {Transform} from '../../../src/transform';
-import {parseUnitModelWithScale} from '../../util';
-import {PlaceholderDataFlowNode} from './util';
+import {ImputeNode} from '../../../src/compile/data/impute.js';
+import {Transform} from '../../../src/transform.js';
+import {parseUnitModelWithScale} from '../../util.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/impute', () => {
   describe('Impute Transform', () => {
@@ -10,7 +10,7 @@ describe('compile/data/impute', () => {
         impute: 'y',
         key: 'x',
         method: 'value',
-        value: 200
+        value: 200,
       };
       const impute = new ImputeNode(null, transform);
 
@@ -20,8 +20,8 @@ describe('compile/data/impute', () => {
           field: 'y',
           key: 'x',
           method: 'value',
-          value: 200
-        }
+          value: 200,
+        },
       ]);
     });
 
@@ -30,7 +30,7 @@ describe('compile/data/impute', () => {
         impute: 'y',
         key: 'x',
         keyvals: [2, 3],
-        method: 'mean'
+        method: 'mean',
       };
       const impute = new ImputeNode(null, transform);
       expect(impute.assemble()).toEqual([
@@ -40,7 +40,7 @@ describe('compile/data/impute', () => {
           key: 'x',
           keyvals: [2, 3],
           method: 'value',
-          value: null
+          value: null,
         },
         {
           type: 'window',
@@ -48,13 +48,13 @@ describe('compile/data/impute', () => {
           ops: ['mean'],
           fields: ['y'],
           frame: [null, null],
-          ignorePeers: false
+          ignorePeers: false,
         },
         {
           type: 'formula',
           expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
-          as: 'y'
-        }
+          as: 'y',
+        },
       ]);
     });
 
@@ -64,7 +64,7 @@ describe('compile/data/impute', () => {
         key: 'x',
         keyvals: [3, 5],
         method: 'max',
-        groupby: ['a', 'b']
+        groupby: ['a', 'b'],
       };
       const impute = new ImputeNode(null, transform);
       expect(impute.assemble()).toEqual([
@@ -75,7 +75,7 @@ describe('compile/data/impute', () => {
           keyvals: [3, 5],
           method: 'value',
           groupby: ['a', 'b'],
-          value: null
+          value: null,
         },
         {
           type: 'window',
@@ -84,13 +84,13 @@ describe('compile/data/impute', () => {
           fields: ['y'],
           frame: [null, null],
           ignorePeers: false,
-          groupby: ['a', 'b']
+          groupby: ['a', 'b'],
         },
         {
           type: 'formula',
           expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
-          as: 'y'
-        }
+          as: 'y',
+        },
       ]);
     });
 
@@ -100,7 +100,7 @@ describe('compile/data/impute', () => {
         key: 'x',
         keyvals: {start: 3, stop: 5},
         method: 'max',
-        groupby: ['a', 'b']
+        groupby: ['a', 'b'],
       };
       const impute = new ImputeNode(null, transform);
       expect(impute.assemble()).toEqual([
@@ -111,7 +111,7 @@ describe('compile/data/impute', () => {
           keyvals: {signal: 'sequence(3,5)'},
           method: 'value',
           groupby: ['a', 'b'],
-          value: null
+          value: null,
         },
         {
           type: 'window',
@@ -120,13 +120,13 @@ describe('compile/data/impute', () => {
           fields: ['y'],
           frame: [null, null],
           ignorePeers: false,
-          groupby: ['a', 'b']
+          groupby: ['a', 'b'],
         },
         {
           type: 'formula',
           expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
-          as: 'y'
-        }
+          as: 'y',
+        },
       ]);
     });
 
@@ -136,7 +136,7 @@ describe('compile/data/impute', () => {
         key: 'x',
         keyvals: {stop: 5},
         method: 'max',
-        groupby: ['a', 'b']
+        groupby: ['a', 'b'],
       };
       const impute = new ImputeNode(null, transform);
       expect(impute.assemble()).toEqual([
@@ -147,7 +147,7 @@ describe('compile/data/impute', () => {
           keyvals: {signal: 'sequence(0,5)'},
           method: 'value',
           groupby: ['a', 'b'],
-          value: null
+          value: null,
         },
         {
           type: 'window',
@@ -156,13 +156,13 @@ describe('compile/data/impute', () => {
           fields: ['y'],
           frame: [null, null],
           ignorePeers: false,
-          groupby: ['a', 'b']
+          groupby: ['a', 'b'],
         },
         {
           type: 'formula',
           expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
-          as: 'y'
-        }
+          as: 'y',
+        },
       ]);
     });
 
@@ -172,7 +172,7 @@ describe('compile/data/impute', () => {
         key: 'x',
         method: 'max',
         groupby: ['a', 'b'],
-        frame: [-2, 2]
+        frame: [-2, 2],
       };
 
       const impute = new ImputeNode(null, transform);
@@ -183,7 +183,7 @@ describe('compile/data/impute', () => {
           key: 'x',
           method: 'value',
           groupby: ['a', 'b'],
-          value: null
+          value: null,
         },
         {
           type: 'window',
@@ -192,13 +192,13 @@ describe('compile/data/impute', () => {
           fields: ['y'],
           frame: [-2, 2],
           ignorePeers: false,
-          groupby: ['a', 'b']
+          groupby: ['a', 'b'],
         },
         {
           type: 'formula',
           expr: 'datum.y === null ? datum.imputed_y_value : datum.y',
-          as: 'y'
-        }
+          as: 'y',
+        },
       ]);
     });
 
@@ -207,7 +207,7 @@ describe('compile/data/impute', () => {
         impute: 'y',
         key: 'x',
         method: 'value',
-        value: 200
+        value: 200,
       };
       const impute = new ImputeNode(null, transform);
       expect(impute.hash()).toBe('Impute {"impute":"y","key":"x","method":"value","value":200}');
@@ -221,8 +221,8 @@ describe('compile/data/impute', () => {
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
           y: {field: 'variety', type: 'quantitative', impute: {value: 500}},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       });
       const result = ImputeNode.makeFromEncoding(null, model);
       expect(result.assemble() as any).toEqual([
@@ -232,8 +232,8 @@ describe('compile/data/impute', () => {
           key: 'yield',
           method: 'value',
           groupby: ['site'],
-          value: 500
-        }
+          value: 500,
+        },
       ]);
     });
 
@@ -243,8 +243,8 @@ describe('compile/data/impute', () => {
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
           y: {field: 'variety', type: 'quantitative', impute: {value: 0}},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       });
       const result = ImputeNode.makeFromEncoding(null, model);
       expect(result.assemble() as any).toEqual([
@@ -254,8 +254,8 @@ describe('compile/data/impute', () => {
           key: 'yield',
           method: 'value',
           groupby: ['site'],
-          value: 0
-        }
+          value: 0,
+        },
       ]);
     });
 
@@ -265,8 +265,8 @@ describe('compile/data/impute', () => {
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
           y: {field: 'variety', type: 'quantitative', impute: {method: 'max'}},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       });
       const result = ImputeNode.makeFromEncoding(null, model);
       expect(result.assemble() as any).toEqual([
@@ -276,7 +276,7 @@ describe('compile/data/impute', () => {
           key: 'yield',
           method: 'value',
           groupby: ['site'],
-          value: null
+          value: null,
         },
         {
           type: 'window',
@@ -285,13 +285,13 @@ describe('compile/data/impute', () => {
           fields: ['variety'],
           frame: [null, null],
           ignorePeers: false,
-          groupby: ['site']
+          groupby: ['site'],
         },
         {
           type: 'formula',
           expr: 'datum.variety === null ? datum.imputed_variety_value : datum.variety',
-          as: 'variety'
-        }
+          as: 'variety',
+        },
       ]);
     });
 
@@ -301,8 +301,8 @@ describe('compile/data/impute', () => {
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
           y: {field: 'variety', type: 'quantitative', impute: {method: 'max', keyvals: {start: 3, stop: 5}}},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       });
       const result = ImputeNode.makeFromEncoding(null, model);
       expect(result.assemble()).toEqual([
@@ -313,7 +313,7 @@ describe('compile/data/impute', () => {
           keyvals: {signal: 'sequence(3,5)'},
           method: 'value',
           groupby: ['site'],
-          value: null
+          value: null,
         },
         {
           type: 'window',
@@ -322,13 +322,13 @@ describe('compile/data/impute', () => {
           fields: ['variety'],
           frame: [null, null],
           ignorePeers: false,
-          groupby: ['site']
+          groupby: ['site'],
         },
         {
           type: 'formula',
           expr: 'datum.variety === null ? datum.imputed_variety_value : datum.variety',
-          as: 'variety'
-        }
+          as: 'variety',
+        },
       ]);
     });
 
@@ -338,8 +338,8 @@ describe('compile/data/impute', () => {
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
           y: {field: 'variety', type: 'quantitative', impute: {method: 'mean', frame: [-2, 2]}},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       });
       const result = ImputeNode.makeFromEncoding(null, model);
       expect(result.assemble() as any).toEqual([
@@ -349,7 +349,7 @@ describe('compile/data/impute', () => {
           key: 'yield',
           method: 'value',
           groupby: ['site'],
-          value: null
+          value: null,
         },
         {
           type: 'window',
@@ -358,13 +358,13 @@ describe('compile/data/impute', () => {
           fields: ['variety'],
           frame: [-2, 2],
           ignorePeers: false,
-          groupby: ['site']
+          groupby: ['site'],
         },
         {
           type: 'formula',
           expr: 'datum.variety === null ? datum.imputed_variety_value : datum.variety',
-          as: 'variety'
-        }
+          as: 'variety',
+        },
       ]);
     });
 
@@ -374,8 +374,8 @@ describe('compile/data/impute', () => {
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
           y: {field: 'variety', type: 'quantitative', impute: {method: 'value', value: 20, frame: [-2, 2]}},
-          color: {field: 'site', type: 'nominal'}
-        }
+          color: {field: 'site', type: 'nominal'},
+        },
       });
 
       const result = ImputeNode.makeFromEncoding(null, model);
@@ -386,8 +386,8 @@ describe('compile/data/impute', () => {
           key: 'yield',
           method: 'value',
           groupby: ['site'],
-          value: 20
-        }
+          value: 20,
+        },
       ]);
     });
   });
@@ -398,7 +398,7 @@ describe('compile/data/impute', () => {
         const transform: Transform = {
           impute: 'y',
           key: 'x',
-          groupby: ['f', 'g']
+          groupby: ['f', 'g'],
         };
         const impute = new ImputeNode(null, transform);
         expect(impute.dependentFields()).toEqual(new Set(['x', 'y', 'f', 'g']));
@@ -407,7 +407,7 @@ describe('compile/data/impute', () => {
       it('should return proper dependent fields without groupby', () => {
         const transform: Transform = {
           impute: 'y',
-          key: 'x'
+          key: 'x',
         };
         const impute = new ImputeNode(null, transform);
         expect(impute.dependentFields()).toEqual(new Set(['x', 'y']));
@@ -422,7 +422,7 @@ describe('compile/data/impute', () => {
           key: 'x',
           method: 'max',
           groupby: ['a', 'b'],
-          frame: [-2, 2]
+          frame: [-2, 2],
         };
         const impute = new ImputeNode(parent, transform);
         expect(impute.clone().parent).toBeNull();

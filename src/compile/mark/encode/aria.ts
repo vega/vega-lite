@@ -1,10 +1,10 @@
-import {entries, isEmpty} from '../../../util';
-import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
-import {VG_MARK_INDEX} from './../../../vega.schema';
-import {UnitModel} from './../../unit';
-import {wrapCondition} from './conditional';
-import {textRef} from './text';
-import {tooltipData} from './tooltip';
+import {hasOwnProperty} from 'vega-util';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
+import {VG_MARK_INDEX} from './../../../vega.schema.js';
+import {UnitModel} from './../../unit.js';
+import {wrapCondition} from './conditional.js';
+import {textRef} from './text.js';
+import {tooltipDataTuples, TooltipTuple} from './tooltip.js';
 
 export function aria(model: UnitModel) {
   const {markDef, config} = model;
@@ -20,7 +20,7 @@ export function aria(model: UnitModel) {
   return {
     ...(enableAria ? {aria: enableAria} : {}),
     ...ariaRoleDescription(model),
-    ...description(model)
+    ...description(model),
   };
 }
 
@@ -37,7 +37,7 @@ function ariaRoleDescription(model: UnitModel) {
     return {ariaRoleDescription: {value: ariaRoleDesc}};
   }
 
-  return mark in VG_MARK_INDEX ? {} : {ariaRoleDescription: {value: mark}};
+  return hasOwnProperty(VG_MARK_INDEX, mark) ? {} : {ariaRoleDescription: {value: mark}};
 }
 
 export function description(model: UnitModel) {
@@ -45,7 +45,13 @@ export function description(model: UnitModel) {
   const channelDef = encoding.description;
 
   if (channelDef) {
-    return wrapCondition(model, channelDef, 'description', cDef => textRef(cDef, model.config));
+    return wrapCondition({
+      model,
+      channelDef,
+      vgChannel: 'description',
+      mainRefFn: (cDef) => textRef(cDef, model.config),
+      invalidValueRef: undefined, // aria encoding doesn't have continuous scales and thus can't have invalid values
+    });
   }
 
   // Use default from mark def or config if defined.
@@ -53,7 +59,7 @@ export function description(model: UnitModel) {
   const descriptionValue = getMarkPropOrConfig('description', markDef, config);
   if (descriptionValue != null) {
     return {
-      description: signalOrValueRef(descriptionValue)
+      description: signalOrValueRef(descriptionValue),
     };
   }
 
@@ -61,17 +67,34 @@ export function description(model: UnitModel) {
     return {};
   }
 
-  const data = tooltipData(encoding, stack, config);
+  const data = tooltipDataTuples(encoding, stack, config)
+    // remove internal/private signals from aria description
+    .filter(({key}) => !key.startsWith('_'));
 
-  if (isEmpty(data)) {
+  if (data.length === 0) {
     return undefined;
   }
 
   return {
     description: {
-      signal: entries(data)
-        .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
-        .join(' + ')
-    }
+      signal: ariaDescription(data),
+    },
   };
+}
+
+function ariaDescription(data: TooltipTuple[]) {
+  // replace newlines with spaces in aria description
+  const entries = data.map(({key, value, test}) => ({key, value: value.replaceAll('\\n', ' '), test}));
+
+  if (entries.every(({test}) => !test)) {
+    return entries.map(({key, value}, index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`).join(' + ');
+  }
+
+  // Prefix every field with a separator and strip the leading separator so that
+  // separators only appear between fields that pass their tests.
+  const segments = entries.map(({key, value, test}) => {
+    const segment = `"; ${key}: " + (${value})`;
+    return test ? `((${test}) ? ${segment} : "")` : segment;
+  });
+  return `slice(${segments.join(' + ')}, 2)`;
 }

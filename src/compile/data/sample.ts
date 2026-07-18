@@ -1,7 +1,7 @@
 import {SampleTransform as VgSampleTransform} from 'vega';
-import {SampleTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {SampleTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for the sample transform nodes
@@ -13,7 +13,7 @@ export class SampleTransformNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private transform: SampleTransform
+    private transform: SampleTransform,
   ) {
     super(parent);
   }
@@ -33,7 +33,7 @@ export class SampleTransformNode extends DataFlowNode {
   public assemble(): VgSampleTransform {
     return {
       type: 'sample',
-      size: this.transform.sample
+      size: this.transform.sample,
     };
   }
 }

@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 500,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -38,7 +38,7 @@
           ],
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Director: \" + (isValid(datum[\"Director\"]) ? datum[\"Director\"] : \"\"+datum[\"Director\"]) + \"; Mean of Rotten Tomatoes Rating: \" + (format(datum[\"mean_Rotten Tomatoes Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
+            "signal": "\"Director: \" + (isValid(datum[\"Director\"]) ? isArray(datum[\"Director\"]) ? join(datum[\"Director\"], ' ') : datum[\"Director\"] : \"\"+datum[\"Director\"]) + \"; Mean of Rotten Tomatoes Rating: \" + (format(datum[\"mean_Rotten Tomatoes Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? isArray(datum[\"Title\"]) ? join(datum[\"Title\"], ' ') : datum[\"Title\"] : \"\"+datum[\"Title\"])"
           },
           "x": {
             "scale": "x",
@@ -49,7 +49,8 @@
           "y": [
             {
               "test": "!isValid(datum[\"mean_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"mean_Rotten Tomatoes Rating\"])",
-              "field": {"group": "height"}
+              "scale": "y",
+              "value": 0
             },
             {"scale": "y", "field": "mean_Rotten Tomatoes Rating"}
           ],

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Though Vega-Lite supports only one scale per axes, one can create a parallel coordinate plot by folding variables, using `joinaggregate` to normalize their values and using ticks and rules to manually create axes.",
   "background": "white",
   "padding": 5,
@@ -70,7 +70,7 @@
         "update": {
           "stroke": {"value": "#ccc"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 0},
@@ -99,7 +99,7 @@
           "name": "layer_1_marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"key\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_layer_1_main"},
           "encode": {
             "update": {
@@ -109,7 +109,7 @@
                 "signal": "{\"Beak Length (mm)\": format(datum[\"Beak Length (mm)\"], \"\"), \"Beak Depth (mm)\": format(datum[\"Beak Depth (mm)\"], \"\"), \"Flipper Length (mm)\": format(datum[\"Flipper Length (mm)\"], \"\"), \"Body Mass (g)\": format(datum[\"Body Mass (g)\"], \"\")}"
               },
               "description": {
-                "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; norm_val: \" + (format(datum[\"norm_val\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; index: \" + (isValid(datum[\"index\"]) ? datum[\"index\"] : \"\"+datum[\"index\"]) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\"))"
+                "signal": "\"key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"]) + \"; norm_val: \" + (format(datum[\"norm_val\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; index: \" + (isValid(datum[\"index\"]) ? isArray(datum[\"index\"]) ? join(datum[\"index\"], ' ') : datum[\"index\"] : \"\"+datum[\"index\"]) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\"))"
               },
               "x": {"scale": "x", "field": "key", "band": 0.5},
               "y": {"scale": "y", "field": "norm_val"},
@@ -130,7 +130,7 @@
         "update": {
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Max of max: \" + (format(datum[\"max_max\"], \"\"))"
+            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Max of max: \" + (format(datum[\"max_max\"], \"\"))"
           },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 0},
@@ -149,11 +149,11 @@
           "fill": {"value": "#ccc"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"])"
           },
           "xc": {"scale": "x", "field": "key", "band": 0.5},
-          "yc": {"value": 0},
           "width": {"value": 8},
+          "yc": {"value": 0},
           "height": {"value": 1}
         }
       }
@@ -167,7 +167,7 @@
         "update": {
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Min of mid: \" + (format(datum[\"min_mid\"], \"\"))"
+            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Min of mid: \" + (format(datum[\"min_mid\"], \"\"))"
           },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 150},
@@ -186,11 +186,11 @@
           "fill": {"value": "#ccc"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"])"
           },
           "xc": {"scale": "x", "field": "key", "band": 0.5},
-          "yc": {"value": 150},
           "width": {"value": 8},
+          "yc": {"value": 150},
           "height": {"value": 1}
         }
       }
@@ -204,7 +204,7 @@
         "update": {
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Min of min: \" + (format(datum[\"min_min\"], \"\"))"
+            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Min of min: \" + (format(datum[\"min_min\"], \"\"))"
           },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 300},
@@ -223,11 +223,11 @@
           "fill": {"value": "#ccc"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? isArray(datum[\"key\"]) ? join(datum[\"key\"], ' ') : datum[\"key\"] : \"\"+datum[\"key\"])"
           },
           "xc": {"scale": "x", "field": "key", "band": 0.5},
-          "yc": {"value": 300},
           "width": {"value": 8},
+          "yc": {"value": 300},
           "height": {"value": 1}
         }
       }

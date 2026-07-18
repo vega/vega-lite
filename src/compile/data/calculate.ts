@@ -1,14 +1,14 @@
 import {FormulaTransform as VgFormulaTransform} from 'vega';
-import {SingleDefChannel} from '../../channel';
-import {FieldRefOption, isScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef';
-import {DateTime} from '../../datetime';
-import {fieldFilterExpression} from '../../predicate';
-import {isSortArray} from '../../sort';
-import {CalculateTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {ModelWithField} from '../model';
-import {DataFlowNode} from './dataflow';
-import {getDependentFields} from './expressions';
+import {SingleDefChannel} from '../../channel.js';
+import {FieldRefOption, isScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef.js';
+import {DateTime} from '../../datetime.js';
+import {fieldFilterExpression} from '../../predicate.js';
+import {isSortArray} from '../../sort.js';
+import {CalculateTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {ModelWithField} from '../model.js';
+import {DataFlowNode} from './dataflow.js';
+import {getDependentFields} from './expressions.js';
 
 export class CalculateNode extends DataFlowNode {
   private _dependentFields: Set<string>;
@@ -19,7 +19,7 @@ export class CalculateNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private readonly transform: CalculateTransform
+    private readonly transform: CalculateTransform,
   ) {
     super(parent);
 
@@ -45,7 +45,7 @@ export class CalculateNode extends DataFlowNode {
 
         parent = new CalculateNode(parent, {
           calculate,
-          as: sortArrayIndexField(fieldDef, channel, {forAs: true})
+          as: sortArrayIndexField(fieldDef, channel, {forAs: true}),
         });
       }
     });
@@ -64,7 +64,7 @@ export class CalculateNode extends DataFlowNode {
     return {
       type: 'formula',
       expr: this.transform.calculate,
-      as: this.transform.as
+      as: this.transform.as,
     };
   }
 

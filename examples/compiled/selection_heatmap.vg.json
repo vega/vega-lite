@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "style": "cell",
@@ -95,6 +95,7 @@
       "encode": {
         "update": {
           "strokeWidth": {"value": 2},
+          "cursor": {"value": "pointer"},
           "fill": {"scale": "fill", "field": "count"},
           "stroke": [
             {
@@ -118,7 +119,7 @@
             {"value": 0}
           ],
           "description": {
-            "signal": "\"predicted: \" + (isValid(datum[\"predicted\"]) ? datum[\"predicted\"] : \"\"+datum[\"predicted\"]) + \"; actual: \" + (isValid(datum[\"actual\"]) ? datum[\"actual\"] : \"\"+datum[\"actual\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
+            "signal": "\"predicted: \" + (isValid(datum[\"predicted\"]) ? isArray(datum[\"predicted\"]) ? join(datum[\"predicted\"], ' ') : datum[\"predicted\"] : \"\"+datum[\"predicted\"]) + \"; actual: \" + (isValid(datum[\"actual\"]) ? isArray(datum[\"actual\"]) ? join(datum[\"actual\"], ' ') : datum[\"actual\"] : \"\"+datum[\"actual\"]) + \"; count: \" + (format(datum[\"count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "predicted"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

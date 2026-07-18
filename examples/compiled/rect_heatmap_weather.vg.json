@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "title": {
@@ -58,7 +58,7 @@
         "update": {
           "fill": {"scale": "color", "field": "max_temp_max"},
           "description": {
-            "signal": "\"Day: \" + (timeFormat(datum[\"date_date\"], '%e')) + \"; Month: \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Max of temp_max: \" + (format(datum[\"max_temp_max\"], \"\"))"
+            "signal": "\"Day: \" + (timeFormat(datum[\"date_date\"], \"%e\")) + \"; Month: \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Max of temp_max: \" + (format(datum[\"max_temp_max\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date_date"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},
