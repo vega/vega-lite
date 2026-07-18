@@ -7,6 +7,7 @@ import {
   isArgmaxDef,
   isArgminDef,
   isCountingAggregateOp,
+  isExponentialBDef,
   isExponentialDef,
 } from './aggregate.js';
 import {Axis} from './axis.js';
@@ -835,7 +836,11 @@ export function vgField(
 
     if (!opt.nofn) {
       if (isOpFieldDef(fieldDef)) {
-        fn = isExponentialDef(fieldDef.op) ? 'exponential' : fieldDef.op;
+        fn = isExponentialDef(fieldDef.op)
+          ? 'exponential'
+          : isExponentialBDef(fieldDef.op)
+            ? 'exponentialb'
+            : fieldDef.op;
       } else {
         const {bin, aggregate, timeUnit} = fieldDef;
         if (isBinning(bin)) {
@@ -849,7 +854,11 @@ export function vgField(
             argAccessor = `["${field}"]`;
             field = `argmin_${aggregate.argmin}`;
           } else {
-            fn = isExponentialDef(aggregate) ? 'exponential' : String(aggregate);
+            fn = isExponentialDef(aggregate)
+              ? 'exponential'
+              : isExponentialBDef(aggregate)
+                ? 'exponentialb'
+                : String(aggregate);
           }
         } else if (timeUnit && !isBinnedTimeUnit(timeUnit)) {
           fn = timeUnitToString(timeUnit);
@@ -923,7 +932,11 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
     } else if (isArgminDef(aggregate)) {
       return `${field} for min ${aggregate.argmin}`;
     } else {
-      const aggregateOp = isExponentialDef(aggregate) ? 'exponential' : aggregate;
+      const aggregateOp = isExponentialDef(aggregate)
+        ? 'exponential'
+        : isExponentialBDef(aggregate)
+          ? 'exponentialb'
+          : aggregate;
       return `${titleCase(aggregateOp)} of ${field}`;
     }
   }
@@ -940,7 +953,11 @@ export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
 
   const timeUnitParams = timeUnit && !isBinnedTimeUnit(timeUnit) ? normalizeTimeUnit(timeUnit) : undefined;
 
-  const aggregateOp = isExponentialDef(aggregate) ? 'exponential' : aggregate;
+  const aggregateOp = isExponentialDef(aggregate)
+    ? 'exponential'
+    : isExponentialBDef(aggregate)
+      ? 'exponentialb'
+      : aggregate;
   const fn =
     aggregateOp || timeUnitParams?.unit || (timeUnitParams?.maxbins && 'timeunit') || (isBinning(bin) && 'bin');
   return fn ? `${fn.toUpperCase()}(${field})` : field;
@@ -1171,7 +1188,8 @@ export function initFieldDef(
     !isAggregateOp(aggregate) &&
     !isArgmaxDef(aggregate) &&
     !isArgminDef(aggregate) &&
-    !isExponentialDef(aggregate)
+    !isExponentialDef(aggregate) &&
+    !isExponentialBDef(aggregate)
   ) {
     log.warn(log.message.invalidAggregate(aggregate));
     delete fieldDef.aggregate;

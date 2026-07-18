@@ -161,6 +161,10 @@ export function invalidTransformIgnored(transform: any) {
   return `Ignoring an invalid transform: ${stringify(transform)}.`;
 }
 
+export function conflictingAggregateParam(op: string, field: string, parentParam: number, childParam: number) {
+  return `The "${op}" aggregate of the field "${field}" is used with different parameters (${parentParam} and ${childParam}). Using ${childParam}.`;
+}
+
 export const NO_FIELDS_NEEDS_AS =
   'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the data from the secondary source.';
 

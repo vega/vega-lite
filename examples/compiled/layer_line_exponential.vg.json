@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 400,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -41,13 +41,13 @@
       "name": "layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"year\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Avg Price: \" + (format(datum[\"mean_price\"], \"\"))"
+            "signal": "\"year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Avg Price: \" + (format(datum[\"mean_price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "mean_price"},
@@ -61,14 +61,14 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"year\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.5},
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Exponential of price: \" + (format(datum[\"exponential_price\"], \"\"))"
+            "signal": "\"year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Exponential of price: \" + (format(datum[\"exponential_price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "exponential_price"},

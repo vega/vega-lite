@@ -1,5 +1,5 @@
 import {array, isArray} from 'vega-util';
-import {isArgmaxDef, isArgminDef, isExponentialDef} from './aggregate.js';
+import {isArgmaxDef, isArgminDef, isExponentialBDef, isExponentialDef} from './aggregate.js';
 import {isBinned, isBinning} from './bin.js';
 import {
   ANGLE,
@@ -429,8 +429,9 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
             newField = vgField({op: 'argmin', field: aggOp.argmin}, {forAs: true});
             newFieldDef.field = `${newField}.${field}`;
           } else if (isExponentialDef(aggOp)) {
-            const exponentialValue = aggOp['exponential'];
-            op = {exponential: exponentialValue};
+            op = {exponential: aggOp.exponential};
+          } else if (isExponentialBDef(aggOp)) {
+            op = {exponentialb: aggOp.exponentialb};
           } else if (aggOp !== 'boxplot' && aggOp !== 'errorbar' && aggOp !== 'errorband') {
             op = aggOp;
           }

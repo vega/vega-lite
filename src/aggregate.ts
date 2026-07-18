@@ -49,9 +49,13 @@ export interface ExponentialDef {
   exponential: number;
 }
 
-export type NonArgAggregateOp = Exclude<AggregateOp, 'argmin' | 'argmax' | 'exponential'>;
+export interface ExponentialBDef {
+  exponentialb: number;
+}
 
-export type Aggregate = NonArgAggregateOp | ArgmaxDef | ArgminDef | ExponentialDef;
+export type NonArgAggregateOp = Exclude<AggregateOp, 'argmin' | 'argmax' | 'exponential' | 'exponentialb'>;
+
+export type Aggregate = NonArgAggregateOp | ArgmaxDef | ArgminDef | ExponentialDef | ExponentialBDef;
 
 export function isArgminDef(a: Aggregate | string): a is ArgminDef {
   return hasProperty(a, 'argmin');
@@ -65,7 +69,11 @@ export function isExponentialDef(a: Aggregate | string): a is ExponentialDef {
   return hasProperty(a, 'exponential');
 }
 
-export function isAggregateOp(a: string | ArgminDef | ArgmaxDef | ExponentialDef): a is AggregateOp {
+export function isExponentialBDef(a: Aggregate | string): a is ExponentialBDef {
+  return hasProperty(a, 'exponentialb');
+}
+
+export function isAggregateOp(a: string | ArgminDef | ArgmaxDef | ExponentialDef | ExponentialBDef): a is AggregateOp {
   return isString(a) && hasOwnProperty(AGGREGATE_OP_INDEX, a);
 }
 

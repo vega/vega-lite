@@ -9,7 +9,7 @@ import {normalizePredicate, Predicate} from './predicate.js';
 import {SortField} from './sort.js';
 import {TimeUnit, TimeUnitTransformParams} from './timeunit.js';
 import {hasProperty} from './util.js';
-import {ExponentialDef} from './aggregate.js';
+import {ExponentialBDef, ExponentialDef} from './aggregate.js';
 
 export interface FilterTransform {
   /**
@@ -100,9 +100,9 @@ export interface AggregateTransform {
   groupby?: FieldName[];
 }
 
-export type NonArgAggregateFieldOp = Exclude<AggregateOp, 'exponential'>;
+export type NonArgAggregateFieldOp = Exclude<AggregateOp, 'exponential' | 'exponentialb'>;
 
-export type AggregateFieldOp = NonArgAggregateFieldOp | ExponentialDef;
+export type AggregateFieldOp = NonArgAggregateFieldOp | ExponentialDef | ExponentialBDef;
 
 export interface AggregatedFieldDef {
   /**

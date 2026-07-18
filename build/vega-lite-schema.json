@@ -15,6 +15,9 @@
         },
         {
           "$ref": "#/definitions/ExponentialDef"
+        },
+        {
+          "$ref": "#/definitions/ExponentialBDef"
         }
       ]
     },
@@ -25,6 +28,9 @@
         },
         {
           "$ref": "#/definitions/ExponentialDef"
+        },
+        {
+          "$ref": "#/definitions/ExponentialBDef"
         }
       ]
     },
@@ -8828,6 +8834,18 @@
         "wheel"
       ],
       "type": "string"
+    },
+    "ExponentialBDef": {
+      "additionalProperties": false,
+      "properties": {
+        "exponentialb": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "exponentialb"
+      ],
+      "type": "object"
     },
     "ExponentialDef": {
       "additionalProperties": false,
@@ -18040,8 +18058,7 @@
         "valid",
         "values",
         "variance",
-        "variancep",
-        "exponentialb"
+        "variancep"
       ],
       "type": "string"
     },
@@ -18067,8 +18084,7 @@
         "valid",
         "values",
         "variance",
-        "variancep",
-        "exponentialb"
+        "variancep"
       ],
       "type": "string"
     },
@@ -33033,3 +33049,4 @@
     }
   }
 }
+

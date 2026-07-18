@@ -1,5 +1,5 @@
 import {AggregateOp, AggregateTransform as VgAggregateTransform} from 'vega';
-import {isArgmaxDef, isArgminDef, isExponentialDef} from '../../aggregate.js';
+import {isArgmaxDef, isArgminDef, isExponentialBDef, isExponentialDef} from '../../aggregate.js';
 import {
   Channel,
   getPositionChannelFromLatLong,
@@ -71,14 +71,22 @@ function mergeMeasures(parentMeasures: Measures, childMeasures: Measures) {
     for (const op of keys(ops)) {
       if (field in parentMeasures) {
         // add operator to existing measure field
-        parentMeasures[field][op] = {
-          aliases: new Set([...(parentMeasures[field][op]?.aliases ?? []), ...ops[op].aliases])
-        };
+        const parentAggregateParam = parentMeasures[field][op]?.aggregateParam;
+        const childAggregateParam = ops[op].aggregateParam;
+        const aggregateParam = childAggregateParam ?? parentAggregateParam;
 
-        const childAggregateParam = childMeasures[field][op].aggregateParam;
-        if (childAggregateParam) {
-          parentMeasures[field][op].aggregateParam = childAggregateParam;
+        if (
+          parentAggregateParam !== undefined &&
+          childAggregateParam !== undefined &&
+          parentAggregateParam !== childAggregateParam
+        ) {
+          log.warn(log.message.conflictingAggregateParam(op, field, parentAggregateParam, childAggregateParam));
         }
+
+        parentMeasures[field][op] = {
+          aliases: new Set([...(parentMeasures[field][op]?.aliases ?? []), ...ops[op].aliases]),
+          ...(aggregateParam !== undefined ? {aggregateParam} : {}),
+        };
       } else {
         parentMeasures[field] = {[op]: ops[op]};
       }
@@ -135,11 +143,11 @@ export class AggregateNode extends DataFlowNode {
             const argField = (aggregate as any)[op];
             meas[argField] ??= {};
             meas[argField][op] = {aliases: new Set([vgField({op, field: argField}, {forAs: true})])};
-          } else if (isExponentialDef(aggregate)) {
-            const op = 'exponential';
-            const aggregateParam = aggregate[op];
+          } else if (isExponentialDef(aggregate) || isExponentialBDef(aggregate)) {
+            const op = isExponentialDef(aggregate) ? 'exponential' : 'exponentialb';
+            const aggregateParam = isExponentialDef(aggregate) ? aggregate.exponential : aggregate.exponentialb;
             meas[field] ??= {};
-            meas[field][op] = {aliases: new Set([vgField(fieldDef, {forAs: true})]), aggregateParam: aggregateParam};
+            meas[field][op] = {aliases: new Set([vgField(fieldDef, {forAs: true})]), aggregateParam};
           } else {
             meas[field] ??= {};
             (meas[field] as any)[aggregate] = {aliases: new Set([vgField(fieldDef, {forAs: true})])};
@@ -176,10 +184,11 @@ export class AggregateNode extends DataFlowNode {
           meas['*'] ??= {};
           meas['*']['count'] = {aliases};
         } else {
-          if (isExponentialDef(op)) {
-            const opName = 'exponential';
+          if (isExponentialDef(op) || isExponentialBDef(op)) {
+            const opName = isExponentialDef(op) ? 'exponential' : 'exponentialb';
+            const aggregateParam = isExponentialDef(op) ? op.exponential : op.exponentialb;
             meas[field] ??= {};
-            meas[field][opName] ??= {aliases: new Set(), aggregateParam: op[opName]};
+            meas[field][opName] ??= {aliases: new Set(), aggregateParam};
             meas[field][opName].aliases.add(as ? as : vgField(s, {forAs: true}));
           } else {
             meas[field] ??= {};
@@ -251,7 +260,7 @@ export class AggregateNode extends DataFlowNode {
           as.push(alias);
           ops.push(op);
           fields.push(field === '*' ? null : replacePathInField(field));
-          aggregateParams.push(this.measures[field][op].aggregateParam || null);
+          aggregateParams.push(this.measures[field][op].aggregateParam ?? null);
         }
       }
     }
@@ -264,7 +273,7 @@ export class AggregateNode extends DataFlowNode {
       as,
     };
 
-    if (aggregateParams.some(param => typeof param === 'number')) {
+    if (aggregateParams.some((param) => typeof param === 'number')) {
       result.aggregate_params = aggregateParams;
     }
 
