@@ -1,15 +1,17 @@
-import {defaultScaleResolve, parseGuideResolve} from '../../src/compile/resolve';
-import * as log from '../../src/log';
-import {parseConcatModel, parseFacetModel, parseLayerModel, parseModel} from '../util';
+import {defaultScaleResolve, parseGuideResolve} from '../../src/compile/resolve.js';
+import * as log from '../../src/log/index.js';
+import {parseConcatModel, parseFacetModel, parseLayerModel, parseModel} from '../util.js';
 
 describe('compile/resolve', () => {
   describe('defaultScaleResolve', () => {
     it('shares scales for layer model by default.', () => {
       const model = parseLayerModel({
-        layer: []
+        layer: [],
       });
       expect(defaultScaleResolve('x', model)).toBe('shared');
       expect(defaultScaleResolve('y', model)).toBe('shared');
+      expect(defaultScaleResolve('xOffset', model)).toBe('shared');
+      expect(defaultScaleResolve('yOffset', model)).toBe('shared');
       expect(defaultScaleResolve('color', model)).toBe('shared');
       expect(defaultScaleResolve('theta', model)).toBe('shared');
       expect(defaultScaleResolve('radius', model)).toBe('shared');
@@ -18,12 +20,14 @@ describe('compile/resolve', () => {
     it('shares scales for facet model by default.', () => {
       const model = parseFacetModel({
         facet: {
-          row: {field: 'a', type: 'nominal'}
+          row: {field: 'a', type: 'nominal'},
         },
-        spec: {mark: 'point', encoding: {}}
+        spec: {mark: 'point', encoding: {}},
       });
       expect(defaultScaleResolve('x', model)).toBe('shared');
       expect(defaultScaleResolve('y', model)).toBe('shared');
+      expect(defaultScaleResolve('xOffset', model)).toBe('shared');
+      expect(defaultScaleResolve('yOffset', model)).toBe('shared');
       expect(defaultScaleResolve('color', model)).toBe('shared');
       expect(defaultScaleResolve('radius', model)).toBe('shared');
     });
@@ -31,45 +35,49 @@ describe('compile/resolve', () => {
     it('separates theta scales for facet model by default.', () => {
       const model = parseFacetModel({
         facet: {
-          row: {field: 'a', type: 'nominal'}
+          row: {field: 'a', type: 'nominal'},
         },
-        spec: {mark: 'arc', encoding: {}}
+        spec: {mark: 'arc', encoding: {}},
       });
       expect(defaultScaleResolve('theta', model)).toBe('independent');
     });
 
-    it('separates x, y, theta, and radius scales for concat model by default.', () => {
+    it('separates x, y, xOffset, yOffset, theta, and radius scales for concat model by default.', () => {
       const model = parseConcatModel({
-        hconcat: []
+        hconcat: [],
       });
       expect(defaultScaleResolve('x', model)).toBe('independent');
       expect(defaultScaleResolve('y', model)).toBe('independent');
+      expect(defaultScaleResolve('xOffset', model)).toBe('independent');
+      expect(defaultScaleResolve('yOffset', model)).toBe('independent');
       expect(defaultScaleResolve('theta', model)).toBe('independent');
       expect(defaultScaleResolve('radius', model)).toBe('independent');
     });
 
     it('shares non-positional scales for concat model by default.', () => {
       const model = parseConcatModel({
-        hconcat: []
+        hconcat: [],
       });
       expect(defaultScaleResolve('color', model)).toBe('shared');
     });
 
-    it('separates x, y, theta, and radius scales for repeat model by default.', () => {
+    it('separates x, y, xOffset, yOffset, theta, and radius scales for repeat model by default.', () => {
       const model = parseModel({
         repeat: {
-          row: ['a', 'b']
+          row: ['a', 'b'],
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: {repeat: 'row'}, type: 'quantitative'},
-            color: {field: 'color', type: 'quantitative'}
-          }
-        }
+            color: {field: 'color', type: 'quantitative'},
+          },
+        },
       });
       expect(defaultScaleResolve('x', model)).toBe('independent');
       expect(defaultScaleResolve('y', model)).toBe('independent');
+      expect(defaultScaleResolve('xOffset', model)).toBe('independent');
+      expect(defaultScaleResolve('yOffset', model)).toBe('independent');
       expect(defaultScaleResolve('theta', model)).toBe('independent');
       expect(defaultScaleResolve('radius', model)).toBe('independent');
     });
@@ -77,15 +85,15 @@ describe('compile/resolve', () => {
     it('shares non-positional scales for repeat model by default.', () => {
       const model = parseModel({
         repeat: {
-          row: ['a', 'b']
+          row: ['a', 'b'],
         },
         spec: {
           mark: 'point',
           encoding: {
             x: {field: {repeat: 'row'}, type: 'quantitative'},
-            color: {field: 'color', type: 'quantitative'}
-          }
-        }
+            color: {field: 'color', type: 'quantitative'},
+          },
+        },
       });
       expect(defaultScaleResolve('color', model)).toBe('shared');
     });
@@ -96,9 +104,9 @@ describe('compile/resolve', () => {
       const axisResolve = parseGuideResolve(
         {
           scale: {x: 'shared'},
-          axis: {}
+          axis: {},
         },
-        'x'
+        'x',
       );
       expect(axisResolve).toBe('shared');
     });
@@ -107,9 +115,9 @@ describe('compile/resolve', () => {
       const axisResolve = parseGuideResolve(
         {
           scale: {x: 'shared'},
-          axis: {x: 'independent'}
+          axis: {x: 'independent'},
         },
-        'x'
+        'x',
       );
       expect(axisResolve).toBe('independent');
     });
@@ -118,9 +126,9 @@ describe('compile/resolve', () => {
       const legendResolve = parseGuideResolve(
         {
           scale: {color: 'shared'},
-          legend: {color: 'independent'}
+          legend: {color: 'independent'},
         },
-        'color'
+        'color',
       );
       expect(legendResolve).toBe('independent');
     });
@@ -129,26 +137,26 @@ describe('compile/resolve', () => {
       const axisResolve = parseGuideResolve(
         {
           scale: {x: 'independent'},
-          axis: {}
+          axis: {},
         },
-        'x'
+        'x',
       );
       expect(axisResolve).toBe('independent');
     });
 
     it(
       'separates axis for an independent scale even "shared" is specified and throw warning',
-      log.wrap(localLogger => {
+      log.wrap((localLogger) => {
         const axisResolve = parseGuideResolve(
           {
             scale: {x: 'independent'},
-            axis: {x: 'shared'}
+            axis: {x: 'shared'},
           },
-          'x'
+          'x',
         );
         expect(axisResolve).toBe('independent');
         expect(localLogger.warns[0]).toEqual(log.message.independentScaleMeansIndependentGuide('x'));
-      })
+      }),
     );
   });
 });

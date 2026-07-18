@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Plot showing a 30 day rolling average with raw values in the background.",
   "width": 400,
   "height": 300,

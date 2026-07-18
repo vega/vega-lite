@@ -1,14 +1,14 @@
 import type {SignalRef} from 'vega';
-import {Field} from '../src/channeldef';
-import {buildModel} from '../src/compile/buildmodel';
-import {ConcatModel} from '../src/compile/concat';
-import {FacetModel} from '../src/compile/facet';
-import {LayerModel} from '../src/compile/layer';
-import {Model} from '../src/compile/model';
-import {parseScales} from '../src/compile/scale/parse';
-import {UnitModel} from '../src/compile/unit';
-import {initConfig} from '../src/config';
-import {normalize} from '../src/normalize';
+import {Field} from '../src/channeldef.js';
+import {buildModel} from '../src/compile/buildmodel.js';
+import {ConcatModel} from '../src/compile/concat.js';
+import {FacetModel} from '../src/compile/facet.js';
+import {LayerModel} from '../src/compile/layer.js';
+import {Model} from '../src/compile/model.js';
+import {parseScales} from '../src/compile/scale/parse.js';
+import {UnitModel} from '../src/compile/unit.js';
+import {initConfig} from '../src/config.js';
+import {normalize} from '../src/normalize/index.js';
 import {
   GenericLayerSpec,
   isLayerSpec,
@@ -18,11 +18,11 @@ import {
   NormalizedLayerSpec,
   NormalizedUnitSpec,
   TopLevel,
-  TopLevelSpec
-} from '../src/spec';
-import {BaseSpec, FrameMixins} from '../src/spec/base';
-import {FacetedUnitSpec} from '../src/spec/unit';
-import {contains} from '../src/util';
+  TopLevelSpec,
+} from '../src/spec/index.js';
+import {BaseSpec, FrameMixins} from '../src/spec/base.js';
+import {FacetedUnitSpec} from '../src/spec/unit.js';
+import {contains} from '../src/util.js';
 
 export type TopLevelNormalizedUnitSpecForTest = TopLevel<NormalizedUnitSpec> & FrameMixins<SignalRef>;
 
@@ -105,7 +105,7 @@ export function assertIsLayerSpec(spec: BaseSpec): asserts spec is GenericLayerS
 
 /** Returns the array without the elements in excludedItems */
 export function without<T>(array: readonly T[], excludedItems: readonly T[]) {
-  return array.filter(item => !contains(excludedItems, item));
+  return array.filter((item) => !contains(excludedItems, item));
 }
 
 export function range(start: number, stop: number, step: number) {

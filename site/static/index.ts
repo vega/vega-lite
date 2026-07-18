@@ -1,27 +1,24 @@
+import * as d3 from 'd3';
 import {select, selectAll, Selection} from 'd3-selection';
-// @ts-ignore
-import hljs from 'highlight.js/lib/core';
-// @ts-ignore
+import hljs_ from 'highlight.js/lib/core';
 import css from 'highlight.js/lib/languages/css';
-// @ts-ignore
 import diff from 'highlight.js/lib/languages/diff';
-// @ts-ignore
 import javascript from 'highlight.js/lib/languages/javascript';
-// @ts-ignore
 import json from 'highlight.js/lib/languages/json';
-// @ts-ignore
 import typescript from 'highlight.js/lib/languages/typescript';
-// @ts-ignore
 import xml from 'highlight.js/lib/languages/xml';
 import compactStringify from 'json-stringify-pretty-compact';
 import * as vega from 'vega';
 import {Handler} from 'vega-tooltip';
-import {compile, TopLevelSpec} from '../../src';
-import {post} from './post';
-import {runStreamingExample} from './streaming';
+import {compile, TopLevelSpec} from '../../src/index.js';
+import {post} from './post.js';
+import {runStreamingExample} from './streaming.js';
 
-window['runStreamingExample'] = runStreamingExample;
-window['embedExample'] = embedExample;
+// to work around weird type issue
+const hljs = hljs_ as any;
+
+(window as any)['runStreamingExample'] = runStreamingExample;
+(window as any)['embedExample'] = embedExample;
 
 hljs.registerLanguage('javascript', javascript);
 hljs.registerLanguage('typescript', typescript);
@@ -30,16 +27,85 @@ hljs.registerLanguage('html', xml);
 hljs.registerLanguage('css', css);
 hljs.registerLanguage('diff', diff);
 
+const COPY_FEEDBACK_TIMEOUT_MS = 2000;
+
+async function copyText(text: string) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.setAttribute('readonly', 'readonly');
+  textArea.style.position = 'fixed';
+  textArea.style.opacity = '0';
+  textArea.style.pointerEvents = 'none';
+  document.body.appendChild(textArea);
+  textArea.select();
+
+  const copied = document.execCommand('copy');
+  document.body.removeChild(textArea);
+
+  if (!copied) {
+    throw new Error('Copy command failed');
+  }
+}
+
+hljs.addPlugin({
+  'after:highlightElement': ({el, text}: {el: HTMLElement; text: string}) => {
+    const pre = el.parentElement;
+
+    if (!pre || pre.tagName !== 'PRE' || pre.querySelector('.code-copy-button')) {
+      return;
+    }
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'code-copy-button';
+    button.setAttribute('aria-label', 'Copy code to clipboard');
+    button.innerHTML =
+      '<span class="code-copy-label">Copy</span><span class="octicon octicon-clippy code-copy-icon-copy" aria-hidden="true"></span><span class="octicon octicon-check code-copy-icon-check" aria-hidden="true"></span>';
+
+    const label = button.querySelector('.code-copy-label') as HTMLSpanElement;
+    let resetTimeoutId: number | undefined;
+
+    button.addEventListener('click', async () => {
+      try {
+        await copyText(text);
+
+        if (resetTimeoutId !== undefined) {
+          window.clearTimeout(resetTimeoutId);
+        }
+
+        button.setAttribute('data-copied', 'true');
+        label.textContent = 'Copied';
+
+        resetTimeoutId = window.setTimeout(() => {
+          button.removeAttribute('data-copied');
+          label.textContent = 'Copy';
+        }, COPY_FEEDBACK_TIMEOUT_MS);
+      } catch (error) {
+        console.error('Failed to copy code block', error);
+      }
+    });
+
+    pre.classList.add('code-copy-wrapper');
+    pre.appendChild(button);
+  },
+});
+
 // highlight jekyll code blocks
 hljs.highlightAll();
 
 declare const BASEURL: string;
 
 const loader = vega.loader({
-  baseURL: BASEURL
+  baseURL: BASEURL,
 });
 
 const editorURL = 'https://vega.github.io/editor/';
+const MIDDLE_MOUSE_CLICK = 1;
 
 /* Anchors */
 selectAll('h2, h3, h4, h5, h6').each(function (this: d3.BaseType) {
@@ -51,8 +117,7 @@ selectAll('h2, h3, h4, h5, h6').each(function (this: d3.BaseType) {
 
 /* Documentation */
 function renderExample($target: Selection<any, any, any, any>, specText: string, figureOnly: boolean) {
-  $target.classed('example', true);
-  $target.text('');
+  $target.classed('example', true).text('');
 
   const vis = $target.append('div').attr('class', 'example-vis');
 
@@ -93,22 +158,25 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      .on('click', event => {
-        post(window, editorURL, {
-          mode: 'vega-lite',
-          spec: compactStringify(spec),
-          config: vgSpec.config,
-          renderer: 'svg'
-        });
+      .on('click mouseup', (event) => {
+        // Check if it's a regular left click or middle mouse click
+        if (event.type === 'click' || (event.type === 'mouseup' && event.button === MIDDLE_MOUSE_CLICK)) {
+          post(window, editorURL, {
+            mode: 'vega-lite',
+            spec: compactStringify(spec),
+            config: vgSpec.config,
+            renderer: 'svg',
+          });
+        }
         // remove as any when d3 typings are updated
-        (event as any).preventDefault();
+        event.preventDefault();
       });
   }
 
   return view;
 }
 
-function getSpec(el: d3.BaseType) {
+async function getSpec(el: d3.BaseType) {
   const sel = select(el);
   const name = sel.attr('data-name');
   const figureOnly = !!sel.attr('figure-only');
@@ -116,28 +184,29 @@ function getSpec(el: d3.BaseType) {
     const dir = sel.attr('data-dir');
     const fullUrl = `${BASEURL}/examples/${dir ? `${dir}/` : ''}${name}.vl.json`;
 
-    fetch(fullUrl)
-      .then(response => {
-        response
-          .text()
-          .then(spec => {
-            renderExample(sel, spec, figureOnly);
-          })
-          .catch(console.error);
-      })
-      .catch(console.error);
+    try {
+      const spec = await (await fetch(fullUrl)).text();
+      renderExample(sel, spec, figureOnly);
+    } catch (e) {
+      sel
+        .html(
+          `Could not load spec: ${e}. Please report this issue on <a href="https://github.com/vega/vega-lite/issues/new/choose">GitHub</a>.`,
+        )
+        .classed('error', true);
+      console.error(e);
+    }
   } else {
     console.error('No "data-name" specified to import examples from');
   }
 }
 
-window['changeSpec'] = (elId: string, newSpec: string) => {
+(window as any)['changeSpec'] = async (elId: string, newSpec: string) => {
   const el = document.getElementById(elId);
   select(el).attr('data-name', newSpec);
-  getSpec(el);
+  await getSpec(el);
 };
 
-window['buildSpecOpts'] = (id: string, baseName: string) => {
+(window as any)['buildSpecOpts'] = (id: string, baseName: string) => {
   const oldName = select(`#${id}`).attr('data-name');
   const prefixSel = select(`select[name=${id}]`);
   const inputsSel = selectAll(`input[name=${id}]:checked`);
@@ -149,12 +218,12 @@ window['buildSpecOpts'] = (id: string, baseName: string) => {
     .join('_');
   const newName = baseName + prefix + (values ? `_${values}` : '');
   if (oldName !== newName) {
-    window['changeSpec'](id, newName);
+    (window as any)['changeSpec'](id, newName);
   }
 };
 
-selectAll('.vl-example').each(function (this: d3.BaseType) {
-  getSpec(this);
+selectAll('.vl-example').each(async function (this: d3.BaseType) {
+  await getSpec(this);
 });
 
 // caroussel for the front page
@@ -194,7 +263,7 @@ function setSlide(
   slides: NodeListOf<Element>,
   indicators: NodeListOf<Element>,
   links: NodeListOf<any>,
-  active: number
+  active: number,
 ) {
   return () => {
     // Reset all slides
@@ -242,7 +311,7 @@ if (carousel) {
     const video = slide.querySelector('video');
     if (video) {
       video.addEventListener('pointerover', () => {
-        (slide.querySelector('.example-vis') as any).style.visibility = 'visible';
+        slide.querySelector<HTMLElement>('.example-vis').style.visibility = 'visible';
         video.style.display = 'none';
         video.pause();
       });

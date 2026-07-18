@@ -1,8 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {
@@ -19,12 +19,12 @@
         },
         {
           "type": "formula",
-          "expr": "datum[\"center_yield\"] + datum[\"extent_yield\"]",
+          "expr": "datum['center_yield'] + datum['extent_yield']",
           "as": "upper_yield"
         },
         {
           "type": "formula",
-          "expr": "datum[\"center_yield\"] - datum[\"extent_yield\"]",
+          "expr": "datum['center_yield'] - datum['extent_yield']",
           "as": "lower_yield"
         },
         {
@@ -49,10 +49,10 @@
           "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]"
+            "signal": "isValid(datum[\"variety\"]) ? isArray(datum[\"variety\"]) ? join(datum[\"variety\"], '\\n') : datum[\"variety\"] : \"\"+datum[\"variety\"]"
           },
           "description": {
-            "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\"))"
+            "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? isArray(datum[\"variety\"]) ? join(datum[\"variety\"], ' ') : datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\"))"
           },
           "x": {"scale": "x", "field": "lower_yield"},
           "x2": {"scale": "x", "field": "upper_yield"},

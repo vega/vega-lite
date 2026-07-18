@@ -520,6 +520,15 @@
       {
         "name": "layer_point_line_loess",
         "title": "Loess Regression"
+      },
+      {
+        "name": "window_impute_null",
+        "title": "Using window transform to impute missing values by averaging the previous and next values."
+      },
+      {
+        "name": "ternary",
+        "title": "Ternary chart",
+        "description": "A ternary chart example created by [Adrián Bazzana](https://www.linkedin.com/in/adrian-bazzana/)."
       }
     ]
   },
@@ -795,6 +804,12 @@
         "title": "Earthquakes Example",
         "description": "Interactive globe visualization of earthquakes",
         "png": true
+      },
+      {
+        "name": "interactive_geo_facet_species",
+        "title": "Faceted County-Level Species Habitat Maps",
+        "description": "A grid of choropleth maps, each displaying the projected habitat distribution for a different species across US counties. Color intensity within each county represents the percentage of suitable habitat.",
+        "png": true
       }
     ]
   },
@@ -823,7 +838,7 @@
       {
         "name": "interactive_area_brush",
         "title": "Area Chart with Rectangular Brush",
-        "descripton": "In this example, we apply an `interval` selection to select subset of data in an area chart. The selected data is highlighted in gold by the second layer of an area mark that `filter`s its data by the `brush` selection."
+        "description": "In this example, we apply an `interval` selection to select subset of data in an area chart. The selected data is highlighted in gold by the second layer of an area mark that `filter`s its data by the `brush` selection."
       },
       {
         "name": "interactive_paintbrush",
@@ -860,7 +875,7 @@
       },
       {
         "name": "interactive_multi_line_pivot_tooltip",
-        "title": "Multi Series Line Chart with Tooltip",
+        "title": "Multi Series Line Chart with Tooltip via Pivot",
         "description": "The plot displays labels for all stock prices of the hovered time. This example uses a pivot transform to compute the data for the tooltip.",
         "png": true
       },

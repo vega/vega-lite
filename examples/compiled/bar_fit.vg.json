@@ -1,11 +1,11 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A simple bar chart with embedded data that fits exactly into 300px width.",
   "autosize": {"type": "fit", "contains": "padding"},
   "background": "white",
   "padding": 5,
   "width": 300,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -52,7 +52,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], ' ') : datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

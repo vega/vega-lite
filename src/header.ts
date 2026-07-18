@@ -1,8 +1,18 @@
-import {Align, Color, FontStyle, FontWeight, Orient, SignalRef, TextBaseline, TitleAnchor, TitleConfig} from 'vega';
-import {FormatMixins} from './channeldef';
-import {ExprRef} from './expr';
-import {Guide, VlOnlyGuideConfig} from './guide';
-import {Flag, keys} from './util';
+import type {
+  Align,
+  Color,
+  FontStyle,
+  FontWeight,
+  Orient,
+  SignalRef,
+  TextBaseline,
+  TitleAnchor,
+  TitleConfig,
+} from 'vega';
+import {FormatMixins} from './channeldef.js';
+import {ExprRef} from './expr.js';
+import {Guide, VlOnlyGuideConfig} from './guide.js';
+import {Flag, keys} from './util.js';
 
 export const HEADER_TITLE_PROPERTIES_MAP: Partial<Record<keyof CoreHeader<any>, keyof TitleConfig>> = {
   titleAlign: 'align',
@@ -17,7 +27,7 @@ export const HEADER_TITLE_PROPERTIES_MAP: Partial<Record<keyof CoreHeader<any>, 
   titleLimit: 'limit',
   titleLineHeight: 'lineHeight',
   titleOrient: 'orient',
-  titlePadding: 'offset'
+  titlePadding: 'offset',
 };
 
 export const HEADER_LABEL_PROPERTIES_MAP: Partial<Record<keyof CoreHeader<any>, keyof TitleConfig>> = {
@@ -33,7 +43,7 @@ export const HEADER_LABEL_PROPERTIES_MAP: Partial<Record<keyof CoreHeader<any>, 
   labelLimit: 'limit',
   labelLineHeight: 'lineHeight',
   labelOrient: 'orient',
-  labelPadding: 'offset'
+  labelPadding: 'offset',
 };
 
 export const HEADER_TITLE_PROPERTIES = keys(HEADER_TITLE_PROPERTIES_MAP);
@@ -263,7 +273,7 @@ const HEADER_CONFIGS_INDEX: Flag<keyof HeaderConfigMixins<any>> = {
   header: 1,
   headerRow: 1,
   headerColumn: 1,
-  headerFacet: 1
+  headerFacet: 1,
 };
 
 export const HEADER_CONFIGS = keys(HEADER_CONFIGS_INDEX);

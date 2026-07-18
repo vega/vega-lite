@@ -1,24 +1,24 @@
 import {parseSelector} from 'vega-event-selector';
-import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import translate from '../../../src/compile/selection/translate';
-import {Scale} from '../../../src/scale';
-import {Sort} from '../../../src/sort';
-import {parseUnitModel} from '../../util';
+import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble.js';
+import {parseUnitSelection} from '../../../src/compile/selection/parse.js';
+import translate from '../../../src/compile/selection/translate.js';
+import {Scale} from '../../../src/scale.js';
+import {Sort} from '../../../src/sort.js';
+import {parseUnitModel} from '../../util.js';
 
 function getModel(
   xscale: Scale = {type: 'linear'},
   yscale: Scale = {type: 'linear'},
   xsort?: Sort<string>,
-  ysort?: Sort<string>
+  ysort?: Sort<string>,
 ) {
   const model = parseUnitModel({
     mark: 'circle',
     encoding: {
       x: {field: 'Horsepower', type: 'quantitative', scale: xscale, ...(xsort ? {sort: xsort} : {})},
       y: {field: 'Miles_per_Gallon', type: 'quantitative', scale: yscale, ...(ysort ? {sort: ysort} : {})},
-      color: {field: 'Origin', type: 'nominal'}
-    }
+      color: {field: 'Origin', type: 'nominal'},
+    },
   });
 
   model.parseScale();
@@ -26,43 +26,43 @@ function getModel(
     {
       name: 'one',
       select: {
-        type: 'point'
-      }
+        type: 'point',
+      },
     },
     {
       name: 'three',
       select: {
         type: 'interval',
-        translate: false
-      }
+        translate: false,
+      },
     },
     {
       name: 'four',
       select: {
-        type: 'interval'
-      }
+        type: 'interval',
+      },
     },
     {
       name: 'five',
       select: {
         type: 'interval',
-        translate: '[pointerdown, pointerup] > pointermove, [keydown, keyup] > touchmove'
-      }
+        translate: '[pointerdown, pointerup] > pointermove, [keydown, keyup] > touchmove',
+      },
     },
     {
       name: 'six',
       select: {
-        type: 'interval'
+        type: 'interval',
       },
-      bind: 'scales'
+      bind: 'scales',
     },
     {
       name: 'seven',
       select: {
         type: 'interval',
-        translate: null
-      }
-    }
+        translate: null,
+      },
+    },
   ]);
 
   return {model, selCmpts};
@@ -93,9 +93,9 @@ describe('Translate Selection Transform', () => {
             on: [
               {
                 events: parseSelector('@four_brush:pointerdown', 'scope'),
-                update: '{x: x(unit), y: y(unit), extent_x: slice(four_x), extent_y: slice(four_y)}'
-              }
-            ]
+                update: '{x: x(unit), y: y(unit), extent_x: slice(four_x), extent_y: slice(four_y)}',
+              },
+            ],
           },
           {
             name: 'four_translate_delta',
@@ -103,11 +103,11 @@ describe('Translate Selection Transform', () => {
             on: [
               {
                 events: parseSelector('[@four_brush:pointerdown, window:pointerup] > window:pointermove!', 'scope'),
-                update: '{x: four_translate_anchor.x - x(unit), y: four_translate_anchor.y - y(unit)}'
-              }
-            ]
-          }
-        ])
+                update: '{x: four_translate_anchor.x - x(unit), y: four_translate_anchor.y - y(unit)}',
+              },
+            ],
+          },
+        ]),
       );
     });
 
@@ -122,9 +122,9 @@ describe('Translate Selection Transform', () => {
             on: [
               {
                 events: parseSelector('@five_brush:pointerdown, @five_brush:keydown', 'scope'),
-                update: '{x: x(unit), y: y(unit), extent_x: slice(five_x), extent_y: slice(five_y)}'
-              }
-            ]
+                update: '{x: x(unit), y: y(unit), extent_x: slice(five_x), extent_y: slice(five_y)}',
+              },
+            ],
           },
           {
             name: 'five_translate_delta',
@@ -133,13 +133,13 @@ describe('Translate Selection Transform', () => {
               {
                 events: parseSelector(
                   '[@five_brush:pointerdown, pointerup] > pointermove, [@five_brush:keydown, keyup] > touchmove',
-                  'scope'
+                  'scope',
                 ),
-                update: '{x: five_translate_anchor.x - x(unit), y: five_translate_anchor.y - y(unit)}'
-              }
-            ]
-          }
-        ])
+                update: '{x: five_translate_anchor.x - x(unit), y: five_translate_anchor.y - y(unit)}',
+              },
+            ],
+          },
+        ]),
       );
     });
 
@@ -154,9 +154,9 @@ describe('Translate Selection Transform', () => {
             on: [
               {
                 events: parseSelector('pointerdown', 'scope'),
-                update: '{x: x(unit), y: y(unit), extent_x: domain("x"), extent_y: domain("y")}'
-              }
-            ]
+                update: '{x: x(unit), y: y(unit), extent_x: domain("x"), extent_y: domain("y")}',
+              },
+            ],
           },
           {
             name: 'six_translate_delta',
@@ -164,11 +164,11 @@ describe('Translate Selection Transform', () => {
             on: [
               {
                 events: parseSelector('[pointerdown, window:pointerup] > window:pointermove!', 'scope'),
-                update: '{x: six_translate_anchor.x - x(unit), y: six_translate_anchor.y - y(unit)}'
-              }
-            ]
-          }
-        ])
+                update: '{x: six_translate_anchor.x - x(unit), y: six_translate_anchor.y - y(unit)}',
+              },
+            ],
+          },
+        ]),
       );
     });
   });
@@ -178,31 +178,31 @@ describe('Translate Selection Transform', () => {
       const {model, selCmpts} = getModel();
       model.component.selection = {four: selCmpts['four']};
       let signals = assembleUnitSelectionSignals(model, []);
-      expect(signals.filter(s => s.name === 'four_x')[0].on).toContainEqual({
+      expect(signals.filter((s) => s.name === 'four_x')[0].on).toContainEqual({
         events: {signal: 'four_translate_delta'},
         update:
-          'clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)'
+          'clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)',
       });
 
-      expect(signals.filter(s => s.name === 'four_y')[0].on).toContainEqual({
+      expect(signals.filter((s) => s.name === 'four_y')[0].on).toContainEqual({
         events: {signal: 'four_translate_delta'},
         update:
-          'clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)'
+          'clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)',
       });
 
       const model2 = getModel({type: 'log'}, {type: 'pow'}).model;
       model2.component.selection = {four: selCmpts['four']};
       signals = assembleUnitSelectionSignals(model2, []);
-      expect(signals.filter(s => s.name === 'four_x')[0].on).toContainEqual({
+      expect(signals.filter((s) => s.name === 'four_x')[0].on).toContainEqual({
         events: {signal: 'four_translate_delta'},
         update:
-          'clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)'
+          'clampRange(panLinear(four_translate_anchor.extent_x, four_translate_delta.x / span(four_translate_anchor.extent_x)), 0, width)',
       });
 
-      expect(signals.filter(s => s.name === 'four_y')[0].on).toContainEqual({
+      expect(signals.filter((s) => s.name === 'four_y')[0].on).toContainEqual({
         events: {signal: 'four_translate_delta'},
         update:
-          'clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)'
+          'clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)',
       });
     });
 
@@ -212,14 +212,14 @@ describe('Translate Selection Transform', () => {
         model.component.selection = {six: selCmpts['six']};
         const signals = assembleUnitSelectionSignals(model, []);
 
-        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Horsepower')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panLinear(six_translate_anchor.extent_x, -six_translate_delta.x / width)'
+          update: 'panLinear(six_translate_anchor.extent_x, -six_translate_delta.x / width)',
         });
 
-        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panLinear(six_translate_anchor.extent_y, six_translate_delta.y / height)'
+          update: 'panLinear(six_translate_anchor.extent_y, six_translate_delta.y / height)',
         });
       });
 
@@ -228,9 +228,9 @@ describe('Translate Selection Transform', () => {
         model.component.selection = {six: selCmpts['six']};
         const signals = assembleUnitSelectionSignals(model, []);
 
-        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Horsepower')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panLog(six_translate_anchor.extent_x, -six_translate_delta.x / width)'
+          update: 'panLog(six_translate_anchor.extent_x, -six_translate_delta.x / width)',
         });
       });
 
@@ -239,14 +239,14 @@ describe('Translate Selection Transform', () => {
         model.component.selection = {six: selCmpts['six']};
         const signals = assembleUnitSelectionSignals(model, []);
 
-        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Horsepower')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panSymlog(six_translate_anchor.extent_x, -six_translate_delta.x / width, 1)'
+          update: 'panSymlog(six_translate_anchor.extent_x, -six_translate_delta.x / width, 1)',
         });
 
-        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panSymlog(six_translate_anchor.extent_y, six_translate_delta.y / height, 0.5)'
+          update: 'panSymlog(six_translate_anchor.extent_y, six_translate_delta.y / height, 0.5)',
         });
       });
 
@@ -255,14 +255,14 @@ describe('Translate Selection Transform', () => {
         model.component.selection = {six: selCmpts['six']};
         const signals = assembleUnitSelectionSignals(model, []);
 
-        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Horsepower')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panPow(six_translate_anchor.extent_x, -six_translate_delta.x / width, 1)'
+          update: 'panPow(six_translate_anchor.extent_x, -six_translate_delta.x / width, 1)',
         });
 
-        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panPow(six_translate_anchor.extent_y, six_translate_delta.y / height, 2)'
+          update: 'panPow(six_translate_anchor.extent_y, six_translate_delta.y / height, 2)',
         });
       });
 
@@ -271,28 +271,28 @@ describe('Translate Selection Transform', () => {
         model.component.selection = {six: selCmpts['six']};
         let signals = assembleUnitSelectionSignals(model, []);
 
-        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Horsepower')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panLinear(six_translate_anchor.extent_x, six_translate_delta.x / width)'
+          update: 'panLinear(six_translate_anchor.extent_x, six_translate_delta.x / width)',
         });
 
-        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panLinear(six_translate_anchor.extent_y, -six_translate_delta.y / height)'
+          update: 'panLinear(six_translate_anchor.extent_y, -six_translate_delta.y / height)',
         });
 
         ({model, selCmpts} = getModel({type: 'linear'}, {type: 'linear'}, 'descending', 'descending'));
         model.component.selection = {six: selCmpts['six']};
         signals = assembleUnitSelectionSignals(model, []);
 
-        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Horsepower')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panLinear(six_translate_anchor.extent_x, six_translate_delta.x / width)'
+          update: 'panLinear(six_translate_anchor.extent_x, six_translate_delta.x / width)',
         });
 
-        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+        expect(signals.filter((s) => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
           events: {signal: 'six_translate_delta'},
-          update: 'panLinear(six_translate_anchor.extent_y, -six_translate_delta.y / height)'
+          update: 'panLinear(six_translate_anchor.extent_y, -six_translate_delta.y / height)',
         });
       });
     });

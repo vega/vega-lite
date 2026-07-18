@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Google's stock price first half of 2006.",
   "background": "white",
   "padding": 5,
   "width": 500,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -52,14 +52,14 @@
       "name": "layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"yearmonth_date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "stroke": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Average of price\": format(datum[\"average_price\"], \"\")}"
           },
-          "stroke": {"value": "#4c78a8"},
           "description": {
             "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (format(datum[\"average_price\"], \"\"))"
           },
@@ -79,10 +79,10 @@
       "encode": {
         "update": {
           "opacity": {"value": 1},
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"date (year-month)\": timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"Average of price\": format(datum[\"average_price\"], \"\")}"
           },
-          "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"date (year-month): \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Average of price: \" + (format(datum[\"average_price\"], \"\"))"

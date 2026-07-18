@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "title": {"text": "World Cup 2018: Group F Rankings", "frame": "bounds"},
@@ -75,13 +75,13 @@
           "name": "marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"matchday\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "team"},
               "description": {
-                "signal": "\"matchday: \" + (isValid(datum[\"matchday\"]) ? datum[\"matchday\"] : \"\"+datum[\"matchday\"]) + \"; rank: \" + (isValid(datum[\"rank\"]) ? datum[\"rank\"] : \"\"+datum[\"rank\"]) + \"; team: \" + (isValid(datum[\"team\"]) ? datum[\"team\"] : \"\"+datum[\"team\"])"
+                "signal": "\"matchday: \" + (isValid(datum[\"matchday\"]) ? isArray(datum[\"matchday\"]) ? join(datum[\"matchday\"], ' ') : datum[\"matchday\"] : \"\"+datum[\"matchday\"]) + \"; rank: \" + (isValid(datum[\"rank\"]) ? isArray(datum[\"rank\"]) ? join(datum[\"rank\"], ' ') : datum[\"rank\"] : \"\"+datum[\"rank\"]) + \"; team: \" + (isValid(datum[\"team\"]) ? isArray(datum[\"team\"]) ? join(datum[\"team\"], ' ') : datum[\"team\"] : \"\"+datum[\"team\"])"
               },
               "x": {"scale": "x", "field": "matchday"},
               "y": {"scale": "y", "field": "rank"}

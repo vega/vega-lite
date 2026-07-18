@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "title": {"text": "Distribution of Body Mass of Penguins", "anchor": "start"},
@@ -129,7 +129,7 @@
           "name": "child_marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"value\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "facet"},
           "encode": {
             "update": {

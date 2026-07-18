@@ -1,4 +1,4 @@
-import {AncestorParse, DataComponent} from '.';
+import {AncestorParse, DataComponent} from './index.js';
 import {
   Data,
   isGenerator,
@@ -8,9 +8,11 @@ import {
   isSequenceGenerator,
   isUrlData,
   DataSourceType,
-  ParseValue
-} from '../../data';
-import * as log from '../../log';
+  ParseValue,
+} from '../../data.js';
+import {getDataSourcesForHandlingInvalidValues, DataSourcesForHandlingInvalidValues} from '../invalid/datasources.js';
+import * as log from '../../log/index.js';
+import {isPathMark} from '../../mark.js';
 import {
   isAggregate,
   isBin,
@@ -30,47 +32,48 @@ import {
   isSample,
   isStack,
   isTimeUnit,
-  isWindow
-} from '../../transform';
-import {deepEqual, mergeDeep} from '../../util';
-import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
-import {requiresSelectionId} from '../selection';
-import {materializeSelections} from '../selection/parse';
-import {AggregateNode} from './aggregate';
-import {BinNode} from './bin';
-import {CalculateNode} from './calculate';
-import {DataFlowNode, OutputNode} from './dataflow';
-import {DensityTransformNode} from './density';
-import {ExtentTransformNode} from './extent';
-import {FacetNode} from './facet';
-import {FilterNode} from './filter';
-import {FilterInvalidNode} from './filterinvalid';
-import {FlattenTransformNode} from './flatten';
-import {FoldTransformNode} from './fold';
+  isWindow,
+} from '../../transform.js';
+import {deepEqual, mergeDeep} from '../../util.js';
+import {getMarkPropOrConfig} from '../common.js';
+import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model.js';
+import {requiresSelectionId} from '../selection/index.js';
+import {materializeSelections} from '../selection/parse.js';
+import {AggregateNode} from './aggregate.js';
+import {BinNode} from './bin.js';
+import {CalculateNode} from './calculate.js';
+import {DataFlowNode, OutputNode} from './dataflow.js';
+import {DensityTransformNode} from './density.js';
+import {ExtentTransformNode} from './extent.js';
+import {FacetNode} from './facet.js';
+import {FilterNode} from './filter.js';
+import {FilterInvalidNode} from './filterinvalid.js';
+import {FlattenTransformNode} from './flatten.js';
+import {FoldTransformNode} from './fold.js';
 import {
   getImplicitFromEncoding,
   getImplicitFromFilterTransform,
   getImplicitFromSelection,
-  ParseNode
-} from './formatparse';
-import {GeoJSONNode} from './geojson';
-import {GeoPointNode} from './geopoint';
-import {GraticuleNode} from './graticule';
-import {IdentifierNode} from './identifier';
-import {ImputeNode} from './impute';
-import {JoinAggregateTransformNode} from './joinaggregate';
-import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
-import {LoessTransformNode} from './loess';
-import {LookupNode} from './lookup';
-import {PivotTransformNode} from './pivot';
-import {QuantileTransformNode} from './quantile';
-import {RegressionTransformNode} from './regression';
-import {SampleTransformNode} from './sample';
-import {SequenceNode} from './sequence';
-import {SourceNode} from './source';
-import {StackNode} from './stack';
-import {TimeUnitNode} from './timeunit';
-import {WindowTransformNode} from './window';
+  ParseNode,
+} from './formatparse.js';
+import {GeoJSONNode} from './geojson.js';
+import {GeoPointNode} from './geopoint.js';
+import {GraticuleNode} from './graticule.js';
+import {IdentifierNode} from './identifier.js';
+import {ImputeNode} from './impute.js';
+import {JoinAggregateTransformNode} from './joinaggregate.js';
+import {makeJoinAggregateFromFacet} from './joinaggregatefacet.js';
+import {LoessTransformNode} from './loess.js';
+import {LookupNode} from './lookup.js';
+import {PivotTransformNode} from './pivot.js';
+import {QuantileTransformNode} from './quantile.js';
+import {RegressionTransformNode} from './regression.js';
+import {SampleTransformNode} from './sample.js';
+import {SequenceNode} from './sequence.js';
+import {SourceNode} from './source.js';
+import {StackNode} from './stack.js';
+import {TimeUnitNode} from './timeunit.js';
+import {WindowTransformNode} from './window.js';
 
 export function findSource(data: Data, sources: SourceNode[]) {
   for (const other of sources) {
@@ -81,7 +84,7 @@ export function findSource(data: Data, sources: SourceNode[]) {
       continue;
     }
 
-    const formatMesh = data['format']?.mesh;
+    const formatMesh = (data as any).format?.mesh;
     const otherFeature = otherData.format?.feature;
 
     // feature and mesh are mutually exclusive
@@ -90,7 +93,7 @@ export function findSource(data: Data, sources: SourceNode[]) {
     }
 
     // we have to extract the same feature or mesh
-    const formatFeature = data['format']?.feature;
+    const formatFeature = (data as any).format?.feature;
     if ((formatFeature || otherFeature) && formatFeature !== otherFeature) {
       continue;
     }
@@ -285,12 +288,24 @@ Formula From Sort Array
   Stack (in `encoding`)
          |
          v
-  Invalid Filter
++- - - - - - - - - - -+
+|   PreFilterInvalid  | - - - -> scale domains
+|(when scales need it)|
++- - - - - - - - - - -+
+         |
+         v
+  Invalid Filter (if the main data source needs it)
          |
          v
    +----------+
-   |   Main   |
+   |   Main   | - - - -> scale domains
    +----------+
+         |
+         v
++- - - - - - - - - - -+
+|   PostFilterInvalid | - - - -> scale domains
+|(when scales need it)|
++- - - - - - - - - - -+
          |
          v
      +-------+
@@ -369,10 +384,7 @@ export function parseData(model: Model): DataComponent {
   }
 
   // add an output node pre aggregation
-  const rawName = model.getDataName(DataSourceType.Raw);
-  const raw = new OutputNode(head, rawName, DataSourceType.Raw, outputNodeRefCounts);
-  outputNodes[rawName] = raw;
-  head = raw;
+  const raw = (head = makeOutputNode(DataSourceType.Raw, model, head));
 
   if (isUnitModel(model)) {
     const agg = AggregateNode.makeFromEncoding(head, model);
@@ -387,15 +399,40 @@ export function parseData(model: Model): DataComponent {
     head = StackNode.makeFromEncoding(head, model) ?? head;
   }
 
+  let preFilterInvalid: OutputNode | undefined;
+  let dataSourcesForHandlingInvalidValues: DataSourcesForHandlingInvalidValues | undefined;
   if (isUnitModel(model)) {
-    head = FilterInvalidNode.make(head, model) ?? head;
+    const {markDef, mark, config} = model;
+    const invalid = getMarkPropOrConfig('invalid', markDef, config);
+
+    const {marks, scales} = (dataSourcesForHandlingInvalidValues = getDataSourcesForHandlingInvalidValues({
+      invalid,
+      isPath: isPathMark(mark),
+    }));
+
+    if (marks !== scales && scales === 'include-invalid-values') {
+      // Create a seperate preFilterInvalid dataSource if scales need pre-filter data but marks needs post-filter.
+      preFilterInvalid = head = makeOutputNode(DataSourceType.PreFilterInvalid, model, head);
+    }
+
+    if (marks === 'exclude-invalid-values') {
+      head = FilterInvalidNode.make(head, model, dataSourcesForHandlingInvalidValues) ?? head;
+    }
   }
 
-  // output node for marks
-  const mainName = model.getDataName(DataSourceType.Main);
-  const main = new OutputNode(head, mainName, DataSourceType.Main, outputNodeRefCounts);
-  outputNodes[mainName] = main;
-  head = main;
+  // output "main" node for marks
+  const main = (head = makeOutputNode(DataSourceType.Main, model, head));
+
+  let postFilterInvalid: OutputNode | undefined;
+  if (isUnitModel(model) && dataSourcesForHandlingInvalidValues) {
+    const {marks, scales} = dataSourcesForHandlingInvalidValues;
+    if (marks === 'include-invalid-values' && scales === 'exclude-invalid-values') {
+      // Create a seperate postFilterInvalid dataSource if scales need post-filter data but marks needs pre-filter.
+      head = FilterInvalidNode.make(head, model, dataSourcesForHandlingInvalidValues) ?? head;
+
+      postFilterInvalid = head = makeOutputNode(DataSourceType.PostFilterInvalid, model, head);
+    }
+  }
 
   if (isUnitModel(model)) {
     materializeSelections(model, main);
@@ -421,6 +458,16 @@ export function parseData(model: Model): DataComponent {
     raw,
     main,
     facetRoot,
-    ancestorParse
+    ancestorParse,
+    preFilterInvalid,
+    postFilterInvalid,
   };
+}
+
+function makeOutputNode(dataSourceType: DataSourceType, model: Model, head: DataFlowNode) {
+  const {outputNodes, outputNodeRefCounts} = model.component.data;
+  const name = model.getDataName(dataSourceType);
+  const node = new OutputNode(head, name, dataSourceType, outputNodeRefCounts);
+  outputNodes[name] = node;
+  return node;
 }

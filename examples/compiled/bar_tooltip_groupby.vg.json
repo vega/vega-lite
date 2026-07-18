@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 20,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {"name": "source_0", "values": [28, 55, 28, 91, 81, 55, 19, 81, 52]},
@@ -35,15 +35,15 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "isValid(datum[\"data\"]) ? datum[\"data\"] : \"\"+datum[\"data\"]"
+            "signal": "isValid(datum[\"data\"]) ? isArray(datum[\"data\"]) ? join(datum[\"data\"], '\\n') : datum[\"data\"] : \"\"+datum[\"data\"]"
           },
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"Mean of data: \" + (format(datum[\"mean_data\"], \"\")) + \"; data: \" + (isValid(datum[\"data\"]) ? datum[\"data\"] : \"\"+datum[\"data\"])"
+            "signal": "\"Mean of data: \" + (format(datum[\"mean_data\"], \"\")) + \"; data: \" + (isValid(datum[\"data\"]) ? isArray(datum[\"data\"]) ? join(datum[\"data\"], ' ') : datum[\"data\"] : \"\"+datum[\"data\"])"
           },
           "xc": {"signal": "width", "mult": 0.5},
+          "width": {"signal": "0.75 * width"},
           "yc": {"scale": "y", "field": "mean_data"},
-          "width": {"value": 15},
           "height": {"value": 1}
         }
       }

@@ -1,4 +1,5 @@
-import {keys} from './util';
+import {hasOwnProperty} from 'vega-util';
+import {keys} from './util.js';
 
 /**
  * Data type based on level of measurement
@@ -8,13 +9,13 @@ export const Type = {
   ordinal: 'ordinal',
   temporal: 'temporal',
   nominal: 'nominal',
-  geojson: 'geojson'
+  geojson: 'geojson',
 } as const;
 
 export type Type = keyof typeof Type;
 
 export function isType(t: any): t is Type {
-  return t in Type;
+  return hasOwnProperty(Type, t);
 }
 
 export function isContinuous(type: Type): type is 'quantitative' | 'temporal' {

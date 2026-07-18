@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A scatterplot showing body mass and flipper lengths of penguins.",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -32,7 +32,7 @@
           "stroke": {"scale": "color", "field": "Species"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+            "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
           },
           "x": {"scale": "x", "field": "Flipper Length (mm)"},
           "y": {"scale": "y", "field": "Body Mass (g)"},

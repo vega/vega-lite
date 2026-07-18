@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A bar graph showing the scores of the top 5 students. This shows an example of the window transform, for how the top K (5) can be filtered, and also how a rank can be computed for each student.",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {
@@ -85,7 +85,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"score: \" + (format(datum[\"score\"], \"\")) + \"; student: \" + (isValid(datum[\"student\"]) ? datum[\"student\"] : \"\"+datum[\"student\"])"
+            "signal": "\"score: \" + (format(datum[\"score\"], \"\")) + \"; student: \" + (isValid(datum[\"student\"]) ? isArray(datum[\"student\"]) ? join(datum[\"student\"], ' ') : datum[\"student\"] : \"\"+datum[\"student\"])"
           },
           "x": {"scale": "x", "field": "score_end"},
           "x2": {"scale": "x", "field": "score_start"},

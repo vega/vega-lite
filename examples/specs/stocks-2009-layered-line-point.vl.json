@@ -1,0 +1,62 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "data": {
+    "url": "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/stocks.csv"
+  },
+  "transform": [
+    {
+      "filter": "year(datum.date) == 2009"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "line"
+      },
+      "encoding": {
+        "x": {
+          "field": "date",
+          "type": "temporal"
+        },
+        "y": {
+          "field": "price",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "symbol",
+          "type": "nominal"
+        },
+        "strokeDash": {
+          "field": "symbol",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 60,
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "date",
+          "type": "temporal"
+        },
+        "y": {
+          "field": "price",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "symbol",
+          "type": "nominal"
+        },
+        "shape": {
+          "field": "symbol",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A bar chart showing the US population distribution of age groups in 2000.",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {
@@ -66,7 +66,7 @@
         "update": {
           "stroke": {"value": "black"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"min_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; Max of people: \" + (format(datum[\"max_people\"], \"\"))"
+            "signal": "\"population: \" + (format(datum[\"min_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"]) + \"; Max of people: \" + (format(datum[\"max_people\"], \"\"))"
           },
           "x": {"scale": "x", "field": "min_people"},
           "x2": {"scale": "x", "field": "max_people"},
@@ -84,11 +84,11 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"min_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
+            "signal": "\"population: \" + (format(datum[\"min_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"])"
           },
-          "xc": {"scale": "x", "field": "min_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
           "height": {"value": 5},
+          "xc": {"scale": "x", "field": "min_people"},
           "width": {"value": 1}
         }
       }
@@ -103,11 +103,11 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"max_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
+            "signal": "\"population: \" + (format(datum[\"max_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"])"
           },
-          "xc": {"scale": "x", "field": "max_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
           "height": {"value": 5},
+          "xc": {"scale": "x", "field": "max_people"},
           "width": {"value": 1}
         }
       }
@@ -123,7 +123,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"population: \" + (format(datum[\"mean_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
+            "signal": "\"population: \" + (format(datum[\"mean_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? isArray(datum[\"age\"]) ? join(datum[\"age\"], ' ') : datum[\"age\"] : \"\"+datum[\"age\"])"
           },
           "x": {"scale": "x", "field": "mean_people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},

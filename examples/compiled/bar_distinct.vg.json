@@ -1,8 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -16,10 +16,6 @@
           "ops": ["distinct"],
           "fields": ["Name"],
           "as": ["distinct_Name"]
-        },
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"distinct_Name\"]) && isFinite(+datum[\"distinct_Name\"])"
         }
       ]
     }
@@ -42,7 +38,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Distinct of Name: \" + (format(datum[\"distinct_Name\"], \"\"))"
+            "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Distinct of Name: \" + (format(datum[\"distinct_Name\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Origin"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

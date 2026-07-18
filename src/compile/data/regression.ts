@@ -1,7 +1,7 @@
 import {RegressionTransform as VgRegressionTransform} from 'vega';
-import {RegressionTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {RegressionTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for regression transform nodes
@@ -13,7 +13,7 @@ export class RegressionTransformNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private transform: RegressionTransform
+    private transform: RegressionTransform,
   ) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
@@ -39,7 +39,7 @@ export class RegressionTransformNode extends DataFlowNode {
       type: 'regression',
       x: on,
       y: regression,
-      ...rest
+      ...rest,
     };
     return result;
   }

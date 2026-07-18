@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "A horizontal box plot showing median and lower and upper quartiles of the distribution of body mass of penguins.",
   "data": {"url": "data/penguins.json"},
   "mark": "boxplot",

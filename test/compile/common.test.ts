@@ -1,4 +1,4 @@
-import {mergeTitle} from '../../src/compile/common';
+import {mergeTitle} from '../../src/compile/common.js';
 
 describe('Common', () => {
   describe('mergeTitle()', () => {

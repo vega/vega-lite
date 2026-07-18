@@ -1,7 +1,7 @@
-import {NONPOSITION_SCALE_CHANNELS, OFFSET_SCALE_CHANNELS} from '../../../src/channel';
-import * as rules from '../../../src/compile/scale/properties';
-import {AREA, BAR, LINE} from '../../../src/mark';
-import {ScaleType} from '../../../src/scale';
+import {NONPOSITION_SCALE_CHANNELS, OFFSET_SCALE_CHANNELS} from '../../../src/channel.js';
+import * as rules from '../../../src/compile/scale/properties.js';
+import {AREA, BAR, LINE} from '../../../src/mark.js';
+import {ScaleType} from '../../../src/scale.js';
 
 describe('compile/scale', () => {
   describe('nice', () => {
@@ -14,7 +14,7 @@ describe('compile/scale', () => {
     it('should not return nice for binned x and y', () => {
       for (const c of ['x', 'y'] as const) {
         expect(
-          rules.nice('linear', c, undefined, undefined, undefined, {type: 'quantitative', field: 'a', bin: true})
+          rules.nice('linear', c, undefined, undefined, undefined, {type: 'quantitative', field: 'a', bin: true}),
         ).toBeUndefined();
       }
     });
@@ -59,8 +59,8 @@ describe('compile/scale', () => {
           {},
           {field: 'date', type: 'temporal'},
           {type: 'bar', orient: 'vertical'},
-          {continuousBandSize: 13}
-        )
+          {continuousBandSize: 13},
+        ),
       ).toBe(13);
     });
 
@@ -72,8 +72,8 @@ describe('compile/scale', () => {
           {},
           {bin: true, field: 'date', type: 'temporal'},
           {type: 'bar', orient: 'vertical'},
-          {continuousBandSize: 13}
-        )
+          {continuousBandSize: 13},
+        ),
       ).toBeUndefined();
     });
 
@@ -85,8 +85,8 @@ describe('compile/scale', () => {
           {},
           {field: 'date', type: 'temporal'},
           {type: 'bar', orient: 'horizontal'},
-          {continuousBandSize: 13}
-        )
+          {continuousBandSize: 13},
+        ),
       ).toBe(13);
     });
   });
@@ -201,19 +201,27 @@ describe('compile/scale', () => {
   describe('zero', () => {
     it('should return default (undefined) when mapping a quantitative field to x with scale.domain = "unaggregated"', () => {
       expect(
-        rules.zero('x', {field: 'a', type: 'quantitative'}, 'unaggregated', {type: 'point'}, 'linear', undefined, false)
+        rules.zero(
+          'x',
+          {field: 'a', type: 'quantitative'},
+          'unaggregated',
+          {type: 'point'},
+          'linear',
+          undefined,
+          false,
+        ),
       ).toBeUndefined();
     });
 
     it('should return true when mapping a quantitative field to size', () => {
       expect(
-        rules.zero('size', {field: 'a', type: 'quantitative'}, undefined, {type: 'point'}, 'linear', undefined, false)
+        rules.zero('size', {field: 'a', type: 'quantitative'}, undefined, {type: 'point'}, 'linear', undefined, false),
       ).toBeTruthy();
     });
 
     it('should return false when mapping a ordinal field to size', () => {
       expect(
-        !rules.zero('size', {field: 'a', type: 'ordinal'}, undefined, {type: 'point'}, 'linear', undefined, false)
+        !rules.zero('size', {field: 'a', type: 'ordinal'}, undefined, {type: 'point'}, 'linear', undefined, false),
       ).toBeTruthy();
     });
 
@@ -227,8 +235,8 @@ describe('compile/scale', () => {
             {type: 'point'},
             'linear',
             undefined,
-            false
-          )
+            false,
+          ),
         ).toBeUndefined();
       }
     });
@@ -243,8 +251,8 @@ describe('compile/scale', () => {
             {type: mark, orient: 'vertical'},
             'linear',
             undefined,
-            false
-          )
+            false,
+          ),
         ).toBe(false);
         expect(
           rules.zero(
@@ -254,8 +262,8 @@ describe('compile/scale', () => {
             {type: mark, orient: 'horizontal'},
             'linear',
             undefined,
-            false
-          )
+            false,
+          ),
         ).toBe(false);
       }
     });
@@ -270,8 +278,8 @@ describe('compile/scale', () => {
             {type: 'point'},
             'linear',
             undefined,
-            false
-          )
+            false,
+          ),
         ).toBeTruthy();
       }
     });
@@ -284,14 +292,14 @@ describe('compile/scale', () => {
             {
               bin: true,
               field: 'a',
-              type: 'quantitative'
+              type: 'quantitative',
             },
             [3, 5],
             {type: 'point'},
             'linear',
             undefined,
-            false
-          )
+            false,
+          ),
         ).toBeTruthy();
       }
     });
@@ -307,8 +315,8 @@ describe('compile/scale', () => {
             {type: 'point'},
             'linear',
             {zero: configZero},
-            false
-          )
+            false,
+          ),
         ).toBe(configZero);
       }
 
@@ -320,13 +328,13 @@ describe('compile/scale', () => {
           {type: 'point'},
           'linear',
           {zero: configZero},
-          false
-        )
+          false,
+        ),
       ).toBe(configZero);
 
       // ranged bar/area should take default configZero
       expect(
-        rules.zero('x', {field: 'a', type: 'quantitative'}, undefined, {type: BAR}, 'linear', {zero: configZero}, true)
+        rules.zero('x', {field: 'a', type: 'quantitative'}, undefined, {type: BAR}, 'linear', {zero: configZero}, true),
       ).toBe(configZero);
     });
 
@@ -341,8 +349,8 @@ describe('compile/scale', () => {
               {type: mark},
               'linear',
               {zero: false},
-              false
-            )
+              false,
+            ),
           ).toBe(true);
         }
       }
@@ -357,8 +365,8 @@ describe('compile/scale', () => {
           {type: 'point'},
           'linear',
           {zero: false},
-          false
-        )
+          false,
+        ),
       ).toBe(true);
     });
   });

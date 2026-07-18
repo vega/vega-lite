@@ -8,7 +8,7 @@
     "release": true
   },
   "hooks": {
-    "after:bump": "yarn build"
+    "after:bump": "npm run build"
   },
   "plugins": {
     "@release-it/conventional-changelog": {

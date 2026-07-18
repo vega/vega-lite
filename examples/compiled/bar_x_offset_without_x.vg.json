@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "xOffset without x",
   "background": "white",
   "padding": 5,
   "width": 20,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -51,7 +51,7 @@
           "fill": {"scale": "color", "field": "group"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
+            "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? isArray(datum[\"group\"]) ? join(datum[\"group\"], ' ') : datum[\"group\"] : \"\"+datum[\"group\"])"
           },
           "x": {
             "signal": "width",

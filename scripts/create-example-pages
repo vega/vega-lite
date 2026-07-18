@@ -1,12 +1,11 @@
 #!/usr/bin/env node
-'use strict';
 
 /**
  * This script creates pages for all examples for the website.
  */
 
-const fs = require('fs');
-const examples = require('../site/_data/examples.json');
+import fs from 'fs';
+import examples from '../site/_data/examples.json' with {type: 'json'};
 
 function createPage(example) {
   return `---

@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -65,7 +65,7 @@
           "name": "marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"year_Year\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {
@@ -73,7 +73,7 @@
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "Cylinders"},
               "description": {
-                "signal": "\"Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of Weight_in_lbs: \" + (format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
+                "signal": "\"Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of Weight_in_lbs: \" + (format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
               },
               "x": {"scale": "x", "field": "year_Year"},
               "y": {"scale": "y", "field": "sum_Weight_in_lbs_end"},

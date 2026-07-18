@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Horizontally concatenated charts that show different types of discretizing scales.",
   "background": "white",
   "padding": 5,
@@ -92,7 +92,7 @@
               "fill": {"scale": "concat_0_color", "field": "b"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
+                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? isArray(datum[\"b\"]) ? join(datum[\"b\"], ' ') : datum[\"b\"] : \"\"+datum[\"b\"])"
               },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_0_y", "field": "b"},
@@ -145,7 +145,7 @@
               "fill": {"scale": "concat_1_color", "field": "b"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
+                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? isArray(datum[\"b\"]) ? join(datum[\"b\"], ' ') : datum[\"b\"] : \"\"+datum[\"b\"])"
               },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_1_y", "field": "b"},
@@ -200,7 +200,7 @@
               "fill": {"scale": "concat_2_color", "field": "b"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"])"
+                "signal": "\"b: \" + (isValid(datum[\"b\"]) ? isArray(datum[\"b\"]) ? join(datum[\"b\"], ' ') : datum[\"b\"] : \"\"+datum[\"b\"])"
               },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_2_y", "field": "b"},
@@ -253,7 +253,7 @@
       "type": "quantize",
       "domain": {"data": "data_1", "field": "b"},
       "range": {
-        "signal": "sequence(9, 361 + (361 - 9) / (4 - 1), (361 - 9) / (4 - 1))"
+        "signal": "sequence(4, 361 + (361 - 4) / (4 - 1), (361 - 4) / (4 - 1))"
       },
       "zero": false
     },

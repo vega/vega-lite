@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "data": [
@@ -36,7 +36,7 @@
     }
   ],
   "signals": [
-    {"name": "child_width", "value": 200},
+    {"name": "child_width", "value": 300},
     {"name": "y_step", "value": 20},
     {
       "name": "child_height",
@@ -133,7 +133,7 @@
               "fill": {"scale": "color", "field": "site"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; site: \" + (isValid(datum[\"site\"]) ? datum[\"site\"] : \"\"+datum[\"site\"])"
+                "signal": "\"Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? isArray(datum[\"variety\"]) ? join(datum[\"variety\"], ' ') : datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; site: \" + (isValid(datum[\"site\"]) ? isArray(datum[\"site\"]) ? join(datum[\"site\"], ' ') : datum[\"site\"] : \"\"+datum[\"site\"])"
               },
               "x": {"scale": "x", "field": "sum_yield_end"},
               "x2": {"scale": "x", "field": "sum_yield_start"},

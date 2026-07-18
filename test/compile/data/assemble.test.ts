@@ -1,10 +1,10 @@
-import {AggregateNode} from '../../../src/compile/data/aggregate';
-import {assembleRootData} from '../../../src/compile/data/assemble';
-import {OutputNode} from '../../../src/compile/data/dataflow';
-import {SourceNode} from '../../../src/compile/data/source';
-import {WindowTransformNode} from '../../../src/compile/data/window';
-import {Transform} from '../../../src/transform';
-import {DataSourceType} from '../../../src/data';
+import {AggregateNode} from '../../../src/compile/data/aggregate.js';
+import {assembleRootData} from '../../../src/compile/data/assemble.js';
+import {OutputNode} from '../../../src/compile/data/dataflow.js';
+import {SourceNode} from '../../../src/compile/data/source.js';
+import {WindowTransformNode} from '../../../src/compile/data/window.js';
+import {Transform} from '../../../src/transform.js';
+import {DataSourceType} from '../../../src/data.js';
 
 describe('compile/data/assemble', () => {
   describe('assembleData', () => {
@@ -21,9 +21,9 @@ describe('compile/data/assemble', () => {
           sources: [src],
           outputNodes: {out: main},
           outputNodeRefCounts,
-          isFaceted: false
+          isFaceted: false,
         },
-        {}
+        {},
       );
 
       expect(data).toHaveLength(1);
@@ -48,16 +48,16 @@ describe('compile/data/assemble', () => {
           sources: [src],
           outputNodes: {out: main},
           outputNodeRefCounts,
-          isFaceted: false
+          isFaceted: false,
         },
-        {}
+        {},
       );
 
       expect(data).toEqual([
         {
           name: 'source_0',
           url: 'foo.csv',
-          format: {type: 'csv'}
+          format: {type: 'csv'},
         },
         {
           name: 'data_0',
@@ -68,10 +68,10 @@ describe('compile/data/assemble', () => {
               groupby: ['a'],
               ops: ['count'],
               fields: ['b'],
-              as: ['count_*']
-            }
-          ]
-        }
+              as: ['count_*'],
+            },
+          ],
+        },
       ]);
     });
 
@@ -84,18 +84,18 @@ describe('compile/data/assemble', () => {
         window: [
           {
             op: 'row_number',
-            as: 'ordered_row_number'
-          }
+            as: 'ordered_row_number',
+          },
         ],
         ignorePeers: false,
         sort: [
           {
             field: 'f',
-            order: 'ascending'
-          }
+            order: 'ascending',
+          },
         ],
         groupby: ['f'],
-        frame: [null, 0]
+        frame: [null, 0],
       };
       const agg = new WindowTransformNode(null, transform);
       agg.parent = raw;
@@ -110,16 +110,16 @@ describe('compile/data/assemble', () => {
           sources: [src],
           outputNodes: {out: main},
           outputNodeRefCounts,
-          isFaceted: false
+          isFaceted: false,
         },
-        {}
+        {},
       );
 
       expect(data).toEqual([
         {
           name: 'source_0',
           url: 'foo.csv',
-          format: {type: 'csv'}
+          format: {type: 'csv'},
         },
         {
           name: 'data_0',
@@ -132,15 +132,15 @@ describe('compile/data/assemble', () => {
               params: [null],
               sort: {
                 field: ['f'],
-                order: ['ascending']
+                order: ['ascending'],
               },
               ignorePeers: false,
               as: ['ordered_row_number'],
               frame: [null, 0],
-              groupby: ['f']
-            }
-          ]
-        }
+              groupby: ['f'],
+            },
+          ],
+        },
       ]);
     });
 
@@ -155,18 +155,18 @@ describe('compile/data/assemble', () => {
           sources: [src],
           outputNodes: {out: main},
           outputNodeRefCounts,
-          isFaceted: false
+          isFaceted: false,
         },
         {
-          foo: [1, 2, 3]
-        }
+          foo: [1, 2, 3],
+        },
       );
 
       expect(data).toEqual([
         {
           name: 'foo',
-          values: [1, 2, 3]
-        }
+          values: [1, 2, 3],
+        },
       ]);
     });
   });

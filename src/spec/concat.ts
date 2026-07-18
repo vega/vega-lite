@@ -1,5 +1,6 @@
-import {GenericSpec, NormalizedSpec} from '.';
-import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
+import {GenericSpec, NormalizedSpec} from './index.js';
+import {hasProperty} from '../util.js';
+import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base.js';
 
 /**
  * Base layout mixins for V/HConcatSpec, which should not have RowCol<T> generic fo its property.
@@ -24,9 +25,7 @@ export interface OneDirectionalConcatLayout extends BoundsMixins, ResolveMixins 
  * Base interface for a generalized concatenation specification.
  */
 export interface GenericConcatSpec<S extends GenericSpec<any, any, any, any>>
-  extends BaseSpec,
-    GenericCompositionLayoutWithColumns,
-    ResolveMixins {
+  extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
   /**
    * A list of views to be concatenated.
    */
@@ -37,8 +36,7 @@ export interface GenericConcatSpec<S extends GenericSpec<any, any, any, any>>
  * Base interface for a vertical concatenation specification.
  */
 export interface GenericVConcatSpec<S extends GenericSpec<any, any, any, any>>
-  extends BaseSpec,
-    OneDirectionalConcatLayout {
+  extends BaseSpec, OneDirectionalConcatLayout {
   /**
    * A list of views to be concatenated and put into a column.
    */
@@ -49,8 +47,7 @@ export interface GenericVConcatSpec<S extends GenericSpec<any, any, any, any>>
  * Base interface for a horizontal concatenation specification.
  */
 export interface GenericHConcatSpec<S extends GenericSpec<any, any, any, any>>
-  extends BaseSpec,
-    OneDirectionalConcatLayout {
+  extends BaseSpec, OneDirectionalConcatLayout {
   /**
    * A list of views to be concatenated and put into a row.
    */
@@ -59,22 +56,20 @@ export interface GenericHConcatSpec<S extends GenericSpec<any, any, any, any>>
 
 /** A concat spec without any shortcut/expansion syntax */
 export type NormalizedConcatSpec =
-  | GenericConcatSpec<NormalizedSpec>
-  | GenericVConcatSpec<NormalizedSpec>
-  | GenericHConcatSpec<NormalizedSpec>;
+  GenericConcatSpec<NormalizedSpec> | GenericVConcatSpec<NormalizedSpec> | GenericHConcatSpec<NormalizedSpec>;
 
 export function isAnyConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any> | GenericHConcatSpec<any> {
   return isVConcatSpec(spec) || isHConcatSpec(spec) || isConcatSpec(spec);
 }
 
 export function isConcatSpec(spec: BaseSpec): spec is GenericConcatSpec<any> {
-  return 'concat' in spec;
+  return hasProperty(spec, 'concat');
 }
 
 export function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any> {
-  return 'vconcat' in spec;
+  return hasProperty(spec, 'vconcat');
 }
 
 export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any> {
-  return 'hconcat' in spec;
+  return hasProperty(spec, 'hconcat');
 }

@@ -1,6 +1,6 @@
-import * as log from '../../src/log';
-import {DEFAULT_SPACING} from '../../src/spec/base';
-import {parseConcatModel} from '../util';
+import * as log from '../../src/log/index.js';
+import {DEFAULT_SPACING} from '../../src/spec/base.js';
+import {parseConcatModel} from '../util.js';
 
 describe('ConcatModel', () => {
   describe('concat', () => {
@@ -10,20 +10,20 @@ describe('ConcatModel', () => {
           {
             mark: 'point',
             encoding: {
-              x: {field: 'a', type: 'ordinal'}
-            }
+              x: {field: 'a', type: 'ordinal'},
+            },
           },
           {
             mark: 'bar',
             encoding: {
               x: {field: 'b', type: 'ordinal'},
-              y: {field: 'c', type: 'quantitative'}
-            }
-          }
+              y: {field: 'c', type: 'quantitative'},
+            },
+          },
         ],
         config: {
-          concat: {columns: 1}
-        }
+          concat: {columns: 1},
+        },
       });
 
       expect(model.layout).toMatchObject({columns: 1, spacing: DEFAULT_SPACING});
@@ -37,17 +37,17 @@ describe('ConcatModel', () => {
           {
             mark: 'point',
             encoding: {
-              x: {field: 'a', type: 'ordinal'}
-            }
+              x: {field: 'a', type: 'ordinal'},
+            },
           },
           {
             mark: 'bar',
             encoding: {
               x: {field: 'b', type: 'ordinal'},
-              y: {field: 'c', type: 'quantitative'}
-            }
-          }
-        ]
+              y: {field: 'c', type: 'quantitative'},
+            },
+          },
+        ],
       });
 
       expect(model.children).toHaveLength(2);
@@ -60,17 +60,17 @@ describe('ConcatModel', () => {
           {
             mark: 'point',
             encoding: {
-              x: {field: 'a', type: 'ordinal'}
-            }
+              x: {field: 'a', type: 'ordinal'},
+            },
           },
           {
             mark: 'bar',
             encoding: {
               x: {field: 'b', type: 'ordinal'},
-              y: {field: 'c', type: 'quantitative'}
-            }
-          }
-        ]
+              y: {field: 'c', type: 'quantitative'},
+            },
+          },
+        ],
       });
 
       expect(model.children).toHaveLength(2);
@@ -82,20 +82,20 @@ describe('ConcatModel', () => {
         vconcat: [
           {
             mark: 'point',
-            encoding: {}
+            encoding: {},
           },
           {
             mark: 'bar',
-            encoding: {}
-          }
-        ]
+            encoding: {},
+          },
+        ],
       });
 
       expect(model.assembleLayout()).toEqual({
         padding: DEFAULT_SPACING,
         columns: 1,
         bounds: 'full',
-        align: 'each'
+        align: 'each',
       });
     });
 
@@ -104,13 +104,13 @@ describe('ConcatModel', () => {
         hconcat: [
           {
             mark: 'point',
-            encoding: {}
+            encoding: {},
           },
           {
             mark: 'bar',
-            encoding: {}
-          }
-        ]
+            encoding: {},
+          },
+        ],
       });
 
       expect(model.layout.columns).toBeUndefined();
@@ -118,25 +118,54 @@ describe('ConcatModel', () => {
       expect(model.assembleLayout()).toEqual({
         padding: DEFAULT_SPACING,
         bounds: 'full',
-        align: 'each'
+        align: 'each',
       });
     });
   });
 
   describe('resolve', () => {
+    it('resolves xOffset and yOffset scales independently by default', () => {
+      const model = parseConcatModel({
+        hconcat: [
+          {
+            mark: 'bar',
+            encoding: {
+              x: {field: 'a', type: 'nominal'},
+              xOffset: {field: 'b', type: 'nominal'},
+              y: {field: 'c', type: 'quantitative'},
+            },
+          },
+          {
+            mark: 'bar',
+            encoding: {
+              x: {field: 'a', type: 'nominal'},
+              xOffset: {field: 'b', type: 'nominal'},
+              y: {field: 'c', type: 'quantitative'},
+            },
+          },
+        ],
+      });
+      model.parseScale();
+
+      expect(model.component.resolve.scale.xOffset).toBe('independent');
+      expect(model.component.scales.xOffset).toBeUndefined();
+      expect(model.children[0].getScaleComponent('xOffset').get('name')).toBe('concat_0_xOffset');
+      expect(model.children[1].getScaleComponent('xOffset').get('name')).toBe('concat_1_xOffset');
+    });
+
     it(
       'cannot share axes',
-      log.wrap(localLogger => {
+      log.wrap((localLogger) => {
         parseConcatModel({
           hconcat: [],
           resolve: {
             axis: {
-              x: 'shared'
-            }
-          }
+              x: 'shared',
+            },
+          },
         });
         expect(localLogger.warns[0]).toEqual(log.message.CONCAT_CANNOT_SHARE_AXIS);
-      })
+      }),
     );
   });
 });

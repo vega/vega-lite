@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 800,
@@ -69,16 +69,6 @@
           "type": "formula",
           "expr": "(datum.sum + datum.previous_sum) / 2",
           "as": "center"
-        },
-        {
-          "type": "formula",
-          "expr": "datum.sum < datum.previous_sum ? datum.sum : ''",
-          "as": "sum_dec"
-        },
-        {
-          "type": "formula",
-          "expr": "datum.sum > datum.previous_sum ? datum.sum : ''",
-          "as": "sum_inc"
         }
       ]
     },
@@ -108,26 +98,6 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"sum_inc\"]) && isFinite(+datum[\"sum_inc\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_4",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"sum_dec\"]) && isFinite(+datum[\"sum_dec\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_5",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
           "expr": "isValid(datum[\"center\"]) && isFinite(+datum[\"center\"])"
         }
       ]
@@ -151,7 +121,7 @@
           ],
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; Amount: \" + (format(datum[\"previous_sum\"], \"\")) + \"; sum: \" + (format(datum[\"sum\"], \"\"))"
+            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? isArray(datum[\"label\"]) ? join(datum[\"label\"], ' ') : datum[\"label\"] : \"\"+datum[\"label\"]) + \"; Amount: \" + (format(datum[\"previous_sum\"], \"\")) + \"; sum: \" + (format(datum[\"sum\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "label", "band": 0.5},
           "width": {"value": 45},
@@ -171,7 +141,7 @@
           "strokeWidth": {"value": 2},
           "stroke": {"value": "#404040"},
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\")) + \"; lead: \" + (isValid(datum[\"lead\"]) ? datum[\"lead\"] : \"\"+datum[\"lead\"])"
+            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? isArray(datum[\"label\"]) ? join(datum[\"label\"], ' ') : datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\")) + \"; lead: \" + (isValid(datum[\"lead\"]) ? isArray(datum[\"lead\"]) ? join(datum[\"lead\"], ' ') : datum[\"lead\"] : \"\"+datum[\"lead\"])"
           },
           "x": {"scale": "x", "field": "label", "offset": -22.5, "band": 0.5},
           "x2": {"scale": "x", "field": "lead", "offset": 22.5, "band": 0.5},
@@ -183,19 +153,19 @@
       "name": "layer_2_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
-          "baseline": {"value": "bottom"},
-          "dy": {"value": -4},
+          "baseline": {"signal": "datum.amount >= 0 ? 'bottom' : 'top'"},
+          "dy": {"signal": "datum.amount >= 0 ? -4 : 4"},
           "fill": {"value": "#404040"},
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum_inc: \" + (format(datum[\"sum_inc\"], \"\"))"
+            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? isArray(datum[\"label\"]) ? join(datum[\"label\"], ' ') : datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\"))"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5},
-          "y": {"scale": "y", "field": "sum_inc"},
+          "y": {"scale": "y", "field": "sum"},
           "text": {
-            "signal": "isValid(datum[\"sum_inc\"]) ? datum[\"sum_inc\"] : \"\"+datum[\"sum_inc\"]"
+            "signal": "isValid(datum[\"sum\"]) ? datum[\"sum\"] : \"\"+datum[\"sum\"]"
           },
           "align": {"value": "center"}
         }
@@ -205,29 +175,7 @@
       "name": "layer_3_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_4"},
-      "encode": {
-        "update": {
-          "baseline": {"value": "top"},
-          "dy": {"value": 4},
-          "fill": {"value": "#404040"},
-          "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum_dec: \" + (format(datum[\"sum_dec\"], \"\"))"
-          },
-          "x": {"scale": "x", "field": "label", "band": 0.5},
-          "y": {"scale": "y", "field": "sum_dec"},
-          "text": {
-            "signal": "isValid(datum[\"sum_dec\"]) ? datum[\"sum_dec\"] : \"\"+datum[\"sum_dec\"]"
-          },
-          "align": {"value": "center"}
-        }
-      }
-    },
-    {
-      "name": "layer_4_marks",
-      "type": "text",
-      "style": ["text"],
-      "from": {"data": "data_5"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "baseline": {"value": "middle"},
@@ -240,7 +188,7 @@
             {"value": "white"}
           ],
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; center: \" + (format(datum[\"center\"], \"\")) + \"; text_amount: \" + (isValid(datum[\"text_amount\"]) ? datum[\"text_amount\"] : \"\"+datum[\"text_amount\"])"
+            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? isArray(datum[\"label\"]) ? join(datum[\"label\"], ' ') : datum[\"label\"] : \"\"+datum[\"label\"]) + \"; center: \" + (format(datum[\"center\"], \"\")) + \"; text_amount: \" + (isValid(datum[\"text_amount\"]) ? isArray(datum[\"text_amount\"]) ? join(datum[\"text_amount\"], ' ') : datum[\"text_amount\"] : \"\"+datum[\"text_amount\"])"
           },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "center"},
@@ -261,9 +209,7 @@
           {"data": "data_1", "field": "label"},
           {"data": "data_2", "field": "label"},
           {"data": "data_2", "field": "lead"},
-          {"data": "data_3", "field": "label"},
-          {"data": "data_4", "field": "label"},
-          {"data": "data_5", "field": "label"}
+          {"data": "data_3", "field": "label"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -278,9 +224,7 @@
           {"data": "data_1", "field": "previous_sum"},
           {"data": "data_1", "field": "sum"},
           {"data": "data_2", "field": "sum"},
-          {"data": "data_3", "field": "sum_inc"},
-          {"data": "data_4", "field": "sum_dec"},
-          {"data": "data_5", "field": "center"}
+          {"data": "data_3", "field": "center"}
         ]
       },
       "range": [{"signal": "height"}, 0],

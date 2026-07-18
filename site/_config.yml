@@ -6,8 +6,6 @@ description:
 
 baseurl: '/vega-lite' # the subpath of your site, e.g. /blog/
 url: 'https://vega.github.io' # the base hostname & protocol for your site
-twitter:
-  username: vega_vis
 exclude:
   - Gemfile
   - Gemfile.lock

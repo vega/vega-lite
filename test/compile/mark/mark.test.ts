@@ -1,14 +1,14 @@
-import {getSort, parseMarkGroups} from '../../../src/compile/mark/mark';
-import {UnitModel} from '../../../src/compile/unit';
-import {GEOSHAPE} from '../../../src/mark';
+import {getSort, parseMarkGroups} from '../../../src/compile/mark/mark.js';
+import {UnitModel} from '../../../src/compile/unit.js';
+import {GEOSHAPE} from '../../../src/mark.js';
 import {
   parseFacetModel,
   parseUnitModel,
   parseUnitModelWithScale,
   parseUnitModelWithScaleAndLayoutSize,
   parseConcatModel,
-  parseUnitModelWithScaleAndSelection
-} from '../../util';
+  parseUnitModelWithScaleAndSelection,
+} from '../../util.js';
 
 describe('Mark', () => {
   describe('parseMarkGroup', () => {
@@ -19,8 +19,8 @@ describe('Mark', () => {
         encoding: {
           x: {field: 'date', type: 'temporal', axis: {format: '%Y'}},
           y: {field: 'price', type: 'quantitative'},
-          color: {field: 'symbol', type: 'nominal'}
-        }
+          color: {field: 'symbol', type: 'nominal'},
+        },
       });
       it('should have a facet directive and a nested mark group that uses the faceted data.', () => {
         const markGroup = parseMarkGroups(model)[0];
@@ -29,8 +29,8 @@ describe('Mark', () => {
           facet: {
             name: 'faceted_path_main',
             data: 'main',
-            groupby: ['symbol']
-          }
+            groupby: ['symbol'],
+          },
         });
         const submarkGroup = markGroup.marks[0];
         expect(submarkGroup.name).toBe('marks');
@@ -46,8 +46,8 @@ describe('Mark', () => {
           facet: {
             name: 'faceted_path_main',
             data: 'main',
-            groupby: ['symbol']
-          }
+            groupby: ['symbol'],
+          },
         });
         const submarkGroup = markGroup.marks[0];
         expect(submarkGroup.transform).toBeUndefined();
@@ -59,8 +59,8 @@ describe('Mark', () => {
         mark: 'line',
         encoding: {
           x: {field: 'date', type: 'temporal', axis: {format: '%Y'}},
-          y: {field: 'price', type: 'quantitative'}
-        }
+          y: {field: 'price', type: 'quantitative'},
+        },
       });
       it('should have mark group with proper data and key', () => {
         const markGroup = parseMarkGroups(model)[0];
@@ -82,8 +82,8 @@ describe('Mark', () => {
         encoding: {
           x: {field: 'date', type: 'temporal', axis: {format: '%Y'}},
           y: {field: 'price', type: 'quantitative'},
-          key: {field: 'k', type: 'quantitative'}
-        }
+          key: {field: 'k', type: 'quantitative'},
+        },
       });
       it('should have mark group with proper data and key', () => {
         const markGroup = parseMarkGroups(model)[0];
@@ -102,16 +102,16 @@ describe('Mark', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'geoshape',
         projection: {
-          type: 'albersUsa'
+          type: 'albersUsa',
         },
         data: {
           url: 'data/us-10m.json',
           format: {
             type: 'topojson',
-            feature: 'states'
-          }
+            feature: 'states',
+          },
         },
-        encoding: {}
+        encoding: {},
       });
       const markGroup = parseMarkGroups(model);
       expect(markGroup[0].transform).toBeDefined();
@@ -124,8 +124,8 @@ describe('Mark', () => {
         encoding: {
           x: {type: 'quantitative', field: 'Cost__Other', aggregate: 'sum'},
           y: {bin: true, type: 'quantitative', field: 'Cost__Total_$'},
-          color: {type: 'ordinal', field: 'Effect__Amount_of_damage'}
-        }
+          color: {type: 'ordinal', field: 'Effect__Amount_of_damage'},
+        },
       });
       it('should use main stacked data source', () => {
         const markGroup = parseMarkGroups(model);
@@ -141,16 +141,16 @@ describe('Mark', () => {
     describe('Faceted aggregated Bar with a color with binned x', () => {
       const model = parseFacetModel({
         facet: {
-          row: {field: 'a', type: 'nominal'}
+          row: {field: 'a', type: 'nominal'},
         },
         spec: {
           mark: 'bar',
           encoding: {
             x: {type: 'quantitative', field: 'Cost__Other', aggregate: 'sum'},
             y: {bin: true, type: 'quantitative', field: 'Cost__Total_$'},
-            color: {type: 'ordinal', field: 'Effect__Amount_of_damage'}
-          }
-        }
+            color: {type: 'ordinal', field: 'Effect__Amount_of_damage'},
+          },
+        },
       });
       it('should use faceted data source', () => {
         model.parseScale();
@@ -174,8 +174,8 @@ describe('Mark', () => {
         mark: 'bar',
         encoding: {
           x: {type: 'quantitative', field: 'Cost__Other', aggregate: 'sum'},
-          y: {bin: true, type: 'quantitative', field: 'Cost__Total_$'}
-        }
+          y: {bin: true, type: 'quantitative', field: 'Cost__Total_$'},
+        },
       });
 
       it('should use main aggregated data source', () => {
@@ -193,11 +193,11 @@ describe('Mark', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {
           type: 'bar',
-          aria: false
+          aria: false,
         },
         encoding: {
-          x: {type: 'quantitative', field: 'foo'}
-        }
+          x: {type: 'quantitative', field: 'foo'},
+        },
       });
 
       const markGroup = parseMarkGroups(model);
@@ -209,11 +209,11 @@ describe('Mark', () => {
         mark: {
           type: 'bar',
           aria: false,
-          cornerRadius: 2
+          cornerRadius: 2,
         },
         encoding: {
-          x: {type: 'quantitative', field: 'foo'}
-        }
+          x: {type: 'quantitative', field: 'foo'},
+        },
       });
 
       const markGroup = parseMarkGroups(model);
@@ -224,11 +224,11 @@ describe('Mark', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {
           type: 'line',
-          aria: false
+          aria: false,
         },
         encoding: {
-          x: {type: 'quantitative', field: 'foo'}
-        }
+          x: {type: 'quantitative', field: 'foo'},
+        },
       });
 
       const markGroup = parseMarkGroups(model);
@@ -239,16 +239,122 @@ describe('Mark', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {
           type: 'bar',
-          cornerRadius: 2
+          cornerRadius: 2,
         },
         encoding: {
           x: {type: 'quantitative', field: 'foo'},
-          y: {type: 'nominal', field: 'bar'}
-        }
+          y: {type: 'nominal', field: 'bar'},
+        },
       });
 
       const markGroup = parseMarkGroups(model);
       expect(markGroup[0].from.facet.groupby).toEqual(['bar']);
+    });
+
+    it('should round the left or right end of horizontal stacked bar groups', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          cornerRadiusEnd: 5,
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo', aggregate: 'sum'},
+          y: {type: 'nominal', field: 'bar'},
+          color: {type: 'nominal', field: 'series'},
+        },
+      });
+
+      const markGroup = parseMarkGroups(model);
+      const update = markGroup[0].encode.update;
+
+      const rightEnd = 'scale("x", datum["max_sum_foo_end"]) > scale("x", datum["max_sum_foo_start"])';
+      const leftEnd = 'scale("x", datum["min_sum_foo_end"]) < scale("x", datum["min_sum_foo_start"])';
+      const roundRight = [{test: rightEnd, value: 5}, {value: 0}];
+      const roundLeft = [{test: leftEnd, value: 5}, {value: 0}];
+
+      expect(update).toMatchObject({
+        cornerRadiusTopRight: roundRight,
+        cornerRadiusBottomRight: roundRight,
+        cornerRadiusTopLeft: roundLeft,
+        cornerRadiusBottomLeft: roundLeft,
+      });
+    });
+
+    it('should round the top or bottom end of vertical stacked bar groups', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          cornerRadiusEnd: 5,
+        },
+        encoding: {
+          x: {type: 'nominal', field: 'bar'},
+          y: {type: 'quantitative', field: 'foo', aggregate: 'sum'},
+          color: {type: 'nominal', field: 'series'},
+        },
+      });
+
+      const markGroup = parseMarkGroups(model);
+      const update = markGroup[0].encode.update;
+
+      const topEnd = 'scale("y", datum["max_sum_foo_end"]) < scale("y", datum["max_sum_foo_start"])';
+      const bottomEnd = 'scale("y", datum["min_sum_foo_end"]) > scale("y", datum["min_sum_foo_start"])';
+      const roundTop = [{test: topEnd, value: 5}, {value: 0}];
+      const roundBottom = [{test: bottomEnd, value: 5}, {value: 0}];
+
+      expect(update).toMatchObject({
+        cornerRadiusTopLeft: roundTop,
+        cornerRadiusTopRight: roundTop,
+        cornerRadiusBottomLeft: roundBottom,
+        cornerRadiusBottomRight: roundBottom,
+      });
+    });
+
+    it('should not let a config cornerRadiusEnd override a mark cornerRadius on stacked bar groups', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          cornerRadius: 2,
+        },
+        encoding: {
+          x: {type: 'nominal', field: 'bar'},
+          y: {type: 'quantitative', field: 'foo', aggregate: 'sum'},
+          color: {type: 'nominal', field: 'series'},
+        },
+        config: {bar: {cornerRadiusEnd: 5}},
+      });
+
+      const markGroup = parseMarkGroups(model);
+      const update = markGroup[0].encode.update;
+
+      // The mark-level cornerRadius wins, so no conditional value-end rounding is emitted.
+      expect(update.cornerRadius).toEqual({value: 2});
+      expect(update.cornerRadiusTopLeft).toBeUndefined();
+      expect(update.cornerRadiusBottomRight).toBeUndefined();
+    });
+
+    it('should not emit the raw markDef tooltip directive when the generated tooltip is empty', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: true},
+        encoding: {
+          x: {field: 'a', type: 'quantitative', tooltip: false},
+          y: {field: 'b', type: 'quantitative', tooltip: false},
+        },
+      });
+
+      const update = parseMarkGroups(model)[0].encode.update;
+      expect(update.tooltip).toBeUndefined();
+    });
+
+    it('should pass static markDef tooltip values through', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'point', tooltip: 'static tooltip'},
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+        },
+      });
+
+      const update = parseMarkGroups(model)[0].encode.update;
+      expect(update.tooltip).toEqual({value: 'static tooltip'});
     });
 
     describe('interactiveFlag', () => {
@@ -257,8 +363,8 @@ describe('Mark', () => {
           mark: 'point',
           encoding: {
             x: {type: 'quantitative', field: 'foo'},
-            y: {type: 'nominal', field: 'bar'}
-          }
+            y: {type: 'nominal', field: 'bar'},
+          },
         });
 
         const markGroup = parseMarkGroups(model);
@@ -273,17 +379,17 @@ describe('Mark', () => {
               mark: 'point',
               encoding: {
                 x: {type: 'quantitative', field: 'foo'},
-                y: {type: 'nominal', field: 'bar'}
-              }
+                y: {type: 'nominal', field: 'bar'},
+              },
             },
             {
               mark: 'point',
               encoding: {
                 x: {type: 'ordinal', field: 'baz'},
-                y: {type: 'quantitative', field: 'world'}
-              }
-            }
-          ]
+                y: {type: 'quantitative', field: 'world'},
+              },
+            },
+          ],
         });
 
         model.parseScale();
@@ -301,18 +407,18 @@ describe('Mark', () => {
               mark: 'point',
               encoding: {
                 x: {type: 'quantitative', field: 'foo'},
-                y: {type: 'nominal', field: 'bar'}
-              }
+                y: {type: 'nominal', field: 'bar'},
+              },
             },
             {
               mark: 'point',
               encoding: {
                 x: {type: 'ordinal', field: 'baz'},
                 y: {type: 'quantitative', field: 'world'},
-                tooltip: {type: 'nominal', field: 'hello'}
-              }
-            }
-          ]
+                tooltip: {type: 'nominal', field: 'hello'},
+              },
+            },
+          ],
         });
 
         model.parseScale();
@@ -332,12 +438,12 @@ describe('Mark', () => {
         encoding: {
           x: {field: 'miles', type: 'quantitative', scale: {zero: false}},
           y: {field: 'gas', type: 'quantitative', scale: {zero: false}},
-          order: {field: 'year', type: 'temporal'}
-        }
+          order: {field: 'year', type: 'temporal'},
+        },
       });
       expect(getSort(model)).toEqual({
         field: ['datum["year"]'],
-        order: ['ascending']
+        order: ['ascending'],
       });
     });
 
@@ -348,8 +454,8 @@ describe('Mark', () => {
         encoding: {
           x: {field: 'miles', type: 'quantitative', scale: {zero: false}},
           y: {field: 'gas', type: 'quantitative', scale: {zero: false}},
-          order: {value: null}
-        }
+          order: {value: null},
+        },
       });
       expect(getSort(model)).toBeUndefined();
     });
@@ -362,24 +468,24 @@ describe('Mark', () => {
           x: {
             bin: {maxbins: 10},
             field: 'IMDB_Rating',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           color: {
             field: 'Source',
-            type: 'nominal'
+            type: 'nominal',
           },
           y: {
             aggregate: 'count',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       expect(getSort(model)).toEqual({
-        field: 'datum["bin_maxbins_10_IMDB_Rating"]'
+        field: 'x',
       });
     });
 
-    it('have no sort if the dimension field has sort:null', () => {
+    it('have order by x if the dimension field has sort:null', () => {
       const model = parseUnitModelWithScale({
         data: {url: 'data/movies.json'},
         mark: 'line',
@@ -387,19 +493,21 @@ describe('Mark', () => {
           x: {
             field: 'a',
             type: 'nominal',
-            sort: null
+            sort: null,
           },
           color: {
             field: 'Source',
-            type: 'nominal'
+            type: 'nominal',
           },
           y: {
             aggregate: 'count',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
-      expect(getSort(model)).toBeUndefined();
+      expect(getSort(model)).toEqual({
+        field: 'x',
+      });
     });
 
     it("should order by x's custom sort order by default if x is the dimension", () => {
@@ -410,13 +518,13 @@ describe('Mark', () => {
           x: {
             type: 'nominal',
             field: 'Name',
-            sort: ['Peter', 'Mary', 'Paul']
+            sort: ['Peter', 'Mary', 'Paul'],
           },
-          y: {type: 'quantitative', field: 'Score'}
-        }
+          y: {type: 'quantitative', field: 'Score'},
+        },
       });
       expect(getSort(model)).toEqual({
-        field: 'datum["x_Name_sort_index"]'
+        field: 'x',
       });
     });
 
@@ -428,13 +536,13 @@ describe('Mark', () => {
           x: {
             type: 'nominal',
             field: 'Name',
-            sort: 'y'
+            sort: 'y',
           },
-          y: {type: 'quantitative', field: 'Score'}
-        }
+          y: {type: 'quantitative', field: 'Score'},
+        },
       });
       expect(getSort(model)).toEqual({
-        field: 'datum["Score"]'
+        field: 'x',
       });
     });
 
@@ -445,13 +553,13 @@ describe('Mark', () => {
         encoding: {
           color: {
             field: 'Source',
-            type: 'nominal'
+            type: 'nominal',
           },
           y: {
             aggregate: 'count',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       expect(getSort(model)).toBeUndefined();
     });
@@ -462,24 +570,24 @@ describe('Mark', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'geoshape',
         projection: {
-          type: 'albersUsa'
+          type: 'albersUsa',
         },
         data: {
           url: 'data/us-10m.json',
           format: {
             type: 'topojson',
-            feature: 'states'
-          }
+            feature: 'states',
+          },
         },
         encoding: {
           color: {
-            value: 'black'
+            value: 'black',
           },
           opacity: {
-            value: 0.8
-          }
+            value: 0.8,
+          },
         },
-        config: {mark: {tooltip: null}}
+        config: {mark: {tooltip: null}},
       });
       model.parse();
       const mark = parseMarkGroups(model);
@@ -490,28 +598,90 @@ describe('Mark', () => {
         mark: 'geoshape',
         projection: {
           type: 'albersUsa',
-          scale: 1000
+          scale: 1000,
         },
         data: {
           url: 'data/us-10m.json',
           format: {
             type: 'topojson',
-            feature: 'states'
-          }
+            feature: 'states',
+          },
         },
         encoding: {
           color: {
-            value: 'black'
+            value: 'black',
           },
           opacity: {
-            value: 0.8
-          }
+            value: 0.8,
+          },
         },
-        config: {mark: {tooltip: null}}
+        config: {mark: {tooltip: null}},
       });
       model.parse();
       const mark = parseMarkGroups(model);
       expect(mark[0].clip).toBe(true);
+    });
+  });
+
+  describe('signal clipping', () => {
+    it('should pass clip as a signal if clip is an expression', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          clip: {expr: "datum['foo'] > 10"},
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'},
+        },
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].clip).toEqual({signal: "datum['foo'] > 10"});
+    });
+
+    it('should pass clip as a signal if clip is a signal', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          clip: {signal: "datum['foo'] > 10"},
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'},
+        },
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].clip).toEqual({signal: "datum['foo'] > 10"});
+    });
+
+    it('should pass clip as a boolean if clip is true', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          clip: true,
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'},
+        },
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].clip).toBe(true);
+    });
+
+    it('should not have clip defined if clip is false', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          clip: false,
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'},
+        },
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].clip).toBeUndefined();
     });
   });
 });

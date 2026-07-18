@@ -1,9 +1,9 @@
-import {COLUMN, FACET_CHANNELS, ROW} from '../../src/channel';
-import {defaultConfig, initConfig} from '../../src/config';
-import * as log from '../../src/log';
-import {LocalLogger} from '../../src/log';
-import {normalize} from '../../src/normalize';
-import {TopLevelSpec} from '../../src/spec';
+import {COLUMN, FACET_CHANNELS, ROW} from '../../src/channel.js';
+import {defaultConfig, initConfig} from '../../src/config.js';
+import * as log from '../../src/log/index.js';
+import {LocalLogger} from '../../src/log/index.js';
+import {normalize} from '../../src/normalize/index.js';
+import {TopLevelSpec} from '../../src/spec/index.js';
 
 describe('normalize()', () => {
   it('throws errors for invalid spec', () => {
@@ -15,7 +15,7 @@ describe('normalize()', () => {
       'should ignore columns from repeat with row/column',
       log.wrap((localLogger: LocalLogger) => {
         const spec: TopLevelSpec = {
-          $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+          $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
           repeat: {column: ['Horsepower', 'Miles_per_Gallon', 'Acceleration', 'Displacement']},
           columns: 2,
           spec: {
@@ -25,26 +25,26 @@ describe('normalize()', () => {
               x: {
                 field: {repeat: 'column'},
                 bin: true,
-                type: 'quantitative'
+                type: 'quantitative',
               },
               y: {aggregate: 'count', type: 'quantitative'},
-              color: {field: 'Origin', type: 'nominal'}
-            }
-          }
+              color: {field: 'Origin', type: 'nominal'},
+            },
+          },
         };
         const normalized = normalize(spec);
-        expect(normalized['columns']).toBe(4);
+        expect((normalized as any).columns).toBe(4);
         expect(localLogger.warns[0]).toEqual(log.message.columnsNotSupportByRowCol('repeat'));
-      })
+      }),
     );
 
     it('normalizes repeat layer', () => {
       const spec: TopLevelSpec = {
         data: {
-          url: 'data/movies.json'
+          url: 'data/movies.json',
         },
         repeat: {
-          layer: ['US_Gross', 'Worldwide_Gross']
+          layer: ['US_Gross', 'Worldwide_Gross'],
         },
         spec: {
           mark: 'line',
@@ -52,18 +52,18 @@ describe('normalize()', () => {
             x: {
               bin: true,
               field: 'IMDB_Rating',
-              type: 'quantitative'
+              type: 'quantitative',
             },
             y: {
               aggregate: 'mean',
               field: {repeat: 'layer'},
-              type: 'quantitative'
-            }
-          }
-        }
+              type: 'quantitative',
+            },
+          },
+        },
       };
       const normalized = normalize(spec);
-      expect(normalized['layer']).toHaveLength(2);
+      expect((normalized as any).layer).toHaveLength(2);
     });
   });
 
@@ -82,8 +82,8 @@ describe('normalize()', () => {
           encoding: {
             [channel]: {...fieldDef, ...layoutMixins},
             x: {field: 'Worldwide_Gross', type: 'quantitative'},
-            y: {field: 'US_DVD_Sales', type: 'quantitative'}
-          }
+            y: {field: 'US_DVD_Sales', type: 'quantitative'},
+          },
         };
 
         const config = initConfig(spec.config);
@@ -91,7 +91,7 @@ describe('normalize()', () => {
           channel === 'facet'
             ? fieldDef
             : {
-                [channel]: fieldDef
+                [channel]: fieldDef,
               };
 
         expect(normalize(spec, config)).toEqual({
@@ -106,9 +106,9 @@ describe('normalize()', () => {
             height: 234,
             encoding: {
               x: {field: 'Worldwide_Gross', type: 'quantitative'},
-              y: {field: 'US_DVD_Sales', type: 'quantitative'}
-            }
-          }
+              y: {field: 'US_DVD_Sales', type: 'quantitative'},
+            },
+          },
         });
       });
     }
@@ -116,7 +116,7 @@ describe('normalize()', () => {
     for (const channel of [ROW, COLUMN]) {
       it(
         `should drop facet if ${channel} is also specified`,
-        log.wrap(localLogger => {
+        log.wrap((localLogger) => {
           const spec: any = {
             data: {url: 'data/movies.json'},
             mark: 'point',
@@ -124,26 +124,26 @@ describe('normalize()', () => {
               [channel]: {field: 'MPAA_Rating', type: 'ordinal'},
               facet: {field: 'todrop', type: 'ordinal'},
               x: {field: 'Worldwide_Gross', type: 'quantitative'},
-              y: {field: 'US_DVD_Sales', type: 'quantitative'}
-            }
+              y: {field: 'US_DVD_Sales', type: 'quantitative'},
+            },
           };
 
           const config = initConfig(spec.config);
           expect(normalize(spec, config)).toEqual({
             data: {url: 'data/movies.json'},
             facet: {
-              [channel]: {field: 'MPAA_Rating', type: 'ordinal'}
+              [channel]: {field: 'MPAA_Rating', type: 'ordinal'},
             },
             spec: {
               mark: 'point',
               encoding: {
                 x: {field: 'Worldwide_Gross', type: 'quantitative'},
-                y: {field: 'US_DVD_Sales', type: 'quantitative'}
-              }
-            }
+                y: {field: 'US_DVD_Sales', type: 'quantitative'},
+              },
+            },
           });
           expect(localLogger.warns[0]).toEqual(log.message.facetChannelDropped([channel]));
-        })
+        }),
       );
     }
   });
@@ -162,17 +162,17 @@ describe('normalize()', () => {
               x: {
                 field: {repeat: 'column'},
                 bin: true,
-                type: 'quantitative'
+                type: 'quantitative',
               },
               y: {aggregate: 'count', type: 'quantitative'},
-              color: {field: 'Origin', type: 'nominal'}
-            }
-          }
+              color: {field: 'Origin', type: 'nominal'},
+            },
+          },
         };
         const normalized = normalize(spec);
-        expect(normalized['columns']).toBeUndefined();
+        expect((normalized as any).columns).toBeUndefined();
         expect(localLogger.warns[0]).toEqual(log.message.columnsNotSupportByRowCol('facet'));
-      })
+      }),
     );
 
     it('should produce correct layered specs for mean point and vertical error bar', () => {
@@ -188,37 +188,37 @@ describe('normalize()', () => {
               layer: [
                 {
                   mark: 'errorbar',
-                  encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}}
+                  encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative'}},
                 },
                 {
                   mark: {type: 'point', opacity: 1, filled: true},
                   encoding: {
                     x: {field: 'age', type: 'ordinal'},
-                    y: {field: 'people', type: 'quantitative', aggregate: 'mean'}
-                  }
-                }
-              ]
-            }
+                    y: {field: 'people', type: 'quantitative', aggregate: 'mean'},
+                  },
+                },
+              ],
+            },
           },
-          defaultConfig
-        )
+          defaultConfig,
+        ),
       ).toEqual({
         description:
           'A error bar plot showing mean, min, and max in the US population distribution of age groups in 2000.',
         data: {
-          url: 'data/population.json'
+          url: 'data/population.json',
         },
         transform: [
           {
             calculate: "(datum.sex==1) ? 'Men':'Women'",
-            as: 'sex'
-          }
+            as: 'sex',
+          },
         ],
         facet: {
           row: {
             field: 'sex',
-            type: 'ordinal'
-          }
+            type: 'ordinal',
+          },
         },
         spec: {
           layer: [
@@ -227,25 +227,25 @@ describe('normalize()', () => {
                 {
                   aggregate: [
                     {op: 'stderr', field: 'people', as: 'extent_people'},
-                    {op: 'mean', field: 'people', as: 'center_people'}
+                    {op: 'mean', field: 'people', as: 'center_people'},
                   ],
-                  groupby: ['age']
+                  groupby: ['age'],
                 },
                 {
-                  calculate: 'datum["center_people"] + datum["extent_people"]',
-                  as: 'upper_people'
+                  calculate: "datum['center_people'] + datum['extent_people']",
+                  as: 'upper_people',
                 },
                 {
-                  calculate: 'datum["center_people"] - datum["extent_people"]',
-                  as: 'lower_people'
-                }
+                  calculate: "datum['center_people'] - datum['extent_people']",
+                  as: 'lower_people',
+                },
               ],
               mark: {type: 'rule', ariaRoleDescription: 'errorbar', style: 'errorbar-rule'},
               encoding: {
                 y: {
                   field: 'lower_people',
                   type: 'quantitative',
-                  title: 'people'
+                  title: 'people',
                 },
                 y2: {field: 'upper_people'},
                 x: {field: 'age', type: 'ordinal'},
@@ -253,19 +253,19 @@ describe('normalize()', () => {
                   {field: 'center_people', title: 'Mean of people', type: 'quantitative'},
                   {field: 'upper_people', title: 'Mean + stderr of people', type: 'quantitative'},
                   {field: 'lower_people', title: 'Mean - stderr of people', type: 'quantitative'},
-                  {field: 'age', type: 'ordinal'}
-                ]
-              }
+                  {field: 'age', type: 'ordinal'},
+                ],
+              },
             },
             {
               mark: {type: 'point', opacity: 1, filled: true},
               encoding: {
                 x: {field: 'age', type: 'ordinal'},
-                y: {field: 'people', type: 'quantitative', aggregate: 'mean'}
-              }
-            }
-          ]
-        }
+                y: {field: 'people', type: 'quantitative', aggregate: 'mean'},
+              },
+            },
+          ],
+        },
       });
     });
   });
@@ -277,7 +277,7 @@ describe('normalize()', () => {
           data: {url: 'data/population.json'},
           projection: {type: 'mercator'},
           encoding: {
-            x: {field: 'age', type: 'ordinal'}
+            x: {field: 'age', type: 'ordinal'},
           },
           layer: [
             {mark: 'point'},
@@ -287,14 +287,14 @@ describe('normalize()', () => {
                 {
                   mark: 'text',
                   encoding: {
-                    text: {field: 'a', type: 'nominal'}
-                  }
-                }
-              ]
-            }
-          ]
+                    text: {field: 'a', type: 'nominal'},
+                  },
+                },
+              ],
+            },
+          ],
         },
-        defaultConfig
+        defaultConfig,
       );
 
       expect(output).toEqual({
@@ -304,8 +304,8 @@ describe('normalize()', () => {
             projection: {type: 'mercator'},
             mark: 'point',
             encoding: {
-              x: {field: 'age', type: 'ordinal'}
-            }
+              x: {field: 'age', type: 'ordinal'},
+            },
           },
           {
             layer: [
@@ -313,20 +313,20 @@ describe('normalize()', () => {
                 projection: {type: 'mercator'},
                 mark: 'rule',
                 encoding: {
-                  x: {field: 'age', type: 'ordinal'}
-                }
+                  x: {field: 'age', type: 'ordinal'},
+                },
               },
               {
                 projection: {type: 'mercator'},
                 mark: 'text',
                 encoding: {
                   x: {field: 'age', type: 'ordinal'},
-                  text: {field: 'a', type: 'nominal'}
-                }
-              }
-            ]
-          }
-        ]
+                  text: {field: 'a', type: 'nominal'},
+                },
+              },
+            ],
+          },
+        ],
       });
     });
 
@@ -336,7 +336,7 @@ describe('normalize()', () => {
           data: {url: 'data/population.json'},
           encoding: {
             x: {type: 'quantitative', scale: {type: 'log'}, axis: {title: null}},
-            color: {scale: {range: ['blue', 'green']}}
+            color: {scale: {range: ['blue', 'green']}},
           },
           layer: [
             {mark: 'point', encoding: {x: {field: 'a'}}},
@@ -348,21 +348,21 @@ describe('normalize()', () => {
                   encoding: {
                     x: {field: 'c'},
                     color: {field: 'b1'},
-                    text: {field: 'a', type: 'nominal'}
-                  }
+                    text: {field: 'a', type: 'nominal'},
+                  },
                 },
                 {
                   mark: 'text',
-                  encoding: {x: {value: 1}, color: {condition: {test: 'a', field: 'b'}, value: 'red'}}
+                  encoding: {x: {value: 1}, color: {condition: {test: 'a', field: 'b'}, value: 'red'}},
                 },
                 {
-                  mark: 'text'
-                }
-              ]
-            }
-          ]
+                  mark: 'text',
+                },
+              ],
+            },
+          ],
         },
-        defaultConfig
+        defaultConfig,
       );
 
       expect(output).toEqual({
@@ -371,38 +371,38 @@ describe('normalize()', () => {
           {
             mark: 'point',
             encoding: {
-              x: {field: 'a', type: 'quantitative', scale: {type: 'log'}, axis: {title: null}}
-            }
+              x: {field: 'a', type: 'quantitative', scale: {type: 'log'}, axis: {title: null}},
+            },
           },
           {
             layer: [
               {
                 mark: 'rule',
                 encoding: {
-                  x: {field: 'b', type: 'quantitative', scale: {type: 'log'}, axis: {title: null}}
-                }
+                  x: {field: 'b', type: 'quantitative', scale: {type: 'log'}, axis: {title: null}},
+                },
               },
               {
                 mark: 'text',
                 encoding: {
                   x: {field: 'c', type: 'quantitative', scale: {type: 'log'}, axis: {title: null}},
                   color: {field: 'b1', scale: {range: ['blue', 'green']}},
-                  text: {field: 'a', type: 'nominal'}
-                }
+                  text: {field: 'a', type: 'nominal'},
+                },
               },
               {
                 mark: 'text',
                 encoding: {
                   x: {value: 1},
-                  color: {condition: {test: 'a', field: 'b', scale: {range: ['blue', 'green']}}, value: 'red'}
-                }
+                  color: {condition: {test: 'a', field: 'b', scale: {range: ['blue', 'green']}}, value: 'red'},
+                },
               },
               {
-                mark: 'text'
-              }
-            ]
-          }
-        ]
+                mark: 'text',
+              },
+            ],
+          },
+        ],
       });
     });
 
@@ -414,22 +414,22 @@ describe('normalize()', () => {
             data: {url: 'data/population.json'},
             projection: {type: 'mercator'},
             encoding: {
-              x: {field: 'age', type: 'ordinal'}
+              x: {field: 'age', type: 'ordinal'},
             },
             layer: [
               {
                 projection: {type: 'albersUsa'},
-                mark: 'rule'
+                mark: 'rule',
               },
               {
                 mark: 'text',
                 encoding: {
-                  x: {field: 'a', type: 'nominal'}
-                }
-              }
-            ]
+                  x: {field: 'a', type: 'nominal'},
+                },
+              },
+            ],
           },
-          defaultConfig
+          defaultConfig,
         );
 
         expect(localLogger.warns).toHaveLength(1);
@@ -437,8 +437,8 @@ describe('normalize()', () => {
         expect(localLogger.warns[0]).toEqual(
           log.message.projectionOverridden({
             parentProjection: {type: 'mercator'},
-            projection: {type: 'albersUsa'}
-          })
+            projection: {type: 'albersUsa'},
+          }),
         );
 
         expect(output).toEqual({
@@ -448,19 +448,19 @@ describe('normalize()', () => {
               projection: {type: 'albersUsa'},
               mark: 'rule',
               encoding: {
-                x: {field: 'age', type: 'ordinal'}
-              }
+                x: {field: 'age', type: 'ordinal'},
+              },
             },
             {
               projection: {type: 'mercator'},
               mark: 'text',
               encoding: {
-                x: {field: 'a', type: 'nominal'}
-              }
-            }
-          ]
+                x: {field: 'a', type: 'nominal'},
+              },
+            },
+          ],
         });
-      })
+      }),
     );
   });
 });

@@ -1,14 +1,14 @@
 import {AxisOrient, SignalRef} from 'vega';
 import {isArray} from 'vega-util';
-import {FacetChannel, FACET_CHANNELS} from '../../channel';
-import {title as fieldDefTitle} from '../../channeldef';
-import {contains, getFirstDefined} from '../../util';
-import {isSignalRef} from '../../vega.schema';
-import {assembleAxis} from '../axis/assemble';
-import {FacetModel} from '../facet';
-import {parseGuideResolve} from '../resolve';
-import {getHeaderProperty} from './common';
-import {HeaderChannel, HeaderComponent} from './component';
+import {FacetChannel, FACET_CHANNELS} from '../../channel.js';
+import {title as fieldDefTitle} from '../../channeldef.js';
+import {contains, getFirstDefined} from '../../util.js';
+import {isSignalRef} from '../../vega.schema.js';
+import {assembleAxis} from '../axis/assemble.js';
+import {FacetModel} from '../facet.js';
+import {parseGuideResolve} from '../resolve.js';
+import {getHeaderProperty} from './common.js';
+import {HeaderChannel, HeaderComponent} from './component.js';
 
 export function getHeaderType(orient: AxisOrient | SignalRef) {
   if (orient === 'top' || orient === 'left' || isSignalRef(orient)) {
@@ -34,7 +34,7 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
     const titleConfig = getHeaderProperty('title', null, config, channel);
     let title = fieldDefTitle(fieldDef, config, {
       allowDisabling: true,
-      includeDefault: titleConfig === undefined || !!titleConfig
+      includeDefault: titleConfig === undefined || !!titleConfig,
     });
 
     if (child.component.layoutHeaders[channel].title) {
@@ -55,7 +55,7 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
     component.layoutHeaders[channel] = {
       title: fieldDef.header !== null ? title : null,
       facetFieldDef: fieldDef,
-      [headerType]: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, labels)]
+      [headerType]: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, labels)],
     };
   }
 }
@@ -66,7 +66,7 @@ function makeHeaderComponent(model: FacetModel, channel: HeaderChannel, labels: 
   return {
     labels,
     sizeSignal: model.child.component.layoutSize.get(sizeType) ? model.child.getSizeSignalRef(sizeType) : undefined,
-    axes: []
+    axes: [],
   };
 }
 

@@ -20,18 +20,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          cache: 'yarn'
+          cache: 'npm'
+          node-version: 22
 
       - name: Install Node dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Build
-        run: yarn schema
+        run: npm run schema
 
       - name: Setup Git remote
         run: scripts/setup-git-ci.sh
@@ -55,21 +56,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          cache: 'yarn'
+          cache: 'npm'
+          node-version: 22
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v6
 
       - name: Install Node dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
 
       - name: Prebuild website
-        run: yarn presite
+        run: npm run presite
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
@@ -77,7 +79,7 @@ jobs:
           source: ./site
           destination: ./_site
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: './_site'
 
@@ -95,4 +97,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

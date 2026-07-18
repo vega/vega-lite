@@ -1,12 +1,12 @@
-import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse';
-import * as log from '../../../src/log';
-import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
-import {parseModel, parseModelWithScale, parseUnitModelWithScale, without} from '../../util';
+import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse.js';
+import * as log from '../../../src/log/index.js';
+import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale.js';
+import {parseModel, parseModelWithScale, parseUnitModelWithScale, without} from '../../util.js';
 
 describe('src/compile', () => {
   it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES without type, domain, and range properties', () => {
     expect(new Set(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES)).toEqual(
-      new Set(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeMax', 'rangeMin', 'scheme']))
+      new Set(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeMax', 'rangeMin', 'scheme'])),
     );
   });
 
@@ -21,9 +21,9 @@ describe('src/compile', () => {
               y: {
                 aggregate: 'mean',
                 field: 'precipitation',
-                type: 'quantitative'
-              }
-            }
+                type: 'quantitative',
+              },
+            },
           },
           {
             mark: 'rule',
@@ -32,11 +32,11 @@ describe('src/compile', () => {
                 aggregate: 'mean',
                 field: 'precipitation',
                 type: 'quantitative',
-                scale: {type: 'log'}
-              }
-            }
-          }
-        ]
+                scale: {type: 'log'},
+              },
+            },
+          },
+        ],
       });
       parseScaleCore(model);
       expect(model.getScaleComponent('y').explicit.type).toBe('log');
@@ -53,9 +53,9 @@ describe('src/compile', () => {
                 aggregate: 'mean',
                 field: 'precipitation',
                 type: 'quantitative',
-                scale: {type: 'log'}
-              }
-            }
+                scale: {type: 'log'},
+              },
+            },
           },
           {
             mark: 'rule',
@@ -63,11 +63,11 @@ describe('src/compile', () => {
               y: {
                 aggregate: 'mean',
                 field: 'precipitation',
-                type: 'quantitative'
-              }
-            }
-          }
-        ]
+                type: 'quantitative',
+              },
+            },
+          },
+        ],
       });
       parseScaleCore(model);
       expect(model.getScaleComponent('y').explicit.type).toBe('log');
@@ -76,7 +76,7 @@ describe('src/compile', () => {
     // TODO: this actually shouldn't get merged
     it(
       'favors the first explicit scale type',
-      log.wrap(localLogger => {
+      log.wrap((localLogger) => {
         const model = parseModel({
           data: {url: 'data/seattle-weather.csv'},
           layer: [
@@ -87,9 +87,9 @@ describe('src/compile', () => {
                   aggregate: 'mean',
                   field: 'precipitation',
                   type: 'quantitative',
-                  scale: {type: 'log'}
-                }
-              }
+                  scale: {type: 'log'},
+                },
+              },
             },
             {
               mark: 'rule',
@@ -98,16 +98,16 @@ describe('src/compile', () => {
                   aggregate: 'mean',
                   field: 'precipitation',
                   type: 'quantitative',
-                  scale: {type: 'pow'}
-                }
-              }
-            }
-          ]
+                  scale: {type: 'pow'},
+                },
+              },
+            },
+          ],
         });
         parseScaleCore(model);
         expect(model.getScaleComponent('y').explicit.type).toBe('log');
         expect(localLogger.warns[0]).toEqual(log.message.mergeConflictingProperty('type', 'scale', 'log', 'pow'));
-      })
+      }),
     );
 
     it('favors the band over point', () => {
@@ -120,10 +120,10 @@ describe('src/compile', () => {
               y: {
                 aggregate: 'mean',
                 field: 'precipitation',
-                type: 'quantitative'
+                type: 'quantitative',
               },
-              x: {field: 'weather', type: 'nominal'}
-            }
+              x: {field: 'weather', type: 'nominal'},
+            },
           },
           {
             mark: 'bar',
@@ -131,12 +131,12 @@ describe('src/compile', () => {
               y: {
                 aggregate: 'mean',
                 field: 'precipitation',
-                type: 'quantitative'
+                type: 'quantitative',
               },
-              x: {field: 'weather', type: 'nominal'}
-            }
-          }
-        ]
+              x: {field: 'weather', type: 'nominal'},
+            },
+          },
+        ],
       });
       parseScaleCore(model);
       expect(model.getScaleComponent('x').implicit.type).toBe('band');
@@ -147,20 +147,20 @@ describe('src/compile', () => {
         data: {
           url: 'data/zipcodes.csv',
           format: {
-            type: 'csv'
-          }
+            type: 'csv',
+          },
         },
         mark: 'point',
         encoding: {
           longitude: {
             field: 'longitude',
-            type: 'quantitative'
+            type: 'quantitative',
           },
           latitude: {
             field: 'latitude',
-            type: 'quantitative'
-          }
-        }
+            type: 'quantitative',
+          },
+        },
       });
       parseScaleCore(model);
       expect(model.getScaleComponent('x')).toBeUndefined();
@@ -177,16 +177,16 @@ describe('src/compile', () => {
             from: {
               data: {
                 url: 'data/us-10m.json',
-                format: {type: 'topojson', feature: 'states'}
+                format: {type: 'topojson', feature: 'states'},
               },
-              key: 'id'
+              key: 'id',
             },
-            as: 'geo'
-          }
+            as: 'geo',
+          },
         ],
         encoding: {
-          shape: {field: 'geo', type: 'geojson'}
-        }
+          shape: {field: 'geo', type: 'geojson'},
+        },
       });
       parseScaleCore(model);
       expect(model.getScaleComponent('shape')).toBeUndefined();
@@ -196,7 +196,7 @@ describe('src/compile', () => {
   describe('parseScale', () => {
     it(
       'does not throw warning when two equivalent objects are specified',
-      log.wrap(logger => {
+      log.wrap((logger) => {
         const model = parseModel({
           data: {url: 'data/seattle-weather.csv'},
           layer: [
@@ -206,9 +206,9 @@ describe('src/compile', () => {
                 y: {
                   field: 'a',
                   type: 'nominal',
-                  scale: {padding: 0.2}
-                }
-              }
+                  scale: {padding: 0.2},
+                },
+              },
             },
             {
               mark: 'point',
@@ -216,16 +216,16 @@ describe('src/compile', () => {
                 y: {
                   field: 'a',
                   type: 'nominal',
-                  scale: {padding: 0.2}
-                }
-              }
-            }
-          ]
+                  scale: {padding: 0.2},
+                },
+              },
+            },
+          ],
         });
         parseScales(model);
         expect(model.getScaleComponent('y').explicit.padding).toBe(0.2);
         expect(logger.warns).toHaveLength(0);
-      })
+      }),
     );
 
     it('should converts date time object in domainMin/Max to signal', () => {
@@ -237,10 +237,10 @@ describe('src/compile', () => {
             type: 'temporal',
             scale: {
               domainMin: {year: 2002},
-              domainMax: {year: 2012}
-            }
-          }
-        }
+              domainMax: {year: 2012},
+            },
+          },
+        },
       });
       const scale = model.getScaleComponent('x');
       expect(scale.explicit.domainMin).toEqual({signal: 'datetime(2002, 0, 1, 0, 0, 0, 0)'});
@@ -252,8 +252,8 @@ describe('src/compile', () => {
         const model = parseUnitModelWithScale({
           mark: 'point',
           encoding: {
-            x: {field: 'origin', type: 'nominal'}
-          }
+            x: {field: 'origin', type: 'nominal'},
+          },
         });
         const scale = model.getScaleComponent('x');
         expect(scale.implicit.type).toBe('point');
@@ -265,8 +265,8 @@ describe('src/compile', () => {
       const model = parseUnitModelWithScale({
         mark: 'bar',
         encoding: {
-          x: {field: 'origin', type: 'nominal', scale: {type: 'band', padding: 0.6}}
-        }
+          x: {field: 'origin', type: 'nominal', scale: {type: 'band', padding: 0.6}},
+        },
       });
       const scale = model.getScaleComponent('x');
       expect(scale.explicit.padding).toBe(0.6);
@@ -278,11 +278,11 @@ describe('src/compile', () => {
       const model = parseUnitModelWithScale({
         mark: 'bar',
         encoding: {
-          x: {field: 'origin', type: 'nominal', scale: {type: 'band'}}
+          x: {field: 'origin', type: 'nominal', scale: {type: 'band'}},
         },
         config: {
-          scale: {bandPaddingInner: 0.3}
-        }
+          scale: {bandPaddingInner: 0.3},
+        },
       });
       const scale = model.getScaleComponent('x');
       expect(scale.implicit.paddingInner).toBe(0.3);
@@ -294,8 +294,8 @@ describe('src/compile', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          color: {field: 'origin', type: 'nominal'}
-        }
+          color: {field: 'origin', type: 'nominal'},
+        },
       });
 
       const scale = model.getScaleComponent('color');
@@ -307,8 +307,8 @@ describe('src/compile', () => {
           {
             data: 'main',
             field: 'origin',
-            sort: true
-          }
+            sort: true,
+          },
         ]);
         expect(scale.implicit.range).toBe('category');
       });
@@ -318,8 +318,8 @@ describe('src/compile', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          color: {field: 'origin', type: 'ordinal'}
-        }
+          color: {field: 'origin', type: 'ordinal'},
+        },
       });
 
       const scale = model.getScaleComponent('color');
@@ -332,8 +332,8 @@ describe('src/compile', () => {
           {
             data: 'main',
             field: 'origin',
-            sort: true
-          }
+            sort: true,
+          },
         ]);
       });
     });
@@ -342,8 +342,8 @@ describe('src/compile', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          color: {field: 'origin', type: 'quantitative'}
-        }
+          color: {field: 'origin', type: 'quantitative'},
+        },
       });
 
       const scale = model.getScaleComponent('color');
@@ -356,8 +356,8 @@ describe('src/compile', () => {
         expect(scale.get('domains')).toEqual([
           {
             data: 'main',
-            field: 'origin'
-          }
+            field: 'origin',
+          },
         ]);
       });
     });
@@ -366,8 +366,8 @@ describe('src/compile', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          color: {field: 'origin', type: 'quantitative', bin: true}
-        }
+          color: {field: 'origin', type: 'quantitative', bin: true},
+        },
       });
 
       const scale = model.getScaleComponent('color');
@@ -383,8 +383,8 @@ describe('src/compile', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          color: {field: 'origin', type: 'ordinal', bin: true}
-        }
+          color: {field: 'origin', type: 'ordinal', bin: true},
+        },
       });
 
       const scale = model.getScaleComponent('color');
@@ -400,8 +400,8 @@ describe('src/compile', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          opacity: {field: 'origin', type: 'quantitative', bin: true}
-        }
+          opacity: {field: 'origin', type: 'quantitative', bin: true},
+        },
       });
 
       const scale = model.getScaleComponent('opacity');
@@ -417,8 +417,8 @@ describe('src/compile', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          size: {field: 'origin', type: 'quantitative', bin: true}
-        }
+          size: {field: 'origin', type: 'quantitative', bin: true},
+        },
       });
 
       const scale = model.getScaleComponent('size');
@@ -434,8 +434,8 @@ describe('src/compile', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
-          color: {field: 'origin', type: 'temporal', timeUnit: 'year'}
-        }
+          color: {field: 'origin', type: 'temporal', timeUnit: 'year'},
+        },
       });
 
       const scale = model.getScaleComponent('color');
@@ -453,14 +453,14 @@ describe('src/compile', () => {
           x: {
             field: 'date',
             type: 'temporal',
-            scale: {domain: {param: 'brush', encoding: 'x'}}
+            scale: {domain: {param: 'brush', encoding: 'x'}},
           },
           y: {
             field: 'date',
             type: 'temporal',
-            scale: {domain: {param: 'foobar', field: 'Miles_per_Gallon'}}
-          }
-        }
+            scale: {domain: {param: 'foobar', field: 'Miles_per_Gallon'}},
+          },
+        },
       });
 
       const xScale = model.getScaleComponent('x');
@@ -469,11 +469,11 @@ describe('src/compile', () => {
       it('should add a selection extent', () => {
         expect('selectionExtent' in xScale.explicit).toBeTruthy();
         expect(xScale.explicit.selectionExtent.param).toBe('brush');
-        expect(xScale.explicit.selectionExtent['encoding']).toBe('x');
+        expect((xScale.explicit.selectionExtent as any).encoding).toBe('x');
 
         expect('selectionExtent' in yScale.explicit).toBeTruthy();
         expect(yScale.explicit.selectionExtent.param).toBe('foobar');
-        expect(yScale.explicit.selectionExtent['field']).toBe('Miles_per_Gallon');
+        expect((yScale.explicit.selectionExtent as any).field).toBe('Miles_per_Gallon');
       });
     });
   });
@@ -483,102 +483,102 @@ describe('src/compile', () => {
       it('should use cloned subtree', () => {
         const model = parseModelWithScale({
           facet: {
-            row: {field: 'symbol', type: 'nominal'}
+            row: {field: 'symbol', type: 'nominal'},
           },
           data: {url: 'foo.csv'},
           spec: {
             mark: 'point',
             encoding: {
-              x: {field: 'a', type: 'quantitative'}
-            }
-          }
+              x: {field: 'a', type: 'quantitative'},
+            },
+          },
         });
 
         expect(model.component.scales.x.get('domains')).toEqual([
           {
             data: 'scale_child_main',
-            field: 'a'
-          }
+            field: 'a',
+          },
         ]);
       });
 
       it('should not use cloned subtree if the data is not faceted', () => {
         const model = parseModelWithScale({
           facet: {
-            row: {field: 'symbol', type: 'nominal'}
+            row: {field: 'symbol', type: 'nominal'},
           },
           data: {url: 'foo.csv'},
           spec: {
             data: {url: 'foo'},
             mark: 'point',
             encoding: {
-              x: {field: 'a', type: 'quantitative'}
-            }
-          }
+              x: {field: 'a', type: 'quantitative'},
+            },
+          },
         });
 
         expect(model.component.scales.x.get('domains')).toEqual([
           {
             data: 'child_main',
-            field: 'a'
-          }
+            field: 'a',
+          },
         ]);
       });
 
       it('should not use cloned subtree if the scale is independent', () => {
         const model = parseModelWithScale({
           facet: {
-            row: {field: 'symbol', type: 'nominal'}
+            row: {field: 'symbol', type: 'nominal'},
           },
           data: {url: 'foo.csv'},
           spec: {
             mark: 'point',
             encoding: {
-              x: {field: 'a', type: 'quantitative'}
-            }
+              x: {field: 'a', type: 'quantitative'},
+            },
           },
           resolve: {
             scale: {
-              x: 'independent'
-            }
-          }
+              x: 'independent',
+            },
+          },
         });
 
         expect(model.children[0].component.scales.x.get('domains')).toEqual([
           {
             data: 'child_main',
-            field: 'a'
-          }
+            field: 'a',
+          },
         ]);
       });
 
       it(
         'should show warning if two domains are merged',
-        log.wrap(localLogger => {
+        log.wrap((localLogger) => {
           const model = parseModelWithScale({
             layer: [
               {
                 mark: 'point',
                 encoding: {
-                  y: {field: 'foo', type: 'nominal', scale: {domain: [1, 2, 3]}}
-                }
+                  y: {field: 'foo', type: 'nominal', scale: {domain: [1, 2, 3]}},
+                },
               },
               {
                 mark: 'point',
                 encoding: {
-                  y: {field: 'foo', type: 'nominal', scale: {domain: [2, 3, 4]}}
-                }
-              }
-            ]
+                  y: {field: 'foo', type: 'nominal', scale: {domain: [2, 3, 4]}},
+                },
+              },
+            ],
           });
 
           expect(model.children[0].component.scales.y.get('domains')).toEqual([[1, 2, 3]]);
           expect(model.children[1].component.scales.y.get('domains')).toEqual([[2, 3, 4]]);
 
           expect(localLogger.warns).toEqual([
-            'Conflicting scale property "domains" ([[1,2,3]] and [[2,3,4]]). Using the union of the two domains.'
+            'Conflicting scale property "domains" ([[1,2,3]] and [[2,3,4]]). Using the union of the two domains.',
           ]);
-        })
+        }),
       );
     });
   });

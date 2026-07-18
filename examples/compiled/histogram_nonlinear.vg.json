@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A histogram for a data source that provides non-linear bins. Thanks to [@Saba9](https://github.com/Saba9) who helps create this example.",
   "background": "white",
   "padding": 5,
@@ -54,17 +54,43 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "cornerRadiusTopLeft": {"value": 0},
-          "cornerRadiusTopRight": {"value": 0},
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"startTime: \" + (isValid(datum[\"startTime\"]) ? datum[\"startTime\"] : \"\"+datum[\"startTime\"]) + \"; residency: \" + (format(datum[\"residency\"], \"\")) + \"; endTime: \" + (isValid(datum[\"endTime\"]) ? datum[\"endTime\"] : \"\"+datum[\"endTime\"])"
+            "signal": "\"startTime: \" + (isValid(datum[\"startTime\"]) ? isArray(datum[\"startTime\"]) ? join(datum[\"startTime\"], ' ') : datum[\"startTime\"] : \"\"+datum[\"startTime\"]) + \"; residency: \" + (format(datum[\"residency\"], \"\")) + \"; endTime: \" + (isValid(datum[\"endTime\"]) ? isArray(datum[\"endTime\"]) ? join(datum[\"endTime\"], ' ') : datum[\"endTime\"] : \"\"+datum[\"endTime\"])"
           },
           "x": {"scale": "x", "field": "startTime"},
           "x2": {"scale": "x", "field": "endTime"},
           "y": {"scale": "y", "field": "residency_end"},
-          "y2": {"scale": "y", "field": "residency_start"}
+          "y2": {"scale": "y", "field": "residency_start"},
+          "cornerRadiusTopLeft": [
+            {
+              "test": "scale(\"y\", datum[\"residency_end\"]) < scale(\"y\", datum[\"residency_start\"])",
+              "value": 0
+            },
+            {"value": 0}
+          ],
+          "cornerRadiusTopRight": [
+            {
+              "test": "scale(\"y\", datum[\"residency_end\"]) < scale(\"y\", datum[\"residency_start\"])",
+              "value": 0
+            },
+            {"value": 0}
+          ],
+          "cornerRadiusBottomLeft": [
+            {
+              "test": "scale(\"y\", datum[\"residency_end\"]) > scale(\"y\", datum[\"residency_start\"])",
+              "value": 0
+            },
+            {"value": 0}
+          ],
+          "cornerRadiusBottomRight": [
+            {
+              "test": "scale(\"y\", datum[\"residency_end\"]) > scale(\"y\", datum[\"residency_start\"])",
+              "value": 0
+            },
+            {"value": 0}
+          ]
         }
       }
     }

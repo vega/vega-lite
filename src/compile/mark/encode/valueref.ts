@@ -2,113 +2,60 @@
  * Utility files for producing Vega ValueRef for marks
  */
 import type {SignalRef} from 'vega';
-import {isFunction, isString} from 'vega-util';
-import {isCountingAggregateOp} from '../../../aggregate';
-import {isBinned, isBinning} from '../../../bin';
-import {Channel, getMainRangeChannel, PolarPositionChannel, PositionChannel, X, X2, Y2} from '../../../channel';
+import {isFunction} from 'vega-util';
+import {isBinned, isBinning} from '../../../bin.js';
+import {Channel, PolarPositionChannel, PositionChannel, X, X2, Y2, getMainRangeChannel} from '../../../channel.js';
 import {
-  binRequiresRange,
   ChannelDef,
   DatumDef,
-  FieldDef,
   FieldDefBase,
-  FieldName,
   FieldRefOption,
+  SecondaryChannelDef,
+  SecondaryFieldDef,
+  TypedFieldDef,
+  Value,
+  binRequiresRange,
   getBandPosition,
   isDatumDef,
   isFieldDef,
   isFieldOrDatumDef,
   isTypedFieldDef,
   isValueDef,
-  SecondaryChannelDef,
-  SecondaryFieldDef,
-  TypedFieldDef,
-  Value,
-  vgField
-} from '../../../channeldef';
-import {Config} from '../../../config';
-import {dateTimeToExpr, isDateTime} from '../../../datetime';
-import {isExprRef} from '../../../expr';
-import * as log from '../../../log';
-import {isPathMark, Mark, MarkDef} from '../../../mark';
-import {fieldValidPredicate} from '../../../predicate';
-import {hasDiscreteDomain, isContinuousToContinuous} from '../../../scale';
-import {StackProperties} from '../../../stack';
-import {TEMPORAL} from '../../../type';
-import {contains, stringify} from '../../../util';
-import {isSignalRef, VgValueRef} from '../../../vega.schema';
-import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
-import {ScaleComponent} from '../../scale/component';
+  vgField,
+} from '../../../channeldef.js';
+import {Config} from '../../../config.js';
+import {dateTimeToExpr, isDateTime} from '../../../datetime.js';
+import {isExprRef} from '../../../expr.js';
+import * as log from '../../../log/index.js';
+import {Mark, MarkDef} from '../../../mark.js';
+import {hasDiscreteDomain} from '../../../scale.js';
+import {StackProperties} from '../../../stack.js';
+import {TEMPORAL} from '../../../type.js';
+import {contains, stringify} from '../../../util.js';
+import {VgValueRef, isSignalRef} from '../../../vega.schema.js';
+import {signalOrValueRef} from '../../common.js';
+import {ScaleComponent} from '../../scale/component.js';
+import {getConditionalValueRefForIncludingInvalidValue} from './invalid.js';
 
 export function midPointRefWithPositionInvalidTest(
   params: MidPointParams & {
     channel: PositionChannel | PolarPositionChannel;
-  }
-) {
-  const {channel, channelDef, markDef, scale, config} = params;
-  const ref = midPoint(params);
+  },
+): VgValueRef | VgValueRef[] {
+  const {channel, channelDef, markDef, scale, scaleName, config} = params;
+  const scaleChannel = getMainRangeChannel(channel);
+  const mainRef = midPoint(params);
 
-  // Wrap to check if the positional value is invalid, if so, plot the point on the min value
-  if (
-    // Only this for field def without counting aggregate (as count wouldn't be null)
-    isFieldDef(channelDef) &&
-    !isCountingAggregateOp(channelDef.aggregate) &&
-    // and only for continuous scale
-    scale &&
-    isContinuousToContinuous(scale.get('type'))
-  ) {
-    return wrapPositionInvalidTest({
-      fieldDef: channelDef,
-      channel,
-      markDef,
-      ref,
-      config
-    });
-  }
-  return ref;
-}
+  const valueRefForIncludingInvalid = getConditionalValueRefForIncludingInvalidValue({
+    scaleChannel,
+    channelDef,
+    scale,
+    scaleName,
+    markDef,
+    config,
+  });
 
-export function wrapPositionInvalidTest({
-  fieldDef,
-  channel,
-  markDef,
-  ref,
-  config
-}: {
-  fieldDef: FieldDef<string>;
-  channel: PositionChannel | PolarPositionChannel;
-  markDef: MarkDef<Mark>;
-  ref: VgValueRef;
-  config: Config<SignalRef>;
-}): VgValueRef | VgValueRef[] {
-  if (isPathMark(markDef.type)) {
-    // path mark already use defined to skip points, no need to do it here.
-    return ref;
-  }
-
-  const invalid = getMarkPropOrConfig('invalid', markDef, config);
-  if (invalid === null) {
-    // if there is no invalid filter, don't do the invalid test
-    return [fieldInvalidTestValueRef(fieldDef, channel), ref];
-  }
-  return ref;
-}
-
-export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: PositionChannel | PolarPositionChannel) {
-  const test = fieldInvalidPredicate(fieldDef, true);
-
-  const mainChannel = getMainRangeChannel(channel) as PositionChannel | PolarPositionChannel; // we can cast here as the output can't be other things.
-  const zeroValueRef =
-    mainChannel === 'y'
-      ? {field: {group: 'height'}}
-      : // x / angle / radius can all use 0
-        {value: 0};
-
-  return {test, ...zeroValueRef};
-}
-
-export function fieldInvalidPredicate(field: FieldName | FieldDef<string>, invalid = true) {
-  return fieldValidPredicate(isString(field) ? field : vgField(field, {expr: 'datum'}), !invalid);
+  return valueRefForIncludingInvalid !== undefined ? [valueRefForIncludingInvalid, mainRef] : mainRef;
 }
 
 export function datumDefToExpr(datumDef: DatumDef<string>) {
@@ -123,7 +70,7 @@ export function valueRefForFieldOrDatumDef(
   fieldDef: FieldDefBase<string> | DatumDef<string>,
   scaleName: string,
   opt: FieldRefOption,
-  encode: {offset?: number | VgValueRef; band?: number | boolean | SignalRef}
+  encode: {offset?: number | VgValueRef; band?: number | boolean | SignalRef},
 ): VgValueRef {
   const ref: VgValueRef = {};
 
@@ -168,7 +115,7 @@ export function interpolatedSignalRef({
   offset,
   startSuffix,
   endSuffix = 'end',
-  bandPosition = 0.5
+  bandPosition = 0.5,
 }: {
   scaleName: string;
   fieldOrDatumDef: TypedFieldDef<string>;
@@ -241,7 +188,7 @@ export function midPoint({
   stack,
   offset,
   defaultRef,
-  bandPosition
+  bandPosition,
 }: MidPointParams): VgValueRef {
   // TODO: datum support
   if (channelDef) {
@@ -254,7 +201,7 @@ export function midPoint({
           fieldDef: channelDef,
           fieldDef2: channel2Def,
           markDef,
-          config
+          config,
         });
         const {bin, timeUnit, type} = channelDef;
 
@@ -276,8 +223,8 @@ export function midPoint({
             scaleName,
             binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {},
             {
-              offset
-            }
+              offset,
+            },
           );
         } else if (isBinned(bin)) {
           if (isFieldDef(channel2Def)) {
@@ -286,7 +233,7 @@ export function midPoint({
               fieldOrDatumDef: channelDef,
               fieldOrDatumDef2: channel2Def,
               bandPosition,
-              offset
+              offset,
             });
           } else {
             const channel2 = channel === X ? X2 : Y2;
@@ -302,8 +249,8 @@ export function midPoint({
         {
           offset,
           // For band, to get mid point, need to offset by half of the band
-          band: scaleType === 'band' ? bandPosition ?? channelDef.bandPosition ?? 0.5 : undefined
-        }
+          band: scaleType === 'band' ? (bandPosition ?? channelDef.bandPosition ?? 0.5) : undefined,
+        },
       );
     } else if (isValueDef(channelDef)) {
       const value = channelDef.value;
@@ -325,7 +272,7 @@ export function midPoint({
     return {
       ...defaultRef,
       // only include offset when it is non-zero (zero = no offset)
-      ...(offset ? {offset} : {})
+      ...(offset ? {offset} : {}),
     };
   }
   return defaultRef;

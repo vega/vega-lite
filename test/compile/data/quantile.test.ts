@@ -1,6 +1,6 @@
-import {QuantileTransformNode} from '../../../src/compile/data/quantile';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {QuantileTransformNode} from '../../../src/compile/data/quantile.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/fold', () => {
   describe('assemble', () => {
@@ -9,7 +9,7 @@ describe('compile/data/fold', () => {
         quantile: 'x',
         groupby: ['a', 'b'],
         step: 0.05,
-        as: ['p', 'v']
+        as: ['p', 'v'],
       };
       const quantile = new QuantileTransformNode(null, transform);
       expect(quantile.assemble()).toEqual({
@@ -17,33 +17,33 @@ describe('compile/data/fold', () => {
         field: 'x',
         groupby: ['a', 'b'],
         step: 0.05,
-        as: ['p', 'v']
+        as: ['p', 'v'],
       });
     });
 
     it('should handle missing "as" field', () => {
       const transform: Transform = {
-        quantile: 'x'
+        quantile: 'x',
       };
 
       const quantile = new QuantileTransformNode(null, transform);
       expect(quantile.assemble()).toEqual({
         type: 'quantile',
         field: 'x',
-        as: ['prob', 'value']
+        as: ['prob', 'value'],
       });
     });
 
     it('should handle partial "as" field', () => {
       const transform: Transform = {
         quantile: 'x',
-        as: ['A'] as any
+        as: ['A'] as any,
       };
       const quantile = new QuantileTransformNode(null, transform);
       expect(quantile.assemble()).toEqual({
         type: 'quantile',
         field: 'x',
-        as: ['A', 'value']
+        as: ['A', 'value'],
       });
     });
   });
@@ -52,7 +52,7 @@ describe('compile/data/fold', () => {
     it('should return proper dependent fields', () => {
       const transform: Transform = {
         quantile: 'x',
-        groupby: ['f', 'g']
+        groupby: ['f', 'g'],
       };
       const quantile = new QuantileTransformNode(null, transform);
       expect(quantile.dependentFields()).toEqual(new Set(['x', 'f', 'g']));
@@ -60,7 +60,7 @@ describe('compile/data/fold', () => {
 
     it('should return proper dependent fields without groupby', () => {
       const transform: Transform = {
-        quantile: 'x'
+        quantile: 'x',
       };
       const quantile = new QuantileTransformNode(null, transform);
       expect(quantile.dependentFields()).toEqual(new Set(['x']));
@@ -70,7 +70,7 @@ describe('compile/data/fold', () => {
   describe('producedFields', () => {
     it('should return proper produced fields for no "as"', () => {
       const transform: Transform = {
-        quantile: 'x'
+        quantile: 'x',
       };
       const quantile = new QuantileTransformNode(null, transform);
       expect(quantile.producedFields()).toEqual(new Set(['prob', 'value']));
@@ -79,7 +79,7 @@ describe('compile/data/fold', () => {
     it('should return proper produced fields for complete "as"', () => {
       const transform: Transform = {
         quantile: 'x',
-        as: ['A', 'B']
+        as: ['A', 'B'],
       };
       const quantile = new QuantileTransformNode(null, transform);
       expect(quantile.producedFields()).toEqual(new Set(['A', 'B']));
@@ -90,7 +90,7 @@ describe('compile/data/fold', () => {
     it('should generate the correct hash', () => {
       const transform: Transform = {
         quantile: 'x',
-        as: ['A', 'B']
+        as: ['A', 'B'],
       };
       const quantile = new QuantileTransformNode(null, transform);
       expect(quantile.hash()).toBe('QuantileTransform {"as":["A","B"],"quantile":"x"}');

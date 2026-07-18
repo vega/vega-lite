@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {
     "url": "https://cdn.jsdelivr.net/npm/vega-datasets@v1.29.0/data/cars.json"
   },

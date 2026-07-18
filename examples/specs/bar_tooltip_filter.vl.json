@@ -1,0 +1,27 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A bar chart with fields that are conditionally omitted from generated tooltips.",
+  "width": 420,
+  "height": 260,
+  "data": {
+    "values": [
+      {"category": "A", "plotValue": 10, "validTooltip": 10, "nonZeroTooltip": 0},
+      {"category": "B", "plotValue": 7, "validTooltip": 7, "nonZeroTooltip": 1},
+      {"category": "C", "plotValue": 5, "validTooltip": null, "nonZeroTooltip": 1},
+      {"category": "D", "plotValue": 4, "validTooltip": 4, "nonZeroTooltip": 0},
+      {"category": "E", "plotValue": 12, "validTooltip": 12, "nonZeroTooltip": 1},
+      {"category": "F", "plotValue": 6, "validTooltip": 6, "nonZeroTooltip": 1}
+    ]
+  },
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "category", "type": "nominal"},
+    "y": {"field": "plotValue", "type": "quantitative"},
+    "color": {"field": "nonZeroTooltip", "type": "nominal"},
+    "tooltip": [
+      {"field": "category", "type": "nominal"},
+      {"field": "validTooltip", "type": "quantitative", "filter": {"valid": true}},
+      {"field": "nonZeroTooltip", "type": "quantitative", "filter": {"not": {"equal": 0}}}
+    ]
+  }
+}

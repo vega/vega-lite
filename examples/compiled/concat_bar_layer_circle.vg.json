@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A dashboard with cross-highlighting.",
   "background": "white",
   "padding": 5,
@@ -111,8 +111,8 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 200},
-    {"name": "concat_0_height", "value": 200},
+    {"name": "concat_0_width", "value": 300},
+    {"name": "concat_0_height", "value": 300},
     {"name": "concat_1_width", "value": 330},
     {"name": "concat_1_height", "value": 120},
     {
@@ -303,6 +303,7 @@
           "from": {"data": "data_3"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": [
                 {
                   "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
@@ -312,7 +313,7 @@
               ],
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+                "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? isArray(datum[\"Major Genre\"]) ? join(datum[\"Major Genre\"], ' ') : datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "Major Genre"},
               "width": {"signal": "max(0.25, bandwidth('concat_1_x'))"},
@@ -370,7 +371,7 @@
         ]
       },
       "range": [
-        0,
+        4,
         {
           "signal": "pow(0.95 * min(concat_0_width / ((concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.stop - concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.start) / concat_0_layer_1_bin_maxbins_10_IMDB_Rating_bins.step), concat_0_height / ((concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop - concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start) / concat_0_layer_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.step)), 2)"
         }

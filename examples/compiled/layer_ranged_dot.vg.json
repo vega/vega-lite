@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A ranged dot plot that uses 'layer' to convey changing life expectancy for the five most populous countries (between 1955 and 2000).",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {
@@ -64,13 +64,13 @@
           "name": "layer_0_marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"country\"]"},
+          "sort": {"field": "y"},
           "from": {"data": "faceted_path_layer_0_main"},
           "encode": {
             "update": {
               "stroke": {"value": "#db646f"},
               "description": {
-                "signal": "\"Life Expectancy (years): \" + (format(datum[\"life_expect\"], \"\")) + \"; Country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"])"
+                "signal": "\"Life Expectancy (years): \" + (format(datum[\"life_expect\"], \"\")) + \"; Country: \" + (isValid(datum[\"country\"]) ? isArray(datum[\"country\"]) ? join(datum[\"country\"], ' ') : datum[\"country\"] : \"\"+datum[\"country\"]) + \"; country: \" + (isValid(datum[\"country\"]) ? isArray(datum[\"country\"]) ? join(datum[\"country\"], ' ') : datum[\"country\"] : \"\"+datum[\"country\"])"
               },
               "x": {"scale": "x", "field": "life_expect"},
               "y": {"scale": "y", "field": "country"},
@@ -93,7 +93,7 @@
           "fill": {"scale": "color", "field": "year"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Life Expectancy (years): \" + (format(datum[\"life_expect\"], \"\")) + \"; Country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; Year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+            "signal": "\"Life Expectancy (years): \" + (format(datum[\"life_expect\"], \"\")) + \"; Country: \" + (isValid(datum[\"country\"]) ? isArray(datum[\"country\"]) ? join(datum[\"country\"], ' ') : datum[\"country\"] : \"\"+datum[\"country\"]) + \"; Year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"])"
           },
           "x": {"scale": "x", "field": "life_expect"},
           "y": {"scale": "y", "field": "country"},

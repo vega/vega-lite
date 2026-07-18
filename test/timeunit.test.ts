@@ -1,4 +1,4 @@
-import {keys} from '../src';
+import {keys} from '../src/index.js';
 import {
   BINNED_TIMEUNIT_INDEX,
   containsTimeUnit,
@@ -6,8 +6,8 @@ import {
   formatExpression,
   isBinnedTimeUnit,
   LOCAL_MULTI_TIMEUNIT_INDEX,
-  TIMEUNIT_PARTS
-} from '../src/timeunit';
+  TIMEUNIT_PARTS,
+} from '../src/timeunit.js';
 
 describe('timeUnit', () => {
   describe('containsTimeUnit', () => {
@@ -49,7 +49,7 @@ describe('timeUnit', () => {
   describe('fieldExpr', () => {
     it('should return correct field expression for yearmonthdatehoursminutesseconds', () => {
       expect(fieldExpr('yearmonthdatehoursminutesseconds', 'x')).toBe(
-        'datetime(year(datum["x"]), month(datum["x"]), date(datum["x"]), hours(datum["x"]), minutes(datum["x"]), seconds(datum["x"]), 0)'
+        'datetime(year(datum["x"]), month(datum["x"]), date(datum["x"]), hours(datum["x"]), minutes(datum["x"]), seconds(datum["x"]), 0)',
       );
     });
 
@@ -79,43 +79,43 @@ describe('timeUnit', () => {
   describe('template', () => {
     it('should return correct template for yearmonthdatehoursminutesseconds', () => {
       expect(formatExpression('yearmonthdatehoursminutesseconds', 'datum.x', false)).toBe(
-        'timeFormat(datum.x, timeUnitSpecifier(["year","month","date","hours","minutes","seconds"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'timeFormat(datum.x, timeUnitSpecifier(["year","month","date","hours","minutes","seconds"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
     it('should return correct template for yearmonth (No comma)', () => {
       expect(formatExpression('yearmonth', 'datum.x', false)).toBe(
-        'timeFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'timeFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
     it('should return correct template for day', () => {
       expect(formatExpression('day', 'datum.x', false)).toBe(
-        'timeFormat(datum.x, timeUnitSpecifier(["day"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'timeFormat(datum.x, timeUnitSpecifier(["day"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
     it('should return correct template for day (shortened)', () => {
       expect(formatExpression('day', 'datum.x', false)).toBe(
-        'timeFormat(datum.x, timeUnitSpecifier(["day"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'timeFormat(datum.x, timeUnitSpecifier(["day"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
     it('should return correct template for QUARTER', () => {
       expect(formatExpression('quarter', 'datum.x', false)).toBe(
-        'timeFormat(datum.x, timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'timeFormat(datum.x, timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
     it('should return correct template for yearquarter', () => {
       expect(formatExpression('yearquarter', 'datum.x', false)).toBe(
-        'timeFormat(datum.x, timeUnitSpecifier(["year","quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'timeFormat(datum.x, timeUnitSpecifier(["year","quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
     it('should return correct template for milliseconds', () => {
       expect(formatExpression('milliseconds', 'datum.x', false)).toBe(
-        'timeFormat(datum.x, timeUnitSpecifier(["milliseconds"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'timeFormat(datum.x, timeUnitSpecifier(["milliseconds"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
@@ -125,23 +125,23 @@ describe('timeUnit', () => {
 
     it('should return correct template for yearmonth (No comma) with utc scale', () => {
       expect(formatExpression('yearmonth', 'datum.x', true)).toBe(
-        'utcFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'utcFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
 
     it('should return correct template for utcyearmonth (No comma)', () => {
       expect(formatExpression('utcyearmonth', 'datum.x', true)).toBe(
-        'utcFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
+        'utcFormat(datum.x, timeUnitSpecifier(["year","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
       );
     });
   });
 
   describe('isBinnedTimeUnit', () => {
-    it.each(keys(BINNED_TIMEUNIT_INDEX))('return true for binned time unit strings', unit => {
+    it.each(keys(BINNED_TIMEUNIT_INDEX))('return true for binned time unit strings', (unit) => {
       expect(isBinnedTimeUnit(unit)).toBe(true);
     });
 
-    it.each(keys(LOCAL_MULTI_TIMEUNIT_INDEX))('return true for binned time unit params', unit => {
+    it.each(keys(LOCAL_MULTI_TIMEUNIT_INDEX))('return true for binned time unit params', (unit) => {
       expect(isBinnedTimeUnit({unit, binned: true})).toBe(true);
     });
   });

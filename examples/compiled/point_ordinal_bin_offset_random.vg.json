@@ -1,8 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 300,
   "style": "cell",
   "data": [
     {
@@ -59,7 +59,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon (binned): \" + (!isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || !isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\")) + \"; random: \" + (format(datum[\"random\"], \"\"))"
+            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon (binned): \" + (isValid(datum[\"Miles_per_Gallon\"]) ? isArray(datum[\"Miles_per_Gallon\"]) ? join(datum[\"Miles_per_Gallon\"], ' ') : datum[\"Miles_per_Gallon\"] : \"\"+datum[\"Miles_per_Gallon\"]) + \"; random: \" + (format(datum[\"random\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {

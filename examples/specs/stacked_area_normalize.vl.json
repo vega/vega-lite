@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "data": {"url": "data/unemployment-across-industries.json"},
   "width": 300, "height": 200,
   "mark": "area",

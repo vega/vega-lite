@@ -1,8 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -37,13 +37,13 @@
       "name": "marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"x_Name_sort_index\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"Name: \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"]) + \"; Score: \" + (format(datum[\"Score\"], \"\"))"
+            "signal": "\"Name: \" + (isValid(datum[\"Name\"]) ? isArray(datum[\"Name\"]) ? join(datum[\"Name\"], ' ') : datum[\"Name\"] : \"\"+datum[\"Name\"]) + \"; Score: \" + (format(datum[\"Score\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Name"},
           "y": {"scale": "y", "field": "Score"},

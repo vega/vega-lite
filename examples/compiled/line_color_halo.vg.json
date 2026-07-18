@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Multi-series Line Chart with Halo. Use pivot and repeat-layer as a workaround to facet groups of lines and their halo strokes. See https://github.com/vega/vega-lite/issues/6192 for more discussion.",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -27,14 +27,14 @@
       "name": "child__layer_AAPL_layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"AAPL\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"AAPL\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AAPL"},
@@ -48,13 +48,13 @@
       "name": "child__layer_AAPL_layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"scale": "stroke", "value": "AAPL"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"AAPL\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"AAPL\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AAPL"},
@@ -68,14 +68,14 @@
       "name": "child__layer_AMZN_layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"AMZN\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"AMZN\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AMZN"},
@@ -89,13 +89,13 @@
       "name": "child__layer_AMZN_layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"scale": "stroke", "value": "AMZN"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"AMZN\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"AMZN\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AMZN"},
@@ -109,14 +109,14 @@
       "name": "child__layer_GOOG_layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"GOOG\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"GOOG\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "GOOG"},
@@ -130,13 +130,13 @@
       "name": "child__layer_GOOG_layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"scale": "stroke", "value": "GOOG"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"GOOG\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"GOOG\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "GOOG"},
@@ -150,14 +150,14 @@
       "name": "child__layer_IBM_layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"IBM\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"IBM\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "IBM"},
@@ -171,13 +171,13 @@
       "name": "child__layer_IBM_layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"scale": "stroke", "value": "IBM"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"IBM\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"IBM\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "IBM"},
@@ -191,14 +191,14 @@
       "name": "child__layer_MSFT_layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"MSFT\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"MSFT\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "MSFT"},
@@ -212,13 +212,13 @@
       "name": "child__layer_MSFT_layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": "x"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"scale": "stroke", "value": "MSFT"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"MSFT\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"MSFT\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "MSFT"},

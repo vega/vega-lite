@@ -1,0 +1,14 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "data": {
+    "values": [{"monthly(date_trunc('day', date))": "2011-12-10"}, {"monthly(date_trunc('day', date))": "2011-10-12"}]
+  },
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "timeUnit": "binnedutcyearmonth",
+      "field": "monthly(date_trunc(\\'day\\', date))",
+      "type": "temporal"
+    }
+  }
+}

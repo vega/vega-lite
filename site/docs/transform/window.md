@@ -62,11 +62,28 @@ The window transform performs calculations over sorted groups of data objects. T
 
 {% include table.html props="field,order" source="SortField" %}
 
+The `sort` property determines the order of records within each window partition before window operations are computed.
+
+For rank-like operations such as `rank`, `dense_rank`, `percent_rank`, `cume_dist`, and `ntile`, you should explicitly specify `sort` to define what is being ranked. For example, to rank rows by descending `score`:
+
+```json
+{
+  "transform": [
+    {
+      "window": [{"op": "rank", "as": "rank"}],
+      "sort": [{"field": "score", "order": "descending"}]
+    }
+  ]
+}
+```
+
+Without an explicit `sort`, ranking results depend on the input order of the data stream rather than a declared field ordering.
+
 {:#ops}
 
 ## Window Only Operation Reference
 
-The valid operations include all [aggregate operations](../aggregate/#ops) plus the following window operations.
+The valid operations include all [aggregate operations](aggregate.html#ops) plus the following window operations.
 
 | Operation | Parameter | Description |
 | :-- | :-: | :-- |
@@ -96,7 +113,7 @@ Here we use the window transform with `frame: [null, 0]` to accumulate count in 
 
 ### Rank Chart
 
-We can also use `rank` operator to calculate ranks over time.
+We can also use `rank` operator to calculate ranks over time. In this example, the `sort` array defines that teams should be ranked by descending `point` and then descending `diff`.
 
 <div class="vl-example" data-name="window_rank"></div>
 
@@ -117,3 +134,7 @@ Here we use window transform to visualize how the average MPG for vehicles have 
 ### Percent of Total
 
 The window transform _can_ be used to compute an aggregate and attach it to all records in order to derive a percent of total, however, a simpler approach is to use the [join aggregate](joinaggregate.html) transform instead.
+
+### Using window transform to impute missing values
+
+<div class="vl-example" data-name="window_impute_null"></div>

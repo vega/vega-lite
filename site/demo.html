@@ -27,28 +27,36 @@
     <script>
       // Assign the specification to a local variable vlSpec.
       var vlSpec = {
-        "data": {
-          "values": [
-            {"a": "C", "b": 2}, {"a": "C", "b": 7}, {"a": "C", "b": 4},
-            {"a": "D", "b": 1}, {"a": "D", "b": 2}, {"a": "D", "b": 6},
-            {"a": "E", "b": 8}, {"a": "E", "b": 4}, {"a": "E", "b": 7}
-          ]
+        data: {
+          values: [
+            {a: 'C', b: 2},
+            {a: 'C', b: 7},
+            {a: 'C', b: 4},
+            {a: 'D', b: 1},
+            {a: 'D', b: 2},
+            {a: 'D', b: 6},
+            {a: 'E', b: 8},
+            {a: 'E', b: 4},
+            {a: 'E', b: 7},
+          ],
         },
-        "mark": "bar",
-        "encoding": {
-          "y": {"field": "a", "type": "nominal"},
-          "x": {
-            "aggregate": "average", "field": "b", "type": "quantitative",
-            "axis": {
-              "title": "Average of b"
-            }
-          }
-        }
+        mark: 'bar',
+        encoding: {
+          y: {field: 'a', type: 'nominal'},
+          x: {
+            aggregate: 'average',
+            field: 'b',
+            type: 'quantitative',
+            axis: {
+              title: 'Average of b',
+            },
+          },
+        },
       };
 
       // optional argument passed to Vega-Embed to specify Vega-Lite spec. More info at https://github.com/vega/vega-embed
       var opt = {
-        mode: 'vega-lite'
+        mode: 'vega-lite',
       };
 
       // Embed the visualization in the container with id `vis`

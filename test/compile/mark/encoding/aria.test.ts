@@ -1,5 +1,5 @@
-import {aria} from '../../../../src/compile/mark/encode';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
+import {aria} from '../../../../src/compile/mark/encode/index.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util.js';
 
 describe('compile/mark/encoding/aria', () => {
   it('aria should be added to bar mark', () => {
@@ -8,14 +8,14 @@ describe('compile/mark/encoding/aria', () => {
       encoding: {
         x: {
           field: 'category',
-          type: 'ordinal'
+          type: 'ordinal',
         },
         y: {
           field: 'value',
-          type: 'quantitative'
-        }
+          type: 'quantitative',
+        },
       },
-      data: {values: []}
+      data: {values: []},
     });
 
     const ariaMixins = aria(model);
@@ -23,11 +23,11 @@ describe('compile/mark/encoding/aria', () => {
     expect(ariaMixins).toEqual({
       description: {
         signal:
-          '"category: " + (isValid(datum["category"]) ? datum["category"] : ""+datum["category"]) + "; value: " + (format(datum["value"], ""))'
+          '"category: " + (isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], \' \') : datum["category"] : ""+datum["category"]) + "; value: " + (format(datum["value"], ""))',
       },
       ariaRoleDescription: {
-        value: 'bar'
-      }
+        value: 'bar',
+      },
     });
   });
 
@@ -36,19 +36,19 @@ describe('compile/mark/encoding/aria', () => {
       mark: {
         type: 'bar',
         aria: false,
-        description: 'this will not show'
+        description: 'this will not show',
       },
       encoding: {
         x: {
           field: 'category',
-          type: 'ordinal'
+          type: 'ordinal',
         },
         y: {
           field: 'value',
-          type: 'quantitative'
-        }
+          type: 'quantitative',
+        },
       },
-      data: {values: []}
+      data: {values: []},
     });
 
     const ariaMixins = aria(model);
@@ -62,13 +62,13 @@ describe('compile/mark/encoding/aria', () => {
       encoding: {
         x: {
           field: 'category',
-          type: 'ordinal'
-        }
+          type: 'ordinal',
+        },
       },
       data: {values: []},
       config: {
-        aria: false
-      }
+        aria: false,
+      },
     });
 
     const ariaMixins = aria(model);
@@ -80,26 +80,49 @@ describe('compile/mark/encoding/aria', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: {
         type: 'bar',
-        description: 'An awesome mark'
+        description: 'An awesome mark',
       },
       encoding: {
         x: {
           field: 'category',
-          type: 'ordinal'
-        }
+          type: 'ordinal',
+        },
       },
       data: {values: []},
       config: {
-        aria: false
-      }
+        aria: false,
+      },
     });
 
     const ariaMixins = aria(model);
 
     expect(ariaMixins).toEqual({
       description: {
-        value: 'An awesome mark'
-      }
+        value: 'An awesome mark',
+      },
+    });
+  });
+
+  it('should support description encoding', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        description: {
+          value: 'An encoded description',
+        },
+      },
+      data: {values: []},
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      ariaRoleDescription: {
+        value: 'bar',
+      },
+      description: {
+        value: 'An encoded description',
+      },
     });
   });
 
@@ -107,26 +130,88 @@ describe('compile/mark/encoding/aria', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: {
         type: 'bar',
-        ariaRoleDescription: 'mark'
+        ariaRoleDescription: 'mark',
       },
       encoding: {
         x: {
           field: 'category',
-          type: 'ordinal'
-        }
+          type: 'ordinal',
+        },
       },
-      data: {values: []}
+      data: {values: []},
     });
 
     const ariaMixins = aria(model);
 
     expect(ariaMixins).toEqual({
       ariaRoleDescription: {
-        value: 'mark'
+        value: 'mark',
       },
       description: {
-        signal: '"category: " + (isValid(datum["category"]) ? datum["category"] : ""+datum["category"])'
-      }
+        signal:
+          '"category: " + (isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], \' \') : datum["category"] : ""+datum["category"])',
+      },
+    });
+  });
+
+  it('omits internal/private fields from the generated description', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        x: {
+          field: 'category',
+          type: 'ordinal',
+        },
+        detail: {
+          field: '__internal_key',
+          type: 'nominal',
+        },
+      },
+      data: {values: []},
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      description: {
+        signal:
+          '"category: " + (isValid(datum["category"]) ? isArray(datum["category"]) ? join(datum["category"], \' \') : datum["category"] : ""+datum["category"])',
+      },
+      ariaRoleDescription: {
+        value: 'bar',
+      },
+    });
+  });
+
+  it('omits a filtered tooltip field from the generated description when its predicate fails', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        tooltip: [
+          {
+            field: 'Date',
+            type: 'nominal',
+          },
+          {
+            field: 'type2',
+            type: 'quantitative',
+            filter: {valid: true},
+          },
+        ],
+      },
+      data: {values: []},
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      description: {
+        signal:
+          'slice("; Date: " + (isValid(datum["Date"]) ? isArray(datum["Date"]) ? join(datum["Date"], \' \') : datum["Date"] : ""+datum["Date"]) + ((isValid(datum["type2"]) && isFinite(+datum["type2"])) ? "; type2: " + (format(datum["type2"], "")) : ""), 2)',
+      },
+      ariaRoleDescription: {
+        value: 'bar',
+      },
     });
   });
 });

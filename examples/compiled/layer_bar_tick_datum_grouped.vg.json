@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "A vertical box plot showing median, min, and max body mass of penguins.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
@@ -46,7 +46,7 @@
           "fill": {"scale": "color", "field": "Origin"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Mean of Acceleration: \" + (format(datum[\"mean_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Mean of Acceleration: \" + (format(datum[\"mean_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
           "x": {
             "scale": "x",
@@ -70,15 +70,15 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
-          "xc": {
+          "x": {
             "scale": "x",
             "field": "Cylinders",
-            "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
+            "offset": {"scale": "xOffset", "field": "Origin"}
           },
+          "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "yc": {"scale": "y", "value": 10},
-          "width": {"value": 15},
           "height": {"value": 1}
         }
       }

@@ -1,7 +1,24 @@
-import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig} from 'vega-util';
-import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical';
+import {
+  hasOwnProperty,
+  isNumber,
+  isString,
+  mergeConfig as mergeConfig_,
+  splitAccessPath,
+  stringValue,
+  writeConfig as writeConfig_,
+  isObject,
+} from 'vega-util';
+import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical.js';
 
 export const duplicate = structuredClone;
+
+export function mergeConfig<C extends object>(...configs: C[]): C {
+  return mergeConfig_(...(configs as any[])) as C;
+}
+
+export function writeConfig<C extends object>(config: C, key: string, value: any, recurse?: boolean | object): void {
+  writeConfig_(config as any, key, value, recurse as any);
+}
 
 export function never(message: string): never {
   throw new Error(message);
@@ -14,7 +31,6 @@ export function never(message: string): never {
  * pick(object, ['a', 'c']);
  * // → {'a': 1, 'c': 3}
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function pick<T extends object, K extends keyof T>(obj: T, props: readonly K[]): Pick<T, K> {
   const copy: any = {};
   for (const prop of props) {
@@ -29,7 +45,6 @@ export function pick<T extends object, K extends keyof T>(obj: T, props: readonl
  * The opposite of _.pick; this method creates an object composed of the own
  * and inherited enumerable string keyed properties of object that are not omitted.
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function omit<T extends object, K extends keyof T>(obj: T, props: readonly K[]): Omit<T, K> {
   const copy = {...(obj as any)};
   for (const prop of props) {
@@ -41,8 +56,8 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: readonl
 /**
  * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
-Set.prototype['toJSON'] = function () {
-  return `Set(${[...this].map(x => stringify(x)).join(',')})`;
+(Set.prototype as any)['toJSON'] = function () {
+  return `Set(${[...this].map((x) => stringify(x)).join(',')})`;
 };
 
 /**
@@ -134,7 +149,7 @@ export function unique<T>(values: readonly T[], f: (item: T) => string | number)
     if (v in u) {
       continue;
     }
-    u[v] = 1;
+    (u as any)[v] = 1;
     results.push(val);
   }
   return results;
@@ -205,7 +220,6 @@ export function fieldIntersection(a: ReadonlySet<string>, b: ReadonlySet<string>
   return hasIntersection(prefixGenerator(a), prefixGenerator(b));
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function isEmpty(obj: object) {
   return keys(obj).length === 0;
 }
@@ -213,9 +227,11 @@ export function isEmpty(obj: object) {
 // This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
 export const keys = Object.keys as <T>(o: T) => Extract<keyof T, string>[];
 
-export const vals = Object.values;
+// Stricter version from https://github.com/microsoft/TypeScript/issues/51572#issuecomment-1319153323
+export const vals = Object.values as <T>(obj: T) => Array<T[keyof T]>;
 
-export const entries = Object.entries;
+// Stricter version from https://github.com/microsoft/TypeScript/issues/51572#issuecomment-1319153323
+export const entries = Object.entries as <T>(obj: T) => Array<[keyof T, T[keyof T]]>;
 
 // Using mapped type to declare a collect of flags for a string literal type S
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types
@@ -225,6 +241,12 @@ export function isBoolean(b: any): b is boolean {
   return b === true || b === false;
 }
 
+/**
+ * Returns true if the value is a primitive type.
+ */
+export function isPrimitive(v: any): v is string | number | boolean {
+  return isString(v) || isNumber(v) || isBoolean(v);
+}
 /**
  * Convert a string into a valid variable name
  */
@@ -255,7 +277,7 @@ export function deleteNestedProperty(obj: any, orderedProps: string[]) {
   if (orderedProps.length === 0) {
     return true;
   }
-  const prop = orderedProps.shift()!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+  const prop = orderedProps.shift()!;
   if (prop in obj && deleteNestedProperty(obj[prop], orderedProps)) {
     delete obj[prop];
   }
@@ -289,6 +311,27 @@ export function accessPathWithDatum(path: string, datum = 'datum') {
  */
 export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'datum.datum' = 'datum') {
   return `${datum}[${stringValue(splitAccessPath(path).join('.'))}]`;
+}
+
+/**
+ * Return access with datum to **an unescaped path**.
+ *
+ * ```ts
+ * console.log(accessWithDatumToUnescapedPath("vega's favorite"))
+ * // "datum['vega\\'s favorite']"
+ * ```
+ *
+ * @param path The unescaped path name. E.g., `"a.b"`, `"vega's favorite"`. (Note
+ * that the field defs take escaped strings like `"a\\.b"`, `"vega\\'s favorite"`,
+ * but this function is for the unescaped field/path)
+ */
+export function accessWithDatumToUnescapedPath(unescapedPath: string) {
+  const singleQuoteEscapedPath = unescapedPath.replaceAll("'", "\\'");
+  return `datum['${singleQuoteEscapedPath}']`;
+}
+
+export function unescapeSingleQuoteAndPathDot(escapedPath: string) {
+  return escapedPath.replaceAll("\\'", "'").replaceAll('\\.', '.');
 }
 
 function escapePathAccess(string: string) {
@@ -336,12 +379,7 @@ export function accessPathDepth(path: string) {
  * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
  */
 export function getFirstDefined<T>(...args: readonly T[]): T | undefined {
-  for (const arg of args) {
-    if (arg !== undefined) {
-      return arg;
-    }
-  }
-  return undefined;
+  return args.find((a) => a !== undefined);
 }
 
 // variable used to generate id
@@ -407,32 +445,32 @@ export function deepEqual(a: any, b: any) {
     if (a.constructor.name !== b.constructor.name) return false;
 
     let length;
-    let i;
+    let i: number;
 
     if (Array.isArray(a)) {
       length = a.length;
       if (length != b.length) return false;
-      for (i = length; i-- !== 0; ) if (!deepEqual(a[i], b[i])) return false;
+      for (i = length; i-- !== 0;) if (!deepEqual(a[i], b[i])) return false;
       return true;
     }
 
     if (a instanceof Map && b instanceof Map) {
       if (a.size !== b.size) return false;
-      for (i of a.entries()) if (!b.has(i[0])) return false;
-      for (i of a.entries()) if (!deepEqual(i[1], b.get(i[0]))) return false;
+      for (const e of a.entries()) if (!b.has(e[0])) return false;
+      for (const e of a.entries()) if (!deepEqual(e[1], b.get(e[0]))) return false;
       return true;
     }
 
     if (a instanceof Set && b instanceof Set) {
       if (a.size !== b.size) return false;
-      for (i of a.entries()) if (!b.has(i[0])) return false;
+      for (const e of a.entries()) if (!b.has(e[0])) return false;
       return true;
     }
 
     if (ArrayBuffer.isView(a) && ArrayBuffer.isView(b)) {
       length = (a as any).length;
       if (length != (b as any).length) return false;
-      for (i = length; i-- !== 0; ) if (a[i] !== b[i]) return false;
+      for (i = length; i-- !== 0;) if ((a as any)[i] !== (b as any)[i]) return false;
       return true;
     }
 
@@ -446,9 +484,9 @@ export function deepEqual(a: any, b: any) {
     length = ks.length;
     if (length !== Object.keys(b).length) return false;
 
-    for (i = length; i-- !== 0; ) if (!Object.prototype.hasOwnProperty.call(b, ks[i])) return false;
+    for (i = length; i-- !== 0;) if (!Object.prototype.hasOwnProperty.call(b, ks[i])) return false;
 
-    for (i = length; i-- !== 0; ) {
+    for (i = length; i-- !== 0;) {
       const key = ks[i];
 
       if (!deepEqual(a[key], b[key])) return false;
@@ -470,22 +508,23 @@ export function stringify(data: any) {
   const seen: any[] = [];
 
   return (function _stringify(node: any) {
-    if (node && node.toJSON && typeof node.toJSON === 'function') {
+    if (node?.toJSON && typeof node.toJSON === 'function') {
       node = node.toJSON();
     }
 
     if (node === undefined) return undefined;
-    if (typeof node == 'number') return isFinite(node) ? '' + node : 'null';
+    if (typeof node == 'number') return isFinite(node) ? `${node}` : 'null';
     if (typeof node !== 'object') return JSON.stringify(node);
 
-    let i, out;
+    let i;
+    let out;
     if (Array.isArray(node)) {
       out = '[';
       for (i = 0; i < node.length; i++) {
         if (i) out += ',';
         out += _stringify(node[i]) || 'null';
       }
-      return out + ']';
+      return `${out}]`;
     }
 
     if (node === null) return 'null';
@@ -503,9 +542,20 @@ export function stringify(data: any) {
 
       if (!value) continue;
       if (out) out += ',';
-      out += JSON.stringify(key) + ':' + value;
+      out += `${JSON.stringify(key)}:${value}`;
     }
     seen.splice(seenIndex, 1);
     return `{${out}}`;
   })(data);
+}
+
+/**
+ * Check if the input object has the property and it's not undefined.
+ *
+ * @param object the object
+ * @param property the property to search
+ * @returns if the object has the property and it's not undefined.
+ */
+export function hasProperty<T>(obj: T, key: string | number | symbol): key is keyof T {
+  return isObject(obj) && hasOwnProperty(obj, key) && (obj as any)[key] !== undefined;
 }

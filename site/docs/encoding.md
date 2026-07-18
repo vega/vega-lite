@@ -125,7 +125,7 @@ To encode a particular field in the data set with an encoding channel, the chann
 
 All field definitions support the following properties:
 
-{% include table.html props="field,type,bin,timeUnit,aggregate,band,title" source="TypedFieldDef" %}
+{% include table.html props="field,type,bin,timeUnit,aggregate,band,title,tooltip" source="TypedFieldDef" %}
 
 In addition, field definitions for different encoding channels may support the following properties:
 
@@ -213,7 +213,7 @@ In addition to the general [field definition properties](#field-def), field defi
 
 **Note:** `x2` and `y2` do not have their own definitions for `scale`, `axis`, `sort`, and `stack` since they share the same scales and axes with `x` and `y` respectively.
 
-{:#positon-offset}
+{:#position-offset}
 
 ## Position Offset Channels
 
@@ -320,6 +320,10 @@ In addition to the constant `value`, [value definitions](#value-def) of `text` a
 ### Multiple Field Definitions for Tooltips
 
 Similar to [`detail`](#detail), you can use an array of field definitions. Vega-Lite will display a tooltip with multiple fields. [Vega tooltip](https://github.com/vega/vega-tooltip/) will display a table that shows the name of the field and its value. See the [tooltip](tooltip.html) page for details.
+
+Field definitions in the array may also include a `filter` predicate to omit individual fields at runtime:
+
+{% include table.html props="filter" source="TooltipFieldDef" %}
 
 {:#href}
 

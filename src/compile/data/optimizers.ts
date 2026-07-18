@@ -1,17 +1,17 @@
-import {Parse} from '../../data';
-import {Dict, fieldIntersection, hash, hasIntersection, isEmpty, keys, some} from '../../util';
-import {Model} from '../model';
-import {requiresSelectionId} from '../selection';
-import {AggregateNode} from './aggregate';
-import {BinNode} from './bin';
-import {DataFlowNode, OutputNode} from './dataflow';
-import {FacetNode} from './facet';
-import {FilterNode} from './filter';
-import {ParseNode} from './formatparse';
-import {IdentifierNode} from './identifier';
-import {BottomUpOptimizer, isDataSourceNode, Optimizer, TopDownOptimizer} from './optimizer';
-import {SourceNode} from './source';
-import {TimeUnitNode} from './timeunit';
+import {Parse} from '../../data.js';
+import {Dict, fieldIntersection, hash, hasIntersection, isEmpty, keys, some} from '../../util.js';
+import {Model} from '../model.js';
+import {requiresSelectionId} from '../selection/index.js';
+import {AggregateNode} from './aggregate.js';
+import {BinNode} from './bin.js';
+import {DataFlowNode, OutputNode} from './dataflow.js';
+import {FacetNode} from './facet.js';
+import {FilterNode} from './filter.js';
+import {ParseNode} from './formatparse.js';
+import {IdentifierNode} from './identifier.js';
+import {BottomUpOptimizer, isDataSourceNode, Optimizer, TopDownOptimizer} from './optimizer.js';
+import {SourceNode} from './source.js';
+import {TimeUnitNode} from './timeunit.js';
 
 /**
  * Merge identical nodes at forks by comparing hashes.
@@ -29,8 +29,8 @@ export class MergeIdenticalNodes extends TopDownOptimizer {
   }
 
   public run(node: DataFlowNode) {
-    const hashes = node.children.map(x => x.hash());
-    const buckets: {hash?: DataFlowNode[]} = {};
+    const hashes = node.children.map((x) => x.hash());
+    const buckets: Record<string | number, DataFlowNode[]> = {};
 
     for (let i = 0; i < hashes.length; i++) {
       if (buckets[hashes[i]] === undefined) {
@@ -64,12 +64,10 @@ export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
     if (node instanceof IdentifierNode) {
       // Only preserve IdentifierNodes if we have default discrete selections
       // in our model tree, and if the nodes come after tuple producing nodes.
-      if (
-        !(
-          this.requiresSelectionId &&
-          (isDataSourceNode(node.parent) || node.parent instanceof AggregateNode || node.parent instanceof ParseNode)
-        )
-      ) {
+      if (!(
+        this.requiresSelectionId &&
+        (isDataSourceNode(node.parent) || node.parent instanceof AggregateNode || node.parent instanceof ParseNode)
+      )) {
         this.setModified();
         node.remove();
       }
@@ -341,7 +339,7 @@ export class MergeBins extends BottomUpOptimizer {
 export class MergeOutputs extends BottomUpOptimizer {
   public run(node: DataFlowNode) {
     const children = [...node.children];
-    const hasOutputChild = some(children, child => child instanceof OutputNode);
+    const hasOutputChild = some(children, (child) => child instanceof OutputNode);
 
     if (!hasOutputChild || node.numChildren() <= 1) {
       return;

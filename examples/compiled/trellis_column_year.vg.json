@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Stock price mean per quarter broken down by years.",
   "background": "white",
   "padding": 5,
@@ -42,7 +42,7 @@
       "name": "child_width",
       "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
     },
-    {"name": "child_height", "value": 200}
+    {"name": "child_height", "value": 300}
   ],
   "layout": {
     "padding": 20,
@@ -152,13 +152,13 @@
               "name": "child_marks",
               "type": "line",
               "style": ["line"],
-              "sort": {"field": "datum[\"quarter_date\"]"},
+              "sort": {"field": "x"},
               "from": {"data": "faceted_path_child_main"},
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "symbol"},
                   "description": {
-                    "signal": "\"date (quarter): \" + (timeFormat(datum[\"quarter_date\"], timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                    "signal": "\"date (quarter): \" + (timeFormat(datum[\"quarter_date\"], timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? isArray(datum[\"symbol\"]) ? join(datum[\"symbol\"], ' ') : datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
                   },
                   "x": {"scale": "x", "field": "quarter_date"},
                   "y": {"scale": "y", "field": "mean_price"},

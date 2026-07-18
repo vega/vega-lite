@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
   "description": "Using `labelExpr` to show only initial letters of month names.",
   "data": {"url": "data/seattle-weather.csv"},
   "mark": "bar",

@@ -1,7 +1,7 @@
 import {KDETransform as VgKDETransform} from 'vega';
-import {DensityTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {DensityTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for density transform nodes
@@ -13,12 +13,14 @@ export class DensityTransformNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private transform: DensityTransform
+    private transform: DensityTransform,
   ) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
     const specifiedAs = this.transform.as ?? [undefined, undefined];
     this.transform.as = [specifiedAs[0] ?? 'value', specifiedAs[1] ?? 'density'];
+    const resolve = this.transform.resolve ?? 'shared';
+    this.transform.resolve = resolve;
   }
 
   public dependentFields() {
@@ -38,11 +40,9 @@ export class DensityTransformNode extends DataFlowNode {
     const result: VgKDETransform = {
       type: 'kde',
       field: density,
-      ...rest
+      ...rest,
     };
-    if (this.transform.groupby) {
-      result.resolve = 'shared';
-    }
+    result.resolve = this.transform.resolve;
     return result;
   }
 }

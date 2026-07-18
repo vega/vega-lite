@@ -1,10 +1,10 @@
-import {BinNode} from '../../../src/compile/data/bin';
-import {dotString, printDebugDataflow} from '../../../src/compile/data/debug';
-import {checkLinks} from '../../../src/compile/data/optimize';
-import {SourceNode} from '../../../src/compile/data/source';
-import {resetIdCounter} from '../../../src/util';
-import {PlaceholderDataFlowNode} from './util';
-import {jest} from '@jest/globals';
+import {BinNode} from '../../../src/compile/data/bin.js';
+import {dotString, printDebugDataflow} from '../../../src/compile/data/debug.js';
+import {checkLinks} from '../../../src/compile/data/optimize.js';
+import {SourceNode} from '../../../src/compile/data/source.js';
+import {resetIdCounter} from '../../../src/util.js';
+import {PlaceholderDataFlowNode} from './util.js';
+import {vi} from 'vitest';
 
 const dot = `digraph DataFlow {
   rankdir = TB;
@@ -110,12 +110,14 @@ describe('compile/data/debug', () => {
       resetIdCounter();
       const root = new PlaceholderDataFlowNode(null, 'foo');
       const node = new PlaceholderDataFlowNode(root, 'bar');
-      console.log = jest.fn();
+
+      const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+
       printDebugDataflow(root);
-      expect(console.log).toHaveBeenCalledWith('PlaceholderDataFlowNode(foo) -> PlaceholderDataFlowNode (bar)');
-      expect(console.log).toHaveBeenCalledWith(root);
-      expect(console.log).toHaveBeenCalledWith('PlaceholderDataFlowNode(bar) -> ');
-      expect(console.log).toHaveBeenCalledWith(node);
+      expect(consoleMock).toHaveBeenCalledWith('PlaceholderDataFlowNode(foo) -> PlaceholderDataFlowNode (bar)');
+      expect(consoleMock).toHaveBeenCalledWith(root);
+      expect(consoleMock).toHaveBeenCalledWith('PlaceholderDataFlowNode(bar) -> ');
+      expect(consoleMock).toHaveBeenCalledWith(node);
     });
   });
 });

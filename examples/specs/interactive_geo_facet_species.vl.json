@@ -1,0 +1,77 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "width": 300,
+  "height": 200,
+  "data": {
+    "url": "data/species.csv",
+    "format": {
+      "parse": {
+        "county_id": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "lookup": "county_id",
+      "from": {
+        "data": {
+          "url": "data/us-10m.json",
+          "format": {
+            "type": "topojson",
+            "feature": "counties"
+          }
+        },
+        "key": "id"
+      },
+      "as": "geo"
+    }
+  ],
+  "projection": {
+    "type": "albers"
+  },
+  "mark": {
+    "type": "geoshape"
+  },
+  "encoding": {
+    "shape": {
+      "field": "geo",
+      "type": "geojson"
+    },
+    "color": {
+      "field": "habitat_yearround_pct",
+      "type": "quantitative",
+      "scale": {
+        "scheme": "viridis"
+      },
+      "legend": {
+        "format": ".0%"
+      },
+      "title": [
+        "Suitable Habitat",
+        "% of County"
+      ]
+    },
+    "facet": {
+      "field": "common_name",
+      "type": "nominal",
+      "columns": 2,
+      "header": {
+        "title": null,
+        "labelFontSize": 14
+      }
+    },
+    "tooltip": [
+      {
+        "field": "county_id",
+        "type": "nominal",
+        "title": "County ID"
+      },
+      {
+        "field": "habitat_yearround_pct",
+        "type": "quantitative",
+        "format": ".2%",
+        "title": "Habitat %"
+      }
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 import {NewSignal, SignalRef} from 'vega';
-import {isArray} from 'vega-util';
-import {Axis, AxisInternal, isConditionalAxisValue} from '../axis';
+import {isArray, stringValue} from 'vega-util';
+import {Axis, AxisInternal, isConditionalAxisValue} from '../axis.js';
 import {
   Channel,
   GEOPOSITION_CHANNELS,
@@ -13,51 +13,53 @@ import {
   SingleDefChannel,
   supportLegend,
   X,
-  Y
-} from '../channel';
+  Y,
+} from '../channel.js';
 import {
   getFieldDef,
   getFieldOrDatumDef,
+  isFieldDef,
   isFieldOrDatumDef,
   isTypedFieldDef,
   MarkPropFieldOrDatumDef,
-  PositionFieldDef
-} from '../channeldef';
-import {Config} from '../config';
-import {isGraticuleGenerator} from '../data';
-import * as vlEncoding from '../encoding';
-import {Encoding, initEncoding} from '../encoding';
-import {ExprRef, replaceExprRef} from '../expr';
-import {LegendInternal} from '../legend';
-import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
-import {Projection} from '../projection';
-import {Domain, Scale} from '../scale';
-import {isSelectionParameter, SelectionParameter} from '../selection';
-import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
-import {isFrameMixins} from '../spec/base';
-import {stack, StackProperties} from '../stack';
-import {keys} from '../util';
-import {VgData, VgLayout} from '../vega.schema';
-import {assembleAxisSignals} from './axis/assemble';
-import {AxisInternalIndex} from './axis/component';
-import {parseUnitAxes} from './axis/parse';
-import {signalOrValueRefWithCondition, signalRefOrValue} from './common';
-import {parseData} from './data/parse';
-import {assembleLayoutSignals} from './layoutsize/assemble';
-import {initLayoutSize} from './layoutsize/init';
-import {parseUnitLayoutSize} from './layoutsize/parse';
-import {LegendInternalIndex} from './legend/component';
-import {defaultFilled, initMarkdef} from './mark/init';
-import {parseMarkGroups} from './mark/mark';
-import {isLayerModel, Model, ModelWithField} from './model';
-import {ScaleIndex} from './scale/component';
+  PositionFieldDef,
+} from '../channeldef.js';
+import {Config} from '../config.js';
+import {isGraticuleGenerator} from '../data.js';
+import * as vlEncoding from '../encoding.js';
+import {Encoding, initEncoding} from '../encoding.js';
+import {ExprRef, replaceExprRef} from '../expr.js';
+import {LegendInternal} from '../legend.js';
+import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark.js';
+import {Projection} from '../projection.js';
+import {Domain, Scale} from '../scale.js';
+import {isSelectionParameter, SelectionParameter} from '../selection.js';
+import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec/index.js';
+import {isFrameMixins} from '../spec/base.js';
+import {stack, StackProperties} from '../stack.js';
+import {keys} from '../util.js';
+import {VgData, VgLayout, VgMarkGroup} from '../vega.schema.js';
+import {assembleAxisSignals} from './axis/assemble.js';
+import {AxisInternalIndex} from './axis/component.js';
+import {parseUnitAxes} from './axis/parse.js';
+import {signalOrValueRefWithCondition, signalRefOrValue} from './common.js';
+import {parseData} from './data/parse.js';
+import {assembleLayoutSignals} from './layoutsize/assemble.js';
+import {initLayoutSize} from './layoutsize/init.js';
+import {parseUnitLayoutSize} from './layoutsize/parse.js';
+import {LegendInternalIndex} from './legend/component.js';
+import {defaultFilled, initMarkdef} from './mark/init.js';
+import {parseMarkGroups} from './mark/mark.js';
+import {isLayerModel, Model, ModelWithField} from './model.js';
+import {ScaleIndex} from './scale/component.js';
 import {
   assembleTopLevelSignals,
   assembleUnitSelectionData,
   assembleUnitSelectionMarks,
-  assembleUnitSelectionSignals
-} from './selection/assemble';
-import {parseUnitSelection} from './selection/parse';
+  assembleUnitSelectionSignals,
+} from './selection/assemble.js';
+import {parseUnitSelection} from './selection/parse.js';
+import {CURR} from './selection/point.js';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -84,7 +86,7 @@ export class UnitModel extends ModelWithField {
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {},
-    config: Config<SignalRef>
+    config: Config<SignalRef>,
   ) {
     super(spec, 'unit', parent, parentGivenName, config, undefined, isFrameMixins(spec) ? spec.view : undefined);
 
@@ -94,7 +96,7 @@ export class UnitModel extends ModelWithField {
     // Need to init filled before other mark properties because encoding depends on filled but other mark properties depend on types inside encoding
     if (markDef.filled === undefined) {
       markDef.filled = defaultFilled(markDef, config, {
-        graticule: spec.data && isGraticuleGenerator(spec.data)
+        graticule: spec.data && isGraticuleGenerator(spec.data),
       });
     }
 
@@ -106,10 +108,10 @@ export class UnitModel extends ModelWithField {
       size: isFrameMixins(spec)
         ? {
             ...parentGivenSize,
-            ...(spec.width ? {width: spec.width} : {}),
-            ...(spec.height ? {height: spec.height} : {})
+            ...(spec.width !== undefined ? {width: spec.width} : {}),
+            ...(spec.height !== undefined ? {height: spec.height} : {}),
           }
-        : parentGivenSize
+        : parentGivenSize,
     });
 
     // calculate stack properties
@@ -121,13 +123,15 @@ export class UnitModel extends ModelWithField {
     this.specifiedProjection = spec.projection;
 
     // Selections will be initialized upon parse.
-    this.selection = (spec.params ?? []).filter(p => isSelectionParameter(p)) as SelectionParameter[];
+    this.selection = (spec.params ?? []).filter((p) => isSelectionParameter(p)) as SelectionParameter[];
+
+    this.alignStackOrderWithColorDomain();
   }
 
   public get hasProjection(): boolean {
     const {encoding} = this;
     const isGeoShapeMark = this.mark === GEOSHAPE;
-    const hasGeoPosition = encoding && GEOPOSITION_CHANNELS.some(channel => isFieldOrDatumDef(encoding[channel]));
+    const hasGeoPosition = encoding && GEOPOSITION_CHANNELS.some((channel) => isFieldOrDatumDef(encoding[channel]));
     return isGeoShapeMark || hasGeoPosition;
   }
 
@@ -141,7 +145,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public axis(channel: PositionChannel): AxisInternal {
-    return this.specifiedAxes[channel];
+    return (this.specifiedAxes as any)[channel];
   }
 
   public legend(channel: NonPositionScaleChannel): LegendInternal {
@@ -151,8 +155,7 @@ export class UnitModel extends ModelWithField {
   private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {
     return SCALE_CHANNELS.reduce((scales, channel) => {
       const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as
-        | PositionFieldDef<string>
-        | MarkPropFieldOrDatumDef<string>;
+        PositionFieldDef<string> | MarkPropFieldOrDatumDef<string>;
       if (fieldOrDatumDef) {
         scales[channel] = this.initScale(fieldOrDatumDef.scale ?? {});
       }
@@ -191,15 +194,15 @@ export class UnitModel extends ModelWithField {
           : axisSpec;
       }
       return _axis;
-    }, {});
+    }, {} as any);
   }
 
   private initAxis(axis: Axis<ExprRef | SignalRef>): Axis<SignalRef> {
     const props = keys(axis);
-    const axisInternal = {};
+    const axisInternal: any = {};
     for (const prop of props) {
       const val = axis[prop];
-      axisInternal[prop as any] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
+      axisInternal[prop] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
         ? signalOrValueRefWithCondition<any>(val)
         : signalRefOrValue(val);
     }
@@ -218,7 +221,41 @@ export class UnitModel extends ModelWithField {
       }
 
       return _legend;
-    }, {});
+    }, {} as any);
+  }
+
+  /**
+   * If this unit lacks order encoding but does contain a color domain
+   * add transform and encoding that aligns the stack order with the color domain.
+   */
+  private alignStackOrderWithColorDomain() {
+    const {color, fill, order, xOffset, yOffset} = this.encoding;
+    const colorField = fill || color;
+    const colorEncoding = isFieldDef(colorField) ? colorField : undefined;
+    const field = colorEncoding?.field;
+    const scale = colorEncoding?.scale;
+    const colorEncodingType = colorEncoding?.type;
+    const domain = scale?.domain;
+    const offset = xOffset || yOffset;
+    const offsetEncoding = isFieldDef(offset) ? offset : undefined;
+    const orderFieldName = `_${field}_sort_index`;
+
+    if (!order && Array.isArray(domain) && typeof field === 'string' && colorEncodingType === 'nominal') {
+      // align grouped chart order with color domain
+      if (offsetEncoding && !offsetEncoding.sort) {
+        offsetEncoding.sort = domain as [];
+      } else {
+        // align stacked chart order with color domain
+        if (!this.stack) {
+          return;
+        }
+
+        const orderExpression = `indexof(${stringValue(domain)}, datum['${field}'])`;
+        const sort = this.markDef?.orient === 'horizontal' ? 'ascending' : 'descending';
+        this.transforms.push({calculate: orderExpression, as: orderFieldName});
+        this.encoding.order = {field: orderFieldName, type: 'quantitative', sort};
+      }
+    }
   }
 
   public parseData() {
@@ -261,6 +298,30 @@ export class UnitModel extends ModelWithField {
     return assembleLayoutSignals(this);
   }
 
+  /**
+   * Corrects the data references in marks after assemble.
+   */
+  public correctDataNames = (mark: VgMarkGroup) => {
+    // for normal data references
+    if (mark.from?.data) {
+      mark.from.data = this.lookupDataSource(mark.from.data);
+      if ('time' in this.encoding) {
+        mark.from.data = mark.from.data + CURR;
+      }
+    }
+
+    // for access to facet data
+    if (mark.from?.facet?.data) {
+      mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
+      // TOOD(jzong) uncomment this when it's time to implement facet animation
+      // if ('time' in this.encoding) {
+      //   mark.from.facet.data = mark.from.facet.data + CURR;
+      // }
+    }
+
+    return mark;
+  };
+
   public assembleMarks() {
     let marks = this.component.mark ?? [];
 
@@ -298,7 +359,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public fieldDef(channel: SingleDefChannel) {
-    const channelDef = this.encoding[channel];
+    const channelDef = (this.encoding as any)[channel];
     return getFieldDef<string>(channelDef);
   }
 

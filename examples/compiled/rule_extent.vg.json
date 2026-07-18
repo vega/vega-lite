@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Minimum and maxmimum horsepower of cars from different origins.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -39,7 +39,7 @@
         "update": {
           "stroke": {"value": "black"},
           "description": {
-            "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Min of Horsepower: \" + (format(datum[\"min_Horsepower\"], \"\")) + \"; Max of Horsepower: \" + (format(datum[\"max_Horsepower\"], \"\"))"
+            "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Min of Horsepower: \" + (format(datum[\"min_Horsepower\"], \"\")) + \"; Max of Horsepower: \" + (format(datum[\"max_Horsepower\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Origin", "band": 0.5},
           "y": {"scale": "y", "field": "min_Horsepower"},

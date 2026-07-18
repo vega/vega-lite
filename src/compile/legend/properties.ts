@@ -1,21 +1,27 @@
 import {LabelOverlap, LegendOrient, LegendType, Orientation, SignalRef, SymbolShape} from 'vega';
 import {isArray} from 'vega-util';
-import {isColorChannel} from '../../channel';
-import {DatumDef, MarkPropFieldOrDatumDef, title as fieldDefTitle, TypedFieldDef, valueArray} from '../../channeldef';
-import {Config} from '../../config';
-import {Encoding} from '../../encoding';
-import {Legend, LegendConfig, LegendInternal} from '../../legend';
-import {Mark, MarkDef} from '../../mark';
-import {isContinuousToContinuous, ScaleType} from '../../scale';
-import {TimeUnit} from '../../timeunit';
-import {contains, getFirstDefined} from '../../util';
-import {isSignalRef} from '../../vega.schema';
-import {guideFormat, guideFormatType} from '../format';
-import {Model} from '../model';
-import {UnitModel} from '../unit';
-import {NonPositionScaleChannel} from './../../channel';
-import {LegendComponentProps} from './component';
-import {getFirstConditionValue} from './encode';
+import {isColorChannel} from '../../channel.js';
+import {
+  DatumDef,
+  MarkPropFieldOrDatumDef,
+  title as fieldDefTitle,
+  TypedFieldDef,
+  valueArray,
+} from '../../channeldef.js';
+import {Config} from '../../config.js';
+import {Encoding} from '../../encoding.js';
+import {Legend, LegendConfig, LegendInternal} from '../../legend.js';
+import {Mark, MarkDef} from '../../mark.js';
+import {isContinuousToContinuous, ScaleType} from '../../scale.js';
+import {TimeUnit} from '../../timeunit.js';
+import {contains, getFirstDefined} from '../../util.js';
+import {isSignalRef} from '../../vega.schema.js';
+import {guideFormat, guideFormatType} from '../format.js';
+import {Model} from '../model.js';
+import {UnitModel} from '../unit.js';
+import {NonPositionScaleChannel} from './../../channel.js';
+import {LegendComponentProps} from './component.js';
+import {getFirstConditionValue} from './encode.js';
 
 export interface LegendRuleParams {
   legend: LegendInternal;
@@ -47,7 +53,7 @@ export const legendRules: {
     return guideFormatType(formatType, fieldOrDatumDef, scaleType);
   },
 
-  gradientLength: params => {
+  gradientLength: (params) => {
     const {legend, legendConfig} = params;
     return legend.gradientLength ?? legendConfig.gradientLength ?? defaultGradientLength(params);
   },
@@ -71,7 +77,7 @@ export const legendRules: {
     return legendType;
   }, // depended by other property, let's define upfront
 
-  values: ({fieldOrDatumDef, legend}) => values(legend, fieldOrDatumDef)
+  values: ({fieldOrDatumDef, legend}) => values(legend, fieldOrDatumDef),
 };
 
 export function values(legend: LegendInternal, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
@@ -89,7 +95,7 @@ export function defaultSymbolType(
   mark: Mark,
   channel: NonPositionScaleChannel,
   shapeChannelDef: Encoding<string>['shape'],
-  markShape: SymbolShape | SignalRef
+  markShape: SymbolShape | SignalRef,
 ): SymbolShape | SignalRef {
   if (channel !== 'shape') {
     // use the value from the shape encoding or the mark config if they exist
@@ -141,7 +147,7 @@ export function getLegendType(params: {
 export function defaultType({
   channel,
   timeUnit,
-  scaleType
+  scaleType,
 }: {
   channel: NonPositionScaleChannel;
   timeUnit?: TimeUnit;
@@ -165,7 +171,7 @@ export function getDirection({
   legendConfig,
   legendType,
   orient,
-  legend
+  legend,
 }: {
   orient: LegendOrient;
   legendConfig: LegendConfig<SignalRef>;
@@ -202,7 +208,7 @@ export function defaultGradientLength({
   model,
   direction,
   orient,
-  scaleType
+  scaleType,
 }: {
   scaleType: ScaleType;
   direction: Orientation;
@@ -214,7 +220,7 @@ export function defaultGradientLength({
     gradientHorizontalMaxLength,
     gradientHorizontalMinLength,
     gradientVerticalMaxLength,
-    gradientVerticalMinLength
+    gradientVerticalMinLength,
   } = legendConfig;
   if (isContinuousToContinuous(scaleType)) {
     if (direction === 'horizontal') {

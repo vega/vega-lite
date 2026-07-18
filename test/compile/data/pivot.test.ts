@@ -1,6 +1,6 @@
-import {PivotTransformNode} from '../../../src/compile/data/pivot';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {PivotTransformNode} from '../../../src/compile/data/pivot.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/pivot', () => {
   it('should return a proper vg transform', () => {
@@ -9,7 +9,7 @@ describe('compile/data/pivot', () => {
       value: 'b',
       limit: 1,
       op: 'count',
-      groupby: ['c']
+      groupby: ['c'],
     };
     const pivot = new PivotTransformNode(null, transform);
     expect(pivot.assemble()).toEqual({
@@ -18,28 +18,28 @@ describe('compile/data/pivot', () => {
       value: 'b',
       limit: 1,
       op: 'count',
-      groupby: ['c']
+      groupby: ['c'],
     });
   });
 
   it('should handle missing fields', () => {
     const transform: Transform = {
       pivot: 'a',
-      value: 'b'
+      value: 'b',
     };
 
     const pivot = new PivotTransformNode(null, transform);
     expect(pivot.assemble()).toEqual({
       type: 'pivot',
       field: 'a',
-      value: 'b'
+      value: 'b',
     });
   });
 
   it('should add dimensions to the groupby attribute', () => {
     const transform: Transform = {
       pivot: 'a',
-      value: 'b'
+      value: 'b',
     };
     const pivot = new PivotTransformNode(null, transform);
     pivot.addDimensions(['c', 'd']);
@@ -49,7 +49,7 @@ describe('compile/data/pivot', () => {
   it('should return undefined for produced fields', () => {
     const transform: Transform = {
       pivot: 'a',
-      value: 'b'
+      value: 'b',
     };
     const pivot = new PivotTransformNode(null, transform);
     expect(pivot.producedFields()).toBeUndefined();
@@ -58,7 +58,7 @@ describe('compile/data/pivot', () => {
   it('should return relevant dependent fields', () => {
     const transform: Transform = {
       pivot: 'a',
-      value: 'b'
+      value: 'b',
     };
     const pivot = new PivotTransformNode(null, transform);
     expect(pivot.dependentFields()).toEqual(new Set(['a', 'b']));
@@ -67,7 +67,7 @@ describe('compile/data/pivot', () => {
   it('should generate the correct hash', () => {
     const transform: Transform = {
       pivot: 'a',
-      value: 'b'
+      value: 'b',
     };
     const pivot = new PivotTransformNode(null, transform);
     expect(pivot.hash()).toBe('PivotTransform {"pivot":"a","value":"b"}');

@@ -1,5 +1,5 @@
-import {arc} from '../../../src/compile/mark/arc';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {arc} from '../../../src/compile/mark/arc.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Arc', () => {
   describe('with theta in mark def', () => {
@@ -9,8 +9,8 @@ describe('Mark: Arc', () => {
       mark: {
         type: 'arc',
         theta: 1.57,
-        theta2: 3.14
-      }
+        theta2: 3.14,
+      },
     });
 
     const props = arc.encodeEntry(model);
@@ -29,8 +29,8 @@ describe('Mark: Arc', () => {
       mark: 'arc',
       encoding: {
         theta: {field: 'field', type: 'quantitative'},
-        color: {field: 'id', type: 'nominal'}
-      }
+        color: {field: 'id', type: 'nominal'},
+      },
     });
 
     const props = arc.encodeEntry(model);
@@ -48,8 +48,8 @@ describe('Mark: Arc', () => {
       mark: {type: 'arc', thetaOffset: 5},
       encoding: {
         theta: {field: 'field', type: 'quantitative'},
-        color: {field: 'id', type: 'nominal'}
-      }
+        color: {field: 'id', type: 'nominal'},
+      },
     });
 
     const props = arc.encodeEntry(model);
@@ -67,8 +67,8 @@ describe('Mark: Arc', () => {
       mark: 'arc',
       encoding: {
         theta: {bin: true, field: 'field', type: 'quantitative'},
-        radius: {aggregate: 'count', type: 'quantitative'}
-      }
+        radius: {aggregate: 'count', type: 'quantitative'},
+      },
     });
 
     const props = arc.encodeEntry(model);

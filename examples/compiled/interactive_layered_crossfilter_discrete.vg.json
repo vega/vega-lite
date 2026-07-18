@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "data": [
@@ -181,8 +181,8 @@
     }
   ],
   "signals": [
-    {"name": "childWidth", "value": 200},
-    {"name": "childHeight", "value": 200},
+    {"name": "childWidth", "value": 300},
+    {"name": "childHeight", "value": 300},
     {
       "name": "unit",
       "value": {},
@@ -259,6 +259,7 @@
           "from": {"data": "data_6"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#ddd"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -414,6 +415,7 @@
           "from": {"data": "data_7"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#ddd"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -569,6 +571,7 @@
           "from": {"data": "data_2"},
           "encode": {
             "update": {
+              "cursor": {"value": "pointer"},
               "fill": {"value": "#ddd"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {

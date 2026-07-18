@@ -1,7 +1,7 @@
 import {LoessTransform as VgLoessTransform} from 'vega';
-import {LoessTransform} from '../../transform';
-import {duplicate, hash} from '../../util';
-import {DataFlowNode} from './dataflow';
+import {LoessTransform} from '../../transform.js';
+import {duplicate, hash} from '../../util.js';
+import {DataFlowNode} from './dataflow.js';
 
 /**
  * A class for loess transform nodes
@@ -13,7 +13,7 @@ export class LoessTransformNode extends DataFlowNode {
 
   constructor(
     parent: DataFlowNode,
-    private transform: LoessTransform
+    private transform: LoessTransform,
   ) {
     super(parent);
     this.transform = duplicate(transform); // duplicate to prevent side effects
@@ -39,7 +39,7 @@ export class LoessTransformNode extends DataFlowNode {
       type: 'loess',
       x: on,
       y: loess,
-      ...rest
+      ...rest,
     };
     return result;
   }

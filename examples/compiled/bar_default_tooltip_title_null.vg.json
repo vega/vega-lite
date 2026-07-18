@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Field definition's title is applied to both axis title and tooltip's field title. Meanwhile, axis.title is specific to axis.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -54,13 +54,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "tooltip": {
-            "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
-          },
           "fill": {"value": "#4c78a8"},
+          "tooltip": {
+            "signal": "{\"a\": isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], '\\n') : datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
+          },
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? isArray(datum[\"a\"]) ? join(datum[\"a\"], ' ') : datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"signal": "max(0.25, bandwidth('x'))"},

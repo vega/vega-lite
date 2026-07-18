@@ -1,10 +1,10 @@
-import {Binding, Color, Cursor, Stream, Vector2} from 'vega';
+import type {Binding, Color, Cursor, Stream, Vector2} from 'vega';
 import {isObject} from 'vega-util';
-import {SingleDefUnitChannel} from './channel';
-import {FieldName, PrimitiveValue} from './channeldef';
-import {DateTime} from './datetime';
-import {ParameterName} from './parameter';
-import {Dict} from './util';
+import {SingleDefUnitChannel} from './channel.js';
+import {FieldName, PrimitiveValue} from './channeldef.js';
+import {DateTime} from './datetime.js';
+import {ParameterName} from './parameter.js';
+import {Dict} from './util.js';
 
 export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'point' | 'interval';
@@ -307,7 +307,7 @@ export const defaultConfig: SelectionConfig = {
     fields: [SELECTION_ID],
     toggle: 'event.shiftKey',
     resolve: 'global',
-    clear: 'dblclick'
+    clear: 'dblclick',
   },
   interval: {
     on: '[pointerdown, window:pointerup] > window:pointermove!',
@@ -316,8 +316,8 @@ export const defaultConfig: SelectionConfig = {
     zoom: 'wheel!',
     mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
     resolve: 'global',
-    clear: 'dblclick'
-  }
+    clear: 'dblclick',
+  },
 };
 
 export function isLegendBinding(bind: any): bind is LegendBinding {

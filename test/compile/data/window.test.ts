@@ -1,6 +1,6 @@
-import {WindowTransformNode} from '../../../src/compile/data/window';
-import {Transform} from '../../../src/transform';
-import {PlaceholderDataFlowNode} from './util';
+import {WindowTransformNode} from '../../../src/compile/data/window.js';
+import {Transform} from '../../../src/transform.js';
+import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/window', () => {
   it('should return a proper vg transform', () => {
@@ -8,18 +8,18 @@ describe('compile/data/window', () => {
       window: [
         {
           op: 'row_number',
-          as: 'ordered_row_number'
-        }
+          as: 'ordered_row_number',
+        },
       ],
       ignorePeers: false,
       sort: [
         {
           field: 'f',
-          order: 'ascending'
-        }
+          order: 'ascending',
+        },
       ],
       groupby: ['f'],
-      frame: [null, 0]
+      frame: [null, 0],
     };
     const window = new WindowTransformNode(null, transform);
     expect(window.assemble()).toEqual({
@@ -29,12 +29,12 @@ describe('compile/data/window', () => {
       params: [null],
       sort: {
         field: ['f'],
-        order: ['ascending']
+        order: ['ascending'],
       },
       ignorePeers: false,
       as: ['ordered_row_number'],
       frame: [null, 0],
-      groupby: ['f']
+      groupby: ['f'],
     });
   });
 
@@ -43,18 +43,18 @@ describe('compile/data/window', () => {
       window: [
         {
           op: 'row_number',
-          as: undefined // intentionally omit for testing
-        }
+          as: undefined, // intentionally omit for testing
+        },
       ],
       ignorePeers: false,
       sort: [
         {
           field: 'f',
-          order: 'ascending'
-        }
+          order: 'ascending',
+        },
       ],
       groupby: ['f'],
-      frame: [null, 0]
+      frame: [null, 0],
     };
     const window = new WindowTransformNode(null, transform);
     expect(window.assemble()).toEqual({
@@ -64,12 +64,12 @@ describe('compile/data/window', () => {
       params: [null],
       sort: {
         field: ['f'],
-        order: ['ascending']
+        order: ['ascending'],
       },
       ignorePeers: false,
       as: ['row_number'],
       frame: [null, 0],
-      groupby: ['f']
+      groupby: ['f'],
     });
   });
 
@@ -78,26 +78,26 @@ describe('compile/data/window', () => {
       window: [
         {
           op: 'row_number',
-          as: 'ordered_row_number'
+          as: 'ordered_row_number',
         },
         {
           op: 'count',
-          as: 'count_field'
+          as: 'count_field',
         },
         {
           op: 'sum',
-          as: 'sum_field'
-        }
+          as: 'sum_field',
+        },
       ],
       ignorePeers: false,
       sort: [
         {
           field: 'f',
-          order: 'ascending'
-        }
+          order: 'ascending',
+        },
       ],
       groupby: ['g'],
-      frame: [null, 0]
+      frame: [null, 0],
     };
     const window = new WindowTransformNode(null, transform);
     expect(window.producedFields()).toEqual(new Set(['count_field', 'ordered_row_number', 'sum_field']));
@@ -108,18 +108,18 @@ describe('compile/data/window', () => {
       window: [
         {
           op: 'row_number',
-          as: 'ordered_row_number'
-        }
+          as: 'ordered_row_number',
+        },
       ],
       ignorePeers: false,
       sort: [
         {
           field: 'f',
-          order: 'ascending'
-        }
+          order: 'ascending',
+        },
       ],
       groupby: ['g'],
-      frame: [null, 0]
+      frame: [null, 0],
     };
     const window = new WindowTransformNode(null, transform);
     expect(window.dependentFields()).toEqual(new Set(['g', 'f']));
@@ -131,11 +131,11 @@ describe('compile/data/window', () => {
         {
           field: 'w',
           op: 'row_number',
-          as: 'ordered_row_number'
-        }
+          as: 'ordered_row_number',
+        },
       ],
       ignorePeers: false,
-      frame: [null, 0]
+      frame: [null, 0],
     };
     const window = new WindowTransformNode(null, transform);
     expect(window.dependentFields()).toEqual(new Set(['w']));
@@ -146,18 +146,18 @@ describe('compile/data/window', () => {
       window: [
         {
           op: 'row_number',
-          as: 'ordered_row_number'
-        }
+          as: 'ordered_row_number',
+        },
       ],
       ignorePeers: false,
       sort: [
         {
           field: 'f',
-          order: 'ascending'
-        }
+          order: 'ascending',
+        },
       ],
       groupby: ['f'],
-      frame: [null, 0]
+      frame: [null, 0],
     };
     const window = new WindowTransformNode(null, transform);
     expect(window).toEqual(window.clone());
@@ -174,23 +174,23 @@ describe('compile/data/window', () => {
       window: [
         {
           op: 'row_number',
-          as: 'ordered_row_number'
-        }
+          as: 'ordered_row_number',
+        },
       ],
       ignorePeers: false,
       sort: [
         {
           field: 'f',
-          order: 'ascending'
-        }
+          order: 'ascending',
+        },
       ],
       groupby: ['f'],
-      frame: [null, 0]
+      frame: [null, 0],
     };
     const window = new WindowTransformNode(null, transform);
     const hash = window.hash();
     expect(hash).toBe(
-      'WindowTransform {"frame":[null,0],"groupby":["f"],"ignorePeers":false,"sort":[{"field":"f","order":"ascending"}],"window":[{"as":"ordered_row_number","op":"row_number"}]}'
+      'WindowTransform {"frame":[null,0],"groupby":["f"],"ignorePeers":false,"sort":[{"field":"f","order":"ascending"}],"window":[{"as":"ordered_row_number","op":"row_number"}]}',
     );
   });
 });

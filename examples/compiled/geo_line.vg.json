@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Line drawn between airports in the U.S. simulating a flight itinerary",
   "background": "white",
   "padding": 5,
@@ -123,7 +123,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\")) + \"; order: \" + (isValid(datum[\"order\"]) ? datum[\"order\"] : \"\"+datum[\"order\"])"
+            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\")) + \"; order: \" + (isValid(datum[\"order\"]) ? isArray(datum[\"order\"]) ? join(datum[\"order\"], ' ') : datum[\"order\"] : \"\"+datum[\"order\"])"
           },
           "x": {"field": "layer_2_x"},
           "y": {"field": "layer_2_y"}

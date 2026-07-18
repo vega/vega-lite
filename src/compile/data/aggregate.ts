@@ -1,13 +1,13 @@
 import {AggregateOp, AggregateTransform as VgAggregateTransform} from 'vega';
-import {isArgmaxDef, isArgminDef, isExponentialDef} from '../../aggregate';
+import {isArgmaxDef, isArgminDef, isExponentialDef} from '../../aggregate.js';
 import {
   Channel,
   getPositionChannelFromLatLong,
   getSecondaryRangeChannel,
   isGeoPositionChannel,
   isScaleChannel,
-  isXorY
-} from '../../channel';
+  isXorY,
+} from '../../channel.js';
 import {
   binRequiresRange,
   FieldDef,
@@ -15,17 +15,17 @@ import {
   hasBandEnd,
   isScaleFieldDef,
   isTypedFieldDef,
-  vgField
-} from '../../channeldef';
-import * as log from '../../log';
-import {isFieldRange} from '../../scale';
-import {AggregateTransform} from '../../transform';
-import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';
-import {isUnitModel, ModelWithField} from '../model';
-import {UnitModel} from '../unit';
-import {DataFlowNode} from './dataflow';
-import {isRectBasedMark} from '../../mark';
-import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from './timeunit';
+  vgField,
+} from '../../channeldef.js';
+import * as log from '../../log/index.js';
+import {isFieldRange} from '../../scale.js';
+import {AggregateTransform} from '../../transform.js';
+import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util.js';
+import {isUnitModel, ModelWithField} from '../model.js';
+import {UnitModel} from '../unit.js';
+import {DataFlowNode} from './dataflow.js';
+import {isRectBasedMark} from '../../mark.js';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from './timeunit.js';
 
 type Measures = Dict<Partial<Record<AggregateOp, {aliases: Set<string>; aggregateParam?: number}>>>;
 
@@ -98,7 +98,7 @@ export class AggregateNode extends DataFlowNode {
   constructor(
     parent: DataFlowNode,
     private dimensions: Set<string>,
-    private measures: Measures
+    private measures: Measures,
   ) {
     super(parent);
   }
@@ -109,7 +109,7 @@ export class AggregateNode extends DataFlowNode {
 
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel): AggregateNode {
     let isAggregate = false;
-    model.forEachFieldDef(fd => {
+    model.forEachFieldDef((fd) => {
       if (fd.aggregate) {
         isAggregate = true;
       }
@@ -132,7 +132,7 @@ export class AggregateNode extends DataFlowNode {
         } else {
           if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
             const op = isArgminDef(aggregate) ? 'argmin' : 'argmax';
-            const argField = aggregate[op];
+            const argField = (aggregate as any)[op];
             meas[argField] ??= {};
             meas[argField][op] = {aliases: new Set([vgField({op, field: argField}, {forAs: true})])};
           } else if (isExponentialDef(aggregate)) {
@@ -142,7 +142,7 @@ export class AggregateNode extends DataFlowNode {
             meas[field][op] = {aliases: new Set([vgField(fieldDef, {forAs: true})]), aggregateParam: aggregateParam};
           } else {
             meas[field] ??= {};
-            meas[field][aggregate] = {aliases: new Set([vgField(fieldDef, {forAs: true})])};
+            (meas[field] as any)[aggregate] = {aliases: new Set([vgField(fieldDef, {forAs: true})])};
           }
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
@@ -178,15 +178,13 @@ export class AggregateNode extends DataFlowNode {
         } else {
           if (isExponentialDef(op)) {
             const opName = 'exponential';
-            const aggregateParam = op[opName];
             meas[field] ??= {};
-            meas[field][opName] = {
-              aliases,
-              aggregateParam
-            };
+            meas[field][opName] ??= {aliases: new Set(), aggregateParam: op[opName]};
+            meas[field][opName].aliases.add(as ? as : vgField(s, {forAs: true}));
           } else {
             meas[field] ??= {};
-            meas[field][op] = {aliases};
+            meas[field][op] ??= {aliases: new Set()};
+            meas[field][op].aliases.add(as ? as : vgField(s, {forAs: true}));
           }
         }
       }
@@ -263,7 +261,7 @@ export class AggregateNode extends DataFlowNode {
       groupby: [...this.dimensions].map(replacePathInField),
       ops,
       fields,
-      as
+      as,
     };
 
     if (aggregateParams.some(param => typeof param === 'number')) {

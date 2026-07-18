@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Drag out a rectangular brush to highlight points.",
   "background": "white",
   "padding": 5,
-  "height": 200,
+  "height": 300,
   "data": [
     {
       "name": "hover_store",
@@ -67,7 +67,7 @@
     }
   ],
   "signals": [
-    {"name": "childWidth", "value": 200},
+    {"name": "childWidth", "value": 300},
     {
       "name": "unit",
       "value": {},

@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {
@@ -110,7 +110,7 @@
       "type": "linear",
       "domain": {"data": "source_0", "field": "__count"},
       "range": [
-        0,
+        4,
         {
           "signal": "pow(0.95 * min(width / ((bin_maxbins_2_IMDB_Rating_bins.stop - bin_maxbins_2_IMDB_Rating_bins.start) / bin_maxbins_2_IMDB_Rating_bins.step), height / ((bin_maxbins_2_Rotten_Tomatoes_Rating_bins.stop - bin_maxbins_2_Rotten_Tomatoes_Rating_bins.start) / bin_maxbins_2_Rotten_Tomatoes_Rating_bins.step)), 2)"
         }

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "description": "Testing labelAngle signals",
   "background": "white",
   "padding": 5,
@@ -113,7 +113,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "data_0", "field": "sum_count"},
-      "range": [0, 361],
+      "range": [4, 361],
       "zero": true
     }
   ],

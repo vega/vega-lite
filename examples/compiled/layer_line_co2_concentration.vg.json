@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
   "width": 800,
@@ -91,13 +91,13 @@
           "name": "layer_0_marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"scaled_date\"]"},
+          "sort": {"field": "x"},
           "from": {"data": "faceted_path_layer_0_main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "decade"},
               "description": {
-                "signal": "\"Year into Decade: \" + (format(datum[\"scaled_date\"], \"\")) + \"; CO2 concentration in ppm: \" + (format(datum[\"CO2\"], \"\")) + \"; decade: \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"])"
+                "signal": "\"Year into Decade: \" + (format(datum[\"scaled_date\"], \"\")) + \"; CO2 concentration in ppm: \" + (format(datum[\"CO2\"], \"\")) + \"; decade: \" + (isValid(datum[\"decade\"]) ? isArray(datum[\"decade\"]) ? join(datum[\"decade\"], ' ') : datum[\"decade\"] : \"\"+datum[\"decade\"])"
               },
               "x": {"scale": "x", "field": "scaled_date"},
               "y": {"scale": "y", "field": "CO2"},

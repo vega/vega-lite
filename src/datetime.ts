@@ -1,9 +1,9 @@
 // DateTime definition object
 
 import {isNumber, isObject} from 'vega-util';
-import * as log from './log';
-import {TIMEUNIT_PARTS} from './timeunit';
-import {duplicate, isNumeric, keys} from './util';
+import * as log from './log/index.js';
+import {TIMEUNIT_PARTS} from './timeunit.js';
+import {duplicate, hasProperty, isNumeric, keys} from './util.js';
 
 /**
  * @minimum 1
@@ -125,7 +125,7 @@ export interface DateTimeExpr {
 export function isDateTime(o: any): o is DateTime {
   if (o && isObject(o)) {
     for (const part of TIMEUNIT_PARTS) {
-      if (part in o) {
+      if (hasProperty(o, part)) {
         return true;
       }
     }
@@ -145,12 +145,12 @@ export const MONTHS = [
   'september',
   'october',
   'november',
-  'december'
+  'december',
 ];
-export const SHORT_MONTHS = MONTHS.map(m => m.substr(0, 3));
+export const SHORT_MONTHS = MONTHS.map((m) => m.substr(0, 3));
 
 export const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-export const SHORT_DAYS = DAYS.map(d => d.substr(0, 3));
+export const SHORT_DAYS = DAYS.map((d) => d.substr(0, 3));
 
 function normalizeQuarter(q: number | string): number {
   if (isNumeric(q)) {

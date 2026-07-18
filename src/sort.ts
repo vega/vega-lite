@@ -1,7 +1,8 @@
-import {isArray} from 'vega-util';
-import {NonArgAggregateOp} from './aggregate';
-import {FieldName} from './channeldef';
-import {DateTime} from './datetime';
+import {hasOwnProperty, isArray} from 'vega-util';
+import {NonArgAggregateOp} from './aggregate.js';
+import {FieldName} from './channeldef.js';
+import {DateTime} from './datetime.js';
+import {hasProperty} from './util.js';
 
 export type SortOrder = 'ascending' | 'descending';
 
@@ -15,7 +16,7 @@ export interface SortField {
   field: FieldName;
 
   /**
-   * Whether to sort the field in ascending or descending order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
+   * Whether to sort the field in ascending or descending order. One of `"ascending"` (default), `"descending"`, or `null` (do not sort).
    */
   order?: SortOrder | null;
 }
@@ -50,7 +51,7 @@ export interface EncodingSortField<F> {
   op?: NonArgAggregateOp;
 
   /**
-   * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
+   * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (do not sort).
    */
   order?: SortOrder | null;
 }
@@ -62,7 +63,7 @@ export interface SortByEncoding {
   encoding: SortByChannel;
 
   /**
-   * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (no not sort).
+   * The sort order. One of `"ascending"` (default), `"descending"`, or `null` (do not sort).
    */
   order?: SortOrder | null;
 }
@@ -81,13 +82,13 @@ const SORT_BY_CHANNEL_INDEX = {
   fillOpacity: 1,
   strokeOpacity: 1,
   opacity: 1,
-  text: 1
+  text: 1,
 } as const;
 
 export type SortByChannel = keyof typeof SORT_BY_CHANNEL_INDEX;
 
 export function isSortByChannel(c: string): c is SortByChannel {
-  return c in SORT_BY_CHANNEL_INDEX;
+  return hasOwnProperty(SORT_BY_CHANNEL_INDEX, c);
 }
 
 export type SortByChannelDesc =
@@ -109,11 +110,11 @@ export type AllSortString = SortOrder | SortByChannel | SortByChannelDesc;
 export type Sort<F> = SortArray | AllSortString | EncodingSortField<F> | SortByEncoding | null;
 
 export function isSortByEncoding<F>(sort: Sort<F>): sort is SortByEncoding {
-  return !!sort?.['encoding'];
+  return hasProperty(sort, 'encoding');
 }
 
 export function isSortField<F>(sort: Sort<F>): sort is EncodingSortField<F> {
-  return sort && (sort['op'] === 'count' || !!sort['field']);
+  return sort && ((sort as any).op === 'count' || hasProperty(sort, 'field'));
 }
 
 export function isSortArray<F>(sort: Sort<F>): sort is SortArray {

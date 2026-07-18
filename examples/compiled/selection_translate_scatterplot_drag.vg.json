@@ -1,9 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
-  "height": 200,
+  "width": 300,
+  "height": 300,
   "style": "cell",
   "data": [
     {"name": "grid_store"},
@@ -176,7 +176,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Cylinders"},
-      "range": [0, 361],
+      "range": [4, 361],
       "zero": true
     }
   ],

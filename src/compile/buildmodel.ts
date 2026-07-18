@@ -1,19 +1,26 @@
 import type {SignalRef} from 'vega';
-import {Config} from '../config';
-import * as log from '../log';
-import {isAnyConcatSpec, isFacetSpec, isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedSpec} from '../spec';
-import {ConcatModel} from './concat';
-import {FacetModel} from './facet';
-import {LayerModel} from './layer';
-import {Model} from './model';
-import {UnitModel} from './unit';
+import {Config} from '../config.js';
+import * as log from '../log/index.js';
+import {
+  isAnyConcatSpec,
+  isFacetSpec,
+  isLayerSpec,
+  isUnitSpec,
+  LayoutSizeMixins,
+  NormalizedSpec,
+} from '../spec/index.js';
+import {ConcatModel} from './concat.js';
+import {FacetModel} from './facet.js';
+import {LayerModel} from './layer.js';
+import {Model} from './model.js';
+import {UnitModel} from './unit.js';
 
 export function buildModel(
   spec: NormalizedSpec,
   parent: Model,
   parentGivenName: string,
   unitSize: LayoutSizeMixins,
-  config: Config<SignalRef>
+  config: Config<SignalRef>,
 ): Model {
   if (isFacetSpec(spec)) {
     return new FacetModel(spec, parent, parentGivenName, config);
