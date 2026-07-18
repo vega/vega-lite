@@ -107,8 +107,9 @@ When using `size` with area marks:
 - use one positional channel for the centerline trajectory (often quantitative),
 - use the other positional channel for grouping lanes (often nominal).
 
-By default, `size` legends are disabled for area ribbons. You can explicitly enable one with `"size": {"legend": { ... }}` if needed.
+The ribbon expands symmetrically around the centerline on the axis selected by the area's orientation. Vega-Lite infers the orientation from the positional encodings, or you can set [`orient`](mark.html#mark-def) explicitly when both axes are quantitative. This mode applies when neither `x2` nor `y2` is encoded; use those channels instead for areas with independently defined boundaries.
 
+By default, `size` legends are disabled for area ribbons. You can explicitly enable one with `"size": {"legend": { ... }}` if needed.
 
 <span class="vl-example" data-name="area_density_ribbon_horizontal_offset_color"></span>
 

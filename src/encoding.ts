@@ -258,8 +258,9 @@ export interface Encoding<F extends Field> {
    * Size of the mark.
    * - For `"point"`, `"square"` and `"circle"`, – the symbol size, or pixel area of the mark.
    * - For `"bar"` and `"tick"` – the bar and tick's size.
+   * - For `"area"` without `x2` or `y2` – the thickness of a ribbon centered on its positional encoding.
    * - For `"text"` – the text's font size.
-   * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
+   * - Size is unsupported for `"line"` and `"rect"`. (Use `"trail"` instead of line with varying size.)
    */
   size?: NumericMarkPropDef<F>;
 
