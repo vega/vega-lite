@@ -92,7 +92,7 @@
       "name": "yOffset",
       "type": "linear",
       "domain": {"data": "data_0", "field": "score"},
-      "range": [0, {"signal": "bandwidth('y')"}],
+      "range": [{"signal": "bandwidth('y')"}, 0],
       "zero": true
     },
     {
