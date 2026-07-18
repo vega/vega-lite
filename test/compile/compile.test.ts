@@ -303,7 +303,7 @@ describe('compile/compile', () => {
     });
 
     const sizeScales = spec.scales.filter((scale) => scale.name.endsWith('_size'));
-    expect(sizeScales.map((scale) => scale.range)).toEqual([
+    expect(sizeScales.map((scale) => (scale as any).range)).toEqual([
       [0, {signal: "bandwidth('layer_0_y')"}],
       [0, {signal: "bandwidth('layer_1_y')"}],
     ]);
@@ -333,7 +333,7 @@ describe('compile/compile', () => {
     expect(update.y.offset.signal).toContain('scale("size"');
     expect(update.y2.offset.signal).toContain('scale("yOffset"');
     expect(update.y2.offset.signal).toContain('scale("size"');
-    expect(spec.scales.find((scale) => scale.name === 'size').range).toEqual([
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([
       0,
       {
         signal:
@@ -366,7 +366,7 @@ describe('compile/compile', () => {
     expect(update.x.offset.signal).toContain('scale("size"');
     expect(update.x2.offset.signal).toContain('scale("xOffset"');
     expect(update.x2.offset.signal).toContain('scale("size"');
-    expect(spec.scales.find((scale) => scale.name === 'size').range).toEqual([
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([
       0,
       {
         signal:
@@ -377,6 +377,7 @@ describe('compile/compile', () => {
 
   it('should preserve explicit area thickness ranges with discrete offsets', () => {
     const {spec} = compile({
+      data: {values: [{value: 1, group: 'A', subgroup: 'B', density: 0.5}]},
       mark: 'area',
       encoding: {
         x: {field: 'value', type: 'quantitative'},
@@ -386,13 +387,14 @@ describe('compile/compile', () => {
       },
     });
 
-    expect(spec.scales.find((scale) => scale.name === 'size').range).toEqual([0, 40]);
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([0, 40]);
     const update = (spec.marks[0] as any).marks[0].encode.update;
     expect(update.y.offset.signal).not.toContain("domain('yOffset').length");
   });
 
   it('should center area ribbons within band offset groups', () => {
     const {spec} = compile({
+      data: {values: [{value: 1, group: 'A', subgroup: 'B', density: 0.5}]},
       mark: 'area',
       encoding: {
         x: {field: 'value', type: 'quantitative'},
@@ -404,7 +406,10 @@ describe('compile/compile', () => {
 
     const update = (spec.marks[0] as any).marks[0].encode.update;
     expect(update.y.offset.signal).toContain('bandwidth("yOffset") * (0.5)');
-    expect(spec.scales.find((scale) => scale.name === 'size').range).toEqual([0, {signal: "bandwidth('yOffset')"}]);
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([
+      0,
+      {signal: "bandwidth('yOffset')"},
+    ]);
   });
 
   it('should escape field names when composing ribbon and positional offsets', () => {
