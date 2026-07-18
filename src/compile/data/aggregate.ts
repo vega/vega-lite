@@ -1,5 +1,11 @@
 import {AggregateOp, AggregateTransform as VgAggregateTransform} from 'vega';
-import {isArgmaxDef, isArgminDef, isExponentialBDef, isExponentialDef} from '../../aggregate.js';
+import {
+  getAggregateOp,
+  getAggregateParam,
+  isArgmaxDef,
+  isArgminDef,
+  isParameterizedAggregateDef,
+} from '../../aggregate.js';
 import {
   Channel,
   getPositionChannelFromLatLong,
@@ -73,7 +79,6 @@ function mergeMeasures(parentMeasures: Measures, childMeasures: Measures) {
         // add operator to existing measure field
         const parentAggregateParam = parentMeasures[field][op]?.aggregateParam;
         const childAggregateParam = ops[op].aggregateParam;
-        const aggregateParam = childAggregateParam ?? parentAggregateParam;
 
         if (
           parentAggregateParam !== undefined &&
@@ -85,7 +90,7 @@ function mergeMeasures(parentMeasures: Measures, childMeasures: Measures) {
 
         parentMeasures[field][op] = {
           aliases: new Set([...(parentMeasures[field][op]?.aliases ?? []), ...ops[op].aliases]),
-          ...(aggregateParam !== undefined ? {aggregateParam} : {}),
+          aggregateParam: childAggregateParam ?? parentAggregateParam,
         };
       } else {
         parentMeasures[field] = {[op]: ops[op]};
@@ -143,11 +148,12 @@ export class AggregateNode extends DataFlowNode {
             const argField = (aggregate as any)[op];
             meas[argField] ??= {};
             meas[argField][op] = {aliases: new Set([vgField({op, field: argField}, {forAs: true})])};
-          } else if (isExponentialDef(aggregate) || isExponentialBDef(aggregate)) {
-            const op = isExponentialDef(aggregate) ? 'exponential' : 'exponentialb';
-            const aggregateParam = isExponentialDef(aggregate) ? aggregate.exponential : aggregate.exponentialb;
+          } else if (isParameterizedAggregateDef(aggregate)) {
             meas[field] ??= {};
-            meas[field][op] = {aliases: new Set([vgField(fieldDef, {forAs: true})]), aggregateParam};
+            meas[field][getAggregateOp(aggregate)] = {
+              aliases: new Set([vgField(fieldDef, {forAs: true})]),
+              aggregateParam: getAggregateParam(aggregate),
+            };
           } else {
             meas[field] ??= {};
             (meas[field] as any)[aggregate] = {aliases: new Set([vgField(fieldDef, {forAs: true})])};
@@ -179,22 +185,15 @@ export class AggregateNode extends DataFlowNode {
     for (const s of t.aggregate) {
       const {op, field, as} = s;
       if (op) {
-        const aliases = new Set([as ? as : vgField(s, {forAs: true})]);
+        const alias = as ? as : vgField(s, {forAs: true});
         if (op === 'count') {
           meas['*'] ??= {};
-          meas['*']['count'] = {aliases};
+          meas['*']['count'] = {aliases: new Set([alias])};
         } else {
-          if (isExponentialDef(op) || isExponentialBDef(op)) {
-            const opName = isExponentialDef(op) ? 'exponential' : 'exponentialb';
-            const aggregateParam = isExponentialDef(op) ? op.exponential : op.exponentialb;
-            meas[field] ??= {};
-            meas[field][opName] ??= {aliases: new Set(), aggregateParam};
-            meas[field][opName].aliases.add(as ? as : vgField(s, {forAs: true}));
-          } else {
-            meas[field] ??= {};
-            meas[field][op] ??= {aliases: new Set()};
-            meas[field][op].aliases.add(as ? as : vgField(s, {forAs: true}));
-          }
+          const opName = getAggregateOp(op);
+          meas[field] ??= {};
+          meas[field][opName] ??= {aliases: new Set(), aggregateParam: getAggregateParam(op)};
+          meas[field][opName].aliases.add(alias);
         }
       }
     }

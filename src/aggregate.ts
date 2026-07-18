@@ -73,7 +73,32 @@ export function isExponentialBDef(a: Aggregate | string): a is ExponentialBDef {
   return hasProperty(a, 'exponentialb');
 }
 
-export function isAggregateOp(a: string | ArgminDef | ArgmaxDef | ExponentialDef | ExponentialBDef): a is AggregateOp {
+/**
+ * An aggregate operation that takes an aggregate parameter, expressed as an object such as `{"exponential": 0.5}`.
+ */
+export type ParameterizedAggregateDef = ExponentialDef | ExponentialBDef;
+
+export function isParameterizedAggregateDef(a: Aggregate | string): a is ParameterizedAggregateDef {
+  return isExponentialDef(a) || isExponentialBDef(a);
+}
+
+/**
+ * Returns the operation name for an aggregate, unwrapping parameterized aggregate defs to their op.
+ */
+export function getAggregateOp(a: ParameterizedAggregateDef): 'exponential' | 'exponentialb';
+export function getAggregateOp<T extends string>(a: T | ParameterizedAggregateDef): T | 'exponential' | 'exponentialb';
+export function getAggregateOp(a: Aggregate | string): string {
+  return isExponentialDef(a) ? 'exponential' : isExponentialBDef(a) ? 'exponentialb' : (a as string);
+}
+
+/**
+ * Returns the parameter of a parameterized aggregate def, or `undefined` for other aggregates.
+ */
+export function getAggregateParam(a: Aggregate | string): number | undefined {
+  return isExponentialDef(a) ? a.exponential : isExponentialBDef(a) ? a.exponentialb : undefined;
+}
+
+export function isAggregateOp(a: string | ArgminDef | ArgmaxDef | ParameterizedAggregateDef): a is AggregateOp {
   return isString(a) && hasOwnProperty(AGGREGATE_OP_INDEX, a);
 }
 
