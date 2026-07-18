@@ -80,9 +80,7 @@ You can use the [Vega view API](https://vega.github.io/vega/docs/api/view/#data)
 
 ```js
 vegaEmbed('#vis', spec).then((res) => {
-  const data = [
-    /* some data array */
-  ];
+  const data = [/* some data array */];
   res.view.insert('myData', data).run();
 });
 ```
