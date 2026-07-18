@@ -97,7 +97,6 @@ For example, we can use a ranged area with the `ci0` and `ci1` [aggregation oper
 
 <span class="vl-example" data-name="area_temperature_range"></span>
 
-
 #### With defined thickness around a centerline
 
 Area marks also support a quantitative `size` encoding for symmetric area thickness around a centerline. This parameterization describes one center position and a visual thickness rather than two independent data-domain boundaries. The centerline may be a field that varies for every datum, a categorical lane, a datum, or a constant value.
