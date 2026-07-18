@@ -9,8 +9,10 @@ import {FacetFieldDef, FacetMapping} from '../../src/spec/facet.js';
 import {ORDINAL} from '../../src/type.js';
 import {parseFacetModel, parseFacetModelWithScale} from '../util.js';
 
-function getCellItems(view: View) {
+function getFacetLayoutItems(view: View) {
   const cells: {x: number; y: number; datum: Record<string, unknown>}[] = [];
+  const rowHeaders: {y: number; datum: Record<string, unknown>}[] = [];
+  const columnHeaders: {x: number; datum: Record<string, unknown>}[] = [];
   const scenegraph = view.scenegraph() as unknown as {root: unknown};
 
   function walk(item: any) {
@@ -18,8 +20,14 @@ function getCellItems(view: View) {
       return;
     }
 
-    if (item.mark?.name === 'cell' && item.datum) {
-      cells.push(item);
+    if (item.datum) {
+      if (item.mark?.name === 'cell') {
+        cells.push(item);
+      } else if (item.mark?.name === 'row_header') {
+        rowHeaders.push(item);
+      } else if (item.mark?.name === 'column_header') {
+        columnHeaders.push(item);
+      }
     }
 
     if (Array.isArray(item.items)) {
@@ -31,7 +39,11 @@ function getCellItems(view: View) {
 
   walk(scenegraph.root);
 
-  return cells.sort((a, b) => a.y - b.y || a.x - b.x);
+  return {
+    cells: cells.sort((a, b) => a.y - b.y || a.x - b.x),
+    rowHeaders: rowHeaders.sort((a, b) => a.y - b.y),
+    columnHeaders: columnHeaders.sort((a, b) => a.x - b.x),
+  };
 }
 
 describe('FacetModel', () => {
@@ -568,8 +580,8 @@ describe('FacetModel', () => {
           ],
         },
         facet: {
-          row: {field: 'second', type: 'ordinal', sort: ['a', 'b']},
-          column: {field: 'first', type: 'ordinal', sort: ['A', 'B', 'C']},
+          row: {field: 'second', type: 'ordinal', sort: ['b', 'a']},
+          column: {field: 'first', type: 'ordinal', sort: ['C', 'A', 'B']},
         },
         spec: {
           mark: 'text',
@@ -582,16 +594,19 @@ describe('FacetModel', () => {
       const view = new View(parse(spec), {renderer: 'none'});
       await view.runAsync();
 
-      const cellItems = getCellItems(view);
+      const {cells, rowHeaders, columnHeaders} = getFacetLayoutItems(view);
 
-      expect(cellItems).toHaveLength(6);
-      expect(cellItems.map((item) => item.datum)).toEqual([
-        expect.objectContaining({first: 'A', second: 'a'}),
-        expect.objectContaining({first: 'B', second: 'a'}),
-        expect.objectContaining({first: 'C', second: 'a'}),
+      expect(rowHeaders.map((item) => item.datum.second)).toEqual(['b', 'a']);
+      expect(columnHeaders.map((item) => item.datum.first)).toEqual(['C', 'A', 'B']);
+
+      expect(cells).toHaveLength(6);
+      expect(cells.map((item) => item.datum)).toEqual([
+        expect.objectContaining({first: 'C', second: 'b'}),
         expect.objectContaining({first: 'A', second: 'b'}),
         expect.objectContaining({first: 'B', second: 'b'}),
-        expect.objectContaining({first: 'C', second: 'b'}),
+        expect.objectContaining({first: 'C', second: 'a'}),
+        expect.objectContaining({first: 'A', second: 'a'}),
+        expect.objectContaining({first: 'B', second: 'a'}),
       ]);
     });
 
@@ -599,11 +614,11 @@ describe('FacetModel', () => {
       const {spec} = compile({
         data: {
           values: [
-            {first: 'A', second: 'a', row_order: 0, column_order: 0, value: 'A/a'},
-            {first: 'B', second: 'a', row_order: 0, column_order: 1, value: 'B/a'},
-            {first: 'C', second: 'a', row_order: 0, column_order: 2, value: 'C/a'},
-            {first: 'A', second: 'b', row_order: 1, column_order: 0, value: 'A/b'},
-            {first: 'B', second: 'b', row_order: 1, column_order: 1, value: 'B/b'},
+            {first: 'A', second: 'a', row_order: 1, column_order: 2, value: 'A/a'},
+            {first: 'B', second: 'a', row_order: 1, column_order: 0, value: 'B/a'},
+            {first: 'C', second: 'a', row_order: 1, column_order: 1, value: 'C/a'},
+            {first: 'A', second: 'b', row_order: 0, column_order: 2, value: 'A/b'},
+            {first: 'B', second: 'b', row_order: 0, column_order: 0, value: 'B/b'},
           ],
         },
         facet: {
@@ -621,16 +636,19 @@ describe('FacetModel', () => {
       const view = new View(parse(spec), {renderer: 'none'});
       await view.runAsync();
 
-      const cellItems = getCellItems(view);
+      const {cells, rowHeaders, columnHeaders} = getFacetLayoutItems(view);
 
-      expect(cellItems).toHaveLength(6);
-      expect(cellItems.map((item) => item.datum)).toEqual([
-        expect.objectContaining({first: 'A', second: 'a'}),
-        expect.objectContaining({first: 'B', second: 'a'}),
-        expect.objectContaining({first: 'C', second: 'a'}),
-        expect.objectContaining({first: 'A', second: 'b'}),
+      expect(rowHeaders.map((item) => item.datum.second)).toEqual(['b', 'a']);
+      expect(columnHeaders.map((item) => item.datum.first)).toEqual(['B', 'C', 'A']);
+
+      expect(cells).toHaveLength(6);
+      expect(cells.map((item) => item.datum)).toEqual([
         expect.objectContaining({first: 'B', second: 'b'}),
         expect.objectContaining({first: 'C', second: 'b'}),
+        expect.objectContaining({first: 'A', second: 'b'}),
+        expect.objectContaining({first: 'B', second: 'a'}),
+        expect.objectContaining({first: 'C', second: 'a'}),
+        expect.objectContaining({first: 'A', second: 'a'}),
       ]);
     });
 

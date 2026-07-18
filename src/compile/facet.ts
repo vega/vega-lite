@@ -15,6 +15,7 @@ import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema.js';
 import {buildModel} from './buildmodel.js';
 import {assembleFacetData} from './data/assemble.js';
 import {sortArrayIndexField} from './data/calculate.js';
+import {facetLookupKeyExpr, facetLookupKeyFieldName, isCrossedFacetWithCustomSort} from './data/facet.js';
 import {parseData} from './data/parse.js';
 import {assembleLabelTitle} from './header/assemble.js';
 import {getHeaderChannel, getHeaderProperty} from './header/common.js';
@@ -33,15 +34,6 @@ export function facetSortFieldName(
   opt?: FieldRefOption,
 ) {
   return vgField(sort, {suffix: `by_${vgField(fieldDef)}`, ...opt});
-}
-
-function isCrossedFacetWithCustomSort(facet: Pick<EncodingFacetMapping<string, SignalRef>, 'row' | 'column'>) {
-  const {row, column} = facet;
-  return !!(row && column && (isCustomSortField(row) || isCustomSortField(column)));
-}
-
-function isCustomSortField(fieldDef?: FacetFieldDef<string, SignalRef>) {
-  return !!fieldDef && (isSortField(fieldDef.sort) || Array.isArray(fieldDef.sort));
 }
 
 export class FacetModel extends ModelWithField {
@@ -352,23 +344,6 @@ export class FacetModel extends ModelWithField {
     };
   }
 
-  private getFacetLookupField(channel: FacetChannel) {
-    return this.getName(`${channel}_facet_key`);
-  }
-
-  private facetLookupKeyExpr(channel: FacetChannel) {
-    const fieldDef = this.facet[channel];
-    const fields = [vgField(fieldDef, {expr: 'datum'})];
-
-    if (isBinning(fieldDef.bin)) {
-      fields.push(vgField(fieldDef, {expr: 'datum', binSuffix: 'end'}));
-    }
-
-    return `join([${fields
-      .map((field) => `isValid(${field}) ? length(toString(${field})) + ':' + toString(${field}) : '-1:'`)
-      .join(', ')}], '|')`;
-  }
-
   private crossedFacetLookupSortExpr(channel: FacetChannel) {
     const fieldDef = this.facet[channel];
     if (!fieldDef || (!isSortField(fieldDef.sort) && !isArray(fieldDef.sort))) {
@@ -377,9 +352,10 @@ export class FacetModel extends ModelWithField {
 
     const lookupDataName = this.getName(`${channel}_lookup_domain`);
     const lookupDataExpr = `data(${stringValue(lookupDataName)})`;
-    const lookupField = this.getFacetLookupField(channel);
-    const lookupIndexExpr = `indexof(pluck(${lookupDataExpr}, ${stringValue(lookupField)}), ${this.facetLookupKeyExpr(
-      channel,
+    const lookupField = facetLookupKeyFieldName(this, channel);
+    const lookupIndexExpr = `indexof(pluck(${lookupDataExpr}, ${stringValue(lookupField)}), ${facetLookupKeyExpr(
+      fieldDef,
+      'datum.datum',
     )})`;
     const sortValueField = isSortField(fieldDef.sort)
       ? vgField(fieldDef.sort, {forAs: true})
