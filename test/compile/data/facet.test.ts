@@ -276,8 +276,6 @@ describe('compile/data/facet', () => {
           },
         ],
       });
-
-      expect(data.find((d) => d.name === 'crossed_facet_domain')).toBeUndefined();
     });
   });
 

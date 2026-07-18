@@ -477,6 +477,64 @@ describe('FacetModel', () => {
       expect(marks[0].title).toEqual(assembleLabelTitle(facet.row, 'row', model.config));
     });
 
+    it('should aggregate the sort field for a single-channel facet with a field sort', () => {
+      const model: FacetModel = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'ordinal', sort: {field: 'd', op: 'median'}},
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'c', type: 'quantitative'},
+          },
+        },
+      });
+      model.parse();
+
+      const marks = model.assembleMarks();
+
+      expect(marks[0].from).toEqual({
+        facet: expect.objectContaining({
+          name: 'facet',
+          groupby: ['a'],
+          aggregate: {fields: ['d'], ops: ['median'], as: ['median_d_by_a']},
+        }),
+      });
+      expect(marks[0].sort).toEqual({
+        field: ['datum["median_d_by_a"]'],
+        order: ['ascending'],
+      });
+    });
+
+    it('should aggregate the sort index for a single-channel facet with a sort array', () => {
+      const model: FacetModel = parseFacetModelWithScale({
+        facet: {
+          row: {field: 'a', type: 'ordinal', sort: ['a2', 'a1']},
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'c', type: 'quantitative'},
+          },
+        },
+      });
+      model.parse();
+
+      const marks = model.assembleMarks();
+
+      expect(marks[0].from).toEqual({
+        facet: expect.objectContaining({
+          name: 'facet',
+          groupby: ['a'],
+          aggregate: {fields: ['row_a_sort_index'], ops: ['max'], as: ['row_a_sort_index']},
+        }),
+      });
+      expect(marks[0].sort).toEqual({
+        field: ['datum["row_a_sort_index"]'],
+        order: ['ascending'],
+      });
+    });
+
     it('should add cross and sort if we facet by multiple dimensions', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
@@ -649,6 +707,48 @@ describe('FacetModel', () => {
         expect.objectContaining({first: 'B', second: 'a'}),
         expect.objectContaining({first: 'C', second: 'a'}),
         expect.objectContaining({first: 'A', second: 'a'}),
+      ]);
+    });
+
+    it('should sort crossed facets when only one channel has a custom sort order at runtime', async () => {
+      const {spec} = compile({
+        data: {
+          values: [
+            {year: 2001, month: 'Mar', value: '2001/Mar'},
+            {year: 2001, month: 'Feb', value: '2001/Feb'},
+            {year: 2001, month: 'Jan', value: '2001/Jan'},
+            {year: 2002, month: 'Feb', value: '2002/Feb'},
+            {year: 2002, month: 'Jan', value: '2002/Jan'},
+          ],
+        },
+        facet: {
+          row: {field: 'year', type: 'ordinal', sort: 'descending'},
+          column: {field: 'month', type: 'ordinal', sort: ['Jan', 'Feb', 'Mar']},
+        },
+        spec: {
+          mark: 'text',
+          encoding: {
+            text: {field: 'value'},
+          },
+        },
+      });
+
+      const view = new View(parse(spec), {renderer: 'none'});
+      await view.runAsync();
+
+      const {cells, rowHeaders, columnHeaders} = getFacetLayoutItems(view);
+
+      expect(rowHeaders.map((item) => item.datum.year)).toEqual([2002, 2001]);
+      expect(columnHeaders.map((item) => item.datum.month)).toEqual(['Jan', 'Feb', 'Mar']);
+
+      expect(cells).toHaveLength(6);
+      expect(cells.map((item) => item.datum)).toEqual([
+        expect.objectContaining({year: 2002, month: 'Jan'}),
+        expect.objectContaining({year: 2002, month: 'Feb'}),
+        expect.objectContaining({year: 2002, month: 'Mar'}),
+        expect.objectContaining({year: 2001, month: 'Jan'}),
+        expect.objectContaining({year: 2001, month: 'Feb'}),
+        expect.objectContaining({year: 2001, month: 'Mar'}),
       ]);
     });
 
