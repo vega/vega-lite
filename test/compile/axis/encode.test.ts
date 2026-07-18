@@ -133,5 +133,18 @@ describe('compile/axis/encode', () => {
         y: {scale: 'y', signal: 'datum.value', band: 0.3},
       });
     });
+
+    it('does not position labels for explicit axis bandPosition without an offset channel', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'bar',
+        encoding: {
+          x: {aggregate: 'count', type: 'quantitative'},
+          y: {field: 'c', type: 'nominal', axis: {bandPosition: 0}},
+        },
+      });
+
+      const labels = encode.labels(model, 'y', {});
+      expect(labels).toEqual({});
+    });
   });
 });

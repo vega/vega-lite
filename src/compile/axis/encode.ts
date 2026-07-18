@@ -90,10 +90,15 @@ function labelsPositionSpec(model: UnitModel, channel: PositionScaleChannel, spe
     mark: model.mark,
     scaleType,
   });
-  const axis = model.axis(channel);
-  const axisBandPosition = axis?.bandPosition ?? inferredBandPosition;
 
-  if (axisBandPosition === undefined || axisBandPosition === 0.5) {
+  if (inferredBandPosition === undefined) {
+    // Without an offset-driven band position, Vega's axis handles any specified bandPosition natively.
+    return specifiedLabelsSpec;
+  }
+
+  const axisBandPosition = model.axis(channel)?.bandPosition ?? inferredBandPosition;
+
+  if (axisBandPosition === 0.5) {
     return specifiedLabelsSpec;
   }
 
