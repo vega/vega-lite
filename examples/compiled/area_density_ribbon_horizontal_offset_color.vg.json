@@ -4,7 +4,7 @@
   "padding": 5,
   "height": 240,
   "title": {
-    "text": "Body Mass Density Ribbons by Species and Sex",
+    "text": "Body Mass Violin Plot by Species and Sex",
     "frame": "group"
   },
   "style": "cell",
