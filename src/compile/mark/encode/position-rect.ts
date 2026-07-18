@@ -31,7 +31,7 @@ import {UnitModel} from '../../unit.js';
 import {nonPosition} from './nonposition.js';
 import {positionOffset} from './offset.js';
 import {vgAlignedPositionChannel} from './position-align.js';
-import {pointPositionDefaultRef} from './position-point.js';
+import {pointPosition, pointPositionDefaultRef} from './position-point.js';
 import {rangePosition} from './position-range.js';
 import * as ref from './valueref.js';
 import {getOffsetScaleChannel} from '../../../channel.js';
@@ -63,6 +63,8 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
     (mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal')) ||
     (mark === 'tick' && (channel === 'y' ? orient === 'vertical' : orient === 'horizontal'));
 
+  const isImage = mark === 'image';
+
   // x, x2, and width -- we must specify two of these in all conditions
   if (
     isFieldDef(channelDef) &&
@@ -85,6 +87,16 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
     channelHasQuantitativeOffset(encoding, channel)
   ) {
     return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
+  } else if (isImage && channelDef && !hasSizeDef && !channelDef2) {
+    // Images without an explicit size use their natural dimensions, which Vega only knows at render time.
+    // Thus, we cannot use xc/yc and instead output a point position with the image mark's own
+    // align/baseline property, which Vega applies based on the rendered dimensions.
+    const alignChannel = channel === 'x' ? 'align' : 'baseline';
+    const align = getMarkPropOrConfig(alignChannel, markDef, config) ?? (channel === 'x' ? 'center' : 'middle');
+    return {
+      ...pointPosition(channel, model, {defaultPos: 'mid'}),
+      [alignChannel]: signalOrValueRef(align),
+    };
   } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarOrTickBand) && !channelDef2) {
     return positionAndSize(channelDef, channel, model);
   } else {

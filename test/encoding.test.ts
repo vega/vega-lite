@@ -13,6 +13,7 @@ import {
 import {isPositionFieldOrDatumDef} from '../src/channeldef.js';
 import {defaultConfig} from '../src/config.js';
 import {
+  channelHasNestedOffsetScale,
   Encoding,
   extractTransformsFromEncoding,
   fieldDefs,
@@ -102,6 +103,26 @@ describe('encoding', () => {
 
         expect(encoding).toEqual({
           x: {field: 'a', type: 'quantitative'},
+        });
+        expect(logger.warns[0]).toEqual(log.message.offsetNestedInsideContinuousPositionScaleDropped('x'));
+      }),
+    );
+
+    it(
+      'drops xOffset if x is binned quantitative',
+      log.wrap((logger) => {
+        const encoding = initEncoding(
+          {
+            x: {field: 'a', type: 'quantitative', bin: true},
+            xOffset: {field: 'b', type: 'nominal'},
+          },
+          'point',
+          false,
+          defaultConfig,
+        );
+
+        expect(encoding).toEqual({
+          x: {field: 'a', type: 'quantitative', bin: {maxbins: 10}},
         });
         expect(logger.warns[0]).toEqual(log.message.offsetNestedInsideContinuousPositionScaleDropped('x'));
       }),
@@ -572,6 +593,57 @@ describe('encoding', () => {
         {field: 'foo', type: 'quantitative'},
         {field: 'bar', test: 'datum.val > 12', type: 'quantitative'},
       ]);
+    });
+  });
+
+  describe('channelHasNestedOffsetScale', () => {
+    it('returns true for nominal x with xOffset', () => {
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'nominal'}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(true);
+    });
+
+    it('returns true for ordinal x with xOffset', () => {
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'ordinal'}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(true);
+    });
+
+    it('returns false for binned quantitative x with xOffset (type-only check ignores binning)', () => {
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'quantitative', bin: true}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(false);
+    });
+
+    it('returns false for unbinned quantitative x with xOffset', () => {
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'quantitative'}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(false);
+    });
+
+    it('returns false when offset channel is missing', () => {
+      expect(channelHasNestedOffsetScale<string>({x: {field: 'a', type: 'nominal'}}, 'x')).toBe(false);
+    });
+
+    it('returns true for temporal x with timeUnit and xOffset', () => {
+      expect(
+        channelHasNestedOffsetScale<string>(
+          {x: {field: 'a', type: 'temporal', timeUnit: 'year'}, xOffset: {field: 'b', type: 'nominal'}},
+          'x',
+        ),
+      ).toBe(true);
     });
   });
 });

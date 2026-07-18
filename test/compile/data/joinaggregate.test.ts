@@ -1,32 +1,8 @@
 import {JoinAggregateTransformNode} from '../../../src/compile/data/joinaggregate.js';
-import {makeJoinAggregateFromFacet} from '../../../src/compile/data/joinaggregatefacet.js';
 import {Transform} from '../../../src/transform.js';
 import {PlaceholderDataFlowNode} from './util.js';
 
 describe('compile/data/joinaggregate', () => {
-  it('creates correct joinaggregate nodes for calculating sort field of crossed facet', () => {
-    const joinaggregate = makeJoinAggregateFromFacet(null, {
-      row: {field: 'r', type: 'nominal'},
-      column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'x'}},
-    });
-
-    expect(joinaggregate.assemble()).toEqual({
-      type: 'joinaggregate',
-      ops: ['median'],
-      fields: ['x'],
-      as: ['median_x_by_c'],
-      groupby: ['c'],
-    });
-  });
-
-  it('does not create any joinaggregate nodes for crossed facet', () => {
-    expect(
-      makeJoinAggregateFromFacet(null, {
-        row: {field: 'a', type: 'nominal'},
-      }),
-    ).toBeNull();
-  });
-
   it('should return a proper vg transform', () => {
     const transform: Transform = {
       joinaggregate: [
