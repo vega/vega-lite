@@ -273,7 +273,7 @@ describe('compile/compile', () => {
     expect(yOffsetScale.zero).toBe(true);
 
     const bar = spec.marks[0].encode.update;
-    const line = (spec.marks[1] as any).marks[0].encode.update;
+    const line = spec.marks[1].encode.update;
     const point = spec.marks[2].encode.update;
 
     expect(bar.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
@@ -283,7 +283,7 @@ describe('compile/compile', () => {
     expect(point.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
   });
 
-  it('should auto-group line paths by the base channel when yOffset is aggregated', () => {
+  it('should group line paths by an explicit detail field when yOffset is aggregated', () => {
     const {spec} = compile({
       data: {
         values: [
@@ -302,6 +302,7 @@ describe('compile/compile', () => {
         x: {field: 'a'},
         y: {field: 'c'},
         yOffset: {field: 'b', aggregate: 'sum', type: 'quantitative'},
+        detail: {field: 'c', type: 'nominal'},
       },
     });
 
@@ -361,7 +362,7 @@ describe('compile/compile', () => {
     expect(spec.width).toBeUndefined();
   });
 
-  it('should compile area with discrete y and quantitative yOffset as faceted ranged paths', () => {
+  it('should compile area with discrete y, quantitative yOffset, and detail as faceted ranged paths', () => {
     const {spec} = compile({
       data: {
         values: [
@@ -380,6 +381,7 @@ describe('compile/compile', () => {
         x: {field: 'a'},
         y: {field: 'c'},
         yOffset: {field: 'b', type: 'quantitative'},
+        detail: {field: 'c', type: 'nominal'},
       },
     });
 

@@ -67,6 +67,7 @@ import {
   isFieldDef,
   isOrderOnlyDef,
   isTypedFieldDef,
+  isUnbinnedQuantitativeFieldOrDatumDef,
   isValueDef,
   LatLongDef,
   NumericArrayMarkPropDef,
@@ -378,6 +379,20 @@ export function channelHasNestedOffsetScale<F extends Field>(
     }
   }
   return false;
+}
+
+/**
+ * Returns true if the given position channel has a quantitative offset channel (e.g., `xOffset` for `x`) that can drive ranged marks.
+ */
+export function channelHasQuantitativeOffset<F extends Field>(
+  encoding: EncodingWithFacet<F>,
+  channel: Channel,
+): boolean {
+  const offsetChannel = getOffsetScaleChannel(channel);
+  if (!offsetChannel) {
+    return false;
+  }
+  return isUnbinnedQuantitativeFieldOrDatumDef(encoding[offsetChannel]);
 }
 
 export function isAggregate(encoding: EncodingWithFacet<any>) {

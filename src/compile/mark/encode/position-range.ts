@@ -6,12 +6,13 @@ import {
   getSizeChannel,
   getVgPositionChannel,
 } from '../../../channel.js';
-import {isFieldDef, isFieldOrDatumDef} from '../../../channeldef.js';
+import {isFieldOrDatumDef} from '../../../channeldef.js';
+import {channelHasQuantitativeOffset} from '../../../encoding.js';
 import * as log from '../../../log/index.js';
 import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark.js';
 import {hasDiscreteDomain} from '../../../scale.js';
-import {isContinuous} from '../../../type.js';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema.js';
+import {contains} from '../../../util.js';
 import {getMarkStyleConfig} from '../../common.js';
 import {UnitModel} from '../../unit.js';
 import {positionOffset} from './offset.js';
@@ -140,9 +141,10 @@ function pointPosition2OrSize(
     }) ||
     position2orSize(channel, config[mark]) ||
     position2orSize(channel, config.mark) ||
-    (isFieldOrDatumDef(channelDef) &&
+    (contains(['bar', 'area'], mark) &&
+    isFieldOrDatumDef(channelDef) &&
     hasDiscreteDomain(scale?.get('type')) &&
-    hasContinuousOffset(encoding, baseChannel)
+    channelHasQuantitativeOffset(encoding, baseChannel)
       ? {
           [vgChannel]: ref.valueRefForFieldOrDatumDef(
             channelDef,
@@ -168,16 +170,6 @@ function pointPosition2OrSize(
           })(),
         })
   );
-}
-
-function hasContinuousOffset(encoding: UnitModel['encoding'], channel: 'x' | 'y' | 'theta' | 'radius'): boolean {
-  const offsetChannel = getOffsetScaleChannel(channel);
-  if (!offsetChannel) {
-    return false;
-  }
-
-  const offsetDef = encoding[offsetChannel];
-  return isFieldDef(offsetDef) && isContinuous(offsetDef.type);
 }
 
 export function position2Ref({

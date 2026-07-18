@@ -245,6 +245,10 @@ For example, with a nominal `y` lane and quantitative `yOffset`, each bar spans 
 
 This is useful for in-band ranged comparisons where you want to preserve categorical lanes while encoding magnitude with offsets.
 
+Path marks (`line`, `area`, and `trail`) are drawn as a single connected path, so a chart with multiple lanes would connect points across lanes. To draw a separate path per lane, add a grouping channel such as [`detail`](#detail) (or `color`) that repeats the lane field:
+
+<span class="vl-example" data-name="area_ranged_offset_quantitative"></span>
+
 {:#polar}
 
 ## Polar Position Channels

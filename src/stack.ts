@@ -14,7 +14,7 @@ import {
   vgField,
 } from './channeldef.js';
 import {CompositeAggregate} from './compositemark/index.js';
-import {channelHasField, Encoding, isAggregate} from './encoding.js';
+import {channelHasField, channelHasQuantitativeOffset, Encoding, isAggregate} from './encoding.js';
 import * as log from './log/index.js';
 import {
   ARC,
@@ -33,7 +33,6 @@ import {
   TICK,
 } from './mark.js';
 import {ScaleType} from './scale.js';
-import {isContinuous} from './type.js';
 
 const STACK_OFFSET_INDEX = {
   zero: 1,
@@ -172,8 +171,8 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   if (
     stackedFieldDef.stack === undefined &&
-    ((fieldChannel === 'x' && !encoding.y && isFieldDef(encoding.yOffset) && isContinuous(encoding.yOffset.type)) ||
-      (fieldChannel === 'y' && !encoding.x && isFieldDef(encoding.xOffset) && isContinuous(encoding.xOffset.type)))
+    ((fieldChannel === 'x' && !encoding.y && channelHasQuantitativeOffset(encoding, 'y')) ||
+      (fieldChannel === 'y' && !encoding.x && channelHasQuantitativeOffset(encoding, 'x')))
   ) {
     return null;
   }

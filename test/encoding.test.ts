@@ -540,13 +540,14 @@ describe('encoding', () => {
       }
     });
 
-    it('should group by the main channel even if the offset field is aggregated', () => {
+    it('should group by an explicit detail field when using an offset field', () => {
       for (const mark of ['line', 'area', 'trail'] as const) {
         expect(
           pathGroupingFields(mark, {
             x: {field: 'a', type: 'nominal'},
             y: {field: 'c', type: 'nominal'},
             yOffset: {field: 'b', aggregate: 'sum', type: 'quantitative'},
+            detail: {field: 'c', type: 'nominal'},
           }),
         ).toEqual(['c']);
       }

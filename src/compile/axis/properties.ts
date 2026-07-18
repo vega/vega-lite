@@ -2,7 +2,7 @@ import {Align, AxisOrient, Orient, SignalRef} from 'vega';
 import {isArray, isObject} from 'vega-util';
 import {AxisInternal} from '../../axis.js';
 import {isBinned, isBinning} from '../../bin.js';
-import {getOffsetScaleChannel, getSecondaryRangeChannel, PositionScaleChannel, X} from '../../channel.js';
+import {getSecondaryRangeChannel, PositionScaleChannel, X} from '../../channel.js';
 import {
   DatumDef,
   isDiscrete,
@@ -15,11 +15,12 @@ import {
   valueArray,
 } from '../../channeldef.js';
 import {Config, StyleConfigIndex} from '../../config.js';
+import {channelHasQuantitativeOffset} from '../../encoding.js';
 import {Mark} from '../../mark.js';
 import {hasDiscreteDomain} from '../../scale.js';
 import {Sort} from '../../sort.js';
 import {durationExpr, normalizeTimeUnit} from '../../timeunit.js';
-import {isContinuous, NOMINAL, ORDINAL, Type} from '../../type.js';
+import {NOMINAL, ORDINAL, Type} from '../../type.js';
 import {contains, normalizeAngle} from '../../util.js';
 import {isSignalRef} from '../../vega.schema.js';
 import {mergeTitle, mergeTitleFieldDefs} from '../common.js';
@@ -146,9 +147,7 @@ export function defaultBandPosition({
     return undefined;
   }
 
-  const offsetChannel = getOffsetScaleChannel(channel);
-  const offsetDef = model.encoding[offsetChannel];
-  if (isFieldDef(offsetDef) && isContinuous(offsetDef.type)) {
+  if (channelHasQuantitativeOffset(model.encoding, channel)) {
     return channel === 'x' ? 0 : 1;
   }
 

@@ -1,8 +1,8 @@
 import {UnitModel} from '../unit.js';
-import {getOffsetScaleChannel, getSecondaryRangeChannel} from '../../channel.js';
-import {isFieldDef, isFieldOrDatumDef} from '../../channeldef.js';
+import {getSecondaryRangeChannel} from '../../channel.js';
+import {isFieldOrDatumDef} from '../../channeldef.js';
+import {channelHasQuantitativeOffset} from '../../encoding.js';
 import {hasDiscreteDomain} from '../../scale.js';
-import {isContinuous} from '../../type.js';
 import {MarkCompiler} from './base.js';
 import * as encode from './encode/index.js';
 
@@ -49,9 +49,7 @@ function hasContinuousOffsetRange(model: UnitModel, channel: 'x' | 'y'): boolean
     return false;
   }
 
-  const offsetChannel = getOffsetScaleChannel(channel);
-  const offsetDef = encoding[offsetChannel];
-  if (!(isFieldDef(offsetDef) && isContinuous(offsetDef.type))) {
+  if (!channelHasQuantitativeOffset(encoding, channel)) {
     return false;
   }
 
