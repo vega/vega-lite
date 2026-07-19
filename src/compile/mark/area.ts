@@ -47,6 +47,12 @@ export const area: MarkCompiler = {
         ...encode.defined(model),
       };
     }
+    const xRangeFromOffset = model.isRangedOffset('x');
+    const yRangeFromOffset = model.isRangedOffset('y');
+    const hasOffsetDrivenRange = xRangeFromOffset || yRangeFromOffset;
+    const xIsRange = xRangeFromOffset || (!hasOffsetDrivenRange && model.markDef.orient === 'horizontal');
+    const yIsRange = yRangeFromOffset || (!hasOffsetDrivenRange && model.markDef.orient === 'vertical');
+    const yDefaultPos = yRangeFromOffset && !model.encoding.y ? 'zeroOrMax' : 'zeroOrMin';
 
     return {
       ...encode.baseEncodeEntry(model, {
@@ -60,12 +66,12 @@ export const area: MarkCompiler = {
       ...encode.pointOrRangePosition('x', model, {
         defaultPos: 'zeroOrMin',
         defaultPos2: 'zeroOrMin',
-        range: model.markDef.orient === 'horizontal',
+        range: xIsRange,
       }),
       ...encode.pointOrRangePosition('y', model, {
-        defaultPos: 'zeroOrMin',
+        defaultPos: yDefaultPos,
         defaultPos2: 'zeroOrMin',
-        range: model.markDef.orient === 'vertical',
+        range: yIsRange,
       }),
       ...encode.defined(model),
     };

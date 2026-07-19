@@ -2,8 +2,13 @@ import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel.js';
 import {channelDefType, getFieldOrDatumDef, isFieldDef, isPositionFieldOrDatumDef} from '../../channeldef.js';
 import {formatCustomType, isCustomFormatType} from '../format.js';
 import {UnitModel} from '../unit.js';
+import {defaultBandPosition} from './properties.js';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
+  return labelsPositionSpec(model, channel, labelsTextSpec(model, channel, specifiedLabelsSpec));
+}
+
+function labelsTextSpec(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
   const {encoding, config} = model;
 
   const fieldOrDatumDef =
@@ -71,4 +76,39 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
     }
   }
   return specifiedLabelsSpec;
+}
+
+/**
+ * Vega positions band-scale axis labels at the band center regardless of the axis `bandPosition`
+ * (only ticks and grid lines move), so ranged offset marks need an explicit label position
+ * override to anchor the labels at the in-band baseline.
+ */
+function labelsPositionSpec(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
+  if ('x' in specifiedLabelsSpec || 'y' in specifiedLabelsSpec) {
+    return specifiedLabelsSpec;
+  }
+
+  const inferredBandPosition = defaultBandPosition(model, channel);
+
+  if (inferredBandPosition === undefined) {
+    // Without an offset-driven band position, Vega's axis handles any specified bandPosition natively.
+    return specifiedLabelsSpec;
+  }
+
+  const bandPosition = model.axis(channel)?.bandPosition ?? inferredBandPosition;
+
+  if (bandPosition === 0.5) {
+    return specifiedLabelsSpec;
+  }
+
+  const positionRef = {
+    scale: model.scaleName(channel),
+    signal: 'datum.value',
+    band: bandPosition,
+  };
+
+  return {
+    ...(channel === 'x' ? {x: positionRef} : {y: positionRef}),
+    ...specifiedLabelsSpec,
+  };
 }

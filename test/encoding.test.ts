@@ -633,6 +633,50 @@ describe('encoding', () => {
       ).toEqual(['Sex', 'Species']);
     });
 
+    it('should not group area size-thickness paths by quantitative offset channels.', () => {
+      expect(
+        pathGroupingFields('area', {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'Species', type: 'nominal'},
+          yOffset: {field: 'shift', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        }),
+      ).toEqual(['Species']);
+    });
+
+    it('should group area size-thickness paths by the center channel for an explicit orientation.', () => {
+      const encoding = {
+        x: {field: 'xGroup', type: 'nominal'},
+        y: {field: 'yGroup', type: 'ordinal'},
+        size: {field: 'density', type: 'quantitative'},
+      } as const;
+
+      expect(pathGroupingFields('area', encoding, 'horizontal')).toEqual(['xGroup']);
+      expect(pathGroupingFields('area', encoding, 'vertical')).toEqual(['yGroup']);
+      expect(
+        pathGroupingFields(
+          'area',
+          {
+            x: {field: 'value', type: 'quantitative'},
+            y: {field: 'group', type: 'nominal'},
+            size: {field: 'density', type: 'quantitative'},
+          },
+          'horizontal',
+        ),
+      ).toEqual([]);
+      expect(
+        pathGroupingFields(
+          'area',
+          {
+            x: {field: 'group', type: 'nominal'},
+            y: {field: 'value', type: 'quantitative'},
+            size: {field: 'density', type: 'quantitative'},
+          },
+          'vertical',
+        ),
+      ).toEqual([]);
+    });
+
     it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', () => {
       for (const channel of [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
         expect(pathGroupingFields('line', {[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}})).toEqual([]);
@@ -681,6 +725,19 @@ describe('encoding', () => {
             xOffset: {field: 'b', type: 'quantitative'},
           }),
         ).not.toEqual(['a']);
+      }
+    });
+
+    it('should group by an explicit detail field when using an offset field', () => {
+      for (const mark of ['line', 'area', 'trail'] as const) {
+        expect(
+          pathGroupingFields(mark, {
+            x: {field: 'a', type: 'nominal'},
+            y: {field: 'c', type: 'nominal'},
+            yOffset: {field: 'b', aggregate: 'sum', type: 'quantitative'},
+            detail: {field: 'c', type: 'nominal'},
+          }),
+        ).toEqual(['c']);
       }
     });
   });

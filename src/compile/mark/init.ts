@@ -2,12 +2,14 @@ import {Orientation, SignalRef} from 'vega';
 import {isBinned, isBinning} from '../../bin.js';
 import {
   isFieldDef,
+  isFieldOrDatumDef,
+  isDiscrete,
   isNumericDataDef,
   isUnbinnedQuantitativeFieldOrDatumDef,
   isTypedFieldDef,
 } from '../../channeldef.js';
 import {Config} from '../../config.js';
-import {Encoding, isAggregate, isAreaSizeThickness} from '../../encoding.js';
+import {channelHasQuantitativeOffset, Encoding, isAggregate, isAreaSizeThickness} from '../../encoding.js';
 import {replaceExprRef} from '../../expr.js';
 import * as log from '../../log/index.js';
 import {AREA, BAR, CIRCLE, IMAGE, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark.js';
@@ -80,10 +82,18 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
   }
 
   const {x, y, x2, y2} = encoding;
+  const xOffsetIsMeasure = channelHasQuantitativeOffset(encoding, 'x');
+  const yOffsetIsMeasure = channelHasQuantitativeOffset(encoding, 'y');
 
   switch (mark) {
     case TEXT:
     case BAR:
+      if (!y && yOffsetIsMeasure) {
+        return 'vertical';
+      }
+      if (!x && xOffsetIsMeasure) {
+        return 'horizontal';
+      }
       if (isFieldDef(x) && (isBinned(x.bin) || (isFieldDef(y) && y.aggregate && !x.aggregate))) {
         return 'vertical';
       }
@@ -145,6 +155,18 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
 
           return 'vertical';
         }
+      }
+      if (!y && yOffsetIsMeasure) {
+        return specifiedOrient ?? 'vertical';
+      }
+      if (!x && xOffsetIsMeasure) {
+        return specifiedOrient ?? 'horizontal';
+      }
+      if ((mark === BAR || mark === AREA) && isFieldOrDatumDef(y) && isDiscrete(y) && yOffsetIsMeasure) {
+        return 'vertical';
+      }
+      if ((mark === BAR || mark === AREA) && isFieldOrDatumDef(x) && isDiscrete(x) && xOffsetIsMeasure) {
+        return 'horizontal';
       }
       // If there are range for both x and y, y (vertical) has higher precedence.
       if (y2) {

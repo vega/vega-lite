@@ -205,6 +205,26 @@ describe('Mark: Area', () => {
     });
   });
 
+  describe('area thickness with a quantitative offset', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {field: 'shift', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+    const props = area.encodeEntry(model);
+
+    it('should prefer centered thickness over ranged-offset geometry', () => {
+      expect(model.isRangedOffset('y')).toBe(false);
+      expect((props.y as any).offset.signal).toContain('scale("yOffset", datum["shift"])');
+      expect((props.y as any).offset.signal).toContain('0.5 * (scale("size", datum["density"]))');
+      expect((props.y2 as any).offset.signal).toContain('-0.5 * (scale("size", datum["density"]))');
+    });
+  });
+
   describe('ranged area with size encoding', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'area',
@@ -221,6 +241,52 @@ describe('Mark: Area', () => {
       expect(model.encoding.size).toBeUndefined();
       expect(props.y).toEqual({scale: 'y', field: 'low'});
       expect(props.y2).toEqual({scale: 'y', field: 'high'});
+    });
+  });
+
+  describe('vertical area with discrete y and continuous yOffset', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {timeUnit: 'year', field: 'Year', type: 'temporal'},
+        y: {field: 'Origin', type: 'nominal'},
+        yOffset: {field: 'US_Gross', type: 'quantitative'},
+      },
+      data: {url: 'data/movies.json'},
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use y as one edge and baseline at offset zero', () => {
+      expect(props.y).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross'}});
+      expect(props.y2).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', value: 0}});
+    });
+
+    it('should not collapse to line geometry', () => {
+      expect(props.x2).toBeUndefined();
+      expect(props.y2).toBeDefined();
+    });
+  });
+
+  describe('vertical area with only yOffset', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'a', type: 'nominal'},
+        yOffset: {field: 'b', type: 'quantitative', aggregate: 'sum'},
+      },
+      data: {
+        values: [
+          {a: 'A', b: 28},
+          {a: 'B', b: 55},
+          {a: 'C', b: 43},
+        ],
+      },
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use zero as the offset edge to match line and point positions', () => {
+      expect(props.y).toEqual({value: 0, offset: {scale: 'yOffset', field: 'sum_b'}});
+      expect(props.y2).toEqual({field: {group: 'height'}});
     });
   });
 

@@ -4,9 +4,12 @@ import {Axis, AxisInternal, isConditionalAxisValue} from '../axis.js';
 import {
   Channel,
   GEOPOSITION_CHANNELS,
+  getSecondaryRangeChannel,
   NonPositionScaleChannel,
   NONPOSITION_SCALE_CHANNELS,
+  PolarPositionScaleChannel,
   PositionChannel,
+  PositionScaleChannel,
   POSITION_SCALE_CHANNELS,
   ScaleChannel,
   SCALE_CHANNELS,
@@ -30,9 +33,9 @@ import * as vlEncoding from '../encoding.js';
 import {Encoding, initEncoding} from '../encoding.js';
 import {ExprRef, replaceExprRef} from '../expr.js';
 import {LegendInternal} from '../legend.js';
-import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark.js';
+import {GEOSHAPE, isBarOrArea, isMarkDef, Mark, MarkDef} from '../mark.js';
 import {Projection} from '../projection.js';
-import {Domain, Scale} from '../scale.js';
+import {Domain, hasDiscreteDomain, Scale} from '../scale.js';
 import {isSelectionParameter, SelectionParameter} from '../selection.js';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec/index.js';
 import {isFrameMixins} from '../spec/base.js';
@@ -148,6 +151,26 @@ export class UnitModel extends ModelWithField {
     return (this.specifiedAxes as any)[channel];
   }
 
+  /**
+   * Returns true if the given position channel is in ranged-offset mode: a bar/area mark
+   * whose missing or discrete position channel has a quantitative offset channel, so the
+   * mark spans from an in-band zero baseline to the offset value.
+   */
+  public isRangedOffset(channel: PositionScaleChannel | PolarPositionScaleChannel): boolean {
+    const {encoding, markDef} = this;
+    if (!isBarOrArea(markDef.type) || vlEncoding.isAreaSizeThickness(markDef.type, encoding)) {
+      return false;
+    }
+    if (encoding[getSecondaryRangeChannel(channel)] || !vlEncoding.channelHasQuantitativeOffset(encoding, channel)) {
+      return false;
+    }
+    const channelDef = encoding[channel];
+    if (channelDef === undefined) {
+      return true;
+    }
+    return isFieldOrDatumDef(channelDef) && hasDiscreteDomain(this.getScaleComponent(channel)?.get('type'));
+  }
+
   public legend(channel: NonPositionScaleChannel): LegendInternal {
     return this.specifiedLegends[channel];
   }
@@ -155,7 +178,8 @@ export class UnitModel extends ModelWithField {
   private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {
     return SCALE_CHANNELS.reduce((scales, channel) => {
       const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as
-        PositionFieldDef<string> | MarkPropFieldOrDatumDef<string>;
+        | PositionFieldDef<string>
+        | MarkPropFieldOrDatumDef<string>;
       if (fieldOrDatumDef) {
         scales[channel] = this.initScale(fieldOrDatumDef.scale ?? {});
       }

@@ -67,6 +67,7 @@ import {
   isFieldDef,
   isOrderOnlyDef,
   isTypedFieldDef,
+  isUnbinnedQuantitativeFieldOrDatumDef,
   isValueDef,
   LatLongDef,
   NumericArrayMarkPropDef,
@@ -383,6 +384,20 @@ export function channelHasNestedOffsetScale<F extends Field>(
     }
   }
   return false;
+}
+
+/**
+ * Returns true if the given position channel has a quantitative offset channel (e.g., `xOffset` for `x`) that can drive ranged marks.
+ */
+export function channelHasQuantitativeOffset<F extends Field>(
+  encoding: EncodingWithFacet<F>,
+  channel: Channel,
+): boolean {
+  const offsetChannel = getOffsetScaleChannel(channel);
+  if (!offsetChannel) {
+    return false;
+  }
+  return isUnbinnedQuantitativeFieldOrDatumDef(encoding[offsetChannel]);
 }
 
 export function isAggregate(encoding: EncodingWithFacet<any>) {
@@ -723,7 +738,11 @@ export function reduce<T, U extends Record<any, any>>(
 /**
  * Returns list of path grouping fields for the given encoding
  */
-export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): string[] {
+export function pathGroupingFields(
+  mark: Mark,
+  encoding: Encoding<string>,
+  orient?: 'horizontal' | 'vertical',
+): string[] {
   return keys(encoding).reduce((details, channel) => {
     switch (channel) {
       // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, aria label, cursor should not cause lines to group
@@ -797,7 +816,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
 
             for (const offsetChannel of [XOFFSET, YOFFSET] as const) {
               const offsetDef = encoding[offsetChannel];
-              if (isFieldDef(offsetDef) && !offsetDef.aggregate) {
+              if (isFieldDef(offsetDef) && !offsetDef.aggregate && channelDefType(offsetDef) !== 'quantitative') {
                 const offsetField = vgField(offsetDef, {});
                 if (!sizeField || offsetField !== sizeField) {
                   addDetail(offsetField);
@@ -805,21 +824,15 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
               }
             }
 
-            const yDef = encoding.y;
-            if (isFieldDef(yDef) && !yDef.aggregate && channelDefType(yDef) !== 'quantitative') {
-              const yField = vgField(yDef, {});
-              if (!sizeField || yField !== sizeField) {
-                addDetail(yField);
-                return details;
-              }
-            }
-
-            const xDef = encoding.x;
-            if (isFieldDef(xDef) && !xDef.aggregate && channelDefType(xDef) !== 'quantitative') {
-              const xField = vgField(xDef, {});
-              if (!sizeField || xField !== sizeField) {
-                addDetail(xField);
-                return details;
+            const centerChannels = orient ? [orient === 'horizontal' ? X : Y] : [Y, X];
+            for (const positionChannel of centerChannels) {
+              const positionDef = encoding[positionChannel];
+              if (isFieldDef(positionDef) && !positionDef.aggregate && channelDefType(positionDef) !== 'quantitative') {
+                const positionField = vgField(positionDef, {});
+                if (!sizeField || positionField !== sizeField) {
+                  addDetail(positionField);
+                  return details;
+                }
               }
             }
           }

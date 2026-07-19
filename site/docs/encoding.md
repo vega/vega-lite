@@ -235,6 +235,20 @@ In addition to the general [field definition properties](#field-def), field defi
 
 <span class="vl-example" data-name="point_offset_random"></span>
 
+### Example: Ranged Marks from Quantitative Offsets
+
+`xOffset` and `yOffset` can also drive ranged geometry for `bar` and `area` marks when used with a discrete base position channel. In this mode, Vega-Lite treats the quantitative offset as a value from an in-band baseline (`0`) to the offset value, so marks become ranged along the offset direction.
+
+For example, with a nominal `y` lane and quantitative `yOffset`, each bar spans from the lane baseline to `yOffset` within that lane.
+
+<span class="vl-example" data-name="bar_ranged_offset_quantitative"></span>
+
+This is useful for in-band ranged comparisons where you want to preserve categorical lanes while encoding magnitude with offsets.
+
+Path marks (`line`, `area`, and `trail`) are drawn as a single connected path, so a chart with multiple lanes would connect points across lanes. To draw a separate path per lane, add a grouping channel such as [`detail`](#detail) (or `color`) that repeats the lane field:
+
+<span class="vl-example" data-name="area_ranged_offset_quantitative"></span>
+
 {:#polar}
 
 ## Polar Position Channels

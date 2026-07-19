@@ -5,6 +5,7 @@ import {
   channelDefType,
   FieldName,
   getFieldDef,
+  isDiscrete,
   isFieldDef,
   isFieldOrDatumDef,
   PositionDatumDef,
@@ -14,13 +15,14 @@ import {
   vgField,
 } from './channeldef.js';
 import {CompositeAggregate} from './compositemark/index.js';
-import {channelHasField, Encoding, isAggregate, isAreaSizeThickness} from './encoding.js';
+import {channelHasField, channelHasQuantitativeOffset, Encoding, isAggregate, isAreaSizeThickness} from './encoding.js';
 import * as log from './log/index.js';
 import {
   ARC,
   AREA,
   BAR,
   CIRCLE,
+  isBarOrArea,
   isMarkDef,
   isPathMark,
   LINE,
@@ -87,7 +89,7 @@ function potentialStackedChannel(
 ): 'x' | 'y' | 'theta' | 'radius' | undefined {
   const y = x === 'x' ? 'y' : 'radius';
 
-  const isCartesianBarOrArea = x === 'x' && ['bar', 'area'].includes(mark);
+  const isCartesianBarOrArea = x === 'x' && isBarOrArea(mark);
 
   const xDef = encoding[x];
   const yDef = encoding[y];
@@ -168,8 +170,21 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
+  const xDef = encoding.x;
+  const yDef = encoding.y;
+  const xRangeFromOffset =
+    fieldChannel === 'y' &&
+    channelHasQuantitativeOffset(encoding, 'x') &&
+    (!xDef || (isFieldOrDatumDef(xDef) && isDiscrete(xDef)));
+  const yRangeFromOffset =
+    fieldChannel === 'x' &&
+    channelHasQuantitativeOffset(encoding, 'y') &&
+    (!yDef || (isFieldOrDatumDef(yDef) && isDiscrete(yDef)));
 
-  if (stackedFieldDef.stack === undefined && isAreaSizeThickness(mark, encoding)) {
+  if (
+    stackedFieldDef.stack === undefined &&
+    (isAreaSizeThickness(mark, encoding) || xRangeFromOffset || yRangeFromOffset)
+  ) {
     return null;
   }
 
