@@ -12,7 +12,7 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "indexof([\"sun\",\"fog\",\"drizzle\",\"rain\",\"snow\"], datum['weather'])",
+          "expr": "datum[\"weather\"]===\"sun\" ? 0 : datum[\"weather\"]===\"fog\" ? 1 : datum[\"weather\"]===\"drizzle\" ? 2 : datum[\"weather\"]===\"rain\" ? 3 : datum[\"weather\"]===\"snow\" ? 4 : -1",
           "as": "_weather_sort_index"
         },
         {
