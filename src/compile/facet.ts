@@ -14,7 +14,7 @@ import {hasProperty, keys, vals} from '../util.js';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema.js';
 import {buildModel} from './buildmodel.js';
 import {assembleFacetData} from './data/assemble.js';
-import {sortArrayIndexField} from './data/calculate.js';
+import {sortArrayIndexField} from './data/sort.js';
 import {parseData} from './data/parse.js';
 import {assembleLabelTitle} from './header/assemble.js';
 import {getHeaderChannel, getHeaderProperty} from './header/common.js';

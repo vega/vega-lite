@@ -20,7 +20,7 @@ import {isText} from '../title.js';
 import {deepEqual, getFirstDefined, hasProperty} from '../util.js';
 import {isSignalRef, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../vega.schema.js';
 import {AxisComponentProps} from './axis/component.js';
-import {sortArrayIndexField} from './data/calculate.js';
+import {sortArrayIndexField} from './data/sort.js';
 import {Explicit} from './split.js';
 import {UnitModel} from './unit.js';
 

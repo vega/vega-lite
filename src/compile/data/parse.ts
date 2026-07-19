@@ -390,6 +390,7 @@ export function parseData(model: Model): DataComponent {
     const agg = AggregateNode.makeFromEncoding(head, model);
     if (agg) {
       head = agg;
+      head = CalculateNode.parseAllForSortIndexAfterAggregate(head, model);
 
       if (requiresSelectionId(model)) {
         head = new IdentifierNode(head);

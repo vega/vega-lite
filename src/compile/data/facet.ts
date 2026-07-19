@@ -12,7 +12,7 @@ import {FacetModel} from '../facet.js';
 import {HEADER_CHANNELS, HEADER_TYPES} from '../header/component.js';
 import {Model} from '../model.js';
 import {assembleDomain, getFieldFromDomain} from '../scale/domain.js';
-import {sortArrayIndexField} from './calculate.js';
+import {sortArrayIndexField} from './sort.js';
 import {DataFlowNode} from './dataflow.js';
 
 interface ChildIndependentFieldsWithStep {

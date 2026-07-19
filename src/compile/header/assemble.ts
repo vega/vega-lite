@@ -19,7 +19,7 @@ import {FacetFieldDef, isFacetMapping} from '../../spec/facet.js';
 import {contains, isEmpty, normalizeAngle, replaceAll} from '../../util.js';
 import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema.js';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties.js';
-import {sortArrayIndexField} from '../data/calculate.js';
+import {sortArrayIndexField} from '../data/sort.js';
 import {formatSignalRef} from '../format.js';
 import {isFacetModel, Model} from '../model.js';
 import {getHeaderChannel, getHeaderProperties, getHeaderProperty} from './common.js';

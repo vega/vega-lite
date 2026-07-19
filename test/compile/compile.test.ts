@@ -48,6 +48,90 @@ describe('compile/compile', () => {
     expect(spec.marks).toHaveLength(1); // just the root group
   });
 
+  it('should preserve custom order sort indexes through aggregation', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {category: 'A', segment: 'medium', value: 28},
+          {category: 'A', segment: 'high', value: 55},
+          {category: 'A', segment: 'low', value: 43},
+        ],
+      },
+      mark: 'bar',
+      encoding: {
+        x: {field: 'category', type: 'nominal'},
+        y: {field: 'value', type: 'quantitative', aggregate: 'sum'},
+        order: {field: 'segment', type: 'nominal', sort: ['high', 'medium', 'low']},
+      },
+    });
+
+    const transforms = spec.data.flatMap((data) => data.transform ?? []);
+    const aggregate = transforms.find((transform) => transform.type === 'aggregate') as AggregateTransform;
+    const stack = transforms.find((transform) => transform.type === 'stack');
+
+    expect(aggregate.groupby).toEqual(expect.arrayContaining(['segment', 'order_segment_0_sort_index']));
+    expect(stack.sort).toEqual({field: ['order_segment_0_sort_index'], order: ['ascending']});
+  });
+
+  it('should preserve order sort indexes inherited from color through aggregation', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {category: 'A', segment: 'medium', value: 28},
+          {category: 'A', segment: 'high', value: 55},
+          {category: 'A', segment: 'low', value: 43},
+        ],
+      },
+      mark: 'bar',
+      encoding: {
+        x: {field: 'category', type: 'nominal'},
+        y: {field: 'value', type: 'quantitative', aggregate: 'sum'},
+        color: {field: 'segment', type: 'nominal', sort: ['high', 'medium', 'low']},
+        order: {field: 'segment', type: 'nominal'},
+      },
+    });
+
+    const transforms = spec.data.flatMap((data) => data.transform ?? []);
+    const aggregate = transforms.find((transform) => transform.type === 'aggregate') as AggregateTransform;
+    const stack = transforms.find((transform) => transform.type === 'stack');
+
+    expect(aggregate.groupby).toEqual(expect.arrayContaining(['segment', 'order_segment_0_sort_index']));
+    expect(stack.sort).toEqual({field: ['order_segment_0_sort_index'], order: ['ascending']});
+  });
+
+  it('should calculate custom order sort indexes after aggregating the order field', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {category: 'A', segment: 'one', priority: 2, value: 28},
+          {category: 'A', segment: 'two', priority: 1, value: 55},
+        ],
+      },
+      mark: 'bar',
+      encoding: {
+        x: {field: 'category', type: 'nominal'},
+        y: {field: 'value', type: 'quantitative', aggregate: 'sum'},
+        color: {field: 'segment', type: 'nominal'},
+        order: {field: 'priority', type: 'quantitative', aggregate: 'min', sort: [1, 2]},
+      },
+    });
+
+    const transforms = spec.data.flatMap((data) => data.transform ?? []);
+    const aggregateIndex = transforms.findIndex((transform) => transform.type === 'aggregate');
+    const formulaIndex = transforms.findIndex(
+      (transform) => transform.type === 'formula' && transform.as === 'order_min_priority_0_sort_index',
+    );
+    const stack = transforms.find((transform) => transform.type === 'stack');
+
+    expect(formulaIndex).toBeGreaterThan(aggregateIndex);
+    expect(transforms[formulaIndex]).toEqual({
+      type: 'formula',
+      expr: 'datum["min_priority"]===1 ? 0 : datum["min_priority"]===2 ? 1 : 2',
+      as: 'order_min_priority_0_sort_index',
+    });
+    expect(stack.sort).toEqual({field: ['order_min_priority_0_sort_index'], order: ['ascending']});
+  });
+
   it(
     'should drop fit in top-level properties for discrete x discrete chart',
     log.wrap((localLogger) => {
