@@ -212,7 +212,7 @@ describe('UnitModel', () => {
         },
       });
 
-      expect(model.transforms[0].calculate).toContain('time(');
+      expect(model.transforms[0]).toEqual(expect.objectContaining({calculate: expect.stringContaining('time(')}));
     });
 
     it('should prefer an explicit color domain over color sort for stack order', () => {
@@ -239,7 +239,7 @@ describe('UnitModel', () => {
         },
       });
 
-      expect(model.transforms[0].calculate).toContain('time(');
+      expect(model.transforms[0]).toEqual(expect.objectContaining({calculate: expect.stringContaining('time(')}));
     });
 
     it('should not add custom order if it is not stacked chart', () => {
