@@ -1,6 +1,7 @@
 _site/
 !build/vega-lite-schema.json
 !site/examples/index.md
+.claude/
 .DS_Store
 .jekyll-metadata
 build/*

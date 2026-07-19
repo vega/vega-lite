@@ -1,5 +1,5 @@
 import {AggregateOp, LayoutAlign, NewSignal, SignalRef} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray, stringValue} from 'vega-util';
 import {isBinning} from '../bin.js';
 import {COLUMN, ExtendedChannel, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel.js';
 import {FieldName, FieldRefOption, initFieldDef, TypedFieldDef, vgField} from '../channeldef.js';
@@ -14,6 +14,7 @@ import {hasProperty, keys, vals} from '../util.js';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema.js';
 import {buildModel} from './buildmodel.js';
 import {assembleFacetData} from './data/assemble.js';
+import {facetLookupKeyExpr, facetLookupKeyFieldName, isCrossedFacetWithCustomSort} from './data/facet.js';
 import {sortArrayIndexField} from './data/sort.js';
 import {parseData} from './data/parse.js';
 import {assembleLabelTitle} from './header/assemble.js';
@@ -294,6 +295,7 @@ export class FacetModel extends ModelWithField {
   private assembleFacet() {
     const {name, data} = this.component.data.facetRoot;
     const {row, column} = this.facet;
+    const cross = !!row && !!column;
     const {fields, ops, as} = this.getCardinalityAggregateForChild();
     const groupby: string[] = [];
 
@@ -311,28 +313,21 @@ export class FacetModel extends ModelWithField {
         if (isSortField(sort)) {
           const {field, op = DEFAULT_SORT_OP} = sort;
           const outputName = facetSortFieldName(fieldDef, sort);
-          if (row && column) {
-            // For crossed facet, use pre-calculate field as it requires a different groupby
-            // For each calculated field, apply max and assign them to the same name as
-            // all values of the same group should be the same anyway.
-            fields.push(outputName);
-            ops.push('max');
-            as.push(outputName);
-          } else {
+          if (!cross) {
             fields.push(field);
             ops.push(op);
             as.push(outputName);
           }
         } else if (isArray(sort)) {
           const outputName = sortArrayIndexField(fieldDef, channel);
-          fields.push(outputName);
-          ops.push('max');
-          as.push(outputName);
+          if (!cross) {
+            fields.push(outputName);
+            ops.push('max');
+            as.push(outputName);
+          }
         }
       }
     }
-
-    const cross = !!row && !!column;
 
     return {
       name,
@@ -349,11 +344,37 @@ export class FacetModel extends ModelWithField {
     };
   }
 
-  private facetSortFields(channel: FacetChannel): string[] {
+  private crossedFacetLookupSortExpr(channel: FacetChannel) {
+    const fieldDef = this.facet[channel];
+    if (!fieldDef || (!isSortField(fieldDef.sort) && !isArray(fieldDef.sort))) {
+      return undefined;
+    }
+
+    const lookupDataName = this.getName(`${channel}_lookup_domain`);
+    const lookupDataExpr = `data(${stringValue(lookupDataName)})`;
+    const lookupField = facetLookupKeyFieldName(this, channel);
+    const lookupIndexExpr = `indexof(pluck(${lookupDataExpr}, ${stringValue(lookupField)}), ${facetLookupKeyExpr(
+      fieldDef,
+      'datum.datum',
+    )})`;
+    const sortValueField = isSortField(fieldDef.sort)
+      ? vgField(fieldDef.sort, {forAs: true})
+      : sortArrayIndexField(fieldDef, channel);
+
+    return `${lookupIndexExpr} >= 0 ? ${lookupDataExpr}[${lookupIndexExpr}][${stringValue(sortValueField)}] : null`;
+  }
+
+  private facetSortFields(channel: FacetChannel): (string | ExprRef)[] {
     const {facet} = this;
     const fieldDef = facet[channel];
 
     if (fieldDef) {
+      if (isCrossedFacetWithCustomSort(facet)) {
+        const lookupSortExpr = this.crossedFacetLookupSortExpr(channel);
+        if (lookupSortExpr) {
+          return [{expr: lookupSortExpr}];
+        }
+      }
       if (isSortField(fieldDef.sort)) {
         return [facetSortFieldName(fieldDef, fieldDef.sort, {expr: 'datum'})];
       } else if (isArray(fieldDef.sort)) {

@@ -9,6 +9,7 @@ import {normalizePredicate, Predicate} from './predicate.js';
 import {SortField} from './sort.js';
 import {TimeUnit, TimeUnitTransformParams} from './timeunit.js';
 import {hasProperty} from './util.js';
+import {ExponentialBDef, ExponentialDef} from './aggregate.js';
 
 export interface FilterTransform {
   /**
@@ -99,13 +100,17 @@ export interface AggregateTransform {
   groupby?: FieldName[];
 }
 
+export type NonArgAggregateFieldOp = Exclude<AggregateOp, 'exponential' | 'exponentialb'>;
+
+export type AggregateFieldOp = NonArgAggregateFieldOp | ExponentialDef | ExponentialBDef;
+
 export interface AggregatedFieldDef {
   /**
    * The aggregation operation to apply to the fields (e.g., `"sum"`, `"average"`, or `"count"`).
    * See the [full list of supported aggregation operations](https://vega.github.io/vega-lite/docs/aggregate.html#ops)
    * for more information.
    */
-  op: AggregateOp;
+  op: AggregateFieldOp;
 
   /**
    * The data field for which to compute aggregate function. This is required for all aggregation operations except `"count"`.

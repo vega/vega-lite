@@ -31,7 +31,7 @@ import {UnitModel} from '../../unit.js';
 import {nonPosition} from './nonposition.js';
 import {positionOffset} from './offset.js';
 import {vgAlignedPositionChannel} from './position-align.js';
-import {pointPositionDefaultRef} from './position-point.js';
+import {pointPosition, pointPositionDefaultRef} from './position-point.js';
 import {rangePosition} from './position-range.js';
 import * as ref from './valueref.js';
 import {getOffsetScaleChannel} from '../../../channel.js';
@@ -63,6 +63,8 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
     (mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal')) ||
     (mark === 'tick' && (channel === 'y' ? orient === 'vertical' : orient === 'horizontal'));
 
+  const isImage = mark === 'image';
+
   // x, x2, and width -- we must specify two of these in all conditions
   if (
     isFieldDef(channelDef) &&
@@ -77,6 +79,18 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'r
       channel,
       model,
     });
+  } else if (isFieldOrDatumDef(channelDef) && model.isRangedOffset(channel)) {
+    return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
+  } else if (isImage && channelDef && !hasSizeDef && !channelDef2) {
+    // Images without an explicit size use their natural dimensions, which Vega only knows at render time.
+    // Thus, we cannot use xc/yc and instead output a point position with the image mark's own
+    // align/baseline property, which Vega applies based on the rendered dimensions.
+    const alignChannel = channel === 'x' ? 'align' : 'baseline';
+    const align = getMarkPropOrConfig(alignChannel, markDef, config) ?? (channel === 'x' ? 'center' : 'middle');
+    return {
+      ...pointPosition(channel, model, {defaultPos: 'mid'}),
+      [alignChannel]: signalOrValueRef(align),
+    };
   } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarOrTickBand) && !channelDef2) {
     return positionAndSize(channelDef, channel, model);
   } else {
@@ -222,6 +236,31 @@ function positionAndSize(
   const center = vgChannel === 'xc' || vgChannel === 'yc';
   const {offset, offsetType} = positionOffset({channel, markDef, encoding, model, bandPosition: center ? 0.5 : 0});
 
+  // When a centered rect-based mark (e.g., a tick with an explicit size) is
+  // placed on a timeUnit-binned field, honor `timeUnitBandPosition` so this
+  // path stays aligned with the `rectBinPosition` path used by bars without an
+  // explicit size. Skip when:
+  // - the mark is not centered (bars spanning a full band need `bandPosition = 0`), or
+  // - an encoding-driven offset is in play (e.g., `xOffset`), which already
+  //   positions the mark at the band's leading edge.
+  // See https://github.com/vega/vega-lite/issues/9836.
+  const timeUnitBandPosition =
+    center && offsetType !== 'encoding' && isFieldDef(fieldDef) && fieldDef.timeUnit && !encoding[channel2]
+      ? getBandPosition({fieldDef, markDef, config})
+      : undefined;
+
+  const bandPosition =
+    timeUnitBandPosition ??
+    (center
+      ? offsetType === 'encoding'
+        ? 0
+        : 0.5
+      : isSignalRef(bandSize)
+        ? {signal: `(1-${bandSize})/2`}
+        : isRelativeBandSize(bandSize)
+          ? (1 - bandSize.band) / 2
+          : 0);
+
   const posRef = ref.midPointRefWithPositionInvalidTest({
     channel,
     channelDef: fieldDef,
@@ -232,15 +271,7 @@ function positionAndSize(
     stack,
     offset,
     defaultRef: pointPositionDefaultRef({model, defaultPos: 'mid', channel, scaleName, scale}),
-    bandPosition: center
-      ? offsetType === 'encoding'
-        ? 0
-        : 0.5
-      : isSignalRef(bandSize)
-        ? {signal: `(1-${bandSize})/2`}
-        : isRelativeBandSize(bandSize)
-          ? (1 - bandSize.band) / 2
-          : 0,
+    bandPosition,
   });
 
   if (vgSizeChannel) {

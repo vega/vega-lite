@@ -4,8 +4,8 @@ set -euo pipefail
 
 GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
 
-# Only push on human pull request branches. Exclude release, prerelease, and bot branches.
-if [ "$GIT_BRANCH" != "stable" ] && [ "$GIT_BRANCH" != "main" ] && [[ "$GIT_BRANCH" != dependabot/* ]]; then
+# Only push on internal push builds. Fork pull requests (detached merge ref, no write access), release, prerelease, and bot branches only verify.
+if [ "${GITHUB_EVENT_NAME:-}" != "pull_request" ] && [ "$GIT_BRANCH" != "stable" ] && [ "$GIT_BRANCH" != "main" ] && [[ "$GIT_BRANCH" != dependabot/* ]]; then
   PUSH_BRANCH=true
   echo "Will try to push changes."
 else

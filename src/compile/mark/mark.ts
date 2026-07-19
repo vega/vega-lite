@@ -19,6 +19,7 @@ import {rect} from './rect.js';
 import {rule} from './rule.js';
 import {text} from './text.js';
 import {tick} from './tick.js';
+import {CornerRadiusEnd, cornerRadiusEndForStackedBar} from './encode/corner-radius.js';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -45,11 +46,12 @@ export function parseMarkGroups(model: UnitModel): any[] {
     }
     // otherwise use standard mark groups
   } else if (model.mark === BAR) {
-    const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some((prop) =>
-      getMarkPropOrConfig(prop, model.markDef, model.config),
-    );
+    const cornerRadiusEnd = getMarkPropOrConfig('cornerRadiusEnd', model.markDef, model.config);
+    const hasCornerRadius =
+      cornerRadiusEnd ||
+      VG_CORNERRADIUS_CHANNELS.some((prop) => getMarkPropOrConfig(prop, model.markDef, model.config));
     if (model.stack && !model.fieldDef('size') && hasCornerRadius) {
-      return getGroupsForStackedBarWithCornerRadius(model);
+      return getGroupsForStackedBarWithCornerRadius(model, cornerRadiusEnd);
     }
   }
 
@@ -91,7 +93,7 @@ const STACK_GROUP_PREFIX = 'stack_group_';
  * If stack is used and the model doesn't have size encoding, we put the mark into groups,
  * and apply cornerRadius properties at the group.
  */
-function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
+function getGroupsForStackedBarWithCornerRadius(model: UnitModel, cornerRadiusEnd: CornerRadiusEnd | undefined) {
   // Generate the mark
   const [mark] = getMarkGroup(model, {fromPrefix: STACK_GROUP_PREFIX});
 
@@ -165,6 +167,15 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
       mark.encode.update[key] = {value: 0};
     }
   }
+  groupUpdate = {
+    ...groupUpdate,
+    ...cornerRadiusEndForStackedBar(model, cornerRadiusEnd, fieldScale, {
+      minStart: stackField({prefix: 'min', suffix: 'start'}),
+      maxStart: stackField({prefix: 'max', suffix: 'start'}),
+      minEnd: stackField({prefix: 'min', suffix: 'end'}),
+      maxEnd: stackField({prefix: 'max', suffix: 'end'}),
+    }),
+  };
 
   const groupby: string[] = [];
 

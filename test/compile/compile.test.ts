@@ -317,6 +317,131 @@ describe('compile/compile', () => {
     expect(spec.autosize).toBe('fit');
   });
 
+  it('should align layered bar/line/point marks on a shared quantitative yOffset baseline', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {cat: 'A', v: 10, g: 'x'},
+          {cat: 'B', v: 30, g: 'x'},
+        ],
+      },
+      layer: [
+        {
+          mark: 'bar',
+          encoding: {
+            x: {field: 'cat', type: 'nominal'},
+            y: {field: 'g', type: 'nominal'},
+            yOffset: {field: 'v', type: 'quantitative'},
+          },
+        },
+        {
+          mark: 'line',
+          encoding: {
+            x: {field: 'cat', type: 'nominal'},
+            y: {field: 'g', type: 'nominal'},
+            yOffset: {field: 'v', type: 'quantitative'},
+          },
+        },
+        {
+          mark: 'point',
+          encoding: {
+            x: {field: 'cat', type: 'nominal'},
+            y: {field: 'g', type: 'nominal'},
+            yOffset: {field: 'v', type: 'quantitative'},
+          },
+        },
+      ],
+    });
+
+    const yOffsetScale = spec.scales.find((s: any) => s.name === 'yOffset') as any;
+    expect(yOffsetScale.zero).toBe(true);
+
+    const bar = spec.marks[0].encode.update;
+    const line = spec.marks[1].encode.update;
+    const point = spec.marks[2].encode.update;
+
+    expect(bar.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
+    expect(bar.y2).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', value: 0}});
+
+    expect(line.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
+    expect(point.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
+  });
+
+  it('should include zero in the offset scale of a ranged bar but not a jittered point', () => {
+    const encoding = {
+      x: {field: 'cat', type: 'nominal'},
+      y: {field: 'g', type: 'nominal'},
+      yOffset: {field: 'v', type: 'quantitative'},
+    } as const;
+    const data = {values: [{cat: 'A', v: 10, g: 'x'}]};
+
+    const {spec: barSpec} = compile({data, mark: 'bar', encoding});
+    expect((barSpec.scales.find((s: any) => s.name === 'yOffset') as any).zero).toBe(true);
+
+    const {spec: pointSpec} = compile({data, mark: 'point', encoding});
+    expect((pointSpec.scales.find((s: any) => s.name === 'yOffset') as any).zero).toBe(false);
+  });
+
+  it('should group line paths by an explicit detail field when yOffset is aggregated', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {a: 'A', b: 28, c: 'x', d: 'm'},
+          {a: 'B', b: 55, c: 'x', d: 'm'},
+          {a: 'C', b: 43, c: 'x', d: 'n'},
+          {a: 'D', b: 91, c: 'x', d: 'n'},
+          {a: 'A', b: 88, c: 'y', d: 'm'},
+          {a: 'B', b: 55, c: 'y', d: 'm'},
+          {a: 'C', b: 43, c: 'y', d: 'n'},
+          {a: 'D', b: 55, c: 'y', d: 'n'},
+        ],
+      },
+      mark: 'line',
+      encoding: {
+        x: {field: 'a'},
+        y: {field: 'c'},
+        yOffset: {field: 'b', aggregate: 'sum', type: 'quantitative'},
+        detail: {field: 'c', type: 'nominal'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['c']);
+  });
+
+  it('should not default-stack x when only yOffset is present for density-like plots', () => {
+    const data = {
+      values: [
+        {value: 3000, density: 0.0002},
+        {value: 3500, density: 0.0005},
+        {value: 4000, density: 0.0003},
+      ],
+    };
+
+    for (const mark of ['bar', 'area'] as const) {
+      const {spec} = compile({
+        data,
+        mark,
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          yOffset: {field: 'density', type: 'quantitative'},
+        },
+      });
+
+      const update = spec.marks[0].encode.update;
+      if (mark === 'bar') {
+        expect(update.xc).toEqual({scale: 'x', field: 'value'});
+        expect(update.x).toBeUndefined();
+      } else {
+        expect(update.orient).toEqual({value: 'vertical'});
+        expect(update.x).toEqual({scale: 'x', field: 'value'});
+      }
+      if (update.x2 && (update.x2 as any).field) {
+        expect((update.x2 as any).field).not.toBe('value_start');
+      }
+    }
+  });
+
   it('should use containerSize for width and autosize to fit-x/padding', () => {
     const {spec} = compile({
       width: 'container',
@@ -334,6 +459,63 @@ describe('compile/compile', () => {
       },
     ]);
     expect(spec.width).toBeUndefined();
+  });
+
+  it('should compile area with discrete y, quantitative yOffset, and detail as faceted ranged paths', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {a: 'A', b: 28, c: 'x'},
+          {a: 'B', b: 55, c: 'x'},
+          {a: 'C', b: 43, c: 'x'},
+          {a: 'D', b: 91, c: 'x'},
+          {a: 'A', b: 88, c: 'y'},
+          {a: 'B', b: 55, c: 'y'},
+          {a: 'C', b: 43, c: 'y'},
+          {a: 'D', b: 55, c: 'y'},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'a'},
+        y: {field: 'c'},
+        yOffset: {field: 'b', type: 'quantitative'},
+        detail: {field: 'c', type: 'nominal'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['c']);
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y).toEqual({scale: 'y', field: 'c', offset: {scale: 'yOffset', field: 'b'}});
+    expect(update.y2).toEqual({scale: 'y', field: 'c', offset: {scale: 'yOffset', value: 0}});
+  });
+
+  it('should compile area with aggregated yOffset and no y as ranged geometry', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {a: 'A', b: 28, c: 'x', d: 'm'},
+          {a: 'B', b: 55, c: 'x', d: 'm'},
+          {a: 'C', b: 43, c: 'x', d: 'n'},
+          {a: 'D', b: 91, c: 'x', d: 'n'},
+          {a: 'A', b: 88, c: 'y', d: 'm'},
+          {a: 'B', b: 55, c: 'y', d: 'm'},
+          {a: 'C', b: 43, c: 'y', d: 'n'},
+          {a: 'D', b: 55, c: 'y', d: 'n'},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'a'},
+        yOffset: {field: 'b', aggregate: 'sum', type: 'quantitative'},
+      },
+    });
+
+    const update = spec.marks[0].encode.update;
+    expect(update.y).toEqual({value: 0, offset: {scale: 'yOffset', field: 'sum_b'}});
+    expect(update.y2).toEqual({field: {group: 'height'}});
   });
 
   it('should use containerSize for width and autosize to fit-y/padding', () => {
@@ -727,4 +909,61 @@ it('should not generate cursor for interval selection', () => {
   });
 
   expect(spec.marks[0].encode.update.cursor).toBeUndefined();
+});
+
+describe('compile with binned position and offset channel', () => {
+  it(
+    'drops xOffset for binned x (bin: true) and compiles without an xOffset scale',
+    log.wrap((localLogger) => {
+      const {spec} = compile({
+        data: {values: [{a: 1, b: 'P'}]},
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', bin: true},
+          y: {aggregate: 'count', type: 'quantitative'},
+          xOffset: {field: 'b', type: 'nominal'},
+        },
+      });
+
+      expect(localLogger.warns).toContain(log.message.offsetNestedInsideContinuousPositionScaleDropped('x'));
+      expect((spec.scales ?? []).map((s) => s.name)).not.toContain('xOffset');
+    }),
+  );
+
+  it(
+    'drops xOffset for pre-binned x (bin: "binned") and compiles without an xOffset scale',
+    log.wrap((localLogger) => {
+      const {spec} = compile({
+        data: {values: [{a: 1, a_end: 2, b: 'P'}]},
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', bin: 'binned', type: 'quantitative'},
+          x2: {field: 'a_end'},
+          y: {aggregate: 'count', type: 'quantitative'},
+          xOffset: {field: 'b', type: 'nominal'},
+        },
+      });
+
+      expect(localLogger.warns).toContain(log.message.offsetNestedInsideContinuousPositionScaleDropped('x'));
+      expect((spec.scales ?? []).map((s) => s.name)).not.toContain('xOffset');
+    }),
+  );
+
+  it(
+    'drops yOffset for binned y and compiles without a yOffset scale',
+    log.wrap((localLogger) => {
+      const {spec} = compile({
+        data: {values: [{a: 1, b: 'P'}]},
+        mark: 'bar',
+        encoding: {
+          y: {field: 'a', type: 'quantitative', bin: true},
+          x: {aggregate: 'count', type: 'quantitative'},
+          yOffset: {field: 'b', type: 'nominal'},
+        },
+      });
+
+      expect(localLogger.warns).toContain(log.message.offsetNestedInsideContinuousPositionScaleDropped('y'));
+      expect((spec.scales ?? []).map((s) => s.name)).not.toContain('yOffset');
+    }),
+  );
 });

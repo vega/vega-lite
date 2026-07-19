@@ -1,5 +1,15 @@
 # Changelog
 
+## [6.4.3](https://github.com/vega/vega-lite/compare/v6.4.2...v6.4.3) (2026-04-24)
+
+
+### Bug Fixes
+
+* exclude `timeUnit` fields from tooltip newline shortcut path ([#9782](https://github.com/vega/vega-lite/issues/9782)) ([1a0ffa3](https://github.com/vega/vega-lite/commit/1a0ffa3d446df9bbe13f847ea9a9de3c65274ab6)), closes [#9678](https://github.com/vega/vega-lite/issues/9678) [streamlit/streamlit#14361](https://github.com/streamlit/streamlit/issues/14361) [#9678](https://github.com/vega/vega-lite/issues/9678)
+* honor `timeUnitBandPosition` for tick/rect marks with explicit `size` ([#9838](https://github.com/vega/vega-lite/issues/9838)) ([7354506](https://github.com/vega/vega-lite/commit/7354506fb2334a1a9a20974f79c32a0003a0f1f0)), closes [#9837](https://github.com/vega/vega-lite/issues/9837) [#9837](https://github.com/vega/vega-lite/issues/9837)
+* rebuild ([#9820](https://github.com/vega/vega-lite/issues/9820)) ([e6a137c](https://github.com/vega/vega-lite/commit/e6a137c42b510307f0d315285c952188e9d8931f))
+* Ungroup pathmarks when used in offset channels ([#9819](https://github.com/vega/vega-lite/issues/9819)) ([a99e89c](https://github.com/vega/vega-lite/commit/a99e89cfc2227166692ed06f2676559e7238b602))
+
 ## [6.4.2](https://github.com/vega/vega-lite/compare/v6.4.1...v6.4.2) (2026-01-14)
 
 

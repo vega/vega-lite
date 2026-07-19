@@ -421,6 +421,9 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
       }
     }
     // otherwise use the position
+    if (channel === YOFFSET && hasContinuousDomain(offsetScaleType)) {
+      return [{signal: `bandwidth('${positionScaleName}')`}, 0];
+    }
     return [0, {signal: `bandwidth('${positionScaleName}')`}];
   } else {
     // continuous scale

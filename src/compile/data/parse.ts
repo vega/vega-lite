@@ -62,7 +62,6 @@ import {GraticuleNode} from './graticule.js';
 import {IdentifierNode} from './identifier.js';
 import {ImputeNode} from './impute.js';
 import {JoinAggregateTransformNode} from './joinaggregate.js';
-import {makeJoinAggregateFromFacet} from './joinaggregatefacet.js';
 import {LoessTransformNode} from './loess.js';
 import {LookupNode} from './lookup.js';
 import {PivotTransformNode} from './pivot.js';
@@ -443,10 +442,6 @@ export function parseData(model: Model): DataComponent {
   let facetRoot = null;
   if (isFacetModel(model)) {
     const facetName = model.getName('facet');
-
-    // Derive new aggregate for facet's sort field
-    // augment data source with new fields for crossed facet
-    head = makeJoinAggregateFromFacet(head, model.facet) ?? head;
 
     facetRoot = new FacetNode(head, model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;

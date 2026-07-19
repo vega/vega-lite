@@ -54,8 +54,6 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "cornerRadiusTopLeft": {"value": 0},
-          "cornerRadiusTopRight": {"value": 0},
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
@@ -64,7 +62,35 @@
           "x": {"scale": "x", "field": "startTime"},
           "x2": {"scale": "x", "field": "endTime"},
           "y": {"scale": "y", "field": "residency_end"},
-          "y2": {"scale": "y", "field": "residency_start"}
+          "y2": {"scale": "y", "field": "residency_start"},
+          "cornerRadiusTopLeft": [
+            {
+              "test": "scale(\"y\", datum[\"residency_end\"]) < scale(\"y\", datum[\"residency_start\"])",
+              "value": 0
+            },
+            {"value": 0}
+          ],
+          "cornerRadiusTopRight": [
+            {
+              "test": "scale(\"y\", datum[\"residency_end\"]) < scale(\"y\", datum[\"residency_start\"])",
+              "value": 0
+            },
+            {"value": 0}
+          ],
+          "cornerRadiusBottomLeft": [
+            {
+              "test": "scale(\"y\", datum[\"residency_end\"]) > scale(\"y\", datum[\"residency_start\"])",
+              "value": 0
+            },
+            {"value": 0}
+          ],
+          "cornerRadiusBottomRight": [
+            {
+              "test": "scale(\"y\", datum[\"residency_end\"]) > scale(\"y\", datum[\"residency_start\"])",
+              "value": 0
+            },
+            {"value": 0}
+          ]
         }
       }
     }

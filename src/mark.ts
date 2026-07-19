@@ -51,12 +51,34 @@ export const PATH_MARKS = ['line', 'area', 'trail'] as const;
 
 export type PathMark = (typeof PATH_MARKS)[number];
 
+const PATH_MARK_SET = new Set(PATH_MARKS) as ReadonlySet<Mark | CompositeMark>;
+
 export function isPathMark(m: Mark | CompositeMark): m is PathMark {
-  return ['line', 'area', 'trail'].includes(m);
+  return PATH_MARK_SET.has(m);
 }
 
-export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' | 'arc' | 'tick' {
-  return ['rect', 'bar', 'image', 'arc', 'tick' /* arc is rect/interval in polar coordinate */].includes(m);
+/* arc is rect/interval in polar coordinate */
+export const RECT_BASED_MARKS = ['rect', 'bar', 'image', 'arc', 'tick'] as const;
+
+export type RectBasedMark = (typeof RECT_BASED_MARKS)[number];
+
+const RECT_BASED_MARK_SET = new Set(RECT_BASED_MARKS) as ReadonlySet<Mark | CompositeMark>;
+
+export function isRectBasedMark(m: Mark | CompositeMark): m is RectBasedMark {
+  return RECT_BASED_MARK_SET.has(m);
+}
+
+/**
+ * Marks that span from a baseline to a value (e.g., for zero baselines and stacking).
+ */
+export const BAR_AREA_MARKS = ['bar', 'area'] as const;
+
+export type BarAreaMark = (typeof BAR_AREA_MARKS)[number];
+
+const BAR_AREA_MARK_SET: ReadonlySet<Mark | CompositeMark> = new Set(BAR_AREA_MARKS);
+
+export function isBarOrArea(m: Mark | CompositeMark): m is BarAreaMark {
+  return BAR_AREA_MARK_SET.has(m);
 }
 
 export const PRIMITIVE_MARKS = new Set(keys(Mark));
@@ -355,12 +377,7 @@ export const defaultMarkConfig: MarkConfig<SignalRef> = {
 
 // TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
 export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
-  | MarkConfig<ES>
-  | AreaConfig<ES>
-  | BarConfig<ES>
-  | RectConfig<ES>
-  | LineConfig<ES>
-  | TickConfig<ES>;
+  MarkConfig<ES> | AreaConfig<ES> | BarConfig<ES> | RectConfig<ES> | LineConfig<ES> | TickConfig<ES>;
 
 export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Mark Config */
@@ -467,21 +484,9 @@ export function isRelativeBandSize(o: number | RelativeBandSize | ExprRef | Sign
   return hasProperty(o, 'band');
 }
 
-export const BAR_CORNER_RADIUS_INDEX: Partial<
-  Record<
-    Orientation,
-    ('cornerRadiusTopLeft' | 'cornerRadiusTopRight' | 'cornerRadiusBottomLeft' | 'cornerRadiusBottomRight')[]
-  >
-> = {
-  horizontal: ['cornerRadiusTopRight', 'cornerRadiusBottomRight'],
-  vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight'],
-};
-
 export interface BarCornerRadiusMixins<ES extends ExprRef | SignalRef> {
   /**
-   * - For vertical bars, top-left and top-right corner radius.
-   *
-   * - For horizontal bars, top-right and bottom-right corner radius.
+   * Corner radius of the value-end side.
    */
   cornerRadiusEnd?: number | ES;
 }

@@ -5,14 +5,14 @@ import {parseUnitModelWithScaleAndLayoutSize, without} from '../../util.js';
 
 describe('compile/mark/init', () => {
   describe('initMarkDef', () => {
-    it('applies cornerRadiusEnd to all cornerRadius for ranged bars', () => {
+    it('preserves cornerRadiusEnd for ranged bars', () => {
       expect(
         initMarkdef(
           {type: 'bar', cornerRadiusEnd: 5},
           {x: {field: 'x', type: 'quantitative'}, x2: {field: 'x2'}},
           defaultConfig,
         ),
-      ).toMatchObject({cornerRadius: 5});
+      ).toMatchObject({cornerRadiusEnd: 5});
 
       expect(
         initMarkdef(
@@ -20,19 +20,19 @@ describe('compile/mark/init', () => {
           {y: {field: 'x', type: 'quantitative'}, y2: {field: 'x2'}},
           defaultConfig,
         ),
-      ).toMatchObject({cornerRadius: 5});
+      ).toMatchObject({cornerRadiusEnd: 5});
     });
 
-    it('applies cornerRadiusEnd to top cornerRadius for vertical bars', () => {
+    it('preserves cornerRadiusEnd for vertical bars', () => {
       expect(
         initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {y: {field: 'x', type: 'quantitative'}}, defaultConfig),
-      ).toMatchObject({cornerRadiusTopLeft: 5, cornerRadiusTopRight: 5});
+      ).toMatchObject({cornerRadiusEnd: 5});
     });
 
-    it('applies cornerRadiusEnd to top cornerRadius for horizontal bars', () => {
+    it('preserves cornerRadiusEnd for horizontal bars', () => {
       expect(
         initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {x: {field: 'x', type: 'quantitative'}}, defaultConfig),
-      ).toMatchObject({cornerRadiusBottomRight: 5, cornerRadiusTopRight: 5});
+      ).toMatchObject({cornerRadiusEnd: 5});
     });
   });
 
@@ -432,6 +432,28 @@ describe('compile/mark/init', () => {
       expect(model.markDef.orient).toBe('vertical');
     });
 
+    it('should return vertical orient for bar with only yOffset quantitative', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          yOffset: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
+
+    it('should return horizontal orient for bar with only xOffset quantitative', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          y: {field: 'value', type: 'quantitative'},
+          xOffset: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
     it('should return correct orient for area with vertical binned data', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'area',
@@ -475,6 +497,28 @@ describe('compile/mark/init', () => {
             field: 'count',
             type: 'quantitative',
           },
+        },
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
+    it('should return vertical orient for area with only yOffset quantitative', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          yOffset: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
+
+    it('should return horizontal orient for area with only xOffset quantitative', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          y: {field: 'value', type: 'quantitative'},
+          xOffset: {field: 'density', type: 'quantitative'},
         },
       });
       expect(model.markDef.orient).toBe('horizontal');
