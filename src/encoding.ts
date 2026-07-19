@@ -92,6 +92,7 @@ import {
 import {Config} from './config.js';
 import * as log from './log/index.js';
 import {Mark} from './mark.js';
+import {isSortArray} from './sort.js';
 import {EncodingFacetMapping} from './spec/facet.js';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform.js';
 import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type.js';
@@ -535,6 +536,29 @@ export function initEncoding(
   filled: boolean,
   config: Config,
 ): Encoding<string> {
+  const colorDef = encoding.fill || encoding.color;
+  const orderDef = encoding.order;
+  if (
+    isFieldDef(colorDef) &&
+    isSortArray(colorDef.sort) &&
+    !isArray(colorDef.scale?.domain) &&
+    orderDef &&
+    !isValueDef(orderDef)
+  ) {
+    const colorField = vgField(colorDef);
+    const colorSort = colorDef.sort;
+    const order = array(orderDef).map((def): OrderFieldDef<string> | OrderOnlyDef => {
+      if (isFieldDef(def) && vgField(def) === colorField && def.sort === undefined) {
+        return {...def, sort: colorSort} as OrderFieldDef<string>;
+      }
+      return def as OrderFieldDef<string> | OrderOnlyDef;
+    });
+    encoding = {
+      ...encoding,
+      order,
+    };
+  }
+
   const normalizedEncoding: Encoding<string> = {};
   for (const key of keys(encoding)) {
     if (!isChannel(key)) {
