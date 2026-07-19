@@ -514,6 +514,28 @@ describe('compile/mark/init', () => {
       expect(model.markDef.orient).toBe('vertical');
     });
 
+    it('should center area thickness vertically when y is omitted', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'area', orient: 'horizontal'},
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
+
+    it('should center area thickness horizontally when x is omitted', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'area', orient: 'vertical'},
+        encoding: {
+          y: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
     it('should use size-thickness orientation with a quantitative offset', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'area',

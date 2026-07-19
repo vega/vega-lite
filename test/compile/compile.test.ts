@@ -277,6 +277,36 @@ describe('compile/compile', () => {
     expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([0, {signal: 'height'}]);
   });
 
+  it('should center area size-thickness ribbons when y is omitted', () => {
+    const {spec} = compile({
+      data: {url: 'data/penguins.json'},
+      transform: [
+        {filter: {field: 'Sex', oneOf: ['MALE', 'FEMALE']}},
+        {density: 'Body Mass (g)', groupby: ['Sex'], resolve: 'independent'},
+      ],
+      mark: {type: 'area', opacity: 0.9},
+      encoding: {
+        x: {field: 'value', type: 'quantitative', title: 'Body Mass (g)'},
+        size: {field: 'density', type: 'quantitative'},
+        color: {field: 'Sex', type: 'nominal'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['Sex']);
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.orient).toEqual({value: 'vertical'});
+    expect(update.y).toEqual({signal: 'height', mult: 0.5, offset: {scale: 'size', field: 'density', mult: 0.5}});
+    expect(update.y2).toEqual({
+      signal: 'height',
+      mult: 0.5,
+      offset: {scale: 'size', field: 'density', mult: -0.5},
+    });
+    expect(spec.scales.some((scale) => scale.name === 'y')).toBe(false);
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([0, {signal: 'height'}]);
+    expect(spec.legends.map((legend: any) => legend.fill)).toEqual(['color']);
+  });
+
   it(
     'should ignore explicit stacking for area size-thickness ribbons',
     log.wrap((localLogger) => {

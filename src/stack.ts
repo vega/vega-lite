@@ -156,6 +156,13 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     return null;
   }
 
+  if (isAreaSizeThickness(mark, encoding)) {
+    if ([encoding.x, encoding.y].some((channelDef) => isFieldOrDatumDef(channelDef) && channelDef.stack)) {
+      log.warn(log.message.cannotStackAreaWithSize());
+    }
+    return null;
+  }
+
   // Run potential stacked twice, one for Cartesian and another for Polar,
   // so text marks can be stacked in any of the coordinates.
 
@@ -180,13 +187,6 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     fieldChannel === 'x' &&
     channelHasQuantitativeOffset(encoding, 'y') &&
     (!yDef || (isFieldOrDatumDef(yDef) && isDiscrete(yDef)));
-
-  if (isAreaSizeThickness(mark, encoding)) {
-    if (stackedFieldDef.stack) {
-      log.warn(log.message.cannotStackAreaWithSize());
-    }
-    return null;
-  }
 
   if (stackedFieldDef.stack === undefined && (xRangeFromOffset || yRangeFromOffset)) {
     return null;

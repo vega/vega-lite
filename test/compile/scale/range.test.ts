@@ -845,6 +845,54 @@ describe('compile/scale', () => {
 
           expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'height'}]));
         });
+
+        it('should use the view height when the y center is omitted', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'height'}]));
+        });
+
+        it('should use the view width when the x center is omitted', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              y: {field: 'y', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
+        });
+
+        it('should use the view height for an x-only categorical trajectory', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'x', type: 'nominal', scale: {type: 'band'}},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'height'}]));
+        });
+
+        it('should use the view width for a y-only categorical trajectory', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              y: {field: 'y', type: 'nominal', scale: {type: 'band'}},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
+        });
       });
 
       describe('point, square, circle', () => {

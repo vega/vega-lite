@@ -600,7 +600,7 @@ describe('encoding', () => {
       ).toEqual(['group']);
     });
 
-    it('should require both position channels for area size-thickness mode', () => {
+    it('should require at least one position channel for area size-thickness mode', () => {
       expect(
         markChannelCompatible(
           {
@@ -610,7 +610,28 @@ describe('encoding', () => {
           SIZE,
           'area',
         ),
-      ).toBe(false);
+      ).toBe(true);
+      expect(
+        markChannelCompatible(
+          {
+            y: {field: 'value', type: 'quantitative'},
+            size: {field: 'density', type: 'quantitative'},
+          },
+          SIZE,
+          'area',
+        ),
+      ).toBe(true);
+      expect(markChannelCompatible({size: {field: 'density', type: 'quantitative'}}, SIZE, 'area')).toBe(false);
+    });
+
+    it('should group missing-center area thickness paths by color', () => {
+      expect(
+        pathGroupingFields('area', {
+          x: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+          color: {field: 'group', type: 'nominal'},
+        }),
+      ).toEqual(['group']);
     });
 
     it('should group area size-thickness paths by discrete offset channels.', () => {

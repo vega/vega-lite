@@ -191,6 +191,38 @@ describe('Mark: Area', () => {
     });
   });
 
+  describe('area thickness with an omitted center channel', () => {
+    it('should center x trajectories vertically in the view', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      const props = area.encodeEntry(model);
+
+      expect(props.x).toEqual({scale: 'x', field: 'value'});
+      expect(props.y).toEqual({signal: 'height', mult: 0.5, offset: {scale: 'size', field: 'density', mult: 0.5}});
+      expect(props.y2).toEqual({signal: 'height', mult: 0.5, offset: {scale: 'size', field: 'density', mult: -0.5}});
+    });
+
+    it('should center y trajectories horizontally in the view', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          y: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      const props = area.encodeEntry(model);
+
+      expect(props.y).toEqual({scale: 'y', field: 'value'});
+      expect(props.x).toEqual({signal: 'width', mult: 0.5, offset: {scale: 'size', field: 'density', mult: 0.5}});
+      expect(props.x2).toEqual({signal: 'width', mult: 0.5, offset: {scale: 'size', field: 'density', mult: -0.5}});
+    });
+  });
+
   describe('horizontal area with size encoding for thickness', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'area',
@@ -228,6 +260,24 @@ describe('Mark: Area', () => {
       expect((props.y as any).offset.signal).toContain('scale("yOffset", datum["shift"])');
       expect((props.y as any).offset.signal).toContain('0.5 * (scale("size", datum["density"]))');
       expect((props.y2 as any).offset.signal).toContain('-0.5 * (scale("size", datum["density"]))');
+    });
+
+    it('should compose a missing center with quantitative offset and thickness', () => {
+      const offsetModel = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          yOffset: {field: 'shift', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      const offsetProps = area.encodeEntry(offsetModel);
+
+      expect(offsetModel.isRangedOffset('y')).toBe(false);
+      expect((offsetProps.y as any).signal).toBe('height');
+      expect((offsetProps.y as any).mult).toBe(0.5);
+      expect((offsetProps.y as any).offset.signal).toContain('scale("yOffset", datum["shift"])');
+      expect((offsetProps.y as any).offset.signal).toContain('0.5 * (scale("size", datum["density"]))');
     });
   });
 

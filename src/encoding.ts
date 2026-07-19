@@ -336,7 +336,7 @@ export interface Encoding<F extends Field> {
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
 
 export function isAreaSizeThickness(mark: Mark, encoding: Encoding<string>): boolean {
-  return mark === AREA && !!encoding.x && !!encoding.y && !!encoding.size && !encoding.x2 && !encoding.y2;
+  return mark === AREA && !!encoding.size && !!(encoding.x || encoding.y) && !encoding.x2 && !encoding.y2;
 }
 
 export function channelHasField<F extends Field>(

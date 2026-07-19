@@ -138,6 +138,12 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     // falls through
     case AREA:
       if (isAreaSizeThickness(mark, encoding)) {
+        if (x && !y) {
+          return 'vertical';
+        }
+        if (y && !x) {
+          return 'horizontal';
+        }
         if (specifiedOrient) {
           return specifiedOrient;
         }

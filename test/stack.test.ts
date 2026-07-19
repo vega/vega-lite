@@ -149,7 +149,6 @@ describe('stack', () => {
       expect(
         stack(AREA, {
           x: {field: 'value', type: 'quantitative', stack: 'zero'},
-          y: {value: 60},
           size: {value: 10},
           color: {field: 'group', type: 'nominal'},
         }),

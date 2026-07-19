@@ -314,6 +314,11 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
 
         const fallbackChannel = laneChannel === 'x' ? 'y' : 'x';
         const fallbackScaleType = model.getScaleComponent(fallbackChannel)?.get('type');
+        if (!encoding[laneChannel]) {
+          const sizeSignal = model.getName(getSizeChannel(laneChannel));
+          return [0, SignalRefWrapper.fromName(model.getSignalName.bind(model), sizeSignal)];
+        }
+
         if (encoding[fallbackChannel] && fallbackScaleType === 'band') {
           return [0, {signal: `bandwidth('${model.scaleName(fallbackChannel)}')`}];
         }

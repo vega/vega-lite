@@ -202,6 +202,21 @@ describe('PathOverlayNormalizer', () => {
     expect(normalizedSpec.layer[1].encoding.y.stack).toBeUndefined();
   });
 
+  it('preserves an omitted center channel on a thickness line overlay', () => {
+    const normalizedSpec = normalize({
+      mark: {type: 'area', line: true},
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    } as TopLevelSpec) as any;
+
+    expect(normalizedSpec.layer[0].encoding.size).toEqual({field: 'density', type: 'quantitative'});
+    expect(normalizedSpec.layer[0].encoding.y).toBeUndefined();
+    expect(normalizedSpec.layer[1].encoding.size).toBeUndefined();
+    expect(normalizedSpec.layer[1].encoding.y).toBeUndefined();
+  });
+
   it('correctly normalizes area using y2 with overlay line.', () => {
     const spec: TopLevelSpec = {
       data: {url: 'data/stocks.csv'},
