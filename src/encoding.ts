@@ -816,7 +816,7 @@ export function pathGroupingFields(
 
             for (const offsetChannel of [XOFFSET, YOFFSET] as const) {
               const offsetDef = encoding[offsetChannel];
-              if (isFieldDef(offsetDef) && !offsetDef.aggregate && channelDefType(offsetDef) !== 'quantitative') {
+              if (isFieldDef(offsetDef) && !offsetDef.aggregate && isDiscrete(channelDefType(offsetDef))) {
                 const offsetField = vgField(offsetDef, {});
                 if (!sizeField || offsetField !== sizeField) {
                   addDetail(offsetField);
@@ -827,7 +827,7 @@ export function pathGroupingFields(
             const centerChannels = orient ? [orient === 'horizontal' ? X : Y] : [Y, X];
             for (const positionChannel of centerChannels) {
               const positionDef = encoding[positionChannel];
-              if (isFieldDef(positionDef) && !positionDef.aggregate && channelDefType(positionDef) !== 'quantitative') {
+              if (isFieldDef(positionDef) && !positionDef.aggregate && isDiscrete(channelDefType(positionDef))) {
                 const positionField = vgField(positionDef, {});
                 if (!sizeField || positionField !== sizeField) {
                   addDetail(positionField);

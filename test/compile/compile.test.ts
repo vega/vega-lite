@@ -257,6 +257,69 @@ describe('compile/compile', () => {
     expect(update.y2).toEqual({value: 60, offset: {scale: 'size', field: 'density', mult: -0.5}});
   });
 
+  it('should compile temporal area size-thickness ribbons as one continuous path', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {date: '2020-01-01', value: 10, density: 2},
+          {date: '2020-01-02', value: 12, density: 4},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'value', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('area');
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([0, {signal: 'height'}]);
+  });
+
+  it(
+    'should ignore explicit stacking for area size-thickness ribbons',
+    log.wrap((localLogger) => {
+      const {spec} = compile({
+        data: {values: [{value: 1, center: 2, density: 3}]},
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative', stack: 'zero'},
+          y: {field: 'center', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+
+      expect(
+        spec.data.every((data: any) => !data.transform?.some((transform: any) => transform.type === 'stack')),
+      ).toBe(true);
+      expect(spec.marks[0].encode.update.x).toEqual({scale: 'x', field: 'value'});
+      expect(localLogger.warns).toEqual([log.message.cannotStackAreaWithSize()]);
+    }),
+  );
+
+  it(
+    'should ignore area thickness size and stack on a line overlay',
+    log.wrap((localLogger) => {
+      const {spec} = compile({
+        data: {values: [{date: '2020-01-01', value: 2, density: 3}]},
+        mark: {type: 'area', line: true},
+        encoding: {
+          x: {field: 'date', type: 'temporal'},
+          y: {field: 'value', type: 'quantitative', stack: 'zero'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+
+      expect(
+        spec.data.every((data: any) => !data.transform?.some((transform: any) => transform.type === 'stack')),
+      ).toBe(true);
+      expect(spec.marks[1].encode.update.y).toEqual({scale: 'y', field: 'value'});
+      expect(spec.marks[1].encode.update.strokeWidth).toBeUndefined();
+      expect(localLogger.warns).toEqual([log.message.cannotStackAreaWithSize()]);
+    }),
+  );
+
   it('should facet area size-thickness ribbons by nominal y groups', () => {
     const {spec} = compile({
       data: {

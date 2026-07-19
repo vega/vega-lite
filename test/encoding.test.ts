@@ -677,6 +677,17 @@ describe('encoding', () => {
       ).toEqual([]);
     });
 
+    it('should not treat temporal area size-thickness channels as lanes.', () => {
+      const encoding = {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'value', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      } as const;
+
+      expect(pathGroupingFields('area', encoding)).toEqual([]);
+      expect(pathGroupingFields('area', encoding, 'horizontal')).toEqual([]);
+    });
+
     it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', () => {
       for (const channel of [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
         expect(pathGroupingFields('line', {[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}})).toEqual([]);

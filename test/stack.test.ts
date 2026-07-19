@@ -141,15 +141,22 @@ describe('stack', () => {
         }),
       ).toBeNull();
     }
-
-    const stackProps = stack(AREA, {
-      x: {field: 'value', type: 'quantitative', stack: 'zero'},
-      y: {value: 60},
-      size: {value: 10},
-      color: {field: 'group', type: 'nominal'},
-    });
-    expect(stackProps?.fieldChannel).toBe(X);
   });
+
+  it(
+    'should warn and ignore explicit stacking when area size encodes thickness',
+    log.wrap((localLogger) => {
+      expect(
+        stack(AREA, {
+          x: {field: 'value', type: 'quantitative', stack: 'zero'},
+          y: {value: 60},
+          size: {value: 10},
+          color: {field: 'group', type: 'nominal'},
+        }),
+      ).toBeNull();
+      expect(localLogger.warns).toEqual([log.message.cannotStackAreaWithSize()]);
+    }),
+  );
 
   it('should disable default x/y stacking when only offset is present on the orthogonal axis', () => {
     for (const mark of [BAR, AREA]) {

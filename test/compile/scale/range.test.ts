@@ -806,6 +806,45 @@ describe('compile/scale', () => {
 
           expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
         });
+
+        it('should use the view height for area thickness with two continuous axes', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              y: {field: 'y', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'height'}]));
+        });
+
+        it('should use the view width for horizontal area thickness with two continuous axes', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: {type: 'area', orient: 'horizontal'},
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              y: {field: 'y', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
+        });
+
+        it('should use the view height for temporal area thickness', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {field: 'y', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'height'}]));
+        });
       });
 
       describe('point, square, circle', () => {

@@ -317,6 +317,11 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         if (encoding[fallbackChannel] && fallbackScaleType === 'band') {
           return [0, {signal: `bandwidth('${model.scaleName(fallbackChannel)}')`}];
         }
+
+        if (hasContinuousDomain(laneScaleType) && hasContinuousDomain(fallbackScaleType)) {
+          const sizeSignal = model.getName(getSizeChannel(laneChannel));
+          return [0, SignalRefWrapper.fromName(model.getSignalName.bind(model), sizeSignal)];
+        }
       }
 
       // TODO: support custom rangeMin, rangeMax

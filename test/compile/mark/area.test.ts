@@ -1,12 +1,18 @@
 import {SignalRef} from 'vega';
 import {COLOR, X, Y} from '../../../src/channel.js';
-import {area} from '../../../src/compile/mark/area.js';
+import {area, withThicknessOffset} from '../../../src/compile/mark/area.js';
 import {Encoding} from '../../../src/encoding.js';
 import {NormalizedUnitSpec} from '../../../src/spec/index.js';
 import {internalField} from '../../../src/util.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Area', () => {
+  it('should reject positional offsets that cannot be serialized', () => {
+    expect(() => withThicknessOffset({value: 1, offset: {field: {group: 'width'}}} as any, {value: 2}, 0.5)).toThrow(
+      'Cannot combine area thickness with the positional offset.',
+    );
+  });
+
   function verticalArea(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {
     return {
       mark: 'area',

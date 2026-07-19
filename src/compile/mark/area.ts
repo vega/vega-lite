@@ -91,11 +91,7 @@ function halfThicknessRef(thickness: VgValueRef, factor: number): VgValueRef {
   };
 }
 
-function thicknessOffsetRef(thickness: VgValueRef, factor: number): VgValueRef {
-  return halfThicknessRef(thickness, factor);
-}
-
-function withThicknessOffset(center: AreaValueRef, thickness: AreaValueRef, factor: number): AreaValueRef {
+export function withThicknessOffset(center: AreaValueRef, thickness: AreaValueRef, factor: number): AreaValueRef {
   const refs: VgValueRef[] = [];
 
   for (const centerRef of Array.isArray(center) ? center : [center]) {
@@ -107,7 +103,7 @@ function withThicknessOffset(center: AreaValueRef, thickness: AreaValueRef, fact
       const {test: _thicknessTest, ...thicknessWithoutTest} = thicknessRef;
       refs.push({
         ...(test ? {test} : {}),
-        ...withOffset(centerWithoutTest, thicknessOffsetRef(thicknessWithoutTest, factor)),
+        ...withOffset(centerWithoutTest, halfThicknessRef(thicknessWithoutTest, factor)),
       });
     }
   }
@@ -119,10 +115,14 @@ function withOffset(baseRef: VgValueRef, offset: VgValueRef): VgValueRef {
   if (baseRef.offset) {
     const baseOffset =
       typeof baseRef.offset === 'number' ? stringValue(baseRef.offset) : valueRefToExpr(baseRef.offset as VgValueRef);
+    const offsetExpr = valueRefToExpr(offset);
+    if (baseOffset === undefined || offsetExpr === undefined) {
+      throw new Error('Cannot combine area thickness with the positional offset.');
+    }
     return {
       ...baseRef,
       offset: {
-        signal: `${baseOffset} + ${valueRefToExpr(offset)}`,
+        signal: `${baseOffset} + ${offsetExpr}`,
       },
     };
   }

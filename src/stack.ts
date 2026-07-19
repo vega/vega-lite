@@ -181,10 +181,14 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     channelHasQuantitativeOffset(encoding, 'y') &&
     (!yDef || (isFieldOrDatumDef(yDef) && isDiscrete(yDef)));
 
-  if (
-    stackedFieldDef.stack === undefined &&
-    (isAreaSizeThickness(mark, encoding) || xRangeFromOffset || yRangeFromOffset)
-  ) {
+  if (isAreaSizeThickness(mark, encoding)) {
+    if (stackedFieldDef.stack) {
+      log.warn(log.message.cannotStackAreaWithSize());
+    }
+    return null;
+  }
+
+  if (stackedFieldDef.stack === undefined && (xRangeFromOffset || yRangeFromOffset)) {
     return null;
   }
 

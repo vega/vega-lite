@@ -185,6 +185,23 @@ describe('PathOverlayNormalizer', () => {
     });
   });
 
+  it('drops area thickness size and ignored stack from the line overlay', () => {
+    const normalizedSpec = normalize({
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'area', line: true},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative', stack: 'zero'},
+        size: {field: 'volume', type: 'quantitative'},
+      },
+    } as TopLevelSpec) as any;
+
+    expect(normalizedSpec.layer[0].encoding.size).toEqual({field: 'volume', type: 'quantitative'});
+    expect(normalizedSpec.layer[0].encoding.y.stack).toBe('zero');
+    expect(normalizedSpec.layer[1].encoding.size).toBeUndefined();
+    expect(normalizedSpec.layer[1].encoding.y.stack).toBeUndefined();
+  });
+
   it('correctly normalizes area using y2 with overlay line.', () => {
     const spec: TopLevelSpec = {
       data: {url: 'data/stocks.csv'},

@@ -389,6 +389,10 @@ export function cannotStackRangedMark(channel: Channel) {
   return `Cannot stack "${channel}" if there is already "${channel}2".`;
 }
 
+export function cannotStackAreaWithSize() {
+  return 'Cannot stack an area mark when size encodes thickness. The stack property will be ignored.';
+}
+
 export function stackNonLinearScale(scaleType: ScaleType) {
   return `Stack is applied to a non-linear scale (${scaleType}).`;
 }
