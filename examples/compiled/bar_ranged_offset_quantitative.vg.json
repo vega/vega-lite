@@ -127,11 +127,7 @@
         "labels": {
           "update": {
             "y": {
-              "scale": "y",
-              "signal": "datum.value",
-              "band": {
-                "signal": "isFinite(scale(\"yOffset\", clamp(0, extent(domain(\"yOffset\"))[0], extent(domain(\"yOffset\"))[1]))) && isFinite(bandwidth(\"y\")) && bandwidth(\"y\") > 0 ? clamp(scale(\"yOffset\", clamp(0, extent(domain(\"yOffset\"))[0], extent(domain(\"yOffset\"))[1])) / bandwidth(\"y\"), 0, 1) : 0.5"
-              }
+              "signal": "scale(\"y\", datum.value) + bandwidth(\"y\") * (isFinite(scale(\"yOffset\", clamp(0, extent(domain(\"yOffset\"))[0], extent(domain(\"yOffset\"))[1]))) && isFinite(bandwidth(\"y\")) && bandwidth(\"y\") > 0 ? clamp(scale(\"yOffset\", clamp(0, extent(domain(\"yOffset\"))[0], extent(domain(\"yOffset\"))[1])) / bandwidth(\"y\"), 0, 1) : 0.5)"
             }
           }
         }
