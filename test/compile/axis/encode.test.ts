@@ -1,4 +1,5 @@
 import * as encode from '../../../src/compile/axis/encode.js';
+import {rangedOffsetBaseline} from '../../../src/compile/scale/rangedOffset.js';
 import {parseUnitModelWithScale} from '../../util.js';
 
 describe('compile/axis/encode', () => {
@@ -114,7 +115,7 @@ describe('compile/axis/encode', () => {
 
       const labels = encode.labels(model, 'y', {});
       expect(labels).toEqual({
-        y: {scale: 'y', signal: 'datum.value', band: 1},
+        y: {scale: 'y', signal: 'datum.value', band: rangedOffsetBaseline(model, 'y').bandPosition},
       });
     });
 
