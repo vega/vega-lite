@@ -1,5 +1,6 @@
 import * as encode from '../../../src/compile/axis/encode.js';
 import {rangedOffsetBaseline} from '../../../src/compile/scale/rangedOffset.js';
+import {isSignalRef} from '../../../src/vega.schema.js';
 import {parseUnitModelWithScale} from '../../util.js';
 
 describe('compile/axis/encode', () => {
@@ -114,8 +115,12 @@ describe('compile/axis/encode', () => {
       });
 
       const labels = encode.labels(model, 'y', {});
+      const bandPosition = rangedOffsetBaseline(model, 'y').bandPosition;
+      if (!isSignalRef(bandPosition)) {
+        throw new Error('Expected a signal-valued band position.');
+      }
       expect(labels).toEqual({
-        y: {scale: 'y', signal: 'datum.value', band: rangedOffsetBaseline(model, 'y').bandPosition},
+        y: {signal: `scale("y", datum.value) + bandwidth("y") * (${bandPosition.signal})`},
       });
     });
 
