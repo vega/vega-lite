@@ -1,5 +1,5 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
-import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel.js';
+import {COLOR, NonPositionScaleChannel, SHAPE, SIZE} from '../../channel.js';
 import {
   DatumDef,
   FieldDef,
@@ -8,6 +8,7 @@ import {
   MarkPropDatumDef,
   MarkPropFieldDef,
 } from '../../channeldef.js';
+import {isAreaSizeThickness} from '../../encoding.js';
 import {LegendInternal, LEGEND_SCALE_CHANNELS} from '../../legend.js';
 import {normalizeTimeUnit} from '../../timeunit.js';
 import {GEOJSON} from '../../type.js';
@@ -45,6 +46,10 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
       continue;
     }
 
+    if (channel === SIZE && isAreaSizeThickness(model.mark, model.encoding) && model.legend(channel) === undefined) {
+      continue;
+    }
+
     legendComponent[channel] = parseLegendForChannel(model, channel);
   }
 
@@ -53,7 +58,7 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
 
 function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChannel): VgLegend {
   const scale = model.scaleName(channel);
-  if (model.mark === 'trail') {
+  if (model.mark === 'trail' || (channel === SIZE && isAreaSizeThickness(model.mark, model.encoding))) {
     if (channel === 'color') {
       // trail is a filled mark, but its default symbolType ("stroke") should use "stroke"
       return {stroke: scale};

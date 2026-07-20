@@ -1,7 +1,8 @@
 import type {SignalRef} from 'vega';
 import {isObject} from 'vega-util';
+import {isFieldDef} from '../channeldef.js';
 import {Config} from '../config.js';
-import {Encoding, normalizeEncoding} from '../encoding.js';
+import {Encoding, isAreaSizeThickness, normalizeEncoding} from '../encoding.js';
 import {ExprRef} from '../expr.js';
 import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark.js';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/index.js';
@@ -113,6 +114,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
 
     const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
+    const areaSizeThickness = isAreaSizeThickness(markDef.type, encoding);
 
     const layer: NormalizedUnitSpec[] = [
       {
@@ -135,7 +137,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
 
     // Need to copy stack config to overlaid layer
     // FIXME: normalizer shouldn't call `initMarkdef`, a method from an init phase.
-    const stackProps = stack(initMarkdef(markDef, encoding, config), encoding);
+    const stackProps = areaSizeThickness ? null : stack(initMarkdef(markDef, encoding, config), encoding);
 
     let overlayEncoding = encoding;
     if (stackProps) {
@@ -154,6 +156,15 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     // point overlay also should not have y2/x2 as it does not support.
     overlayEncoding = omit(overlayEncoding, ['y2', 'x2']);
 
+    if (areaSizeThickness) {
+      for (const channel of ['x', 'y'] as const) {
+        const channelDef = overlayEncoding[channel];
+        if (isFieldDef(channelDef) && channelDef.stack !== undefined) {
+          overlayEncoding = {...overlayEncoding, [channel]: omit(channelDef, ['stack'])};
+        }
+      }
+    }
+
     if (lineOverlay) {
       layer.push({
         ...(projection ? {projection} : {}),
@@ -162,7 +173,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'interpolate', 'tension', 'tooltip']),
           ...lineOverlay,
         },
-        encoding: overlayEncoding,
+        encoding: areaSizeThickness ? omit(overlayEncoding, ['size']) : overlayEncoding,
       });
     }
     if (pointOverlay) {
@@ -175,7 +186,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'tooltip']),
           ...pointOverlay,
         },
-        encoding: overlayEncoding,
+        encoding: areaSizeThickness ? omit(overlayEncoding, ['size']) : overlayEncoding,
       });
     }
 

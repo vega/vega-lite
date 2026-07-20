@@ -185,6 +185,53 @@ describe('PathOverlayNormalizer', () => {
     });
   });
 
+  it('drops area thickness size and ignored stack from the line overlay', () => {
+    const normalizedSpec = normalize({
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'area', line: true},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative', stack: 'zero'},
+        size: {field: 'volume', type: 'quantitative'},
+      },
+    } as TopLevelSpec) as any;
+
+    expect(normalizedSpec.layer[0].encoding.size).toEqual({field: 'volume', type: 'quantitative'});
+    expect(normalizedSpec.layer[0].encoding.y.stack).toBe('zero');
+    expect(normalizedSpec.layer[1].encoding.size).toBeUndefined();
+    expect(normalizedSpec.layer[1].encoding.y.stack).toBeUndefined();
+  });
+
+  it('drops area thickness size from the point overlay', () => {
+    const normalizedSpec = normalize({
+      data: {url: 'data/stocks.csv'},
+      mark: {type: 'area', point: true},
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'},
+        size: {field: 'volume', type: 'quantitative'},
+      },
+    } as TopLevelSpec) as any;
+
+    expect(normalizedSpec.layer[0].encoding.size).toEqual({field: 'volume', type: 'quantitative'});
+    expect(normalizedSpec.layer[1].encoding.size).toBeUndefined();
+  });
+
+  it('preserves an omitted center channel on a thickness line overlay', () => {
+    const normalizedSpec = normalize({
+      mark: {type: 'area', line: true},
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    } as TopLevelSpec) as any;
+
+    expect(normalizedSpec.layer[0].encoding.size).toEqual({field: 'density', type: 'quantitative'});
+    expect(normalizedSpec.layer[0].encoding.y).toBeUndefined();
+    expect(normalizedSpec.layer[1].encoding.size).toBeUndefined();
+    expect(normalizedSpec.layer[1].encoding.y).toBeUndefined();
+  });
+
   it('correctly normalizes area using y2 with overlay line.', () => {
     const spec: TopLevelSpec = {
       data: {url: 'data/stocks.csv'},

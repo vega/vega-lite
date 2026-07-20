@@ -117,6 +117,34 @@ describe('compile/legend', () => {
       expect(def.strokeWidth).toBe('size');
     });
 
+    it('should disable size legend by default for area marks', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'area',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'quantitative'},
+          size: {field: 's', type: 'quantitative'},
+        },
+      });
+
+      expect(parseLegend(model).size).toBeUndefined();
+    });
+
+    it('should allow explicitly enabling area size legend', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'area',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'quantitative'},
+          size: {field: 's', type: 'quantitative', legend: {}},
+        },
+      });
+
+      const def = parseLegendForChannel(model, SIZE).combine();
+      expect(def.disable).not.toBe(true);
+      expect(def.strokeWidth).toBe('size');
+    });
+
     it('should produce no legend title when title is null, "", or false', () => {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({
@@ -200,6 +228,35 @@ describe('compile/legend', () => {
   });
 
   describe('parseNonUnitLegend()', () => {
+    it('should preserve a shared point size legend when an area ribbon uses the scale', () => {
+      const model = parseLayerModel({
+        data: {values: [{x: 1, y: 2, size: 3}]},
+        layer: [
+          {
+            mark: 'area',
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              y: {field: 'y', type: 'quantitative'},
+              size: {field: 'size', type: 'quantitative'},
+            },
+          },
+          {
+            mark: 'point',
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              y: {field: 'y', type: 'quantitative'},
+              size: {field: 'size', type: 'quantitative'},
+            },
+          },
+        ],
+      });
+      model.parseScale();
+      model.parseLegends();
+
+      expect(model.component.legends.size).toBeTruthy();
+      expect(model.component.legends.size.get('disable')).not.toBe(true);
+    });
+
     it('should correctly merge orient by favoring explicit orient', () => {
       const model = parseLayerModel({
         $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
