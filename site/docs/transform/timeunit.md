@@ -12,7 +12,7 @@ Vega-Lite supports the following time units:
 - `"quarter"` - Three-month intervals, starting in one of January, April, July, and October.
 - `"month"` - Calendar months (January, February, _etc._).
 - `"date"` - Calendar day of the month (January 1, January 2, _etc._).
-- `"week"` - Sunday-based weeks. Days before the first Sunday of the year are considered to be in week 0, the first Sunday of the year is the start of week 1, the second Sunday week 2, _etc._.
+- `"week"` - [ISO 8601](https://en.wikipedia.org/wiki/ISO_week_date) weeks. Weeks start on Monday, and week 1 is the week that contains the first Thursday of the year (equivalently, the week containing January 4). This matches the week numbering used by SQL engines such as DuckDB. Note that `"week"` and `"yearweek"` follow ISO 8601, whereas `"day"` remains the plain day of the week.
 - `"day"` - Day of the week (Sunday, Monday, _etc._).
 - `"dayofyear"` - Day of the year (1, 2, ..., 365, _etc._).
 - `"hours"` - Hours of the day (12:00am, 1:00am, _etc._).
