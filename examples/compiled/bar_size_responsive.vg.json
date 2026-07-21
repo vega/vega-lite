@@ -29,6 +29,10 @@
         {
           "update": "isFinite(containerSize()[0]) ? containerSize()[0] : 300",
           "events": "window:resize"
+        },
+        {
+          "update": "isFinite(containerSize()[0]) ? containerSize()[0] : 300",
+          "events": {"signal": "autosize"}
         }
       ]
     }
