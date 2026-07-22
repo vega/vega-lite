@@ -1,6 +1,7 @@
 import {SignalRef} from 'vega';
 import {COLOR, X, Y} from '../../../src/channel.js';
 import {area} from '../../../src/compile/mark/area.js';
+import {rangedOffsetBaseline} from '../../../src/compile/scale/rangedOffset.js';
 import {Encoding} from '../../../src/encoding.js';
 import {NormalizedUnitSpec} from '../../../src/spec/index.js';
 import {internalField} from '../../../src/util.js';
@@ -128,7 +129,7 @@ describe('Mark: Area', () => {
 
     it('should use y as one edge and baseline at offset zero', () => {
       expect(props.y).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross'}});
-      expect(props.y2).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', value: 0}});
+      expect(props.y2).toEqual({scale: 'y', field: 'Origin', offset: rangedOffsetBaseline(model, 'y').offset});
     });
 
     it('should not collapse to line geometry', () => {
