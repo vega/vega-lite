@@ -7,6 +7,7 @@ import {
   getFieldDef,
   isFieldDef,
   isFieldOrDatumDef,
+  OffsetDef,
   PositionDatumDef,
   PositionDef,
   PositionFieldDef,
@@ -55,7 +56,7 @@ export interface StackProperties {
   groupbyFields: Set<FieldName>;
 
   /** Measure axis of the stack. */
-  fieldChannel: 'x' | 'y' | 'theta' | 'radius';
+  fieldChannel: StackFieldChannel;
 
   /** Stack-by fields e.g., color, detail */
   stackBy: {
@@ -74,11 +75,40 @@ export interface StackProperties {
   impute: boolean;
 }
 
+export type StackFieldChannel = 'x' | 'y' | 'theta' | 'radius' | 'xOffset' | 'yOffset';
+
 export const STACKABLE_MARKS = new Set<Mark>([ARC, BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK]);
 export const STACK_BY_DEFAULT_MARKS = new Set<Mark>([BAR, AREA, ARC]);
 
-function isUnbinnedQuantitative(channelDef: PositionDef<string>) {
+function isUnbinnedQuantitative(channelDef: PositionDef<string> | OffsetDef<string>) {
   return isFieldDef(channelDef) && channelDefType(channelDef) === 'quantitative' && !channelDef.bin;
+}
+
+function explicitCartesianStackedChannel(encoding: Encoding<string>): 'x' | 'y' | 'xOffset' | 'yOffset' | undefined {
+  for (const channel of ['x', 'y', 'xOffset', 'yOffset'] as const) {
+    const channelDef = encoding[channel];
+    if (isFieldDef(channelDef) && isUnbinnedQuantitative(channelDef) && channelDef.stack) {
+      return channel;
+    }
+  }
+  return undefined;
+}
+
+function potentialOffsetStackedChannel(
+  encoding: Encoding<string>,
+  orient: MarkDef['orient'],
+): 'xOffset' | 'yOffset' | undefined {
+  const xOffsetIsMeasure = isUnbinnedQuantitative(encoding.xOffset);
+  const yOffsetIsMeasure = isUnbinnedQuantitative(encoding.yOffset);
+
+  if (xOffsetIsMeasure && yOffsetIsMeasure) {
+    return orient === 'horizontal' ? 'xOffset' : 'yOffset';
+  } else if (xOffsetIsMeasure) {
+    return 'xOffset';
+  } else if (yOffsetIsMeasure) {
+    return 'yOffset';
+  }
+  return undefined;
 }
 
 function potentialStackedChannel(
@@ -133,16 +163,20 @@ function potentialStackedChannel(
   return undefined;
 }
 
-function getDimensionChannel(channel: 'x' | 'y' | 'theta' | 'radius') {
-  switch (channel) {
+function stackGroupbyChannels(fieldChannel: StackFieldChannel): StackProperties['groupbyChannels'] {
+  switch (fieldChannel) {
     case 'x':
-      return 'y';
+      return ['y', 'yOffset'];
     case 'y':
-      return 'x';
+      return ['x', 'xOffset'];
+    case 'xOffset':
+      return ['y', 'yOffset', 'x'];
+    case 'yOffset':
+      return ['x', 'xOffset', 'y'];
     case 'theta':
-      return 'radius';
+      return ['radius'];
     case 'radius':
-      return 'theta';
+      return ['theta'];
   }
 }
 
@@ -161,7 +195,10 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   // Note: The logic here is not perfectly correct.  If we want to support stacked dot plots where each dot is a pie chart with label, we have to change the stack logic here to separate Cartesian stacking for polar stacking.
   // However, since we probably never want to do that, let's just note the limitation here.
   const fieldChannel =
-    potentialStackedChannel(encoding, 'x', markDef) || potentialStackedChannel(encoding, 'theta', markDef);
+    explicitCartesianStackedChannel(encoding) ||
+    potentialOffsetStackedChannel(encoding, markDef.orient) ||
+    potentialStackedChannel(encoding, 'x', markDef) ||
+    potentialStackedChannel(encoding, 'theta', markDef);
 
   if (!fieldChannel) {
     return null;
@@ -172,38 +209,25 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   if (
     stackedFieldDef.stack === undefined &&
-    ((fieldChannel === 'x' && !encoding.y && channelHasQuantitativeOffset(encoding, 'y')) ||
-      (fieldChannel === 'y' && !encoding.x && channelHasQuantitativeOffset(encoding, 'x')))
+    ((fieldChannel === 'x' && channelHasQuantitativeOffset(encoding, 'y')) ||
+      (fieldChannel === 'y' && channelHasQuantitativeOffset(encoding, 'x')))
   ) {
     return null;
   }
 
-  const dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
   const groupbyChannels: StackProperties['groupbyChannels'] = [];
   const groupbyFields: Set<FieldName> = new Set();
 
-  if (encoding[dimensionChannel]) {
+  for (const dimensionChannel of stackGroupbyChannels(fieldChannel)) {
     const dimensionDef = encoding[dimensionChannel];
     const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
 
-    if (dimensionField && dimensionField !== stackedField) {
+    if (dimensionField && dimensionField !== stackedField && !groupbyFields.has(dimensionField)) {
       // avoid grouping by the stacked field
       groupbyChannels.push(dimensionChannel);
       groupbyFields.add(dimensionField);
     }
   }
-
-  const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
-  const dimensionOffsetDef = encoding[dimensionOffsetChannel];
-  const dimensionOffsetField = isFieldDef(dimensionOffsetDef) ? vgField(dimensionOffsetDef, {}) : undefined;
-
-  if (dimensionOffsetField && dimensionOffsetField !== stackedField) {
-    // avoid grouping by the stacked field
-    groupbyChannels.push(dimensionOffsetChannel);
-    groupbyFields.add(dimensionOffsetField);
-  }
-
-  // If the dimension has offset, don't stack anymore
 
   // Should have grouping level of detail that is different from the dimension field
   const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
@@ -259,7 +283,10 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   }
 
   // Check if it is a ranged mark
-  if (isFieldOrDatumDef(encoding[getSecondaryRangeChannel(fieldChannel)])) {
+  if (
+    (fieldChannel === 'x' || fieldChannel === 'y' || fieldChannel === 'theta' || fieldChannel === 'radius') &&
+    isFieldOrDatumDef(encoding[getSecondaryRangeChannel(fieldChannel)])
+  ) {
     if (stackedFieldDef.stack !== undefined) {
       log.warn(log.message.cannotStackRangedMark(fieldChannel));
     }
@@ -279,7 +306,12 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     groupbyChannels,
     groupbyFields,
     fieldChannel,
-    impute: stackedFieldDef.impute === null ? false : isPathMark(mark),
+    impute:
+      fieldChannel === 'xOffset' || fieldChannel === 'yOffset'
+        ? false
+        : stackedFieldDef.impute === null
+          ? false
+          : isPathMark(mark),
     stackBy,
     offset,
   };
