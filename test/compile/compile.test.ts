@@ -371,7 +371,10 @@ describe('compile/compile', () => {
       {
         name: 'width',
         init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300',
-        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300'}],
+        on: [
+          {events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300'},
+          {events: {signal: 'autosize'}, update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300'},
+        ],
       },
     ]);
     expect(spec.width).toBeUndefined();
@@ -447,7 +450,10 @@ describe('compile/compile', () => {
       {
         name: 'height',
         init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
-        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'}],
+        on: [
+          {events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'},
+          {events: {signal: 'autosize'}, update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'},
+        ],
       },
     ]);
     expect(spec.height).toBeUndefined();
@@ -473,12 +479,18 @@ describe('compile/compile', () => {
       {
         name: 'width',
         init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500',
-        on: [{events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'}],
+        on: [
+          {events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'},
+          {events: {signal: 'autosize'}, update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'},
+        ],
       },
       {
         name: 'height',
         init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
-        on: [{events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'}],
+        on: [
+          {events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'},
+          {events: {signal: 'autosize'}, update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'},
+        ],
       },
     ]);
     expect(spec.width).toBeUndefined();

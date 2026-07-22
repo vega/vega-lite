@@ -55,7 +55,7 @@ After setting `width` or `height` to `"container"`, you need to ensure that the 
 **Limitations:**
 
 - This responsive mode is available only for single view or layer specifications.
-- Vega listens to the `window.resize` event to update plot size from container size. This should cover many use cases. However, if you change the container size programmatically (e.g., you build a custom divider view), you'll need to trigger `window.resize` manually. In a modern browser, you can do: `window.dispatchEvent(new Event('resize'));`.
+- Vega updates the plot size when the view is resized. In browsers where Vega uses `ResizeObserver`, container changes are detected automatically; otherwise, call `view.resize()` after changing the container size programmatically.
 
 ### Specifying Width and Height per Discrete Step
 
