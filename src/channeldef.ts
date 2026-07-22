@@ -392,8 +392,10 @@ export interface ScaleMixins {
   scale?: Scale | null;
 }
 
+export type OffsetFieldDef<F extends Field, T extends Type = StandardType> = ScaleFieldDef<F, T> & PositionBaseMixins;
+
 export type OffsetDef<F extends Field, T extends Type = StandardType> =
-  ScaleFieldDef<F, T> | ScaleDatumDef<F> | ValueDef<number>;
+  OffsetFieldDef<F, T> | ScaleDatumDef<F> | ValueDef<number>;
 
 export interface DatumDef<
   F extends Field = string,
@@ -474,7 +476,7 @@ export type PositionDatumDefBase<F extends Field> = ScaleDatumDef<F> & PositionB
 export interface PositionBaseMixins {
   /**
    * Type of stacking offset if the field should be stacked.
-   * `stack` is only applicable for `x`, `y`, `theta`, and `radius` channels with continuous domains.
+   * `stack` is only applicable for `x`, `y`, `xOffset`, `yOffset`, `theta`, and `radius` channels with continuous domains.
    * For example, `stack` of `y` can be used to customize stacking for a vertical bar chart.
    *
    * `stack` can be one of the following values:
@@ -487,6 +489,7 @@ export interface PositionBaseMixins {
    * (1) the mark is `bar`, `area`, or `arc`;
    * (2) the stacked measure channel (x or y) has a linear scale;
    * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y. Otherwise, `null` by default.
+   * Stacking is never inferred for `xOffset` or `yOffset` channels.
    *
    * __See also:__ [`stack`](https://vega.github.io/vega-lite/docs/stack.html) documentation.
    */

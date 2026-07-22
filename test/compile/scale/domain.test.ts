@@ -148,6 +148,23 @@ describe('compile/scale', () => {
       expect(testParseDomainForChannel(model, 'y')).toEqual([[0, 1]]);
     });
 
+    it('should return generated start and end fields for an offset stack', () => {
+      const model = parseUnitModel({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'species', type: 'nominal'},
+          yOffset: {field: 'density', type: 'quantitative', stack: 'center'},
+          color: {field: 'sex', type: 'nominal'},
+        },
+      });
+
+      expect(testParseDomainForChannel(model, 'yOffset')).toEqual([
+        {data: 'main', field: 'density_start'},
+        {data: 'main', field: 'density_end'},
+      ]);
+    });
+
     describe('for quantitative', () => {
       it(
         'should return the right domain for binned Q',

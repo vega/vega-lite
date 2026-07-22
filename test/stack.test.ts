@@ -156,6 +156,43 @@ describe('stack', () => {
     }
   });
 
+  it('should stack yOffset only when explicitly requested', () => {
+    const encoding = {
+      x: {field: 'value', type: 'quantitative'},
+      y: {field: 'species', type: 'nominal'},
+      yOffset: {field: 'density', type: 'quantitative'},
+      color: {field: 'sex', type: 'nominal'},
+    } as const;
+
+    expect(stack(AREA, encoding)).toBeNull();
+    expect(stack(AREA, {...encoding, yOffset: {...encoding.yOffset, stack: 'center'}})).toEqual({
+      fieldChannel: 'yOffset',
+      groupbyChannels: ['x', 'y'],
+      groupbyFields: new Set(['value', 'species']),
+      impute: false,
+      offset: 'center',
+      stackBy: [{channel: 'color', fieldDef: {field: 'sex', type: 'nominal'}}],
+    });
+  });
+
+  it('should stack xOffset only when explicitly requested', () => {
+    expect(
+      stack(AREA, {
+        x: {field: 'species', type: 'nominal'},
+        xOffset: {field: 'density', type: 'quantitative', stack: 'zero'},
+        y: {field: 'value', type: 'quantitative'},
+        color: {field: 'sex', type: 'nominal'},
+      }),
+    ).toEqual({
+      fieldChannel: 'xOffset',
+      groupbyChannels: ['y', 'x'],
+      groupbyFields: new Set(['value', 'species']),
+      impute: false,
+      offset: 'zero',
+      stackBy: [{channel: 'color', fieldDef: {field: 'sex', type: 'nominal'}}],
+    });
+  });
+
   it('should always be disabled if the stackby channel is aggregated', () => {
     for (const s of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       for (const mark of PRIMITIVE_MARKS) {
