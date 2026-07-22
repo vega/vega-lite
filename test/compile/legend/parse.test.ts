@@ -117,6 +117,35 @@ describe('compile/legend', () => {
       expect(def.strokeWidth).toBe('size');
     });
 
+    it('should disable size legend by default for area marks', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'area',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'quantitative'},
+          size: {field: 's', type: 'quantitative'},
+        },
+      });
+
+      const def = parseLegendForChannel(model, SIZE).combine();
+      expect(def.disable).toBe(true);
+    });
+
+    it('should allow explicitly enabling area size legend', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'area',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'quantitative'},
+          size: {field: 's', type: 'quantitative', legend: {}},
+        },
+      });
+
+      const def = parseLegendForChannel(model, SIZE).combine();
+      expect(def.disable).not.toBe(true);
+      expect(def.size).toBe('size');
+    });
+
     it('should produce no legend title when title is null, "", or false', () => {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({

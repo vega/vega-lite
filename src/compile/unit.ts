@@ -158,7 +158,7 @@ export class UnitModel extends ModelWithField {
    */
   public isRangedOffset(channel: PositionScaleChannel | PolarPositionScaleChannel): boolean {
     const {encoding, markDef} = this;
-    if (!isBarOrArea(markDef.type)) {
+    if (!isBarOrArea(markDef.type) || vlEncoding.isAreaSizeThickness(markDef.type, encoding)) {
       return false;
     }
     if (encoding[getSecondaryRangeChannel(channel)] || !vlEncoding.channelHasQuantitativeOffset(encoding, channel)) {

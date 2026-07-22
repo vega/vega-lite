@@ -751,6 +751,150 @@ describe('compile/scale', () => {
         });
       });
 
+      describe('area', () => {
+        it('should return [0, step] for area size-thickness ribbons with point y', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              y: {field: 'g', type: 'nominal'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(
+            makeImplicit([
+              0,
+              {
+                signal:
+                  "domain('y').length > 1 ? abs(scale('y', domain('y')[1]) - scale('y', domain('y')[0])) : span(range('y'))",
+              },
+            ]),
+          );
+        });
+
+        it('should return [0, step] for horizontal area size-thickness ribbons with point x', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'g', type: 'nominal'},
+              y: {field: 'v', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(
+            makeImplicit([
+              0,
+              {
+                signal:
+                  "domain('x').length > 1 ? abs(scale('x', domain('x')[1]) - scale('x', domain('x')[0])) : span(range('x'))",
+              },
+            ]),
+          );
+        });
+
+        it('should fall back to the opposite band scale for an explicitly oriented ribbon', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: {type: 'area', orient: 'vertical'},
+            encoding: {
+              x: {field: 'g', type: 'nominal', scale: {type: 'band'}},
+              y: {field: 'v', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
+        });
+
+        it('should use the view height for area thickness with two continuous axes', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              y: {field: 'y', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'height'}]));
+        });
+
+        it('should use the view width for horizontal area thickness with two continuous axes', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: {type: 'area', orient: 'horizontal'},
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              y: {field: 'y', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
+        });
+
+        it('should use the view height for temporal area thickness', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {field: 'y', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'height'}]));
+        });
+
+        it('should use the view height when the y center is omitted', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'x', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'height'}]));
+        });
+
+        it('should use the view width when the x center is omitted', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              y: {field: 'y', type: 'quantitative'},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
+        });
+
+        it('should use the view height for an x-only categorical trajectory', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              x: {field: 'x', type: 'nominal', scale: {type: 'band'}},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'height'}]));
+        });
+
+        it('should use the view width for a y-only categorical trajectory', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'area',
+            encoding: {
+              y: {field: 'y', type: 'nominal', scale: {type: 'band'}},
+              size: {field: 's', type: 'quantitative'},
+            },
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
+        });
+      });
+
       describe('point, square, circle', () => {
         it('should return [minSize, maxSize] when zero is excluded', () => {
           for (const mark of ['point', 'square', 'circle'] as Mark[]) {

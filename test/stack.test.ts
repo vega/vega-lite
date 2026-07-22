@@ -127,6 +127,36 @@ describe('stack', () => {
     }
   });
 
+  it('should disable default area stacking when size is used for thickness', () => {
+    for (const size of [
+      {field: 'density', type: 'quantitative' as const},
+      {datum: 10, type: 'quantitative' as const},
+      {value: 10},
+    ]) {
+      expect(
+        stack(AREA, {
+          x: {field: 'value', type: 'quantitative'},
+          y: {value: 60},
+          size,
+        }),
+      ).toBeNull();
+    }
+  });
+
+  it(
+    'should warn and ignore explicit stacking when area size encodes thickness',
+    log.wrap((localLogger) => {
+      expect(
+        stack(AREA, {
+          x: {field: 'value', type: 'quantitative', stack: 'zero'},
+          size: {value: 10},
+          color: {field: 'group', type: 'nominal'},
+        }),
+      ).toBeNull();
+      expect(localLogger.warns).toEqual([log.message.cannotStackAreaWithSize()]);
+    }),
+  );
+
   it('should disable default x/y stacking when only offset is present on the orthogonal axis', () => {
     for (const mark of [BAR, AREA]) {
       expect(
@@ -138,6 +168,22 @@ describe('stack', () => {
 
       expect(
         stack(mark, {
+          y: {field: 'value', type: 'quantitative'},
+          xOffset: {field: 'density', type: 'quantitative'},
+        }),
+      ).toBeNull();
+
+      expect(
+        stack(mark, {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'group', type: 'nominal'},
+          yOffset: {field: 'density', type: 'quantitative'},
+        }),
+      ).toBeNull();
+
+      expect(
+        stack(mark, {
+          x: {field: 'group', type: 'nominal'},
           y: {field: 'value', type: 'quantitative'},
           xOffset: {field: 'density', type: 'quantitative'},
         }),

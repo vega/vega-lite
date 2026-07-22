@@ -50,6 +50,7 @@ import {
 } from './channel.js';
 import {
   binRequiresRange,
+  channelDefType,
   ChannelDef,
   ColorDef,
   Field,
@@ -91,7 +92,7 @@ import {
 } from './channeldef.js';
 import {Config} from './config.js';
 import * as log from './log/index.js';
-import {Mark} from './mark.js';
+import {AREA, Mark} from './mark.js';
 import {EncodingFacetMapping} from './spec/facet.js';
 import {AggregatedFieldDef, BinTransform, AggregateFieldOp, TimeUnitTransform} from './transform.js';
 import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type.js';
@@ -258,8 +259,9 @@ export interface Encoding<F extends Field> {
    * Size of the mark.
    * - For `"point"`, `"square"` and `"circle"`, – the symbol size, or pixel area of the mark.
    * - For `"bar"` and `"tick"` – the bar and tick's size.
+   * - For `"area"` without `x2` or `y2` – the thickness of a ribbon centered on its positional encoding.
    * - For `"text"` – the text's font size.
-   * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
+   * - Size is unsupported for `"line"` and `"rect"`. (Use `"trail"` instead of line with varying size.)
    */
   size?: NumericMarkPropDef<F>;
 
@@ -332,6 +334,10 @@ export interface Encoding<F extends Field> {
 }
 
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
+
+export function isAreaSizeThickness(mark: Mark, encoding: Encoding<string>): boolean {
+  return mark === AREA && !!encoding.size && !!(encoding.x || encoding.y) && !encoding.x2 && !encoding.y2;
+}
 
 export function channelHasField<F extends Field>(
   encoding: EncodingWithFacet<F>,
@@ -542,7 +548,7 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
       return false;
     }
   }
-  return true;
+  return channel !== SIZE || mark !== AREA || isAreaSizeThickness(mark, encoding);
 }
 
 export function initEncoding(
@@ -732,7 +738,11 @@ export function reduce<T, U extends Record<any, any>>(
 /**
  * Returns list of path grouping fields for the given encoding
  */
-export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): string[] {
+export function pathGroupingFields(
+  mark: Mark,
+  encoding: Encoding<string>,
+  orient?: 'horizontal' | 'vertical',
+): string[] {
   return keys(encoding).reduce((details, channel) => {
     switch (channel) {
       // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, aria label, cursor should not cause lines to group
@@ -791,6 +801,41 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case SIZE:
         if (mark === 'trail') {
           // For trail, size should not group trail lines.
+          return details;
+        }
+
+        if (mark === 'area') {
+          const sizeDef = encoding.size;
+          if (isAreaSizeThickness(mark, encoding)) {
+            const sizeField = isFieldDef(sizeDef) ? vgField(sizeDef, {}) : undefined;
+            const addDetail = (field: string) => {
+              if (field && !details.includes(field)) {
+                details.push(field);
+              }
+            };
+
+            for (const offsetChannel of [XOFFSET, YOFFSET] as const) {
+              const offsetDef = encoding[offsetChannel];
+              if (isFieldDef(offsetDef) && !offsetDef.aggregate && isDiscrete(channelDefType(offsetDef))) {
+                const offsetField = vgField(offsetDef, {});
+                if (!sizeField || offsetField !== sizeField) {
+                  addDetail(offsetField);
+                }
+              }
+            }
+
+            const centerChannels = orient ? [orient === 'horizontal' ? X : Y] : [Y, X];
+            for (const positionChannel of centerChannels) {
+              const positionDef = encoding[positionChannel];
+              if (isFieldDef(positionDef) && !positionDef.aggregate && isDiscrete(channelDefType(positionDef))) {
+                const positionField = vgField(positionDef, {});
+                if (!sizeField || positionField !== sizeField) {
+                  addDetail(positionField);
+                  return details;
+                }
+              }
+            }
+          }
           return details;
         }
       // For line, size should group lines.

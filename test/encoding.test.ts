@@ -574,6 +574,141 @@ describe('encoding', () => {
       expect(pathGroupingFields('trail', {size: {field: 'a', type: 'nominal'}})).toEqual([]);
     });
 
+    it('should group area size-thickness paths by nominal x/y if present.', () => {
+      expect(
+        pathGroupingFields('area', {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'g', type: 'nominal'},
+          size: {field: 'a', type: 'quantitative'},
+        }),
+      ).toEqual(['g']);
+      expect(
+        pathGroupingFields('area', {
+          x: {field: 'g', type: 'nominal'},
+          y: {field: 'value', type: 'quantitative'},
+          size: {field: 'a', type: 'quantitative'},
+        }),
+      ).toEqual(['g']);
+      expect(pathGroupingFields('area', {size: {field: 'a', type: 'nominal'}})).toEqual([]);
+
+      expect(
+        pathGroupingFields('area', {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'group', type: 'nominal'},
+          size: {value: 10},
+        }),
+      ).toEqual(['group']);
+    });
+
+    it('should require at least one position channel for area size-thickness mode', () => {
+      expect(
+        markChannelCompatible(
+          {
+            x: {field: 'value', type: 'quantitative'},
+            size: {field: 'density', type: 'quantitative'},
+          },
+          SIZE,
+          'area',
+        ),
+      ).toBe(true);
+      expect(
+        markChannelCompatible(
+          {
+            y: {field: 'value', type: 'quantitative'},
+            size: {field: 'density', type: 'quantitative'},
+          },
+          SIZE,
+          'area',
+        ),
+      ).toBe(true);
+      expect(markChannelCompatible({size: {field: 'density', type: 'quantitative'}}, SIZE, 'area')).toBe(false);
+    });
+
+    it('should group missing-center area thickness paths by color', () => {
+      expect(
+        pathGroupingFields('area', {
+          x: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+          color: {field: 'group', type: 'nominal'},
+        }),
+      ).toEqual(['group']);
+    });
+
+    it('should group area size-thickness paths by discrete offset channels.', () => {
+      expect(
+        pathGroupingFields('area', {
+          x: {field: 'Species', type: 'nominal'},
+          y: {field: 'value', type: 'quantitative'},
+          xOffset: {field: 'Sex', type: 'nominal'},
+          size: {field: 'density', type: 'quantitative'},
+        }),
+      ).toEqual(['Sex', 'Species']);
+
+      expect(
+        pathGroupingFields('area', {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'Species', type: 'nominal'},
+          yOffset: {field: 'Sex', type: 'nominal'},
+          size: {field: 'density', type: 'quantitative'},
+        }),
+      ).toEqual(['Sex', 'Species']);
+    });
+
+    it('should not group area size-thickness paths by quantitative offset channels.', () => {
+      expect(
+        pathGroupingFields('area', {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'Species', type: 'nominal'},
+          yOffset: {field: 'shift', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        }),
+      ).toEqual(['Species']);
+    });
+
+    it('should group area size-thickness paths by the center channel for an explicit orientation.', () => {
+      const encoding = {
+        x: {field: 'xGroup', type: 'nominal'},
+        y: {field: 'yGroup', type: 'ordinal'},
+        size: {field: 'density', type: 'quantitative'},
+      } as const;
+
+      expect(pathGroupingFields('area', encoding, 'horizontal')).toEqual(['xGroup']);
+      expect(pathGroupingFields('area', encoding, 'vertical')).toEqual(['yGroup']);
+      expect(
+        pathGroupingFields(
+          'area',
+          {
+            x: {field: 'value', type: 'quantitative'},
+            y: {field: 'group', type: 'nominal'},
+            size: {field: 'density', type: 'quantitative'},
+          },
+          'horizontal',
+        ),
+      ).toEqual([]);
+      expect(
+        pathGroupingFields(
+          'area',
+          {
+            x: {field: 'group', type: 'nominal'},
+            y: {field: 'value', type: 'quantitative'},
+            size: {field: 'density', type: 'quantitative'},
+          },
+          'vertical',
+        ),
+      ).toEqual([]);
+    });
+
+    it('should not treat temporal area size-thickness channels as lanes.', () => {
+      const encoding = {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'value', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      } as const;
+
+      expect(pathGroupingFields('area', encoding)).toEqual([]);
+      expect(pathGroupingFields('area', encoding, 'horizontal')).toEqual([]);
+    });
+
     it('should not return fields for aggregate detail, color, size, opacity fieldDefs.', () => {
       for (const channel of [DETAIL, COLOR, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, STROKEWIDTH]) {
         expect(pathGroupingFields('line', {[channel]: {aggregate: 'mean', field: 'a', type: 'nominal'}})).toEqual([]);
