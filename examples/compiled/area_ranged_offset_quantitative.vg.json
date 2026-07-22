@@ -17,6 +17,20 @@
         {"quarter": "Q3", "team": "B", "score": 11},
         {"quarter": "Q4", "team": "B", "score": 17}
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["quarter", "team"],
+          "field": "score",
+          "sort": {"field": [], "order": []},
+          "as": ["score_start", "score_end"],
+          "offset": "zero"
+        }
+      ]
     }
   ],
   "signals": [
@@ -38,7 +52,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_main",
-          "data": "source_0",
+          "data": "data_0",
           "groupby": ["team"]
         }
       },
@@ -58,6 +72,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.8},
+              "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
                 "signal": "\"quarter: \" + (isValid(datum[\"quarter\"]) ? isArray(datum[\"quarter\"]) ? join(datum[\"quarter\"], ' ') : datum[\"quarter\"] : \"\"+datum[\"quarter\"]) + \"; team: \" + (isValid(datum[\"team\"]) ? isArray(datum[\"team\"]) ? join(datum[\"team\"], ' ') : datum[\"team\"] : \"\"+datum[\"team\"]) + \"; score: \" + (format(datum[\"score\"], \"\"))"
@@ -66,12 +81,12 @@
               "y": {
                 "scale": "y",
                 "field": "team",
-                "offset": {"scale": "yOffset", "field": "score"}
+                "offset": {"scale": "yOffset", "field": "score_end"}
               },
               "y2": {
                 "scale": "y",
                 "field": "team",
-                "offset": {"scale": "yOffset", "value": 0}
+                "offset": {"scale": "yOffset", "field": "score_start"}
               },
               "defined": {
                 "signal": "isValid(datum[\"score\"]) && isFinite(+datum[\"score\"])"
@@ -86,14 +101,14 @@
     {
       "name": "x",
       "type": "point",
-      "domain": {"data": "source_0", "field": "quarter", "sort": true},
+      "domain": {"data": "data_0", "field": "quarter", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "padding": 0.5
     },
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "source_0", "field": "team", "sort": true},
+      "domain": {"data": "data_0", "field": "team", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.2,
       "paddingOuter": 0.2
@@ -101,7 +116,7 @@
     {
       "name": "yOffset",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "score"},
+      "domain": {"data": "data_0", "fields": ["score_start", "score_end"]},
       "range": [{"signal": "bandwidth('y')"}, 0],
       "zero": true
     }
