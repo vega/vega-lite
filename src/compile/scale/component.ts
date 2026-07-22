@@ -1,6 +1,6 @@
 import type {SignalRef} from 'vega';
 import {isArray, isNumber} from 'vega-util';
-import {ScaleChannel} from '../../channel.js';
+import {ScaleKey} from '../../channel.js';
 import {Scale, ScaleType} from '../../scale.js';
 import {ParameterExtent} from '../../selection.js';
 import {contains} from '../../util.js';
@@ -84,6 +84,6 @@ export class ScaleComponent extends Split<ScaleComponentProps> {
   }
 }
 
-export type ScaleComponentIndex = Partial<Record<ScaleChannel, ScaleComponent>>;
+export type ScaleComponentIndex = Partial<Record<ScaleKey, ScaleComponent>>;
 
-export type ScaleIndex = Partial<Record<ScaleChannel, Scale<SignalRef>>>;
+export type ScaleIndex = Partial<Record<ScaleKey, Scale<SignalRef>>>;

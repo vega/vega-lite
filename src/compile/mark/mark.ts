@@ -179,10 +179,11 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel, cornerRadiusEn
 
   const groupby: string[] = [];
 
-  if (model.stack.groupbyChannels?.length > 0) {
-    for (const groupbyChannel of model.stack.groupbyChannels) {
+  const groupbyFieldDefs =
+    model.stack.groupbyFieldDefs ?? model.stack.groupbyChannels.map((channel) => model.fieldDef(channel));
+  if (groupbyFieldDefs.length > 0) {
+    for (const groupByField of groupbyFieldDefs) {
       // For bin and time unit, we have to add bin/timeunit -end channels.
-      const groupByField = model.fieldDef(groupbyChannel);
       const field = vgField(groupByField);
       if (field) {
         groupby.push(field);

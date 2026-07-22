@@ -25,6 +25,7 @@ import {
   LONGITUDE2,
   OPACITY,
   ORDER,
+  OffsetScaleChannel,
   RADIUS,
   RADIUS2,
   SHAPE,
@@ -115,14 +116,16 @@ export interface Encoding<F extends Field> {
   y?: PositionDef<F>;
 
   /**
-   * Offset of x-position of the marks
+   * Offset of x-position of the marks. An array defines nested offsets from outermost to innermost.
+   * Every non-final level must use a discrete scale; the final level may be continuous quantitative.
    */
-  xOffset?: OffsetDef<F>;
+  xOffset?: OffsetDef<F> | OffsetDef<F>[];
 
   /**
-   * Offset of y-position of the marks
+   * Offset of y-position of the marks. An array defines nested offsets from outermost to innermost.
+   * Every non-final level must use a discrete scale; the final level may be continuous quantitative.
    */
-  yOffset?: OffsetDef<F>;
+  yOffset?: OffsetDef<F> | OffsetDef<F>[];
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -340,7 +343,7 @@ export function channelHasField<F extends Field>(
   const channelDef = encoding?.[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
-      return some(channelDef, (fieldDef) => !!fieldDef.field);
+      return some(channelDef, isFieldDef);
     } else {
       return isFieldDef(channelDef) || hasConditionalFieldDef<Field>(channelDef);
     }
@@ -355,12 +358,36 @@ export function channelHasFieldOrDatum<F extends Field>(
   const channelDef = encoding?.[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
-      return some(channelDef, (fieldDef) => !!fieldDef.field);
+      return some(channelDef, (def) => isFieldDef(def) || isDatumDef(def));
     } else {
       return isFieldDef(channelDef) || isDatumDef(channelDef) || hasConditionalFieldOrDatumDef<Field>(channelDef);
     }
   }
   return false;
+}
+
+export function getOffsetDefs<F extends Field>(
+  encoding: EncodingWithFacet<F>,
+  channel: OffsetScaleChannel,
+): OffsetDef<F>[] {
+  const channelDef = encoding[channel];
+  return channelDef === undefined ? [] : [...array(channelDef)];
+}
+
+export function getOffsetDef<F extends Field>(
+  encoding: EncodingWithFacet<F>,
+  channel: OffsetScaleChannel,
+  index: number,
+): OffsetDef<F> {
+  return getOffsetDefs(encoding, channel)[index];
+}
+
+export function getFinalOffsetDef<F extends Field>(
+  encoding: EncodingWithFacet<F>,
+  channel: OffsetScaleChannel,
+): OffsetDef<F> {
+  const defs = getOffsetDefs(encoding, channel);
+  return defs[defs.length - 1];
 }
 
 export function channelHasNestedOffsetScale<F extends Field>(
@@ -391,7 +418,7 @@ export function channelHasQuantitativeOffset<F extends Field>(
   if (!offsetChannel) {
     return false;
   }
-  return isUnbinnedQuantitativeFieldOrDatumDef(encoding[offsetChannel]);
+  return isUnbinnedQuantitativeFieldOrDatumDef(getFinalOffsetDef(encoding, offsetChannel));
 }
 
 export function isAggregate(encoding: EncodingWithFacet<any>) {
@@ -399,7 +426,7 @@ export function isAggregate(encoding: EncodingWithFacet<any>) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       if (isArray(channelDef)) {
-        return some(channelDef, (fieldDef) => !!fieldDef.aggregate);
+        return some(channelDef, (fieldDef) => isFieldDef(fieldDef) && !!fieldDef.aggregate);
       } else {
         const fieldDef = getFieldDef(channelDef);
         return fieldDef && !!fieldDef.aggregate;
@@ -416,7 +443,15 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
   const aggregate: AggregatedFieldDef[] = [];
   const encoding: Encoding<string> = {};
 
-  forEach(oldEncoding, (channelDef, channel) => {
+  const setEncoding = (channel: Channel, channelDef: ChannelDef, index?: number) => {
+    if (isXorYOffset(channel) && index !== undefined) {
+      ((encoding as any)[channel] ??= [])[index] = channelDef;
+    } else {
+      (encoding as any)[channel] = channelDef;
+    }
+  };
+
+  forEach(oldEncoding, (channelDef, channel, index) => {
     // Extract potential embedded transformations along with remaining properties
     if (isFieldDef(channelDef)) {
       const {field, aggregate: aggOp, bin, timeUnit, ...remaining} = channelDef;
@@ -507,14 +542,14 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
         }
 
         // now the field should refer to post-transformed field instead
-        (encoding as any)[channel as any] = newFieldDef;
+        setEncoding(channel, newFieldDef, index);
       } else {
         groupby.push(field);
-        (encoding as any)[channel as any] = oldEncoding[channel];
+        setEncoding(channel, channelDef, index);
       }
     } else {
       // For value def / signal ref / datum def, just copy
-      (encoding as any)[channel as any] = oldEncoding[channel];
+      setEncoding(channel, channelDef, index);
     }
   });
 
@@ -571,7 +606,7 @@ export function initEncoding(
       const positionDef = normalizedEncoding[mainChannel];
       if (isFieldDef(positionDef)) {
         if (isContinuous(positionDef.type)) {
-          if (isFieldDef(channelDef) && !positionDef.timeUnit) {
+          if (getOffsetDefs(encoding, channel).some(isFieldDef) && !positionDef.timeUnit) {
             // TODO: nesting continuous field instead continuous field should
             // behave like offsetting the data in data domain
             log.warn(log.message.offsetNestedInsideContinuousPositionScaleDropped(mainChannel));
@@ -607,7 +642,39 @@ export function initEncoding(
       continue;
     }
 
-    if (
+    if (isXorYOffset(channel) && isArray(channelDef)) {
+      const defs = channelDef.reduce((normalized: OffsetDef<string>[], def, index) => {
+        if (!isFieldDef(def) && !isDatumDef(def) && !isValueDef(def)) {
+          log.warn(log.message.emptyFieldDef(def, channel));
+          return normalized;
+        }
+
+        const normalizedDef = initChannelDef(def, channel, config) as OffsetDef<string>;
+        if (index < channelDef.length - 1) {
+          if (
+            (!isFieldDef(normalizedDef) && !isDatumDef(normalizedDef)) ||
+            (!isDiscrete(normalizedDef.type) &&
+              !(isFieldDef(normalizedDef) && (normalizedDef.bin || normalizedDef.timeUnit))) ||
+            normalizedDef.scale === null
+          ) {
+            log.warn(log.message.invalidNestedOffset(channel));
+            return [];
+          }
+        } else if (
+          (isFieldDef(normalizedDef) || isDatumDef(normalizedDef)) &&
+          isContinuous(normalizedDef.type) &&
+          !isUnbinnedQuantitativeFieldOrDatumDef(normalizedDef)
+        ) {
+          log.warn(log.message.invalidNestedOffset(channel));
+          return [];
+        }
+        normalized.push(normalizedDef);
+        return normalized;
+      }, []);
+      if (defs.length === channelDef.length) {
+        (normalizedEncoding as any)[channel] = defs;
+      }
+    } else if (
       channel === DETAIL ||
       (channel === ORDER && !isArray(channelDef) && !isValueDef(channelDef)) ||
       (channel === TOOLTIP && isArray(channelDef))
@@ -661,7 +728,10 @@ export function normalizeEncoding(encoding: Encoding<string>, config: Config): E
   const normalizedEncoding: Encoding<string> = {};
 
   for (const channel of keys(encoding)) {
-    const newChannelDef = initChannelDef(encoding[channel], channel, config, {compositeMark: true});
+    const channelDef = encoding[channel];
+    const newChannelDef = isArray(channelDef)
+      ? channelDef.map((def) => initChannelDef(def, channel, config, {compositeMark: true}))
+      : initChannelDef(channelDef, channel, config, {compositeMark: true});
     (normalizedEncoding as any)[channel as any] = newChannelDef;
   }
 
@@ -688,7 +758,7 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
 
 export function forEach<U extends Record<any, any>>(
   mapping: U,
-  f: (cd: ChannelDef, c: keyof U) => void,
+  f: (cd: ChannelDef, c: keyof U, index?: number) => void,
   thisArg?: any,
 ) {
   if (!mapping) {
@@ -698,8 +768,8 @@ export function forEach<U extends Record<any, any>>(
   for (const channel of keys(mapping)) {
     const el = mapping[channel];
     if (isArray(el)) {
-      for (const channelDef of el as unknown[]) {
-        f.call(thisArg, channelDef, channel);
+      for (let index = 0; index < el.length; index++) {
+        f.call(thisArg, el[index], channel, index);
       }
     } else {
       f.call(thisArg, el, channel);
@@ -709,7 +779,7 @@ export function forEach<U extends Record<any, any>>(
 
 export function reduce<T, U extends Record<any, any>>(
   mapping: U,
-  f: (acc: any, fd: TypedFieldDef<string>, c: keyof U) => U,
+  f: (acc: any, fd: TypedFieldDef<string>, c: keyof U, index?: number) => U,
   init: T,
   thisArg?: any,
 ) {
@@ -720,8 +790,8 @@ export function reduce<T, U extends Record<any, any>>(
   return keys(mapping).reduce((r, channel) => {
     const map = mapping[channel];
     if (isArray(map)) {
-      return map.reduce((r1: T, channelDef: ChannelDef) => {
-        return f.call(thisArg, r1, channelDef, channel);
+      return map.reduce((r1: T, channelDef: ChannelDef, index: number) => {
+        return f.call(thisArg, r1, channelDef, channel, index);
       }, r);
     } else {
       return f.call(thisArg, r, map, channel);

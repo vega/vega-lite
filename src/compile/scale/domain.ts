@@ -10,7 +10,7 @@ import {
   MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX,
 } from '../../aggregate.js';
 import {isBinning, isBinParams, isParameterExtent} from '../../bin.js';
-import {getSecondaryRangeChannel, isScaleChannel, isXorY, ScaleChannel} from '../../channel.js';
+import {getScaleChannelForKey, getSecondaryRangeChannel, isXorY, ScaleKey} from '../../channel.js';
 import {
   binRequiresRange,
   getBandPosition,
@@ -71,11 +71,12 @@ export function parseScaleDomain(model: Model) {
 function parseUnitScaleDomain(model: UnitModel) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
-  for (const channel of util.keys(localScaleComponents)) {
-    const domains = parseDomainForChannel(model, channel);
-    const localScaleCmpt = localScaleComponents[channel];
+  for (const key of util.keys(localScaleComponents) as ScaleKey[]) {
+    const channel = getScaleChannelForKey(key);
+    const domains = parseDomainForChannel(model, key);
+    const localScaleCmpt = localScaleComponents[key];
     localScaleCmpt.setWithExplicit('domains', domains);
-    parseSelectionDomain(model, channel);
+    parseSelectionDomain(model, key);
 
     if (model.component.data.isFaceted) {
       // get resolve from closest facet parent as this decides whether we need to refer to cloned subtree or not
@@ -106,7 +107,7 @@ function parseNonUnitScaleDomain(model: Model) {
 
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
-  for (const channel of util.keys(localScaleComponents)) {
+  for (const channel of util.keys(localScaleComponents) as ScaleKey[]) {
     let domains: Explicit<VgNonUnionDomain[]>;
     let selectionExtent: ParameterExtent = null;
 
@@ -168,19 +169,21 @@ function normalizeUnaggregatedDomain(
   return domain;
 }
 
-export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): Explicit<VgNonUnionDomain[]> {
-  const scaleType = model.getScaleComponent(channel).get('type');
+export function parseDomainForChannel(model: UnitModel, key: ScaleKey): Explicit<VgNonUnionDomain[]> {
+  const channel = getScaleChannelForKey(key);
+  const scaleType = model.getScaleComponent(key).get('type');
   const {encoding} = model;
+  const fieldDef = model.scaleDef(key) as TypedFieldDef<string>;
 
   const domain = normalizeUnaggregatedDomain(
-    model.scaleDomain(channel),
-    model.typedFieldDef(channel),
+    model.specifiedScale(key)?.domain,
+    fieldDef,
     scaleType,
     model.config.scale,
   );
-  if (domain !== model.scaleDomain(channel)) {
-    model.specifiedScales[channel] = {
-      ...model.specifiedScales[channel],
+  if (domain !== model.specifiedScale(key)?.domain) {
+    model.specifiedScales[key] = {
+      ...model.specifiedScales[key],
       domain,
     };
   }
@@ -211,7 +214,7 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
       return parseSingleChannelDomain(scaleType, domain, model, 'y2');
     }
   }
-  return parseSingleChannelDomain(scaleType, domain, model, channel);
+  return parseSingleChannelDomain(scaleType, domain, model, key);
 }
 
 function mapDomainToDataSignal(
@@ -243,10 +246,13 @@ function parseSingleChannelDomain(
   scaleType: ScaleType,
   domain: Domain,
   model: UnitModel,
-  channel: ScaleChannel | 'x2' | 'y2',
+  channel: ScaleKey | 'x2' | 'y2',
 ): Explicit<VgNonUnionDomain[]> {
   const {encoding, markDef, mark, config, stack} = model;
-  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleDatumDef<string> | ScaleFieldDef<string>;
+  const scaleChannel = channel === 'x2' || channel === 'y2' ? channel : getScaleChannelForKey(channel);
+  const fieldOrDatumDef = (
+    channel === 'x2' || channel === 'y2' ? getFieldOrDatumDef(encoding[channel]) : model.scaleDef(channel)
+  ) as ScaleDatumDef<string> | ScaleFieldDef<string>;
 
   const {type} = fieldOrDatumDef;
   const timeUnit = (fieldOrDatumDef as any)['timeUnit'];
@@ -268,7 +274,7 @@ function parseSingleChannelDomain(
     return makeExplicit(convertDomainIfItIsDateTime(domain, type, timeUnit));
   }
 
-  if (stack && channel === stack.fieldChannel) {
+  if (stack && scaleChannel === stack.fieldChannel) {
     if (stack.offset === 'normalize') {
       return makeImplicit([[0, 1]]);
     }
@@ -277,17 +283,18 @@ function parseSingleChannelDomain(
     return makeImplicit([
       {
         data,
-        field: model.vgField(channel, {suffix: 'start'}),
+        field: vgField(fieldOrDatumDef as ScaleFieldDef<string>, {suffix: 'start'}),
       },
       {
         data,
-        field: model.vgField(channel, {suffix: 'end'}),
+        field: vgField(fieldOrDatumDef as ScaleFieldDef<string>, {suffix: 'end'}),
       },
     ]);
   }
 
-  const sort: undefined | true | VgSortField =
-    isScaleChannel(channel) && isFieldDef(fieldOrDatumDef) ? domainSort(model, channel, scaleType) : undefined;
+  const sort: undefined | true | VgSortField = isFieldDef(fieldOrDatumDef)
+    ? domainSort(model, channel as ScaleKey, scaleType)
+    : undefined;
 
   if (isDatumDef(fieldOrDatumDef)) {
     const d = convertDomainIfItIsDateTime([fieldOrDatumDef.datum], type, timeUnit);
@@ -324,12 +331,12 @@ function parseSingleChannelDomain(
             ? model.requestDataName(dataSourceTypeForScaleDomain)
             : model.requestDataName(DataSourceType.Raw),
           // Use range if we added it and the scale does not support computing a range as a signal.
-          field: model.vgField(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
+          field: vgField(fieldDef, binRequiresRange(fieldDef, scaleChannel) ? {binSuffix: 'range'} : {}),
           // we have to use a sort object if sort = true to make the sort correct by bin start
           sort:
             sort === true || !isObject(sort)
               ? {
-                  field: model.vgField(channel, {}),
+                  field: vgField(fieldDef),
                   op: 'min',
                 }
               : sort,
@@ -350,27 +357,27 @@ function parseSingleChannelDomain(
         return makeImplicit([
           {
             data: model.requestDataName(dataSourceTypeForScaleDomain),
-            field: model.vgField(channel, {}),
+            field: vgField(fieldDef),
           },
         ]);
       }
     }
   } else if (fieldDef.timeUnit && util.contains(['time', 'utc'], scaleType)) {
-    const fieldDef2 = encoding[getSecondaryRangeChannel(channel)];
+    const fieldDef2 = encoding[getSecondaryRangeChannel(scaleChannel)];
 
     if (hasBandEnd(fieldDef, fieldDef2, markDef, config)) {
       const data = model.requestDataName(dataSourceTypeForScaleDomain);
 
       const bandPosition = getBandPosition({fieldDef, fieldDef2, markDef, config});
-      const isRectWithOffset = isRectBasedMark(mark) && bandPosition !== 0.5 && isXorY(channel);
+      const isRectWithOffset = isRectBasedMark(mark) && bandPosition !== 0.5 && isXorY(scaleChannel);
       return makeImplicit([
         {
           data,
-          field: model.vgField(channel, isRectWithOffset ? {suffix: OFFSETTED_RECT_START_SUFFIX} : {}),
+          field: vgField(fieldDef, isRectWithOffset ? {suffix: OFFSETTED_RECT_START_SUFFIX} : {}),
         },
         {
           data,
-          field: model.vgField(channel, {suffix: isRectWithOffset ? OFFSETTED_RECT_END_SUFFIX : 'end'}),
+          field: vgField(fieldDef, {suffix: isRectWithOffset ? OFFSETTED_RECT_END_SUFFIX : 'end'}),
         },
       ]);
     }
@@ -383,7 +390,7 @@ function parseSingleChannelDomain(
         data: util.isBoolean(sort)
           ? model.requestDataName(dataSourceTypeForScaleDomain)
           : model.requestDataName(DataSourceType.Raw),
-        field: model.vgField(channel),
+        field: vgField(fieldDef),
         sort,
       },
     ]);
@@ -391,7 +398,7 @@ function parseSingleChannelDomain(
     return makeImplicit([
       {
         data: model.requestDataName(dataSourceTypeForScaleDomain),
-        field: model.vgField(channel),
+        field: vgField(fieldDef),
       },
     ]);
   }
@@ -409,10 +416,10 @@ function normalizeSortField(sort: EncodingSortField<string>, isStackedMeasure: b
   };
 }
 
-function parseSelectionDomain(model: UnitModel, channel: ScaleChannel) {
-  const scale = model.component.scales[channel];
-  const spec = model.specifiedScales[channel].domain;
-  const bin = model.fieldDef(channel)?.bin;
+function parseSelectionDomain(model: UnitModel, key: ScaleKey) {
+  const scale = model.component.scales[key];
+  const spec = model.specifiedScale(key)?.domain;
+  const bin = (model.scaleDef(key) as ScaleFieldDef<string>)?.bin;
   const domain = isParameterDomain(spec) ? spec : undefined;
   const extent = isBinParams(bin) && isParameterExtent(bin.extent) ? bin.extent : undefined;
 
@@ -424,17 +431,13 @@ function parseSelectionDomain(model: UnitModel, channel: ScaleChannel) {
   }
 }
 
-export function domainSort(
-  model: UnitModel,
-  channel: ScaleChannel,
-  scaleType: ScaleType,
-): undefined | true | VgSortField {
+export function domainSort(model: UnitModel, channel: ScaleKey, scaleType: ScaleType): undefined | true | VgSortField {
   if (!hasDiscreteDomain(scaleType)) {
     return undefined;
   }
 
   // save to cast as the only exception is the geojson type for shape, which would not generate a scale
-  const fieldDef = model.fieldDef(channel) as ScaleFieldDef<string>;
+  const fieldDef = model.scaleDef(channel) as ScaleFieldDef<string>;
   const sort = fieldDef.sort;
 
   // if the sort is specified with array, use the derived sort index field
@@ -483,7 +486,7 @@ export function domainSort(
   } else if (sort === 'descending') {
     return {
       op: 'min',
-      field: model.vgField(channel),
+      field: vgField(fieldDef),
       order: 'descending',
     };
   } else if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
@@ -695,7 +698,7 @@ export function getFieldFromDomain(domain: VgDomain): string {
   return undefined;
 }
 
-export function assembleDomain(model: Model, channel: ScaleChannel) {
+export function assembleDomain(model: Model, channel: ScaleKey) {
   const scaleComponent: ScaleComponent = model.component.scales[channel];
 
   const domains = scaleComponent.get('domains').map((domain: VgNonUnionDomain) => {

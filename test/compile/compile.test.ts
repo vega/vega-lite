@@ -1,4 +1,4 @@
-import {AggregateTransform} from 'vega';
+import {AggregateTransform, parse as parseVega} from 'vega';
 import {compile} from '../../src/compile/compile.js';
 import * as log from '../../src/log/index.js';
 
@@ -406,6 +406,101 @@ describe('compile/compile', () => {
     const update = (spec.marks[0] as any).marks[0].encode.update;
     expect(update.y).toEqual({scale: 'y', field: 'c', offset: {scale: 'yOffset', field: 'b'}});
     expect(update.y2).toEqual({scale: 'y', field: 'c', offset: {scale: 'yOffset', value: 0}});
+  });
+
+  it('should compile nested categorical and quantitative offsets', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 1, species: 'A', sex: 'female', density: 0.2},
+          {value: 2, species: 'A', sex: 'female', density: 0.4},
+          {value: 1, species: 'A', sex: 'male', density: 0.1},
+          {value: 2, species: 'A', sex: 'male', density: 0.3},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'species', type: 'nominal'},
+        yOffset: [
+          {field: 'sex', type: 'nominal'},
+          {field: 'density', type: 'quantitative'},
+        ],
+        detail: {field: 'sex', type: 'nominal'},
+      },
+    });
+
+    const outerScale = spec.scales.find((scale: any) => scale.name === 'yOffset') as any;
+    const densityScale = spec.scales.find((scale: any) => scale.name === 'yOffset_1') as any;
+    expect(outerScale.type).toBe('band');
+    expect(outerScale.range).toEqual([0, {signal: "bandwidth('y')"}]);
+    expect(densityScale.type).toBe('linear');
+    expect(densityScale.range).toEqual([{signal: "bandwidth('yOffset')"}, 0]);
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y).toEqual({
+      scale: 'y',
+      field: 'species',
+      offset: {
+        scale: 'yOffset',
+        field: 'sex',
+        offset: {scale: 'yOffset_1', field: 'density'},
+      },
+    });
+    expect(update.y2).toEqual({
+      scale: 'y',
+      field: 'species',
+      offset: {
+        scale: 'yOffset',
+        field: 'sex',
+        offset: {scale: 'yOffset_1', value: 0},
+      },
+    });
+    expect(() => parseVega(spec)).not.toThrow();
+  });
+
+  it('should compile arbitrary discrete offset depth before a continuous leaf', () => {
+    const {spec} = compile({
+      data: {values: [{category: 'A', region: 'north', sex: 'female', treatment: 'control', value: 0.4}]},
+      mark: 'point',
+      encoding: {
+        x: {field: 'category', type: 'nominal'},
+        xOffset: [
+          {field: 'region', type: 'nominal'},
+          {field: 'sex', type: 'nominal'},
+          {field: 'treatment', type: 'nominal'},
+          {field: 'value', type: 'quantitative'},
+        ],
+      },
+    });
+
+    expect(spec.scales.map((scale: any) => [scale.name, scale.type])).toEqual([
+      ['x', 'band'],
+      ['xOffset', 'band'],
+      ['xOffset_1', 'band'],
+      ['xOffset_2', 'band'],
+      ['xOffset_3', 'linear'],
+    ]);
+    expect((spec.scales[2] as any).range).toEqual([0, {signal: "bandwidth('xOffset')"}]);
+    expect((spec.scales[3] as any).range).toEqual([0, {signal: "bandwidth('xOffset_1')"}]);
+    expect((spec.scales[4] as any).range).toEqual([0, {signal: "bandwidth('xOffset_2')"}]);
+    expect(spec.marks[0].encode.update.x).toEqual({
+      scale: 'x',
+      field: 'category',
+      offset: {
+        scale: 'xOffset',
+        field: 'region',
+        offset: {
+          scale: 'xOffset_1',
+          field: 'sex',
+          offset: {
+            scale: 'xOffset_2',
+            field: 'treatment',
+            offset: {scale: 'xOffset_3', field: 'value'},
+          },
+        },
+      },
+    });
   });
 
   it('should compile area with aggregated yOffset and no y as ranged geometry', () => {

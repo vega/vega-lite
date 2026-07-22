@@ -498,6 +498,35 @@ const SCALE_CHANNEL_INDEX = {
 export const SCALE_CHANNELS = keys(SCALE_CHANNEL_INDEX);
 export type ScaleChannel = (typeof SCALE_CHANNELS)[number];
 
+export type OffsetScaleKey = OffsetScaleChannel | `${OffsetScaleChannel}_${number}`;
+export type ScaleKey = Exclude<ScaleChannel, OffsetScaleChannel> | OffsetScaleKey;
+
+export function getOffsetScaleKey(channel: OffsetScaleChannel, index: number): OffsetScaleKey {
+  return index === 0 ? channel : `${channel}_${index}`;
+}
+
+export function getOffsetScaleKeyIndex(key: OffsetScaleKey): number {
+  const match = /_(\d+)$/.exec(key);
+  return match ? +match[1] : 0;
+}
+
+export function getScaleChannelForKey(key: ScaleKey): ScaleChannel {
+  if (key.startsWith(XOFFSET)) {
+    return XOFFSET;
+  } else if (key.startsWith(YOFFSET)) {
+    return YOFFSET;
+  }
+  return key as ScaleChannel;
+}
+
+export function getScaleKey(channel: ScaleChannel, index = 0): ScaleKey {
+  return isXorYOffset(channel) ? getOffsetScaleKey(channel, index) : channel;
+}
+
+export function isOffsetScaleKey(key: ScaleKey): key is OffsetScaleKey {
+  return key === XOFFSET || key === YOFFSET || /^xOffset_\d+$/.test(key) || /^yOffset_\d+$/.test(key);
+}
+
 export function isScaleChannel(channel: ExtendedChannel): channel is ScaleChannel {
   return hasOwnProperty(SCALE_CHANNEL_INDEX, channel);
 }

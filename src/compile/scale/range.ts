@@ -6,7 +6,10 @@ import {
   COLOR,
   FILL,
   FILLOPACITY,
+  getOffsetScaleKey,
+  getOffsetScaleKeyIndex,
   getOffsetScaleChannel,
+  getScaleChannelForKey,
   getSizeChannel,
   isXorY,
   isXorYOffset,
@@ -14,7 +17,7 @@ import {
   PositionScaleChannel,
   RADIUS,
   ScaleChannel,
-  SCALE_CHANNELS,
+  ScaleKey,
   SHAPE,
   SIZE,
   STROKE,
@@ -28,14 +31,7 @@ import {
   YOFFSET,
   TIME,
 } from '../../channel.js';
-import {
-  getBandPosition,
-  getFieldOrDatumDef,
-  isFieldDef,
-  isFieldOrDatumDef,
-  ScaleDatumDef,
-  ScaleFieldDef,
-} from '../../channeldef.js';
+import {getBandPosition, isFieldDef, ScaleDatumDef, ScaleFieldDef, vgField} from '../../channeldef.js';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config.js';
 import {DataSourceType} from '../../data.js';
 import {channelHasFieldOrDatum} from '../../encoding.js';
@@ -54,7 +50,6 @@ import {
   Scheme,
 } from '../../scale.js';
 import {getStepFor, isStep, LayoutSizeMixins, Step} from '../../spec/base.js';
-import {isDiscrete} from '../../type.js';
 import * as util from '../../util.js';
 import {isSignalRef, VgRange} from '../../vega.schema.js';
 import {exprFromSignalRefOrValue, signalOrStringValue} from '../common.js';
@@ -71,8 +66,8 @@ export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 export function parseUnitScaleRange(model: UnitModel) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
-  // use SCALE_CHANNELS instead of scales[channel] to ensure that x, y come first!
-  for (const channel of SCALE_CHANNELS) {
+  // scaleKeys keeps x/y before their offset descendants.
+  for (const channel of model.scaleKeys()) {
     const localScaleCmpt = localScaleComponents[channel];
     if (!localScaleCmpt) {
       continue;
@@ -115,11 +110,12 @@ function getBinStepSignal(model: UnitModel, channel: 'x' | 'y'): SignalRefWrappe
 /**
  * Return mixins that includes one of the Vega range types (explicit range, range.step, range.scheme).
  */
-export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): Explicit<VgRange> {
-  const specifiedScale = model.specifiedScales[channel];
+export function parseRangeForChannel(key: ScaleKey, model: UnitModel): Explicit<VgRange> {
+  const channel = getScaleChannelForKey(key);
+  const specifiedScale = model.specifiedScales[key];
   const {size} = model;
 
-  const mergedScaleCmpt = model.getScaleComponent(channel);
+  const mergedScaleCmpt = model.getScaleComponent(key);
   const scaleType = mergedScaleCmpt.get('type');
 
   // Check if any of the range properties is specified.
@@ -158,7 +154,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
               return makeExplicit({
                 data: model.requestDataName(DataSourceType.Main),
                 field: range.field,
-                sort: {op: 'min', field: model.vgField(channel)},
+                sort: {op: 'min', field: vgField(model.scaleDef(key) as ScaleFieldDef<string>)},
               });
             }
 
@@ -198,7 +194,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
   }
 
   const {rangeMin, rangeMax} = specifiedScale;
-  const d = defaultRange(channel, model);
+  const d = defaultRange(key, model);
 
   if (
     (rangeMin !== undefined || rangeMax !== undefined) &&
@@ -253,15 +249,16 @@ function fullWidthOrHeightRange(
   }
 }
 
-function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
-  const {size, config, mark, encoding} = model;
+function defaultRange(key: ScaleKey, model: UnitModel): VgRange {
+  const channel = getScaleChannelForKey(key);
+  const {size, config, mark} = model;
 
-  const {type} = getFieldOrDatumDef(encoding[channel]) as ScaleFieldDef<string> | ScaleDatumDef;
+  const {type} = model.scaleDef(key) as ScaleFieldDef<string> | ScaleDatumDef;
 
-  const mergedScaleCmpt = model.getScaleComponent(channel);
+  const mergedScaleCmpt = model.getScaleComponent(key);
   const scaleType = mergedScaleCmpt.get('type');
 
-  const {domain, domainMid} = model.specifiedScales[channel];
+  const {domain, domainMid} = model.specifiedScales[key];
 
   switch (channel) {
     case X:
@@ -280,7 +277,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
 
     case XOFFSET:
     case YOFFSET:
-      return getOffsetRange(channel, model, scaleType);
+      return getOffsetRange(key, model, scaleType);
 
     case SIZE: {
       // TODO: support custom rangeMin, rangeMax
@@ -365,20 +362,27 @@ function getPositionStep(step: Step, model: UnitModel, channel: PositionScaleCha
 
   const mergedScaleCmpt = model.getScaleComponent(channel);
   const offsetChannel = getOffsetScaleChannel(channel);
-  const offsetDef = encoding[offsetChannel];
-  const stepFor = getStepFor({step, offsetIsDiscrete: isFieldOrDatumDef(offsetDef) && isDiscrete(offsetDef.type)});
+  const offsetDefs = model.offsetScaleKeys(offsetChannel);
+  const stepFor = getStepFor({
+    step,
+    offsetIsDiscrete: offsetDefs.some((key) => hasDiscreteDomain(model.getScaleType(key))),
+  });
 
   if (stepFor === 'offset' && channelHasFieldOrDatum(encoding, offsetChannel)) {
-    const offsetScaleCmpt = model.getScaleComponent(offsetChannel);
-    const offsetScaleName = model.scaleName(offsetChannel);
-
-    let stepCount = `domain('${offsetScaleName}').length`;
-
-    if (offsetScaleCmpt.get('type') === 'band') {
-      const offsetPaddingInner = offsetScaleCmpt.get('paddingInner') ?? offsetScaleCmpt.get('padding') ?? 0;
-      const offsetPaddingOuter = offsetScaleCmpt.get('paddingOuter') ?? offsetScaleCmpt.get('padding') ?? 0;
-      stepCount = `bandspace(${stepCount}, ${offsetPaddingInner}, ${offsetPaddingOuter})`;
-    }
+    const stepCount = offsetDefs
+      .filter((key) => hasDiscreteDomain(model.getScaleType(key)))
+      .map((key) => {
+        const offsetScaleCmpt = model.getScaleComponent(key);
+        const offsetScaleName = model.scaleName(key);
+        const domainLength = `domain('${offsetScaleName}').length`;
+        if (offsetScaleCmpt.get('type') === 'band') {
+          const offsetPaddingInner = offsetScaleCmpt.get('paddingInner') ?? offsetScaleCmpt.get('padding') ?? 0;
+          const offsetPaddingOuter = offsetScaleCmpt.get('paddingOuter') ?? offsetScaleCmpt.get('padding') ?? 0;
+          return `bandspace(${domainLength}, ${offsetPaddingInner}, ${offsetPaddingOuter})`;
+        }
+        return domainLength;
+      })
+      .join(' * ');
 
     const paddingInner = mergedScaleCmpt.get('paddingInner') ?? mergedScaleCmpt.get('padding');
     return {
@@ -397,7 +401,16 @@ function getOffsetStep(step: Step, offsetScaleType: ScaleType) {
   return undefined;
 }
 
-function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: ScaleType): VgRange {
+function getOffsetRange(key: ScaleKey, model: UnitModel, offsetScaleType: ScaleType): VgRange {
+  const channel = getScaleChannelForKey(key);
+  const index = getOffsetScaleKeyIndex(key as any);
+  if (index > 0) {
+    const parentKey = getOffsetScaleKey(channel as typeof XOFFSET | typeof YOFFSET, index - 1);
+    const parentScaleName = model.scaleName(parentKey);
+    return channel === YOFFSET && hasContinuousDomain(offsetScaleType)
+      ? [{signal: `bandwidth('${parentScaleName}')`}, 0]
+      : [0, {signal: `bandwidth('${parentScaleName}')`}];
+  }
   const positionChannel = channel === XOFFSET ? 'x' : 'y';
   const positionScaleCmpt = model.getScaleComponent(positionChannel);
 
@@ -413,7 +426,7 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
   if (positionScaleType === 'band') {
     const size = getDiscretePositionSize(positionChannel, model.size, model.config.view);
 
-    if (isStep(size)) {
+    if (isStep(size) && model.offsetScaleKeys(channel as typeof XOFFSET | typeof YOFFSET).length === 1) {
       // step is for offset
       const step = getOffsetStep(size, offsetScaleType);
       if (step) {
