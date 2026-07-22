@@ -43,7 +43,7 @@ describe('Mark: Bar', () => {
     expect(props.height).toBeUndefined();
   });
 
-  it('should draw ranged bars within a discrete y band when yOffset is continuous', () => {
+  it('should draw default-stacked bars within a discrete y band when yOffset is continuous', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
       mark: 'bar',
@@ -55,11 +55,15 @@ describe('Mark: Bar', () => {
     });
     const props = bar.encodeEntry(model);
 
-    expect(props.y).toEqual({scale: 'y', field: 'Cylinders', offset: {scale: 'yOffset', field: 'Acceleration'}});
+    expect(props.y).toEqual({
+      scale: 'y',
+      field: 'Cylinders',
+      offset: {scale: 'yOffset', field: 'Acceleration_end'},
+    });
     expect(props.y2).toEqual({
       scale: 'y',
       field: 'Cylinders',
-      offset: {scale: 'yOffset', value: 0},
+      offset: {scale: 'yOffset', field: 'Acceleration_start'},
     });
     expect(props.height).toBeUndefined();
   });
@@ -71,7 +75,7 @@ describe('Mark: Bar', () => {
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
         y: {field: 'Cylinders', type: 'ordinal'},
-        yOffset: {field: 'Acceleration', type: 'quantitative', stack: 'zero'},
+        yOffset: {field: 'Acceleration', type: 'quantitative'},
         color: {field: 'Year', type: 'nominal'},
       },
     });

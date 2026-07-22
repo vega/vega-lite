@@ -126,9 +126,9 @@ describe('Mark: Area', () => {
     });
     const props = area.encodeEntry(model);
 
-    it('should use y as one edge and baseline at offset zero', () => {
-      expect(props.y).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross'}});
-      expect(props.y2).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', value: 0}});
+    it('should use y as one edge and default stack the offset', () => {
+      expect(props.y).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross_end'}});
+      expect(props.y2).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross_start'}});
     });
 
     it('should not collapse to line geometry', () => {
@@ -143,7 +143,7 @@ describe('Mark: Area', () => {
       encoding: {
         x: {field: 'IMDB_Rating', type: 'quantitative'},
         y: {field: 'Origin', type: 'nominal'},
-        yOffset: {field: 'US_Gross', type: 'quantitative', stack: 'center'},
+        yOffset: {field: 'US_Gross', type: 'quantitative'},
         color: {field: 'Genre', type: 'nominal'},
       },
       data: {url: 'data/movies.json'},
@@ -310,7 +310,7 @@ describe('Mark: Area', () => {
       mark: 'area',
       encoding: {
         x: {field: 'Origin', type: 'nominal'},
-        xOffset: {field: 'US_Gross', type: 'quantitative', stack: 'zero'},
+        xOffset: {field: 'US_Gross', type: 'quantitative'},
         y: {field: 'IMDB_Rating', type: 'quantitative'},
         color: {field: 'Genre', type: 'nominal'},
       },

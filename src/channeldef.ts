@@ -487,9 +487,8 @@ export interface PositionBaseMixins {
    *
    * __Default value:__ `zero` for plots with all of the following conditions are true:
    * (1) the mark is `bar`, `area`, or `arc`;
-   * (2) the stacked measure channel (x or y) has a linear scale;
+   * (2) the stacked measure channel (x, y, xOffset, or yOffset) has a linear scale;
    * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y. Otherwise, `null` by default.
-   * Stacking is never inferred for `xOffset` or `yOffset` channels.
    *
    * __See also:__ [`stack`](https://vega.github.io/vega-lite/docs/stack.html) documentation.
    */

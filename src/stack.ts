@@ -94,6 +94,23 @@ function explicitCartesianStackedChannel(encoding: Encoding<string>): 'x' | 'y' 
   return undefined;
 }
 
+function potentialOffsetStackedChannel(
+  encoding: Encoding<string>,
+  orient: MarkDef['orient'],
+): 'xOffset' | 'yOffset' | undefined {
+  const xOffsetIsMeasure = isUnbinnedQuantitative(encoding.xOffset);
+  const yOffsetIsMeasure = isUnbinnedQuantitative(encoding.yOffset);
+
+  if (xOffsetIsMeasure && yOffsetIsMeasure) {
+    return orient === 'horizontal' ? 'xOffset' : 'yOffset';
+  } else if (xOffsetIsMeasure) {
+    return 'xOffset';
+  } else if (yOffsetIsMeasure) {
+    return 'yOffset';
+  }
+  return undefined;
+}
+
 function potentialStackedChannel(
   encoding: Encoding<string>,
   x: 'x' | 'theta',
@@ -179,6 +196,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
   // However, since we probably never want to do that, let's just note the limitation here.
   const fieldChannel =
     explicitCartesianStackedChannel(encoding) ||
+    potentialOffsetStackedChannel(encoding, markDef.orient) ||
     potentialStackedChannel(encoding, 'x', markDef) ||
     potentialStackedChannel(encoding, 'theta', markDef);
 

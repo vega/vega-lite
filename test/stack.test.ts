@@ -1,7 +1,7 @@
 import {NonArgAggregateOp} from '../src/aggregate.js';
-import {DETAIL, X, Y, YOFFSET} from '../src/channel.js';
+import {DETAIL, X, XOFFSET, Y, YOFFSET} from '../src/channel.js';
 import * as log from '../src/log/index.js';
-import {ARC, AREA, BAR, PRIMITIVE_MARKS, RECT} from '../src/mark.js';
+import {ARC, AREA, BAR, POINT, PRIMITIVE_MARKS, RECT} from '../src/mark.js';
 import {ScaleType} from '../src/scale.js';
 import {NormalizedUnitSpec, TopLevel} from '../src/spec/index.js';
 import {stack, STACKABLE_MARKS, StackOffset, STACK_BY_DEFAULT_MARKS} from '../src/stack.js';
@@ -127,21 +127,21 @@ describe('stack', () => {
     }
   });
 
-  it('should disable default x/y stacking when only offset is present on the orthogonal axis', () => {
+  it('should prioritize quantitative offset channels over default x/y stacking', () => {
     for (const mark of [BAR, AREA]) {
       expect(
         stack(mark, {
           x: {field: 'value', type: 'quantitative'},
           yOffset: {field: 'density', type: 'quantitative'},
-        }),
-      ).toBeNull();
+        })?.fieldChannel,
+      ).toBe(YOFFSET);
 
       expect(
         stack(mark, {
           y: {field: 'value', type: 'quantitative'},
           xOffset: {field: 'density', type: 'quantitative'},
-        }),
-      ).toBeNull();
+        })?.fieldChannel,
+      ).toBe(XOFFSET);
     }
   });
 
@@ -156,7 +156,7 @@ describe('stack', () => {
     }
   });
 
-  it('should stack yOffset only when explicitly requested', () => {
+  it('should stack yOffset by default and allow an explicit offset', () => {
     const encoding = {
       x: {field: 'value', type: 'quantitative'},
       y: {field: 'species', type: 'nominal'},
@@ -164,7 +164,14 @@ describe('stack', () => {
       color: {field: 'sex', type: 'nominal'},
     } as const;
 
-    expect(stack(AREA, encoding)).toBeNull();
+    expect(stack(AREA, encoding)).toEqual({
+      fieldChannel: 'yOffset',
+      groupbyChannels: ['x', 'y'],
+      groupbyFields: new Set(['value', 'species']),
+      impute: false,
+      offset: 'zero',
+      stackBy: [{channel: 'color', fieldDef: {field: 'sex', type: 'nominal'}}],
+    });
     expect(stack(AREA, {...encoding, yOffset: {...encoding.yOffset, stack: 'center'}})).toEqual({
       fieldChannel: 'yOffset',
       groupbyChannels: ['x', 'y'],
@@ -173,13 +180,15 @@ describe('stack', () => {
       offset: 'center',
       stackBy: [{channel: 'color', fieldDef: {field: 'sex', type: 'nominal'}}],
     });
+    expect(stack(AREA, {...encoding, yOffset: {...encoding.yOffset, stack: null}})).toBeNull();
+    expect(stack(POINT, encoding)).toBeNull();
   });
 
-  it('should stack xOffset only when explicitly requested', () => {
+  it('should stack xOffset by default', () => {
     expect(
       stack(AREA, {
         x: {field: 'species', type: 'nominal'},
-        xOffset: {field: 'density', type: 'quantitative', stack: 'zero'},
+        xOffset: {field: 'density', type: 'quantitative'},
         y: {field: 'value', type: 'quantitative'},
         color: {field: 'sex', type: 'nominal'},
       }),
