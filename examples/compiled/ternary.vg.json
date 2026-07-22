@@ -487,7 +487,7 @@
           "stroke": {"value": "#000000"},
           "strokeWidth": {"value": 1.5},
           "strokeOpacity": {"value": 1},
-          "fill": {"field": "color"},
+          "fill": {"scale": "fill", "field": "color"},
           "tooltip": {
             "signal": "{\"City:\": isValid(datum[\"City\"]) ? isArray(datum[\"City\"]) ? join(datum[\"City\"], '\\n') : datum[\"City\"] : \"\"+datum[\"City\"], \"🔴 High:\": isValid(datum[\"tooltip_high\"]) ? isArray(datum[\"tooltip_high\"]) ? join(datum[\"tooltip_high\"], '\\n') : datum[\"tooltip_high\"] : \"\"+datum[\"tooltip_high\"], \"🟡 Medium:\": isValid(datum[\"tooltip_medium\"]) ? isArray(datum[\"tooltip_medium\"]) ? join(datum[\"tooltip_medium\"], '\\n') : datum[\"tooltip_medium\"] : \"\"+datum[\"tooltip_medium\"], \"🟢 Low:\": isValid(datum[\"tooltip_low\"]) ? isArray(datum[\"tooltip_low\"]) ? join(datum[\"tooltip_low\"], '\\n') : datum[\"tooltip_low\"] : \"\"+datum[\"tooltip_low\"]}"
           },
@@ -578,11 +578,29 @@
       "zero": true
     },
     {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {"data": "data_10", "field": "color", "sort": true},
+      "range": "category"
+    },
+    {
       "name": "size",
       "type": "linear",
       "domain": {"data": "data_10", "field": "TotalLevel"},
       "range": [50, 500],
       "zero": true
+    }
+  ],
+  "legends": [
+    {
+      "fill": "fill",
+      "symbolType": "circle",
+      "title": "color",
+      "encode": {
+        "symbols": {
+          "update": {"stroke": {"value": "#000000"}, "opacity": {"value": 1}}
+        }
+      }
     }
   ],
   "config": {
