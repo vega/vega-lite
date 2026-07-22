@@ -86,6 +86,12 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
   switch (mark) {
     case TEXT:
     case BAR:
+      if (mark === BAR && !isUnbinnedQuantitativeFieldOrDatumDef(y) && yOffsetIsMeasure) {
+        return specifiedOrient ?? 'vertical';
+      }
+      if (mark === BAR && !isUnbinnedQuantitativeFieldOrDatumDef(x) && xOffsetIsMeasure) {
+        return specifiedOrient ?? 'horizontal';
+      }
       if (!y && yOffsetIsMeasure) {
         return specifiedOrient ?? 'vertical';
       }
@@ -135,10 +141,10 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
 
     // falls through
     case AREA:
-      if (!y && yOffsetIsMeasure) {
+      if (mark === AREA && !isUnbinnedQuantitativeFieldOrDatumDef(y) && yOffsetIsMeasure) {
         return specifiedOrient ?? 'vertical';
       }
-      if (!x && xOffsetIsMeasure) {
+      if (mark === AREA && !isUnbinnedQuantitativeFieldOrDatumDef(x) && xOffsetIsMeasure) {
         return specifiedOrient ?? 'horizontal';
       }
       // If there are range for both x and y, y (vertical) has higher precedence.

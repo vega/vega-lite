@@ -127,7 +127,7 @@ describe('stack', () => {
     }
   });
 
-  it('should disable default x/y stacking when only offset is present on the orthogonal axis', () => {
+  it('should disable default x/y stacking when quantitative offset is present on the orthogonal axis', () => {
     for (const mark of [BAR, AREA]) {
       expect(
         stack(mark, {
@@ -140,6 +140,22 @@ describe('stack', () => {
         stack(mark, {
           y: {field: 'value', type: 'quantitative'},
           xOffset: {field: 'density', type: 'quantitative'},
+        }),
+      ).toBeNull();
+
+      expect(
+        stack(mark, {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'category', type: 'nominal'},
+          yOffset: {field: 'density', type: 'quantitative'},
+        }),
+      ).toBeNull();
+
+      expect(
+        stack(mark, {
+          x: {field: 'category', type: 'nominal'},
+          xOffset: {field: 'density', type: 'quantitative'},
+          y: {field: 'value', type: 'quantitative'},
         }),
       ).toBeNull();
     }
