@@ -1,5 +1,5 @@
 import {NewSignal, SignalRef} from 'vega';
-import {isArray, stringValue} from 'vega-util';
+import {isArray} from 'vega-util';
 import {Axis, AxisInternal, isConditionalAxisValue} from '../axis.js';
 import {
   Channel,
@@ -35,6 +35,7 @@ import {ExprRef, replaceExprRef} from '../expr.js';
 import {LegendInternal} from '../legend.js';
 import {GEOSHAPE, isBarOrArea, isMarkDef, Mark, MarkDef} from '../mark.js';
 import {Projection} from '../projection.js';
+import {fieldFilterExpression} from '../predicate.js';
 import {Domain, hasDiscreteDomain, Scale} from '../scale.js';
 import {isSelectionParameter, SelectionParameter} from '../selection.js';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec/index.js';
@@ -258,22 +259,34 @@ export class UnitModel extends ModelWithField {
     const field = colorEncoding?.field;
     const scale = colorEncoding?.scale;
     const colorEncodingType = colorEncoding?.type;
+    const colorSort = colorEncoding?.sort;
     const domain = scale?.domain;
+    const orderedValues = isArray(domain) ? domain : isArray(colorSort) ? colorSort : undefined;
     const offset = xOffset || yOffset;
     const offsetEncoding = isFieldDef(offset) ? offset : undefined;
     const orderFieldName = `_${field}_sort_index`;
 
-    if (!order && Array.isArray(domain) && typeof field === 'string' && colorEncodingType === 'nominal') {
+    if (
+      !order &&
+      isArray(orderedValues) &&
+      typeof field === 'string' &&
+      (colorEncodingType === 'nominal' || colorEncodingType === 'ordinal')
+    ) {
       // align grouped chart order with color domain
       if (offsetEncoding && !offsetEncoding.sort) {
-        offsetEncoding.sort = domain as [];
+        offsetEncoding.sort = orderedValues as [];
       } else {
         // align stacked chart order with color domain
         if (!this.stack) {
           return;
         }
 
-        const orderExpression = `indexof(${stringValue(domain)}, datum['${field}'])`;
+        const orderExpression = `${orderedValues
+          .map(
+            (sortValue, index) =>
+              `${fieldFilterExpression({field, timeUnit: colorEncoding.timeUnit, equal: sortValue as any})} ? ${index} : `,
+          )
+          .join('')}-1`;
         const sort = this.markDef?.orient === 'horizontal' ? 'ascending' : 'descending';
         this.transforms.push({calculate: orderExpression, as: orderFieldName});
         this.encoding.order = {field: orderFieldName, type: 'quantitative', sort};

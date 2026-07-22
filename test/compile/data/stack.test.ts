@@ -175,6 +175,61 @@ describe('compile/data/stack', () => {
       ]);
     });
 
+    it('should inherit color sort array for stack order when matching order field has no sort', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'area',
+        encoding: {
+          x: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal'},
+          color: {field: 'c', type: 'nominal', sort: ['high', 'mid', 'low']},
+          order: {field: 'c', type: 'nominal'},
+        },
+      });
+
+      expect(parse(model)).toEqual({
+        dimensionFieldDefs: [{field: 'b', type: 'nominal'}],
+        facetby: [],
+        stackField: 'sum_a',
+        stackby: ['c'],
+        sort: {
+          field: ['order_c_0_sort_index'],
+          order: ['ascending'],
+        },
+        offset: 'zero',
+        impute: true,
+        as: ['sum_a_start', 'sum_a_end'],
+      });
+    });
+
+    it('should use derived sort index for stack order sort arrays', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'area',
+        encoding: {
+          x: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal'},
+          color: {field: 'c', type: 'nominal'},
+          order: [
+            {field: 'd', type: 'nominal', sort: ['high', 'mid', 'low']},
+            {field: 'e', type: 'nominal', sort: ['left', 'right']},
+          ],
+        },
+      });
+
+      expect(parse(model)).toEqual({
+        dimensionFieldDefs: [{field: 'b', type: 'nominal'}],
+        facetby: [],
+        stackField: 'sum_a',
+        stackby: ['c', 'd', 'e'],
+        sort: {
+          field: ['order_d_0_sort_index', 'order_e_1_sort_index'],
+          order: ['ascending', 'ascending'],
+        },
+        offset: 'zero',
+        impute: true,
+        as: ['sum_a_start', 'sum_a_end'],
+      });
+    });
+
     it('should produce correct stack component for area with color and binned dimension', () => {
       const model = parseUnitModelWithScale({
         mark: 'area',

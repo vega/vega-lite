@@ -12,7 +12,7 @@
       "transform": [
         {
           "type": "formula",
-          "expr": "indexof([\"Morris\",\"Crookston\",\"Grand Rapids\",\"University Farm\",\"Waseca\",\"Duluth\"], datum['site'])",
+          "expr": "datum[\"site\"]===\"Morris\" ? 0 : datum[\"site\"]===\"Crookston\" ? 1 : datum[\"site\"]===\"Grand Rapids\" ? 2 : datum[\"site\"]===\"University Farm\" ? 3 : datum[\"site\"]===\"Waseca\" ? 4 : datum[\"site\"]===\"Duluth\" ? 5 : -1",
           "as": "_site_sort_index"
         },
         {

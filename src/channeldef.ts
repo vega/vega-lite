@@ -74,7 +74,7 @@ import {LogicalComposition} from './logical.js';
 import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark.js';
 import {ParameterPredicate, Predicate, TooltipFieldFilter} from './predicate.js';
 import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale.js';
-import {isSortByChannel, Sort, SortOrder} from './sort.js';
+import {isSortArray, isSortByChannel, Sort, SortArray, SortOrder} from './sort.js';
 import {isFacetFieldDef} from './spec/facet.js';
 import {StackOffset} from './stack.js';
 import {
@@ -655,7 +655,13 @@ export interface LegendMixins {
 
 // Order Path have no scale
 
-export type OrderFieldDef<F extends Field> = FieldDefWithoutScale<F> & OrderOnlyDef;
+export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> {
+  /**
+   * The sort order. One of `"ascending"` (default), `"descending"`,
+   * or an array specifying a custom order for field values.
+   */
+  sort?: SortOrder | SortArray;
+}
 
 export interface OrderOnlyDef {
   /**
@@ -667,7 +673,9 @@ export interface OrderOnlyDef {
 export function isOrderOnlyDef<F extends Field>(
   orderDef: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef,
 ): orderDef is OrderOnlyDef {
-  return hasProperty(orderDef, 'sort') && !hasProperty(orderDef, 'field');
+  return (
+    hasProperty(orderDef, 'sort') && !hasProperty(orderDef, 'field') && !isSortArray((orderDef as OrderOnlyDef).sort)
+  );
 }
 
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;

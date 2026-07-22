@@ -1,14 +1,15 @@
 import {FormulaTransform as VgFormulaTransform} from 'vega';
 import {SingleDefChannel} from '../../channel.js';
-import {FieldRefOption, isScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef.js';
+import {isFieldDef, isScaleFieldDef, isValueDef, TypedFieldDef, vgField} from '../../channeldef.js';
 import {DateTime} from '../../datetime.js';
 import {fieldFilterExpression} from '../../predicate.js';
 import {isSortArray} from '../../sort.js';
 import {CalculateTransform} from '../../transform.js';
 import {duplicate, hash} from '../../util.js';
-import {ModelWithField} from '../model.js';
+import {isUnitModel, ModelWithField} from '../model.js';
 import {DataFlowNode} from './dataflow.js';
 import {getDependentFields} from './expressions.js';
+import {sortArrayIndexField} from './sort.js';
 
 export class CalculateNode extends DataFlowNode {
   private _dependentFields: Set<string>;
@@ -49,6 +50,63 @@ export class CalculateNode extends DataFlowNode {
         });
       }
     });
+
+    if (isUnitModel(model)) {
+      const orderDef = model.encoding.order;
+      if (!isValueDef(orderDef)) {
+        for (const [index, orderChannelDef] of [orderDef].flat().entries()) {
+          if (!isFieldDef(orderChannelDef) || orderChannelDef.aggregate || !isSortArray(orderChannelDef.sort)) {
+            continue;
+          }
+
+          const {field, timeUnit} = orderChannelDef;
+          const sort: (number | string | boolean | DateTime)[] = orderChannelDef.sort;
+          const calculate =
+            sort
+              .map((sortValue, i) => {
+                return `${fieldFilterExpression({field, timeUnit, equal: sortValue})} ? ${i} : `;
+              })
+              .join('') + sort.length;
+
+          parent = new CalculateNode(parent, {
+            calculate,
+            as: sortArrayIndexField(orderChannelDef, 'order', index, {forAs: true}),
+          });
+        }
+      }
+    }
+
+    return parent;
+  }
+
+  public static parseAllForSortIndexAfterAggregate(parent: DataFlowNode, model: ModelWithField) {
+    if (!isUnitModel(model)) {
+      return parent;
+    }
+
+    const orderDef = model.encoding.order;
+    if (!isValueDef(orderDef)) {
+      for (const [index, orderChannelDef] of [orderDef].flat().entries()) {
+        if (!isFieldDef(orderChannelDef) || !orderChannelDef.aggregate || !isSortArray(orderChannelDef.sort)) {
+          continue;
+        }
+
+        const sort: (number | string | boolean | DateTime)[] = orderChannelDef.sort;
+        const calculate =
+          sort
+            .map(
+              (sortValue, i) =>
+                `${fieldFilterExpression({field: vgField(orderChannelDef), equal: sortValue})} ? ${i} : `,
+            )
+            .join('') + sort.length;
+
+        parent = new CalculateNode(parent, {
+          calculate,
+          as: sortArrayIndexField(orderChannelDef, 'order', index, {forAs: true}),
+        });
+      }
+    }
+
     return parent;
   }
 
@@ -71,8 +129,4 @@ export class CalculateNode extends DataFlowNode {
   public hash() {
     return `Calculate ${hash(this.transform)}`;
   }
-}
-
-export function sortArrayIndexField(fieldDef: TypedFieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption) {
-  return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', ...opt});
 }

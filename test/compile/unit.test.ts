@@ -118,6 +118,18 @@ describe('UnitModel', () => {
       expect(model.encoding.xOffset).toEqual({field: 'b', sort: ['y', 'x', 'z'], type: 'nominal'});
     });
 
+    it('should add custom order if color sort is specified for grouped bars', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          color: {field: 'a', sort: ['y', 'x', 'z']},
+          xOffset: {field: 'b'},
+        },
+      });
+
+      expect(model.encoding.xOffset).toEqual({field: 'b', sort: ['y', 'x', 'z'], type: 'nominal'});
+    });
+
     it('should add custom order if color or fill domain is specified for stacked bars', () => {
       const model = parseUnitModel({
         mark: 'bar',
@@ -128,6 +140,106 @@ describe('UnitModel', () => {
       });
 
       expect(model.encoding.order).toEqual({field: '_a_sort_index', type: 'quantitative', sort: 'descending'});
+    });
+
+    it('should add custom order if color sort is specified for stacked bars', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          y: {field: 'b', type: 'quantitative'},
+          color: {field: 'a', sort: ['y', 'x', 'z']},
+        },
+      });
+
+      expect(model.transforms[0]).toEqual({
+        as: '_a_sort_index',
+        calculate: 'datum["a"]==="y" ? 0 : datum["a"]==="x" ? 1 : datum["a"]==="z" ? 2 : -1',
+      });
+      expect(model.encoding.order).toEqual({field: '_a_sort_index', type: 'quantitative', sort: 'descending'});
+    });
+
+    it(
+      'should inherit color sort array when order field matches and has no sort',
+      log.wrap((localLogger) => {
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            y: {field: 'b', type: 'quantitative'},
+            color: {field: 'a', sort: ['y', 'x', 'z']},
+            order: {field: 'a', type: 'nominal'},
+          },
+        });
+
+        expect(localLogger.warns).toHaveLength(0);
+        expect(model.encoding.order).toEqual([{field: 'a', type: 'nominal', sort: ['y', 'x', 'z']}]);
+      }),
+    );
+
+    it('should not inherit color sort array when order uses a different transform', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          y: {field: 'b', type: 'quantitative'},
+          color: {field: 'date', timeUnit: 'month', sort: ['Jan', 'Feb', 'Mar']},
+          order: {field: 'date', type: 'temporal'},
+        },
+      });
+
+      expect(model.encoding.order).toEqual([{field: 'date', type: 'temporal'}]);
+    });
+
+    it('should inherit color sort array when order uses the same transform', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          y: {field: 'b', type: 'quantitative'},
+          color: {field: 'date', timeUnit: 'month', sort: ['Jan', 'Feb', 'Mar']},
+          order: {field: 'date', timeUnit: 'month', type: 'ordinal'},
+        },
+      });
+
+      expect(model.encoding.order).toEqual([
+        {field: 'date', timeUnit: {unit: 'month'}, type: 'ordinal', sort: ['Jan', 'Feb', 'Mar']},
+      ]);
+    });
+
+    it('should apply time units when deriving order from color sort arrays', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          y: {field: 'b', type: 'quantitative'},
+          color: {field: 'date', timeUnit: 'month', sort: ['Jan', 'Feb', 'Mar']},
+        },
+      });
+
+      expect(model.transforms[0]).toEqual(expect.objectContaining({calculate: expect.stringContaining('time(')}));
+    });
+
+    it('should prefer an explicit color domain over color sort for stack order', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          y: {field: 'b', type: 'quantitative'},
+          color: {field: 'a', sort: ['y', 'x', 'z'], scale: {domain: ['z', 'x', 'y']}},
+        },
+      });
+
+      expect(model.transforms[0]).toEqual({
+        as: '_a_sort_index',
+        calculate: 'datum["a"]==="z" ? 0 : datum["a"]==="x" ? 1 : datum["a"]==="y" ? 2 : -1',
+      });
+    });
+
+    it('should apply time units when deriving order from an explicit color domain', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          y: {field: 'b', type: 'quantitative'},
+          color: {field: 'date', timeUnit: 'month', type: 'ordinal', scale: {domain: ['Jan', 'Feb', 'Mar']}},
+        },
+      });
+
+      expect(model.transforms[0]).toEqual(expect.objectContaining({calculate: expect.stringContaining('time(')}));
     });
 
     it('should not add custom order if it is not stacked chart', () => {
@@ -152,7 +264,7 @@ describe('UnitModel', () => {
 
       expect(model.transforms[0]).toEqual({
         as: '_a_sort_index',
-        calculate: 'indexof([null,"y","x","z"], datum[\'a\'])',
+        calculate: 'datum["a"]===null ? 0 : datum["a"]==="y" ? 1 : datum["a"]==="x" ? 2 : datum["a"]==="z" ? 3 : -1',
       });
       expect(model.encoding.order).toEqual({field: '_a_sort_index', type: 'quantitative', sort: 'descending'});
     });

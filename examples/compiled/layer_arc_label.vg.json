@@ -19,25 +19,7 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "stack",
-          "groupby": [],
-          "field": "value",
-          "sort": {"field": ["category"], "order": ["ascending"]},
-          "as": ["value_start", "value_end"],
-          "offset": "zero"
-        },
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
+      "name": "data_0",
       "source": "source_0",
       "transform": [
         {
@@ -60,7 +42,7 @@
       "name": "layer_0_marks",
       "type": "arc",
       "style": ["arc"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "outerRadius": {"value": 80},
@@ -80,7 +62,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "radius": {"value": 90},
@@ -106,27 +88,14 @@
     {
       "name": "theta",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "value_start"},
-          {"data": "data_1", "field": "value_end"},
-          {"data": "data_2", "field": "value_start"},
-          {"data": "data_2", "field": "value_end"}
-        ]
-      },
+      "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
       "range": [0, 6.283185307179586],
       "zero": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "category"},
-          {"data": "data_2", "field": "category"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_0", "field": "category", "sort": true},
       "range": "category"
     }
   ]

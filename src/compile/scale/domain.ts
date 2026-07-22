@@ -50,7 +50,7 @@ import {
 } from '../../vega.schema.js';
 import {getMarkConfig} from '../common.js';
 import {getBinSignalName} from '../data/bin.js';
-import {sortArrayIndexField} from '../data/calculate.js';
+import {sortArrayIndexField} from '../data/sort.js';
 import {FACET_SCALE_PREFIX} from '../data/optimize.js';
 import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../data/timeunit.js';
 import {getScaleDataSourceForHandlingInvalidValues} from '../invalid/datasources.js';

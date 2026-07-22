@@ -1,4 +1,5 @@
 import {AggregateOp, AggregateTransform as VgAggregateTransform} from 'vega';
+import {array} from 'vega-util';
 import {
   getAggregateOp,
   getAggregateParam,
@@ -24,13 +25,15 @@ import {
   vgField,
 } from '../../channeldef.js';
 import * as log from '../../log/index.js';
+import {isRectBasedMark} from '../../mark.js';
 import {isFieldRange} from '../../scale.js';
+import {isSortArray} from '../../sort.js';
 import {AggregateTransform} from '../../transform.js';
 import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util.js';
 import {isUnitModel, ModelWithField} from '../model.js';
 import {UnitModel} from '../unit.js';
 import {DataFlowNode} from './dataflow.js';
-import {isRectBasedMark} from '../../mark.js';
+import {sortArrayIndexField} from './sort.js';
 import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from './timeunit.js';
 
 type Measures = Dict<Partial<Record<AggregateOp, {aliases: Set<string>; aggregateParam?: number}>>>;
@@ -127,6 +130,11 @@ export class AggregateNode extends DataFlowNode {
         isAggregate = true;
       }
     });
+    for (const orderDef of array(model.encoding.order)) {
+      if (isTypedFieldDef(orderDef) && orderDef.aggregate) {
+        isAggregate = true;
+      }
+    }
 
     const meas: Measures = {};
     const dims = new Set<string>();
@@ -136,7 +144,7 @@ export class AggregateNode extends DataFlowNode {
       return null;
     }
 
-    model.forEachFieldDef((fieldDef, channel: Channel) => {
+    const addFieldDef = (fieldDef: FieldDef<string>, channel: Channel) => {
       const {aggregate, field} = fieldDef;
       if (aggregate) {
         if (aggregate === 'count') {
@@ -169,7 +177,20 @@ export class AggregateNode extends DataFlowNode {
       } else {
         addDimension(dims, channel, fieldDef, model);
       }
-    });
+    };
+
+    model.forEachFieldDef(addFieldDef);
+
+    for (const [index, orderDef] of array(model.encoding.order).entries()) {
+      if (isTypedFieldDef(orderDef)) {
+        if (orderDef.aggregate) {
+          addFieldDef(orderDef, 'order');
+        } else if (isSortArray(orderDef.sort)) {
+          addDimension(dims, 'order', orderDef, model);
+          dims.add(sortArrayIndexField(orderDef, 'order', index));
+        }
+      }
+    }
 
     if (dims.size + keys(meas).length === 0) {
       return null;
