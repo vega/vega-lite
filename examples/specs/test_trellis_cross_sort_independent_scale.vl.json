@@ -1,0 +1,31 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "data": {
+    "values": [
+      {"first": "A", "second": "p", "cat": "c1", "val": 10},
+      {"first": "A", "second": "p", "cat": "c2", "val": 12},
+      {"first": "A", "second": "q", "cat": "c1", "val": 10},
+      {"first": "A", "second": "q", "cat": "c2", "val": 12},
+      {"first": "B", "second": "p", "cat": "c1", "val": 1},
+      {"first": "B", "second": "p", "cat": "c2", "val": 3},
+      {"first": "B", "second": "q", "cat": "c1", "val": 1},
+      {"first": "B", "second": "q", "cat": "c2", "val": 3},
+      {"first": "C", "second": "p", "cat": "c1", "val": 5},
+      {"first": "C", "second": "p", "cat": "c2", "val": 7},
+      {"first": "C", "second": "q", "cat": "c1", "val": 5},
+      {"first": "C", "second": "q", "cat": "c2", "val": 7}
+    ]
+  },
+  "facet": {
+    "column": {"field": "first", "type": "nominal", "sort": {"op": "median", "field": "val"}},
+    "row": {"field": "second", "type": "nominal"}
+  },
+  "spec": {
+    "mark": "point",
+    "encoding": {
+      "x": {"field": "cat", "type": "ordinal"},
+      "y": {"field": "val", "type": "quantitative"}
+    }
+  },
+  "resolve": {"scale": {"x": "independent"}}
+}
