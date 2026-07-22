@@ -185,7 +185,7 @@ export function parseRangeForChannel(key: ScaleKey, model: UnitModel): Explicit<
       const positionScaleCmpt = model.getScaleComponent(positionChannel);
       const positionScaleType = positionScaleCmpt.get('type');
       if (positionScaleType === 'band') {
-        const step = getOffsetStep(sizeValue, scaleType);
+        const step = getOffsetStep(sizeValue, scaleType, key, model);
         if (step) {
           return makeExplicit(step);
         }
@@ -369,8 +369,8 @@ function getPositionStep(step: Step, model: UnitModel, channel: PositionScaleCha
   });
 
   if (stepFor === 'offset' && channelHasFieldOrDatum(encoding, offsetChannel)) {
-    const stepCount = offsetDefs
-      .filter((key) => hasDiscreteDomain(model.getScaleType(key)))
+    const discreteOffsetKeys = offsetDefs.filter((key) => hasDiscreteDomain(model.getScaleType(key)));
+    const stepCount = discreteOffsetKeys
       .map((key) => {
         const offsetScaleCmpt = model.getScaleComponent(key);
         const offsetScaleName = model.scaleName(key);
@@ -384,19 +384,51 @@ function getPositionStep(step: Step, model: UnitModel, channel: PositionScaleCha
       })
       .join(' * ');
 
-    const paddingInner = mergedScaleCmpt.get('paddingInner') ?? mergedScaleCmpt.get('padding');
+    const divisors = [
+      mergedScaleCmpt,
+      ...discreteOffsetKeys.slice(0, -1).map((key) => model.getScaleComponent(key)),
+    ].map((scaleComponent) => {
+      const paddingInner = scaleComponent.get('paddingInner') ?? scaleComponent.get('padding') ?? 0;
+      return `(1-${exprFromSignalRefOrValue(paddingInner)})`;
+    });
+    const divisor = divisors.length === 1 ? divisors[0] : `(${divisors.join(' * ')})`;
     return {
-      signal: `${step.step} * ${stepCount} / (1-${exprFromSignalRefOrValue(paddingInner)})`,
+      signal: `${step.step} * ${stepCount} / ${divisor}`,
     };
   } else {
     return step.step;
   }
 }
 
-function getOffsetStep(step: Step, offsetScaleType: ScaleType) {
+function getOffsetStep(step: Step, offsetScaleType: ScaleType, key: ScaleKey, model: UnitModel) {
   const stepFor = getStepFor({step, offsetIsDiscrete: hasDiscreteDomain(offsetScaleType)});
   if (stepFor === 'offset') {
-    return {step: step.step};
+    const channel = getScaleChannelForKey(key) as typeof XOFFSET | typeof YOFFSET;
+    const discreteOffsetKeys = model
+      .offsetScaleKeys(channel)
+      .filter((offsetKey) => hasDiscreteDomain(model.getScaleType(offsetKey)));
+    const index = discreteOffsetKeys.indexOf(key as any);
+    const descendants = discreteOffsetKeys.slice(index + 1);
+    if (descendants.length === 0) {
+      return {step: step.step};
+    }
+
+    const stepCount = descendants
+      .map((offsetKey) => {
+        const scaleComponent = model.getScaleComponent(offsetKey);
+        const scaleName = model.scaleName(offsetKey);
+        const paddingInner = scaleComponent.get('paddingInner') ?? scaleComponent.get('padding') ?? 0;
+        const paddingOuter = scaleComponent.get('paddingOuter') ?? scaleComponent.get('padding') ?? 0;
+        return `bandspace(domain('${scaleName}').length, ${paddingInner}, ${paddingOuter})`;
+      })
+      .join(' * ');
+    const divisors = discreteOffsetKeys.slice(index, -1).map((offsetKey) => {
+      const scaleComponent = model.getScaleComponent(offsetKey);
+      const paddingInner = scaleComponent.get('paddingInner') ?? scaleComponent.get('padding') ?? 0;
+      return `(1-${exprFromSignalRefOrValue(paddingInner)})`;
+    });
+    const divisor = divisors.length === 1 ? divisors[0] : `(${divisors.join(' * ')})`;
+    return {step: {signal: `${step.step} * ${stepCount} / ${divisor}`}};
   }
   return undefined;
 }
@@ -404,18 +436,18 @@ function getOffsetStep(step: Step, offsetScaleType: ScaleType) {
 function getOffsetRange(key: ScaleKey, model: UnitModel, offsetScaleType: ScaleType): VgRange {
   const channel = getScaleChannelForKey(key);
   const index = getOffsetScaleKeyIndex(key as any);
-  if (index > 0) {
+  const positionChannel = channel === XOFFSET ? 'x' : 'y';
+  const positionScaleCmpt = model.getScaleComponent(positionChannel);
+  const parentRange = () => {
     const parentKey = getOffsetScaleKey(channel as typeof XOFFSET | typeof YOFFSET, index - 1);
     const parentScaleName = model.scaleName(parentKey);
     return channel === YOFFSET && hasContinuousDomain(offsetScaleType)
       ? [{signal: `bandwidth('${parentScaleName}')`}, 0]
       : [0, {signal: `bandwidth('${parentScaleName}')`}];
-  }
-  const positionChannel = channel === XOFFSET ? 'x' : 'y';
-  const positionScaleCmpt = model.getScaleComponent(positionChannel);
+  };
 
   if (!positionScaleCmpt) {
-    return fullWidthOrHeightRange(positionChannel, model, offsetScaleType, {center: true});
+    return index > 0 ? parentRange() : fullWidthOrHeightRange(positionChannel, model, offsetScaleType, {center: true});
   }
 
   const positionScaleType = positionScaleCmpt.get('type');
@@ -426,12 +458,15 @@ function getOffsetRange(key: ScaleKey, model: UnitModel, offsetScaleType: ScaleT
   if (positionScaleType === 'band') {
     const size = getDiscretePositionSize(positionChannel, model.size, model.config.view);
 
-    if (isStep(size) && model.offsetScaleKeys(channel as typeof XOFFSET | typeof YOFFSET).length === 1) {
+    if (isStep(size)) {
       // step is for offset
-      const step = getOffsetStep(size, offsetScaleType);
+      const step = getOffsetStep(size, offsetScaleType, key, model);
       if (step) {
         return step;
       }
+    }
+    if (index > 0) {
+      return parentRange();
     }
     // otherwise use the position
     if (channel === YOFFSET && hasContinuousDomain(offsetScaleType)) {
@@ -440,6 +475,9 @@ function getOffsetRange(key: ScaleKey, model: UnitModel, offsetScaleType: ScaleT
     return [0, {signal: `bandwidth('${positionScaleName}')`}];
   } else {
     // continuous scale
+    if (index > 0) {
+      return parentRange();
+    }
     const positionDef = model.encoding[positionChannel];
     if (isFieldDef(positionDef) && positionDef.timeUnit) {
       const duration = durationExpr(positionDef.timeUnit, (expr) => `scale('${positionScaleName}', ${expr})`);

@@ -1,4 +1,4 @@
-import {AggregateTransform, parse as parseVega} from 'vega';
+import {AggregateTransform, parse as parseVega, View} from 'vega';
 import {compile} from '../../src/compile/compile.js';
 import * as log from '../../src/log/index.js';
 
@@ -410,6 +410,7 @@ describe('compile/compile', () => {
 
   it('should compile nested categorical and quantitative offsets', () => {
     const {spec} = compile({
+      height: 300,
       data: {
         values: [
           {value: 1, species: 'A', sex: 'female', density: 0.2},
@@ -461,6 +462,7 @@ describe('compile/compile', () => {
 
   it('should compile arbitrary discrete offset depth before a continuous leaf', () => {
     const {spec} = compile({
+      width: 300,
       data: {values: [{category: 'A', region: 'north', sex: 'female', treatment: 'control', value: 0.4}]},
       mark: 'point',
       encoding: {
@@ -501,6 +503,37 @@ describe('compile/compile', () => {
         },
       },
     });
+  });
+
+  it.each([
+    ['implicit height', undefined],
+    ['numeric height', 160],
+    ['step height', {step: 40}],
+  ] as const)('should run nested offsets with %s', async (_name, height) => {
+    const {spec} = compile({
+      ...(height === undefined ? {} : {height}),
+      data: {
+        values: [
+          {species: 'Adelie', island: 'Biscoe', sex: 'Female', mass: 3500},
+          {species: 'Adelie', island: 'Biscoe', sex: 'Male', mass: 4100},
+        ],
+      },
+      transform: [{calculate: 'random()', as: 'jitter'}],
+      mark: 'point',
+      encoding: {
+        x: {field: 'mass', type: 'quantitative'},
+        y: {field: 'species', type: 'nominal'},
+        yOffset: [
+          {field: 'island', type: 'nominal'},
+          {field: 'sex', type: 'nominal'},
+          {field: 'jitter', type: 'quantitative', scale: {domain: [0, 1]}},
+        ],
+      },
+    });
+
+    const view = new View(parseVega(spec), {renderer: 'none'});
+    await expect(view.runAsync()).resolves.toBeDefined();
+    view.finalize();
   });
 
   it('should compile area with aggregated yOffset and no y as ranged geometry', () => {
