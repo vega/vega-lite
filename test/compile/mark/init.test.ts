@@ -443,12 +443,36 @@ describe('compile/mark/init', () => {
       expect(model.markDef.orient).toBe('vertical');
     });
 
+    it('should return vertical orient for bar with discrete y and quantitative yOffset', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'category', type: 'nominal'},
+          yOffset: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
+
     it('should return horizontal orient for bar with only xOffset quantitative', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'bar',
         encoding: {
           y: {field: 'value', type: 'quantitative'},
           xOffset: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
+    it('should return horizontal orient for bar with discrete x and quantitative xOffset', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'category', type: 'nominal'},
+          xOffset: {field: 'density', type: 'quantitative'},
+          y: {field: 'value', type: 'quantitative'},
         },
       });
       expect(model.markDef.orient).toBe('horizontal');

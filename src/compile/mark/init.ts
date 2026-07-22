@@ -86,6 +86,12 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
   switch (mark) {
     case TEXT:
     case BAR:
+      if (mark === BAR && !isUnbinnedQuantitativeFieldOrDatumDef(y) && yOffsetIsMeasure) {
+        return specifiedOrient ?? 'vertical';
+      }
+      if (mark === BAR && !isUnbinnedQuantitativeFieldOrDatumDef(x) && xOffsetIsMeasure) {
+        return specifiedOrient ?? 'horizontal';
+      }
       if (!y && yOffsetIsMeasure) {
         return specifiedOrient ?? 'vertical';
       }
