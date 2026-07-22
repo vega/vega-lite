@@ -156,7 +156,23 @@ describe('Mark: Area', () => {
 
     it('should use zero as the offset edge to match line and point positions', () => {
       expect(props.y).toEqual({value: 0, offset: {scale: 'yOffset', field: 'sum_b'}});
-      expect(props.y2).toEqual({field: {group: 'height'}});
+      expect(props.y2).toEqual({value: 0, offset: {scale: 'yOffset', value: 0}});
+    });
+  });
+
+  describe('horizontal area with only xOffset', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        y: {field: 'a', type: 'nominal'},
+        xOffset: {field: 'b', type: 'quantitative'},
+      },
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use zero as the offset edge', () => {
+      expect(props.x).toEqual({value: 0, offset: {scale: 'xOffset', field: 'b'}});
+      expect(props.x2).toEqual({value: 0, offset: {scale: 'xOffset', value: 0}});
     });
   });
 
