@@ -2,23 +2,17 @@ import {
   hasOwnProperty,
   isNumber,
   isString,
-  mergeConfig as mergeConfig_,
+  mergeConfig,
   splitAccessPath,
   stringValue,
-  writeConfig as writeConfig_,
+  writeConfig,
   isObject,
 } from 'vega-util';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical.js';
 
 export const duplicate = structuredClone;
 
-export function mergeConfig<C extends object>(...configs: C[]): C {
-  return mergeConfig_(...(configs as any[])) as C;
-}
-
-export function writeConfig<C extends object>(config: C, key: string, value: any, recurse?: boolean | object): void {
-  writeConfig_(config as any, key, value, recurse as any);
-}
+export {mergeConfig, writeConfig};
 
 export function never(message: string): never {
   throw new Error(message);
