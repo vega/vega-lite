@@ -118,7 +118,7 @@ function defaultType(
         return 'utc';
       } else if (isTime(channel)) {
         // return 'linear';
-        return 'band'; // TODO(jzong): when interpolation is implemented, this should be 'linear'
+        return 'band'; // TODO(jzong): when interpolation is implemented, this should be 'linear' https://github.com/vega/vega-lite/issues/9590
       }
 
       return 'time';
@@ -136,7 +136,7 @@ function defaultType(
         return 'ordinal';
       } else if (isTime(channel)) {
         // return 'linear';
-        return 'band'; // TODO(jzong): when interpolation is implemented, this should be 'linear'
+        return 'band'; // TODO(jzong): when interpolation is implemented, this should be 'linear' https://github.com/vega/vega-lite/issues/9590
       }
 
       return 'linear';
