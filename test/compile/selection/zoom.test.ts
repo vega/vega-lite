@@ -276,7 +276,7 @@ describe('Zoom Selection Transform', () => {
       expect(anchor.on).toEqual([
         {
           events: parseSelector('wheel!', 'scope'),
-          update: '{x: x(unit), y: y(unit), scale: geoScale("projection"), translate: geo_projection_translate}',
+          update: '{x: x(unit), y: y(unit), scale: geoScale("projection"), translate: geoTranslate("projection")}',
         },
       ]);
 
@@ -309,7 +309,7 @@ describe('Zoom Selection Transform', () => {
       expect(fit.on).toEqual(
         expect.arrayContaining([
           {
-            events: parseSelector('wheel!', 'scope'),
+            events: {signal: 'geo_zoom_delta'},
             update: 'null',
           },
         ]),

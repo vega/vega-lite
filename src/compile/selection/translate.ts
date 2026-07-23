@@ -43,7 +43,7 @@ const translate: SelectionCompiler<'interval'> = {
           {
             events: events.map((e) => e.between[0]),
             update: projectionBound
-              ? `{x: x(unit), y: y(unit), translate: ${projectionTranslateName(name)}}`
+              ? `{x: x(unit), y: y(unit), translate: geoTranslate(${stringValue(model.projectionName())})}`
               : `{x: x(unit), y: y(unit)${
                   x !== undefined ? `, extent_x: ${boundScales ? domain(model, X) : `slice(${x.signals.visual})`}` : ''
                 }${y !== undefined ? `, extent_y: ${boundScales ? domain(model, Y) : `slice(${y.signals.visual})`}` : ''}}`,

@@ -322,7 +322,7 @@ describe('Translate Selection Transform', () => {
           on: [
             {
               events: parseSelector('pointerdown', 'scope'),
-              update: '{x: x(unit), y: y(unit), translate: geo_projection_translate}',
+              update: '{x: x(unit), y: y(unit), translate: geoTranslate("projection")}',
             },
           ],
         }),
