@@ -67,8 +67,12 @@
       "name": "color_selection",
       "update": "vlSelectionResolve(\"color_selection_store\", \"union\", true, true)"
     },
-    {"name": "computed_domain", "update": "domain('color')"},
-    {"name": "color_domain", "react": false, "update": "computed_domain"},
+    {"name": "computed_domain", "update": "domain('__color_domain_source')"},
+    {
+      "name": "color_domain",
+      "value": {"__vl_color_domain_sentinel": true},
+      "update": "color_domain && color_domain.__vl_color_domain_sentinel ? (computed_domain) : color_domain"
+    },
     {
       "name": "color_selection_tuple",
       "update": "color_selection_Origin_legend !== null ? {fields: color_selection_tuple_fields, values: [color_selection_Origin_legend]} : null"
@@ -140,6 +144,11 @@
       "type": "ordinal",
       "domain": {"signal": "color_domain"},
       "range": "category"
+    },
+    {
+      "name": "__color_domain_source",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Origin"}
     }
   ],
   "axes": [
