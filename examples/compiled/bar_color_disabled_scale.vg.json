@@ -48,7 +48,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "color"},
+          "fill": {"field": "color"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
             "signal": "\"color: \" + (isValid(datum[\"color\"]) ? isArray(datum[\"color\"]) ? join(datum[\"color\"], ' ') : datum[\"color\"] : \"\"+datum[\"color\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
@@ -77,12 +77,6 @@
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
-    },
-    {
-      "name": "color",
-      "type": "ordinal",
-      "domain": {"data": "data_0", "field": "color", "sort": true},
-      "range": "category"
     }
   ],
   "axes": [
@@ -119,6 +113,5 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "color"}]
+  ]
 }
