@@ -29,6 +29,22 @@ describe('compile/compile', () => {
     expect(spec.marks).toHaveLength(1); // just the root group
   });
 
+  it.each(['color', 'fill'] as const)('should directly encode %s fields when scale is null', (channel) => {
+    const {spec} = compile({
+      data: {values: [{category: 'A', value: 1, directColor: '#ff0000'}]},
+      mark: channel === 'color' ? 'bar' : 'point',
+      encoding: {
+        x: {field: 'category', type: 'nominal'},
+        y: {field: 'value', type: 'quantitative'},
+        [channel]: {field: 'directColor', type: 'nominal', scale: null},
+      },
+    });
+
+    expect(spec.scales.some((scale) => scale.name === channel)).toBe(false);
+    expect(spec.legends).toBeUndefined();
+    expect(spec.marks[0].encode.update.fill).toEqual({field: 'directColor'});
+  });
+
   it('should return a spec with specified top-level properties, size signals, data and marks', () => {
     const {spec} = compile({
       padding: 123,
