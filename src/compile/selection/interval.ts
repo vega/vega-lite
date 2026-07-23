@@ -31,8 +31,14 @@ const interval: SelectionCompiler<'interval'> = {
       const def: IntervalSelectionConfigWithField = {...(isObject(selDef.select) ? selDef.select : {})};
       def.fields = [SELECTION_ID];
       if (!def.encodings) {
-        // Remap default x/y projection
-        def.encodings = selDef.value ? (keys(selDef.value) as GeoPositionChannel[]) : [LONGITUDE, LATITUDE];
+        // Remap default x/y projection. Only include channels that the model
+        // actually has field definitions for (geoshape specs may have no
+        // longitude/latitude encoding, so projection-bound interactions work
+        // purely through scale/translate signals).
+        const candidates: GeoPositionChannel[] = selDef.value
+          ? (keys(selDef.value) as GeoPositionChannel[])
+          : [LONGITUDE, LATITUDE];
+        def.encodings = candidates.filter((ch) => model.fieldDef(ch));
       }
 
       selDef.select = {type: 'interval', ...def};

@@ -3,12 +3,17 @@ import {VL_SELECTION_RESOLVE} from './index.js';
 import {isScaleChannel, ScaleChannel} from '../../channel.js';
 import * as log from '../../log/index.js';
 import {hasContinuousDomain} from '../../scale.js';
+import {contains} from '../../util.js';
 import {isLayerModel, Model} from '../model.js';
 import {UnitModel} from '../unit.js';
 import {SelectionProjection} from './project.js';
-import {SelectionCompiler} from './index.js';
+import {SelectionCompiler, SelectionComponent} from './index.js';
 import {replacePathInField} from '../../util.js';
 import {NewSignal} from 'vega';
+
+const PROJECTION_SCALE = '_projection_scale';
+const PROJECTION_TRANSLATE = '_projection_translate';
+const PROJECTION_FIT = '_projection_fit';
 
 const scaleBindings: SelectionCompiler<'interval'> = {
   defined: (selCmpt) => {
@@ -16,6 +21,11 @@ const scaleBindings: SelectionCompiler<'interval'> = {
   },
 
   parse: (model, selCmpt) => {
+    if (model.hasProjection) {
+      selCmpt.scales = [];
+      return;
+    }
+
     const bound: SelectionProjection[] = (selCmpt.scales = []);
 
     for (const proj of selCmpt.project.items) {
@@ -77,6 +87,27 @@ const scaleBindings: SelectionCompiler<'interval'> = {
   },
 
   signals: (model, selCmpt, signals) => {
+    if (isProjectionBoundInterval(model, selCmpt)) {
+      const scaleSg = projectionScaleName(selCmpt.name);
+      const translateSg = projectionTranslateName(selCmpt.name);
+      const fitSg = projectionFitName(selCmpt.name);
+      const width = model.getSizeSignalRef('width').signal;
+      const height = model.getSizeSignalRef('height').signal;
+      const fitExpr = projectionFitExpr(model);
+
+      if (!signals.some((s) => s.name === scaleSg)) {
+        signals.push({name: scaleSg, value: 1});
+      }
+
+      if (!signals.some((s) => s.name === translateSg)) {
+        signals.push({name: translateSg, value: [0, 0], update: `[${width} / 2, ${height} / 2]`});
+      }
+
+      if (fitExpr && !signals.some((s) => s.name === fitSg)) {
+        signals.push({name: fitSg, init: fitExpr});
+      }
+    }
+
     // Nested signals need only push to top-level signals with multiview displays.
     if (model.parent && !isTopLevelLayer(model)) {
       for (const proj of selCmpt.scales) {
@@ -98,6 +129,43 @@ export function domain(model: UnitModel, channel: ScaleChannel) {
   return `domain(${scale})`;
 }
 
+export function isProjectionBoundInterval(model: UnitModel, selCmpt: SelectionComponent<'interval'>) {
+  return model.hasProjection && scaleBindings.defined(selCmpt);
+}
+
+export function projectionScaleName(name: string) {
+  return name + PROJECTION_SCALE;
+}
+
+export function projectionTranslateName(name: string) {
+  return name + PROJECTION_TRANSLATE;
+}
+
+export function projectionFitName(name: string) {
+  return name + PROJECTION_FIT;
+}
+
 function isTopLevelLayer(model: Model): boolean {
   return model.parent && isLayerModel(model.parent) && (!model.parent.parent || isTopLevelLayer(model.parent.parent));
+}
+
+export function projectionFitExpr(model: UnitModel) {
+  const projection = model.component.projection;
+  if (!projection?.data) {
+    return null;
+  }
+
+  const fits: string[] = projection.data.reduce((sources, data) => {
+    const source = typeof data === 'string' ? `data(${stringValue(model.lookupDataSource(data))})` : data.signal;
+    if (!contains(sources, source)) {
+      sources.push(source);
+    }
+    return sources;
+  }, [] as string[]);
+
+  if (fits.length === 0) {
+    return null;
+  }
+
+  return fits.length > 1 ? `[${fits.join(', ')}]` : fits[0];
 }

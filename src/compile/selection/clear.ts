@@ -6,6 +6,14 @@ import {varName} from '../../util.js';
 import inputBindings from './inputs.js';
 import toggle, {TOGGLE} from './toggle.js';
 import {SelectionCompiler} from './index.js';
+import {
+  isProjectionBoundInterval,
+  projectionFitExpr,
+  projectionFitName,
+  projectionScaleName,
+  projectionTranslateName,
+} from './scales.js';
+import {UnitModel} from '../unit.js';
 
 const clear: SelectionCompiler = {
   defined: (selCmpt) => {
@@ -33,13 +41,30 @@ const clear: SelectionCompiler = {
 
   signals: (model, selCmpt, signals) => {
     function addClear(idx: number, update: Update) {
-      if (idx !== -1 && signals[idx].on) {
-        signals[idx].on.push({events: selCmpt.clear, update});
+      if (idx !== -1) {
+        (signals[idx].on ??= []).push({events: selCmpt.clear, update});
       }
     }
 
     // Be as minimalist as possible when adding clear triggers to minimize dataflow execution.
     if (selCmpt.type === 'interval') {
+      if (isProjectionBoundInterval(model as UnitModel, selCmpt as any)) {
+        const fitExpr = projectionFitExpr(model as UnitModel);
+
+        if (fitExpr) {
+          const scaleName = projectionScaleName(selCmpt.name);
+          const translateName = projectionTranslateName(selCmpt.name);
+          const fitName = projectionFitName(selCmpt.name);
+          const scaleIdx = signals.findIndex((n) => n.name === scaleName);
+          const translateIdx = signals.findIndex((n) => n.name === translateName);
+          const fitIdx = signals.findIndex((n) => n.name === fitName);
+
+          addClear(scaleIdx, '1');
+          addClear(translateIdx, '[0, 0]');
+          addClear(fitIdx, fitExpr);
+        }
+      }
+
       for (const proj of selCmpt.project.items) {
         const vIdx = signals.findIndex((n) => n.name === proj.signals.visual);
         addClear(vIdx, '[0, 0]');
