@@ -49,12 +49,10 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"signal": "{data: datetime(1500000000000)}"},
-          {"signal": "{data: datetime(1500900000000)}"}
-        ]
-      },
+      "domain": [
+        {"signal": "datetime(1500000000000)"},
+        {"signal": "datetime(1500900000000)"}
+      ],
       "range": [0, {"signal": "width"}]
     },
     {
