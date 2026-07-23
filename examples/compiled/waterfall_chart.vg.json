@@ -210,8 +210,7 @@
           {"data": "data_2", "field": "label"},
           {"data": "data_2", "field": "lead"},
           {"data": "data_3", "field": "label"}
-        ],
-        "sort": true
+        ]
       },
       "range": [0, {"signal": "width"}],
       "paddingInner": 0.1,

@@ -292,9 +292,11 @@ function parseSingleChannelDomain(
     ]);
   }
 
-  const sort: undefined | true | VgSortField = isFieldDef(fieldOrDatumDef)
-    ? domainSort(model, channel as ScaleKey, scaleType)
-    : undefined;
+  // Secondary channels contribute values to the primary scale domain but inherit its sort.
+  const sort: undefined | true | VgSortField =
+    channel !== 'x2' && channel !== 'y2' && isFieldDef(fieldOrDatumDef)
+      ? domainSort(model, channel as ScaleKey, scaleType)
+      : undefined;
 
   if (isDatumDef(fieldOrDatumDef)) {
     const d = convertDomainIfItIsDateTime([fieldOrDatumDef.datum], type, timeUnit);

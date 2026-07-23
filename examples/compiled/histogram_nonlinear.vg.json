@@ -99,11 +99,7 @@
     {
       "name": "x",
       "type": "point",
-      "domain": {
-        "data": "data_0",
-        "fields": ["startTime", "endTime"],
-        "sort": true
-      },
+      "domain": {"data": "data_0", "fields": ["startTime", "endTime"]},
       "range": {"step": {"signal": "x_step"}},
       "padding": 0
     },

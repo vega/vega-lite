@@ -45,6 +45,22 @@ describe('compile/compile', () => {
     expect(spec.marks[0].encode.update.fill).toEqual({field: 'directColor'});
   });
 
+  it('should preserve sort null when a shared position scale includes a secondary channel', () => {
+    const {spec} = compile({
+      data: {values: [{label: 'A', next: 'B', value: 1}]},
+      encoding: {
+        x: {field: 'label', type: 'ordinal', sort: null},
+      },
+      layer: [
+        {mark: 'bar', encoding: {y: {field: 'value', type: 'quantitative'}}},
+        {mark: 'rule', encoding: {x2: {field: 'next'}, y: {field: 'value', type: 'quantitative'}}},
+      ],
+    });
+
+    const xScale = spec.scales.find((scale) => scale.name === 'x');
+    expect(xScale.domain).not.toHaveProperty('sort');
+  });
+
   it('should return a spec with specified top-level properties, size signals, data and marks', () => {
     const {spec} = compile({
       padding: 123,
