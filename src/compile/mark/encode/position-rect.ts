@@ -171,9 +171,15 @@ function positionAndSize(
   const vgSizeChannel = getSizeChannel(channel);
   const channel2 = getSecondaryRangeChannel(channel);
 
-  const offsetScaleChannel = getOffsetChannel(channel);
-  const offsetScaleName = model.scaleName(offsetScaleChannel);
-  const offsetScale = model.getScaleComponent(getOffsetScaleChannel(channel));
+  const offsetScaleChannel = getOffsetScaleChannel(channel);
+  const offsetScaleKey = offsetScaleChannel
+    ? model
+        .offsetScaleKeys(offsetScaleChannel)
+        .filter((key) => model.getScaleType(key) === 'band')
+        .at(-1)
+    : undefined;
+  const offsetScaleName = offsetScaleKey && model.scaleName(offsetScaleKey);
+  const offsetScale = offsetScaleKey && model.getScaleComponent(offsetScaleKey);
 
   const useVlSizeChannel =
     // Always uses size channel for ticks, because tick only calls rectPosition() for the size channel

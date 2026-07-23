@@ -5178,8 +5178,18 @@
           "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
         },
         "xOffset": {
-          "$ref": "#/definitions/OffsetDef",
-          "description": "Offset of x-position of the marks"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/OffsetDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/OffsetDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Offset of x-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a discrete scale; the final level may be continuous quantitative."
         },
         "y": {
           "$ref": "#/definitions/PositionDef",
@@ -5212,8 +5222,18 @@
           "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
         },
         "yOffset": {
-          "$ref": "#/definitions/OffsetDef",
-          "description": "Offset of y-position of the marks"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/OffsetDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/OffsetDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Offset of y-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a discrete scale; the final level may be continuous quantitative."
         }
       },
       "type": "object"
@@ -9354,8 +9374,18 @@
           "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
         },
         "xOffset": {
-          "$ref": "#/definitions/OffsetDef",
-          "description": "Offset of x-position of the marks"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/OffsetDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/OffsetDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Offset of x-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a discrete scale; the final level may be continuous quantitative."
         },
         "y": {
           "$ref": "#/definitions/PositionDef",
@@ -9388,8 +9418,18 @@
           "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
         },
         "yOffset": {
-          "$ref": "#/definitions/OffsetDef",
-          "description": "Offset of y-position of the marks"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/OffsetDef"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/OffsetDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Offset of y-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a discrete scale; the final level may be continuous quantitative."
         }
       },
       "type": "object"

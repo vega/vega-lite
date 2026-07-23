@@ -1,5 +1,5 @@
 import type {FilterTransform as VgFilterTransform} from 'vega';
-import {isScaleChannel} from '../../channel.js';
+import {getScaleKey, isScaleChannel} from '../../channel.js';
 import {TypedFieldDef, vgField as fieldRef} from '../../channeldef.js';
 import {Dict, hash, keys} from '../../util.js';
 import {getScaleInvalidDataMode} from '../invalid/ScaleInvalidDataMode.js';
@@ -34,8 +34,9 @@ export class FilterInvalidNode extends DataFlowNode {
     }
 
     const filter = model.reduceFieldDef(
-      (aggregator: Dict<TypedFieldDef<string>>, fieldDef, channel) => {
-        const scaleComponent = isScaleChannel(channel) && model.getScaleComponent(channel);
+      (aggregator: Dict<TypedFieldDef<string>>, fieldDef, channel, index) => {
+        const scaleKey = isScaleChannel(channel) && getScaleKey(channel, index);
+        const scaleComponent = scaleKey && model.getScaleComponent(scaleKey);
 
         if (scaleComponent) {
           const scaleType = scaleComponent.get('type');
