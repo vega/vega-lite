@@ -14,7 +14,6 @@ import {
   projectionTranslateName,
 } from './scales.js';
 import {UnitModel} from '../unit.js';
-import {stringValue} from 'vega-util';
 
 const clear: SelectionCompiler = {
   defined: (selCmpt) => {
@@ -50,20 +49,18 @@ const clear: SelectionCompiler = {
     // Be as minimalist as possible when adding clear triggers to minimize dataflow execution.
     if (selCmpt.type === 'interval') {
       if (isProjectionBoundInterval(model as UnitModel, selCmpt as any)) {
-        const unit = model as UnitModel;
         const fitExpr = projectionFitExpr(model as UnitModel);
-        const scaleIdx = signals.findIndex((n) => n.name === projectionScaleName(selCmpt.name));
-        const translateIdx = signals.findIndex((n) => n.name === projectionTranslateName(selCmpt.name));
-        const projection = stringValue(unit.projectionName());
-
-        addClear(scaleIdx, `geoScale(${projection})`);
-        addClear(
-          translateIdx,
-          `[${unit.getSizeSignalRef('width').signal} / 2, ${unit.getSizeSignalRef('height').signal} / 2]`,
-        );
 
         if (fitExpr) {
-          const fitIdx = signals.findIndex((n) => n.name === projectionFitName(selCmpt.name));
+          const scaleName = projectionScaleName(selCmpt.name);
+          const translateName = projectionTranslateName(selCmpt.name);
+          const fitName = projectionFitName(selCmpt.name);
+          const scaleIdx = signals.findIndex((n) => n.name === scaleName);
+          const translateIdx = signals.findIndex((n) => n.name === translateName);
+          const fitIdx = signals.findIndex((n) => n.name === fitName);
+
+          addClear(scaleIdx, '1');
+          addClear(translateIdx, '[0, 0]');
           addClear(fitIdx, fitExpr);
         }
       }

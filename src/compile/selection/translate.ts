@@ -80,6 +80,7 @@ const translate: SelectionCompiler<'interval'> = {
 
       translateSg.on.push({
         events: {signal: name + DELTA},
+        force: true,
         update: `[${anchor}.translate[0] - ${name + DELTA}.x, ${anchor}.translate[1] - ${name + DELTA}.y]`,
       });
 

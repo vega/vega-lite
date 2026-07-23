@@ -74,24 +74,20 @@ const zoom: SelectionCompiler<'interval'> = {
       const translateSg = signals.find((s) => s.name === projectionTranslateName(name));
       const fitSg = signals.find((s) => s.name === projectionFitName(name));
       const anchorSg = `${name}${ANCHOR}`;
-      const projection = stringValue(model.projectionName());
 
       anchorSignal.value = {x: 0, y: 0, scale: 1, translate: [0, 0]};
       scaleSg.on ??= [];
       translateSg.on ??= [];
 
       scaleSg.on.push({
-        events,
-        update: `geoScale(${projection})`,
-      });
-
-      scaleSg.on.push({
         events: {signal: delta},
+        force: true,
         update: `${anchorSg}.scale / ${delta}`,
       });
 
       translateSg.on.push({
         events: {signal: delta},
+        force: true,
         update: `[${anchorSg}.x + (${anchorSg}.translate[0] - ${anchorSg}.x) / ${delta}, ${anchorSg}.y + (${anchorSg}.translate[1] - ${anchorSg}.y) / ${delta}]`,
       });
 

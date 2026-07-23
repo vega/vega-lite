@@ -282,10 +282,15 @@ describe('Zoom Selection Transform', () => {
 
       const scale: any = signals.find((s) => s.name === 'geo_projection_scale');
       expect(scale.value).toBe(1);
+      expect(scale.on).not.toContainEqual({
+        events: parseSelector('wheel!', 'scope'),
+        update: 'geoScale("projection")',
+      });
       expect(scale.on).toEqual(
         expect.arrayContaining([
           {
             events: {signal: 'geo_zoom_delta'},
+            force: true,
             update: 'geo_zoom_anchor.scale / geo_zoom_delta',
           },
         ]),
@@ -298,6 +303,7 @@ describe('Zoom Selection Transform', () => {
         expect.arrayContaining([
           {
             events: {signal: 'geo_zoom_delta'},
+            force: true,
             update:
               '[geo_zoom_anchor.x + (geo_zoom_anchor.translate[0] - geo_zoom_anchor.x) / geo_zoom_delta, geo_zoom_anchor.y + (geo_zoom_anchor.translate[1] - geo_zoom_anchor.y) / geo_zoom_delta]',
           },

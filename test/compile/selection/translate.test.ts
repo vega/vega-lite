@@ -346,6 +346,7 @@ describe('Translate Selection Transform', () => {
         expect.arrayContaining([
           {
             events: {signal: 'geo_translate_delta'},
+            force: true,
             update:
               '[geo_translate_anchor.translate[0] - geo_translate_delta.x, geo_translate_anchor.translate[1] - geo_translate_delta.y]',
           },

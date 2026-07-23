@@ -273,7 +273,7 @@ describe('Clear selection transform, projection-bound interval', () => {
       expect.arrayContaining([
         {
           events: parseSelector('dblclick', 'view'),
-          update: 'geoScale("projection")',
+          update: '1',
         },
       ]),
     );
@@ -283,7 +283,7 @@ describe('Clear selection transform, projection-bound interval', () => {
       expect.arrayContaining([
         {
           events: parseSelector('dblclick', 'view'),
-          update: '[width / 2, height / 2]',
+          update: '[0, 0]',
         },
       ]),
     );
