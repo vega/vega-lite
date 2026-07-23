@@ -183,10 +183,29 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
   const labelsSpec = {
     ...(opacity ? {opacity} : {}),
     ...(text ? {text} : {}),
+    ...labelLineBreak(legendCmpt),
+    ...labelTooltip(legendCmpt),
     ...specifiedlabelsSpec,
   };
 
   return isEmpty(labelsSpec) ? undefined : labelsSpec;
+}
+
+function labelLineBreak(legendCmpt: LegendComponent) {
+  const lineBreak = legendCmpt.get('labelLineBreak');
+  return lineBreak === undefined ? undefined : {lineBreak: signalOrValueRef(lineBreak)};
+}
+
+function labelTooltip(legendCmpt: LegendComponent) {
+  const tooltip = legendCmpt.get('labelTooltip');
+
+  if (tooltip === true) {
+    return {tooltip: {signal: 'datum.value'}};
+  } else if (typeof tooltip === 'string') {
+    return {tooltip: {signal: tooltip}};
+  }
+
+  return undefined;
 }
 
 export function entries(entriesSpec: any, {legendCmpt}: LegendEncodeParams) {
