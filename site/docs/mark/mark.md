@@ -38,6 +38,8 @@ Vega-Lite supports the following primitive `mark` types: [`"area"`](area.html), 
 
 In addition to primitive marks, Vega-Lite also support composite marks, which are "macros" for complex layered graphics that contain multiple primitive marks. Supported composite mark types include [`"boxplot"`](boxplot.html), [`"errorband"`](errorband.html), [`"errorbar"`](errorbar.html).
 
+Vega-Lite also supports an [`"auto"`](auto.html) mark, which picks a suitable primitive mark for you based on the encoded channels and their data types.
+
 For example, a bar chart has `mark` as a simple string `"bar"`.
 
 <span class="vl-example" data-name="bar"></span>

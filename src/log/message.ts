@@ -276,6 +276,14 @@ export function discreteChannelCannotEncode(channel: Channel, type: Type) {
 
 // MARK
 
+export function autoMarkUndetermined() {
+  return `Could not automatically determine a mark for the "auto" mark because no suitable positional or geo encoding was found. Defaulting to "point".`;
+}
+
+export function autoMarkInvalidPrefer(prefer: string) {
+  return `Invalid "prefer" value "${prefer}" for the "auto" mark. Ignoring it and inferring the mark instead.`;
+}
+
 export function rangeMarkAlignmentCannotBeExpression(align: 'align' | 'baseline') {
   return `The ${align} for range marks cannot be an expression`;
 }

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Mean horsepower for each combination of cylinders and origin, produced by the auto mark as a rect heatmap.",
+  "data": {"url": "data/cars.json"},
+  "mark": "auto",
+  "encoding": {
+    "x": {"field": "Cylinders", "type": "ordinal"},
+    "y": {"field": "Origin", "type": "nominal"},
+    "color": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+  }
+}
