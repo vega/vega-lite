@@ -71,7 +71,7 @@ The `tick` property of the top-level [`config`](config.html) object sets the def
 
 Besides standard [mark config properties](mark.html#config), tick config can contain the following additional properties:
 
-{% include table.html props="bandSize,thickness" source="TickConfig" %}
+{% include table.html props="thickness" source="TickConfig" %}
 
 #### Example Customizing Tick's Size and Thickness
 
