@@ -16,7 +16,7 @@ import type {
 import {ConditionalPredicate, Value, ValueDef} from './channeldef.js';
 import {DateTime} from './datetime.js';
 import {ExprRef} from './expr.js';
-import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide.js';
+import {Guide, GuideEncodingEntry, TitleMixins} from './guide.js';
 import {Flag, keys} from './util.js';
 import {MapExcludeValueRefAndReplaceSignalWith, VgEncodeChannel} from './vega.schema.js';
 import {hasOwnProperty} from 'vega-util';
@@ -308,7 +308,7 @@ export type AxisConfigBaseWithConditionalAndSignal<ES extends ExprRef | SignalRe
   BaseAxisNoValueRefs<ES>,
   ConditionalAxisProp | 'title'
 > &
-  AxisPropsWithCondition<ES>;
+  Omit<AxisPropsWithCondition<ES>, 'title'>;
 
 export interface AxisPropsWithCondition<ES extends ExprRef | SignalRef> {
   labelAlign?: BaseAxisNoValueRefs<ES>['labelAlign'] | ConditionalAxisLabelAlign<ES>;
@@ -336,8 +336,7 @@ export interface AxisPropsWithCondition<ES extends ExprRef | SignalRef> {
   title?: TitleMixins['title'];
 }
 
-export type AxisConfig<ES extends ExprRef | SignalRef> = Guide &
-  VlOnlyGuideConfig &
+export type AxisConfig<ES extends ExprRef | SignalRef> = Omit<Guide, 'title'> &
   AxisConfigBaseWithConditionalAndSignal<ES> & {
     /**
      * Disable axis by default.
@@ -347,6 +346,19 @@ export type AxisConfig<ES extends ExprRef | SignalRef> = Guide &
 
 export interface Axis<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   extends AxisConfigBaseWithConditionalAndSignal<ES>, Guide {
+  /**
+   * A title for the axis. If `null`, the title will be removed.
+   *
+   * __Default value:__ derived from the field's name and transformation function (`aggregate`, `bin`, and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `"Sum of Profit"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `"Profit (binned)"`, `"Transaction Date (year-month)"`). Otherwise, the title is simply the field name.
+   *
+   * __Notes__:
+   *
+   * 1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).
+   *
+   * 2) If both field definitions of a ranged position channel have titles, the axis title will combine both titles.
+   */
+  title?: TitleMixins['title'];
+
   /**
    * Mark definitions for custom axis encoding.
    *

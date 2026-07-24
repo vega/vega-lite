@@ -262,6 +262,21 @@ describe('Axis', () => {
       expect(axisComponent['x'][0].explicit.grid).toBeUndefined();
     });
 
+    it('should ignore title from axis config and preserve the field title', () => {
+      const model = parseUnitModelWithScale({
+        data: {values: [{a: 1, b: 4}]},
+        mark: 'line',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'quantitative'},
+        },
+        config: {axisX: {title: 'foo'}},
+      } as any);
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x']).toHaveLength(1);
+      expect(axisComponent['x'][0].get('title')).toEqual([{field: 'a'}]);
+    });
+
     it('should store the title value if title = null, "", or false', () => {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({

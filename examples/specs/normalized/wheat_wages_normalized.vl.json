@@ -7,10 +7,14 @@
     {
       "mark": {"type": "bar", "fill": "#aaa", "stroke": "#999"},
       "encoding": {
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wheat"},
+        "y": {
+          "type": "quantitative",
+          "axis": {"zindex": 1, "title": null},
+          "field": "wheat"
+        },
         "x": {
           "type": "quantitative",
-          "axis": {"tickCount": 5, "format": "d"},
+          "axis": {"tickCount": 5, "format": "d", "title": null},
           "field": "year",
           "bin": "binned"
         },
@@ -36,7 +40,7 @@
       "encoding": {
         "x": {
           "type": "quantitative",
-          "axis": {"tickCount": 5, "format": "d"},
+          "axis": {"tickCount": 5, "format": "d", "title": null},
           "field": "year"
         }
       }
@@ -44,10 +48,14 @@
     {
       "mark": {"type": "area", "color": "#a4cedb", "opacity": 0.7},
       "encoding": {
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wages"},
+        "y": {
+          "type": "quantitative",
+          "axis": {"zindex": 1, "title": null},
+          "field": "wages"
+        },
         "x": {
           "type": "quantitative",
-          "axis": {"tickCount": 5, "format": "d"},
+          "axis": {"tickCount": 5, "format": "d", "title": null},
           "field": "year"
         }
       }
@@ -55,10 +63,14 @@
     {
       "mark": {"type": "line", "color": "#000", "opacity": 0.7},
       "encoding": {
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wages"},
+        "y": {
+          "type": "quantitative",
+          "axis": {"zindex": 1, "title": null},
+          "field": "wages"
+        },
         "x": {
           "type": "quantitative",
-          "axis": {"tickCount": 5, "format": "d"},
+          "axis": {"tickCount": 5, "format": "d", "title": null},
           "field": "year"
         }
       }
@@ -66,10 +78,14 @@
     {
       "mark": {"type": "line", "yOffset": -2, "color": "#EE8182"},
       "encoding": {
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wages"},
+        "y": {
+          "type": "quantitative",
+          "axis": {"zindex": 1, "title": null},
+          "field": "wages"
+        },
         "x": {
           "type": "quantitative",
-          "axis": {"tickCount": 5, "format": "d"},
+          "axis": {"tickCount": 5, "format": "d", "title": null},
           "field": "year"
         }
       }
@@ -78,10 +94,14 @@
       "data": {"url": "data/monarchs.json"},
       "mark": {"type": "rect", "stroke": "#000"},
       "encoding": {
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "y"},
+        "y": {
+          "type": "quantitative",
+          "axis": {"zindex": 1, "title": null},
+          "field": "y"
+        },
         "x": {
           "type": "quantitative",
-          "axis": {"tickCount": 5, "format": "d"},
+          "axis": {"tickCount": 5, "format": "d", "title": null},
           "field": "start"
         },
         "x2": {"field": "end"},
@@ -110,10 +130,14 @@
         "fontStyle": "italic"
       },
       "encoding": {
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "off2"},
+        "y": {
+          "type": "quantitative",
+          "axis": {"zindex": 1, "title": null},
+          "field": "off2"
+        },
         "x": {
           "type": "quantitative",
-          "axis": {"tickCount": 5, "format": "d"},
+          "axis": {"tickCount": 5, "format": "d", "title": null},
           "field": "x"
         },
         "text": {"field": "name"}
@@ -128,12 +152,7 @@
     }
   ],
   "config": {
-    "axis": {
-      "title": null,
-      "gridColor": "white",
-      "gridOpacity": 0.25,
-      "domain": false
-    },
+    "axis": {"gridColor": "white", "gridOpacity": 0.25, "domain": false},
     "view": {"stroke": "transparent"}
   },
   "transform": [{"calculate": "+datum.year + 5", "as": "year_end"}]
