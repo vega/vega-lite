@@ -201,6 +201,51 @@ describe('encoding', () => {
         expect(logger.warns).toContain(log.message.invalidNestedOffset('xOffset'));
       }),
     );
+
+    it(
+      'drops discretized fields whose scales do not provide bandwidth from intermediate levels',
+      log.wrap((logger) => {
+        for (const intermediateDef of [
+          {field: 'value', type: 'quantitative', bin: true},
+          {field: 'date', type: 'temporal', timeUnit: 'month'},
+        ] as const) {
+          const encoding = initEncoding(
+            {
+              x: {field: 'category', type: 'nominal'},
+              xOffset: [intermediateDef, {field: 'group', type: 'nominal'}],
+            },
+            'point',
+            false,
+            defaultConfig,
+          );
+
+          expect(encoding.xOffset).toBeUndefined();
+        }
+        expect(logger.warns.filter((warning) => warning === log.message.invalidNestedOffset('xOffset'))).toHaveLength(
+          2,
+        );
+      }),
+    );
+
+    it('allows a temporal final level', () => {
+      const encoding = initEncoding(
+        {
+          y: {field: 'category', type: 'nominal'},
+          yOffset: [
+            {field: 'group', type: 'nominal'},
+            {field: 'date', type: 'temporal'},
+          ],
+        },
+        'point',
+        false,
+        defaultConfig,
+      );
+
+      expect(encoding.yOffset).toEqual([
+        {field: 'group', type: 'nominal'},
+        {field: 'date', type: 'temporal'},
+      ]);
+    });
   });
 
   describe('extractTransformsFromEncoding', () => {

@@ -492,6 +492,47 @@ describe('compile/compile', () => {
     expect(() => parseVega(spec)).not.toThrow();
   });
 
+  it('should compile a temporal offset as the final level', async () => {
+    const {spec} = compile({
+      height: 200,
+      data: {
+        values: [
+          {value: 1, category: 'A', group: 'first', date: 0},
+          {value: 2, category: 'A', group: 'first', date: 86_400_000},
+        ],
+      },
+      mark: 'point',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'category', type: 'nominal'},
+        yOffset: [
+          {field: 'group', type: 'nominal'},
+          {field: 'date', type: 'temporal'},
+        ],
+      },
+    });
+
+    const outerScale = spec.scales.find((scale) => scale.name === 'yOffset');
+    const temporalScale = spec.scales.find((scale) => scale.name === 'yOffset_1');
+    expect(outerScale.type).toBe('band');
+    expect(temporalScale.type).toBe('time');
+    expect((temporalScale as any).range).toEqual([{signal: "bandwidth('yOffset')"}, 0]);
+    expect(spec.marks[0].encode.update.y).toEqual({
+      scale: 'y',
+      field: 'category',
+      offset: {
+        scale: 'yOffset',
+        field: 'group',
+        offset: {scale: 'yOffset_1', field: 'date'},
+      },
+    });
+    expect(spec.marks[0].encode.update.y2).toBeUndefined();
+
+    const view = new View(parseVega(spec), {renderer: 'none'});
+    await expect(view.runAsync()).resolves.toBeDefined();
+    view.finalize();
+  });
+
   it('should compile arbitrary discrete offset depth before a continuous leaf', () => {
     const {spec} = compile({
       width: 300,

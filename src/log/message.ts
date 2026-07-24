@@ -198,7 +198,7 @@ export function offsetNestedInsideContinuousPositionScaleDropped(mainChannel: Po
 }
 
 export function invalidNestedOffset(channel: OffsetScaleChannel) {
-  return `${channel} dropped because every non-final level must have a discrete scale and only the final level may be continuous quantitative.`;
+  return `${channel} dropped because every non-final level must use a scale with bandwidth.`;
 }
 
 export function primitiveChannelDef(

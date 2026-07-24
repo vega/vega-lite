@@ -93,6 +93,7 @@ import {
 import {Config} from './config.js';
 import * as log from './log/index.js';
 import {Mark} from './mark.js';
+import {scaleTypeSupportDataType} from './scale.js';
 import {EncodingFacetMapping} from './spec/facet.js';
 import {AggregatedFieldDef, BinTransform, AggregateFieldOp, TimeUnitTransform} from './transform.js';
 import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type.js';
@@ -123,13 +124,13 @@ export interface Encoding<F extends Field> {
 
   /**
    * Offset of x-position of the marks. An array defines nested offsets from outermost to innermost.
-   * Every non-final level must use a discrete scale; the final level may be continuous quantitative.
+   * Every non-final level must use a scale with bandwidth; the final level may use a continuous scale.
    */
   xOffset?: OffsetDef<F> | NestedOffsetChain<F>;
 
   /**
    * Offset of y-position of the marks. An array defines nested offsets from outermost to innermost.
-   * Every non-final level must use a discrete scale; the final level may be continuous quantitative.
+   * Every non-final level must use a scale with bandwidth; the final level may use a continuous scale.
    */
   yOffset?: OffsetDef<F> | NestedOffsetChain<F>;
 
@@ -657,22 +658,15 @@ export function initEncoding(
 
         const normalizedDef = initChannelDef(def, channel, config) as OffsetDef<string>;
         if (index < channelDef.length - 1) {
+          // Parent levels must resolve to band scales; binning and time units alone do not provide bandwidth.
           if (
             (!isFieldDef(normalizedDef) && !isDatumDef(normalizedDef)) ||
-            (!isDiscrete(normalizedDef.type) &&
-              !(isFieldDef(normalizedDef) && (normalizedDef.bin || normalizedDef.timeUnit))) ||
+            !scaleTypeSupportDataType('band', normalizedDef.type) ||
             normalizedDef.scale === null
           ) {
             log.warn(log.message.invalidNestedOffset(channel));
             return [];
           }
-        } else if (
-          (isFieldDef(normalizedDef) || isDatumDef(normalizedDef)) &&
-          isContinuous(normalizedDef.type) &&
-          !isUnbinnedQuantitativeFieldOrDatumDef(normalizedDef)
-        ) {
-          log.warn(log.message.invalidNestedOffset(channel));
-          return [];
         }
         normalized.push(normalizedDef);
         return normalized;

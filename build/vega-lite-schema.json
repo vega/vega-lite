@@ -5186,7 +5186,7 @@
               "$ref": "#/definitions/NestedOffsetChain"
             }
           ],
-          "description": "Offset of x-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a discrete scale; the final level may be continuous quantitative."
+          "description": "Offset of x-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a scale with bandwidth; the final level may use a continuous scale."
         },
         "y": {
           "$ref": "#/definitions/PositionDef",
@@ -5227,7 +5227,7 @@
               "$ref": "#/definitions/NestedOffsetChain"
             }
           ],
-          "description": "Offset of y-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a discrete scale; the final level may be continuous quantitative."
+          "description": "Offset of y-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a scale with bandwidth; the final level may use a continuous scale."
         }
       },
       "type": "object"
@@ -9376,7 +9376,7 @@
               "$ref": "#/definitions/NestedOffsetChain"
             }
           ],
-          "description": "Offset of x-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a discrete scale; the final level may be continuous quantitative."
+          "description": "Offset of x-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a scale with bandwidth; the final level may use a continuous scale."
         },
         "y": {
           "$ref": "#/definitions/PositionDef",
@@ -9417,7 +9417,7 @@
               "$ref": "#/definitions/NestedOffsetChain"
             }
           ],
-          "description": "Offset of y-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a discrete scale; the final level may be continuous quantitative."
+          "description": "Offset of y-position of the marks. An array defines nested offsets from outermost to innermost. Every non-final level must use a scale with bandwidth; the final level may use a continuous scale."
         }
       },
       "type": "object"
