@@ -16862,7 +16862,7 @@
           ]
         },
         "bandSize": {
-          "description": "The width of the ticks.\n\n__Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).",
+          "description": "The length of the ticks.\n\n__Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).",
           "minimum": 0,
           "type": "number"
         },
@@ -28659,7 +28659,7 @@
           ]
         },
         "bandSize": {
-          "description": "The width of the ticks.\n\n__Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).",
+          "description": "The length of the ticks.\n\n__Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).",
           "minimum": 0,
           "type": "number"
         },

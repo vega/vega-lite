@@ -33,7 +33,7 @@
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\"))"
           },
           "yc": {"signal": "height", "mult": 0.5},
-          "height": {"signal": "0.75 * height"},
+          "height": {"value": 10},
           "xc": {"scale": "x", "field": "Horsepower"},
           "width": {"value": 2}
         }
