@@ -20,7 +20,7 @@
         },
         "xOffset": {"datum": "Worldwide Gross", "type": "nominal"}
       },
-      "name": "child__layer_Worldwide_Gross"
+      "name": "child__layer_0_Worldwide_Gross"
     },
     {
       "mark": "bar",
@@ -35,7 +35,7 @@
         "color": {"datum": "US Gross", "title": "Gross", "type": "nominal"},
         "xOffset": {"datum": "US Gross", "type": "nominal"}
       },
-      "name": "child__layer_US_Gross"
+      "name": "child__layer_1_US_Gross"
     }
   ]
 }

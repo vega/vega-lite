@@ -42,6 +42,10 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     new RuleForRangedLineNormalizer(),
   ];
 
+  private repeatNamePart(prefix: string, value: string, index: number) {
+    return `${prefix}${index}_${varName(value)}`;
+  }
+
   public map(spec: GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>, params: NormalizerParams) {
     // Special handling for a faceted unit spec as it can return a facet spec, not just a layer or unit spec like a normal unit spec.
     if (isUnitSpec(spec)) {
@@ -122,14 +126,16 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     } else {
       return {
         ...rest,
-        layer: layer.map((layerValue) => {
+        layer: layer.map((layerValue, layerIndex) => {
           const childRepeater = {
             ...repeater,
             layer: layerValue,
           };
 
-          const childName = `${(childSpec.name ? `${childSpec.name}_` : '') + repeaterPrefix}child__layer_${varName(
+          const childName = `${(childSpec.name ? `${childSpec.name}_` : '') + repeaterPrefix}child__${this.repeatNamePart(
+            'layer_',
             layerValue,
+            layerIndex,
           )}`;
 
           const child = this.mapLayerOrUnit(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
@@ -160,9 +166,9 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     const repeatValues = (isArray(repeat) && repeat) || [repeater ? repeater.repeat : null];
 
     // cross product
-    for (const repeatValue of repeatValues) {
-      for (const rowValue of row) {
-        for (const columnValue of column) {
+    for (const [repeatIndex, repeatValue] of repeatValues.entries()) {
+      for (const [rowIndex, rowValue] of row.entries()) {
+        for (const [columnIndex, columnValue] of column.entries()) {
           const childRepeater = {
             repeat: repeatValue,
             row: rowValue,
@@ -172,8 +178,9 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
           const childName = `${(childSpec.name ? `${childSpec.name}_` : '') + repeaterPrefix}child__${
             isArray(repeat)
-              ? `${varName(repeatValue)}`
-              : (repeat.row ? `row_${varName(rowValue)}` : '') + (repeat.column ? `column_${varName(columnValue)}` : '')
+              ? this.repeatNamePart('', repeatValue, repeatIndex)
+              : (repeat.row ? this.repeatNamePart('row_', rowValue, rowIndex) : '') +
+                (repeat.column ? this.repeatNamePart('column_', columnValue, columnIndex) : '')
           }`;
 
           const child = this.map(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});

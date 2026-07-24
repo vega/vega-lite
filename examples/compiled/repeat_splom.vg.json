@@ -117,7 +117,7 @@
   "marks": [
     {
       "type": "group",
-      "name": "child__row_Beak_Length__mm_column_Body_Mass__g__group",
+      "name": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -127,7 +127,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Beak_Length__mm_column_Body_Mass__g__marks",
+          "name": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_0"},
@@ -141,11 +141,11 @@
                 "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__x",
+                "scale": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__x",
                 "field": "Body Mass (g)"
               },
               "y": {
-                "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__y",
+                "scale": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__y",
                 "field": "Beak Length (mm)"
               }
             }
@@ -154,9 +154,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__x",
+          "scale": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__x",
           "orient": "bottom",
-          "gridScale": "child__row_Beak_Length__mm_column_Body_Mass__g__y",
+          "gridScale": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -168,9 +168,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__y",
+          "scale": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__y",
           "orient": "left",
-          "gridScale": "child__row_Beak_Length__mm_column_Body_Mass__g__x",
+          "gridScale": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -182,7 +182,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__x",
+          "scale": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__x",
           "orient": "bottom",
           "grid": false,
           "title": "Body Mass (g)",
@@ -192,7 +192,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__y",
+          "scale": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__y",
           "orient": "left",
           "grid": false,
           "title": "Beak Length (mm)",
@@ -204,7 +204,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Beak_Length__mm_column_Flipper_Length__mm__group",
+      "name": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -214,7 +214,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Beak_Length__mm_column_Flipper_Length__mm__marks",
+          "name": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_1"},
@@ -228,11 +228,11 @@
                 "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__x",
+                "scale": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__x",
                 "field": "Flipper Length (mm)"
               },
               "y": {
-                "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__y",
+                "scale": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__y",
                 "field": "Beak Length (mm)"
               }
             }
@@ -241,9 +241,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__x",
+          "scale": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__y",
+          "gridScale": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -255,9 +255,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__y",
+          "scale": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__x",
+          "gridScale": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -269,7 +269,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__x",
+          "scale": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Flipper Length (mm)",
@@ -279,7 +279,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__y",
+          "scale": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Beak Length (mm)",
@@ -291,7 +291,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Beak_Length__mm_column_Beak_Depth__mm__group",
+      "name": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -301,7 +301,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Beak_Length__mm_column_Beak_Depth__mm__marks",
+          "name": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_2"},
@@ -315,11 +315,11 @@
                 "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__x",
+                "scale": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__x",
                 "field": "Beak Depth (mm)"
               },
               "y": {
-                "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__y",
+                "scale": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__y",
                 "field": "Beak Length (mm)"
               }
             }
@@ -328,9 +328,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__x",
+          "scale": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__y",
+          "gridScale": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -342,9 +342,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__y",
+          "scale": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__x",
+          "gridScale": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -356,7 +356,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__x",
+          "scale": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Beak Depth (mm)",
@@ -366,7 +366,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__y",
+          "scale": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Beak Length (mm)",
@@ -378,7 +378,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Beak_Length__mm_column_Beak_Length__mm__group",
+      "name": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -388,7 +388,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Beak_Length__mm_column_Beak_Length__mm__marks",
+          "name": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_3"},
@@ -402,11 +402,11 @@
                 "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__x",
+                "scale": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__x",
                 "field": "Beak Length (mm)"
               },
               "y": {
-                "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__y",
+                "scale": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__y",
                 "field": "Beak Length (mm)"
               }
             }
@@ -415,9 +415,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__x",
+          "scale": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Beak_Length__mm_column_Beak_Length__mm__y",
+          "gridScale": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -429,9 +429,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__y",
+          "scale": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Beak_Length__mm_column_Beak_Length__mm__x",
+          "gridScale": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -443,7 +443,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__x",
+          "scale": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Beak Length (mm)",
@@ -453,7 +453,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__y",
+          "scale": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Beak Length (mm)",
@@ -465,7 +465,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Beak_Depth__mm_column_Body_Mass__g__group",
+      "name": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -475,7 +475,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Beak_Depth__mm_column_Body_Mass__g__marks",
+          "name": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_4"},
@@ -489,11 +489,11 @@
                 "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__x",
+                "scale": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__x",
                 "field": "Body Mass (g)"
               },
               "y": {
-                "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__y",
+                "scale": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__y",
                 "field": "Beak Depth (mm)"
               }
             }
@@ -502,9 +502,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__x",
+          "scale": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__x",
           "orient": "bottom",
-          "gridScale": "child__row_Beak_Depth__mm_column_Body_Mass__g__y",
+          "gridScale": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -516,9 +516,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__y",
+          "scale": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__y",
           "orient": "left",
-          "gridScale": "child__row_Beak_Depth__mm_column_Body_Mass__g__x",
+          "gridScale": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -530,7 +530,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__x",
+          "scale": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__x",
           "orient": "bottom",
           "grid": false,
           "title": "Body Mass (g)",
@@ -540,7 +540,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__y",
+          "scale": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__y",
           "orient": "left",
           "grid": false,
           "title": "Beak Depth (mm)",
@@ -552,7 +552,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__group",
+      "name": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -562,7 +562,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__marks",
+          "name": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_5"},
@@ -576,11 +576,11 @@
                 "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__x",
+                "scale": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__x",
                 "field": "Flipper Length (mm)"
               },
               "y": {
-                "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__y",
+                "scale": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__y",
                 "field": "Beak Depth (mm)"
               }
             }
@@ -589,9 +589,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__x",
+          "scale": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__y",
+          "gridScale": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -603,9 +603,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__y",
+          "scale": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__x",
+          "gridScale": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -617,7 +617,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__x",
+          "scale": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Flipper Length (mm)",
@@ -627,7 +627,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__y",
+          "scale": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Beak Depth (mm)",
@@ -639,7 +639,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__group",
+      "name": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -649,7 +649,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__marks",
+          "name": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_6"},
@@ -663,11 +663,11 @@
                 "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__x",
+                "scale": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__x",
                 "field": "Beak Depth (mm)"
               },
               "y": {
-                "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__y",
+                "scale": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__y",
                 "field": "Beak Depth (mm)"
               }
             }
@@ -676,9 +676,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__x",
+          "scale": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__y",
+          "gridScale": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -690,9 +690,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__y",
+          "scale": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__x",
+          "gridScale": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -704,7 +704,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__x",
+          "scale": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Beak Depth (mm)",
@@ -714,7 +714,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__y",
+          "scale": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Beak Depth (mm)",
@@ -726,7 +726,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Beak_Depth__mm_column_Beak_Length__mm__group",
+      "name": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -736,7 +736,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Beak_Depth__mm_column_Beak_Length__mm__marks",
+          "name": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_2"},
@@ -750,11 +750,11 @@
                 "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__x",
+                "scale": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__x",
                 "field": "Beak Length (mm)"
               },
               "y": {
-                "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__y",
+                "scale": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__y",
                 "field": "Beak Depth (mm)"
               }
             }
@@ -763,9 +763,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__x",
+          "scale": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__y",
+          "gridScale": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -777,9 +777,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__y",
+          "scale": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__x",
+          "gridScale": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -791,7 +791,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__x",
+          "scale": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Beak Length (mm)",
@@ -801,7 +801,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__y",
+          "scale": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Beak Depth (mm)",
@@ -813,7 +813,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Flipper_Length__mm_column_Body_Mass__g__group",
+      "name": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -823,7 +823,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Flipper_Length__mm_column_Body_Mass__g__marks",
+          "name": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_7"},
@@ -837,11 +837,11 @@
                 "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__x",
+                "scale": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__x",
                 "field": "Body Mass (g)"
               },
               "y": {
-                "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__y",
+                "scale": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__y",
                 "field": "Flipper Length (mm)"
               }
             }
@@ -850,9 +850,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__x",
+          "scale": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__x",
           "orient": "bottom",
-          "gridScale": "child__row_Flipper_Length__mm_column_Body_Mass__g__y",
+          "gridScale": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -864,9 +864,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__y",
+          "scale": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__y",
           "orient": "left",
-          "gridScale": "child__row_Flipper_Length__mm_column_Body_Mass__g__x",
+          "gridScale": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -878,7 +878,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__x",
+          "scale": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__x",
           "orient": "bottom",
           "grid": false,
           "title": "Body Mass (g)",
@@ -888,7 +888,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__y",
+          "scale": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__y",
           "orient": "left",
           "grid": false,
           "title": "Flipper Length (mm)",
@@ -900,7 +900,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__group",
+      "name": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -910,7 +910,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__marks",
+          "name": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_8"},
@@ -924,11 +924,11 @@
                 "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__x",
+                "scale": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__x",
                 "field": "Flipper Length (mm)"
               },
               "y": {
-                "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__y",
+                "scale": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__y",
                 "field": "Flipper Length (mm)"
               }
             }
@@ -937,9 +937,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__x",
+          "scale": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__y",
+          "gridScale": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -951,9 +951,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__y",
+          "scale": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__x",
+          "gridScale": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -965,7 +965,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__x",
+          "scale": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Flipper Length (mm)",
@@ -975,7 +975,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__y",
+          "scale": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Flipper Length (mm)",
@@ -987,7 +987,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__group",
+      "name": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -997,7 +997,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__marks",
+          "name": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_5"},
@@ -1011,11 +1011,11 @@
                 "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__x",
+                "scale": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__x",
                 "field": "Beak Depth (mm)"
               },
               "y": {
-                "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__y",
+                "scale": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__y",
                 "field": "Flipper Length (mm)"
               }
             }
@@ -1024,9 +1024,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__x",
+          "scale": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__y",
+          "gridScale": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1038,9 +1038,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__y",
+          "scale": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__x",
+          "gridScale": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -1052,7 +1052,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__x",
+          "scale": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Beak Depth (mm)",
@@ -1062,7 +1062,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__y",
+          "scale": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Flipper Length (mm)",
@@ -1074,7 +1074,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Flipper_Length__mm_column_Beak_Length__mm__group",
+      "name": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -1084,7 +1084,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Flipper_Length__mm_column_Beak_Length__mm__marks",
+          "name": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_1"},
@@ -1098,11 +1098,11 @@
                 "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__x",
+                "scale": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__x",
                 "field": "Beak Length (mm)"
               },
               "y": {
-                "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__y",
+                "scale": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__y",
                 "field": "Flipper Length (mm)"
               }
             }
@@ -1111,9 +1111,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__x",
+          "scale": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__y",
+          "gridScale": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1125,9 +1125,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__y",
+          "scale": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__x",
+          "gridScale": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -1139,7 +1139,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__x",
+          "scale": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Beak Length (mm)",
@@ -1149,7 +1149,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__y",
+          "scale": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Flipper Length (mm)",
@@ -1161,7 +1161,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Body_Mass__g_column_Body_Mass__g__group",
+      "name": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -1171,7 +1171,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Body_Mass__g_column_Body_Mass__g__marks",
+          "name": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_9"},
@@ -1185,11 +1185,11 @@
                 "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Body_Mass__g_column_Body_Mass__g__x",
+                "scale": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__x",
                 "field": "Body Mass (g)"
               },
               "y": {
-                "scale": "child__row_Body_Mass__g_column_Body_Mass__g__y",
+                "scale": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__y",
                 "field": "Body Mass (g)"
               }
             }
@@ -1198,9 +1198,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Body_Mass__g_column_Body_Mass__g__x",
+          "scale": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__x",
           "orient": "bottom",
-          "gridScale": "child__row_Body_Mass__g_column_Body_Mass__g__y",
+          "gridScale": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1212,9 +1212,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Body_Mass__g__y",
+          "scale": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__y",
           "orient": "left",
-          "gridScale": "child__row_Body_Mass__g_column_Body_Mass__g__x",
+          "gridScale": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -1226,7 +1226,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Body_Mass__g__x",
+          "scale": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__x",
           "orient": "bottom",
           "grid": false,
           "title": "Body Mass (g)",
@@ -1236,7 +1236,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Body_Mass__g__y",
+          "scale": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__y",
           "orient": "left",
           "grid": false,
           "title": "Body Mass (g)",
@@ -1248,7 +1248,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Body_Mass__g_column_Flipper_Length__mm__group",
+      "name": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -1258,7 +1258,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Body_Mass__g_column_Flipper_Length__mm__marks",
+          "name": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_7"},
@@ -1272,11 +1272,11 @@
                 "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__x",
+                "scale": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__x",
                 "field": "Flipper Length (mm)"
               },
               "y": {
-                "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__y",
+                "scale": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__y",
                 "field": "Body Mass (g)"
               }
             }
@@ -1285,9 +1285,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__x",
+          "scale": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Body_Mass__g_column_Flipper_Length__mm__y",
+          "gridScale": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1299,9 +1299,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__y",
+          "scale": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Body_Mass__g_column_Flipper_Length__mm__x",
+          "gridScale": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -1313,7 +1313,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__x",
+          "scale": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Flipper Length (mm)",
@@ -1323,7 +1323,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__y",
+          "scale": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Body Mass (g)",
@@ -1335,7 +1335,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Body_Mass__g_column_Beak_Depth__mm__group",
+      "name": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -1345,7 +1345,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Body_Mass__g_column_Beak_Depth__mm__marks",
+          "name": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_4"},
@@ -1359,11 +1359,11 @@
                 "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__x",
+                "scale": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__x",
                 "field": "Beak Depth (mm)"
               },
               "y": {
-                "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__y",
+                "scale": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__y",
                 "field": "Body Mass (g)"
               }
             }
@@ -1372,9 +1372,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__x",
+          "scale": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Body_Mass__g_column_Beak_Depth__mm__y",
+          "gridScale": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1386,9 +1386,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__y",
+          "scale": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Body_Mass__g_column_Beak_Depth__mm__x",
+          "gridScale": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -1400,7 +1400,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__x",
+          "scale": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Beak Depth (mm)",
@@ -1410,7 +1410,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__y",
+          "scale": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Body Mass (g)",
@@ -1422,7 +1422,7 @@
     },
     {
       "type": "group",
-      "name": "child__row_Body_Mass__g_column_Beak_Length__mm__group",
+      "name": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__group",
       "style": "cell",
       "encode": {
         "update": {
@@ -1432,7 +1432,7 @@
       },
       "marks": [
         {
-          "name": "child__row_Body_Mass__g_column_Beak_Length__mm__marks",
+          "name": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
           "from": {"data": "data_0"},
@@ -1446,11 +1446,11 @@
                 "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {
-                "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__x",
+                "scale": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__x",
                 "field": "Beak Length (mm)"
               },
               "y": {
-                "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__y",
+                "scale": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__y",
                 "field": "Body Mass (g)"
               }
             }
@@ -1459,9 +1459,9 @@
       ],
       "axes": [
         {
-          "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__x",
+          "scale": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__x",
           "orient": "bottom",
-          "gridScale": "child__row_Body_Mass__g_column_Beak_Length__mm__y",
+          "gridScale": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1473,9 +1473,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__y",
+          "scale": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__y",
           "orient": "left",
-          "gridScale": "child__row_Body_Mass__g_column_Beak_Length__mm__x",
+          "gridScale": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -1487,7 +1487,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__x",
+          "scale": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__x",
           "orient": "bottom",
           "grid": false,
           "title": "Beak Length (mm)",
@@ -1497,7 +1497,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__y",
+          "scale": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__y",
           "orient": "left",
           "grid": false,
           "title": "Body Mass (g)",
@@ -1530,7 +1530,7 @@
       "range": "category"
     },
     {
-      "name": "child__row_Beak_Length__mm_column_Body_Mass__g__x",
+      "name": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "Body Mass (g)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1538,7 +1538,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Length__mm_column_Body_Mass__g__y",
+      "name": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g__y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "Beak Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1546,7 +1546,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Length__mm_column_Flipper_Length__mm__x",
+      "name": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "Flipper Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1554,7 +1554,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Length__mm_column_Flipper_Length__mm__y",
+      "name": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm__y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "Beak Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1562,7 +1562,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Length__mm_column_Beak_Depth__mm__x",
+      "name": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__x",
       "type": "linear",
       "domain": {"data": "data_2", "field": "Beak Depth (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1570,7 +1570,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Length__mm_column_Beak_Depth__mm__y",
+      "name": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm__y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "Beak Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1578,7 +1578,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Length__mm_column_Beak_Length__mm__x",
+      "name": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__x",
       "type": "linear",
       "domain": {"data": "data_3", "field": "Beak Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1586,7 +1586,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Length__mm_column_Beak_Length__mm__y",
+      "name": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm__y",
       "type": "linear",
       "domain": {"data": "data_3", "field": "Beak Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1594,7 +1594,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Depth__mm_column_Body_Mass__g__x",
+      "name": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__x",
       "type": "linear",
       "domain": {"data": "data_4", "field": "Body Mass (g)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1602,7 +1602,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Depth__mm_column_Body_Mass__g__y",
+      "name": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g__y",
       "type": "linear",
       "domain": {"data": "data_4", "field": "Beak Depth (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1610,7 +1610,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__x",
+      "name": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__x",
       "type": "linear",
       "domain": {"data": "data_5", "field": "Flipper Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1618,7 +1618,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__y",
+      "name": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm__y",
       "type": "linear",
       "domain": {"data": "data_5", "field": "Beak Depth (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1626,7 +1626,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__x",
+      "name": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__x",
       "type": "linear",
       "domain": {"data": "data_6", "field": "Beak Depth (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1634,7 +1634,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__y",
+      "name": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm__y",
       "type": "linear",
       "domain": {"data": "data_6", "field": "Beak Depth (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1642,7 +1642,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Depth__mm_column_Beak_Length__mm__x",
+      "name": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__x",
       "type": "linear",
       "domain": {"data": "data_2", "field": "Beak Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1650,7 +1650,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Beak_Depth__mm_column_Beak_Length__mm__y",
+      "name": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm__y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "Beak Depth (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1658,7 +1658,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Flipper_Length__mm_column_Body_Mass__g__x",
+      "name": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__x",
       "type": "linear",
       "domain": {"data": "data_7", "field": "Body Mass (g)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1666,7 +1666,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Flipper_Length__mm_column_Body_Mass__g__y",
+      "name": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g__y",
       "type": "linear",
       "domain": {"data": "data_7", "field": "Flipper Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1674,7 +1674,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__x",
+      "name": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__x",
       "type": "linear",
       "domain": {"data": "data_8", "field": "Flipper Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1682,7 +1682,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__y",
+      "name": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm__y",
       "type": "linear",
       "domain": {"data": "data_8", "field": "Flipper Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1690,7 +1690,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__x",
+      "name": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__x",
       "type": "linear",
       "domain": {"data": "data_5", "field": "Beak Depth (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1698,7 +1698,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__y",
+      "name": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm__y",
       "type": "linear",
       "domain": {"data": "data_5", "field": "Flipper Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1706,7 +1706,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Flipper_Length__mm_column_Beak_Length__mm__x",
+      "name": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "Beak Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1714,7 +1714,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Flipper_Length__mm_column_Beak_Length__mm__y",
+      "name": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm__y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "Flipper Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1722,7 +1722,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Body_Mass__g_column_Body_Mass__g__x",
+      "name": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__x",
       "type": "linear",
       "domain": {"data": "data_9", "field": "Body Mass (g)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1730,7 +1730,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Body_Mass__g_column_Body_Mass__g__y",
+      "name": "child__row_3_Body_Mass__g_column_0_Body_Mass__g__y",
       "type": "linear",
       "domain": {"data": "data_9", "field": "Body Mass (g)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1738,7 +1738,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Body_Mass__g_column_Flipper_Length__mm__x",
+      "name": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__x",
       "type": "linear",
       "domain": {"data": "data_7", "field": "Flipper Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1746,7 +1746,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Body_Mass__g_column_Flipper_Length__mm__y",
+      "name": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm__y",
       "type": "linear",
       "domain": {"data": "data_7", "field": "Body Mass (g)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1754,7 +1754,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Body_Mass__g_column_Beak_Depth__mm__x",
+      "name": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__x",
       "type": "linear",
       "domain": {"data": "data_4", "field": "Beak Depth (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1762,7 +1762,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Body_Mass__g_column_Beak_Depth__mm__y",
+      "name": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm__y",
       "type": "linear",
       "domain": {"data": "data_4", "field": "Body Mass (g)"},
       "range": [{"signal": "childHeight"}, 0],
@@ -1770,7 +1770,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Body_Mass__g_column_Beak_Length__mm__x",
+      "name": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "Beak Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
@@ -1778,7 +1778,7 @@
       "nice": true
     },
     {
-      "name": "child__row_Body_Mass__g_column_Beak_Length__mm__y",
+      "name": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm__y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "Body Mass (g)"},
       "range": [{"signal": "childHeight"}, 0],

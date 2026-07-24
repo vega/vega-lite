@@ -11,7 +11,7 @@
         "y": {"field": "temp_max", "aggregate": "mean"},
         "color": {"field": "location"}
       },
-      "name": "child__temp_max"
+      "name": "child__0_temp_max"
     },
     {
       "mark": "line",
@@ -20,7 +20,7 @@
         "y": {"field": "precipitation", "aggregate": "mean"},
         "color": {"field": "location"}
       },
-      "name": "child__precipitation"
+      "name": "child__1_precipitation"
     },
     {
       "mark": "line",
@@ -29,7 +29,7 @@
         "y": {"field": "wind", "aggregate": "mean"},
         "color": {"field": "location"}
       },
-      "name": "child__wind"
+      "name": "child__2_wind"
     }
   ]
 }
