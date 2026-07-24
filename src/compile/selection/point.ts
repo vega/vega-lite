@@ -34,6 +34,7 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
     {name: MAX_RANGE_EXTENT, init: `extent(range('${scaleName}'))[1]`},
     // {name: 't_index', update: `indexof(${selectionName}_domain, anim_value)`},
     {name: ANIM_VALUE, update: `invert('${scaleName}', ${EASED_ANIM_CLOCK})`},
+    {name: `${selectionName}_value`, update: ANIM_VALUE},
   ];
 };
 
