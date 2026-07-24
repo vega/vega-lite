@@ -17,6 +17,7 @@ import {isFacetModel, Model} from '../model.js';
 import {UnitModel} from '../unit.js';
 import interval from './interval.js';
 import point from './point.js';
+import segment from './segment.js';
 import {SelectionProjection, SelectionProjectionComponent} from './project.js';
 import clear from './clear.js';
 import inputs from './inputs.js';
@@ -35,6 +36,12 @@ export const MODIFY = '_modify';
 export const SELECTION_DOMAIN = '_selection_domain_';
 export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 
+export interface SegmentSelectionState {
+  project: 'path' | 'values';
+  fields?: string[];
+  scopeField?: string;
+}
+
 export interface SelectionComponent<T extends SelectionType = SelectionType> {
   name: ParameterName;
   type: T;
@@ -52,6 +59,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   zoom?: any;
   nearest?: any;
   clear?: any;
+  segment?: SegmentSelectionState;
 }
 
 export interface SelectionCompiler<T extends SelectionType = SelectionType> {
@@ -68,6 +76,7 @@ export const selectionCompilers: SelectionCompiler[] = [
   point,
   interval,
   project,
+  segment,
   toggle,
 
   // Bindings may disable direct manipulation.

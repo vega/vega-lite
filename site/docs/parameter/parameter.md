@@ -71,7 +71,7 @@ A few parameter names are automatically processed and/or reserved:
 
 ### Selection Parameters
 
-Selection parameters, on the other hand, define _data queries_ that are driven by direct manipulation user input (e.g., mouse clicks or drags). A parameter becomes a selection when the `select` property is specified. This property identifies properties of a selection including its _type_ (`point` or `interval`), which determines the default events that trigger a selection and the resultant data query.
+Selection parameters, on the other hand, define _data queries_ that are driven by direct manipulation user input (e.g., mouse clicks or drags). A parameter becomes a selection when the `select` property is specified. This property identifies properties of a selection including its _type_ (`point`, `interval`, or `segment`), which determines the default events that trigger a selection and the resultant data query.
 
 {% include table.html props="select" source="SelectionParameter" %}
 
@@ -152,6 +152,6 @@ _Note:_ Bin extents can be explicitly specified using a similar syntax. For a se
 }
 ```
 
-The `selection` property of the [`config`](config.html) object determines the default properties and transformations applied to the two types of selection parameters. The selection config can contain the following properties:
+The `selection` property of the [`config`](config.html) object determines the default properties and transformations applied to selection parameters. The selection config can contain the following properties:
 
-{% include table.html props="point,interval" source="SelectionConfig" %}
+{% include table.html props="point,interval,segment" source="SelectionConfig" %}
