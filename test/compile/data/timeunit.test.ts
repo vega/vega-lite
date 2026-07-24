@@ -4,9 +4,11 @@ import {
   TimeUnitNode,
 } from '../../../src/compile/data/timeunit.js';
 import {ModelWithField} from '../../../src/compile/model.js';
+import {compile} from '../../../src/index.js';
 import {TimeUnitTransform} from '../../../src/transform.js';
 import {parseUnitModel} from '../../util.js';
 import {PlaceholderDataFlowNode} from './util.js';
+import {parse, View} from 'vega';
 
 function assembleFromEncoding(model: ModelWithField) {
   return TimeUnitNode.makeFromEncoding(null, model)?.assemble();
@@ -14,6 +16,27 @@ function assembleFromEncoding(model: ModelWithField) {
 
 function assembleFromTransform(t: TimeUnitTransform) {
   return TimeUnitNode.makeFromTransform(null, t).assemble();
+}
+
+async function timeUnitData(timeUnit: string) {
+  const spec = {
+    data: {
+      values: [
+        {date: '2012-01-01T00:00:00Z', value: 1},
+        {date: '2022-01-02T00:00:00Z', value: 2},
+        {date: '2024-06-10T00:00:00Z', value: 3},
+      ],
+    },
+    mark: 'point',
+    encoding: {
+      x: {field: 'date', type: 'temporal', timeUnit},
+      y: {field: 'value', type: 'quantitative'},
+    },
+  } as any;
+
+  const view = new View(parse(compile(spec).spec), {renderer: 'none'}).initialize();
+  await view.runAsync();
+  return view.data('data_0');
 }
 
 describe('compile/data/timeunit', () => {
@@ -284,6 +307,63 @@ describe('compile/data/timeunit', () => {
           as: ['month_date', 'month_date_end'],
           units: ['month'],
         },
+      ]);
+    });
+
+    it('should return formula transforms for ISO yearweek', () => {
+      const t: TimeUnitTransform = {field: 'date', as: 'yearweek_date', timeUnit: 'yearweek'};
+      const transforms = assembleFromTransform(t);
+
+      expect(transforms).toHaveLength(2);
+      expect(transforms[0]).toEqual({
+        type: 'formula',
+        expr: expect.stringContaining('"%G"'),
+        as: 'yearweek_date',
+      });
+      expect((transforms[0] as any).expr).toContain("toDate(datum['date'])");
+      expect((transforms[0] as any).expr).toContain('"%V"');
+      expect(transforms[1]).toEqual({
+        type: 'formula',
+        expr: "timeOffset('day', datum['yearweek_date'], 7)",
+        as: 'yearweek_date_end',
+      });
+    });
+
+    it('should return UTC formula transforms for stepped ISO week', () => {
+      const t: TimeUnitTransform = {field: 'date', as: 'utcweek_date', timeUnit: {unit: 'week', utc: true, step: 2}};
+      const transforms = assembleFromTransform(t);
+
+      expect(transforms).toHaveLength(2);
+      expect(transforms[0]).toEqual({
+        type: 'formula',
+        expr: expect.stringContaining('utcFormat'),
+        as: 'utcweek_date',
+      });
+      expect((transforms[0] as any).expr).toContain('1 + 2 * floor');
+      expect(transforms[1]).toEqual({
+        type: 'formula',
+        expr: "utcOffset('day', datum['utcweek_date'], 14)",
+        as: 'utcweek_date_end',
+      });
+    });
+  });
+
+  describe('runtime', () => {
+    it('should floor utcyearweek to ISO Mondays', async () => {
+      const data = await timeUnitData('utcyearweek');
+      expect(data.map((d) => d.utcyearweek_date.toISOString().slice(0, 10))).toEqual([
+        '2011-12-26',
+        '2021-12-27',
+        '2024-06-10',
+      ]);
+    });
+
+    it('should floor utcweek to ISO weeks in the reference year', async () => {
+      const data = await timeUnitData('utcweek');
+      expect(data.map((d) => d.utcweek_date.toISOString().slice(0, 10))).toEqual([
+        '2012-12-24',
+        '2012-12-24',
+        '2012-06-11',
       ]);
     });
   });

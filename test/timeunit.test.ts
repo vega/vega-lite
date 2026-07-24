@@ -113,6 +113,18 @@ describe('timeUnit', () => {
       );
     });
 
+    it('should return ISO week template for week', () => {
+      expect(formatExpression('week', 'datum.x', false)).toBe(
+        'timeFormat(datum.x, timeUnitSpecifier(["week"], {"week":"W%V ","year-month":"%b %Y ","year-month-date":"%b %d, %Y ","year-week":"%G W%V "}))',
+      );
+    });
+
+    it('should return ISO week-year template for yearweek', () => {
+      expect(formatExpression('yearweek', 'datum.x', false)).toBe(
+        'timeFormat(datum.x, timeUnitSpecifier(["year","week"], {"week":"W%V ","year-month":"%b %Y ","year-month-date":"%b %d, %Y ","year-week":"%G W%V "}))',
+      );
+    });
+
     it('should return correct template for milliseconds', () => {
       expect(formatExpression('milliseconds', 'datum.x', false)).toBe(
         'timeFormat(datum.x, timeUnitSpecifier(["milliseconds"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',

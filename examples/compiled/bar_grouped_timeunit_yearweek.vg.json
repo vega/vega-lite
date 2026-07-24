@@ -16,10 +16,14 @@
           "expr": "inrange(time(datetime(year(datum[\"Year\"]), 0, 1, 0, 0, 0, 0)), [time(datetime(1970, 0, 1, 0, 0, 0, 0)), time(datetime(1971, 0, 1, 0, 0, 0, 0))])"
         },
         {
-          "field": "Year",
-          "type": "timeunit",
-          "units": ["year", "week"],
-          "as": ["yearweek_Year", "yearweek_Year_end"]
+          "type": "formula",
+          "expr": "timeOffset('day', datetime(toNumber(timeFormat(toDate(datum['Year']), \"%G\")), 0, 4 - ((day(datetime(toNumber(timeFormat(toDate(datum['Year']), \"%G\")), 0, 4, 0, 0, 0, 0)) + 6) % 7), 0, 0, 0, 0), (toNumber(timeFormat(toDate(datum['Year']), \"%V\")) - 1) * 7)",
+          "as": "yearweek_Year"
+        },
+        {
+          "type": "formula",
+          "expr": "timeOffset('day', datum['yearweek_Year'], 7)",
+          "as": "yearweek_Year_end"
         },
         {
           "type": "aggregate",
@@ -46,7 +50,7 @@
           "fill": {"scale": "color", "field": "Origin"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Year (year-week): \" + (timeFormat(datum[\"yearweek_Year\"], timeUnitSpecifier([\"year\",\"week\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Number of Cars: \" + (format(datum[\"__count\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+            "signal": "\"Year (year-week): \" + (timeFormat(datum[\"yearweek_Year\"], timeUnitSpecifier([\"year\",\"week\"], {\"week\":\"W%V \",\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \",\"year-week\":\"%G W%V \"}))) + \"; Number of Cars: \" + (format(datum[\"__count\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
           "xc": {
             "scale": "x",
@@ -136,7 +140,7 @@
       "grid": false,
       "title": "Year (year-week)",
       "format": {
-        "signal": "timeUnitSpecifier([\"year\",\"week\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+        "signal": "timeUnitSpecifier([\"year\",\"week\"], {\"week\":\"W%V \",\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \",\"year-week\":\"%G W%V \"})"
       },
       "labelFlush": true,
       "labelOverlap": true,
