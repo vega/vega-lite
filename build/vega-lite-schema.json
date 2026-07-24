@@ -5228,6 +5228,9 @@
         },
         {
           "$ref": "#/definitions/ErrorBand"
+        },
+        {
+          "$ref": "#/definitions/WordCloud"
         }
       ]
     },
@@ -5241,6 +5244,9 @@
         },
         {
           "$ref": "#/definitions/ErrorBandDef"
+        },
+        {
+          "$ref": "#/definitions/WordcloudDef"
         }
       ]
     },
@@ -7882,6 +7888,10 @@
         "view": {
           "$ref": "#/definitions/ViewConfig",
           "description": "Default properties for [single view plots](https://vega.github.io/vega-lite/docs/spec.html#single)."
+        },
+        "wordcloud": {
+          "$ref": "#/definitions/WordcloudConfig",
+          "description": "Wordcloud Config"
         }
       },
       "type": "object"
@@ -31918,6 +31928,9 @@
         },
         {
           "$ref": "#/definitions/PivotTransform"
+        },
+        {
+          "$ref": "#/definitions/WordcloudTransform"
         }
       ]
     },
@@ -33044,6 +33057,293 @@
       },
       "required": [
         "window"
+      ],
+      "type": "object"
+    },
+    "WordCloud": {
+      "const": "wordcloud",
+      "type": "string"
+    },
+    "WordcloudConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "font": {
+          "description": "The font family for words. __Default value:__ `\"sans-serif\"`",
+          "type": "string"
+        },
+        "fontSizeRange": {
+          "description": "The [min, max] range of font sizes for scaling word sizes. __Default value:__ `[10, 56]`",
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "fontStyle": {
+          "description": "The font style. __Default value:__ `\"normal\"`",
+          "type": "string"
+        },
+        "fontWeight": {
+          "description": "The font weight. __Default value:__ `\"normal\"`",
+          "type": "string"
+        },
+        "padding": {
+          "description": "Padding in pixels between words. __Default value:__ `1`",
+          "type": "number"
+        },
+        "spiral": {
+          "description": "The spiral layout algorithm: `\"archimedean\"` or `\"rectangular\"`. __Default value:__ `\"archimedean\"`",
+          "enum": [
+            "archimedean",
+            "rectangular"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "WordcloudDef": {
+      "additionalProperties": false,
+      "properties": {
+        "clip": {
+          "description": "Whether a composite mark be clipped to the enclosing group’s width and height.",
+          "type": "boolean"
+        },
+        "color": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
+        },
+        "font": {
+          "description": "The font family for words. __Default value:__ `\"sans-serif\"`",
+          "type": "string"
+        },
+        "fontSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A fixed font size for all words. When omitted, font sizes are scaled from the `size` encoding channel using `fontSizeRange`."
+        },
+        "fontSizeRange": {
+          "description": "The [min, max] range of font sizes for scaling word sizes. __Default value:__ `[10, 56]`",
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "fontStyle": {
+          "description": "The font style. __Default value:__ `\"normal\"`",
+          "type": "string"
+        },
+        "fontWeight": {
+          "description": "The font weight. __Default value:__ `\"normal\"`",
+          "type": "string"
+        },
+        "opacity": {
+          "description": "The opacity (value between [0,1]) of the mark.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "padding": {
+          "description": "Padding in pixels between words. __Default value:__ `1`",
+          "type": "number"
+        },
+        "rotate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Rotation angle for all words in degrees, or an expression. If the `angle` encoding channel is specified, it overrides this setting. __Default value:__ `0`"
+        },
+        "spiral": {
+          "description": "The spiral layout algorithm: `\"archimedean\"` or `\"rectangular\"`. __Default value:__ `\"archimedean\"`",
+          "enum": [
+            "archimedean",
+            "rectangular"
+          ],
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/WordCloud",
+          "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "WordcloudTransform": {
+      "additionalProperties": false,
+      "properties": {
+        "as": {
+          "description": "The output field names for the wordcloud transform as `[x, y, font, fontSize, fontStyle, fontWeight, angle]`. __Default value:__ `[\"x\", \"y\", \"font\", \"fontSize\", \"fontStyle\", \"fontWeight\", \"angle\"]`",
+          "items": {
+            "$ref": "#/definitions/FieldName"
+          },
+          "maxItems": 7,
+          "minItems": 7,
+          "type": "array"
+        },
+        "font": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The font family for the words. __Default value:__ `\"sans-serif\"`"
+        },
+        "fontSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "field": {
+                  "$ref": "#/definitions/FieldName"
+                }
+              },
+              "required": [
+                "field"
+              ],
+              "type": "object"
+            }
+          ],
+          "description": "A fixed font size for all words. When omitted, font size is determined by the data using `fontSizeRange`. Use `{field: \"fieldName\"}` to derive font size from a data field."
+        },
+        "fontSizeRange": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "maxItems": 2,
+              "minItems": 2,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The [min, max] font size range for scaling when font size is data-driven. __Default value:__ `[10, 56]`"
+        },
+        "fontStyle": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The font style. __Default value:__ `\"normal\"`"
+        },
+        "fontWeight": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The font weight. __Default value:__ `\"normal\"`"
+        },
+        "padding": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Padding between words in pixels. __Default value:__ `1`"
+        },
+        "rotate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "field": {
+                  "$ref": "#/definitions/FieldName"
+                }
+              },
+              "required": [
+                "field"
+              ],
+              "type": "object"
+            }
+          ],
+          "description": "Rotation angle for words in degrees. Use a number for a fixed angle, or `{field: \"fieldName\"}` for per-word rotation. __Default value:__ `0`"
+        },
+        "size": {
+          "description": "The layout size as [width, height] in pixels. Defaults to the view's width and height signals.",
+          "items": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "$ref": "#/definitions/ExprRef"
+              }
+            ]
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
+        },
+        "spiral": {
+          "description": "The layout spiral algorithm. __Default value:__ `\"archimedean\"`",
+          "enum": [
+            "archimedean",
+            "rectangular"
+          ],
+          "type": "string"
+        },
+        "wordcloud": {
+          "$ref": "#/definitions/FieldName",
+          "description": "The data field containing the words to display."
+        }
+      },
+      "required": [
+        "wordcloud"
       ],
       "type": "object"
     }
