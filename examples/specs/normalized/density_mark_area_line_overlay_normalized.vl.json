@@ -1,0 +1,40 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "title": "Density Mark: Area and Line Overlay",
+  "width": 420,
+  "height": 180,
+  "data": {"url": "data/penguins.json"},
+  "transform": [
+    {
+      "density": "Body Mass (g)",
+      "groupby": ["Species", "Species"],
+      "resolve": "independent"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "area", "orient": "vertical", "fillOpacity": 0.5},
+      "encoding": {
+        "x": {
+          "field": "value",
+          "type": "quantitative",
+          "title": "Body Mass (g)"
+        },
+        "y": {"field": "density", "type": "quantitative", "stack": null},
+        "fill": {"field": "Species", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {"type": "line", "orient": "vertical"},
+      "encoding": {
+        "x": {
+          "field": "value",
+          "type": "quantitative",
+          "title": "Body Mass (g)"
+        },
+        "y": {"field": "density", "type": "quantitative"},
+        "color": {"field": "Species", "type": "nominal"}
+      }
+    }
+  ]
+}
