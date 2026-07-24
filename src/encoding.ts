@@ -100,6 +100,12 @@ import {keys, some} from './util.js';
 import {isSignalRef} from './vega.schema.js';
 import {isBinnedTimeUnit} from './timeunit.js';
 
+/**
+ * An ordered, non-empty chain of position offsets from outermost to innermost.
+ * A one-element chain is valid so specifications can change nesting depth without changing representation.
+ */
+export type NestedOffsetChain<F extends Field> = [OffsetDef<F>, ...OffsetDef<F>[]];
+
 export interface Encoding<F extends Field> {
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
@@ -119,13 +125,13 @@ export interface Encoding<F extends Field> {
    * Offset of x-position of the marks. An array defines nested offsets from outermost to innermost.
    * Every non-final level must use a discrete scale; the final level may be continuous quantitative.
    */
-  xOffset?: OffsetDef<F> | OffsetDef<F>[];
+  xOffset?: OffsetDef<F> | NestedOffsetChain<F>;
 
   /**
    * Offset of y-position of the marks. An array defines nested offsets from outermost to innermost.
    * Every non-final level must use a discrete scale; the final level may be continuous quantitative.
    */
-  yOffset?: OffsetDef<F> | OffsetDef<F>[];
+  yOffset?: OffsetDef<F> | NestedOffsetChain<F>;
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.

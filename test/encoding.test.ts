@@ -19,6 +19,7 @@ import {
   fieldDefs,
   initEncoding,
   markChannelCompatible,
+  NestedOffsetChain,
   pathGroupingFields,
 } from '../src/encoding.js';
 import * as log from '../src/log/index.js';
@@ -163,6 +164,21 @@ describe('encoding', () => {
         {field: 'sex', type: 'nominal'},
         {field: 'density', type: 'quantitative'},
       ]);
+    });
+
+    it('preserves a one-element nested offset chain', () => {
+      const yOffset: NestedOffsetChain<string> = [{field: 'density', type: 'quantitative'}];
+      const encoding = initEncoding(
+        {
+          y: {field: 'species', type: 'nominal'},
+          yOffset,
+        },
+        'point',
+        true,
+        defaultConfig,
+      );
+
+      expect(encoding.yOffset).toEqual([{field: 'density', type: 'quantitative'}]);
     });
 
     it(
