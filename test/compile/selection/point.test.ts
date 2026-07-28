@@ -788,7 +788,7 @@ describe('Animated Selection', () => {
       modelDuplicateSelection.parseData();
       optimizeDataflow(modelDuplicateSelection.component.data, modelDuplicateSelection);
 
-      const signals = assembleUnitSelectionSignals(model, []);
+      const signals = assembleUnitSelectionSignals(modelDuplicateSelection, []);
       // TODO(jzong): uncomment commented signals when implementing interpolation
       expect(signals).toEqual(
         expect.arrayContaining([
@@ -800,6 +800,8 @@ describe('Animated Selection', () => {
           {name: 'avl_value', update: "invert('time', eased_anim_clock)"},
         ]),
       );
+      expect(signals.filter((signal) => signal.name === 'avl_value')).toHaveLength(1);
+      expect(signals.some((signal) => signal.name === 'avl_2_value')).toBe(false);
       expect(localLogger.warns).toHaveLength(1);
     }),
   );
