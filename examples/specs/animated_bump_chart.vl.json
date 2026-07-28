@@ -1,0 +1,42 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "US unemployment by industry, ranked against each other and drawn as the animation advances. A window transform ranks the industries within each month, the selection holds every month up to the clock so the lines extend rather than sweep, and the key carries each industry across keyframes so a line slides between ranks instead of jumping.",
+  "width": 600,
+  "height": 300,
+  "data": {"url": "data/unemployment-across-industries.json"},
+  "transform": [
+    {
+      "window": [{"op": "rank", "as": "rank"}],
+      "groupby": ["date"],
+      "sort": [{"field": "count", "order": "descending"}]
+    },
+    {"filter": {"param": "upto"}}
+  ],
+  "params": [
+    {
+      "name": "upto",
+      "select": {
+        "type": "point",
+        "on": "timer",
+        "predicate": {"field": "date", "lte": {"expr": "anim_value"}}
+      }
+    }
+  ],
+  "mark": {"type": "line", "interpolate": "monotone", "strokeWidth": 2},
+  "encoding": {
+    "x": {"field": "date", "type": "temporal", "title": null},
+    "y": {
+      "field": "rank",
+      "type": "quantitative",
+      "scale": {"reverse": true, "nice": false},
+      "axis": {"tickMinStep": 1}
+    },
+    "color": {"field": "series", "type": "nominal", "title": "industry"},
+    "time": {
+      "field": "date",
+      "type": "ordinal",
+      "scale": {"range": {"step": 120}},
+      "key": {"field": "series"}
+    }
+  }
+}

@@ -26,6 +26,7 @@ import {UnitModel} from '../unit.js';
 import {parseSelectionExtent} from './parse.js';
 import {SelectionProjection} from './project.js';
 import {ANIM_VALUE, CURR, PAUSE_STORE} from './point.js';
+import {animationInterpolationData} from '../animation.js';
 import {DataSourceType} from '../../data.js';
 
 export function assembleProjection(proj: SelectionProjection) {
@@ -243,6 +244,11 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
           });
 
           model.animationFrameSource = sourceData.name;
+
+          // Interpolation datasets derive from the frame dataset, so they
+          // exist exactly when it does. Their builder asks the model whether it
+          // animates, which holds only after the assignment above.
+          animationData.push(...animationInterpolationData(model, sourceData));
         }
       }
     }

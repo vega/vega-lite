@@ -535,6 +535,18 @@ export type PolarDef<F extends Field> = PositionFieldDefBase<F> | PositionDatumD
 export type TimeDef<F extends Field> = TimeFieldDef<F>;
 export interface TimeMixins {
   /**
+   * A field identifying each mark across keyframes, so Vega-Lite can tween a
+   * mark towards its own next position. Without a key the animation runs as a
+   * flipbook, in which each frame replaces the one before it. With a key, a
+   * mark present in consecutive frames slides between its two positions.
+   *
+   * Interpolation requires discrete keyframes, so it applies to `band` time
+   * scales. A mark with no counterpart in the next frame disappears for the
+   * transition.
+   */
+  key?: TimeKey | boolean;
+
+  /**
    * Whether the animated marks' scales should be recomputed from the current
    * frame rather than held fixed across the whole animation. Rescaling keeps
    * each frame's data filling the view -- as in a racing bar chart, where the
@@ -551,6 +563,26 @@ export interface TimeMixins {
   rescale?: boolean;
 }
 export type TimeFieldDef<F extends Field> = ScaleFieldDef<F, StandardType> & TimeMixins;
+
+export interface TimeKey {
+  /**
+   * The field whose value identifies a mark across keyframes.
+   *
+   * Omit the field when a keyframe holds a single mark, as in a line whose
+   * leading end advances. One mark carries forward to the next keyframe, and a
+   * lone mark needs no field to distinguish it. Writing `"key": true` is
+   * shorthand for omitting the field.
+   */
+  field?: FieldName;
+
+  /**
+   * Whether the last keyframe tweens back around to the first rather than
+   * settling on the final frame.
+   *
+   * __Default value:__ `false`
+   */
+  loop?: boolean;
+}
 
 export function getBandPosition({
   fieldDef,

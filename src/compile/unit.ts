@@ -26,6 +26,7 @@ import {
   isTypedFieldDef,
   MarkPropFieldOrDatumDef,
   PositionFieldDef,
+  TimeFieldDef,
 } from '../channeldef.js';
 import {Config} from '../config.js';
 import {isGraticuleGenerator} from '../data.js';
@@ -63,6 +64,7 @@ import {
 } from './selection/assemble.js';
 import {parseUnitSelection} from './selection/parse.js';
 import {CURR} from './selection/point.js';
+import {animationKey, INTERPOLATE, interpolateMarkEncodings} from './animation.js';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -342,12 +344,15 @@ export class UnitModel extends ModelWithField {
    */
   public correctDataNames = (mark: VgMarkGroup) => {
     const animated = this.isAnimated;
+    // An interpolating animation draws from the joined dataset instead, because
+    // its marks need their successor in the next frame to tween towards.
+    const frame = animationKey(this) ? INTERPOLATE : CURR;
 
     // for normal data references
     if (mark.from?.data) {
       mark.from.data = this.lookupDataSource(mark.from.data);
       if (animated) {
-        mark.from.data = mark.from.data + CURR;
+        mark.from.data = mark.from.data + frame;
       }
     }
 
@@ -359,8 +364,27 @@ export class UnitModel extends ModelWithField {
     if (mark.from?.facet?.data) {
       mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
       if (animated) {
-        mark.from.facet.data = mark.from.facet.data + CURR;
+        mark.from.facet.data = mark.from.facet.data + frame;
       }
+    }
+
+    return mark;
+  };
+
+  /**
+   * Rewrites scaled encodings to tween towards the next keyframe. Grouped path
+   * marks nest their real encodings one level down, in the group's child.
+   */
+  private interpolateMarks = (mark: VgMarkGroup) => {
+    if (!animationKey(this)) {
+      return mark;
+    }
+
+    const rescale = !!(this.encoding.time as TimeFieldDef<string>)?.rescale;
+    const target = mark.from?.facet ? ((mark as any).marks?.[0] ?? mark) : mark;
+
+    if (target.encode?.update) {
+      interpolateMarkEncodings(this, target.encode.update, rescale);
     }
 
     return mark;
@@ -376,7 +400,7 @@ export class UnitModel extends ModelWithField {
       marks = assembleUnitSelectionMarks(this, marks);
     }
 
-    return marks.map(this.correctDataNames);
+    return marks.map(this.correctDataNames).map(this.interpolateMarks);
   }
   public assembleGroupStyle(): string | string[] {
     const {style} = this.view || {};

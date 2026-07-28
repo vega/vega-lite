@@ -344,6 +344,20 @@ Note: `time` encoding animations currently have a few restrictions. See the [exa
 
 - currently, only unit specifications are supported (no multi-view animations)
 
+{:#time-key}
+
+### Interpolating Between Frames
+
+Without a `key`, an animation runs as a flipbook. Each frame replaces the one before it, and a mark that moves jumps to its new position. `key` gives the field identifying a mark across frames, so Vega-Lite can match a mark to itself in the next frame and tween between the two positions:
+
+```json
+"time": {"field": "year", "type": "ordinal", "key": {"field": "country"}}
+```
+
+Set `"loop": true` on the key to tween from the last keyframe back around to the first.
+
+Vega-Lite interpolates positions after scaling, so marks travel smoothly even when the scale maps category names rather than numbers, and bars slide past each other as they reorder. A mark with no counterpart in the next frame disappears for the transition rather than freezing at its last position. Interpolation applies to `band` time scales, because a linear time scale is already continuous and has no next frame to head towards.
+
 {:#time-rescale}
 
 ### Rescaling
@@ -362,7 +376,7 @@ Vega-Lite never rescales a scale with a discrete output range (`ordinal`, `bin-o
 
 In addition to the general [field definition properties](#field-def), the `time` field definition may include the properties listed below.
 
-{% include table.html props="scale,rescale,sort" source="TimeFieldDef" %}
+{% include table.html props="scale,key,rescale,sort" source="TimeFieldDef" %}
 
 {:#mark-prop}
 

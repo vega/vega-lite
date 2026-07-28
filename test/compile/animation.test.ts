@@ -428,4 +428,165 @@ describe('animation', () => {
       });
     });
   });
+  describe('interpolation', () => {
+    const interpolated = (time: any): TopLevelSpec => ({
+      data: {url: 'data/gapminder.json'},
+      params: [{name: 'frame', select: {type: 'point', on: 'timer'}}],
+      transform: [{filter: {param: 'frame'}}],
+      mark: 'point',
+      encoding: {
+        x: {field: 'fertility', type: 'quantitative'},
+        y: {field: 'life_expect', type: 'quantitative'},
+        color: {field: 'cluster', type: 'nominal'},
+        time: {field: 'year', type: 'ordinal', ...time},
+      },
+    });
+
+    const keyed = compile(interpolated({key: {field: 'country'}})).spec;
+    const signal = (name: string) => keyed.signals.find((s) => s.name === name) as any;
+    const dataset = (name: string) => keyed.data.find((d) => d.name === name);
+
+    it('emits no interpolation machinery without a key', () => {
+      const plain = compile(interpolated({})).spec;
+      expect(plain.signals.filter((s) => /anim_tween|anim_value_next|t_index/.test(s.name))).toHaveLength(0);
+      expect(plain.data.filter((d) => /_eq|_next|_interpolate/.test(d.name))).toHaveLength(0);
+      expect(plain.marks[0].from.data).toMatch(/_curr$/);
+    });
+
+    it('joins on a synthesized constant when the key names no field', () => {
+      // A keyframe holding one mark has nothing to tell its rows apart by, so
+      // `"key": true` asks for interpolation without naming a field.
+      for (const key of [true, {}]) {
+        const single = compile(interpolated({key})).spec;
+        const eq = single.data.find((d) => d.name.endsWith('_eq')) as any;
+        const eqNext = single.data.find((d) => d.name.endsWith('_eq_next')) as any;
+
+        expect(eq.transform).toContainEqual({type: 'formula', expr: '0', as: 'animation_key'});
+        expect(eqNext.transform[0]).toMatchObject({
+          type: 'lookup',
+          key: 'animation_key',
+          fields: ['animation_key'],
+        });
+        // The tween machinery is emitted just as it is for a keyed animation.
+        expect(single.signals.filter((s) => /anim_tween|anim_value_next/.test(s.name))).toHaveLength(2);
+      }
+    });
+
+    it('does not synthesize a constant when the key names a field', () => {
+      const eq = dataset('source_0_eq') as any;
+      expect(eq.transform.filter((t: any) => t.type === 'formula')).toHaveLength(0);
+      expect((dataset('source_0_eq_next') as any).transform[0].key).toBe('country');
+    });
+
+    it('does not interpolate over a linear time scale', () => {
+      // a linear time scale is already continuous; there are no keyframes to
+      // move between, because every instant is its own frame
+      const linear = compile(
+        interpolated({type: 'quantitative', scale: {type: 'linear'}, key: {field: 'country'}}),
+      ).spec;
+      expect(linear.signals.filter((s) => s.name === 'anim_tween')).toHaveLength(0);
+    });
+
+    it('tracks the frame it is heading towards', () => {
+      expect(signal('t_index').update).toBe('indexof(frame_domain, anim_value)');
+      expect(signal('anim_value_next').update).toBe(
+        't_index < length(frame_domain) - 1 ? frame_domain[t_index + 1] : max_extent',
+      );
+    });
+
+    it('loops back to the first frame when asked', () => {
+      const looping = compile(interpolated({key: {field: 'country', loop: true}})).spec;
+      const next = looping.signals.find((s) => s.name === 'anim_value_next') as any;
+      expect(next.update).toContain('min_extent');
+    });
+
+    it('measures progress across the gap between frames', () => {
+      // guarded, because at the end of a non-looping animation the two frames
+      // coincide and the ratio is undefined
+      expect(signal('anim_tween').update).toBe(
+        'anim_value_next !== anim_value ? ' +
+          '(eased_anim_clock - scale("time", anim_value)) / ' +
+          '(scale("time", anim_value_next) - scale("time", anim_value)) : 0',
+      );
+    });
+
+    it('joins each frame to its successor by the key field', () => {
+      expect(dataset('source_0_eq').transform).toContainEqual({
+        type: 'filter',
+        expr: 'datum["year"] === anim_value',
+      });
+      expect(dataset('source_0_next').transform).toContainEqual({
+        type: 'filter',
+        expr: 'datum["year"] === anim_value_next',
+      });
+      expect(dataset('source_0_eq_next').transform).toContainEqual({
+        type: 'lookup',
+        from: 'source_0_next',
+        key: 'country',
+        fields: ['country'],
+        as: ['next'],
+      });
+    });
+
+    it('draws from the joined dataset unioned with the frame dataset', () => {
+      // the frame dataset contributes rows outside the current keyframe, which a
+      // cumulative or windowed predicate admits and which are drawn where they are
+      expect(dataset('source_0_interpolate').source).toEqual(['source_0_curr', 'source_0_eq_next']);
+      expect(keyed.marks[0].from.data).toBe('source_0_interpolate');
+    });
+
+    it('drops marks with no successor rather than freezing them', () => {
+      expect(dataset('source_0_interpolate').transform).toContainEqual({
+        type: 'filter',
+        expr: 'datum["year"] === anim_value ? isValid(datum.next) : true',
+      });
+    });
+
+    it('interpolates position after scaling', () => {
+      // scaling first means a mark still moves smoothly when the scale itself is
+      // not numeric -- between two band positions, say
+      expect(keyed.marks[0].encode.update.x).toEqual({
+        signal:
+          'isValid(datum.next) ? lerp([scale("x", datum["fertility"]), scale("x", datum.next["fertility"])], anim_tween) : scale("x", datum["fertility"])',
+      });
+    });
+
+    it('leaves encodings on a discrete-range scale alone', () => {
+      expect(keyed.marks[0].encode.update.stroke).toEqual({scale: 'color', field: 'cluster'});
+    });
+
+    describe('with rescale', () => {
+      const both = compile({
+        data: {url: 'data/category-brands.csv'},
+        params: [{name: 'frame', select: {type: 'point', on: 'timer'}}],
+        transform: [{filter: {param: 'frame'}}],
+        mark: 'bar',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'name', type: 'nominal', sort: {field: 'value', order: 'descending'}},
+          time: {field: 'date', type: 'ordinal', rescale: true, key: {field: 'name'}},
+        },
+      } as TopLevelSpec).spec;
+
+      it('builds a scale for the next frame', () => {
+        const next = both.scales.find((s) => s.name === 'y_next') as any;
+        expect(next).toBeDefined();
+        expect(next.domain.data).toBe('data_0_next');
+      });
+
+      it('reads the successor position off the next frame scale', () => {
+        // against the current frame's domain the mark would aim somewhere it is
+        // not going, since rescaling moves the domain every frame
+        expect((both.marks[0].encode.update.y as any).signal).toContain('scale("y_next", datum.next["name"])');
+      });
+
+      it('points every scale reference at a scale that exists', () => {
+        const names = new Set(both.scales.map((s) => s.name));
+        const encode = JSON.stringify(both.marks[0].encode);
+        for (const [, name] of encode.matchAll(/scale\(\\"([^\\]+)\\"/g)) {
+          expect(names).toContain(name);
+        }
+      });
+    });
+  });
 });

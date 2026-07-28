@@ -14,13 +14,19 @@ import {vals} from '../../util.js';
 import {BRUSH} from './interval.js';
 import {TUPLE_FIELDS} from './project.js';
 import {TIME} from '../../channel.js';
+import {animationInterpolationSignals} from '../animation.js';
+import {UnitModel} from '../unit.js';
 
 export const CURR = '_curr';
 export const ANIM_VALUE = 'anim_value';
 export const ANIM_CLOCK = 'anim_clock';
 export const EASED_ANIM_CLOCK = 'eased_anim_clock';
 export const MIN_EXTENT = 'min_extent';
+export const MAX_EXTENT = 'max_extent';
 export const MAX_RANGE_EXTENT = 'max_range_extent';
+export const T_INDEX = 't_index';
+export const ANIM_VALUE_NEXT = 'anim_value_next';
+export const ANIM_TWEEN = 'anim_tween';
 export const LAST_TICK = 'last_tick_at';
 export const IS_PLAYING = 'is_playing';
 // Vega labels a bound widget with its signal's name. The animation signals are
@@ -45,7 +51,6 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
     },
 
     // scale signals
-    // TODO(jzong): uncomment commented signals below when implementing interpolation https://github.com/vega/vega-lite/issues/9590
     {name: `${selectionName}_domain`, init: `domain('${scaleName}')`},
     {name: MIN_EXTENT, init: `extent(${selectionName}_domain)[0]`},
     // {name: 'max_extent', init: `extent(${selectionName}_domain)[1]`},
@@ -269,18 +274,22 @@ const point: SelectionCompiler<'point'> = {
 
     if (isTimerSelection(selCmpt)) {
       // timer event: selection is for animation
-      return signals.concat(animationSignals(selCmpt.name, model.scaleName(TIME)), [
-        {
-          // An `update` expression rather than an `on` handler: unlike a
-          // direct-manipulation selection, an animation always has a current
-          // frame, including before any event has fired. Event handlers do not
-          // run during the initial pulse, so an `on` handler here leaves the
-          // selection store empty for the first render -- the frame filter
-          // matches nothing until the first timer tick lands.
-          name: name + TUPLE,
-          update: `{${update}}`,
-        },
-      ]);
+      return signals.concat(
+        animationSignals(selCmpt.name, model.scaleName(TIME)),
+        animationInterpolationSignals(model as UnitModel, selCmpt.name),
+        [
+          {
+            // An `update` expression rather than an `on` handler: unlike a
+            // direct-manipulation selection, an animation always has a current
+            // frame, including before any event has fired. Event handlers do not
+            // run during the initial pulse, so an `on` handler here leaves the
+            // selection store empty for the first render -- the frame filter
+            // matches nothing until the first timer tick lands.
+            name: name + TUPLE,
+            update: `{${update}}`,
+          },
+        ],
+      );
     } else {
       const events: Stream[] = selCmpt.events;
       return signals.concat([

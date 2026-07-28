@@ -111,7 +111,10 @@
     "time": {
       "field": "year",
       "type": "ordinal",
-      "rescale": true
+      "rescale": true,
+      "key": {
+        "field": "age"
+      }
     }
   }
 }

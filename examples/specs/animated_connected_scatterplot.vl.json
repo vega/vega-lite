@@ -1,0 +1,60 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "The connected scatterplot of US driving, drawn as the animation advances. The selection holds every year up to the clock rather than the current one, so the path accumulates instead of showing a single point, and `\"key\": true` carries the single moving vertex across keyframes so the leading end extends smoothly rather than jumping a segment at a time.",
+  "data": {
+    "url": "data/driving.json"
+  },
+  "transform": [
+    {
+      "filter": {
+        "param": "upto"
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "upto",
+      "select": {
+        "type": "point",
+        "on": "timer",
+        "predicate": {
+          "field": "year",
+          "lte": {
+            "expr": "anim_value"
+          }
+        }
+      }
+    }
+  ],
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "miles",
+      "type": "quantitative",
+      "scale": {
+        "zero": false
+      }
+    },
+    "y": {
+      "field": "gas",
+      "type": "quantitative",
+      "scale": {
+        "zero": false
+      }
+    },
+    "order": {
+      "field": "year"
+    },
+    "time": {
+      "field": "year",
+      "scale": {
+        "type": "band",
+        "range": {
+          "step": 200
+        }
+      },
+      "key": true,
+      "type": "ordinal"
+    }
+  }
+}

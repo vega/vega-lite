@@ -1,0 +1,266 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "US unemployment by industry, ranked against each other and drawn as the animation advances. A window transform ranks the industries within each month, the selection holds every month up to the clock so the lines extend rather than sweep, and the key carries each industry across keyframes so a line slides between ranks instead of jumping.",
+  "background": "white",
+  "padding": 5,
+  "width": 600,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {"name": "upto_store"},
+    {
+      "name": "source_0",
+      "url": "data/unemployment-across-industries.json",
+      "format": {"type": "json", "parse": {"date": "date"}},
+      "transform": [
+        {
+          "type": "window",
+          "params": [null],
+          "as": ["rank"],
+          "ops": ["rank"],
+          "fields": [null],
+          "sort": {"field": ["count"], "order": ["descending"]},
+          "groupby": ["date"]
+        }
+      ]
+    },
+    {
+      "name": "source_0_curr",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!length(data(\"upto_store\")) || vlSelectionTest(\"upto_store\", datum)"
+        }
+      ]
+    },
+    {
+      "name": "source_0_eq",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "datum[\"date\"] === anim_value"}
+      ]
+    },
+    {
+      "name": "source_0_next",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "datum[\"date\"] === anim_value_next"}
+      ]
+    },
+    {
+      "name": "source_0_eq_next",
+      "source": "source_0_eq",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "source_0_next",
+          "key": "series",
+          "fields": ["series"],
+          "as": ["next"]
+        },
+        {"type": "filter", "expr": "isValid(datum.next)"}
+      ]
+    },
+    {
+      "name": "source_0_interpolate",
+      "source": ["source_0_curr", "source_0_eq_next"],
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"date\"] === anim_value ? isValid(datum.next) : true"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "upto",
+      "update": "vlSelectionResolve(\"upto_store\", \"union\", true, true)"
+    },
+    {
+      "name": "anim_clock",
+      "init": "0",
+      "on": [
+        {
+          "events": {"type": "timer", "throttle": 16.666666666666668},
+          "update": "is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock"
+        }
+      ]
+    },
+    {
+      "name": "last_tick_at",
+      "init": "now()",
+      "on": [
+        {
+          "events": [{"signal": "anim_clock"}, {"signal": "is_playing"}],
+          "update": "now()"
+        }
+      ]
+    },
+    {"name": "is_playing", "init": "true"},
+    {"name": "eased_anim_clock", "update": "anim_clock"},
+    {"name": "upto_domain", "init": "domain('time')"},
+    {"name": "min_extent", "init": "extent(upto_domain)[0]"},
+    {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
+    {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
+    {"name": "max_extent", "init": "extent(upto_domain)[1]"},
+    {"name": "t_index", "update": "indexof(upto_domain, anim_value)"},
+    {
+      "name": "anim_value_next",
+      "update": "t_index < length(upto_domain) - 1 ? upto_domain[t_index + 1] : max_extent"
+    },
+    {
+      "name": "anim_tween",
+      "update": "anim_value_next !== anim_value ? (eased_anim_clock - scale(\"time\", anim_value)) / (scale(\"time\", anim_value_next) - scale(\"time\", anim_value)) : 0"
+    },
+    {
+      "name": "upto_tuple",
+      "update": "{unit: \"\", fields: upto_tuple_fields, values: [anim_value]}"
+    },
+    {
+      "name": "upto_tuple_fields",
+      "value": [{"field": "date", "type": "E-LTE", "channel": "x"}]
+    },
+    {
+      "name": "upto_modify",
+      "update": "modify(\"upto_store\", upto_tuple, true)"
+    }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "source_0_interpolate",
+          "groupby": ["series"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "x"},
+          "interactive": true,
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "strokeWidth": {"value": 2},
+              "interpolate": {"value": "monotone"},
+              "cursor": {"value": "pointer"},
+              "stroke": {"scale": "color", "field": "series"},
+              "description": {
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; rank: \" + (format(datum[\"rank\"], \"\")) + \"; industry: \" + (isValid(datum[\"series\"]) ? isArray(datum[\"series\"]) ? join(datum[\"series\"], ' ') : datum[\"series\"] : \"\"+datum[\"series\"])"
+              },
+              "x": {
+                "signal": "isValid(datum.next) ? lerp([scale(\"x\", datum[\"date\"]), scale(\"x\", datum.next[\"date\"])], anim_tween) : scale(\"x\", datum[\"date\"])"
+              },
+              "y": {
+                "signal": "isValid(datum.next) ? lerp([scale(\"y\", datum[\"rank\"]), scale(\"y\", datum.next[\"rank\"])], anim_tween) : scale(\"y\", datum[\"rank\"])"
+              },
+              "defined": {
+                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"rank\"]) && isFinite(+datum[\"rank\"])"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "date"},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "rank"},
+      "range": [{"signal": "height"}, 0],
+      "reverse": true,
+      "nice": false,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "series", "sort": true},
+      "range": "category"
+    },
+    {
+      "name": "time",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "date", "sort": true},
+      "range": {"step": 120}
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "tickMinStep": 1,
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "rank",
+      "tickMinStep": 1,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [{"title": "industry", "stroke": "color", "symbolType": "stroke"}]
+}
