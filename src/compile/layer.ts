@@ -92,9 +92,16 @@ export class LayerModel extends Model {
 
   // TODO: Support same named selections across children.
   public assembleSignals(): NewSignal[] {
-    return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleSignals());
-    }, assembleAxisSignals(this));
+    // A selection declared on the layer itself is parsed into every child, so
+    // each child assembles the same signals for it. They are identical, and Vega
+    // rejects a duplicate signal name, so keep the first of each.
+    const seen = new Set<string>();
+    const dedupe = (signals: NewSignal[]) => signals.filter((s) => !seen.has(s.name) && seen.add(s.name));
+
+    return this.children.reduce(
+      (signals, child) => signals.concat(dedupe(child.assembleSignals())),
+      dedupe(assembleAxisSignals(this)),
+    );
   }
 
   public assembleLayoutSignals(): NewSignal[] {
