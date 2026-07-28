@@ -531,9 +531,9 @@ describe('Animated Selection', () => {
     untransformedModel.parseData();
     optimizeDataflow(untransformedModel.component.data, untransformedModel);
 
-    expect(assembleUnitSelectionData(untransformedModel, assembleRootData(untransformedModel.component.data, {}))).toEqual(
-      expect.arrayContaining([{name: 'source_0_curr', source: 'source_0'}]),
-    );
+    expect(
+      assembleUnitSelectionData(untransformedModel, assembleRootData(untransformedModel.component.data, {})),
+    ).toEqual(expect.arrayContaining([{name: 'source_0_curr', source: 'source_0'}]));
   });
 
   it('moves timer value filters onto animation frame dataset', () => {
@@ -597,10 +597,7 @@ describe('Animated Selection', () => {
         ],
       },
       params: [{name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}}],
-      transform: [
-        {filter: 'datum.year <= avl_value'},
-        {joinaggregate: [{op: 'sum', field: 'value', as: 'total'}]},
-      ],
+      transform: [{filter: 'datum.year <= avl_value'}, {joinaggregate: [{op: 'sum', field: 'value', as: 'total'}]}],
       mark: 'line',
       encoding: {
         x: {field: 'year', type: 'ordinal'},
@@ -669,9 +666,7 @@ describe('Animated Selection', () => {
     const currentFrame = datasets.find((d) => d.name.endsWith('_curr'));
     const source = datasets.find((d) => d.name === currentFrame.source);
 
-    expect(source.transform).toEqual([
-      expect.objectContaining({expr: expect.stringContaining('data("pick_store")')}),
-    ]);
+    expect(source.transform).toEqual([expect.objectContaining({expr: expect.stringContaining('data("pick_store")')})]);
     expect(currentFrame.transform[0]).toEqual(expect.objectContaining({expr: 'datum.year <= avl_value'}));
   });
 

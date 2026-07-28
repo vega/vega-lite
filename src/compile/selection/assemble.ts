@@ -161,8 +161,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
       const timerStore = `data(${stringValue(selCmpt.name + STORE)})`;
       const animationStart = (sourceData.transform ?? []).findIndex(
         (t) =>
-          t.type === 'filter' &&
-          (t.expr.includes(timerStore) || getDependentSignals(t.expr).has(timerValueSignal)),
+          t.type === 'filter' && (t.expr.includes(timerStore) || getDependentSignals(t.expr).has(timerValueSignal)),
       );
 
       // create dataset to hold current animation frame
