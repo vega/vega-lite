@@ -132,7 +132,7 @@ The aptly named `resolve` property addresses this ambiguity, and can be set to o
 
 In addition to all [common selection properties](#selection-props), point selections support the following properties:
 
-{% include table.html props="toggle,nearest" source="PointSelectionConfig" %}
+{% include table.html props="toggle,nearest,pause" source="PointSelectionConfig" %}
 
 ### `toggle`
 
@@ -165,6 +165,29 @@ The `nearest` transform also respects any [position encoding projections](projec
 #### Current Limitations
 
 - The `nearest` property is not supported for multi-element mark types (i.e., `line` and `area`). For these mark types, consider layering a discrete mark type (e.g., `point`) with a 0-value `opacity` as in the last example above.
+
+{:#animation-pause}
+
+### Pausing an Animation
+
+A selection with `"on": "timer"` drives an [animation](../encoding.html#time). A filter on the timer stops playback until the viewer restarts it, and `pause` holds the clock on chosen frames without stopping it.
+
+To hand the viewer a switch, filter the timer on your own parameter:
+
+```json
+"params": [
+  {"name": "frame", "select": {"type": "point", "on": {"type": "timer", "filter": "playing"}}},
+  {"name": "playing", "value": true, "bind": {"input": "checkbox"}}
+]
+```
+
+A specification that supplies this filter owns the switch, and Vega-Lite emits no `is_playing` signal of its own.
+
+To dwell on particular moments in the data, use `pause`. Each entry gives a value in the time field's domain and a duration in milliseconds to hold on it:
+
+```json
+"pause": [{"value": 1965, "duration": 2000}]
+```
 
 {:#interval}
 

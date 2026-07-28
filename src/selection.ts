@@ -109,6 +109,26 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
    * __See also:__ [`nearest` examples](https://vega.github.io/vega-lite/docs/selection.html#nearest) documentation.
    */
   nearest?: boolean;
+
+  /**
+   * For animated selections (those with `"on": "timer"`), frames to dwell on
+   * before playback continues. Each entry gives a value in the time field's
+   * domain and a duration in milliseconds to hold on it, which draws attention
+   * to a turning point in the data without slowing the whole animation down.
+   */
+  pause?: AnimationPause[];
+}
+
+export interface AnimationPause {
+  /**
+   * The value in the time field's domain to pause on.
+   */
+  value: SelectionInit;
+
+  /**
+   * How long to pause, in milliseconds.
+   */
+  duration: number;
 }
 
 // Similar to BaseMarkConfig but the field documentations are specificly for an interval mark.

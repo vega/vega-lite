@@ -36,6 +36,11 @@ const racingBars = (rescale: boolean): TopLevelSpec => ({
 const scaleDomains = (spec: TopLevelSpec) =>
   Object.fromEntries(compile(spec).spec.scales.map((s) => [s.name, (s.domain as any)?.data]));
 
+const clockGate = (spec: TopLevelSpec) => {
+  const update = (compile(spec).spec.signals.find((s) => s.name === 'anim_clock') as any).on[0].update;
+  return update.slice(0, update.indexOf(' ? '));
+};
+
 describe('animation', () => {
   describe('frame filter placement', () => {
     it('moves the frame filter off an upstream dataset', () => {
@@ -214,6 +219,95 @@ describe('animation', () => {
           expect(names).toContain(data);
         }
       }
+    });
+  });
+  describe('playback gate', () => {
+    it('gates on an is_playing switch of its own by default', () => {
+      const compiled = compile(gapminder({on: 'timer'})).spec;
+      expect(clockGate(gapminder({on: 'timer'}))).toBe('is_playing');
+      expect(compiled.signals).toEqual(expect.arrayContaining([{name: 'is_playing', init: 'true'}]));
+    });
+
+    it('defers to the timer event filter and emits no switch of its own', () => {
+      // otherwise the internal signal collides with the very parameter the
+      // filter refers to, and the spec ends up with two `is_playing` signals
+      const spec = gapminder({on: {type: 'timer', filter: 'is_playing'}}, [
+        {name: 'is_playing', value: true, bind: {input: 'checkbox'}},
+      ]);
+      const compiled = compile(spec).spec;
+
+      expect(clockGate(spec)).toBe('is_playing');
+      expect(compiled.signals.filter((s) => s.name === 'is_playing')).toEqual([
+        {name: 'is_playing', value: true, bind: {input: 'checkbox'}},
+      ]);
+    });
+
+    it('conjoins multiple filter expressions', () => {
+      const spec = gapminder({on: {type: 'timer', filter: ['playing', 'ready']}}, [
+        {name: 'playing', value: true},
+        {name: 'ready', value: true},
+      ]);
+      expect(clockGate(spec)).toBe('playing && ready');
+    });
+
+    it('resets the tick reference whenever the gate changes', () => {
+      // without this a pause banks up elapsed time and the animation jumps on resume
+      const compiled = compile(gapminder({on: 'timer'})).spec;
+      const lastTick = compiled.signals.find((s) => s.name === 'last_tick_at') as any;
+      expect(lastTick.on[0].events).toEqual([{signal: 'anim_clock'}, {signal: 'is_playing'}]);
+    });
+  });
+
+  describe('data-driven pause', () => {
+    const paused = gapminder({on: 'timer', pause: [{value: 1965, duration: 2000}]});
+
+    it('holds the pause entries in a store filtered to the current frame', () => {
+      const compiled = compile(paused).spec;
+      expect(compiled.data).toEqual(
+        expect.arrayContaining([
+          {
+            name: 'frame_pause_store',
+            values: [{value: 1965, duration: 2000}],
+            transform: [{type: 'filter', expr: 'datum.value === anim_value'}],
+          },
+        ]),
+      );
+    });
+
+    it('gates playback on the dwell having elapsed', () => {
+      expect(clockGate(paused)).toBe('is_playing && frame_pause_playing');
+    });
+
+    it('restarts the dwell timer on arriving at a new pause point', () => {
+      const compiled = compile(paused).spec;
+      expect(compiled.signals).toEqual(
+        expect.arrayContaining([
+          {
+            name: 'frame_pause_duration',
+            update: 'length(data("frame_pause_store")) ? data("frame_pause_store")[0].duration : null',
+          },
+          {
+            name: 'frame_pause_since',
+            init: 'now()',
+            on: [{events: [{signal: 'frame_pause_duration'}], update: 'now()'}],
+          },
+        ]),
+      );
+    });
+
+    it('plays through frames that are not pause points', () => {
+      const compiled = compile(paused).spec;
+      const playing = compiled.signals.find((s) => s.name === 'frame_pause_playing') as any;
+      // a null duration means "not a pause point", which must read as playing
+      expect(playing.on[0].update).toBe(
+        'frame_pause_duration ? (now() - frame_pause_since > frame_pause_duration) : true',
+      );
+    });
+
+    it('emits no pause machinery without a pause', () => {
+      const compiled = compile(gapminder({on: 'timer'})).spec;
+      expect(compiled.signals.filter((s) => /pause/.test(s.name))).toHaveLength(0);
+      expect(compiled.data.filter((d) => /pause/.test(d.name))).toHaveLength(0);
     });
   });
 });

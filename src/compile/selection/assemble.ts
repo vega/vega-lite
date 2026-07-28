@@ -14,7 +14,7 @@ import {ScaleComponent} from '../scale/component.js';
 import {UnitModel} from '../unit.js';
 import {parseSelectionExtent} from './parse.js';
 import {SelectionProjection} from './project.js';
-import {CURR} from './point.js';
+import {ANIM_VALUE, CURR, PAUSE_STORE} from './point.js';
 import {DataSourceType} from '../../data.js';
 
 export function assembleProjection(proj: SelectionProjection) {
@@ -145,6 +145,16 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
     const contains = [...selectionData, ...data].filter((d) => d.name === selCmpt.name + STORE);
     if (!contains.length) {
       selectionData.push(store);
+    }
+
+    if (selCmpt.pause?.length && isTimerSelection(selCmpt)) {
+      // This store holds the current frame's pause entry and nothing else, so
+      // the signals reading it need only test whether it is empty.
+      animationData.push({
+        name: selCmpt.name + PAUSE_STORE,
+        values: selCmpt.pause.map(({value, duration}) => ({value: assembleInit(value, false), duration})),
+        transform: [{type: 'filter', expr: `datum.value === ${ANIM_VALUE}`}],
+      });
     }
 
     if (isTimerSelection(selCmpt) && data.length) {

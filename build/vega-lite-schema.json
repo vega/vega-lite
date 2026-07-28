@@ -130,6 +130,24 @@
         }
       ]
     },
+    "AnimationPause": {
+      "additionalProperties": false,
+      "properties": {
+        "duration": {
+          "description": "How long to pause, in milliseconds.",
+          "type": "number"
+        },
+        "value": {
+          "$ref": "#/definitions/SelectionInit",
+          "description": "The value in the time field's domain to pause on."
+        }
+      },
+      "required": [
+        "value",
+        "duration"
+      ],
+      "type": "object"
+    },
     "AnyMark": {
       "anyOf": [
         {
@@ -19534,6 +19552,13 @@
           ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).\n\n__See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation."
         },
+        "pause": {
+          "description": "For animated selections (those with `\"on\": \"timer\"`), frames to dwell on before playback continues. Each entry gives a value in the time field's domain and a duration in milliseconds to hold on it, which draws attention to a turning point in the data without slowing the whole animation down.",
+          "items": {
+            "$ref": "#/definitions/AnimationPause"
+          },
+          "type": "array"
+        },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
           "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\nOne of:\n- `\"global\"` -- only one brush exists for the entire SPLOM. When the user begins to drag, any previous brushes are cleared, and a new one is constructed.\n- `\"union\"` -- each cell contains its own brush, and points are highlighted if they lie within _any_ of these individual brushes.\n- `\"intersect\"` -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.\n\n__Default value:__ `global`.\n\n__See also:__ [`resolve` examples](https://vega.github.io/vega-lite/docs/selection.html#resolve) in the documentation."
@@ -19601,6 +19626,13 @@
             }
           ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).\n\n__See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation."
+        },
+        "pause": {
+          "description": "For animated selections (those with `\"on\": \"timer\"`), frames to dwell on before playback continues. Each entry gives a value in the time field's domain and a duration in milliseconds to hold on it, which draws attention to a turning point in the data without slowing the whole animation down.",
+          "items": {
+            "$ref": "#/definitions/AnimationPause"
+          },
+          "type": "array"
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
