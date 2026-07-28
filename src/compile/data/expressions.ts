@@ -38,3 +38,41 @@ export function getDependentFields(expression: string) {
 
   return dependents;
 }
+
+export function getDependentSignals(expression: string) {
+  const ast = parseExpression(expression);
+  const dependents = new Set<string>();
+
+  function visit(node: any) {
+    switch (node.type) {
+      case 'Identifier':
+        if (node.name !== 'datum') {
+          dependents.add(node.name);
+        }
+        break;
+      case 'MemberExpression':
+        visit(node.object);
+        if (node.computed) {
+          visit(node.property);
+        }
+        break;
+      case 'CallExpression':
+        node.arguments.forEach(visit);
+        break;
+      case 'Property':
+        visit(node.value);
+        break;
+      default:
+        for (const child of Object.values(node)) {
+          if (Array.isArray(child)) {
+            child.forEach((item) => item?.type && visit(item));
+          } else if ((child as any)?.type) {
+            visit(child);
+          }
+        }
+    }
+  }
+
+  visit(ast);
+  return dependents;
+}

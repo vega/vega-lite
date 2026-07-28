@@ -16,6 +16,7 @@ import {parseSelectionExtent} from './parse.js';
 import {SelectionProjection} from './project.js';
 import {CURR} from './point.js';
 import {DataSourceType} from '../../data.js';
+import {getDependentSignals} from '../data/expressions.js';
 
 export function assembleProjection(proj: SelectionProjection) {
   const {signals, hasLegend, index, ...rest} = proj;
@@ -157,8 +158,11 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
 
       // find animation-related filters to be applied on the per-frame dataset
       const timerValueSignal = `${selCmpt.name}_value`;
+      const timerStore = `data(${stringValue(selCmpt.name + STORE)})`;
       const animationStart = (sourceData.transform ?? []).findIndex(
-        (t) => t.type === 'filter' && (t.expr.includes('vlSelectionTest') || t.expr.includes(timerValueSignal)),
+        (t) =>
+          t.type === 'filter' &&
+          (t.expr.includes(timerStore) || getDependentSignals(t.expr).has(timerValueSignal)),
       );
 
       // create dataset to hold current animation frame

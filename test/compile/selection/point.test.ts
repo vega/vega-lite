@@ -621,6 +621,60 @@ describe('Animated Selection', () => {
     expect(currentFrame.transform[0]).toEqual(expect.objectContaining({expr: 'datum.year <= avl_value'}));
   });
 
+  it('does not treat a datum field as the timer value signal', () => {
+    const fieldFilterModel = parseUnitModelWithScaleAndSelection({
+      data: {values: [{year: 2000, avl_value: 1}]},
+      params: [{name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+      transform: [{filter: 'datum.avl_value > 0'}],
+      mark: 'point',
+      encoding: {
+        x: {field: 'year', type: 'ordinal'},
+        time: {field: 'year', type: 'ordinal'},
+      },
+    });
+
+    fieldFilterModel.parseData();
+    optimizeDataflow(fieldFilterModel.component.data, fieldFilterModel);
+
+    const datasets = assembleUnitSelectionData(fieldFilterModel, assembleRootData(fieldFilterModel.component.data, {}));
+    const currentFrame = datasets.find((d) => d.name.endsWith('_curr'));
+    const source = datasets.find((d) => d.name === currentFrame.source);
+
+    expect(source.transform).toEqual([expect.objectContaining({expr: 'datum.avl_value > 0'})]);
+    expect(currentFrame.transform).toBeUndefined();
+  });
+
+  it('keeps unrelated selection filters upstream of the animation frame', () => {
+    const multipleSelectionModel = parseUnitModelWithScaleAndSelection({
+      data: {values: [{year: 2000, category: 'a'}]},
+      params: [
+        {name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}},
+        {name: 'pick', select: {type: 'point', fields: ['category']}},
+      ],
+      transform: [{filter: {param: 'pick'}}, {filter: 'datum.year <= avl_value'}],
+      mark: 'point',
+      encoding: {
+        x: {field: 'category', type: 'nominal'},
+        time: {field: 'year', type: 'ordinal'},
+      },
+    });
+
+    multipleSelectionModel.parseData();
+    optimizeDataflow(multipleSelectionModel.component.data, multipleSelectionModel);
+
+    const datasets = assembleUnitSelectionData(
+      multipleSelectionModel,
+      assembleRootData(multipleSelectionModel.component.data, {}),
+    );
+    const currentFrame = datasets.find((d) => d.name.endsWith('_curr'));
+    const source = datasets.find((d) => d.name === currentFrame.source);
+
+    expect(source.transform).toEqual([
+      expect.objectContaining({expr: expect.stringContaining('data("pick_store")')}),
+    ]);
+    expect(currentFrame.transform[0]).toEqual(expect.objectContaining({expr: 'datum.year <= avl_value'}));
+  });
+
   it('assigns correct animation frame dataset to marks', () => {
     model.parseMarkGroup();
     const marks = model.assembleMarks();
