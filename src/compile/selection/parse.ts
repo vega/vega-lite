@@ -11,7 +11,7 @@ import {
 } from './index.js';
 import {warn} from '../../log/index.js';
 import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection.js';
-import {Dict, duplicate, entries, replacePathInField, varName} from '../../util.js';
+import {Dict, duplicate, entries, replacePathInField, vals, varName} from '../../util.js';
 import {DataFlowNode, OutputNode} from '../data/dataflow.js';
 import {FilterNode} from '../data/filter.js';
 import {Model} from '../model.js';
@@ -19,11 +19,18 @@ import {UnitModel} from '../unit.js';
 import {DataSourceType} from '../../data.js';
 import {ParameterPredicate} from '../../predicate.js';
 import {
-  MULTIPLE_TIMER_ANIMATION_SELECTION,
   TIMER_BIND_WITH_EXPRESSION_FILTER,
   selectionAsScaleDomainWithoutField,
   selectionAsScaleDomainWrongEncodings,
+  timerSelectionClockConflict,
 } from '../../log/message.js';
+
+/**
+ * Selection properties that configure the shared clock rather than a
+ * selection's own store. Animated selections coexist by driving one clock
+ * between them, so one selection sets each of these properties for all.
+ */
+const CLOCK_PROPS = ['pause', 'bind'] as const;
 
 export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
@@ -31,7 +38,9 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
 
   if (!selDefs || !selDefs.length) return selCmpts;
 
-  let nTimerSelections = 0;
+  // Which selection claimed each clock-configuring property. A later selection
+  // setting the same property gets a warning instead of silently winning.
+  const clockConfig: Record<string, string> = {};
 
   for (const def of selDefs) {
     const name = varName(def.name);
@@ -69,23 +78,21 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
     } as any);
 
     if (isTimerSelection(selCmpt)) {
-      nTimerSelections++;
-      // check for multiple timer selections and ignore all but the first one
-      if (nTimerSelections > 1) {
-        delete selCmpts[name];
-        continue;
-      }
-
-      // A range binding pauses playback when the viewer scrubs. With a
-      // specification-supplied timer filter, the pause works by clearing the
-      // parameters the filter names, which requires each filter to be a
-      // parameter name. An expression filter offers nothing the compiler can
-      // clear, so the binding is dropped rather than left to fight the clock.
-      if (sliderName(selCmpt)) {
-        const filters = timerFilters(selCmpt);
-        if (filters.length && filters.some((f) => !BARE_SIGNAL_NAME.test(f))) {
-          warn(TIMER_BIND_WITH_EXPRESSION_FILTER);
-          delete selCmpt.bind;
+      // Animated selections share one clock, whose signals are top level and
+      // deduplicated on assembly. Two of them are therefore two views of a
+      // single animation. A specification can hold the current frame in one
+      // selection and a window around it in another, then encode each
+      // differently. The properties configuring the clock stay unshared, and
+      // the first selection to set such a property keeps it.
+      for (const prop of CLOCK_PROPS) {
+        if ((selCmpt as any)[prop] === undefined) {
+          continue;
+        }
+        if (clockConfig[prop] && clockConfig[prop] !== name) {
+          warn(timerSelectionClockConflict(prop, clockConfig[prop], name));
+          delete (selCmpt as any)[prop];
+        } else {
+          clockConfig[prop] = name;
         }
       }
     }
@@ -98,9 +105,21 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
     }
   }
 
-  if (nTimerSelections > 1) {
-    // if multiple timer selections were found, issue a warning
-    warn(MULTIPLE_TIMER_ANIMATION_SELECTION);
+  // A range binding pauses playback when the viewer scrubs. With a
+  // specification-supplied timer filter, the pause works by clearing the
+  // parameters the filter names, which requires each filter to be a parameter
+  // name. The clock is shared, so a binding on any timer selection answers to
+  // every timer selection's filters. An expression filter offers nothing the
+  // compiler can clear, so the binding is dropped rather than left to fight
+  // the clock.
+  const timers = vals(selCmpts).filter((c) => isTimerSelection(c));
+  const bound = timers.find((c) => sliderName(c));
+  if (bound) {
+    const filters = timers.flatMap((c) => timerFilters(c));
+    if (filters.length && filters.some((f) => !BARE_SIGNAL_NAME.test(f))) {
+      warn(TIMER_BIND_WITH_EXPRESSION_FILTER);
+      delete bound.bind;
+    }
   }
 
   return selCmpts;

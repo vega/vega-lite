@@ -123,4 +123,42 @@ describe('time encoding animations', () => {
     expect(nextFrame.tween).toBe(0);
     expect(nextFrame.y).toBeCloseTo(end.y, 1);
   });
+
+  it('animates every layer of a layered view from one clock', async () => {
+    const {params, transform, encoding, data} = gapminderSpec;
+    const view = await embed(
+      {
+        $schema: gapminderSpec.$schema,
+        data,
+        params,
+        transform,
+        width: 200,
+        height: 200,
+        encoding: {x: encoding.x, y: encoding.y, time: encoding.time},
+        layer: [{mark: 'point'}, {mark: {type: 'text', dy: -10}, encoding: {text: {field: 'country'}}}],
+      } as TopLevelSpec,
+      false,
+    );
+    await view.runAsync();
+    await view.signal('is_playing', false).runAsync();
+
+    const counts = () => {
+      const items = view.scenegraph().root.items[0].items;
+      return {
+        points: items.find((i: any) => i.marktype === 'symbol').items.length,
+        labels: items.find((i: any) => i.marktype === 'text').items.length,
+      };
+    };
+
+    await view.signal('anim_clock', 0).runAsync();
+    const first = counts();
+    expect(first.points).toBeGreaterThan(0);
+    // both layers read the same frame dataset, so they stay in step
+    expect(first.labels).toBe(first.points);
+
+    await view.signal('anim_clock', 2000).runAsync();
+    expect(view.signal('anim_value')).toBe(1975);
+    const later = counts();
+    expect(later.labels).toBe(later.points);
+  });
 });

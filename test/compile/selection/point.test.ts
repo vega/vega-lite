@@ -436,7 +436,8 @@ describe('Animated Selection', () => {
   });
 
   it('builds scale signals', () => {
-    const signals = assembleUnitSelectionSignals(model, []);
+    // top-level, not unit-scope: one clock drives the whole view
+    const signals = assembleTopLevelSignals(model, []);
     // TODO(jzong): uncomment commented signals when implementing interpolation
     expect(signals).toEqual(
       expect.arrayContaining([
@@ -628,8 +629,7 @@ describe('Animated Selection', () => {
       modelDuplicateSelection.parseData();
       optimizeDataflow(modelDuplicateSelection.component.data, modelDuplicateSelection);
 
-      const signals = assembleUnitSelectionSignals(model, []);
-      // TODO(jzong): uncomment commented signals when implementing interpolation
+      const signals = assembleTopLevelSignals(model, []);
       expect(signals).toEqual(
         expect.arrayContaining([
           {name: 'avl_domain', init: "domain('time')"},
@@ -640,169 +640,110 @@ describe('Animated Selection', () => {
           {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
         ]),
       );
-      expect(localLogger.warns).toHaveLength(1);
+
+      // The clock signals are emitted once and shared, so nothing collides.
+      const names = signals.map((s) => s.name);
+      expect(names).toHaveLength(new Set(names).size);
+
+      // Sharing a clock is legitimate: neither selection is dropped and nothing
+      // is warned about.
+      expect(localLogger.warns).toHaveLength(0);
+      expect(Object.keys(modelDuplicateSelection.component.selection)).toEqual(['avl', 'avl_2']);
     }),
   );
 
-  it('errors if you try to use animation on a faceted multi-view', () => {
+  it(
+    'warns when two animated selections both configure the clock',
     log.wrap((localLogger) => {
-      const facetModel = parseModel({
-        data: {
-          url: 'data/gapminder.json',
-        },
+      const model = parseUnitModelWithScaleAndSelection({
+        data: {url: 'data/gapminder.json'},
         params: [
           {
-            name: 'avl',
-            select: {
-              type: 'point',
-              fields: ['year'],
-              on: 'timer',
-            },
+            name: 'a',
+            select: {type: 'point', fields: ['year'], on: 'timer', pause: [{value: 1960, duration: 500}]},
           },
-        ],
-        transform: [
           {
-            filter: {
-              param: 'avl',
-            },
+            name: 'b',
+            select: {type: 'point', fields: ['year'], on: 'timer', pause: [{value: 1970, duration: 500}]},
           },
         ],
+        transform: [{filter: {param: 'a'}}],
         mark: 'point',
         encoding: {
-          color: {
-            field: 'country',
-          },
-          x: {
-            field: 'fertility',
-            type: 'quantitative',
-          },
-          y: {
-            field: 'life_expect',
-            type: 'quantitative',
-          },
-          time: {
-            field: 'year',
-            type: 'ordinal',
-          },
-          facet: {
-            field: 'cluster',
-          },
+          x: {field: 'fertility', type: 'quantitative'},
+          y: {field: 'life_expect', type: 'quantitative'},
+          time: {field: 'year', type: 'ordinal'},
         },
       });
-      facetModel.parseSelections();
 
-      expect(localLogger.warns).toHaveLength(1);
-      expect(localLogger.warns[0]).toEqual(log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED);
-    });
-  });
+      // Both selections survive; only the second one's clock property is dropped.
+      expect(Object.keys(model.component.selection)).toEqual(['a', 'b']);
+      expect(model.component.selection['a'].pause).toBeDefined();
+      expect(model.component.selection['b'].pause).toBeUndefined();
+      expect(localLogger.warns[0]).toEqual(log.message.timerSelectionClockConflict('pause', 'a', 'b'));
+    }),
+  );
 
-  it('errors if you try to use animation on a layered multi-view', () => {
-    log.wrap((localLogger) => {
-      const layerModel = parseModel({
-        data: {
-          url: 'data/gapminder.json',
-        },
-        params: [
-          {
-            name: 'avl',
-            select: {
-              type: 'point',
-              fields: ['year'],
-              on: 'timer',
-            },
-          },
-        ],
-        transform: [
-          {
-            filter: {
-              param: 'avl',
-            },
-          },
-        ],
-        layer: [
-          {
-            mark: 'point',
-          },
-          {
-            mark: 'point',
-          },
-        ],
+  it(
+    'errors if you try to use animation on a faceted multi-view',
+    log.wrap(() => {
+      const facetModel = parseModel({
+        data: {url: 'data/gapminder.json'},
+        params: [{name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+        transform: [{filter: {param: 'avl'}}],
+        mark: 'point',
         encoding: {
-          color: {
-            field: 'country',
-          },
-          x: {
-            field: 'fertility',
-            type: 'quantitative',
-          },
-          y: {
-            field: 'life_expect',
-            type: 'quantitative',
-          },
-          time: {
-            field: 'year',
-            type: 'ordinal',
-          },
+          x: {field: 'fertility', type: 'quantitative'},
+          y: {field: 'life_expect', type: 'quantitative'},
+          time: {field: 'year', type: 'ordinal'},
+          facet: {field: 'cluster'},
         },
       });
-      layerModel.parseSelections();
 
-      expect(localLogger.warns).toHaveLength(1);
-      expect(localLogger.warns[2]).toEqual(log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED);
-    });
+      expect(() => facetModel.parseSelections()).toThrow(log.message.FACET_ANIMATION_UNSUPPORTED);
+    }),
+  );
 
-    log.wrap((localLogger) => {
-      const concatModel = parseModel({
-        data: {
-          url: 'data/gapminder.json',
+  it(
+    'allows animation in a layered multi-view',
+    log.wrap(() => {
+      const layerModel = parseModel({
+        data: {url: 'data/gapminder.json'},
+        params: [{name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+        transform: [{filter: {param: 'avl'}}],
+        layer: [{mark: 'point'}, {mark: 'text'}],
+        encoding: {
+          x: {field: 'fertility', type: 'quantitative'},
+          y: {field: 'life_expect', type: 'quantitative'},
+          time: {field: 'year', type: 'ordinal'},
         },
-        params: [
-          {
-            name: 'avl',
-            select: {
-              type: 'point',
-              fields: ['year'],
-              on: 'timer',
-            },
-          },
-        ],
-        transform: [
-          {
-            filter: {
-              param: 'avl',
-            },
-          },
-        ],
+      });
+
+      expect(() => layerModel.parseSelections()).not.toThrow();
+    }),
+  );
+
+  it(
+    'allows animation in a concatenated multi-view',
+    log.wrap(() => {
+      const concatModel = parseModel({
+        data: {url: 'data/gapminder.json'},
         vconcat: [
           {
+            params: [{name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+            transform: [{filter: {param: 'avl'}}],
             mark: 'point',
+            encoding: {
+              x: {field: 'fertility', type: 'quantitative'},
+              y: {field: 'life_expect', type: 'quantitative'},
+              time: {field: 'year', type: 'ordinal'},
+            },
           },
-          {
-            mark: 'point',
-          },
+          {mark: 'point', encoding: {x: {field: 'year', type: 'ordinal'}}},
         ],
-        encoding: {
-          color: {
-            field: 'country',
-          },
-          x: {
-            field: 'fertility',
-            type: 'quantitative',
-          },
-          y: {
-            field: 'life_expect',
-            type: 'quantitative',
-          },
-          time: {
-            field: 'year',
-            type: 'ordinal',
-          },
-        },
       });
-      concatModel.parseSelections();
 
-      expect(localLogger.warns).toHaveLength(1);
-      expect(localLogger.warns[2]).toEqual(log.message.MULTI_VIEW_ANIMATION_UNSUPPORTED);
-    });
-  });
+      expect(() => concatModel.parseSelections()).not.toThrow();
+    }),
+  );
 });

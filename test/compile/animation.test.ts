@@ -608,7 +608,7 @@ describe('animation', () => {
     it('draws from the joined dataset unioned with the frame dataset', () => {
       // the frame dataset contributes rows outside the current keyframe, which a
       // cumulative or windowed predicate admits and which are drawn where they are
-      expect(dataset('source_0_interpolate').source).toEqual(['source_0_curr', 'source_0_eq_next']);
+      expect((dataset('source_0_interpolate') as any).source).toEqual(['source_0_curr', 'source_0_eq_next']);
       expect(keyed.marks[0].from.data).toBe('source_0_interpolate');
     });
 
@@ -664,6 +664,91 @@ describe('animation', () => {
           expect(names).toContain(name);
         }
       });
+    });
+  });
+  describe('multi-view', () => {
+    const timeEncoding = {
+      x: {field: 'fertility', type: 'quantitative'},
+      y: {field: 'life_expect', type: 'quantitative'},
+      time: {field: 'year', type: 'ordinal'},
+    };
+
+    it('lets several animated selections share one clock', () => {
+      // Emitting the clock once is what makes a layered animation work, and the
+      // same thing lets a spec hold the current frame in one selection and a
+      // window around it in another -- one animation seen two ways.
+      const twoSelections = compile({
+        data: {url: 'data/gapminder.json'},
+        params: [
+          {name: 'today', select: {type: 'point', fields: ['year'], on: 'timer'}},
+          {name: 'window', select: {type: 'point', fields: ['year'], on: 'timer'}},
+        ],
+        transform: [{filter: {param: 'today'}}],
+        mark: 'point',
+        encoding: {
+          ...timeEncoding,
+          opacity: {condition: {param: 'window', value: 1}, value: 0.2},
+        },
+      } as TopLevelSpec).spec;
+
+      const names = twoSelections.signals.map((s) => s.name);
+      expect(names.filter((n) => n === 'anim_clock')).toHaveLength(1);
+      expect(names).toHaveLength(new Set(names).size);
+
+      // Each selection keeps its own store, so they can hold different things.
+      expect(twoSelections.data.map((d) => d.name)).toEqual(expect.arrayContaining(['today_store', 'window_store']));
+    });
+
+    const layered = compile({
+      data: {url: 'data/gapminder.json'},
+      params: [{name: 'frame', select: {type: 'point', on: 'timer'}}],
+      transform: [{filter: {param: 'frame'}}],
+      layer: [{mark: 'point'}, {mark: {type: 'text', dy: -10}, encoding: {text: {field: 'country'}}}],
+      encoding: timeEncoding,
+    } as TopLevelSpec).spec;
+
+    const duplicates = (names: string[]) => names.filter((n, i) => names.indexOf(n) !== i);
+
+    it('builds the clock once for a layered view', () => {
+      // the selection is parsed into every child, so each asks for these; Vega
+      // rejects a duplicate signal name
+      expect(duplicates(layered.signals.map((s) => s.name))).toEqual([]);
+    });
+
+    it('builds the frame dataset once for a layered view', () => {
+      expect(duplicates(layered.data.map((d) => d.name))).toEqual([]);
+    });
+
+    it('points every layer at the same frame dataset', () => {
+      const from = layered.marks.map((m) => m.from.data);
+      expect(from).toEqual(['source_0_curr', 'source_0_curr']);
+    });
+
+    it('keeps the clock resolvable from a concatenated view', () => {
+      // the clock depends on the time scale's extent, so a clock scoped to one
+      // concat group could not see it -- both have to be top-level
+      const concatenated = compile({
+        data: {url: 'data/gapminder.json'},
+        vconcat: [
+          {
+            params: [{name: 'frame', select: {type: 'point', on: 'timer'}}],
+            transform: [{filter: {param: 'frame'}}],
+            mark: 'point',
+            encoding: timeEncoding,
+          },
+          {mark: 'line', encoding: {x: {field: 'year', type: 'ordinal'}}},
+        ],
+      } as TopLevelSpec).spec;
+
+      const topLevel = new Set(concatenated.signals.map((s) => s.name));
+      expect(topLevel).toContain('anim_clock');
+      expect(topLevel).toContain('max_range_extent');
+      expect(topLevel).toContain('anim_value');
+      expect(concatenated.scales.map((s) => s.name)).toContain('time');
+
+      // the tuple stays with its unit, since it records which unit it came from
+      const groupSignals = (concatenated.marks[0] as any).signals.map((s: any) => s.name);
+      expect(groupSignals).toContain('frame_tuple');
     });
   });
 });

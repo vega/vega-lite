@@ -199,7 +199,14 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
       const sourceName = model.lookupDataSource(model.getDataName(DataSourceType.Main));
       const sourceData = data.find((d) => d.name === sourceName);
 
-      if (sourceData && !animationData.some((d) => d.name === sourceData.name + CURR)) {
+      // A layer parses the same selection into every child, so a sibling may
+      // already have built the frame dataset and removed the filter it was
+      // built from. This unit draws from that same dataset.
+      const built = new Set([...data, ...animationData].map((d) => d.name));
+
+      if (sourceData && built.has(sourceData.name + CURR)) {
+        model.animationFrameSource = sourceData.name;
+      } else if (sourceData) {
         // Find where the frame filter ended up. It usually sits on the main
         // source, but the dataflow may have pushed it above an aggregate, and
         // it has to move from wherever it landed. Only this unit's own

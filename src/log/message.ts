@@ -115,10 +115,14 @@ export function columnsNotSupportByRowCol(type: 'facet' | 'repeat') {
   return `The "columns" property cannot be used when "${type}" has nested row/column.`;
 }
 
-export const MULTIPLE_TIMER_ANIMATION_SELECTION =
-  'Multiple timer selections in one unit spec are not supported. Ignoring all but the first.';
+export function timerSelectionClockConflict(prop: string, owner: string, ignored: string) {
+  return (
+    `Animated selections share one clock, so "${prop}" can only be set once. ` +
+    `Parameter ${stringValue(owner)} sets it; ignoring the "${prop}" on ${stringValue(ignored)}.`
+  );
+}
 
-export const MULTI_VIEW_ANIMATION_UNSUPPORTED = 'Animation involving facet, layer, or concat is currently unsupported.';
+export const FACET_ANIMATION_UNSUPPORTED = 'Animation involving facet is currently unsupported.';
 
 export function stepRangeRequiresTimeChannel(channel: string) {
   return (

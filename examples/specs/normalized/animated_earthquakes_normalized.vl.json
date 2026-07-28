@@ -1,0 +1,75 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A week of global seismicity from the USGS feed, drawn over a world basemap. A linear time scale places each earthquake at its real arrival time, so aftershock bursts stay compressed and quiet hours stay empty. A band scale would instead give all 1,707 events equal screen time, flattening the record into a metronome. The selection holds a 24-hour window, opacity falls with the age of each quake, and circle area follows magnitude. The basemap layer carries no time encoding, so it holds still while the quakes animate.",
+  "width": 600,
+  "height": 340,
+  "layer": [
+    {
+      "data": {
+        "url": "data/world-110m.json",
+        "format": {"type": "topojson", "feature": "countries"}
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#f0f0f0",
+        "stroke": "#ffffff",
+        "strokeWidth": 0.5
+      },
+      "projection": {"type": "naturalEarth1"}
+    },
+    {
+      "data": {
+        "url": "data/earthquakes.json",
+        "format": {"type": "json", "property": "features"}
+      },
+      "params": [
+        {
+          "name": "recent",
+          "select": {
+            "type": "point",
+            "on": "timer",
+            "predicate": {
+              "and": [
+                {"field": "time", "lte": {"expr": "anim_value"}},
+                {"field": "time", "gt": {"expr": "anim_value - 86400000"}}
+              ]
+            }
+          }
+        }
+      ],
+      "mark": {"type": "circle", "color": "#c1272d"},
+      "encoding": {
+        "longitude": {"field": "longitude", "type": "quantitative"},
+        "latitude": {"field": "latitude", "type": "quantitative"},
+        "size": {
+          "field": "magnitude",
+          "type": "quantitative",
+          "scale": {
+            "type": "pow",
+            "exponent": 2,
+            "domain": [0, 6.5],
+            "range": [6, 700]
+          }
+        },
+        "opacity": {
+          "value": {
+            "expr": "max(0.1, 1 - (anim_value - datum.time) / 86400000)"
+          }
+        },
+        "time": {
+          "field": "time",
+          "type": "quantitative",
+          "scale": {"type": "linear", "range": [0, 30000]}
+        }
+      },
+      "transform": [
+        {"calculate": "datum.geometry.coordinates[0]", "as": "longitude"},
+        {"calculate": "datum.geometry.coordinates[1]", "as": "latitude"},
+        {"calculate": "datum.properties.mag", "as": "magnitude"},
+        {"calculate": "datum.properties.time", "as": "time"},
+        {"filter": {"param": "recent"}}
+      ],
+      "projection": {"type": "naturalEarth1"}
+    }
+  ]
+}

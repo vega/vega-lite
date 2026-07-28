@@ -1,0 +1,74 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "The index chart, driven by a clock instead of the pointer. Each stock is replotted as its return relative to whichever date the animation has reached, so the lines pivot around the moving index date. The timer selection sits in one layer and the rule and label read it from two others, all sharing a single clock.",
+  "data": {
+    "url": "data/stocks.csv",
+    "format": {"parse": {"date": "date"}}
+  },
+  "width": 650,
+  "height": 300,
+  "encoding": {
+    "time": {
+      "field": "date",
+      "type": "temporal",
+      "scale": {"range": {"step": 200}}
+    }
+  },
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "index",
+          "select": {
+            "type": "point",
+            "on": "timer"
+          }
+        }
+      ],
+      "mark": "point",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "opacity": {"value": 0}
+      }
+    },
+    {
+      "transform": [
+        {
+          "lookup": "symbol",
+          "from": {"param": "index", "key": "symbol"}
+        },
+        {
+          "calculate": "datum.index && datum.index.price > 0 ? (datum.price - datum.index.price)/datum.index.price : 0",
+          "as": "indexed_price"
+        }
+      ],
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "y": {
+          "field": "indexed_price",
+          "type": "quantitative",
+          "axis": {"format": "%"}
+        },
+        "color": {"field": "symbol", "type": "nominal"}
+      }
+    },
+    {
+      "transform": [{"filter": {"param": "index"}}],
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "color": {"value": "firebrick"}
+      },
+      "layer": [
+        {"mark": {"type": "rule", "strokeWidth": 0.5}},
+        {
+          "mark": {"type": "text", "align": "center", "fontWeight": 100},
+          "encoding": {
+            "text": {"field": "date", "timeUnit": "yearmonth"},
+            "y": {"value": 310}
+          }
+        }
+      ]
+    }
+  ]
+}

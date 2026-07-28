@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "A week of earthquakes from the USGS feed, animated at the time each one occurred. Circle area follows magnitude, and each circle fades over the day after its earthquake.",
+  "description": "A week of earthquakes from the USGS feed, animated over a world map at the time each one occurred. Circle area follows magnitude, and each circle fades over the day after its earthquake.",
   "background": "white",
   "padding": 5,
   "width": 600,
@@ -10,6 +10,11 @@
     {"name": "recent_store"},
     {
       "name": "source_0",
+      "url": "data/world-110m.json",
+      "format": {"type": "topojson", "feature": "countries"}
+    },
+    {
+      "name": "source_1",
       "url": "data/earthquakes.json",
       "format": {"type": "json", "property": "features"},
       "transform": [
@@ -28,13 +33,13 @@
         {
           "type": "geojson",
           "fields": ["longitude", "latitude"],
-          "signal": "geojson_0"
+          "signal": "layer_1_geojson_0"
         },
         {
           "type": "geopoint",
           "projection": "projection",
           "fields": ["longitude", "latitude"],
-          "as": ["x", "y"]
+          "as": ["layer_1_x", "layer_1_y"]
         },
         {
           "type": "filter",
@@ -43,8 +48,8 @@
       ]
     },
     {
-      "name": "source_0_curr",
-      "source": "source_0",
+      "name": "source_1_curr",
+      "source": "source_1",
       "transform": [
         {
           "type": "filter",
@@ -57,7 +62,7 @@
     {
       "name": "projection",
       "size": {"signal": "[width, height]"},
-      "fit": {"signal": "geojson_0"},
+      "fit": {"signal": "[data('source_0'), layer_1_geojson_0]"},
       "type": "naturalEarth1"
     }
   ],
@@ -101,9 +106,15 @@
     {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
     {
       "name": "recent_tuple",
-      "update": "{unit: \"\", fields: recent_tuple_fields, values: [anim_value ? anim_value : min_extent]}"
+      "update": "{unit: \"layer_1\", fields: recent_tuple_fields, values: [anim_value, anim_value - 86400000]}"
     },
-    {"name": "recent_tuple_fields", "value": [{"type": "E", "field": "time"}]},
+    {
+      "name": "recent_tuple_fields",
+      "value": [
+        {"field": "time", "type": "E-LTE"},
+        {"field": "time", "type": "E-GT"}
+      ]
+    },
     {
       "name": "recent_modify",
       "update": "modify(\"recent_store\", recent_tuple, true)"
@@ -111,11 +122,27 @@
   ],
   "marks": [
     {
-      "name": "marks",
+      "name": "layer_0_marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "interactive": true,
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#f0f0f0"},
+          "stroke": {"value": "#ffffff"},
+          "strokeWidth": {"value": 0.5},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "name": "layer_1_marks",
       "type": "symbol",
       "style": ["circle"],
       "interactive": true,
-      "from": {"data": "source_0_curr"},
+      "from": {"data": "source_1_curr"},
       "encode": {
         "update": {
           "opacity": {
@@ -127,8 +154,8 @@
           "description": {
             "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\")) + \"; time: \" + (format(datum[\"time\"], \"\")) + \"; magnitude: \" + (format(datum[\"magnitude\"], \"\"))"
           },
-          "x": {"field": "x"},
-          "y": {"field": "y"},
+          "x": {"field": "layer_1_x"},
+          "y": {"field": "layer_1_y"},
           "size": {"scale": "size", "field": "magnitude"},
           "shape": {"value": "circle"}
         }
@@ -139,7 +166,7 @@
     {
       "name": "time",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "time"},
+      "domain": {"data": "source_1", "field": "time"},
       "range": [0, 30000],
       "zero": false
     },

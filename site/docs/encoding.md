@@ -342,7 +342,7 @@ An animation does not have to filter data. If you declare the parameter and omit
 
 Note: `time` encoding animations currently have a few restrictions. See the [example gallery]({{ site.baseurl }}/examples/#animated) for examples of animated visualizations.
 
-- currently, only unit specifications are supported (no multi-view animations)
+- animation is not supported in faceted views
 
 {:#time-key}
 
