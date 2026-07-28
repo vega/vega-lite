@@ -1,13 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Shows the relationship between horsepower and the number of cylinders using point marks with random offset (jittering).",
-  "data": {"url": "data/cars.json"},
-  "transform": [{"calculate": "random()", "as": "random"}],
-  "height": {"step": 50},
-  "mark": "point",
+  "description": "Shows the relationship between body mass and species point marks with random offset (jittering).",
+  "data": {"url": "data/penguins.json"},
+  "transform": [{"calculate": "random()", "as": "jitter"}],
+  "mark": {"type": "point", "filled": true, "opacity": 0.7},
   "encoding": {
-    "x": {"field": "Horsepower", "type": "quantitative"},
-    "y": {"field": "Cylinders", "type": "ordinal"},
-    "yOffset": {"field": "random", "type": "quantitative"}
+    "x": {"field": "Body Mass (g)", "type": "quantitative"},
+    "y": {"field": "Species"},
+    "yOffset": {"field": "jitter", "type": "quantitative"}
   }
 }
