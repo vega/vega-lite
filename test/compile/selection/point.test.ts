@@ -405,8 +405,8 @@ describe('Animated Selection', () => {
           name: 'avl_tuple',
           on: [
             {
-              events: [{signal: 'eased_anim_clock'}, {signal: 'anim_value'}],
-              update: '{unit: "", fields: avl_tuple_fields, values: [anim_value ? anim_value : min_extent]}',
+              events: [{signal: 'eased_anim_clock'}, {signal: 'avl_value'}],
+              update: '{unit: "", fields: avl_tuple_fields, values: [avl_value ? avl_value : min_extent]}',
               force: true,
             },
           ],
@@ -448,9 +448,8 @@ describe('Animated Selection', () => {
         {name: 'min_extent', init: 'extent(avl_domain)[0]'},
         // {name: 'max_extent', init: 'extent(avl_domain)[1]'},
         {name: 'max_range_extent', init: "extent(range('time'))[1]"},
-        // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
-        {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
-        {name: 'avl_value', update: 'anim_value'},
+        // {name: 't_index', update: 'indexof(avl_domain, avl_value)'},
+        {name: 'avl_value', update: "invert('time', eased_anim_clock)"},
       ]),
     );
   });
@@ -470,6 +469,23 @@ describe('Animated Selection', () => {
         },
       ]),
     );
+  });
+
+  it('does not duplicate the value signal for a selection named anim', () => {
+    const animModel = parseUnitModelWithScaleAndSelection({
+      data: {values: [{year: 2000}]},
+      params: [{name: 'anim', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+      mark: 'point',
+      encoding: {
+        x: {field: 'year', type: 'quantitative'},
+        time: {field: 'year', type: 'quantitative'},
+      },
+    });
+
+    const signals = assembleUnitSelectionSignals(animModel, []);
+    expect(signals.filter((signal) => signal.name === 'anim_value')).toEqual([
+      {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
+    ]);
   });
 
   it('builds top-level signals', () => {
@@ -698,9 +714,8 @@ describe('Animated Selection', () => {
           {name: 'min_extent', init: 'extent(avl_domain)[0]'},
           // {name: 'max_extent', init: 'extent(avl_domain)[1]'},
           {name: 'max_range_extent', init: "extent(range('time'))[1]"},
-          // {name: 't_index', update: 'indexof(avl_domain, anim_value)'},
-          {name: 'anim_value', update: "invert('time', eased_anim_clock)"},
-          {name: 'avl_value', update: 'anim_value'},
+          // {name: 't_index', update: 'indexof(avl_domain, avl_value)'},
+          {name: 'avl_value', update: "invert('time', eased_anim_clock)"},
         ]),
       );
       expect(localLogger.warns).toHaveLength(1);

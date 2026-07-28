@@ -8,7 +8,6 @@ import {TUPLE_FIELDS} from './project.js';
 import {TIME} from '../../channel.js';
 
 export const CURR = '_curr';
-export const ANIM_VALUE = 'anim_value';
 export const ANIM_CLOCK = 'anim_clock';
 export const EASED_ANIM_CLOCK = 'eased_anim_clock';
 export const MIN_EXTENT = 'min_extent';
@@ -18,6 +17,7 @@ export const IS_PLAYING = 'is_playing';
 export const THROTTLE = (1 / 60) * 1000; // 60 FPS
 
 const animationSignals = (selectionName: string, scaleName: string): Signal[] => {
+  const animationValue = `${selectionName}_value`;
   return [
     // timer signals
     {
@@ -32,9 +32,8 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
     {name: MIN_EXTENT, init: `extent(${selectionName}_domain)[0]`},
     // {name: 'max_extent', init: `extent(${selectionName}_domain)[1]`},
     {name: MAX_RANGE_EXTENT, init: `extent(range('${scaleName}'))[1]`},
-    // {name: 't_index', update: `indexof(${selectionName}_domain, anim_value)`},
-    {name: ANIM_VALUE, update: `invert('${scaleName}', ${EASED_ANIM_CLOCK})`},
-    {name: `${selectionName}_value`, update: ANIM_VALUE},
+    // {name: 't_index', update: `indexof(${selectionName}_domain, ${animationValue})`},
+    {name: animationValue, update: `invert('${scaleName}', ${EASED_ANIM_CLOCK})`},
   ];
 };
 
@@ -72,6 +71,7 @@ const point: SelectionCompiler<'point'> = {
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const fieldsSg = name + TUPLE_FIELDS;
+    const animationValue = `${name}_value`;
     const project = selCmpt.project;
     const datum = '(item().isVoronoi ? datum.datum : datum)';
 
@@ -98,7 +98,7 @@ const point: SelectionCompiler<'point'> = {
     if (selCmpt.project.hasSelectionId) {
       update += `${SELECTION_ID}: ${datum}[${stringValue(SELECTION_ID)}]`;
     } else if (isTimerSelection(selCmpt)) {
-      update += `fields: ${fieldsSg}, values: [${ANIM_VALUE} ? ${ANIM_VALUE} : ${MIN_EXTENT}]`;
+      update += `fields: ${fieldsSg}, values: [${animationValue} ? ${animationValue} : ${MIN_EXTENT}]`;
     } else {
       const values = project.items
         .map((p) => {
@@ -121,7 +121,7 @@ const point: SelectionCompiler<'point'> = {
           name: name + TUPLE,
           on: [
             {
-              events: [{signal: EASED_ANIM_CLOCK}, {signal: ANIM_VALUE}],
+              events: [{signal: EASED_ANIM_CLOCK}, {signal: animationValue}],
               update: `{${update}}`,
               force: true,
             },
