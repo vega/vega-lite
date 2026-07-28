@@ -11,12 +11,7 @@
       "name": "source_0",
       "url": "data/seattle-weather.csv",
       "format": {"type": "csv"},
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"precipitation\"]) && isFinite(+datum[\"precipitation\"])"
-        }
-      ]
+      "transform": []
     },
     {
       "name": "source_0_curr",
@@ -25,6 +20,10 @@
         {
           "type": "filter",
           "expr": "!length(data(\"animation_frame_store\")) || vlSelectionTest(\"animation_frame_store\", datum)"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"precipitation\"]) && isFinite(+datum[\"precipitation\"])"
         }
       ]
     }
@@ -66,14 +65,19 @@
     {"name": "animation_frame_domain", "init": "domain('time')"},
     {"name": "min_extent", "init": "extent(animation_frame_domain)[0]"},
     {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
-    {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
-    {"name": "animation_frame_value", "update": "anim_value"},
+    {
+      "name": "animation_frame_value",
+      "update": "invert('time', eased_anim_clock)"
+    },
     {
       "name": "animation_frame_tuple",
       "on": [
         {
-          "events": [{"signal": "eased_anim_clock"}, {"signal": "anim_value"}],
-          "update": "{unit: \"\", fields: animation_frame_tuple_fields, values: [anim_value ? anim_value : min_extent]}",
+          "events": [
+            {"signal": "eased_anim_clock"},
+            {"signal": "animation_frame_value"}
+          ],
+          "update": "{unit: \"\", fields: animation_frame_tuple_fields, values: [animation_frame_value ? animation_frame_value : min_extent]}",
           "force": true
         }
       ]
