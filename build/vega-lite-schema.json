@@ -8445,6 +8445,48 @@
       ],
       "type": "object"
     },
+    "EasingFunction": {
+      "enum": [
+        "easeLinear",
+        "easeQuad",
+        "easeQuadIn",
+        "easeQuadOut",
+        "easeQuadInOut",
+        "easeCubic",
+        "easeCubicIn",
+        "easeCubicOut",
+        "easeCubicInOut",
+        "easePoly",
+        "easePolyIn",
+        "easePolyOut",
+        "easePolyInOut",
+        "easeSin",
+        "easeSinIn",
+        "easeSinOut",
+        "easeSinInOut",
+        "easeExp",
+        "easeExpIn",
+        "easeExpOut",
+        "easeExpInOut",
+        "easeCircle",
+        "easeCircleIn",
+        "easeCircleOut",
+        "easeCircleInOut",
+        "easeBounce",
+        "easeBounceIn",
+        "easeBounceOut",
+        "easeBounceInOut",
+        "easeBack",
+        "easeBackIn",
+        "easeBackOut",
+        "easeBackInOut",
+        "easeElastic",
+        "easeElasticIn",
+        "easeElasticOut",
+        "easeElasticInOut"
+      ],
+      "type": "string"
+    },
     "Element": {
       "type": "string"
     },
@@ -19523,6 +19565,20 @@
           ],
           "description": "Clears the selection, emptying it of all values. This property can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable clear.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear` examples ](https://vega.github.io/vega-lite/docs/selection.html#clear) in the documentation."
         },
+        "easing": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EasingFunction"
+            },
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "For animated selections (those with `\"on\": \"timer\"`), the curve playback speed follows across the animation. Give the name of a [d3-ease](https://github.com/d3/d3-ease) easing function, or an array of ascending numbers in [0, 1] as evenly-spaced control points of a custom piecewise-linear interpolator.\n\n__Default value:__ `\"easeLinear\"`, a constant rate."
+        },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.",
           "items": {
@@ -19597,6 +19653,20 @@
             }
           ],
           "description": "Clears the selection, emptying it of all values. This property can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable clear.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear` examples ](https://vega.github.io/vega-lite/docs/selection.html#clear) in the documentation."
+        },
+        "easing": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/EasingFunction"
+            },
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "For animated selections (those with `\"on\": \"timer\"`), the curve playback speed follows across the animation. Give the name of a [d3-ease](https://github.com/d3/d3-ease) easing function, or an array of ascending numbers in [0, 1] as evenly-spaced control points of a custom piecewise-linear interpolator.\n\n__Default value:__ `\"easeLinear\"`, a constant rate."
         },
         "encodings": {
           "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.",

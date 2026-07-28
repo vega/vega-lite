@@ -122,6 +122,20 @@ export function timerSelectionClockConflict(prop: string, owner: string, ignored
   );
 }
 
+export const SELECTION_EASING_REQUIRES_TIMER =
+  'A selection "easing" is only supported for animated selections (those with "on": "timer"). Ignoring the easing.';
+
+export function invalidSelectionEasing(easing: string) {
+  return `Unknown easing function ${stringValue(easing)}. Ignoring the easing.`;
+}
+
+export function invalidSelectionEasingControlPoints(easing: number[]) {
+  return (
+    'A custom selection "easing" must be at least two numbers in [0, 1]. ' +
+    `Got ${stringify(easing)}. Ignoring the easing.`
+  );
+}
+
 export const FACET_ANIMATION_UNSUPPORTED = 'Animation involving facet is currently unsupported.';
 
 export function stepRangeRequiresTimeChannel(channel: string) {

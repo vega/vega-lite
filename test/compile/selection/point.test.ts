@@ -653,6 +653,32 @@ describe('Animated Selection', () => {
   );
 
   it(
+    'warns when two animated selections both set an easing',
+    log.wrap((localLogger) => {
+      const easingConflictModel = parseUnitModelWithScaleAndSelection({
+        data: {url: 'data/gapminder.json'},
+        params: [
+          {name: 'a', select: {type: 'point', fields: ['year'], on: 'timer', easing: 'easeCubicInOut'}},
+          {name: 'b', select: {type: 'point', fields: ['year'], on: 'timer', easing: 'easeQuadIn'}},
+        ],
+        transform: [{filter: {param: 'a'}}],
+        mark: 'point',
+        encoding: {
+          x: {field: 'fertility', type: 'quantitative'},
+          y: {field: 'life_expect', type: 'quantitative'},
+          time: {field: 'year', type: 'ordinal'},
+        },
+      });
+
+      // Easing reshapes the shared clock, so only one selection can set it.
+      expect(Object.keys(easingConflictModel.component.selection)).toEqual(['a', 'b']);
+      expect(easingConflictModel.component.selection['a'].easing).toBe('easeCubicInOut');
+      expect(easingConflictModel.component.selection['b'].easing).toBeUndefined();
+      expect(localLogger.warns[0]).toEqual(log.message.timerSelectionClockConflict('easing', 'a', 'b'));
+    }),
+  );
+
+  it(
     'warns when two animated selections both configure the clock',
     log.wrap((localLogger) => {
       const clockConflictModel = parseUnitModelWithScaleAndSelection({
@@ -746,4 +772,67 @@ describe('Animated Selection', () => {
       expect(() => concatModel.parseSelections()).not.toThrow();
     }),
   );
+
+  describe('easing', () => {
+    const easingModel = (easing: any, animated = true) =>
+      parseUnitModelWithScaleAndSelection({
+        data: {url: 'data/gapminder.json'},
+        params: [{name: 'avl', select: {type: 'point', fields: ['year'], ...(animated ? {on: 'timer'} : {}), easing}}],
+        transform: [{filter: {param: 'avl'}}],
+        mark: 'point',
+        encoding: {
+          x: {field: 'fertility', type: 'quantitative'},
+          y: {field: 'life_expect', type: 'quantitative'},
+          time: {field: 'year', type: 'ordinal'},
+        },
+      });
+
+    const easedClock = (easing: any) =>
+      assembleTopLevelSignals(easingModel(easing), []).find((s) => s.name === 'eased_anim_clock');
+
+    it('passes the clock through unchanged for the default rate', () => {
+      // easeLinear is the identity, so emitting a call would only add a
+      // dependency on it for no behavioral difference
+      expect(easedClock(undefined)).toEqual({name: 'eased_anim_clock', update: 'anim_clock'});
+      expect(easedClock('easeLinear')).toEqual({name: 'eased_anim_clock', update: 'anim_clock'});
+    });
+
+    it('applies a named easing function over normalized time', () => {
+      expect(easedClock('easeCubicInOut')).toEqual({
+        name: 'eased_anim_clock',
+        update: 'easeCubicInOut(anim_clock / max_range_extent) * max_range_extent',
+      });
+    });
+
+    it('builds a piecewise interpolator from custom control points', () => {
+      expect(easedClock([0, 0.1, 0.9, 1])).toEqual({
+        name: 'eased_anim_clock',
+        update: 'interpolateLinear([0, 0.1, 0.9, 1], anim_clock / max_range_extent) * max_range_extent',
+      });
+    });
+
+    it(
+      'warns and ignores an unknown easing function',
+      log.wrap((localLogger) => {
+        expect(easedClock('easeWobble')).toEqual({name: 'eased_anim_clock', update: 'anim_clock'});
+        expect(localLogger.warns).toContain(log.message.invalidSelectionEasing('easeWobble'));
+      }),
+    );
+
+    it(
+      'warns and ignores out-of-range control points',
+      log.wrap((localLogger) => {
+        expect(easedClock([0, 2])).toEqual({name: 'eased_anim_clock', update: 'anim_clock'});
+        expect(localLogger.warns).toContain(log.message.invalidSelectionEasingControlPoints([0, 2]));
+      }),
+    );
+
+    it(
+      'warns and ignores easing on a non-animated selection',
+      log.wrap((localLogger) => {
+        easingModel('easeCubicInOut', false);
+        expect(localLogger.warns).toContain(log.message.SELECTION_EASING_REQUIRES_TIMER);
+      }),
+    );
+  });
 });

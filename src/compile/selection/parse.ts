@@ -30,7 +30,7 @@ import {
  * selection's own store. Animated selections coexist by driving one clock
  * between them, so one selection sets each of these properties for all.
  */
-const CLOCK_PROPS = ['pause', 'bind'] as const;
+const CLOCK_PROPS = ['pause', 'bind', 'easing'] as const;
 
 export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};

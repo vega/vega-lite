@@ -1,5 +1,5 @@
 import {Binding, Signal, Stream} from 'vega';
-import {array, stringValue} from 'vega-util';
+import {array, isArray, isNumber, stringValue} from 'vega-util';
 import {
   BARE_SIGNAL_NAME,
   SelectionCompiler,
@@ -9,7 +9,8 @@ import {
   sliderName,
   unitName,
 } from './index.js';
-import {SELECTION_ID} from '../../selection.js';
+import {EasingFunction, isEasingFunction, SELECTION_ID} from '../../selection.js';
+import * as log from '../../log/index.js';
 import {vals} from '../../util.js';
 import {BRUSH} from './interval.js';
 import {TUPLE_FIELDS} from './project.js';
@@ -41,13 +42,29 @@ export const PAUSE_DURATION = 'pause_duration';
 export const PAUSE_PLAYING = 'pause_playing';
 export const PAUSE_SINCE = 'pause_since';
 
+/**
+ * Reshapes the raw clock by the selection's easing. `easeLinear` is the
+ * identity function, so an explicit `easeLinear` and an unset easing both pass
+ * the clock straight through instead of emitting a call that changes nothing.
+ */
+function easedClockExpr(easing: EasingFunction | number[]): string {
+  if (!easing || easing === 'easeLinear') {
+    return ANIM_CLOCK;
+  }
+
+  const t = `${ANIM_CLOCK} / ${MAX_RANGE_EXTENT}`;
+  const eased = isArray(easing) ? `interpolateLinear([${easing.join(', ')}], ${t})` : `${easing}(${t})`;
+
+  return `${eased} * ${MAX_RANGE_EXTENT}`;
+}
+
 const animationSignals = (selCmpt: SelectionComponent<'point'>, scaleName: string): Signal[] => {
   const selectionName = selCmpt.name;
   return [
     // timer signals
     {
       name: EASED_ANIM_CLOCK,
-      update: ANIM_CLOCK,
+      update: easedClockExpr(selCmpt.easing),
     },
 
     // scale signals
@@ -163,6 +180,24 @@ function playbackGate(timers: SelectionComponent<'point'>[]): {
 
 const point: SelectionCompiler<'point'> = {
   defined: (selCmpt) => selCmpt.type === 'point',
+
+  parse: (model, selCmpt) => {
+    const {easing} = selCmpt;
+    if (easing === undefined) return;
+
+    if (!isTimerSelection(selCmpt)) {
+      log.warn(log.message.SELECTION_EASING_REQUIRES_TIMER);
+      delete selCmpt.easing;
+    } else if (isArray(easing)) {
+      if (easing.length < 2 || easing.some((v) => !isNumber(v) || v < 0 || v > 1)) {
+        log.warn(log.message.invalidSelectionEasingControlPoints(easing));
+        delete selCmpt.easing;
+      }
+    } else if (!isEasingFunction(easing)) {
+      log.warn(log.message.invalidSelectionEasing(easing));
+      delete selCmpt.easing;
+    }
+  },
 
   topLevelSignals: (model, selCmpt, signals) => {
     if (!isTimerSelection(selCmpt)) {

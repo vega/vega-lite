@@ -4,6 +4,7 @@ import {FACET_CHANNELS} from '../../channel.js';
 import {
   AnimationPause,
   BrushConfig,
+  EasingFunction,
   LegendBinding,
   SelectionInit,
   SelectionInitInterval,
@@ -47,6 +48,8 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   resolve: SelectionResolution;
   mark?: BrushConfig;
   project: SelectionProjectionComponent;
+  /** An animated selection's easing: a d3-ease name or custom control points. */
+  easing?: EasingFunction | number[];
   /** Frames an animated selection dwells on, and for how long. */
   pause?: AnimationPause[];
   scales?: SelectionProjection[];

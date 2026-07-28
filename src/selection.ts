@@ -10,6 +10,56 @@ export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'point' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
+/**
+ * The [d3-ease](https://github.com/d3/d3-ease) easing functions available to
+ * animated selections, named as Vega's expression language exposes them.
+ */
+export const EASING_FUNCTIONS = [
+  'easeLinear',
+  'easeQuad',
+  'easeQuadIn',
+  'easeQuadOut',
+  'easeQuadInOut',
+  'easeCubic',
+  'easeCubicIn',
+  'easeCubicOut',
+  'easeCubicInOut',
+  'easePoly',
+  'easePolyIn',
+  'easePolyOut',
+  'easePolyInOut',
+  'easeSin',
+  'easeSinIn',
+  'easeSinOut',
+  'easeSinInOut',
+  'easeExp',
+  'easeExpIn',
+  'easeExpOut',
+  'easeExpInOut',
+  'easeCircle',
+  'easeCircleIn',
+  'easeCircleOut',
+  'easeCircleInOut',
+  'easeBounce',
+  'easeBounceIn',
+  'easeBounceOut',
+  'easeBounceInOut',
+  'easeBack',
+  'easeBackIn',
+  'easeBackOut',
+  'easeBackInOut',
+  'easeElastic',
+  'easeElasticIn',
+  'easeElasticOut',
+  'easeElasticInOut',
+] as const;
+
+export type EasingFunction = (typeof EASING_FUNCTIONS)[number];
+
+export function isEasingFunction(easing: any): easing is EasingFunction {
+  return (EASING_FUNCTIONS as readonly string[]).includes(easing);
+}
+
 export type SelectionInit = PrimitiveValue | DateTime;
 export type SelectionInitInterval = Vector2<boolean> | Vector2<number> | Vector2<string> | Vector2<DateTime>;
 
@@ -109,6 +159,17 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
    * __See also:__ [`nearest` examples](https://vega.github.io/vega-lite/docs/selection.html#nearest) documentation.
    */
   nearest?: boolean;
+
+  /**
+   * For animated selections (those with `"on": "timer"`), the curve playback
+   * speed follows across the animation. Give the name of a
+   * [d3-ease](https://github.com/d3/d3-ease) easing function, or an array of
+   * ascending numbers in [0, 1] as evenly-spaced control points of a custom
+   * piecewise-linear interpolator.
+   *
+   * __Default value:__ `"easeLinear"`, a constant rate.
+   */
+  easing?: EasingFunction | number[];
 
   /**
    * For animated selections (those with `"on": "timer"`), values to pause on

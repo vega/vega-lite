@@ -1,0 +1,46 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Gapminder with an eased clock, so each keyframe transition accelerates away from one year and settles into the next rather than moving at a constant rate. Easing is a property of the selection, so the parameter and its filter are written out rather than left to elaboration.",
+  "data": {
+    "url": "data/gapminder.json"
+  },
+  "mark": "point",
+  "params": [
+    {
+      "name": "animation_frame",
+      "select": {
+        "type": "point",
+        "on": "timer",
+        "easing": "easeCubicInOut"
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": {
+        "param": "animation_frame"
+      }
+    }
+  ],
+  "encoding": {
+    "color": {
+      "field": "cluster",
+      "type": "nominal"
+    },
+    "x": {
+      "field": "fertility",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "life_expect",
+      "type": "quantitative"
+    },
+    "time": {
+      "field": "year",
+      "type": "ordinal",
+      "key": {
+        "field": "country"
+      }
+    }
+  }
+}
