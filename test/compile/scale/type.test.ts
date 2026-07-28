@@ -194,9 +194,14 @@ describe('compile/scale', () => {
       });
 
       describe('time (animation)', () => {
-        it('should return linear scale for temporal data by default.', () => {
-          // expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
-          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.BAND); // TODO(jzong) change to linear when interpolation implemented
+        it('should return band scale for temporal data by default.', () => {
+          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.BAND);
+        });
+
+        it('should honor an explicit linear scale for temporal data.', () => {
+          // unlike a visual channel, the time channel maps onto elapsed playback
+          // time, so a temporal field may legitimately drive a linear scale
+          expect(scaleType({type: 'linear'}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
         });
       });
     });
@@ -240,9 +245,12 @@ describe('compile/scale', () => {
       });
 
       describe('time (animation)', () => {
-        it('should return linear scale for quantitative data by default.', () => {
-          // expect(scaleType({}, 'time', {type: 'quantitative'}, 'point')).toEqual(ScaleType.LINEAR);
-          expect(scaleType({}, 'time', {type: 'quantitative'}, 'point')).toEqual(ScaleType.BAND); // TODO(jzong) change to linear when interpolation implemented
+        it('should return band scale for quantitative data by default.', () => {
+          expect(scaleType({}, 'time', {type: 'quantitative'}, 'point')).toEqual(ScaleType.BAND);
+        });
+
+        it('should honor an explicit linear scale for quantitative data.', () => {
+          expect(scaleType({type: 'linear'}, 'time', {type: 'quantitative'}, 'point')).toEqual(ScaleType.LINEAR);
         });
       });
     });

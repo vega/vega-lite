@@ -318,6 +318,16 @@ normalizes to this specification, with the default parameter and filter written 
 
 Vega-Lite adds the default parameter and filter only when the specification does not already declare an animated parameter (a selection with a `timer` event). Declare the parameter explicitly to customize it, for example to change its name.
 
+{:#time-scale-type}
+
+### Keyframes vs. Continuous Time
+
+By default the time channel uses a `band` scale: each distinct value of the field is one keyframe, and the animation cuts from one to the next. `config.scale.framesPerSecond` (default `2`) sets how long each frame lasts, or the duration can be set directly with `"scale": {"range": {"step": 200}}`.
+
+Set `"scale": {"type": "linear"}` instead when the field is continuous and the animation should track elapsed time rather than step through the values present, as with a unix timestamp. The scale then spans `config.scale.animationDuration` seconds (default `5`), or an explicit `"range": [0, 10000]`.
+
+A visual channel restricts which scale types a field type accepts. The time channel accepts `band` and `linear` for any orderable field, temporal fields included, because its range is elapsed playback time rather than a visual extent.
+
 {:#time-no-filter}
 
 ### Animating Without Filtering
@@ -334,7 +344,6 @@ An animation does not have to filter data. If you declare the parameter and omit
 
 Note: `time` encoding animations currently have a few restrictions. See the [example gallery]({{ site.baseurl }}/examples/#animated) for examples of animated visualizations.
 
-- currently, the `time` channel only supports `band` scales (these are the default for discrete frame animation)
 - currently, only unit specifications are supported (no multi-view animations)
 
 <!--

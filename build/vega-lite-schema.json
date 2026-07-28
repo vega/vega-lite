@@ -22088,9 +22088,12 @@
             },
             {
               "$ref": "#/definitions/FieldRange"
+            },
+            {
+              "$ref": "#/definitions/ScaleRangeStep"
             }
           ],
-          "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n\n- For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values or an object with a `field` property representing the range values.  For example, if a field `color` contains CSS color names, we can set `range` to `{field: \"color\"}`.\n\n__Notes:__\n\n1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`)."
+          "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n\n- For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values or an object with a `field` property representing the range values.  For example, if a field `color` contains CSS color names, we can set `range` to `{field: \"color\"}`.\n\n__Notes:__\n\n1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n- For [band](https://vega.github.io/vega-lite/docs/scale.html#band) scales other than `x` and `y`, an object with a `step` property giving the width of each band. The [`time`](https://vega.github.io/vega-lite/docs/animation.html) channel sets keyframe duration this way, because it has no view size to divide into bands.\n\n__Notes:__\n\n1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`)."
         },
         "rangeMax": {
           "anyOf": [
@@ -22211,6 +22214,10 @@
     "ScaleConfig": {
       "additionalProperties": false,
       "properties": {
+        "animationDuration": {
+          "description": "Default animation duration (in seconds) for [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) encodings (except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales, which use `framesPerSecond` instead).\n\n__Default value:__ `5`",
+          "type": "number"
+        },
         "bandPaddingInner": {
           "anyOf": [
             {
@@ -23134,6 +23141,19 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "ScaleRangeStep": {
+      "additionalProperties": false,
+      "properties": {
+        "step": {
+          "description": "The width of each band in a band scale's range.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "step"
+      ],
       "type": "object"
     },
     "ScaleResolveMap": {

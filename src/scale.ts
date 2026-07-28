@@ -450,8 +450,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
    * __Default value:__ `5`
    *
    */
-  // TODO(jzong): uncomment when linear scales for animation are implemented https://github.com/vega/vega-lite/issues/9590
-  // animationDuration?: number;
+  animationDuration?: number;
 }
 
 export const defaultScaleConfig: ScaleConfig<SignalRef> = {
@@ -483,7 +482,7 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
   zero: true,
 
   framesPerSecond: 2,
-  // animationDuration: 5, //TODO(jzong): uncomment when linear scales for animation are implemented https://github.com/vega/vega-lite/issues/9590
+  animationDuration: 5,
 };
 
 export interface SchemeParams {
@@ -540,6 +539,17 @@ export interface FieldRange {
 
 export function isFieldRange(range: any): range is FieldRange {
   return isObject(range) && 'field' in range;
+}
+
+export interface ScaleRangeStep {
+  /**
+   * The width of each band in a band scale's range.
+   */
+  step: number;
+}
+
+export function isScaleRangeStep(range: any): range is ScaleRangeStep {
+  return isObject(range) && 'step' in range;
 }
 
 export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
@@ -617,9 +627,15 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
    *
    * 1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.
    *
+   * - For [band](https://vega.github.io/vega-lite/docs/scale.html#band) scales other than `x` and `y`, an object with a `step` property giving the width of each band. The [`time`](https://vega.github.io/vega-lite/docs/animation.html) channel sets keyframe duration this way, because it has no view size to divide into bands.
+   *
+   * __Notes:__
+   *
+   * 1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.
+   *
    * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`).
    */
-  range?: RangeEnum | (number | string | number[] | ES)[] | FieldRange;
+  range?: RangeEnum | (number | string | number[] | ES)[] | FieldRange | ScaleRangeStep;
 
   /**
    * Sets the maximum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges.

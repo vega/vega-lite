@@ -954,17 +954,17 @@ describe('compile/scale', () => {
           makeImplicit({step: 1000 / defaultConfig.scale.framesPerSecond}),
         );
 
-        // TODO(jzong) uncomment the below when implementing linear scales for interpolation
+        // a linear time scale spans the whole playback rather than one frame
+        const linearModel = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            time: {field: 'x', type: 'quantitative', scale: {type: 'linear'}},
+          },
+        });
 
-        // const linearModel = parseUnitModelWithScaleExceptRange({
-        //   mark: 'point',
-        //   encoding: {
-        //     time: {field: 'x', type: 'quantitative'}
-        //   }
-        // });
-
-        // console.log(parseRangeForChannel('time', linearModel));
-        // expect(parseRangeForChannel('time', linearModel)).toEqual(makeImplicit([0, defaultConfig.scale.animationDuration * 1000]));
+        expect(parseRangeForChannel('time', linearModel)).toEqual(
+          makeImplicit([0, defaultConfig.scale.animationDuration * 1000]),
+        );
       });
     });
   });

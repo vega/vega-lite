@@ -45,8 +45,12 @@ export function scaleType(
       return defaultScaleType;
     }
 
-    // Check if explicitly specified scale type is supported by the data type
-    if (isFieldDef(fieldDef) && !scaleTypeSupportDataType(type, fieldDef.type)) {
+    // Check if explicitly specified scale type is supported by the data type.
+    // The time channel is exempt. Its range is elapsed animation time rather
+    // than a visual extent, and both scale types it allows -- `band` for
+    // discrete keyframes, `linear` for continuous playback -- apply to any
+    // orderable field, temporal fields included.
+    if (!isTime(channel) && isFieldDef(fieldDef) && !scaleTypeSupportDataType(type, fieldDef.type)) {
       log.warn(log.message.scaleTypeNotWorkWithFieldDef(type, defaultScaleType));
       return defaultScaleType;
     }
@@ -117,8 +121,9 @@ function defaultType(
       } else if (isFieldDef(fieldDef) && fieldDef.timeUnit && normalizeTimeUnit(fieldDef.timeUnit).utc) {
         return 'utc';
       } else if (isTime(channel)) {
-        // return 'linear';
-        return 'band'; // TODO(jzong): when interpolation is implemented, this should be 'linear' https://github.com/vega/vega-lite/issues/9590
+        // Default to discrete keyframes, one per distinct data value. An
+        // explicit `"scale": {"type": "linear"}` asks for continuous playback.
+        return 'band';
       }
 
       return 'time';
@@ -135,8 +140,8 @@ function defaultType(
         // TODO: consider using quantize (equivalent to binning) once we have it
         return 'ordinal';
       } else if (isTime(channel)) {
-        // return 'linear';
-        return 'band'; // TODO(jzong): when interpolation is implemented, this should be 'linear' https://github.com/vega/vega-lite/issues/9590
+        // See the temporal case above: keyframes by default, linear on request.
+        return 'band';
       }
 
       return 'linear';

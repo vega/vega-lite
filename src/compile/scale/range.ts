@@ -48,6 +48,7 @@ import {
   hasDiscreteDomain,
   isContinuousToDiscrete,
   isExtendedScheme,
+  isScaleRangeStep,
   Scale,
   ScaleType,
   scaleTypeSupportProperty,
@@ -154,6 +155,10 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
                   }),
                 );
               }
+            } else if (isScaleRangeStep(range)) {
+              // A band step, as the time channel uses to set keyframe duration.
+              // It passes through to Vega untouched.
+              return makeExplicit(range);
             } else if (isObject(range)) {
               return makeExplicit({
                 data: model.requestDataName(DataSourceType.Main),
@@ -319,10 +324,13 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
     }
 
     case TIME: {
-      // if (scaleType === 'band') {
-      return {step: 1000 / config.scale.framesPerSecond};
-      // }
-      // return [0, config.scale.animationDuration * 1000]; // TODO(jzong): uncomment for linear scales when interpolation is implemented https://github.com/vega/vega-lite/issues/9590
+      // A band time scale gives each distinct data value its own keyframe, so
+      // its range states a per-frame duration. A linear time scale runs a
+      // continuous field across the whole playback, so its range spans it.
+      if (scaleType === 'band') {
+        return {step: 1000 / config.scale.framesPerSecond};
+      }
+      return [0, config.scale.animationDuration * 1000];
     }
 
     case STROKEWIDTH:
