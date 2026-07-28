@@ -157,7 +157,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
 
       // find animation-related filters to be applied on the per-frame dataset
       const timerValueSignal = `${selCmpt.name}_value`;
-      const sourceDataFilters = (sourceData.transform ?? []).filter(
+      const animationStart = (sourceData.transform ?? []).findIndex(
         (t) => t.type === 'filter' && (t.expr.includes('vlSelectionTest') || t.expr.includes(timerValueSignal)),
       );
 
@@ -167,11 +167,9 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
         source: sourceData.name,
       };
 
-      if (sourceDataFilters.length > 0) {
-        // remove it from the original dataset
-        sourceData.transform = sourceData.transform.filter((t) => !sourceDataFilters.includes(t));
-        // add the animation filters to the animation dataset
-        currentFrame.transform = sourceDataFilters;
+      if (animationStart >= 0) {
+        // Preserve transform ordering by moving the animation filter and everything downstream of it.
+        currentFrame.transform = sourceData.transform.splice(animationStart);
       }
 
       animationData.push(currentFrame);

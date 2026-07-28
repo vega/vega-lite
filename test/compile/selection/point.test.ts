@@ -506,20 +506,15 @@ describe('Animated Selection', () => {
   });
 
   it('builds animation frame datasets', () => {
-    expect(assembleUnitSelectionData(model, assembleRootData(model.component.data, {}))).toEqual(
-      expect.arrayContaining([
-        {
-          name: 'source_0_curr',
-          source: 'source_0',
-          transform: [
-            {
-              type: 'filter',
-              expr: '!length(data("avl_store")) || vlSelectionTest("avl_store", datum)',
-            },
-          ],
-        },
-      ]),
+    const currentFrame = assembleUnitSelectionData(model, assembleRootData(model.component.data, {})).find(
+      (data) => data.name === 'source_0_curr',
     );
+
+    expect(currentFrame).toEqual(expect.objectContaining({name: 'source_0_curr', source: 'source_0'}));
+    expect(currentFrame.transform[0]).toEqual({
+      type: 'filter',
+      expr: '!length(data("avl_store")) || vlSelectionTest("avl_store", datum)',
+    });
   });
 
   it('builds animation frame datasets when the source has no transforms', () => {
@@ -591,6 +586,39 @@ describe('Animated Selection', () => {
     expect(currentFrame.transform).toEqual(
       expect.arrayContaining([expect.objectContaining({expr: 'datum.year <= avl_value'})]),
     );
+  });
+
+  it('preserves transforms downstream of timer value filters', () => {
+    const aggregateModel = parseUnitModelWithScaleAndSelection({
+      data: {
+        values: [
+          {year: 2000, value: 1},
+          {year: 2001, value: 2},
+        ],
+      },
+      params: [{name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+      transform: [
+        {filter: 'datum.year <= avl_value'},
+        {joinaggregate: [{op: 'sum', field: 'value', as: 'total'}]},
+      ],
+      mark: 'line',
+      encoding: {
+        x: {field: 'year', type: 'ordinal'},
+        y: {field: 'total', type: 'quantitative'},
+        time: {field: 'year', type: 'ordinal'},
+      },
+    });
+
+    aggregateModel.parseData();
+    optimizeDataflow(aggregateModel.component.data, aggregateModel);
+
+    const datasets = assembleUnitSelectionData(aggregateModel, assembleRootData(aggregateModel.component.data, {}));
+    const currentFrame = datasets.find((d) => d.name.endsWith('_curr'));
+    const source = datasets.find((d) => d.name === currentFrame.source);
+
+    expect(source.transform).toEqual([]);
+    expect(currentFrame.transform.map((transform) => transform.type)).toEqual(['filter', 'joinaggregate']);
+    expect(currentFrame.transform[0]).toEqual(expect.objectContaining({expr: 'datum.year <= avl_value'}));
   });
 
   it('assigns correct animation frame dataset to marks', () => {
