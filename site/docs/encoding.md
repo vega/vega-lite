@@ -286,12 +286,56 @@ See [an example scatterplot animation]({{ site.baseurl }}/examples/animated_gapm
 
 {% include table.html props="time" source="Encoding" %}
 
+{:#time-elaboration}
+
+### A Time Encoding Implies a Parameter and a Filter
+
+A `time` encoding names the field the animation runs over. From that field, Vega-Lite derives the clock that advances the animation and the filter that picks the current frame. This specification:
+
+```json
+{
+  "data": {"url": "data/gapminder.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "fertility", "type": "quantitative"},
+    "y": {"field": "life_expect", "type": "quantitative"},
+    "time": {"field": "year", "type": "ordinal"}
+  }
+}
+```
+
+normalizes to this specification, which writes the parameter and the filter out:
+
+```json
+{
+  "params": [{"name": "animation_frame", "select": {"type": "point", "on": "timer"}}],
+  "transform": [{"filter": {"param": "animation_frame"}}],
+  ...
+}
+```
+
+`animation_frame` is an ordinary [point selection](selection.html) holding the current frame, so a conditional encoding, a scale domain, or a filter in another view can all read it. Declare the parameter yourself to set its playback rate, bind it to a slider, or give it a name of your own. Vega-Lite derives nothing when a specification already declares an animated parameter.
+
+In a layered or concatenated view, every view with a `time` encoding receives the same `animation_frame` parameter, so the views share one store and advance together.
+
+{:#time-no-filter}
+
+### Animating Without Filtering
+
+An animation can drive a conditional encoding while every mark stays on the full data. Declare the parameter yourself and omit the filter, and the clock still advances — here it recolors the current year's points against the rest.
+
+```json
+"params": [{"name": "frame", "select": {"type": "point", "on": "timer"}}],
+"encoding": {
+  "color": {"condition": {"param": "frame", "value": "red"}, "value": "lightgray"},
+  "time": {"field": "year", "type": "ordinal"}
+}
+```
+
+Vega-Lite repoints marks at the current frame's data only when something filters on the animated selection.
+
 Note: `time` encoding animations currently have a few restrictions. See the [example gallery]({{ site.baseurl }}/examples/#animated) for examples of animated visualizations.
 
-- must also explicility specify a selection parameter
-  - parameter must have a `timer` event
-  - parameter must select the same field as the `time` field definition
-- must explicitly define a filter using that parameter
 - currently, the `time` channel only supports `band` scales (these are the default for discrete frame animation)
 - currently, only unit specifications are supported (no multi-view animations)
 
