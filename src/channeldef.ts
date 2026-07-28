@@ -534,11 +534,19 @@ export type PolarDef<F extends Field> = PositionFieldDefBase<F> | PositionDatumD
 
 export type TimeDef<F extends Field> = TimeFieldDef<F>;
 export interface TimeMixins {
-  /*
-  Optional. A boolean flag. When rescale is true, scale domains update according to the subset of data inside the current keyframe. When rescale is false, scale domains are generated from the entire dataset.
-
-  __Default value:__ `false`
-  */
+  /**
+   * Whether the animated marks' scales should be recomputed from the current
+   * frame rather than held fixed across the whole animation. Rescaling keeps
+   * each frame's data filling the view -- as in a racing bar chart, where the
+   * bars stay legible as their magnitudes grow -- at the cost of making
+   * positions incomparable between frames.
+   *
+   * Vega-Lite never rescales a scale with a discrete output range (`ordinal`,
+   * `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because moving
+   * between such outputs jumps rather than travels.
+   *
+   * __Default value:__ `false`
+   */
   rescale?: boolean;
 }
 export type TimeFieldDef<F extends Field> = ScaleFieldDef<F, StandardType> & TimeMixins;

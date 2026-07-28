@@ -10,7 +10,7 @@ import {
   MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX,
 } from '../../aggregate.js';
 import {isBinning, isBinParams, isParameterExtent} from '../../bin.js';
-import {getSecondaryRangeChannel, isScaleChannel, isXorY, ScaleChannel} from '../../channel.js';
+import {getSecondaryRangeChannel, isScaleChannel, isXorY, ScaleChannel, TIME} from '../../channel.js';
 import {
   binRequiresRange,
   getBandPosition,
@@ -20,6 +20,7 @@ import {
   isFieldDef,
   ScaleDatumDef,
   ScaleFieldDef,
+  TimeFieldDef,
   TypedFieldDef,
   valueExpr,
   vgField,
@@ -30,7 +31,15 @@ import {DateTime} from '../../datetime.js';
 import {ExprRef} from '../../expr.js';
 import * as log from '../../log/index.js';
 import {isPathMark, isRectBasedMark} from '../../mark.js';
-import {Domain, hasDiscreteDomain, isDomainUnionWith, isParameterDomain, ScaleConfig, ScaleType} from '../../scale.js';
+import {
+  Domain,
+  hasDiscreteDomain,
+  hasDiscreteRange,
+  isDomainUnionWith,
+  isParameterDomain,
+  ScaleConfig,
+  ScaleType,
+} from '../../scale.js';
 import {ParameterExtent} from '../../selection.js';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort.js';
 import {normalizeTimeUnit, TimeUnit, TimeUnitTransformParams} from '../../timeunit.js';
@@ -58,6 +67,7 @@ import {isFacetModel, isUnitModel, Model} from '../model.js';
 import {SignalRefWrapper} from '../signal.js';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split.js';
 import {UnitModel} from '../unit.js';
+import {CURR} from '../selection/point.js';
 import {ScaleComponent, ScaleComponentIndex} from './component.js';
 
 export function parseScaleDomain(model: Model) {
@@ -695,8 +705,42 @@ export function getFieldFromDomain(domain: VgDomain): string {
   return undefined;
 }
 
+/**
+ * When a scale should be recomputed from the current animation frame, the
+ * datasets to redirect away from and the frame dataset to redirect to.
+ *
+ * A domain may read either the unit's raw source or its main one -- a band
+ * domain sorted by another field uses the raw source, for instance -- and both
+ * should follow the animation. Both redirect to the main source's frame
+ * dataset, which is the data the marks themselves draw.
+ *
+ * The time scale keeps its own domain. That domain fixes the extent of the
+ * animation, so narrowing it to the current frame would collapse the range the
+ * clock plays through.
+ */
+function animationRescale(model: Model, channel: ScaleChannel): {sources: Set<string>; frame: string} | undefined {
+  if (channel === TIME || !isUnitModel(model) || !model.isAnimated) {
+    return undefined;
+  }
+
+  if (!(model.encoding.time as TimeFieldDef<string>)?.rescale) {
+    return undefined;
+  }
+
+  if (hasDiscreteRange(model.component.scales[channel]?.get('type'))) {
+    return undefined;
+  }
+
+  const main = model.lookupDataSource(model.getDataName(DataSourceType.Main));
+  return {
+    sources: new Set([main, model.lookupDataSource(model.getDataName(DataSourceType.Raw))]),
+    frame: main + CURR,
+  };
+}
+
 export function assembleDomain(model: Model, channel: ScaleChannel) {
   const scaleComponent: ScaleComponent = model.component.scales[channel];
+  const rescale = animationRescale(model, channel);
 
   const domains = scaleComponent.get('domains').map((domain: VgNonUnionDomain) => {
     // Correct references to data as the original domain's data was determined
@@ -704,6 +748,10 @@ export function assembleDomain(model: Model, channel: ScaleChannel) {
     // reference can be incorrect.
     if (isDataRefDomain(domain)) {
       domain.data = model.lookupDataSource(domain.data);
+
+      if (rescale?.sources.has(domain.data)) {
+        domain.data = rescale.frame;
+      }
     }
 
     return domain;

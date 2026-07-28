@@ -20,6 +20,22 @@ const gapminder = (select: any, extraParams: any[] = []): TopLevelSpec => ({
   },
 });
 
+const racingBars = (rescale: boolean): TopLevelSpec => ({
+  data: {url: 'data/category-brands.csv'},
+  params: [{name: 'frame', select: {type: 'point', on: 'timer'}}],
+  transform: [{filter: {param: 'frame'}}],
+  mark: 'bar',
+  encoding: {
+    x: {field: 'value', type: 'quantitative'},
+    y: {field: 'name', type: 'nominal', sort: {field: 'value', order: 'descending'}},
+    color: {field: 'category', type: 'nominal'},
+    time: {field: 'date', type: 'ordinal', ...(rescale ? {rescale: true} : {})},
+  },
+});
+
+const scaleDomains = (spec: TopLevelSpec) =>
+  Object.fromEntries(compile(spec).spec.scales.map((s) => [s.name, (s.domain as any)?.data]));
+
 describe('animation', () => {
   describe('frame filter placement', () => {
     it('moves the frame filter off an upstream dataset', () => {
@@ -137,6 +153,47 @@ describe('animation', () => {
           },
         ]),
       );
+    });
+  });
+  describe('rescale', () => {
+    it('leaves scale domains on the full dataset by default', () => {
+      const domains = scaleDomains(racingBars(false));
+      expect(domains.x).not.toMatch(/_curr$/);
+      expect(domains.y).not.toMatch(/_curr$/);
+    });
+
+    it('reads continuous domains from the current frame', () => {
+      expect(scaleDomains(racingBars(true)).x).toMatch(/_curr$/);
+    });
+
+    it('reads a sorted band domain from the current frame', () => {
+      // a band domain sorted by another field reads the raw source rather than
+      // the main one; it has to follow the animation too, or the bars in a
+      // racing bar chart never reorder
+      expect(scaleDomains(racingBars(true)).y).toMatch(/_curr$/);
+    });
+
+    it('leaves scales with a discrete range alone', () => {
+      // interpolating between an ordinal scale's outputs is not meaningful
+      expect(scaleDomains(racingBars(true)).color).not.toMatch(/_curr$/);
+    });
+
+    it('leaves the time scale alone', () => {
+      // the time scale defines the extent of the animation; narrowing it to the
+      // current frame would collapse the domain being played through
+      expect(scaleDomains(racingBars(true)).time).not.toMatch(/_curr$/);
+    });
+
+    it('points the rescaled domains at a dataset that exists', () => {
+      const compiled = compile(racingBars(true)).spec;
+      const names = new Set(compiled.data.map((d) => d.name));
+
+      for (const scale of compiled.scales) {
+        const data = (scale.domain as any)?.data;
+        if (data) {
+          expect(names).toContain(data);
+        }
+      }
     });
   });
 });

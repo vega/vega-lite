@@ -180,6 +180,15 @@ export function isContinuousToDiscrete(type: ScaleType): type is 'quantile' | 'q
   return CONTINUOUS_TO_DISCRETE_SCALES.has(type);
 }
 
+/**
+ * Whether a scale's output is a set of discrete values rather than a
+ * continuous span. `band` and `point` are excluded: their domains are discrete,
+ * but they produce continuous positions.
+ */
+export function hasDiscreteRange(type: ScaleType): boolean {
+  return type === 'ordinal' || type === 'bin-ordinal' || isContinuousToDiscrete(type);
+}
+
 export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvalidDataConfigMixins {
   /**
    * If true, rounds numeric output values to integers.

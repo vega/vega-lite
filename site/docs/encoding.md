@@ -344,8 +344,17 @@ Note: `time` encoding animations currently have a few restrictions. See the [exa
 
 - currently, only unit specifications are supported (no multi-view animations)
 
-<!--
-TODO(jzong): uncomment once we've added rescale, scale types
+{:#time-rescale}
+
+### Rescaling
+
+By default a scale holds one domain across the whole animation, which keeps positions comparable between frames. Set `"rescale": true` to recompute the domain from each frame instead. Rescaling is what a racing bar chart depends on. Against a domain covering every frame, the earliest values are a rounding error and the bars start out invisible.
+
+```json
+"time": {"field": "date", "type": "ordinal", "rescale": true}
+```
+
+Vega-Lite never rescales a scale with a discrete output range (`ordinal`, `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because moving between such outputs jumps rather than travels. It never rescales the time scale either, which fixes the extent of the animation.
 
 {:#time-field-def}
 
@@ -353,7 +362,7 @@ TODO(jzong): uncomment once we've added rescale, scale types
 
 In addition to the general [field definition properties](#field-def), the `time` field definition may include the properties listed below.
 
-{% include table.html props="scale,rescale,sort" source="TimeFieldDef" %} -->
+{% include table.html props="scale,rescale,sort" source="TimeFieldDef" %}
 
 {:#mark-prop}
 
