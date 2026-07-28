@@ -123,8 +123,8 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
 }
 
 export function assembleUnitSelectionData(model: UnitModel, data: readonly VgData[]): VgData[] {
-  const selectionData = [];
-  const animationData = [];
+  const selectionData: VgData[] = [];
+  const animationData: VgData[] = [];
   const unit = unitName(model, {escape: false});
 
   for (const selCmpt of vals(model.component.selection ?? {})) {
@@ -148,31 +148,36 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
     }
 
     if (isTimerSelection(selCmpt) && data.length) {
-      // TODO(jzong): eventually uncomment this stuff when we want to support multi-view
-      // const sourceName =
-      //   model.parent && model.parent.type !== 'unit' // facet, layer, or concat
-      //     ? model.parent.lookupDataSource(model.parent.getDataName(DataSourceType.Main))
-      //     : model.lookupDataSource(model.getDataName(DataSourceType.Main));
       const sourceName = model.lookupDataSource(model.getDataName(DataSourceType.Main));
       const sourceData = data.find((d) => d.name === sourceName);
 
-      // find the filter transform for the current selection
-      const sourceDataFilter = sourceData.transform.find(
-        (t) => t.type === 'filter' && t.expr.includes('vlSelectionTest'),
-      );
+      if (sourceData && !animationData.some((d) => d.name === sourceData.name + CURR)) {
+        // Find where the frame filter ended up. It usually sits on the main
+        // source, but the dataflow may have pushed it above an aggregate, and
+        // it has to move from wherever it landed.
+        const storeRef = stringValue(selCmpt.name + STORE);
+        const testsStore = (t: VgData['transform'][number]) =>
+          t.type === 'filter' && t.expr.includes(`vlSelectionTest(${storeRef}`);
+        const filterHost = data.find((d) => (d.transform ?? []).some(testsStore));
+        const frameFilter = filterHost?.transform.find(testsStore);
 
-      if (sourceDataFilter) {
-        // remove it from the original dataset
-        sourceData.transform = sourceData.transform.filter((t) => t !== sourceDataFilter);
+        // No frame filter means nothing selects the current frame's rows, so
+        // there is no frame dataset to build and marks stay on the full data.
+        // An animation may still drive conditional encodings or a bound scale.
+        if (frameFilter) {
+          // Move the filter down so everything upstream still sees the whole
+          // time domain. Scale domains read that domain, and an aggregate over
+          // a single frame collapses the animation to that frame.
+          filterHost.transform = filterHost.transform.filter((t) => t !== frameFilter);
 
-        // create dataset to hold current animation frame
-        const currentFrame: VgData = {
-          name: sourceData.name + CURR,
-          source: sourceData.name,
-          transform: [sourceDataFilter], // add the selection filter to the animation dataset
-        };
+          animationData.push({
+            name: sourceData.name + CURR,
+            source: sourceData.name,
+            transform: [frameFilter],
+          });
 
-        animationData.push(currentFrame);
+          model.animationFrameSource = sourceData.name;
+        }
       }
     }
   }

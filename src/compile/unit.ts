@@ -322,24 +322,45 @@ export class UnitModel extends ModelWithField {
   }
 
   /**
+   * The data source of this unit's frame dataset. Data assembly writes this
+   * field, and mark assembly reads it.
+   *
+   * A set field means the marks follow the animation. A `time` encoding and a
+   * timer selection are each compatible with marks that follow the animation
+   * and with marks that stay on the full data, so neither one determines this
+   * field. Data assembly sets it after it finds a frame filter and builds a
+   * frame dataset from that filter.
+   */
+  public animationFrameSource?: string;
+
+  public get isAnimated(): boolean {
+    return this.animationFrameSource !== undefined;
+  }
+
+  /**
    * Corrects the data references in marks after assemble.
    */
   public correctDataNames = (mark: VgMarkGroup) => {
+    const animated = this.isAnimated;
+
     // for normal data references
     if (mark.from?.data) {
       mark.from.data = this.lookupDataSource(mark.from.data);
-      if ('time' in this.encoding) {
+      if (animated) {
         mark.from.data = mark.from.data + CURR;
       }
     }
 
-    // for access to facet data
+    // for access to facet data. A grouped path mark -- a line broken up by
+    // color, say -- compiles to a facet-backed group, which stores its data
+    // reference here rather than on `from.data`. A pass that reads only
+    // `from.data` misses the reference, and the line then holds still while
+    // the rest of the chart animates.
     if (mark.from?.facet?.data) {
       mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
-      // TOOD(jzong) uncomment this when it's time to implement facet animation
-      // if ('time' in this.encoding) {
-      //   mark.from.facet.data = mark.from.facet.data + CURR;
-      // }
+      if (animated) {
+        mark.from.facet.data = mark.from.facet.data + CURR;
+      }
     }
 
     return mark;
