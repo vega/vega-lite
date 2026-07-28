@@ -1,0 +1,48 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Gapminder animated over time, with a slider for scrubbing through the years by hand.",
+  "data": {
+    "url": "data/gapminder.json"
+  },
+  "mark": "point",
+  "params": [
+    {
+      "name": "animation_frame",
+      "select": {
+        "type": "point",
+        "on": "timer"
+      },
+      "bind": {
+        "input": "range",
+        "min": 1955,
+        "max": 2005,
+        "step": 5
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": {
+        "param": "animation_frame"
+      }
+    }
+  ],
+  "encoding": {
+    "color": {
+      "field": "cluster",
+      "type": "nominal"
+    },
+    "x": {
+      "field": "fertility",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "life_expect",
+      "type": "quantitative"
+    },
+    "time": {
+      "field": "year",
+      "type": "ordinal"
+    }
+  }
+}

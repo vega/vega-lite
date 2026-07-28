@@ -331,4 +331,39 @@ describe('animation', () => {
       expect(compiled.data.filter((d) => /pause/.test(d.name))).toHaveLength(0);
     });
   });
+  describe('range binding', () => {
+    const slider = gapminder({on: 'timer'});
+    (slider as any).params[0].bind = {input: 'range', min: 1955, max: 2005, step: 5};
+    const compiled = compile(slider).spec;
+    const signal = (name: string) => compiled.signals.find((s) => s.name === name) as any;
+
+    it('binds a signal reading in data units', () => {
+      expect(signal('frame_time')).toEqual({
+        name: 'frame_time',
+        bind: {input: 'range', min: 1955, max: 2005, step: 5},
+      });
+    });
+
+    it('scrubs the clock by scaling the slider value', () => {
+      expect(signal('anim_clock').on).toContainEqual({
+        events: {signal: 'frame_time'},
+        update: "scale('time', frame_time)",
+      });
+    });
+
+    it('stops playback on scrub and offers a way to resume', () => {
+      expect(signal('is_playing')).toEqual({
+        name: 'is_playing',
+        init: 'true',
+        bind: {input: 'checkbox'},
+        on: [{events: {signal: 'frame_time'}, update: 'false'}],
+      });
+    });
+
+    it('does not also build the generic widget-driven tuple', () => {
+      // the generic input binding rewrites the tuple to read widget values,
+      // which would sever it from the clock
+      expect(signal('frame_tuple').update).toContain('anim_value');
+    });
+  });
 });

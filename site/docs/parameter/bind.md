@@ -29,6 +29,22 @@ If multiple projections are specified, customized bindings can be specified by m
 
 **Note:** When point selections are bound to input widgets, direct manipulation interaction (e.g., clicking or double clicking the visualization) is disabled by default. Such interaction can be re-enabled by explicitly specifying the [`on`](selection.html#selection-props) and [`clear`](clear.html) properties.
 
+{:#animation-binding}
+
+### Binding an Animated Selection
+
+Binding a selection with `"on": "timer"` to a range input gives a scrubber for its [animation](../encoding.html#time). Its `min`, `max`, and `step` are in the units of the time field, not in milliseconds:
+
+```json
+{
+  "name": "frame",
+  "select": {"type": "point", "on": "timer"},
+  "bind": {"input": "range", "min": 1955, "max": 2005, "step": 5}
+}
+```
+
+Scrubbing stops playback, so the clock does not fight the pointer. Pair the slider with a checkbox to resume.
+
 ## Legend Binding
 
 When a point selection is [projected](project.html) over only one field or encoding channel, the `bind` property can be set to `"legend"` to populate the selection by interacting with the corresponding legend.

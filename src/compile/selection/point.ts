@@ -1,5 +1,5 @@
-import {Signal, Stream} from 'vega';
-import {array, stringValue} from 'vega-util';
+import {BindRange, Binding, Signal, Stream} from 'vega';
+import {array, isObject, stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, TUPLE, isTimerSelection, unitName} from './index.js';
 import {SELECTION_ID} from '../../selection.js';
 import {vals} from '../../util.js';
@@ -45,6 +45,18 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
 };
 
 /**
+ * The signal backing an animated selection's range binding, or undefined when
+ * the selection has no binding. The signal holds a point in the time field's
+ * domain, so a specification states `min`, `max`, and `step` in data units.
+ */
+function sliderName(selCmpt: SelectionComponent<'point'>): string | undefined {
+  const {bind} = selCmpt;
+  return bind && bind !== 'scales' && isObject(bind) && (bind as BindRange).input === 'range'
+    ? `${selCmpt.name}_time`
+    : undefined;
+}
+
+/**
  * The condition under which the clock advances, along with the signals it
  * depends on and any signals that have to be emitted to support it.
  *
@@ -67,6 +79,7 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
   // supplies the filter owns the switch, so the compiler emits no `is_playing`
   // of its own. Emitting one would collide with the parameter the filter names.
   const filters = array<string>(selCmpt.events?.find((e) => 'type' in e && e.type === 'timer')?.filter ?? []);
+  const slider = sliderName(selCmpt);
 
   if (filters.length) {
     for (const [i, filter] of filters.entries()) {
@@ -87,7 +100,18 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
   } else {
     terms.push(IS_PLAYING);
     dependencies.push({signal: IS_PLAYING});
-    signals.push({name: IS_PLAYING, init: 'true'});
+    signals.push(
+      slider
+        ? {
+            // Scrubbing takes over from playback, so the clock does not fight
+            // the pointer. A bound checkbox resumes playback.
+            name: IS_PLAYING,
+            init: 'true',
+            bind: {input: 'checkbox'},
+            on: [{events: {signal: slider}, update: 'false'}],
+          }
+        : {name: IS_PLAYING, init: 'true'},
+    );
   }
 
   if (selCmpt.pause?.length) {
@@ -131,6 +155,7 @@ const point: SelectionCompiler<'point'> = {
   topLevelSignals: (model, selCmpt, signals) => {
     if (isTimerSelection(selCmpt)) {
       const {gate, dependencies, signals: gateSignals} = playbackGate(selCmpt);
+      const slider = sliderName(selCmpt);
 
       signals = signals.concat(
         [
@@ -142,6 +167,9 @@ const point: SelectionCompiler<'point'> = {
                 events: {type: 'timer', throttle: THROTTLE},
                 update: `${gate} ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`,
               },
+              // Scrubbing sets the clock directly. The slider reads in data
+              // units, so scaling it gives the elapsed time of that frame.
+              ...(slider ? [{events: {signal: slider}, update: `scale('${model.scaleName(TIME)}', ${slider})`}] : []),
             ],
           },
           {
@@ -151,6 +179,7 @@ const point: SelectionCompiler<'point'> = {
             init: 'now()',
             on: [{events: [{signal: ANIM_CLOCK}, ...dependencies], update: 'now()'}],
           },
+          ...(slider ? [{name: slider, bind: selCmpt.bind as Binding}] : []),
         ],
         gateSignals,
       );
