@@ -506,6 +506,25 @@ describe('Animated Selection', () => {
     );
   });
 
+  it('builds animation frame datasets when the source has no transforms', () => {
+    const untransformedModel = parseUnitModelWithScaleAndSelection({
+      data: {values: [{category: 'a', frame: 'first'}]},
+      params: [{name: 'avl', select: {type: 'point', fields: ['frame'], on: 'timer'}}],
+      mark: 'point',
+      encoding: {
+        x: {field: 'category', type: 'nominal'},
+        time: {field: 'frame', type: 'ordinal'},
+      },
+    });
+
+    untransformedModel.parseData();
+    optimizeDataflow(untransformedModel.component.data, untransformedModel);
+
+    expect(assembleUnitSelectionData(untransformedModel, assembleRootData(untransformedModel.component.data, {}))).toEqual(
+      expect.arrayContaining([{name: 'source_0_curr', source: 'source_0'}]),
+    );
+  });
+
   it('moves timer value filters onto animation frame dataset', () => {
     const valueFilterModel = parseUnitModelWithScaleAndSelection({
       data: {
