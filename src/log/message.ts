@@ -120,6 +120,19 @@ export const MULTIPLE_TIMER_ANIMATION_SELECTION =
 
 export const MULTI_VIEW_ANIMATION_UNSUPPORTED = 'Animation involving facet, layer, or concat is currently unsupported.';
 
+export const SELECTION_PREDICATE_COMPOSITION_UNSUPPORTED =
+  'A selection "predicate" may only be a single field predicate or a flat "and" of them. Ignoring the predicate.';
+
+export const SELECTION_PREDICATE_REQUIRES_FIELD =
+  'Every field predicate in a selection "predicate" must specify a "field". Ignoring the predicate.';
+
+export const SELECTION_PREDICATE_REQUIRES_POINT =
+  'A selection "predicate" is only supported for point selections. Ignoring the predicate.';
+
+export const SELECTION_PREDICATE_INCOMPATIBLE_WITH_NEAREST =
+  'A selection "predicate" that compares against "datum" does not work with "nearest", ' +
+  'because events are captured on a voronoi overlay whose datum is a mark item rather than a data tuple.';
+
 export function selectionAsScaleDomainWithoutField(field: string) {
   return (
     'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +

@@ -6,6 +6,21 @@ import {vals} from '../../util.js';
 import {BRUSH} from './interval.js';
 import {TUPLE_FIELDS} from './project.js';
 import {TIME} from '../../channel.js';
+import {valueExpr} from '../../channeldef.js';
+import {replaceExprRef} from '../../expr.js';
+import {
+  FieldEqualPredicate,
+  FieldPredicate,
+  isFieldGTEPredicate,
+  isFieldGTPredicate,
+  isFieldLTEPredicate,
+  isFieldLTPredicate,
+  isFieldOneOfPredicate,
+  isFieldRangePredicate,
+  isFieldValidPredicate,
+} from '../../predicate.js';
+import {normalizeTimeUnit} from '../../timeunit.js';
+import {isSignalRef} from '../../vega.schema.js';
 
 export const CURR = '_curr';
 export const ANIM_VALUE = 'anim_value';
@@ -36,6 +51,31 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
     {name: ANIM_VALUE, update: `invert('${scaleName}', ${EASED_ANIM_CLOCK})`},
   ];
 };
+
+/**
+ * Renders the value a predicate compares against as a Vega expression. Range
+ * and oneOf predicates compare against arrays; the rest against a scalar.
+ */
+function predicateValue(predicate: FieldPredicate): string {
+  const {unit} = normalizeTimeUnit(predicate.timeUnit) ?? {};
+  const expr = (v: any) => valueExpr(v, {timeUnit: unit, wrapTime: true});
+
+  if (isFieldRangePredicate(predicate)) {
+    const {range} = replaceExprRef(predicate);
+    return isSignalRef(range) ? range.signal : `[${expr(range[0])}, ${expr(range[1])}]`;
+  }
+  if (isFieldOneOfPredicate(predicate)) {
+    return `[${predicate.oneOf.map(expr).join(', ')}]`;
+  }
+  if (isFieldValidPredicate(predicate)) {
+    return String(predicate.valid ?? true);
+  }
+  if (isFieldLTPredicate(predicate)) return expr(predicate.lt);
+  if (isFieldLTEPredicate(predicate)) return expr(predicate.lte);
+  if (isFieldGTPredicate(predicate)) return expr(predicate.gt);
+  if (isFieldGTEPredicate(predicate)) return expr(predicate.gte);
+  return expr((predicate as FieldEqualPredicate).equal);
+}
 
 const point: SelectionCompiler<'point'> = {
   defined: (selCmpt) => selCmpt.type === 'point',
@@ -96,6 +136,12 @@ const point: SelectionCompiler<'point'> = {
 
     if (selCmpt.project.hasSelectionId) {
       update += `${SELECTION_ID}: ${datum}[${stringValue(SELECTION_ID)}]`;
+    } else if (selCmpt.predicate) {
+      // The tuple stores the predicate's comparison values, which the
+      // projection pairs with the comparison types it recorded. Vega evaluates
+      // each value as an ordinary expression at the point the tuple is
+      // captured, so `datum` there is the datum the viewer interacted with.
+      update += `fields: ${fieldsSg}, values: [${selCmpt.predicate.map(predicateValue).join(', ')}]`;
     } else if (isTimerSelection(selCmpt)) {
       update += `fields: ${fieldsSg}, values: [${ANIM_VALUE} ? ${ANIM_VALUE} : ${MIN_EXTENT}]`;
     } else {

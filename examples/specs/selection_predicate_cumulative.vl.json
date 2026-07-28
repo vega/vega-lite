@@ -1,0 +1,24 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Clicking a bar highlights every year up to it, using a selection predicate to hold a threshold rather than a single value.",
+  "data": {"url": "data/population.json"},
+  "params": [
+    {
+      "name": "upto",
+      "select": {
+        "type": "point",
+        "predicate": {"field": "year", "lte": {"expr": "datum.year"}},
+        "toggle": false
+      }
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "year", "type": "ordinal"},
+    "y": {"aggregate": "sum", "field": "people", "type": "quantitative"},
+    "color": {
+      "condition": {"param": "upto", "empty": false, "value": "steelblue"},
+      "value": "lightgray"
+    }
+  }
+}

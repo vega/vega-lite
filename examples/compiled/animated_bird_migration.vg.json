@@ -1,0 +1,152 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "A year of migration for ten bird species that cross the Atlantic, one point per species per day. The selection holds a ten-day window rather than a single day, so each species trails a tail behind its leading edge, and opacity falls with the age of each position.",
+  "background": "white",
+  "padding": 5,
+  "width": 500,
+  "height": 500,
+  "style": "view",
+  "data": [
+    {"name": "trail_store"},
+    {
+      "name": "source_0",
+      "url": "data/bird-migration.csv",
+      "format": {"type": "csv"},
+      "transform": [
+        {"type": "geojson", "fields": ["lon", "lat"], "signal": "geojson_0"},
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["lon", "lat"],
+          "as": ["x", "y"]
+        }
+      ]
+    },
+    {
+      "name": "source_0_curr",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!length(data(\"trail_store\")) || vlSelectionTest(\"trail_store\", datum)"
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "geojson_0"},
+      "type": "equalEarth"
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "trail",
+      "update": "vlSelectionResolve(\"trail_store\", \"union\", true, true)"
+    },
+    {
+      "name": "anim_clock",
+      "init": "0",
+      "on": [
+        {
+          "events": {"type": "timer", "throttle": 16.666666666666668},
+          "update": "is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock"
+        }
+      ]
+    },
+    {
+      "name": "last_tick_at",
+      "init": "now()",
+      "on": [
+        {
+          "events": [{"signal": "anim_clock"}, {"signal": "is_playing"}],
+          "update": "now()"
+        }
+      ]
+    },
+    {"name": "is_playing", "init": "true"},
+    {"name": "eased_anim_clock", "update": "anim_clock"},
+    {"name": "trail_domain", "init": "domain('time')"},
+    {"name": "min_extent", "init": "extent(trail_domain)[0]"},
+    {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
+    {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
+    {
+      "name": "trail_tuple",
+      "update": "{unit: \"\", fields: trail_tuple_fields, values: [anim_value, anim_value - 10]}"
+    },
+    {
+      "name": "trail_tuple_fields",
+      "value": [
+        {"field": "day", "type": "E-LTE"},
+        {"field": "day", "type": "E-GT"}
+      ]
+    },
+    {
+      "name": "trail_modify",
+      "update": "modify(\"trail_store\", trail_tuple, true)"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "interactive": true,
+      "from": {"data": "source_0_curr"},
+      "encode": {
+        "update": {
+          "opacity": {"signal": "max(0.15, 1 - (anim_value - datum.day) / 10)"},
+          "size": {"value": 20},
+          "cursor": {"value": "pointer"},
+          "fill": {"scale": "color", "field": "species"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"lon: \" + (format(datum[\"lon\"], \"\")) + \"; lat: \" + (format(datum[\"lat\"], \"\")) + \"; species: \" + (isValid(datum[\"species\"]) ? isArray(datum[\"species\"]) ? join(datum[\"species\"], ' ') : datum[\"species\"] : \"\"+datum[\"species\"]) + \"; day: \" + (format(datum[\"day\"], \"\"))"
+          },
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "shape": {"value": "circle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "species", "sort": true},
+      "range": "category"
+    },
+    {
+      "name": "time",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "day", "sort": true},
+      "range": {"step": 50}
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "symbolType": "circle",
+      "title": "species",
+      "encode": {
+        "symbols": {
+          "update": {
+            "opacity": {
+              "signal": "max(0.15, 1 - (anim_value - datum.day) / 10)"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

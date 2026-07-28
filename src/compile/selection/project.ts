@@ -1,11 +1,24 @@
 import {array, isObject} from 'vega-util';
+import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalAnd} from '../../logical.js';
+import {
+  FieldPredicate,
+  isFieldGTEPredicate,
+  isFieldGTPredicate,
+  isFieldLTEPredicate,
+  isFieldLTPredicate,
+  isFieldOneOfPredicate,
+  isFieldRangePredicate,
+  isFieldValidPredicate,
+} from '../../predicate.js';
 import {
   GeoPositionChannel,
   getPositionChannelFromLatLong,
   isGeoPositionChannel,
   isScaleChannel,
   isSingleDefUnitChannel,
+  SINGLE_DEF_UNIT_CHANNELS,
   SingleDefUnitChannel,
+  TIME,
 } from '../../channel.js';
 import * as log from '../../log/index.js';
 import {hasContinuousDomain} from '../../scale.js';
@@ -18,12 +31,13 @@ import {
 import {Dict, hash, keys, varName, isEmpty} from '../../util.js';
 import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit.js';
 import {SelectionCompiler} from './index.js';
+import {UnitModel} from '../unit.js';
 import {assembleProjection} from './assemble.js';
 import {isBinnedTimeUnit} from '../../timeunit.js';
 export const TUPLE_FIELDS = '_tuple_fields';
 
 /**
- * Whether the selection tuples hold enumerated or ranged values for a field.
+ * Whether the selection tuples hold enumerated, ranged, or compared values for a field.
  */
 export type TupleStoreType =
   // enumerated
@@ -31,7 +45,54 @@ export type TupleStoreType =
   // ranged, exclusive, left-right inclusive
   | 'R'
   // ranged, left-inclusive, right-exclusive
-  | 'R-RE';
+  | 'R-RE'
+  // comparisons against a single value, used by selections with a predicate
+  | 'E-LT'
+  | 'E-LTE'
+  | 'E-GT'
+  | 'E-GTE'
+  | 'E-VALID'
+  | 'E-ONE';
+
+/**
+ * The tuple store type that tests a given field predicate. Each store type
+ * matches a comparison `vlSelectionTest` already understands, so the selection
+ * store evaluates the predicate itself and no filter expression has to encode
+ * it. Evaluating comparisons in the store is what allows a selection to hold a
+ * range or a threshold instead of the single value it captured.
+ */
+export function predicateTupleType(predicate: FieldPredicate): TupleStoreType {
+  if (isFieldLTPredicate(predicate)) return 'E-LT';
+  if (isFieldLTEPredicate(predicate)) return 'E-LTE';
+  if (isFieldGTPredicate(predicate)) return 'E-GT';
+  if (isFieldGTEPredicate(predicate)) return 'E-GTE';
+  if (isFieldRangePredicate(predicate)) return 'R';
+  if (isFieldOneOfPredicate(predicate)) return 'E-ONE';
+  if (isFieldValidPredicate(predicate)) return 'E-VALID';
+  return 'E';
+}
+
+/**
+ * Flattens a selection predicate into the list of field predicates it tests.
+ * A predicate may be a single field predicate or a flat `and` of them. The
+ * store tests a tuple's fields conjunctively, which leaves `or` and `not` with
+ * no representation.
+ */
+export function selectionPredicates(
+  predicate: FieldPredicate | LogicalAnd<FieldPredicate>,
+): FieldPredicate[] | undefined {
+  if (isLogicalAnd(predicate)) {
+    const leaves = predicate.and;
+    if (leaves.some((p) => !isObject(p) || isLogicalAnd(p) || isLogicalOr(p) || isLogicalNot(p))) {
+      return undefined;
+    }
+    return leaves as FieldPredicate[];
+  }
+  if (isLogicalOr(predicate) || isLogicalNot(predicate)) {
+    return undefined;
+  }
+  return [predicate as FieldPredicate];
+}
 
 export interface SelectionProjection {
   type: TupleStoreType;
@@ -58,6 +119,32 @@ export class SelectionProjectionComponent {
   }
 }
 
+/**
+ * Whether any value a predicate compares against reads from `datum`.
+ */
+export function predicateReferencesDatum(predicate: FieldPredicate): boolean {
+  return Object.entries(predicate).some(([key, value]) => {
+    if (key === 'field' || key === 'timeUnit') return false;
+    return /\bdatum\b/.test(JSON.stringify(value ?? null));
+  });
+}
+
+/**
+ * The scale channel a field is encoded on, if any. This lookup passes over the
+ * time channel. An animated selection's predicate compares against the
+ * animation's own field, so matching that field on the time channel would bind
+ * the selection to its own clock instead of to the view that draws the field.
+ */
+function channelForField(model: UnitModel, field: string): SingleDefUnitChannel | undefined {
+  for (const channel of SINGLE_DEF_UNIT_CHANNELS) {
+    if (channel === TIME || !isScaleChannel(channel)) continue;
+    if (model.fieldDef(channel)?.field === field) {
+      return channel;
+    }
+  }
+  return undefined;
+}
+
 const project: SelectionCompiler = {
   defined: () => {
     return true; // This transform handles its own defaults, so always run parse.
@@ -82,10 +169,92 @@ const project: SelectionCompiler = {
 
     const type = selCmpt.type;
     const cfg = model.config.selection[type];
+
     const init =
       selDef.value !== undefined
         ? (array(selDef.value as any) as SelectionInitMapping[] | SelectionInitIntervalMapping[])
         : null;
+
+    /**
+     * Aligns an initial value with the projection, positionally. A value may
+     * give a channel, give a field, or be a scalar covering every projection.
+     */
+    const applyInit = () => {
+      if (!init) return;
+      selCmpt.init = (init as any).map((v: SelectionInitMapping | SelectionInitIntervalMapping) =>
+        proj.items.map((p) =>
+          isObject(v) ? (v[p.geoChannel || p.channel] !== undefined ? v[p.geoChannel || p.channel] : v[p.field]) : v,
+        ),
+      );
+    };
+
+    // A selection predicate replaces the field and encoding projection. Each of
+    // its leaves contributes one tuple field holding a comparison. The
+    // projections below deduplicate by field, but these leaves keep duplicates,
+    // because a windowed predicate compares the same field twice with `gte` and
+    // `lte`, and the store tests tuple fields positionally.
+    const predicateDef = ((isObject(selDef.select) ? selDef.select : {}) as PointSelectionConfig).predicate;
+
+    // Parsing copies the raw definition onto the component along with the rest
+    // of the selection config. Replace it with the flattened leaves, or drop
+    // it, so nothing downstream reads the unvalidated form.
+    delete selCmpt.predicate;
+
+    if (predicateDef) {
+      const predicates = selectionPredicates(predicateDef);
+
+      if (type !== 'point') {
+        // An interval selection derives its tuple from the brush extent, and the
+        // rest of its compilation needs the channel projection built below. The
+        // schema offers `predicate` on point selections and refuses it on
+        // interval selections. A spec that reaches here evaded the schema, so
+        // warn and keep the projection instead of compiling an unparseable
+        // stream.
+        log.warn(log.message.SELECTION_PREDICATE_REQUIRES_POINT);
+      } else if (!predicates) {
+        log.warn(log.message.SELECTION_PREDICATE_COMPOSITION_UNSUPPORTED);
+      } else if (predicates.some((p) => !p.field)) {
+        log.warn(log.message.SELECTION_PREDICATE_REQUIRES_FIELD);
+      } else {
+        // With `nearest`, events are captured on an invisible voronoi overlay
+        // whose data are scenegraph items, so `datum` there is the mark item
+        // rather than the tuple it was drawn from. A predicate comparing against
+        // `datum` would silently read undefined.
+        if (selCmpt.nearest && predicates.some(predicateReferencesDatum)) {
+          log.warn(log.message.SELECTION_PREDICATE_INCOMPATIBLE_WITH_NEAREST);
+        }
+
+        selCmpt.predicate = predicates;
+
+        for (const predicate of predicates) {
+          const p: SelectionProjection = {
+            field: predicate.field,
+            type: predicateTupleType(predicate),
+            index: proj.items.length,
+          };
+
+          // Record which channel, if any, encodes the compared field. A
+          // predicate gives a field where scale binding needs a channel, so
+          // the lookup supplies the missing channel.
+          const channel = channelForField(model, predicate.field);
+          if (channel) {
+            p.channel = channel;
+            proj.hasChannel[channel] ??= p;
+          }
+
+          p.signals = {...signalName(p, 'data')};
+          proj.items.push(p);
+          proj.hasField[p.field] ??= p;
+        }
+
+        // An initial value seeds the store with comparisons already in place,
+        // so a predicate selection starts out holding tuples just as a
+        // projected selection does.
+        applyInit();
+
+        return;
+      }
+    }
 
     // If no explicit projection (either fields or encodings) is specified, set some defaults.
     // If an initial value is set, try to infer projections.
@@ -193,15 +362,9 @@ const project: SelectionCompiler = {
       proj.hasSelectionId = proj.hasSelectionId || field === SELECTION_ID;
     }
 
-    if (init) {
-      selCmpt.init = (init as any).map((v: SelectionInitMapping | SelectionInitIntervalMapping) => {
-        // Selections can be initialized either with a full object that maps projections to values
-        // or scalar values to smoothen the abstraction gradient from variable params to point selections.
-        return proj.items.map((p) =>
-          isObject(v) ? (v[p.geoChannel || p.channel] !== undefined ? v[p.geoChannel || p.channel] : v[p.field]) : v,
-        );
-      });
-    }
+    // Selections can be initialized either with a full object that maps projections to values
+    // or scalar values to smoothen the abstraction gradient from variable params to point selections.
+    applyInit();
 
     if (!isEmpty(timeUnits)) {
       proj.timeUnit = new TimeUnitNode(null, timeUnits);

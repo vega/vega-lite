@@ -10,6 +10,7 @@ import {
   SelectionType,
   SelectionParameter,
 } from '../../selection.js';
+import {FieldPredicate} from '../../predicate.js';
 import {Dict, vals} from '../../util.js';
 import {OutputNode} from '../data/dataflow.js';
 import {FacetModel} from '../facet.js';
@@ -46,6 +47,8 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   resolve: SelectionResolution;
   mark?: BrushConfig;
   project: SelectionProjectionComponent;
+  /** Flattened leaves of the selection's `predicate`, in tuple field order. */
+  predicate?: FieldPredicate[];
   scales?: SelectionProjection[];
   toggle?: string;
   translate?: any;

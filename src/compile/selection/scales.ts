@@ -12,7 +12,16 @@ import {NewSignal} from 'vega';
 
 const scaleBindings: SelectionCompiler<'interval'> = {
   defined: (selCmpt) => {
-    return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
+    // Binding to scales needs a selection that resolves to a range. An interval
+    // selection always resolves to one. A point selection resolves to one when
+    // a predicate makes it hold comparisons instead of a value, which lets a
+    // windowed selection pan the view as its window moves.
+    return (
+      (selCmpt.type === 'interval' || !!selCmpt.predicate) &&
+      selCmpt.resolve === 'global' &&
+      selCmpt.bind &&
+      selCmpt.bind === 'scales'
+    );
   },
 
   parse: (model, selCmpt) => {

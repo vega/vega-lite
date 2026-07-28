@@ -1,0 +1,76 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A year of migration for ten bird species that cross the Atlantic, one point per species per day. The selection holds a ten-day window rather than a single day, so each species trails a tail behind its leading edge, and opacity falls with the age of each position.",
+  "width": 500,
+  "height": 500,
+  "projection": {
+    "type": "equalEarth"
+  },
+  "data": {
+    "url": "data/bird-migration.csv"
+  },
+  "transform": [
+    {
+      "filter": {
+        "param": "trail"
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "trail",
+      "select": {
+        "type": "point",
+        "on": "timer",
+        "predicate": {
+          "and": [
+            {
+              "field": "day",
+              "lte": {
+                "expr": "anim_value"
+              }
+            },
+            {
+              "field": "day",
+              "gt": {
+                "expr": "anim_value - 10"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "mark": {
+    "type": "circle",
+    "size": 20
+  },
+  "encoding": {
+    "longitude": {
+      "field": "lon",
+      "type": "quantitative"
+    },
+    "latitude": {
+      "field": "lat",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "species",
+      "type": "nominal"
+    },
+    "opacity": {
+      "value": {
+        "expr": "max(0.15, 1 - (anim_value - datum.day) / 10)"
+      }
+    },
+    "time": {
+      "field": "day",
+      "type": "quantitative"
+    }
+  },
+  "config": {
+    "scale": {
+      "framesPerSecond": 20
+    }
+  }
+}
