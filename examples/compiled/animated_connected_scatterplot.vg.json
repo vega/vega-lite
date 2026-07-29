@@ -115,12 +115,9 @@
     },
     {
       "name": "upto_tuple",
-      "update": "{unit: \"\", fields: upto_tuple_fields, values: [anim_value]}"
+      "update": "{unit: \"\", fields: upto_tuple_fields, values: [anim_value ? anim_value : min_extent]}"
     },
-    {
-      "name": "upto_tuple_fields",
-      "value": [{"field": "year", "type": "E-LTE"}]
-    },
+    {"name": "upto_tuple_fields", "value": [{"type": "E", "field": "year"}]},
     {
       "name": "upto_modify",
       "update": "modify(\"upto_store\", upto_tuple, true)"
