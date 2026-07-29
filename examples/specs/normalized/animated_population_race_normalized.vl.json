@@ -1,0 +1,24 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "US population by age group, animated across census years. Rescaling recomputes the x domain each frame, so every census fills the view instead of being dwarfed by the largest one.",
+  "data": {"url": "data/population.json"},
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "aggregate": "sum",
+      "field": "people",
+      "type": "quantitative",
+      "title": "population"
+    },
+    "y": {
+      "field": "age",
+      "type": "ordinal",
+      "sort": {"field": "people", "op": "sum", "order": "descending"}
+    },
+    "time": {"field": "year", "type": "ordinal", "rescale": true}
+  },
+  "params": [
+    {"name": "animation_frame", "select": {"type": "point", "on": "timer"}}
+  ],
+  "transform": [{"filter": {"param": "animation_frame"}}]
+}
