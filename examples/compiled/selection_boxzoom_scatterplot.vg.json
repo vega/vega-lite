@@ -163,23 +163,23 @@
       ]
     },
     {
-      "name": "grid_x_zoom",
+      "name": "grid_Horsepower_zoom",
       "value": null,
       "on": [
         {
           "events": [{"source": "window", "type": "pointerup"}],
-          "update": "isValid(grid_Horsepower) ? (grid_Horsepower[0] < grid_Horsepower[1] ? grid_Horsepower : [grid_Horsepower[1], grid_Horsepower[0]]) : grid_x_zoom"
+          "update": "isValid(grid_Horsepower) ? (grid_Horsepower[0] < grid_Horsepower[1] ? grid_Horsepower : [grid_Horsepower[1], grid_Horsepower[0]]) : grid_Horsepower_zoom"
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
-      "name": "grid_y_zoom",
+      "name": "grid_Miles_per_Gallon_zoom",
       "value": null,
       "on": [
         {
           "events": [{"source": "window", "type": "pointerup"}],
-          "update": "isValid(grid_Miles_per_Gallon) ? (grid_Miles_per_Gallon[0] < grid_Miles_per_Gallon[1] ? grid_Miles_per_Gallon : [grid_Miles_per_Gallon[1], grid_Miles_per_Gallon[0]]) : grid_y_zoom"
+          "update": "isValid(grid_Miles_per_Gallon) ? (grid_Miles_per_Gallon[0] < grid_Miles_per_Gallon[1] ? grid_Miles_per_Gallon : [grid_Miles_per_Gallon[1], grid_Miles_per_Gallon[0]]) : grid_Miles_per_Gallon_zoom"
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
@@ -377,7 +377,7 @@
       "name": "x",
       "type": "linear",
       "domain": [0, 240],
-      "domainRaw": {"signal": "grid_x_zoom"},
+      "domainRaw": {"signal": "grid_Horsepower_zoom"},
       "range": [0, {"signal": "width"}],
       "zero": true
     },
@@ -385,7 +385,7 @@
       "name": "y",
       "type": "linear",
       "domain": [0, 50],
-      "domainRaw": {"signal": "grid_y_zoom"},
+      "domainRaw": {"signal": "grid_Miles_per_Gallon_zoom"},
       "range": [{"signal": "height"}, 0],
       "zero": true
     },
