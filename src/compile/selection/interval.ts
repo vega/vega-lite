@@ -327,7 +327,10 @@ function channelSignals(
     // to their domains (e.g., filtering) should clear the brushes.
     von.push({
       events: {signal: selCmpt.name + SCALE_TRIGGER},
-      update: hasContinuousDomain(scaleType) ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]` : `[0, 0]`,
+      update:
+        !selCmpt.boxZoom && hasContinuousDomain(scaleType)
+          ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]`
+          : `[0, 0]`,
     });
 
     return hasScales
