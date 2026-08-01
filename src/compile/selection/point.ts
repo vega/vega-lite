@@ -117,14 +117,14 @@ const point: SelectionCompiler<'point'> = {
       // timer event: selection is for animation
       return signals.concat(animationSignals(selCmpt.name, model.scaleName(TIME)), [
         {
+          // An `update` expression rather than an `on` handler: unlike a
+          // direct-manipulation selection, an animation always has a current
+          // frame, including before any event has fired. Event handlers do not
+          // run during the initial pulse, so an `on` handler here leaves the
+          // selection store empty for the first render -- the frame filter
+          // matches nothing until the first timer tick lands.
           name: name + TUPLE,
-          on: [
-            {
-              events: [{signal: EASED_ANIM_CLOCK}, {signal: ANIM_VALUE}],
-              update: `{${update}}`,
-              force: true,
-            },
-          ],
+          update: `{${update}}`,
         },
       ]);
     } else {

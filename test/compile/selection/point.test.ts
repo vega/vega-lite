@@ -402,14 +402,10 @@ describe('Animated Selection', () => {
     expect(signals).toEqual(
       expect.arrayContaining([
         {
+          // an update expression, not an on handler, so that the tuple has a
+          // value on the initial pulse rather than only from the first tick
           name: 'avl_tuple',
-          on: [
-            {
-              events: [{signal: 'eased_anim_clock'}, {signal: 'anim_value'}],
-              update: '{unit: "", fields: avl_tuple_fields, values: [anim_value ? anim_value : min_extent]}',
-              force: true,
-            },
-          ],
+          update: '{unit: "", fields: avl_tuple_fields, values: [anim_value ? anim_value : min_extent]}',
         },
       ]),
     );
@@ -459,13 +455,10 @@ describe('Animated Selection', () => {
     expect(signals).toEqual(
       expect.arrayContaining([
         {
+          // likewise driven by an update expression, so the store is written
+          // during the initial pulse and the first frame filters correctly
           name: 'avl_modify',
-          on: [
-            {
-              events: {signal: 'avl_tuple'},
-              update: 'modify("avl_store", avl_tuple, true)',
-            },
-          ],
+          update: 'modify("avl_store", avl_tuple, true)',
         },
       ]),
     );

@@ -52,15 +52,16 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]
       if (c.modifyExpr) modifyExpr = c.modifyExpr(model, selCmpt, modifyExpr);
     }
 
-    signals.push({
-      name: name + MODIFY,
-      on: [
-        {
-          events: {signal: selCmpt.name + TUPLE},
-          update: `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`,
-        },
-      ],
-    });
+    const modify = `modify(${stringValue(selCmpt.name + STORE)}, ${modifyExpr})`;
+
+    signals.push(
+      isTimerSelection(selCmpt)
+        ? // an animation's tuple signal is itself an `update` expression, so
+          // write the store on the initial pulse too -- otherwise the first
+          // frame renders against an empty store. see point.ts.
+          {name: name + MODIFY, update: modify}
+        : {name: name + MODIFY, on: [{events: {signal: selCmpt.name + TUPLE}, update: modify}]},
+    );
   }
 
   return cleanupEmptyOnArray(signals);
