@@ -1,11 +1,5 @@
 import type {SignalRef} from 'vega';
-import {
-  getMainRangeChannel,
-  getOffsetScaleChannel,
-  getSecondaryRangeChannel,
-  getSizeChannel,
-  getVgPositionChannel,
-} from '../../../channel.js';
+import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel.js';
 import {isFieldOrDatumDef} from '../../../channeldef.js';
 import * as log from '../../../log/index.js';
 import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark.js';
@@ -145,12 +139,13 @@ function pointPosition2OrSize(
             scaleName,
             {},
             {
-              offset: ref.valueRefForFieldOrDatumDef(
-                {datum: 0},
-                model.scaleName(getOffsetScaleChannel(baseChannel)),
-                {},
-                {},
-              ),
+              offset: positionOffset({
+                channel: baseChannel,
+                markDef,
+                encoding,
+                model,
+                finalOffsetDatum: 0,
+              }).offset,
             },
           ),
         }

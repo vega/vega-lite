@@ -4,6 +4,9 @@ import {Axis, AxisInternal, isConditionalAxisValue} from '../axis.js';
 import {
   Channel,
   GEOPOSITION_CHANNELS,
+  getOffsetScaleKey,
+  getOffsetScaleKeyIndex,
+  getScaleChannelForKey,
   getSecondaryRangeChannel,
   NonPositionScaleChannel,
   NONPOSITION_SCALE_CHANNELS,
@@ -12,11 +15,14 @@ import {
   PositionScaleChannel,
   POSITION_SCALE_CHANNELS,
   ScaleChannel,
+  ScaleKey,
   SCALE_CHANNELS,
   SingleDefChannel,
   supportLegend,
   X,
+  XOFFSET,
   Y,
+  YOFFSET,
 } from '../channel.js';
 import {
   getFieldDef,
@@ -119,7 +125,7 @@ export class UnitModel extends ModelWithField {
 
     // calculate stack properties
     this.stack = stack(this.markDef, encoding);
-    this.specifiedScales = this.initScales(mark, encoding);
+    this.specifiedScales = this.initScales();
 
     this.specifiedAxes = this.initAxes(encoding);
     this.specifiedLegends = this.initLegends(encoding);
@@ -145,6 +151,41 @@ export class UnitModel extends ModelWithField {
   public scaleDomain(channel: ScaleChannel): Domain {
     const scale = this.specifiedScales[channel];
     return scale ? scale.domain : undefined;
+  }
+
+  public scaleKeys(): ScaleKey[] {
+    return SCALE_CHANNELS.flatMap((channel) => {
+      if (channel === XOFFSET || channel === YOFFSET) {
+        return vlEncoding.getOffsetDefs(this.encoding, channel).map((_, index) => getOffsetScaleKey(channel, index));
+      }
+      return [channel];
+    });
+  }
+
+  public scaleChannel(key: ScaleKey): ScaleChannel {
+    return getScaleChannelForKey(key);
+  }
+
+  public scaleDef(key: ScaleKey) {
+    const channel = getScaleChannelForKey(key);
+    const channelDef =
+      channel === XOFFSET || channel === YOFFSET
+        ? vlEncoding.getOffsetDef(this.encoding, channel, getOffsetScaleKeyIndex(key as any))
+        : this.encoding[channel];
+    return getFieldOrDatumDef(channelDef) as PositionFieldDef<string> | MarkPropFieldOrDatumDef<string>;
+  }
+
+  public specifiedScale(key: ScaleKey): Scale<SignalRef> {
+    return this.specifiedScales[key];
+  }
+
+  public offsetScaleKeys(channel: typeof XOFFSET | typeof YOFFSET) {
+    return vlEncoding.getOffsetDefs(this.encoding, channel).map((_, index) => getOffsetScaleKey(channel, index));
+  }
+
+  public finalOffsetScaleKey(channel: typeof XOFFSET | typeof YOFFSET) {
+    const scaleKeys = this.offsetScaleKeys(channel);
+    return scaleKeys[scaleKeys.length - 1];
   }
 
   public axis(channel: PositionChannel): AxisInternal {
@@ -175,12 +216,11 @@ export class UnitModel extends ModelWithField {
     return this.specifiedLegends[channel];
   }
 
-  private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {
-    return SCALE_CHANNELS.reduce((scales, channel) => {
-      const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as
-        PositionFieldDef<string> | MarkPropFieldOrDatumDef<string>;
+  private initScales(): ScaleIndex {
+    return this.scaleKeys().reduce((scales, key) => {
+      const fieldOrDatumDef = this.scaleDef(key);
       if (fieldOrDatumDef) {
-        scales[channel] = this.initScale(fieldOrDatumDef.scale ?? {});
+        scales[key] = this.initScale(fieldOrDatumDef.scale ?? {});
       }
       return scales;
     }, {} as ScaleIndex);
@@ -260,13 +300,13 @@ export class UnitModel extends ModelWithField {
     const colorEncodingType = colorEncoding?.type;
     const domain = scale?.domain;
     const offset = xOffset || yOffset;
-    const offsetEncoding = isFieldDef(offset) ? offset : undefined;
+    const offsetEncoding = isFieldDef(offset) ? offset : isArray(offset) ? offset.find(isFieldDef) : undefined;
     const orderFieldName = `_${field}_sort_index`;
 
     if (!order && Array.isArray(domain) && typeof field === 'string' && colorEncodingType === 'nominal') {
       // align grouped chart order with color domain
-      if (offsetEncoding && !offsetEncoding.sort) {
-        offsetEncoding.sort = domain as [];
+      if (offsetEncoding && !('sort' in offsetEncoding && offsetEncoding.sort)) {
+        (offsetEncoding as any).sort = domain as [];
       } else {
         // align stacked chart order with color domain
         if (!this.stack) {

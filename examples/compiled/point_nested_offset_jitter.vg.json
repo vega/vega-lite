@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "Shows the relationship between body mass and species point marks with random offset (jittering).",
+  "description": "A jittered dot plot using a nested categorical and quantitative position offset.",
   "background": "white",
   "padding": 5,
   "width": 300,
@@ -9,8 +9,12 @@
     {
       "name": "source_0",
       "url": "data/penguins.json",
-      "format": {"type": "json"},
+      "format": {"type": "json", "parse": {"Sex": "string"}},
       "transform": [
+        {
+          "type": "filter",
+          "expr": "indexof([\"MALE\",\"FEMALE\"], datum[\"Sex\"]) !== -1"
+        },
         {"type": "formula", "expr": "random()", "as": "jitter"},
         {
           "type": "filter",
@@ -20,7 +24,10 @@
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 20},
+    {
+      "name": "y_step",
+      "update": "20 * bandspace(domain('yOffset').length, 0.2, 0.1) / (1-0.2)"
+    },
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 0.2, 0.2) * y_step"
@@ -35,16 +42,20 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "#4c78a8"},
+          "fill": {"scale": "color", "field": "Sex"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; jitter: \" + (format(datum[\"jitter\"], \"\"))"
+            "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? isArray(datum[\"Species\"]) ? join(datum[\"Species\"], ' ') : datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; Sex: \" + (isValid(datum[\"Sex\"]) ? isArray(datum[\"Sex\"]) ? join(datum[\"Sex\"], ' ') : datum[\"Sex\"] : \"\"+datum[\"Sex\"]) + \"; jitter: \" + (format(datum[\"jitter\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Body Mass (g)"},
           "y": {
             "scale": "y",
             "field": "Species",
-            "offset": {"scale": "yOffset", "field": "jitter"}
+            "offset": {
+              "scale": "yOffset",
+              "field": "Sex",
+              "offset": {"scale": "yOffset_1", "field": "jitter"}
+            }
           }
         }
       }
@@ -69,10 +80,24 @@
     },
     {
       "name": "yOffset",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "Sex", "sort": true},
+      "range": {"step": 20},
+      "paddingInner": 0.2,
+      "paddingOuter": 0.1
+    },
+    {
+      "name": "yOffset_1",
       "type": "linear",
       "domain": {"data": "source_0", "field": "jitter"},
-      "range": [{"signal": "bandwidth('y')"}, 0],
+      "range": [{"signal": "bandwidth('yOffset')"}, 0],
       "zero": false
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Sex", "sort": true},
+      "range": "category"
     }
   ],
   "axes": [
@@ -106,6 +131,14 @@
       "grid": false,
       "title": "Species",
       "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "symbolType": "circle",
+      "title": "Sex",
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
     }
   ]
 }

@@ -191,6 +191,18 @@ describe('src/compile', () => {
       parseScaleCore(model);
       expect(model.getScaleComponent('shape')).toBeUndefined();
     });
+
+    it('does not create a scale when scale is null', () => {
+      const model = parseModel({
+        data: {values: [{color: 'red'}]},
+        mark: 'point',
+        encoding: {
+          color: {field: 'color', type: 'nominal', scale: null},
+        },
+      });
+      parseScaleCore(model);
+      expect(model.getScaleComponent('color')).toBeUndefined();
+    });
   });
 
   describe('parseScale', () => {

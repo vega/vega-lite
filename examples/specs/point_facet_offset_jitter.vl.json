@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A faceted jittered dot plot using a quantitative position offset within each categorical band.",
+  "data": {"url": "data/penguins.json"},
+  "transform": [
+    {"filter": {"field": "Sex", "oneOf": ["MALE", "FEMALE"]}},
+    {"calculate": "random()", "as": "jitter"}
+  ],
+  "mark": {"type": "point", "filled": true, "opacity": 0.7},
+  "encoding": {
+    "x": {"field": "Body Mass (g)", "type": "quantitative"},
+    "row": {"field": "Species", "type": "nominal"},
+    "yOffset": {"field": "jitter", "type": "quantitative"},
+    "color": {"field": "Sex", "type": "nominal"},
+    "y": {"field": "Sex", "type": "nominal"}
+  }
+}

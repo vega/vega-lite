@@ -121,19 +121,16 @@ export class StackNode extends DataFlowNode {
   public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
     const stackProperties = model.stack;
     const {encoding} = model;
-
     if (!stackProperties) {
       return null;
     }
 
-    const {groupbyChannels, fieldChannel, offset, impute} = stackProperties;
-
-    const dimensionFieldDefs = groupbyChannels
-      .map((groupbyChannel) => {
-        const cDef = encoding[groupbyChannel];
-        return getFieldDef(cDef);
-      })
-      .filter((def) => !!def);
+    const {fieldChannel, offset, impute} = stackProperties;
+    const dimensionFieldDefs =
+      stackProperties.groupbyFieldDefs ??
+      stackProperties.groupbyChannels
+        .map((groupbyChannel) => getFieldDef(encoding[groupbyChannel]))
+        .filter((def) => !!def);
 
     const stackby = getStackByFields(model);
     const orderDef = model.encoding.order;

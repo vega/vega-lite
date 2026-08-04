@@ -156,6 +156,20 @@ describe('stack', () => {
     }
   });
 
+  it('should group stacks by every nested offset level', () => {
+    const stackProps = stack(BAR, {
+      x: {field: 'category', type: 'nominal'},
+      xOffset: [
+        {field: 'region', type: 'nominal'},
+        {field: 'sex', type: 'nominal'},
+      ],
+      y: {field: 'value', type: 'quantitative', aggregate: 'sum'},
+      color: {field: 'series', type: 'nominal'},
+    });
+
+    expect(stackProps.groupbyFieldDefs.map((fieldDef) => fieldDef.field)).toEqual(['category', 'region', 'sex']);
+  });
+
   it('should always be disabled if the stackby channel is aggregated', () => {
     for (const s of [undefined, 'center', 'zero', 'normalize', null, 'none'] as StackOffset[]) {
       for (const mark of PRIMITIVE_MARKS) {

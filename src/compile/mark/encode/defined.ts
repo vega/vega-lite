@@ -1,6 +1,6 @@
 import {isCountingAggregateOp} from '../../../aggregate.js';
-import {isScaleChannel} from '../../../channel.js';
-import {Value} from '../../../channeldef.js';
+import {getScaleKey, isScaleChannel} from '../../../channel.js';
+import {Value, vgField} from '../../../channeldef.js';
 import {fieldValidPredicate} from '../../../predicate.js';
 import {VgEncodeEntry} from '../../../vega.schema.js';
 import {signalOrValueRef} from '../../common.js';
@@ -16,9 +16,9 @@ export function defined(model: UnitModel): VgEncodeEntry {
   // For each channel (x/y), add fields to break path to a set first.
   const fieldsToBreakPath = new Set<string>();
 
-  model.forEachFieldDef((fieldDef, channel) => {
+  model.forEachFieldDef((fieldDef, channel, index) => {
     let scaleType;
-    if (!isScaleChannel(channel) || !(scaleType = model.getScaleType(channel))) {
+    if (!isScaleChannel(channel) || !(scaleType = model.getScaleType(getScaleKey(channel, index)))) {
       // Skip if the channel is not a scale channel or does not have a scale
       return;
     }
@@ -32,7 +32,7 @@ export function defined(model: UnitModel): VgEncodeEntry {
       isCountAggregate,
     });
     if (shouldBreakPath(invalidDataMode)) {
-      const field = model.vgField(channel, {expr: 'datum', binSuffix: model.stack?.impute ? 'mid' : undefined});
+      const field = vgField(fieldDef, {expr: 'datum', binSuffix: model.stack?.impute ? 'mid' : undefined});
       if (field) {
         fieldsToBreakPath.add(field);
       }

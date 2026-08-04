@@ -42,6 +42,21 @@ describe('compile/scale', () => {
       ]);
     });
 
+    it('should not add a sort from a secondary channel', () => {
+      const model = parseUnitModel({
+        mark: 'rule',
+        encoding: {
+          x: {field: 'start', type: 'ordinal', sort: null},
+          x2: {field: 'end'},
+        },
+      });
+
+      expect(testParseDomainForChannel(model, 'x')).toEqual([
+        {data: 'main', field: 'start'},
+        {data: 'main', field: 'end'},
+      ]);
+    });
+
     it('should have correct domain unionWith', () => {
       const model = parseUnitModel({
         mark: 'point',

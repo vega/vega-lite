@@ -231,11 +231,42 @@ In addition to the general [field definition properties](#field-def), field defi
 
 **Note:** Read [here](size.html#offset-step) for more details about how to set step size for offset scale.
 
-### Example: Jittering
+### Jittering
+
+To "jitter" points, a random offset can be added in the desired direction.
 
 <span class="vl-example" data-name="point_offset_random"></span>
 
-### Example: Ranged Marks from Quantitative Offsets
+### Nested Offset Chains
+
+An `xOffset` or `yOffset` can be an ordered `NestedOffsetChain` which (as the name implies) can nest multiple offsets:
+
+```json
+{
+  "yOffset": [
+    {"field": "Sex", "type": "nominal"},
+    {"field": "jitter", "type": "quantitative"}
+  ]
+}
+```
+
+The last position in the nested offset chain is the innermost/final offset level and every non-final definition must produce a scale with bandwidth. A continuous quantitative or temporal definition must therefore be the final definition in the chain. A one-element chain is valid and behaves like its scalar definition, which allows a specification to change nesting depth without changing between scalar and array syntax. Only a quantitative final definition activates ranged `bar` or `area` geometry; a temporal final definition is a positional offset.
+
+The following chart uses a nested `yOffset` to stratify observations based on sex and then jitter points within each sex band:
+
+<span class="vl-example" data-name="point_nested_offset_jitter"></span>
+
+#### Nested Offsets vs Facets
+
+[Facets](facet.html) and nested offsets both group marks by categorical fields, but they serve complementary purposes. A facet partitions data into separate coordinate spaces with headers, axis-layout machinery, and potentially independent scales. This stronger visual separation can make comparisons easier or harder depending on the chart's complexity.
+
+In contrast, offset chains keep records in one coordinate space, which keeps the groups close together for when direct comparison is important. This allows path marks such as `line`, `area`, and `trail` to connect records across offset positions. Use a grouping channel such as [`detail`](#detail) or `color` when offset categories should produce separate paths. Offset scales do not produce axes or legends.
+
+The following alternative facets species into separate rows, then uses a scalar quantitative `yOffset` to jitter points within the `y` bands for sex.
+
+<span class="vl-example" data-name="point_facet_offset_jitter"></span>
+
+### Ranged Marks from Quantitative Offsets
 
 `xOffset` and `yOffset` can also drive ranged geometry for `bar` and `area` marks when used with a discrete base position channel. In this mode, Vega-Lite treats the quantitative offset as a value from an in-band baseline (`0`) to the offset value, so marks become ranged along the offset direction.
 

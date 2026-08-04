@@ -4,6 +4,7 @@ import {isBinned, isBinning, isBinParams} from '../../bin.js';
 import {
   COLOR,
   FILL,
+  getScaleChannelForKey,
   getMainChannelFromOffsetChannel,
   getSecondaryRangeChannel,
   isXorY,
@@ -11,17 +12,10 @@ import {
   POLAR_POSITION_SCALE_CHANNELS,
   POSITION_SCALE_CHANNELS,
   ScaleChannel,
+  ScaleKey,
   STROKE,
 } from '../../channel.js';
-import {
-  getFieldDef,
-  getFieldOrDatumDef,
-  isFieldDef,
-  ScaleDatumDef,
-  ScaleFieldDef,
-  TypedFieldDef,
-  valueExpr,
-} from '../../channeldef.js';
+import {getFieldDef, isFieldDef, ScaleDatumDef, ScaleFieldDef, TypedFieldDef, valueExpr} from '../../channeldef.js';
 import {Config} from '../../config.js';
 import {isDateTime} from '../../datetime.js';
 import {channelHasNestedOffsetScale} from '../../encoding.js';
@@ -63,11 +57,12 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
   const {config, encoding, markDef, specifiedScales} = model;
 
-  for (const channel of keys(localScaleComponents)) {
-    const specifiedScale = specifiedScales[channel];
-    const localScaleCmpt = localScaleComponents[channel];
-    const mergedScaleCmpt = model.getScaleComponent(channel);
-    const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleFieldDef<string, Type> | ScaleDatumDef;
+  for (const key of keys(localScaleComponents) as ScaleKey[]) {
+    const channel = getScaleChannelForKey(key);
+    const specifiedScale = specifiedScales[key];
+    const localScaleCmpt = localScaleComponents[key];
+    const mergedScaleCmpt = model.getScaleComponent(key);
+    const fieldOrDatumDef = model.scaleDef(key) as ScaleFieldDef<string, Type> | ScaleDatumDef;
 
     const specifiedValue = specifiedScale[property];
     const scaleType = mergedScaleCmpt.get('type');
@@ -121,7 +116,9 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
               domainMax: specifiedScale.domainMax,
               markDef,
               config,
-              hasNestedOffsetScale: channelHasNestedOffsetScale(encoding, channel),
+              hasNestedOffsetScale:
+                channelHasNestedOffsetScale(encoding, channel) ||
+                ((channel === 'xOffset' || channel === 'yOffset') && key !== model.finalOffsetScaleKey(channel)),
               hasSecondaryRangeChannel: !!encoding[getSecondaryRangeChannel(channel)],
             })
           : config.scale[property];
@@ -205,7 +202,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
     }
   }
 
-  for (const channel of keys(localScaleComponents)) {
+  for (const channel of keys(localScaleComponents) as ScaleKey[]) {
     let valueWithExplicit: Explicit<any>;
 
     for (const child of model.children) {

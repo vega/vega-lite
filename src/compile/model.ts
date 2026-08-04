@@ -13,9 +13,7 @@ import {
   ExtendedChannel,
   FACET_CHANNELS,
   getPositionScaleChannel,
-  isChannel,
-  isScaleChannel,
-  ScaleChannel,
+  ScaleKey,
   SingleDefChannel,
 } from '../channel.js';
 import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef.js';
@@ -557,7 +555,7 @@ export abstract class Model {
   /**
    * @return scale name for a given channel after the scale has been parsed and named.
    */
-  public scaleName(originalScaleName: ScaleChannel | string, parse?: boolean): string {
+  public scaleName(originalScaleName: ScaleKey | string, parse?: boolean): string {
     if (parse) {
       // During the parse phase always return a value
       // No need to refer to rename map because a scale can't be renamed
@@ -569,7 +567,7 @@ export abstract class Model {
     // be in the scale component or exist in the name map
     if (
       // If there is a scale for the channel, there should be a local scale component for it
-      (isChannel(originalScaleName) && isScaleChannel(originalScaleName) && this.component.scales[originalScaleName]) ||
+      this.component.scales?.[originalScaleName as ScaleKey] ||
       // in the scale name map (the scale get merged by its parent)
       this.scaleNameMap.has(this.getName(originalScaleName))
     ) {
@@ -601,7 +599,7 @@ export abstract class Model {
   /**
    * Traverse a model's hierarchy to get the scale component for a particular channel.
    */
-  public getScaleComponent(channel: ScaleChannel): ScaleComponent {
+  public getScaleComponent(channel: ScaleKey): ScaleComponent {
     /* istanbul ignore next: This is warning for debugging test */
     if (!this.component.scales) {
       throw new Error(
@@ -616,7 +614,7 @@ export abstract class Model {
     return this.parent ? this.parent.getScaleComponent(channel) : undefined;
   }
 
-  public getScaleType(channel: ScaleChannel): ScaleType {
+  public getScaleType(channel: ScaleKey): ScaleType {
     const scaleComponent = this.getScaleComponent(channel);
     return scaleComponent ? scaleComponent.get('type') : undefined;
   }
@@ -663,13 +661,13 @@ export abstract class ModelWithField extends Model {
 
   protected abstract getMapping(): Partial<Record<ExtendedChannel, any>>;
 
-  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T): T {
+  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel, index?: number) => U, init: T): T {
     return reduce(
       this.getMapping(),
-      (acc: U, cd: ChannelDef, c: Channel) => {
+      (acc: U, cd: ChannelDef, c: Channel, index?: number) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
-          return f(acc, fieldDef, c);
+          return f(acc, fieldDef, c, index);
         }
         return acc;
       },
@@ -677,13 +675,13 @@ export abstract class ModelWithField extends Model {
     );
   }
 
-  public forEachFieldDef(f: (fd: FieldDef<string>, c: ExtendedChannel) => void, t?: any) {
+  public forEachFieldDef(f: (fd: FieldDef<string>, c: ExtendedChannel, index?: number) => void, t?: any) {
     forEach(
       this.getMapping(),
-      (cd, c) => {
+      (cd, c, index) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
-          f(fieldDef, c);
+          f(fieldDef, c, index);
         }
       },
       t,

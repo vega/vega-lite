@@ -8,6 +8,7 @@ import {
 } from '../../aggregate.js';
 import {
   Channel,
+  getScaleKey,
   getPositionChannelFromLatLong,
   getSecondaryRangeChannel,
   isGeoPositionChannel,
@@ -136,7 +137,7 @@ export class AggregateNode extends DataFlowNode {
       return null;
     }
 
-    model.forEachFieldDef((fieldDef, channel: Channel) => {
+    model.forEachFieldDef((fieldDef, channel: Channel, index) => {
       const {aggregate, field} = fieldDef;
       if (aggregate) {
         if (aggregate === 'count') {
@@ -160,7 +161,7 @@ export class AggregateNode extends DataFlowNode {
           }
 
           // For scale channel with domain === 'unaggregated', add min/max so we can use their union as unaggregated domain
-          if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
+          if (isScaleChannel(channel) && model.specifiedScale(getScaleKey(channel, index))?.domain === 'unaggregated') {
             meas[field] ??= {};
             meas[field]['min'] = {aliases: new Set([vgField({field, aggregate: 'min'}, {forAs: true})])};
             meas[field]['max'] = {aliases: new Set([vgField({field, aggregate: 'max'}, {forAs: true})])};

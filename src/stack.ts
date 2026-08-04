@@ -3,6 +3,7 @@ import {Aggregate, SUM_OPS} from './aggregate.js';
 import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel.js';
 import {
   channelDefType,
+  FieldDef,
   FieldName,
   getFieldDef,
   isFieldDef,
@@ -50,6 +51,9 @@ export function isStackOffset(s: string): s is StackOffset {
 export interface StackProperties {
   /** Dimension axis of the stack. */
   groupbyChannels: ('x' | 'y' | 'theta' | 'radius' | 'xOffset' | 'yOffset')[];
+
+  /** Field definitions for all grouping levels, including nested offsets. */
+  groupbyFieldDefs?: FieldDef<string>[];
 
   /** Field for groupbyChannel. */
   groupbyFields: Set<FieldName>;
@@ -180,6 +184,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   const dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
   const groupbyChannels: StackProperties['groupbyChannels'] = [];
+  const groupbyFieldDefs: FieldDef<string>[] = [];
   const groupbyFields: Set<FieldName> = new Set();
 
   if (encoding[dimensionChannel]) {
@@ -189,18 +194,24 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     if (dimensionField && dimensionField !== stackedField) {
       // avoid grouping by the stacked field
       groupbyChannels.push(dimensionChannel);
+      groupbyFieldDefs.push(dimensionDef as FieldDef<string>);
       groupbyFields.add(dimensionField);
     }
   }
 
   const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
   const dimensionOffsetDef = encoding[dimensionOffsetChannel];
-  const dimensionOffsetField = isFieldDef(dimensionOffsetDef) ? vgField(dimensionOffsetDef, {}) : undefined;
+  const dimensionOffsetFieldDefs = array(dimensionOffsetDef).filter(isFieldDef);
 
-  if (dimensionOffsetField && dimensionOffsetField !== stackedField) {
-    // avoid grouping by the stacked field
-    groupbyChannels.push(dimensionOffsetChannel);
-    groupbyFields.add(dimensionOffsetField);
+  for (const dimensionOffsetFieldDef of dimensionOffsetFieldDefs) {
+    const dimensionOffsetField = vgField(dimensionOffsetFieldDef, {});
+    if (dimensionOffsetField && dimensionOffsetField !== stackedField && !groupbyFields.has(dimensionOffsetField)) {
+      if (!groupbyChannels.includes(dimensionOffsetChannel)) {
+        groupbyChannels.push(dimensionOffsetChannel);
+      }
+      groupbyFieldDefs.push(dimensionOffsetFieldDef);
+      groupbyFields.add(dimensionOffsetField);
+    }
   }
 
   // If the dimension has offset, don't stack anymore
@@ -277,6 +288,7 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   return {
     groupbyChannels,
+    groupbyFieldDefs,
     groupbyFields,
     fieldChannel,
     impute: stackedFieldDef.impute === null ? false : isPathMark(mark),

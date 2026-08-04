@@ -19,6 +19,7 @@ import {
   fieldDefs,
   initEncoding,
   markChannelCompatible,
+  NestedOffsetChain,
   pathGroupingFields,
 } from '../src/encoding.js';
 import * as log from '../src/log/index.js';
@@ -143,6 +144,107 @@ describe('encoding', () => {
         x: {field: 'a', type: 'temporal', timeUnit: {unit: 'year'}},
         xOffset: {field: 'b', type: 'nominal'},
       });
+    });
+
+    it('preserves ordered nested offset definitions', () => {
+      expect(
+        initEncoding(
+          {
+            y: {field: 'species', type: 'nominal'},
+            yOffset: [
+              {field: 'sex', type: 'nominal'},
+              {field: 'density', type: 'quantitative'},
+            ],
+          },
+          'area',
+          true,
+          defaultConfig,
+        ).yOffset,
+      ).toEqual([
+        {field: 'sex', type: 'nominal'},
+        {field: 'density', type: 'quantitative'},
+      ]);
+    });
+
+    it('preserves a one-element nested offset chain', () => {
+      const yOffset: NestedOffsetChain<string> = [{field: 'density', type: 'quantitative'}];
+      const encoding = initEncoding(
+        {
+          y: {field: 'species', type: 'nominal'},
+          yOffset,
+        },
+        'point',
+        true,
+        defaultConfig,
+      );
+
+      expect(encoding.yOffset).toEqual([{field: 'density', type: 'quantitative'}]);
+    });
+
+    it(
+      'drops nested offsets with an intermediate continuous level',
+      log.wrap((logger) => {
+        const encoding = initEncoding(
+          {
+            x: {field: 'category', type: 'nominal'},
+            xOffset: [
+              {field: 'value', type: 'quantitative'},
+              {field: 'group', type: 'nominal'},
+            ],
+          },
+          'point',
+          false,
+          defaultConfig,
+        );
+
+        expect(encoding.xOffset).toBeUndefined();
+        expect(logger.warns).toContain(log.message.invalidNestedOffset('xOffset'));
+      }),
+    );
+
+    it(
+      'drops discretized fields whose scales do not provide bandwidth from intermediate levels',
+      log.wrap((logger) => {
+        for (const intermediateDef of [
+          {field: 'value', type: 'quantitative', bin: true},
+          {field: 'date', type: 'temporal', timeUnit: 'month'},
+        ] as const) {
+          const encoding = initEncoding(
+            {
+              x: {field: 'category', type: 'nominal'},
+              xOffset: [intermediateDef, {field: 'group', type: 'nominal'}],
+            },
+            'point',
+            false,
+            defaultConfig,
+          );
+
+          expect(encoding.xOffset).toBeUndefined();
+        }
+        expect(logger.warns.filter((warning) => warning === log.message.invalidNestedOffset('xOffset'))).toHaveLength(
+          2,
+        );
+      }),
+    );
+
+    it('allows a temporal final level', () => {
+      const encoding = initEncoding(
+        {
+          y: {field: 'category', type: 'nominal'},
+          yOffset: [
+            {field: 'group', type: 'nominal'},
+            {field: 'date', type: 'temporal'},
+          ],
+        },
+        'point',
+        false,
+        defaultConfig,
+      );
+
+      expect(encoding.yOffset).toEqual([
+        {field: 'group', type: 'nominal'},
+        {field: 'date', type: 'temporal'},
+      ]);
     });
   });
 
@@ -464,6 +566,25 @@ describe('encoding', () => {
           },
         },
       });
+    });
+
+    it('should preserve nested offset arrays while extracting transforms', () => {
+      const output = extractTransformsFromEncoding(
+        {
+          yOffset: [
+            {field: 'date', type: 'temporal', timeUnit: 'month'},
+            {field: 'value', type: 'quantitative', aggregate: 'mean'},
+          ],
+        },
+        defaultConfig,
+      );
+
+      expect(output.encoding.yOffset).toEqual([
+        {field: 'month_date', type: 'temporal', title: 'date (month)'},
+        {field: 'mean_value', type: 'quantitative', title: 'Mean of value'},
+      ]);
+      expect(output.timeUnits).toEqual([{timeUnit: 'month', field: 'date', as: 'month_date'}]);
+      expect(output.aggregate).toEqual([{op: 'mean', field: 'value', as: 'mean_value'}]);
     });
   });
 
