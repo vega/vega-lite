@@ -137,8 +137,12 @@ describe('config', () => {
       expect(cfg.selection.interval).toHaveProperty('zoom', 'wheel!');
     });
 
-    it('drops title from axis config', () => {
+    it('drops non-null title from axis config', () => {
       expect(initConfig({axisX: {title: 'foo', labelAngle: 0} as any}).axisX).toEqual({labelAngle: 0});
+    });
+
+    it('keeps title null in axis config', () => {
+      expect(initConfig({axisX: {title: null, labelAngle: 0}}).axisX).toEqual({title: null, labelAngle: 0});
     });
   });
 

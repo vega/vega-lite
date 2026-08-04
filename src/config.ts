@@ -513,13 +513,10 @@ export function fontConfig(font: string): Config {
   };
 }
 
-function getAxisConfigInternal(axisConfig: AxisConfig<ExprRef | SignalRef> & {title?: unknown}) {
+function getAxisConfigInternal(axisConfig: AxisConfig<ExprRef | SignalRef>) {
   const props = keys(axisConfig || {});
   const axisConfigInternal: AxisConfig<SignalRef> = {};
   for (const prop of props) {
-    if (prop === 'title') {
-      continue;
-    }
     const val = axisConfig[prop];
     (axisConfigInternal as any)[prop] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
       ? signalOrValueRefWithCondition<any>(val)
@@ -590,7 +587,11 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   for (const axisConfigType of AXIS_CONFIGS) {
     if (mergedConfig[axisConfigType]) {
-      outputConfig[axisConfigType] = getAxisConfigInternal(mergedConfig[axisConfigType]);
+      // Axis configs cannot set specific titles; drop any title except `null`, which disables axis titles by default (https://github.com/vega/vega-lite/issues/9429).
+      const {title, ...axisConfigWithoutTitle} = mergedConfig[axisConfigType];
+      outputConfig[axisConfigType] = getAxisConfigInternal(
+        title === null ? mergedConfig[axisConfigType] : axisConfigWithoutTitle,
+      );
     }
   }
 

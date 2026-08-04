@@ -277,6 +277,21 @@ describe('Axis', () => {
       expect(axisComponent['x'][0].get('title')).toEqual([{field: 'a'}]);
     });
 
+    it('should suppress the default title if axis config title is null', () => {
+      const model = parseUnitModelWithScale({
+        data: {values: [{a: 1, b: 4}]},
+        mark: 'line',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'quantitative'},
+        },
+        config: {axisX: {title: null}},
+      });
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x']).toHaveLength(1);
+      expect(axisComponent['x'][0].get('title')).toBeUndefined();
+    });
+
     it('should store the title value if title = null, "", or false', () => {
       for (const val of [null, '', false]) {
         const model = parseUnitModelWithScale({
