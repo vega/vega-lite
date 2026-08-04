@@ -587,7 +587,7 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   for (const axisConfigType of AXIS_CONFIGS) {
     if (mergedConfig[axisConfigType]) {
-      // Axis configs cannot set specific titles; drop any title except `null`, which disables axis titles by default (https://github.com/vega/vega-lite/issues/9429).
+      // Axis configs cannot set specific titles; drop any title except `null`, which disables axis titles by default.
       const {title, ...axisConfigWithoutTitle} = mergedConfig[axisConfigType];
       outputConfig[axisConfigType] = getAxisConfigInternal(
         title === null ? mergedConfig[axisConfigType] : axisConfigWithoutTitle,
