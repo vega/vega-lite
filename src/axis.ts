@@ -335,7 +335,7 @@ export interface AxisPropsWithCondition<ES extends ExprRef | SignalRef> {
   tickWidth?: BaseAxisNoValueRefs<ES>['tickWidth'] | ConditionalAxisNumber<ES>;
 }
 
-// As in Vega, axis configs cannot set specific titles; `title: null` (from VlOnlyGuideConfig) is the only allowed title value (https://github.com/vega/vega-lite/issues/9429).
+// As in Vega, axis configs cannot set specific titles; `title: null` (from VlOnlyGuideConfig) is the only allowed title value.
 export type AxisConfig<ES extends ExprRef | SignalRef> = Omit<Guide, 'title'> &
   VlOnlyGuideConfig &
   AxisConfigBaseWithConditionalAndSignal<ES> & {
