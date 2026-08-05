@@ -590,8 +590,7 @@ describe('compile/scale', () => {
         const _domain = testParseDomainForChannel(model, 'y');
 
         expect(_domain).toEqual([
-          {signal: '{data: datetime(1970, 0, 1, 0, 0, 0, 0)}'},
-          {signal: '{data: datetime(1980, 0, 1, 0, 0, 0, 0)}'},
+          [{signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'}, {signal: 'datetime(1980, 0, 1, 0, 0, 0, 0)'}],
         ]);
       });
 
@@ -610,8 +609,7 @@ describe('compile/scale', () => {
         const _domain = testParseDomainForChannel(model, 'y');
 
         expect(_domain).toEqual([
-          {signal: '{data: datetime(1970, 0, 1, 0, 0, 0, 0)}'},
-          {signal: '{data: datetime(1980, 0, 1, 0, 0, 0, 0)}'},
+          [{signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'}, {signal: 'datetime(1980, 0, 1, 0, 0, 0, 0)'}],
         ]);
       });
 
@@ -629,10 +627,7 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'y');
 
-        expect(_domain).toEqual([
-          {signal: '{data: datetime(2134512352)}'},
-          {signal: '{data: datetime(2012, 1, 1, 0, 0, 0, 0)}'},
-        ]);
+        expect(_domain).toEqual([[{signal: 'datetime(2134512352)'}, {signal: 'datetime(2012, 1, 1, 0, 0, 0, 0)'}]]);
       });
 
       it('should return the right custom domain with DateTime object and signal', () => {
@@ -648,7 +643,7 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'y');
 
-        expect(_domain).toEqual([{signal: '{data: datetime(1970, 0, 1, 0, 0, 0, 0)}'}, {signal: '{data: a}'}]);
+        expect(_domain).toEqual([[{signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'}, {signal: 'a'}]]);
       });
 
       it('should return the right custom domain with date strings', () => {
@@ -664,10 +659,7 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'y');
 
-        expect(_domain).toEqual([
-          {signal: `{data: datetime("Jan 1, 2007")}`},
-          {signal: `{data: datetime("Jan 1, 2009")}`},
-        ]);
+        expect(_domain).toEqual([[{signal: `datetime("Jan 1, 2007")`}, {signal: `datetime("Jan 1, 2009")`}]]);
       });
 
       it('should return the right custom domain when timeUnit is used', () => {
@@ -684,10 +676,7 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'y');
 
-        expect(_domain).toEqual([
-          {signal: `{data: datetime("Jan 1, 2007")}`},
-          {signal: `{data: datetime("Jan 1, 2009")}`},
-        ]);
+        expect(_domain).toEqual([[{signal: `datetime("Jan 1, 2007")`}, {signal: `datetime("Jan 1, 2009")`}]]);
       });
 
       describe('for ordinal', () => {
