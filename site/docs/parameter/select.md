@@ -170,9 +170,9 @@ The `nearest` transform also respects any [position encoding projections](projec
 
 ### Pausing an Animation
 
-A selection with `"on": "timer"` drives an [animation](../encoding.html#time). A filter on the timer stops playback until the viewer restarts it, and `pause` holds the clock on chosen frames without stopping it.
+A selection with `"on": "timer"` drives an [animation](../encoding.html#time). A filter on the timer uses a signal parameter to pause or resume playback. The `pause` property enables the author to pause the clock for a specified amount of time on specific data values.
 
-To hand the viewer a switch, filter the timer on your own parameter:
+To provide the viewer with a checkbox to play or pause, filter the timer on a parameter:
 
 ```json
 "params": [
@@ -181,9 +181,7 @@ To hand the viewer a switch, filter the timer on your own parameter:
 ]
 ```
 
-A specification that supplies this filter owns the switch, and Vega-Lite emits no `is_playing` signal of its own.
-
-To dwell on particular moments in the data, use `pause`. Each entry gives a value in the time field's domain and a duration in milliseconds to hold on it:
+To dwell on particular values in the data, use `pause`. Each entry specifies a value in the time field's domain and a duration in milliseconds to hold on it:
 
 ```json
 "pause": [{"value": 1965, "duration": 2000}]
