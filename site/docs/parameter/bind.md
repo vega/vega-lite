@@ -43,7 +43,7 @@ Binding a selection with `"on": "timer"` to a range input gives a scrubber for i
 }
 ```
 
-Scrubbing stops playback, so the clock does not fight the pointer. Pair the slider with a checkbox to resume.
+Scrubbing stops playback, so the animation clock does not conflict with the interaction. Pair the slider with a checkbox to resume.
 
 ## Legend Binding
 
