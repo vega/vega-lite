@@ -1,5 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import {compile} from '../../src/compile/compile.js';
+import {SCRUB_PLAYING} from '../../src/compile/selection/point.js';
 import {TopLevelSpec} from '../../src/index.js';
 
 /**
@@ -364,6 +365,46 @@ describe('animation', () => {
       // the generic input binding rewrites the tuple to read widget values,
       // which would sever it from the clock
       expect(signal('frame_tuple').update).toContain('anim_value');
+    });
+
+    it('emits no scrub signal when the compiler owns the switch', () => {
+      expect(signal(SCRUB_PLAYING)).toBeUndefined();
+    });
+
+    describe('with a specification-supplied timer filter', () => {
+      const own = gapminder({on: {type: 'timer', filter: 'playing'}}, [
+        {name: 'playing', value: true, bind: {input: 'checkbox'}},
+      ]);
+      (own as any).params[0].bind = {input: 'range', min: 1955, max: 2005, step: 5};
+      const ownCompiled = compile(own).spec;
+      const ownSignal = (name: string) => ownCompiled.signals.find((s) => s.name === name) as any;
+
+      it('leaves the specification its own switch', () => {
+        expect(ownSignal('is_playing')).toBeUndefined();
+        expect(ownSignal('playing')).toEqual({name: 'playing', value: true, bind: {input: 'checkbox'}});
+      });
+
+      it('stops playback on scrub through a signal of its own', () => {
+        expect(ownSignal(SCRUB_PLAYING)).toEqual({
+          name: SCRUB_PLAYING,
+          init: 'true',
+          on: [
+            {events: {signal: 'frame_time'}, update: 'false'},
+            {events: [{signal: 'playing'}], update: 'true'},
+          ],
+        });
+      });
+
+      it('gates the clock on both switches', () => {
+        expect(ownSignal('anim_clock').on[0].update).toContain(`playing && ${SCRUB_PLAYING} ?`);
+      });
+
+      it('emits no scrub signal without a slider', () => {
+        const noSlider = compile(
+          gapminder({on: {type: 'timer', filter: 'playing'}}, [{name: 'playing', value: true}]),
+        ).spec;
+        expect(noSlider.signals.find((s) => s.name === SCRUB_PLAYING)).toBeUndefined();
+      });
     });
   });
 });

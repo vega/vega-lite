@@ -15,6 +15,7 @@ export const MIN_EXTENT = 'min_extent';
 export const MAX_RANGE_EXTENT = 'max_range_extent';
 export const LAST_TICK = 'last_tick_at';
 export const IS_PLAYING = 'is_playing';
+export const SCRUB_PLAYING = 'scrub_playing';
 export const THROTTLE = (1 / 60) * 1000; // 60 FPS
 
 // Data-driven pausing. The store holds the pause entries matching the current
@@ -82,11 +83,12 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
   const slider = sliderName(selCmpt);
 
   if (filters.length) {
+    const filterRefs: {signal: string}[] = [];
     for (const [i, filter] of filters.entries()) {
       const f = filter.trim();
       if (/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(f)) {
         terms.push(f);
-        dependencies.push({signal: f});
+        filterRefs.push({signal: f});
       } else {
         // An expression filter cannot be referenced from an event stream, so
         // it gets a signal of its own. The signal also brackets the
@@ -94,8 +96,27 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
         const term = `${name}_gate${i > 0 ? `_${i}` : ''}`;
         signals.push({name: term, update: `(${f})`});
         terms.push(term);
-        dependencies.push({signal: term});
+        filterRefs.push({signal: term});
       }
+    }
+    dependencies.push(...filterRefs);
+
+    if (slider) {
+      // Scrubbing stops playback whichever switch gates the clock, so the
+      // clock never fights the pointer. The compiler cannot write to the
+      // parameter the filter names, so it stops playback in a signal of its
+      // own and releases that signal when the parameter next changes. Toggling
+      // the specification's switch therefore resumes playback.
+      terms.push(SCRUB_PLAYING);
+      dependencies.push({signal: SCRUB_PLAYING});
+      signals.push({
+        name: SCRUB_PLAYING,
+        init: 'true',
+        on: [
+          {events: {signal: slider}, update: 'false'},
+          {events: filterRefs, update: 'true'},
+        ],
+      });
     }
   } else {
     terms.push(IS_PLAYING);
@@ -104,7 +125,8 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
       slider
         ? {
             // Scrubbing takes over from playback, so the clock does not fight
-            // the pointer. A bound checkbox resumes playback.
+            // the pointer. The compiler owns this switch, so scrubbing clears
+            // the checkbox and checking it again resumes playback.
             name: IS_PLAYING,
             init: 'true',
             bind: {input: 'checkbox'},

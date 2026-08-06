@@ -43,7 +43,11 @@ Binding a selection with `"on": "timer"` to a range input gives a scrubber for i
 }
 ```
 
-Scrubbing stops playback, so the animation clock does not conflict with the interaction. Pair the slider with a checkbox to resume.
+Scrubbing stops playback, so the animation clock does not conflict with the interaction. Vega-Lite emits an `is_playing` checkbox next to the slider, and checking it again resumes playback:
+
+<div class="vl-example" data-name="animated_gapminder_slider"></div>
+
+When a specification filters the timer on [its own parameter](selection.html#animation-pause), that parameter becomes the play/pause switch. Scrubbing still stops playback, and toggling the switch resumes it.
 
 ## Legend Binding
 
