@@ -348,13 +348,13 @@ Note: `time` encoding animations currently have a few restrictions. See the [exa
 
 ### Rescaling
 
-By default a scale holds one domain across the whole animation, which keeps positions comparable between frames. Set `"rescale": true` to recompute the domain from each frame instead. Rescaling is what a racing bar chart depends on. Against a domain covering every frame, the earliest values are a rounding error and the bars start out invisible.
+By default a scale has one constant domain across the whole animation, which keeps positions comparable between frames. Set `"rescale": true` to recompute the domain from each frame instead. Animations like bar chart races depend on rescaling to keep the viewport focused on the current frame's data.
 
 ```json
 "time": {"field": "date", "type": "ordinal", "rescale": true}
 ```
 
-Vega-Lite never rescales a scale with a discrete output range (`ordinal`, `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because moving between such outputs jumps rather than travels. It never rescales the time scale either, which fixes the extent of the animation.
+Vega-Lite never rescales a scale with a discrete output range (`ordinal`, `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because moving between such outputs causes discontinuous jumps. It also never rescales the time scale, which fixes the extent of the animation.
 
 {:#time-field-def}
 
