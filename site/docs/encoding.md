@@ -326,8 +326,6 @@ By default the time channel uses a `band` scale: each distinct value of the fiel
 
 Set `"scale": {"type": "linear"}` instead when the field is continuous and the animation should track elapsed time rather than step through the values present, as with a unix timestamp. The scale then spans `config.scale.animationDuration` seconds (default `5`), or an explicit `"range": [0, 10000]`.
 
-A visual channel restricts which scale types a field type accepts. The time channel accepts `band` and `linear` for any orderable field, temporal fields included, because its range is elapsed playback time rather than a visual extent.
-
 {:#time-no-filter}
 
 ### Animating Without Filtering
