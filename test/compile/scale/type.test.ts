@@ -203,6 +203,18 @@ describe('compile/scale', () => {
           // time, so a temporal field may legitimately drive a linear scale
           expect(scaleType({type: 'linear'}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
         });
+
+        it(
+          'should warn and fall back to band for a linear scale over a nominal field.',
+          log.wrap((localLogger) => {
+            // a linear scale over strings has a NaN domain, so the frame
+            // filter would silently match nothing
+            expect(scaleType({type: 'linear'}, 'time', {type: 'nominal'}, 'point')).toEqual(ScaleType.BAND);
+            expect(localLogger.warns[0]).toEqual(
+              log.message.scaleTypeNotWorkWithFieldDef(ScaleType.LINEAR, ScaleType.BAND),
+            );
+          }),
+        );
       });
     });
     describe('quantitative', () => {

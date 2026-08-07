@@ -156,9 +156,14 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
                 );
               }
             } else if (isScaleRangeStep(range)) {
-              // A band step, as the time channel uses to set keyframe duration.
-              // It passes through to Vega untouched.
-              return makeExplicit(range);
+              if (channel === TIME) {
+                // The step sets keyframe duration and passes through untouched.
+                return makeExplicit(range);
+              }
+              // Vega rejects a step range on anything but a band scale, and
+              // x/y band steps are set through the view size, so no other
+              // channel has a valid use for this form.
+              log.warn(log.message.stepRangeRequiresTimeChannel(channel));
             } else if (isObject(range)) {
               return makeExplicit({
                 data: model.requestDataName(DataSourceType.Main),

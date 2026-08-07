@@ -46,11 +46,16 @@ export function scaleType(
     }
 
     // Check if explicitly specified scale type is supported by the data type.
-    // The time channel is exempt. Its range is elapsed animation time rather
-    // than a visual extent, and both scale types it allows -- `band` for
-    // discrete keyframes, `linear` for continuous playback -- apply to any
-    // orderable field, temporal fields included.
-    if (!isTime(channel) && isFieldDef(fieldDef) && !scaleTypeSupportDataType(type, fieldDef.type)) {
+    // The time channel has its own rule. Its range is elapsed animation time
+    // rather than a visual extent: `band` gives any field discrete keyframes,
+    // and `linear` runs continuous playback over a field with numeric values,
+    // so `linear` needs a quantitative or temporal field.
+    if (isTime(channel)) {
+      if (type === 'linear' && !util.contains(['quantitative', 'temporal'], fieldDef.type)) {
+        log.warn(log.message.scaleTypeNotWorkWithFieldDef(type, defaultScaleType));
+        return defaultScaleType;
+      }
+    } else if (isFieldDef(fieldDef) && !scaleTypeSupportDataType(type, fieldDef.type)) {
       log.warn(log.message.scaleTypeNotWorkWithFieldDef(type, defaultScaleType));
       return defaultScaleType;
     }

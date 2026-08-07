@@ -966,6 +966,32 @@ describe('compile/scale', () => {
           makeImplicit([0, defaultConfig.scale.animationDuration * 1000]),
         );
       });
+
+      it('should keep an explicit step range on the time channel', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            time: {field: 'x', type: 'ordinal', scale: {range: {step: 200}}},
+          },
+        });
+        expect(parseRangeForChannel('time', model)).toEqual(makeExplicit({step: 200}));
+      });
+
+      it(
+        'should warn and drop a step range on any other channel',
+        log.wrap((localLogger) => {
+          // Vega rejects a step range on anything but a band scale, and x/y
+          // band steps are set through the view size
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'point',
+            encoding: {
+              color: {field: 'x', type: 'nominal', scale: {range: {step: 20}}},
+            },
+          });
+          parseRangeForChannel('color', model);
+          expect(localLogger.warns[0]).toEqual(log.message.stepRangeRequiresTimeChannel('color'));
+        }),
+      );
     });
   });
 
