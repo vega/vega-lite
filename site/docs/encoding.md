@@ -358,6 +358,8 @@ Set `"loop": true` on the key to animate from the last keyframe back around to t
 
 Vega-Lite interpolates positions after scaling, so marks move smoothly even on discrete scales — bars in a racing bar chart slide past each other as they reorder. A mark with no counterpart in the next frame disappears for the transition rather than freezing in place. Interpolation only applies to `band` time scales, which have discrete keyframes to interpolate between; a linear time scale is already continuous.
 
+A `line` mark with a key animates differently, because one line spans many keyframes. When the line's `x` or `y` encodes the time field itself, the line keeps its full static shape and a clip moving with the clock reveals it, so any [`interpolate`](line.html) curve stays stable as the line extends. Otherwise Vega-Lite subdivides each segment of the line and reveals the pieces up to the clock. Either way the line draws from the full data, so it needs no filter of its own.
+
 {:#time-rescale}
 
 ### Rescaling
