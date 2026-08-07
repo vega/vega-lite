@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "The connected scatterplot of US driving, drawn as the animation advances. The selection holds every year up to the clock rather than the current one, so the path accumulates instead of showing a single point, and `\"key\": true` carries the single moving vertex across keyframes so the leading end extends smoothly rather than jumping a segment at a time.",
+  "description": "A connected scatterplot of US gas prices and miles driven per capita, traced year by year as the animation advances.",
   "background": "white",
   "padding": 5,
   "width": 300,

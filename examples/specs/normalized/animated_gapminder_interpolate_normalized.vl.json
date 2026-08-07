@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Gapminder animated over time, with countries tweening between keyframes rather than jumping.",
+  "description": "Gapminder animated over time, with countries moving smoothly between years.",
   "data": {"url": "data/gapminder.json"},
   "mark": "point",
   "encoding": {
