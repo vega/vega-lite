@@ -655,7 +655,7 @@ describe('Animated Selection', () => {
   it(
     'warns when two animated selections both configure the clock',
     log.wrap((localLogger) => {
-      const model = parseUnitModelWithScaleAndSelection({
+      const clockConflictModel = parseUnitModelWithScaleAndSelection({
         data: {url: 'data/gapminder.json'},
         params: [
           {
@@ -677,9 +677,9 @@ describe('Animated Selection', () => {
       });
 
       // Both selections survive; only the second one's clock property is dropped.
-      expect(Object.keys(model.component.selection)).toEqual(['a', 'b']);
-      expect(model.component.selection['a'].pause).toBeDefined();
-      expect(model.component.selection['b'].pause).toBeUndefined();
+      expect(Object.keys(clockConflictModel.component.selection)).toEqual(['a', 'b']);
+      expect(clockConflictModel.component.selection['a'].pause).toBeDefined();
+      expect(clockConflictModel.component.selection['b'].pause).toBeUndefined();
       expect(localLogger.warns[0]).toEqual(log.message.timerSelectionClockConflict('pause', 'a', 'b'));
     }),
   );
