@@ -993,11 +993,11 @@
       },
       {
         "name": "animated_connected_scatterplot",
-        "title": "Connected Scatterplot Reveal"
+        "title": "Animated Connected Scatterplot"
       },
       {
         "name": "animated_bump_chart",
-        "title": "Bump Chart Reveal"
+        "title": "Animated Bump Chart"
       },
       {
         "name": "animated_bird_migration",
