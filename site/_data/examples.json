@@ -924,6 +924,10 @@
         "name": "selection_type_point_zorder",
         "description": "Show points on top when hovered over with the pointer",
         "title": "Change zorder on hover"
+      },
+      {
+        "name": "animated_gapminder_slider",
+        "title": "Scrubbing an Animation with a Slider"
       }
     ],
     "Interactive Multi-View Displays": [
@@ -978,6 +982,32 @@
         "name": "animated_hop",
         "title": "Hypothetical outcome plot",
         "description": "An animated tick chart displaying precipitation measurements from Seattle weather data. Each horizontal tick mark represents a precipitation value for a specific date, with the visualization updating over time to show the temporal progression of rainfall patterns."
+      },
+      {
+        "name": "animated_population_race",
+        "title": "Racing Bar Chart of US Population"
+      },
+      {
+        "name": "animated_index_chart",
+        "title": "Animated Index Chart"
+      },
+      {
+        "name": "animated_connected_scatterplot",
+        "title": "Connected Scatterplot Reveal"
+      },
+      {
+        "name": "animated_bump_chart",
+        "title": "Bump Chart Reveal"
+      },
+      {
+        "name": "animated_bird_migration",
+        "title": "Bird Migration",
+        "png": true
+      },
+      {
+        "name": "animated_earthquakes",
+        "title": "A Week of Earthquakes",
+        "png": true
       }
     ]
   }
