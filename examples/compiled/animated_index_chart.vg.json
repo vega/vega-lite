@@ -23,7 +23,16 @@
         }
       ]
     },
-    {"name": "data_1", "source": "data_0", "transform": []},
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!length(data(\"index_store\")) || vlSelectionTest(\"index_store\", datum)"
+        }
+      ]
+    },
     {
       "name": "data_2",
       "source": "source_0",
@@ -75,16 +84,6 @@
         {
           "type": "filter",
           "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"])))"
-        }
-      ]
-    },
-    {
-      "name": "data_0_curr",
-      "source": "data_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "!length(data(\"index_store\")) || vlSelectionTest(\"index_store\", datum)"
         }
       ]
     }
@@ -143,7 +142,7 @@
       "type": "symbol",
       "style": ["point"],
       "interactive": true,
-      "from": {"data": "data_0_curr"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0},

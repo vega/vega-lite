@@ -699,6 +699,73 @@ describe('animation', () => {
       expect(twoSelections.data.map((d) => d.name)).toEqual(expect.arrayContaining(['today_store', 'window_store']));
     });
 
+    it('honors clock properties whichever selection carries them', () => {
+      // the clock is assembled once, so it merges every timer selection's
+      // configuration rather than taking the first selection's alone
+      const compiled = compile({
+        data: {url: 'data/gapminder.json'},
+        params: [
+          {name: 'today', select: {type: 'point', fields: ['year'], on: 'timer'}},
+          {
+            name: 'window',
+            select: {type: 'point', fields: ['year'], on: 'timer'},
+            bind: {input: 'range', min: 1955, max: 2005, step: 5},
+          },
+        ],
+        transform: [{filter: {param: 'today'}}],
+        mark: 'point',
+        encoding: {
+          x: {field: 'fertility', type: 'quantitative'},
+          time: {field: 'year', type: 'ordinal'},
+        },
+      } as TopLevelSpec).spec;
+
+      // the slider owned by the second selection still scrubs the clock
+      const clock = compiled.signals.find((s) => s.name === 'anim_clock') as any;
+      expect(clock.on.some((o: any) => o.events?.signal === 'window_time')).toBe(true);
+      // and stops playback
+      const playing = compiled.signals.find((s) => s.name === 'is_playing') as any;
+      expect(playing.bind).toEqual({input: 'checkbox', name: 'Playing'});
+    });
+
+    it("leaves a lookup transform's selection filter alone", () => {
+      // `lookup: {from: {param}}` in a sibling layer materializes the
+      // selection as a filtered secondary table. That filter tests the same
+      // store as a frame filter, but it belongs to the lookup, and moving it
+      // would freeze the lookup on its first frame.
+      const compiled = compile({
+        data: {url: 'data/stocks.csv'},
+        encoding: {time: {field: 'date', type: 'temporal'}},
+        layer: [
+          {
+            params: [{name: 'index', select: {type: 'point', on: 'timer'}}],
+            mark: 'point',
+            encoding: {x: {field: 'date', type: 'temporal'}, opacity: {value: 0}},
+          },
+          {
+            transform: [
+              {lookup: 'symbol', from: {param: 'index', key: 'symbol'}},
+              {calculate: 'datum.index ? datum.price / datum.index.price : 0', as: 'indexed'},
+            ],
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {field: 'indexed', type: 'quantitative'},
+              color: {field: 'symbol', type: 'nominal'},
+            },
+          },
+        ],
+      } as TopLevelSpec).spec;
+
+      const lookup = compiled.data.flatMap((d) => d.transform ?? []).find((t: any) => t.type === 'lookup') as any;
+      const lookupTable = compiled.data.find((d) => d.name === lookup.from);
+      expect(lookupTable.transform).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({type: 'filter', expr: expect.stringContaining('vlSelectionTest')}),
+        ]),
+      );
+    });
+
     const layered = compile({
       data: {url: 'data/gapminder.json'},
       params: [{name: 'frame', select: {type: 'point', on: 'timer'}}],
