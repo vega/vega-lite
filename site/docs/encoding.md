@@ -290,7 +290,7 @@ See [an example scatterplot animation]({{ site.baseurl }}/examples/animated_gapm
 
 ### A Time Encoding Implies a Parameter and a Filter
 
-A `time` encoding defines the field over which the animation runs. From that field, Vega-Lite derives the clock that advances the animation and the filter that picks the current frame. This specification:
+A `time` encoding defines the field over which the animation runs, and Vega-Lite automatically derives the animation's selection parameter and filter from it. This specification:
 
 ```json
 {
@@ -304,7 +304,7 @@ A `time` encoding defines the field over which the animation runs. From that fie
 }
 ```
 
-automatically normalizes to this specification, which writes a default parameter and the filter out:
+normalizes to this specification, with the default parameter and filter written out:
 
 ```json
 {
@@ -316,13 +316,13 @@ automatically normalizes to this specification, which writes a default parameter
 
 `animation_frame` is an ordinary [point selection](selection.html) holding the current frame, so a conditional encoding, a scale domain, or a filter in another view can all read it.
 
-Vega-Lite does not normalize a default parameter and filter when a specification already declares an animated parameter. Manually declare the parameter to e.g. change its name or bind it to a slider.
+Vega-Lite adds the default parameter and filter only when the specification does not already declare an animated parameter (a selection with a `timer` event). Declare the parameter explicitly to customize it, for example to change its name.
 
 {:#time-no-filter}
 
 ### Animating Without Filtering
 
-An animation can drive a conditional encoding while every mark stays on the full data. Declare the parameter yourself and omit the filter, and the clock still advances — here it recolors the current year's points against the rest.
+An animation does not have to filter data. If you declare the parameter and omit the filter, every mark stays visible, and the parameter can instead drive other parts of the specification. This example uses a conditional encoding to recolor the current year's points against the rest:
 
 ```json
 "params": [{"name": "frame", "select": {"type": "point", "on": "timer"}}],
