@@ -322,14 +322,14 @@ export class UnitModel extends ModelWithField {
   }
 
   /**
-   * The data source of this unit's frame dataset. Data assembly writes this
-   * field, and mark assembly reads it.
+   * The data source that this unit's frame dataset derives from. Data assembly
+   * sets this field when it finds a frame filter and builds the frame dataset
+   * from it; mark assembly then reads it to point marks at the frame dataset.
    *
-   * A set field means the marks follow the animation. A `time` encoding and a
-   * timer selection are each compatible with marks that follow the animation
-   * and with marks that stay on the full data, so neither one determines this
-   * field. Data assembly sets it after it finds a frame filter and builds a
-   * frame dataset from that filter.
+   * A `time` encoding or a timer selection alone is not enough to set this
+   * field, because an animation without a frame filter (e.g. one that only
+   * drives a conditional encoding) has no frame dataset and leaves its marks
+   * on the full data.
    */
   public animationFrameSource?: string;
 
