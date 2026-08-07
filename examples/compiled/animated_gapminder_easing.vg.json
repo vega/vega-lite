@@ -7,15 +7,11 @@
   "height": 300,
   "style": "cell",
   "data": [
-    {
-      "name": "animation_frame_store"
-    },
+    {"name": "animation_frame_store"},
     {
       "name": "source_0",
       "url": "data/gapminder.json",
-      "format": {
-        "type": "json"
-      },
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "filter",
@@ -37,20 +33,14 @@
       "name": "source_0_eq",
       "source": "source_0",
       "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"year\"] === anim_value"
-        }
+        {"type": "filter", "expr": "datum[\"year\"] === anim_value"}
       ]
     },
     {
       "name": "source_0_next",
       "source": "source_0",
       "transform": [
-        {
-          "type": "filter",
-          "expr": "datum[\"year\"] === anim_value_next"
-        }
+        {"type": "filter", "expr": "datum[\"year\"] === anim_value_next"}
       ]
     },
     {
@@ -61,25 +51,15 @@
           "type": "lookup",
           "from": "source_0_next",
           "key": "country",
-          "fields": [
-            "country"
-          ],
-          "as": [
-            "next"
-          ]
+          "fields": ["country"],
+          "as": ["next"]
         },
-        {
-          "type": "filter",
-          "expr": "isValid(datum.next)"
-        }
+        {"type": "filter", "expr": "isValid(datum.next)"}
       ]
     },
     {
       "name": "source_0_interpolate",
-      "source": [
-        "source_0_curr",
-        "source_0_eq_next"
-      ],
+      "source": ["source_0_curr", "source_0_eq_next"],
       "transform": [
         {
           "type": "filter",
@@ -93,10 +73,7 @@
       "name": "unit",
       "value": {},
       "on": [
-        {
-          "events": "pointermove",
-          "update": "isTuple(group()) ? group() : unit"
-        }
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
     {
@@ -108,10 +85,7 @@
       "init": "0",
       "on": [
         {
-          "events": {
-            "type": "timer",
-            "throttle": 16.666666666666668
-          },
+          "events": {"type": "timer", "throttle": 16.666666666666668},
           "update": "is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock"
         }
       ]
@@ -121,57 +95,31 @@
       "init": "now()",
       "on": [
         {
-          "events": [
-            {
-              "signal": "anim_clock"
-            },
-            {
-              "signal": "is_playing"
-            }
-          ],
+          "events": [{"signal": "anim_clock"}, {"signal": "is_playing"}],
           "update": "now()"
         }
       ]
     },
-    {
-      "name": "is_playing",
-      "init": "true"
-    },
+    {"name": "is_playing", "init": "true"},
     {
       "name": "eased_anim_clock",
       "update": "easeCubicInOut(anim_clock / max_range_extent) * max_range_extent"
     },
-    {
-      "name": "animation_frame_domain",
-      "init": "domain('time')"
-    },
-    {
-      "name": "min_extent",
-      "init": "extent(animation_frame_domain)[0]"
-    },
-    {
-      "name": "max_range_extent",
-      "init": "extent(range('time'))[1]"
-    },
-    {
-      "name": "anim_value",
-      "update": "invert('time', eased_anim_clock)"
-    },
-    {
-      "name": "max_extent",
-      "init": "extent(animation_frame_domain)[1]"
-    },
+    {"name": "animation_frame_domain", "init": "domain('time')"},
+    {"name": "min_extent", "init": "extent(animation_frame_domain)[0]"},
+    {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
+    {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
     {
       "name": "t_index",
       "update": "indexof(animation_frame_domain, anim_value)"
     },
     {
       "name": "anim_value_next",
-      "update": "t_index < length(animation_frame_domain) - 1 ? animation_frame_domain[t_index + 1] : max_extent"
+      "update": "t_index < length(animation_frame_domain) - 1 ? animation_frame_domain[t_index + 1] : anim_value"
     },
     {
       "name": "anim_tween",
-      "update": "anim_value_next !== anim_value ? (eased_anim_clock - scale(\"time\", anim_value)) / (scale(\"time\", anim_value_next) - scale(\"time\", anim_value)) : 0"
+      "update": "anim_value_next !== anim_value ? (eased_anim_clock - scale(\"time\", anim_value)) / (scale(\"time\", anim_value_next) > scale(\"time\", anim_value) ? scale(\"time\", anim_value_next) - scale(\"time\", anim_value) : max_range_extent - scale(\"time\", anim_value)) : 0"
     },
     {
       "name": "animation_frame_tuple",
@@ -179,12 +127,7 @@
     },
     {
       "name": "animation_frame_tuple_fields",
-      "value": [
-        {
-          "type": "E",
-          "field": "year"
-        }
-      ]
+      "value": [{"type": "E", "field": "year"}]
     },
     {
       "name": "animation_frame_modify",
@@ -195,31 +138,16 @@
     {
       "name": "marks",
       "type": "symbol",
-      "style": [
-        "point"
-      ],
+      "style": ["point"],
       "interactive": true,
-      "from": {
-        "data": "source_0_interpolate"
-      },
+      "from": {"data": "source_0_interpolate"},
       "encode": {
         "update": {
-          "opacity": {
-            "value": 0.7
-          },
-          "cursor": {
-            "value": "pointer"
-          },
-          "fill": {
-            "value": "transparent"
-          },
-          "stroke": {
-            "scale": "color",
-            "field": "cluster"
-          },
-          "ariaRoleDescription": {
-            "value": "point"
-          },
+          "opacity": {"value": 0.7},
+          "cursor": {"value": "pointer"},
+          "fill": {"value": "transparent"},
+          "stroke": {"scale": "color", "field": "cluster"},
+          "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; cluster: \" + (isValid(datum[\"cluster\"]) ? isArray(datum[\"cluster\"]) ? join(datum[\"cluster\"], ' ') : datum[\"cluster\"] : \"\"+datum[\"cluster\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"])"
           },
@@ -237,56 +165,30 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "data": "source_0",
-        "field": "fertility"
-      },
-      "range": [
-        0,
-        {
-          "signal": "width"
-        }
-      ],
+      "domain": {"data": "source_0", "field": "fertility"},
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "data": "source_0",
-        "field": "life_expect"
-      },
-      "range": [
-        {
-          "signal": "height"
-        },
-        0
-      ],
+      "domain": {"data": "source_0", "field": "life_expect"},
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "data": "source_0",
-        "field": "cluster",
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "cluster", "sort": true},
       "range": "category"
     },
     {
       "name": "time",
       "type": "band",
-      "domain": {
-        "data": "source_0",
-        "field": "year",
-        "sort": true
-      },
-      "range": {
-        "step": 500
-      }
+      "domain": {"data": "source_0", "field": "year", "sort": true},
+      "range": {"step": 500}
     }
   ],
   "axes": [
@@ -295,9 +197,7 @@
       "orient": "bottom",
       "gridScale": "y",
       "grid": true,
-      "tickCount": {
-        "signal": "ceil(width/40)"
-      },
+      "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
       "aria": false,
@@ -311,9 +211,7 @@
       "orient": "left",
       "gridScale": "x",
       "grid": true,
-      "tickCount": {
-        "signal": "ceil(height/40)"
-      },
+      "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
       "aria": false,
@@ -329,9 +227,7 @@
       "title": "fertility",
       "labelFlush": true,
       "labelOverlap": true,
-      "tickCount": {
-        "signal": "ceil(width/40)"
-      },
+      "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     },
     {
@@ -340,9 +236,7 @@
       "grid": false,
       "title": "life_expect",
       "labelOverlap": true,
-      "tickCount": {
-        "signal": "ceil(height/40)"
-      },
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ],
@@ -354,12 +248,8 @@
       "encode": {
         "symbols": {
           "update": {
-            "fill": {
-              "value": "transparent"
-            },
-            "opacity": {
-              "value": 0.7
-            }
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
           }
         }
       }

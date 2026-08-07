@@ -58,13 +58,17 @@ function easedClockExpr(easing: EasingFunction | number[]): string {
   return `${eased} * ${MAX_RANGE_EXTENT}`;
 }
 
-const animationSignals = (selCmpt: SelectionComponent<'point'>, scaleName: string): Signal[] => {
+const animationSignals = (
+  selCmpt: SelectionComponent<'point'>,
+  scaleName: string,
+  easing: EasingFunction | number[] | undefined,
+): Signal[] => {
   const selectionName = selCmpt.name;
   return [
     // timer signals
     {
       name: EASED_ANIM_CLOCK,
-      update: easedClockExpr(selCmpt.easing),
+      update: easedClockExpr(easing),
     },
 
     // scale signals
@@ -273,7 +277,9 @@ const point: SelectionCompiler<'point'> = {
           ]
         : []),
       ...gateSignals,
-      ...animationSignals(selCmpt, model.scaleName(TIME)),
+      // The easing, like the other clock properties, comes from whichever
+      // timer selection declares it.
+      ...animationSignals(selCmpt, model.scaleName(TIME), timers.find((t) => t.easing !== undefined)?.easing),
       ...animationInterpolationSignals(model as UnitModel, selCmpt.name),
     ];
 
