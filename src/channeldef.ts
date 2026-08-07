@@ -566,11 +566,15 @@ export type TimeFieldDef<F extends Field> = ScaleFieldDef<F, StandardType> & Tim
 
 export interface TimeKey {
   /**
-   * The field whose value identifies a mark across keyframes.
+   * The field whose value identifies a mark across keyframes. The value must
+   * be unique within each keyframe: the join keeps one row per key, so a
+   * duplicated value silently drops the other rows.
    *
    * Omit the field when each keyframe holds a single mark, as in a line whose
    * leading end advances; a lone mark needs no field to identify it. Writing
-   * `"key": true` is shorthand for omitting the field.
+   * `"key": true` is shorthand for omitting the field. With more than one
+   * mark per keyframe and no field, every mark joins to the same single
+   * successor.
    */
   field?: FieldName;
 

@@ -29688,7 +29688,7 @@
       "properties": {
         "field": {
           "$ref": "#/definitions/FieldName",
-          "description": "The field whose value identifies a mark across keyframes.\n\nOmit the field when each keyframe holds a single mark, as in a line whose leading end advances; a lone mark needs no field to identify it. Writing `\"key\": true` is shorthand for omitting the field."
+          "description": "The field whose value identifies a mark across keyframes. The value must be unique within each keyframe: the join keeps one row per key, so a duplicated value silently drops the other rows.\n\nOmit the field when each keyframe holds a single mark, as in a line whose leading end advances; a lone mark needs no field to identify it. Writing `\"key\": true` is shorthand for omitting the field. With more than one mark per keyframe and no field, every mark joins to the same single successor."
         },
         "loop": {
           "description": "Whether the animation interpolates from the last keyframe back around to the first, rather than stopping at the final frame.\n\n__Default value:__ `false`",
