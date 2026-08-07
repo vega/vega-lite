@@ -173,6 +173,26 @@ describe('animation', () => {
       expect(scaleDomains(racingBars(true)).y).toMatch(/_curr$/);
     });
 
+    it('rewrites a sort over a pre-aggregation field onto the frame dataset', () => {
+      // the sort reads the raw source, where `people` exists; the frame dataset
+      // carries the aggregate's output, so the sort has to read `sum_people`
+      const compiled = compile({
+        data: {url: 'data/population.json'},
+        params: [{name: 'frame', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+        transform: [{filter: {param: 'frame'}}],
+        mark: 'bar',
+        encoding: {
+          x: {aggregate: 'sum', field: 'people', type: 'quantitative'},
+          y: {field: 'age', type: 'ordinal', sort: {field: 'people', op: 'sum', order: 'descending'}},
+          time: {field: 'year', type: 'ordinal', rescale: true},
+        },
+      } as TopLevelSpec).spec;
+
+      const y = compiled.scales.find((s) => s.name === 'y').domain as any;
+      expect(y.data).toMatch(/_curr$/);
+      expect(y.sort).toEqual({field: 'sum_people', op: 'max', order: 'descending'});
+    });
+
     it('leaves scales with a discrete range alone', () => {
       // interpolating between an ordinal scale's outputs is not meaningful
       expect(scaleDomains(racingBars(true)).color).not.toMatch(/_curr$/);

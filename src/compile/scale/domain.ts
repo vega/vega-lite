@@ -10,7 +10,14 @@ import {
   MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX,
 } from '../../aggregate.js';
 import {isBinning, isBinParams, isParameterExtent} from '../../bin.js';
-import {getSecondaryRangeChannel, isScaleChannel, isXorY, ScaleChannel, TIME} from '../../channel.js';
+import {
+  getSecondaryRangeChannel,
+  isScaleChannel,
+  isSingleDefUnitChannel,
+  isXorY,
+  ScaleChannel,
+  TIME,
+} from '../../channel.js';
 import {
   binRequiresRange,
   getBandPosition,
@@ -27,6 +34,7 @@ import {
 } from '../../channeldef.js';
 import {CompositeAggregate} from '../../compositemark/index.js';
 import {DataSourceType} from '../../data.js';
+import {isAggregate} from '../../encoding.js';
 import {DateTime} from '../../datetime.js';
 import {ExprRef} from '../../expr.js';
 import * as log from '../../log/index.js';
@@ -738,6 +746,39 @@ function animationRescale(model: Model, channel: ScaleChannel): {sources: Set<st
   };
 }
 
+/**
+ * Rewrites a domain's sort so it still works on the frame dataset, whose rows
+ * are the unit's aggregated output. A sort like `{op: "sum", field: "people"}`
+ * reads the raw source, where `people` exists; the frame dataset instead
+ * carries the aggregate's output field (`sum_people`), one row per category
+ * per frame, so the sort becomes `{op: "max", field: "sum_people"}`.
+ *
+ * Returns the rewritten sort, undefined when the sort needs no rewrite, or
+ * null when the sort field does not exist on the frame dataset and cannot be
+ * mapped onto it.
+ */
+function rescaledDomainSort(model: Model, sort: any): any | null | undefined {
+  if (!isObject(sort) || !(sort as any).field || !(sort as any).op) {
+    return undefined;
+  }
+
+  if (!isUnitModel(model) || !isAggregate(model.encoding)) {
+    // no aggregation, so the sort field passes through to the frame dataset
+    return undefined;
+  }
+
+  for (const channel of util.keys(model.encoding)) {
+    if (!isSingleDefUnitChannel(channel)) continue;
+    const fieldDef = model.fieldDef(channel);
+    if (fieldDef?.aggregate === (sort as any).op && fieldDef.field === (sort as any).field) {
+      // one row per category per frame, so max reads that row's value
+      return {...(sort as any), op: 'max', field: model.vgField(channel)};
+    }
+  }
+
+  return null;
+}
+
 export function assembleDomain(model: Model, channel: ScaleChannel) {
   const scaleComponent: ScaleComponent = model.component.scales[channel];
   const rescale = animationRescale(model, channel);
@@ -750,7 +791,15 @@ export function assembleDomain(model: Model, channel: ScaleChannel) {
       domain.data = model.lookupDataSource(domain.data);
 
       if (rescale?.sources.has(domain.data)) {
-        domain.data = rescale.frame;
+        const sort = rescaledDomainSort(model, (domain as any).sort);
+        if (sort === null) {
+          log.warn(log.message.animationRescaleSortDropped(channel, (domain as any).sort.field));
+        } else {
+          domain.data = rescale.frame;
+          if (sort !== undefined) {
+            (domain as any).sort = sort;
+          }
+        }
       }
     }
 

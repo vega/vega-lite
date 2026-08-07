@@ -45,6 +45,14 @@
         {
           "type": "filter",
           "expr": "!length(data(\"animation_frame_store\")) || vlSelectionTest(\"animation_frame_store\", datum)"
+        },
+        {
+          "type": "stack",
+          "groupby": ["age"],
+          "field": "sum_people",
+          "sort": {"field": ["year"], "order": ["ascending"]},
+          "as": ["sum_people_start", "sum_people_end"],
+          "offset": "zero"
         }
       ]
     }
@@ -146,7 +154,7 @@
       "domain": {
         "data": "data_0_curr",
         "field": "age",
-        "sort": {"op": "sum", "field": "people", "order": "descending"}
+        "sort": {"op": "max", "field": "sum_people", "order": "descending"}
       },
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,

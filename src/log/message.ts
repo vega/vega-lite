@@ -127,6 +127,13 @@ export function stepRangeRequiresTimeChannel(channel: string) {
   );
 }
 
+export function animationRescaleSortDropped(channel: string, field: string) {
+  return (
+    `The "${channel}" scale domain cannot be recomputed per frame, because its sort ` +
+    `reads ${stringValue(field)}, which does not exist on the frame dataset. Keeping the full domain.`
+  );
+}
+
 export function selectionAsScaleDomainWithoutField(field: string) {
   return (
     'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
