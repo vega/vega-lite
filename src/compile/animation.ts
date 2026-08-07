@@ -12,8 +12,7 @@ import {
   ANIM_VALUE_NEXT,
   CURR,
   EASED_ANIM_CLOCK,
-  MAX_EXTENT,
-  MIN_EXTENT,
+  MAX_RANGE_EXTENT,
   T_INDEX,
 } from './selection/point.js';
 
@@ -88,24 +87,31 @@ export function animationInterpolationSignals(model: UnitModel, selectionName: s
   const domain = `${selectionName}_domain`;
   const timeScale = stringValue(model.scaleName(TIME));
 
+  const here = `scale(${timeScale}, ${ANIM_VALUE})`;
+  const there = `scale(${timeScale}, ${ANIM_VALUE_NEXT})`;
+
   return [
-    {name: MAX_EXTENT, init: `extent(${domain})[1]`},
     {name: T_INDEX, update: `indexof(${domain}, ${ANIM_VALUE})`},
     {
       // Past the last keyframe there is no successor to head towards. A looping
-      // animation tweens back to the first frame, and the rest settle in place.
+      // animation tweens back to the first frame in playback order, and the
+      // rest settle in place: a successor equal to the current frame zeroes
+      // the tween below.
       name: ANIM_VALUE_NEXT,
-      update: `${T_INDEX} < length(${domain}) - 1 ? ${domain}[${T_INDEX} + 1] : ${key.loop ? MIN_EXTENT : MAX_EXTENT}`,
+      update: `${T_INDEX} < length(${domain}) - 1 ? ${domain}[${T_INDEX} + 1] : ${key.loop ? `${domain}[0]` : ANIM_VALUE}`,
     },
     {
       // How far the clock has travelled into the gap between the two frames.
       // Guarded because the two frames coincide at the end of a non-looping
-      // animation, where the gap is zero and the ratio undefined.
+      // animation, where the gap is zero and the ratio undefined. A successor
+      // behind the current frame -- the wrap of a looping animation -- has no
+      // forward gap to measure, so the wrap runs over the remainder of the
+      // clock's range instead.
       name: ANIM_TWEEN,
       update:
         `${ANIM_VALUE_NEXT} !== ${ANIM_VALUE} ? ` +
-        `(${EASED_ANIM_CLOCK} - scale(${timeScale}, ${ANIM_VALUE})) / ` +
-        `(scale(${timeScale}, ${ANIM_VALUE_NEXT}) - scale(${timeScale}, ${ANIM_VALUE})) : 0`,
+        `(${EASED_ANIM_CLOCK} - ${here}) / ` +
+        `(${there} > ${here} ? ${there} - ${here} : ${MAX_RANGE_EXTENT} - ${here}) : 0`,
     },
   ];
 }
@@ -190,12 +196,22 @@ export function animationInterpolationData(model: UnitModel, source: VgData): Vg
  */
 export function interpolateMarkEncodings(model: UnitModel, encode: Record<string, any>, rescale: boolean): void {
   for (const channel of Object.keys(encode)) {
-    let def = encode[channel];
+    const rule = encode[channel];
 
     // Production rules compile to an array whose last entry is the default.
-    if (Array.isArray(def)) {
-      def = def[def.length - 1];
-    }
+    // Only that entry is rewritten; the conditional entries before it keep
+    // their tests and values.
+    const def = Array.isArray(rule) ? rule[rule.length - 1] : rule;
+
+    // Replaces the default entry with an interpolating expression, in place,
+    // so a production rule's conditional entries survive.
+    const replace = (signal: string) => {
+      if (Array.isArray(rule)) {
+        rule[rule.length - 1] = {signal};
+      } else {
+        encode[channel] = {signal};
+      }
+    };
 
     const {scale, field} = def ?? {};
     if (!field || typeof field !== 'string') {
@@ -205,9 +221,9 @@ export function interpolateMarkEncodings(model: UnitModel, encode: Record<string
     if (!scale) {
       // No scale to go through -- a projected geographic position, for
       // instance. The raw values are already in a space we can interpolate.
-      encode[channel] = {
-        signal: `isValid(datum.next) ? lerp([datum[${stringValue(field)}], datum.next[${stringValue(field)}]], ${ANIM_TWEEN}) : datum[${stringValue(field)}]`,
-      };
+      replace(
+        `isValid(datum.next) ? lerp([datum[${stringValue(field)}], datum.next[${stringValue(field)}]], ${ANIM_TWEEN}) : datum[${stringValue(field)}]`,
+      );
       continue;
     }
 
@@ -224,9 +240,7 @@ export function interpolateMarkEncodings(model: UnitModel, encode: Record<string
     const here = `scale(${stringValue(scale)}, datum[${stringValue(field)}])`;
     const there = `scale(${stringValue(nextScale)}, datum.next[${stringValue(field)}])`;
 
-    encode[channel] = {
-      signal: `isValid(datum.next) ? lerp([${here}, ${there}], ${ANIM_TWEEN}) : ${here}`,
-    };
+    replace(`isValid(datum.next) ? lerp([${here}, ${there}], ${ANIM_TWEEN}) : ${here}`);
   }
 }
 

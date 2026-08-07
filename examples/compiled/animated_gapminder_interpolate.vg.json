@@ -106,18 +106,17 @@
     {"name": "min_extent", "init": "extent(animation_frame_domain)[0]"},
     {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
     {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
-    {"name": "max_extent", "init": "extent(animation_frame_domain)[1]"},
     {
       "name": "t_index",
       "update": "indexof(animation_frame_domain, anim_value)"
     },
     {
       "name": "anim_value_next",
-      "update": "t_index < length(animation_frame_domain) - 1 ? animation_frame_domain[t_index + 1] : max_extent"
+      "update": "t_index < length(animation_frame_domain) - 1 ? animation_frame_domain[t_index + 1] : anim_value"
     },
     {
       "name": "anim_tween",
-      "update": "anim_value_next !== anim_value ? (eased_anim_clock - scale(\"time\", anim_value)) / (scale(\"time\", anim_value_next) - scale(\"time\", anim_value)) : 0"
+      "update": "anim_value_next !== anim_value ? (eased_anim_clock - scale(\"time\", anim_value)) / (scale(\"time\", anim_value_next) > scale(\"time\", anim_value) ? scale(\"time\", anim_value_next) - scale(\"time\", anim_value) : max_range_extent - scale(\"time\", anim_value)) : 0"
     },
     {
       "name": "animation_frame_tuple",

@@ -489,25 +489,45 @@ describe('animation', () => {
 
     it('tracks the frame it is heading towards', () => {
       expect(signal('t_index').update).toBe('indexof(frame_domain, anim_value)');
+      // a successor equal to the current frame settles in place: it zeroes the
+      // tween below
       expect(signal('anim_value_next').update).toBe(
-        't_index < length(frame_domain) - 1 ? frame_domain[t_index + 1] : max_extent',
+        't_index < length(frame_domain) - 1 ? frame_domain[t_index + 1] : anim_value',
       );
     });
 
-    it('loops back to the first frame when asked', () => {
+    it('loops back to the first frame in playback order when asked', () => {
       const looping = compile(interpolated({key: {field: 'country', loop: true}})).spec;
       const next = looping.signals.find((s) => s.name === 'anim_value_next') as any;
-      expect(next.update).toContain('min_extent');
+      expect(next.update).toContain('frame_domain[0]');
     });
 
     it('measures progress across the gap between frames', () => {
-      // guarded, because at the end of a non-looping animation the two frames
-      // coincide and the ratio is undefined
+      // Guarded, because at the end of a non-looping animation the two frames
+      // coincide and the ratio is undefined. The wrap of a looping animation
+      // has its successor behind the current frame, so it runs over the
+      // remainder of the clock's range rather than a negative gap.
       expect(signal('anim_tween').update).toBe(
         'anim_value_next !== anim_value ? ' +
           '(eased_anim_clock - scale("time", anim_value)) / ' +
-          '(scale("time", anim_value_next) - scale("time", anim_value)) : 0',
+          '(scale("time", anim_value_next) > scale("time", anim_value) ? ' +
+          'scale("time", anim_value_next) - scale("time", anim_value) : ' +
+          'max_range_extent - scale("time", anim_value)) : 0',
       );
+    });
+
+    it('keeps conditional encoding entries when rewriting the default', () => {
+      // a production rule compiles to an array whose last entry is the
+      // default; only that entry interpolates, and the tests survive
+      const spec = interpolated({key: {field: 'country'}}) as any;
+      spec.params.push({name: 'hover', select: {type: 'point', on: 'pointerover'}});
+      spec.encoding.opacity = {condition: {param: 'hover', value: 1}, field: 'fertility', type: 'quantitative'};
+      const compiled = compile(spec).spec;
+
+      const opacity = (compiled.marks[0] as any).encode.update.opacity;
+      expect(Array.isArray(opacity)).toBe(true);
+      expect(opacity[0].test).toContain('hover');
+      expect(opacity[opacity.length - 1].signal).toContain('lerp');
     });
 
     it('joins each frame to its successor by the key field', () => {
