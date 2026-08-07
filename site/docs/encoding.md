@@ -348,7 +348,7 @@ Note: `time` encoding animations currently have a few restrictions. See the [exa
 
 ### Interpolating Between Frames
 
-Without a `key`, an animation runs as a flipbook. Each frame replaces the one before it, and a mark that moves jumps to its new position. `key` gives the field identifying a mark across frames, so Vega-Lite can match a mark to itself in the next frame and tween between the two positions:
+Without a `key`, an animation runs as a flipbook where each frame replaces the one before it, and a mark with a different data value jumps to its new position. `key` specifies the field identifying a mark across frames, so Vega-Lite can match marks that represent the same entity and tween between their positions across frames:
 
 ```json
 "time": {"field": "year", "type": "ordinal", "key": {"field": "country"}}
@@ -356,7 +356,7 @@ Without a `key`, an animation runs as a flipbook. Each frame replaces the one be
 
 Set `"loop": true` on the key to tween from the last keyframe back around to the first.
 
-Vega-Lite interpolates positions after scaling, so marks travel smoothly even when the scale maps category names rather than numbers, and bars slide past each other as they reorder. A mark with no counterpart in the next frame disappears for the transition rather than freezing at its last position. Interpolation applies to `band` time scales, because a linear time scale is already continuous and has no next frame to head towards.
+Vega-Lite interpolates positions after scaling, so marks travel smoothly even when the scale maps category names rather than numbers, and bars slide past each other as they reorder. A mark with no counterpart in the next frame disappears for the transition rather than freezing at its last position. Interpolation applies to `band` time scales representing discrete frames, because a linear time scale is already continuous.
 
 {:#time-rescale}
 
