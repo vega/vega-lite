@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Gapminder animated over time, faceted by region. Every cell plays the same year, and the shared scales keep the regions comparable.",
+  "description": "Gapminder animated over time, faceted by region.",
   "data": {
     "url": "data/gapminder.json"
   },
