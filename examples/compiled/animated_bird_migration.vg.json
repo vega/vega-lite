@@ -16,7 +16,7 @@
     {
       "name": "source_1",
       "url": "data/bird-migration.csv",
-      "format": {"type": "csv"},
+      "format": {"type": "csv", "parse": {"day": "number"}},
       "transform": [
         {
           "type": "geopoint",
