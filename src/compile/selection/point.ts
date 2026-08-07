@@ -116,7 +116,8 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
         name: SCRUB_PLAYING,
         init: 'true',
         on: [
-          {events: {signal: slider}, update: 'false'},
+          // ignore the slider echoing the current frame during playback
+          {events: {signal: slider}, update: `${slider} !== ${ANIM_VALUE} ? false : ${SCRUB_PLAYING}`},
           {events: filterRefs, update: 'true'},
         ],
       });
@@ -135,7 +136,8 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
             // Vega labels a widget with the signal's name unless the binding
             // gives one, and `is_playing` is a compiler-internal name.
             bind: {input: 'checkbox', name: PLAYING_LABEL},
-            on: [{events: {signal: slider}, update: 'false'}],
+            // ignore the slider echoing the current frame during playback
+            on: [{events: {signal: slider}, update: `${slider} !== ${ANIM_VALUE} ? false : ${IS_PLAYING}`}],
           }
         : {name: IS_PLAYING, init: 'true'},
     );
@@ -195,8 +197,21 @@ const point: SelectionCompiler<'point'> = {
                 update: `${gate} ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`,
               },
               // Scrubbing sets the clock directly. The slider reads in data
-              // units, so scaling it gives the elapsed time of that frame.
-              ...(slider ? [{events: {signal: slider}, update: `scale('${model.scaleName(TIME)}', ${slider})`}] : []),
+              // units, so scaling it gives the elapsed time of that frame. The
+              // guards matter: the slider echoes the current frame during
+              // playback, and without them the echo would quantize the clock
+              // to keyframe starts every tick; and a value off the domain
+              // scales to undefined, which would poison the clock into NaN.
+              ...(slider
+                ? [
+                    {
+                      events: {signal: slider},
+                      update:
+                        `${slider} !== ${ANIM_VALUE} && isValid(scale('${model.scaleName(TIME)}', ${slider})) ? ` +
+                        `scale('${model.scaleName(TIME)}', ${slider}) : ${ANIM_CLOCK}`,
+                    },
+                  ]
+                : []),
             ],
           },
           {
@@ -208,12 +223,18 @@ const point: SelectionCompiler<'point'> = {
           },
           // The slider reads in the units of the field the selection projects
           // onto, so that field labels it. A binding that gives its own `name`
-          // keeps that label.
+          // keeps that label. The binding is two-way: the slider tracks the
+          // current frame while the animation plays, and dragging it scrubs.
           ...(slider
             ? [
                 {
                   name: slider,
                   bind: {name: selCmpt.project.items[0]?.field, ...(selCmpt.bind as Binding)} as Binding,
+                  // The echo listens to the timer rather than to `anim_value`:
+                  // a signal event stream is an edge in Vega's dataflow graph,
+                  // and the slider already feeds the clock, so listening to
+                  // the clock's descendant would close a cycle.
+                  on: [{events: {type: 'timer', throttle: THROTTLE}, update: ANIM_VALUE}],
                 },
               ]
             : []),

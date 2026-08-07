@@ -342,6 +342,9 @@ describe('animation', () => {
       expect(signal('frame_time')).toEqual({
         name: 'frame_time',
         bind: {name: 'year', input: 'range', min: 1955, max: 2005, step: 5},
+        // the binding is two-way: the slider follows playback on each tick
+        // (listening to anim_value itself would close a dataflow cycle)
+        on: [{events: {type: 'timer', throttle: 1000 / 60}, update: 'anim_value'}],
       });
     });
 
@@ -353,9 +356,12 @@ describe('animation', () => {
     });
 
     it('scrubs the clock by scaling the slider value', () => {
+      // guarded so the slider echoing playback does not quantize the clock,
+      // and an off-domain value cannot poison the clock into NaN
       expect(signal('anim_clock').on).toContainEqual({
         events: {signal: 'frame_time'},
-        update: "scale('time', frame_time)",
+        update:
+          "frame_time !== anim_value && isValid(scale('time', frame_time)) ? scale('time', frame_time) : anim_clock",
       });
     });
 
@@ -364,7 +370,8 @@ describe('animation', () => {
         name: 'is_playing',
         init: 'true',
         bind: {input: 'checkbox', name: 'Playing'},
-        on: [{events: {signal: 'frame_time'}, update: 'false'}],
+        // ignores the slider echoing the current frame during playback
+        on: [{events: {signal: 'frame_time'}, update: 'frame_time !== anim_value ? false : is_playing'}],
       });
     });
 
@@ -396,7 +403,7 @@ describe('animation', () => {
           name: SCRUB_PLAYING,
           init: 'true',
           on: [
-            {events: {signal: 'frame_time'}, update: 'false'},
+            {events: {signal: 'frame_time'}, update: `frame_time !== anim_value ? false : ${SCRUB_PLAYING}`},
             {events: [{signal: 'playing'}], update: 'true'},
           ],
         });

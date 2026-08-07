@@ -52,7 +52,7 @@
         },
         {
           "events": {"signal": "animation_frame_time"},
-          "update": "scale('time', animation_frame_time)"
+          "update": "animation_frame_time !== anim_value && isValid(scale('time', animation_frame_time)) ? scale('time', animation_frame_time) : anim_clock"
         }
       ]
     },
@@ -74,13 +74,24 @@
         "min": 1955,
         "max": 2005,
         "step": 5
-      }
+      },
+      "on": [
+        {
+          "events": {"type": "timer", "throttle": 16.666666666666668},
+          "update": "anim_value"
+        }
+      ]
     },
     {
       "name": "is_playing",
       "init": "true",
       "bind": {"input": "checkbox", "name": "Playing"},
-      "on": [{"events": {"signal": "animation_frame_time"}, "update": "false"}]
+      "on": [
+        {
+          "events": {"signal": "animation_frame_time"},
+          "update": "animation_frame_time !== anim_value ? false : is_playing"
+        }
+      ]
     },
     {"name": "eased_anim_clock", "update": "anim_clock"},
     {"name": "animation_frame_domain", "init": "domain('time')"},
