@@ -338,11 +338,18 @@ describe('animation', () => {
     const compiled = compile(slider).spec;
     const signal = (name: string) => compiled.signals.find((s) => s.name === name) as any;
 
-    it('binds a signal reading in data units', () => {
+    it('binds a signal reading in data units, labelled with the time field', () => {
       expect(signal('frame_time')).toEqual({
         name: 'frame_time',
-        bind: {input: 'range', min: 1955, max: 2005, step: 5},
+        bind: {name: 'year', input: 'range', min: 1955, max: 2005, step: 5},
       });
+    });
+
+    it('keeps a label the binding supplies', () => {
+      const labelled = gapminder({on: 'timer'});
+      (labelled as any).params[0].bind = {input: 'range', min: 1955, max: 2005, step: 5, name: 'Year'};
+      const sg = compile(labelled).spec.signals.find((s) => s.name === 'frame_time') as any;
+      expect(sg.bind.name).toBe('Year');
     });
 
     it('scrubs the clock by scaling the slider value', () => {
@@ -352,11 +359,11 @@ describe('animation', () => {
       });
     });
 
-    it('stops playback on scrub and offers a way to resume', () => {
+    it('stops playback on scrub and offers a labelled way to resume', () => {
       expect(signal('is_playing')).toEqual({
         name: 'is_playing',
         init: 'true',
-        bind: {input: 'checkbox'},
+        bind: {input: 'checkbox', name: 'Playing'},
         on: [{events: {signal: 'frame_time'}, update: 'false'}],
       });
     });

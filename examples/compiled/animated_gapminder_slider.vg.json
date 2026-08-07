@@ -68,12 +68,18 @@
     },
     {
       "name": "animation_frame_time",
-      "bind": {"input": "range", "min": 1955, "max": 2005, "step": 5}
+      "bind": {
+        "name": "year",
+        "input": "range",
+        "min": 1955,
+        "max": 2005,
+        "step": 5
+      }
     },
     {
       "name": "is_playing",
       "init": "true",
-      "bind": {"input": "checkbox"},
+      "bind": {"input": "checkbox", "name": "Playing"},
       "on": [{"events": {"signal": "animation_frame_time"}, "update": "false"}]
     },
     {"name": "eased_anim_clock", "update": "anim_clock"},

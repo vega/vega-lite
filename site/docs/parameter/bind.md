@@ -47,7 +47,7 @@ Scrubbing stops playback, so the animation clock does not conflict with the inte
 
 <div class="vl-example" data-name="animated_gapminder_slider"></div>
 
-When a specification filters the timer on [its own parameter](selection.html#animation-pause), that parameter becomes the play/pause switch. Scrubbing still stops playback, and toggling the switch resumes it.
+When a specification filters the timer on [its own parameter](selection.html#animation-pause), that parameter becomes the play/pause checkbox. Scrubbing still stops playback, and toggling the checkbox resumes playback.
 
 ## Legend Binding
 

@@ -16,6 +16,9 @@ export const MAX_RANGE_EXTENT = 'max_range_extent';
 export const LAST_TICK = 'last_tick_at';
 export const IS_PLAYING = 'is_playing';
 export const SCRUB_PLAYING = 'scrub_playing';
+// Vega labels a bound widget with its signal's name. The animation signals are
+// named for the compiler rather than the viewer, so the bindings carry a label.
+export const PLAYING_LABEL = 'Playing';
 export const THROTTLE = (1 / 60) * 1000; // 60 FPS
 
 // Data-driven pausing. The store holds the pause entries matching the current
@@ -129,7 +132,9 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
             // the checkbox and checking it again resumes playback.
             name: IS_PLAYING,
             init: 'true',
-            bind: {input: 'checkbox'},
+            // Vega labels a widget with the signal's name unless the binding
+            // gives one, and `is_playing` is a compiler-internal name.
+            bind: {input: 'checkbox', name: PLAYING_LABEL},
             on: [{events: {signal: slider}, update: 'false'}],
           }
         : {name: IS_PLAYING, init: 'true'},
@@ -201,7 +206,17 @@ const point: SelectionCompiler<'point'> = {
             init: 'now()',
             on: [{events: [{signal: ANIM_CLOCK}, ...dependencies], update: 'now()'}],
           },
-          ...(slider ? [{name: slider, bind: selCmpt.bind as Binding}] : []),
+          // The slider reads in the units of the field the selection projects
+          // onto, so that field labels it. A binding that gives its own `name`
+          // keeps that label.
+          ...(slider
+            ? [
+                {
+                  name: slider,
+                  bind: {name: selCmpt.project.items[0]?.field, ...(selCmpt.bind as Binding)} as Binding,
+                },
+              ]
+            : []),
         ],
         gateSignals,
       );
