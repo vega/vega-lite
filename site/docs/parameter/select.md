@@ -176,6 +176,8 @@ The `easing` property controls how an [animation](../encoding.html#time)'s playb
 {"name": "frame", "select": {"type": "point", "on": "timer", "easing": "easeCubicInOut"}}
 ```
 
+Easing also applies when a [bound slider](bind.html#animation-binding) scrubs the animation: the scrubbed position passes through the easing curve, so playback can land on a frame near the chosen one. The slider then updates to the frame shown.
+
 {:#animation-pause}
 
 ### Pausing an Animation
