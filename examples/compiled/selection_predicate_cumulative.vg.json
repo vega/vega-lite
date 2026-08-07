@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "Clicking a bar highlights every year up to it, using a selection predicate to hold a threshold rather than a single value.",
+  "description": "Click a bar to highlight it and every bar before it.",
   "background": "white",
   "padding": 5,
   "height": 300,

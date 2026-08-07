@@ -121,13 +121,14 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
    * or a window instead of a point -- everything up to what was clicked, say,
    * or everything within ten units of it.
    *
-   * Comparison values are Vega expressions evaluated where the selection is
-   * captured, so `datum` is the datum being interacted with, as in
+   * Comparison values are Vega expressions evaluated when the selection is
+   * triggered, so `datum` is the datum being interacted with, as in
    * `{"field": "year", "lte": {"expr": "datum.year"}}`.
    *
-   * A single predicate or an `"and"` of predicates may be given; `"or"` and
-   * `"not"` are not supported, since a selection tests its fields conjunctively.
-   * A predicate replaces `fields` and `encodings`.
+   * A single field predicate or an `"and"` of field predicates may be given;
+   * `"or"` and `"not"` are not supported, because a selection tests all of its
+   * comparisons conjunctively. A predicate is specified in place of `fields`
+   * and `encodings`.
    *
    * __See also:__ [`predicate` examples](https://vega.github.io/vega-lite/docs/selection.html#predicate) in the documentation.
    */

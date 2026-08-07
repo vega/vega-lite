@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "A year of migration for ten bird species that cross the Atlantic, one point per species per day. The selection holds a ten-day window rather than a single day, so each species trails a tail behind its leading edge, and opacity falls with the age of each position.",
+  "description": "The migration of ten bird species over a year, traced by each species' daily average position. Each species trails a fading ten-day tail as the animation advances.",
   "width": 500,
   "height": 500,
   "projection": {
