@@ -176,8 +176,6 @@ The `nearest` transform also respects any [position encoding projections](projec
 {"name": "frame", "select": {"type": "point", "on": "timer", "easing": "easeCubicInOut"}}
 ```
 
-Easing requires Vega's easing expression functions.
-
 {:#animation-pause}
 
 ### Pausing an Animation
