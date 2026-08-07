@@ -250,6 +250,25 @@ describe('animation', () => {
       expect(clockGate(spec)).toBe('playing && ready');
     });
 
+    it('wraps an expression filter in a signal of its own', () => {
+      // An expression cannot be referenced from an event stream, so the tick
+      // reference could never reset on it. The signal also brackets the
+      // expression, so an `||` inside it cannot regroup the gate's `&&`s.
+      const spec = gapminder({on: {type: 'timer', filter: 'a || b'}, pause: [{value: 1965, duration: 2000}]}, [
+        {name: 'a', value: false},
+        {name: 'b', value: true},
+      ]);
+      const compiled = compile(spec).spec;
+
+      expect(compiled.signals).toEqual(expect.arrayContaining([{name: 'frame_gate', update: '(a || b)'}]));
+      expect(clockGate(spec)).toBe('frame_gate && frame_pause_playing');
+
+      const lastTick = compiled.signals.find((s) => s.name === 'last_tick_at') as any;
+      expect(lastTick.on[0].events).toEqual(
+        expect.arrayContaining([{signal: 'frame_gate'}, {signal: 'frame_pause_playing'}]),
+      );
+    });
+
     it('resets the tick reference whenever the gate changes', () => {
       // without this a pause banks up elapsed time and the animation jumps on resume
       const compiled = compile(gapminder({on: 'timer'})).spec;
@@ -289,7 +308,9 @@ describe('animation', () => {
           {
             name: 'frame_pause_since',
             init: 'now()',
-            on: [{events: [{signal: 'frame_pause_duration'}], update: 'now()'}],
+            // keyed off the frame, not the duration, so consecutive pause
+            // points with the same duration each get a fresh dwell
+            on: [{events: [{signal: 'anim_value'}], update: 'now()'}],
           },
         ]),
       );

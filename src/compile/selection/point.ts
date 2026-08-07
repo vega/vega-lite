@@ -69,8 +69,21 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
   const filters = array<string>(selCmpt.events?.find((e) => 'type' in e && e.type === 'timer')?.filter ?? []);
 
   if (filters.length) {
-    terms.push(...filters);
-    dependencies.push(...filters.map((f) => ({signal: f})));
+    for (const [i, filter] of filters.entries()) {
+      const f = filter.trim();
+      if (/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(f)) {
+        terms.push(f);
+        dependencies.push({signal: f});
+      } else {
+        // An expression filter cannot be referenced from an event stream, so
+        // it gets a signal of its own. The signal also brackets the
+        // expression, so an `||` inside it cannot regroup the gate's `&&`s.
+        const term = `${name}_gate${i > 0 ? `_${i}` : ''}`;
+        signals.push({name: term, update: `(${f})`});
+        terms.push(term);
+        dependencies.push({signal: term});
+      }
+    }
   } else {
     terms.push(IS_PLAYING);
     dependencies.push({signal: IS_PLAYING});
@@ -91,8 +104,11 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
         name: duration,
         update: `length(data(${stringValue(name + PAUSE_STORE)})) ? data(${stringValue(name + PAUSE_STORE)})[0].duration : null`,
       },
-      // restart the dwell timer on arriving at a new pause point
-      {name: since, init: 'now()', on: [{events: [{signal: duration}], update: 'now()'}]},
+      // Restart the dwell timer on arriving at a new frame. Keying off the
+      // frame rather than the duration matters when two consecutive pause
+      // points share a duration: the duration signal would not change, and
+      // the second pause would inherit an already-elapsed timer.
+      {name: since, init: 'now()', on: [{events: [{signal: ANIM_VALUE}], update: 'now()'}]},
       {
         name: playing,
         init: 'true',

@@ -78,12 +78,7 @@
     {
       "name": "animation_frame_pause_since",
       "init": "now()",
-      "on": [
-        {
-          "events": [{"signal": "animation_frame_pause_duration"}],
-          "update": "now()"
-        }
-      ]
+      "on": [{"events": [{"signal": "anim_value"}], "update": "now()"}]
     },
     {
       "name": "animation_frame_pause_playing",
