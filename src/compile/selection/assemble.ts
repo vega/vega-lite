@@ -216,11 +216,10 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
         // secondary table or another view's pipeline, and moving one of those
         // filters would sever that consumer. A facet child's main output is
         // the partition its cell defines, which is not a dataset in this
-        // array, so its chain starts from the raw source instead.
-        const chainHead =
-          sourceData ?? data.find((d) => d.name === model.lookupDataSource(model.getDataName(DataSourceType.Raw)));
+        // array; a facet holds a single child view, so no other consumer can
+        // exist and the whole array is its pipeline.
         const chain: VgData[] = [];
-        for (let d: VgData | undefined = chainHead; d; ) {
+        for (let d: VgData | undefined = sourceData; d;) {
           chain.push(d);
           const src = d.source;
           d = typeof src === 'string' ? data.find((x) => x.name === src) : undefined;
@@ -229,7 +228,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
         const storeRef = stringValue(selCmpt.name + STORE);
         const testsStore = (t: VgData['transform'][number]) =>
           t.type === 'filter' && t.expr.includes(`vlSelectionTest(${storeRef}`);
-        const filterHost = chain.find((d) => (d.transform ?? []).some(testsStore));
+        const filterHost = (sourceData ? chain : data).find((d) => (d.transform ?? []).some(testsStore));
         const frameFilter = filterHost?.transform.find(testsStore);
 
         // No frame filter means nothing selects the current frame's rows, so
