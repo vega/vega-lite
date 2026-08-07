@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "The index chart, driven by a clock instead of the pointer. Each stock is replotted as its return relative to whichever date the animation has reached, so the lines pivot around the moving index date. The timer selection sits in one layer and the rule and label read it from two others, all sharing a single clock.",
+  "description": "An animated index chart of stock prices, showing each stock's return relative to the date the animation has reached.",
   "data": {
     "url": "data/stocks.csv",
     "format": {"parse": {"date": "date"}}

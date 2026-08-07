@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "Gapminder animated over time, with a labelled layer riding along on the same clock.",
+  "description": "Gapminder animated over time, with each country's point labelled by name.",
   "background": "white",
   "padding": 5,
   "width": 300,

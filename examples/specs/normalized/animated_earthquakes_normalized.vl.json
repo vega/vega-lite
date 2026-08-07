@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "A week of global seismicity from the USGS feed, drawn over a world basemap. A linear time scale places each earthquake at its real arrival time, so aftershock bursts stay compressed and quiet hours stay empty. A band scale would instead give all 1,707 events equal screen time, flattening the record into a metronome. The selection holds a 24-hour window, opacity falls with the age of each quake, and circle area follows magnitude. The basemap layer carries no time encoding, so it holds still while the quakes animate.",
+  "description": "A week of earthquakes from the USGS feed, animated over a world map at the time each one occurred. Circle area follows magnitude, and each circle fades over the day after its earthquake.",
   "width": 600,
   "height": 340,
   "layer": [
