@@ -322,9 +322,9 @@ Vega-Lite adds the default parameter and filter only when the specification does
 
 ### Keyframes vs. Continuous Time
 
-By default the time channel uses a `band` scale: each distinct value of the field is one keyframe, and the animation cuts from one to the next. `config.scale.framesPerSecond` (default `2`) sets how long each frame lasts, or the duration can be set directly with `"scale": {"range": {"step": 200}}`.
+By default the time channel uses a `band` scale: each distinct value of the field is one keyframe, and the animation cuts from one to the next. `config.scale.framesPerSecond` (default `2`) sets the frame rate, or the duration of each frame can be set directly in milliseconds with `"scale": {"range": {"step": 200}}`.
 
-Set `"scale": {"type": "linear"}` instead when the field is continuous and the animation should track elapsed time rather than step through the values present, as with a unix timestamp. The scale then spans `config.scale.animationDuration` seconds (default `5`), or an explicit `"range": [0, 10000]`.
+Set `"scale": {"type": "linear"}` instead when the field is continuous and the animation should track elapsed time rather than step through the distinct values, as with a timestamp field. The animation then lasts `config.scale.animationDuration` seconds (default `5`), or its duration can be set directly in milliseconds with an explicit range like `"range": [0, 10000]`.
 
 {:#time-no-filter}
 

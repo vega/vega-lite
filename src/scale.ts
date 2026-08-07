@@ -436,7 +436,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
   zero?: boolean;
 
   /**
-   * Default framerate (frames per second) for [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) encoding animation [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.
+   * Default frame rate (frames per second) for animations with a [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) scale.
    *
    * __Default value:__ `2`
    *
@@ -444,8 +444,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
   framesPerSecond?: number;
 
   /**
-   *
-   * Default animation duration (in seconds) for [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) encodings (except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales, which use `framesPerSecond` instead).
+   * Default animation duration (in seconds) for [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales, which use `framesPerSecond` instead.
    *
    * __Default value:__ `5`
    *
@@ -623,11 +622,7 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
    *
    * - For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values or an object with a `field` property representing the range values.  For example, if a field `color` contains CSS color names, we can set `range` to `{field: "color"}`.
    *
-   * __Notes:__
-   *
-   * 1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.
-   *
-   * - For [band](https://vega.github.io/vega-lite/docs/scale.html#band) scales other than `x` and `y`, an object with a `step` property giving the width of each band. The [`time`](https://vega.github.io/vega-lite/docs/animation.html) channel sets keyframe duration this way, because it has no view size to divide into bands.
+   * - For [band](https://vega.github.io/vega-lite/docs/scale.html#band) scales other than `x` and `y`, an object with a `step` property giving the width of each band. The [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) channel sets the duration of each keyframe this way, because it has no view size to derive band widths from.
    *
    * __Notes:__
    *
