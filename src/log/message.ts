@@ -123,6 +123,13 @@ export const MULTI_VIEW_ANIMATION_UNSUPPORTED = 'Animation involving facet, laye
 export const SELECTION_PREDICATE_COMPOSITION_UNSUPPORTED =
   'A selection "predicate" may only be a single field predicate or a flat "and" of them. Ignoring the predicate.';
 
+export const SELECTION_PREDICATE_EMPTY =
+  'A selection "predicate" needs at least one field predicate that constrains a value. Ignoring the predicate.';
+
+export const SELECTION_PREDICATE_VALID_FALSE =
+  'A selection "predicate" cannot express {"valid": false}: the selection store only tests that values are valid. ' +
+  'Ignoring the predicate.';
+
 export const SELECTION_PREDICATE_REQUIRES_FIELD =
   'Every field predicate in a selection "predicate" must specify a "field". Ignoring the predicate.';
 

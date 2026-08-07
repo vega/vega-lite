@@ -378,6 +378,104 @@ describe('Selection Predicate Projection', () => {
     });
   });
 
+  describe('normalization and edge cases', () => {
+    it(
+      'warns and ignores an empty "and"',
+      log.wrap((localLogger) => {
+        const spec = compile(cars([{name: 'p', select: {type: 'point', predicate: {and: []}}}])).spec;
+        expect(localLogger.warns).toContain(log.message.SELECTION_PREDICATE_EMPTY);
+        // falls back to the ordinary projection rather than a match-all tuple
+        expect(spec.signals.find((s) => s.name === 'p_tuple_fields')).toBeUndefined();
+      }),
+    );
+
+    it(
+      'warns and ignores {"valid": false}',
+      log.wrap((localLogger) => {
+        compile(cars([{name: 'p', select: {type: 'point', predicate: {field: 'Horsepower', valid: false}}}]));
+        expect(localLogger.warns).toContain(log.message.SELECTION_PREDICATE_VALID_FALSE);
+      }),
+    );
+
+    it('rewrites a one-sided range as the equivalent single comparison', () => {
+      // the store's range test coerces a null bound to zero
+      const spec = compile(
+        cars([{name: 'p', select: {type: 'point', predicate: {field: 'Horsepower', range: [null, 100]}}}]),
+      ).spec;
+      expect((spec.signals.find((s) => s.name === 'p_tuple_fields') as any).value).toEqual([
+        {field: 'Horsepower', type: 'E-LTE', channel: 'x'},
+      ]);
+    });
+
+    it('orders lower bounds before upper bounds', () => {
+      // vlSelectionResolve concatenates comparison values in tuple order, so
+      // a selection bound to scales resolves to an ascending [low, high]
+      const spec = compile(
+        cars([
+          {
+            name: 'p',
+            select: {
+              type: 'point',
+              predicate: {
+                and: [
+                  {field: 'Horsepower', lte: {expr: 'datum.Horsepower'}},
+                  {field: 'Horsepower', gte: {expr: 'datum.Horsepower - 20'}},
+                ],
+              },
+            },
+          },
+        ]),
+      ).spec;
+      const types = (spec.signals.find((s) => s.name === 'p_tuple_fields') as any).value.map((f: any) => f.type);
+      expect(types).toEqual(['E-GTE', 'E-LTE']);
+    });
+
+    it('projects a timeUnit predicate onto the derived field and computes it', () => {
+      // the comparison value applies the timeUnit, so the datum side has to
+      // test the same floored field
+      const spec = compile({
+        data: {url: 'data/cars.json'},
+        params: [{name: 'p', select: {type: 'point', predicate: {field: 'Year', timeUnit: 'year', lte: {year: 1975}}}}],
+        transform: [{filter: {param: 'p'}}],
+        mark: 'circle',
+        encoding: {
+          x: {field: 'Year', type: 'temporal'},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        },
+      } as TopLevelSpec).spec;
+
+      expect((spec.signals.find((s) => s.name === 'p_tuple_fields') as any).value[0].field).toBe('year_Year');
+      const timeunits = spec.data.flatMap((d: any) => (d.transform ?? []).filter((t: any) => t.type === 'timeunit'));
+      expect(timeunits.some((t: any) => t.as?.includes('year_Year'))).toBe(true);
+    });
+
+    it('binds scales from inside a composed view without per-unit signals', () => {
+      // a point selection's store and named signal assemble at the top level,
+      // so its scale extent resolves without the interval-style signal routing
+      const spec = compile({
+        vconcat: [
+          {
+            data: {url: 'data/cars.json'},
+            params: [
+              {
+                name: 'p',
+                select: {type: 'point', predicate: {field: 'Horsepower', gte: {expr: 'datum.Horsepower - 20'}}},
+                bind: 'scales',
+              },
+            ],
+            mark: 'circle',
+            encoding: {
+              x: {field: 'Horsepower', type: 'quantitative'},
+              y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+            },
+          },
+        ],
+      } as TopLevelSpec).spec;
+
+      expect(JSON.stringify(spec)).toContain('domainRaw');
+    });
+  });
+
   describe('comparison types', () => {
     const cases: [string, any, string][] = [
       ['equal', {field: 'Horsepower', equal: 1}, 'E'],

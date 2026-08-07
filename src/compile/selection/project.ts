@@ -20,6 +20,7 @@ import {
   SingleDefUnitChannel,
   TIME,
 } from '../../channel.js';
+import {vgField} from '../../channeldef.js';
 import * as log from '../../log/index.js';
 import {hasContinuousDomain} from '../../scale.js';
 import {
@@ -92,6 +93,39 @@ export function selectionPredicates(
     return undefined;
   }
   return [predicate as FieldPredicate];
+}
+
+/**
+ * Rewrites predicate leaves into the forms the selection store can test, or
+ * returns undefined for a predicate the store cannot express.
+ *
+ * A one-sided range becomes the equivalent single comparison, because the
+ * store's range test coerces a null bound to zero. A range with neither bound
+ * is dropped. Lower bounds (`gt`, `gte`) move ahead of upper bounds
+ * (`lt`, `lte`), so a windowed predicate resolves to an ascending
+ * `[low, high]` extent when the selection is bound to scales.
+ */
+export function normalizePredicates(predicates: FieldPredicate[]): FieldPredicate[] {
+  const normalized: FieldPredicate[] = [];
+
+  for (const p of predicates) {
+    if (isFieldRangePredicate(p) && Array.isArray(p.range)) {
+      const [lo, hi] = p.range;
+      if (lo != null && hi != null) {
+        normalized.push(p);
+      } else if (lo != null) {
+        normalized.push({field: p.field, ...(p.timeUnit ? {timeUnit: p.timeUnit} : {}), gte: lo} as FieldPredicate);
+      } else if (hi != null) {
+        normalized.push({field: p.field, ...(p.timeUnit ? {timeUnit: p.timeUnit} : {}), lte: hi} as FieldPredicate);
+      }
+      // a range with neither bound constrains nothing and is dropped
+    } else {
+      normalized.push(p);
+    }
+  }
+
+  const isLower = (p: FieldPredicate) => isFieldGTPredicate(p) || isFieldGTEPredicate(p);
+  return [...normalized.filter(isLower), ...normalized.filter((p) => !isLower(p))];
 }
 
 export interface SelectionProjection {
@@ -201,7 +235,8 @@ const project: SelectionCompiler = {
     delete selCmpt.predicate;
 
     if (predicateDef) {
-      const predicates = selectionPredicates(predicateDef);
+      const flattened = selectionPredicates(predicateDef);
+      const predicates = flattened && normalizePredicates(flattened);
 
       if (type !== 'point') {
         // An interval selection derives its tuple from the brush extent, and the
@@ -213,8 +248,15 @@ const project: SelectionCompiler = {
         log.warn(log.message.SELECTION_PREDICATE_REQUIRES_POINT);
       } else if (!predicates) {
         log.warn(log.message.SELECTION_PREDICATE_COMPOSITION_UNSUPPORTED);
+      } else if (!predicates.length) {
+        // an empty "and", or one whose only entry was an unbounded range
+        log.warn(log.message.SELECTION_PREDICATE_EMPTY);
       } else if (predicates.some((p) => !p.field)) {
         log.warn(log.message.SELECTION_PREDICATE_REQUIRES_FIELD);
+      } else if (predicates.some((p) => isFieldValidPredicate(p) && p.valid === false)) {
+        // the store's E-VALID test always asks whether the value is valid;
+        // it has no way to select the invalid values
+        log.warn(log.message.SELECTION_PREDICATE_VALID_FALSE);
       } else {
         // With `nearest`, events are captured on an invisible voronoi overlay
         // whose data are scenegraph items, so `datum` there is the mark item
@@ -227,8 +269,20 @@ const project: SelectionCompiler = {
         selCmpt.predicate = predicates;
 
         for (const predicate of predicates) {
+          let field = predicate.field;
+
+          // The comparison value applies the timeUnit, so the datum side has
+          // to test the same derived field, exactly as the encodings path
+          // projects onto `model.vgField` rather than the raw field. The
+          // component re-derives the field for views that lack the time unit.
+          if (predicate.timeUnit && !isBinnedTimeUnit(predicate.timeUnit)) {
+            field = vgField({field: predicate.field, timeUnit: predicate.timeUnit} as any);
+            const component = {timeUnit: predicate.timeUnit, as: field, field: predicate.field};
+            timeUnits[hash(component)] = component;
+          }
+
           const p: SelectionProjection = {
-            field: predicate.field,
+            field,
             type: predicateTupleType(predicate),
             index: proj.items.length,
           };
@@ -251,6 +305,10 @@ const project: SelectionCompiler = {
         // so a predicate selection starts out holding tuples just as a
         // projected selection does.
         applyInit();
+
+        if (!isEmpty(timeUnits)) {
+          proj.timeUnit = new TimeUnitNode(null, timeUnits);
+        }
 
         return;
       }
