@@ -106,15 +106,9 @@
     {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
     {
       "name": "recent_tuple",
-      "update": "{unit: \"layer_1\", fields: recent_tuple_fields, values: [anim_value, anim_value - 86400000]}"
+      "update": "{unit: \"layer_1\", fields: recent_tuple_fields, values: [anim_value ? anim_value : min_extent]}"
     },
-    {
-      "name": "recent_tuple_fields",
-      "value": [
-        {"field": "time", "type": "E-LTE"},
-        {"field": "time", "type": "E-GT"}
-      ]
-    },
+    {"name": "recent_tuple_fields", "value": [{"type": "E", "field": "time"}]},
     {
       "name": "recent_modify",
       "update": "modify(\"recent_store\", recent_tuple, true)"

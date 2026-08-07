@@ -1,0 +1,33 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Gapminder animated over time, with a labelled layer riding along on the same clock.",
+  "data": {"url": "data/gapminder.json"},
+  "layer": [
+    {
+      "mark": "point",
+      "encoding": {
+        "x": {"field": "fertility", "type": "quantitative"},
+        "y": {"field": "life_expect", "type": "quantitative"},
+        "time": {"field": "year", "type": "ordinal"}
+      },
+      "params": [
+        {"name": "animation_frame", "select": {"type": "point", "on": "timer"}}
+      ],
+      "transform": [{"filter": {"param": "animation_frame"}}]
+    },
+    {
+      "mark": {"type": "text", "dy": -10, "fontSize": 8},
+      "encoding": {
+        "x": {"field": "fertility", "type": "quantitative"},
+        "y": {"field": "life_expect", "type": "quantitative"},
+        "time": {"field": "year", "type": "ordinal"},
+        "text": {"field": "country"}
+      },
+      "params": [
+        {"name": "animation_frame", "select": {"type": "point", "on": "timer"}}
+      ],
+      "transform": [{"filter": {"param": "animation_frame"}}]
+    }
+  ],
+  "transform": [{"filter": "datum.pop > 100000000"}]
+}
