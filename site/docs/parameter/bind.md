@@ -47,7 +47,7 @@ Scrubbing pauses playback, so that the animation does not keep advancing while t
 
 <div class="vl-example" data-name="animated_gapminder_slider"></div>
 
-If the specification already [filters the timer on its own parameter](select.html#animation-pause), Vega-Lite adds no extra checkbox. Scrubbing still pauses playback, and toggling the parameter resumes it.
+If the specification already [filters the timer on its own parameter](select.html#animation-pause), Vega-Lite adds no extra checkbox. Scrubbing pauses playback by clearing that parameter, so a checkbox bound to it unchecks, and re-checking it resumes playback. Each timer filter must be a parameter name for this to work; with an expression filter Vega-Lite warns and ignores the range binding.
 
 ## Legend Binding
 

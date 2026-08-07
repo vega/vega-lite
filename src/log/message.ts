@@ -127,6 +127,11 @@ export function stepRangeRequiresTimeChannel(channel: string) {
   );
 }
 
+export const TIMER_BIND_WITH_EXPRESSION_FILTER =
+  'A range binding on an animated selection pauses playback on scrub by clearing the parameters ' +
+  'the timer filter names, so every filter must be a parameter name. Ignoring the "bind"; ' +
+  'omit the filter to get a play/pause checkbox alongside the slider.';
+
 export function animationRescaleSortDropped(channel: string, field: string) {
   return (
     `The "${channel}" scale domain cannot be recomputed per frame, because its sort ` +

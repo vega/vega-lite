@@ -6,6 +6,7 @@ import {Config, initConfig, stripAndRedirectConfig} from '../config.js';
 import * as log from '../log/index.js';
 import {normalize} from '../normalize/index.js';
 import {assembleParameterSignals} from '../parameter.js';
+import {attachScrubPause} from './selection/assemble.js';
 import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec/index.js';
 import {
   AutoSizeParams,
@@ -223,6 +224,16 @@ function assembleTopLevelModel(
 
   const {params, ...otherTopLevelProps} = topLevelProperties;
 
+  const topLevelSignals = [
+    ...layoutSignals,
+    ...model.assembleSelectionTopLevelSignals([]),
+    ...assembleParameterSignals(params),
+  ];
+  // Scrubbing an animated selection's range binding pauses playback through
+  // the parameters its timer filter names. Those parameters' signals first
+  // exist here, after parameter assembly.
+  attachScrubPause(model, topLevelSignals);
+
   return {
     $schema: 'https://vega.github.io/schema/vega/v6.json',
     ...(model.description ? {description: model.description} : {}),
@@ -232,11 +243,7 @@ function assembleTopLevelModel(
     ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
     data,
     ...(projections.length > 0 ? {projections} : {}),
-    ...model.assembleGroup([
-      ...layoutSignals,
-      ...model.assembleSelectionTopLevelSignals([]),
-      ...assembleParameterSignals(params),
-    ]),
+    ...model.assembleGroup(topLevelSignals),
     ...(vgConfig ? {config: vgConfig} : {}),
     ...(usermeta ? {usermeta} : {}),
   };

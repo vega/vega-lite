@@ -1,6 +1,14 @@
-import {BindRange, Binding, Signal, Stream} from 'vega';
-import {array, isObject, stringValue} from 'vega-util';
-import {SelectionCompiler, SelectionComponent, TUPLE, isTimerSelection, unitName} from './index.js';
+import {Binding, Signal, Stream} from 'vega';
+import {array, stringValue} from 'vega-util';
+import {
+  BARE_SIGNAL_NAME,
+  SelectionCompiler,
+  SelectionComponent,
+  TUPLE,
+  isTimerSelection,
+  sliderName,
+  unitName,
+} from './index.js';
 import {SELECTION_ID} from '../../selection.js';
 import {vals} from '../../util.js';
 import {BRUSH} from './interval.js';
@@ -15,7 +23,6 @@ export const MIN_EXTENT = 'min_extent';
 export const MAX_RANGE_EXTENT = 'max_range_extent';
 export const LAST_TICK = 'last_tick_at';
 export const IS_PLAYING = 'is_playing';
-export const SCRUB_PLAYING = 'scrub_playing';
 // Vega labels a bound widget with its signal's name. The animation signals are
 // named for the compiler rather than the viewer, so the bindings carry a label.
 export const PLAYING_LABEL = 'Playing';
@@ -49,18 +56,6 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
 };
 
 /**
- * The signal backing an animated selection's range binding, or undefined when
- * the selection has no binding. The signal holds a point in the time field's
- * domain, so a specification states `min`, `max`, and `step` in data units.
- */
-function sliderName(selCmpt: SelectionComponent<'point'>): string | undefined {
-  const {bind} = selCmpt;
-  return bind && bind !== 'scales' && isObject(bind) && (bind as BindRange).input === 'range'
-    ? `${selCmpt.name}_time`
-    : undefined;
-}
-
-/**
  * The condition under which the clock advances, along with the signals it
  * depends on and any signals that have to be emitted to support it.
  *
@@ -89,7 +84,7 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
     const filterRefs: {signal: string}[] = [];
     for (const [i, filter] of filters.entries()) {
       const f = filter.trim();
-      if (/^[A-Za-z_$][A-Za-z0-9_$]*$/.test(f)) {
+      if (BARE_SIGNAL_NAME.test(f)) {
         terms.push(f);
         filterRefs.push({signal: f});
       } else {
@@ -103,25 +98,6 @@ function playbackGate(selCmpt: SelectionComponent<'point'>): {
       }
     }
     dependencies.push(...filterRefs);
-
-    if (slider) {
-      // Scrubbing stops playback whichever switch gates the clock, so the
-      // clock never fights the pointer. The compiler cannot write to the
-      // parameter the filter names, so it stops playback in a signal of its
-      // own and releases that signal when the parameter next changes. Toggling
-      // the specification's switch therefore resumes playback.
-      terms.push(SCRUB_PLAYING);
-      dependencies.push({signal: SCRUB_PLAYING});
-      signals.push({
-        name: SCRUB_PLAYING,
-        init: 'true',
-        on: [
-          // ignore the slider echoing the current frame during playback
-          {events: {signal: slider}, update: `${slider} !== ${ANIM_VALUE} ? false : ${SCRUB_PLAYING}`},
-          {events: filterRefs, update: 'true'},
-        ],
-      });
-    }
   } else {
     terms.push(IS_PLAYING);
     dependencies.push({signal: IS_PLAYING});
@@ -234,7 +210,7 @@ const point: SelectionCompiler<'point'> = {
                   // a signal event stream is an edge in Vega's dataflow graph,
                   // and the slider already feeds the clock, so listening to
                   // the clock's descendant would close a cycle.
-                  on: [{events: {type: 'timer', throttle: THROTTLE}, update: ANIM_VALUE}],
+                  on: [{events: {type: 'timer', throttle: THROTTLE} as Stream, update: ANIM_VALUE}],
                 },
               ]
             : []),

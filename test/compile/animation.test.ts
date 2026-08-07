@@ -1,6 +1,5 @@
 import {describe, expect, it} from 'vitest';
 import {compile} from '../../src/compile/compile.js';
-import {SCRUB_PLAYING} from '../../src/compile/selection/point.js';
 import {TopLevelSpec} from '../../src/index.js';
 
 /**
@@ -382,7 +381,7 @@ describe('animation', () => {
     });
 
     it('emits no scrub signal when the compiler owns the switch', () => {
-      expect(signal(SCRUB_PLAYING)).toBeUndefined();
+      expect(signal('scrub_playing')).toBeUndefined();
     });
 
     describe('with a specification-supplied timer filter', () => {
@@ -393,31 +392,39 @@ describe('animation', () => {
       const ownCompiled = compile(own).spec;
       const ownSignal = (name: string) => ownCompiled.signals.find((s) => s.name === name) as any;
 
-      it('leaves the specification its own switch', () => {
+      it('leaves the specification its own switch and pauses it on scrub', () => {
         expect(ownSignal('is_playing')).toBeUndefined();
-        expect(ownSignal('playing')).toEqual({name: 'playing', value: true, bind: {input: 'checkbox'}});
-      });
-
-      it('stops playback on scrub through a signal of its own', () => {
-        expect(ownSignal(SCRUB_PLAYING)).toEqual({
-          name: SCRUB_PLAYING,
-          init: 'true',
-          on: [
-            {events: {signal: 'frame_time'}, update: `frame_time !== anim_value ? false : ${SCRUB_PLAYING}`},
-            {events: [{signal: 'playing'}], update: 'true'},
-          ],
+        // Scrubbing writes to the specification's own parameter, so the
+        // widget bound to it unchecks and the visible state stays consistent.
+        expect(ownSignal('playing')).toEqual({
+          name: 'playing',
+          value: true,
+          bind: {input: 'checkbox'},
+          on: [{events: {signal: 'frame_time'}, update: 'frame_time !== anim_value ? false : playing'}],
         });
       });
 
-      it('gates the clock on both switches', () => {
-        expect(ownSignal('anim_clock').on[0].update).toContain(`playing && ${SCRUB_PLAYING} ?`);
+      it('gates the clock on the specification switch alone', () => {
+        expect(ownSignal('anim_clock').on[0].update).toContain('playing ?');
       });
 
-      it('emits no scrub signal without a slider', () => {
+      it('warns and drops the binding when a filter is an expression', () => {
+        // an expression names no parameter the compiler could clear on scrub
+        const spec = gapminder({on: {type: 'timer', filter: 'a || b'}}, [
+          {name: 'a', value: true},
+          {name: 'b', value: false},
+        ]);
+        (spec as any).params[0].bind = {input: 'range', min: 1955, max: 2005, step: 5};
+        const compiled = compile(spec).spec;
+        expect(compiled.signals.find((s) => s.name === 'frame_time')).toBeUndefined();
+      });
+
+      it('leaves an unbound filtered selection alone', () => {
         const noSlider = compile(
           gapminder({on: {type: 'timer', filter: 'playing'}}, [{name: 'playing', value: true}]),
         ).spec;
-        expect(noSlider.signals.find((s) => s.name === SCRUB_PLAYING)).toBeUndefined();
+        const playing = noSlider.signals.find((s) => s.name === 'playing') as any;
+        expect(playing.on).toBeUndefined();
       });
     });
   });

@@ -1,7 +1,18 @@
 import {Signal, SignalRef} from 'vega';
 import {parseSelector} from 'vega-event-selector';
 import {isArray, stringValue} from 'vega-util';
-import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers, isTimerSelection} from './index.js';
+import {
+  BARE_SIGNAL_NAME,
+  MODIFY,
+  STORE,
+  unitName,
+  VL_SELECTION_RESOLVE,
+  TUPLE,
+  selectionCompilers,
+  isTimerSelection,
+  sliderName,
+  timerFilters,
+} from './index.js';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime.js';
 import {hasContinuousDomain} from '../../scale.js';
 import {SelectionInit, SelectionInitInterval, ParameterExtent, SELECTION_ID} from '../../selection.js';
@@ -120,6 +131,32 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
   }
 
   return cleanupEmptyOnArray(signals);
+}
+
+/**
+ * Wires scrubbing to the parameters a specification's own timer filters name,
+ * so dragging the slider pauses playback through the specification's own
+ * switch -- and the widget bound to that switch unchecks, keeping the visible
+ * state consistent. Runs over the assembled top-level signals, which is the
+ * first place the compiler can see a variable parameter's signal.
+ */
+export function attachScrubPause(model: Model, signals: Signal[]): void {
+  for (const selCmpt of vals(model.component.selection ?? {})) {
+    if (!isTimerSelection(selCmpt)) continue;
+    const slider = sliderName(selCmpt);
+    if (!slider) continue;
+
+    for (const f of timerFilters(selCmpt)) {
+      if (!BARE_SIGNAL_NAME.test(f)) continue;
+      const target = signals.find((sg) => sg.name === f);
+      if (!target) continue;
+      ((target as any).on ??= []).push({
+        // ignore the slider echoing the current frame during playback
+        events: {signal: slider},
+        update: `${slider} !== ${ANIM_VALUE} ? false : ${f}`,
+      });
+    }
+  }
 }
 
 export function assembleUnitSelectionData(model: UnitModel, data: readonly VgData[]): VgData[] {
