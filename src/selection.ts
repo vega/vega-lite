@@ -111,10 +111,9 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
   nearest?: boolean;
 
   /**
-   * For animated selections (those with `"on": "timer"`), frames to dwell on
+   * For animated selections (those with `"on": "timer"`), values to pause on
    * before playback continues. Each entry gives a value in the time field's
-   * domain and a duration in milliseconds to hold on it, which draws attention
-   * to a turning point in the data without slowing the whole animation down.
+   * domain and a duration in milliseconds to hold on it.
    */
   pause?: AnimationPause[];
 }

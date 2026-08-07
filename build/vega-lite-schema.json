@@ -19553,7 +19553,7 @@
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).\n\n__See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation."
         },
         "pause": {
-          "description": "For animated selections (those with `\"on\": \"timer\"`), frames to dwell on before playback continues. Each entry gives a value in the time field's domain and a duration in milliseconds to hold on it, which draws attention to a turning point in the data without slowing the whole animation down.",
+          "description": "For animated selections (those with `\"on\": \"timer\"`), values to pause on before playback continues. Each entry gives a value in the time field's domain and a duration in milliseconds to hold on it.",
           "items": {
             "$ref": "#/definitions/AnimationPause"
           },
@@ -19628,7 +19628,7 @@
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).\n\n__See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation."
         },
         "pause": {
-          "description": "For animated selections (those with `\"on\": \"timer\"`), frames to dwell on before playback continues. Each entry gives a value in the time field's domain and a duration in milliseconds to hold on it, which draws attention to a turning point in the data without slowing the whole animation down.",
+          "description": "For animated selections (those with `\"on\": \"timer\"`), values to pause on before playback continues. Each entry gives a value in the time field's domain and a duration in milliseconds to hold on it.",
           "items": {
             "$ref": "#/definitions/AnimationPause"
           },

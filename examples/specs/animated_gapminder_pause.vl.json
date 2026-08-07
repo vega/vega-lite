@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Gapminder animated over time, dwelling on 1965 and driven by a play/pause checkbox.",
+  "description": "Gapminder animated over time, pausing on 1965, with a play/pause checkbox.",
   "data": {
     "url": "data/gapminder.json"
   },

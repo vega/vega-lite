@@ -170,9 +170,9 @@ The `nearest` transform also respects any [position encoding projections](projec
 
 ### Pausing an Animation
 
-A selection with `"on": "timer"` drives an [animation](../encoding.html#time). A filter on the timer uses a signal parameter to pause or resume playback. The `pause` property enables the author to pause the clock for a specified amount of time on specific data values.
+A selection with `"on": "timer"` drives an [animation](../encoding.html#time). There are two ways to pause playback: a filter on the timer event lets the viewer play and pause the animation, and the `pause` property holds the animation on particular data values for a fixed duration.
 
-To provide the viewer with a checkbox to play or pause, filter the timer on a parameter:
+To give the viewer a play/pause checkbox, filter the timer on a parameter bound to a checkbox:
 
 ```json
 "params": [
@@ -181,7 +181,7 @@ To provide the viewer with a checkbox to play or pause, filter the timer on a pa
 ]
 ```
 
-To dwell on particular values in the data, use `pause`. Each entry specifies a value in the time field's domain and a duration in milliseconds to hold on it:
+To hold the animation on particular values in the data, use `pause`. Each entry specifies a value in the time field's domain and a duration in milliseconds to hold on it:
 
 ```json
 "pause": [{"value": 1965, "duration": 2000}]
