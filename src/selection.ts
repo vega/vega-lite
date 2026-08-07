@@ -161,11 +161,11 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
   nearest?: boolean;
 
   /**
-   * For animated selections (those with `"on": "timer"`), the curve playback
-   * speed follows across the animation. Give the name of a
+   * For animated selections (those with `"on": "timer"`), how playback speed
+   * varies over the animation. Give the name of a
    * [d3-ease](https://github.com/d3/d3-ease) easing function, or an array of
-   * ascending numbers in [0, 1] as evenly-spaced control points of a custom
-   * piecewise-linear interpolator.
+   * ascending numbers in [0, 1], which are treated as evenly-spaced control
+   * points of a custom easing curve.
    *
    * __Default value:__ `"easeLinear"`, a constant rate.
    */

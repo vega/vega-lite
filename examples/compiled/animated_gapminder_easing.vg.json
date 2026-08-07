@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "Gapminder with an eased clock, so each keyframe transition accelerates away from one year and settles into the next rather than moving at a constant rate. Easing is a property of the selection, so the parameter and its filter are written out rather than left to elaboration.",
+  "description": "Gapminder animated over time, with easing, so each transition accelerates away from one year and settles into the next.",
   "background": "white",
   "padding": 5,
   "width": 300,

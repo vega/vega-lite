@@ -170,7 +170,7 @@ The `nearest` transform also respects any [position encoding projections](projec
 
 ### Easing an Animation
 
-`easing` reshapes the curve an [animation](../encoding.html#time)'s clock follows through the time domain. Give it the name of a [d3-ease](https://github.com/d3/d3-ease) function, or an array of ascending numbers in [0, 1] as evenly-spaced control points of a custom interpolator. The default, `"easeLinear"`, plays at a constant rate.
+The `easing` property controls how an [animation](../encoding.html#time)'s playback speed varies over its duration. Give it the name of a [d3-ease](https://github.com/d3/d3-ease) function, or an array of ascending numbers in [0, 1], which are treated as evenly-spaced control points of a custom easing curve. The default, `"easeLinear"`, plays at a constant rate.
 
 ```json
 {"name": "frame", "select": {"type": "point", "on": "timer", "easing": "easeCubicInOut"}}
