@@ -58,6 +58,25 @@ describe('animation', () => {
       expect(aggregate.groupby).toContain('year');
     });
 
+    it('parses a quantitative time field as a number', () => {
+      // the band time scale sorts its domain; an unparsed CSV column would
+      // sort lexicographically and play 1, 10, 100, ... instead of in order
+      const compiled = compile({
+        data: {url: 'data/bird-migration.csv'},
+        params: [{name: 'frame', select: {type: 'point', fields: ['day'], on: 'timer'}}],
+        transform: [{filter: {param: 'frame'}}],
+        mark: 'circle',
+        encoding: {
+          longitude: {field: 'lon', type: 'quantitative'},
+          latitude: {field: 'lat', type: 'quantitative'},
+          time: {field: 'day', type: 'quantitative'},
+        },
+      } as TopLevelSpec).spec;
+
+      const source = compiled.data.find((d: any) => d.url) as any;
+      expect(source.format.parse).toMatchObject({day: 'number'});
+    });
+
     it('re-applies stack transforms on the frame dataset', () => {
       // The filter moves below the main pipeline's stack, which therefore
       // stacks every frame's rows at once. The frame dataset restacks, so bars
