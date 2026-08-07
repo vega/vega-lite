@@ -542,8 +542,9 @@ export interface TimeMixins {
    * positions incomparable between frames.
    *
    * Vega-Lite never rescales a scale with a discrete output range (`ordinal`,
-   * `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because moving
-   * between such outputs jumps rather than travels.
+   * `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because
+   * recomputing one of these scales per frame makes marks flicker between its
+   * discrete outputs.
    *
    * __Default value:__ `false`
    */

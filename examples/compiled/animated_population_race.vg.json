@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "US population by age group, animated across census years. Rescaling recomputes the x domain each frame, so every census fills the view instead of being dwarfed by the largest one.",
+  "description": "A racing bar chart of US population by age group, animated across census years.",
   "background": "white",
   "padding": 5,
   "width": 300,

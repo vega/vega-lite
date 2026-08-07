@@ -354,7 +354,7 @@ By default a scale has one constant domain across the whole animation, which kee
 "time": {"field": "date", "type": "ordinal", "rescale": true}
 ```
 
-Vega-Lite never rescales a scale with a discrete output range (`ordinal`, `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because moving between such outputs causes discontinuous jumps. It also never rescales the time scale, which fixes the extent of the animation.
+Vega-Lite never rescales a scale with a discrete output range (`ordinal`, `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because recomputing one of these scales per frame makes marks flicker between its discrete outputs. It also never rescales the time scale, whose domain defines the extent of the animation.
 
 {:#time-field-def}
 
