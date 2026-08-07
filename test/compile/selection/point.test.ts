@@ -797,19 +797,30 @@ describe('Animated Selection', () => {
       expect(easedClock('easeLinear')).toEqual({name: 'eased_anim_clock', update: 'anim_clock'});
     });
 
-    it('applies a named easing function over normalized time', () => {
+    it('applies a named easing function over normalized time, clamped to the range', () => {
+      // overshooting easings (easeBack*, easeElastic*) leave [0, 1], and a
+      // clock outside the scale's range inverts to undefined
       expect(easedClock('easeCubicInOut')).toEqual({
         name: 'eased_anim_clock',
-        update: 'easeCubicInOut(anim_clock / max_range_extent) * max_range_extent',
+        update: 'clamp(easeCubicInOut(anim_clock / max_range_extent) * max_range_extent, 0, max_range_extent)',
       });
     });
 
     it('builds a piecewise interpolator from custom control points', () => {
       expect(easedClock([0, 0.1, 0.9, 1])).toEqual({
         name: 'eased_anim_clock',
-        update: 'interpolateLinear([0, 0.1, 0.9, 1], anim_clock / max_range_extent) * max_range_extent',
+        update:
+          'clamp(interpolateLinear([0, 0.1, 0.9, 1], anim_clock / max_range_extent) * max_range_extent, 0, max_range_extent)',
       });
     });
+
+    it(
+      'warns and ignores control points that are not ascending',
+      log.wrap((localLogger) => {
+        easedClock([1, 0]);
+        expect(localLogger.warns[0]).toEqual(log.message.invalidSelectionEasingControlPoints([1, 0]));
+      }),
+    );
 
     it(
       'warns and ignores an unknown easing function',

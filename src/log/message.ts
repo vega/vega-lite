@@ -131,7 +131,7 @@ export function invalidSelectionEasing(easing: string) {
 
 export function invalidSelectionEasingControlPoints(easing: number[]) {
   return (
-    'A custom selection "easing" must be at least two numbers in [0, 1]. ' +
+    'A custom selection "easing" must be at least two ascending numbers in [0, 1]. ' +
     `Got ${stringify(easing)}. Ignoring the easing.`
   );
 }

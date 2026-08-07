@@ -103,7 +103,7 @@
     {"name": "is_playing", "init": "true"},
     {
       "name": "eased_anim_clock",
-      "update": "easeCubicInOut(anim_clock / max_range_extent) * max_range_extent"
+      "update": "clamp(easeCubicInOut(anim_clock / max_range_extent) * max_range_extent, 0, max_range_extent)"
     },
     {"name": "animation_frame_domain", "init": "domain('time')"},
     {"name": "min_extent", "init": "extent(animation_frame_domain)[0]"},

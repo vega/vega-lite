@@ -55,7 +55,10 @@ function easedClockExpr(easing: EasingFunction | number[]): string {
   const t = `${ANIM_CLOCK} / ${MAX_RANGE_EXTENT}`;
   const eased = isArray(easing) ? `interpolateLinear([${easing.join(', ')}], ${t})` : `${easing}(${t})`;
 
-  return `${eased} * ${MAX_RANGE_EXTENT}`;
+  // Overshooting easings (easeBack*, easeElastic*) leave [0, 1], and a clock
+  // outside the scale's range inverts to undefined, flickering the first
+  // frame. Clamping pins the overshoot to the nearest end instead.
+  return `clamp(${eased} * ${MAX_RANGE_EXTENT}, 0, ${MAX_RANGE_EXTENT})`;
 }
 
 const animationSignals = (
@@ -193,7 +196,11 @@ const point: SelectionCompiler<'point'> = {
       log.warn(log.message.SELECTION_EASING_REQUIRES_TIMER);
       delete selCmpt.easing;
     } else if (isArray(easing)) {
-      if (easing.length < 2 || easing.some((v) => !isNumber(v) || v < 0 || v > 1)) {
+      if (
+        easing.length < 2 ||
+        easing.some((v) => !isNumber(v) || v < 0 || v > 1) ||
+        easing.some((v, i) => i > 0 && v < (easing as number[])[i - 1])
+      ) {
         log.warn(log.message.invalidSelectionEasingControlPoints(easing));
         delete selCmpt.easing;
       }
