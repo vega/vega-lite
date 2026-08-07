@@ -73,6 +73,143 @@ export function animationKey(model: UnitModel): AnimationKey | undefined {
   return model.getScaleComponent(TIME)?.get('type') === 'band' ? normalized : undefined;
 }
 
+/** What resampled line marks are drawn from. */
+export const LINE_INTERPOLATE = '_line_interpolate';
+/** The subsample fraction of a resampled line vertex within its segment. */
+export const LINE_TWEEN = 'anim_line_tween';
+/** A resampled vertex's position on the clock's range; also the path order. */
+export const LINE_SAMPLE_CLOCK = 'anim_sample_clock';
+
+export interface AnimationLineKey extends AnimationKey {
+  /**
+   * How the line reveals. When a positional channel encodes the time field
+   * itself, the line draws from the full data behind a clip whose extent
+   * follows the clock: the geometry is the static chart's own curve, so any
+   * curve interpolation stays stable, and the reveal is continuous. Otherwise
+   * the line's segments are subsampled and revealed up to the clock.
+   */
+  mode: 'clip' | 'resample';
+  /** For clip mode, the positional channel that encodes the time field. */
+  channel?: 'x' | 'y';
+}
+
+/**
+ * How an animated line mark reveals, or undefined when the unit does not draw
+ * an animated line.
+ *
+ * A line is one mark spanning many keyframes, so the eq/next join -- built for
+ * marks that exist once per frame -- cannot animate it: tweening only the head
+ * vertex leaves any curve interpolation recomputing its shape over the points
+ * revealed so far, and the already-drawn line writhes as points arrive.
+ */
+export function animationLineKey(model: UnitModel): AnimationLineKey | undefined {
+  const key = animationKey(model);
+  if (!key || model.markDef.type !== 'line') {
+    return undefined;
+  }
+
+  // A facet cell's datasets assemble inside its group, which the line
+  // machinery does not reach into; faceted lines fall back to the join.
+  if (model.parent && 'facet' in (model.parent as any)) {
+    return undefined;
+  }
+
+  const timeField = (model.encoding.time as TimeFieldDef<string>).field;
+
+  for (const channel of ['x', 'y'] as const) {
+    const def = model.encoding[channel];
+    const field = def && 'field' in def ? def.field : undefined;
+    if (field === timeField && !hasDiscreteRange(model.getScaleComponent(channel)?.get('type'))) {
+      return {...key, mode: 'clip', channel};
+    }
+  }
+
+  for (const channel of ['x', 'y'] as const) {
+    if (hasDiscreteRange(model.getScaleComponent(channel)?.get('type'))) {
+      return undefined;
+    }
+  }
+
+  return {...key, mode: 'resample'};
+}
+
+/**
+ * The dataset a resampled line mark draws from. Each segment of each series
+ * splits into evenly spaced subsamples, and a subsample survives while the
+ * clock is past its position on the timeline, so the line extends smoothly and
+ * holds still behind the playhead.
+ */
+export function animationLineInterpolationData(model: UnitModel, source: VgData): VgData[] {
+  const key = animationLineKey(model);
+  if (!key) {
+    return [];
+  }
+
+  const name = source.name;
+  const timeField = (model.encoding.time as TimeFieldDef<string>).field as string;
+  const timeScale = stringValue(model.scaleName(TIME));
+  const t = `datum[${stringValue(timeField)}]`;
+  const tNextField = `${timeField}_next`;
+  const tNext = `datum[${stringValue(tNextField)}]`;
+
+  const joinField = key.field ?? SINGLETON_KEY;
+  const singleton: VgTransform[] = key.field ? [] : [{type: 'formula', expr: '0', as: SINGLETON_KEY}];
+
+  // The fields subsampled vertices interpolate: the line's positions.
+  const fields = (['x', 'y'] as const).flatMap((channel) => {
+    const def = model.encoding[channel];
+    const field = def && 'field' in def ? def.field : undefined;
+    return typeof field === 'string' && field !== timeField ? [field] : [];
+  });
+
+  const leads: VgTransform = {
+    type: 'window',
+    groupby: [joinField],
+    sort: {field: [timeField], order: ['ascending']},
+    ops: Array(fields.length + 1).fill('lead') as any,
+    fields: [timeField, ...fields],
+    as: [tNextField, ...fields.map((field) => `${field}_next`)],
+  };
+
+  return [
+    {
+      name: name + LINE_INTERPOLATE,
+      source: name,
+      transform: [
+        ...singleton,
+        leads,
+        {
+          // Subsample fractions along each segment. Denser for smaller data,
+          // bounded so a large series does not explode: at most 20 subsamples
+          // per segment and roughly 10,000 rows in total.
+          type: 'formula',
+          expr: `sequence(0, 1, 1 / clamp(floor(10000 / length(data(${stringValue(name)}))), 1, 20))`,
+          as: LINE_TWEEN,
+        },
+        {type: 'flatten', fields: [LINE_TWEEN]},
+        {
+          // Where this subsample sits on the clock's range.
+          type: 'formula',
+          expr: `isValid(${tNext}) ? lerp([scale(${timeScale}, ${t}), scale(${timeScale}, ${tNext})], datum[${stringValue(LINE_TWEEN)}]) : scale(${timeScale}, ${t})`,
+          as: LINE_SAMPLE_CLOCK,
+        },
+        {
+          // A series' last vertex has no segment to subdivide, so it keeps its
+          // zero subsample only; every kept subsample must be behind the
+          // playhead.
+          type: 'filter',
+          expr: `(isValid(${tNext}) || datum[${stringValue(LINE_TWEEN)}] === 0) && datum[${stringValue(LINE_SAMPLE_CLOCK)}] <= ${EASED_ANIM_CLOCK}`,
+        },
+        ...fields.map((field): VgTransform => ({
+          type: 'formula',
+          expr: `isValid(datum[${stringValue(`${field}_next`)}]) ? lerp([datum[${stringValue(field)}], datum[${stringValue(`${field}_next`)}]], datum[${stringValue(LINE_TWEEN)}]) : datum[${stringValue(field)}]`,
+          as: field,
+        })),
+      ],
+    },
+  ];
+}
+
 /**
  * Signals locating the animation between the frame it is on and the frame it
  * is heading towards. Mark encodings interpolate along `anim_tween`, which runs

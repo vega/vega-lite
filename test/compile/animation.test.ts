@@ -428,6 +428,63 @@ describe('animation', () => {
       });
     });
   });
+  describe('line marks', () => {
+    it('reveals a line whose x is the time field behind a moving clip', () => {
+      // the geometry is the static chart's own curve, so any curve
+      // interpolation stays stable while the clip advances
+      const compiled = compile({
+        data: {url: 'data/stocks.csv'},
+        params: [{name: 'frame', select: {type: 'point', fields: ['date'], on: 'timer'}}],
+        transform: [{filter: {param: 'frame'}}],
+        mark: {type: 'line', interpolate: 'monotone'},
+        encoding: {
+          x: {field: 'date', type: 'temporal'},
+          y: {field: 'price', type: 'quantitative'},
+          color: {field: 'symbol', type: 'nominal'},
+          time: {field: 'date', type: 'temporal', key: {field: 'symbol'}},
+        },
+      } as TopLevelSpec).spec;
+
+      const pathgroup = compiled.marks.find((m: any) => m.name === 'pathgroup') as any;
+      expect(pathgroup.clip.path.signal).toContain('lerp([scale("x", anim_value), scale("x", anim_value_next)]');
+      // the line draws from the full data, not a frame dataset
+      expect(pathgroup.from.facet.data).not.toMatch(/_curr$|_interpolate$/);
+    });
+
+    it('resamples a line whose position is not the time field', () => {
+      const compiled = compile({
+        data: {url: 'data/driving.json'},
+        params: [{name: 'frame', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+        transform: [{filter: {param: 'frame'}}],
+        mark: 'line',
+        encoding: {
+          x: {field: 'miles', type: 'quantitative'},
+          y: {field: 'gas', type: 'quantitative'},
+          order: {field: 'year'},
+          time: {field: 'year', type: 'quantitative', key: true},
+        },
+      } as TopLevelSpec).spec;
+
+      const line = compiled.data.find((d: any) => d.name.endsWith('_line_interpolate')) as any;
+      expect(line.transform.map((t: any) => t.type)).toEqual([
+        'formula', // singleton key
+        'window', // next vertex of the series
+        'formula', // subsample fractions
+        'flatten',
+        'formula', // position on the clock's range
+        'filter', // reveal up to the playhead
+        'formula', // resampled x
+        'formula', // resampled y
+      ]);
+
+      const mark = compiled.marks[0] as any;
+      expect(mark.from.data).toBe(line.name);
+      // subsamples of one segment share the time value, so the path orders by
+      // each subsample's clock position
+      expect(mark.sort).toEqual({field: 'datum["anim_sample_clock"]'});
+    });
+  });
+
   describe('interpolation', () => {
     const interpolated = (time: any): TopLevelSpec => ({
       data: {url: 'data/gapminder.json'},

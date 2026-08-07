@@ -63,8 +63,15 @@ import {
   assembleUnitSelectionSignals,
 } from './selection/assemble.js';
 import {parseUnitSelection} from './selection/parse.js';
-import {CURR} from './selection/point.js';
-import {animationKey, INTERPOLATE, interpolateMarkEncodings} from './animation.js';
+import {ANIM_TWEEN, ANIM_VALUE, ANIM_VALUE_NEXT, CURR} from './selection/point.js';
+import {
+  animationKey,
+  animationLineKey,
+  INTERPOLATE,
+  LINE_INTERPOLATE,
+  LINE_SAMPLE_CLOCK,
+  interpolateMarkEncodings,
+} from './animation.js';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -343,10 +350,14 @@ export class UnitModel extends ModelWithField {
    * Corrects the data references in marks after assemble.
    */
   public correctDataNames = (mark: VgMarkGroup) => {
-    const animated = this.isAnimated;
+    const lineKey = animationLineKey(this);
+    // A clip-revealed line draws from the full data: its geometry is the
+    // static chart's own curve, and the clip supplies the animation.
+    const animated = this.isAnimated && lineKey?.mode !== 'clip';
     // An interpolating animation draws from the joined dataset instead, because
-    // its marks need their successor in the next frame to tween towards.
-    const frame = animationKey(this) ? INTERPOLATE : CURR;
+    // its marks need their successor in the next frame to tween towards. A
+    // resampled line draws from its subsampled series.
+    const frame = lineKey ? LINE_INTERPOLATE : animationKey(this) ? INTERPOLATE : CURR;
 
     // for normal data references
     if (mark.from?.data) {
@@ -380,9 +391,50 @@ export class UnitModel extends ModelWithField {
       return mark;
     }
 
-    const rescale = !!(this.encoding.time as TimeFieldDef<string>)?.rescale;
     const target = mark.from?.facet ? ((mark as any).marks?.[0] ?? mark) : mark;
 
+    const lineKey = animationLineKey(this);
+    if (lineKey?.mode === 'clip') {
+      // The line draws its full static geometry, and a clip whose extent
+      // follows the clock between keyframes reveals it, so the reveal is
+      // continuous and the geometry never changes behind it.
+      const scaleName = stringValue(this.scaleName(lineKey.channel));
+      const reveal = `lerp([scale(${scaleName}, ${ANIM_VALUE}), scale(${scaleName}, ${ANIM_VALUE_NEXT})], ${ANIM_TWEEN})`;
+      const clip = {
+        path: {
+          signal:
+            lineKey.channel === 'x'
+              ? `'M0,0H' + (${reveal}) + 'V' + height + 'H0Z'`
+              : `'M0,0H' + width + 'V' + (${reveal}) + 'H0Z'`,
+        },
+      };
+
+      if (mark.from?.facet) {
+        // a faceted path already has a group to clip
+        mark.clip = clip;
+      } else {
+        const line = {...mark};
+        for (const k of Object.keys(mark)) delete (mark as any)[k];
+        Object.assign(mark, {
+          type: 'group',
+          name: `${line.name}_clip_group`,
+          clip,
+          marks: [line],
+        });
+      }
+      return mark;
+    }
+
+    if (lineKey) {
+      // A resampled line's vertices are computed in its dataset, so its
+      // encodings stay as written. The path orders by each subsample's clock
+      // position, which strictly increases along a series; ordering by the
+      // time field alone would tie all of a segment's subsamples.
+      target.sort = {field: `datum[${stringValue(LINE_SAMPLE_CLOCK)}]`};
+      return mark;
+    }
+
+    const rescale = !!(this.encoding.time as TimeFieldDef<string>)?.rescale;
     if (target.encode?.update) {
       interpolateMarkEncodings(this, target.encode.update, rescale);
     }

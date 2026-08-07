@@ -35,19 +35,14 @@
       "name": "upto",
       "select": {
         "type": "point",
-        "on": "timer",
-        "predicate": {
-          "field": "date",
-          "lte": {
-            "expr": "anim_value"
-          }
-        }
+        "on": "timer"
       }
     }
   ],
   "mark": {
     "type": "line",
-    "strokeWidth": 2
+    "strokeWidth": 2,
+    "interpolate": "monotone"
   },
   "encoding": {
     "x": {

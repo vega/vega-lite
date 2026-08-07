@@ -26,7 +26,7 @@ import {UnitModel} from '../unit.js';
 import {parseSelectionExtent} from './parse.js';
 import {SelectionProjection} from './project.js';
 import {ANIM_VALUE, CURR, PAUSE_STORE} from './point.js';
-import {animationInterpolationData} from '../animation.js';
+import {animationInterpolationData, animationLineInterpolationData, animationLineKey} from '../animation.js';
 import {DataSourceType} from '../../data.js';
 
 export function assembleProjection(proj: SelectionProjection) {
@@ -246,9 +246,15 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
           model.animationFrameSource = sourceData.name;
 
           // Interpolation datasets derive from the frame dataset, so they
-          // exist exactly when it does. Their builder asks the model whether it
-          // animates, which holds only after the assignment above.
-          animationData.push(...animationInterpolationData(model, sourceData));
+          // exist exactly when it does. Their builders ask the model whether
+          // it animates, which holds only after the assignment above. A line
+          // mark resamples the full series instead of joining frame to
+          // frame, because a line is one mark spanning many keyframes.
+          if (animationLineKey(model)) {
+            animationData.push(...animationLineInterpolationData(model, sourceData));
+          } else {
+            animationData.push(...animationInterpolationData(model, sourceData));
+          }
         }
       }
     }

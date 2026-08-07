@@ -16,13 +16,7 @@
       "name": "upto",
       "select": {
         "type": "point",
-        "on": "timer",
-        "predicate": {
-          "field": "year",
-          "lte": {
-            "expr": "anim_value"
-          }
-        }
+        "on": "timer"
       }
     }
   ],

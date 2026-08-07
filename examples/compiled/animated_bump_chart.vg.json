@@ -35,40 +35,36 @@
       ]
     },
     {
-      "name": "source_0_eq",
+      "name": "source_0_line_interpolate",
       "source": "source_0",
-      "transform": [
-        {"type": "filter", "expr": "datum[\"date\"] === anim_value"}
-      ]
-    },
-    {
-      "name": "source_0_next",
-      "source": "source_0",
-      "transform": [
-        {"type": "filter", "expr": "datum[\"date\"] === anim_value_next"}
-      ]
-    },
-    {
-      "name": "source_0_eq_next",
-      "source": "source_0_eq",
       "transform": [
         {
-          "type": "lookup",
-          "from": "source_0_next",
-          "key": "series",
-          "fields": ["series"],
-          "as": ["next"]
+          "type": "window",
+          "groupby": ["series"],
+          "sort": {"field": ["date"], "order": ["ascending"]},
+          "ops": ["lead", "lead"],
+          "fields": ["date", "rank"],
+          "as": ["date_next", "rank_next"]
         },
-        {"type": "filter", "expr": "isValid(datum.next)"}
-      ]
-    },
-    {
-      "name": "source_0_interpolate",
-      "source": ["source_0_curr", "source_0_eq_next"],
-      "transform": [
+        {
+          "type": "formula",
+          "expr": "sequence(0, 1, 1 / clamp(floor(10000 / length(data(\"source_0\"))), 1, 20))",
+          "as": "anim_line_tween"
+        },
+        {"type": "flatten", "fields": ["anim_line_tween"]},
+        {
+          "type": "formula",
+          "expr": "isValid(datum[\"date_next\"]) ? lerp([scale(\"time\", datum[\"date\"]), scale(\"time\", datum[\"date_next\"])], datum[\"anim_line_tween\"]) : scale(\"time\", datum[\"date\"])",
+          "as": "anim_sample_clock"
+        },
         {
           "type": "filter",
-          "expr": "datum[\"date\"] === anim_value ? isValid(datum.next) : true"
+          "expr": "(isValid(datum[\"date_next\"]) || datum[\"anim_line_tween\"] === 0) && datum[\"anim_sample_clock\"] <= eased_anim_clock"
+        },
+        {
+          "type": "formula",
+          "expr": "isValid(datum[\"rank_next\"]) ? lerp([datum[\"rank\"], datum[\"rank_next\"]], datum[\"anim_line_tween\"]) : datum[\"rank\"]",
+          "as": "rank"
         }
       ]
     }
@@ -137,7 +133,7 @@
       "from": {
         "facet": {
           "name": "faceted_path_main",
-          "data": "source_0_interpolate",
+          "data": "source_0",
           "groupby": ["series"]
         }
       },
@@ -158,24 +154,26 @@
           "encode": {
             "update": {
               "strokeWidth": {"value": 2},
+              "interpolate": {"value": "monotone"},
               "cursor": {"value": "pointer"},
               "stroke": {"scale": "color", "field": "series"},
               "description": {
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; rank: \" + (format(datum[\"rank\"], \"\")) + \"; industry: \" + (isValid(datum[\"series\"]) ? isArray(datum[\"series\"]) ? join(datum[\"series\"], ' ') : datum[\"series\"] : \"\"+datum[\"series\"])"
               },
-              "x": {
-                "signal": "isValid(datum.next) ? lerp([scale(\"x\", datum[\"date\"]), scale(\"x\", datum.next[\"date\"])], anim_tween) : scale(\"x\", datum[\"date\"])"
-              },
-              "y": {
-                "signal": "isValid(datum.next) ? lerp([scale(\"y\", datum[\"rank\"]), scale(\"y\", datum.next[\"rank\"])], anim_tween) : scale(\"y\", datum[\"rank\"])"
-              },
+              "x": {"scale": "x", "field": "date"},
+              "y": {"scale": "y", "field": "rank"},
               "defined": {
                 "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"rank\"]) && isFinite(+datum[\"rank\"])"
               }
             }
           }
         }
-      ]
+      ],
+      "clip": {
+        "path": {
+          "signal": "'M0,0H' + (lerp([scale(\"x\", anim_value), scale(\"x\", anim_value_next)], anim_tween)) + 'V' + height + 'H0Z'"
+        }
+      }
     }
   ],
   "scales": [
