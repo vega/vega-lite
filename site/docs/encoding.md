@@ -316,7 +316,7 @@ normalizes to this specification, with the default parameter and filter written 
 
 `animation_frame` is an ordinary [point selection](selection.html) holding the current frame, so a conditional encoding, a scale domain, or a filter in another view can all read it.
 
-Vega-Lite adds the default parameter and filter only when the specification does not already declare an animated parameter (a selection with a `timer` event). Declare the parameter explicitly to customize it, for example to change its name.
+Vega-Lite adds the default parameter and filter only when the specification does not already declare an animated parameter (a selection with a `timer` event). Declare the parameter explicitly to customize it, for example to change its name or [bind it to a slider](parameter/bind.html#animation-binding).
 
 {:#time-scale-type}
 

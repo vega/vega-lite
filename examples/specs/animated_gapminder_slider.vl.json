@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Gapminder animated over time, with a slider for scrubbing through the years by hand.",
+  "description": "Gapminder animated over time, with a slider to scrub through the years.",
   "data": {
     "url": "data/gapminder.json"
   },

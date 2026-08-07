@@ -33,7 +33,7 @@ If multiple projections are specified, customized bindings can be specified by m
 
 ### Binding an Animated Selection
 
-Binding a selection with `"on": "timer"` to a range input gives a scrubber for its [animation](../encoding.html#time). Its `min`, `max`, and `step` are in the units of the time field, not in milliseconds:
+An animated selection (one with `"on": "timer"`) can be bound to a range input to create a slider that scrubs through the [animation](../encoding.html#time). The slider's `min`, `max`, and `step` are in the units of the time field, not in milliseconds of playback:
 
 ```json
 {
@@ -43,11 +43,11 @@ Binding a selection with `"on": "timer"` to a range input gives a scrubber for i
 }
 ```
 
-Scrubbing stops playback, so the animation clock does not conflict with the interaction. Vega-Lite emits an `is_playing` checkbox next to the slider, and checking it again resumes playback:
+Scrubbing pauses playback, so that the animation does not keep advancing while the viewer drags the slider. Vega-Lite adds a play/pause checkbox next to the slider; checking it resumes playback:
 
 <div class="vl-example" data-name="animated_gapminder_slider"></div>
 
-When a specification filters the timer on [its own parameter](selection.html#animation-pause), that parameter becomes the play/pause checkbox. Scrubbing still stops playback, and toggling the checkbox resumes playback.
+If the specification already [filters the timer on its own parameter](select.html#animation-pause), Vega-Lite adds no extra checkbox. Scrubbing still pauses playback, and toggling the parameter resumes it.
 
 ## Legend Binding
 
