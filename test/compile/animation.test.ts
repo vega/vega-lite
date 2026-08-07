@@ -819,6 +819,30 @@ describe('animation', () => {
     });
   });
   describe('facet', () => {
+    it('re-applies stack transforms in the cell frame and interpolation datasets', () => {
+      // the partition inherits rows stacked across every frame
+      const compiled = compile({
+        data: {url: 'data/population.json'},
+        params: [{name: 'frame', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+        transform: [{filter: {param: 'frame'}}],
+        mark: 'bar',
+        encoding: {
+          y: {field: 'age', type: 'ordinal'},
+          x: {aggregate: 'sum', field: 'people', type: 'quantitative'},
+          color: {field: 'sex', type: 'nominal'},
+          time: {field: 'year', type: 'ordinal', key: {field: 'age'}},
+          facet: {field: 'sex', columns: 2},
+        },
+      } as TopLevelSpec).spec;
+
+      const cell = (compiled.marks as any[]).find((m) => m.name === 'cell');
+      const types = Object.fromEntries(
+        (cell.data as any[]).map((d) => [d.name, d.transform.map((t: any) => t.type)]),
+      );
+      expect(types['facet_curr']).toEqual(['filter', 'stack']);
+      expect(types['facet_eq']).toEqual(expect.arrayContaining(['filter', 'stack']));
+    });
+
     const faceted = (time: any = {field: 'year', type: 'ordinal'}) =>
       compile({
         data: {url: 'data/gapminder.json'},

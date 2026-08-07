@@ -171,6 +171,11 @@ export class FacetModel extends ModelWithField {
     // `assembleMarks` builds the dataset itself, inside the cell group.
     if (isUnitModel(this.child) && this.child.animationFrameFilter) {
       this.child.animationFrameSource = this.component.data.facetRoot.name;
+
+      // A facet has a single child, so every stack transform assembled at the
+      // top level belongs to the child's pipeline. Keep them so the frame
+      // dataset can re-apply them per frame.
+      this.child.animationFrameLayout = data.flatMap((d) => (d.transform ?? []).filter((t) => t.type === 'stack'));
     }
 
     return assembled;
@@ -465,18 +470,22 @@ export class FacetModel extends ModelWithField {
     // left it on the child, because only here does the partition have a name.
     if (isUnitModel(child) && child.animationFrameFilter) {
       const partition = child.animationFrameSource;
+      const layout = child.animationFrameLayout ?? [];
+
+      // The partition inherits rows stacked across every frame, so the frame
+      // dataset re-applies the pipeline's stack transforms, exactly as the
+      // non-facet build does.
       data.push({
         name: partition + CURR,
         source: partition,
-        transform: [child.animationFrameFilter],
+        transform: [child.animationFrameFilter, ...layout],
       });
 
       // Interpolation joins the current frame to the next one, so its datasets
-      // derive from the frame dataset and belong in the same scope. The
-      // partition may already be a dataset this cell defines, whose layout
-      // transforms the join has to repeat.
-      const partitionData = data.find((d) => d.name === partition) ?? {name: partition};
-      data.push(...animationInterpolationData(child, partitionData));
+      // derive from the frame dataset and belong in the same scope. Passing
+      // the layout lets the join repeat it per frame; the partition itself is
+      // defined by `from.facet` rather than by a dataset in this array.
+      data.push(...animationInterpolationData(child, {name: partition, transform: layout}));
     }
 
     const encodeEntry = child.assembleGroupEncodeEntry(false);

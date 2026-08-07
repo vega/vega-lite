@@ -351,6 +351,14 @@ export class UnitModel extends ModelWithField {
    */
   public animationFrameFilter?: VgData['transform'][number];
 
+  /**
+   * The stack transforms of this unit's pipeline, held alongside the frame
+   * filter for the same reason: the facet re-applies them when it builds the
+   * frame and interpolation datasets inside the cell group, so rows are laid
+   * out within their frame rather than across every frame at once.
+   */
+  public animationFrameLayout?: VgData['transform'];
+
   public get isAnimated(): boolean {
     return this.animationFrameSource !== undefined;
   }
