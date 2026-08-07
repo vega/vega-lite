@@ -154,11 +154,23 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
       if (sourceData && !animationData.some((d) => d.name === sourceData.name + CURR)) {
         // Find where the frame filter ended up. It usually sits on the main
         // source, but the dataflow may have pushed it above an aggregate, and
-        // it has to move from wherever it landed.
+        // it has to move from wherever it landed. Only this unit's own
+        // pipeline -- the main source and its ancestors -- may host it: the
+        // same selection test also appears on datasets that materialize the
+        // selection for other consumers, such as a lookup transform's
+        // secondary table or another view's pipeline, and moving one of those
+        // filters would sever that consumer.
+        const chain: VgData[] = [];
+        for (let d: VgData | undefined = sourceData; d;) {
+          chain.push(d);
+          const src = d.source;
+          d = typeof src === 'string' ? data.find((x) => x.name === src) : undefined;
+        }
+
         const storeRef = stringValue(selCmpt.name + STORE);
         const testsStore = (t: VgData['transform'][number]) =>
           t.type === 'filter' && t.expr.includes(`vlSelectionTest(${storeRef}`);
-        const filterHost = data.find((d) => (d.transform ?? []).some(testsStore));
+        const filterHost = chain.find((d) => (d.transform ?? []).some(testsStore));
         const frameFilter = filterHost?.transform.find(testsStore);
 
         // No frame filter means nothing selects the current frame's rows, so
@@ -170,10 +182,17 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
           // a single frame collapses the animation to that frame.
           filterHost.transform = filterHost.transform.filter((t) => t !== frameFilter);
 
+          // The pipeline's layout transforms (stack) computed positions over
+          // the whole time domain, because the filter moved below them. The
+          // frame dataset re-applies them so its rows are laid out within the
+          // frame, as they would have been with the filter where the author
+          // wrote it.
+          const layout = chain.flatMap((d) => (d.transform ?? []).filter((t) => t.type === 'stack'));
+
           animationData.push({
             name: sourceData.name + CURR,
             source: sourceData.name,
-            transform: [frameFilter],
+            transform: [frameFilter, ...layout],
           });
 
           model.animationFrameSource = sourceData.name;

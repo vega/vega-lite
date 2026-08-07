@@ -57,6 +57,29 @@ describe('animation', () => {
         .find((t: any) => t.type === 'aggregate') as any;
       expect(aggregate.groupby).toContain('year');
     });
+
+    it('re-applies stack transforms on the frame dataset', () => {
+      // The filter moves below the main pipeline's stack, which therefore
+      // stacks every frame's rows at once. The frame dataset restacks, so bars
+      // are laid out within their own frame.
+      const compiled = compile({
+        data: {url: 'data/population.json'},
+        params: [{name: 'frame', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+        transform: [{filter: {param: 'frame'}}],
+        mark: 'bar',
+        encoding: {
+          y: {field: 'age', type: 'ordinal'},
+          x: {aggregate: 'sum', field: 'people', type: 'quantitative'},
+          color: {field: 'sex', type: 'nominal'},
+          time: {field: 'year', type: 'ordinal'},
+        },
+      } as TopLevelSpec).spec;
+
+      const curr = compiled.data.find((d) => d.name.endsWith('_curr'));
+      const types = curr.transform.map((t: any) => t.type);
+      expect(types[0]).toBe('filter');
+      expect(types).toContain('stack');
+    });
   });
 
   describe('default projection', () => {
