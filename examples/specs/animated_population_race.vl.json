@@ -113,7 +113,7 @@
       "type": "ordinal",
       "rescale": true,
       "key": {
-        "field": "age"
+        "field": "country"
       }
     }
   }

@@ -111,15 +111,14 @@
     {"name": "min_extent", "init": "extent(upto_domain)[0]"},
     {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
     {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
-    {"name": "max_extent", "init": "extent(upto_domain)[1]"},
     {"name": "t_index", "update": "indexof(upto_domain, anim_value)"},
     {
       "name": "anim_value_next",
-      "update": "t_index < length(upto_domain) - 1 ? upto_domain[t_index + 1] : max_extent"
+      "update": "t_index < length(upto_domain) - 1 ? upto_domain[t_index + 1] : anim_value"
     },
     {
       "name": "anim_tween",
-      "update": "anim_value_next !== anim_value ? (eased_anim_clock - scale(\"time\", anim_value)) / (scale(\"time\", anim_value_next) - scale(\"time\", anim_value)) : 0"
+      "update": "anim_value_next !== anim_value ? (eased_anim_clock - scale(\"time\", anim_value)) / (scale(\"time\", anim_value_next) > scale(\"time\", anim_value) ? scale(\"time\", anim_value_next) - scale(\"time\", anim_value) : max_range_extent - scale(\"time\", anim_value)) : 0"
     },
     {
       "name": "upto_tuple",
@@ -159,7 +158,6 @@
           "encode": {
             "update": {
               "strokeWidth": {"value": 2},
-              "interpolate": {"value": "monotone"},
               "cursor": {"value": "pointer"},
               "stroke": {"scale": "color", "field": "series"},
               "description": {
