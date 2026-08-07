@@ -974,8 +974,8 @@
   "Animated": {
     "": [
       {
-        "name": "animated_gapminder",
-        "title": "Gapminder Frame Animation",
+        "name": "animated_gapminder_interpolate",
+        "title": "Animated Gapminder Scatterplot",
         "description": "An animated scatterplot showing the relationship between fertility rates and life expectancy across different countries, based on Gapminder data. Each point represents a country, with points colored by country and the visualization updating over time to show how these metrics have changed across years."
       },
       {
