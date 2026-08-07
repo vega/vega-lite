@@ -102,6 +102,25 @@ describe('animation', () => {
   });
 
   describe('default projection', () => {
+    it('projects onto the derived field when the time encoding has a timeUnit', () => {
+      // the time scale's domain holds the derived field's values, and
+      // anim_value inverts to them, so the raw field could never match
+      const compiled = compile({
+        data: {url: 'data/seattle-weather.csv'},
+        params: [{name: 'frame', select: {type: 'point', on: 'timer'}}],
+        transform: [{filter: {param: 'frame'}}],
+        mark: 'point',
+        encoding: {
+          x: {field: 'temp_max', type: 'quantitative'},
+          time: {field: 'date', type: 'ordinal', timeUnit: 'month'},
+        },
+      } as TopLevelSpec).spec;
+
+      expect(compiled.signals).toEqual(
+        expect.arrayContaining([{name: 'frame_tuple_fields', value: [{type: 'E', field: 'month_date'}]}]),
+      );
+    });
+
     it('projects an unprojected animated selection onto the time field', () => {
       // the `_vgsid_` fallback other point selections use stores a row identity,
       // which no frame filter can match

@@ -119,9 +119,15 @@ const project: SelectionCompiler = {
     // identity, and it compiles to `vlSelectionIdTest`, which the frame
     // dataset's filter search does not recognize.
     if (!fields && !encodings && isTimerSelection(selCmpt)) {
-      const timeField = model.fieldDef(TIME)?.field;
-      if (timeField) {
-        fields = [timeField];
+      const timeDef = model.fieldDef(TIME);
+      if (timeDef?.field) {
+        // With a timeUnit, the time scale's domain holds the derived field's
+        // values and `anim_value` inverts to them, so the projection has to
+        // test the derived field too. The main pipeline already computes it,
+        // because the time encoding itself carries the timeUnit.
+        fields = [
+          timeDef.timeUnit && !isBinnedTimeUnit(timeDef.timeUnit) ? (model.vgField(TIME) as string) : timeDef.field,
+        ];
       }
     }
 
