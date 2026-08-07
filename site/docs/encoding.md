@@ -340,10 +340,6 @@ An animation does not have to filter data. If you declare the parameter and omit
 }
 ```
 
-Note: `time` encoding animations currently have a few restrictions. See the [example gallery]({{ site.baseurl }}/examples/#animated) for examples of animated visualizations.
-
-- animation is not supported in faceted views
-
 {:#time-key}
 
 ### Interpolating Between Frames

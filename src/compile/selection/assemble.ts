@@ -206,7 +206,7 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
 
       if (sourceData && built.has(sourceData.name + CURR)) {
         model.animationFrameSource = sourceData.name;
-      } else if (sourceData) {
+      } else {
         // Find where the frame filter ended up. It usually sits on the main
         // source, but the dataflow may have pushed it above an aggregate, and
         // it has to move from wherever it landed. Only this unit's own
@@ -214,9 +214,13 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
         // same selection test also appears on datasets that materialize the
         // selection for other consumers, such as a lookup transform's
         // secondary table or another view's pipeline, and moving one of those
-        // filters would sever that consumer.
+        // filters would sever that consumer. A facet child's main output is
+        // the partition its cell defines, which is not a dataset in this
+        // array, so its chain starts from the raw source instead.
+        const chainHead =
+          sourceData ?? data.find((d) => d.name === model.lookupDataSource(model.getDataName(DataSourceType.Raw)));
         const chain: VgData[] = [];
-        for (let d: VgData | undefined = sourceData; d;) {
+        for (let d: VgData | undefined = chainHead; d; ) {
           chain.push(d);
           const src = d.source;
           d = typeof src === 'string' ? data.find((x) => x.name === src) : undefined;
@@ -244,23 +248,31 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
           // wrote it.
           const layout = chain.flatMap((d) => (d.transform ?? []).filter((t) => t.type === 'stack'));
 
-          animationData.push({
-            name: sourceData.name + CURR,
-            source: sourceData.name,
-            transform: [frameFilter, ...layout],
-          });
+          if (sourceData) {
+            animationData.push({
+              name: sourceData.name + CURR,
+              source: sourceData.name,
+              transform: [frameFilter, ...layout],
+            });
 
-          model.animationFrameSource = sourceData.name;
+            model.animationFrameSource = sourceData.name;
 
-          // Interpolation datasets derive from the frame dataset, so they
-          // exist exactly when it does. Their builders ask the model whether
-          // it animates, which holds only after the assignment above. A line
-          // mark resamples the full series instead of joining frame to
-          // frame, because a line is one mark spanning many keyframes.
-          if (animationLineKey(model)) {
-            animationData.push(...animationLineInterpolationData(model, sourceData));
+            // Interpolation datasets derive from the frame dataset, so they
+            // exist exactly when it does. Their builders ask the model whether
+            // it animates, which holds only after the assignment above. A line
+            // mark resamples the full series instead of joining frame to
+            // frame, because a line is one mark spanning many keyframes.
+            if (animationLineKey(model)) {
+              animationData.push(...animationLineInterpolationData(model, sourceData));
+            } else {
+              animationData.push(...animationInterpolationData(model, sourceData));
+            }
           } else {
-            animationData.push(...animationInterpolationData(model, sourceData));
+            // A facet's child draws from the partition its cell group defines,
+            // which is not a dataset in this array. The frame dataset has to sit
+            // inside that group, so hand the filter to the facet, which knows
+            // the partition's name once its own data is assembled.
+            model.animationFrameFilter = frameFilter;
           }
         }
       }

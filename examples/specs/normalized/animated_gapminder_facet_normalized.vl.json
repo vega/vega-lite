@@ -1,0 +1,20 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Gapminder animated over time, faceted by region. Every cell plays the same year, and the shared scales keep the regions comparable.",
+  "data": {"url": "data/gapminder.json"},
+  "columns": 3,
+  "facet": {"field": "cluster", "type": "nominal"},
+  "spec": {
+    "mark": "point",
+    "encoding": {
+      "x": {"field": "fertility", "type": "quantitative"},
+      "y": {"field": "life_expect", "type": "quantitative"},
+      "color": {"field": "cluster", "type": "nominal", "legend": null},
+      "time": {"field": "year", "type": "ordinal"}
+    },
+    "params": [
+      {"name": "animation_frame", "select": {"type": "point", "on": "timer"}}
+    ],
+    "transform": [{"filter": {"param": "animation_frame"}}]
+  }
+}

@@ -136,7 +136,11 @@ export function invalidSelectionEasingControlPoints(easing: number[]) {
   );
 }
 
-export const FACET_ANIMATION_UNSUPPORTED = 'Animation involving facet is currently unsupported.';
+export const FACET_ANIMATION_CHILD_UNSUPPORTED =
+  'A faceted animation draws each cell from one frame dataset, so the faceted specification has to be a single view. Animating a layer or concatenation inside a facet is currently unsupported.';
+
+export const FACET_ANIMATION_RESCALE_UNSUPPORTED =
+  'A facet\'s scales are shared across its cells and cannot read one cell\'s frame, so "rescale" is unsupported in a faceted animation.';
 
 export function stepRangeRequiresTimeChannel(channel: string) {
   return (

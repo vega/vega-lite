@@ -711,7 +711,7 @@ describe('Animated Selection', () => {
   );
 
   it(
-    'errors if you try to use animation on a faceted multi-view',
+    'allows animation in a faceted multi-view',
     log.wrap(() => {
       const facetModel = parseModel({
         data: {url: 'data/gapminder.json'},
@@ -726,7 +726,49 @@ describe('Animated Selection', () => {
         },
       });
 
-      expect(() => facetModel.parseSelections()).toThrow(log.message.FACET_ANIMATION_UNSUPPORTED);
+      expect(() => facetModel.parseSelections()).not.toThrow();
+    }),
+  );
+
+  it(
+    'errors if a faceted animation rescales',
+    log.wrap(() => {
+      const rescaled = parseModel({
+        data: {url: 'data/gapminder.json'},
+        params: [{name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+        transform: [{filter: {param: 'avl'}}],
+        mark: 'point',
+        encoding: {
+          x: {field: 'fertility', type: 'quantitative'},
+          y: {field: 'life_expect', type: 'quantitative'},
+          time: {field: 'year', type: 'ordinal', rescale: true},
+          facet: {field: 'cluster'},
+        },
+      });
+
+      expect(() => rescaled.parseSelections()).toThrow(log.message.FACET_ANIMATION_RESCALE_UNSUPPORTED);
+    }),
+  );
+
+  it(
+    'errors if a facet animates a layered child',
+    log.wrap(() => {
+      const layerInFacet = parseModel({
+        data: {url: 'data/gapminder.json'},
+        facet: {field: 'cluster', columns: 2},
+        spec: {
+          params: [{name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+          transform: [{filter: {param: 'avl'}}],
+          layer: [{mark: 'point'}, {mark: 'text'}],
+          encoding: {
+            x: {field: 'fertility', type: 'quantitative'},
+            y: {field: 'life_expect', type: 'quantitative'},
+            time: {field: 'year', type: 'ordinal'},
+          },
+        },
+      });
+
+      expect(() => layerInFacet.parseSelections()).toThrow(log.message.FACET_ANIMATION_CHILD_UNSUPPORTED);
     }),
   );
 

@@ -22,11 +22,14 @@ import {getHeaderChannel, getHeaderProperty} from './header/common.js';
 import {HEADER_CHANNELS, HEADER_TYPES} from './header/component.js';
 import {parseFacetHeaders} from './header/parse.js';
 import {parseChildrenLayoutSize} from './layoutsize/parse.js';
-import {Model, ModelWithField} from './model.js';
+import {isUnitModel, Model, ModelWithField} from './model.js';
 import {assembleDomain, getFieldFromDomain} from './scale/domain.js';
 import {assembleFacetSignals} from './selection/assemble.js';
 import {isTimerSelection} from './selection/index.js';
-import {FACET_ANIMATION_UNSUPPORTED} from '../log/message.js';
+import {FACET_ANIMATION_CHILD_UNSUPPORTED, FACET_ANIMATION_RESCALE_UNSUPPORTED} from '../log/message.js';
+import {CURR} from './selection/point.js';
+import {animationInterpolationData} from './animation.js';
+import {TimeFieldDef} from '../channeldef.js';
 
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,
@@ -117,8 +120,25 @@ export class FacetModel extends ModelWithField {
     this.child.parseSelections();
     this.component.selection = this.child.component.selection;
 
-    if (vals(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
-      log.error(FACET_ANIMATION_UNSUPPORTED);
+    if (!vals(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
+      return;
+    }
+
+    // Each cell filters its own partition down to the current frame, and this
+    // facet builds that one dataset for its one child. A layer's children each
+    // draw from a dataset of their own, so one frame dataset does not serve
+    // them, and the filter would be dropped without animating anything.
+    if (!isUnitModel(this.child)) {
+      log.error(FACET_ANIMATION_CHILD_UNSUPPORTED);
+      return;
+    }
+
+    // A facet's scales are shared across its cells and assemble outside the
+    // cell group, but the frame dataset is inside it. A scale cannot read a
+    // dataset from a scope it does not enclose, so per-frame domains have
+    // nowhere to come from here.
+    if ((this.child.encoding.time as TimeFieldDef<string>)?.rescale) {
+      log.error(FACET_ANIMATION_RESCALE_UNSUPPORTED);
     }
   }
 
@@ -142,7 +162,18 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleSelectionData(data: readonly VgData[]): readonly VgData[] {
-    return this.child.assembleSelectionData(data);
+    const assembled = this.child.assembleSelectionData(data);
+
+    // The child could not build its own frame dataset, because it draws from
+    // the partition this facet defines rather than from a top-level dataset.
+    // Name the partition here, so that everything assembled from now on --
+    // the interpolation signals, and the marks -- reads an animated unit.
+    // `assembleMarks` builds the dataset itself, inside the cell group.
+    if (isUnitModel(this.child) && this.child.animationFrameFilter) {
+      this.child.animationFrameSource = this.component.data.facetRoot.name;
+    }
+
+    return assembled;
   }
 
   private getHeaderLayoutMixins(): VgLayout {
@@ -427,6 +458,26 @@ export class FacetModel extends ModelWithField {
     // so that we create all groups
     const facetRoot = this.component.data.facetRoot;
     const data = assembleFacetData(facetRoot);
+
+    // A cell's marks show one frame while the scales outside the cell keep the
+    // whole domain, so the frame dataset derives from the partition this cell
+    // already holds. Data assembly lifted the filter out of the pipeline and
+    // left it on the child, because only here does the partition have a name.
+    if (isUnitModel(child) && child.animationFrameFilter) {
+      const partition = child.animationFrameSource;
+      data.push({
+        name: partition + CURR,
+        source: partition,
+        transform: [child.animationFrameFilter],
+      });
+
+      // Interpolation joins the current frame to the next one, so its datasets
+      // derive from the frame dataset and belong in the same scope. The
+      // partition may already be a dataset this cell defines, whose layout
+      // transforms the join has to repeat.
+      const partitionData = data.find((d) => d.name === partition) ?? {name: partition};
+      data.push(...animationInterpolationData(child, partitionData));
+    }
 
     const encodeEntry = child.assembleGroupEncodeEntry(false);
 

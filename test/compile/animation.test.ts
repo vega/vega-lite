@@ -818,4 +818,75 @@ describe('animation', () => {
       expect(groupSignals).toContain('frame_tuple');
     });
   });
+  describe('facet', () => {
+    const faceted = (time: any = {field: 'year', type: 'ordinal'}) =>
+      compile({
+        data: {url: 'data/gapminder.json'},
+        params: [{name: 'frame', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+        transform: [{filter: {param: 'frame'}}],
+        mark: 'point',
+        encoding: {
+          x: {field: 'fertility', type: 'quantitative'},
+          y: {field: 'life_expect', type: 'quantitative'},
+          time,
+          facet: {field: 'cluster', columns: 2},
+        },
+      } as TopLevelSpec).spec;
+
+    const cell = (spec: any) => spec.marks.find((m: any) => /cell/.test(m.name));
+
+    it('builds the frame dataset inside the cell group', () => {
+      // The partition is a Vega-level dataset the cell group defines, so the
+      // frame dataset has to live in the same scope rather than at the top.
+      const compiled = faceted();
+      expect(cell(compiled).data.map((d: any) => d.name)).toContain('facet_curr');
+      expect(compiled.data.map((d: any) => d.name)).not.toContain('facet_curr');
+    });
+
+    it('derives the frame dataset from the partition the cell holds', () => {
+      const frame = cell(faceted()).data.find((d: any) => d.name === 'facet_curr');
+      expect(frame.source).toBe('facet');
+      expect(frame.transform[0].expr).toContain('vlSelectionTest');
+    });
+
+    it('leaves the frame filter off every top-level dataset', () => {
+      // Left upstream, the filter narrows the source that the scales and the
+      // facet partition both read: the time domain collapses to one keyframe
+      // and the set of cells changes every frame.
+      const compiled = faceted();
+      for (const d of compiled.data) {
+        for (const t of d.transform ?? []) {
+          expect(JSON.stringify(t)).not.toContain('vlSelectionTest');
+        }
+      }
+    });
+
+    it('keeps every scale on the full data', () => {
+      const compiled = faceted();
+      for (const scale of compiled.scales) {
+        expect((scale.domain as any).data).toBe('source_0');
+      }
+    });
+
+    it('partitions the cells from the full data', () => {
+      const facetDef = cell(faceted()).from.facet;
+      expect(facetDef.data).toBe('source_0');
+    });
+
+    it('points the marks at the frame dataset', () => {
+      expect(cell(faceted()).marks[0].from.data).toBe('facet_curr');
+    });
+
+    it('builds the interpolation datasets in the cell group too', () => {
+      const compiled = faceted({field: 'year', type: 'ordinal', key: {field: 'country'}});
+      const names = cell(compiled).data.map((d: any) => d.name);
+      expect(names).toEqual(['facet_curr', 'facet_eq', 'facet_next', 'facet_eq_next', 'facet_interpolate']);
+      expect(cell(compiled).marks[0].from.data).toBe('facet_interpolate');
+
+      // the signals the join reads stay at the top level, where one clock lives
+      const topLevel = new Set(compiled.signals.map((s: any) => s.name));
+      expect(topLevel).toContain('anim_value_next');
+      expect(topLevel).toContain('anim_tween');
+    });
+  });
 });

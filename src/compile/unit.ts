@@ -342,6 +342,15 @@ export class UnitModel extends ModelWithField {
    */
   public animationFrameSource?: string;
 
+  /**
+   * The frame filter, held for a facet to build the frame dataset from. A unit
+   * inside a facet draws from the partition its cell group defines rather than
+   * from a top-level dataset, so data assembly cannot build the frame dataset
+   * itself. It lifts the filter out of the pipeline and leaves it here, and the
+   * facet builds the dataset inside the cell group.
+   */
+  public animationFrameFilter?: VgData['transform'][number];
+
   public get isAnimated(): boolean {
     return this.animationFrameSource !== undefined;
   }
