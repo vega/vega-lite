@@ -671,7 +671,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
   return domain;
 }
 
-/** Vega ingests an array in `domain.fields` as literal data without evaluating signals inside it. */
+/** A single signal keeps unioned signal domains working across all supported Vega versions. */
 function unionDomainField(domain: VgNonUnionDomain): VgNonUnionDomain {
   if (isArray(domain) && domain.some(isSignalRef)) {
     return {signal: `[${domain.map((v) => (isSignalRef(v) ? v.signal : util.stringify(v))).join(', ')}]`};
