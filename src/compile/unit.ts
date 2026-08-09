@@ -67,7 +67,7 @@ import {CURR} from './selection/point.js';
 /**
  * Internal model of Vega-Lite specification for the compiler.
  */
-export class UnitModel extends ModelWithField {
+export class UnitModel extends ModelWithField<Encoding<string>> {
   public readonly markDef: MarkDef<Mark, SignalRef>;
   public readonly encoding: Encoding<string>;
 

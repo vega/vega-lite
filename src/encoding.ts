@@ -705,7 +705,7 @@ export function forEach<U extends Record<any, any>>(
 
 export function reduce<T, U extends Record<any, any>>(
   mapping: U,
-  f: (acc: any, cd: ChannelDef, c: keyof U) => U,
+  f: (acc: T, cd: ChannelDef, c: keyof U) => T,
   init: T,
   thisArg?: any,
 ) {

@@ -167,7 +167,7 @@ export class AggregateNode extends DataFlowNode {
           }
         }
       } else {
-        addDimension(dims, channel as Channel, fieldDef, model);
+        addDimension(dims, channel, fieldDef, model);
       }
     });
 
