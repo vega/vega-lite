@@ -1,5 +1,5 @@
 import type {SignalRef} from 'vega';
-import {hasOwnProperty, isObject, isString} from 'vega-util';
+import {hasOwnProperty, isArray, isObject, isString} from 'vega-util';
 import {
   Aggregate,
   isAggregateOp,
@@ -663,8 +663,19 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     return domain;
   }
 
-  const domain: VgScaleMultiDataRefWithSort = {fields: uniqueDomains, ...(sort ? {sort} : {})};
+  const domain: VgScaleMultiDataRefWithSort = {
+    fields: uniqueDomains.map(unionDomainField),
+    ...(sort ? {sort} : {}),
+  };
 
+  return domain;
+}
+
+/** Vega ingests an array in `domain.fields` as literal data without evaluating signals inside it. */
+function unionDomainField(domain: VgNonUnionDomain): VgNonUnionDomain {
+  if (isArray(domain) && domain.some(isSignalRef)) {
+    return {signal: `[${domain.map((v) => (isSignalRef(v) ? v.signal : util.stringify(v))).join(', ')}]`};
+  }
   return domain;
 }
 
