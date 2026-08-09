@@ -348,7 +348,12 @@ export function mergeConflictingProperty<T>(
   )}). Using ${stringify(v1)}.`;
 }
 
-export function mergeConflictingDomainProperty<T>(property: 'domains', propertyOf: SplitParentProperty, v1: T, v2: T) {
+export function mergeConflictingDomainProperty<T>(
+  property: 'domain' | 'domains',
+  propertyOf: SplitParentProperty,
+  v1: T,
+  v2: T,
+) {
   return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(
     v2,
   )}). Using the union of the two domains.`;

@@ -663,10 +663,10 @@ export abstract class ModelWithField extends Model {
 
   protected abstract getMapping(): Partial<Record<ExtendedChannel, any>>;
 
-  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T): T {
+  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: ExtendedChannel) => U, init: T): T {
     return reduce(
       this.getMapping(),
-      (acc: U, cd: ChannelDef, c: Channel) => {
+      (acc: U, cd: ChannelDef, c: ExtendedChannel) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
           return f(acc, fieldDef, c);

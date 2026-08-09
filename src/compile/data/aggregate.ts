@@ -136,7 +136,7 @@ export class AggregateNode extends DataFlowNode {
       return null;
     }
 
-    model.forEachFieldDef((fieldDef, channel: Channel) => {
+    model.forEachFieldDef((fieldDef, channel) => {
       const {aggregate, field} = fieldDef;
       if (aggregate) {
         if (aggregate === 'count') {
@@ -167,7 +167,7 @@ export class AggregateNode extends DataFlowNode {
           }
         }
       } else {
-        addDimension(dims, channel, fieldDef, model);
+        addDimension(dims, channel as Channel, fieldDef, model);
       }
     });
 
