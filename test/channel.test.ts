@@ -5,6 +5,7 @@ import {
   rangeType,
   SCALE_CHANNELS,
   SINGLE_DEF_CHANNELS,
+  SINGLE_DEF_UNIT_CHANNELS,
   UNIT_CHANNELS,
 } from '../src/channel.js';
 import {without} from './util.js';
@@ -19,6 +20,12 @@ describe('channel', () => {
   describe('SINGLE_DEF_CHANNELS', () => {
     it('should be CHANNELS without detail and order', () => {
       expect(SINGLE_DEF_CHANNELS).toEqual(without(CHANNELS, ['detail', 'order', 'tooltip']));
+    });
+  });
+
+  describe('SINGLE_DEF_UNIT_CHANNELS', () => {
+    it('should be SINGLE_DEF_CHANNELS without row, column, and facet', () => {
+      expect(SINGLE_DEF_UNIT_CHANNELS).toEqual(without(SINGLE_DEF_CHANNELS, ['row', 'column', 'facet']));
     });
   });
 

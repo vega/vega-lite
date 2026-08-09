@@ -202,7 +202,44 @@ export const SINGLE_DEF_CHANNELS = keys(SINGLE_DEF_CHANNEL_INDEX);
 
 export type SingleDefChannel = (typeof SINGLE_DEF_CHANNELS)[number];
 
-export const SINGLE_DEF_UNIT_CHANNELS = keys(SINGLE_DEF_UNIT_CHANNEL_INDEX);
+/**
+ * Listed explicitly, rather than derived with `keys()`, so that the order of
+ * `SingleDefUnitChannel` comes from this file instead of from the type checker's key
+ * ordering. The generated JSON schema's enum follows this list.
+ */
+export const SINGLE_DEF_UNIT_CHANNELS = [
+  X,
+  Y,
+  X2,
+  Y2,
+  THETA,
+  THETA2,
+  RADIUS,
+  RADIUS2,
+  LONGITUDE,
+  LONGITUDE2,
+  LATITUDE,
+  LATITUDE2,
+  XOFFSET,
+  YOFFSET,
+  COLOR,
+  FILL,
+  STROKE,
+  TIME,
+  OPACITY,
+  FILLOPACITY,
+  STROKEOPACITY,
+  STROKEWIDTH,
+  STROKEDASH,
+  SIZE,
+  ANGLE,
+  SHAPE,
+  TEXT,
+  KEY,
+  HREF,
+  URL,
+  DESCRIPTION,
+] as const satisfies readonly Extract<keyof typeof SINGLE_DEF_UNIT_CHANNEL_INDEX, string>[];
 
 export type SingleDefUnitChannel = (typeof SINGLE_DEF_UNIT_CHANNELS)[number];
 
