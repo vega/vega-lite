@@ -123,7 +123,7 @@
     "rollup-plugin-bundle-size": "^1.0.3",
     "serve": "^14.2.6",
     "terser": "^5.49.0",
-    "ts-json-schema-generator": "^2.9.0",
+    "ts-json-schema-generator": "3.0.0-native.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.64.0",
     "vega-cli": "^6.2.0",
