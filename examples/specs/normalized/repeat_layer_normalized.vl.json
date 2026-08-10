@@ -14,7 +14,7 @@
         },
         "color": {"datum": "US Gross", "type": "nominal"}
       },
-      "name": "child__layer_US_Gross"
+      "name": "child__layer_0_US_Gross"
     },
     {
       "mark": "line",
@@ -28,7 +28,7 @@
         },
         "color": {"datum": "Worldwide Gross", "type": "nominal"}
       },
-      "name": "child__layer_Worldwide_Gross"
+      "name": "child__layer_1_Worldwide_Gross"
     }
   ]
 }

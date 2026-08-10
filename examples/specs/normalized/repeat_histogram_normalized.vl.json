@@ -11,7 +11,7 @@
         "y": {"aggregate": "count"},
         "color": {"field": "Origin"}
       },
-      "name": "child__Horsepower"
+      "name": "child__0_Horsepower"
     },
     {
       "mark": "bar",
@@ -20,7 +20,7 @@
         "y": {"aggregate": "count"},
         "color": {"field": "Origin"}
       },
-      "name": "child__Miles_per_Gallon"
+      "name": "child__1_Miles_per_Gallon"
     },
     {
       "mark": "bar",
@@ -29,7 +29,7 @@
         "y": {"aggregate": "count"},
         "color": {"field": "Origin"}
       },
-      "name": "child__Acceleration"
+      "name": "child__2_Acceleration"
     },
     {
       "mark": "bar",
@@ -38,7 +38,7 @@
         "y": {"aggregate": "count"},
         "color": {"field": "Origin"}
       },
-      "name": "child__Displacement"
+      "name": "child__3_Displacement"
     }
   ]
 }

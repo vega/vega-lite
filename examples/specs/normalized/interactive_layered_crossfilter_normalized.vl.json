@@ -33,7 +33,7 @@
           "transform": [{"filter": {"param": "brush"}}]
         }
       ],
-      "name": "child__column_distance"
+      "name": "child__column_0_distance"
     },
     {
       "layer": [
@@ -60,7 +60,7 @@
           "transform": [{"filter": {"param": "brush"}}]
         }
       ],
-      "name": "child__column_delay"
+      "name": "child__column_1_delay"
     },
     {
       "layer": [
@@ -87,7 +87,7 @@
           "transform": [{"filter": {"param": "brush"}}]
         }
       ],
-      "name": "child__column_time"
+      "name": "child__column_2_time"
     }
   ]
 }

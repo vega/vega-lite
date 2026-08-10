@@ -16,7 +16,7 @@
             "x": {"field": "Rotten Tomatoes Rating", "bin": {"maxbins": 20}},
             "y": {"aggregate": "count"}
           },
-          "name": "child__column_Rotten_Tomatoes_Rating"
+          "name": "child__column_0_Rotten_Tomatoes_Rating"
         },
         {
           "width": 150,
@@ -26,7 +26,7 @@
             "x": {"field": "IMDB Rating", "bin": {"maxbins": 20}},
             "y": {"aggregate": "count"}
           },
-          "name": "child__column_IMDB_Rating"
+          "name": "child__column_1_IMDB_Rating"
         }
       ]
     },
@@ -43,7 +43,7 @@
             "y": {"aggregate": "count"}
           },
           "mark": "bar",
-          "name": "child__column_US_Gross"
+          "name": "child__column_0_US_Gross"
         },
         {
           "width": 150,
@@ -53,7 +53,7 @@
             "y": {"aggregate": "count"}
           },
           "mark": "bar",
-          "name": "child__column_Worldwide_Gross"
+          "name": "child__column_1_Worldwide_Gross"
         }
       ]
     }

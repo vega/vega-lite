@@ -11,7 +11,7 @@
         "x": {"field": "Horsepower", "bin": true},
         "y": {"aggregate": "count"}
       },
-      "name": "child__Horsepower"
+      "name": "child__0_Horsepower"
     },
     {
       "mark": "bar",
@@ -19,7 +19,7 @@
         "x": {"field": "Miles_per_Gallon", "bin": true},
         "y": {"aggregate": "count"}
       },
-      "name": "child__Miles_per_Gallon"
+      "name": "child__1_Miles_per_Gallon"
     }
   ]
 }

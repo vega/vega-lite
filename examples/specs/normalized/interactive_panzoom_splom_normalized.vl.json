@@ -16,7 +16,7 @@
         },
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__row_Horsepowercolumn_Miles_per_Gallon"
+      "name": "child__row_0_Horsepowercolumn_0_Miles_per_Gallon"
     },
     {
       "params": [{"name": "grid", "select": "interval", "bind": "scales"}],
@@ -30,7 +30,7 @@
         },
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__row_Horsepowercolumn_Acceleration"
+      "name": "child__row_0_Horsepowercolumn_1_Acceleration"
     },
     {
       "params": [{"name": "grid", "select": "interval", "bind": "scales"}],
@@ -44,7 +44,7 @@
         },
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__row_Horsepowercolumn_Horsepower"
+      "name": "child__row_0_Horsepowercolumn_2_Horsepower"
     },
     {
       "params": [{"name": "grid", "select": "interval", "bind": "scales"}],
@@ -58,7 +58,7 @@
         },
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__row_Accelerationcolumn_Miles_per_Gallon"
+      "name": "child__row_1_Accelerationcolumn_0_Miles_per_Gallon"
     },
     {
       "params": [{"name": "grid", "select": "interval", "bind": "scales"}],
@@ -72,7 +72,7 @@
         },
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__row_Accelerationcolumn_Acceleration"
+      "name": "child__row_1_Accelerationcolumn_1_Acceleration"
     },
     {
       "params": [{"name": "grid", "select": "interval", "bind": "scales"}],
@@ -86,7 +86,7 @@
         },
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__row_Accelerationcolumn_Horsepower"
+      "name": "child__row_1_Accelerationcolumn_2_Horsepower"
     },
     {
       "params": [{"name": "grid", "select": "interval", "bind": "scales"}],
@@ -100,7 +100,7 @@
         },
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon"
+      "name": "child__row_2_Miles_per_Galloncolumn_0_Miles_per_Gallon"
     },
     {
       "params": [{"name": "grid", "select": "interval", "bind": "scales"}],
@@ -114,7 +114,7 @@
         },
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__row_Miles_per_Galloncolumn_Acceleration"
+      "name": "child__row_2_Miles_per_Galloncolumn_1_Acceleration"
     },
     {
       "params": [{"name": "grid", "select": "interval", "bind": "scales"}],
@@ -128,7 +128,7 @@
         },
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__row_Miles_per_Galloncolumn_Horsepower"
+      "name": "child__row_2_Miles_per_Galloncolumn_2_Horsepower"
     }
   ]
 }

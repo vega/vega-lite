@@ -22,7 +22,7 @@
           }
         }
       ],
-      "name": "child__layer_AAPL"
+      "name": "child__layer_0_AAPL"
     },
     {
       "layer": [
@@ -42,7 +42,7 @@
           }
         }
       ],
-      "name": "child__layer_AMZN"
+      "name": "child__layer_1_AMZN"
     },
     {
       "layer": [
@@ -62,7 +62,7 @@
           }
         }
       ],
-      "name": "child__layer_GOOG"
+      "name": "child__layer_2_GOOG"
     },
     {
       "layer": [
@@ -82,7 +82,7 @@
           }
         }
       ],
-      "name": "child__layer_IBM"
+      "name": "child__layer_3_IBM"
     },
     {
       "layer": [
@@ -102,7 +102,7 @@
           }
         }
       ],
-      "name": "child__layer_MSFT"
+      "name": "child__layer_4_MSFT"
     }
   ]
 }

@@ -21,7 +21,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Beak_Length__mm_column_Body_Mass__g_"
+      "name": "child__row_0_Beak_Length__mm_column_0_Body_Mass__g_"
     },
     {
       "width": 150,
@@ -40,7 +40,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Beak_Length__mm_column_Flipper_Length__mm_"
+      "name": "child__row_0_Beak_Length__mm_column_1_Flipper_Length__mm_"
     },
     {
       "width": 150,
@@ -59,7 +59,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Beak_Length__mm_column_Beak_Depth__mm_"
+      "name": "child__row_0_Beak_Length__mm_column_2_Beak_Depth__mm_"
     },
     {
       "width": 150,
@@ -78,7 +78,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Beak_Length__mm_column_Beak_Length__mm_"
+      "name": "child__row_0_Beak_Length__mm_column_3_Beak_Length__mm_"
     },
     {
       "width": 150,
@@ -97,7 +97,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Beak_Depth__mm_column_Body_Mass__g_"
+      "name": "child__row_1_Beak_Depth__mm_column_0_Body_Mass__g_"
     },
     {
       "width": 150,
@@ -116,7 +116,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Beak_Depth__mm_column_Flipper_Length__mm_"
+      "name": "child__row_1_Beak_Depth__mm_column_1_Flipper_Length__mm_"
     },
     {
       "width": 150,
@@ -135,7 +135,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Beak_Depth__mm_column_Beak_Depth__mm_"
+      "name": "child__row_1_Beak_Depth__mm_column_2_Beak_Depth__mm_"
     },
     {
       "width": 150,
@@ -154,7 +154,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Beak_Depth__mm_column_Beak_Length__mm_"
+      "name": "child__row_1_Beak_Depth__mm_column_3_Beak_Length__mm_"
     },
     {
       "width": 150,
@@ -173,7 +173,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Flipper_Length__mm_column_Body_Mass__g_"
+      "name": "child__row_2_Flipper_Length__mm_column_0_Body_Mass__g_"
     },
     {
       "width": 150,
@@ -192,7 +192,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Flipper_Length__mm_column_Flipper_Length__mm_"
+      "name": "child__row_2_Flipper_Length__mm_column_1_Flipper_Length__mm_"
     },
     {
       "width": 150,
@@ -211,7 +211,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Flipper_Length__mm_column_Beak_Depth__mm_"
+      "name": "child__row_2_Flipper_Length__mm_column_2_Beak_Depth__mm_"
     },
     {
       "width": 150,
@@ -230,7 +230,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Flipper_Length__mm_column_Beak_Length__mm_"
+      "name": "child__row_2_Flipper_Length__mm_column_3_Beak_Length__mm_"
     },
     {
       "width": 150,
@@ -249,7 +249,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Body_Mass__g_column_Body_Mass__g_"
+      "name": "child__row_3_Body_Mass__g_column_0_Body_Mass__g_"
     },
     {
       "width": 150,
@@ -268,7 +268,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Body_Mass__g_column_Flipper_Length__mm_"
+      "name": "child__row_3_Body_Mass__g_column_1_Flipper_Length__mm_"
     },
     {
       "width": 150,
@@ -287,7 +287,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Body_Mass__g_column_Beak_Depth__mm_"
+      "name": "child__row_3_Body_Mass__g_column_2_Beak_Depth__mm_"
     },
     {
       "width": 150,
@@ -306,7 +306,7 @@
         },
         "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_Body_Mass__g_column_Beak_Length__mm_"
+      "name": "child__row_3_Body_Mass__g_column_3_Beak_Length__mm_"
     }
   ]
 }

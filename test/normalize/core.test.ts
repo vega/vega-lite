@@ -65,6 +65,26 @@ describe('normalize()', () => {
       const normalized = normalize(spec);
       expect((normalized as any).layer).toHaveLength(2);
     });
+
+    it('generates unique child names for non-ASCII repeat values', () => {
+      const spec: TopLevelSpec = {
+        repeat: {row: ['γ', 'β'], column: ['γ', 'β']},
+        spec: {
+          mark: {type: 'point', filled: true},
+          encoding: {
+            x: {field: {repeat: 'column'}, type: 'quantitative'},
+            y: {field: {repeat: 'row'}, type: 'quantitative'},
+            size: {value: 80},
+          },
+        },
+      };
+
+      const normalized = normalize(spec) as any;
+      const childNames = normalized.concat.map((child: any) => child.name);
+
+      expect(childNames).toHaveLength(4);
+      expect(new Set(childNames).size).toBe(4);
+    });
   });
 
   describe('normalizeFacetedUnit', () => {
