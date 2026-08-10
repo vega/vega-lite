@@ -132,7 +132,7 @@ The aptly named `resolve` property addresses this ambiguity, and can be set to o
 
 In addition to all [common selection properties](#selection-props), point selections support the following properties:
 
-{% include table.html props="toggle,nearest" source="PointSelectionConfig" %}
+{% include table.html props="toggle,nearest,easing,pause" source="PointSelectionConfig" %}
 
 ### `toggle`
 
@@ -165,6 +165,39 @@ The `nearest` transform also respects any [position encoding projections](projec
 #### Current Limitations
 
 - The `nearest` property is not supported for multi-element mark types (i.e., `line` and `area`). For these mark types, consider layering a discrete mark type (e.g., `point`) with a 0-value `opacity` as in the last example above.
+
+{:#animation-easing}
+
+### Easing an Animation
+
+The `easing` property controls how an [animation](../encoding.html#time)'s playback speed varies over its duration. Give it the name of a [d3-ease](https://github.com/d3/d3-ease) function, or an array of ascending numbers in [0, 1], which are treated as evenly-spaced control points of a custom easing curve. The default, `"easeLinear"`, plays at a constant rate.
+
+```json
+{"name": "frame", "select": {"type": "point", "on": "timer", "easing": "easeCubicInOut"}}
+```
+
+Easing also applies when a [bound slider](bind.html#animation-binding) scrubs the animation: the scrubbed position passes through the easing curve, so playback can land on a frame near the chosen one. The slider then updates to the frame shown.
+
+{:#animation-pause}
+
+### Pausing an Animation
+
+A selection with `"on": "timer"` drives an [animation](../encoding.html#time). There are two ways to pause playback: a filter on the timer event lets the viewer play and pause the animation, and the `pause` property holds the animation on particular data values for a fixed duration.
+
+To give the viewer a play/pause checkbox, filter the timer on a parameter bound to a checkbox:
+
+```json
+"params": [
+  {"name": "frame", "select": {"type": "point", "on": {"type": "timer", "filter": "playing"}}},
+  {"name": "playing", "value": true, "bind": {"input": "checkbox"}}
+]
+```
+
+To hold the animation on particular values in the data, use `pause`. Each entry specifies a value in the time field's domain and a duration in milliseconds to hold on it:
+
+```json
+"pause": [{"value": 1965, "duration": 2000}]
+```
 
 {:#interval}
 

@@ -18,6 +18,7 @@ import {deepEqual} from '../util.js';
 import {NormalizerParams} from './base.js';
 import {CoreNormalizer} from './core.js';
 import {SelectionCompatibilityNormalizer} from './selectioncompat.js';
+import {TimeEncodingNormalizer} from './timeencoding.js';
 import {TopLevelSelectionsNormalizer} from './toplevelselection.js';
 
 export function normalize(
@@ -42,6 +43,7 @@ export function normalize(
 const coreNormalizer = new CoreNormalizer();
 const selectionCompatNormalizer = new SelectionCompatibilityNormalizer();
 const topLevelSelectionNormalizer = new TopLevelSelectionsNormalizer();
+const timeEncodingNormalizer = new TimeEncodingNormalizer();
 
 /**
  * Decompose extended unit specs into composition of pure unit specs.
@@ -52,8 +54,13 @@ function normalizeGenericSpec(
   config: Config<SignalRef> = {},
 ) {
   const normParams = {config};
-  return topLevelSelectionNormalizer.map(
-    coreNormalizer.map(selectionCompatNormalizer.map(spec, normParams), normParams),
+  // Time encodings elaborate after top-level selections are distributed, so a
+  // selection declared above a unit still counts as that unit's animation.
+  return timeEncodingNormalizer.map(
+    topLevelSelectionNormalizer.map(
+      coreNormalizer.map(selectionCompatNormalizer.map(spec, normParams), normParams),
+      normParams,
+    ),
     normParams,
   );
 }

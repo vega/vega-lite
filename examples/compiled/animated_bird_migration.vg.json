@@ -1,0 +1,175 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "The migration of ten bird species over a year, traced by each species' daily average position over a world map. Each species trails a fading ten-day tail as the animation advances.",
+  "background": "white",
+  "padding": 5,
+  "width": 420,
+  "height": 560,
+  "style": "view",
+  "data": [
+    {"name": "trail_store"},
+    {
+      "name": "source_0",
+      "url": "data/world-110m.json",
+      "format": {"type": "topojson", "feature": "countries"}
+    },
+    {
+      "name": "source_1",
+      "url": "data/bird-migration.csv",
+      "format": {"type": "csv", "parse": {"day": "number"}},
+      "transform": [
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["lon", "lat"],
+          "as": ["layer_1_x", "layer_1_y"]
+        }
+      ]
+    },
+    {
+      "name": "source_1_curr",
+      "source": "source_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!length(data(\"trail_store\")) || vlSelectionTest(\"trail_store\", datum)"
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "translate": [200, 324],
+      "type": "equalEarth",
+      "rotate": [90, 0],
+      "scale": 250
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "trail",
+      "update": "vlSelectionResolve(\"trail_store\", \"union\", true, true)"
+    },
+    {
+      "name": "anim_clock",
+      "init": "0",
+      "on": [
+        {
+          "events": {"type": "timer", "throttle": 16.666666666666668},
+          "update": "is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock"
+        }
+      ]
+    },
+    {
+      "name": "last_tick_at",
+      "init": "now()",
+      "on": [
+        {
+          "events": [{"signal": "anim_clock"}, {"signal": "is_playing"}],
+          "update": "now()"
+        }
+      ]
+    },
+    {"name": "is_playing", "init": "true"},
+    {"name": "eased_anim_clock", "update": "anim_clock"},
+    {"name": "trail_domain", "init": "domain('time')"},
+    {"name": "min_extent", "init": "extent(trail_domain)[0]"},
+    {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
+    {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
+    {
+      "name": "trail_tuple",
+      "update": "{unit: \"layer_1\", fields: trail_tuple_fields, values: [anim_value, anim_value - 10]}"
+    },
+    {
+      "name": "trail_tuple_fields",
+      "value": [
+        {"field": "day", "type": "E-LTE"},
+        {"field": "day", "type": "E-GT"}
+      ]
+    },
+    {
+      "name": "trail_modify",
+      "update": "modify(\"trail_store\", trail_tuple, true)"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "shape",
+      "clip": true,
+      "style": ["geoshape"],
+      "interactive": true,
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#f0f0f0"},
+          "stroke": {"value": "#ffffff"},
+          "strokeWidth": {"value": 0.5},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "clip": true,
+      "style": ["circle"],
+      "interactive": true,
+      "from": {"data": "source_1_curr"},
+      "encode": {
+        "update": {
+          "opacity": {"signal": "max(0.15, 1 - (anim_value - datum.day) / 10)"},
+          "size": {"value": 20},
+          "cursor": {"value": "pointer"},
+          "fill": {"scale": "color", "field": "species"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"lon: \" + (format(datum[\"lon\"], \"\")) + \"; lat: \" + (format(datum[\"lat\"], \"\")) + \"; species: \" + (isValid(datum[\"species\"]) ? isArray(datum[\"species\"]) ? join(datum[\"species\"], ' ') : datum[\"species\"] : \"\"+datum[\"species\"]) + \"; day: \" + (format(datum[\"day\"], \"\"))"
+          },
+          "x": {"field": "layer_1_x"},
+          "y": {"field": "layer_1_y"},
+          "shape": {"value": "circle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_1", "field": "species", "sort": true},
+      "range": "category"
+    },
+    {
+      "name": "time",
+      "type": "band",
+      "domain": {"data": "source_1", "field": "day", "sort": true},
+      "range": {"step": 50}
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "symbolType": "circle",
+      "title": "species",
+      "encode": {
+        "symbols": {
+          "update": {
+            "opacity": {
+              "signal": "max(0.15, 1 - (anim_value - datum.day) / 10)"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

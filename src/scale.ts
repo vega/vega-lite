@@ -180,6 +180,15 @@ export function isContinuousToDiscrete(type: ScaleType): type is 'quantile' | 'q
   return CONTINUOUS_TO_DISCRETE_SCALES.has(type);
 }
 
+/**
+ * Whether a scale's output is a set of discrete values rather than a
+ * continuous span. `band` and `point` are excluded: their domains are discrete,
+ * but they produce continuous positions.
+ */
+export function hasDiscreteRange(type: ScaleType): boolean {
+  return type === 'ordinal' || type === 'bin-ordinal' || isContinuousToDiscrete(type);
+}
+
 export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvalidDataConfigMixins {
   /**
    * If true, rounds numeric output values to integers.
@@ -436,7 +445,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
   zero?: boolean;
 
   /**
-   * Default framerate (frames per second) for time [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.
+   * Default frame rate (frames per second) for animations with a [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) scale.
    *
    * __Default value:__ `2`
    *
@@ -444,7 +453,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
   framesPerSecond?: number;
 
   /**
-   * Default animation duration (in seconds) for time encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.
+   * Default animation duration (in seconds) for [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales, which use `framesPerSecond` instead.
    *
    * __Default value:__ `5`
    *
@@ -540,6 +549,17 @@ export function isFieldRange(range: any): range is FieldRange {
   return isObject(range) && 'field' in range;
 }
 
+export interface ScaleRangeStep {
+  /**
+   * The width of each band in a band scale's range.
+   */
+  step: number;
+}
+
+export function isScaleRangeStep(range: any): range is ScaleRangeStep {
+  return isObject(range) && 'step' in range;
+}
+
 export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
   /**
    * The type of scale. Vega-Lite supports the following categories of scale types:
@@ -611,13 +631,15 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
    *
    * - For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values or an object with a `field` property representing the range values.  For example, if a field `color` contains CSS color names, we can set `range` to `{field: "color"}`.
    *
+   * - For the [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) channel's band scale, an object with a `step` property giving the duration of each keyframe in milliseconds.
+   *
    * __Notes:__
    *
    * 1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.
    *
    * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`).
    */
-  range?: RangeEnum | (number | string | number[] | ES)[] | FieldRange;
+  range?: RangeEnum | (number | string | number[] | ES)[] | FieldRange | ScaleRangeStep;
 
   /**
    * Sets the maximum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges.
