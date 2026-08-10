@@ -2,6 +2,7 @@ import {Binding, isString, Signal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel.js';
 import {
+  AnimationPause,
   BrushConfig,
   LegendBinding,
   SelectionInit,
@@ -46,6 +47,8 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   resolve: SelectionResolution;
   mark?: BrushConfig;
   project: SelectionProjectionComponent;
+  /** Frames an animated selection dwells on, and for how long. */
+  pause?: AnimationPause[];
   scales?: SelectionProjection[];
   toggle?: string;
   translate?: any;

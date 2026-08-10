@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Gapminder animated over time, pausing on 1965, with a play/pause checkbox.",
+  "data": {
+    "url": "data/gapminder.json"
+  },
+  "mark": "point",
+  "params": [
+    {
+      "name": "animation_frame",
+      "select": {
+        "type": "point",
+        "on": {
+          "type": "timer",
+          "filter": "playing"
+        },
+        "pause": [
+          {
+            "value": 1965,
+            "duration": 2000
+          }
+        ]
+      }
+    },
+    {
+      "name": "playing",
+      "value": true,
+      "bind": {
+        "input": "checkbox"
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": {
+        "param": "animation_frame"
+      }
+    }
+  ],
+  "encoding": {
+    "color": {
+      "field": "cluster",
+      "type": "nominal"
+    },
+    "x": {
+      "field": "fertility",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "life_expect",
+      "type": "quantitative"
+    },
+    "time": {
+      "field": "year",
+      "type": "ordinal"
+    }
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "A week of earthquakes from the USGS feed, animated at the time each one occurred. Circle area follows magnitude, and each circle fades over the day after its earthquake.",
+  "background": "white",
+  "padding": 5,
+  "width": 600,
+  "height": 340,
+  "style": "view",
+  "data": [
+    {"name": "recent_store"},
+    {
+      "name": "source_0",
+      "url": "data/earthquakes.json",
+      "format": {"type": "json", "property": "features"},
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum.geometry.coordinates[0]",
+          "as": "longitude"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.geometry.coordinates[1]",
+          "as": "latitude"
+        },
+        {"type": "formula", "expr": "datum.properties.mag", "as": "magnitude"},
+        {"type": "formula", "expr": "datum.properties.time", "as": "time"},
+        {
+          "type": "geojson",
+          "fields": ["longitude", "latitude"],
+          "signal": "geojson_0"
+        },
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["longitude", "latitude"],
+          "as": ["x", "y"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"time\"]) && isFinite(+datum[\"time\"]) && isValid(datum[\"magnitude\"]) && isFinite(+datum[\"magnitude\"])"
+        }
+      ]
+    },
+    {
+      "name": "source_0_curr",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!length(data(\"recent_store\")) || vlSelectionTest(\"recent_store\", datum)"
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "geojson_0"},
+      "type": "naturalEarth1"
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "recent",
+      "update": "vlSelectionResolve(\"recent_store\", \"union\", true, true)"
+    },
+    {
+      "name": "anim_clock",
+      "init": "0",
+      "on": [
+        {
+          "events": {"type": "timer", "throttle": 16.666666666666668},
+          "update": "is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock"
+        }
+      ]
+    },
+    {
+      "name": "last_tick_at",
+      "init": "now()",
+      "on": [
+        {
+          "events": [{"signal": "anim_clock"}, {"signal": "is_playing"}],
+          "update": "now()"
+        }
+      ]
+    },
+    {"name": "is_playing", "init": "true"},
+    {"name": "eased_anim_clock", "update": "anim_clock"},
+    {"name": "recent_domain", "init": "domain('time')"},
+    {"name": "min_extent", "init": "extent(recent_domain)[0]"},
+    {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
+    {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
+    {
+      "name": "recent_tuple",
+      "update": "{unit: \"\", fields: recent_tuple_fields, values: [anim_value ? anim_value : min_extent]}"
+    },
+    {"name": "recent_tuple_fields", "value": [{"type": "E", "field": "time"}]},
+    {
+      "name": "recent_modify",
+      "update": "modify(\"recent_store\", recent_tuple, true)"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "interactive": true,
+      "from": {"data": "source_0_curr"},
+      "encode": {
+        "update": {
+          "opacity": {
+            "signal": "max(0.1, 1 - (anim_value - datum.time) / 86400000)"
+          },
+          "cursor": {"value": "pointer"},
+          "fill": {"value": "#c1272d"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\")) + \"; time: \" + (format(datum[\"time\"], \"\")) + \"; magnitude: \" + (format(datum[\"magnitude\"], \"\"))"
+          },
+          "x": {"field": "x"},
+          "y": {"field": "y"},
+          "size": {"scale": "size", "field": "magnitude"},
+          "shape": {"value": "circle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "time",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "time"},
+      "range": [0, 30000],
+      "zero": false
+    },
+    {
+      "name": "size",
+      "type": "pow",
+      "domain": [0, 6.5],
+      "range": [6, 700],
+      "exponent": 2,
+      "zero": true
+    }
+  ],
+  "legends": [
+    {
+      "size": "size",
+      "symbolType": "circle",
+      "title": "magnitude",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "#c1272d"},
+            "opacity": {
+              "signal": "max(0.1, 1 - (anim_value - datum.time) / 86400000)"
+            },
+            "stroke": {"value": "transparent"}
+          }
+        }
+      }
+    }
+  ]
+}

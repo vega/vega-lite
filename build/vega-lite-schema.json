@@ -130,6 +130,24 @@
         }
       ]
     },
+    "AnimationPause": {
+      "additionalProperties": false,
+      "properties": {
+        "duration": {
+          "description": "How long to pause, in milliseconds.",
+          "type": "number"
+        },
+        "value": {
+          "$ref": "#/definitions/SelectionInit",
+          "description": "The value in the time field's domain to pause on."
+        }
+      },
+      "required": [
+        "value",
+        "duration"
+      ],
+      "type": "object"
+    },
     "AnyMark": {
       "anyOf": [
         {
@@ -5114,7 +5132,8 @@
           "description": "The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise."
         },
         "time": {
-          "$ref": "#/definitions/TimeDef"
+          "$ref": "#/definitions/TimeDef",
+          "description": "Time position of animated marks."
         },
         "tooltip": {
           "anyOf": [
@@ -9290,7 +9309,8 @@
           "description": "The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise."
         },
         "time": {
-          "$ref": "#/definitions/TimeDef"
+          "$ref": "#/definitions/TimeDef",
+          "description": "Time position of animated marks."
         },
         "tooltip": {
           "anyOf": [
@@ -19532,6 +19552,13 @@
           ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).\n\n__See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation."
         },
+        "pause": {
+          "description": "For animated selections (those with `\"on\": \"timer\"`), values to pause on before playback continues. Each entry gives a value in the time field's domain and a duration in milliseconds to hold on it.",
+          "items": {
+            "$ref": "#/definitions/AnimationPause"
+          },
+          "type": "array"
+        },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
           "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\nOne of:\n- `\"global\"` -- only one brush exists for the entire SPLOM. When the user begins to drag, any previous brushes are cleared, and a new one is constructed.\n- `\"union\"` -- each cell contains its own brush, and points are highlighted if they lie within _any_ of these individual brushes.\n- `\"intersect\"` -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.\n\n__Default value:__ `global`.\n\n__See also:__ [`resolve` examples](https://vega.github.io/vega-lite/docs/selection.html#resolve) in the documentation."
@@ -19599,6 +19626,13 @@
             }
           ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).\n\n__See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation."
+        },
+        "pause": {
+          "description": "For animated selections (those with `\"on\": \"timer\"`), values to pause on before playback continues. Each entry gives a value in the time field's domain and a duration in milliseconds to hold on it.",
+          "items": {
+            "$ref": "#/definitions/AnimationPause"
+          },
+          "type": "array"
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
@@ -22086,9 +22120,12 @@
             },
             {
               "$ref": "#/definitions/FieldRange"
+            },
+            {
+              "$ref": "#/definitions/ScaleRangeStep"
             }
           ],
-          "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n\n- For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values or an object with a `field` property representing the range values.  For example, if a field `color` contains CSS color names, we can set `range` to `{field: \"color\"}`.\n\n__Notes:__\n\n1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`)."
+          "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n\n- For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values or an object with a `field` property representing the range values.  For example, if a field `color` contains CSS color names, we can set `range` to `{field: \"color\"}`.\n\n- For the [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) channel's band scale, an object with a `step` property giving the duration of each keyframe in milliseconds.\n\n__Notes:__\n\n1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`)."
         },
         "rangeMax": {
           "anyOf": [
@@ -22210,7 +22247,7 @@
       "additionalProperties": false,
       "properties": {
         "animationDuration": {
-          "description": "Default animation duration (in seconds) for time encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.\n\n__Default value:__ `5`",
+          "description": "Default animation duration (in seconds) for [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales, which use `framesPerSecond` instead.\n\n__Default value:__ `5`",
           "type": "number"
         },
         "bandPaddingInner": {
@@ -22302,7 +22339,7 @@
           "minimum": 0
         },
         "framesPerSecond": {
-          "description": "Default framerate (frames per second) for time [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.\n\n__Default value:__ `2`",
+          "description": "Default frame rate (frames per second) for animations with a [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) scale.\n\n__Default value:__ `2`",
           "type": "number"
         },
         "invalid": {
@@ -23136,6 +23173,19 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "ScaleRangeStep": {
+      "additionalProperties": false,
+      "properties": {
+        "step": {
+          "description": "The width of each band in a band scale's range.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "step"
+      ],
       "type": "object"
     },
     "ScaleResolveMap": {
@@ -26926,6 +26976,7 @@
               "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
             },
             "rescale": {
+              "description": "Whether the animated marks' scales should be recomputed from the current frame rather than held fixed across the whole animation. Rescaling keeps each frame's data filling the view -- as in a racing bar chart, where the bars stay legible as their magnitudes grow -- at the cost of making positions incomparable between frames.\n\nVega-Lite never rescales a scale with a discrete output range (`ordinal`, `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because recomputing one of these scales per frame makes marks flicker between its discrete outputs.\n\n__Default value:__ `false`",
               "type": "boolean"
             },
             "scale": {
@@ -29491,6 +29542,7 @@
           "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
         },
         "rescale": {
+          "description": "Whether the animated marks' scales should be recomputed from the current frame rather than held fixed across the whole animation. Rescaling keeps each frame's data filling the view -- as in a racing bar chart, where the bars stay legible as their magnitudes grow -- at the cost of making positions incomparable between frames.\n\nVega-Lite never rescales a scale with a discrete output range (`ordinal`, `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because recomputing one of these scales per frame makes marks flicker between its discrete outputs.\n\n__Default value:__ `false`",
           "type": "boolean"
         },
         "scale": {
