@@ -504,6 +504,75 @@ describe('Animated Selection', () => {
     expect(marks[0].from.data).toBe('source_0_curr');
   });
 
+  it('builds no frame dataset when nothing filters on the animation', () => {
+    // an animation may drive a conditional encoding or a bound scale while every
+    // mark stays on the full data, so there is no frame to select
+    const unfilteredModel = parseUnitModelWithScaleAndSelection({
+      data: {url: 'data/gapminder.json'},
+      params: [{name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+      mark: 'point',
+      encoding: {
+        x: {field: 'fertility', type: 'quantitative'},
+        y: {field: 'life_expect', type: 'quantitative'},
+        time: {field: 'year', type: 'ordinal'},
+      },
+    });
+
+    unfilteredModel.parseData();
+    optimizeDataflow(unfilteredModel.component.data, unfilteredModel);
+
+    const datasets = assembleUnitSelectionData(unfilteredModel, assembleRootData(unfilteredModel.component.data, {}));
+    expect(datasets.find((d) => d.name === 'source_0_curr')).toBeUndefined();
+
+    unfilteredModel.parseMarkGroup();
+    expect(unfilteredModel.assembleMarks()[0].from.data).toBe('source_0');
+  });
+
+  it('does not rewrite marks to the frame dataset without a timer selection', () => {
+    const staticModel = parseUnitModelWithScaleAndSelection({
+      data: {url: 'data/gapminder.json'},
+      params: [{name: 'pt', select: {type: 'point', fields: ['year']}}],
+      mark: 'point',
+      encoding: {
+        x: {field: 'fertility', type: 'quantitative'},
+        y: {field: 'life_expect', type: 'quantitative'},
+        time: {field: 'year', type: 'ordinal'},
+      },
+    });
+
+    staticModel.parseData();
+    optimizeDataflow(staticModel.component.data, staticModel);
+    staticModel.parseMarkGroup();
+
+    expect(staticModel.assembleMarks()[0].from.data).not.toMatch(/_curr$/);
+  });
+
+  it('assigns the animation frame dataset to faceted path groups', () => {
+    // a line broken up by color compiles to a facet-backed group mark, so its
+    // data reference lives on from.facet.data rather than from.data
+    const groupedLineModel = parseUnitModelWithScaleAndSelection({
+      data: {url: 'data/gapminder.json'},
+      params: [{name: 'avl', select: {type: 'point', fields: ['year'], on: 'timer'}}],
+      transform: [{filter: {param: 'avl'}}],
+      mark: 'line',
+      encoding: {
+        x: {field: 'fertility', type: 'quantitative'},
+        y: {field: 'life_expect', type: 'quantitative'},
+        color: {field: 'country', type: 'nominal'},
+        time: {field: 'year', type: 'ordinal'},
+      },
+    });
+
+    groupedLineModel.parseData();
+    optimizeDataflow(groupedLineModel.component.data, groupedLineModel);
+    // data is assembled before marks, which is where the frame dataset is built
+    assembleUnitSelectionData(groupedLineModel, assembleRootData(groupedLineModel.component.data, {}));
+    groupedLineModel.parseMarkGroup();
+
+    const marks = groupedLineModel.assembleMarks();
+    expect(marks[0].from.facet.data).toMatch(/_curr$/);
+  });
+
   it(
     'does not build extra signals for duplicate selection',
     log.wrap((localLogger) => {
