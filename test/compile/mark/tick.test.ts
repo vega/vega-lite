@@ -190,6 +190,40 @@ describe('Mark: Tick', () => {
     });
   });
 
+  describe('vertical ticks with bandSize in config', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'tick',
+      config: {tick: {bandSize: 12}},
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Cylinders', type: 'ordinal'},
+      },
+      data: {url: 'data/cars.json'},
+    });
+    const props = tick.encodeEntry(model);
+
+    it('uses config bandSize for tick length', () => {
+      expect(props.height).toEqual({value: 12});
+    });
+  });
+
+  describe('vertical ticks with size in mark def and bandSize in config', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: {type: 'tick', size: 5},
+      config: {tick: {bandSize: 12}},
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Cylinders', type: 'ordinal'},
+      },
+      data: {url: 'data/cars.json'},
+    });
+    const props = tick.encodeEntry(model);
+
+    it('prefers explicit mark size over config bandSize', () => {
+      expect(props.height).toEqual({value: 5});
+    });
+  });
+
   describe('vertical ticks (implicit)', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'tick',
@@ -231,6 +265,23 @@ describe('Mark: Tick', () => {
     const props = tick.encodeEntry(model);
     it('sets mark width to (1-tickBandPaddingInner) * plot_width', () => {
       expect(props.width).toEqual({signal: '0.75 * width'});
+    });
+  });
+
+  describe('horizontal ticks with bandSize in config', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'tick',
+      config: {tick: {bandSize: 12}},
+      encoding: {
+        x: {field: 'Cylinders', type: 'ordinal'},
+        y: {field: 'Horsepower', type: 'quantitative'},
+      },
+      data: {url: 'data/cars.json'},
+    });
+    const props = tick.encodeEntry(model);
+
+    it('uses config bandSize for tick length', () => {
+      expect(props.width).toEqual({value: 12});
     });
   });
 });

@@ -73,6 +73,6 @@ Besides standard [mark config properties](mark.html#config), tick config can con
 
 {% include table.html props="bandSize,thickness" source="TickConfig" %}
 
-#### Example Customizing Tick's Size and Thickness
+#### Example Customizing Tick's Length and Thickness
 
 <span class="vl-example" data-name="tick_dot_thickness"></span>
