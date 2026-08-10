@@ -6,6 +6,7 @@ import {
   isScaleChannel,
   isSingleDefUnitChannel,
   SingleDefUnitChannel,
+  TIME,
 } from '../../channel.js';
 import * as log from '../../log/index.js';
 import {hasContinuousDomain} from '../../scale.js';
@@ -17,7 +18,7 @@ import {
 } from '../../selection.js';
 import {Dict, hash, keys, varName, isEmpty} from '../../util.js';
 import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit.js';
-import {SelectionCompiler} from './index.js';
+import {isTimerSelection, SelectionCompiler} from './index.js';
 import {assembleProjection} from './assemble.js';
 import {isBinnedTimeUnit} from '../../timeunit.js';
 export const TUPLE_FIELDS = '_tuple_fields';
@@ -109,6 +110,24 @@ const project: SelectionCompiler = {
             }
           }
         }
+      }
+    }
+
+    // An unprojected animated selection holds the current frame, so project it
+    // onto the field the animation runs over. Other point selections fall back
+    // to `_vgsid_`, which stores a row identity: no frame filter matches a row
+    // identity, and it compiles to `vlSelectionIdTest`, which the frame
+    // dataset's filter search does not recognize.
+    if (!fields && !encodings && isTimerSelection(selCmpt)) {
+      const timeDef = model.fieldDef(TIME);
+      if (timeDef?.field) {
+        // With a timeUnit, the time scale's domain holds the derived field's
+        // values and `anim_value` inverts to them, so the projection has to
+        // test the derived field too. The main pipeline already computes it,
+        // because the time encoding itself carries the timeUnit.
+        fields = [
+          timeDef.timeUnit && !isBinnedTimeUnit(timeDef.timeUnit) ? (model.vgField(TIME) as string) : timeDef.field,
+        ];
       }
     }
 

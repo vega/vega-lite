@@ -211,6 +211,7 @@
     - [Position Offset Channels]({{site.baseurl}}/docs/encoding.html#position-offset)
     - [Polar Position Channels]({{site.baseurl}}/docs/encoding.html#polar)
     - [Geographic Position Channels]({{site.baseurl}}/docs/encoding.html#geo)
+    - [Time Channel]({{site.baseurl}}/docs/encoding.html#time)
     - [Mark Property Channels]({{site.baseurl}}/docs/encoding.html#mark-prop)
     - [Text and Tooltip Channels]({{site.baseurl}}/docs/encoding.html#text)
     - [Hyperlink Channel]({{site.baseurl}}/docs/encoding.html#href)

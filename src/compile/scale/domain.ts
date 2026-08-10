@@ -10,7 +10,14 @@ import {
   MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX,
 } from '../../aggregate.js';
 import {isBinning, isBinParams, isParameterExtent} from '../../bin.js';
-import {getSecondaryRangeChannel, isScaleChannel, isXorY, ScaleChannel} from '../../channel.js';
+import {
+  getSecondaryRangeChannel,
+  isScaleChannel,
+  isSingleDefUnitChannel,
+  isXorY,
+  ScaleChannel,
+  TIME,
+} from '../../channel.js';
 import {
   binRequiresRange,
   getBandPosition,
@@ -20,17 +27,27 @@ import {
   isFieldDef,
   ScaleDatumDef,
   ScaleFieldDef,
+  TimeFieldDef,
   TypedFieldDef,
   valueExpr,
   vgField,
 } from '../../channeldef.js';
 import {CompositeAggregate} from '../../compositemark/index.js';
 import {DataSourceType} from '../../data.js';
+import {isAggregate} from '../../encoding.js';
 import {DateTime} from '../../datetime.js';
 import {ExprRef} from '../../expr.js';
 import * as log from '../../log/index.js';
 import {isPathMark, isRectBasedMark} from '../../mark.js';
-import {Domain, hasDiscreteDomain, isDomainUnionWith, isParameterDomain, ScaleConfig, ScaleType} from '../../scale.js';
+import {
+  Domain,
+  hasDiscreteDomain,
+  hasDiscreteRange,
+  isDomainUnionWith,
+  isParameterDomain,
+  ScaleConfig,
+  ScaleType,
+} from '../../scale.js';
 import {ParameterExtent} from '../../selection.js';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort.js';
 import {normalizeTimeUnit, TimeUnit, TimeUnitTransformParams} from '../../timeunit.js';
@@ -59,6 +76,7 @@ import {isFacetModel, isUnitModel, Model} from '../model.js';
 import {SignalRefWrapper} from '../signal.js';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit, SplitParentProperty} from '../split.js';
 import {UnitModel} from '../unit.js';
+import {CURR} from '../selection/point.js';
 import {ScaleComponent, ScaleComponentIndex} from './component.js';
 
 export function parseScaleDomain(model: Model) {
@@ -709,8 +727,75 @@ export function getFieldFromDomain(domain: VgDomain): string {
   return undefined;
 }
 
+/**
+ * When a scale should be recomputed from the current animation frame, the
+ * datasets to redirect away from and the frame dataset to redirect to.
+ *
+ * A domain may read either the unit's raw source or its main one -- a band
+ * domain sorted by another field uses the raw source, for instance -- and both
+ * should follow the animation. Both redirect to the main source's frame
+ * dataset, which is the data the marks themselves draw.
+ *
+ * The time scale keeps its own domain. That domain fixes the extent of the
+ * animation, so narrowing it to the current frame would collapse the range the
+ * clock plays through.
+ */
+function animationRescale(model: Model, channel: ScaleChannel): {sources: Set<string>; frame: string} | undefined {
+  if (channel === TIME || !isUnitModel(model) || !model.isAnimated) {
+    return undefined;
+  }
+
+  if (!(model.encoding.time as TimeFieldDef<string>)?.rescale) {
+    return undefined;
+  }
+
+  if (hasDiscreteRange(model.component.scales[channel]?.get('type'))) {
+    return undefined;
+  }
+
+  const main = model.lookupDataSource(model.getDataName(DataSourceType.Main));
+  return {
+    sources: new Set([main, model.lookupDataSource(model.getDataName(DataSourceType.Raw))]),
+    frame: main + CURR,
+  };
+}
+
+/**
+ * Rewrites a domain's sort so it still works on the frame dataset, whose rows
+ * are the unit's aggregated output. A sort like `{op: "sum", field: "people"}`
+ * reads the raw source, where `people` exists; the frame dataset instead
+ * carries the aggregate's output field (`sum_people`), one row per category
+ * per frame, so the sort becomes `{op: "max", field: "sum_people"}`.
+ *
+ * Returns the rewritten sort, undefined when the sort needs no rewrite, or
+ * null when the sort field does not exist on the frame dataset and cannot be
+ * mapped onto it.
+ */
+function rescaledDomainSort(model: Model, sort: any): any | null | undefined {
+  if (!isObject(sort) || !(sort as any).field || !(sort as any).op) {
+    return undefined;
+  }
+
+  if (!isUnitModel(model) || !isAggregate(model.encoding)) {
+    // no aggregation, so the sort field passes through to the frame dataset
+    return undefined;
+  }
+
+  for (const channel of util.keys(model.encoding)) {
+    if (!isSingleDefUnitChannel(channel)) continue;
+    const fieldDef = model.fieldDef(channel);
+    if (fieldDef?.aggregate === (sort as any).op && fieldDef.field === (sort as any).field) {
+      // one row per category per frame, so max reads that row's value
+      return {...(sort as any), op: 'max', field: model.vgField(channel)};
+    }
+  }
+
+  return null;
+}
+
 export function assembleDomain(model: Model, channel: ScaleChannel) {
   const scaleComponent: ScaleComponent = model.component.scales[channel];
+  const rescale = animationRescale(model, channel);
 
   const domains = scaleComponent.get('domains').map((domain: VgNonUnionDomain) => {
     // Correct references to data as the original domain's data was determined
@@ -718,6 +803,18 @@ export function assembleDomain(model: Model, channel: ScaleChannel) {
     // reference can be incorrect.
     if (isDataRefDomain(domain)) {
       domain.data = model.lookupDataSource(domain.data);
+
+      if (rescale?.sources.has(domain.data)) {
+        const sort = rescaledDomainSort(model, (domain as any).sort);
+        if (sort === null) {
+          log.warn(log.message.animationRescaleSortDropped(channel, (domain as any).sort.field));
+        } else {
+          domain.data = rescale.frame;
+          if (sort !== undefined) {
+            (domain as any).sort = sort;
+          }
+        }
+      }
     }
 
     return domain;

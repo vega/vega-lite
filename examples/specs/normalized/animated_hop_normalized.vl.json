@@ -1,0 +1,14 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "data": {"url": "data/seattle-weather.csv"},
+  "mark": "tick",
+  "config": {"tick": {"thickness": 3}},
+  "encoding": {
+    "y": {"field": "precipitation", "type": "quantitative"},
+    "time": {"field": "date", "type": "ordinal"}
+  },
+  "params": [
+    {"name": "animation_frame", "select": {"type": "point", "on": "timer"}}
+  ],
+  "transform": [{"filter": {"param": "animation_frame"}}]
+}
