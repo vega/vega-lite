@@ -1,5 +1,5 @@
 import {stringValue} from 'vega-util';
-import {disableDirectManipulation, TUPLE, SelectionCompiler} from './index.js';
+import {disableDirectManipulation, isTimerSelection, TUPLE, SelectionCompiler} from './index.js';
 import {varName} from '../../util.js';
 import {assembleInit} from './assemble.js';
 import nearest from './nearest.js';
@@ -14,7 +14,10 @@ const inputBindings: SelectionCompiler<'point'> = {
       selCmpt.resolve === 'global' &&
       selCmpt.bind &&
       selCmpt.bind !== 'scales' &&
-      !isLegendBinding(selCmpt.bind)
+      !isLegendBinding(selCmpt.bind) &&
+      // The clock drives an animated selection's tuple, not widget values, so
+      // point.ts binds the widget to the clock instead.
+      !isTimerSelection(selCmpt)
     );
   },
 

@@ -1,6 +1,14 @@
 import {parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
-import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from './index.js';
+import {
+  BARE_SIGNAL_NAME,
+  isTimerSelection,
+  selectionCompilers,
+  SelectionComponent,
+  sliderName,
+  STORE,
+  timerFilters,
+} from './index.js';
 import {warn} from '../../log/index.js';
 import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection.js';
 import {Dict, duplicate, entries, replacePathInField, varName} from '../../util.js';
@@ -12,6 +20,7 @@ import {DataSourceType} from '../../data.js';
 import {ParameterPredicate} from '../../predicate.js';
 import {
   MULTIPLE_TIMER_ANIMATION_SELECTION,
+  TIMER_BIND_WITH_EXPRESSION_FILTER,
   selectionAsScaleDomainWithoutField,
   selectionAsScaleDomainWrongEncodings,
 } from '../../log/message.js';
@@ -65,6 +74,19 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
       if (nTimerSelections > 1) {
         delete selCmpts[name];
         continue;
+      }
+
+      // A range binding pauses playback when the viewer scrubs. With a
+      // specification-supplied timer filter, the pause works by clearing the
+      // parameters the filter names, which requires each filter to be a
+      // parameter name. An expression filter offers nothing the compiler can
+      // clear, so the binding is dropped rather than left to fight the clock.
+      if (sliderName(selCmpt)) {
+        const filters = timerFilters(selCmpt);
+        if (filters.length && filters.some((f) => !BARE_SIGNAL_NAME.test(f))) {
+          warn(TIMER_BIND_WITH_EXPRESSION_FILTER);
+          delete selCmpt.bind;
+        }
       }
     }
 

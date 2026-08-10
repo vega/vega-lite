@@ -1,7 +1,8 @@
-import {Binding, isString, Signal, Stream} from 'vega';
-import {stringValue} from 'vega-util';
+import {BindRange, Binding, isString, Signal, Stream} from 'vega';
+import {array, isObject, stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel.js';
 import {
+  AnimationPause,
   BrushConfig,
   LegendBinding,
   SelectionInit,
@@ -46,6 +47,8 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   resolve: SelectionResolution;
   mark?: BrushConfig;
   project: SelectionProjectionComponent;
+  /** Frames an animated selection dwells on, and for how long. */
+  pause?: AnimationPause[];
   scales?: SelectionProjection[];
   toggle?: string;
   translate?: any;
@@ -117,6 +120,27 @@ export function disableDirectManipulation(selCmpt: SelectionComponent, selDef: S
   if (isString(selDef.select) || !selDef.select.on) delete selCmpt.events;
   if (isString(selDef.select) || !selDef.select.clear) delete selCmpt.clear;
   if (isString(selDef.select) || !selDef.select.toggle) delete selCmpt.toggle;
+}
+
+export const BARE_SIGNAL_NAME = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
+
+/** The trimmed filter expressions of a selection's timer event, if any. */
+export function timerFilters<T extends SelectionType>(selCmpt: SelectionComponent<T>): string[] {
+  return array((selCmpt.events?.find((e) => 'type' in e && e.type === 'timer') as any)?.filter ?? []).map((f: string) =>
+    f.trim(),
+  );
+}
+
+/**
+ * The signal backing an animated selection's range binding, or undefined when
+ * the selection has no binding. The signal holds a point in the time field's
+ * domain, so a specification states `min`, `max`, and `step` in data units.
+ */
+export function sliderName<T extends SelectionType>(selCmpt: SelectionComponent<T>): string | undefined {
+  const {bind} = selCmpt;
+  return bind && bind !== 'scales' && isObject(bind) && (bind as BindRange).input === 'range'
+    ? `${selCmpt.name}_time`
+    : undefined;
 }
 
 export function isTimerSelection<T extends SelectionType>(selCmpt: SelectionComponent<T>) {

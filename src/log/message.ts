@@ -120,6 +120,25 @@ export const MULTIPLE_TIMER_ANIMATION_SELECTION =
 
 export const MULTI_VIEW_ANIMATION_UNSUPPORTED = 'Animation involving facet, layer, or concat is currently unsupported.';
 
+export function stepRangeRequiresTimeChannel(channel: string) {
+  return (
+    `A {"step": ...} scale range only applies to the "time" channel, where it sets keyframe duration. ` +
+    `Dropping it from "${channel}".`
+  );
+}
+
+export const TIMER_BIND_WITH_EXPRESSION_FILTER =
+  'A range binding on an animated selection pauses playback on scrub by clearing the parameters ' +
+  'the timer filter names, so every filter must be a parameter name. Ignoring the "bind"; ' +
+  'omit the filter to get a play/pause checkbox alongside the slider.';
+
+export function animationRescaleSortDropped(channel: string, field: string) {
+  return (
+    `The "${channel}" scale domain cannot be recomputed per frame, because its sort ` +
+    `reads ${stringValue(field)}, which does not exist on the frame dataset. Keeping the full domain.`
+  );
+}
+
 export function selectionAsScaleDomainWithoutField(field: string) {
   return (
     'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +

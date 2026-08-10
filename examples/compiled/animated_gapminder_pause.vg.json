@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Gapminder animated over time, pausing on 1965, with a play/pause checkbox.",
   "background": "white",
   "padding": 5,
   "width": 300,
@@ -17,6 +18,11 @@
           "expr": "isValid(datum[\"fertility\"]) && isFinite(+datum[\"fertility\"]) && isValid(datum[\"life_expect\"]) && isFinite(+datum[\"life_expect\"])"
         }
       ]
+    },
+    {
+      "name": "animation_frame_pause_store",
+      "values": [{"value": 1965, "duration": 2000}],
+      "transform": [{"type": "filter", "expr": "datum.value === anim_value"}]
     },
     {
       "name": "source_0_curr",
@@ -47,7 +53,7 @@
       "on": [
         {
           "events": {"type": "timer", "throttle": 16.666666666666668},
-          "update": "is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock"
+          "update": "playing && animation_frame_pause_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock"
         }
       ]
     },
@@ -56,12 +62,35 @@
       "init": "now()",
       "on": [
         {
-          "events": [{"signal": "anim_clock"}, {"signal": "is_playing"}],
+          "events": [
+            {"signal": "anim_clock"},
+            {"signal": "playing"},
+            {"signal": "animation_frame_pause_playing"}
+          ],
           "update": "now()"
         }
       ]
     },
-    {"name": "is_playing", "init": "true"},
+    {
+      "name": "animation_frame_pause_duration",
+      "update": "length(data(\"animation_frame_pause_store\")) ? data(\"animation_frame_pause_store\")[0].duration : null"
+    },
+    {
+      "name": "animation_frame_pause_since",
+      "init": "now()",
+      "on": [{"events": [{"signal": "anim_value"}], "update": "now()"}]
+    },
+    {
+      "name": "animation_frame_pause_playing",
+      "init": "true",
+      "on": [
+        {
+          "events": {"type": "timer", "throttle": 16.666666666666668},
+          "update": "animation_frame_pause_duration ? (now() - animation_frame_pause_since > animation_frame_pause_duration) : true"
+        }
+      ]
+    },
+    {"name": "playing", "value": true, "bind": {"input": "checkbox"}},
     {"name": "eased_anim_clock", "update": "anim_clock"},
     {"name": "animation_frame_domain", "init": "domain('time')"},
     {"name": "min_extent", "init": "extent(animation_frame_domain)[0]"},
@@ -92,10 +121,10 @@
           "opacity": {"value": 0.7},
           "cursor": {"value": "pointer"},
           "fill": {"value": "transparent"},
-          "stroke": {"scale": "color", "field": "country"},
+          "stroke": {"scale": "color", "field": "cluster"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; country: \" + (isValid(datum[\"country\"]) ? isArray(datum[\"country\"]) ? join(datum[\"country\"], ' ') : datum[\"country\"] : \"\"+datum[\"country\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"])"
+            "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; cluster: \" + (isValid(datum[\"cluster\"]) ? isArray(datum[\"cluster\"]) ? join(datum[\"cluster\"], ' ') : datum[\"cluster\"] : \"\"+datum[\"cluster\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"])"
           },
           "x": {"scale": "x", "field": "fertility"},
           "y": {"scale": "y", "field": "life_expect"}
@@ -123,7 +152,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "country", "sort": true},
+      "domain": {"data": "source_0", "field": "cluster", "sort": true},
       "range": "category"
     },
     {
@@ -180,6 +209,21 @@
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "stroke": "color",
+      "symbolType": "circle",
+      "title": "cluster",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
     }
   ]
 }
