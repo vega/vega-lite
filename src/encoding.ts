@@ -86,7 +86,6 @@ import {
   TimeDef,
   title,
   TooltipFieldDef,
-  TypedFieldDef,
   vgField,
 } from './channeldef.js';
 import {Config} from './config.js';
@@ -621,17 +620,14 @@ export function initEncoding(
           }
         }
         // Array of fieldDefs for detail channel (or production rule)
-        (normalizedEncoding[channel] as any) = array(channelDef).reduce(
-          (defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
-            if (!isFieldDef(fieldDef)) {
-              log.warn(log.message.emptyFieldDef(fieldDef, channel));
-            } else {
-              defs.push(initFieldDef(fieldDef, channel));
-            }
-            return defs;
-          },
-          [],
-        );
+        (normalizedEncoding[channel] as any) = array(channelDef).reduce((defs: FieldDef<string>[], fieldDef) => {
+          if (!isFieldDef(fieldDef)) {
+            log.warn(log.message.emptyFieldDef(fieldDef, channel));
+          } else {
+            defs.push(initFieldDef(fieldDef, channel));
+          }
+          return defs;
+        }, []);
       }
     } else {
       if (channel === TOOLTIP && channelDef === null) {
@@ -709,7 +705,7 @@ export function forEach<U extends Record<any, any>>(
 
 export function reduce<T, U extends Record<any, any>>(
   mapping: U,
-  f: (acc: any, fd: TypedFieldDef<string>, c: keyof U) => U,
+  f: (acc: T, cd: ChannelDef, c: keyof U) => T,
   init: T,
   thisArg?: any,
 ) {

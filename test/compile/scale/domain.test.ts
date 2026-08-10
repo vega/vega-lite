@@ -915,6 +915,29 @@ describe('compile/scale', () => {
       });
     });
 
+    it('should turn a unioned value array containing signals into a single signal', () => {
+      const domain = mergeDomains([
+        [{signal: 'lo'}, {signal: 'hi'}],
+        [0, 5],
+      ]);
+
+      expect(domain).toEqual({fields: [{signal: '[lo, hi]'}, [0, 5]]});
+    });
+
+    it('should keep a unioned value array without signals as an array', () => {
+      const domain = mergeDomains([
+        [1, 2],
+        [0, 5],
+      ]);
+
+      expect(domain).toEqual({
+        fields: [
+          [1, 2],
+          [0, 5],
+        ],
+      });
+    });
+
     it('should merge domains with different data source', () => {
       const domain = mergeDomains([
         {
