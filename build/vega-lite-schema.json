@@ -5114,7 +5114,8 @@
           "description": "The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise."
         },
         "time": {
-          "$ref": "#/definitions/TimeDef"
+          "$ref": "#/definitions/TimeDef",
+          "description": "Time position of animated marks."
         },
         "tooltip": {
           "anyOf": [
@@ -9290,7 +9291,8 @@
           "description": "The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise."
         },
         "time": {
-          "$ref": "#/definitions/TimeDef"
+          "$ref": "#/definitions/TimeDef",
+          "description": "Time position of animated marks."
         },
         "tooltip": {
           "anyOf": [
@@ -22086,9 +22088,12 @@
             },
             {
               "$ref": "#/definitions/FieldRange"
+            },
+            {
+              "$ref": "#/definitions/ScaleRangeStep"
             }
           ],
-          "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n\n- For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values or an object with a `field` property representing the range values.  For example, if a field `color` contains CSS color names, we can set `range` to `{field: \"color\"}`.\n\n__Notes:__\n\n1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`)."
+          "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n\n- For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values or an object with a `field` property representing the range values.  For example, if a field `color` contains CSS color names, we can set `range` to `{field: \"color\"}`.\n\n- For the [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) channel's band scale, an object with a `step` property giving the duration of each keyframe in milliseconds.\n\n__Notes:__\n\n1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`)."
         },
         "rangeMax": {
           "anyOf": [
@@ -22210,7 +22215,7 @@
       "additionalProperties": false,
       "properties": {
         "animationDuration": {
-          "description": "Default animation duration (in seconds) for time encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.\n\n__Default value:__ `5`",
+          "description": "Default animation duration (in seconds) for [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) encodings, except for [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales, which use `framesPerSecond` instead.\n\n__Default value:__ `5`",
           "type": "number"
         },
         "bandPaddingInner": {
@@ -22302,7 +22307,7 @@
           "minimum": 0
         },
         "framesPerSecond": {
-          "description": "Default framerate (frames per second) for time [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) scales.\n\n__Default value:__ `2`",
+          "description": "Default frame rate (frames per second) for animations with a [`band`](https://vega.github.io/vega-lite/docs/scale.html#band) [`time`](https://vega.github.io/vega-lite/docs/encoding.html#time) scale.\n\n__Default value:__ `2`",
           "type": "number"
         },
         "invalid": {
@@ -23136,6 +23141,19 @@
           "type": "number"
         }
       },
+      "type": "object"
+    },
+    "ScaleRangeStep": {
+      "additionalProperties": false,
+      "properties": {
+        "step": {
+          "description": "The width of each band in a band scale's range.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "step"
+      ],
       "type": "object"
     },
     "ScaleResolveMap": {

@@ -9,25 +9,6 @@
       "thickness": 3
     }
   },
-  "params": [
-    {
-      "name": "animation_frame",
-      "select": {
-        "type": "point",
-        "fields": [
-          "date"
-        ],
-        "on": "timer"
-      }
-    }
-  ],
-  "transform": [
-    {
-      "filter": {
-        "param": "animation_frame"
-      }
-    }
-  ],
   "encoding": {
     "y": {
       "field": "precipitation",
