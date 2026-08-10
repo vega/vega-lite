@@ -76,7 +76,7 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "zindex": 0
+      "zindex": 1
     },
     {
       "scale": "y",
@@ -84,7 +84,7 @@
       "grid": false,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
-      "zindex": 0
+      "zindex": 1
     }
   ]
 }

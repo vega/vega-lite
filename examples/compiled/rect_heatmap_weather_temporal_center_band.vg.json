@@ -167,7 +167,7 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
-      "zindex": 0
+      "zindex": 1
     },
     {
       "scale": "y",
@@ -183,7 +183,7 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
-      "zindex": 0
+      "zindex": 1
     },
     {
       "scale": "x",
@@ -199,7 +199,7 @@
       "tickMinStep": {
         "signal": "datetime(2001, 0, 2, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
-      "zindex": 0
+      "zindex": 1
     },
     {
       "scale": "y",
@@ -213,7 +213,7 @@
       "tickMinStep": {
         "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
       },
-      "zindex": 0
+      "zindex": 1
     }
   ],
   "legends": [
