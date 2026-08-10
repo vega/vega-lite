@@ -69,7 +69,12 @@ export type MapExcludeValueRefAndReplaceSignalWith<T, S extends ExprRef | Signal
 
 export interface VgData {
   name: string;
-  source?: string;
+  /**
+   * A single upstream dataset, or several to concatenate. The dataflow builds
+   * only the single-source form. Animation supplies the array form, drawing
+   * interpolated marks from the union of two derived datasets.
+   */
+  source?: string | string[];
   values?: any;
   format?: {
     type?: string;

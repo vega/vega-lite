@@ -26,7 +26,7 @@ import {Model, ModelWithField} from './model.js';
 import {assembleDomain, getFieldFromDomain} from './scale/domain.js';
 import {assembleFacetSignals} from './selection/assemble.js';
 import {isTimerSelection} from './selection/index.js';
-import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message.js';
+import {FACET_ANIMATION_UNSUPPORTED} from '../log/message.js';
 
 export function facetSortFieldName(
   fieldDef: FacetFieldDef<string>,
@@ -118,7 +118,7 @@ export class FacetModel extends ModelWithField<EncodingFacetMapping<string, Sign
     this.component.selection = this.child.component.selection;
 
     if (vals(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
-      log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
+      log.error(FACET_ANIMATION_UNSUPPORTED);
     }
   }
 

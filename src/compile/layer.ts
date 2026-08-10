@@ -3,7 +3,7 @@ import {array} from 'vega-util';
 import {Config} from '../config.js';
 import * as log from '../log/index.js';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec/index.js';
-import {keys, vals} from '../util.js';
+import {keys} from '../util.js';
 import {VgData, VgLayout} from '../vega.schema.js';
 import {assembleAxisSignals} from './axis/assemble.js';
 import {parseLayerAxes} from './axis/parse.js';
@@ -14,8 +14,6 @@ import {assembleLegends} from './legend/assemble.js';
 import {Model} from './model.js';
 import {assembleLayerSelectionMarks} from './selection/assemble.js';
 import {UnitModel} from './unit.js';
-import {isTimerSelection} from './selection/index.js';
-import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message.js';
 
 export class LayerModel extends Model {
   // HACK: This should be (LayerModel | UnitModel)[], but setting the correct type leads to weird error.
@@ -70,10 +68,6 @@ export class LayerModel extends Model {
         this.component.selection[key] = child.component.selection[key];
       }
     }
-
-    if (vals(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
-      log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
-    }
   }
 
   public parseMarkGroup() {
@@ -92,9 +86,16 @@ export class LayerModel extends Model {
 
   // TODO: Support same named selections across children.
   public assembleSignals(): NewSignal[] {
-    return this.children.reduce((signals, child) => {
-      return signals.concat(child.assembleSignals());
-    }, assembleAxisSignals(this));
+    // A selection declared on the layer parses into every child, so each child
+    // assembles the same signals for it. The copies are identical, and Vega
+    // rejects a duplicate signal name, so keep the first of each name.
+    const seen = new Set<string>();
+    const dedupe = (signals: NewSignal[]) => signals.filter((s) => !seen.has(s.name) && seen.add(s.name));
+
+    return this.children.reduce(
+      (signals, child) => signals.concat(dedupe(child.assembleSignals())),
+      dedupe(assembleAxisSignals(this)),
+    );
   }
 
   public assembleLayoutSignals(): NewSignal[] {
