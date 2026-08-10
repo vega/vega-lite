@@ -2,7 +2,7 @@ import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from './index.js';
 import {isMinMaxOp} from '../../aggregate.js';
-import {getMainRangeChannel, SingleDefChannel} from '../../channel.js';
+import {getMainRangeChannel, SingleDefChannel, TIME} from '../../channel.js';
 import {
   isFieldDef,
   isFieldOrDatumDefForTimeFormat,
@@ -150,6 +150,15 @@ export function getImplicitFromEncoding(model: Model) {
     model.forEachFieldDef((fieldDef, channel) => {
       if (isTypedFieldDef(fieldDef)) {
         add(fieldDef);
+
+        // A quantitative time field must parse as a number. The band time
+        // scale sorts its domain, and strings sort lexicographically, so an
+        // unparsed day column would play 1, 10, 100, ... rather than in
+        // numeric order -- and expressions comparing against `anim_value`
+        // would mix strings and numbers.
+        if (channel === TIME && fieldDef.type === 'quantitative' && !(fieldDef.field in implicit)) {
+          implicit[fieldDef.field] = 'number';
+        }
       } else {
         const mainChannel = getMainRangeChannel(channel);
         const mainFieldDef = model.fieldDef(mainChannel as SingleDefChannel) as TypedFieldDef<string>;

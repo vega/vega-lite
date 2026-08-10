@@ -79,7 +79,7 @@ function makeWalkTree(data: VgData[]) {
         data.push(dataSource);
         node.data = dataSource.name;
       } else {
-        node.data = dataSource.source;
+        node.data = dataSource.source as string;
       }
 
       data.push(...node.assemble());
@@ -125,7 +125,7 @@ function makeWalkTree(data: VgData[]) {
 
     if (node instanceof OutputNode) {
       if (dataSource.source && dataSource.transform.length === 0) {
-        node.setSource(dataSource.source);
+        node.setSource(dataSource.source as string);
       } else if (node.parent instanceof OutputNode) {
         // Note that an output node may be required but we still do not assemble a
         // separate data source for it.
@@ -172,7 +172,7 @@ function makeWalkTree(data: VgData[]) {
         if (!dataSource.source || dataSource.transform.length > 0) {
           data.push(dataSource);
         } else {
-          source = dataSource.source;
+          source = dataSource.source as string;
         }
 
         for (const child of node.children) {

@@ -1,0 +1,318 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "A racing bar chart of the ten most populous countries, colored by region, animated over half a century.",
+  "background": "white",
+  "padding": 5,
+  "width": 500,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {"name": "frame_store"},
+    {
+      "name": "source_1",
+      "values": [
+        {"id": 0, "name": "South Asia"},
+        {"id": 1, "name": "Europe & Central Asia"},
+        {"id": 2, "name": "Sub-Saharan Africa"},
+        {"id": 3, "name": "America"},
+        {"id": 4, "name": "East Asia & Pacific"},
+        {"id": 5, "name": "Middle East & North Africa"}
+      ]
+    },
+    {
+      "name": "source_0",
+      "url": "data/gapminder.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "source_1",
+          "key": "id",
+          "fields": ["cluster"],
+          "values": ["name"]
+        },
+        {
+          "type": "window",
+          "params": [null],
+          "as": ["rank"],
+          "ops": ["rank"],
+          "fields": [null],
+          "sort": {"field": ["pop"], "order": ["descending"]},
+          "groupby": ["year"]
+        },
+        {"type": "filter", "expr": "datum.rank <= 10"}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["country"],
+          "field": "pop",
+          "sort": {
+            "field": ["name", "year"],
+            "order": ["ascending", "ascending"]
+          },
+          "as": ["pop_start", "pop_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"pop\"]) && isFinite(+datum[\"pop\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_0_curr",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!length(data(\"frame_store\")) || vlSelectionTest(\"frame_store\", datum)"
+        },
+        {
+          "type": "stack",
+          "groupby": ["country"],
+          "field": "pop",
+          "sort": {
+            "field": ["name", "year"],
+            "order": ["ascending", "ascending"]
+          },
+          "as": ["pop_start", "pop_end"],
+          "offset": "zero"
+        }
+      ]
+    },
+    {
+      "name": "data_0_eq",
+      "source": "data_0",
+      "transform": [
+        {"type": "filter", "expr": "datum[\"year\"] === anim_value"},
+        {
+          "type": "stack",
+          "groupby": ["country"],
+          "field": "pop",
+          "sort": {
+            "field": ["name", "year"],
+            "order": ["ascending", "ascending"]
+          },
+          "as": ["pop_start", "pop_end"],
+          "offset": "zero"
+        }
+      ]
+    },
+    {
+      "name": "data_0_next",
+      "source": "data_0",
+      "transform": [
+        {"type": "filter", "expr": "datum[\"year\"] === anim_value_next"},
+        {
+          "type": "stack",
+          "groupby": ["country"],
+          "field": "pop",
+          "sort": {
+            "field": ["name", "year"],
+            "order": ["ascending", "ascending"]
+          },
+          "as": ["pop_start", "pop_end"],
+          "offset": "zero"
+        }
+      ]
+    },
+    {
+      "name": "data_0_eq_next",
+      "source": "data_0_eq",
+      "transform": [
+        {
+          "type": "lookup",
+          "from": "data_0_next",
+          "key": "country",
+          "fields": ["country"],
+          "as": ["next"]
+        },
+        {"type": "filter", "expr": "isValid(datum.next)"}
+      ]
+    },
+    {
+      "name": "data_0_interpolate",
+      "source": ["data_0_curr", "data_0_eq_next"],
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum[\"year\"] === anim_value ? isValid(datum.next) : true"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "frame",
+      "update": "vlSelectionResolve(\"frame_store\", \"union\", true, true)"
+    },
+    {
+      "name": "anim_clock",
+      "init": "0",
+      "on": [
+        {
+          "events": {"type": "timer", "throttle": 16.666666666666668},
+          "update": "is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock"
+        }
+      ]
+    },
+    {
+      "name": "last_tick_at",
+      "init": "now()",
+      "on": [
+        {
+          "events": [{"signal": "anim_clock"}, {"signal": "is_playing"}],
+          "update": "now()"
+        }
+      ]
+    },
+    {"name": "is_playing", "init": "true"},
+    {"name": "eased_anim_clock", "update": "anim_clock"},
+    {"name": "frame_domain", "init": "domain('time')"},
+    {"name": "min_extent", "init": "extent(frame_domain)[0]"},
+    {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
+    {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
+    {"name": "t_index", "update": "indexof(frame_domain, anim_value)"},
+    {
+      "name": "anim_value_next",
+      "update": "t_index < length(frame_domain) - 1 ? frame_domain[t_index + 1] : anim_value"
+    },
+    {
+      "name": "anim_tween",
+      "update": "anim_value_next !== anim_value ? (eased_anim_clock - scale(\"time\", anim_value)) / (scale(\"time\", anim_value_next) > scale(\"time\", anim_value) ? scale(\"time\", anim_value_next) - scale(\"time\", anim_value) : max_range_extent - scale(\"time\", anim_value)) : 0"
+    },
+    {
+      "name": "frame_tuple",
+      "update": "{unit: \"\", fields: frame_tuple_fields, values: [anim_value ? anim_value : min_extent]}"
+    },
+    {"name": "frame_tuple_fields", "value": [{"type": "E", "field": "year"}]},
+    {
+      "name": "frame_modify",
+      "update": "modify(\"frame_store\", frame_tuple, true)"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "interactive": true,
+      "from": {"data": "data_0_interpolate"},
+      "encode": {
+        "update": {
+          "cursor": {"value": "pointer"},
+          "fill": {"scale": "color", "field": "name"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"pop: \" + (format(datum[\"pop\"], \"~s\")) + \"; country: \" + (isValid(datum[\"country\"]) ? isArray(datum[\"country\"]) ? join(datum[\"country\"], ' ') : datum[\"country\"] : \"\"+datum[\"country\"]) + \"; name: \" + (isValid(datum[\"name\"]) ? isArray(datum[\"name\"]) ? join(datum[\"name\"], ' ') : datum[\"name\"] : \"\"+datum[\"name\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"])"
+          },
+          "x": {
+            "signal": "isValid(datum.next) ? lerp([scale(\"x\", datum[\"pop_end\"]), scale(\"x_next\", datum.next[\"pop_end\"])], anim_tween) : scale(\"x\", datum[\"pop_end\"])"
+          },
+          "x2": {
+            "signal": "isValid(datum.next) ? lerp([scale(\"x\", datum[\"pop_start\"]), scale(\"x_next\", datum.next[\"pop_start\"])], anim_tween) : scale(\"x\", datum[\"pop_start\"])"
+          },
+          "y": {
+            "signal": "isValid(datum.next) ? lerp([scale(\"y\", datum[\"country\"]), scale(\"y_next\", datum.next[\"country\"])], anim_tween) : scale(\"y\", datum[\"country\"])"
+          },
+          "height": {"signal": "max(0.25, bandwidth('y'))"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "data_0_curr", "fields": ["pop_start", "pop_end"]},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "x_next",
+      "type": "linear",
+      "domain": {"data": "data_0_next", "fields": ["pop_start", "pop_end"]},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {
+        "data": "data_0_curr",
+        "field": "country",
+        "sort": {"op": "sum", "field": "pop", "order": "descending"}
+      },
+      "range": [0, {"signal": "height"}],
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y_next",
+      "type": "band",
+      "domain": {
+        "data": "data_0_next",
+        "field": "country",
+        "sort": {"op": "sum", "field": "pop", "order": "descending"}
+      },
+      "range": [0, {"signal": "height"}],
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "name", "sort": true},
+      "range": "category"
+    },
+    {
+      "name": "time",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "year", "sort": true},
+      "range": {"step": 500}
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "population",
+      "format": "~s",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {"scale": "y", "orient": "left", "grid": false, "zindex": 0}
+  ],
+  "legends": [{"title": "region", "fill": "color", "symbolType": "square"}]
+}

@@ -533,9 +533,58 @@ export type PolarDef<F extends Field> = PositionFieldDefBase<F> | PositionDatumD
 
 export type TimeDef<F extends Field> = TimeFieldDef<F>;
 export interface TimeMixins {
+  /**
+   * A field that identifies the same mark across keyframes, so Vega-Lite can
+   * interpolate the mark's encodings between frames. Without a key, each frame
+   * simply replaces the one before it, and a mark that moves between frames
+   * jumps to its new position.
+   *
+   * Interpolation only applies to `band` time scales; a linear time scale is
+   * already continuous. A mark with no counterpart in the next frame
+   * disappears for the transition.
+   */
+  key?: TimeKey | boolean;
+
+  /**
+   * Whether the animated marks' scales should be recomputed from the current
+   * frame rather than held fixed across the whole animation. Rescaling keeps
+   * each frame's data filling the view -- as in a racing bar chart, where the
+   * bars stay legible as their magnitudes grow -- at the cost of making
+   * positions incomparable between frames.
+   *
+   * Vega-Lite never rescales a scale with a discrete output range (`ordinal`,
+   * `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because
+   * recomputing one of these scales per frame makes marks flicker between its
+   * discrete outputs.
+   *
+   * __Default value:__ `false`
+   */
   rescale?: boolean;
 }
 export type TimeFieldDef<F extends Field> = ScaleFieldDef<F, StandardType> & TimeMixins;
+
+export interface TimeKey {
+  /**
+   * The field whose value identifies a mark across keyframes. The value must
+   * be unique within each keyframe: the join keeps one row per key, so a
+   * duplicated value silently drops the other rows.
+   *
+   * Omit the field when each keyframe holds a single mark, as in a line whose
+   * leading end advances; a lone mark needs no field to identify it. Writing
+   * `"key": true` is shorthand for omitting the field. With more than one
+   * mark per keyframe and no field, every mark joins to the same single
+   * successor.
+   */
+  field?: FieldName;
+
+  /**
+   * Whether the animation interpolates from the last keyframe back around to
+   * the first, rather than stopping at the final frame.
+   *
+   * __Default value:__ `false`
+   */
+  loop?: boolean;
+}
 
 export function getBandPosition({
   fieldDef,

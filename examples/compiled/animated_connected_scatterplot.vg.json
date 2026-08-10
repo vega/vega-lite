@@ -1,0 +1,222 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "A connected scatterplot of US gas prices and miles driven per capita, traced year by year as the animation advances.",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {"name": "upto_store"},
+    {
+      "name": "source_0",
+      "url": "data/driving.json",
+      "format": {"type": "json"},
+      "transform": []
+    },
+    {
+      "name": "source_0_curr",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!length(data(\"upto_store\")) || vlSelectionTest(\"upto_store\", datum)"
+        }
+      ]
+    },
+    {
+      "name": "source_0_line_interpolate",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "0", "as": "animation_key"},
+        {
+          "type": "window",
+          "groupby": ["animation_key"],
+          "sort": {"field": ["year"], "order": ["ascending"]},
+          "ops": ["lead", "lead", "lead"],
+          "fields": ["year", "miles", "gas"],
+          "as": ["year_next", "miles_next", "gas_next"]
+        },
+        {
+          "type": "formula",
+          "expr": "sequence(0, 1, 1 / clamp(floor(10000 / length(data(\"source_0\"))), 1, 20))",
+          "as": "anim_line_tween"
+        },
+        {"type": "flatten", "fields": ["anim_line_tween"]},
+        {
+          "type": "formula",
+          "expr": "isValid(datum[\"year_next\"]) ? lerp([scale(\"time\", datum[\"year\"]), scale(\"time\", datum[\"year_next\"])], datum[\"anim_line_tween\"]) : scale(\"time\", datum[\"year\"])",
+          "as": "anim_sample_clock"
+        },
+        {
+          "type": "filter",
+          "expr": "(isValid(datum[\"year_next\"]) || datum[\"anim_line_tween\"] === 0) && datum[\"anim_sample_clock\"] <= eased_anim_clock"
+        },
+        {
+          "type": "formula",
+          "expr": "isValid(datum[\"miles_next\"]) ? lerp([datum[\"miles\"], datum[\"miles_next\"]], datum[\"anim_line_tween\"]) : datum[\"miles\"]",
+          "as": "miles"
+        },
+        {
+          "type": "formula",
+          "expr": "isValid(datum[\"gas_next\"]) ? lerp([datum[\"gas\"], datum[\"gas_next\"]], datum[\"anim_line_tween\"]) : datum[\"gas\"]",
+          "as": "gas"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "upto",
+      "update": "vlSelectionResolve(\"upto_store\", \"union\", true, true)"
+    },
+    {
+      "name": "anim_clock",
+      "init": "0",
+      "on": [
+        {
+          "events": {"type": "timer", "throttle": 16.666666666666668},
+          "update": "is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock"
+        }
+      ]
+    },
+    {
+      "name": "last_tick_at",
+      "init": "now()",
+      "on": [
+        {
+          "events": [{"signal": "anim_clock"}, {"signal": "is_playing"}],
+          "update": "now()"
+        }
+      ]
+    },
+    {"name": "is_playing", "init": "true"},
+    {"name": "eased_anim_clock", "update": "anim_clock"},
+    {"name": "upto_domain", "init": "domain('time')"},
+    {"name": "min_extent", "init": "extent(upto_domain)[0]"},
+    {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
+    {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
+    {"name": "t_index", "update": "indexof(upto_domain, anim_value)"},
+    {
+      "name": "anim_value_next",
+      "update": "t_index < length(upto_domain) - 1 ? upto_domain[t_index + 1] : anim_value"
+    },
+    {
+      "name": "anim_tween",
+      "update": "anim_value_next !== anim_value ? (eased_anim_clock - scale(\"time\", anim_value)) / (scale(\"time\", anim_value_next) > scale(\"time\", anim_value) ? scale(\"time\", anim_value_next) - scale(\"time\", anim_value) : max_range_extent - scale(\"time\", anim_value)) : 0"
+    },
+    {
+      "name": "upto_tuple",
+      "update": "{unit: \"\", fields: upto_tuple_fields, values: [anim_value ? anim_value : min_extent]}"
+    },
+    {"name": "upto_tuple_fields", "value": [{"type": "E", "field": "year"}]},
+    {
+      "name": "upto_modify",
+      "update": "modify(\"upto_store\", upto_tuple, true)"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"anim_sample_clock\"]"},
+      "interactive": true,
+      "from": {"data": "source_0_line_interpolate"},
+      "encode": {
+        "update": {
+          "cursor": {"value": "pointer"},
+          "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"miles: \" + (format(datum[\"miles\"], \"\")) + \"; gas: \" + (format(datum[\"gas\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? isArray(datum[\"year\"]) ? join(datum[\"year\"], ' ') : datum[\"year\"] : \"\"+datum[\"year\"])"
+          },
+          "x": {"scale": "x", "field": "miles"},
+          "y": {"scale": "y", "field": "gas"},
+          "defined": {
+            "signal": "isValid(datum[\"miles\"]) && isFinite(+datum[\"miles\"]) && isValid(datum[\"gas\"]) && isFinite(+datum[\"gas\"])"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "miles"},
+      "range": [0, {"signal": "width"}],
+      "zero": false,
+      "nice": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "gas"},
+      "range": [{"signal": "height"}, 0],
+      "zero": false,
+      "nice": true
+    },
+    {
+      "name": "time",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "year", "sort": true},
+      "range": {"step": 200}
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "miles",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "gas",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

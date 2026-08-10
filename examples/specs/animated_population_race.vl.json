@@ -1,0 +1,120 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A racing bar chart of the ten most populous countries, colored by region, animated over half a century.",
+  "width": 500,
+  "height": 300,
+  "data": {
+    "url": "data/gapminder.json"
+  },
+  "transform": [
+    {
+      "lookup": "cluster",
+      "from": {
+        "key": "id",
+        "fields": [
+          "name"
+        ],
+        "data": {
+          "values": [
+            {
+              "id": 0,
+              "name": "South Asia"
+            },
+            {
+              "id": 1,
+              "name": "Europe & Central Asia"
+            },
+            {
+              "id": 2,
+              "name": "Sub-Saharan Africa"
+            },
+            {
+              "id": 3,
+              "name": "America"
+            },
+            {
+              "id": 4,
+              "name": "East Asia & Pacific"
+            },
+            {
+              "id": 5,
+              "name": "Middle East & North Africa"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "pop",
+          "order": "descending"
+        }
+      ],
+      "groupby": [
+        "year"
+      ]
+    },
+    {
+      "filter": "datum.rank <= 10"
+    },
+    {
+      "filter": {
+        "param": "frame"
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "frame",
+      "select": {
+        "type": "point",
+        "fields": [
+          "year"
+        ],
+        "on": "timer"
+      }
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "pop",
+      "type": "quantitative",
+      "axis": {
+        "title": "population",
+        "format": "~s"
+      }
+    },
+    "y": {
+      "field": "country",
+      "type": "nominal",
+      "sort": {
+        "field": "pop",
+        "order": "descending"
+      },
+      "title": null
+    },
+    "color": {
+      "field": "name",
+      "type": "nominal",
+      "legend": {
+        "title": "region"
+      }
+    },
+    "time": {
+      "field": "year",
+      "type": "ordinal",
+      "rescale": true,
+      "key": {
+        "field": "country"
+      }
+    }
+  }
+}

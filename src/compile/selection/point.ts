@@ -1,21 +1,45 @@
-import {Signal, Stream} from 'vega';
-import {stringValue} from 'vega-util';
-import {SelectionCompiler, TUPLE, isTimerSelection, unitName} from './index.js';
+import {Binding, Signal, Stream} from 'vega';
+import {array, stringValue} from 'vega-util';
+import {
+  BARE_SIGNAL_NAME,
+  SelectionCompiler,
+  SelectionComponent,
+  TUPLE,
+  isTimerSelection,
+  sliderName,
+  unitName,
+} from './index.js';
 import {SELECTION_ID} from '../../selection.js';
 import {vals} from '../../util.js';
 import {BRUSH} from './interval.js';
 import {TUPLE_FIELDS} from './project.js';
 import {TIME} from '../../channel.js';
+import {animationInterpolationSignals} from '../animation.js';
+import {UnitModel} from '../unit.js';
 
 export const CURR = '_curr';
 export const ANIM_VALUE = 'anim_value';
 export const ANIM_CLOCK = 'anim_clock';
 export const EASED_ANIM_CLOCK = 'eased_anim_clock';
 export const MIN_EXTENT = 'min_extent';
+export const MAX_EXTENT = 'max_extent';
 export const MAX_RANGE_EXTENT = 'max_range_extent';
+export const T_INDEX = 't_index';
+export const ANIM_VALUE_NEXT = 'anim_value_next';
+export const ANIM_TWEEN = 'anim_tween';
 export const LAST_TICK = 'last_tick_at';
 export const IS_PLAYING = 'is_playing';
+// Vega labels a bound widget with its signal's name. The animation signals are
+// named for the compiler rather than the viewer, so the bindings carry a label.
+export const PLAYING_LABEL = 'Playing';
 export const THROTTLE = (1 / 60) * 1000; // 60 FPS
+
+// Data-driven pausing. The store holds the pause entries matching the current
+// frame, so the signals below read entry zero.
+export const PAUSE_STORE = '_pause_store';
+export const PAUSE_DURATION = 'pause_duration';
+export const PAUSE_PLAYING = 'pause_playing';
+export const PAUSE_SINCE = 'pause_since';
 
 const animationSignals = (selectionName: string, scaleName: string): Signal[] => {
   return [
@@ -27,7 +51,6 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
     },
 
     // scale signals
-    // TODO(jzong): uncomment commented signals below when implementing interpolation
     {name: `${selectionName}_domain`, init: `domain('${scaleName}')`},
     {name: MIN_EXTENT, init: `extent(${selectionName}_domain)[0]`},
     // {name: 'max_extent', init: `extent(${selectionName}_domain)[1]`},
@@ -37,32 +60,168 @@ const animationSignals = (selectionName: string, scaleName: string): Signal[] =>
   ];
 };
 
+/**
+ * The condition under which the clock advances, along with the signals it
+ * depends on and any signals that have to be emitted to support it.
+ *
+ * Two optional conditions gate playback. A specification supplies the first as
+ * an `is_playing` switch or an expression in the timer's event filter, and the
+ * second as a dwell on particular frames.
+ */
+function playbackGate(selCmpt: SelectionComponent<'point'>): {
+  gate: string;
+  dependencies: {signal: string}[];
+  signals: Signal[];
+} {
+  const name = selCmpt.name;
+  const terms: string[] = [];
+  const dependencies: {signal: string}[] = [];
+  const signals: Signal[] = [];
+
+  // A timer event filter lets a specification drive playback from its own
+  // parameters, as in a checkbox bound to play/pause. A specification that
+  // supplies the filter owns the switch, so the compiler emits no `is_playing`
+  // of its own. Emitting one would collide with the parameter the filter names.
+  const filters = array<string>(selCmpt.events?.find((e) => 'type' in e && e.type === 'timer')?.filter ?? []);
+  const slider = sliderName(selCmpt);
+
+  if (filters.length) {
+    const filterRefs: {signal: string}[] = [];
+    for (const [i, filter] of filters.entries()) {
+      const f = filter.trim();
+      if (BARE_SIGNAL_NAME.test(f)) {
+        terms.push(f);
+        filterRefs.push({signal: f});
+      } else {
+        // An expression filter cannot be referenced from an event stream, so
+        // it gets a signal of its own. The signal also brackets the
+        // expression, so an `||` inside it cannot regroup the gate's `&&`s.
+        const term = `${name}_gate${i > 0 ? `_${i}` : ''}`;
+        signals.push({name: term, update: `(${f})`});
+        terms.push(term);
+        filterRefs.push({signal: term});
+      }
+    }
+    dependencies.push(...filterRefs);
+  } else {
+    terms.push(IS_PLAYING);
+    dependencies.push({signal: IS_PLAYING});
+    signals.push(
+      slider
+        ? {
+            // Scrubbing takes over from playback, so the clock does not fight
+            // the pointer. The compiler owns this switch, so scrubbing clears
+            // the checkbox and checking it again resumes playback.
+            name: IS_PLAYING,
+            init: 'true',
+            // Vega labels a widget with the signal's name unless the binding
+            // gives one, and `is_playing` is a compiler-internal name.
+            bind: {input: 'checkbox', name: PLAYING_LABEL},
+            // ignore the slider echoing the current frame during playback
+            on: [{events: {signal: slider}, update: `${slider} !== ${ANIM_VALUE} ? false : ${IS_PLAYING}`}],
+          }
+        : {name: IS_PLAYING, init: 'true'},
+    );
+  }
+
+  if (selCmpt.pause?.length) {
+    const playing = `${name}_${PAUSE_PLAYING}`;
+    const duration = `${name}_${PAUSE_DURATION}`;
+    const since = `${name}_${PAUSE_SINCE}`;
+
+    terms.push(playing);
+    dependencies.push({signal: playing});
+
+    signals.push(
+      // null when the current frame is not a pause point, otherwise how long to dwell
+      {
+        name: duration,
+        update: `length(data(${stringValue(name + PAUSE_STORE)})) ? data(${stringValue(name + PAUSE_STORE)})[0].duration : null`,
+      },
+      // Restart the dwell timer on arriving at a new frame. Keying off the
+      // frame rather than the duration matters when two consecutive pause
+      // points share a duration: the duration signal would not change, and
+      // the second pause would inherit an already-elapsed timer.
+      {name: since, init: 'now()', on: [{events: [{signal: ANIM_VALUE}], update: 'now()'}]},
+      {
+        name: playing,
+        init: 'true',
+        on: [
+          {
+            events: {type: 'timer', throttle: THROTTLE},
+            update: `${duration} ? (now() - ${since} > ${duration}) : true`,
+          },
+        ],
+      },
+    );
+  }
+
+  return {gate: terms.join(' && '), dependencies, signals};
+}
+
 const point: SelectionCompiler<'point'> = {
   defined: (selCmpt) => selCmpt.type === 'point',
 
   topLevelSignals: (model, selCmpt, signals) => {
     if (isTimerSelection(selCmpt)) {
-      signals = signals.concat([
-        {
-          name: ANIM_CLOCK,
-          init: '0',
-          on: [
-            {
-              events: {type: 'timer', throttle: THROTTLE},
-              update: `${IS_PLAYING} ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`,
-            },
-          ],
-        },
-        {
-          name: LAST_TICK,
-          init: 'now()',
-          on: [{events: [{signal: ANIM_CLOCK}, {signal: IS_PLAYING}], update: 'now()'}],
-        },
-        {
-          name: IS_PLAYING,
-          init: 'true',
-        },
-      ]);
+      const {gate, dependencies, signals: gateSignals} = playbackGate(selCmpt);
+      const slider = sliderName(selCmpt);
+
+      signals = signals.concat(
+        [
+          {
+            name: ANIM_CLOCK,
+            init: '0',
+            on: [
+              {
+                events: {type: 'timer', throttle: THROTTLE},
+                update: `${gate} ? (${ANIM_CLOCK} + (now() - ${LAST_TICK}) > ${MAX_RANGE_EXTENT} ? 0 : ${ANIM_CLOCK} + (now() - ${LAST_TICK})) : ${ANIM_CLOCK}`,
+              },
+              // Scrubbing sets the clock directly. The slider reads in data
+              // units, so scaling it gives the elapsed time of that frame. The
+              // guards matter: the slider echoes the current frame during
+              // playback, and without them the echo would quantize the clock
+              // to keyframe starts every tick; and a value off the domain
+              // scales to undefined, which would poison the clock into NaN.
+              ...(slider
+                ? [
+                    {
+                      events: {signal: slider},
+                      update:
+                        `${slider} !== ${ANIM_VALUE} && isValid(scale('${model.scaleName(TIME)}', ${slider})) ? ` +
+                        `scale('${model.scaleName(TIME)}', ${slider}) : ${ANIM_CLOCK}`,
+                    },
+                  ]
+                : []),
+            ],
+          },
+          {
+            // Reset the reference point whenever playback stops or starts, so a
+            // pause does not bank up elapsed time and jump on resume.
+            name: LAST_TICK,
+            init: 'now()',
+            on: [{events: [{signal: ANIM_CLOCK}, ...dependencies], update: 'now()'}],
+          },
+          // The slider reads in the units of the field the selection projects
+          // onto, so that field labels it. A binding that gives its own `name`
+          // keeps that label. The binding is two-way: the slider tracks the
+          // current frame while the animation plays, and dragging it scrubs.
+          ...(slider
+            ? [
+                {
+                  name: slider,
+                  bind: {name: selCmpt.project.items[0]?.field, ...(selCmpt.bind as Binding)} as Binding,
+                  // The echo listens to the timer rather than to `anim_value`:
+                  // a signal event stream is an edge in Vega's dataflow graph,
+                  // and the slider already feeds the clock, so listening to
+                  // the clock's descendant would close a cycle.
+                  on: [{events: {type: 'timer', throttle: THROTTLE} as Stream, update: ANIM_VALUE}],
+                },
+              ]
+            : []),
+        ],
+        gateSignals,
+      );
     }
 
     return signals;
@@ -115,18 +274,22 @@ const point: SelectionCompiler<'point'> = {
 
     if (isTimerSelection(selCmpt)) {
       // timer event: selection is for animation
-      return signals.concat(animationSignals(selCmpt.name, model.scaleName(TIME)), [
-        {
-          // An `update` expression rather than an `on` handler: unlike a
-          // direct-manipulation selection, an animation always has a current
-          // frame, including before any event has fired. Event handlers do not
-          // run during the initial pulse, so an `on` handler here leaves the
-          // selection store empty for the first render -- the frame filter
-          // matches nothing until the first timer tick lands.
-          name: name + TUPLE,
-          update: `{${update}}`,
-        },
-      ]);
+      return signals.concat(
+        animationSignals(selCmpt.name, model.scaleName(TIME)),
+        animationInterpolationSignals(model as UnitModel, selCmpt.name),
+        [
+          {
+            // An `update` expression rather than an `on` handler: unlike a
+            // direct-manipulation selection, an animation always has a current
+            // frame, including before any event has fired. Event handlers do not
+            // run during the initial pulse, so an `on` handler here leaves the
+            // selection store empty for the first render -- the frame filter
+            // matches nothing until the first timer tick lands.
+            name: name + TUPLE,
+            update: `{${update}}`,
+          },
+        ],
+      );
     } else {
       const events: Stream[] = selCmpt.events;
       return signals.concat([

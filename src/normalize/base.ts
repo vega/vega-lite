@@ -40,6 +40,9 @@ export type NormalizeLayerOrUnit = Normalize<
 >;
 
 export interface NormalizerParams {
+  /** Whether a bare `time` encoding should elaborate into an animation parameter. */
+  elaborateTimeEncoding?: boolean;
+
   config: Config<SignalRef>;
   parentEncoding?: Encoding<FieldName>;
   parentProjection?: Projection<ExprRef>;
