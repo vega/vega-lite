@@ -322,24 +322,45 @@ export class UnitModel extends ModelWithField<Encoding<string>> {
   }
 
   /**
+   * The data source that this unit's frame dataset derives from. Data assembly
+   * sets this field when it finds a frame filter and builds the frame dataset
+   * from it; mark assembly then reads it to point marks at the frame dataset.
+   *
+   * A `time` encoding or a timer selection alone is not enough to set this
+   * field, because an animation without a frame filter (e.g. one that only
+   * drives a conditional encoding) has no frame dataset and leaves its marks
+   * on the full data.
+   */
+  public animationFrameSource?: string;
+
+  public get isAnimated(): boolean {
+    return this.animationFrameSource !== undefined;
+  }
+
+  /**
    * Corrects the data references in marks after assemble.
    */
   public correctDataNames = (mark: VgMarkGroup) => {
+    const animated = this.isAnimated;
+
     // for normal data references
     if (mark.from?.data) {
       mark.from.data = this.lookupDataSource(mark.from.data);
-      if ('time' in this.encoding) {
+      if (animated) {
         mark.from.data = mark.from.data + CURR;
       }
     }
 
-    // for access to facet data
+    // for access to facet data. A grouped path mark -- a line broken up by
+    // color, say -- compiles to a facet-backed group, which stores its data
+    // reference here rather than on `from.data`. A pass that reads only
+    // `from.data` misses the reference, and the line then holds still while
+    // the rest of the chart animates.
     if (mark.from?.facet?.data) {
       mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
-      // TOOD(jzong) uncomment this when it's time to implement facet animation
-      // if ('time' in this.encoding) {
-      //   mark.from.facet.data = mark.from.facet.data + CURR;
-      // }
+      if (animated) {
+        mark.from.facet.data = mark.from.facet.data + CURR;
+      }
     }
 
     return mark;
