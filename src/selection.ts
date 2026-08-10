@@ -10,6 +10,56 @@ export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'point' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
+/**
+ * The [d3-ease](https://github.com/d3/d3-ease) easing functions available to
+ * animated selections, named as Vega's expression language exposes them.
+ */
+export const EASING_FUNCTIONS = [
+  'easeLinear',
+  'easeQuad',
+  'easeQuadIn',
+  'easeQuadOut',
+  'easeQuadInOut',
+  'easeCubic',
+  'easeCubicIn',
+  'easeCubicOut',
+  'easeCubicInOut',
+  'easePoly',
+  'easePolyIn',
+  'easePolyOut',
+  'easePolyInOut',
+  'easeSin',
+  'easeSinIn',
+  'easeSinOut',
+  'easeSinInOut',
+  'easeExp',
+  'easeExpIn',
+  'easeExpOut',
+  'easeExpInOut',
+  'easeCircle',
+  'easeCircleIn',
+  'easeCircleOut',
+  'easeCircleInOut',
+  'easeBounce',
+  'easeBounceIn',
+  'easeBounceOut',
+  'easeBounceInOut',
+  'easeBack',
+  'easeBackIn',
+  'easeBackOut',
+  'easeBackInOut',
+  'easeElastic',
+  'easeElasticIn',
+  'easeElasticOut',
+  'easeElasticInOut',
+] as const;
+
+export type EasingFunction = (typeof EASING_FUNCTIONS)[number];
+
+export function isEasingFunction(easing: any): easing is EasingFunction {
+  return (EASING_FUNCTIONS as readonly string[]).includes(easing);
+}
+
 export type SelectionInit = PrimitiveValue | DateTime;
 export type SelectionInitInterval = Vector2<boolean> | Vector2<number> | Vector2<string> | Vector2<DateTime>;
 
@@ -109,6 +159,36 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
    * __See also:__ [`nearest` examples](https://vega.github.io/vega-lite/docs/selection.html#nearest) documentation.
    */
   nearest?: boolean;
+
+  /**
+   * For animated selections (those with `"on": "timer"`), how playback speed
+   * varies over the animation. Give the name of a
+   * [d3-ease](https://github.com/d3/d3-ease) easing function, or an array of
+   * ascending numbers in [0, 1], which are treated as evenly-spaced control
+   * points of a custom easing curve.
+   *
+   * __Default value:__ `"easeLinear"`, a constant rate.
+   */
+  easing?: EasingFunction | number[];
+
+  /**
+   * For animated selections (those with `"on": "timer"`), values to pause on
+   * before playback continues. Each entry gives a value in the time field's
+   * domain and a duration in milliseconds to hold on it.
+   */
+  pause?: AnimationPause[];
+}
+
+export interface AnimationPause {
+  /**
+   * The value in the time field's domain to pause on.
+   */
+  value: SelectionInit;
+
+  /**
+   * How long to pause, in milliseconds.
+   */
+  duration: number;
 }
 
 // Similar to BaseMarkConfig but the field documentations are specificly for an interval mark.

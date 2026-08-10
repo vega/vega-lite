@@ -84,6 +84,7 @@ The keys in the `encoding` object are encoding channels. Vega-Lite supports the 
 - [Position Offset Channels](#position-offset): `xOffset`, `yOffset`
 - [Polar Position Channels](#polar): `theta`, `theta2`, `radius`, `radius2`
 - [Geographic Position Channels](#geo): `longitude`, `latitude`, `longitude2`, `latitude2`
+- [Time Channel](#time): `time`
 - [Mark Property Channels](#mark-prop): `angle`, `color` (and `fill` / `stroke`), `opacity`, `fillOpacity`, `strokeOpacity`, `shape`, `size`, `strokeDash`, `strokeWidth`
 - [Text and Tooltip Channels](#text): `text`, `tooltip`
 - [Hyperlink Channel](#href): `href`
@@ -274,6 +275,110 @@ Polar field and datum definitions may include `scale`, `stack`, and `sort` prope
 {% include table.html props="longitude,latitude,longitude2,latitude2" source="Encoding" %}
 
 See [an example that uses `longitude` and `latitude` channels in a map]({{ site.baseurl }}/examples/geo_circle.html) or [another example that draws line segments (`rule`s) between points in a map]({{ site.baseurl }}/examples/geo_rule.html).
+
+{:#time}
+
+## Time Channel
+
+The `time` channel maps data values to animation keyframes over time. When a time encoding is specified, together with a [selection parameter](selection.html) that has a `timer` [event stream](selection.html#on), marks are animated to show different data values as time progresses.
+
+See [an example scatterplot animation]({{ site.baseurl }}/examples/animated_gapminder.html) that uses the `time` channel and a `timer` selection parameter.
+
+{% include table.html props="time" source="Encoding" %}
+
+{:#time-elaboration}
+
+### A Time Encoding Implies a Parameter and a Filter
+
+A `time` encoding defines the field over which the animation runs, and Vega-Lite automatically derives the animation's selection parameter and filter from it. This specification:
+
+```json
+{
+  "data": {"url": "data/gapminder.json"},
+  "mark": "point",
+  "encoding": {
+    "x": {"field": "fertility", "type": "quantitative"},
+    "y": {"field": "life_expect", "type": "quantitative"},
+    "time": {"field": "year", "type": "ordinal"}
+  }
+}
+```
+
+normalizes to this specification, with the default parameter and filter written out:
+
+```json
+{
+  "params": [{"name": "animation_frame", "select": {"type": "point", "on": "timer"}}],
+  "transform": [{"filter": {"param": "animation_frame"}}],
+  ...
+}
+```
+
+`animation_frame` is an ordinary [point selection](selection.html) holding the current frame, so a conditional encoding, a scale domain, or a filter in another view can all read it.
+
+Vega-Lite adds the default parameter and filter only when the specification does not already declare an animated parameter (a selection with a `timer` event). Declare the parameter explicitly to customize it, for example to change its name or [bind it to a slider](parameter/bind.html#animation-binding).
+
+{:#time-scale-type}
+
+### Keyframes vs. Continuous Time
+
+By default the time channel uses a `band` scale: each distinct value of the field is one keyframe, and the animation cuts from one to the next. `config.scale.framesPerSecond` (default `2`) sets the frame rate, or the duration of each frame can be set directly in milliseconds with `"scale": {"range": {"step": 200}}`.
+
+Set `"scale": {"type": "linear"}` instead when the field is continuous and the animation should track elapsed time rather than step through the distinct values, as with a timestamp field. The animation then lasts `config.scale.animationDuration` seconds (default `5`), or its duration can be set directly in milliseconds with an explicit range like `"range": [0, 10000]`.
+
+{:#time-no-filter}
+
+### Animating Without Filtering
+
+An animation does not have to filter data. If you declare the parameter and omit the filter, every mark stays visible, and the parameter can instead drive other parts of the specification. This example uses a conditional encoding to recolor the current year's points against the rest:
+
+```json
+"params": [{"name": "frame", "select": {"type": "point", "on": "timer"}}],
+"encoding": {
+  "color": {"condition": {"param": "frame", "value": "red"}, "value": "lightgray"},
+  "time": {"field": "year", "type": "ordinal"}
+}
+```
+
+Note: `time` encoding animations currently have a few restrictions. See the [example gallery]({{ site.baseurl }}/examples/#animated) for examples of animated visualizations.
+
+- animation is not supported in faceted views
+
+{:#time-key}
+
+### Interpolating Between Frames
+
+Without a `key`, each frame simply replaces the one before it, and a mark that moves between frames jumps to its new position. The `key` property specifies a field that identifies the same mark across frames, so Vega-Lite can interpolate each mark smoothly from its position in one frame to its position in the next:
+
+```json
+"time": {"field": "year", "type": "ordinal", "key": {"field": "country"}}
+```
+
+Set `"loop": true` on the key to animate from the last keyframe back around to the first.
+
+Vega-Lite interpolates positions after scaling, so marks move smoothly even on discrete scales — bars in a racing bar chart slide past each other as they reorder. A mark with no counterpart in the next frame disappears for the transition rather than freezing in place. Interpolation only applies to `band` time scales, which have discrete keyframes to interpolate between; a linear time scale is already continuous.
+
+A `line` mark with a key animates differently, because one line spans many keyframes. When the line's `x` or `y` encodes the time field itself, the line keeps its full static shape and a clip moving with the clock reveals it, so any [`interpolate`](line.html) curve stays stable as the line extends. Otherwise Vega-Lite subdivides each segment of the line and reveals the pieces up to the clock. Either way the line draws from the full data, so it needs no filter of its own.
+
+{:#time-rescale}
+
+### Rescaling
+
+By default a scale has one constant domain across the whole animation, which keeps positions comparable between frames. Set `"rescale": true` to recompute the domain from each frame instead. Animations like bar chart races depend on rescaling to keep the viewport focused on the current frame's data.
+
+```json
+"time": {"field": "date", "type": "ordinal", "rescale": true}
+```
+
+Vega-Lite never rescales a scale with a discrete output range (`ordinal`, `bin-ordinal`, `quantile`, `quantize`, and `threshold`), because recomputing one of these scales per frame makes marks flicker between its discrete outputs. It also never rescales the time scale, whose domain defines the extent of the animation.
+
+{:#time-field-def}
+
+### Time Field Definition
+
+In addition to the general [field definition properties](#field-def), the `time` field definition may include the properties listed below.
+
+{% include table.html props="scale,key,rescale,sort" source="TimeFieldDef" %}
 
 {:#mark-prop}
 

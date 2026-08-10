@@ -1,0 +1,54 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A connected scatterplot of US gas prices and miles driven per capita, traced year by year as the animation advances.",
+  "data": {
+    "url": "data/driving.json"
+  },
+  "transform": [
+    {
+      "filter": {
+        "param": "upto"
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "upto",
+      "select": {
+        "type": "point",
+        "on": "timer"
+      }
+    }
+  ],
+  "mark": "line",
+  "encoding": {
+    "x": {
+      "field": "miles",
+      "type": "quantitative",
+      "scale": {
+        "zero": false
+      }
+    },
+    "y": {
+      "field": "gas",
+      "type": "quantitative",
+      "scale": {
+        "zero": false
+      }
+    },
+    "order": {
+      "field": "year"
+    },
+    "time": {
+      "field": "year",
+      "scale": {
+        "type": "band",
+        "range": {
+          "step": 200
+        }
+      },
+      "key": true,
+      "type": "ordinal"
+    }
+  }
+}

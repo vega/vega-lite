@@ -1,0 +1,16 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Gapminder animated over time, with countries moving smoothly between years.",
+  "data": {"url": "data/gapminder.json"},
+  "mark": "point",
+  "encoding": {
+    "color": {"field": "cluster", "type": "nominal"},
+    "x": {"field": "fertility", "type": "quantitative"},
+    "y": {"field": "life_expect", "type": "quantitative"},
+    "time": {"field": "year", "type": "ordinal", "key": {"field": "country"}}
+  },
+  "params": [
+    {"name": "animation_frame", "select": {"type": "point", "on": "timer"}}
+  ],
+  "transform": [{"filter": {"param": "animation_frame"}}]
+}
