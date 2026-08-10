@@ -1,0 +1,252 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Stock prices of five tech companies, revealed left to right as the animation advances.",
+  "background": "white",
+  "padding": 5,
+  "width": 500,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {"name": "animation_frame_store"},
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": []
+    },
+    {
+      "name": "source_0_curr",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "!length(data(\"animation_frame_store\")) || vlSelectionTest(\"animation_frame_store\", datum)"
+        }
+      ]
+    },
+    {
+      "name": "source_0_line_interpolate",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "window",
+          "groupby": ["symbol"],
+          "sort": {"field": ["date"], "order": ["ascending"]},
+          "ops": ["lead", "lead"],
+          "fields": ["date", "price"],
+          "as": ["date_next", "price_next"]
+        },
+        {
+          "type": "formula",
+          "expr": "sequence(0, 1, 1 / clamp(floor(10000 / length(data(\"source_0\"))), 1, 20))",
+          "as": "anim_line_tween"
+        },
+        {"type": "flatten", "fields": ["anim_line_tween"]},
+        {
+          "type": "formula",
+          "expr": "isValid(datum[\"date_next\"]) ? lerp([scale(\"time\", datum[\"date\"]), scale(\"time\", datum[\"date_next\"])], datum[\"anim_line_tween\"]) : scale(\"time\", datum[\"date\"])",
+          "as": "anim_sample_clock"
+        },
+        {
+          "type": "filter",
+          "expr": "(isValid(datum[\"date_next\"]) || datum[\"anim_line_tween\"] === 0) && datum[\"anim_sample_clock\"] <= eased_anim_clock"
+        },
+        {
+          "type": "formula",
+          "expr": "isValid(datum[\"price_next\"]) ? lerp([datum[\"price\"], datum[\"price_next\"]], datum[\"anim_line_tween\"]) : datum[\"price\"]",
+          "as": "price"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "animation_frame",
+      "update": "vlSelectionResolve(\"animation_frame_store\", \"union\", true, true)"
+    },
+    {
+      "name": "anim_clock",
+      "init": "0",
+      "on": [
+        {
+          "events": {"type": "timer", "throttle": 16.666666666666668},
+          "update": "is_playing ? (anim_clock + (now() - last_tick_at) > max_range_extent ? 0 : anim_clock + (now() - last_tick_at)) : anim_clock"
+        }
+      ]
+    },
+    {
+      "name": "last_tick_at",
+      "init": "now()",
+      "on": [
+        {
+          "events": [{"signal": "anim_clock"}, {"signal": "is_playing"}],
+          "update": "now()"
+        }
+      ]
+    },
+    {"name": "is_playing", "init": "true"},
+    {"name": "eased_anim_clock", "update": "anim_clock"},
+    {"name": "animation_frame_domain", "init": "domain('time')"},
+    {"name": "min_extent", "init": "extent(animation_frame_domain)[0]"},
+    {"name": "max_range_extent", "init": "extent(range('time'))[1]"},
+    {"name": "anim_value", "update": "invert('time', eased_anim_clock)"},
+    {
+      "name": "t_index",
+      "update": "indexof(animation_frame_domain, anim_value)"
+    },
+    {
+      "name": "anim_value_next",
+      "update": "t_index < length(animation_frame_domain) - 1 ? animation_frame_domain[t_index + 1] : anim_value"
+    },
+    {
+      "name": "anim_tween",
+      "update": "anim_value_next !== anim_value ? (eased_anim_clock - scale(\"time\", anim_value)) / (scale(\"time\", anim_value_next) > scale(\"time\", anim_value) ? scale(\"time\", anim_value_next) - scale(\"time\", anim_value) : max_range_extent - scale(\"time\", anim_value)) : 0"
+    },
+    {
+      "name": "animation_frame_tuple",
+      "update": "{unit: \"\", fields: animation_frame_tuple_fields, values: [anim_value ? anim_value : min_extent]}"
+    },
+    {
+      "name": "animation_frame_tuple_fields",
+      "value": [{"type": "E", "field": "date"}]
+    },
+    {
+      "name": "animation_frame_modify",
+      "update": "modify(\"animation_frame_store\", animation_frame_tuple, true)"
+    }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "source_0",
+          "groupby": ["symbol"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "x"},
+          "interactive": true,
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "interpolate": {"value": "monotone"},
+              "cursor": {"value": "pointer"},
+              "stroke": {"scale": "color", "field": "symbol"},
+              "description": {
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? isArray(datum[\"symbol\"]) ? join(datum[\"symbol\"], ' ') : datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+              },
+              "x": {"scale": "x", "field": "date"},
+              "y": {"scale": "y", "field": "price"},
+              "defined": {
+                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+              }
+            }
+          }
+        }
+      ],
+      "clip": {
+        "path": {
+          "signal": "'M0,0H' + (lerp([scale(\"x\", anim_value), scale(\"x\", anim_value_next)], anim_tween)) + 'V' + height + 'H0Z'"
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "date"},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "price"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "symbol", "sort": true},
+      "range": "category"
+    },
+    {
+      "name": "time",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "date", "sort": true},
+      "range": {"step": 500}
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "symbol"}]
+}

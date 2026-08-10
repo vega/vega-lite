@@ -1,0 +1,82 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A bump chart of US industries ranked by unemployment, drawn month by month as the animation advances.",
+  "width": 600,
+  "height": 300,
+  "data": {
+    "url": "data/unemployment-across-industries.json"
+  },
+  "transform": [
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "rank"
+        }
+      ],
+      "groupby": [
+        "date"
+      ],
+      "sort": [
+        {
+          "field": "count",
+          "order": "descending"
+        }
+      ]
+    },
+    {
+      "filter": {
+        "param": "upto"
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "upto",
+      "select": {
+        "type": "point",
+        "on": "timer"
+      }
+    }
+  ],
+  "mark": {
+    "type": "line",
+    "strokeWidth": 2,
+    "interpolate": "monotone"
+  },
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "temporal",
+      "title": null
+    },
+    "y": {
+      "field": "rank",
+      "type": "quantitative",
+      "scale": {
+        "reverse": true,
+        "nice": false
+      },
+      "axis": {
+        "tickMinStep": 1
+      }
+    },
+    "color": {
+      "field": "series",
+      "type": "nominal",
+      "title": "industry"
+    },
+    "time": {
+      "field": "date",
+      "type": "ordinal",
+      "scale": {
+        "range": {
+          "step": 120
+        }
+      },
+      "key": {
+        "field": "series"
+      }
+    }
+  }
+}

@@ -29,6 +29,26 @@ If multiple projections are specified, customized bindings can be specified by m
 
 **Note:** When point selections are bound to input widgets, direct manipulation interaction (e.g., clicking or double clicking the visualization) is disabled by default. Such interaction can be re-enabled by explicitly specifying the [`on`](selection.html#selection-props) and [`clear`](clear.html) properties.
 
+{:#animation-binding}
+
+### Binding an Animated Selection
+
+An animated selection (one with `"on": "timer"`) can be bound to a range input to create a slider that scrubs through the [animation](../encoding.html#time). The slider's `min`, `max`, and `step` are in the units of the time field, not in milliseconds of playback:
+
+```json
+{
+  "name": "frame",
+  "select": {"type": "point", "on": "timer"},
+  "bind": {"input": "range", "min": 1955, "max": 2005, "step": 5}
+}
+```
+
+Scrubbing pauses playback, so that the animation does not keep advancing while the viewer drags the slider. Vega-Lite adds a play/pause checkbox next to the slider; checking it resumes playback:
+
+<div class="vl-example" data-name="animated_gapminder_slider"></div>
+
+If the specification already [filters the timer on its own parameter](select.html#animation-pause), Vega-Lite adds no extra checkbox. Scrubbing pauses playback by clearing that parameter, so a checkbox bound to it unchecks, and re-checking it resumes playback. Each timer filter must be a parameter name for this to work; with an expression filter Vega-Lite warns and ignores the range binding.
+
 ## Legend Binding
 
 When a point selection is [projected](project.html) over only one field or encoding channel, the `bind` property can be set to `"legend"` to populate the selection by interacting with the corresponding legend.

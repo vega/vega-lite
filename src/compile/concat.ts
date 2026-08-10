@@ -2,15 +2,13 @@ import {NewSignal, SignalRef} from 'vega';
 import {Config} from '../config.js';
 import * as log from '../log/index.js';
 import {isHConcatSpec, isVConcatSpec, NormalizedConcatSpec, NormalizedSpec} from '../spec/index.js';
-import {keys, vals} from '../util.js';
+import {keys} from '../util.js';
 import {VgData, VgLayout} from '../vega.schema.js';
 import {buildModel} from './buildmodel.js';
 import {parseData} from './data/parse.js';
 import {assembleLayoutSignals} from './layoutsize/assemble.js';
 import {parseConcatLayoutSize} from './layoutsize/parse.js';
 import {Model} from './model.js';
-import {MULTI_VIEW_ANIMATION_UNSUPPORTED} from '../log/message.js';
-import {isTimerSelection} from './selection/index.js';
 
 export class ConcatModel extends Model {
   public readonly children: Model[];
@@ -44,10 +42,6 @@ export class ConcatModel extends Model {
       for (const key of keys(child.component.selection)) {
         this.component.selection[key] = child.component.selection[key];
       }
-    }
-
-    if (vals(this.component.selection).some((selCmpt) => isTimerSelection(selCmpt))) {
-      log.error(MULTI_VIEW_ANIMATION_UNSUPPORTED);
     }
   }
 

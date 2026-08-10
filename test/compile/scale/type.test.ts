@@ -194,10 +194,27 @@ describe('compile/scale', () => {
       });
 
       describe('time (animation)', () => {
-        it('should return linear scale for temporal data by default.', () => {
-          // expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
-          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.BAND); // TODO(jzong) change to linear when interpolation implemented
+        it('should return band scale for temporal data by default.', () => {
+          expect(scaleType({}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.BAND);
         });
+
+        it('should honor an explicit linear scale for temporal data.', () => {
+          // unlike a visual channel, the time channel maps onto elapsed playback
+          // time, so a temporal field may legitimately drive a linear scale
+          expect(scaleType({type: 'linear'}, 'time', {type: 'temporal'}, 'point')).toEqual(ScaleType.LINEAR);
+        });
+
+        it(
+          'should warn and fall back to band for a linear scale over a nominal field.',
+          log.wrap((localLogger) => {
+            // a linear scale over strings has a NaN domain, so the frame
+            // filter would silently match nothing
+            expect(scaleType({type: 'linear'}, 'time', {type: 'nominal'}, 'point')).toEqual(ScaleType.BAND);
+            expect(localLogger.warns[0]).toEqual(
+              log.message.scaleTypeNotWorkWithFieldDef(ScaleType.LINEAR, ScaleType.BAND),
+            );
+          }),
+        );
       });
     });
     describe('quantitative', () => {
@@ -240,9 +257,12 @@ describe('compile/scale', () => {
       });
 
       describe('time (animation)', () => {
-        it('should return linear scale for quantitative data by default.', () => {
-          // expect(scaleType({}, 'time', {type: 'quantitative'}, 'point')).toEqual(ScaleType.LINEAR);
-          expect(scaleType({}, 'time', {type: 'quantitative'}, 'point')).toEqual(ScaleType.BAND); // TODO(jzong) change to linear when interpolation implemented
+        it('should return band scale for quantitative data by default.', () => {
+          expect(scaleType({}, 'time', {type: 'quantitative'}, 'point')).toEqual(ScaleType.BAND);
+        });
+
+        it('should honor an explicit linear scale for quantitative data.', () => {
+          expect(scaleType({type: 'linear'}, 'time', {type: 'quantitative'}, 'point')).toEqual(ScaleType.LINEAR);
         });
       });
     });

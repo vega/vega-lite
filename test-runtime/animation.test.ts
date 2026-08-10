@@ -73,4 +73,92 @@ describe('time encoding animations', () => {
       await expect(await view.toSVG()).toMatchFileSnapshot(`./resources/animation/gapminder_${anim_value}.svg`);
     }
   });
+
+  it('moves marks continuously between keyframes when given a key', async () => {
+    const view = await embed(
+      {
+        ...gapminderSpec,
+        width: 200,
+        height: 200,
+        encoding: {
+          ...gapminderSpec.encoding,
+          time: {...gapminderSpec.encoding.time, key: {field: 'country'}},
+        },
+      } as TopLevelSpec,
+      false,
+    );
+    await view.runAsync();
+    await view.signal('is_playing', false).runAsync();
+
+    const firstMark = () => {
+      const symbols = view.scenegraph().root.items[0].items.find((i: any) => i.marktype === 'symbol');
+      return {x: symbols.items[0].x, y: symbols.items[0].y};
+    };
+
+    const at = async (clock: number) => {
+      await view.signal('anim_clock', clock).runAsync();
+      return {tween: view.signal('anim_tween'), value: view.signal('anim_value'), ...firstMark()};
+    };
+
+    // one keyframe spans 500ms at the default frame rate
+    const start = await at(0);
+    const quarter = await at(125);
+    const half = await at(250);
+    const end = await at(499);
+    const nextFrame = await at(500);
+
+    expect(start.tween).toBe(0);
+    expect(half.tween).toBeCloseTo(0.5, 2);
+
+    // the mark travels monotonically across the gap rather than jumping at the
+    // frame boundary
+    const ys = [start.y, quarter.y, half.y, end.y];
+    for (let i = 1; i < ys.length; i++) {
+      expect(ys[i]).not.toBe(ys[i - 1]);
+    }
+    expect(ys.every((y, i) => i === 0 || y < ys[i - 1])).toBe(true);
+
+    // and arrives where the next keyframe starts, so there is no visible seam
+    expect(nextFrame.value).toBe(1960);
+    expect(nextFrame.tween).toBe(0);
+    expect(nextFrame.y).toBeCloseTo(end.y, 1);
+  });
+
+  it('animates every layer of a layered view from one clock', async () => {
+    const {params, transform, encoding, data} = gapminderSpec;
+    const view = await embed(
+      {
+        $schema: gapminderSpec.$schema,
+        data,
+        params,
+        transform,
+        width: 200,
+        height: 200,
+        encoding: {x: encoding.x, y: encoding.y, time: encoding.time},
+        layer: [{mark: 'point'}, {mark: {type: 'text', dy: -10}, encoding: {text: {field: 'country'}}}],
+      } as TopLevelSpec,
+      false,
+    );
+    await view.runAsync();
+    await view.signal('is_playing', false).runAsync();
+
+    const counts = () => {
+      const items = view.scenegraph().root.items[0].items;
+      return {
+        points: items.find((i: any) => i.marktype === 'symbol').items.length,
+        labels: items.find((i: any) => i.marktype === 'text').items.length,
+      };
+    };
+
+    await view.signal('anim_clock', 0).runAsync();
+    const first = counts();
+    expect(first.points).toBeGreaterThan(0);
+    // both layers read the same frame dataset, so they stay in step
+    expect(first.labels).toBe(first.points);
+
+    await view.signal('anim_clock', 2000).runAsync();
+    expect(view.signal('anim_value')).toBe(1975);
+    const later = counts();
+    expect(later.labels).toBe(later.points);
+  });
 });

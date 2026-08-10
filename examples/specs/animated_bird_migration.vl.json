@@ -1,0 +1,104 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "The migration of ten bird species over a year, traced by each species' daily average position over a world map. Each species trails a fading ten-day tail as the animation advances.",
+  "width": 420,
+  "height": 560,
+  "projection": {
+    "type": "equalEarth",
+    "rotate": [
+      90,
+      0
+    ],
+    "scale": 250,
+    "translate": [
+      200,
+      324
+    ]
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/world-110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "countries"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#f0f0f0",
+        "stroke": "#ffffff",
+        "strokeWidth": 0.5
+      }
+    },
+    {
+      "data": {
+        "url": "data/bird-migration.csv"
+      },
+      "transform": [
+        {
+          "filter": {
+            "param": "trail"
+          }
+        }
+      ],
+      "params": [
+        {
+          "name": "trail",
+          "select": {
+            "type": "point",
+            "on": "timer",
+            "predicate": {
+              "and": [
+                {
+                  "field": "day",
+                  "lte": {
+                    "expr": "anim_value"
+                  }
+                },
+                {
+                  "field": "day",
+                  "gt": {
+                    "expr": "anim_value - 10"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 20
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "species",
+          "type": "nominal"
+        },
+        "opacity": {
+          "value": {
+            "expr": "max(0.15, 1 - (anim_value - datum.day) / 10)"
+          }
+        },
+        "time": {
+          "field": "day",
+          "type": "quantitative"
+        }
+      }
+    }
+  ],
+  "config": {
+    "scale": {
+      "framesPerSecond": 20
+    }
+  }
+}

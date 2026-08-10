@@ -26,6 +26,7 @@ import {
   isTypedFieldDef,
   MarkPropFieldOrDatumDef,
   PositionFieldDef,
+  TimeFieldDef,
 } from '../channeldef.js';
 import {Config} from '../config.js';
 import {isGraticuleGenerator} from '../data.js';
@@ -62,7 +63,15 @@ import {
   assembleUnitSelectionSignals,
 } from './selection/assemble.js';
 import {parseUnitSelection} from './selection/parse.js';
-import {CURR} from './selection/point.js';
+import {ANIM_TWEEN, ANIM_VALUE, ANIM_VALUE_NEXT, CURR} from './selection/point.js';
+import {
+  animationKey,
+  animationLineKey,
+  INTERPOLATE,
+  LINE_INTERPOLATE,
+  LINE_SAMPLE_CLOCK,
+  interpolateMarkEncodings,
+} from './animation.js';
 
 /**
  * Internal model of Vega-Lite specification for the compiler.
@@ -322,24 +331,129 @@ export class UnitModel extends ModelWithField<Encoding<string>> {
   }
 
   /**
+   * The data source that this unit's frame dataset derives from. Data assembly
+   * sets this field when it finds a frame filter and builds the frame dataset
+   * from it; mark assembly then reads it to point marks at the frame dataset.
+   *
+   * A `time` encoding or a timer selection alone is not enough to set this
+   * field, because an animation without a frame filter (e.g. one that only
+   * drives a conditional encoding) has no frame dataset and leaves its marks
+   * on the full data.
+   */
+  public animationFrameSource?: string;
+
+  /**
+   * The frame filter, held for a facet to build the frame dataset from. A unit
+   * inside a facet draws from the partition its cell group defines rather than
+   * from a top-level dataset, so data assembly cannot build the frame dataset
+   * itself. It lifts the filter out of the pipeline and leaves it here, and the
+   * facet builds the dataset inside the cell group.
+   */
+  public animationFrameFilter?: VgData['transform'][number];
+
+  /**
+   * The stack transforms of this unit's pipeline, held alongside the frame
+   * filter for the same reason: the facet re-applies them when it builds the
+   * frame and interpolation datasets inside the cell group, so rows are laid
+   * out within their frame rather than across every frame at once.
+   */
+  public animationFrameLayout?: VgData['transform'];
+
+  public get isAnimated(): boolean {
+    return this.animationFrameSource !== undefined;
+  }
+
+  /**
    * Corrects the data references in marks after assemble.
    */
   public correctDataNames = (mark: VgMarkGroup) => {
+    const lineKey = animationLineKey(this);
+    // A clip-revealed line draws from the full data: its geometry is the
+    // static chart's own curve, and the clip supplies the animation.
+    const animated = this.isAnimated && lineKey?.mode !== 'clip';
+    // An interpolating animation draws from the joined dataset instead, because
+    // its marks need their successor in the next frame to tween towards. A
+    // resampled line draws from its subsampled series.
+    const frame = lineKey ? LINE_INTERPOLATE : animationKey(this) ? INTERPOLATE : CURR;
+
     // for normal data references
     if (mark.from?.data) {
       mark.from.data = this.lookupDataSource(mark.from.data);
-      if ('time' in this.encoding) {
-        mark.from.data = mark.from.data + CURR;
+      if (animated) {
+        mark.from.data = mark.from.data + frame;
       }
     }
 
-    // for access to facet data
+    // for access to facet data. A grouped path mark -- a line broken up by
+    // color, say -- compiles to a facet-backed group, which stores its data
+    // reference here rather than on `from.data`. A pass that reads only
+    // `from.data` misses the reference, and the line then holds still while
+    // the rest of the chart animates.
     if (mark.from?.facet?.data) {
       mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
-      // TOOD(jzong) uncomment this when it's time to implement facet animation
-      // if ('time' in this.encoding) {
-      //   mark.from.facet.data = mark.from.facet.data + CURR;
-      // }
+      if (animated) {
+        mark.from.facet.data = mark.from.facet.data + frame;
+      }
+    }
+
+    return mark;
+  };
+
+  /**
+   * Rewrites scaled encodings to tween towards the next keyframe. Grouped path
+   * marks nest their real encodings one level down, in the group's child.
+   */
+  private interpolateMarks = (mark: VgMarkGroup) => {
+    if (!animationKey(this)) {
+      return mark;
+    }
+
+    const target = mark.from?.facet ? ((mark as any).marks?.[0] ?? mark) : mark;
+
+    const lineKey = animationLineKey(this);
+    if (lineKey?.mode === 'clip') {
+      // The line draws its full static geometry, and a clip whose extent
+      // follows the clock between keyframes reveals it, so the reveal is
+      // continuous and the geometry never changes behind it.
+      const scaleName = stringValue(this.scaleName(lineKey.channel));
+      const reveal = `lerp([scale(${scaleName}, ${ANIM_VALUE}), scale(${scaleName}, ${ANIM_VALUE_NEXT})], ${ANIM_TWEEN})`;
+      const clip = {
+        path: {
+          signal:
+            lineKey.channel === 'x'
+              ? `'M0,0H' + (${reveal}) + 'V' + height + 'H0Z'`
+              : `'M0,0H' + width + 'V' + (${reveal}) + 'H0Z'`,
+        },
+      };
+
+      if (mark.from?.facet) {
+        // a faceted path already has a group to clip
+        mark.clip = clip;
+      } else {
+        const line = {...mark};
+        for (const k of Object.keys(mark)) delete (mark as any)[k];
+        Object.assign(mark, {
+          type: 'group',
+          name: `${line.name}_clip_group`,
+          clip,
+          marks: [line],
+        });
+      }
+      return mark;
+    }
+
+    if (lineKey) {
+      // A resampled line's vertices are computed in its dataset, so its
+      // encodings stay as written. The path orders by each subsample's clock
+      // position, which strictly increases along a series; ordering by the
+      // time field alone would tie all of a segment's subsamples.
+      target.sort = {field: `datum[${stringValue(LINE_SAMPLE_CLOCK)}]`};
+      return mark;
+    }
+
+    const rescale = !!(this.encoding.time as TimeFieldDef<string>)?.rescale;
+    if (target.encode?.update) {
+      interpolateMarkEncodings(this, target.encode.update, rescale);
     }
 
     return mark;
@@ -355,7 +469,7 @@ export class UnitModel extends ModelWithField<Encoding<string>> {
       marks = assembleUnitSelectionMarks(this, marks);
     }
 
-    return marks.map(this.correctDataNames);
+    return marks.map(this.correctDataNames).map(this.interpolateMarks);
   }
   public assembleGroupStyle(): string | string[] {
     const {style} = this.view || {};

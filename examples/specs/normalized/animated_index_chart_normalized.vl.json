@@ -1,0 +1,77 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "An animated index chart of stock prices, showing each stock's return relative to the date the animation has reached.",
+  "data": {"url": "data/stocks.csv", "format": {"parse": {"date": "date"}}},
+  "width": 650,
+  "height": 300,
+  "layer": [
+    {
+      "params": [{"name": "index", "select": {"type": "point", "on": "timer"}}],
+      "mark": "point",
+      "encoding": {
+        "time": {
+          "field": "date",
+          "type": "temporal",
+          "scale": {"range": {"step": 200}}
+        },
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "opacity": {"value": 0}
+      }
+    },
+    {
+      "mark": "line",
+      "encoding": {
+        "time": {
+          "field": "date",
+          "type": "temporal",
+          "scale": {"range": {"step": 200}}
+        },
+        "x": {"field": "date", "type": "temporal", "axis": null},
+        "y": {
+          "field": "indexed_price",
+          "type": "quantitative",
+          "axis": {"format": "%"}
+        },
+        "color": {"field": "symbol", "type": "nominal"}
+      },
+      "transform": [
+        {"lookup": "symbol", "from": {"param": "index", "key": "symbol"}},
+        {
+          "calculate": "datum.index && datum.index.price > 0 ? (datum.price - datum.index.price)/datum.index.price : 0",
+          "as": "indexed_price"
+        }
+      ]
+    },
+    {
+      "layer": [
+        {
+          "mark": {"type": "rule", "strokeWidth": 0.5},
+          "encoding": {
+            "time": {
+              "field": "date",
+              "type": "temporal",
+              "scale": {"range": {"step": 200}}
+            },
+            "x": {"field": "date", "type": "temporal", "axis": null},
+            "color": {"value": "firebrick"}
+          }
+        },
+        {
+          "mark": {"type": "text", "align": "center", "fontWeight": 100},
+          "encoding": {
+            "time": {
+              "field": "date",
+              "type": "temporal",
+              "scale": {"range": {"step": 200}}
+            },
+            "x": {"field": "date", "type": "temporal", "axis": null},
+            "color": {"value": "firebrick"},
+            "text": {"field": "date", "timeUnit": "yearmonth"},
+            "y": {"value": 310}
+          }
+        }
+      ],
+      "transform": [{"filter": {"param": "index"}}]
+    }
+  ]
+}
