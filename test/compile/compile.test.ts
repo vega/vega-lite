@@ -373,7 +373,7 @@ describe('compile/compile', () => {
         init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300',
         on: [
           {events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300'},
-          {events: {signal: 'autosize'}, update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300'},
+          {events: 'container:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 300'},
         ],
       },
     ]);
@@ -452,7 +452,7 @@ describe('compile/compile', () => {
         init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
         on: [
           {events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'},
-          {events: {signal: 'autosize'}, update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'},
+          {events: 'container:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'},
         ],
       },
     ]);
@@ -481,7 +481,7 @@ describe('compile/compile', () => {
         init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500',
         on: [
           {events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'},
-          {events: {signal: 'autosize'}, update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'},
+          {events: 'container:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'},
         ],
       },
       {
@@ -489,7 +489,7 @@ describe('compile/compile', () => {
         init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300',
         on: [
           {events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'},
-          {events: {signal: 'autosize'}, update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'},
+          {events: 'container:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 300'},
         ],
       },
     ]);

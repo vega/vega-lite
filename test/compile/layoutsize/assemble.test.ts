@@ -170,7 +170,7 @@ describe('compile/layout', () => {
       expect(height).toEqual([{name: 'height', value: 18}]);
     });
 
-    it('should update container size on window resize and autosize signal changes', () => {
+    it('should update container size on window and container resize', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         width: 'container',
         height: 'container',
@@ -186,7 +186,7 @@ describe('compile/layout', () => {
           init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500',
           on: [
             {events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'},
-            {events: {signal: 'autosize'}, update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'},
+            {events: 'container:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'},
           ],
         },
       ]);
@@ -198,7 +198,7 @@ describe('compile/layout', () => {
           init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 400',
           on: [
             {events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 400'},
-            {events: {signal: 'autosize'}, update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 400'},
+            {events: 'container:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 400'},
           ],
         },
       ]);

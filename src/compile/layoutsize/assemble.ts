@@ -67,9 +67,12 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
       {
         name,
         init: safeExpr,
+        // `container:resize` catches every container size change but only exists in newer Vega;
+        // `window:resize` keeps older Vega working and costs nothing when both fire, since the
+        // signal then re-reads the same size and Vega skips unchanged signal updates.
         on: [
           {update: safeExpr, events: 'window:resize'},
-          {update: safeExpr, events: {signal: 'autosize'}},
+          {update: safeExpr, events: 'container:resize'},
         ],
       },
     ];
