@@ -6,6 +6,8 @@ import {Split} from '../split.js';
 
 export type LegendComponentProps = VgLegend & {
   labelExpr?: string;
+  labelLineBreak?: LegendInternal['labelLineBreak'];
+  labelTooltip?: boolean | string;
   selections?: string[];
   disable?: boolean;
 };
@@ -14,6 +16,8 @@ const LEGEND_COMPONENT_PROPERTY_INDEX: Flag<keyof LegendComponentProps> = {
   ...COMMON_LEGEND_PROPERTY_INDEX,
   disable: 1,
   labelExpr: 1,
+  labelLineBreak: 1,
+  labelTooltip: 1,
   selections: 1,
   // channel scales
   opacity: 1,
