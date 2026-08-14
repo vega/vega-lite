@@ -139,6 +139,12 @@
           "$ref": "#/definitions/CompositeMarkDef"
         },
         {
+          "$ref": "#/definitions/AutoMark"
+        },
+        {
+          "$ref": "#/definitions/AutoMarkDef"
+        },
+        {
           "$ref": "#/definitions/Mark"
         },
         {
@@ -1030,6 +1036,37 @@
         "argmin"
       ],
       "type": "object"
+    },
+    "AutoMark": {
+      "const": "auto",
+      "type": "string"
+    },
+    "AutoMarkDef": {
+      "additionalProperties": false,
+      "properties": {
+        "prefer": {
+          "$ref": "#/definitions/AutoPreferredMark",
+          "description": "Constrains the family of mark that `auto` selects. One of `\"point\"`, `\"line\"`, `\"area\"`, `\"bar\"`, or `\"rule\"`. When set, `auto` still determines the mark's orientation, baseline, stacking, and any binning/aggregation, but always uses the requested family.\n\n__Note:__ `\"area\"` is only ever produced when explicitly requested via `prefer`.\n\n__Default value:__ Inferred from the encodings."
+        },
+        "type": {
+          "$ref": "#/definitions/AutoMark",
+          "description": "The mark type. For an automatically-chosen mark, this should always be `\"auto\"`."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "AutoPreferredMark": {
+      "enum": [
+        "point",
+        "line",
+        "area",
+        "bar",
+        "rule"
+      ],
+      "type": "string"
     },
     "AutoSizeParams": {
       "additionalProperties": false,
