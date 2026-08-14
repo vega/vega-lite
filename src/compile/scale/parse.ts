@@ -69,7 +69,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
   return scaleComponents;
 }
 
-const scaleTypeTieBreaker = tieBreakByComparing(
+const scaleTypeTieBreaker = tieBreakByComparing<VgScale, ScaleType>(
   (st1: ScaleType, st2: ScaleType) => scaleTypePrecedence(st1) - scaleTypePrecedence(st2),
 );
 
