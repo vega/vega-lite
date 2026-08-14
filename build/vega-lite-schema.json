@@ -8803,6 +8803,58 @@
             "type"
           ],
           "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "between": {
+              "items": {
+                "$ref": "#/definitions/Stream"
+              },
+              "type": "array"
+            },
+            "consume": {
+              "type": "boolean"
+            },
+            "debounce": {
+              "type": "number"
+            },
+            "filter": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Expr"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/Expr"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "markname": {
+              "type": "string"
+            },
+            "marktype": {
+              "$ref": "#/definitions/MarkType"
+            },
+            "source": {
+              "const": "container",
+              "type": "string"
+            },
+            "throttle": {
+              "type": "number"
+            },
+            "type": {
+              "const": "resize",
+              "type": "string"
+            }
+          },
+          "required": [
+            "source",
+            "type"
+          ],
+          "type": "object"
         }
       ]
     },

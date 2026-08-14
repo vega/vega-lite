@@ -127,7 +127,7 @@
     "ts-json-schema-generator": "^2.9.0",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.64.0",
-    "vega-cli": "^6.2.0",
+    "vega-cli": "^6.4.0",
     "vega-datasets": "^3.2.1",
     "vega-embed": "^7.1.0",
     "vega-tooltip": "^1.1.0",
@@ -143,7 +143,7 @@
     "yargs": "~18.0.0"
   },
   "peerDependencies": {
-    "vega": "^6.0.0"
+    "vega": "^6.4.0"
   },
   "engines": {
     "node": ">=20"
