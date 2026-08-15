@@ -64,6 +64,27 @@ describe('Mark: Bar', () => {
     expect(props.height).toBeUndefined();
   });
 
+  it('should use quantitative x as the dimension when yOffset drives a vertical range', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/penguins.json'},
+      mark: 'bar',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'Species', type: 'nominal'},
+        yOffset: {field: 'density', type: 'quantitative'},
+      },
+    });
+    const props = bar.encodeEntry(model);
+
+    expect(model.markDef.orient).toBe('vertical');
+    expect(props.xc).toEqual({scale: 'x', field: 'value'});
+    expect(props.width).toEqual({value: defaultBarConfig.continuousBandSize});
+    expect(props.x).toBeUndefined();
+    expect(props.x2).toBeUndefined();
+    expect(props.y).toEqual({scale: 'y', field: 'Species', offset: {scale: 'yOffset', field: 'density'}});
+    expect(props.y2).toEqual({scale: 'y', field: 'Species', offset: {scale: 'yOffset', value: 0}});
+  });
+
   it('should draw horizontal bar, with y from zero to field value and bar with quantitative x, x2, and y', () => {
     const x: PositionFieldDef<string> = {field: 'q_start', type: 'quantitative'};
     const x2: SecondaryFieldDef<string> = {field: 'q_end'};

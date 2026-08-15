@@ -172,8 +172,8 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   if (
     stackedFieldDef.stack === undefined &&
-    ((fieldChannel === 'x' && !encoding.y && channelHasQuantitativeOffset(encoding, 'y')) ||
-      (fieldChannel === 'y' && !encoding.x && channelHasQuantitativeOffset(encoding, 'x')))
+    ((fieldChannel === 'x' && channelHasQuantitativeOffset(encoding, 'y')) ||
+      (fieldChannel === 'y' && channelHasQuantitativeOffset(encoding, 'x')))
   ) {
     return null;
   }
