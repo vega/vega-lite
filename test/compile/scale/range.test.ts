@@ -344,6 +344,19 @@ describe('compile/scale', () => {
     });
 
     describe('xOffset', () => {
+      it('returns the full width for a ranged bar without x', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          width: 500,
+          mark: 'bar',
+          encoding: {
+            y: {field: 'y', type: 'nominal'},
+            xOffset: {field: 'value', type: 'quantitative'},
+          },
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit([0, {signal: 'width'}]));
+      });
+
       it('returns [0, bandwidth] if x is band scale with fixed width', () => {
         const model = parseUnitModelWithScaleExceptRange({
           width: 500,
@@ -415,6 +428,34 @@ describe('compile/scale', () => {
     });
 
     describe('yOffset', () => {
+      it('returns the full reversed height for a ranged bar without y', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          height: 500,
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            yOffset: {field: 'value', type: 'quantitative'},
+          },
+        });
+
+        expect(parseRangeForChannel('yOffset', model)).toEqual(makeImplicit([{signal: 'height'}, 0]));
+      });
+
+      it('keeps a centered range for a point without y', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          height: 500,
+          mark: 'point',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            yOffset: {field: 'value', type: 'quantitative'},
+          },
+        });
+
+        expect(parseRangeForChannel('yOffset', model)).toEqual(
+          makeImplicit([{signal: 'height/2'}, {signal: '-height/2'}]),
+        );
+      });
+
       it("returns [bandwidth('y'), 0] for continuous yOffset nested in band y", () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'bar',
