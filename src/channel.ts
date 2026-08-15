@@ -597,6 +597,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
         circle: 'always',
         square: 'always',
         bar: 'always',
+        area: 'always',
         text: 'always',
         line: 'always',
         trail: 'always',
