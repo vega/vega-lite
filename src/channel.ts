@@ -518,6 +518,7 @@ const ALL_MARKS: Record<Mark, 'always'> = {
   // all marks
   arc: 'always',
   area: 'always',
+  array: 'always',
   bar: 'always',
   circle: 'always',
   geoshape: 'always',
