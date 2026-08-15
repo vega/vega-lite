@@ -579,6 +579,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case LONGITUDE2:
       return {
         area: 'always',
+        array: 'always',
         bar: 'always',
         image: 'always',
         rect: 'always',

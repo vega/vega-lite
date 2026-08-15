@@ -53,4 +53,48 @@ describe('Mark: Array', () => {
       expect((transform[0] as any).opacity).toBeUndefined();
     });
   });
+
+  describe('encodeEntry with x/x2/y/y2 (axis/extent support)', () => {
+    it('positions and sizes the image from the scaled x/x2 and y/y2 extent when both are field-encoded', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: [{x1_: -180, x2_: 180, y1_: -81, y2_: 87, width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]},
+        mark: 'array',
+        encoding: {
+          x: {field: 'x1_', type: 'quantitative'},
+          x2: {field: 'x2_'},
+          y: {field: 'y1_', type: 'quantitative'},
+          y2: {field: 'y2_'},
+        },
+      });
+      const props = array.encodeEntry(model);
+      const xScale = model.scaleName('x');
+      const yScale = model.scaleName('y');
+
+      expect(props.x).toEqual({
+        signal: `min(scale('${xScale}', datum["x1_"]), scale('${xScale}', datum["x2_"]))`,
+      });
+      expect(props.width).toEqual({
+        signal: `abs((scale('${xScale}', datum["x2_"])) - (scale('${xScale}', datum["x1_"])))`,
+      });
+      expect(props.y).toEqual({
+        signal: `min(scale('${yScale}', datum["y1_"]), scale('${yScale}', datum["y2_"]))`,
+      });
+      expect(props.height).toEqual({
+        signal: `abs((scale('${yScale}', datum["y2_"])) - (scale('${yScale}', datum["y1_"])))`,
+      });
+    });
+
+    it('falls back to filling the view when only one of x/x2 (or y/y2) is encoded', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: [{x1_: 0, width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]},
+        mark: 'array',
+        encoding: {x: {field: 'x1_', type: 'quantitative'}},
+      });
+      const props = array.encodeEntry(model);
+      expect(props.x).toEqual({value: 0});
+      expect(props.width).toHaveProperty('signal');
+      expect(props.y).toEqual({value: 0});
+      expect(props.height).toHaveProperty('signal');
+    });
+  });
 });
