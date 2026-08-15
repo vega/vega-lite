@@ -40,9 +40,9 @@ export function assembleParameterSignals(params: (VariableParameter | TopLevelSe
     // Selection parameters are handled separately via assembleSelectionTopLevelSignals
     // and assembleSignals methods registered on the Model.
     if (isSelectionParameter(param)) continue;
-    const {expr, bind, ...rest} = param;
+    const {expr, bind, react, ...rest} = param;
 
-    if (bind && expr) {
+    if (expr && bind) {
       // Vega's InitSignal -- apply expr to "init"
       const signal: InitSignal = {
         ...rest,
@@ -50,11 +50,20 @@ export function assembleParameterSignals(params: (VariableParameter | TopLevelSe
         init: expr,
       };
       signals.push(signal);
+    } else if (expr && react === false) {
+      const sentinelKey = `__vl_${param.name}_sentinel`;
+      const signal: NewSignal = {
+        ...rest,
+        value: {[sentinelKey]: true},
+        update: `${param.name} && ${param.name}.${sentinelKey} ? (${expr}) : ${param.name}`,
+      };
+      signals.push(signal);
     } else {
       const signal: NewSignal = {
         ...rest,
         ...(expr ? {update: expr} : {}),
         ...(bind ? {bind} : {}),
+        ...(react === false ? {react} : {}),
       };
       signals.push(signal);
     }
