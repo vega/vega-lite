@@ -575,5 +575,252 @@ describe('Axis', () => {
       expect(axisComponents.x[0].get('title')).toBe('Hello, World');
       expect(axisComponents.y[0].get('title')).toBeNull();
     });
+
+    it('recalculates labelAlign and labelBaseline when orient is flipped for dual y-axis (issue #3773)', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {
+                field: 'a',
+                type: 'quantitative',
+                axis: {labelAngle: 0},
+              },
+            },
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {
+                field: 'b',
+                type: 'quantitative',
+                axis: {labelAngle: 0},
+              },
+            },
+          },
+        ],
+        resolve: {
+          scale: {y: 'independent'},
+        },
+      });
+      model.parseScale();
+      parseLayerAxes(model);
+      const axisComponents = model.component.axes;
+
+      // The second y-axis should be flipped to orient='right'
+      expect(axisComponents.y).toHaveLength(2);
+      expect(axisComponents.y[0].get('orient')).toBe('left');
+      expect(axisComponents.y[1].get('orient')).toBe('right');
+
+      // At angle=0 for y-axis: left orient → 'right' align, right orient → 'left' align
+      expect(axisComponents.y[0].get('labelAlign')).toBe('right');
+      expect(axisComponents.y[1].get('labelAlign')).toBe('left');
+    });
+
+    it('recalculates labelBaseline when orient is flipped for dual y-axis at angle=60 (issue #3773)', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {
+                field: 'a',
+                type: 'quantitative',
+                axis: {labelAngle: 60},
+              },
+            },
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {
+                field: 'b',
+                type: 'quantitative',
+                axis: {labelAngle: 60},
+              },
+            },
+          },
+        ],
+        resolve: {
+          scale: {y: 'independent'},
+        },
+      });
+      model.parseScale();
+      parseLayerAxes(model);
+      const axisComponents = model.component.axes;
+
+      expect(axisComponents.y[1].get('orient')).toBe('right');
+
+      // At angle=60 for y-axis: left orient → 'top' baseline, right orient → 'bottom' baseline
+      expect(axisComponents.y[0].get('labelBaseline')).toBe('top');
+      expect(axisComponents.y[1].get('labelBaseline')).toBe('bottom');
+    });
+
+    it('does not override explicit labelAlign when orient is flipped (issue #3773)', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {
+                field: 'a',
+                type: 'quantitative',
+                axis: {labelAngle: 0},
+              },
+            },
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {
+                field: 'b',
+                type: 'quantitative',
+                axis: {labelAngle: 0, labelAlign: 'center'},
+              },
+            },
+          },
+        ],
+        resolve: {
+          scale: {y: 'independent'},
+        },
+      });
+      model.parseScale();
+      parseLayerAxes(model);
+      const axisComponents = model.component.axes;
+
+      // Explicit labelAlign should be preserved even after orient flip
+      expect(axisComponents.y[1].get('orient')).toBe('right');
+      expect(axisComponents.y[1].get('labelAlign')).toBe('center');
+    });
+
+    it('does not override explicit labelBaseline when orient is flipped (issue #3773)', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {
+                field: 'a',
+                type: 'quantitative',
+                axis: {labelAngle: 60},
+              },
+            },
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {
+                field: 'b',
+                type: 'quantitative',
+                axis: {labelAngle: 60, labelBaseline: 'middle'},
+              },
+            },
+          },
+        ],
+        resolve: {
+          scale: {y: 'independent'},
+        },
+      });
+      model.parseScale();
+      parseLayerAxes(model);
+      const axisComponents = model.component.axes;
+
+      // Explicit labelBaseline should be preserved even after orient flip
+      expect(axisComponents.y[1].get('orient')).toBe('right');
+      expect(axisComponents.y[1].get('labelBaseline')).toBe('middle');
+    });
+
+    it('recalculates labelAlign when labelAngle comes from config (issue #3773)', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {field: 'a', type: 'quantitative'},
+            },
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {field: 'b', type: 'quantitative'},
+            },
+          },
+        ],
+        resolve: {
+          scale: {y: 'independent'},
+        },
+        config: {
+          axisY: {labelAngle: 45},
+        },
+      });
+      model.parseScale();
+      parseLayerAxes(model);
+      const axisComponents = model.component.axes;
+
+      expect(axisComponents.y[0].get('orient')).toBe('left');
+      expect(axisComponents.y[1].get('orient')).toBe('right');
+
+      // labelAngle from config should still trigger recalculation
+      expect(axisComponents.y[0].get('labelAlign')).toBe('right');
+      expect(axisComponents.y[1].get('labelAlign')).toBe('left');
+    });
+
+    it('recalculates labelAlign and labelBaseline when orient is flipped for dual x-axis (issue #3773)', () => {
+      const model = parseLayerModel({
+        layer: [
+          {
+            mark: 'line',
+            encoding: {
+              x: {
+                field: 'a',
+                type: 'quantitative',
+                axis: {labelAngle: 90},
+              },
+              y: {field: 'date', type: 'temporal'},
+            },
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {
+                field: 'b',
+                type: 'quantitative',
+                axis: {labelAngle: 90},
+              },
+              y: {field: 'date', type: 'temporal'},
+            },
+          },
+        ],
+        resolve: {
+          scale: {x: 'independent'},
+        },
+      });
+      model.parseScale();
+      parseLayerAxes(model);
+      const axisComponents = model.component.axes;
+
+      expect(axisComponents.x).toHaveLength(2);
+      expect(axisComponents.x[0].get('orient')).toBe('bottom');
+      expect(axisComponents.x[1].get('orient')).toBe('top');
+
+      // At angle=90 for x-axis: bottom orient → 'left' align, top orient → 'right' align
+      expect(axisComponents.x[0].get('labelAlign')).toBe('left');
+      expect(axisComponents.x[1].get('labelAlign')).toBe('right');
+
+      // At angle=90 for x-axis: bottom orient → 'middle' baseline, top orient → 'middle' baseline
+      expect(axisComponents.x[0].get('labelBaseline')).toBe('middle');
+      expect(axisComponents.x[1].get('labelBaseline')).toBe('middle');
+    });
   });
 });
