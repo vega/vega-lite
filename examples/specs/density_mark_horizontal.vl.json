@@ -1,0 +1,22 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "title": "Density Mark: Horizontal Orientation",
+  "width": 220,
+  "height": 420,
+  "data": {
+    "url": "data/penguins.json"
+  },
+  "mark": {
+    "type": "density"
+  },
+  "encoding": {
+    "y": {
+      "field": "Body Mass (g)",
+      "type": "quantitative"
+    },
+    "fill": {
+      "field": "Species",
+      "type": "nominal"
+    }
+  }
+}
