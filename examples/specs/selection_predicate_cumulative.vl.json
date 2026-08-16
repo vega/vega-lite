@@ -1,0 +1,24 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Click a bar to highlight it and every bar before it.",
+  "data": {"url": "data/population.json"},
+  "params": [
+    {
+      "name": "upto",
+      "select": {
+        "type": "point",
+        "predicate": {"field": "year", "lte": {"expr": "datum.year"}},
+        "toggle": false
+      }
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {"field": "year", "type": "ordinal"},
+    "y": {"aggregate": "sum", "field": "people", "type": "quantitative"},
+    "color": {
+      "condition": {"param": "upto", "empty": false, "value": "steelblue"},
+      "value": "lightgray"
+    }
+  }
+}

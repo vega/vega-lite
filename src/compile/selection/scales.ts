@@ -12,7 +12,16 @@ import {NewSignal} from 'vega';
 
 const scaleBindings: SelectionCompiler<'interval'> = {
   defined: (selCmpt) => {
-    return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
+    // Binding to scales needs a selection that resolves to a range. An interval
+    // selection always resolves to one. A point selection resolves to one when
+    // a predicate makes it hold comparisons instead of a value, which lets a
+    // windowed selection pan the view as its window moves.
+    return (
+      (selCmpt.type === 'interval' || !!selCmpt.predicate) &&
+      selCmpt.resolve === 'global' &&
+      selCmpt.bind &&
+      selCmpt.bind === 'scales'
+    );
   },
 
   parse: (model, selCmpt) => {
@@ -43,6 +52,15 @@ const scaleBindings: SelectionCompiler<'interval'> = {
   },
 
   topLevelSignals: (model, selCmpt, signals) => {
+    // The routing below exists for interval selections, whose per-unit brush
+    // signals hold the selection's state and have to be pushed outward in a
+    // multiview display. A point selection with a predicate has no such
+    // signals and needs none: its store and named signal already assemble at
+    // the top level, so its scale extent resolves from any group.
+    if (selCmpt.type !== 'interval') {
+      return signals;
+    }
+
     const bound = selCmpt.scales.filter((proj) => signals.filter((s) => s.name === proj.signals.data).length === 0);
 
     // Top-level signals are only needed for multiview displays and if this
@@ -78,7 +96,8 @@ const scaleBindings: SelectionCompiler<'interval'> = {
 
   signals: (model, selCmpt, signals) => {
     // Nested signals need only push to top-level signals with multiview displays.
-    if (model.parent && !isTopLevelLayer(model)) {
+    // Interval selections only: see topLevelSignals.
+    if (selCmpt.type === 'interval' && model.parent && !isTopLevelLayer(model)) {
       for (const proj of selCmpt.scales) {
         const signal: any = signals.find((s) => s.name === proj.signals.data);
         signal.push = 'outer';

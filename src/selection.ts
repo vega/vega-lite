@@ -3,7 +3,9 @@ import {isObject} from 'vega-util';
 import {SingleDefUnitChannel} from './channel.js';
 import {FieldName, PrimitiveValue} from './channeldef.js';
 import {DateTime} from './datetime.js';
+import {LogicalAnd} from './logical.js';
 import {ParameterName} from './parameter.js';
+import {FieldPredicate} from './predicate.js';
 import {Dict} from './util.js';
 
 export const SELECTION_ID = '_vgsid_';
@@ -109,6 +111,28 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
    * __See also:__ [`nearest` examples](https://vega.github.io/vega-lite/docs/selection.html#nearest) documentation.
    */
   nearest?: boolean;
+
+  /**
+   * The condition a data value must satisfy to fall within the selection.
+   *
+   * By default a point selection holds the values it captured, and a datum
+   * falls within it only by matching them exactly. A predicate replaces that
+   * with an arbitrary comparison, so a selection can hold a threshold, a range,
+   * or a window instead of a point -- everything up to what was clicked, say,
+   * or everything within ten units of it.
+   *
+   * Comparison values are Vega expressions evaluated when the selection is
+   * triggered, so `datum` is the datum being interacted with, as in
+   * `{"field": "year", "lte": {"expr": "datum.year"}}`.
+   *
+   * A single field predicate or an `"and"` of field predicates may be given;
+   * `"or"` and `"not"` are not supported, because a selection tests all of its
+   * comparisons conjunctively. A predicate is specified in place of `fields`
+   * and `encodings`.
+   *
+   * __See also:__ [`predicate` examples](https://vega.github.io/vega-lite/docs/selection.html#predicate) in the documentation.
+   */
+  predicate?: FieldPredicate | LogicalAnd<FieldPredicate>;
 }
 
 // Similar to BaseMarkConfig but the field documentations are specificly for an interval mark.

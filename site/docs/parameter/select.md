@@ -132,7 +132,45 @@ The aptly named `resolve` property addresses this ambiguity, and can be set to o
 
 In addition to all [common selection properties](#selection-props), point selections support the following properties:
 
-{% include table.html props="toggle,nearest" source="PointSelectionConfig" %}
+{% include table.html props="toggle,nearest,predicate" source="PointSelectionConfig" %}
+
+{:#predicate}
+
+### `predicate`
+
+By default a point selection stores the values it captures, and a datum falls within the selection when it matches those values exactly. The `predicate` property replaces exact matching with a comparison, so a selection can hold a threshold, a range, or a window rather than a point.
+
+```json
+{
+  "name": "upto",
+  "select": {
+    "type": "point",
+    "predicate": {"field": "year", "lte": {"expr": "datum.year"}}
+  }
+}
+```
+
+Clicking a datum now selects every datum whose `year` is at most the clicked datum's `year`.
+
+A predicate is specified in place of `fields` and `encodings`, and each field predicate in it contributes one comparison to the selection. A comparison value is a [Vega expression](https://vega.github.io/vega/docs/expressions/) evaluated when the selection is triggered, so `datum` refers to the datum the viewer interacted with. A comparison may test one field against a value computed from another.
+
+A comparison uses one of the [field predicates](predicate.html): `equal`, `lt`, `lte`, `gt`, `gte`, `range`, `oneOf`, and `valid`. The predicate can be a single field predicate or a flat `"and"` of them; `"or"` and `"not"` are not supported, because a selection tests all of its comparisons conjunctively. Two comparisons on the same field describe a window:
+
+```json
+"predicate": {
+  "and": [
+    {"field": "year", "gte": {"expr": "datum.year - 10"}},
+    {"field": "year", "lte": {"expr": "datum.year"}}
+  ]
+}
+```
+
+A selection with a predicate works unchanged wherever a selection works: [filter transforms](../filter.html), [conditional encodings](condition.html), [scale domains](../scale.html), and [scale binding](bind.html#scale-binding). Scale binding normally requires an interval selection, but a predicate gives a point selection a range, so it can be bound to scales too. Toggling accumulates selected entries, and a datum falls within the selection when it satisfies any one of them.
+
+#### Current Limitations
+
+- A predicate that compares against `datum` cannot be combined with [`nearest`](#nearest), because Vega captures `nearest` events on an invisible voronoi overlay, where `datum` is a mark item rather than a data tuple.
+- Only point selections support a predicate. An interval selection takes its extent from the brush instead.
 
 ### `toggle`
 

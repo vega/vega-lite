@@ -10914,6 +10914,34 @@
       },
       "type": "object"
     },
+    "FieldPredicate": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/FieldEqualPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldLTPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldGTPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldLTEPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldGTEPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldRangePredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldOneOfPredicate"
+        },
+        {
+          "$ref": "#/definitions/FieldValidPredicate"
+        }
+      ]
+    },
     "FieldRange": {
       "additionalProperties": false,
       "properties": {
@@ -15801,6 +15829,21 @@
       ],
       "type": "object"
     },
+    "LogicalAnd<FieldPredicate>": {
+      "additionalProperties": false,
+      "properties": {
+        "and": {
+          "items": {
+            "$ref": "#/definitions/LogicalComposition<FieldPredicate>"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "and"
+      ],
+      "type": "object"
+    },
     "LogicalAnd<Predicate>": {
       "additionalProperties": false,
       "properties": {
@@ -15830,6 +15873,22 @@
         "and"
       ],
       "type": "object"
+    },
+    "LogicalComposition<FieldPredicate>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/LogicalNot<FieldPredicate>"
+        },
+        {
+          "$ref": "#/definitions/LogicalAnd<FieldPredicate>"
+        },
+        {
+          "$ref": "#/definitions/LogicalOr<FieldPredicate>"
+        },
+        {
+          "$ref": "#/definitions/FieldPredicate"
+        }
+      ]
     },
     "PredicateComposition": {
       "anyOf": [
@@ -15863,6 +15922,18 @@
         }
       ]
     },
+    "LogicalNot<FieldPredicate>": {
+      "additionalProperties": false,
+      "properties": {
+        "not": {
+          "$ref": "#/definitions/LogicalComposition<FieldPredicate>"
+        }
+      },
+      "required": [
+        "not"
+      ],
+      "type": "object"
+    },
     "LogicalNot<Predicate>": {
       "additionalProperties": false,
       "properties": {
@@ -15884,6 +15955,21 @@
       },
       "required": [
         "not"
+      ],
+      "type": "object"
+    },
+    "LogicalOr<FieldPredicate>": {
+      "additionalProperties": false,
+      "properties": {
+        "or": {
+          "items": {
+            "$ref": "#/definitions/LogicalComposition<FieldPredicate>"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "or"
       ],
       "type": "object"
     },
@@ -19584,6 +19670,17 @@
           ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).\n\n__See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation."
         },
+        "predicate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldPredicate"
+            },
+            {
+              "$ref": "#/definitions/LogicalAnd<FieldPredicate>"
+            }
+          ],
+          "description": "The condition a data value must satisfy to fall within the selection.\n\nBy default a point selection holds the values it captured, and a datum falls within it only by matching them exactly. A predicate replaces that with an arbitrary comparison, so a selection can hold a threshold, a range, or a window instead of a point -- everything up to what was clicked, say, or everything within ten units of it.\n\nComparison values are Vega expressions evaluated when the selection is triggered, so `datum` is the datum being interacted with, as in `{\"field\": \"year\", \"lte\": {\"expr\": \"datum.year\"}}`.\n\nA single field predicate or an `\"and\"` of field predicates may be given; `\"or\"` and `\"not\"` are not supported, because a selection tests all of its comparisons conjunctively. A predicate is specified in place of `fields` and `encodings`.\n\n__See also:__ [`predicate` examples](https://vega.github.io/vega-lite/docs/selection.html#predicate) in the documentation."
+        },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
           "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\nOne of:\n- `\"global\"` -- only one brush exists for the entire SPLOM. When the user begins to drag, any previous brushes are cleared, and a new one is constructed.\n- `\"union\"` -- each cell contains its own brush, and points are highlighted if they lie within _any_ of these individual brushes.\n- `\"intersect\"` -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.\n\n__Default value:__ `global`.\n\n__See also:__ [`resolve` examples](https://vega.github.io/vega-lite/docs/selection.html#resolve) in the documentation."
@@ -19651,6 +19748,17 @@
             }
           ],
           "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).\n\n__See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation."
+        },
+        "predicate": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FieldPredicate"
+            },
+            {
+              "$ref": "#/definitions/LogicalAnd<FieldPredicate>"
+            }
+          ],
+          "description": "The condition a data value must satisfy to fall within the selection.\n\nBy default a point selection holds the values it captured, and a datum falls within it only by matching them exactly. A predicate replaces that with an arbitrary comparison, so a selection can hold a threshold, a range, or a window instead of a point -- everything up to what was clicked, say, or everything within ten units of it.\n\nComparison values are Vega expressions evaluated when the selection is triggered, so `datum` is the datum being interacted with, as in `{\"field\": \"year\", \"lte\": {\"expr\": \"datum.year\"}}`.\n\nA single field predicate or an `\"and\"` of field predicates may be given; `\"or\"` and `\"not\"` are not supported, because a selection tests all of its comparisons conjunctively. A predicate is specified in place of `fields` and `encodings`.\n\n__See also:__ [`predicate` examples](https://vega.github.io/vega-lite/docs/selection.html#predicate) in the documentation."
         },
         "resolve": {
           "$ref": "#/definitions/SelectionResolution",
