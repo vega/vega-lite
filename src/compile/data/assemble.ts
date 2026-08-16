@@ -30,6 +30,7 @@ import {SourceNode} from './source.js';
 import {StackNode} from './stack.js';
 import {TimeUnitNode} from './timeunit.js';
 import {WindowTransformNode} from './window.js';
+import {WordcloudTransformNode} from './wordcloud.js';
 import {DataComponent} from './index.js';
 
 function makeWalkTree(data: VgData[]) {
@@ -108,7 +109,8 @@ function makeWalkTree(data: VgData[]) {
       node instanceof IdentifierNode ||
       node instanceof SampleTransformNode ||
       node instanceof PivotTransformNode ||
-      node instanceof ExtentTransformNode
+      node instanceof ExtentTransformNode ||
+      node instanceof WordcloudTransformNode
     ) {
       dataSource.transform.push(node.assemble());
     }

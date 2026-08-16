@@ -350,6 +350,12 @@ export const defaultConfig: Config<SignalRef> = {
     borders: false,
   },
 
+  wordcloud: {
+    fontSizeRange: [10, 56],
+    padding: 1,
+    spiral: 'archimedean',
+  },
+
   scale: defaultScaleConfig,
 
   projection: {},
