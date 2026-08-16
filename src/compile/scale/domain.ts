@@ -211,6 +211,27 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
     } else {
       return parseSingleChannelDomain(scaleType, domain, model, 'y2');
     }
+  } else if (channel === 'color' && model.mark === 'array' && !domain) {
+    // The array mark's color-encoded field is a whole raster (an array of per-pixel values), so
+    // the ordinary field-extent domain machinery can't compute a domain from it directly (an
+    // array coerces to NaN under isFinite/aggregate min-max). Instead, the mark can be given
+    // minField/maxField markDef properties naming two genuine per-datum scalar fields (e.g. each
+    // grid's own precomputed min/max) to union into the domain, same mechanism as x/x2 above,
+    // just field names supplied via the mark definition rather than a second encoding channel
+    // (color has no color2 counterpart in the schema).
+    const {minField, maxField} = model.markDef;
+    if (minField && maxField) {
+      const data = model.requestDataName(
+        getScaleDataSourceForHandlingInvalidValues({
+          invalid: getMarkConfig('invalid', model.markDef, model.config),
+          isPath: isPathMark(model.mark),
+        }),
+      );
+      return makeImplicit([
+        {data, field: minField},
+        {data, field: maxField},
+      ]);
+    }
   }
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }

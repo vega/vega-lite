@@ -67,7 +67,16 @@ export const array: MarkCompiler = {
     if (encoding.color) {
       const scaleName = model.scaleName(COLOR);
       if (scaleName) {
-        transform['color'] = {expr: `scale('${scaleName}', datum.$value / datum.$max)`};
+        // With minField/maxField set (see domain.ts), the color scale's domain is the real,
+        // data-driven [min, max] of this grid (or - under a shared color resolve - the union
+        // across grids), so the raw value maps correctly without renormalizing here: the legend
+        // reflects genuine data values instead of an internal 0-1 ratio, and shared vs.
+        // independent color resolve becomes visibly meaningful across facets. Without those
+        // fields, fall back to normalizing by the grid's own max, since a fixed [0, 1] domain is
+        // the only safe default when we don't know the data's real range.
+        const {minField, maxField} = model.markDef;
+        const valueExpr = minField && maxField ? 'datum.$value' : 'datum.$value / datum.$max';
+        transform['color'] = {expr: `scale('${scaleName}', ${valueExpr})`};
         transform['opacity'] = 1;
       }
     }

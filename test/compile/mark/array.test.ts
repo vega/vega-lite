@@ -97,4 +97,33 @@ describe('Mark: Array', () => {
       expect(props.height).toHaveProperty('signal');
     });
   });
+
+  describe('postEncodingTransform with minField/maxField (real-domain color)', () => {
+    it('uses raw $value (no normalization) and a domain unioned from the two fields', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: [{min_: 0, max_: 100, width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]},
+        mark: {type: 'array', minField: 'min_', maxField: 'max_'},
+        encoding: {color: {field: 'values', type: 'quantitative'}},
+      });
+      const transform = array.postEncodingTransform(model);
+      const scaleName = model.scaleName('color');
+      expect((transform[0] as any).color.expr).toBe(`scale('${scaleName}', datum.$value)`);
+
+      const scales = assembleScalesForModel(model);
+      const colorScale = scales.find((s: any) => s.name === scaleName) as any;
+      expect(colorScale.domain).toEqual({data: colorScale.domain.data, fields: ['min_', 'max_']});
+    });
+
+    it('does not override an explicit user-specified domain', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: [{min_: 0, max_: 100, width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]},
+        mark: {type: 'array', minField: 'min_', maxField: 'max_'},
+        encoding: {color: {field: 'values', type: 'quantitative', scale: {domain: [0, 1]}}},
+      });
+      const scaleName = model.scaleName('color');
+      const scales = assembleScalesForModel(model);
+      const colorScale = scales.find((s: any) => s.name === scaleName) as any;
+      expect(colorScale.domain).toEqual([0, 1]);
+    });
+  });
 });
