@@ -303,7 +303,7 @@ function channelSignals(
   const vname = proj.signals.visual;
 
   const scaleName = stringValue(scaledInterval ? model.scaleName(channel) : model.projectionName());
-  const scaled = (str: string) => `scale(${scaleName}, ${str})`;
+  const scaled = (str: string | number) => `scale(${scaleName}, ${str})`;
 
   const size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
   const coord = `${channel}(unit)`;

@@ -36,7 +36,7 @@ export function facetSortFieldName(
   return vgField(sort, {suffix: `by_${vgField(fieldDef)}`, ...opt});
 }
 
-export class FacetModel extends ModelWithField {
+export class FacetModel extends ModelWithField<EncodingFacetMapping<string, SignalRef>> {
   public readonly facet: EncodingFacetMapping<string, SignalRef>;
 
   public readonly child: Model;
