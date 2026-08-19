@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Elevation of Maunga Whau, an 87 by 61 grid drawn at four times that size so its cells stay square.",
+  "width": 348,
+  "height": 244,
+  "data": {"url": "data/volcano.json"},
+  "mark": "array",
+  "encoding": {
+    "color": {
+      "field": "values",
+      "type": "quantitative",
+      "scale": {"scheme": "viridis"}
+    }
+  }
+}

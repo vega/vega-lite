@@ -247,6 +247,8 @@ export type VgEncodeChannel =
   | 'tension'
   | 'orient'
   | 'url'
+  | 'image'
+  | 'aspect'
   | 'align'
   | 'baseline'
   | 'text'

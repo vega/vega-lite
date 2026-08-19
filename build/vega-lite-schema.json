@@ -7571,6 +7571,10 @@
           "description": "A boolean flag indicating if ARIA default attributes should be included for marks and guides (SVG output only). If false, the `\"aria-hidden\"` attribute will be set for all guides, removing them from the ARIA accessibility tree and Vega-Lite will not generate default descriptions for marks.\n\n__Default value:__ `true`.",
           "type": "boolean"
         },
+        "array": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Array-Specific Config"
+        },
         "autosize": {
           "anyOf": [
             {
@@ -16014,6 +16018,7 @@
       "enum": [
         "arc",
         "area",
+        "array",
         "bar",
         "image",
         "line",
@@ -28512,6 +28517,10 @@
         "area": {
           "$ref": "#/definitions/AreaConfig",
           "description": "Area-Specific Config"
+        },
+        "array": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Array-Specific Config"
         },
         "bar": {
           "$ref": "#/definitions/BarConfig",

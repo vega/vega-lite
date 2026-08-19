@@ -12,6 +12,7 @@ import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema.js';
 export const Mark = {
   arc: 'arc',
   area: 'area',
+  array: 'array',
   bar: 'bar',
   image: 'image',
   line: 'line',
@@ -28,6 +29,7 @@ export const Mark = {
 
 export const ARC = Mark.arc;
 export const AREA = Mark.area;
+export const ARRAY = Mark.array;
 export const BAR = Mark.bar;
 export const IMAGE = Mark.image;
 export const LINE = Mark.line;
@@ -391,6 +393,9 @@ export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Area-Specific Config */
   area?: AreaConfig<ES>;
 
+  /** Array-Specific Config */
+  array?: MarkConfig<ES>;
+
   /** Bar-Specific Config */
   bar?: BarConfig<ES>;
 
@@ -432,6 +437,7 @@ const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
   mark: 1,
   arc: 1,
   area: 1,
+  array: 1,
   bar: 1,
   circle: 1,
   image: 1,

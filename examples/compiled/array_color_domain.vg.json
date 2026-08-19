@@ -1,0 +1,71 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "An elevation grid with the color domain clipped to bring out mid-range detail.",
+  "background": "white",
+  "padding": 5,
+  "width": 348,
+  "height": 244,
+  "style": "view",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/volcano.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "{width: datum.width, height: datum.height, values: datum.values}",
+          "as": "__array_grid"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "image",
+      "style": ["array"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "ariaRoleDescription": {"value": "array"},
+          "description": {
+            "signal": "\"values: \" + (format(datum[\"values\"], \"\"))"
+          },
+          "x": {"value": 0},
+          "width": {"signal": "width"},
+          "y": {"value": 0},
+          "height": {"signal": "height"},
+          "image": {"field": "image"},
+          "aspect": {"value": false}
+        }
+      },
+      "transform": [
+        {
+          "type": "heatmap",
+          "field": "datum.__array_grid",
+          "color": {"expr": "scale('color', datum.$value)"},
+          "opacity": 1
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": [120, 180],
+      "range": {"scheme": "viridis"},
+      "clamp": true,
+      "interpolate": "hcl",
+      "zero": false
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "values"
+    }
+  ]
+}

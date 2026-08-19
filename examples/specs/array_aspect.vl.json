@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "An elevation grid fitted to a square view, keeping its cells square rather than stretching them.",
+  "width": 300,
+  "height": 300,
+  "data": {"url": "data/volcano.json"},
+  "mark": {"type": "array", "aspect": true},
+  "encoding": {
+    "color": {
+      "field": "values",
+      "type": "quantitative",
+      "scale": {"scheme": "viridis"}
+    }
+  }
+}
