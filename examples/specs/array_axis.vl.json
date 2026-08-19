@@ -3,37 +3,17 @@
   "description": "An elevation grid labelled with the extent it covers.",
   "width": 348,
   "height": 244,
-  "data": {
-    "url": "data/volcano.json"
-  },
+  "data": {"url": "data/volcano.json"},
   "mark": "array",
   "encoding": {
-    "x": {
-      "datum": 0,
-      "type": "quantitative",
-      "axis": {
-        "title": "column"
-      }
-    },
-    "x2": {
-      "datum": 87
-    },
-    "y": {
-      "datum": 0,
-      "type": "quantitative",
-      "axis": {
-        "title": "row"
-      }
-    },
-    "y2": {
-      "datum": 61
-    },
+    "x": {"datum": 0, "type": "quantitative", "axis": {"title": "column"}},
+    "x2": {"datum": 87},
+    "y": {"datum": 0, "type": "quantitative", "axis": {"title": "row"}},
+    "y2": {"datum": 61},
     "color": {
       "field": "values",
       "type": "quantitative",
-      "scale": {
-        "scheme": "viridis"
-      }
+      "scale": {"scheme": "viridis"}
     }
   }
 }

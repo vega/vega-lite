@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Two grids with different value ranges, faceted with independent color scales.",
+  "description": "Two grids faceted side by side, sharing one color scale.",
   "data": {
     "values": [
       {
@@ -18,7 +18,6 @@
     ]
   },
   "facet": {"field": "variant", "type": "nominal", "title": null},
-  "resolve": {"scale": {"color": "independent"}},
   "spec": {
     "width": 160,
     "height": 120,

@@ -3,17 +3,13 @@
   "description": "Elevation of Maunga Whau, drawn as a single raster image.",
   "width": 348,
   "height": 244,
-  "data": {
-    "url": "data/volcano.json"
-  },
+  "data": {"url": "data/volcano.json"},
   "mark": "array",
   "encoding": {
     "color": {
       "field": "values",
       "type": "quantitative",
-      "scale": {
-        "scheme": "viridis"
-      }
+      "scale": {"scheme": "viridis"}
     }
   }
 }

@@ -87,10 +87,24 @@ following special properties:
 ### Raster Grid
 
 The [`color`](encoding.html#color) encoding maps the grid's values to a color scheme. Its scale
-covers the range of the data, so the legend reads in data units. Set an explicit
-[`domain`](scale.html#domain) to clip outliers, or `domainMid` to centre a diverging scheme.
+covers the range of the data, so the legend reads in data units.
 
 <span class="vl-example" data-name="array_grid"></span>
+
+### Clipping the Color Range
+
+A few extreme cells can leave the rest of the grid crowded into a narrow band of color. Set an
+explicit [`domain`](scale.html#domain) with `clamp` to spread the scheme over the range you care
+about, holding anything beyond it at the end colors.
+
+<span class="vl-example" data-name="array_color_domain"></span>
+
+### Diverging Colors
+
+When a value divides the grid into meaningful sides, such as a threshold or a baseline, pair a
+diverging scheme with `domainMid` to place the midpoint there.
+
+<span class="vl-example" data-name="array_color_diverging"></span>
 
 ### Crisp Cells
 
@@ -101,15 +115,29 @@ The image is smoothed as it scales up. Set `smooth` to `false` to show each cell
 ### Adding Axes
 
 An array mark fills the view and needs no position encoding. To label it, give the extent the grid
-covers with `x`/`x2` and `y`/`y2`, as constant `datum` values here, or as fields when the extent
-differs per grid.
+covers with `x`/`x2` and `y`/`y2`. Constant `datum` values are enough for a fixed extent.
 
 <span class="vl-example" data-name="array_axis"></span>
 
+### Axis Extent from Fields
+
+Use fields when the extent is part of the data or differs per grid, for example grids that each
+cover a different area. Here a [`calculate`](calculate.html) transform derives the extent from the
+grid's own `width` and `height`.
+
+<span class="vl-example" data-name="array_axis_field"></span>
+
 ### Faceted Grids
 
-[Faceted](facet.html) grids share one color scale by default, which makes them comparable. Use
-`"resolve": {"scale": {"color": "independent"}}` to give each its own range instead.
+[Faceted](facet.html) grids share one color scale by default, so panels stay comparable. The second
+grid below covers a narrower range of values and therefore uses only part of the scheme.
+
+<span class="vl-example" data-name="facet_array"></span>
+
+### Independent Color Scales
+
+Set `"resolve": {"scale": {"color": "independent"}}` to give each grid its own range instead. This
+brings out the structure within each panel, but the panels can no longer be compared to each other.
 
 <span class="vl-example" data-name="facet_array_independent_color"></span>
 

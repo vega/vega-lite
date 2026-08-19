@@ -1,0 +1,224 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Two grids faceted side by side, sharing one color scale.",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {
+          "variant": "A",
+          "width": 8,
+          "height": 6,
+          "values": [
+            50,
+            79,
+            95,
+            88,
+            63,
+            31,
+            9,
+            7,
+            50,
+            68,
+            77,
+            73,
+            58,
+            38,
+            25,
+            23,
+            50,
+            43,
+            39,
+            41,
+            47,
+            55,
+            60,
+            61,
+            50,
+            23,
+            9,
+            15,
+            38,
+            67,
+            87,
+            90,
+            50,
+            24,
+            11,
+            17,
+            39,
+            67,
+            86,
+            88,
+            50,
+            45,
+            43,
+            44,
+            48,
+            53,
+            57,
+            57
+          ]
+        },
+        {
+          "variant": "B",
+          "width": 8,
+          "height": 6,
+          "values": [
+            30,
+            36,
+            39,
+            38,
+            33,
+            26,
+            22,
+            21,
+            30,
+            34,
+            35,
+            35,
+            32,
+            28,
+            25,
+            25,
+            30,
+            29,
+            28,
+            28,
+            29,
+            31,
+            32,
+            32,
+            30,
+            25,
+            22,
+            23,
+            28,
+            33,
+            37,
+            38,
+            30,
+            25,
+            22,
+            23,
+            28,
+            33,
+            37,
+            38,
+            30,
+            29,
+            29,
+            29,
+            30,
+            31,
+            31,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "{width: datum.width, height: datum.height, values: datum.values}",
+          "as": "__array_grid"
+        },
+        {
+          "type": "formula",
+          "expr": "isArray(datum[\"values\"]) ? extent(datum[\"values\"])[0] : datum[\"values\"]",
+          "as": "array_min_values"
+        },
+        {
+          "type": "formula",
+          "expr": "isArray(datum[\"values\"]) ? extent(datum[\"values\"])[1] : datum[\"values\"]",
+          "as": "array_max_values"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "child_width", "value": 160},
+    {"name": "child_height", "value": 120}
+  ],
+  "layout": {"padding": 20, "bounds": "full", "align": "all"},
+  "marks": [
+    {
+      "name": "cell",
+      "type": "group",
+      "title": {
+        "text": {
+          "signal": "isValid(parent[\"variant\"]) ? parent[\"variant\"] : \"\"+parent[\"variant\"]"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "style": "view",
+      "from": {
+        "facet": {"name": "facet", "data": "data_0", "groupby": ["variant"]}
+      },
+      "sort": {"field": ["datum[\"variant\"]"], "order": ["ascending"]},
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "image",
+          "style": ["array"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "ariaRoleDescription": {"value": "array"},
+              "description": {
+                "signal": "\"values: \" + (format(datum[\"values\"], \"\"))"
+              },
+              "x": {"value": 0},
+              "width": {"signal": "child_width"},
+              "y": {"value": 0},
+              "height": {"signal": "child_height"},
+              "image": {"field": "image"},
+              "aspect": {"value": false}
+            }
+          },
+          "transform": [
+            {
+              "type": "heatmap",
+              "field": "datum.__array_grid",
+              "color": {"expr": "scale('color', datum.$value)"},
+              "opacity": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {
+        "data": "data_0",
+        "fields": ["array_min_values", "array_max_values"]
+      },
+      "range": {"scheme": "viridis"},
+      "interpolate": "hcl",
+      "zero": false
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "title": "values"
+    }
+  ]
+}
