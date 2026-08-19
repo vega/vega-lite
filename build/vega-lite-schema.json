@@ -17306,10 +17306,6 @@
             }
           ]
         },
-        "maxField": {
-          "description": "Field naming the per-datum scalar holding the raster grid's true maximum value. See `minField`.",
-          "type": "string"
-        },
         "minBandSize": {
           "anyOf": [
             {
@@ -17320,10 +17316,6 @@
             }
           ],
           "description": "The minimum band size for bar and rectangle marks. __Default value:__ `0.25`"
-        },
-        "minField": {
-          "description": "Field naming the per-datum scalar holding the raster grid's true minimum value. When set together with `maxField`, the array mark's color scale takes its domain from these two real fields (the union of `minField`/`maxField` across the data, or per facet under an independent color resolve) instead of normalizing color by each grid's own max - so the legend reflects genuine data values, and shared vs. independent color resolve become visibly different.",
-          "type": "string"
         },
         "opacity": {
           "anyOf": [
