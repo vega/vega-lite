@@ -15,9 +15,9 @@ permalink: /docs/array.html
 }
 ```
 
-The `array` mark displays a grid of values — an image, a model output field, or any 2D array — as a
-single raster image. Since the whole grid is drawn as one image instead of one mark per cell, it
-stays responsive at resolutions where a [`rect`](rect.html) mark would not.
+The `array` mark displays a grid of values, such as an image, an elevation model, or any 2D array,
+as a single raster image. Since the whole grid is drawn as one image instead of one mark per cell,
+it stays responsive at resolutions where a [`rect`](rect.html) mark would not.
 
 <!--prettier-ignore-start-->
 ## Documentation Overview
@@ -33,24 +33,32 @@ stays responsive at resolutions where a [`rect`](rect.html) mark would not.
 ## Grid Data
 
 Each datum describes one grid: `width` and `height` give its size in cells, and `values` lists the
-cells in row-major order.
+cells in row-major order. The `volcano` dataset is stored this way:
 
 ```json
 {
-  "data": {
-    "values": [{"width": 3, "height": 2, "values": [1, 2, 3, 4, 5, 6]}]
-  },
+  "width": 87,
+  "height": 61,
+  "values": [103, 104, 104, 105, ...]
+}
+```
+
+so it can be used directly:
+
+```json
+{
+  "data": {"url": "data/volcano.json"},
   "mark": "array",
   "encoding": {"color": {"field": "values", "type": "quantitative"}}
 }
 ```
 
-`width` and `height` count cells, not pixels — the image is scaled to fill the view, so a grid of
-any size can be drawn at any size.
+`width` and `height` count cells rather than pixels. The image is scaled to fill the view, so a grid
+of any size can be drawn at any size.
 
-The first row of `values` is drawn at the top of the image, which puts it at the highest `y` value.
-This matches `imshow(..., origin="upper")` in NumPy. For data stored bottom-up, either flip it
-before serializing (`np.flipud`) or reverse the axis with `"scale": {"reverse": true}` on `y`.
+The first row of `values` is drawn at the top of the image, which places it at the highest `y`
+value. If your grid is stored the other way up, reverse the axis with `"scale": {"reverse": true}`
+on `y`.
 
 {:#properties}
 
@@ -93,7 +101,7 @@ The image is smoothed as it scales up. Set `smooth` to `false` to show each cell
 ### Adding Axes
 
 An array mark fills the view and needs no position encoding. To label it, give the extent the grid
-covers with `x`/`x2` and `y`/`y2` — as constant `datum` values here, or as fields when the extent
+covers with `x`/`x2` and `y`/`y2`, as constant `datum` values here, or as fields when the extent
 differs per grid.
 
 <span class="vl-example" data-name="array_axis"></span>
