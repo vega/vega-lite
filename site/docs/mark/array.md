@@ -33,7 +33,7 @@ holds a whole grid rather than one row per cell.
 ## Grid Data
 
 An array mark reads one grid per datum. A grid gives its size in cells with `width` and `height`,
-and lists the cell values in `values`, in row-major order: left to right, then top to bottom.
+and lists the cell values in `values`, in row-major order.
 
 ```json
 {"width": 3, "height": 2, "values": [1, 2, 3, 4, 5, 6]}
