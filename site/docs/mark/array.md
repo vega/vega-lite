@@ -48,6 +48,28 @@ each panel its own range.
 
 Omitting the color encoding renders the grid in greyscale by opacity alone.
 
+Because the scale sees the grid's real values, the ordinary [scale](scale.html) properties apply. For
+a field with a meaningful centre, such as an anomaly, pair a diverging scheme with `domainMid`:
+
+```json
+"color": {
+  "field": "values", "type": "quantitative",
+  "scale": {"scheme": "redblue", "domainMid": 0}
+}
+```
+
+For banded rather than continuous colour, use a discretizing scale type:
+
+```json
+"color": {
+  "field": "values", "type": "quantitative",
+  "scale": {"type": "quantize", "scheme": "viridis"}
+}
+```
+
+Since the domain is derived from the true minimum and maximum, a few extreme cells can flatten the
+rest of the range. Set an explicit `domain` to clip them.
+
 {:#axes}
 
 ## Axes
