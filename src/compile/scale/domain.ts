@@ -232,6 +232,13 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
         {data, field: maxField},
       ]);
     }
+
+    // Without those fields the heatmap transform normalizes color by each grid's own maximum
+    // (datum.$value / datum.$max), so the scale only ever sees a 0-1 ratio. Default the domain to
+    // match. Falling through to the ordinary field-extent path instead would compute the extent of
+    // the raster field itself, which holds arrays: that yields [Infinity, -Infinity] and a scale
+    // that throws at render time rather than merely looking wrong.
+    return makeImplicit([[0, 1]]);
   }
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }

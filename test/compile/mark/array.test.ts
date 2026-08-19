@@ -114,6 +114,21 @@ describe('Mark: Array', () => {
       expect(colorScale.domain).toEqual({data: colorScale.domain.data, fields: ['min_', 'max_']});
     });
 
+    it('defaults the color domain to [0, 1] when no minField/maxField and no explicit domain', () => {
+      // Regression: falling through to the ordinary field-extent path here computes the extent of
+      // the raster field, which holds arrays -> [Infinity, -Infinity] and a scale that throws at
+      // render time ("TypeError: I[i] is not a function") rather than merely looking wrong.
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: [{width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]},
+        mark: 'array',
+        encoding: {color: {field: 'values', type: 'quantitative'}},
+      });
+      const scaleName = model.scaleName('color');
+      const scales = assembleScalesForModel(model);
+      const colorScale = scales.find((s: any) => s.name === scaleName) as any;
+      expect(colorScale.domain).toEqual([0, 1]);
+    });
+
     it('does not override an explicit user-specified domain', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         data: {values: [{min_: 0, max_: 100, width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]},
