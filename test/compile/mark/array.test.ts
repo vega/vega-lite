@@ -99,6 +99,18 @@ describe('Mark: Array', () => {
     });
   });
 
+  describe('default view size', () => {
+    it('uses the continuous view size, not the 20px discrete step, without position encodings', () => {
+      const {spec} = compile({
+        data: {values: [{width: 48, height: 32, values: [1, 2, 3, 4, 5, 6]}]},
+        mark: 'array',
+        encoding: {color: {field: 'values', type: 'quantitative'}},
+      } as any);
+      expect(spec.width).toBe(300);
+      expect(spec.height).toBe(300);
+    });
+  });
+
   describe('real-domain color from the grid’s derived extent', () => {
     const gridData = {values: [{width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]};
 
