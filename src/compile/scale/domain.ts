@@ -212,29 +212,21 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
     } else {
       return parseSingleChannelDomain(scaleType, domain, model, 'y2');
     }
-  } else if (channel === 'color' && model.mark === 'array' && !domain) {
-    // The array mark's color-encoded field holds a whole raster, so the ordinary field-extent path
-    // would aggregate over arrays and yield [Infinity, -Infinity] - a scale that throws at render
-    // time. Take the domain from the real per-grid min/max derived in the data pipeline instead
-    // (see parseArrayData), unioning the two like x/x2 above.
+  } else if (channel === 'color' && !domain && arrayColorFieldDef(model)) {
+    // An array mark's color field holds a whole raster, so take the domain from the per-grid
+    // min/max derived in the data pipeline (see parseArrayData) and union them like x/x2 above.
+    // Aggregating the raster itself would give [Infinity, -Infinity].
     const fieldDef = arrayColorFieldDef(model);
-    if (fieldDef) {
-      const data = model.requestDataName(
-        getScaleDataSourceForHandlingInvalidValues({
-          invalid: getMarkConfig('invalid', model.markDef, model.config),
-          isPath: isPathMark(model.mark),
-        }),
-      );
-      return makeImplicit([
-        {data, field: arrayExtentField(fieldDef, 'min')},
-        {data, field: arrayExtentField(fieldDef, 'max')},
-      ]);
-    }
-
-    // No color *field* to derive an extent from (e.g. a datum or value def), so the heatmap
-    // transform falls back to normalizing by each grid's own maximum and the scale only ever sees
-    // a 0-1 ratio.
-    return makeImplicit([[0, 1]]);
+    const data = model.requestDataName(
+      getScaleDataSourceForHandlingInvalidValues({
+        invalid: getMarkConfig('invalid', model.markDef, model.config),
+        isPath: isPathMark(model.mark),
+      }),
+    );
+    return makeImplicit([
+      {data, field: arrayExtentField(fieldDef, 'min')},
+      {data, field: arrayExtentField(fieldDef, 'max')},
+    ]);
   }
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }

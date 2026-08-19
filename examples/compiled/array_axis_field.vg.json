@@ -23,12 +23,12 @@
         },
         {
           "type": "formula",
-          "expr": "isArray(datum[\"values\"]) ? extent(datum[\"values\"])[0] : datum[\"values\"]",
+          "expr": "extent(datum[\"values\"])[0]",
           "as": "array_min_values"
         },
         {
           "type": "formula",
-          "expr": "isArray(datum[\"values\"]) ? extent(datum[\"values\"])[1] : datum[\"values\"]",
+          "expr": "extent(datum[\"values\"])[1]",
           "as": "array_max_values"
         }
       ]

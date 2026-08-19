@@ -157,8 +157,8 @@ export const scaleRules: {
   interpolate: ({channel, fieldOrDatumDef}) => interpolate(channel, fieldOrDatumDef.type),
 
   nice: ({scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef, markDef}) =>
-    // An array mark's raster spans its extent exactly and is stretched to fill the view, so
-    // rounding the domain outward would silently misalign the axis with the image it labels.
+    // An array mark's raster spans its extent exactly, so keep the domain as given: rounding it
+    // outward would misalign the axis with the image.
     markDef.type === 'array' && isXorY(channel)
       ? undefined
       : nice(scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef),
@@ -177,8 +177,7 @@ export const scaleRules: {
     return reverse(scaleType, sort, channel, config.scale);
   },
   zero: ({model, channel, fieldOrDatumDef, domain, markDef, scaleType, config, hasSecondaryRangeChannel}) =>
-    // Likewise, extending a raster's extent to include zero would misalign it (and is plainly
-    // wrong for extents that legitimately exclude zero, such as a latitude band).
+    // Likewise, keep an array mark's extent as given rather than extending it to include zero.
     markDef.type === 'array' && isXorY(channel)
       ? undefined
       : zero(

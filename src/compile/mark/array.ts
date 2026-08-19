@@ -7,9 +7,8 @@ import {UnitModel} from '../unit.js';
 import {MarkCompiler} from './base.js';
 import * as encode from './encode/index.js';
 
-// If both a position channel (x/y) and its range partner (x2/y2) are field-encoded, position and
-// size the image from their scaled extent (e.g. a grid's geographic bounding box). Otherwise fall
-// back to filling the full view, as plain (non-axis) array-mark specs already rely on.
+// Position and size the image from the scaled extent given by x/x2 (or y/y2), or fill the view
+// when the grid's extent is not encoded.
 function rangeEncodeEntry(
   model: UnitModel,
   channel: 'x' | 'y',
@@ -61,30 +60,18 @@ export const array: MarkCompiler = {
   },
 
   postEncodingTransform: (model: UnitModel): VgPostEncodingTransform[] => {
-    const {encoding} = model;
-
     const transform: Record<string, unknown> = {
       type: 'heatmap',
-      // A post-encoding transform runs on scenegraph items, so reach through to the sanitized grid
-      // built on the datum (see parseArrayData) rather than handing over the whole tuple.
+      // This runs on scenegraph items, so reach through to the grid built on the datum.
       field: `datum.${ARRAY_GRID_FIELD}`,
     };
 
-    if (encoding.color) {
-      const scaleName = model.scaleName(COLOR);
-      if (scaleName) {
-        // When the grid's real [min, max] is derived into scalar fields (see parseArrayData), the
-        // color scale's domain reflects genuine data values: the union across grids, or each
-        // grid's own range under an independent facet resolve. The raw value then maps correctly
-        // and the legend shows real numbers.
-        //
-        // Otherwise the color channel is a datum or value def, with no field to take an extent of,
-        // so normalize by the grid's own maximum to match the fixed [0, 1] domain that domain.ts
-        // falls back to.
-        const valueExpr = arrayColorFieldDef(model) ? 'datum.$value' : 'datum.$value / datum.$max';
-        transform['color'] = {expr: `scale('${scaleName}', ${valueExpr})`};
-        transform['opacity'] = 1;
-      }
+    // The scale's domain is the grid's own value range (see parseArrayData), so each cell's value
+    // maps straight through it. Without a color field the transform shades by opacity alone.
+    const scaleName = arrayColorFieldDef(model) && model.scaleName(COLOR);
+    if (scaleName) {
+      transform['color'] = {expr: `scale('${scaleName}', datum.$value)`};
+      transform['opacity'] = 1;
     }
 
     return [transform as unknown as VgPostEncodingTransform];

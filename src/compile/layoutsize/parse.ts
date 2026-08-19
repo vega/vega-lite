@@ -129,9 +129,7 @@ function defaultUnitSize(model: UnitModel, sizeType: 'width' | 'height'): Layout
     }
   } else if (model.hasProjection || model.mark === 'arc' || model.mark === 'array') {
     // arc should use continuous size by default otherwise the pie is extremely small.
-    // array likewise renders a whole raster into the view, which the discrete step default would
-    // shrink to 20x20 - too small to read anything from, and it needs no position encoding to
-    // qualify for a full-size view the way other marks do.
+    // array fills the view with a raster, so the discrete step default would shrink it to 20x20.
     return getViewConfigContinuousSize(config.view, sizeType);
   } else {
     const size = getViewConfigDiscreteSize(config.view, sizeType);

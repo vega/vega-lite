@@ -194,20 +194,12 @@ describe('Mark: Array', () => {
         .filter((t: any) => t.type === 'formula' && t.as !== '__array_grid');
 
       expect(formulas).toEqual([
-        {
-          type: 'formula',
-          expr: 'isArray(datum["values"]) ? extent(datum["values"])[0] : datum["values"]',
-          as: 'array_min_values',
-        },
-        {
-          type: 'formula',
-          expr: 'isArray(datum["values"]) ? extent(datum["values"])[1] : datum["values"]',
-          as: 'array_max_values',
-        },
+        {type: 'formula', expr: 'extent(datum["values"])[0]', as: 'array_min_values'},
+        {type: 'formula', expr: 'extent(datum["values"])[1]', as: 'array_max_values'},
       ]);
     });
 
-    it('respects an explicit domain, keeping raw values rather than reverting to normalized ones', () => {
+    it('respects an explicit domain and skips deriving one', () => {
       const {spec} = compile({
         data: gridData,
         mark: 'array',
@@ -224,22 +216,17 @@ describe('Mark: Array', () => {
       expect((spec.marks[0] as any).transform[0].color.expr).toBe(`scale('color', datum.$value)`);
     });
 
-    it('falls back to normalizing against [0, 1] when color has no field to take an extent of', () => {
-      // Regression: the ordinary field-extent path over a raster field yields
-      // [Infinity, -Infinity] and a scale that throws at render time
-      // ("TypeError: I[i] is not a function") rather than merely looking wrong.
+    it('leaves the domain alone and shades by opacity when color is not a field', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         data: gridData,
         mark: 'array',
         encoding: {color: {datum: 5}},
       });
-      const scaleName = model.scaleName('color');
-
       const transform = array.postEncodingTransform(model);
-      expect((transform[0] as any).color.expr).toBe(`scale('${scaleName}', datum.$value / datum.$max)`);
+      expect((transform[0] as any).color).toBeUndefined();
 
-      const colorScale = assembleScalesForModel(model).find((s: any) => s.name === scaleName) as any;
-      expect(colorScale.domain).toEqual([0, 1]);
+      const colorScale = assembleScalesForModel(model).find((s: any) => s.name === model.scaleName('color')) as any;
+      expect(colorScale.domain).toEqual([5]);
     });
   });
 });
