@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "Elevation of Maunga Whau, drawn as a single raster image.",
+  "description": "Elevation of Maunga Whau, an 87 by 61 grid drawn at four times that size so its cells stay square.",
   "background": "white",
   "padding": 5,
   "width": 348,
