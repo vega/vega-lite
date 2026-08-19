@@ -15,12 +15,25 @@ permalink: /docs/array.html
 }
 ```
 
-The `array` mark renders dense 2D raster data — a grid of values such as an image, a heatmap, or a
-model output field — as a single image, rather than as one mark per cell. Because the whole grid
-becomes one rendered image, it stays fast at resolutions where a `rect` mark per cell would not.
+The `array` mark displays a grid of values — an image, a model output field, or any 2D array — as a
+single raster image. Since the whole grid is drawn as one image instead of one mark per cell, it
+stays responsive at resolutions where a [`rect`](rect.html) mark would not.
 
-The mark expects each datum to describe one grid, with the values flattened into a single array in
-row-major order:
+<!--prettier-ignore-start-->
+## Documentation Overview
+{:.no_toc}
+
+- TOC
+{:toc}
+
+<!--prettier-ignore-end-->
+
+{:#data}
+
+## Grid Data
+
+Each datum describes one grid: `width` and `height` give its size in cells, and `values` lists the
+cells in row-major order.
 
 ```json
 {
@@ -28,106 +41,69 @@ row-major order:
     "values": [{"width": 3, "height": 2, "values": [1, 2, 3, 4, 5, 6]}]
   },
   "mark": "array",
-  "encoding": {
-    "color": {"field": "values", "type": "quantitative", "scale": {"scheme": "viridis"}}
-  }
+  "encoding": {"color": {"field": "values", "type": "quantitative"}}
 }
 ```
 
-`width` and `height` describe the grid's own resolution and are what reshape the flat `values`
-array. They are unrelated to the view's `width`/`height`, which are the size of the plot area in
-screen pixels — the image is scaled to fill it. To keep pixels square, keep the two proportional
-(a 48×32 grid in a 360×240 view is a uniform 7.5× upscale).
+`width` and `height` count cells, not pixels — the image is scaled to fill the view, so a grid of
+any size can be drawn at any size.
 
-## Color
+The first row of `values` is drawn at the top of the image, which puts it at the highest `y` value.
+This matches `imshow(..., origin="upper")` in NumPy. For data stored bottom-up, either flip it
+before serializing (`np.flipud`) or reverse the axis with `"scale": {"reverse": true}` on `y`.
 
-The color scale's domain is derived from the grid's real values, so the legend shows genuine data
-units. Under [faceting](facet.html), this means `resolve` behaves as it does for any other mark: a
-shared color scale spans every grid, while `"resolve": {"scale": {"color": "independent"}}` gives
-each panel its own range.
+{:#properties}
 
-Omitting the color encoding renders the grid in greyscale by opacity alone.
+## Array Mark Properties
 
-Because the scale sees the grid's real values, the ordinary [scale](scale.html) properties apply. For
-a field with a meaningful centre, such as an anomaly, pair a diverging scheme with `domainMid`:
-
-```json
-"color": {
-  "field": "values", "type": "quantitative",
-  "scale": {"scheme": "redblue", "domainMid": 0}
+```js
+// Single View Specification
+{
+  ...
+  "mark": {
+    "type": "array",
+    ...
+  },
+  "encoding": ... ,
+  ...
 }
 ```
 
-For banded rather than continuous colour, use a discretizing scale type:
+An `array` mark definition can contain any [standard mark properties](mark.html#mark-def) and the
+following special properties:
 
-```json
-"color": {
-  "field": "values", "type": "quantitative",
-  "scale": {"type": "quantize", "scheme": "viridis"}
-}
-```
+{% include table.html props="smooth,aspect" source="MarkConfig" %}
 
-Since the domain is derived from the true minimum and maximum, a few extreme cells can flatten the
-rest of the range. Set an explicit `domain` to clip them.
+## Examples
 
-{:#axes}
+### Raster Grid
 
-## Axes
+The [`color`](encoding.html#color) encoding maps the grid's values to a color scheme. Its scale
+covers the range of the data, so the legend reads in data units. Set an explicit
+[`domain`](scale.html#domain) to clip outliers, or `domainMid` to centre a diverging scheme.
 
-An `array` mark needs no position encoding — by default the image fills the view. To label it, give
-the extent the grid spans using `x`/`x2` and `y`/`y2`. For a fixed extent, `datum` values are enough
-and require no extra fields in the data:
+<span class="vl-example" data-name="array_grid"></span>
 
-```json
-"encoding": {
-  "x": {"datum": 0, "type": "quantitative"},
-  "x2": {"datum": 48},
-  "y": {"datum": 0, "type": "quantitative"},
-  "y2": {"datum": 32}
-}
-```
+### Crisp Cells
 
-Use field definitions instead when the extent varies per datum — for example, faceted grids that
-each cover a different geographic area. In that case the image is positioned and sized from the
-scaled fields rather than simply filling the view.
+The image is smoothed as it scales up. Set `smooth` to `false` to show each cell exactly.
 
-Position scales for an `array` mark are not [`nice`](scale.html#continuous)d and do not include
-zero by default, since a raster spans its extent exactly and rounding the domain outward would
-misalign the axis with the image it labels.
+<span class="vl-example" data-name="array_smooth"></span>
 
-{:#smooth}
+### Adding Axes
 
-## Pixelated rendering
+An array mark fills the view and needs no position encoding. To label it, give the extent the grid
+covers with `x`/`x2` and `y`/`y2` — as constant `datum` values here, or as fields when the extent
+differs per grid.
 
-Because the grid is drawn at its own resolution and then scaled to fill the view, upscaling is
-smoothed (bilinearly) by default — which is usually what you want for a continuous field, but blurs
-away cell boundaries for a coarse grid. Set `smooth` to `false` to render exact, crisp cells
-instead:
+<span class="vl-example" data-name="array_axis"></span>
 
-```json
-{"mark": {"type": "array", "smooth": false}}
-```
+### Faceted Grids
 
-{:#orientation}
+[Faceted](facet.html) grids share one color scale by default, which makes them comparable. Use
+`"resolve": {"scale": {"color": "independent"}}` to give each its own range instead.
 
-## Row order
-
-Rows are drawn top-down — the first row of `values` appears at the **top** of the image — while a
-`y` axis increases upward. So the first row sits at the *highest* y value.
-
-This matches how images are conventionally stored, and how NumPy renders with
-`imshow(..., origin="upper")`. If your rows run bottom-to-top instead (`origin="lower"`), either
-flip the array before serializing it:
-
-```python
-grid = {"width": w, "height": h, "values": np.flipud(array).ravel().tolist()}
-```
-
-or reverse the `y` scale:
-
-```json
-"y": {"datum": 0, "type": "quantitative", "scale": {"reverse": true}}
-```
+<span class="vl-example" data-name="facet_array_independent_color"></span>
 
 {:#config}
 
@@ -138,14 +114,15 @@ or reverse the `y` scale:
 {
   ...
   "config": {
-    "array": ...
+    "array": ...,
+    ...
   }
 }
 ```
 
-The `array` property of the top-level `config` object sets the default properties for all array
-marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these
-config values will be overridden.
+The `array` property of the top-level [`config`](config.html) object sets the default properties for
+all array marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for
+marks, these config values will be overridden.
 
-The array config can contain any [mark properties](mark.html#mark-def) (except `type`, `style`, and
+The array config can contain any [array mark properties](#properties) (except `type`, `style`, and
 `clip`).
