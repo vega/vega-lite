@@ -120,6 +120,7 @@
         - [Area Config]({{site.baseurl}}/docs/area.html#config)
     - [Array]({{site.baseurl}}/docs/array.html)
         - [Axes]({{site.baseurl}}/docs/array.html#axes)
+        - [Pixelated rendering]({{site.baseurl}}/docs/array.html#smooth)
         - [Row order]({{site.baseurl}}/docs/array.html#orientation)
         - [Array Config]({{site.baseurl}}/docs/array.html#config)
     - [Bar]({{site.baseurl}}/docs/bar.html)

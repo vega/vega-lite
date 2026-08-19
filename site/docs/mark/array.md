@@ -73,6 +73,19 @@ Position scales for an `array` mark are not [`nice`](scale.html#continuous)d and
 zero by default, since a raster spans its extent exactly and rounding the domain outward would
 misalign the axis with the image it labels.
 
+{:#smooth}
+
+## Pixelated rendering
+
+Because the grid is drawn at its own resolution and then scaled to fill the view, upscaling is
+smoothed (bilinearly) by default — which is usually what you want for a continuous field, but blurs
+away cell boundaries for a coarse grid. Set `smooth` to `false` to render exact, crisp cells
+instead:
+
+```json
+{"mark": {"type": "array", "smooth": false}}
+```
+
 {:#orientation}
 
 ## Row order
