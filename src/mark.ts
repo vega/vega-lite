@@ -555,23 +555,6 @@ export interface GenericMarkDef<M> {
   type: M;
 }
 
-export interface ArrayConfig {
-  /**
-   * Field naming the per-datum scalar holding the raster grid's true minimum value. When set
-   * together with `maxField`, the array mark's color scale takes its domain from these two real
-   * fields (the union of `minField`/`maxField` across the data, or per facet under an independent
-   * color resolve) instead of normalizing color by each grid's own max - so the legend reflects
-   * genuine data values, and shared vs. independent color resolve become visibly different.
-   */
-  minField?: string;
-
-  /**
-   * Field naming the per-datum scalar holding the raster grid's true maximum value. See
-   * `minField`.
-   */
-  maxField?: string;
-}
-
 export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
   /**
    * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
@@ -643,7 +626,6 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
     Omit<
       MarkConfig<ES> &
         AreaConfig<ES> &
-        ArrayConfig &
         BarConfig<ES> & // always extends RectConfig
         LineConfig<ES> &
         TickConfig<ES>,

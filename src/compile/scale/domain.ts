@@ -50,6 +50,7 @@ import {
   VgUnionSortField,
 } from '../../vega.schema.js';
 import {getMarkConfig} from '../common.js';
+import {arrayColorFieldDef, arrayExtentField} from '../data/arrayextent.js';
 import {getBinSignalName} from '../data/bin.js';
 import {sortArrayIndexField} from '../data/calculate.js';
 import {FACET_SCALE_PREFIX} from '../data/optimize.js';
@@ -212,15 +213,12 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
       return parseSingleChannelDomain(scaleType, domain, model, 'y2');
     }
   } else if (channel === 'color' && model.mark === 'array' && !domain) {
-    // The array mark's color-encoded field is a whole raster (an array of per-pixel values), so
-    // the ordinary field-extent domain machinery can't compute a domain from it directly (an
-    // array coerces to NaN under isFinite/aggregate min-max). Instead, the mark can be given
-    // minField/maxField markDef properties naming two genuine per-datum scalar fields (e.g. each
-    // grid's own precomputed min/max) to union into the domain, same mechanism as x/x2 above,
-    // just field names supplied via the mark definition rather than a second encoding channel
-    // (color has no color2 counterpart in the schema).
-    const {minField, maxField} = model.markDef;
-    if (minField && maxField) {
+    // The array mark's color-encoded field holds a whole raster, so the ordinary field-extent path
+    // would aggregate over arrays and yield [Infinity, -Infinity] - a scale that throws at render
+    // time. Take the domain from the real per-grid min/max derived in the data pipeline instead
+    // (see parseArrayExtent), unioning the two like x/x2 above.
+    const fieldDef = arrayColorFieldDef(model);
+    if (fieldDef) {
       const data = model.requestDataName(
         getScaleDataSourceForHandlingInvalidValues({
           invalid: getMarkConfig('invalid', model.markDef, model.config),
@@ -228,16 +226,14 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
         }),
       );
       return makeImplicit([
-        {data, field: minField},
-        {data, field: maxField},
+        {data, field: arrayExtentField(fieldDef, 'min')},
+        {data, field: arrayExtentField(fieldDef, 'max')},
       ]);
     }
 
-    // Without those fields the heatmap transform normalizes color by each grid's own maximum
-    // (datum.$value / datum.$max), so the scale only ever sees a 0-1 ratio. Default the domain to
-    // match. Falling through to the ordinary field-extent path instead would compute the extent of
-    // the raster field itself, which holds arrays: that yields [Infinity, -Infinity] and a scale
-    // that throws at render time rather than merely looking wrong.
+    // No color *field* to derive an extent from (e.g. a datum or value def), so the heatmap
+    // transform falls back to normalizing by each grid's own maximum and the scale only ever sees
+    // a 0-1 ratio.
     return makeImplicit([[0, 1]]);
   }
   return parseSingleChannelDomain(scaleType, domain, model, channel);

@@ -1,6 +1,7 @@
 import {VgEncodeEntry, VgPostEncodingTransform} from '../../vega.schema.js';
 import {COLOR} from '../../channel.js';
 import {isFieldDef, vgField} from '../../channeldef.js';
+import {arrayColorFieldDef} from '../data/arrayextent.js';
 import {UnitModel} from '../unit.js';
 import {MarkCompiler} from './base.js';
 import * as encode from './encode/index.js';
@@ -67,15 +68,13 @@ export const array: MarkCompiler = {
     if (encoding.color) {
       const scaleName = model.scaleName(COLOR);
       if (scaleName) {
-        // With minField/maxField set (see domain.ts), the color scale's domain is the real,
-        // data-driven [min, max] of this grid (or - under a shared color resolve - the union
-        // across grids), so the raw value maps correctly without renormalizing here: the legend
-        // reflects genuine data values instead of an internal 0-1 ratio, and shared vs.
-        // independent color resolve becomes visibly meaningful across facets. Without those
-        // fields, fall back to normalizing by the grid's own max, since a fixed [0, 1] domain is
-        // the only safe default when we don't know the data's real range.
-        const {minField, maxField} = model.markDef;
-        const valueExpr = minField && maxField ? 'datum.$value' : 'datum.$value / datum.$max';
+        // When the grid's real [min, max] is derived into scalar fields (see parseArrayExtent),
+        // the color scale's domain reflects genuine data values - the union across grids, or each
+        // grid's own range under an independent facet resolve - so the raw value maps correctly
+        // and the legend shows real numbers. Otherwise (a color datum/value def, with no field to
+        // take an extent of) normalize by the grid's own max against the fixed [0, 1] domain
+        // domain.ts falls back to.
+        const valueExpr = arrayColorFieldDef(model) ? 'datum.$value' : 'datum.$value / datum.$max';
         transform['color'] = {expr: `scale('${scaleName}', ${valueExpr})`};
         transform['opacity'] = 1;
       }

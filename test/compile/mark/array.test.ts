@@ -1,4 +1,5 @@
 import {array} from '../../../src/compile/mark/array.js';
+import {compile} from '../../../src/compile/compile.js';
 import {assembleScalesForModel} from '../../../src/compile/scale/assemble.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
@@ -35,7 +36,7 @@ describe('Mark: Array', () => {
       expect(transform).toHaveLength(1);
       expect(transform[0].type).toBe('heatmap');
       const scaleName = model.scaleName('color');
-      expect((transform[0] as any).color.expr).toBe(`scale('${scaleName}', datum.$value / datum.$max)`);
+      expect((transform[0] as any).color.expr).toBe(`scale('${scaleName}', datum.$value)`);
       expect((transform[0] as any).opacity).toBe(1);
 
       const scales = assembleScalesForModel(model);
@@ -98,46 +99,74 @@ describe('Mark: Array', () => {
     });
   });
 
-  describe('postEncodingTransform with minField/maxField (real-domain color)', () => {
-    it('uses raw $value (no normalization) and a domain unioned from the two fields', () => {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        data: {values: [{min_: 0, max_: 100, width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]},
-        mark: {type: 'array', minField: 'min_', maxField: 'max_'},
-        encoding: {color: {field: 'values', type: 'quantitative'}},
-      });
-      const transform = array.postEncodingTransform(model);
-      const scaleName = model.scaleName('color');
-      expect((transform[0] as any).color.expr).toBe(`scale('${scaleName}', datum.$value)`);
+  describe('real-domain color from the grid’s derived extent', () => {
+    const gridData = {values: [{width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]};
 
-      const scales = assembleScalesForModel(model);
-      const colorScale = scales.find((s: any) => s.name === scaleName) as any;
-      expect(colorScale.domain).toEqual({data: colorScale.domain.data, fields: ['min_', 'max_']});
-    });
-
-    it('defaults the color domain to [0, 1] when no minField/maxField and no explicit domain', () => {
-      // Regression: falling through to the ordinary field-extent path here computes the extent of
-      // the raster field, which holds arrays -> [Infinity, -Infinity] and a scale that throws at
-      // render time ("TypeError: I[i] is not a function") rather than merely looking wrong.
+    it('takes the domain from the derived min/max fields and uses raw $value', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
-        data: {values: [{width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]},
+        data: gridData,
         mark: 'array',
         encoding: {color: {field: 'values', type: 'quantitative'}},
       });
       const scaleName = model.scaleName('color');
-      const scales = assembleScalesForModel(model);
-      const colorScale = scales.find((s: any) => s.name === scaleName) as any;
-      expect(colorScale.domain).toEqual([0, 1]);
+
+      const transform = array.postEncodingTransform(model);
+      expect((transform[0] as any).color.expr).toBe(`scale('${scaleName}', datum.$value)`);
+
+      const colorScale = assembleScalesForModel(model).find((s: any) => s.name === scaleName) as any;
+      expect(colorScale.domain.fields).toEqual(['array_min_values', 'array_max_values']);
     });
 
-    it('does not override an explicit user-specified domain', () => {
+    it('emits formula transforms computing the real extent, guarded for non-array fields', () => {
+      const {spec} = compile({
+        data: gridData,
+        mark: 'array',
+        encoding: {color: {field: 'values', type: 'quantitative'}},
+      } as any);
+      const formulas = spec.data.flatMap((d: any) => d.transform ?? []).filter((t: any) => t.type === 'formula');
+
+      expect(formulas).toEqual([
+        {
+          type: 'formula',
+          expr: 'isArray(datum["values"]) ? extent(datum["values"])[0] : datum["values"]',
+          as: 'array_min_values',
+        },
+        {
+          type: 'formula',
+          expr: 'isArray(datum["values"]) ? extent(datum["values"])[1] : datum["values"]',
+          as: 'array_max_values',
+        },
+      ]);
+    });
+
+    it('respects an explicit domain, keeping raw values rather than reverting to normalized ones', () => {
+      const {spec} = compile({
+        data: gridData,
+        mark: 'array',
+        encoding: {color: {field: 'values', type: 'quantitative', scale: {domain: [0, 100]}}},
+      } as any);
+
+      expect((spec.scales as any)[0].domain).toEqual([0, 100]);
+      // no point deriving an extent that the explicit domain would override
+      expect(spec.data.flatMap((d: any) => d.transform ?? []).filter((t: any) => t.type === 'formula')).toEqual([]);
+      expect((spec.marks[0] as any).transform[0].color.expr).toBe(`scale('color', datum.$value)`);
+    });
+
+    it('falls back to normalizing against [0, 1] when color has no field to take an extent of', () => {
+      // Regression: the ordinary field-extent path over a raster field yields
+      // [Infinity, -Infinity] and a scale that throws at render time
+      // ("TypeError: I[i] is not a function") rather than merely looking wrong.
       const model = parseUnitModelWithScaleAndLayoutSize({
-        data: {values: [{min_: 0, max_: 100, width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]},
-        mark: {type: 'array', minField: 'min_', maxField: 'max_'},
-        encoding: {color: {field: 'values', type: 'quantitative', scale: {domain: [0, 1]}}},
+        data: gridData,
+        mark: 'array',
+        encoding: {color: {datum: 5}},
       });
       const scaleName = model.scaleName('color');
-      const scales = assembleScalesForModel(model);
-      const colorScale = scales.find((s: any) => s.name === scaleName) as any;
+
+      const transform = array.postEncodingTransform(model);
+      expect((transform[0] as any).color.expr).toBe(`scale('${scaleName}', datum.$value / datum.$max)`);
+
+      const colorScale = assembleScalesForModel(model).find((s: any) => s.name === scaleName) as any;
       expect(colorScale.domain).toEqual([0, 1]);
     });
   });
