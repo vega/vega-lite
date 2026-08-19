@@ -127,6 +127,12 @@ Set `"resolve": {"scale": {"color": "independent"}}` to give each grid its own r
 
 <span class="vl-example" data-name="facet_array_independent_color"></span>
 
+### Further Dimensions
+
+Each grid covers two dimensions. [`row`](encoding.html#facet) and [`column`](encoding.html#facet) lay grids out by two more, so a dataset with four dimensions can be shown at once.
+
+<span class="vl-example" data-name="trellis_array_row_column"></span>
+
 {:#config}
 
 ## Array Config
