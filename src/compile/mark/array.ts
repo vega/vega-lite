@@ -73,12 +73,14 @@ export const array: MarkCompiler = {
     if (encoding.color) {
       const scaleName = model.scaleName(COLOR);
       if (scaleName) {
-        // When the grid's real [min, max] is derived into scalar fields (see parseArrayExtent),
-        // the color scale's domain reflects genuine data values - the union across grids, or each
-        // grid's own range under an independent facet resolve - so the raw value maps correctly
-        // and the legend shows real numbers. Otherwise (a color datum/value def, with no field to
-        // take an extent of) normalize by the grid's own max against the fixed [0, 1] domain
-        // domain.ts falls back to.
+        // When the grid's real [min, max] is derived into scalar fields (see parseArrayData), the
+        // color scale's domain reflects genuine data values: the union across grids, or each
+        // grid's own range under an independent facet resolve. The raw value then maps correctly
+        // and the legend shows real numbers.
+        //
+        // Otherwise the color channel is a datum or value def, with no field to take an extent of,
+        // so normalize by the grid's own maximum to match the fixed [0, 1] domain that domain.ts
+        // falls back to.
         const valueExpr = arrayColorFieldDef(model) ? 'datum.$value' : 'datum.$value / datum.$max';
         transform['color'] = {expr: `scale('${scaleName}', ${valueExpr})`};
         transform['opacity'] = 1;

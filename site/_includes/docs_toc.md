@@ -119,6 +119,7 @@
         - [Examples]({{site.baseurl}}/docs/area.html#examples)
         - [Area Config]({{site.baseurl}}/docs/area.html#config)
     - [Array]({{site.baseurl}}/docs/array.html)
+        - [Documentation Overview]({{site.baseurl}}/docs/array.html#documentation-overview)
         - [Grid Data]({{site.baseurl}}/docs/array.html#data)
         - [Array Mark Properties]({{site.baseurl}}/docs/array.html#properties)
         - [Examples]({{site.baseurl}}/docs/array.html#examples)

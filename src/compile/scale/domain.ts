@@ -216,7 +216,7 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
     // The array mark's color-encoded field holds a whole raster, so the ordinary field-extent path
     // would aggregate over arrays and yield [Infinity, -Infinity] - a scale that throws at render
     // time. Take the domain from the real per-grid min/max derived in the data pipeline instead
-    // (see parseArrayExtent), unioning the two like x/x2 above.
+    // (see parseArrayData), unioning the two like x/x2 above.
     const fieldDef = arrayColorFieldDef(model);
     if (fieldDef) {
       const data = model.requestDataName(
