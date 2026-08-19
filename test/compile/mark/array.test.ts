@@ -19,6 +19,17 @@ describe('Mark: Array', () => {
       expect(props.aspect).toEqual({value: false});
     });
 
+    it('stretches to fill the view by default, but honors an explicit aspect', () => {
+      expect(props.aspect).toEqual({value: false});
+
+      const fitted = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: [{width: 3, height: 2, values: [1, 2, 3, 4, 5, 6]}]},
+        mark: {type: 'array', aspect: true},
+        encoding: {color: {field: 'values', type: 'quantitative'}},
+      });
+      expect(array.encodeEntry(fitted).aspect).toEqual({value: true});
+    });
+
     it('sizes from the view size signal', () => {
       expect(props.width).toHaveProperty('signal');
       expect(props.height).toHaveProperty('signal');

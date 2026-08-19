@@ -1,0 +1,83 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "An elevation grid fitted to the view so that its cells stay square.",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 300,
+  "style": "view",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/volcano.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "{width: datum.width, height: datum.height, values: datum.values}",
+          "as": "__array_grid"
+        },
+        {
+          "type": "formula",
+          "expr": "isArray(datum[\"values\"]) ? extent(datum[\"values\"])[0] : datum[\"values\"]",
+          "as": "array_min_values"
+        },
+        {
+          "type": "formula",
+          "expr": "isArray(datum[\"values\"]) ? extent(datum[\"values\"])[1] : datum[\"values\"]",
+          "as": "array_max_values"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "image",
+      "style": ["array"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "aspect": {"value": true},
+          "ariaRoleDescription": {"value": "array"},
+          "description": {
+            "signal": "\"values: \" + (format(datum[\"values\"], \"\"))"
+          },
+          "x": {"value": 0},
+          "width": {"signal": "width"},
+          "y": {"value": 0},
+          "height": {"signal": "height"},
+          "image": {"field": "image"}
+        }
+      },
+      "transform": [
+        {
+          "type": "heatmap",
+          "field": "datum.__array_grid",
+          "color": {"expr": "scale('color', datum.$value)"},
+          "opacity": 1
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["array_min_values", "array_max_values"]
+      },
+      "range": {"scheme": "viridis"},
+      "interpolate": "hcl",
+      "zero": false
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "values"
+    }
+  ]
+}

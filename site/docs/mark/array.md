@@ -32,18 +32,15 @@ holds a whole grid rather than one row per cell.
 
 ## Grid Data
 
-Each datum describes one grid: `width` and `height` give its size in cells, and `values` lists the
-cells in row-major order. The `volcano` dataset is stored this way:
+An array mark reads one grid per datum. A grid gives its size in cells with `width` and `height`,
+and lists the cell values in `values`, in row-major order: left to right, then top to bottom.
 
 ```json
-{
-  "width": 87,
-  "height": 61,
-  "values": [103, 104, 104, 105, ...]
-}
+{"width": 3, "height": 2, "values": [1, 2, 3, 4, 5, 6]}
 ```
 
-so it can be used directly:
+Gridded data is commonly distributed in this form, so it can often be plotted without reshaping.
+The examples below use `volcano`, an 87 by 61 grid of elevations:
 
 ```json
 {
@@ -111,6 +108,14 @@ diverging scheme with `domainMid` to place the midpoint there.
 The image is smoothed as it scales up. Set `smooth` to `false` to show each cell exactly.
 
 <span class="vl-example" data-name="array_smooth"></span>
+
+### Square Cells
+
+The image is stretched to fill the view, so cells are only square when the view has the same
+proportions as the grid. Set `aspect` to `true` to fit the grid inside the view instead, keeping
+its cells square and leaving space on the sides that do not fill.
+
+<span class="vl-example" data-name="array_aspect"></span>
 
 ### Adding Axes
 

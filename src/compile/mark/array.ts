@@ -1,6 +1,7 @@
 import {VgEncodeEntry, VgPostEncodingTransform} from '../../vega.schema.js';
 import {COLOR} from '../../channel.js';
 import {isFieldDef, vgField} from '../../channeldef.js';
+import {getMarkPropOrConfig, signalOrValueRef} from '../common.js';
 import {ARRAY_GRID_FIELD, arrayColorFieldDef} from '../data/array.js';
 import {UnitModel} from '../unit.js';
 import {MarkCompiler} from './base.js';
@@ -53,7 +54,9 @@ export const array: MarkCompiler = {
       ...rangeEncodeEntry(model, 'x', 'x2', 'width'),
       ...rangeEncodeEntry(model, 'y', 'y2', 'height'),
       image: {field: 'image'},
-      aspect: {value: false},
+      // Stretch the raster to fill the view unless asked otherwise. `aspect: true` fits it inside
+      // the view instead, preserving the grid's own proportions so that its cells stay square.
+      aspect: signalOrValueRef(getMarkPropOrConfig('aspect', model.markDef, model.config) ?? false),
     };
   },
 
