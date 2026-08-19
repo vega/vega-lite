@@ -50,7 +50,7 @@ import {
   VgUnionSortField,
 } from '../../vega.schema.js';
 import {getMarkConfig} from '../common.js';
-import {arrayColorFieldDef, arrayExtentField} from '../data/arrayextent.js';
+import {arrayColorFieldDef, arrayExtentField} from '../data/array.js';
 import {getBinSignalName} from '../data/bin.js';
 import {sortArrayIndexField} from '../data/calculate.js';
 import {FACET_SCALE_PREFIX} from '../data/optimize.js';

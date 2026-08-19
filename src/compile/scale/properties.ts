@@ -156,8 +156,12 @@ export const scaleRules: {
 
   interpolate: ({channel, fieldOrDatumDef}) => interpolate(channel, fieldOrDatumDef.type),
 
-  nice: ({scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef}) =>
-    nice(scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef),
+  nice: ({scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef, markDef}) =>
+    // An array mark's raster spans its extent exactly and is stretched to fill the view, so
+    // rounding the domain outward would silently misalign the axis with the image it labels.
+    markDef.type === 'array' && isXorY(channel)
+      ? undefined
+      : nice(scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef),
 
   padding: ({channel, scaleType, fieldOrDatumDef, markDef, config}) =>
     padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
@@ -173,16 +177,20 @@ export const scaleRules: {
     return reverse(scaleType, sort, channel, config.scale);
   },
   zero: ({model, channel, fieldOrDatumDef, domain, markDef, scaleType, config, hasSecondaryRangeChannel}) =>
-    zero(
-      channel,
-      fieldOrDatumDef,
-      domain,
-      markDef,
-      scaleType,
-      config.scale,
-      hasSecondaryRangeChannel,
-      isXorYOffset(channel) && (model as UnitModel).isRangedOffset(getMainChannelFromOffsetChannel(channel)),
-    ),
+    // Likewise, extending a raster's extent to include zero would misalign it (and is plainly
+    // wrong for extents that legitimately exclude zero, such as a latitude band).
+    markDef.type === 'array' && isXorY(channel)
+      ? undefined
+      : zero(
+          channel,
+          fieldOrDatumDef,
+          domain,
+          markDef,
+          scaleType,
+          config.scale,
+          hasSecondaryRangeChannel,
+          isXorYOffset(channel) && (model as UnitModel).isRangedOffset(getMainChannelFromOffsetChannel(channel)),
+        ),
 };
 
 // This method is here rather than in range.ts to avoid circular dependency.

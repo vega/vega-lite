@@ -1,7 +1,7 @@
 import {VgEncodeEntry, VgPostEncodingTransform} from '../../vega.schema.js';
 import {COLOR} from '../../channel.js';
 import {isFieldDef, vgField} from '../../channeldef.js';
-import {arrayColorFieldDef} from '../data/arrayextent.js';
+import {ARRAY_GRID_FIELD, arrayColorFieldDef} from '../data/array.js';
 import {UnitModel} from '../unit.js';
 import {MarkCompiler} from './base.js';
 import * as encode from './encode/index.js';
@@ -62,7 +62,9 @@ export const array: MarkCompiler = {
 
     const transform: Record<string, unknown> = {
       type: 'heatmap',
-      field: 'datum',
+      // A post-encoding transform runs on scenegraph items, so reach through to the sanitized grid
+      // built on the datum (see parseArrayData) rather than handing over the whole tuple.
+      field: `datum.${ARRAY_GRID_FIELD}`,
     };
 
     if (encoding.color) {

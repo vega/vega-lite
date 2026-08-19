@@ -99,6 +99,49 @@ describe('Mark: Array', () => {
     });
   });
 
+  describe('grid sanitization and exact position scales', () => {
+    const W = 48;
+    const H = 32;
+    // x1/x2/y1/y2 are exactly the names Heatmap.js reads off the grid for its undocumented
+    // pixel-crop feature, so these used to silently corrupt the raster.
+    const collidingSpec = {
+      width: 360,
+      height: 240,
+      data: {values: [{x1: 0, x2: W, y1: 0, y2: H, width: W, height: H, values: [1, 2, 3, 4, 5, 6]}]},
+      mark: 'array',
+      encoding: {
+        x: {field: 'x1', type: 'quantitative'},
+        x2: {field: 'x2'},
+        y: {field: 'y1', type: 'quantitative'},
+        y2: {field: 'y2'},
+        color: {field: 'values', type: 'quantitative'},
+      },
+    };
+
+    it('hands the heatmap transform a grid of only width/height/values', () => {
+      const {spec} = compile(collidingSpec as any);
+      const gridFormula = spec.data.flatMap((d: any) => d.transform ?? []).find((t: any) => t.as === '__array_grid');
+
+      expect(gridFormula.expr).toBe('{width: datum.width, height: datum.height, values: datum.values}');
+      expect((spec.marks[0] as any).transform[0].field).toBe('datum.__array_grid');
+    });
+
+    it('leaves x1/x2/y1/y2 free for the user to encode', () => {
+      const {spec} = compile(collidingSpec as any);
+      const x = (spec.scales as any).find((s: any) => s.name === 'x');
+      expect(x.domain.fields).toEqual(['x1', 'x2']);
+    });
+
+    it('does not nice or zero position scales, which would misalign the axis with the raster', () => {
+      const {spec} = compile(collidingSpec as any);
+      for (const name of ['x', 'y']) {
+        const scale = (spec.scales as any).find((s: any) => s.name === name);
+        expect(scale.nice).toBeUndefined();
+        expect(scale.zero).toBeUndefined();
+      }
+    });
+  });
+
   describe('default view size', () => {
     it('uses the continuous view size, not the 20px discrete step, without position encodings', () => {
       const {spec} = compile({
@@ -135,7 +178,9 @@ describe('Mark: Array', () => {
         mark: 'array',
         encoding: {color: {field: 'values', type: 'quantitative'}},
       } as any);
-      const formulas = spec.data.flatMap((d: any) => d.transform ?? []).filter((t: any) => t.type === 'formula');
+      const formulas = spec.data
+        .flatMap((d: any) => d.transform ?? [])
+        .filter((t: any) => t.type === 'formula' && t.as !== '__array_grid');
 
       expect(formulas).toEqual([
         {
@@ -160,7 +205,11 @@ describe('Mark: Array', () => {
 
       expect((spec.scales as any)[0].domain).toEqual([0, 100]);
       // no point deriving an extent that the explicit domain would override
-      expect(spec.data.flatMap((d: any) => d.transform ?? []).filter((t: any) => t.type === 'formula')).toEqual([]);
+      expect(
+        spec.data
+          .flatMap((d: any) => d.transform ?? [])
+          .filter((t: any) => t.type === 'formula' && t.as !== '__array_grid'),
+      ).toEqual([]);
       expect((spec.marks[0] as any).transform[0].color.expr).toBe(`scale('color', datum.$value)`);
     });
 

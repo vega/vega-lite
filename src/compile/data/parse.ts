@@ -56,7 +56,7 @@ import {
   getImplicitFromSelection,
   ParseNode,
 } from './formatparse.js';
-import {parseArrayExtent} from './arrayextent.js';
+import {parseArrayData} from './array.js';
 import {GeoJSONNode} from './geojson.js';
 import {GeoPointNode} from './geopoint.js';
 import {GraticuleNode} from './graticule.js';
@@ -372,7 +372,7 @@ export function parseData(model: Model): DataComponent {
   if (isUnitModel(model)) {
     head = GeoJSONNode.parseAll(head, model);
     head = GeoPointNode.parseAll(head, model);
-    head = parseArrayExtent(head, model);
+    head = parseArrayData(head, model);
   }
 
   if (isUnitModel(model) || isFacetModel(model)) {

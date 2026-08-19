@@ -1,8 +1,14 @@
 import {COLOR} from '../../channel.js';
 import {FieldRefOption, getFieldOrDatumDef, isFieldDef, TypedFieldDef, vgField} from '../../channeldef.js';
+import {internalField} from '../../util.js';
 import {UnitModel} from '../unit.js';
 import {CalculateNode} from './calculate.js';
 import {DataFlowNode} from './dataflow.js';
+
+/**
+ * Field holding the sanitized raster grid handed to Vega's heatmap transform.
+ */
+export const ARRAY_GRID_FIELD = internalField('array_grid');
 
 /**
  * Name of the derived field holding one end of a raster grid's real value range.
@@ -36,17 +42,32 @@ export function arrayColorFieldDef(model: UnitModel): TypedFieldDef<string> | nu
 }
 
 /**
- * Derive a raster grid's real [min, max] into two genuine per-datum scalar fields, using Vega's
- * `extent` expression, so the color scale can take its domain from them like any other
- * field-driven domain - which also means it honors shared vs. independent facet resolve for free.
+ * Prepare the data an `array` mark needs.
  *
- * Deriving these at runtime rather than reading conventionally-named fields off the data keeps this
- * working for data Vega-Lite never sees at compile time, such as a `url` source.
+ * 1. A sanitized grid object for the heatmap transform. Handing it the datum wholesale would let
+ *    any same-named data field reach it, and it reads `x1`/`x2`/`y1`/`y2` off the grid for an
+ *    undocumented pixel-crop feature - so a spec that (very reasonably) names its extent fields
+ *    `x1`/`y1` would silently render a corrupted raster. Passing only width/height/values keeps
+ *    those names free for the user.
  *
- * The `isArray` guard keeps a scalar color field working too: `extent` expects an array, and
- * min = max = the value itself gives exactly the right per-datum contribution to the domain.
+ * 2. The grid's real [min, max], derived with Vega's `extent` expression into two genuine per-datum
+ *    scalar fields, so the color scale can take its domain from them like any other field-driven
+ *    domain - which also means it honors shared vs. independent facet resolve for free. Deriving
+ *    these at runtime rather than reading conventionally-named fields off the data keeps this
+ *    working for data Vega-Lite never sees at compile time, such as a `url` source. The `isArray`
+ *    guard keeps a scalar color field working too: `extent` expects an array, and min = max = the
+ *    value itself is exactly the right per-datum contribution to the domain.
  */
-export function parseArrayExtent(head: DataFlowNode, model: UnitModel): DataFlowNode {
+export function parseArrayData(head: DataFlowNode, model: UnitModel): DataFlowNode {
+  if (model.mark !== 'array') {
+    return head;
+  }
+
+  head = new CalculateNode(head, {
+    calculate: '{width: datum.width, height: datum.height, values: datum.values}',
+    as: ARRAY_GRID_FIELD,
+  });
+
   const fieldDef = arrayColorFieldDef(model);
 
   // An explicitly specified domain wins over any derived one, so there is nothing to compute.
