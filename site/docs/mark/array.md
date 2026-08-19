@@ -16,8 +16,8 @@ permalink: /docs/array.html
 ```
 
 The `array` mark displays a grid of values, such as an image, an elevation model, or any 2D array,
-as a single raster image. Since the whole grid is drawn as one image instead of one mark per cell,
-it stays responsive at resolutions where a [`rect`](rect.html) mark would not.
+as a single raster image. This is a useful mark for data that is already gridded, where one datum
+holds a whole grid rather than one row per cell.
 
 <!--prettier-ignore-start-->
 ## Documentation Overview
