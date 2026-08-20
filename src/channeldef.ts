@@ -14,7 +14,6 @@ import {Axis} from './axis.js';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin.js';
 import {
   ANGLE,
-  Channel,
   COLOR,
   COLUMN,
   DESCRIPTION,
@@ -1468,7 +1467,7 @@ export function valueArray(
 /**
  * Checks whether a fieldDef for a particular channel requires a computed bin range.
  */
-export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel): boolean {
+export function binRequiresRange(fieldDef: FieldDef<string>, channel: ExtendedChannel): boolean {
   if (!isBinning(fieldDef.bin)) {
     console.warn('Only call this method for binned field defs.');
     return false;

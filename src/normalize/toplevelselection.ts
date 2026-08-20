@@ -68,7 +68,7 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
 for (const method of ['mapFacet', 'mapRepeat', 'mapHConcat', 'mapVConcat', 'mapLayer'] as const) {
   const proto = TopLevelSelectionsNormalizer.prototype[method];
   TopLevelSelectionsNormalizer.prototype[method] = function (spec: BaseSpec, params: NormalizerParams) {
-    return proto.call(this, spec, addSpecNameToParams(spec, params));
+    return Reflect.apply(proto, this, [spec, addSpecNameToParams(spec, params)]);
   };
 }
 
