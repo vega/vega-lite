@@ -7,7 +7,7 @@ import {ParameterName} from './parameter.js';
 import {Dict} from './util.js';
 
 export const SELECTION_ID = '_vgsid_';
-export type SelectionType = 'point' | 'interval';
+export type SelectionType = 'point' | 'interval' | 'region';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
 export type SelectionInit = PrimitiveValue | DateTime;
@@ -21,10 +21,11 @@ export type LegendBinding = 'legend' | LegendStreamBinding;
 
 export interface BaseSelectionConfig<T extends SelectionType = SelectionType> {
   /**
-   * Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:
+   * Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:
    *
    * - `"point"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click.
    * - `"interval"` -- to select a continuous range of data values on `drag`.
+   * - `"region"` -- to select arbitrary freeform regions of the visualization.
    */
   type: T;
 
@@ -200,6 +201,17 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
   mark?: BrushConfig;
 }
 
+export interface RegionSelectionConfig extends BaseSelectionConfig<'region'> {
+  /**
+   * A region selection also adds a path mark to depict the
+   * shape of the region. The `mark` property can be used to customize the
+   * appearance of the mark.
+   *
+   * __See also:__ [`mark` examples](https://vega.github.io/vega-lite/docs/selection.html#mark) in the documentation.
+   */
+  mark?: BrushConfig;
+}
+
 export interface SelectionParameter<T extends SelectionType = SelectionType> {
   /**
    * Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
@@ -207,12 +219,21 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
   name: ParameterName;
 
   /**
-   * Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:
+   * Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:
    *
    * - `"point"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click.
    * - `"interval"` -- to select a continuous range of data values on `drag`.
+   * - `"region"` -- to select arbitrary freeform regions of the visualization.
    */
-  select: T | (T extends 'point' ? PointSelectionConfig : T extends 'interval' ? IntervalSelectionConfig : never);
+  select:
+    | T
+    | (T extends 'point'
+        ? PointSelectionConfig
+        : T extends 'interval'
+          ? IntervalSelectionConfig
+          : T extends 'region'
+            ? RegionSelectionConfig
+            : never);
 
   /**
    * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/selection.html#project) and initial values.
@@ -282,6 +303,8 @@ export type PointSelectionConfigWithoutType = Omit<PointSelectionConfig, 'type'>
 
 export type IntervalSelectionConfigWithoutType = Omit<IntervalSelectionConfig, 'type'>;
 
+export type RegionSelectionConfigWithoutType = Omit<RegionSelectionConfig, 'type'>;
+
 export interface SelectionConfig {
   /**
    * The default definition for a [`point`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations
@@ -299,6 +322,12 @@ export interface SelectionConfig {
    * interval selections by default.
    */
   interval?: IntervalSelectionConfigWithoutType;
+
+  /**
+   * The default definition for a [`region`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations
+   * for a region selection definition (except `type`) may be specified here.
+   */
+  region?: RegionSelectionConfigWithoutType;
 }
 
 export const defaultConfig: SelectionConfig = {
@@ -316,6 +345,12 @@ export const defaultConfig: SelectionConfig = {
     zoom: 'wheel!',
     mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
     resolve: 'global',
+    clear: 'dblclick',
+  },
+  region: {
+    on: '[pointerdown, window:pointerup] > window:pointermove!',
+    resolve: 'global',
+    mark: {fill: '#333', fillOpacity: 0.125, stroke: 'gray', strokeWidth: 2, strokeDash: [8, 5]},
     clear: 'dblclick',
   },
 };
