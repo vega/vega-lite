@@ -16,7 +16,7 @@ function isFalseOrNull(v: any) {
 }
 
 export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp> &
-  Omit<AxisPropsWithCondition<SignalRef>, 'title'> & {
+  AxisPropsWithCondition<SignalRef> & {
     title: Text | FieldDefBase<string>[] | SignalRef;
     labelExpr: string;
     disable: boolean;
