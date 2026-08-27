@@ -63,7 +63,19 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
     const expr = isWidth ? 'containerSize()[0]' : 'containerSize()[1]';
     const defaultValue = getViewConfigContinuousSize(model.config.view, isWidth ? 'width' : 'height');
     const safeExpr = `isFinite(${expr}) ? ${expr} : ${defaultValue}`;
-    return [{name, init: safeExpr, on: [{update: safeExpr, events: 'window:resize'}]}];
+    return [
+      {
+        name,
+        init: safeExpr,
+        // `container:resize` catches every container size change but only exists in newer Vega;
+        // `window:resize` keeps older Vega working and costs nothing when both fire, since the
+        // signal then re-reads the same size and Vega skips unchanged signal updates.
+        on: [
+          {update: safeExpr, events: 'window:resize'},
+          {update: safeExpr, events: 'container:resize'},
+        ],
+      },
+    ];
   } else {
     return [
       {
