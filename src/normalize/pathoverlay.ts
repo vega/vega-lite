@@ -10,7 +10,7 @@ import {stack} from '../stack.js';
 import {keys, omit, pick} from '../util.js';
 import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base.js';
 import {DEFAULT_REDUCED_OPACITY, initMarkdef} from '../compile/mark/init.js';
-import {getMarkPropOrConfig} from '../compile/common.js';
+import {getMarkPropOrConfig, getMarkStyleConfig} from '../compile/common.js';
 
 type UnitSpecWithPathOverlay = GenericUnitSpec<Encoding<string>, Mark | MarkDef<'line' | 'area' | 'rule' | 'trail'>>;
 
@@ -30,12 +30,24 @@ function dropLineAndPointFromConfig(config: Config<SignalRef>) {
       };
     }
   }
+  // Also drop line/point from style config so the overlaid child layers do not re-match
+  // the path-overlay normalizer (which now also reads the style config) and recurse infinitely.
+  if (config.style) {
+    const style = {...config.style};
+    for (const styleName of keys(style)) {
+      if (style[styleName]) {
+        // TODO: remove as any
+        style[styleName] = omit(style[styleName], ['point', 'line'] as any);
+      }
+    }
+    config = {...config, style};
+  }
   return config;
 }
 
 function getPointOverlay(
   markDef: MarkDef,
-  markConfig: LineConfig<ExprRef | SignalRef> = {},
+  config: Config<SignalRef>,
   encoding: Encoding<string>,
 ): MarkConfig<ExprRef | SignalRef> {
   if (markDef.point === 'transparent') {
@@ -47,20 +59,24 @@ function getPointOverlay(
     // false or null
     return null;
   } else {
-    // undefined (not disabled)
-    if (markConfig.point || encoding.shape) {
-      // enable point overlay if config[mark].point is truthy or if encoding.shape is provided
-      return isObject(markConfig.point) ? markConfig.point : {};
+    // undefined (not disabled): resolve the point overlay from the config.
+    // The style config (config.style) takes precedence over the mark-type config (config[mark.type]),
+    // consistent with getMarkConfig, so a point overlay can be disabled via style config.
+    const stylePoint = getMarkStyleConfig('point', markDef, config.style ?? {});
+    const markConfigPoint = (config[markDef.type] as LineConfig<ExprRef | SignalRef>)?.point;
+    const point = stylePoint !== undefined ? stylePoint : markConfigPoint;
+    if (point || encoding.shape) {
+      // enable point overlay if the resolved config point is truthy or if encoding.shape is provided
+      return isObject(point) ? point : {};
+    } else if (point !== undefined) {
+      // explicitly disabled via config (e.g. config.style[...].point: false)
+      return null;
     }
-    // markDef.point is defined as falsy
     return undefined;
   }
 }
 
-function getLineOverlay(
-  markDef: MarkDef,
-  markConfig: AreaConfig<ExprRef | SignalRef> = {},
-): MarkConfig<ExprRef | SignalRef> {
+function getLineOverlay(markDef: MarkDef, config: Config<SignalRef>): MarkConfig<ExprRef | SignalRef> {
   if (markDef.line) {
     // true or object
     return markDef.line === true ? {} : markDef.line;
@@ -68,12 +84,19 @@ function getLineOverlay(
     // false or null
     return null;
   } else {
-    // undefined (not disabled)
-    if (markConfig.line) {
-      // enable line overlay if config[mark].line is truthy
-      return markConfig.line === true ? {} : markConfig.line;
+    // undefined (not disabled): resolve the line overlay from the config.
+    // The style config (config.style) takes precedence over the mark-type config (config[mark.type]),
+    // consistent with getMarkConfig, so a line overlay can be disabled via style config (#9547).
+    const styleLine = getMarkStyleConfig('line', markDef, config.style ?? {});
+    const markConfigLine = (config[markDef.type] as AreaConfig<ExprRef | SignalRef>)?.line;
+    const line = styleLine !== undefined ? styleLine : markConfigLine;
+    if (line) {
+      // enable line overlay if the resolved config line is truthy
+      return line === true ? {} : line;
+    } else if (line !== undefined) {
+      // explicitly disabled via config (e.g. config.style[...].line: false)
+      return null;
     }
-    // markDef.point is defined as falsy
     return undefined;
   }
 }
@@ -89,12 +112,12 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
         case 'line':
         case 'rule':
         case 'trail':
-          return !!getPointOverlay(markDef, config[markDef.type], encoding);
+          return !!getPointOverlay(markDef, config as Config<SignalRef>, encoding);
         case 'area':
           return (
             // false / null are also included as we want to remove the properties
-            !!getPointOverlay(markDef, config[markDef.type], encoding) ||
-            !!getLineOverlay(markDef, config[markDef.type])
+            !!getPointOverlay(markDef, config as Config<SignalRef>, encoding) ||
+            !!getLineOverlay(markDef, config as Config<SignalRef>)
           );
       }
     }
@@ -110,9 +133,9 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
 
     const markDef: MarkDef = isMarkDef(mark) ? mark : {type: mark};
 
-    const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
+    const pointOverlay = getPointOverlay(markDef, config, encoding);
 
-    const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
+    const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config);
 
     const layer: NormalizedUnitSpec[] = [
       {
