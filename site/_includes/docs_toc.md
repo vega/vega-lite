@@ -349,6 +349,7 @@
         - [Common Selection Properties]({{site.baseurl}}/docs/selection.html#selection-props)
         - [Point Selection Properties]({{site.baseurl}}/docs/selection.html#point)
         - [Interval Selection Properties]({{site.baseurl}}/docs/selection.html#interval)
+        - [Segment Selection Properties]({{site.baseurl}}/docs/selection.html#segment)
 - [Config]({{site.baseurl}}/docs/config.html)
     - [Top-level Configuration]({{site.baseurl}}/docs/config.html#top-level-config)
     - [Format Configuration]({{site.baseurl}}/docs/config.html#format)
