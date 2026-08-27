@@ -124,4 +124,35 @@ describe('compile/axis/assemble', () => {
       signal: 'myFormat(datum.value, {"a":"b"})[0]',
     });
   });
+
+  it('adds year information to automatic labels for multi-year temporal axes', () => {
+    const model = parseUnitModelWithScale({
+      mark: 'line',
+      encoding: {
+        x: {field: 'Date', type: 'temporal'},
+        y: {field: 'Data', type: 'quantitative'},
+      },
+    });
+    model.parseAxesAndHeaders();
+
+    const axes = model.assembleAxes();
+    expect(axes[2].encode.labels.update.text).toEqual({
+      signal:
+        'year(domain("x")[0]) === year(domain("x")[1]) ? datum.label : month(datum.value) === 0 && date(datum.value) === 1 && hours(datum.value) === 0 && minutes(datum.value) === 0 && seconds(datum.value) === 0 && milliseconds(datum.value) === 0 ? datum.label : datum.label + " " + timeFormat(datum.value, "%Y")',
+    });
+  });
+
+  it('does not add year information when temporal axis format is specified', () => {
+    const model = parseUnitModelWithScale({
+      mark: 'line',
+      encoding: {
+        x: {field: 'Date', type: 'temporal', axis: {format: '%b'}},
+        y: {field: 'Data', type: 'quantitative'},
+      },
+    });
+    model.parseAxesAndHeaders();
+
+    const axes = model.assembleAxes();
+    expect(axes[2].encode).toBeUndefined();
+  });
 });
