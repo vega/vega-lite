@@ -172,7 +172,7 @@ The `nearest` transform also respects any [position encoding projections](projec
 
 In addition to all [common selection properties](#selection-props), interval selections support the following properties:
 
-{% include table.html props="mark,translate,zoom" source="IntervalSelectionConfig" %}
+{% include table.html props="mark,translate,zoom,boxZoom" source="IntervalSelectionConfig" %}
 
 ### `mark`
 
@@ -235,3 +235,25 @@ function buildZoom() {
   changeSpec('zoom', 'selection_zoom_' + type + '_' + event);
 }
 </script>
+
+### `boxZoom`
+
+The `boxZoom` property turns an interval selection into a "box zoom" tool: drag out a rectangle -- just like a normal interval brush -- and, once you release the mouse, the view's scales zoom to that rectangle. The brush then clears itself, ready to be dragged again to zoom in further. This mimics the click-and-drag-to-zoom-to-rectangle tool found in plotting libraries such as Matplotlib, Plotly, and Bokeh.
+
+This differs from [`bind: "scales"`](bind.html#scale-binding), which continuously pans (drag) and zooms (scroll) the scales in place and never draws a brush rectangle. `boxZoom` instead draws the rectangle live while dragging, and only rescales once the drag ends.
+
+```json
+"select": {
+  "type": "interval",
+  "boxZoom": true
+}
+```
+
+Drag a rectangle over the plot below to zoom in. Double-click to reset the zoom back to its original domain.
+
+<div class="vl-example" data-name="selection_boxzoom_scatterplot"></div>
+
+#### Current Limitations
+
+- `boxZoom` is not supported for geographic (projected longitude/latitude) views, since those don't have per-channel continuous scales to zoom -- a projection's pan/zoom state works differently (a single `scale`/`translate` pair rather than a domain per axis).
+- `boxZoom` requires `resolve` to be `"global"` (the default); it has no effect when `resolve` is `"union"` or `"intersect"`.
