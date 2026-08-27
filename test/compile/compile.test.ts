@@ -277,7 +277,8 @@ describe('compile/compile', () => {
     const point = spec.marks[2].encode.update;
 
     expect(bar.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
-    expect(bar.y2).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', value: 0}});
+    expect(bar.y2).toMatchObject({scale: 'y', field: 'g'});
+    expect((bar.y2 as any).offset.signal).toContain('extent(domain("yOffset"))');
 
     expect(line.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
     expect(point.y).toEqual({scale: 'y', field: 'g', offset: {scale: 'yOffset', field: 'v'}});
@@ -405,7 +406,8 @@ describe('compile/compile', () => {
 
     const update = (spec.marks[0] as any).marks[0].encode.update;
     expect(update.y).toEqual({scale: 'y', field: 'c', offset: {scale: 'yOffset', field: 'b'}});
-    expect(update.y2).toEqual({scale: 'y', field: 'c', offset: {scale: 'yOffset', value: 0}});
+    expect(update.y2).toMatchObject({scale: 'y', field: 'c'});
+    expect((update.y2 as any).offset.signal).toContain('extent(domain("yOffset"))');
   });
 
   it('should compile area with aggregated yOffset and no y as ranged geometry', () => {
