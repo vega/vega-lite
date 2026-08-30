@@ -119,7 +119,7 @@ To label a grid with something other than cell counts, encode `x`/`x2` and `y`/`
 
 ### An Extent from the Data
 
-Use fields when the extent travels with the grid, which also lets each grid in a faceted chart cover a different area. A grid holding `"extent": [-180, 180, -81, 87]` can be read straight out of the array:
+Use fields when the extent travels with the grid, which also lets each grid in a faceted chart cover a different area. Those grids then sit in their own place within a shared scale, rather than each filling its panel, unless the position scale is resolved independently. A grid holding `"extent": [-180, 180, -81, 87]` can be read straight out of the array:
 
 ```json
 "x": {"field": "extent[0]", "type": "quantitative"},
