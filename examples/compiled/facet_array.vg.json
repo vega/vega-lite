@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v6.json",
-  "description": "Two grids faceted side by side, sharing one color scale.",
+  "description": "Two grids laid out in columns, sharing one color scale.",
   "background": "white",
   "padding": 5,
   "data": [
@@ -139,17 +139,30 @@
           "as": "array_max_values"
         }
       ]
+    },
+    {
+      "name": "column_domain",
+      "source": "data_0",
+      "transform": [{"type": "aggregate", "groupby": ["variant"]}]
     }
   ],
   "signals": [
     {"name": "child_width", "value": 160},
     {"name": "child_height", "value": 120}
   ],
-  "layout": {"padding": 20, "bounds": "full", "align": "all"},
+  "layout": {
+    "padding": 20,
+    "columns": {"signal": "length(data('column_domain'))"},
+    "bounds": "full",
+    "align": "all"
+  },
   "marks": [
     {
-      "name": "cell",
+      "name": "column_header",
       "type": "group",
+      "role": "column-header",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"variant\"]", "order": "ascending"},
       "title": {
         "text": {
           "signal": "isValid(parent[\"variant\"]) ? parent[\"variant\"] : \"\"+parent[\"variant\"]"
@@ -158,6 +171,11 @@
         "frame": "group",
         "offset": 10
       },
+      "encode": {"update": {"width": {"signal": "child_width"}}}
+    },
+    {
+      "name": "cell",
+      "type": "group",
       "style": "view",
       "from": {
         "facet": {"name": "facet", "data": "data_0", "groupby": ["variant"]}

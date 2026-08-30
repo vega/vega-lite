@@ -1,6 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Two grids faceted side by side, sharing one color scale.",
+  "description": "Two grids laid out in columns, sharing one color scale.",
+  "width": 160,
+  "height": 120,
   "data": {
     "values": [
       {
@@ -17,17 +19,13 @@
       }
     ]
   },
-  "facet": {"field": "variant", "type": "nominal", "title": null},
-  "spec": {
-    "width": 160,
-    "height": 120,
-    "mark": "array",
-    "encoding": {
-      "color": {
-        "field": "values",
-        "type": "quantitative",
-        "scale": {"scheme": "viridis"}
-      }
-    }
+  "mark": "array",
+  "encoding": {
+    "color": {
+      "field": "values",
+      "type": "quantitative",
+      "scale": {"scheme": "viridis"}
+    },
+    "column": {"field": "variant", "type": "nominal", "title": null}
   }
 }

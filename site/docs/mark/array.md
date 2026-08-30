@@ -113,27 +113,33 @@ An array mark fills the view and needs no position encoding, so it has no axes b
 
 ### A Different Extent
 
-To label a grid with something other than cell counts, such as the area it covers, encode `x`/`x2` and `y`/`y2` yourself. Use fields when each grid covers a different extent.
+To label a grid with something other than cell counts, encode `x`/`x2` and `y`/`y2` yourself. The grid below is spaced 10 metres apart, so it covers 870 by 610 metres. Use fields rather than constants when each grid covers a different extent.
 
 <span class="vl-example" data-name="array_axis_field"></span>
 
-### Shared Axes
-
-Faceted grids share one pair of axes, drawn once around the panels.
-
-<span class="vl-example" data-name="facet_array_axis"></span>
-
 ### Faceted Grids
 
-[Faceted](facet.html) grids share one color scale by default, so panels stay comparable. The second grid below covers a narrower range of values and therefore uses only part of the scheme.
+Grids can be laid out by a further dimension with the [`column`](encoding.html#facet) or `row` channel. They share one color scale by default, so panels stay comparable: the second grid below covers a narrower range of values and therefore uses only part of the scheme.
 
 <span class="vl-example" data-name="facet_array"></span>
 
-### Independent Color Scales
+#### Shared Axes
+
+Panels also share their axes, so one pair is drawn around the whole layout rather than repeated.
+
+<span class="vl-example" data-name="facet_array_axis"></span>
+
+#### Independent Color Scales
 
 Set `"resolve": {"scale": {"color": "independent"}}` to give each grid its own range instead. This brings out the structure within each panel, but the panels can no longer be compared to each other.
 
 <span class="vl-example" data-name="facet_array_independent_color"></span>
+
+#### Independent Axes
+
+Axes resolve separately from scales. Below, the grids sit in a two by two trellis with `"resolve": {"axis": {"x": "shared", "y": "independent"}}`, so the x axis is drawn once along the bottom while every panel keeps its own y axis.
+
+<span class="vl-example" data-name="facet_array_independent_axis"></span>
 
 {:#config}
 

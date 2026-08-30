@@ -1,21 +1,19 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "An elevation grid whose axis extent is taken from fields in the data.",
+  "description": "An elevation grid labelled in metres rather than cells, using its 10 m spacing.",
   "width": 348,
   "height": 244,
   "data": {"url": "data/volcano.json"},
-  "transform": [
-    {"calculate": "0", "as": "left"},
-    {"calculate": "datum.width", "as": "right"},
-    {"calculate": "0", "as": "bottom"},
-    {"calculate": "datum.height", "as": "top"}
-  ],
   "mark": "array",
   "encoding": {
-    "x": {"field": "left", "type": "quantitative", "axis": {"title": "column"}},
-    "x2": {"field": "right"},
-    "y": {"field": "bottom", "type": "quantitative", "axis": {"title": "row"}},
-    "y2": {"field": "top"},
+    "x": {"datum": 0, "type": "quantitative", "axis": {"title": "metres east"}},
+    "x2": {"datum": 870},
+    "y": {
+      "datum": 0,
+      "type": "quantitative",
+      "axis": {"title": "metres north"}
+    },
+    "y2": {"datum": 610},
     "color": {
       "field": "values",
       "type": "quantitative",

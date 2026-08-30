@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Two grids laid out in columns, sharing one pair of axes.",
+  "description": "Two grids laid out in columns, each with its own color scale.",
   "data": {
     "values": [
       {
@@ -115,20 +115,13 @@
       }
     ]
   },
+  "resolve": {"scale": {"color": "independent"}},
   "facet": {"column": {"field": "variant", "type": "nominal", "title": null}},
   "spec": {
     "width": 160,
     "height": 120,
-    "transform": [
-      {"calculate": "0", "as": "__array_x0"},
-      {"calculate": "0", "as": "__array_y0"}
-    ],
-    "mark": {"type": "array"},
+    "mark": "array",
     "encoding": {
-      "x": {"field": "__array_x0", "type": "quantitative", "title": null},
-      "x2": {"field": "width"},
-      "y": {"field": "__array_y0", "type": "quantitative", "title": null},
-      "y2": {"field": "height"},
       "color": {
         "field": "values",
         "type": "quantitative",
