@@ -12,9 +12,8 @@ type UnitSpecWithArrayAxis = GenericUnitSpec<Encoding<string>, Mark | MarkDef<'a
 const ORIGIN = {x: internalField('array_x0'), y: internalField('array_y0')} as const;
 
 /**
- * Expands `{"mark": {"type": "array", "axis": true}}` into the encodings that give a grid axes:
- * `x`/`y` at zero, and `x2`/`y2` at the grid's own `width` and `height`. Writing that out is what
- * the flag saves, and the expansion is visible in the normalized spec.
+ * Expands `{"mark": {"type": "array", "axis": true}}` into the encodings that label a grid with its
+ * own extent: `x`/`y` at zero, and `x2`/`y2` at the grid's `width` and `height`.
  */
 export class ArrayAxisNormalizer implements NonFacetUnitNormalizer<UnitSpecWithArrayAxis> {
   public name = 'array-axis';
@@ -48,7 +47,7 @@ export class ArrayAxisNormalizer implements NonFacetUnitNormalizer<UnitSpecWithA
         },
       },
       // drop the flag from the config too, or the expanded spec matches again and recurses
-      {...normParams, config: {...config, array: omit(config.array ?? {}, ['axis'])}},
+      {...normParams, config: {...config, array: omit(config.array, ['axis'])}},
     );
   }
 }

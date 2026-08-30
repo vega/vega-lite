@@ -75,49 +75,53 @@ An `array` mark definition can contain any [standard mark properties](mark.html#
 
 ## Examples
 
-### Raster Grid
+### Color
 
 The [`color`](encoding.html#color) encoding maps the grid's values to a color scheme. Its scale covers the range of the data, so the legend reads in data units.
 
 <span class="vl-example" data-name="array_grid"></span>
 
-### Clipping the Color Range
+#### Clipping the Range
 
 A few extreme cells can leave the rest of the grid crowded into a narrow band of color. Set an explicit [`domain`](scale.html#domain) with `clamp` to spread the scheme over the range you care about, holding anything beyond it at the end colors.
 
 <span class="vl-example" data-name="array_color_domain"></span>
 
-### Diverging Colors
+#### Diverging Colors
 
 When a value divides the grid into meaningful sides, such as a threshold or a baseline, pair a diverging scheme with `domainMid` to place the midpoint there.
 
 <span class="vl-example" data-name="array_color_diverging"></span>
 
-### Crisp Cells
+### Rendering
+
+How the grid is drawn into the view.
+
+#### Crisp Cells
 
 The image is smoothed as it scales up. Set `smooth` to `false` to show each cell exactly.
 
 <span class="vl-example" data-name="array_smooth"></span>
 
-### Square Cells
+#### Square Cells
 
 The image is stretched to fill the view, so cells are only square when the view has the same proportions as the grid. Set `aspect` to `true` to fit the grid inside the view instead, keeping its cells square and leaving space on the sides that do not fill.
 
 <span class="vl-example" data-name="array_aspect"></span>
 
-### Adding Axes
+### Axes
 
 An array mark fills the view and needs no position encoding, so it has no axes by default. Set `axis` to `true` to label the grid with its own extent, counted in cells.
 
 <span class="vl-example" data-name="array_axis"></span>
 
-### A Different Extent
+#### A Different Extent
 
 To label a grid with something other than cell counts, encode `x`/`x2` and `y`/`y2` yourself. These are the outer edges of the grid, not the centres of its first and last cells, so a global grid runs from -180 to 180 rather than -179.5 to 179.5. Constants suit an extent you know when writing the spec: the grid below is sampled every 10 metres, so it covers 870 by 610 metres.
 
 <span class="vl-example" data-name="array_axis_datum"></span>
 
-### An Extent from the Data
+#### An Extent from the Data
 
 Use fields when the extent travels with the grid, which also lets each grid in a faceted chart cover a different area. Those grids then sit in their own place within a shared scale, rather than each filling its panel, unless the position scale is resolved independently. A grid holding `"extent": [-180, 180, -81, 87]` can be read straight out of the array:
 

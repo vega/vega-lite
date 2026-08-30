@@ -7,6 +7,7 @@ import type {
   Compare as VgCompare,
   ExprRef as VgExprRef,
   GeoShapeTransform as VgGeoShapeTransform,
+  HeatmapTransform as VgHeatmapTransform,
   IdentityScale,
   LayoutAlign,
   LinearScale,
@@ -47,7 +48,16 @@ import {ExprRef} from './expr.js';
 import {SortOrder} from './sort.js';
 import {Dict, Flag, hasProperty, keys} from './util.js';
 
-export type {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
+export type {
+  VgSortField,
+  VgUnionSortField,
+  VgCompare,
+  VgTitle,
+  LayoutAlign,
+  ProjectionType,
+  VgExprRef,
+  VgHeatmapTransform,
+};
 
 // TODO: make recursive (e.g. with https://stackoverflow.com/a/64900252/214950 but needs https://github.com/vega/ts-json-schema-generator/issues/568)
 export type MappedExclude<T, E> = {
@@ -285,7 +295,7 @@ export type VgEncodeEntry = Partial<Record<VgEncodeChannel, VgValueRef | (VgValu
 //  ...
 // }
 
-export type VgPostEncodingTransform = VgGeoShapeTransform;
+export type VgPostEncodingTransform = VgGeoShapeTransform | VgHeatmapTransform;
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof MarkConfig> = {
   aria: 1,

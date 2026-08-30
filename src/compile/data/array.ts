@@ -26,7 +26,7 @@ export function arrayColorFieldDef(model: UnitModel): TypedFieldDef<string> | nu
     return null;
   }
 
-  const fieldDef = getFieldOrDatumDef(model.encoding?.color);
+  const fieldDef = getFieldOrDatumDef(model.encoding.color);
   return fieldDef && isFieldDef(fieldDef) ? (fieldDef as TypedFieldDef<string>) : null;
 }
 
@@ -48,16 +48,17 @@ export function parseArrayData(head: DataFlowNode, model: UnitModel): DataFlowNo
     return head;
   }
 
-  // Derive the grid's value range into scalar fields for the color scale to take its domain from.
-  // Computing it here rather than reading it off the data keeps this working for a url source.
+  // Derive the grid's value range for the color scale to take its domain from. Computing it rather
+  // than reading it off the data means it also works for a url source.
   const field = vgField(fieldDef, {expr: 'datum'});
-
-  for (const [i, extreme] of (['min', 'max'] as const).entries()) {
-    head = new CalculateNode(head, {
-      calculate: `extent(${field})[${i}]`,
-      as: arrayExtentField(fieldDef, extreme, {forAs: true}),
-    });
-  }
+  head = new CalculateNode(head, {
+    calculate: `extent(${field})[0]`,
+    as: arrayExtentField(fieldDef, 'min', {forAs: true}),
+  });
+  head = new CalculateNode(head, {
+    calculate: `extent(${field})[1]`,
+    as: arrayExtentField(fieldDef, 'max', {forAs: true}),
+  });
 
   return head;
 }
