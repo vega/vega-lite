@@ -1103,8 +1103,16 @@
           ]
         },
         "axis": {
-          "description": "A flag for labelling an `array` mark with the extent of its grid, in cells.\n\nSet this to `true` to add `x` and `y` axes running from zero to the grid's `width` and `height`. To label a grid with anything else, such as the area it covers, encode `x`/`x2` and `y`/`y2` yourself instead.\n\n__Default value:__ `false`.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "const": "extent",
+              "type": "string"
+            }
+          ],
+          "description": "A flag for labelling an `array` mark with the extent of its grid.\n\n- If this property is `true`, `x` and `y` axes run from zero to the grid's `width` and `height`, labelling it in cells.\n\n- If this property is `\"extent\"`, they run over the grid's `extent` field, which holds `[xmin, xmax, ymin, ymax]` as the outer edges of the grid.\n\nTo label a grid any other way, encode `x`/`x2` and `y`/`y2` yourself instead.\n\n__Default value:__ `false`."
         },
         "baseline": {
           "anyOf": [
@@ -17736,8 +17744,16 @@
           ]
         },
         "axis": {
-          "description": "A flag for labelling an `array` mark with the extent of its grid, in cells.\n\nSet this to `true` to add `x` and `y` axes running from zero to the grid's `width` and `height`. To label a grid with anything else, such as the area it covers, encode `x`/`x2` and `y`/`y2` yourself instead.\n\n__Default value:__ `false`.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "const": "extent",
+              "type": "string"
+            }
+          ],
+          "description": "A flag for labelling an `array` mark with the extent of its grid.\n\n- If this property is `true`, `x` and `y` axes run from zero to the grid's `width` and `height`, labelling it in cells.\n\n- If this property is `\"extent\"`, they run over the grid's `extent` field, which holds `[xmin, xmax, ymin, ymax]` as the outer edges of the grid.\n\nTo label a grid any other way, encode `x`/`x2` and `y`/`y2` yourself instead.\n\n__Default value:__ `false`."
         },
         "bandSize": {
           "description": "The width of the ticks.\n\n__Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).",

@@ -69,9 +69,7 @@ The first row of `values` is drawn at the top of the image, which places it at t
 
 An `array` mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
-{% include table.html props="axis" source="ArrayConfig" %}
-
-{% include table.html props="smooth,aspect" source="MarkConfig" %}
+{% include table.html props="axis,smooth,aspect" source="MarkDef" %}
 
 ## Examples
 
@@ -125,12 +123,11 @@ To label a grid with something other than cell counts, encode `x`/`x2` and `y`/`
 
 #### An Extent from the Data
 
-Use fields when the extent travels with the grid, which also lets each grid in a faceted chart cover a different area. Those grids then sit in their own place within a shared scale, rather than each filling its panel, unless the position scale is resolved independently. A grid holding `"extent": [-180, 180, -81, 87]` can be read straight out of the array:
+Set `axis` to `"extent"` when the grid carries its own extent, as `[xmin, xmax, ymin, ymax]`. This suits data converted from a labelled array, where the coordinates are known but the spec is generated.
 
-```json
-"x": {"field": "extent[0]", "type": "quantitative"},
-"x2": {"field": "extent[1]"}
-```
+<span class="vl-example" data-name="array_axis_extent"></span>
+
+Encoding `x`/`x2` and `y`/`y2` from fields does the same for any other field names, and lets each grid in a faceted chart cover a different area. Those grids then sit in their own place within a shared scale, rather than each filling its panel, unless the position scale is resolved independently.
 
 <span class="vl-example" data-name="array_axis_field"></span>
 

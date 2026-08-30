@@ -144,6 +144,20 @@ describe('Mark: Array', () => {
       expect(normalized.mark).toEqual({type: 'array'});
     });
 
+    it('labels the grid over its extent field when set to "extent"', () => {
+      const {normalized} = compile({
+        data: {values: [{extent: [-180, 180, -81, 87], ...GRID.values[0]}]},
+        mark: {type: 'array', axis: 'extent'},
+        encoding: {color: COLOR},
+      } as any) as any;
+
+      expect(normalized.encoding.x).toEqual({field: 'extent[0]', type: 'quantitative', title: null});
+      expect(normalized.encoding.x2).toEqual({field: 'extent[1]'});
+      expect(normalized.encoding.y).toEqual({field: 'extent[2]', type: 'quantitative', title: null});
+      expect(normalized.encoding.y2).toEqual({field: 'extent[3]'});
+      expect(normalized.transform).toBeUndefined();
+    });
+
     it('gives the x scale a domain running from zero to the grid width', () => {
       const {spec} = compile(withAxis as any);
       const x = (spec.scales as any).find((s: any) => s.name === 'x');

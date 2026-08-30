@@ -559,15 +559,19 @@ export interface GenericMarkDef<M> {
 
 export interface ArrayAxisMixins {
   /**
-   * A flag for labelling an `array` mark with the extent of its grid, in cells.
+   * A flag for labelling an `array` mark with the extent of its grid.
    *
-   * Set this to `true` to add `x` and `y` axes running from zero to the grid's `width` and
-   * `height`. To label a grid with anything else, such as the area it covers, encode `x`/`x2` and
-   * `y`/`y2` yourself instead.
+   * - If this property is `true`, `x` and `y` axes run from zero to the grid's `width` and
+   * `height`, labelling it in cells.
+   *
+   * - If this property is `"extent"`, they run over the grid's `extent` field, which holds
+   * `[xmin, xmax, ymin, ymax]` as the outer edges of the grid.
+   *
+   * To label a grid any other way, encode `x`/`x2` and `y`/`y2` yourself instead.
    *
    * __Default value:__ `false`.
    */
-  axis?: boolean;
+  axis?: boolean | 'extent';
 }
 
 export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
