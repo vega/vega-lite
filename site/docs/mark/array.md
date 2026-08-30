@@ -115,6 +115,8 @@ A cell whose value is `null` is left undrawn, so a grid can cover a rectangle wh
 
 <span class="vl-example" data-name="array_nodata"></span>
 
+Grid lines are drawn behind the mark, so they show through wherever cells are left out. Set `"axis": {"grid": false}` on `x` and `y` to leave them off.
+
 Grids often mark missing cells with a number instead, such as `-999`. Such a value is a real number to the scale, so it stretches the color range and flattens everything else. Replace it with `null` before plotting.
 
 ### Axes

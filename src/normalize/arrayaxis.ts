@@ -1,3 +1,4 @@
+import {ChannelDef, isFieldOrDatumDef, isValueDef} from '../channeldef.js';
 import {Config} from '../config.js';
 import {Encoding} from '../encoding.js';
 import {isMarkDef, Mark, MarkDef} from '../mark.js';
@@ -10,6 +11,12 @@ type UnitSpecWithArrayAxis = GenericUnitSpec<Encoding<string>, Mark | MarkDef<'a
 
 /** Fields holding the origin an `array` mark's axes run from, when labelling it in cells. */
 const ORIGIN = {x: internalField('array_x0'), y: internalField('array_y0')} as const;
+
+/** The user's own channel replaces a generated one, or adjusts it when it names no data itself. */
+function overlay<D extends ChannelDef<string>>(generated: D, user: D): D {
+  if (!user) return generated;
+  return isFieldOrDatumDef(user) || isValueDef(user) ? user : {...generated, ...user};
+}
 
 function arrayAxis(mark: Mark | MarkDef, config: Config) {
   const markDef = isMarkDef(mark) ? mark : {type: mark};
@@ -44,12 +51,11 @@ export class ArrayAxisNormalizer implements NonFacetUnitNormalizer<UnitSpecWithA
         ...(transforms.length ? {transform: transforms} : {}),
         mark: omit(markDef, ['axis']) as MarkDef<'array'>,
         encoding: {
-          x: {field: overExtent ? 'extent[0]' : ORIGIN.x, type: 'quantitative', title: null},
-          x2: {field: overExtent ? 'extent[1]' : 'width'},
-          y: {field: overExtent ? 'extent[2]' : ORIGIN.y, type: 'quantitative', title: null},
-          y2: {field: overExtent ? 'extent[3]' : 'height'},
-          // anything the user encoded themselves wins
-          ...encoding,
+          x: overlay({field: overExtent ? 'extent[0]' : ORIGIN.x, type: 'quantitative', title: null}, encoding.x),
+          x2: overlay({field: overExtent ? 'extent[1]' : 'width'}, encoding.x2),
+          y: overlay({field: overExtent ? 'extent[2]' : ORIGIN.y, type: 'quantitative', title: null}, encoding.y),
+          y2: overlay({field: overExtent ? 'extent[3]' : 'height'}, encoding.y2),
+          ...omit(encoding, ['x', 'x2', 'y', 'y2']),
         },
       },
       // drop the flag from the config too, or the expanded spec matches again and recurses

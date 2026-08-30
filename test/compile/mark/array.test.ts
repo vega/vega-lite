@@ -179,6 +179,21 @@ describe('Mark: Array', () => {
       expect(normalized.encoding.y).toEqual({field: '__array_y0', type: 'quantitative', title: null});
     });
 
+    it('lets an encoding that names no data adjust the generated axis', () => {
+      const {normalized} = compile({
+        ...withAxis,
+        encoding: {...withAxis.encoding, x: {axis: {grid: false}}},
+      } as any) as any;
+
+      expect(normalized.encoding.x).toEqual({
+        field: '__array_x0',
+        type: 'quantitative',
+        title: null,
+        axis: {grid: false},
+      });
+      expect(normalized.encoding.x2).toEqual({field: 'width'});
+    });
+
     it('can be turned on for every array mark through the config', () => {
       const {normalized} = compile({
         data: GRID,
