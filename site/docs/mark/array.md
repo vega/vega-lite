@@ -69,6 +69,8 @@ The first row of `values` is drawn at the top of the image, which places it at t
 
 An `array` mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
+{% include table.html props="axis" source="ArrayConfig" %}
+
 {% include table.html props="smooth,aspect" source="MarkConfig" %}
 
 ## Examples
@@ -105,15 +107,21 @@ The image is stretched to fill the view, so cells are only square when the view 
 
 ### Adding Axes
 
-An array mark fills the view and needs no position encoding. To label it, give the extent the grid covers with `x`/`x2` and `y`/`y2`. Constant `datum` values are enough for a fixed extent.
+An array mark fills the view and needs no position encoding, so it has no axes by default. Set `axis` to `true` to label the grid with its own extent, counted in cells.
 
 <span class="vl-example" data-name="array_axis"></span>
 
-### Axis Extent from Fields
+### A Different Extent
 
-Use fields when the extent is part of the data or differs per grid, for example grids that each cover a different area. Here a [`calculate`](calculate.html) transform derives the extent from the grid's own `width` and `height`.
+To label a grid with something other than cell counts, such as the area it covers, encode `x`/`x2` and `y`/`y2` yourself. Use fields when each grid covers a different extent.
 
 <span class="vl-example" data-name="array_axis_field"></span>
+
+### Shared Axes
+
+Faceted grids share one pair of axes, drawn once around the panels.
+
+<span class="vl-example" data-name="facet_array_axis"></span>
 
 ### Faceted Grids
 

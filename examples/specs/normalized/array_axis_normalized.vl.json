@@ -4,8 +4,16 @@
   "width": 348,
   "height": 244,
   "data": {"url": "data/volcano.json"},
-  "mark": {"type": "array", "axis": true},
+  "transform": [
+    {"calculate": "0", "as": "__array_x0"},
+    {"calculate": "0", "as": "__array_y0"}
+  ],
+  "mark": {"type": "array"},
   "encoding": {
+    "x": {"field": "__array_x0", "type": "quantitative", "title": null},
+    "x2": {"field": "width"},
+    "y": {"field": "__array_y0", "type": "quantitative", "title": null},
+    "y2": {"field": "height"},
     "color": {
       "field": "values",
       "type": "quantitative",

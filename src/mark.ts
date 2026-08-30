@@ -394,7 +394,7 @@ export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   area?: AreaConfig<ES>;
 
   /** Array-Specific Config */
-  array?: MarkConfig<ES>;
+  array?: ArrayConfig<ES>;
 
   /** Bar-Specific Config */
   bar?: BarConfig<ES>;
@@ -516,6 +516,8 @@ export interface PointOverlayMixins<ES extends ExprRef | SignalRef> {
   point?: boolean | OverlayMarkDef<ES> | 'transparent';
 }
 
+export interface ArrayConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, ArrayAxisMixins {}
+
 export interface LineConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, PointOverlayMixins<ES> {}
 
 export interface LineOverlayMixins<ES extends ExprRef | SignalRef> {
@@ -553,6 +555,19 @@ export interface GenericMarkDef<M> {
    * or a composite mark type (`"boxplot"`, `"errorband"`, `"errorbar"`).
    */
   type: M;
+}
+
+export interface ArrayAxisMixins {
+  /**
+   * A flag for labelling an `array` mark with the extent of its grid, in cells.
+   *
+   * Set this to `true` to add `x` and `y` axes running from zero to the grid's `width` and
+   * `height`. To label a grid with anything else, such as the area it covers, encode `x`/`x2` and
+   * `y`/`y2` yourself instead.
+   *
+   * __Default value:__ `false`.
+   */
+  axis?: boolean;
 }
 
 export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
@@ -626,6 +641,7 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
     Omit<
       MarkConfig<ES> &
         AreaConfig<ES> &
+        ArrayAxisMixins &
         BarConfig<ES> & // always extends RectConfig
         LineConfig<ES> &
         TickConfig<ES>,

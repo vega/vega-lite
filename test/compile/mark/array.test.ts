@@ -127,6 +127,57 @@ describe('Mark: Array', () => {
     });
   });
 
+  describe('axis flag', () => {
+    const withAxis = {data: GRID, mark: {type: 'array', axis: true}, encoding: {color: COLOR}};
+
+    it('labels the grid with its own extent, in cells', () => {
+      const {normalized} = compile(withAxis as any) as any;
+
+      expect(normalized.encoding.x).toEqual({field: '__array_x0', type: 'quantitative', title: null});
+      expect(normalized.encoding.x2).toEqual({field: 'width'});
+      expect(normalized.encoding.y).toEqual({field: '__array_y0', type: 'quantitative', title: null});
+      expect(normalized.encoding.y2).toEqual({field: 'height'});
+      expect(normalized.transform).toEqual([
+        {calculate: '0', as: '__array_x0'},
+        {calculate: '0', as: '__array_y0'},
+      ]);
+      expect(normalized.mark).toEqual({type: 'array'});
+    });
+
+    it('gives the x scale a domain running from zero to the grid width', () => {
+      const {spec} = compile(withAxis as any);
+      const x = (spec.scales as any).find((s: any) => s.name === 'x');
+      expect(x.domain.fields).toEqual(['__array_x0', 'width']);
+    });
+
+    it('leaves an extent the user encoded themselves alone', () => {
+      const {normalized} = compile({
+        ...withAxis,
+        encoding: {...withAxis.encoding, x: {field: 'left', type: 'quantitative'}, x2: {field: 'right'}},
+      } as any) as any;
+
+      expect(normalized.encoding.x).toEqual({field: 'left', type: 'quantitative'});
+      expect(normalized.encoding.x2).toEqual({field: 'right'});
+      expect(normalized.encoding.y).toEqual({field: '__array_y0', type: 'quantitative', title: null});
+    });
+
+    it('can be turned on for every array mark through the config', () => {
+      const {normalized} = compile({
+        data: GRID,
+        mark: 'array',
+        encoding: {color: COLOR},
+        config: {array: {axis: true}},
+      } as any) as any;
+      expect(normalized.encoding.x2).toEqual({field: 'width'});
+    });
+
+    it('adds nothing without the flag', () => {
+      const {normalized} = compile({data: GRID, mark: 'array', encoding: {color: COLOR}} as any) as any;
+      expect(normalized.encoding.x).toBeUndefined();
+      expect(normalized.transform).toBeUndefined();
+    });
+  });
+
   describe('scales and layout', () => {
     it('keeps position scale domains exactly as given, so the axis lines up with the raster', () => {
       const {spec} = compile({
