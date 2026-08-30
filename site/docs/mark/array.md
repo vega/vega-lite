@@ -81,6 +81,8 @@ The [`color`](encoding.html#color) encoding maps the grid's values to a color sc
 
 <span class="vl-example" data-name="array_grid"></span>
 
+Without a color encoding the grid is shaded by opacity alone, relative to its largest value. That assumes values are non-negative, so encode color for data that goes below zero.
+
 #### Clipping the Range
 
 A few extreme cells can leave the rest of the grid crowded into a narrow band of color. Set an explicit [`domain`](scale.html#domain) with `clamp` to spread the scheme over the range you care about, holding anything beyond it at the end colors.
