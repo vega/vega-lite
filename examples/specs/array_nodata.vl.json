@@ -1,25 +1,23 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "A grid whose cells outside the measured area have no value, and are left undrawn.",
-  "width": 320,
-  "height": 200,
+  "description": "A shape drawn by leaving cells out of the grid.",
+  "width": 260,
+  "height": 260,
   "data": {
     "values": [
       {
-        "width": 16,
-        "height": 10,
-        "values": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 56, 59, 61, 63, 63, 61, 59, 56, null, null, null, null, null, null, 46, 54, 61, 68, 72, 75, 75, 72, 68, 61, 54, 46, null, null, null, 34, 45, 55, 66, 74, 81, 84, 84, 81, 74, 66, 55, 45, 34, null, null, 32, 44, 56, 68, 78, 85, 89, 89, 85, 78, 68, 56, 44, 32, null, null, 32, 44, 56, 68, 78, 85, 89, 89, 85, 78, 68, 56, 44, 32, null, null, 34, 45, 55, 66, 74, 81, 84, 84, 81, 74, 66, 55, 45, 34, null, null, null, 46, 54, 61, 68, 72, 75, 75, 72, 68, 61, 54, 46, null, null, null, null, null, null, 56, 59, 61, 63, 63, 61, 59, 56, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+        "width": 15,
+        "height": 15,
+        "values": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 68, 70, 70, 70, 68, null, null, null, null, null, null, null, null, 68, 71, 73, 75, 75, 75, 73, 71, 68, null, null, null, null, null, 68, 72, 75, 78, null, null, 79, 78, 75, 72, 68, null, null, null, null, 71, 75, 79, 82, null, null, 84, 82, 79, 75, null, null, null, null, 68, 73, 78, 82, 86, 89, 90, 89, 86, 82, null, null, null, null, null, 70, 75, 79, 84, 89, 93, 95, 93, null, null, null, null, null, null, null, 70, 75, 80, 85, 90, 95, null, null, null, null, null, null, null, null, null, 70, 75, 79, 84, 89, 93, 95, 93, null, null, null, null, null, null, null, 68, 73, 78, 82, 86, 89, 90, 89, 86, 82, null, null, null, null, null, null, 71, 75, 79, 82, 84, 85, 84, 82, 79, 75, null, null, null, null, null, 68, 72, 75, 78, 79, 80, 79, 78, 75, 72, 68, null, null, null, null, null, 68, 71, 73, 75, 75, 75, 73, 71, 68, null, null, null, null, null, null, null, null, 68, 70, 70, 70, 68, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
       }
     ]
   },
-  "mark": "array",
+  "mark": {"type": "array", "smooth": false},
   "encoding": {
     "color": {
       "field": "values",
       "type": "quantitative",
-      "scale": {
-        "scheme": "viridis"
-      }
+      "scale": {"range": ["#e0a02a", "#ffe45c"]}
     }
   }
 }
