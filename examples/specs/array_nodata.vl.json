@@ -1,0 +1,25 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A grid whose cells outside the measured area have no value, and are left undrawn.",
+  "width": 320,
+  "height": 200,
+  "data": {
+    "values": [
+      {
+        "width": 16,
+        "height": 10,
+        "values": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 56, 59, 61, 63, 63, 61, 59, 56, null, null, null, null, null, null, 46, 54, 61, 68, 72, 75, 75, 72, 68, 61, 54, 46, null, null, null, 34, 45, 55, 66, 74, 81, 84, 84, 81, 74, 66, 55, 45, 34, null, null, 32, 44, 56, 68, 78, 85, 89, 89, 85, 78, 68, 56, 44, 32, null, null, 32, 44, 56, 68, 78, 85, 89, 89, 85, 78, 68, 56, 44, 32, null, null, 34, 45, 55, 66, 74, 81, 84, 84, 81, 74, 66, 55, 45, 34, null, null, null, 46, 54, 61, 68, 72, 75, 75, 72, 68, 61, 54, 46, null, null, null, null, null, null, 56, 59, 61, 63, 63, 61, 59, 56, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+      }
+    ]
+  },
+  "mark": "array",
+  "encoding": {
+    "color": {
+      "field": "values",
+      "type": "quantitative",
+      "scale": {
+        "scheme": "viridis"
+      }
+    }
+  }
+}

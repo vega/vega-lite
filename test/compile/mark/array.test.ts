@@ -72,7 +72,6 @@ describe('Mark: Array', () => {
 
       expect(transform.type).toBe('heatmap');
       expect(transform.color.expr).toBe(`scale('${unit.scaleName('color')}', datum.$value)`);
-      expect(transform.opacity).toBe(1);
     });
 
     it('reads a grid of only width, height and values, so other fields cannot crop the raster', () => {
@@ -86,6 +85,11 @@ describe('Mark: Array', () => {
         as: '__array_grid',
       });
       expect((spec.marks[0] as any).transform[0].field).toBe('datum.__array_grid');
+    });
+
+    it('hides cells that have no value', () => {
+      const [transform] = array.postEncodingTransform(model({encoding: {color: COLOR}})) as any[];
+      expect(transform.opacity).toEqual({expr: 'isValid(datum.$value) ? 1 : 0'});
     });
 
     it('shades by opacity alone when color is not encoded', () => {

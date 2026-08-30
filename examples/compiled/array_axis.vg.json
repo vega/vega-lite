@@ -65,7 +65,7 @@
           "type": "heatmap",
           "field": "datum.__array_grid",
           "color": {"expr": "scale('color', datum.$value)"},
-          "opacity": 1
+          "opacity": {"expr": "isValid(datum.$value) ? 1 : 0"}
         }
       ]
     }

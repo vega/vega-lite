@@ -109,6 +109,14 @@ The image is stretched to fill the view, so cells are only square when the view 
 
 <span class="vl-example" data-name="array_aspect"></span>
 
+#### Cells Without a Value
+
+A cell whose value is `null` is left undrawn, so a grid can cover a rectangle while only part of it holds data.
+
+<span class="vl-example" data-name="array_nodata"></span>
+
+Grids often mark missing cells with a number instead, such as `-999`. Such a value is a real number to the scale, so it stretches the color range and flattens everything else. Replace it with `null` before plotting.
+
 ### Axes
 
 An array mark fills the view and needs no position encoding, so it has no axes by default. Set `axis` to `true` to label the grid with its own extent, counted in cells.

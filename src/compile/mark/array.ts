@@ -62,11 +62,12 @@ export const array: MarkCompiler = {
     };
 
     // The color scale's domain is in the grid's own units (see parseArrayData), so a cell's value
-    // maps straight through it. Without one, the transform shades by opacity alone.
+    // maps straight through it. Without one, the transform shades by opacity alone, which already
+    // leaves a cell without a value transparent.
     const scaleName = arrayColorFieldDef(model) && model.scaleName(COLOR);
     if (scaleName) {
       transform.color = {expr: `scale('${scaleName}', datum.$value)`};
-      transform.opacity = 1;
+      transform.opacity = {expr: 'isValid(datum.$value) ? 1 : 0'};
     }
 
     return [transform];
