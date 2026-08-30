@@ -113,7 +113,7 @@ An array mark fills the view and needs no position encoding, so it has no axes b
 
 ### A Different Extent
 
-To label a grid with something other than cell counts, encode `x`/`x2` and `y`/`y2` yourself. Constants suit an extent you know when writing the spec: the grid below is sampled every 10 metres, so it covers 870 by 610 metres.
+To label a grid with something other than cell counts, encode `x`/`x2` and `y`/`y2` yourself. These are the outer edges of the grid, not the centres of its first and last cells, so a global grid runs from -180 to 180 rather than -179.5 to 179.5. Constants suit an extent you know when writing the spec: the grid below is sampled every 10 metres, so it covers 870 by 610 metres.
 
 <span class="vl-example" data-name="array_axis_datum"></span>
 
