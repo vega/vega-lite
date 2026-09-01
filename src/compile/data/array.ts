@@ -35,15 +35,17 @@ export function parseArrayData(head: DataFlowNode, model: UnitModel): DataFlowNo
     return head;
   }
 
-  // Give the heatmap transform a grid of just the fields it needs. It also reads x1/x2/y1/y2 off
-  // the grid to crop the raster, so handing it the datum would let a spec that names its extent
-  // fields x1/y1 crop itself by accident.
+  // The color field holds the raster, so the grid is read from it, falling back to the name the
+  // grid format gives it. Give the heatmap transform only the fields it needs: it also reads
+  // x1/x2/y1/y2 off the grid to crop the raster, so handing it the datum would let a spec that
+  // names its extent fields x1/y1 crop itself by accident.
+  const fieldDef = arrayColorFieldDef(model);
+  const grid = fieldDef ? vgField(fieldDef, {expr: 'datum'}) : 'datum.values';
   head = new CalculateNode(head, {
-    calculate: '{width: datum.width, height: datum.height, values: datum.values}',
+    calculate: `{width: datum.width, height: datum.height, values: ${grid}}`,
     as: ARRAY_GRID_FIELD,
   });
 
-  const fieldDef = arrayColorFieldDef(model);
   if (!fieldDef || model.scaleDomain(COLOR)) {
     return head;
   }

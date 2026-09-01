@@ -481,7 +481,7 @@
         {"type": "formula", "expr": "0", "as": "__array_y0"},
         {
           "type": "formula",
-          "expr": "{width: datum.width, height: datum.height, values: datum.values}",
+          "expr": "{width: datum.width, height: datum.height, values: datum[\"values\"]}",
           "as": "__array_grid"
         },
         {

@@ -333,7 +333,7 @@
         },
         {
           "type": "formula",
-          "expr": "{width: datum.width, height: datum.height, values: datum.values}",
+          "expr": "{width: datum.width, height: datum.height, values: datum[\"values\"]}",
           "as": "__array_grid"
         },
         {

@@ -81,7 +81,7 @@ describe('Mark: Array', () => {
 
       expect(grid).toEqual({
         type: 'formula',
-        expr: '{width: datum.width, height: datum.height, values: datum.values}',
+        expr: '{width: datum.width, height: datum.height, values: datum["values"]}',
         as: '__array_grid',
       });
       expect((spec.marks[0] as any).transform[0].field).toBe('datum.__array_grid');
@@ -90,6 +90,17 @@ describe('Mark: Array', () => {
     it('hides cells that have no value', () => {
       const [transform] = array.postEncodingTransform(model({encoding: {color: COLOR}})) as any[];
       expect(transform.opacity).toEqual({expr: 'isValid(datum.$value) ? 1 : 0'});
+    });
+
+    it('reads the grid from the color field, whatever it is called', () => {
+      const {spec} = compile({
+        data: {values: [{width: 3, height: 2, temperature: [1, 2, 3, 4, 5, 6]}]},
+        mark: 'array',
+        encoding: {color: {field: 'temperature', type: 'quantitative'}},
+      } as any);
+      const [grid] = formulas(spec, {grid: true});
+
+      expect(grid.expr).toBe('{width: datum.width, height: datum.height, values: datum["temperature"]}');
     });
 
     it('shades by opacity alone when color is not encoded', () => {
