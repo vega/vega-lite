@@ -42,7 +42,7 @@
         "update": {
           "ariaRoleDescription": {"value": "array"},
           "description": {
-            "signal": "\"width: \" + (format(datum[\"width\"], \"\")) + \"; height: \" + (format(datum[\"height\"], \"\")) + \"; values: \" + (format(datum[\"values\"], \"\"))"
+            "signal": "\"width: \" + (format(datum[\"width\"], \"\")) + \"; height: \" + (format(datum[\"height\"], \"\")) + \"; values: \" + (format(extent(datum[\"values\"])[0], \"\") + \" – \" + format(extent(datum[\"values\"])[1], \"\"))"
           },
           "x": {
             "signal": "min(scale('x', datum[\"__array_x0\"]), scale('x', datum[\"width\"]))"

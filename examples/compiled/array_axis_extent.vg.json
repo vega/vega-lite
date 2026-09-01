@@ -143,7 +143,7 @@
         "update": {
           "ariaRoleDescription": {"value": "array"},
           "description": {
-            "signal": "\"extent[0]: \" + (format(datum[\"extent.0\"], \"\")) + \"; extent[2]: \" + (format(datum[\"extent.2\"], \"\")) + \"; extent[1]: \" + (format(datum[\"extent.1\"], \"\")) + \"; extent[3]: \" + (format(datum[\"extent.3\"], \"\")) + \"; values: \" + (format(datum[\"values\"], \"\"))"
+            "signal": "\"extent[0]: \" + (format(datum[\"extent.0\"], \"\")) + \"; extent[2]: \" + (format(datum[\"extent.2\"], \"\")) + \"; extent[1]: \" + (format(datum[\"extent.1\"], \"\")) + \"; extent[3]: \" + (format(datum[\"extent.3\"], \"\")) + \"; values: \" + (format(extent(datum[\"values\"])[0], \"\") + \" – \" + format(extent(datum[\"values\"])[1], \"\"))"
           },
           "x": {
             "signal": "min(scale('x', datum[\"extent.0\"]), scale('x', datum[\"extent.1\"]))"

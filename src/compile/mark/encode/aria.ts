@@ -67,7 +67,7 @@ export function description(model: UnitModel) {
     return {};
   }
 
-  const data = tooltipDataTuples(encoding, stack, config)
+  const data = tooltipDataTuples(encoding, stack, config, {mark: markDef.type})
     // remove internal/private signals from aria description
     .filter(({key}) => !key.startsWith('_'));
 

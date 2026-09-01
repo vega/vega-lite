@@ -46,6 +46,8 @@ Gridded data is commonly distributed in this form, so it can often be plotted wi
 }
 ```
 
+One grid is drawn as one mark, so a tooltip describes the whole grid rather than the cell under the pointer. With `tooltip` on, it reports the range the values cover.
+
 `width` and `height` count cells rather than pixels. The image is scaled to fill the view, so a grid of any size can be drawn at any size.
 
 The first row of `values` is drawn at the top of the image, which places it at the highest `y` value. If your grid is stored the other way up, reverse the axis with `"scale": {"reverse": true}` on `y`.

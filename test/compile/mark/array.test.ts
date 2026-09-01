@@ -99,6 +99,21 @@ describe('Mark: Array', () => {
     });
   });
 
+  describe('tooltip', () => {
+    it('reports the range of the grid, which holds no single value to show', () => {
+      const {spec} = compile({
+        data: GRID,
+        mark: {type: 'array', tooltip: true},
+        encoding: {color: COLOR},
+      } as any);
+
+      expect((spec.marks[0] as any).encode.update.tooltip).toEqual({
+        signal:
+          '{"values": format(extent(datum["values"])[0], "") + " \u2013 " + format(extent(datum["values"])[1], "")}',
+      });
+    });
+  });
+
   describe('color domain', () => {
     it('derives the domain from the grid’s own value range', () => {
       const {spec} = compile({data: GRID, mark: 'array', encoding: {color: COLOR}} as any);
