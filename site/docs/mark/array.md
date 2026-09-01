@@ -167,6 +167,12 @@ Axes resolve separately from scales. Below, the grids sit in a two by two trelli
 
 <span class="vl-example" data-name="facet_array_independent_axis"></span>
 
+### Repeated Variables
+
+Faceting splits one variable across categories. To show different variables measured over the same area, repeat over their fields. Each grid keeps its own units, so resolve the color scale independently.
+
+<span class="vl-example" data-name="repeat_array"></span>
+
 {:#config}
 
 ## Array Config
