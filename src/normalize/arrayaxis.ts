@@ -1,10 +1,13 @@
 import {ChannelDef, isFieldOrDatumDef, isValueDef} from '../channeldef.js';
 import {Config} from '../config.js';
+import {isInlineData} from '../data.js';
 import {Encoding} from '../encoding.js';
+import {isArray, isObject} from 'vega-util';
 import {isMarkDef, Mark, MarkDef} from '../mark.js';
 import {GenericUnitSpec} from '../spec/index.js';
 import {isUnitSpec} from '../spec/unit.js';
-import {internalField, omit} from '../util.js';
+import * as log from '../log/index.js';
+import {hasProperty, internalField, omit} from '../util.js';
 import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base.js';
 
 type UnitSpecWithArrayAxis = GenericUnitSpec<Encoding<string>, Mark | MarkDef<'array'>>;
@@ -38,7 +41,16 @@ export class ArrayAxisNormalizer implements NonFacetUnitNormalizer<UnitSpecWithA
     const {config} = normParams;
     const {mark, encoding = {}, transform = [], ...outerSpec} = spec;
     const markDef: MarkDef<'array'> = isMarkDef(mark) ? mark : {type: 'array'};
-    const overExtent = arrayAxis(mark, config) === 'extent';
+    let overExtent = arrayAxis(mark, config) === 'extent';
+
+    // An extent that is not there leaves the grid nowhere to sit, so say so and fall back to cells.
+    if (overExtent && isInlineData(spec.data) && isArray(spec.data.values) && spec.data.values.length) {
+      const [datum] = spec.data.values;
+      if (isObject(datum) && !hasProperty(datum, 'extent')) {
+        log.warn(log.message.arrayAxisExtentMissing());
+        overExtent = false;
+      }
+    }
 
     // In cells the grid starts at zero, which no field holds, so derive one to encode against.
     const transforms = overExtent

@@ -135,7 +135,7 @@ To label a grid with something other than cell counts, encode `x`/`x2` and `y`/`
 
 #### An Extent from the Data
 
-Set `axis` to `"extent"` when the grid carries its own extent, as `[xmin, xmax, ymin, ymax]`. This suits data converted from a labelled array, where the coordinates are known but the spec is generated.
+Set `axis` to `"extent"` when the grid carries its own extent, in a field named `extent`, as `[xmin, xmax, ymin, ymax]`. Without that field there is nowhere to put the grid, so it falls back to cells and says so. This suits data converted from a labelled array, where the coordinates are known but the spec is generated.
 
 <span class="vl-example" data-name="array_axis_extent"></span>
 

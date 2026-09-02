@@ -1,4 +1,5 @@
 import {array} from '../../../src/compile/mark/array.js';
+import * as log from '../../../src/log/index.js';
 import {compile} from '../../../src/compile/compile.js';
 import {assembleScalesForModel} from '../../../src/compile/scale/assemble.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
@@ -196,6 +197,25 @@ describe('Mark: Array', () => {
       expect(signal).not.toContain('width');
       expect(signal).toContain('extent(datum["values"])');
     });
+
+    it(
+      'falls back to cells, with a warning, when the extent field is missing',
+      log.wrap((localLogger) => {
+        const {normalized} = compile({
+          data: GRID,
+          mark: {type: 'array', axis: 'extent'},
+          encoding: {color: COLOR},
+        } as any) as any;
+
+        expect(normalized.encoding.x).toEqual({
+          field: '__array_x0',
+          type: 'quantitative',
+          title: null,
+          tooltip: false,
+        });
+        expect(localLogger.warns[0]).toEqual(log.message.arrayAxisExtentMissing());
+      }),
+    );
 
     it('gives the x scale a domain running from zero to the grid width', () => {
       const {spec} = compile(withAxis as any);
