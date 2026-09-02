@@ -88,10 +88,20 @@
   },
   "mark": {"type": "array"},
   "encoding": {
-    "x": {"field": "extent[0]", "type": "quantitative", "title": null},
-    "x2": {"field": "extent[1]"},
-    "y": {"field": "extent[2]", "type": "quantitative", "title": null},
-    "y2": {"field": "extent[3]"},
+    "x": {
+      "field": "extent[0]",
+      "type": "quantitative",
+      "title": null,
+      "tooltip": false
+    },
+    "x2": {"field": "extent[1]", "tooltip": false},
+    "y": {
+      "field": "extent[2]",
+      "type": "quantitative",
+      "title": null,
+      "tooltip": false
+    },
+    "y2": {"field": "extent[3]", "tooltip": false},
     "color": {
       "field": "values",
       "type": "quantitative",

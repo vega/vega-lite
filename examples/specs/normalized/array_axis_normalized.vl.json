@@ -10,10 +10,20 @@
   ],
   "mark": {"type": "array"},
   "encoding": {
-    "x": {"field": "__array_x0", "type": "quantitative", "title": null},
-    "x2": {"field": "width"},
-    "y": {"field": "__array_y0", "type": "quantitative", "title": null},
-    "y2": {"field": "height"},
+    "x": {
+      "field": "__array_x0",
+      "type": "quantitative",
+      "title": null,
+      "tooltip": false
+    },
+    "x2": {"field": "width", "tooltip": false},
+    "y": {
+      "field": "__array_y0",
+      "type": "quantitative",
+      "title": null,
+      "tooltip": false
+    },
+    "y2": {"field": "height", "tooltip": false},
     "color": {
       "field": "values",
       "type": "quantitative",

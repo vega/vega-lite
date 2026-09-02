@@ -163,10 +163,10 @@ describe('Mark: Array', () => {
     it('labels the grid with its own extent, in cells', () => {
       const {normalized} = compile(withAxis as any) as any;
 
-      expect(normalized.encoding.x).toEqual({field: '__array_x0', type: 'quantitative', title: null});
-      expect(normalized.encoding.x2).toEqual({field: 'width'});
-      expect(normalized.encoding.y).toEqual({field: '__array_y0', type: 'quantitative', title: null});
-      expect(normalized.encoding.y2).toEqual({field: 'height'});
+      expect(normalized.encoding.x).toEqual({field: '__array_x0', type: 'quantitative', title: null, tooltip: false});
+      expect(normalized.encoding.x2).toEqual({field: 'width', tooltip: false});
+      expect(normalized.encoding.y).toEqual({field: '__array_y0', type: 'quantitative', title: null, tooltip: false});
+      expect(normalized.encoding.y2).toEqual({field: 'height', tooltip: false});
       expect(normalized.transform).toEqual([
         {calculate: '0', as: '__array_x0'},
         {calculate: '0', as: '__array_y0'},
@@ -181,11 +181,20 @@ describe('Mark: Array', () => {
         encoding: {color: COLOR},
       } as any) as any;
 
-      expect(normalized.encoding.x).toEqual({field: 'extent[0]', type: 'quantitative', title: null});
-      expect(normalized.encoding.x2).toEqual({field: 'extent[1]'});
-      expect(normalized.encoding.y).toEqual({field: 'extent[2]', type: 'quantitative', title: null});
-      expect(normalized.encoding.y2).toEqual({field: 'extent[3]'});
+      expect(normalized.encoding.x).toEqual({field: 'extent[0]', type: 'quantitative', title: null, tooltip: false});
+      expect(normalized.encoding.x2).toEqual({field: 'extent[1]', tooltip: false});
+      expect(normalized.encoding.y).toEqual({field: 'extent[2]', type: 'quantitative', title: null, tooltip: false});
+      expect(normalized.encoding.y2).toEqual({field: 'extent[3]', tooltip: false});
       expect(normalized.transform).toBeUndefined();
+    });
+
+    it('keeps the channels it generates out of the tooltip', () => {
+      const {spec} = compile({...withAxis, mark: {type: 'array', axis: true, tooltip: true}} as any);
+      const {signal} = (spec.marks[0] as any).encode.update.tooltip;
+
+      expect(signal).not.toContain('__array_x0');
+      expect(signal).not.toContain('width');
+      expect(signal).toContain('extent(datum["values"])');
     });
 
     it('gives the x scale a domain running from zero to the grid width', () => {
@@ -202,7 +211,7 @@ describe('Mark: Array', () => {
 
       expect(normalized.encoding.x).toEqual({field: 'left', type: 'quantitative'});
       expect(normalized.encoding.x2).toEqual({field: 'right'});
-      expect(normalized.encoding.y).toEqual({field: '__array_y0', type: 'quantitative', title: null});
+      expect(normalized.encoding.y).toEqual({field: '__array_y0', type: 'quantitative', title: null, tooltip: false});
     });
 
     it('lets an encoding that names no data adjust the generated axis', () => {
@@ -215,9 +224,10 @@ describe('Mark: Array', () => {
         field: '__array_x0',
         type: 'quantitative',
         title: null,
+        tooltip: false,
         axis: {grid: false},
       });
-      expect(normalized.encoding.x2).toEqual({field: 'width'});
+      expect(normalized.encoding.x2).toEqual({field: 'width', tooltip: false});
     });
 
     it('can be turned on for every array mark through the config', () => {
@@ -227,7 +237,7 @@ describe('Mark: Array', () => {
         encoding: {color: COLOR},
         config: {array: {axis: true}},
       } as any) as any;
-      expect(normalized.encoding.x2).toEqual({field: 'width'});
+      expect(normalized.encoding.x2).toEqual({field: 'width', tooltip: false});
     });
 
     it('adds nothing without the flag', () => {

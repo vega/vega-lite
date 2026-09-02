@@ -51,10 +51,17 @@ export class ArrayAxisNormalizer implements NonFacetUnitNormalizer<UnitSpecWithA
         ...(transforms.length ? {transform: transforms} : {}),
         mark: omit(markDef, ['axis']) as MarkDef<'array'>,
         encoding: {
-          x: overlay({field: overExtent ? 'extent[0]' : ORIGIN.x, type: 'quantitative', title: null}, encoding.x),
-          x2: overlay({field: overExtent ? 'extent[1]' : 'width'}, encoding.x2),
-          y: overlay({field: overExtent ? 'extent[2]' : ORIGIN.y, type: 'quantitative', title: null}, encoding.y),
-          y2: overlay({field: overExtent ? 'extent[3]' : 'height'}, encoding.y2),
+          // These channels place the image rather than describe it, so keep them out of tooltips.
+          x: overlay(
+            {field: overExtent ? 'extent[0]' : ORIGIN.x, type: 'quantitative', title: null, tooltip: false},
+            encoding.x,
+          ),
+          x2: overlay({field: overExtent ? 'extent[1]' : 'width', tooltip: false}, encoding.x2),
+          y: overlay(
+            {field: overExtent ? 'extent[2]' : ORIGIN.y, type: 'quantitative', title: null, tooltip: false},
+            encoding.y,
+          ),
+          y2: overlay({field: overExtent ? 'extent[3]' : 'height', tooltip: false}, encoding.y2),
           ...omit(encoding, ['x', 'x2', 'y', 'y2']),
         },
       },
