@@ -1,7 +1,7 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from '../../../aggregate.js';
 import {isBinned} from '../../../bin.js';
-import {Channel, getMainRangeChannel, isXorY, RADIUS, THETA, TOOLTIP} from '../../../channel.js';
+import {Channel, COLOR, getMainRangeChannel, isXorY, RADIUS, THETA, TOOLTIP} from '../../../channel.js';
 import {
   defaultTitle,
   getFieldDef,
@@ -29,7 +29,8 @@ import {normalizeTimeUnit} from '../../../timeunit.js';
 import {isDiscrete} from '../../../type.js';
 import {hasProperty, logicalExpr} from '../../../util.js';
 import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
-import {getMarkPropOrConfig} from '../../common.js';
+import {ARRAY, Mark} from '../../../mark.js';
+import {BIN_RANGE_DELIMITER, getMarkPropOrConfig} from '../../common.js';
 import {binFormatExpression, formatSignalRef} from '../../format.js';
 import {UnitModel} from '../../unit.js';
 import {wrapCondition} from './conditional.js';
@@ -40,7 +41,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const channelDef = encoding.tooltip;
 
   if (isArray(channelDef)) {
-    return {tooltip: tooltipRefForEncoding({tooltip: channelDef}, stack, config, opt)};
+    return {tooltip: tooltipRefForEncoding({tooltip: channelDef}, stack, config, {...opt, mark: markDef.type})};
   } else {
     const datum = opt.reactiveGeom ? 'datum.datum' : 'datum';
     const mainRefFn = (cDef: Encoding<string>['tooltip']) => {
@@ -68,7 +69,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
         if (isSignalRef(markTooltip)) {
           return markTooltip;
         } else if (markTooltip.content === 'encoding') {
-          return tooltipRefForEncoding(encoding, stack, config, opt);
+          return tooltipRefForEncoding(encoding, stack, config, {...opt, mark: markDef.type});
         } else {
           return {signal: datum};
         }
@@ -97,7 +98,7 @@ export function tooltipDataTuples(
   encoding: Encoding<string>,
   stack: StackProperties,
   config: Config,
-  {reactiveGeom}: {reactiveGeom?: boolean} = {},
+  {reactiveGeom, mark}: {reactiveGeom?: boolean; mark?: Mark} = {},
 ) {
   const formatConfig = {...config, ...config.tooltipFormat};
   const toSkip = new Set();
@@ -134,6 +135,12 @@ export function tooltipDataTuples(
 
     if (fieldDef.tooltip === false) {
       return;
+    }
+
+    // An array mark's color field holds a whole grid, so report the range it covers.
+    if (mark === ARRAY && channel === COLOR) {
+      const grid = vgField(fieldDef, {expr});
+      value = `format(extent(${grid})[0], "") + "${BIN_RANGE_DELIMITER}" + format(extent(${grid})[1], "")`;
     }
 
     const test = tooltipFilterExpression(fieldDef, channel, expr);
@@ -229,9 +236,9 @@ export function tooltipRefForEncoding(
   encoding: Encoding<string>,
   stack: StackProperties,
   config: Config,
-  {reactiveGeom}: {reactiveGeom?: boolean} = {},
+  {reactiveGeom, mark}: {reactiveGeom?: boolean; mark?: Mark} = {},
 ) {
-  const tuples = tooltipDataTuples(encoding, stack, config, {reactiveGeom});
+  const tuples = tooltipDataTuples(encoding, stack, config, {reactiveGeom, mark});
   if (tuples.length === 0) {
     return undefined;
   }

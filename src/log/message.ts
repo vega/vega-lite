@@ -57,6 +57,10 @@ export function droppingFit(channel?: PositionScaleChannel) {
 
 // VIEW SIZE
 
+export function arrayAxisExtentMissing() {
+  return 'An array mark sets `axis` to "extent" but the data has no `extent` field. Give each grid an extent of [xmin, xmax, ymin, ymax]. We will label it in cells instead.';
+}
+
 export function unknownField(channel: Channel) {
   return `Unknown field for ${channel}. Cannot calculate view size.`;
 }
