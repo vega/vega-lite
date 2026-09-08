@@ -6,6 +6,7 @@ import type {
   ColorValueRef,
   Compare as VgCompare,
   ExprRef as VgExprRef,
+  FormulaTransform as VgFormulaTransform,
   GeoShapeTransform as VgGeoShapeTransform,
   IdentityScale,
   LayoutAlign,
@@ -47,7 +48,16 @@ import {ExprRef} from './expr.js';
 import {SortOrder} from './sort.js';
 import {Dict, Flag, hasProperty, keys} from './util.js';
 
-export type {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
+export type {
+  VgSortField,
+  VgUnionSortField,
+  VgCompare,
+  VgTitle,
+  LayoutAlign,
+  ProjectionType,
+  VgExprRef,
+  VgFormulaTransform,
+};
 
 // TODO: make recursive (e.g. with https://stackoverflow.com/a/64900252/214950 but needs https://github.com/vega/ts-json-schema-generator/issues/568)
 export type MappedExclude<T, E> = {
@@ -283,7 +293,22 @@ export type VgEncodeEntry = Partial<Record<VgEncodeChannel, VgValueRef | (VgValu
 //  ...
 // }
 
-export type VgPostEncodingTransform = VgGeoShapeTransform;
+export interface VgWordcloudTransform {
+  type: 'wordcloud';
+  size: [SignalRef, SignalRef];
+  text: {field: string};
+  font?: string;
+  fontStyle?: string;
+  fontWeight?: string | number;
+  fontSize?: number | {field: string};
+  fontSizeRange?: [number, number];
+  rotate?: number | {field: string} | SignalRef;
+  padding?: number;
+  spiral?: 'archimedean' | 'rectangular';
+  as?: string[];
+}
+
+export type VgPostEncodingTransform = VgGeoShapeTransform | VgWordcloudTransform | VgFormulaTransform;
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof MarkConfig> = {
   aria: 1,
