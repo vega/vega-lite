@@ -117,7 +117,7 @@ These layout parameters would go on the mark def (e.g. `"mark": {"type": "wordcl
 | `fontWeight` | String \| Number | `"normal"` | Font weight for all words |
 | `fontSize` | Number | `14` | Uniform font size when no `size` encoding is specified |
 | `padding` | Number | `2` | Pixel padding between words |
-| `spiral` | `"archimedean"` \| `"rectangular"` | `"archimedean"` | Spiral layout method for word placement |
+| `spiral` | `"archimedean"` \| `"rectangular"` | `"archimedean"` | Word-placement path: `"archimedean"` follows a smooth curve outward from the center, while `"rectangular"` follows an expanding rectangular path |
 | `angle` | Number | random [-45, 0, 45] | Rotation angle (degrees) when no `angle` encoding is specified. Set to `0` for horizontal-only. |
 
 Font size scaling range is controlled via `scale.range` on the `size` encoding (e.g. `"size": {"field": "count", "scale": {"range": [10, 56]}}`), not via a mark def property. The mark compiler reads this range and passes it to the Vega transform's `fontSizeRange`. Default range is `[10, 56]`.

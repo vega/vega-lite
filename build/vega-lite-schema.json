@@ -690,7 +690,7 @@
               ]
             },
             "spiral": {
-              "description": "The spiral layout method for positioning words. One of `\"archimedean\"` (default) or `\"rectangular\"`.",
+              "description": "The spiral layout method for positioning words. The `\"archimedean\"` spiral (default) follows a smooth curve outward from the center; the `\"rectangular\"` spiral follows an expanding rectangular path.",
               "enum": [
                 "archimedean",
                 "rectangular"
@@ -9233,7 +9233,7 @@
               ]
             },
             "spiral": {
-              "description": "The spiral layout method for positioning words. One of `\"archimedean\"` (default) or `\"rectangular\"`.",
+              "description": "The spiral layout method for positioning words. The `\"archimedean\"` spiral (default) follows a smooth curve outward from the center; the `\"rectangular\"` spiral follows an expanding rectangular path.",
               "enum": [
                 "archimedean",
                 "rectangular"
@@ -19118,7 +19118,7 @@
           ]
         },
         "spiral": {
-          "description": "The spiral layout method for positioning words. One of `\"archimedean\"` (default) or `\"rectangular\"`.",
+          "description": "The spiral layout method for positioning words. The `\"archimedean\"` spiral (default) follows a smooth curve outward from the center; the `\"rectangular\"` spiral follows an expanding rectangular path.",
           "enum": [
             "archimedean",
             "rectangular"
@@ -30770,7 +30770,7 @@
               ]
             },
             "spiral": {
-              "description": "The spiral layout method for positioning words. One of `\"archimedean\"` (default) or `\"rectangular\"`.",
+              "description": "The spiral layout method for positioning words. The `\"archimedean\"` spiral (default) follows a smooth curve outward from the center; the `\"rectangular\"` spiral follows an expanding rectangular path.",
               "enum": [
                 "archimedean",
                 "rectangular"

@@ -6,6 +6,7 @@ import type {
   ColorValueRef,
   Compare as VgCompare,
   ExprRef as VgExprRef,
+  FormulaTransform as VgFormulaTransform,
   GeoShapeTransform as VgGeoShapeTransform,
   IdentityScale,
   LayoutAlign,
@@ -47,7 +48,16 @@ import {ExprRef} from './expr.js';
 import {SortOrder} from './sort.js';
 import {Dict, Flag, hasProperty, keys} from './util.js';
 
-export type {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
+export type {
+  VgSortField,
+  VgUnionSortField,
+  VgCompare,
+  VgTitle,
+  LayoutAlign,
+  ProjectionType,
+  VgExprRef,
+  VgFormulaTransform,
+};
 
 // TODO: make recursive (e.g. with https://stackoverflow.com/a/64900252/214950 but needs https://github.com/vega/ts-json-schema-generator/issues/568)
 export type MappedExclude<T, E> = {
@@ -296,12 +306,6 @@ export interface VgWordcloudTransform {
   padding?: number;
   spiral?: 'archimedean' | 'rectangular';
   as?: string[];
-}
-
-export interface VgFormulaTransform {
-  type: 'formula';
-  as: string;
-  expr: string;
 }
 
 export type VgPostEncodingTransform = VgGeoShapeTransform | VgWordcloudTransform | VgFormulaTransform;

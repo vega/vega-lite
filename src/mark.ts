@@ -635,7 +635,8 @@ export interface WordcloudDef {
   padding?: number;
 
   /**
-   * The spiral layout method for positioning words. One of `"archimedean"` (default) or `"rectangular"`.
+   * The spiral layout method for positioning words. The `"archimedean"` spiral (default) follows a smooth curve
+   * outward from the center; the `"rectangular"` spiral follows an expanding rectangular path.
    */
   spiral?: 'archimedean' | 'rectangular';
 }

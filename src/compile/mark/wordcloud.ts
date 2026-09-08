@@ -103,12 +103,14 @@ export const wordcloud: MarkCompiler = {
       transform.fontWeight = fontWeight;
     }
 
-    if (markDef.padding !== undefined) {
-      transform.padding = markDef.padding;
+    const padding = getMarkPropOrConfig('padding', markDef, config);
+    if (isNumber(padding)) {
+      transform.padding = padding;
     }
 
-    if (markDef.spiral !== undefined) {
-      transform.spiral = markDef.spiral;
+    const spiral = getMarkPropOrConfig('spiral', markDef, config);
+    if (spiral !== undefined) {
+      transform.spiral = spiral;
     }
 
     return [...(formulaTransform ? [formulaTransform] : []), transform];

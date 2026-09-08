@@ -183,6 +183,36 @@ describe('Mark: Wordcloud', () => {
       expect(wc.spiral).toBe('rectangular');
     });
 
+    it('should pass wordcloud-specific properties from config', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'wordcloud',
+        encoding: {
+          text: {field: 'word', type: 'nominal'},
+        },
+        data: {values: [{word: 'hello'}]},
+        config: {wordcloud: {padding: 4, spiral: 'rectangular'}},
+      });
+      const transforms = wordcloud.postEncodingTransform(model);
+      const wc = transforms.find((t: any) => t.type === 'wordcloud') as any;
+
+      expect(wc.padding).toBe(4);
+      expect(wc.spiral).toBe('rectangular');
+    });
+
+    it('should default to the padding used by the Vega wordcloud example', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'wordcloud',
+        encoding: {
+          text: {field: 'word', type: 'nominal'},
+        },
+        data: {values: [{word: 'hello'}]},
+      });
+      const transforms = wordcloud.postEncodingTransform(model);
+      const wc = transforms.find((t: any) => t.type === 'wordcloud') as any;
+
+      expect(wc.padding).toBe(2);
+    });
+
     it('should use width/height signal refs for transform size', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'wordcloud',

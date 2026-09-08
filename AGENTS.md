@@ -34,7 +34,7 @@ For new features (marks, transforms, etc.), always:
 
 Standard datasets (cars, flare, movies, etc.) are available locally in `node_modules/vega-datasets/data/`. Use these in tests and example specs — no need to fetch from a CDN.
 
-To visually verify output, write a temporary vitest test that compiles a VL spec, renders with Vega, and writes the SVG to `/tmp/`. Do not commit generated files (SVGs, PNGs) into `examples/` or the source tree.
+To visually verify output, write a temporary vitest test that compiles a VL spec, renders with Vega, and writes the SVG to `/tmp/`. Do not commit temporary verification outputs; artifacts under `examples/compiled/` are generated and committed by CI.
 
 ```typescript
 import {readFileSync, writeFileSync} from 'fs';
