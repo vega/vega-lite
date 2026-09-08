@@ -17,8 +17,6 @@ permalink: /docs/wordcloud.html
 
 A `wordcloud` mark lays out words without overlap, using font size to represent a quantitative value. It compiles to a Vega [`text`](text.html) mark with a [wordcloud layout](https://vega.github.io/vega/docs/transforms/wordcloud/).
 
-<span class="vl-example" data-name="wordcloud"></span>
-
 <!--prettier-ignore-start-->
 ## Documentation Overview
 {:.no_toc}
@@ -59,7 +57,13 @@ A wordcloud mark definition can contain any [standard mark properties](mark.html
 
 {% include table.html props="angle,font,fontSize,fontStyle,fontWeight,padding,spiral" source="MarkDef" %}
 
-The `padding` property sets the padding around each word in pixels. The `spiral` property controls the word-placement path: `"archimedean"` (the default) follows a smooth curve outward from the center, while `"rectangular"` follows an expanding rectangular path.
+## Examples
+
+### Size by Frequency
+
+<span class="vl-example" data-name="wordcloud"></span>
+
+### Horizontal Words
 
 To render every word horizontally, set `angle` to `0`:
 
