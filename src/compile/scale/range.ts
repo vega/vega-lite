@@ -38,7 +38,7 @@ import {
 } from '../../channeldef.js';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config.js';
 import {DataSourceType} from '../../data.js';
-import {channelHasFieldOrDatum} from '../../encoding.js';
+import {channelHasFieldOrDatum, isAreaSizeThickness} from '../../encoding.js';
 import * as log from '../../log/index.js';
 import {Mark} from '../../mark.js';
 import {
@@ -283,6 +283,52 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       return getOffsetRange(channel, model, scaleType);
 
     case SIZE: {
+      if (isAreaSizeThickness(mark, encoding)) {
+        const laneChannel = model.markDef.orient === 'horizontal' ? 'x' : 'y';
+        const offsetChannel = laneChannel === 'x' ? XOFFSET : YOFFSET;
+        const offsetScaleType = model.getScaleComponent(offsetChannel)?.get('type');
+
+        if (encoding[offsetChannel] && (offsetScaleType === 'band' || offsetScaleType === 'point')) {
+          const offsetScaleName = model.scaleName(offsetChannel);
+          if (offsetScaleType === 'band') {
+            return [0, {signal: `bandwidth('${offsetScaleName}')`}];
+          }
+          return [0, pointScaleStep(offsetScaleName)];
+        }
+
+        const laneScaleType = model.getScaleComponent(laneChannel)?.get('type');
+        const laneScaleName = model.scaleName(laneChannel);
+
+        if (encoding[laneChannel] && laneScaleType === 'band') {
+          return [0, {signal: `bandwidth('${laneScaleName}')`}];
+        }
+
+        if (encoding[laneChannel] && laneScaleType === 'point') {
+          const laneRange = model.getScaleComponent(laneChannel).get('range');
+          if (isObject(laneRange) && 'step' in laneRange) {
+            return [0, (laneRange as {step: number | SignalRef}).step];
+          }
+
+          return [0, pointScaleStep(laneScaleName)];
+        }
+
+        const fallbackChannel = laneChannel === 'x' ? 'y' : 'x';
+        const fallbackScaleType = model.getScaleComponent(fallbackChannel)?.get('type');
+        if (!encoding[laneChannel]) {
+          const sizeSignal = model.getName(getSizeChannel(laneChannel));
+          return [0, SignalRefWrapper.fromName(model.getSignalName.bind(model), sizeSignal)];
+        }
+
+        if (encoding[fallbackChannel] && fallbackScaleType === 'band') {
+          return [0, {signal: `bandwidth('${model.scaleName(fallbackChannel)}')`}];
+        }
+
+        if (hasContinuousDomain(laneScaleType) && hasContinuousDomain(fallbackScaleType)) {
+          const sizeSignal = model.getName(getSizeChannel(laneChannel));
+          return [0, SignalRefWrapper.fromName(model.getSignalName.bind(model), sizeSignal)];
+        }
+      }
+
       // TODO: support custom rangeMin, rangeMax
       const rangeMin = sizeRangeMin(mark, config);
       const rangeMax = sizeRangeMax(mark, size, model, config);
@@ -358,6 +404,12 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minOpacity, config.scale.maxOpacity];
   }
+}
+
+function pointScaleStep(scaleName: string): SignalRef {
+  return {
+    signal: `domain('${scaleName}').length > 1 ? abs(scale('${scaleName}', domain('${scaleName}')[1]) - scale('${scaleName}', domain('${scaleName}')[0])) : span(range('${scaleName}'))`,
+  };
 }
 
 function getPositionStep(step: Step, model: UnitModel, channel: PositionScaleChannel): number | SignalRef {
@@ -520,6 +572,7 @@ function sizeRangeMin(mark: Mark, config: Config): number | SignalRef {
     case 'tick':
       return config.scale.minBandSize;
     case 'line':
+    case 'area':
     case 'trail':
     case 'rule':
       return config.scale.minStrokeWidth;
@@ -563,6 +616,7 @@ function sizeRangeMax(
       }
     }
     case 'line':
+    case 'area':
     case 'trail':
     case 'rule':
       return config.scale.maxStrokeWidth;

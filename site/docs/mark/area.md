@@ -89,9 +89,27 @@ We can also shift the stacked area chart's baseline to center and produces a [st
 
 ### Ranged Area
 
-Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged areas. For example, we can use ranged area with the `ci0` and `ci0` [aggregation operators](aggregate.html#ops) to highlight 95% confidence interval of a line chart that shows mean values over time.
+#### With defined endpoints
+
+Specifying `x2` or `y2` for the quantitative axis of area marks produce ranged areas (or "ribbons"). Ranged areas via `x2` or `y2` encodes the endpoints of the area independently in the positional scale's data domain. This is appropriate when both boundaries are meaningful data values.
+
+For example, we can use a ranged area with the `ci0` and `ci1` [aggregation operators](aggregate.html#ops) to highlight 95% confidence interval of a line chart that shows mean values over time. We could also use the `min` and `max` aggregation operators to show the range of values, as in the chart below.
 
 <span class="vl-example" data-name="area_temperature_range"></span>
+
+#### With defined thickness around a centerline
+
+Area marks also support a quantitative `size` encoding for symmetric area thickness around a centerline. This parameterization describes one center position and a visual thickness rather than two independent data-domain boundaries. The centerline may be a field that varies for every datum, a categorical lane, a datum, or a constant value.
+
+The `size` encoding is particularly useful when visualizing how a magnitude varies along a quantitative field. A canonical example of this is a violin plot, where the density estimate's magnitude is visualized as the thickness of the area. In the example below, `x` (`value`) defines the trajectory of each area, `y` (`Species`) places its centerline in a categorical lane, and `size` (`density`) controls its thickness to create a violin plot.
+
+<span class="vl-example" data-name="area_density_ribbon_vertical_simple"></span>
+
+The ribbon expands symmetrically around the centerline on the axis selected by the area's orientation. Vega-Lite infers the orientation from the positional encodings, or you can set [`orient`](mark.html#mark-def) explicitly when both axes are quantitative.
+
+<span class="vl-example" data-name="area_density_ribbon_horizontal_offset_color"></span>
+
+By default, `size` legends are disabled for area ribbons. You can explicitly enable one with `"size": {"legend": { ... }}` if needed.
 
 {:#config}
 
