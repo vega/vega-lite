@@ -208,6 +208,7 @@
         - [Documentation Overview]({{site.baseurl}}/docs/wordcloud.html#documentation-overview)
         - [Encoding]({{site.baseurl}}/docs/wordcloud.html#encoding)
         - [Word Cloud Mark Properties]({{site.baseurl}}/docs/wordcloud.html#properties)
+        - [Examples]({{site.baseurl}}/docs/wordcloud.html#examples)
         - [Word Cloud Config]({{site.baseurl}}/docs/wordcloud.html#config)
 - [Encoding]({{site.baseurl}}/docs/encoding.html)
     - [Encoding Channels]({{site.baseurl}}/docs/encoding.html#channels)
