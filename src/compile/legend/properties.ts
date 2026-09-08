@@ -180,7 +180,7 @@ export function getDirection({
 }): Orientation {
   return (
     legend.direction ??
-    legendConfig[legendType ? 'gradientDirection' : 'symbolDirection'] ??
+    legendConfig[legendType === 'gradient' ? 'gradientDirection' : 'symbolDirection'] ??
     defaultDirection(orient, legendType)
   );
 }
