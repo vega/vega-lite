@@ -85,6 +85,12 @@ export function selectionNotFound(name: string) {
 export const SCALE_BINDINGS_CONTINUOUS =
   'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
 
+export const BOX_ZOOM_NOT_SUPPORTED_FOR_PROJECTION =
+  '"boxZoom" is not supported for geographic (projected longitude/latitude) views.';
+
+export const BOX_ZOOM_REQUIRES_GLOBAL_RESOLVE =
+  '"boxZoom" requires "resolve": "global" (the default) and is ignored for "union"/"intersect" resolved selections.';
+
 export const SEQUENTIAL_SCALE_DEPRECATED =
   'Sequntial scales are deprecated. The available quantitative scale type values are linear, log, pow, sqrt, symlog, time and utc';
 

@@ -198,6 +198,27 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
    * __See also:__ [`mark` examples](https://vega.github.io/vega-lite/docs/selection.html#mark) in the documentation.
    */
   mark?: BrushConfig;
+
+  /**
+   * When true, dragging the interval selection performs a "box zoom": the
+   * rectangle is drawn live while dragging (like a normal interval brush),
+   * and once the drag ends, the selection's bound continuous scale(s) zoom to
+   * the dragged extent and the brush clears itself, ready to be dragged again.
+   *
+   * This differs from `"bind": "scales"`, which continuously pans (drag) and
+   * zooms (scroll) the scales in place and never draws a brush rectangle.
+   * Box zoom instead mimics the click-and-drag-to-zoom-to-rectangle tool
+   * found in plotting libraries such as Matplotlib, Plotly, and Bokeh.
+   *
+   * The zoom can be reset back to the original domain via the selection's
+   * `clear` event (double-click, by default).
+   *
+   * Not supported for geographic (projected longitude/latitude) views, and
+   * requires `resolve` to be `"global"` (the default).
+   *
+   * __Default value:__ `false`
+   */
+  boxZoom?: boolean;
 }
 
 export interface SelectionParameter<T extends SelectionType = SelectionType> {
