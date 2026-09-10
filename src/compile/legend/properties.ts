@@ -109,6 +109,7 @@ export function defaultSymbolType(
     case 'bar':
     case 'rect':
     case 'image':
+    case 'array':
     case 'square':
       return 'square';
     case 'line':

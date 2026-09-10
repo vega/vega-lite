@@ -1,0 +1,33 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "An elevation grid labelled with its own extent, in cells.",
+  "width": 348,
+  "height": 244,
+  "data": {"url": "data/volcano.json"},
+  "transform": [
+    {"calculate": "0", "as": "__array_x0"},
+    {"calculate": "0", "as": "__array_y0"}
+  ],
+  "mark": {"type": "array"},
+  "encoding": {
+    "x": {
+      "field": "__array_x0",
+      "type": "quantitative",
+      "title": null,
+      "tooltip": false
+    },
+    "x2": {"field": "width", "tooltip": false},
+    "y": {
+      "field": "__array_y0",
+      "type": "quantitative",
+      "title": null,
+      "tooltip": false
+    },
+    "y2": {"field": "height", "tooltip": false},
+    "color": {
+      "field": "values",
+      "type": "quantitative",
+      "scale": {"scheme": "viridis"}
+    }
+  }
+}

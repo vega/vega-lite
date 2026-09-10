@@ -518,6 +518,7 @@ const ALL_MARKS: Record<Mark, 'always'> = {
   // all marks
   arc: 'always',
   area: 'always',
+  array: 'always',
   bar: 'always',
   circle: 'always',
   geoshape: 'always',
@@ -578,6 +579,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case LONGITUDE2:
       return {
         area: 'always',
+        array: 'always',
         bar: 'always',
         image: 'always',
         rect: 'always',
