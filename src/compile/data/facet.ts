@@ -1,5 +1,5 @@
-import type {AggregateOp, SignalRef} from 'vega';
-import {isArray} from 'vega-util';
+import type {AggregateOp, SignalRef, Transforms as VgTransform} from 'vega';
+import {isArray, stringValue} from 'vega-util';
 import {isBinning} from '../../bin.js';
 import {COLUMN, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../../channel.js';
 import {vgField} from '../../channeldef.js';
@@ -172,6 +172,75 @@ export class FacetNode extends DataFlowNode {
     return childIndependentFieldsWithStep;
   }
 
+  private facetChannelHasCardinality(
+    channel: 'row' | 'column' | 'facet',
+    childIndependentFieldsWithStep: ChildIndependentFieldsWithStep,
+  ): boolean {
+    const childChannel = ({row: 'y', column: 'x', facet: undefined} as const)[channel];
+    return !!(childChannel && childIndependentFieldsWithStep?.[childChannel]);
+  }
+
+  /**
+   * The aggregate that computes a channel's custom sort metadata over the original data,
+   * grouped by that channel only. Returns null when the channel has no custom sort.
+   */
+  private getFacetSortAggregate(
+    channel: 'row' | 'column' | 'facet',
+  ): {field: string; op: AggregateOp; as: string} | null {
+    const info = this[channel];
+    if (!info) {
+      return null;
+    }
+    const {sortField, sortIndexField} = info;
+    if (sortField) {
+      const {op = DEFAULT_SORT_OP, field} = sortField;
+      return {field, op, as: vgField(sortField, {forAs: true})};
+    } else if (sortIndexField) {
+      return {field: sortIndexField, op: 'max', as: sortIndexField};
+    }
+    return null;
+  }
+
+  /**
+   * When the child has an independent discrete scale sized by range steps, the per-row/column
+   * cardinalities come from the crossed dataset (grouped by row x column). That crossed dataset
+   * does not carry the custom sort field, and re-aggregating its per-cell values would compute an
+   * incorrect op-of-op (e.g. a median of per-cell medians). So when a channel needs both the
+   * crossed cardinality and a custom sort, the sort metadata is computed in a separate
+   * single-channel aggregate over the original data and joined back into the domain via a lookup
+   * formula (the same indexof/pluck machinery #9818 uses for cell sorting).
+   */
+  private joinsFacetSortFromCrossedData(
+    channel: 'row' | 'column' | 'facet',
+    crossedDataName: string,
+    childIndependentFieldsWithStep: ChildIndependentFieldsWithStep,
+  ): boolean {
+    return (
+      !!crossedDataName &&
+      !!this.getFacetSortAggregate(channel) &&
+      this.facetChannelHasCardinality(channel, childIndependentFieldsWithStep)
+    );
+  }
+
+  private facetSortDomainName(channel: 'row' | 'column' | 'facet') {
+    return this.model.getName(`${channel}_domain_sort`);
+  }
+
+  /**
+   * Expression that reads a channel's custom sort value out of the separate single-channel sort
+   * aggregate, matching on the same facet key expression used by #9818's cell-sort lookup.
+   */
+  private facetSortLookupExpr(channel: 'row' | 'column' | 'facet', sortValueField: string): string {
+    const fieldDef = this.model.facet[channel];
+    const sortDataExpr = `data(${stringValue(this.facetSortDomainName(channel))})`;
+    const keyField = facetLookupKeyFieldName(this.model, channel);
+    const indexExpr = `indexof(pluck(${sortDataExpr}, ${stringValue(keyField)}), ${facetLookupKeyExpr(
+      fieldDef,
+      'datum',
+    )})`;
+    return `${indexExpr} >= 0 ? ${sortDataExpr}[${indexExpr}][${stringValue(sortValueField)}] : null`;
+  }
+
   private assembleRowColumnHeaderData(
     channel: 'row' | 'column' | 'facet',
     crossedDataName: string,
@@ -183,7 +252,9 @@ export class FacetNode extends DataFlowNode {
     const ops: AggregateOp[] = [];
     const as: string[] = [];
 
-    if (childChannel && childIndependentFieldsWithStep && childIndependentFieldsWithStep[childChannel]) {
+    const hasCardinality = this.facetChannelHasCardinality(channel, childIndependentFieldsWithStep);
+
+    if (hasCardinality) {
       if (crossedDataName) {
         // If there is a crossed data, calculate max
         fields.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
@@ -198,33 +269,83 @@ export class FacetNode extends DataFlowNode {
       as.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
     }
 
-    const {sortField, sortIndexField} = this[channel];
-    if (sortField) {
-      const {op = DEFAULT_SORT_OP, field} = sortField;
-      fields.push(field);
-      ops.push(op);
-      as.push(vgField(sortField, {forAs: true}));
-    } else if (sortIndexField) {
-      fields.push(sortIndexField);
-      ops.push('max');
-      as.push(sortIndexField);
+    const sortAggregate = this.getFacetSortAggregate(channel);
+    const joinSortFromCrossed = this.joinsFacetSortFromCrossedData(
+      channel,
+      crossedDataName,
+      childIndependentFieldsWithStep,
+    );
+
+    // Only inline the sort field when it can be computed correctly in this aggregate, i.e. when
+    // we are not sourcing per-cell cardinality from the crossed dataset (which lacks the field).
+    // Otherwise it is joined in below.
+    if (sortAggregate && !joinSortFromCrossed) {
+      fields.push(sortAggregate.field);
+      ops.push(sortAggregate.op);
+      as.push(sortAggregate.as);
+    }
+
+    const transform: VgTransform[] = [
+      {
+        type: 'aggregate',
+        groupby: this[channel].fields,
+        ...(fields.length
+          ? {
+              fields,
+              ops,
+              as,
+            }
+          : {}),
+      },
+    ];
+
+    if (joinSortFromCrossed) {
+      // The crossed dataset lacks the sort field, so join in the value computed by the separate
+      // single-channel aggregate (see assembleFacetSortAggregateData). This mirrors #9818's
+      // cell-sort lookup and avoids re-aggregating per-cell values (op-of-op).
+      transform.push({
+        type: 'formula',
+        expr: this.facetSortLookupExpr(channel, sortAggregate.as),
+        as: sortAggregate.as,
+      });
     }
 
     return {
       name: this[channel].name,
-      // Use data from the crossed one if it exist
-      source: crossedDataName ?? this.data,
+      // Source from the crossed dataset when we need its per-cell cardinality; otherwise
+      // (including when we only need custom sort metadata) source from the original data so the
+      // sort field is available.
+      source: crossedDataName && (hasCardinality || !sortAggregate) ? crossedDataName : this.data,
+      transform,
+    };
+  }
+
+  private assembleFacetSortAggregateData(
+    channel: 'row' | 'column',
+    crossedDataName: string,
+    childIndependentFieldsWithStep: ChildIndependentFieldsWithStep,
+  ): VgData | null {
+    if (!this.joinsFacetSortFromCrossedData(channel, crossedDataName, childIndependentFieldsWithStep)) {
+      return null;
+    }
+
+    const sortAggregate = this.getFacetSortAggregate(channel);
+
+    return {
+      name: this.facetSortDomainName(channel),
+      source: this.data,
       transform: [
         {
           type: 'aggregate',
           groupby: this[channel].fields,
-          ...(fields.length
-            ? {
-                fields,
-                ops,
-                as,
-              }
-            : {}),
+          fields: [sortAggregate.field],
+          ops: [sortAggregate.op],
+          as: [sortAggregate.as],
+        },
+        {
+          type: 'formula',
+          expr: facetLookupKeyExpr(this.model.facet[channel], 'datum'),
+          as: facetLookupKeyFieldName(this.model, channel),
         },
       ],
     };
@@ -338,8 +459,16 @@ export class FacetNode extends DataFlowNode {
       });
     }
 
-    for (const channel of [COLUMN, ROW]) {
+    for (const channel of [COLUMN, ROW] as const) {
       if (this[channel]) {
+        const sortAggregateData = this.assembleFacetSortAggregateData(
+          channel,
+          crossedDataName,
+          childIndependentFieldsWithStep,
+        );
+        if (sortAggregateData) {
+          data.push(sortAggregateData);
+        }
         data.push(this.assembleRowColumnHeaderData(channel, crossedDataName, childIndependentFieldsWithStep));
       }
     }

@@ -1,0 +1,279 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"first": "A", "second": "p", "cat": "c1", "val": 10},
+        {"first": "A", "second": "p", "cat": "c2", "val": 12},
+        {"first": "A", "second": "q", "cat": "c1", "val": 10},
+        {"first": "A", "second": "q", "cat": "c2", "val": 12},
+        {"first": "B", "second": "p", "cat": "c1", "val": 1},
+        {"first": "B", "second": "p", "cat": "c2", "val": 3},
+        {"first": "B", "second": "q", "cat": "c1", "val": 1},
+        {"first": "B", "second": "q", "cat": "c2", "val": 3},
+        {"first": "C", "second": "p", "cat": "c1", "val": 5},
+        {"first": "C", "second": "p", "cat": "c2", "val": 7},
+        {"first": "C", "second": "q", "cat": "c1", "val": 5},
+        {"first": "C", "second": "q", "cat": "c2", "val": 7}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"val\"]) && isFinite(+datum[\"val\"])"
+        }
+      ]
+    },
+    {
+      "name": "cross_column_domain_row_domain",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["second", "first"],
+          "fields": ["cat"],
+          "ops": ["distinct"]
+        }
+      ]
+    },
+    {
+      "name": "column_domain_sort",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["first"],
+          "fields": ["val"],
+          "ops": ["median"],
+          "as": ["median_val"]
+        },
+        {
+          "type": "formula",
+          "expr": "join([isValid(datum[\"first\"]) ? length(toString(datum[\"first\"])) + ':' + toString(datum[\"first\"]) : '-1:'], '|')",
+          "as": "column_facet_key"
+        }
+      ]
+    },
+    {
+      "name": "column_domain",
+      "source": "cross_column_domain_row_domain",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["first"],
+          "fields": ["distinct_cat"],
+          "ops": ["max"],
+          "as": ["distinct_cat"]
+        },
+        {
+          "type": "formula",
+          "expr": "indexof(pluck(data(\"column_domain_sort\"), \"column_facet_key\"), join([isValid(datum[\"first\"]) ? length(toString(datum[\"first\"])) + ':' + toString(datum[\"first\"]) : '-1:'], '|')) >= 0 ? data(\"column_domain_sort\")[indexof(pluck(data(\"column_domain_sort\"), \"column_facet_key\"), join([isValid(datum[\"first\"]) ? length(toString(datum[\"first\"])) + ':' + toString(datum[\"first\"]) : '-1:'], '|'))][\"median_val\"] : null",
+          "as": "median_val"
+        }
+      ]
+    },
+    {
+      "name": "row_domain",
+      "source": "cross_column_domain_row_domain",
+      "transform": [{"type": "aggregate", "groupby": ["second"]}]
+    },
+    {
+      "name": "column_lookup_domain",
+      "source": "column_domain",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "join([isValid(datum[\"first\"]) ? length(toString(datum[\"first\"])) + ':' + toString(datum[\"first\"]) : '-1:'], '|')",
+          "as": "column_facet_key"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "child_x_step", "value": 20},
+    {"name": "child_height", "value": 300}
+  ],
+  "layout": {
+    "padding": 20,
+    "offset": {"rowTitle": 10, "columnTitle": 10},
+    "columns": {"signal": "length(data('column_domain'))"},
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "row-title",
+      "type": "group",
+      "role": "row-title",
+      "title": {
+        "text": "second",
+        "orient": "left",
+        "style": "guide-title",
+        "offset": 10
+      }
+    },
+    {
+      "name": "column-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {"text": "first", "style": "guide-title", "offset": 10}
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {"data": "row_domain"},
+      "sort": {"field": "datum[\"second\"]", "order": "ascending"},
+      "title": {
+        "text": {
+          "signal": "isValid(parent[\"second\"]) ? parent[\"second\"] : \"\"+parent[\"second\"]"
+        },
+        "orient": "left",
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "val",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_header",
+      "type": "group",
+      "role": "column-header",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"median_val\"]", "order": "ascending"},
+      "title": {
+        "text": {
+          "signal": "isValid(parent[\"first\"]) ? parent[\"first\"] : \"\"+parent[\"first\"]"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "bandspace(datum[\"distinct_cat\"], 1, 0.5) * child_x_step"
+          }
+        }
+      }
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "data_0",
+          "groupby": ["second", "first"],
+          "aggregate": {
+            "cross": true,
+            "fields": ["cat"],
+            "ops": ["distinct"],
+            "as": ["distinct_cat"]
+          }
+        }
+      },
+      "sort": {
+        "field": [
+          "datum[\"second\"]",
+          {
+            "expr": "indexof(pluck(data(\"column_lookup_domain\"), \"column_facet_key\"), join([isValid(datum.datum[\"first\"]) ? length(toString(datum.datum[\"first\"])) + ':' + toString(datum.datum[\"first\"]) : '-1:'], '|')) >= 0 ? data(\"column_lookup_domain\")[indexof(pluck(data(\"column_lookup_domain\"), \"column_facet_key\"), join([isValid(datum.datum[\"first\"]) ? length(toString(datum.datum[\"first\"])) + ':' + toString(datum.datum[\"first\"]) : '-1:'], '|'))][\"median_val\"] : null"
+          }
+        ],
+        "order": ["ascending", "ascending"]
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "bandspace(datum[\"distinct_cat\"], 1, 0.5) * child_x_step"
+          },
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "symbol",
+          "style": ["point"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "fill": {"value": "transparent"},
+              "stroke": {"value": "#4c78a8"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"cat: \" + (isValid(datum[\"cat\"]) ? isArray(datum[\"cat\"]) ? join(datum[\"cat\"], ' ') : datum[\"cat\"] : \"\"+datum[\"cat\"]) + \"; val: \" + (format(datum[\"val\"], \"\"))"
+              },
+              "x": {"scale": "child_x", "field": "cat"},
+              "y": {"scale": "y", "field": "val"}
+            }
+          }
+        }
+      ],
+      "scales": [
+        {
+          "name": "child_x",
+          "type": "point",
+          "domain": {"data": "facet", "field": "cat", "sort": true},
+          "range": {"step": {"signal": "child_x_step"}},
+          "padding": 0.5
+        }
+      ],
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "gridScale": "child_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "child_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "cat",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "val"},
+      "range": [{"signal": "child_height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ]
+}
