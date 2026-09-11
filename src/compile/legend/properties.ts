@@ -66,12 +66,16 @@ export const legendRules: {
 
   title: ({fieldOrDatumDef, config}) => fieldDefTitle(fieldOrDatumDef, config, {allowDisabling: true}),
 
-  type: ({legendType, scaleType, channel}) => {
+  type: ({legend, legendType, scaleType, channel}) => {
     if (isColorChannel(channel) && isContinuousToContinuous(scaleType)) {
       if (legendType === 'gradient') {
         return undefined;
       }
-    } else if (legendType === 'symbol') {
+    } else if (legendType === 'symbol' && legend.type === undefined) {
+      // `symbol` is Vega's default legend type for these cases, so it can be omitted — but only
+      // when it was inferred. When the user explicitly sets `legend.type: "symbol"` (e.g. on a
+      // discretizing color scale, where Vega would otherwise default to a gradient), it must be
+      // kept, otherwise it is silently dropped (#9856).
       return undefined;
     }
     return legendType;
