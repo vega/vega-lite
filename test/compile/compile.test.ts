@@ -1,4 +1,4 @@
-import {AggregateTransform} from 'vega';
+import {AggregateTransform, parse, View} from 'vega';
 import {compile} from '../../src/compile/compile.js';
 import * as log from '../../src/log/index.js';
 
@@ -220,6 +220,340 @@ describe('compile/compile', () => {
     });
 
     expect(spec.autosize).toEqual({type: 'fit', contains: 'content'});
+  });
+
+  it('should rewrite sorted domain expressions to use helper scales', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {x: 1, y: 1, c: 'b'},
+          {x: 2, y: 2, c: 'a'},
+          {x: 3, y: 3, c: 'c'},
+        ],
+      },
+      params: [
+        {name: 'computed_domain', expr: "sort(domain('color'))"},
+        {name: 'color_domain', react: false, expr: 'computed_domain'},
+      ],
+      mark: 'point',
+      encoding: {
+        color: {
+          field: 'c',
+          type: 'nominal',
+          scale: {domain: {expr: 'color_domain'}},
+        },
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.signals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'computed_domain',
+          update: "sort(domain('__color_domain_source'))",
+        }),
+      ]),
+    );
+
+    expect(spec.scales).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: '__color_domain_source',
+          type: 'ordinal',
+          domain: {data: 'data_0', field: 'c'},
+        }),
+      ]),
+    );
+  });
+
+  it('should rewrite parameter domain expressions even without sort', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {x: 1, y: 1, c: 'b'},
+          {x: 2, y: 2, c: 'a'},
+        ],
+      },
+      params: [
+        {name: 'computed_domain', expr: "sort(domain('color'))"},
+        {name: 'color_domain', react: false, expr: 'computed_domain'},
+        {name: 'domain_len', expr: "domain('color').length"},
+      ],
+      mark: 'point',
+      encoding: {
+        color: {
+          field: 'c',
+          type: 'nominal',
+          scale: {domain: {expr: 'color_domain'}},
+        },
+        x: {field: 'x', type: 'quantitative'},
+        y: {field: 'y', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.signals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'domain_len',
+          update: "domain('__color_domain_source').length",
+        }),
+      ]),
+    );
+  });
+
+  it('should rewrite domain references for layered specs', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {x: 1, y: 1, c: 'b'},
+          {x: 2, y: 2, c: 'a'},
+        ],
+      },
+      params: [
+        {name: 'computed_domain', expr: "sort(domain('color'))"},
+        {name: 'color_domain', react: false, expr: 'computed_domain'},
+      ],
+      layer: [
+        {
+          mark: 'point',
+          encoding: {
+            color: {field: 'c', type: 'nominal', scale: {domain: {expr: 'color_domain'}}},
+            x: {field: 'x', type: 'quantitative'},
+            y: {field: 'y', type: 'quantitative'},
+          },
+        },
+      ],
+    });
+
+    expect(spec.signals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({name: 'computed_domain', update: "sort(domain('__color_domain_source'))"}),
+      ]),
+    );
+    expect(spec.scales).toEqual(expect.arrayContaining([expect.objectContaining({name: '__color_domain_source'})]));
+  });
+
+  it('should rewrite domain references for faceted specs', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {x: 1, y: 1, c: 'b', g: 'u'},
+          {x: 2, y: 2, c: 'a', g: 'v'},
+        ],
+      },
+      params: [
+        {name: 'computed_domain', expr: "sort(domain('color'))"},
+        {name: 'color_domain', react: false, expr: 'computed_domain'},
+      ],
+      facet: {field: 'g', type: 'nominal'},
+      spec: {
+        mark: 'point',
+        encoding: {
+          color: {field: 'c', type: 'nominal', scale: {domain: {expr: 'color_domain'}}},
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'},
+        },
+      },
+    });
+
+    expect(spec.signals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({name: 'computed_domain', update: "sort(domain('__color_domain_source'))"}),
+      ]),
+    );
+    expect(spec.scales).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({name: '__color_domain_source', domain: {data: 'data_0', field: 'c'}}),
+      ]),
+    );
+  });
+
+  it('should rewrite domain references for concatenated specs', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {x: 1, y: 1, c: 'b'},
+          {x: 2, y: 2, c: 'a'},
+        ],
+      },
+      params: [
+        {name: 'computed_domain', expr: "sort(domain('color'))"},
+        {name: 'color_domain', react: false, expr: 'computed_domain'},
+      ],
+      hconcat: [
+        {
+          mark: 'point',
+          encoding: {
+            color: {field: 'c', type: 'nominal', scale: {domain: {expr: 'color_domain'}}},
+            x: {field: 'x', type: 'quantitative'},
+            y: {field: 'y', type: 'quantitative'},
+          },
+        },
+        {
+          mark: 'point',
+          encoding: {
+            x: {field: 'x', type: 'quantitative'},
+            y: {field: 'y', type: 'quantitative'},
+          },
+        },
+      ],
+    });
+
+    expect(spec.signals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({name: 'computed_domain', update: "sort(domain('__color_domain_source'))"}),
+      ]),
+    );
+    expect(spec.scales).toEqual(expect.arrayContaining([expect.objectContaining({name: '__color_domain_source'})]));
+  });
+
+  it('should compile non-reactive parameter references to one-time updates', () => {
+    const {spec} = compile({
+      data: {values: [{x: 1}]},
+      mark: 'point',
+      encoding: {x: {field: 'x', type: 'quantitative'}},
+      params: [
+        {name: 'a', expr: '5'},
+        {name: 'b', expr: 'a', react: false},
+      ],
+    });
+
+    expect(spec.signals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({name: 'a', update: '5'}),
+        expect.objectContaining({
+          name: 'b',
+          value: {__vl_b_sentinel: true},
+          update: 'b && b.__vl_b_sentinel ? (a) : b',
+        }),
+      ]),
+    );
+  });
+
+  it('should keep sorted frozen color domain for layered specs at runtime', async () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {x: 1, y: 1, c: 'b'},
+          {x: 2, y: 2, c: 'a'},
+          {x: 3, y: 3, c: 'c'},
+        ],
+      },
+      params: [
+        {name: 'legend_click', select: {type: 'point', encodings: ['color']}, bind: 'legend'},
+        {name: 'frozen_domain', expr: "sort(domain('color'))", react: false},
+      ],
+      layer: [
+        {
+          mark: 'point',
+          transform: [{filter: {param: 'legend_click'}}],
+          encoding: {
+            color: {field: 'c', type: 'nominal', scale: {domain: {expr: 'frozen_domain'}}},
+            x: {field: 'x', type: 'quantitative'},
+            y: {field: 'y', type: 'quantitative'},
+          },
+        },
+      ],
+    });
+
+    const view = new View(parse(spec), {renderer: 'none'});
+    await view.runAsync();
+    expect(view.scale('color').domain()).toEqual(['a', 'b', 'c']);
+
+    const legendSignal = spec.signals.find((s) => s.name.includes('legend_click_c_legend')).name;
+    view.signal(legendSignal, 'a');
+    await view.runAsync();
+
+    expect(view.data('data_0').map((d: any) => d.c)).toEqual(['a']);
+    expect(view.scale('color').domain()).toEqual(['a', 'b', 'c']);
+  });
+
+  it('should keep sorted frozen color domain for faceted specs at runtime', async () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {x: 1, y: 1, c: 'b', g: 'u'},
+          {x: 2, y: 2, c: 'a', g: 'u'},
+          {x: 3, y: 3, c: 'c', g: 'v'},
+        ],
+      },
+      params: [
+        {name: 'legend_click', select: {type: 'point', encodings: ['color']}, bind: 'legend'},
+        {name: 'frozen_domain', expr: "sort(domain('color'))", react: false},
+      ],
+      facet: {column: {field: 'g', type: 'nominal'}},
+      spec: {
+        mark: 'point',
+        transform: [{filter: {param: 'legend_click'}}],
+        encoding: {
+          color: {field: 'c', type: 'nominal', scale: {domain: {expr: 'frozen_domain'}}},
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'},
+        },
+      },
+    });
+
+    const view = new View(parse(spec), {renderer: 'none'});
+    await view.runAsync();
+    expect(view.scale('color').domain()).toEqual(['a', 'b', 'c']);
+
+    const legendSignal = spec.signals.find((s) => s.name.includes('legend_click_c_legend')).name;
+    view.signal(legendSignal, 'a');
+    await view.runAsync();
+
+    expect(view.data('data_0').map((d: any) => d.c)).toEqual(['a']);
+    expect(view.scale('color').domain()).toEqual(['a', 'b', 'c']);
+  });
+
+  it('should keep sorted frozen color domain for concatenated specs at runtime', async () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {x: 1, y: 1, c: 'b'},
+          {x: 2, y: 2, c: 'a'},
+          {x: 3, y: 3, c: 'c'},
+        ],
+      },
+      params: [
+        {name: 'legend_click', select: {type: 'point', encodings: ['color']}, bind: 'legend'},
+        {name: 'frozen_domain', expr: "sort(domain('color'))", react: false},
+      ],
+      hconcat: [
+        {
+          mark: 'point',
+          transform: [{filter: {param: 'legend_click'}}],
+          encoding: {
+            color: {field: 'c', type: 'nominal', scale: {domain: {expr: 'frozen_domain'}}},
+            x: {field: 'x', type: 'quantitative'},
+            y: {field: 'y', type: 'quantitative'},
+          },
+        },
+        {
+          mark: 'bar',
+          transform: [
+            {filter: {param: 'legend_click'}},
+            {bin: {maxbins: 8}, field: 'x', as: 'x_binned'},
+            {aggregate: [{op: 'count', as: 'count'}], groupby: ['x_binned']},
+          ],
+          encoding: {
+            y: {field: 'x_binned', type: 'ordinal'},
+            x: {field: 'count', type: 'quantitative'},
+          },
+        },
+      ],
+    });
+
+    const view = new View(parse(spec), {renderer: 'none'});
+    await view.runAsync();
+    expect(view.scale('color').domain()).toEqual(['a', 'b', 'c']);
+
+    const legendSignal = spec.signals.find((s) => s.name.includes('legend_click_c_legend')).name;
+    view.signal(legendSignal, 'a');
+    await view.runAsync();
+
+    expect(view.data('data_0').map((d: any) => d.c)).toEqual(['a']);
+    expect(view.scale('color').domain()).toEqual(['a', 'b', 'c']);
   });
 
   it('should set autosize to fit if requested', () => {
