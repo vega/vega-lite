@@ -4,6 +4,7 @@ import {stringValue} from 'vega-util';
 import {getAxisConfigs} from '../../../src/compile/axis/config.js';
 import * as properties from '../../../src/compile/axis/properties.js';
 import {defaultLabelAlign, defaultLabelBaseline, getLabelAngle} from '../../../src/compile/axis/properties.js';
+import {rangedOffsetBaseline} from '../../../src/compile/scale/rangedOffset.js';
 import {TimeUnit, TimeUnitTransformParams} from '../../../src/timeunit.js';
 import {normalizeAngle} from '../../../src/util.js';
 import {isSignalRef} from '../../../src/vega.schema.js';
@@ -40,7 +41,7 @@ describe('compile/axis/properties', () => {
   });
 
   describe('bandPosition', () => {
-    it('should set y-axis bandPosition to 1 for bar with discrete y and continuous yOffset', () => {
+    it('should position the y-axis at the closest-to-zero yOffset baseline', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'bar',
         data: {values: [{a: 'A', b: 1, c: 'x'}]},
@@ -51,24 +52,24 @@ describe('compile/axis/properties', () => {
         },
       });
 
-      expect(
-        properties.axisRules.bandPosition({
-          axis: {},
-          model,
-          channel: 'y',
-          fieldOrDatumDef: model.encoding.y as any,
-          mark: model.mark,
-          scaleType: model.getScaleComponent('y').get('type'),
-          orient: 'left',
-          labelAngle: undefined,
-          format: undefined,
-          formatType: undefined,
-          config: model.config,
-        }),
-      ).toBe(1);
+      const bandPosition = properties.axisRules.bandPosition({
+        axis: {},
+        model,
+        channel: 'y',
+        fieldOrDatumDef: model.encoding.y as any,
+        mark: model.mark,
+        scaleType: model.getScaleComponent('y').get('type'),
+        orient: 'left',
+        labelAngle: undefined,
+        format: undefined,
+        formatType: undefined,
+        config: model.config,
+      });
+      expect(bandPosition).toEqual(rangedOffsetBaseline(model, 'y').bandPosition);
+      expect(isSignalRef(bandPosition)).toBe(true);
     });
 
-    it('should set x-axis bandPosition to 0 for bar with discrete x and continuous xOffset', () => {
+    it('should position the x-axis at the closest-to-zero xOffset baseline', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'bar',
         data: {values: [{a: 'A', b: 1, c: 'x'}]},
@@ -79,21 +80,36 @@ describe('compile/axis/properties', () => {
         },
       });
 
-      expect(
-        properties.axisRules.bandPosition({
-          axis: {},
-          model,
-          channel: 'x',
-          fieldOrDatumDef: model.encoding.x as any,
-          mark: model.mark,
-          scaleType: model.getScaleComponent('x').get('type'),
-          orient: 'bottom',
-          labelAngle: undefined,
-          format: undefined,
-          formatType: undefined,
-          config: model.config,
-        }),
-      ).toBe(0);
+      const bandPosition = properties.axisRules.bandPosition({
+        axis: {},
+        model,
+        channel: 'x',
+        fieldOrDatumDef: model.encoding.x as any,
+        mark: model.mark,
+        scaleType: model.getScaleComponent('x').get('type'),
+        orient: 'bottom',
+        labelAngle: undefined,
+        format: undefined,
+        formatType: undefined,
+        config: model.config,
+      });
+      expect(bandPosition).toEqual(rangedOffsetBaseline(model, 'x').bandPosition);
+      expect(isSignalRef(bandPosition)).toBe(true);
+    });
+
+    it('should keep the axis centered for point jitter', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'point',
+        data: {values: [{a: 1, b: 0.5, c: 'A'}]},
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'c', type: 'ordinal'},
+          yOffset: {field: 'b', type: 'quantitative'},
+        },
+      });
+
+      expect(model.isRangedOffset('y')).toBe(false);
+      expect(properties.defaultBandPosition(model, 'y')).toBeUndefined();
     });
 
     it('should respect explicit axis.bandPosition', () => {

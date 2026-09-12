@@ -1,5 +1,6 @@
 import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef.js';
 import {bar} from '../../../src/compile/mark/bar.js';
+import {rangedOffsetBaseline} from '../../../src/compile/scale/rangedOffset.js';
 import {DEFAULT_STEP} from '../../../src/config.js';
 import {defaultBarConfig} from '../../../src/mark.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
@@ -59,7 +60,7 @@ describe('Mark: Bar', () => {
     expect(props.y2).toEqual({
       scale: 'y',
       field: 'Cylinders',
-      offset: {scale: 'yOffset', value: 0},
+      offset: rangedOffsetBaseline(model, 'y').offset,
     });
     expect(props.height).toBeUndefined();
   });
