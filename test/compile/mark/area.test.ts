@@ -118,7 +118,7 @@ describe('Mark: Area', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'area',
       encoding: {
-        x: {timeUnit: 'year', field: 'Year', type: 'temporal'},
+        x: {field: 'IMDB_Rating', type: 'quantitative'},
         y: {field: 'Origin', type: 'nominal'},
         yOffset: {field: 'US_Gross', type: 'quantitative'},
       },
@@ -134,6 +134,10 @@ describe('Mark: Area', () => {
     it('should not collapse to line geometry', () => {
       expect(props.x2).toBeUndefined();
       expect(props.y2).toBeDefined();
+    });
+
+    it('should orient the Vega area vertically', () => {
+      expect(props.orient).toEqual({value: 'vertical'});
     });
   });
 
