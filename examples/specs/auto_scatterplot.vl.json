@@ -1,0 +1,10 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A scatterplot of horsepower and miles per gallon, produced by the auto mark from two quantitative encodings.",
+  "data": {"url": "data/cars.json"},
+  "mark": "auto",
+  "encoding": {
+    "x": {"field": "Horsepower", "type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon", "type": "quantitative"}
+  }
+}
