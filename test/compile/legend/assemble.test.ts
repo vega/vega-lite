@@ -144,6 +144,21 @@ describe('legend/assemble', () => {
     expect(legends[0].aria).toBe(false);
   });
 
+  it('encodes description on the legend group for aria labels', () => {
+    const model = parseUnitModelWithScale({
+      mark: 'point',
+      encoding: {
+        color: {field: 'b', type: 'nominal', legend: {description: 'Custom legend label'}},
+      },
+    });
+
+    model.parseLegends();
+
+    const legends = model.assembleLegends();
+    expect(legends).toHaveLength(1);
+    expect(legends[0].encode.legend.update.description).toEqual({value: 'Custom legend label'});
+  });
+
   it('does not merge legends for different discrete fields', () => {
     const model = parseUnitModelWithScale({
       data: {url: 'data/cars.json'},
