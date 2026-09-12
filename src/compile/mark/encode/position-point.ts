@@ -29,7 +29,7 @@ export function pointPosition(
     defaultPos,
     vgChannel,
   }: {
-    defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null;
+    defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | 'start' | null;
     vgChannel?: 'x' | 'y' | 'xc' | 'yc';
   },
 ) {
@@ -127,7 +127,7 @@ export function pointPositionDefaultRef({
   scale,
 }: {
   model: UnitModel;
-  defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null;
+  defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | 'start' | null;
   channel: PositionChannel | PolarPositionChannel;
   scaleName: string;
   scale: ScaleComponent;
@@ -143,6 +143,8 @@ export function pointPositionDefaultRef({
     }
 
     switch (defaultPos) {
+      case 'start':
+        return {value: 0};
       case 'zeroOrMin':
         return zeroOrMinOrMaxPosition({scaleName, scale, mode: 'zeroOrMin', mainChannel, config});
       case 'zeroOrMax':

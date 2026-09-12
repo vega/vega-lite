@@ -298,6 +298,33 @@ describe('compile/compile', () => {
     expect((pointSpec.scales.find((s: any) => s.name === 'yOffset') as any).zero).toBe(false);
   });
 
+  it('should compile signed yOffset bars around offset zero when y is omitted', () => {
+    const {spec} = compile({
+      height: 300,
+      data: {
+        values: [
+          {a: 'A', b: -28, c: 'x'},
+          {a: 'B', b: -55, c: 'x'},
+          {a: 'A', b: 88, c: 'y'},
+          {a: 'B', b: 55, c: 'y'},
+        ],
+      },
+      mark: 'bar',
+      encoding: {
+        x: {field: 'a'},
+        yOffset: {field: 'b', type: 'quantitative'},
+        color: {field: 'c'},
+      },
+    });
+
+    const yOffsetScale = spec.scales.find((scale) => scale.name === 'yOffset') as any;
+    expect(yOffsetScale.range).toEqual([{signal: 'height'}, 0]);
+    expect(yOffsetScale.zero).toBe(true);
+    expect(spec.marks[0].encode.update.y).toEqual({value: 0, offset: {scale: 'yOffset', field: 'b'}});
+    expect(spec.marks[0].encode.update.y2).toEqual({value: 0, offset: {scale: 'yOffset', value: 0}});
+    expect(spec.scales.some((scale) => scale.name === 'y')).toBe(false);
+  });
+
   it('should group line paths by an explicit detail field when yOffset is aggregated', () => {
     const {spec} = compile({
       data: {
@@ -431,7 +458,7 @@ describe('compile/compile', () => {
 
     const update = spec.marks[0].encode.update;
     expect(update.y).toEqual({value: 0, offset: {scale: 'yOffset', field: 'sum_b'}});
-    expect(update.y2).toEqual({field: {group: 'height'}});
+    expect(update.y2).toEqual({value: 0, offset: {scale: 'yOffset', value: 0}});
   });
 
   it('should use containerSize for width and autosize to fit-y/padding', () => {
