@@ -24,15 +24,26 @@ import {
   ErrorExtraEncoding,
   normalizeErrorBar,
 } from './errorbar.js';
+import {
+  WORDCLOUD,
+  WordCloud,
+  WordcloudConfigMixins,
+  WordcloudDef,
+  WORDCLOUD_PARTS,
+  normalizeWordcloud,
+} from './wordcloud.js';
 
 export type {BoxPlotConfig} from './boxplot.js';
 export type {ErrorBandConfigMixins} from './errorband.js';
 export type {ErrorBarConfigMixins} from './errorbar.js';
+export type {WordcloudConfigMixins, WordcloudConfig} from './wordcloud.js';
 
 export type CompositeMarkNormalizerRun = (
   spec: GenericUnitSpec<any, any>,
   params: NormalizerParams,
 ) => NormalizedLayerSpec | NormalizedUnitSpec;
+
+export type {WordCloud, WordcloudDef} from './wordcloud.js';
 
 /**
  * Registry index for all composite mark's normalizer
@@ -66,18 +77,20 @@ export type SharedCompositeEncoding<F extends Field> = PartialIndex<
 
 export type FacetedCompositeEncoding<F extends Field> = Encoding<F> & ErrorExtraEncoding<F> & EncodingFacetMapping<F>;
 
-export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
+export type CompositeMark = BoxPlot | ErrorBar | ErrorBand | WordCloud;
 
 export function getAllCompositeMarks() {
   return keys(compositeMarkRegistry);
 }
 
-export type CompositeMarkDef = BoxPlotDef | ErrorBarDef | ErrorBandDef;
+export type CompositeMarkDef = BoxPlotDef | ErrorBarDef | ErrorBandDef | WordcloudDef;
 
 export type CompositeAggregate = BoxPlot | ErrorBar | ErrorBand;
 
-export interface CompositeMarkConfigMixins extends BoxPlotConfigMixins, ErrorBarConfigMixins, ErrorBandConfigMixins {}
+export interface CompositeMarkConfigMixins
+  extends BoxPlotConfigMixins, ErrorBarConfigMixins, ErrorBandConfigMixins, WordcloudConfigMixins {}
 
 add(BOXPLOT, normalizeBoxPlot, BOXPLOT_PARTS);
 add(ERRORBAR, normalizeErrorBar, ERRORBAR_PARTS);
 add(ERRORBAND, normalizeErrorBand, ERRORBAND_PARTS);
+add(WORDCLOUD, normalizeWordcloud as any, WORDCLOUD_PARTS);

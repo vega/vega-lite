@@ -43,3 +43,4 @@ The View-level `transform` object is an array of objects describing transformati
 - [Stack](stack.html)
 - [Time Unit](timeunit.html#transform)
 - [Window](window.html)
+- [Wordcloud](wordcloud-transform.html)

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A word cloud with custom configuration: rectangular spiral, custom font size range, and fixed rotation.",
+  "width": 600,
+  "height": 350,
+  "data": {
+    "values": [
+      {"word": "machine", "freq": 100},
+      {"word": "learning", "freq": 95},
+      {"word": "neural", "freq": 80},
+      {"word": "network", "freq": 75},
+      {"word": "deep", "freq": 70},
+      {"word": "model", "freq": 65},
+      {"word": "training", "freq": 60},
+      {"word": "prediction", "freq": 55},
+      {"word": "classification", "freq": 50},
+      {"word": "regression", "freq": 45},
+      {"word": "feature", "freq": 40},
+      {"word": "accuracy", "freq": 35},
+      {"word": "loss", "freq": 30},
+      {"word": "gradient", "freq": 25},
+      {"word": "epoch", "freq": 20}
+    ]
+  },
+  "mark": {
+    "type": "wordcloud",
+    "fontSizeRange": [14, 64],
+    "spiral": "rectangular",
+    "padding": 3,
+    "font": "Georgia"
+  },
+  "encoding": {
+    "text": {"field": "word", "type": "nominal"},
+    "size": {"field": "freq", "type": "quantitative"},
+    "color": {"field": "word", "type": "nominal"}
+  }
+}

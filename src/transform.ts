@@ -2,6 +2,7 @@ import type {AggregateOp} from 'vega';
 import {BinParams} from './bin.js';
 import {FieldName} from './channeldef.js';
 import {Data} from './data.js';
+import {ExprRef} from './expr.js';
 import {ImputeParams} from './impute.js';
 import {LogicalComposition, normalizeLogicalComposition} from './logical.js';
 import {ParameterName} from './parameter.js';
@@ -686,6 +687,80 @@ export function isFold(t: Transform): t is FoldTransform {
 export function isExtent(t: Transform): t is ExtentTransform {
   return hasProperty(t, 'extent') && !hasProperty(t, 'density') && !hasProperty(t, 'regression');
 }
+
+export interface WordcloudTransform {
+  /**
+   * The data field containing the words to display.
+   */
+  wordcloud: FieldName;
+
+  /**
+   * The layout size as [width, height] in pixels. Defaults to the view's width and height signals.
+   */
+  size?: [number | ExprRef, number | ExprRef];
+
+  /**
+   * The font family for the words.
+   * __Default value:__ `"sans-serif"`
+   */
+  font?: string | ExprRef;
+
+  /**
+   * The font style.
+   * __Default value:__ `"normal"`
+   */
+  fontStyle?: string | ExprRef;
+
+  /**
+   * The font weight.
+   * __Default value:__ `"normal"`
+   */
+  fontWeight?: string | ExprRef;
+
+  /**
+   * A fixed font size for all words.
+   * When omitted, font size is determined by the data using `fontSizeRange`.
+   * Use `{field: "fieldName"}` to derive font size from a data field.
+   */
+  fontSize?: number | ExprRef | {field: FieldName};
+
+  /**
+   * The [min, max] font size range for scaling when font size is data-driven.
+   * __Default value:__ `[10, 56]`
+   */
+  fontSizeRange?: [number, number] | null;
+
+  /**
+   * Rotation angle for words in degrees.
+   * Use a number for a fixed angle, or `{field: "fieldName"}` for per-word rotation.
+   * __Default value:__ `0`
+   */
+  rotate?: number | ExprRef | {field: FieldName};
+
+  /**
+   * Padding between words in pixels.
+   * __Default value:__ `1`
+   */
+  padding?: number | ExprRef;
+
+  /**
+   * The layout spiral algorithm.
+   * __Default value:__ `"archimedean"`
+   */
+  spiral?: 'archimedean' | 'rectangular';
+
+  /**
+   * The output field names for the wordcloud transform as
+   * `[x, y, font, fontSize, fontStyle, fontWeight, angle]`.
+   * __Default value:__ `["x", "y", "font", "fontSize", "fontStyle", "fontWeight", "angle"]`
+   */
+  as?: [FieldName, FieldName, FieldName, FieldName, FieldName, FieldName, FieldName];
+}
+
+export function isWordcloud(t: Transform): t is WordcloudTransform {
+  return hasProperty(t, 'wordcloud');
+}
+
 export type Transform =
   | AggregateTransform
   | BinTransform
@@ -705,7 +780,8 @@ export type Transform =
   | SampleTransform
   | StackTransform
   | WindowTransform
-  | PivotTransform;
+  | PivotTransform
+  | WordcloudTransform;
 
 export function normalizeTransform(transform: Transform[]) {
   return transform.map((t) => {
