@@ -26,13 +26,6 @@
           "type": "timeunit",
           "units": ["month", "date"],
           "as": ["monthdate_date", "monthdate_date_end"]
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["monthdate_date", "hours_date"],
-          "ops": ["mean"],
-          "fields": ["temperature"],
-          "as": ["mean_temperature"]
         }
       ]
     },
@@ -46,6 +39,19 @@
           "fields": ["order"],
           "ops": ["min"],
           "as": ["order"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["monthdate_date", "hours_date"],
+          "ops": ["mean"],
+          "fields": ["temperature"],
+          "as": ["mean_temperature"]
         }
       ]
     }
@@ -147,6 +153,21 @@
         "field": ["datum[\"order_by_hours_date\"]"],
         "order": ["ascending"]
       },
+      "data": [
+        {
+          "source": "facet",
+          "name": "data_0",
+          "transform": [
+            {
+              "type": "aggregate",
+              "groupby": ["monthdate_date"],
+              "ops": ["mean"],
+              "fields": ["temperature"],
+              "as": ["mean_temperature"]
+            }
+          ]
+        }
+      ],
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
@@ -160,7 +181,7 @@
           "type": "area",
           "style": ["area"],
           "sort": {"field": "x"},
-          "from": {"data": "facet"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
@@ -186,13 +207,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "monthdate_date"},
+      "domain": {"data": "data_1", "field": "monthdate_date"},
       "range": [0, {"signal": "child_width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "mean_temperature"},
+      "domain": {"data": "data_1", "field": "mean_temperature"},
       "range": [{"signal": "child_height"}, 0],
       "zero": false,
       "nice": true

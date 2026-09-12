@@ -120,6 +120,34 @@ export class FacetNode extends DataFlowNode {
     return f;
   }
 
+  /**
+   * The sort index fields of the facet channels that are sorted by an array.
+   */
+  public get sortIndexFields(): string[] {
+    const fields: string[] = [];
+
+    for (const channel of FACET_CHANNELS) {
+      const sortIndexField = this[channel]?.sortIndexField;
+      if (sortIndexField) {
+        fields.push(sortIndexField);
+      }
+    }
+    return fields;
+  }
+
+  public get doSortWithAggregation(): boolean {
+    for (const channel of FACET_CHANNELS) {
+      const info = this[channel];
+      if (!info) {
+        continue;
+      }
+      if (info.sortField || (info.sortIndexField && isBinning(this.model.facet[channel].bin))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   public dependentFields() {
     const depFields = new Set<string>(this.fields);
 

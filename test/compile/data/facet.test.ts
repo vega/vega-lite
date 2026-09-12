@@ -307,6 +307,88 @@ describe('compile/data/facet', () => {
     });
   });
 
+  describe('sortIndexFields', () => {
+    it('should return the sort index fields of array-sorted channels', () => {
+      const model = parseFacetModelWithScale({
+        $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
+        data: {
+          name: 'a',
+        },
+        facet: {
+          row: {field: 'r', type: 'nominal', sort: {op: 'median', field: 'b'}},
+          column: {field: 'c', type: 'nominal', sort: [1, 2, 3]},
+        },
+        spec: {
+          mark: 'rect',
+          encoding: {
+            y: {field: 'b', type: 'quantitative'},
+            x: {field: 'a', type: 'quantitative'},
+          },
+        },
+      });
+
+      const facet = new FacetNode(null, model, 'facetName', 'dataName');
+
+      expect(facet.sortIndexFields).toEqual(['column_c_sort_index']);
+    });
+  });
+
+  describe('sortSurvivesAggregation', () => {
+    function facetNodeForFacet(facet: any) {
+      const model = parseFacetModelWithScale({
+        $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
+        data: {
+          name: 'a',
+        },
+        facet,
+        spec: {
+          mark: 'rect',
+          encoding: {
+            y: {field: 'b', type: 'quantitative'},
+            x: {field: 'a', type: 'quantitative'},
+          },
+        },
+      });
+
+      return new FacetNode(null, model, 'facetName', 'dataName');
+    }
+
+    it('should be true without a custom sort', () => {
+      const facet = facetNodeForFacet({
+        row: {field: 'r', type: 'nominal'},
+        column: {field: 'c', type: 'nominal', sort: 'descending'},
+      });
+
+      expect(facet.doSortWithAggregation).toBe(true);
+    });
+
+    it('should be true with sort arrays on unbinned fields', () => {
+      const facet = facetNodeForFacet({
+        row: {field: 'r', type: 'nominal', sort: ['r1', 'r2']},
+        column: {field: 'c', type: 'nominal', sort: [1, 2, 3]},
+      });
+
+      expect(facet.doSortWithAggregation).toBe(true);
+    });
+
+    it('should be false with a sort field definition', () => {
+      const facet = facetNodeForFacet({
+        row: {field: 'r', type: 'nominal', sort: {op: 'median', field: 'b'}},
+        column: {field: 'c', type: 'nominal', sort: [1, 2, 3]},
+      });
+
+      expect(facet.doSortWithAggregation).toBe(false);
+    });
+
+    it('should be false with a sort array on a binned field', () => {
+      const facet = facetNodeForFacet({
+        row: {bin: true, field: 'r', type: 'quantitative', sort: [1, 2, 3]},
+      });
+
+      expect(facet.doSortWithAggregation).toBe(false);
+    });
+  });
+
   describe('hash', () => {
     it('should generate the correct hash', () => {
       const model = parseFacetModelWithScale({

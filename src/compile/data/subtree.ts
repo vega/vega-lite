@@ -41,13 +41,26 @@ function cloneSubtree(facet: FacetNode) {
 }
 
 /**
+ * Checks whether facet node can swap with the given child to move further down the dataflow.
+ */
+function canMoveFacetBelow(facet: FacetNode, child: DataFlowNode): boolean {
+  if (child instanceof OutputNode) {
+    return false;
+  }
+  if (child instanceof AggregateNode) {
+    return facet.doSortWithAggregation;
+  }
+  return true;
+}
+
+/**
  * Move facet nodes down to the next fork or output node. Also pull the main output with the facet node.
  * After moving down the facet node, make a copy of the subtree and make it a child of the main output.
  */
 export function moveFacetDown(node: DataFlowNode) {
   if (node instanceof FacetNode) {
-    if (node.numChildren() === 1 && !(node.children[0] instanceof OutputNode)) {
-      // move down until we hit a fork or output node
+    if (node.numChildren() === 1 && canMoveFacetBelow(node, node.children[0])) {
+      // move down until we hit a fork, an output node, or an aggregate that would break sorting
       const child = node.children[0];
 
       if (
@@ -57,6 +70,11 @@ export function moveFacetDown(node: DataFlowNode) {
         child instanceof JoinAggregateTransformNode
       ) {
         child.addDimensions(node.fields);
+
+        if (child instanceof AggregateNode) {
+          // also group by the sort index fields so that the aggregate does not drop them
+          child.addDimensions(node.sortIndexFields);
+        }
       }
 
       child.swapWithParent();
