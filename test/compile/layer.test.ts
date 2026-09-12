@@ -111,4 +111,50 @@ describe('Layer', () => {
       expect(model.component.axes['x'][1].implicit.orient).toBe('top');
     });
   });
+
+  describe('dual y-axis chart with label angle', () => {
+    it('should recalculate labelAlign for the flipped axis (issue #3773)', () => {
+      const dualYModel = parseLayerModel({
+        layer: [
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {
+                field: 'temp',
+                type: 'quantitative',
+                axis: {labelAngle: 0},
+              },
+            },
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'date', type: 'temporal'},
+              y: {
+                field: 'precip',
+                type: 'quantitative',
+                axis: {labelAngle: 0},
+              },
+            },
+          },
+        ],
+        resolve: {
+          scale: {y: 'independent'},
+        },
+      });
+      dualYModel.parseScale();
+      dualYModel.parseAxesAndHeaders();
+
+      const yAxes = dualYModel.component.axes['y'];
+      expect(yAxes).toHaveLength(2);
+      expect(yAxes[0].get('orient')).toBe('left');
+      expect(yAxes[1].get('orient')).toBe('right');
+
+      // At angle=0, left axis labels should align right (toward chart),
+      // right axis labels should align left (toward chart)
+      expect(yAxes[0].get('labelAlign')).toBe('right');
+      expect(yAxes[1].get('labelAlign')).toBe('left');
+    });
+  });
 });
