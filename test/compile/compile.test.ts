@@ -29,6 +29,53 @@ describe('compile/compile', () => {
     expect(spec.marks).toHaveLength(1); // just the root group
   });
 
+  it('uses a valid top-level data source for a data-driven scale range in a faceted+layered plot (#9706)', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {group: '2025', class: 'A', value: 23, deltaX: 322, class_color: '#041042'},
+          {group: '2025', class: 'B', value: 21.5, deltaX: 313, class_color: '#7c31c0'},
+          {group: '2025', class: 'C', value: 15, deltaX: 275, class_color: '#2652bc'},
+        ],
+      },
+      transform: [
+        {
+          window: [
+            {field: 'deltaX', op: 'max', as: 'deltaX_max'},
+            {field: 'value', op: 'max', as: 'value_max'},
+          ],
+          frame: [null, null],
+        },
+        {calculate: 'datum.deltaX / datum.deltaX_max * datum.value_max', as: 'value_published'},
+        {fold: ['value', 'value_published'], as: ['key', 'value']},
+      ],
+      facet: {row: {field: 'key'}},
+      spec: {
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'group', type: 'nominal'},
+          yOffset: {field: 'class', type: 'nominal', sort: {field: 'y', order: 'ascending'}},
+        },
+        layer: [
+          {
+            mark: {type: 'bar'},
+            encoding: {
+              color: {field: 'class', type: 'nominal', scale: {range: {field: 'class_color'}}},
+            },
+          },
+          {mark: {type: 'text'}, encoding: {text: {field: 'class', type: 'nominal'}}},
+        ],
+      },
+    });
+
+    const colorScale = spec.scales!.find((s) => s.name === 'color')!;
+    const rangeData = (colorScale.range as {data: string}).data;
+    const dataNames = spec.data!.map((d) => d.name);
+    // The data-driven range must reference an existing top-level data source, not one that only
+    // exists inside the facet cell (which produced "Undefined data set name" when Vega parsed it).
+    expect(dataNames).toContain(rangeData);
+  });
+
   it('should return a spec with specified top-level properties, size signals, data and marks', () => {
     const {spec} = compile({
       padding: 123,
