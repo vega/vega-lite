@@ -1,12 +1,18 @@
 import {SignalRef} from 'vega';
 import {COLOR, X, Y} from '../../../src/channel.js';
-import {area} from '../../../src/compile/mark/area.js';
+import {area, withThicknessOffset} from '../../../src/compile/mark/area.js';
 import {Encoding} from '../../../src/encoding.js';
 import {NormalizedUnitSpec} from '../../../src/spec/index.js';
 import {internalField} from '../../../src/util.js';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('Mark: Area', () => {
+  it('should reject positional offsets that cannot be serialized', () => {
+    expect(() => withThicknessOffset({value: 1, offset: {field: {group: 'width'}}} as any, {value: 2}, 0.5)).toThrow(
+      'Cannot combine area thickness with the positional offset.',
+    );
+  });
+
   function verticalArea(moreEncoding: Encoding<string> = {}): NormalizedUnitSpec {
     return {
       mark: 'area',
@@ -111,6 +117,186 @@ describe('Mark: Area', () => {
 
     it('should have the correct value for y2', () => {
       expect(props.y2).toEqual({scale: 'y', value: 0});
+    });
+  });
+
+  describe('vertical area with size encoding for thickness', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'Year', type: 'temporal'},
+        y: {field: 'Worldwide_Gross', type: 'quantitative'},
+        size: {field: 'US_Gross', type: 'quantitative'},
+      },
+      data: {url: 'data/movies.json'},
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use y/y2 around the centerline based on size', () => {
+      expect((props.y as any).scale).toBe('y');
+      expect((props.y as any).offset).toEqual({scale: 'size', field: 'US_Gross', mult: 0.5});
+      expect((props.y2 as any).scale).toBe('y');
+      expect((props.y2 as any).offset).toEqual({scale: 'size', field: 'US_Gross', mult: -0.5});
+    });
+
+    it('should also support value centerlines', () => {
+      const valueCenterModel = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'Year', type: 'temporal'},
+          y: {value: 60},
+          size: {field: 'US_Gross', type: 'quantitative'},
+        },
+        data: {url: 'data/movies.json'},
+      });
+      const valueCenterProps = area.encodeEntry(valueCenterModel);
+
+      expect(valueCenterProps.y).toEqual({value: 60, offset: {scale: 'size', field: 'US_Gross', mult: 0.5}});
+      expect(valueCenterProps.y2).toEqual({value: 60, offset: {scale: 'size', field: 'US_Gross', mult: -0.5}});
+    });
+
+    it('should preserve conditional size production rules for both edges', () => {
+      const conditionalModel = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'Year', type: 'temporal'},
+          y: {field: 'Worldwide_Gross', type: 'quantitative'},
+          size: {
+            condition: {test: 'datum.highlight', field: 'US_Gross', type: 'quantitative'},
+            value: 10,
+          },
+        },
+        data: {url: 'data/movies.json'},
+      });
+      const conditionalProps = area.encodeEntry(conditionalModel);
+
+      expect(conditionalProps.y).toEqual([
+        {
+          test: 'datum.highlight',
+          scale: 'y',
+          field: 'Worldwide_Gross',
+          offset: {scale: 'size', field: 'US_Gross', mult: 0.5},
+        },
+        {scale: 'y', field: 'Worldwide_Gross', offset: {value: 10, mult: 0.5}},
+      ]);
+      expect(conditionalProps.y2).toEqual([
+        {
+          test: 'datum.highlight',
+          scale: 'y',
+          field: 'Worldwide_Gross',
+          offset: {scale: 'size', field: 'US_Gross', mult: -0.5},
+        },
+        {scale: 'y', field: 'Worldwide_Gross', offset: {value: 10, mult: -0.5}},
+      ]);
+    });
+  });
+
+  describe('area thickness with an omitted center channel', () => {
+    it('should center x trajectories vertically in the view', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      const props = area.encodeEntry(model);
+
+      expect(props.x).toEqual({scale: 'x', field: 'value'});
+      expect(props.y).toEqual({signal: 'height', mult: 0.5, offset: {scale: 'size', field: 'density', mult: 0.5}});
+      expect(props.y2).toEqual({signal: 'height', mult: 0.5, offset: {scale: 'size', field: 'density', mult: -0.5}});
+    });
+
+    it('should center y trajectories horizontally in the view', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          y: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      const props = area.encodeEntry(model);
+
+      expect(props.y).toEqual({scale: 'y', field: 'value'});
+      expect(props.x).toEqual({signal: 'width', mult: 0.5, offset: {scale: 'size', field: 'density', mult: 0.5}});
+      expect(props.x2).toEqual({signal: 'width', mult: 0.5, offset: {scale: 'size', field: 'density', mult: -0.5}});
+    });
+  });
+
+  describe('horizontal area with size encoding for thickness', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'Species', type: 'nominal'},
+        y: {field: 'value', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+      data: {url: 'data/penguins.json'},
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use x/x2 around the centerline based on size', () => {
+      expect((props.x as any).scale).toBe('x');
+      expect((props.x as any).offset).toEqual({scale: 'size', field: 'density', mult: 0.5});
+      expect((props.x2 as any).scale).toBe('x');
+      expect((props.x2 as any).offset).toEqual({scale: 'size', field: 'density', mult: -0.5});
+    });
+  });
+
+  describe('area thickness with a quantitative offset', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {field: 'shift', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+    const props = area.encodeEntry(model);
+
+    it('should prefer centered thickness over ranged-offset geometry', () => {
+      expect(model.isRangedOffset('y')).toBe(false);
+      expect((props.y as any).offset.signal).toContain('scale("yOffset", datum["shift"])');
+      expect((props.y as any).offset.signal).toContain('0.5 * (scale("size", datum["density"]))');
+      expect((props.y2 as any).offset.signal).toContain('-0.5 * (scale("size", datum["density"]))');
+    });
+
+    it('should compose a missing center with quantitative offset and thickness', () => {
+      const offsetModel = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          yOffset: {field: 'shift', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      const offsetProps = area.encodeEntry(offsetModel);
+
+      expect(offsetModel.isRangedOffset('y')).toBe(false);
+      expect((offsetProps.y as any).signal).toBe('height');
+      expect((offsetProps.y as any).mult).toBe(0.5);
+      expect((offsetProps.y as any).offset.signal).toContain('scale("yOffset", datum["shift"])');
+      expect((offsetProps.y as any).offset.signal).toContain('0.5 * (scale("size", datum["density"]))');
+    });
+  });
+
+  describe('ranged area with size encoding', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'Year', type: 'temporal'},
+        y: {field: 'low', type: 'quantitative'},
+        y2: {field: 'high'},
+        size: {field: 'uncertainty', type: 'quantitative'},
+      },
+    });
+    const props = area.encodeEntry(model);
+
+    it('should preserve the explicit range instead of using size as thickness', () => {
+      expect(model.encoding.size).toBeUndefined();
+      expect(props.y).toEqual({scale: 'y', field: 'low'});
+      expect(props.y2).toEqual({scale: 'y', field: 'high'});
     });
   });
 

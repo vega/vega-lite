@@ -2,12 +2,14 @@ import {Orientation, SignalRef} from 'vega';
 import {isBinned, isBinning} from '../../bin.js';
 import {
   isFieldDef,
+  isFieldOrDatumDef,
+  isDiscrete,
   isNumericDataDef,
   isUnbinnedQuantitativeFieldOrDatumDef,
   isTypedFieldDef,
 } from '../../channeldef.js';
 import {Config} from '../../config.js';
-import {channelHasQuantitativeOffset, Encoding, isAggregate} from '../../encoding.js';
+import {channelHasQuantitativeOffset, Encoding, isAggregate, isAreaSizeThickness} from '../../encoding.js';
 import {replaceExprRef} from '../../expr.js';
 import * as log from '../../log/index.js';
 import {AREA, BAR, CIRCLE, IMAGE, LINE, Mark, MarkDef, POINT, RECT, RULE, SQUARE, TEXT, TICK} from '../../mark.js';
@@ -87,10 +89,10 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     case TEXT:
     case BAR:
       if (!y && yOffsetIsMeasure) {
-        return specifiedOrient ?? 'vertical';
+        return 'vertical';
       }
       if (!x && xOffsetIsMeasure) {
-        return specifiedOrient ?? 'horizontal';
+        return 'horizontal';
       }
       if (isFieldDef(x) && (isBinned(x.bin) || (isFieldDef(y) && y.aggregate && !x.aggregate))) {
         return 'vertical';
@@ -135,11 +137,42 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
 
     // falls through
     case AREA:
+      if (isAreaSizeThickness(mark, encoding)) {
+        if (x && !y) {
+          return 'vertical';
+        }
+        if (y && !x) {
+          return 'horizontal';
+        }
+        if (specifiedOrient) {
+          return specifiedOrient;
+        }
+        if (x && y) {
+          const xIsMeasure = isUnbinnedQuantitativeFieldOrDatumDef(x);
+          const yIsMeasure = isUnbinnedQuantitativeFieldOrDatumDef(y);
+
+          if (xIsMeasure && !yIsMeasure) {
+            return 'vertical';
+          }
+          if (!xIsMeasure && yIsMeasure) {
+            const xIsTemporal = isTypedFieldDef(x) && x.type === TEMPORAL;
+            return xIsTemporal ? 'vertical' : 'horizontal';
+          }
+
+          return 'vertical';
+        }
+      }
       if (!y && yOffsetIsMeasure) {
         return specifiedOrient ?? 'vertical';
       }
       if (!x && xOffsetIsMeasure) {
         return specifiedOrient ?? 'horizontal';
+      }
+      if ((mark === BAR || mark === AREA) && isFieldOrDatumDef(y) && isDiscrete(y) && yOffsetIsMeasure) {
+        return 'vertical';
+      }
+      if ((mark === BAR || mark === AREA) && isFieldOrDatumDef(x) && isDiscrete(x) && xOffsetIsMeasure) {
+        return 'horizontal';
       }
       // If there are range for both x and y, y (vertical) has higher precedence.
       if (y2) {

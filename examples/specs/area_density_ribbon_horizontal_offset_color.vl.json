@@ -1,0 +1,28 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "title": "Body Mass Violin Plot by Species and Sex",
+  "width": {"step": 70},
+  "height": 240,
+  "data": {"url": "data/penguins.json"},
+  "transform": [
+    {"filter": {"field": "Sex", "oneOf": ["MALE", "FEMALE"]}},
+    {
+      "density": "Body Mass (g)",
+      "groupby": ["Species", "Sex"],
+      "resolve": "independent",
+      "bandwidth": 100
+    }
+  ],
+  "mark": {"type": "area", "opacity": 0.9},
+  "encoding": {
+    "y": {
+      "field": "value",
+      "type": "quantitative",
+      "title": "Body Mass (g)"
+    },
+    "x": {"field": "Species", "type": "nominal"},
+    "xOffset": {"field": "Sex", "type": "nominal"},
+    "size": {"field": "density", "type": "quantitative"},
+    "color": {"field": "Sex", "type": "nominal"}
+  }
+}

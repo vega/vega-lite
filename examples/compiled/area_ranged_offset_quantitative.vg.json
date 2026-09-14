@@ -58,6 +58,7 @@
           "encode": {
             "update": {
               "opacity": {"value": 0.8},
+              "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
                 "signal": "\"quarter: \" + (isValid(datum[\"quarter\"]) ? isArray(datum[\"quarter\"]) ? join(datum[\"quarter\"], ' ') : datum[\"quarter\"] : \"\"+datum[\"quarter\"]) + \"; team: \" + (isValid(datum[\"team\"]) ? isArray(datum[\"team\"]) ? join(datum[\"team\"], ' ') : datum[\"team\"] : \"\"+datum[\"team\"]) + \"; score: \" + (format(datum[\"score\"], \"\"))"
