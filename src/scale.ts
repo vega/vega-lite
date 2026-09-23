@@ -204,6 +204,19 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> extends ScaleInvali
   bandWithNestedOffsetPaddingInner?: number | ES;
 
   /**
+   * Default inner padding for `x` and `y` band scales with a continuous-domain
+   * `xOffset` or `yOffset` scale, such as quantitative or temporal jitter.
+   * Takes precedence over `bandWithNestedOffsetPaddingInner` for these scales.
+   * Explicit `padding` or `paddingInner` on the position scale takes precedence.
+   *
+   * __Default value:__ Falls back to `bandWithNestedOffsetPaddingInner`.
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  bandWithContinuousOffsetPaddingInner?: number | ES;
+
+  /**
    * Default outer padding for `x` and `y` band scales with nested `xOffset` and `yOffset` encoding.
    *
    * __Default value:__ `0.2`
