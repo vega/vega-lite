@@ -410,6 +410,29 @@ describe('Axis', () => {
       });
     });
 
+    it.each([
+      {format: '.1f', normalizedNumberFormat: undefined, expected: '.1f'},
+      {format: '.1f', normalizedNumberFormat: '.2%', expected: '.1f'},
+      {format: '', normalizedNumberFormat: '.2%', expected: ''},
+      {format: undefined, normalizedNumberFormat: undefined, expected: '.0%'},
+      {format: undefined, normalizedNumberFormat: '.2%', expected: '.2%'},
+    ])(
+      'should use format $expected for a normalized stack with axis format $format and normalizedNumberFormat $normalizedNumberFormat',
+      ({format, normalizedNumberFormat, expected}) => {
+        const model = parseUnitModelWithScale({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'Origin', type: 'nominal'},
+            y: {aggregate: 'count', type: 'quantitative', stack: 'normalize', axis: {format}},
+            color: {field: 'Cylinders', type: 'nominal'},
+          },
+          config: normalizedNumberFormat === undefined ? {} : {normalizedNumberFormat},
+        });
+        const axisComponent = parseUnitAxes(model);
+        expect(axisComponent['y'][0].get('format')).toBe(expected);
+      },
+    );
+
     it('should have output time formatType for ordinal months', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
