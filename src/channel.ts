@@ -530,9 +530,11 @@ const ALL_MARKS: Record<Mark, 'always'> = {
   trail: 'always',
   text: 'always',
   tick: 'always',
+  wordcloud: 'always',
 };
 
-const {geoshape: _g, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
+// Layout marks use a transform for positioning (not user-specified x/y).
+const {geoshape: _g, wordcloud: _wc, ...POSITIONAL_MARKS} = ALL_MARKS;
 
 /**
  * Return a dictionary showing whether a channel supports mark type.
@@ -570,8 +572,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case LATITUDE:
     case LONGITUDE:
     case TIME:
-      // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
-      return ALL_MARKS_EXCEPT_GEOSHAPE;
+      return POSITIONAL_MARKS;
     case X2:
     case Y2:
     case LATITUDE2:
@@ -600,6 +601,7 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
         text: 'always',
         line: 'always',
         trail: 'always',
+        wordcloud: 'always',
       };
     case STROKEDASH:
       return {
@@ -615,9 +617,9 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case SHAPE:
       return {point: 'always', geoshape: 'always'};
     case TEXT:
-      return {text: 'always'};
+      return {text: 'always', wordcloud: 'always'};
     case ANGLE:
-      return {point: 'always', square: 'always', text: 'always'};
+      return {point: 'always', square: 'always', text: 'always', wordcloud: 'always'};
     case URL:
       return {image: 'always'};
     case THETA:

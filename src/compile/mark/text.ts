@@ -21,6 +21,7 @@ export const text: MarkCompiler = {
         size: 'ignore',
         orient: 'ignore',
         theta: 'include',
+        angle: 'include',
       }),
       ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
