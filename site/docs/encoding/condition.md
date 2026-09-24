@@ -30,9 +30,11 @@ permalink: /docs/condition.html
 }
 ```
 
-For [mark property channels](encoding.html#mark-prop) as well as [text and tooltip channels](encoding.html#text), the `condition` property of their channel definitions can be used to determine encoding rules based on whether data values satisfy a [parameter](parameter.html) (e.g. fall withing a [selection parameter](parameter.html#select)) or satisfy a `test` predicate.
+For [mark property channels](encoding.html#mark-prop) as well as [text and tooltip channels](encoding.html#text), the `condition` property of their channel definitions can be used to determine encoding rules based on whether data values satisfy a [parameter](parameter.html) (e.g. fall within a [selection parameter](parameter.html#select)) or satisfy a `test` predicate.
 
 {:#condition}
+
+The `condition` property can be either a **single** condition object or an **array** of condition objects. When using an array, conditions are evaluated in order; the first matching condition determines the encoding for that mark.
 
 There are two ways to specify the condition:
 
@@ -119,9 +121,23 @@ For example, in the following plot, the color of `rect` marks is driven by a con
 }
 ```
 
-Condition value definitions and conditional datum definitions use a constant value encoding when data satisfy a [parameter](parameter.html) (e.g. fall withing a [selection parameter](parameter.html#select)) or satisfy a logical predicate. Another field, datum, or value definition can be specified as the "else" case when the condition is not satisfied.
+Condition value definitions and conditional datum definitions use a constant value encoding when data satisfy a [parameter](parameter.html) (e.g. fall within a [selection parameter](parameter.html#select)) or satisfy a logical predicate. Another field, datum, or value definition can be specified as the "else" case when the condition is not satisfied.
 
 A condition value/datum definition must contain either [a `param` name or a `test` predicate](#condition) in addition to the encoded constant [`value`](encoding.html#value-def) or constant data value ([`datum`](encoding.html#datum-def)).
+
+{:#multiple-conditions}
+
+### Multiple conditions (array form)
+
+You can pass an **array** of condition objects to apply multiple rules in order (e.g. one for click selection and one for hover). The first condition that matches determines the encoding.
+
+For example, the following bar chart uses two conditions on `strokeWidth`: one for selected bars (click) and one for hovered bars. Bars can be both selected and hovered; the order of conditions in the array determines which style wins.
+
+<div class="vl-example" data-name="interactive_bar_select_highlight"></div>
+
+The next example uses an array of conditions on `color`: points inside a brush selection use one color, points under the cursor use another, and the base `value` is used otherwise.
+
+<div class="vl-example" data-name="selection_multi_condition"></div>
 
 For example, in the visualization below, a conditional value definition causes marks that fall within a dragged interval to be larger than those that lie outside it.
 
