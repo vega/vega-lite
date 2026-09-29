@@ -131,7 +131,7 @@
     "vega-datasets": "^3.2.1",
     "vega-embed": "^7.1.0",
     "vega-tooltip": "^1.1.0",
-    "vitest": "^4.1.10",
+    "vitest": "^5.0.2",
     "yaml-front-matter": "^4.1.1"
   },
   "dependencies": {
