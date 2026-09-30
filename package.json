@@ -97,9 +97,9 @@
     "@types/d3": "^7.4.3",
     "@types/node": "^26.1.1",
     "@typescript/native": "npm:typescript@^7.0.2",
-    "@vitest/browser": "^4.1.10",
-    "@vitest/browser-playwright": "^4.1.10",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/browser": "^5.0.2",
+    "@vitest/browser-playwright": "^5.0.2",
+    "@vitest/coverage-v8": "^5.0.2",
     "@vitest/eslint-plugin": "^1.6.23",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
@@ -131,7 +131,7 @@
     "vega-datasets": "^3.2.1",
     "vega-embed": "^7.1.0",
     "vega-tooltip": "^1.1.0",
-    "vitest": "^4.1.10",
+    "vitest": "^5.0.2",
     "yaml-front-matter": "^4.1.1"
   },
   "dependencies": {
