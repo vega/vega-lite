@@ -91,7 +91,7 @@ function pointPosition2OrSize(
   const {offset} =
     channel in encoding || channel in markDef
       ? positionOffset({channel, markDef, encoding, model})
-      : positionOffset({channel: baseChannel, markDef, encoding, model});
+      : positionOffset({channel: baseChannel, markDef, encoding, model, stackSuffix: 'start'});
 
   if (!channelDef && (channel === 'x2' || channel === 'y2') && (encoding.latitude || encoding.longitude)) {
     const vgSizeChannel = getSizeChannel(channel);
@@ -145,12 +145,15 @@ function pointPosition2OrSize(
             scaleName,
             {},
             {
-              offset: ref.valueRefForFieldOrDatumDef(
-                {datum: 0},
-                model.scaleName(getOffsetScaleChannel(baseChannel)),
-                {},
-                {},
-              ),
+              offset:
+                model.stack?.fieldChannel === getOffsetScaleChannel(baseChannel)
+                  ? offset
+                  : ref.valueRefForFieldOrDatumDef(
+                      {datum: 0},
+                      model.scaleName(getOffsetScaleChannel(baseChannel)),
+                      {},
+                      {},
+                    ),
             },
           ),
         }
@@ -180,12 +183,7 @@ export function position2Ref({
 }: ref.MidPointParams & {
   channel: 'x2' | 'y2' | 'radius2' | 'theta2';
 }): VgValueRef | VgValueRef[] {
-  if (
-    isFieldOrDatumDef(channelDef) &&
-    stack &&
-    // If fieldChannel is X and channel is X2 (or Y and Y2)
-    channel.charAt(0) === stack.fieldChannel.charAt(0)
-  ) {
+  if (isFieldOrDatumDef(channelDef) && stack && getMainRangeChannel(channel) === stack.fieldChannel) {
     return ref.valueRefForFieldOrDatumDef(channelDef, scaleName, {suffix: 'start'}, {offset});
   }
   return ref.midPointRefWithPositionInvalidTest({
