@@ -26,7 +26,7 @@ export default defineConfig({
           globalSetup: './vitest.global-setup.ts',
           name: 'runtime',
           browser: {
-            provider: playwright(),
+            provider: playwright({contextOptions: {timezoneId: 'America/Los_Angeles'}}),
             enabled: true,
             headless: false,
             instances: [{browser: 'chromium'}],
