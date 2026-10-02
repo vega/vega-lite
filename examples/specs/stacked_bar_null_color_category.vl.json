@@ -1,0 +1,26 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Stacked bar chart with one category that aggregates to null for one group.",
+  "data": {
+    "values": [
+      {"grouping": "GroupA", "type": "aaa", "amount": 100},
+      {"grouping": "GroupA", "type": "charges", "amount": 100},
+      {"grouping": "GroupA", "type": "denials", "amount": null},
+      {"grouping": "GroupA", "type": "denials", "amount": null},
+      {"grouping": "GroupA", "type": "yyy", "amount": 100},
+      {"grouping": "GroupA", "type": "zzz", "amount": 100},
+      {"grouping": "GroupB", "type": "aaa", "amount": 100},
+      {"grouping": "GroupB", "type": "charges", "amount": 100},
+      {"grouping": "GroupB", "type": "denials", "amount": 100},
+      {"grouping": "GroupB", "type": "denials", "amount": null},
+      {"grouping": "GroupB", "type": "yyy", "amount": 100},
+      {"grouping": "GroupB", "type": "zzz", "amount": 100}
+    ]
+  },
+  "mark": {"type": "bar"},
+  "encoding": {
+    "x": {"field": "grouping", "type": "nominal", "title": "Group"},
+    "y": {"aggregate": "sum", "field": "amount", "type": "quantitative", "title": "Sum of Amount"},
+    "color": {"field": "type", "type": "nominal"}
+  }
+}
