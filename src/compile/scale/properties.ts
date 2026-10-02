@@ -156,8 +156,12 @@ export const scaleRules: {
 
   interpolate: ({channel, fieldOrDatumDef}) => interpolate(channel, fieldOrDatumDef.type),
 
-  nice: ({scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef}) =>
-    nice(scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef),
+  nice: ({scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef, markDef}) =>
+    // An array mark's raster spans its extent exactly, so keep the domain as given: rounding it
+    // outward would misalign the axis with the image.
+    markDef.type === 'array' && isXorY(channel)
+      ? undefined
+      : nice(scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef),
 
   padding: ({channel, scaleType, fieldOrDatumDef, markDef, config}) =>
     padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
@@ -173,16 +177,19 @@ export const scaleRules: {
     return reverse(scaleType, sort, channel, config.scale);
   },
   zero: ({model, channel, fieldOrDatumDef, domain, markDef, scaleType, config, hasSecondaryRangeChannel}) =>
-    zero(
-      channel,
-      fieldOrDatumDef,
-      domain,
-      markDef,
-      scaleType,
-      config.scale,
-      hasSecondaryRangeChannel,
-      isXorYOffset(channel) && (model as UnitModel).isRangedOffset(getMainChannelFromOffsetChannel(channel)),
-    ),
+    // Likewise, keep an array mark's extent as given rather than extending it to include zero.
+    markDef.type === 'array' && isXorY(channel)
+      ? undefined
+      : zero(
+          channel,
+          fieldOrDatumDef,
+          domain,
+          markDef,
+          scaleType,
+          config.scale,
+          hasSecondaryRangeChannel,
+          isXorYOffset(channel) && (model as UnitModel).isRangedOffset(getMainChannelFromOffsetChannel(channel)),
+        ),
 };
 
 // This method is here rather than in range.ts to avoid circular dependency.

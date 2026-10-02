@@ -402,6 +402,18 @@
         "title": "Wind Vector Map"
       }
     ],
+    "Gridded Data": [
+      {
+        "name": "array_axis",
+        "title": "Elevation Grid",
+        "description": "An `array` mark draws a grid of values as a single raster image. Setting `axis` to `true` labels it with its own extent, counted in cells."
+      },
+      {
+        "name": "array_nodata",
+        "title": "Grid with Empty Cells",
+        "description": "Cells whose value is `null` are left undrawn, so a grid can cover a rectangle while holding data in only part of it."
+      }
+    ],
     "Circular Plots": [
       {
         "name": "arc_pie",
@@ -742,6 +754,11 @@
       {
         "name": "concat_population_pyramid",
         "title": "Population Pyramid"
+      },
+      {
+        "name": "concat_array_zonal_mean",
+        "title": "Global Precipitation with Zonal Mean",
+        "description": "A raster of annual precipitation beside the mean at each latitude. The profile is derived from the grid itself, by flattening its cells."
       }
     ]
   },

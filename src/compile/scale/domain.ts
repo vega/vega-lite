@@ -50,6 +50,7 @@ import {
   VgUnionSortField,
 } from '../../vega.schema.js';
 import {getMarkConfig} from '../common.js';
+import {arrayColorFieldDef, arrayExtentField} from '../data/array.js';
 import {getBinSignalName} from '../data/bin.js';
 import {sortArrayIndexField} from '../data/calculate.js';
 import {FACET_SCALE_PREFIX} from '../data/optimize.js';
@@ -211,6 +212,21 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
     } else {
       return parseSingleChannelDomain(scaleType, domain, model, 'y2');
     }
+  } else if (channel === 'color' && !domain && arrayColorFieldDef(model)) {
+    // An array mark's color field holds a whole raster, so take the domain from the per-grid
+    // min/max derived in the data pipeline (see parseArrayData) and union them like x/x2 above.
+    // Aggregating the raster itself would give [Infinity, -Infinity].
+    const fieldDef = arrayColorFieldDef(model);
+    const data = model.requestDataName(
+      getScaleDataSourceForHandlingInvalidValues({
+        invalid: getMarkConfig('invalid', model.markDef, model.config),
+        isPath: isPathMark(model.mark),
+      }),
+    );
+    return makeImplicit([
+      {data, field: arrayExtentField(fieldDef, 'min')},
+      {data, field: arrayExtentField(fieldDef, 'max')},
+    ]);
   }
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }

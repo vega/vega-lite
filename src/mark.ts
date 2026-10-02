@@ -12,6 +12,7 @@ import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema.js';
 export const Mark = {
   arc: 'arc',
   area: 'area',
+  array: 'array',
   bar: 'bar',
   image: 'image',
   line: 'line',
@@ -28,6 +29,7 @@ export const Mark = {
 
 export const ARC = Mark.arc;
 export const AREA = Mark.area;
+export const ARRAY = Mark.array;
 export const BAR = Mark.bar;
 export const IMAGE = Mark.image;
 export const LINE = Mark.line;
@@ -391,6 +393,9 @@ export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Area-Specific Config */
   area?: AreaConfig<ES>;
 
+  /** Array-Specific Config */
+  array?: ArrayConfig<ES>;
+
   /** Bar-Specific Config */
   bar?: BarConfig<ES>;
 
@@ -432,6 +437,7 @@ const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
   mark: 1,
   arc: 1,
   area: 1,
+  array: 1,
   bar: 1,
   circle: 1,
   image: 1,
@@ -510,6 +516,8 @@ export interface PointOverlayMixins<ES extends ExprRef | SignalRef> {
   point?: boolean | OverlayMarkDef<ES> | 'transparent';
 }
 
+export interface ArrayConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, ArrayAxisMixins {}
+
 export interface LineConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, PointOverlayMixins<ES> {}
 
 export interface LineOverlayMixins<ES extends ExprRef | SignalRef> {
@@ -547,6 +555,23 @@ export interface GenericMarkDef<M> {
    * or a composite mark type (`"boxplot"`, `"errorband"`, `"errorbar"`).
    */
   type: M;
+}
+
+export interface ArrayAxisMixins {
+  /**
+   * A flag for labelling an `array` mark with the extent of its grid.
+   *
+   * - If this property is `true`, `x` and `y` axes run from zero to the grid's `width` and
+   * `height`, labelling it in cells.
+   *
+   * - If this property is `"extent"`, they run over the grid's `extent` field, which holds
+   * `[xmin, xmax, ymin, ymax]` as the outer edges of the grid.
+   *
+   * To label a grid any other way, encode `x`/`x2` and `y`/`y2` yourself instead.
+   *
+   * __Default value:__ `false`.
+   */
+  axis?: boolean | 'extent';
 }
 
 export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
@@ -620,6 +645,7 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
     Omit<
       MarkConfig<ES> &
         AreaConfig<ES> &
+        ArrayAxisMixins &
         BarConfig<ES> & // always extends RectConfig
         LineConfig<ES> &
         TickConfig<ES>,

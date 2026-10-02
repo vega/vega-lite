@@ -29,6 +29,7 @@ import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit.js';
 import {isEmpty, keys, omit, varName} from '../util.js';
 import {isSignalRef} from '../vega.schema.js';
 import {NonFacetUnitNormalizer, NormalizerParams} from './base.js';
+import {ArrayAxisNormalizer} from './arrayaxis.js';
 import {PathOverlayNormalizer} from './pathoverlay.js';
 import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from './repeater.js';
 import {RuleForRangedLineNormalizer} from './ruleforrangedline.js';
@@ -38,6 +39,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     boxPlotNormalizer,
     errorBarNormalizer,
     errorBandNormalizer,
+    new ArrayAxisNormalizer(),
     new PathOverlayNormalizer(),
     new RuleForRangedLineNormalizer(),
   ];
