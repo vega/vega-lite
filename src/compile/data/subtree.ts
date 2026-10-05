@@ -48,7 +48,7 @@ function canMoveFacetBelow(facet: FacetNode, child: DataFlowNode): boolean {
     return false;
   }
   if (child instanceof AggregateNode) {
-    return facet.doSortWithAggregation;
+    return facet.canMoveBelowAggregate;
   }
   return true;
 }

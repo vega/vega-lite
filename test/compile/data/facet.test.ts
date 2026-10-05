@@ -333,7 +333,7 @@ describe('compile/data/facet', () => {
     });
   });
 
-  describe('sortSurvivesAggregation', () => {
+  describe('canMoveBelowAggregate', () => {
     function facetNodeForFacet(facet: any) {
       const model = parseFacetModelWithScale({
         $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
@@ -359,7 +359,7 @@ describe('compile/data/facet', () => {
         column: {field: 'c', type: 'nominal', sort: 'descending'},
       });
 
-      expect(facet.doSortWithAggregation).toBe(true);
+      expect(facet.canMoveBelowAggregate).toBe(true);
     });
 
     it('should be true with sort arrays on unbinned fields', () => {
@@ -368,7 +368,7 @@ describe('compile/data/facet', () => {
         column: {field: 'c', type: 'nominal', sort: [1, 2, 3]},
       });
 
-      expect(facet.doSortWithAggregation).toBe(true);
+      expect(facet.canMoveBelowAggregate).toBe(true);
     });
 
     it('should be false with a sort field definition', () => {
@@ -377,7 +377,7 @@ describe('compile/data/facet', () => {
         column: {field: 'c', type: 'nominal', sort: [1, 2, 3]},
       });
 
-      expect(facet.doSortWithAggregation).toBe(false);
+      expect(facet.canMoveBelowAggregate).toBe(false);
     });
 
     it('should be false with a sort array on a binned field', () => {
@@ -385,7 +385,7 @@ describe('compile/data/facet', () => {
         row: {bin: true, field: 'r', type: 'quantitative', sort: [1, 2, 3]},
       });
 
-      expect(facet.doSortWithAggregation).toBe(false);
+      expect(facet.canMoveBelowAggregate).toBe(false);
     });
   });
 

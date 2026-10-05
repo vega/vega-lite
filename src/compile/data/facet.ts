@@ -135,7 +135,7 @@ export class FacetNode extends DataFlowNode {
     return fields;
   }
 
-  public get doSortWithAggregation(): boolean {
+  public get canMoveBelowAggregate(): boolean {
     for (const channel of FACET_CHANNELS) {
       const info = this[channel];
       if (!info) {
