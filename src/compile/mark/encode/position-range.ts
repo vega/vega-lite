@@ -1,5 +1,11 @@
 import type {SignalRef} from 'vega';
-import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel.js';
+import {
+  getMainRangeChannel,
+  getOffsetScaleChannel,
+  getSecondaryRangeChannel,
+  getSizeChannel,
+  getVgPositionChannel,
+} from '../../../channel.js';
 import {isFieldOrDatumDef} from '../../../channeldef.js';
 import * as log from '../../../log/index.js';
 import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark.js';
@@ -131,15 +137,32 @@ function pointPosition2OrSize(
       [sizeChannel]: getMarkStyleConfig(sizeChannel, markDef, config.style),
     }) ||
     position2orSize(channel, config[mark]) ||
-    position2orSize(channel, config.mark) || {
-      [vgChannel]: pointPositionDefaultRef({
-        model,
-        defaultPos,
-        channel,
-        scaleName,
-        scale,
-      })(),
-    }
+    position2orSize(channel, config.mark) ||
+    (isFieldOrDatumDef(channelDef) && model.isRangedOffset(baseChannel)
+      ? {
+          [vgChannel]: ref.valueRefForFieldOrDatumDef(
+            channelDef,
+            scaleName,
+            {},
+            {
+              offset: ref.valueRefForFieldOrDatumDef(
+                {datum: 0},
+                model.scaleName(getOffsetScaleChannel(baseChannel)),
+                {},
+                {},
+              ),
+            },
+          ),
+        }
+      : {
+          [vgChannel]: pointPositionDefaultRef({
+            model,
+            defaultPos,
+            channel,
+            scaleName,
+            scale,
+          })(),
+        })
   );
 }
 

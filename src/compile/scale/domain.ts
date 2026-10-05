@@ -45,6 +45,7 @@ import {
   VgMultiFieldsRefWithSort,
   VgNonUnionDomain,
   VgScaleDataRefWithSort,
+  VgScaleMultiDataRefWithSort,
   VgSortField,
   VgUnionSortField,
 } from '../../vega.schema.js';
@@ -56,7 +57,7 @@ import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../data/ti
 import {getScaleDataSourceForHandlingInvalidValues} from '../invalid/datasources.js';
 import {isFacetModel, isUnitModel, Model} from '../model.js';
 import {SignalRefWrapper} from '../signal.js';
-import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split.js';
+import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit, SplitParentProperty} from '../split.js';
 import {UnitModel} from '../unit.js';
 import {ScaleComponent, ScaleComponentIndex} from './component.js';
 
@@ -536,8 +537,8 @@ export function canUseUnaggregatedDomain(
 function domainsTieBreaker(
   v1: Explicit<VgNonUnionDomain[]>,
   v2: Explicit<VgNonUnionDomain[]>,
-  property: 'domains',
-  propertyOf: 'scale',
+  property: 'domain' | 'domains',
+  propertyOf: SplitParentProperty,
 ) {
   if (v1.explicit && v2.explicit) {
     log.warn(log.message.mergeConflictingDomainProperty(property, propertyOf, v1.value, v2.value));
@@ -659,13 +660,21 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
     return domain;
   }
 
-  const fields = uniqueDomains.map((d) =>
-    // Wrap signal values as objects with a data field as Vega reads union domain signals via `field: "data"`
-    // (primitives are wrapped automatically during ingestion, but dates are objects and thus are not).
-    isArray(d) && d.every(isSignalRef) ? {signal: `[${d.map((s) => `{data: ${s.signal}}`).join(', ')}]`} : d,
-  );
+  const domain: VgScaleMultiDataRefWithSort = {
+    fields: uniqueDomains.map(unionDomainField),
+    ...(sort ? {sort} : {}),
+  };
 
-  return {fields, ...(sort ? {sort} : {})};
+  return domain;
+}
+
+function unionDomainField(domain: VgNonUnionDomain): VgNonUnionDomain {
+  if (isArray(domain) && domain.some(isSignalRef)) {
+    return {
+      signal: `[${domain.map((v) => `{data: ${isSignalRef(v) ? v.signal : util.stringify(v)}}`).join(', ')}]`,
+    };
+  }
+  return domain;
 }
 
 /**

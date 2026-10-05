@@ -18,9 +18,23 @@ export function isType(t: any): t is Type {
   return hasOwnProperty(Type, t);
 }
 
+/**
+ * Type-only continuous check (does not consider binning).
+ * A binned quantitative field still counts as continuous here, whereas the
+ * field-aware `isDiscrete` in `./channeldef.js` treats it as discrete.
+ */
 export function isContinuous(type: Type): type is 'quantitative' | 'temporal' {
   return type === 'quantitative' || type === 'temporal';
 }
+
+/**
+ * Type-only discrete check (does not consider binning).
+ * For a field-aware version that treats binned quantitative fields as discrete,
+ * use `isDiscrete` from `./channeldef.js`.
+ * Note: `tooltipRefForEncoding` relies on this type-only check so that binned
+ * quantitative fields keep the bin-range tooltip format instead of the
+ * discrete format.
+ */
 export function isDiscrete(type: Type): type is 'ordinal' | 'nominal' {
   return type === 'ordinal' || type === 'nominal';
 }

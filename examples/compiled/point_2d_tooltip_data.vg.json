@@ -28,9 +28,9 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "tooltip": {"signal": "datum"},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "tooltip": {"signal": "datum"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"

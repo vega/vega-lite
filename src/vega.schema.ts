@@ -109,7 +109,7 @@ export interface VgValueRef {
 }
 
 // TODO: add vg prefix
-export type VgScaleMultiDataRefWithSort = ScaleMultiDataRef & {
+export type VgScaleMultiDataRefWithSort = Omit<ScaleMultiDataRef, 'fields'> & {
   fields: (any[] | VgScaleDataRefWithSort | SignalRef)[];
   sort?: VgUnionSortField;
 };

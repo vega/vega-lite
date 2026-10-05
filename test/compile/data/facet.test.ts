@@ -230,6 +230,55 @@ describe('compile/data/facet', () => {
         ],
       });
     });
+
+    it('should assemble lookup datasets for crossed custom facet sort metadata', () => {
+      const model = parseFacetModelWithScale({
+        $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
+        data: {
+          name: 'a',
+        },
+        facet: {
+          row: {field: 'r', type: 'nominal', sort: {op: 'median', field: 'b'}},
+          column: {field: 'c', type: 'nominal', sort: ['c1', 'c2']},
+        },
+        spec: {
+          mark: 'rect',
+          encoding: {
+            y: {field: 'b', type: 'quantitative'},
+            x: {field: 'a', type: 'quantitative'},
+          },
+        },
+      });
+
+      const node = new FacetNode(null, model, 'facetName', 'dataName');
+      const data = node.assemble();
+
+      expect(data).toContainEqual({
+        name: 'row_lookup_domain',
+        source: 'row_domain',
+        transform: [
+          {
+            type: 'formula',
+            expr: `join([isValid(datum["r"]) ? length(toString(datum["r"])) + ':' + toString(datum["r"]) : '-1:'], '|')`,
+            as: 'row_facet_key',
+          },
+        ],
+      });
+
+      expect(data).toContainEqual({
+        name: 'column_lookup_domain',
+        source: 'column_domain',
+        transform: [
+          {
+            type: 'formula',
+            expr: `join([isValid(datum["c"]) ? length(toString(datum["c"])) + ':' + toString(datum["c"]) : '-1:'], '|')`,
+            as: 'column_facet_key',
+          },
+        ],
+      });
+
+      expect(data.find((d) => d.name === 'crossed_facet_domain')).toBeUndefined();
+    });
   });
 
   describe('dependentFields', () => {

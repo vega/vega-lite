@@ -1,6 +1,5 @@
-import type {AggregateOp} from 'vega';
 import {array, isArray} from 'vega-util';
-import {isArgmaxDef, isArgminDef} from './aggregate.js';
+import {isArgmaxDef, isArgminDef, isParameterizedAggregateDef} from './aggregate.js';
 import {isBinned, isBinning} from './bin.js';
 import {
   ANGLE,
@@ -67,6 +66,7 @@ import {
   isFieldDef,
   isOrderOnlyDef,
   isTypedFieldDef,
+  isUnbinnedQuantitativeFieldOrDatumDef,
   isValueDef,
   LatLongDef,
   NumericArrayMarkPropDef,
@@ -80,20 +80,19 @@ import {
   PositionDef,
   SecondaryFieldDef,
   ShapeDef,
-  StringFieldDef,
   StringFieldDefWithCondition,
   StringValueDefWithCondition,
   TextDef,
   TimeDef,
   title,
-  TypedFieldDef,
+  TooltipFieldDef,
   vgField,
 } from './channeldef.js';
 import {Config} from './config.js';
 import * as log from './log/index.js';
 import {Mark} from './mark.js';
 import {EncodingFacetMapping} from './spec/facet.js';
-import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform.js';
+import {AggregatedFieldDef, BinTransform, AggregateFieldOp, TimeUnitTransform} from './transform.js';
 import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type.js';
 import {keys, some} from './util.js';
 import {isSignalRef} from './vega.schema.js';
@@ -303,7 +302,7 @@ export interface Encoding<F extends Field> {
    *
    * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
-  tooltip?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[] | null;
+  tooltip?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | TooltipFieldDef<F>[] | null;
 
   /**
    * A URL to load upon mouse click.
@@ -380,6 +379,20 @@ export function channelHasNestedOffsetScale<F extends Field>(
   return false;
 }
 
+/**
+ * Returns true if the given position channel has a quantitative offset channel (e.g., `xOffset` for `x`) that can drive ranged marks.
+ */
+export function channelHasQuantitativeOffset<F extends Field>(
+  encoding: EncodingWithFacet<F>,
+  channel: Channel,
+): boolean {
+  const offsetChannel = getOffsetScaleChannel(channel);
+  if (!offsetChannel) {
+    return false;
+  }
+  return isUnbinnedQuantitativeFieldOrDatumDef(encoding[offsetChannel]);
+}
+
 export function isAggregate(encoding: EncodingWithFacet<any>) {
   return some(CHANNELS, (channel) => {
     if (channelHasField(encoding, channel)) {
@@ -419,7 +432,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
         };
 
         if (aggOp) {
-          let op: AggregateOp;
+          let op: AggregateFieldOp;
 
           if (isArgmaxDef(aggOp)) {
             op = 'argmax';
@@ -429,6 +442,8 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
             op = 'argmin';
             newField = vgField({op: 'argmin', field: aggOp.argmin}, {forAs: true});
             newFieldDef.field = `${newField}.${field}`;
+          } else if (isParameterizedAggregateDef(aggOp)) {
+            op = aggOp;
           } else if (aggOp !== 'boxplot' && aggOp !== 'errorbar' && aggOp !== 'errorband') {
             op = aggOp;
           }
@@ -605,17 +620,14 @@ export function initEncoding(
           }
         }
         // Array of fieldDefs for detail channel (or production rule)
-        (normalizedEncoding[channel] as any) = array(channelDef).reduce(
-          (defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
-            if (!isFieldDef(fieldDef)) {
-              log.warn(log.message.emptyFieldDef(fieldDef, channel));
-            } else {
-              defs.push(initFieldDef(fieldDef, channel));
-            }
-            return defs;
-          },
-          [],
-        );
+        (normalizedEncoding[channel] as any) = array(channelDef).reduce((defs: FieldDef<string>[], fieldDef) => {
+          if (!isFieldDef(fieldDef)) {
+            log.warn(log.message.emptyFieldDef(fieldDef, channel));
+          } else {
+            defs.push(initFieldDef(fieldDef, channel));
+          }
+          return defs;
+        }, []);
       }
     } else {
       if (channel === TOOLTIP && channelDef === null) {
@@ -693,7 +705,7 @@ export function forEach<U extends Record<any, any>>(
 
 export function reduce<T, U extends Record<any, any>>(
   mapping: U,
-  f: (acc: any, fd: TypedFieldDef<string>, c: keyof U) => U,
+  f: (acc: T, cd: ChannelDef, c: keyof U) => T,
   init: T,
   thisArg?: any,
 ) {
@@ -727,26 +739,8 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case URL:
       case X2:
       case Y2:
-        return details;
-
       case XOFFSET:
-      case YOFFSET: {
-        if (mark === 'line' || mark === 'area' || mark === 'trail') {
-          const offsetDef = encoding[channel];
-          if (isFieldDef(offsetDef)) {
-            const mainChannel = channel === XOFFSET ? X : Y;
-            const mainDef = encoding[mainChannel];
-            if (isFieldDef(mainDef) && !mainDef.aggregate && !offsetDef.aggregate) {
-              const mainField = vgField(mainDef, {});
-              const offsetField = vgField(offsetDef, {});
-              if (mainField && offsetField && mainField !== offsetField) {
-                details.push(mainField);
-              }
-            }
-          }
-        }
-        return details;
-      }
+      case YOFFSET:
       case THETA:
       case THETA2:
       case RADIUS:

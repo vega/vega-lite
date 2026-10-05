@@ -1,14 +1,14 @@
 const {warn, error} = console;
 
-console.error = function (msg: string, msg2: string) {
-  // eslint-disable-next-line prefer-rest-params
-  error.apply(console, arguments);
+console.error = function (...args: [msg: string, msg2: string, ...rest: any[]]) {
+  error.apply(console, args);
+  const [msg, msg2] = args;
   throw new Error(`${msg}: ${msg2} -- Please remove unnecessary errors or use log.wrap to consume reasonable errors`);
 };
 
-console.warn = function (msg: string, msg2: string) {
-  // eslint-disable-next-line prefer-rest-params
-  warn.apply(console, arguments);
+console.warn = function (...args: [msg: string, msg2: string, ...rest: any[]]) {
+  warn.apply(console, args);
+  const [msg, msg2] = args;
   throw new Error(`${msg}: ${msg2} -- Please remove unnecessary errors or use log.wrap to consume reasonable errors`);
 };
 

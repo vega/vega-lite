@@ -82,7 +82,7 @@ export function getAxisConfigs(
 }
 
 export function getAxisConfigStyle(axisConfigTypes: string[], config: Config) {
-  const toMerge = [{}];
+  const toMerge = [];
   for (const configType of axisConfigTypes) {
     // TODO: add special casing to add conditional value based on orient signal
     let style = (config as any)[configType]?.style;
@@ -93,7 +93,7 @@ export function getAxisConfigStyle(axisConfigTypes: string[], config: Config) {
       }
     }
   }
-  return Object.assign.apply(null, toMerge);
+  return Object.assign({}, ...toMerge);
 }
 export function getAxisConfig(
   property: keyof AxisConfig<SignalRef>,

@@ -1,5 +1,5 @@
 import {FormulaTransform as VgFormulaTransform} from 'vega';
-import {SingleDefChannel} from '../../channel.js';
+import {ExtendedChannel} from '../../channel.js';
 import {FieldRefOption, isScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef.js';
 import {DateTime} from '../../datetime.js';
 import {fieldFilterExpression} from '../../predicate.js';
@@ -28,7 +28,7 @@ export class CalculateNode extends DataFlowNode {
 
   public static parseAllForSortIndex(parent: DataFlowNode, model: ModelWithField) {
     // get all the encoding with sort fields from model
-    model.forEachFieldDef((fieldDef: TypedFieldDef<string>, channel: SingleDefChannel) => {
+    model.forEachFieldDef((fieldDef, channel) => {
       if (!isScaleFieldDef(fieldDef)) {
         return;
       }
@@ -73,6 +73,6 @@ export class CalculateNode extends DataFlowNode {
   }
 }
 
-export function sortArrayIndexField(fieldDef: TypedFieldDef<string>, channel: SingleDefChannel, opt?: FieldRefOption) {
+export function sortArrayIndexField(fieldDef: TypedFieldDef<string>, channel: ExtendedChannel, opt?: FieldRefOption) {
   return vgField(fieldDef, {prefix: channel, suffix: 'sort_index', ...opt});
 }

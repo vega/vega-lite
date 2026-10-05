@@ -1,0 +1,104 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Images centered at their position with their natural dimensions.",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"name": "Firefox", "score": 4.5, "img": "data/ffox.png"},
+        {"name": "GIMP", "score": 3.2, "img": "data/gimp.png"},
+        {"name": "7-Zip", "score": 2.1, "img": "data/7zip.png"}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"score\"]) && isFinite(+datum[\"score\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "image",
+      "style": ["image"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "description": {
+            "signal": "\"name: \" + (isValid(datum[\"name\"]) ? isArray(datum[\"name\"]) ? join(datum[\"name\"], ' ') : datum[\"name\"] : \"\"+datum[\"name\"]) + \"; score: \" + (format(datum[\"score\"], \"\")) + \"; img: \" + (isValid(datum[\"img\"]) ? isArray(datum[\"img\"]) ? join(datum[\"img\"], ' ') : datum[\"img\"] : \"\"+datum[\"img\"])"
+          },
+          "x": {"scale": "x", "field": "name", "band": 0.5},
+          "align": {"value": "center"},
+          "y": {"scale": "y", "field": "score"},
+          "baseline": {"value": "middle"},
+          "url": {
+            "signal": "isValid(datum[\"img\"]) ? datum[\"img\"] : \"\"+datum[\"img\"]"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "name", "sort": true},
+      "range": [0, {"signal": "width"}],
+      "paddingInner": 0,
+      "paddingOuter": 0
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "score"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "name",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "score",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

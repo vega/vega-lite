@@ -7,6 +7,7 @@ import {defaultLabelAlign, defaultLabelBaseline, getLabelAngle} from '../../../s
 import {TimeUnit, TimeUnitTransformParams} from '../../../src/timeunit.js';
 import {normalizeAngle} from '../../../src/util.js';
 import {isSignalRef} from '../../../src/vega.schema.js';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 import {range} from '../../util.js';
 
 describe('compile/axis/properties', () => {
@@ -35,6 +36,92 @@ describe('compile/axis/properties', () => {
     it('should return false by default for a discrete scale', () => {
       const grid = properties.defaultGrid('point', {field: 'a', type: 'quantitative'});
       expect(grid).toBe(false);
+    });
+  });
+
+  describe('bandPosition', () => {
+    it('should set y-axis bandPosition to 1 for bar with discrete y and continuous yOffset', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        data: {values: [{a: 'A', b: 1, c: 'x'}]},
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          y: {field: 'c', type: 'nominal'},
+          yOffset: {field: 'b', type: 'quantitative'},
+        },
+      });
+
+      expect(
+        properties.axisRules.bandPosition({
+          axis: {},
+          model,
+          channel: 'y',
+          fieldOrDatumDef: model.encoding.y as any,
+          mark: model.mark,
+          scaleType: model.getScaleComponent('y').get('type'),
+          orient: 'left',
+          labelAngle: undefined,
+          format: undefined,
+          formatType: undefined,
+          config: model.config,
+        }),
+      ).toBe(1);
+    });
+
+    it('should set x-axis bandPosition to 0 for bar with discrete x and continuous xOffset', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        data: {values: [{a: 'A', b: 1, c: 'x'}]},
+        encoding: {
+          x: {field: 'c', type: 'nominal'},
+          xOffset: {field: 'b', type: 'quantitative'},
+          y: {field: 'a', type: 'nominal'},
+        },
+      });
+
+      expect(
+        properties.axisRules.bandPosition({
+          axis: {},
+          model,
+          channel: 'x',
+          fieldOrDatumDef: model.encoding.x as any,
+          mark: model.mark,
+          scaleType: model.getScaleComponent('x').get('type'),
+          orient: 'bottom',
+          labelAngle: undefined,
+          format: undefined,
+          formatType: undefined,
+          config: model.config,
+        }),
+      ).toBe(0);
+    });
+
+    it('should respect explicit axis.bandPosition', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'bar',
+        data: {values: [{a: 'A', b: 1, c: 'x'}]},
+        encoding: {
+          x: {field: 'a', type: 'nominal'},
+          y: {field: 'c', type: 'nominal', axis: {bandPosition: 0.25}},
+          yOffset: {field: 'b', type: 'quantitative'},
+        },
+      });
+
+      expect(
+        properties.axisRules.bandPosition({
+          axis: {bandPosition: 0.25},
+          model,
+          channel: 'y',
+          fieldOrDatumDef: model.encoding.y as any,
+          mark: model.mark,
+          scaleType: model.getScaleComponent('y').get('type'),
+          orient: 'left',
+          labelAngle: undefined,
+          format: undefined,
+          formatType: undefined,
+          config: model.config,
+        }),
+      ).toBe(0.25);
     });
   });
 

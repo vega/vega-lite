@@ -13,7 +13,8 @@ import {hasProperty} from '../util.js';
 export interface FacetFieldDef<
   F extends Field,
   ES extends ExprRef | SignalRef = ExprRef | SignalRef,
-> extends TypedFieldDef<F, StandardType, boolean | BinParams | null> {
+  // Omit `tooltip` because facet fields do not feed the tooltips generated from a unit's encoding.
+> extends Omit<TypedFieldDef<F, StandardType, boolean | BinParams | null>, 'tooltip'> {
   /**
    * An object defining properties of a facet's header.
    */

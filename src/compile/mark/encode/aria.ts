@@ -1,11 +1,10 @@
 import {hasOwnProperty} from 'vega-util';
-import {entries, isEmpty} from '../../../util.js';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common.js';
 import {VG_MARK_INDEX} from './../../../vega.schema.js';
 import {UnitModel} from './../../unit.js';
 import {wrapCondition} from './conditional.js';
 import {textRef} from './text.js';
-import {tooltipData} from './tooltip.js';
+import {tooltipDataTuples, TooltipTuple} from './tooltip.js';
 
 export function aria(model: UnitModel) {
   const {markDef, config} = model;
@@ -68,19 +67,34 @@ export function description(model: UnitModel) {
     return {};
   }
 
-  const data = tooltipData(encoding, stack, config);
+  const data = tooltipDataTuples(encoding, stack, config)
+    // remove internal/private signals from aria description
+    .filter(({key}) => !key.startsWith('_'));
 
-  if (isEmpty(data)) {
+  if (data.length === 0) {
     return undefined;
   }
 
   return {
     description: {
-      signal: entries(data)
-        .filter(([key]) => !key.startsWith('_')) // remove internal/private signals from aria description
-        .map(([key, value]) => [key, value.replaceAll('\\n', ' ')]) // replace newlines with spaces in aria description
-        .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
-        .join(' + '),
+      signal: ariaDescription(data),
     },
   };
+}
+
+function ariaDescription(data: TooltipTuple[]) {
+  // replace newlines with spaces in aria description
+  const entries = data.map(({key, value, test}) => ({key, value: value.replaceAll('\\n', ' '), test}));
+
+  if (entries.every(({test}) => !test)) {
+    return entries.map(({key, value}, index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`).join(' + ');
+  }
+
+  // Prefix every field with a separator and strip the leading separator so that
+  // separators only appear between fields that pass their tests.
+  const segments = entries.map(({key, value, test}) => {
+    const segment = `"; ${key}: " + (${value})`;
+    return test ? `((${test}) ? ${segment} : "")` : segment;
+  });
+  return `slice(${segments.join(' + ')}, 2)`;
 }

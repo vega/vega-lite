@@ -131,10 +131,10 @@
             },
             {"value": 0}
           ],
+          "fill": {"scale": "color", "field": "symbol"},
           "tooltip": {
             "signal": "{\"date\": timeFormat(datum[\"date\"], \"%b %d, %Y\"), \"price\": format(datum[\"price\"], \"\"), \"symbol\": isValid(datum[\"symbol\"]) ? isArray(datum[\"symbol\"]) ? join(datum[\"symbol\"], '\\n') : datum[\"symbol\"] : \"\"+datum[\"symbol\"]}"
           },
-          "fill": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? isArray(datum[\"symbol\"]) ? join(datum[\"symbol\"], ' ') : datum[\"symbol\"] : \"\"+datum[\"symbol\"])"

@@ -306,8 +306,12 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
 /**
  * Returns Vega expression for a given timeUnit and fieldRef
  */
-export function fieldExpr(fullTimeUnit: TimeUnit, field: string, {end}: {end: boolean} = {end: false}): string {
-  const fieldRef = accessPathWithDatum(field);
+export function fieldExpr(
+  fullTimeUnit: TimeUnit,
+  field: string,
+  {end = false, expr = 'datum'}: {end?: boolean; expr?: 'datum' | 'datum.datum'} = {},
+): string {
+  const fieldRef = accessPathWithDatum(field, expr);
 
   const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
 

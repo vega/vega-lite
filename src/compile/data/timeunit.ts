@@ -56,7 +56,7 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
-    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef, channel) => {
+    const formula = model.reduceFieldDef((timeUnitComponent: Dict<TimeUnitComponent>, fieldDef, channel) => {
       const {field, timeUnit} = fieldDef;
 
       if (timeUnit) {
@@ -92,7 +92,7 @@ export class TimeUnitNode extends DataFlowNode {
         }
 
         if (component) {
-          (timeUnitComponent as any)[hash(component)] = component;
+          timeUnitComponent[hash(component)] = component;
         }
       }
       return timeUnitComponent;

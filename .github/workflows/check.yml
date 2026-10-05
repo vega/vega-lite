@@ -3,11 +3,15 @@ name: Check
 on:
   workflow_dispatch:
   push:
+  pull_request:
 
 jobs:
   check:
     name: Format, Schema, and Examples
     runs-on: ubuntu-latest
+    # Internal branches are handled by the push event; only run for pull requests from forks.
+    if: >-
+      github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
 
     steps:
       - uses: actions/checkout@v7
@@ -16,10 +20,10 @@ jobs:
           ref: ${{ github.ref }}
 
       - name: Setup Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           cache: 'npm'
-          node-version: 22
+          node-version: 24
 
       - name: Install Node dependencies
         run: npm ci

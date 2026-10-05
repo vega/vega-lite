@@ -64,7 +64,7 @@ export interface SelectionCompiler<T extends SelectionType = SelectionType> {
 }
 
 // Order matters for parsing and assembly.
-export const selectionCompilers: SelectionCompiler[] = [
+export const selectionCompilers: SelectionCompiler<any>[] = [
   point,
   interval,
   project,

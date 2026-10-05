@@ -69,10 +69,10 @@
       "encode": {
         "update": {
           "stroke": {"value": "white"},
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"IMDB Rating (binned)\": !isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
           },
-          "fill": {"value": "#4c78a8"},
           "description": {
             "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },

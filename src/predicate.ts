@@ -41,6 +41,23 @@ export type FieldPredicate =
   | FieldOneOfPredicate
   | FieldValidPredicate;
 
+/**
+ * A field predicate without `field` and `timeUnit`, which are implied by the tooltip field definition that the filter is defined on and must not be specified.
+ */
+type TooltipPredicate<P extends FieldPredicate> = Omit<P, 'field' | 'timeUnit'>;
+
+export type TooltipFieldPredicate =
+  | TooltipPredicate<FieldEqualPredicate>
+  | TooltipPredicate<FieldLTPredicate>
+  | TooltipPredicate<FieldGTPredicate>
+  | TooltipPredicate<FieldLTEPredicate>
+  | TooltipPredicate<FieldGTEPredicate>
+  | TooltipPredicate<FieldRangePredicate>
+  | TooltipPredicate<FieldOneOfPredicate>
+  | TooltipPredicate<FieldValidPredicate>;
+
+export type TooltipFieldFilter = LogicalComposition<TooltipFieldPredicate>;
+
 export interface ParameterPredicate {
   /**
    * Filter using a parameter name.
@@ -201,17 +218,21 @@ function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], tim
   return vals.map((v) => predicateValueExpr(v, timeUnit));
 }
 
-// This method is used by Voyager. Do not change its behavior without changing Voyager.
-export function fieldFilterExpression(predicate: FieldPredicate, useInRange = true) {
+// This method is used by Voyager. Do not change its default behavior without changing Voyager.
+export function fieldFilterExpression(
+  predicate: FieldPredicate,
+  useInRange = true,
+  expr: 'datum' | 'datum.datum' = 'datum',
+) {
   const {field} = predicate;
   const normalizedTimeUnit = normalizeTimeUnit(predicate.timeUnit);
   const {unit, binned} = normalizedTimeUnit || {};
-  const rawFieldExpr = vgField(predicate, {expr: 'datum'});
+  const rawFieldExpr = vgField(predicate, {expr});
   const fieldExpr = unit
     ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
       // TODO: support utc
-      `time(${!binned ? timeUnitFieldExpr(unit, field) : rawFieldExpr})`
+      `time(${!binned ? timeUnitFieldExpr(unit, field, {expr}) : rawFieldExpr})`
     : rawFieldExpr;
 
   if (isFieldEqualPredicate(predicate)) {

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Images centered at their position with their natural dimensions.",
+  "data": {
+    "values": [
+      {"name": "Firefox", "score": 4.5, "img": "data/ffox.png"},
+      {"name": "GIMP", "score": 3.2, "img": "data/gimp.png"},
+      {"name": "7-Zip", "score": 2.1, "img": "data/7zip.png"}
+    ]
+  },
+  "width": 300,
+  "height": 300,
+  "mark": "image",
+  "encoding": {
+    "x": {"field": "name", "type": "nominal"},
+    "y": {"field": "score", "type": "quantitative"},
+    "url": {"field": "img", "type": "nominal"}
+  }
+}

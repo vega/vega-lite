@@ -7,6 +7,7 @@ import {
   defaultType,
   functionalTitleFormatter,
   initChannelDef,
+  isDiscrete,
   TypedFieldDef,
   vgField,
 } from '../src/channeldef.js';
@@ -37,6 +38,18 @@ describe('fieldDef', () => {
       expect(vgField({aggregate: {argmax: 'foo bar'}, field: 'bar baz'}, {expr: 'datum'})).toBe(
         'datum["argmax_foo bar"]["bar baz"]',
       );
+    });
+
+    it('should support exponential operations', () => {
+      expect(vgField({aggregate: {exponential: 0.23}, field: 'a'}, {expr: 'datum'})).toBe('datum["exponential_a"]');
+
+      expect(vgField({op: {exponential: 0.54}, field: 'a', as: 'b'})).toBe('exponential_a');
+    });
+
+    it('should support exponentialb operations', () => {
+      expect(vgField({aggregate: {exponentialb: 0.23}, field: 'a'}, {expr: 'datum'})).toBe('datum["exponentialb_a"]');
+
+      expect(vgField({op: {exponentialb: 0.54}, field: 'a', as: 'b'})).toBe('exponentialb_a');
     });
 
     it('should support prefix and field names with space', () => {
@@ -292,6 +305,12 @@ describe('fieldDef', () => {
     it('should return correct title for aggregate', () => {
       expect(functionalTitleFormatter({field: 'f', aggregate: {argmax: 'a'}})).toBe('f for argmax(a)');
     });
+    it('should return correct title for exponential', () => {
+      expect(functionalTitleFormatter({field: 'f', aggregate: {exponential: 0.5}})).toBe('EXPONENTIAL(f)');
+    });
+    it('should return correct title for exponentialb', () => {
+      expect(functionalTitleFormatter({field: 'f', aggregate: {exponentialb: 0.5}})).toBe('EXPONENTIALB(f)');
+    });
   });
 
   describe('defaultTitle()', () => {
@@ -304,6 +323,13 @@ describe('fieldDef', () => {
     });
     it('should return correct title for argmax', () => {
       expect(defaultTitle({field: 'f', aggregate: {argmax: 'a'}}, {})).toBe('f for max a');
+    });
+
+    it('should return correct title for exponential', () => {
+      expect(defaultTitle({field: 'f', aggregate: {exponential: 0.5}}, {})).toBe('Exponential of f');
+    });
+    it('should return correct title for exponentialb', () => {
+      expect(defaultTitle({field: 'f', aggregate: {exponentialb: 0.5}}, {})).toBe('Exponentialb of f');
     });
 
     it('should return correct title for count', () => {
@@ -344,5 +370,51 @@ describe('fieldDef', () => {
       const fieldDef = {field: 'f', type: TEMPORAL};
       expect(defaultTitle(fieldDef, {})).toBe('f');
     });
+  });
+});
+
+describe('isDiscrete()', () => {
+  it('returns true for nominal field def', () => {
+    expect(isDiscrete({field: 'f', type: 'nominal'})).toBe(true);
+  });
+
+  it('returns true for ordinal field def', () => {
+    expect(isDiscrete({field: 'f', type: 'ordinal'})).toBe(true);
+  });
+
+  it('returns true for geojson field def', () => {
+    expect(isDiscrete({field: 'f', type: 'geojson'})).toBe(true);
+  });
+
+  it('returns false for temporal field def', () => {
+    expect(isDiscrete({field: 'f', type: 'temporal'})).toBe(false);
+  });
+
+  it('returns false for unbinned quantitative field def', () => {
+    expect(isDiscrete({field: 'f', type: 'quantitative'})).toBe(false);
+  });
+
+  it('returns true for binned quantitative field def (bin: true)', () => {
+    expect(isDiscrete({field: 'f', type: 'quantitative', bin: true})).toBe(true);
+  });
+
+  it('returns true for pre-binned quantitative field def (bin: "binned")', () => {
+    expect(isDiscrete({field: 'f', type: 'quantitative', bin: 'binned'})).toBe(true);
+  });
+
+  it('returns true for quantitative field def with bin params', () => {
+    expect(isDiscrete({field: 'f', type: 'quantitative', bin: {maxbins: 10}})).toBe(true);
+  });
+
+  it('returns false for quantitative datum def (datum defs cannot be binned)', () => {
+    expect(isDiscrete({datum: 1, type: 'quantitative'})).toBe(false);
+  });
+
+  it('returns true for nominal datum def', () => {
+    expect(isDiscrete({datum: 'a', type: 'nominal'})).toBe(true);
+  });
+
+  it('throws for a def without explicit type', () => {
+    expect(() => isDiscrete({datum: 1} as any)).toThrow('Invalid field type "undefined".');
   });
 });

@@ -48,7 +48,13 @@ function colorRef(channel: 'fill' | 'stroke', valueRef: VgValueRef | VgValueRef[
 function markDefProperties(mark: MarkDef, ignore: Ignore) {
   return VG_MARK_CONFIGS.reduce(
     (m, prop) => {
-      if (!ALWAYS_IGNORE.has(prop) && hasProperty(mark, prop) && (ignore as any)[prop] !== 'ignore') {
+      if (
+        !ALWAYS_IGNORE.has(prop) &&
+        hasProperty(mark, prop) &&
+        (ignore as any)[prop] !== 'ignore' &&
+        // `tooltip: true` and `tooltip: {content: ...}` request generated tooltips, which tooltip() compiles; they are not Vega values.
+        !(prop === 'tooltip' && (mark.tooltip === true || hasProperty(mark.tooltip, 'content')))
+      ) {
         m[prop] = signalOrValueRef(mark[prop]);
       }
       return m;

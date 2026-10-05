@@ -1,11 +1,13 @@
 import {array, isArray, isObject, isString} from 'vega-util';
+import {isArgmaxDef, isArgminDef} from '../../../aggregate.js';
 import {isBinned} from '../../../bin.js';
-import {Channel, getMainRangeChannel, isXorY, RADIUS, THETA} from '../../../channel.js';
+import {Channel, getMainRangeChannel, isXorY, RADIUS, THETA, TOOLTIP} from '../../../channel.js';
 import {
   defaultTitle,
   getFieldDef,
   getFormatMixins,
   hasConditionalFieldDef,
+  isCount,
   isFieldDef,
   isTypedFieldDef,
   SecondaryFieldDef,
@@ -14,9 +16,18 @@ import {
 } from '../../../channeldef.js';
 import {Config} from '../../../config.js';
 import {Encoding, forEach} from '../../../encoding.js';
+import * as log from '../../../log/index.js';
+import {
+  fieldFilterExpression,
+  isFieldPredicate,
+  isFieldValidPredicate,
+  TooltipFieldFilter,
+  TooltipFieldPredicate,
+} from '../../../predicate.js';
 import {StackProperties} from '../../../stack.js';
+import {normalizeTimeUnit} from '../../../timeunit.js';
 import {isDiscrete} from '../../../type.js';
-import {Dict, entries} from '../../../util.js';
+import {hasProperty, logicalExpr} from '../../../util.js';
 import {isSignalRef, VgValueRef} from '../../../vega.schema.js';
 import {getMarkPropOrConfig} from '../../common.js';
 import {binFormatExpression, formatSignalRef} from '../../format.js';
@@ -76,7 +87,13 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   }
 }
 
-export function tooltipData(
+export type TooltipTuple = {channel: Channel; key: string; value: string; test?: string};
+
+type FilterableTooltipFieldDef = (TypedFieldDef<string> | SecondaryFieldDef<string>) & {
+  filter?: TooltipFieldFilter;
+};
+
+export function tooltipDataTuples(
   encoding: Encoding<string>,
   stack: StackProperties,
   config: Config,
@@ -85,9 +102,9 @@ export function tooltipData(
   const formatConfig = {...config, ...config.tooltipFormat};
   const toSkip = new Set();
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
-  const tuples: {channel: Channel; key: string; value: string}[] = [];
+  const tuples: TooltipTuple[] = [];
 
-  function add(fDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
+  function add(fDef: FilterableTooltipFieldDef, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
 
     const fieldDef: TypedFieldDef<string> = isTypedFieldDef(fDef)
@@ -115,6 +132,12 @@ export function tooltipData(
       }
     }
 
+    if (fieldDef.tooltip === false) {
+      return;
+    }
+
+    const test = tooltipFilterExpression(fieldDef, channel, expr);
+
     if (
       (isXorY(channel) || channel === THETA || channel === RADIUS) &&
       stack &&
@@ -134,7 +157,7 @@ export function tooltipData(
 
     value ??= addLineBreaksToTooltip(fieldDef, formatConfig, expr).signal;
 
-    tuples.push({channel, key, value});
+    tuples.push({channel, key, value, test});
   }
 
   forEach(encoding, (channelDef, channel) => {
@@ -145,14 +168,61 @@ export function tooltipData(
     }
   });
 
-  const out: Dict<string> = {};
-  for (const {channel, key, value} of tuples) {
-    if (!toSkip.has(channel) && !out[key]) {
-      out[key] = value;
+  const out: TooltipTuple[] = [];
+  const keys = new Set<string>();
+  for (const {channel, key, value, test} of tuples) {
+    if (!toSkip.has(channel) && !keys.has(key)) {
+      out.push({channel, key, value, test});
+      keys.add(key);
     }
   }
 
   return out;
+}
+
+// Converts a tooltip filter for the given field into a Vega expression, undefined when absent or invalid.
+function tooltipFilterExpression(
+  fieldDef: FilterableTooltipFieldDef,
+  channel: Channel,
+  expr: 'datum' | 'datum.datum',
+): string | undefined {
+  if (channel !== TOOLTIP || !hasProperty(fieldDef, 'filter')) {
+    return undefined;
+  }
+
+  const {filter} = fieldDef;
+
+  if (isArgminDef(fieldDef.aggregate) || isArgmaxDef(fieldDef.aggregate) || (!fieldDef.field && !isCount(fieldDef))) {
+    log.warn(log.message.TOOLTIP_FILTER_REQUIRES_FIELD);
+    return undefined;
+  }
+
+  // The predicates test the mark's datum, where aggregate, bin, and time unit are already applied
+  // (the raw field may not even exist after aggregation), so resolve the datum field upfront and
+  // mark time units as binned so they are not recomputed from the raw field.
+  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit);
+  const boundFieldDef = {field: vgField(fieldDef), ...(timeUnit ? {timeUnit: {...timeUnit, binned: true}} : {})};
+
+  let valid = true;
+  let leafCount = 0;
+  const test = logicalExpr(filter, (predicate: TooltipFieldPredicate) => {
+    leafCount++;
+    if (isObject(predicate)) {
+      const fieldPredicate = {...predicate, ...boundFieldDef};
+      if (isFieldPredicate(fieldPredicate) || isFieldValidPredicate(fieldPredicate)) {
+        return fieldFilterExpression(fieldPredicate, true, expr);
+      }
+    }
+    valid = false;
+    return '';
+  });
+
+  if (valid && leafCount > 0) {
+    return test;
+  }
+
+  log.warn(log.message.invalidTooltipFilter(filter));
+  return undefined;
 }
 
 export function tooltipRefForEncoding(
@@ -161,10 +231,32 @@ export function tooltipRefForEncoding(
   config: Config,
   {reactiveGeom}: {reactiveGeom?: boolean} = {},
 ) {
-  const data = tooltipData(encoding, stack, config, {reactiveGeom});
+  const tuples = tooltipDataTuples(encoding, stack, config, {reactiveGeom});
+  if (tuples.length === 0) {
+    return undefined;
+  }
 
-  const keyValues = entries(data).map(([key, value]) => `"${key}": ${value}`);
-  return keyValues.length > 0 ? {signal: `{${keyValues.join(', ')}}`} : undefined;
+  const objectExpr = ({key, value}: TooltipTuple) => `{"${key}": ${value}}`;
+  if (tuples.some(({test}) => !!test)) {
+    if (tuples.length === 1) {
+      return {signal: `(${tuples[0].test}) ? ${objectExpr(tuples[0])} : null`};
+    }
+
+    const keyValues = tuples.map((tuple) =>
+      tuple.test ? `(${tuple.test}) ? ${objectExpr(tuple)} : {}` : objectExpr(tuple),
+    );
+    const value = `merge(${keyValues.join(', ')})`;
+
+    if (tuples.every(({test}) => !!test)) {
+      // With all fields filtered, return null instead of an empty object so that no tooltip is shown.
+      const anyVisible = tuples.map(({test}) => `(${test})`).join(' || ');
+      return {signal: `(${anyVisible}) ? ${value} : null`};
+    }
+    return {signal: value};
+  }
+
+  const keyValues = tuples.map(({key, value}) => `"${key}": ${value}`);
+  return {signal: `{${keyValues.join(', ')}}`};
 }
 
 /**

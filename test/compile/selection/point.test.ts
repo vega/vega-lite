@@ -220,6 +220,29 @@ describe('Multi Selection', () => {
     model.component.selection = selCmpts;
   });
 
+  it('accesses escaped fields in tuple signals', () => {
+    const escaped = parseUnitSelection(model, [
+      {
+        name: 'escaped',
+        select: {type: 'point', fields: ['y\\[foo\\]']},
+      },
+    ]);
+
+    expect(point.signals(model, escaped['escaped'], [])).toEqual([
+      {
+        name: 'escaped_tuple',
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: escaped_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["y[foo]"]]} : null',
+            force: true,
+          },
+        ],
+      },
+    ]);
+  });
+
   it('builds modify signals', () => {
     const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(
@@ -402,14 +425,10 @@ describe('Animated Selection', () => {
     expect(signals).toEqual(
       expect.arrayContaining([
         {
+          // an update expression, not an on handler, so that the tuple has a
+          // value on the initial pulse rather than only from the first tick
           name: 'avl_tuple',
-          on: [
-            {
-              events: [{signal: 'eased_anim_clock'}, {signal: 'anim_value'}],
-              update: '{unit: "", fields: avl_tuple_fields, values: [anim_value ? anim_value : min_extent]}',
-              force: true,
-            },
-          ],
+          update: '{unit: "", fields: avl_tuple_fields, values: [anim_value ? anim_value : min_extent]}',
         },
       ]),
     );
@@ -459,13 +478,10 @@ describe('Animated Selection', () => {
     expect(signals).toEqual(
       expect.arrayContaining([
         {
+          // likewise driven by an update expression, so the store is written
+          // during the initial pulse and the first frame filters correctly
           name: 'avl_modify',
-          on: [
-            {
-              events: {signal: 'avl_tuple'},
-              update: 'modify("avl_store", avl_tuple, true)',
-            },
-          ],
+          update: 'modify("avl_store", avl_tuple, true)',
         },
       ]),
     );

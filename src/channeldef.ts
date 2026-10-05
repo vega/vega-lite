@@ -1,12 +1,19 @@
 import {Gradient, ScaleType, SignalRef, Text, TimeFormatSpecifier} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {isPrimitive} from './util.js';
-import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate.js';
+import {
+  Aggregate,
+  getAggregateOp,
+  isAggregateOp,
+  isArgmaxDef,
+  isArgminDef,
+  isCountingAggregateOp,
+  isParameterizedAggregateDef,
+} from './aggregate.js';
 import {Axis} from './axis.js';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin.js';
 import {
   ANGLE,
-  Channel,
   COLOR,
   COLUMN,
   DESCRIPTION,
@@ -64,7 +71,7 @@ import {Legend} from './legend.js';
 import * as log from './log/index.js';
 import {LogicalComposition} from './logical.js';
 import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark.js';
-import {ParameterPredicate, Predicate} from './predicate.js';
+import {ParameterPredicate, Predicate, TooltipFieldFilter} from './predicate.js';
 import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale.js';
 import {isSortByChannel, Sort, SortOrder} from './sort.js';
 import {isFacetFieldDef} from './spec/facet.js';
@@ -236,6 +243,15 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
    * 2) `field` is not required if `aggregate` is `count`.
    */
   field?: F;
+
+  /**
+   * Controls whether this field appears in tooltips and ARIA descriptions generated from the encoding (e.g., when the mark definition's `tooltip` property is `true`).
+   *
+   * __Default value:__ `true`
+   *
+   * __See also:__ [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html#encoding) documentation.
+   */
+  tooltip?: boolean;
 
   // function
 
@@ -656,6 +672,14 @@ export function isOrderOnlyDef<F extends Field>(
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
 
 export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
+export interface TooltipFieldDef<F extends Field> extends StringFieldDef<F> {
+  /**
+   * A [predicate](https://vega.github.io/vega-lite/docs/predicate.html) for including this field in the generated tooltip and ARIA description. The predicate is tested against this field's value and must not include `field` or `timeUnit` properties. For example, `"filter": {"gt": 0}` includes the field only when its value is positive, and `"filter": {"valid": true}` includes it only when it is not `null` and not `NaN`.
+   *
+   * __See also:__ [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html#channel) documentation.
+   */
+  filter?: TooltipFieldFilter;
+}
 
 export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];
@@ -811,7 +835,7 @@ export function vgField(
 
     if (!opt.nofn) {
       if (isOpFieldDef(fieldDef)) {
-        fn = fieldDef.op;
+        fn = getAggregateOp(fieldDef.op);
       } else {
         const {bin, aggregate, timeUnit} = fieldDef;
         if (isBinning(bin)) {
@@ -825,7 +849,7 @@ export function vgField(
             argAccessor = `["${field}"]`;
             field = `argmin_${aggregate.argmin}`;
           } else {
-            fn = String(aggregate);
+            fn = getAggregateOp(aggregate);
           }
         } else if (timeUnit && !isBinnedTimeUnit(timeUnit)) {
           fn = timeUnitToString(timeUnit);
@@ -899,7 +923,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
     } else if (isArgminDef(aggregate)) {
       return `${field} for min ${aggregate.argmin}`;
     } else {
-      return `${titleCase(aggregate)} of ${field}`;
+      return `${titleCase(getAggregateOp(aggregate))} of ${field}`;
     }
   }
   return field;
@@ -915,7 +939,11 @@ export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
 
   const timeUnitParams = timeUnit && !isBinnedTimeUnit(timeUnit) ? normalizeTimeUnit(timeUnit) : undefined;
 
-  const fn = aggregate || timeUnitParams?.unit || (timeUnitParams?.maxbins && 'timeunit') || (isBinning(bin) && 'bin');
+  const fn =
+    getAggregateOp(aggregate) ||
+    timeUnitParams?.unit ||
+    (timeUnitParams?.maxbins && 'timeunit') ||
+    (isBinning(bin) && 'bin');
   return fn ? `${fn.toUpperCase()}(${field})` : field;
 }
 
@@ -1138,7 +1166,14 @@ export function initFieldDef(
   const fieldDef = {...fd};
 
   // Drop invalid aggregate
-  if (!compositeMark && aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
+  if (
+    !compositeMark &&
+    aggregate &&
+    !isAggregateOp(aggregate) &&
+    !isArgmaxDef(aggregate) &&
+    !isArgminDef(aggregate) &&
+    !isParameterizedAggregateDef(aggregate)
+  ) {
     log.warn(log.message.invalidAggregate(aggregate));
     delete fieldDef.aggregate;
   }
@@ -1427,7 +1462,7 @@ export function valueArray(
 /**
  * Checks whether a fieldDef for a particular channel requires a computed bin range.
  */
-export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel): boolean {
+export function binRequiresRange(fieldDef: FieldDef<string>, channel: ExtendedChannel): boolean {
   if (!isBinning(fieldDef.bin)) {
     console.warn('Only call this method for binned field defs.');
     return false;

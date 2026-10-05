@@ -1,7 +1,7 @@
 import {BinTransform as VgBinTransform, Transforms as VgTransform} from 'vega';
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning, isParameterExtent} from '../../bin.js';
-import {Channel} from '../../channel.js';
+import {ExtendedChannel} from '../../channel.js';
 import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef.js';
 import {Config} from '../../config.js';
 import {BinTransform} from '../../transform.js';
@@ -12,7 +12,12 @@ import {parseSelectionExtent} from '../selection/parse.js';
 import {NonPositionScaleChannel, PositionChannel} from './../../channel.js';
 import {DataFlowNode} from './dataflow.js';
 
-function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, channel: Channel, config: Config) {
+function rangeFormula(
+  model: ModelWithField,
+  fieldDef: TypedFieldDef<string>,
+  channel: ExtendedChannel,
+  config: Config,
+) {
   if (binRequiresRange(fieldDef, channel)) {
     // read format from axis or legend, if there is no format then use config.numberFormat
 

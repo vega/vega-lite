@@ -161,6 +161,10 @@ export function invalidTransformIgnored(transform: any) {
   return `Ignoring an invalid transform: ${stringify(transform)}.`;
 }
 
+export function conflictingAggregateParam(op: string, field: string, parentParam: number, childParam: number) {
+  return `The "${op}" aggregate of the field "${field}" is used with different parameters (${parentParam} and ${childParam}). Using ${childParam}.`;
+}
+
 export const NO_FIELDS_NEEDS_AS =
   'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the data from the secondary source.';
 
@@ -169,6 +173,13 @@ export const NO_FIELDS_NEEDS_AS =
 export function customFormatTypeNotAllowed(channel: ExtendedChannel) {
   return `Config.customFormatTypes is not true, thus custom format type and format for channel ${channel} are dropped.`;
 }
+
+export function invalidTooltipFilter(filter: any) {
+  return `Ignoring an invalid tooltip filter: ${stringify(filter)}.`;
+}
+
+export const TOOLTIP_FILTER_REQUIRES_FIELD =
+  'Ignoring tooltip filter because it requires a field (argmin and argmax fields are not supported).';
 
 export function projectionOverridden<ES extends ExprRef | SignalRef>(opt: {
   parentProjection: Projection<ES>;
@@ -337,7 +348,12 @@ export function mergeConflictingProperty<T>(
   )}). Using ${stringify(v1)}.`;
 }
 
-export function mergeConflictingDomainProperty<T>(property: 'domains', propertyOf: SplitParentProperty, v1: T, v2: T) {
+export function mergeConflictingDomainProperty<T>(
+  property: 'domain' | 'domains',
+  propertyOf: SplitParentProperty,
+  v1: T,
+  v2: T,
+) {
   return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(
     v2,
   )}). Using the union of the two domains.`;

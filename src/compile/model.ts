@@ -647,7 +647,9 @@ export abstract class Model {
 }
 
 /** Abstract class for UnitModel and FacetModel. Both of which can contain fieldDefs as a part of its own specification. */
-export abstract class ModelWithField extends Model {
+export abstract class ModelWithField<
+  M extends Partial<Record<ExtendedChannel, any>> = Partial<Record<ExtendedChannel, any>>,
+> extends Model {
   public abstract fieldDef(channel: SingleDefChannel): FieldDef<any>;
 
   /** Get "field" reference for Vega */
@@ -661,12 +663,12 @@ export abstract class ModelWithField extends Model {
     return vgField(fieldDef, opt);
   }
 
-  protected abstract getMapping(): Partial<Record<ExtendedChannel, any>>;
+  protected abstract getMapping(): M;
 
-  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T): T {
+  public reduceFieldDef<T>(f: (acc: T, fd: FieldDef<string>, c: keyof M) => T, init: T): T {
     return reduce(
       this.getMapping(),
-      (acc: U, cd: ChannelDef, c: Channel) => {
+      (acc: T, cd: ChannelDef, c: keyof M) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
           return f(acc, fieldDef, c);
@@ -677,7 +679,7 @@ export abstract class ModelWithField extends Model {
     );
   }
 
-  public forEachFieldDef(f: (fd: FieldDef<string>, c: ExtendedChannel) => void, t?: any) {
+  public forEachFieldDef(f: (fd: FieldDef<string>, c: keyof M) => void, t?: any) {
     forEach(
       this.getMapping(),
       (cd, c) => {

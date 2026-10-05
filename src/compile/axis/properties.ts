@@ -75,6 +75,8 @@ export const axisRules: {
       isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined,
     ),
 
+  bandPosition: ({axis, model, channel}) => axis.bandPosition ?? defaultBandPosition(model, channel),
+
   // we already calculate orient in parse
   orient: ({orient}) => orient as AxisOrient, // Need to cast until Vega supports signal
 
@@ -118,6 +120,13 @@ export const axisRules: {
 
 export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string> | DatumDef) {
   return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef?.bin) && !isBinned(fieldDef?.bin);
+}
+
+export function defaultBandPosition(model: UnitModel, channel: PositionScaleChannel) {
+  if (model.isRangedOffset(channel)) {
+    return channel === 'x' ? 0 : 1;
+  }
+  return undefined;
 }
 
 export function gridScale(model: UnitModel, channel: PositionScaleChannel) {

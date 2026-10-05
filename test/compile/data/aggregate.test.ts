@@ -1,5 +1,6 @@
 import {AggregateNode} from '../../../src/compile/data/aggregate.js';
 import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../../../src/compile/data/timeunit.js';
+import * as log from '../../../src/log/index.js';
 import {AggregateTransform} from '../../../src/transform.js';
 import {internalField} from '../../../src/util.js';
 import {parseUnitModel} from '../../util.js';
@@ -49,9 +50,9 @@ describe('compile/data/aggregate', () => {
 
       const agg = AggregateNode.makeFromEncoding(null, model);
       expect(agg.hash()).toBe(
-        `Aggregate {"dimensions":"Set(\\"Origin\\")","measures":{"*":{"count":"Set(\\"${internalField(
+        `Aggregate {"dimensions":"Set(\\"Origin\\")","measures":{"*":{"count":{"aliases":"Set(\\"${internalField(
           'count',
-        )}\\")"},"Acceleration":{"sum":"Set(\\"sum_Acceleration\\")"}}}`,
+        )}\\")"}},"Acceleration":{"sum":{"aliases":"Set(\\"sum_Acceleration\\")"}}}}`,
       );
     });
   });
@@ -268,6 +269,46 @@ describe('compile/data/aggregate', () => {
         as: ['argmin_a', 'argmax_c'],
       });
     });
+
+    it('should produce the correct summary component for exponential', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {aggregate: {exponential: 0.25}, field: 'Displacement', type: 'quantitative'},
+          y: {aggregate: 'sum', field: 'Acceleration', type: 'quantitative'},
+        },
+      });
+
+      const agg = AggregateNode.makeFromEncoding(null, model);
+      expect(agg.assemble()).toEqual({
+        type: 'aggregate',
+        groupby: [],
+        ops: ['exponential', 'sum'],
+        fields: ['Displacement', 'Acceleration'],
+        as: ['exponential_Displacement', 'sum_Acceleration'],
+        aggregate_params: [0.25, null],
+      });
+    });
+
+    it('should produce the correct summary component for exponentialb', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {aggregate: {exponentialb: 0.25}, field: 'Displacement', type: 'quantitative'},
+          y: {aggregate: 'sum', field: 'Acceleration', type: 'quantitative'},
+        },
+      });
+
+      const agg = AggregateNode.makeFromEncoding(null, model);
+      expect(agg.assemble()).toEqual({
+        type: 'aggregate',
+        groupby: [],
+        ops: ['exponentialb', 'sum'],
+        fields: ['Displacement', 'Acceleration'],
+        as: ['exponentialb_Displacement', 'sum_Acceleration'],
+        aggregate_params: [0.25, null],
+      });
+    });
   });
 
   describe('makeFromTransform', () => {
@@ -309,6 +350,63 @@ describe('compile/data/aggregate', () => {
         as: ['Displacement_mean', 'Displacement_max', 'Acceleration_sum'],
       });
     });
+
+    it('should produce the correct summary component from transform array with exponential', () => {
+      const t: AggregateTransform = {
+        aggregate: [
+          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'},
+          {op: {exponential: 0.3}, field: 'Displacement', as: 'Displacement_exponential'},
+        ],
+        groupby: ['Group'],
+      };
+
+      const agg = AggregateNode.makeFromTransform(null, t);
+      expect(agg.assemble()).toEqual({
+        type: 'aggregate',
+        groupby: ['Group'],
+        ops: ['sum', 'exponential'],
+        fields: ['Acceleration', 'Displacement'],
+        as: ['Acceleration_sum', 'Displacement_exponential'],
+        aggregate_params: [null, 0.3],
+      });
+    });
+
+    it('should produce the correct summary component from transform array with exponentialb', () => {
+      const t: AggregateTransform = {
+        aggregate: [
+          {op: 'sum', field: 'Acceleration', as: 'Acceleration_sum'},
+          {op: {exponentialb: 0.3}, field: 'Displacement', as: 'Displacement_exponentialb'},
+        ],
+        groupby: ['Group'],
+      };
+
+      const agg = AggregateNode.makeFromTransform(null, t);
+      expect(agg.assemble()).toEqual({
+        type: 'aggregate',
+        groupby: ['Group'],
+        ops: ['sum', 'exponentialb'],
+        fields: ['Acceleration', 'Displacement'],
+        as: ['Acceleration_sum', 'Displacement_exponentialb'],
+        aggregate_params: [null, 0.3],
+      });
+    });
+
+    it('should preserve an aggregate param of 0', () => {
+      const t: AggregateTransform = {
+        aggregate: [{op: {exponential: 0}, field: 'Displacement', as: 'Displacement_exponential'}],
+        groupby: ['Group'],
+      };
+
+      const agg = AggregateNode.makeFromTransform(null, t);
+      expect(agg.assemble()).toEqual({
+        type: 'aggregate',
+        groupby: ['Group'],
+        ops: ['exponential'],
+        fields: ['Displacement'],
+        as: ['Displacement_exponential'],
+        aggregate_params: [0],
+      });
+    });
   });
 
   describe('producedFields', () => {
@@ -336,17 +434,72 @@ describe('compile/data/aggregate', () => {
     });
     it('should merge AggregateNodes with same dimensions', () => {
       const parent = new PlaceholderDataFlowNode(null);
-      const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {a: {mean: new Set(['a_mean'])}});
-      const agg2 = new AggregateNode(parent, new Set(['a', 'b']), {b: {mean: new Set(['b_mean'])}});
+      const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {a: {mean: {aliases: new Set(['a_mean'])}}});
+      const agg2 = new AggregateNode(parent, new Set(['a', 'b']), {b: {mean: {aliases: new Set(['b_mean'])}}});
 
       expect(agg1.merge(agg2)).toBe(true);
       expect(agg1.producedFields()).toEqual(new Set(['a_mean', 'b_mean']));
     });
+    it('should merge AggregateNodes without losing aggregateParam', () => {
+      const parent = new PlaceholderDataFlowNode(null);
+      const agg1 = new AggregateNode(parent, new Set(['a', 'b']), {
+        a: {sum: {aliases: new Set(['a_sum'])}},
+      });
+      const agg2 = new AggregateNode(parent, new Set(['a', 'b']), {
+        b: {exponential: {aliases: new Set(['b_exponential']), aggregateParam: 0.5}},
+      });
+
+      expect(agg1.merge(agg2)).toBe(true);
+      expect(agg1.assemble()).toEqual({
+        ops: ['sum', 'exponential'],
+        type: 'aggregate',
+        as: ['a_sum', 'b_exponential'],
+        fields: ['a', 'b'],
+        groupby: ['a', 'b'],
+        aggregate_params: [null, 0.5],
+      });
+    });
+    it('should merge AggregateNodes without losing an aggregateParam of 0', () => {
+      const parent = new PlaceholderDataFlowNode(null);
+      const agg1 = new AggregateNode(parent, new Set(['a']), {
+        b: {exponential: {aliases: new Set(['b_exp1']), aggregateParam: 0}},
+      });
+      const agg2 = new AggregateNode(parent, new Set(['a']), {
+        b: {exponential: {aliases: new Set(['b_exp2']), aggregateParam: 0}},
+      });
+
+      expect(agg1.merge(agg2)).toBe(true);
+      expect(agg1.assemble()).toEqual({
+        ops: ['exponential', 'exponential'],
+        type: 'aggregate',
+        as: ['b_exp1', 'b_exp2'],
+        fields: ['b', 'b'],
+        groupby: ['a'],
+        aggregate_params: [0, 0],
+      });
+    });
+    it(
+      'should warn when merging AggregateNodes with conflicting aggregateParams',
+      log.wrap((localLogger) => {
+        const parent = new PlaceholderDataFlowNode(null);
+        const agg1 = new AggregateNode(parent, new Set(['a']), {
+          b: {exponential: {aliases: new Set(['b_exp1']), aggregateParam: 0.3}},
+        });
+        const agg2 = new AggregateNode(parent, new Set(['a']), {
+          b: {exponential: {aliases: new Set(['b_exp2']), aggregateParam: 0.7}},
+        });
+
+        expect(agg1.merge(agg2)).toBe(true);
+        expect(localLogger.warns[0]).toEqual(log.message.conflictingAggregateParam('exponential', 'b', 0.3, 0.7));
+      }),
+    );
   });
 
   describe('assemble()', () => {
     it('should escape nested accesses', () => {
-      const agg = new AggregateNode(null, new Set(['foo.bar']), {'foo.baz': {mean: new Set(['foo_baz_mean'])}});
+      const agg = new AggregateNode(null, new Set(['foo.bar']), {
+        'foo.baz': {mean: {aliases: new Set(['foo_baz_mean'])}},
+      });
       expect(agg.assemble()).toEqual({
         as: ['foo_baz_mean'],
         fields: ['foo\\.baz'],

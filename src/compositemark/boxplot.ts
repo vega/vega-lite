@@ -8,7 +8,13 @@ import {isMarkDef, MarkDef} from '../mark.js';
 import {MarkInvalidMixins} from '../invalid.js';
 import {NormalizerParams} from '../normalize/index.js';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec/index.js';
-import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform.js';
+import {
+  AggregatedFieldDef,
+  CalculateTransform,
+  JoinAggregateTransform,
+  NonArgAggregateFieldOp,
+  Transform,
+} from '../transform.js';
 import {accessWithDatumToUnescapedPath, removePathFromField} from '../util.js';
 import {CompositeMarkNormalizer} from './base.js';
 import {
@@ -22,6 +28,7 @@ import {
   partLayerMixins,
   PartsMixins,
 } from './common.js';
+import {FieldName} from '../channeldef.js';
 
 export const BOXPLOT = 'boxplot' as const;
 export type BoxPlot = typeof BOXPLOT;
@@ -344,7 +351,9 @@ export function normalizeBoxPlot(
   };
 }
 
-function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
+function boxParamsQuartiles(
+  continousAxisField: string,
+): {op: NonArgAggregateFieldOp; field: FieldName; as: FieldName}[] {
   const aliasedFieldName = removePathFromField(continousAxisField);
   return [
     {
