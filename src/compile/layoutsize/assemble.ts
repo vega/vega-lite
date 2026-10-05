@@ -63,7 +63,17 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
     const expr = isWidth ? 'containerSize()[0]' : 'containerSize()[1]';
     const defaultValue = getViewConfigContinuousSize(model.config.view, isWidth ? 'width' : 'height');
     const safeExpr = `isFinite(${expr}) ? ${expr} : ${defaultValue}`;
-    return [{name, init: safeExpr, on: [{update: safeExpr, events: 'window:resize'}]}];
+    return [
+      {
+        name,
+        init: safeExpr,
+        // `window:resize` supports Vega versions before 6.4, which have no `container:resize` event
+        on: [
+          {update: safeExpr, events: 'window:resize'},
+          {update: safeExpr, events: 'container:resize'},
+        ],
+      },
+    ];
   } else {
     return [
       {

@@ -169,5 +169,39 @@ describe('compile/layout', () => {
       const height = sizeSignals(model, 'height');
       expect(height).toEqual([{name: 'height', value: 18}]);
     });
+
+    it('should update container size on window and container resize', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        width: 'container',
+        height: 'container',
+        mark: 'point',
+        encoding: {},
+        config: {view: {continuousWidth: 500, continuousHeight: 400}},
+      });
+
+      const width = sizeSignals(model, 'width');
+      expect(width).toEqual([
+        {
+          name: 'width',
+          init: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500',
+          on: [
+            {events: 'window:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'},
+            {events: 'container:resize', update: 'isFinite(containerSize()[0]) ? containerSize()[0] : 500'},
+          ],
+        },
+      ]);
+
+      const height = sizeSignals(model, 'height');
+      expect(height).toEqual([
+        {
+          name: 'height',
+          init: 'isFinite(containerSize()[1]) ? containerSize()[1] : 400',
+          on: [
+            {events: 'window:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 400'},
+            {events: 'container:resize', update: 'isFinite(containerSize()[1]) ? containerSize()[1] : 400'},
+          ],
+        },
+      ]);
+    });
   });
 });
