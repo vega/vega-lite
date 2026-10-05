@@ -216,6 +216,7 @@ export function guideFormat(
   ) {
     return numberFormat({
       type: 'quantitative',
+      specifiedFormat: format,
       config,
       normalizeStack: true,
     });
