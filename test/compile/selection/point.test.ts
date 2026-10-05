@@ -220,6 +220,29 @@ describe('Multi Selection', () => {
     model.component.selection = selCmpts;
   });
 
+  it('accesses escaped fields in tuple signals', () => {
+    const escaped = parseUnitSelection(model, [
+      {
+        name: 'escaped',
+        select: {type: 'point', fields: ['y\\[foo\\]']},
+      },
+    ]);
+
+    expect(point.signals(model, escaped['escaped'], [])).toEqual([
+      {
+        name: 'escaped_tuple',
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: escaped_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["y[foo]"]]} : null',
+            force: true,
+          },
+        ],
+      },
+    ]);
+  });
+
   it('builds modify signals', () => {
     const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(

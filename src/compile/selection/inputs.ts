@@ -1,6 +1,5 @@
-import {stringValue} from 'vega-util';
 import {disableDirectManipulation, TUPLE, SelectionCompiler} from './index.js';
-import {varName} from '../../util.js';
+import {flatAccessWithDatum, varName} from '../../util.js';
 import {assembleInit} from './assemble.js';
 import nearest from './nearest.js';
 import {TUPLE_FIELDS} from './project.js';
@@ -39,7 +38,7 @@ const inputBindings: SelectionCompiler<'point'> = {
             ? [
                 {
                   events: selCmpt.events,
-                  update: `datum && item().mark.marktype !== 'group' ? ${datum}[${stringValue(p.field)}] : null`,
+                  update: `datum && item().mark.marktype !== 'group' ? ${flatAccessWithDatum(p.field, datum)} : null`,
                 },
               ]
             : [],

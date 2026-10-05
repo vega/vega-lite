@@ -1,8 +1,7 @@
 import {Signal, Stream} from 'vega';
-import {stringValue} from 'vega-util';
 import {SelectionCompiler, TUPLE, isTimerSelection, unitName} from './index.js';
 import {SELECTION_ID} from '../../selection.js';
-import {vals} from '../../util.js';
+import {flatAccessWithDatum, vals} from '../../util.js';
 import {BRUSH} from './interval.js';
 import {TUPLE_FIELDS} from './project.js';
 import {TIME} from '../../channel.js';
@@ -95,7 +94,7 @@ const point: SelectionCompiler<'point'> = {
     let update = `unit: ${unitName(model)}, `;
 
     if (selCmpt.project.hasSelectionId) {
-      update += `${SELECTION_ID}: ${datum}[${stringValue(SELECTION_ID)}]`;
+      update += `${SELECTION_ID}: ${flatAccessWithDatum(SELECTION_ID, datum)}`;
     } else if (isTimerSelection(selCmpt)) {
       update += `fields: ${fieldsSg}, values: [${ANIM_VALUE} ? ${ANIM_VALUE} : ${MIN_EXTENT}]`;
     } else {
@@ -104,9 +103,9 @@ const point: SelectionCompiler<'point'> = {
           const fieldDef = model.fieldDef(p.channel);
           // Binned fields should capture extents, for a range test against the raw field.
           return fieldDef?.bin
-            ? `[${datum}[${stringValue(model.vgField(p.channel, {}))}], ` +
-                `${datum}[${stringValue(model.vgField(p.channel, {binSuffix: 'end'}))}]]`
-            : `${datum}[${stringValue(p.field)}]`;
+            ? `[${flatAccessWithDatum(model.vgField(p.channel, {}), datum)}, ` +
+                `${flatAccessWithDatum(model.vgField(p.channel, {binSuffix: 'end'}), datum)}]`
+            : flatAccessWithDatum(p.field, datum);
         })
         .join(', ');
 

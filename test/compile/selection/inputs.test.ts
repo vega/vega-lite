@@ -249,6 +249,35 @@ describe('Inputs Selection Transform', () => {
     });
   });
 
+  it('accesses escaped fields in bound selection events', () => {
+    const escaped = parseUnitSelection(model, [
+      {
+        name: 'escaped',
+        select: {
+          type: 'point',
+          fields: ['y\\[foo\\]'],
+          nearest: true,
+          on: 'click',
+        },
+        bind: {input: 'range', min: 0, max: 10, step: 1},
+      },
+    ]);
+    model.component.selection = escaped;
+
+    expect(assembleTopLevelSignals(model, [])).toContainEqual({
+      name: 'escaped_y__foo__',
+      value: null,
+      on: [
+        {
+          events: [{source: 'scope', type: 'click', markname: 'voronoi'}],
+          update:
+            'datum && item().mark.marktype !== \'group\' ? (item().isVoronoi ? datum.datum : datum)["y[foo]"] : null',
+        },
+      ],
+      bind: {input: 'range', min: 0, max: 10, step: 1},
+    });
+  });
+
   it('respects initialization', () => {
     model.component.selection = {seven: selCmpts['seven']};
     expect(assembleUnitSelectionSignals(model, [])).toEqual(
