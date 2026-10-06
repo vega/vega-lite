@@ -162,8 +162,16 @@ export const scaleRules: {
   padding: ({channel, scaleType, fieldOrDatumDef, markDef, config}) =>
     padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
 
-  paddingInner: ({scalePadding, channel, markDef, scaleType, config, hasNestedOffsetScale}) =>
-    paddingInner(scalePadding, channel, markDef.type, scaleType, config.scale, hasNestedOffsetScale),
+  paddingInner: ({model, scalePadding, channel, markDef, scaleType, config, hasNestedOffsetScale}) =>
+    paddingInner(
+      scalePadding,
+      channel,
+      markDef.type,
+      scaleType,
+      config.scale,
+      hasNestedOffsetScale,
+      isXorY(channel) ? model.getScaleComponent(channel === 'x' ? 'xOffset' : 'yOffset')?.get('type') : undefined,
+    ),
 
   paddingOuter: ({scalePadding, channel, scaleType, scalePaddingInner, config, hasNestedOffsetScale}) =>
     paddingOuter(scalePadding, channel, scaleType, scalePaddingInner, config.scale, hasNestedOffsetScale),
@@ -315,6 +323,7 @@ export function paddingInner(
   scaleType: ScaleType,
   scaleConfig: ScaleConfig<SignalRef>,
   hasNestedOffsetScale = false,
+  offsetScaleType?: ScaleType,
 ) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingInner.
@@ -335,6 +344,9 @@ export function paddingInner(
     } = scaleConfig;
 
     if (hasNestedOffsetScale) {
+      if (offsetScaleType && hasContinuousDomain(offsetScaleType)) {
+        return getFirstDefined(scaleConfig.bandWithContinuousOffsetPaddingInner, bandWithNestedOffsetPaddingInner);
+      }
       return bandWithNestedOffsetPaddingInner;
     }
 
