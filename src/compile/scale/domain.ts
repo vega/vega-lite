@@ -43,6 +43,7 @@ import {
   isSignalRef,
   VgDomain,
   VgMultiFieldsRefWithSort,
+  VgDomainsToUnion,
   VgNonUnionDomain,
   VgScaleDataRefWithSort,
   VgScaleMultiDataRefWithSort,
@@ -108,7 +109,7 @@ function parseNonUnitScaleDomain(model: Model) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   for (const channel of util.keys(localScaleComponents)) {
-    let domains: Explicit<VgNonUnionDomain[]>;
+    let domains: Explicit<VgDomainsToUnion>;
     let selectionExtent: ParameterExtent = null;
 
     for (const child of model.children) {
@@ -169,7 +170,7 @@ function normalizeUnaggregatedDomain(
   return domain;
 }
 
-export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): Explicit<VgNonUnionDomain[]> {
+export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): Explicit<VgDomainsToUnion> {
   const scaleType = model.getScaleComponent(channel).get('type');
   const {encoding} = model;
 
@@ -227,14 +228,14 @@ function convertDomainIfItIsDateTime(
   domain: (number | string | boolean | DateTime | ExprRef | SignalRef | number[])[],
   type: Type,
   timeUnit: TimeUnit | TimeUnitTransformParams,
-): [number[]] | [string[]] | [boolean[]] | [SignalRef[]] {
+): VgDomainsToUnion {
   // explicit value
   const normalizedTimeUnit = normalizeTimeUnit(timeUnit)?.unit;
   if (type === 'temporal' || normalizedTimeUnit) {
     return [mapDomainToSignals(domain, type, normalizedTimeUnit)];
   }
 
-  return [domain] as [number[]] | [string[]] | [boolean[]]; // Date time won't make sense
+  return [domain as number[] | string[] | boolean[]]; // Date time won't make sense
 }
 
 function parseSingleChannelDomain(
@@ -242,7 +243,7 @@ function parseSingleChannelDomain(
   domain: Domain,
   model: UnitModel,
   channel: ScaleChannel | 'x2' | 'y2',
-): Explicit<VgNonUnionDomain[]> {
+): Explicit<VgDomainsToUnion> {
   const {encoding, markDef, mark, config, stack} = model;
   const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleDatumDef<string> | ScaleFieldDef<string>;
 
@@ -535,8 +536,8 @@ export function canUseUnaggregatedDomain(
  * Tie breaker for mergeValuesWithExplicit for domains. We concat the specified values.
  */
 function domainsTieBreaker(
-  v1: Explicit<VgNonUnionDomain[]>,
-  v2: Explicit<VgNonUnionDomain[]>,
+  v1: Explicit<VgDomainsToUnion>,
+  v2: Explicit<VgDomainsToUnion>,
   property: 'domain' | 'domains',
   propertyOf: SplitParentProperty,
 ) {
@@ -550,7 +551,7 @@ function domainsTieBreaker(
 /**
  * Converts an array of domains to a single Vega scale domain.
  */
-export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
+export function mergeDomains(domains: VgDomainsToUnion): VgDomain {
   const uniqueDomains = util.unique(
     domains.map((domain) => {
       // ignore sort property when computing the unique domains

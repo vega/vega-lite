@@ -4,7 +4,7 @@ import {ScaleChannel} from '../../channel.js';
 import {Scale, ScaleType} from '../../scale.js';
 import {ParameterExtent} from '../../selection.js';
 import {contains} from '../../util.js';
-import {VgNonUnionDomain, VgScale} from '../../vega.schema.js';
+import {VgDomainsToUnion, VgScale} from '../../vega.schema.js';
 import {Explicit, Split} from '../split.js';
 
 /**
@@ -12,7 +12,7 @@ import {Explicit, Split} from '../split.js';
  * (We exclude domain as we have a special "domains" array that allow us merge them all at once in assemble.)
  */
 export type ScaleComponentProps = Omit<VgScale, 'domain' | 'reverse'> & {
-  domains: VgNonUnionDomain[];
+  domains: VgDomainsToUnion;
   selectionExtent?: ParameterExtent;
   reverse?: boolean | SignalRef; // Need override since Vega doesn't official support scale reverse yet (though it does in practice)
 };
