@@ -1,5 +1,29 @@
 # Changelog
 
+# [6.5.0](https://github.com/vega/vega-lite/compare/v6.4.3...v6.5.0) (2026-10-08)
+
+### Bug Fixes
+
+* align center for image mark if channel2 not defined ([#9881](https://github.com/vega/vega-lite/issues/9881)) ([72cab44](https://github.com/vega/vega-lite/commit/72cab44f31653d6c7edff97a4fb2f8613f47c2bc)), closes [#9250](https://github.com/vega/vega-lite/issues/9250) [#8687](https://github.com/vega/vega-lite/issues/8687)
+* apply cornerRadiusEnd to the rendered value end of bars ([#9872](https://github.com/vega/vega-lite/issues/9872)) ([9cf5666](https://github.com/vega/vega-lite/commit/9cf5666b893c804d607efa36888c3b1b9406d57a))
+* apply facet sort order correctly in presence of an aggregate ([#9920](https://github.com/vega/vega-lite/issues/9920)) ([6437c37](https://github.com/vega/vega-lite/commit/6437c37bded7c8a1b8fe44e0c3eb057683d27912)), closes [#5366](https://github.com/vega/vega-lite/issues/5366)
+* facet missing data bug fix ([#9818](https://github.com/vega/vega-lite/issues/9818)) ([a29b4ef](https://github.com/vega/vega-lite/commit/a29b4efe49cabd8ceb4256e387d3f23e238443ff)), closes [#9434](https://github.com/vega/vega-lite/issues/9434) [#5937](https://github.com/vega/vega-lite/issues/5937) [#8675](https://github.com/vega/vega-lite/issues/8675) [vega/altair#3481](https://github.com/vega/altair/issues/3481) [vega/altair#3588](https://github.com/vega/altair/issues/3588)
+* Make ranged marks compatible with offset channels ([#9823](https://github.com/vega/vega-lite/issues/9823)) ([8f90c2b](https://github.com/vega/vega-lite/commit/8f90c2b0eca7d331aa244f59eef1c9f0cacb9231)), closes [#9819](https://github.com/vega/vega-lite/issues/9819) [#9819](https://github.com/vega/vega-lite/issues/9819)
+* namespace xOffset/yOffset scales in concat and repeat ([cd94d52](https://github.com/vega/vega-lite/commit/cd94d5225b210f9088a50112cfb6e8ef9da6daca))
+* ResizeObserver based container sizing ([#9892](https://github.com/vega/vega-lite/issues/9892)) ([bedc3f3](https://github.com/vega/vega-lite/commit/bedc3f36c87b45fa46b7a376b19bb3c63ada8edb)), closes [#9349](https://github.com/vega/vega-lite/issues/9349) [vega/vega#4318](https://github.com/vega/vega/issues/4318)
+* respect explicit axis formats for normalized stacks ([#9939](https://github.com/vega/vega-lite/issues/9939)) ([ab44401](https://github.com/vega/vega-lite/commit/ab44401c40cee6b120fece9c9ea23b89db8babc2))
+* Reverse `yOffset` directionality for quantitative scales to match `y` ([#9817](https://github.com/vega/vega-lite/issues/9817)) ([0798c25](https://github.com/vega/vega-lite/commit/0798c25d96385db12371ab718caafc7c3fc6a9f5)), closes [#9816](https://github.com/vega/vega-lite/issues/9816)
+* **scale:** evaluate signals in unioned domains, upgrade to TypeScript 6 ([#9922](https://github.com/vega/vega-lite/issues/9922)) ([da29fe4](https://github.com/vega/vega-lite/commit/da29fe49398532130906ee9d426f1de4f088de5f))
+* **selection:** initialize animation selections on the first pulse ([#9900](https://github.com/vega/vega-lite/issues/9900)) ([6fd39f9](https://github.com/vega/vega-lite/commit/6fd39f97143d4f50923bef45a3459db2c71b661f))
+* simplify compiled output for explicit datetime scale domains ([#9875](https://github.com/vega/vega-lite/issues/9875)) ([9f8850e](https://github.com/vega/vega-lite/commit/9f8850e163d03fe3e571f8c15c334a680bfc9544)), closes [#5943](https://github.com/vega/vega-lite/issues/5943)
+* support escaped fields in point selections ([#9904](https://github.com/vega/vega-lite/issues/9904)) ([91eeeb8](https://github.com/vega/vega-lite/commit/91eeeb8c2b8a4cf2cf9c1ea238667da0216d7a1c))
+* Ungroup pathmarks when used in offset channels (revert [#9819](https://github.com/vega/vega-lite/issues/9819)) ([#9822](https://github.com/vega/vega-lite/issues/9822)) ([3b25c34](https://github.com/vega/vega-lite/commit/3b25c347d04d3d2f6a62dba04e14f88efbfb9069))
+
+### Features
+
+* add exponential moving average ([#9880](https://github.com/vega/vega-lite/issues/9880)) ([223f88e](https://github.com/vega/vega-lite/commit/223f88e4fb3e8266c613734738b14ac57561fc18)), closes [#9225](https://github.com/vega/vega-lite/issues/9225) [#9225](https://github.com/vega/vega-lite/issues/9225)
+* filter tooltip fields ([#9876](https://github.com/vega/vega-lite/issues/9876)) ([8408ea4](https://github.com/vega/vega-lite/commit/8408ea4b5a2affc6f73dea7cd411a99b83bbb0d5)), closes [#9861](https://github.com/vega/vega-lite/issues/9861) [#9148](https://github.com/vega/vega-lite/issues/9148) [#9152](https://github.com/vega/vega-lite/issues/9152)
+
 ## [6.4.3](https://github.com/vega/vega-lite/compare/v6.4.2...v6.4.3) (2026-04-24)
 
 
