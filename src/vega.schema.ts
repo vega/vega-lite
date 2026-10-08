@@ -130,6 +130,8 @@ export interface VgRangeStep {
 // Domains that are not a union of domains
 export type VgNonUnionDomain = (null | string | number | boolean | SignalRef)[] | VgScaleDataRefWithSort | SignalRef;
 
+export type VgDomainsToUnion = VgNonUnionDomain[];
+
 export type VgDomain = BaseScale['domain'];
 
 export type VgMarkGroup = any;
