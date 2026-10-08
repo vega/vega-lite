@@ -50,7 +50,6 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "changelog": "conventional-changelog -p angular -r 2",
     "prebuild": "npm run clean:build",
     "build": "npm run build:only",
     "build:only": "rollup -c",
@@ -104,7 +103,7 @@
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "cheerio": "^1.2.0",
-    "conventional-changelog-cli": "^5.0.0",
+    "conventional-changelog-angular": "^9.4.0",
     "d3": "^7.9.0",
     "del-cli": "^7.0.0",
     "dotenv": "^18.0.5",
