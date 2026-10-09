@@ -114,9 +114,14 @@ describe('compile/data/stack', () => {
 
       expect(assemble(model)).toEqual([
         {
+          type: 'formula',
+          expr: 'isValid(datum["sum_a"]) && isFinite(+datum["sum_a"]) ? datum["sum_a"] : 0',
+          as: '__sum_a_stack',
+        },
+        {
           type: 'stack',
           groupby: [],
-          field: 'sum_a',
+          field: '__sum_a_stack',
           sort: {
             field: ['c'],
             order: ['ascending'],
@@ -162,9 +167,14 @@ describe('compile/data/stack', () => {
           value: 0,
         },
         {
+          type: 'formula',
+          expr: 'isValid(datum["sum_a"]) && isFinite(+datum["sum_a"]) ? datum["sum_a"] : 0',
+          as: '__sum_a_stack',
+        },
+        {
           type: 'stack',
           groupby: ['b'],
-          field: 'sum_a',
+          field: '__sum_a_stack',
           sort: {
             field: ['mean_d'],
             order: ['ascending'],
@@ -214,14 +224,65 @@ describe('compile/data/stack', () => {
           value: 0,
         },
         {
+          type: 'formula',
+          expr: 'isValid(datum["sum_a"]) && isFinite(+datum["sum_a"]) ? datum["sum_a"] : 0',
+          as: '__sum_a_stack',
+        },
+        {
           type: 'stack',
           groupby: ['bin_maxbins_10_b_mid'],
-          field: 'sum_a',
+          field: '__sum_a_stack',
           sort: {
             field: ['c'],
             order: ['ascending'],
           },
           as: ['sum_a_start', 'sum_a_end'],
+          offset: 'zero',
+        },
+      ]);
+    });
+
+    it('should use a non-null stack field so all-null categories do not corrupt later stack offsets', () => {
+      const model = parseUnitModelWithScale({
+        data: {
+          values: [
+            {grouping: 'GroupA', type: 'aaa', amount: 100},
+            {grouping: 'GroupA', type: 'charges', amount: 100},
+            {grouping: 'GroupA', type: 'denials', amount: null},
+            {grouping: 'GroupA', type: 'denials', amount: null},
+            {grouping: 'GroupA', type: 'yyy', amount: 100},
+            {grouping: 'GroupA', type: 'zzz', amount: 100},
+            {grouping: 'GroupB', type: 'aaa', amount: 100},
+            {grouping: 'GroupB', type: 'charges', amount: 100},
+            {grouping: 'GroupB', type: 'denials', amount: 100},
+            {grouping: 'GroupB', type: 'denials', amount: null},
+            {grouping: 'GroupB', type: 'yyy', amount: 100},
+            {grouping: 'GroupB', type: 'zzz', amount: 100},
+          ],
+        },
+        mark: 'bar',
+        encoding: {
+          x: {field: 'grouping', type: 'nominal'},
+          y: {aggregate: 'sum', field: 'amount', type: 'quantitative'},
+          color: {field: 'type', type: 'nominal'},
+        },
+      });
+
+      expect(assemble(model)).toEqual([
+        {
+          type: 'formula',
+          expr: 'isValid(datum["sum_amount"]) && isFinite(+datum["sum_amount"]) ? datum["sum_amount"] : 0',
+          as: '__sum_amount_stack',
+        },
+        {
+          type: 'stack',
+          groupby: ['grouping'],
+          field: '__sum_amount_stack',
+          sort: {
+            field: ['type'],
+            order: ['descending'],
+          },
+          as: ['sum_amount_start', 'sum_amount_end'],
           offset: 'zero',
         },
       ]);
