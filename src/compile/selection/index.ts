@@ -23,6 +23,7 @@ import inputs from './inputs.js';
 import nearest from './nearest.js';
 import project from './project.js';
 import scales from './scales.js';
+import boxZoom from './boxzoom.js';
 import legends from './legends.js';
 import toggle from './toggle.js';
 import translate from './translate.js';
@@ -50,6 +51,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   toggle?: string;
   translate?: any;
   zoom?: any;
+  boxZoom?: boolean;
   nearest?: any;
   clear?: any;
 }
@@ -73,6 +75,7 @@ export const selectionCompilers: SelectionCompiler<any>[] = [
   // Bindings may disable direct manipulation.
   inputs,
   scales,
+  boxZoom,
   legends,
 
   clear,
