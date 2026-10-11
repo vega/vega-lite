@@ -22291,6 +22291,19 @@
           "maximum": 1,
           "minimum": 0
         },
+        "bandWithContinuousOffsetPaddingInner": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Default inner padding for `x` and `y` band scales with a continuous-domain `xOffset` or `yOffset` scale, such as quantitative or temporal jitter. Takes precedence over `bandWithNestedOffsetPaddingInner` for these scales. Explicit `padding` or `paddingInner` on the position scale takes precedence.\n\n__Default value:__ Falls back to `bandWithNestedOffsetPaddingInner`.",
+          "maximum": 1,
+          "minimum": 0
+        },
         "bandWithNestedOffsetPaddingInner": {
           "anyOf": [
             {
