@@ -39,7 +39,7 @@ const clear: SelectionCompiler = {
     }
 
     // Be as minimalist as possible when adding clear triggers to minimize dataflow execution.
-    if (selCmpt.type === 'interval') {
+    if (selCmpt.type === 'interval' || selCmpt.type === 'segment') {
       for (const proj of selCmpt.project.items) {
         const vIdx = signals.findIndex((n) => n.name === proj.signals.visual);
         addClear(vIdx, '[0, 0]');
