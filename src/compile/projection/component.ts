@@ -10,6 +10,7 @@ export class ProjectionComponent extends Split<VgProjection> {
     public specifiedProjection: Projection<SignalRef>,
     public size: SignalRef[],
     public data: (string | SignalRef)[],
+    public interactiveSelection?: string,
   ) {
     super(
       {...specifiedProjection}, // all explicit properties of projection
