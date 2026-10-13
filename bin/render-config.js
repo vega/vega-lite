@@ -1,15 +1,27 @@
-import {readFileSync} from 'fs';
+import {readFileSync} from 'node:fs';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
 
-// CLI -c, -f and -t flags expect parsed JSON objects, not file contents.
-export function loadJSON(file) {
+// Render options accept both JSON files and exported JavaScript objects.
+export async function loadConfig(file) {
+  const extension = path.extname(file).toLowerCase();
+  if (['.js', '.mjs', '.cjs'].includes(extension)) {
+    const module = await import(pathToFileURL(path.resolve(file)).href);
+    return module.default ?? module;
+  }
   return JSON.parse(readFileSync(file, 'utf8'));
 }
 
-// Omit the locale option if the user did not provide a locale flag. This
-// preserves locale values set in the Vega specification.
-export function localeOptions(formatFile, timeFormatFile) {
-  const locale = {};
-  if (formatFile) locale.number = loadJSON(formatFile);
-  if (timeFormatFile) locale.time = loadJSON(timeFormatFile);
-  return Object.keys(locale).length ? {locale} : {};
+export async function localeOptions(formatFile, timeFormatFile) {
+  if (!formatFile && !timeFormatFile) return {};
+  const [number, time] = await Promise.all([
+    formatFile ? loadConfig(formatFile) : undefined,
+    timeFormatFile ? loadConfig(timeFormatFile) : undefined,
+  ]);
+  return {
+    locale: {
+      ...(formatFile ? {number} : {}),
+      ...(timeFormatFile ? {time} : {}),
+    },
+  };
 }
