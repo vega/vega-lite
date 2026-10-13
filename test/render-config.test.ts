@@ -9,6 +9,7 @@ describe('CLI JSON and JavaScript configuration and locale flags', () => {
   let numberFile: string;
   let timeFile: string;
   let jsFile: string;
+  let mjsFile: string;
   let cjsFile: string;
 
   const config = {axis: {labelFont: 'Arial'}};
@@ -21,12 +22,14 @@ describe('CLI JSON and JavaScript configuration and locale flags', () => {
     numberFile = path.join(dir, 'number.json');
     timeFile = path.join(dir, 'time.json');
     jsFile = path.join(dir, 'number.js');
+    mjsFile = path.join(dir, 'number.mjs');
     cjsFile = path.join(dir, 'number.cjs');
     writeFileSync(path.join(dir, 'package.json'), '{"type":"module"}');
     writeFileSync(configFile, JSON.stringify(config));
     writeFileSync(numberFile, JSON.stringify(number));
     writeFileSync(timeFile, JSON.stringify(time));
     writeFileSync(jsFile, `export default ${JSON.stringify(number)};`);
+    writeFileSync(mjsFile, `export default ${JSON.stringify(number)};`);
     writeFileSync(cjsFile, `module.exports = ${JSON.stringify(number)};`);
   });
 
@@ -40,6 +43,10 @@ describe('CLI JSON and JavaScript configuration and locale flags', () => {
 
   it('imports a JavaScript ES module config', async () => {
     expect(await loadConfig(jsFile)).toEqual(number);
+  });
+
+  it('imports an .mjs ES-module config', async () => {
+    expect(await loadConfig(mjsFile)).toEqual(number);
   });
 
   it('imports a CommonJS module config', async () => {
