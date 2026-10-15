@@ -122,6 +122,7 @@ export function defaultSymbolType(
     case 'geoshape':
     case 'area':
     case 'text':
+    case 'wordcloud':
       return 'circle';
   }
 }
