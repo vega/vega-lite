@@ -217,7 +217,8 @@ export const CONDITIONAL_AXIS_PROP_INDEX: Record<
   },
   labelOpacity: {
     part: 'labels',
-    vgProp: 'opacity',
+    // Vega's label overlap removal resets `opacity`, so use `fillOpacity` like Vega does for `labelOpacity`.
+    vgProp: 'fillOpacity',
   },
   labelOffset: null,
   labelPadding: null, // There is no fixed vgProp for tickSize, need to use signal.
