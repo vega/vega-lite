@@ -6,6 +6,7 @@ import {SharedCompositeEncoding} from '../compositemark/index.js';
 import {boxPlotNormalizer} from '../compositemark/boxplot.js';
 import {errorBandNormalizer} from '../compositemark/errorband.js';
 import {errorBarNormalizer} from '../compositemark/errorbar.js';
+import {wordcloudNormalizer} from '../compositemark/wordcloud.js';
 import {channelHasField, Encoding} from '../encoding.js';
 import {ExprRef} from '../expr.js';
 import * as log from '../log/index.js';
@@ -38,6 +39,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     boxPlotNormalizer,
     errorBarNormalizer,
     errorBandNormalizer,
+    wordcloudNormalizer,
     new PathOverlayNormalizer(),
     new RuleForRangedLineNormalizer(),
   ];
