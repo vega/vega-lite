@@ -1,5 +1,7 @@
+import {Axis} from '../../../src/axis.js';
 import {Y} from '../../../src/channel.js';
 import {parseLayerAxes, parseUnitAxes} from '../../../src/compile/axis/parse.js';
+import {Config} from '../../../src/config.js';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util.js';
 
 describe('Axis', () => {
@@ -475,6 +477,164 @@ describe('Axis', () => {
   });
 
   describe('parseLayerAxis', () => {
+    function independentAxes(channel: 'x' | 'y', axis: Axis = {}, config: Config = {}) {
+      const model = parseLayerModel({
+        layer: ['a', 'b'].map((field) => ({
+          mark: 'point',
+          encoding: {[channel]: {field, type: 'quantitative', axis}},
+        })),
+        resolve: {scale: {[channel]: 'independent'}},
+        config,
+      });
+      model.parseScale();
+      parseLayerAxes(model);
+      return model.component.axes[channel];
+    }
+
+    it.each([
+      {channel: 'y' as const, angle: 0, aligns: ['right', 'left'], baselines: [null, null]},
+      {channel: 'y' as const, angle: 90, aligns: ['center', 'center'], baselines: ['top', 'bottom']},
+      {channel: 'x' as const, angle: 45, aligns: ['left', 'right'], baselines: ['top', 'bottom']},
+    ])(
+      'updates default label alignment for independent $channel axes with config labelAngle $angle',
+      ({channel, angle, aligns, baselines}) => {
+        const axes = independentAxes(channel, {}, {axis: {labelAngle: angle}});
+
+        expect(axes.map((axis) => axis.get('orient'))).toEqual(channel === 'y' ? ['left', 'right'] : ['bottom', 'top']);
+        expect(axes.map((axis) => axis.get('labelAlign'))).toEqual(aligns);
+        expect(axes.map((axis) => axis.get('labelBaseline'))).toEqual(baselines);
+      },
+    );
+
+    it.each([
+      {
+        property: 'labelAlign' as const,
+        axis: {labelAngle: 90, labelAlign: 'right'} as Axis,
+        align: 'right',
+        baseline: 'bottom',
+      },
+      {
+        property: 'labelBaseline' as const,
+        axis: {labelAngle: 0, labelBaseline: 'top'} as Axis,
+        align: 'left',
+        baseline: 'top',
+      },
+    ])('preserves explicit $property when moving an independent axis', ({property, axis, align, baseline}) => {
+      const axes = independentAxes('y', axis);
+
+      expect(axes[1].get('orient')).toBe('right');
+      expect(axes[1].getWithExplicit(property).explicit).toBe(true);
+      expect(axes[1].get('labelAlign')).toBe(align);
+      expect(axes[1].get('labelBaseline')).toBe(baseline);
+    });
+
+    it.each([
+      {source: 'literal', labelAlign: 'center' as const, expected: undefined},
+      {source: 'signal', labelAlign: {signal: 'alignment'}, expected: {signal: 'alignment'}},
+    ])('respects $source alignment from the destination axis config', ({labelAlign, expected}) => {
+      const axes = independentAxes('y', {}, {axis: {labelAngle: 0}, axisRight: {labelAlign}});
+
+      expect(axes[1].get('orient')).toBe('right');
+      expect(axes[1].get('labelAlign')).toEqual(expected);
+    });
+
+    it('derives label alignment from the destination axis angle', () => {
+      const axes = independentAxes('y', {}, {axisLeft: {labelAngle: 0}, axisRight: {labelAngle: 90}});
+
+      expect(axes[1].get('orient')).toBe('right');
+      expect(axes[1].get('labelAlign')).toBe('center');
+      expect(axes[1].get('labelBaseline')).toBe('bottom');
+    });
+
+    it('retains an emitted label angle from the original orientation style', () => {
+      const axes = independentAxes('y', {}, {axisLeft: {style: 'rotated'}, style: {rotated: {labelAngle: 90}}});
+
+      expect(axes[1].get('orient')).toBe('right');
+      expect(axes[1].get('labelAngle')).toBe(90);
+      expect(axes[1].get('labelAlign')).toBe('center');
+      expect(axes[1].get('labelBaseline')).toBe('bottom');
+    });
+
+    it.each([
+      {
+        source: 'style',
+        axis: {style: 'labels'} as Axis,
+        config: {style: {labels: {labelAlign: 'right', labelBaseline: 'middle'}}} as Config,
+      },
+      {
+        source: 'type config',
+        axis: {} as Axis,
+        config: {axisQuantitative: {labelAlign: 'right', labelBaseline: 'middle'}} as Config,
+      },
+    ])('preserves label alignment from $source when moving an independent axis', ({axis, config}) => {
+      const axes = independentAxes('y', {labelAngle: 90, ...axis}, config);
+
+      expect(axes[1].get('orient')).toBe('right');
+      expect(axes[1].get('labelAlign')).toBe('right');
+      expect(axes[1].get('labelBaseline')).toBe('middle');
+    });
+
+    it('preserves label encoding overrides when moving an independent axis', () => {
+      const labels = {align: {value: 'right' as const}, baseline: {value: 'bottom' as const}};
+      const axes = independentAxes('y', {labelAngle: 0, encoding: {labels}});
+
+      expect(axes[1].get('orient')).toBe('right');
+      expect(axes[1].get('encode').labels.update).toEqual(labels);
+    });
+
+    it('updates label alignment when moving an axis from a nested layer', () => {
+      const model = parseLayerModel({
+        layer: [
+          {mark: 'point', encoding: {y: {field: 'a', type: 'quantitative'}}},
+          {
+            layer: [{mark: 'point', encoding: {y: {field: 'b', type: 'quantitative'}}}],
+          },
+        ],
+        resolve: {scale: {y: 'independent'}},
+        config: {axis: {labelAngle: 0}},
+      });
+      model.parseScale();
+      parseLayerAxes(model);
+
+      const axes = model.component.axes.y;
+      expect(axes.map((axis) => axis.get('orient'))).toEqual(['left', 'right']);
+      expect(axes.map((axis) => axis.get('labelAlign'))).toEqual(['right', 'left']);
+    });
+
+    it.each([
+      {
+        source: 'explicit axis properties',
+        axis: {labelAlign: 'right', labelBaseline: 'middle'} as Axis,
+        config: {axis: {labelAngle: 0}} as Config,
+      },
+      {
+        source: 'style config',
+        axis: {style: 'labels'} as Axis,
+        config: {style: {labels: {labelAlign: 'right', labelBaseline: 'middle'}}} as Config,
+      },
+    ])('preserves $source from a merged child after moving the axis', ({axis, config}) => {
+      const model = parseLayerModel({
+        layer: [
+          {mark: 'point', encoding: {y: {field: 'a', type: 'quantitative'}}},
+          {
+            layer: [
+              {mark: 'point', encoding: {y: {field: 'b', type: 'quantitative'}}},
+              {mark: 'point', encoding: {y: {field: 'b', type: 'quantitative', axis}}},
+            ],
+          },
+        ],
+        resolve: {scale: {y: 'independent'}},
+        config,
+      });
+      model.parseScale();
+      parseLayerAxes(model);
+
+      const axes = model.component.axes.y;
+      expect(axes.map((component) => component.get('orient'))).toEqual(['left', 'right']);
+      expect(axes[1].get('labelAlign')).toBe('right');
+      expect(axes[1].get('labelBaseline')).toBe('middle');
+    });
+
     const globalRuleOverlay = parseLayerModel({
       layer: [
         {
