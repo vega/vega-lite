@@ -23,13 +23,6 @@ then
 fi
 export forcesvg
 
-baseref=${baseref-"origin/main"}
-if ! git rev-parse --verify --quiet "$baseref^{commit}" > /dev/null; then
-  echo "Base $baseref not found. Only rebuilding SVGs for Vega specs that change in this build."
-  baseref=""
-fi
-export baseref
-
 nopatch='--no-patch'
 export nopatch
 
@@ -42,7 +35,7 @@ rm -f $dir/*.vg.json
 
 # Re-compile all examples
 echo "Using parallel to generate vega specs from examples in parallel."
-ls examples/specs/*.vl.json | parallel --env skipnormalize --env forcesvg --env nopatch --env baseref --no-notice --plus --halt 1 "scripts/build-example.sh {/..}"
+ls examples/specs/*.vl.json | parallel --env skipnormalize --env forcesvg --env nopatch --no-notice --plus --halt 1 "scripts/build-example.sh {/..}"
 
 scripts/build-normalized-examples
 
