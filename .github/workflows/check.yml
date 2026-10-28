@@ -32,14 +32,6 @@ jobs:
       - name: Setup data
         run: npm run data
 
-      - name: Install Parallel
-        run: |
-          # Faster than "sudo apt-get install parallel"
-          wget https://raw.githubusercontent.com/martinda/gnu-parallel/master/src/parallel
-          chmod +x parallel
-          cp parallel sem
-          sudo mv parallel sem /usr/local/bin
-
       - name: Format
         run: npm run format
 
