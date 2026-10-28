@@ -44,5 +44,8 @@ jobs:
       - name: Setup Git remote
         run: scripts/setup-git-ci.sh
 
+      - name: Fetch main
+        run: git fetch --no-tags --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+
       - name: Check and Commit
         run: scripts/check-and-commit.sh
