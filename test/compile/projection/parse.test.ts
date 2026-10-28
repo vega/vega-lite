@@ -1,3 +1,4 @@
+import {NormalizedLayerSpec, NormalizedUnitSpec} from '../../../src/spec/index.js';
 import {parseLayerModel, parseUnitModelWithScaleAndLayoutSize} from '../../util.js';
 
 describe('src/compile/projection/parse', () => {
@@ -155,6 +156,43 @@ describe('src/compile/projection/parse', () => {
   });
 
   describe('parseNonUnitProjection', () => {
+    it.each<{name: string; layer: NormalizedLayerSpec['layer']}>([
+      {name: 'a single layer', layer: [{mark: 'geoshape'}]},
+      {name: 'multiple layers', layer: [{mark: 'geoshape'}, {mark: 'geoshape'}]},
+      {name: 'nested layers', layer: [{layer: [{mark: 'geoshape'}]}, {mark: 'geoshape'}]},
+    ])('should preserve the implicit default projection for $name', ({layer}) => {
+      const model = parseLayerModel({
+        data: {
+          url: 'data/world-110m.json',
+          format: {type: 'topojson', feature: 'countries'},
+        },
+        layer,
+      });
+      model.parse();
+
+      expect(model.assembleProjections()).toMatchObject([{name: 'projection', type: 'equalEarth'}]);
+      expect(model.component.projection.getWithExplicit('type')).toEqual({value: 'equalEarth', explicit: false});
+    });
+
+    it.each([true, false])(
+      'should let an explicit projection override a nested default projection (default first: %s)',
+      (defaultFirst) => {
+        const defaultLayer: NormalizedLayerSpec = {layer: [{mark: 'geoshape'}]};
+        const specifiedLayer: NormalizedUnitSpec = {mark: 'geoshape', projection: {type: 'albersUsa'}};
+        const model = parseLayerModel({
+          data: {
+            url: 'data/us-10m.json',
+            format: {type: 'topojson', feature: 'states'},
+          },
+          layer: defaultFirst ? [defaultLayer, specifiedLayer] : [specifiedLayer, defaultLayer],
+        });
+        model.parse();
+
+        expect(model.assembleProjections()).toMatchObject([{name: 'projection', type: 'albersUsa'}]);
+        expect(model.component.projection.getWithExplicit('type')).toEqual({value: 'albersUsa', explicit: true});
+      },
+    );
+
     it('should merge the same projection', () => {
       const model = parseLayerModel({
         layer: [

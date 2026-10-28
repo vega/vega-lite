@@ -146,6 +146,7 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
       nonUnitProjection.size,
       duplicate(nonUnitProjection.data),
     );
+    modelProjection.setWithExplicit('type', nonUnitProjection.getWithExplicit('type'));
 
     // rename and assign all others as merged
     for (const child of model.children) {
