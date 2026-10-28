@@ -23,8 +23,6 @@ then
 fi
 export forcesvg
 
-# Also rebuild SVGs for Vega specs that differ from the base branch, so images are regenerated
-# when a branch commits an updated Vega spec without its images. Skipped if the base is unavailable.
 baseref=${baseref-"origin/main"}
 if ! git rev-parse --verify --quiet "$baseref^{commit}" > /dev/null; then
   echo "Base $baseref not found. Only rebuilding SVGs for Vega specs that change in this build."

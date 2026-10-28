@@ -44,7 +44,6 @@ jobs:
       - name: Setup Git remote
         run: scripts/setup-git-ci.sh
 
-      # Lets the example build rebuild images for Vega specs that differ from main.
       - name: Fetch main
         run: git fetch --no-tags --depth=1 origin +refs/heads/main:refs/remotes/origin/main
 
