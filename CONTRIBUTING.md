@@ -94,7 +94,7 @@ You can run `npm run build:example <examplename>` (e.g., `npm run build:example 
 
 **Notes:**
 
-1. `npm run build:examples` only re-compile SVGs if the output Vega file changes (so it runs way faster). If you want to enforce re-compilation of all SVGs, use `npm run build:examples-full`.
+1. `npm run build:examples` only re-compile SVGs if the output Vega file changes or differs from `origin/main` (so it runs way faster). If you want to enforce re-compilation of all SVGs, use `npm run build:examples-full`.
 2. To make the CI run `npm run build:examples-full`, include `[SVG]` in your commit message of the last commit in your branch.
 3. To run `npm run build:examples`, you need to install [gnu parallel](https://www.gnu.org/software/parallel/). (For Mac, you can simply do `brew install parallel`.)
 

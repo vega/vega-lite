@@ -32,10 +32,11 @@ do
 
   # compile SVG if one of the following condition is true
   # 1) Vega spec has changed
-  # 2) The SVG file does not exist (new example would not have vg file diff)
-  # or 3) the forcesvg environment variable is true
+  # 2) Vega spec differs from the base branch $baseref (if set)
+  # 3) The SVG file does not exist (new example would not have vg file diff)
+  # or 4) the forcesvg environment variable is true
 
-  if (! git diff $nopatch --exit-code $dir/$name.vg.json || [ ! -f $dir/$name.svg ] ||  [ ! -f $dir/$name.png ] || $forcesvg)
+  if (! git diff $nopatch --exit-code $dir/$name.vg.json || ([ -n "$baseref" ] && ! git diff --no-patch --exit-code "$baseref" -- $dir/$name.vg.json) || [ ! -f $dir/$name.svg ] ||  [ ! -f $dir/$name.png ] || $forcesvg)
   then
     pushd examples/compiled/
     rm -f $name.svg
