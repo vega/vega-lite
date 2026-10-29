@@ -6,10 +6,11 @@ import {DataSourceType} from '../../data.js';
 import {replaceExprRef} from '../../expr.js';
 import {PROJECTION_PROPERTIES} from '../../projection.js';
 import {GEOJSON} from '../../type.js';
-import {deepEqual, duplicate, every} from '../../util.js';
+import {deepEqual, duplicate, every, vals} from '../../util.js';
 import {isUnitModel, Model} from '../model.js';
 import {UnitModel} from '../unit.js';
 import {ProjectionComponent} from './component.js';
+import scales from '../selection/scales.js';
 
 export function parseProjection(model: Model) {
   model.component.projection = isUnitModel(model) ? parseUnitProjection(model) : parseNonUnitProjections(model);
@@ -22,6 +23,10 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
     const size = fit ? [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')] : undefined;
     const data = fit ? gatherFitData(model) : undefined;
 
+    const interactiveSelection = vals(model.component.selection ?? {}).find(
+      (selCmpt) => scales.defined(selCmpt) && model.hasProjection,
+    )?.name;
+
     const projComp = new ProjectionComponent(
       model.projectionName(true),
       {
@@ -30,6 +35,7 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
       },
       size,
       data,
+      interactiveSelection,
     );
 
     if (!projComp.get('type')) {
