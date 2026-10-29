@@ -143,8 +143,8 @@ describe('Interactive Legends', () => {
               force: true,
             },
             {
-              events: [{source: 'view', type: 'click'}],
-              update: '!event.item || !datum ? null : one_Origin_legend',
+              events: [{source: 'view', type: 'click', filter: ['!event.item || !event.item.datum']}],
+              update: 'null',
               force: true,
             },
           ],
@@ -194,13 +194,15 @@ describe('Interactive Legends', () => {
                 {
                   source: 'view',
                   type: 'dblclick',
+                  filter: ['!event.item || !event.item.datum'],
                 },
                 {
                   source: 'view',
                   type: 'pointerover',
+                  filter: ['!event.item || !event.item.datum'],
                 },
               ],
-              update: '!event.item || !datum ? null : two_Origin_legend',
+              update: 'null',
               force: true,
             },
           ],
@@ -235,9 +237,10 @@ describe('Interactive Legends', () => {
                 {
                   source: 'view',
                   type: 'click',
+                  filter: ['!event.item || !event.item.datum'],
                 },
               ],
-              update: '!event.item || !datum ? null : four_Origin_legend',
+              update: 'null',
               force: true,
             },
           ],
@@ -272,9 +275,10 @@ describe('Interactive Legends', () => {
                 {
                   source: 'view',
                   type: 'pointerover',
+                  filter: ['!event.item || !event.item.datum'],
                 },
               ],
-              update: '!event.item || !datum ? null : seven_Origin_legend',
+              update: 'null',
               force: true,
             },
           ],
@@ -309,15 +313,50 @@ describe('Interactive Legends', () => {
                 {
                   source: 'view',
                   type: 'pointerover',
+                  filter: ['!event.item || !event.item.datum'],
                 },
               ],
-              update: '!event.item || !datum ? null : eight_Origin_legend',
+              update: 'null',
               force: true,
             },
           ],
         },
       ]),
     );
+  });
+
+  it('preserves custom legend event filters and consumption when clearing', () => {
+    const m = parseUnitModel({
+      mark: 'point',
+      encoding: {color: {field: 'Origin', type: 'nominal'}},
+    });
+    m.parseScale();
+    m.component.selection = parseUnitSelection(m, [
+      {
+        name: 'filtered',
+        select: {type: 'point', fields: ['Origin']},
+        bind: {legend: 'click![event.altKey]'},
+      },
+    ]);
+    m.parseLegends();
+
+    const signal = assembleTopLevelSignals(m, []).find((s) => s.name === 'filtered_Origin_legend');
+    expect(signal.on[0].events).toEqual(
+      ['symbols', 'labels', 'entries'].map((part) => ({
+        source: 'view',
+        type: 'click',
+        filter: ['event.altKey'],
+        consume: true,
+        markname: `Origin_legend_${part}`,
+      })),
+    );
+    expect(signal.on[1]).toEqual({
+      events: [
+        {source: 'view', type: 'click', filter: ['event.altKey', '!event.item || !event.item.datum'], consume: true},
+      ],
+      update: 'null',
+      force: true,
+    });
   });
 
   it('updates tuple signal to use bound top-level signal', () => {
@@ -435,8 +474,8 @@ describe('Interactive Legends', () => {
               force: true,
             },
             {
-              events: [{source: 'view', type: 'click'}],
-              update: '!event.item || !datum ? null : ten_Origin_legend',
+              events: [{source: 'view', type: 'click', filter: ['!event.item || !event.item.datum']}],
+              update: 'null',
               force: true,
             },
           ],
