@@ -71,11 +71,11 @@ A few parameter names are automatically processed and/or reserved:
 
 ### Selection Parameters
 
-Selection parameters, on the other hand, define _data queries_ that are driven by direct manipulation user input (e.g., mouse clicks or drags). A parameter becomes a selection when the `select` property is specified. This property identifies properties of a selection including its _type_ (`point` or `interval`), which determines the default events that trigger a selection and the resultant data query.
+Selection parameters, on the other hand, define _data queries_ that are driven by direct manipulation user input (e.g., mouse clicks or drags). A parameter becomes a selection when the `select` property is specified. This property identifies properties of a selection including its _type_ (`point`, `interval`, or `region`), which determines the default events that trigger a selection and the resultant data query.
 
 {% include table.html props="select" source="SelectionParameter" %}
 
-For example, try the two types against the example selection (named `pts`) below: <select onchange="changeSpec('selection_type', 'selection_type_' + this.value)"><option>point</option><option>interval</option></select>.
+For example, try the different types against the example selection (named `pts`) below: <select onchange="changeSpec('selection_type', 'selection_type_' + this.value)"><option>point</option><option>interval</option><option>region</option></select>.
 
 <div id="selection_type" class="vl-example" data-name="selection_type_point"></div>
 
