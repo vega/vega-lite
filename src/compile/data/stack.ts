@@ -4,7 +4,15 @@ import {FieldDef, FieldName, getFieldDef, isFieldDef, isOrderOnlyDef, vgField} f
 import {SortFields, SortOrder} from '../../sort.js';
 import {StackOffset} from '../../stack.js';
 import {StackTransform} from '../../transform.js';
-import {duplicate, getFirstDefined, hash} from '../../util.js';
+import {
+  duplicate,
+  flatAccessWithDatum,
+  getFirstDefined,
+  hash,
+  internalField,
+  removePathFromField,
+  replacePathInField,
+} from '../../util.js';
 import {sortParams} from '../common.js';
 import {UnitModel} from '../unit.js';
 import {DataFlowNode} from './dataflow.js';
@@ -68,6 +76,10 @@ export interface StackComponent {
 
 function isValidAsArray(as: string[] | string): as is string[] {
   return isArray(as) && as.every((s) => isString(s)) && as.length > 1;
+}
+
+function nonNullStackField(field: string) {
+  return internalField(`${removePathFromField(field)}_stack`);
 }
 
 export class StackNode extends DataFlowNode {
@@ -257,11 +269,22 @@ export class StackNode extends DataFlowNode {
       }
     }
 
+    const stackField = stackby?.length ? nonNullStackField(field) : field;
+
+    if (stackby?.length) {
+      const fieldRef = flatAccessWithDatum(field);
+      transform.push({
+        type: 'formula',
+        expr: `${isValidFiniteNumberExpr(fieldRef)} ? ${fieldRef} : 0`,
+        as: stackField,
+      });
+    }
+
     // Stack
     transform.push({
       type: 'stack',
       groupby: [...this.getGroupbyFields(), ...facetby],
-      field,
+      field: stackby?.length ? replacePathInField(stackField) : stackField,
       sort,
       as,
       offset,
