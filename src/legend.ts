@@ -102,6 +102,18 @@ export interface Legend<ES extends ExprRef | SignalRef>
   labelExpr?: string;
 
   /**
+   * Tooltip for legend labels. If `true`, the legend label tooltip will show the backing legend value. If a string, the value will be used as a [Vega expression](https://vega.github.io/vega/docs/expressions/) evaluated against the legend label's backing `datum` object.
+   *
+   * __Default value:__ `false`.
+   */
+  labelTooltip?: boolean | string;
+
+  /**
+   * A delimiter, such as a newline character, upon which to break legend label text into multiple lines.
+   */
+  labelLineBreak?: string | ES;
+
+  /**
    * The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
    *
    * __Default value__: `undefined`
