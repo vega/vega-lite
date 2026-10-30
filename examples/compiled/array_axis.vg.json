@@ -1,0 +1,152 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "An elevation grid labelled with its own extent, in cells.",
+  "background": "white",
+  "padding": 5,
+  "width": 348,
+  "height": 244,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/volcano.json",
+      "format": {"type": "json"},
+      "transform": [
+        {"type": "formula", "expr": "0", "as": "__array_x0"},
+        {"type": "formula", "expr": "0", "as": "__array_y0"},
+        {
+          "type": "formula",
+          "expr": "{width: datum.width, height: datum.height, values: datum[\"values\"]}",
+          "as": "__array_grid"
+        },
+        {
+          "type": "formula",
+          "expr": "extent(datum[\"values\"])[0]",
+          "as": "array_min_values"
+        },
+        {
+          "type": "formula",
+          "expr": "extent(datum[\"values\"])[1]",
+          "as": "array_max_values"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "image",
+      "style": ["array"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "ariaRoleDescription": {"value": "array"},
+          "description": {
+            "signal": "\"values: \" + (format(extent(datum[\"values\"])[0], \"\") + \" – \" + format(extent(datum[\"values\"])[1], \"\"))"
+          },
+          "x": {
+            "signal": "min(scale('x', datum[\"__array_x0\"]), scale('x', datum[\"width\"]))"
+          },
+          "width": {
+            "signal": "abs((scale('x', datum[\"width\"])) - (scale('x', datum[\"__array_x0\"])))"
+          },
+          "y": {
+            "signal": "min(scale('y', datum[\"__array_y0\"]), scale('y', datum[\"height\"]))"
+          },
+          "height": {
+            "signal": "abs((scale('y', datum[\"height\"])) - (scale('y', datum[\"__array_y0\"])))"
+          },
+          "image": {"field": "image"},
+          "aspect": {"value": false}
+        }
+      },
+      "transform": [
+        {
+          "type": "heatmap",
+          "field": "datum.__array_grid",
+          "color": {"expr": "scale('color', datum.$value)"},
+          "opacity": {"expr": "isValid(datum.$value) ? 1 : 0"}
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "fields": ["__array_x0", "width"]},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "fields": ["__array_y0", "height"]},
+      "range": [{"signal": "height"}, 0]
+    },
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["array_min_values", "array_max_values"]
+      },
+      "range": {"scheme": "viridis"},
+      "interpolate": "hcl",
+      "zero": false
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "values"
+    }
+  ]
+}

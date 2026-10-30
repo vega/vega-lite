@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "An elevation grid with the color domain clipped to bring out mid-range detail.",
+  "width": 348,
+  "height": 244,
+  "data": {"url": "data/volcano.json"},
+  "mark": "array",
+  "encoding": {
+    "color": {
+      "field": "values",
+      "type": "quantitative",
+      "scale": {"scheme": "viridis", "domain": [120, 180], "clamp": true}
+    }
+  }
+}

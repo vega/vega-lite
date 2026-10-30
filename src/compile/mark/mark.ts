@@ -9,6 +9,7 @@ import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortPar
 import {UnitModel} from '../unit.js';
 import {arc} from './arc.js';
 import {area} from './area.js';
+import {array} from './array.js';
 import {bar} from './bar.js';
 import {MarkCompiler} from './base.js';
 import {geoshape} from './geoshape.js';
@@ -24,6 +25,7 @@ import {CornerRadiusEnd, cornerRadiusEndForStackedBar} from './encode/corner-rad
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
   area,
+  array,
   bar,
   circle,
   geoshape,
