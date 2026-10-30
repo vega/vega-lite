@@ -433,6 +433,13 @@
         "title": "Pyramid Pie Chart"
       }
     ],
+    "Word Clouds": [
+      {
+        "name": "wordcloud",
+        "title": "Word Cloud",
+        "description": "A word cloud uses font size to show word frequency."
+      }
+    ],
     "Advanced Calculations": [
       {
         "name": "bar_percent_of_total",

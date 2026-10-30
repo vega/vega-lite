@@ -13,6 +13,7 @@ export const image: MarkCompiler = {
         orient: 'ignore',
         size: 'ignore',
         theta: 'ignore',
+        angle: 'include',
       }),
       ...encode.rectPosition(model, 'x'),
       ...encode.rectPosition(model, 'y'),

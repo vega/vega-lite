@@ -20,6 +20,7 @@ import {rule} from './rule.js';
 import {text} from './text.js';
 import {tick} from './tick.js';
 import {CornerRadiusEnd, cornerRadiusEndForStackedBar} from './encode/corner-radius.js';
+import {wordcloud} from './wordcloud.js';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -36,6 +37,7 @@ const markCompiler: Record<Mark, MarkCompiler> = {
   text,
   tick,
   trail,
+  wordcloud,
 };
 
 export function parseMarkGroups(model: UnitModel): any[] {
