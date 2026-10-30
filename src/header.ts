@@ -239,6 +239,20 @@ export interface HeaderConfig<ES extends ExprRef | SignalRef> extends CoreHeader
  */
 export interface Header<ES extends ExprRef | SignalRef> extends CoreHeader<ES>, Guide {}
 
+/**
+ * Internal header type used during compilation.
+ * Headers support both SignalRef (for pre-compiled signals) and ExprRef (for user expressions).
+ * This differs from axes/legends which only support SignalRef internally.
+ */
+export type HeaderInternal = Header<SignalRef | ExprRef>;
+
+/**
+ * Internal CoreHeader type used during compilation.
+ * Supports both SignalRef and ExprRef to handle user-provided expressions
+ * that get transformed into signals during the compilation process.
+ */
+export type CoreHeaderInternal = CoreHeader<SignalRef | ExprRef>;
+
 export interface HeaderConfigMixins<ES extends ExprRef | SignalRef> {
   /**
    * Header configuration, which determines default properties for all [headers](https://vega.github.io/vega-lite/docs/header.html).
