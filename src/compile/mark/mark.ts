@@ -1,4 +1,5 @@
 import {isArray} from 'vega-util';
+import {isXorYOffset} from '../../channel.js';
 import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef.js';
 import {DataSourceType} from '../../data.js';
 import {pathGroupingFields} from '../../encoding.js';
@@ -50,7 +51,7 @@ export function parseMarkGroups(model: UnitModel): any[] {
     const hasCornerRadius =
       cornerRadiusEnd ||
       VG_CORNERRADIUS_CHANNELS.some((prop) => getMarkPropOrConfig(prop, model.markDef, model.config));
-    if (model.stack && !model.fieldDef('size') && hasCornerRadius) {
+    if (model.stack && !isXorYOffset(model.stack.fieldChannel) && !model.fieldDef('size') && hasCornerRadius) {
       return getGroupsForStackedBarWithCornerRadius(model, cornerRadiusEnd);
     }
   }

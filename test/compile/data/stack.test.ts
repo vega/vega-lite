@@ -226,6 +226,43 @@ describe('compile/data/stack', () => {
         },
       ]);
     });
+
+    it('should produce a centered yOffset stack grouped by path and baseline fields', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'species', type: 'nominal'},
+          yOffset: {field: 'density', type: 'quantitative', stack: 'center'},
+          color: {field: 'sex', type: 'nominal'},
+        },
+      });
+
+      expect(parse(model)).toEqual({
+        dimensionFieldDefs: [
+          {field: 'value', type: 'quantitative'},
+          {field: 'species', type: 'nominal'},
+        ],
+        facetby: [],
+        stackField: 'density',
+        stackby: ['sex'],
+        sort: {field: ['sex'], order: ['descending']},
+        offset: 'center',
+        impute: false,
+        as: ['density_start', 'density_end'],
+      });
+
+      expect(assemble(model)).toEqual([
+        {
+          type: 'stack',
+          groupby: ['value', 'species'],
+          field: 'density',
+          sort: {field: ['sex'], order: ['descending']},
+          as: ['density_start', 'density_end'],
+          offset: 'center',
+        },
+      ]);
+    });
   });
 
   describe('StackNode.makeFromTransform', () => {
