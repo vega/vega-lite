@@ -1,5 +1,6 @@
 import type {Align, Color, Gradient, Orientation, SignalRef, TextBaseline, MarkConfig as VgMarkConfig} from 'vega';
 import {hasOwnProperty} from 'vega-util';
+import {AutoMark, AutoMarkDef} from './automark.js';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index.js';
 import {ExprRef} from './expr.js';
 import {MarkInvalidMixins} from './invalid.js';
@@ -314,7 +315,7 @@ export interface RectBinSpacingMixins {
   binSpacing?: number;
 }
 
-export type AnyMark = CompositeMark | CompositeMarkDef | Mark | MarkDef;
+export type AnyMark = CompositeMark | CompositeMarkDef | AutoMark | AutoMarkDef | Mark | MarkDef;
 
 export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMarkDef<any> {
   return hasProperty(mark, 'type');
@@ -322,7 +323,7 @@ export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMa
 
 export function isPrimitiveMark(mark: AnyMark): mark is Mark {
   const markType = isMarkDef(mark) ? mark.type : mark;
-  return (PRIMITIVE_MARKS as Set<Mark | CompositeMark>).has(markType);
+  return (PRIMITIVE_MARKS as Set<string>).has(markType);
 }
 
 export const STROKE_CONFIG = [
