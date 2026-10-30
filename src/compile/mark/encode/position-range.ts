@@ -29,8 +29,8 @@ export function pointOrRangePosition(
     defaultPos2,
     range,
   }: {
-    defaultPos: 'zeroOrMin' | 'zeroOrMax' | 'mid';
-    defaultPos2: 'zeroOrMin' | 'zeroOrMax';
+    defaultPos: 'zeroOrMin' | 'zeroOrMax' | 'mid' | 'start';
+    defaultPos2: 'zeroOrMin' | 'zeroOrMax' | 'start';
     range: boolean;
   },
 ) {
@@ -47,11 +47,15 @@ export function rangePosition(
     defaultPos,
     defaultPos2,
   }: {
-    defaultPos: 'zeroOrMin' | 'zeroOrMax' | 'mid';
-    defaultPos2: 'zeroOrMin' | 'zeroOrMax';
+    defaultPos: 'zeroOrMin' | 'zeroOrMax' | 'mid' | 'start';
+    defaultPos2: 'zeroOrMin' | 'zeroOrMax' | 'start';
   },
 ): VgEncodeEntry {
   const {markDef, config} = model;
+  if (!model.encoding[channel] && model.isRangedOffset(channel)) {
+    defaultPos = 'start';
+    defaultPos2 = 'start';
+  }
   const channel2 = getSecondaryRangeChannel(channel);
   const sizeChannel = getSizeChannel(channel);
 
@@ -75,7 +79,7 @@ export function rangePosition(
  */
 function pointPosition2OrSize(
   model: UnitModel,
-  defaultPos: 'zeroOrMin' | 'zeroOrMax',
+  defaultPos: 'zeroOrMin' | 'zeroOrMax' | 'start',
   channel: 'x2' | 'y2' | 'radius2' | 'theta2',
 ) {
   const {encoding, mark, markDef, stack, config} = model;
@@ -138,21 +142,19 @@ function pointPosition2OrSize(
     }) ||
     position2orSize(channel, config[mark]) ||
     position2orSize(channel, config.mark) ||
-    (isFieldOrDatumDef(channelDef) && model.isRangedOffset(baseChannel)
+    (model.isRangedOffset(baseChannel)
       ? {
-          [vgChannel]: ref.valueRefForFieldOrDatumDef(
-            channelDef,
-            scaleName,
-            {},
-            {
-              offset: ref.valueRefForFieldOrDatumDef(
-                {datum: 0},
-                model.scaleName(getOffsetScaleChannel(baseChannel)),
-                {},
-                {},
-              ),
-            },
-          ),
+          [vgChannel]: {
+            ...(isFieldOrDatumDef(channelDef)
+              ? ref.valueRefForFieldOrDatumDef(channelDef, scaleName, {}, {})
+              : pointPositionDefaultRef({model, defaultPos, channel: baseChannel, scaleName, scale})()),
+            offset: ref.valueRefForFieldOrDatumDef(
+              {datum: 0},
+              model.scaleName(getOffsetScaleChannel(baseChannel)),
+              {},
+              {},
+            ),
+          },
         }
       : {
           [vgChannel]: pointPositionDefaultRef({
