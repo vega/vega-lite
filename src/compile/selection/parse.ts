@@ -1,12 +1,13 @@
 import {parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
 import {isTimerSelection, selectionCompilers, SelectionComponent, STORE} from './index.js';
-import {warn} from '../../log/index.js';
+import {X, X2, Y, Y2} from '../../channel.js';
+import {message, warn} from '../../log/index.js';
 import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection.js';
 import {Dict, duplicate, entries, replacePathInField, varName} from '../../util.js';
 import {DataFlowNode, OutputNode} from '../data/dataflow.js';
 import {FilterNode} from '../data/filter.js';
-import {Model} from '../model.js';
+import {isUnitModel, Model} from '../model.js';
 import {UnitModel} from '../unit.js';
 import {DataSourceType} from '../../data.js';
 import {ParameterPredicate} from '../../predicate.js';
@@ -15,6 +16,7 @@ import {
   selectionAsScaleDomainWithoutField,
   selectionAsScaleDomainWrongEncodings,
 } from '../../log/message.js';
+import {isSegmentPathSelection, segmentIntersectionExpr, supportsSegmentTarget} from './segment.js';
 
 export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
@@ -112,12 +114,72 @@ export function parseSelectionPredicate(
     }
   }
 
+  if (selCmpt.type === 'segment') {
+    if (isSegmentPathSelection(selCmpt as SelectionComponent<'segment'>)) {
+      return selectionTest(selCmpt, store, pred.empty, datum);
+    }
+
+    return segmentPredicate(model, selCmpt as SelectionComponent<'segment'>, pred.empty, datum);
+  }
+
+  return selectionTest(selCmpt, store, pred.empty, datum);
+}
+
+function segmentPredicate(
+  model: Model,
+  selCmpt: SelectionComponent<'segment'>,
+  empty: boolean | undefined,
+  datum: string,
+) {
+  const store = stringValue(selCmpt.name + STORE);
+  const length = `length(data(${store}))`;
+
+  if (!isUnitModel(model)) {
+    return empty === false ? 'false' : `!${length}`;
+  }
+
+  if (datum !== 'datum') {
+    warn(message.segmentSelectionPredicateRequiresDatum());
+    return empty === false ? 'false' : `!${length}`;
+  }
+
+  if (!supportsSegmentTarget(model)) {
+    warn(message.segmentSelectionUnsupportedMark(model.mark));
+    return empty === false ? 'false' : `!${length}`;
+  }
+
+  const x = model.vgField(X, {expr: 'datum'});
+  const y = model.vgField(Y, {expr: 'datum'});
+  const x2 = model.vgField(X2, {expr: 'datum'});
+  const y2 = model.vgField(Y2, {expr: 'datum'});
+
+  if (!(x && y && x2 && y2)) {
+    warn(message.segmentSelectionUnsupportedMark(model.mark));
+    return empty === false ? 'false' : `!${length}`;
+  }
+
+  const values = `data(${store})[0].values`;
+  const ax = `${values}[0]`;
+  const ay = `${values}[1]`;
+  const bx = `${values}[2]`;
+  const by = `${values}[3]`;
+  const cx = `+(${x})`;
+  const cy = `+(${y})`;
+  const dx = `+(${x2})`;
+  const dy = `+(${y2})`;
+
+  const test = segmentIntersectionExpr(ax, ay, bx, by, cx, cy, dx, dy);
+
+  return empty === false ? `${length} && ${test}` : `!${length} || ${test}`;
+}
+
+function selectionTest(selCmpt: SelectionComponent, store: string, empty: boolean | undefined, datum: string) {
   const fn = selCmpt.project.hasSelectionId ? 'vlSelectionIdTest(' : 'vlSelectionTest(';
   const resolve = selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`;
   const test = `${fn}${store}, ${datum}${resolve}`;
   const length = `length(data(${store}))`;
 
-  return pred.empty === false ? `${length} && ${test}` : `!${length} || ${test}`;
+  return empty === false ? `${length} && ${test}` : `!${length} || ${test}`;
 }
 
 export function parseSelectionExtent(model: Model, name: string, extent: ParameterExtent) {
