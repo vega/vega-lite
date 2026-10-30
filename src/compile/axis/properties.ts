@@ -23,6 +23,7 @@ import {contains, normalizeAngle} from '../../util.js';
 import {isSignalRef} from '../../vega.schema.js';
 import {mergeTitle, mergeTitleFieldDefs} from '../common.js';
 import {guideFormatType} from '../format.js';
+import {rangedOffsetBaseline} from '../scale/rangedOffset.js';
 import {UnitModel} from '../unit.js';
 import {ScaleType} from './../../scale.js';
 import {AxisComponentProps} from './component.js';
@@ -124,7 +125,7 @@ export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string
 
 export function defaultBandPosition(model: UnitModel, channel: PositionScaleChannel) {
   if (model.isRangedOffset(channel)) {
-    return channel === 'x' ? 0 : 1;
+    return rangedOffsetBaseline(model, channel).bandPosition;
   }
   return undefined;
 }

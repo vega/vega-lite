@@ -65,7 +65,9 @@
           "y2": {
             "scale": "y",
             "field": "team",
-            "offset": {"scale": "yOffset", "value": 0}
+            "offset": {
+              "signal": "isFinite(scale(\"yOffset\", clamp(0, extent(domain(\"yOffset\"))[0], extent(domain(\"yOffset\"))[1]))) && isFinite(bandwidth(\"y\")) && bandwidth(\"y\") > 0 ? clamp(scale(\"yOffset\", clamp(0, extent(domain(\"yOffset\"))[0], extent(domain(\"yOffset\"))[1])), 0, bandwidth(\"y\")) : (isFinite(bandwidth(\"y\")) ? (bandwidth(\"y\")) / 2 : 0)"
+            }
           }
         }
       }
@@ -118,10 +120,16 @@
       "orient": "left",
       "grid": false,
       "title": "team",
-      "bandPosition": 1,
+      "bandPosition": {
+        "signal": "isFinite(scale(\"yOffset\", clamp(0, extent(domain(\"yOffset\"))[0], extent(domain(\"yOffset\"))[1]))) && isFinite(bandwidth(\"y\")) && bandwidth(\"y\") > 0 ? clamp(scale(\"yOffset\", clamp(0, extent(domain(\"yOffset\"))[0], extent(domain(\"yOffset\"))[1])) / bandwidth(\"y\"), 0, 1) : 0.5"
+      },
       "encode": {
         "labels": {
-          "update": {"y": {"scale": "y", "signal": "datum.value", "band": 1}}
+          "update": {
+            "y": {
+              "signal": "scale(\"y\", datum.value) + bandwidth(\"y\") * (isFinite(scale(\"yOffset\", clamp(0, extent(domain(\"yOffset\"))[0], extent(domain(\"yOffset\"))[1]))) && isFinite(bandwidth(\"y\")) && bandwidth(\"y\") > 0 ? clamp(scale(\"yOffset\", clamp(0, extent(domain(\"yOffset\"))[0], extent(domain(\"yOffset\"))[1])) / bandwidth(\"y\"), 0, 1) : 0.5)"
+            }
+          }
         }
       },
       "zindex": 0
