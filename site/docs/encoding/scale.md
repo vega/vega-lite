@@ -448,7 +448,19 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 
 #### Padding
 
-{% include table.html props="bandPaddingInner,barBandPaddingInner,rectBandPaddingInner,bandWithNestedOffsetPaddingInner,offsetBandPaddingInner,bandPaddingOuter,bandWithNestedOffsetPaddingOuter,offsetBandPaddingOuter,continuousPadding,pointPadding" source="ScaleConfig" %}
+{% include table.html props="bandPaddingInner,barBandPaddingInner,rectBandPaddingInner,bandWithNestedOffsetPaddingInner,bandWithContinuousOffsetPaddingInner,offsetBandPaddingInner,bandPaddingOuter,bandWithNestedOffsetPaddingOuter,offsetBandPaddingOuter,continuousPadding,pointPadding" source="ScaleConfig" %}
+
+For jitter plots, set `config.scale.bandWithContinuousOffsetPaddingInner` to reserve more space between categories without changing the spacing of discrete offset groups:
+
+```json
+"config": {
+  "scale": {
+    "bandWithContinuousOffsetPaddingInner": 0.4
+  }
+}
+```
+
+This applies to `x` and `y` band scales with a continuous-domain `xOffset` or `yOffset` scale. When unset, it falls back to `bandWithNestedOffsetPaddingInner`. Explicit `padding` or `paddingInner` on the position scale takes precedence.
 
 #### Range
 

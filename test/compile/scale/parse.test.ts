@@ -290,6 +290,76 @@ describe('src/compile', () => {
       expect(scale.get('padding')).toBeUndefined();
     });
 
+    describe.each(['x', 'y'] as const)('%s band padding with continuous offsets', (channel) => {
+      const offsetChannel = channel === 'x' ? 'xOffset' : 'yOffset';
+
+      it.each(['quantitative', 'temporal', 'nominal', 'ordinal'] as const)(
+        'uses continuous offset padding only for continuous %s offset scales',
+        (type) => {
+          const model = parseUnitModelWithScale({
+            mark: 'point',
+            encoding: {
+              [channel]: {field: 'category', type: 'nominal'},
+              [offsetChannel]: {field: 'offset', type},
+            },
+            config: {scale: {bandWithContinuousOffsetPaddingInner: 0.4, bandWithNestedOffsetPaddingInner: 0.1}},
+          });
+          expect(model.getScaleComponent(channel).get('paddingInner')).toBe(
+            type === 'quantitative' || type === 'temporal' ? 0.4 : 0.1,
+          );
+        },
+      );
+
+      it('does not apply continuous offset padding when the offset scale is disabled', () => {
+        const model = parseUnitModelWithScale({
+          mark: 'point',
+          encoding: {
+            [channel]: {field: 'category', type: 'nominal', scale: {type: 'band'}},
+            [offsetChannel]: {field: 'offset', type: 'quantitative', scale: null},
+          },
+          config: {scale: {bandWithContinuousOffsetPaddingInner: 0.4, bandWithNestedOffsetPaddingInner: 0.1}},
+        });
+        expect(model.getScaleComponent(channel).get('paddingInner')).toBe(0.1);
+      });
+
+      it.each([undefined, 0, 0.4, {expr: '0.4'}])('supports continuous padding %j and fallback', (padding) => {
+        const model = parseUnitModelWithScale({
+          mark: 'point',
+          encoding: {
+            [channel]: {field: 'category', type: 'nominal'},
+            [offsetChannel]: {field: 'offset', type: 'quantitative'},
+          },
+          config: {scale: {bandWithContinuousOffsetPaddingInner: padding, bandWithNestedOffsetPaddingInner: 0.3}},
+        });
+        expect(model.getScaleComponent(channel).get('paddingInner')).toEqual(
+          padding === undefined ? 0.3 : typeof padding === 'number' ? padding : {signal: '0.4'},
+        );
+      });
+
+      it.each(['padding', 'paddingInner'] as const)('respects explicit %s', (property) => {
+        const model = parseUnitModelWithScale({
+          mark: 'point',
+          encoding: {
+            [channel]: {field: 'category', type: 'nominal', scale: {[property]: 0.1}},
+            [offsetChannel]: {field: 'offset', type: 'quantitative'},
+          },
+          config: {scale: {bandWithContinuousOffsetPaddingInner: 0.4}},
+        });
+        const scale = model.getScaleComponent(channel);
+        expect(scale.get(property)).toBe(0.1);
+        expect(scale.get('paddingInner')).toBe(property === 'padding' ? undefined : 0.1);
+      });
+
+      it('leaves band scales without offsets unchanged', () => {
+        const model = parseUnitModelWithScale({
+          mark: 'bar',
+          encoding: {[channel]: {field: 'category', type: 'nominal'}},
+          config: {scale: {bandWithContinuousOffsetPaddingInner: 0.4, bandPaddingInner: 0.1}},
+        });
+        expect(model.getScaleComponent(channel).get('paddingInner')).toBe(0.1);
+      });
+    });
+
     describe('nominal with color', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
