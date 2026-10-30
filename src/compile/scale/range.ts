@@ -322,7 +322,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       // if (scaleType === 'band') {
       return {step: 1000 / config.scale.framesPerSecond};
       // }
-      // return [0, config.scale.animationDuration * 1000]; // TODO(jzong): uncomment for linear scales when interpolation is implemented
+      // return [0, config.scale.animationDuration * 1000]; // TODO(jzong): uncomment for linear scales when interpolation is implemented https://github.com/vega/vega-lite/issues/9590
     }
 
     case STROKEWIDTH:
