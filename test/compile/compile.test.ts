@@ -1,4 +1,4 @@
-import {AggregateTransform} from 'vega';
+import {AggregateTransform, parse} from 'vega';
 import {compile} from '../../src/compile/compile.js';
 import * as log from '../../src/log/index.js';
 
@@ -231,6 +231,389 @@ describe('compile/compile', () => {
     });
 
     expect(spec.autosize).toBe('fit');
+  });
+
+  it('should compile area size-thickness ribbons with vertical orient', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 3000, density: 0.0002},
+          {value: 3500, density: 0.0005},
+          {value: 4000, density: 0.0003},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {value: 60},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    const update = spec.marks[0].encode.update;
+    expect(update.orient).toEqual({value: 'vertical'});
+    expect(update.x).toEqual({scale: 'x', field: 'value'});
+    expect(update.y).toEqual({value: 60, offset: {scale: 'size', field: 'density', mult: 0.5}});
+    expect(update.y2).toEqual({value: 60, offset: {scale: 'size', field: 'density', mult: -0.5}});
+  });
+
+  it('should compile temporal area size-thickness ribbons as one continuous path', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {date: '2020-01-01', value: 10, density: 2},
+          {date: '2020-01-02', value: 12, density: 4},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'value', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('area');
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([0, {signal: 'height'}]);
+  });
+
+  it('should center area size-thickness ribbons when y is omitted', () => {
+    const {spec} = compile({
+      data: {url: 'data/penguins.json'},
+      transform: [
+        {filter: {field: 'Sex', oneOf: ['MALE', 'FEMALE']}},
+        {density: 'Body Mass (g)', groupby: ['Sex'], resolve: 'independent'},
+      ],
+      mark: {type: 'area', opacity: 0.9},
+      encoding: {
+        x: {field: 'value', type: 'quantitative', title: 'Body Mass (g)'},
+        size: {field: 'density', type: 'quantitative'},
+        color: {field: 'Sex', type: 'nominal'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['Sex']);
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.orient).toEqual({value: 'vertical'});
+    expect(update.y).toEqual({signal: 'height', mult: 0.5, offset: {scale: 'size', field: 'density', mult: 0.5}});
+    expect(update.y2).toEqual({
+      signal: 'height',
+      mult: 0.5,
+      offset: {scale: 'size', field: 'density', mult: -0.5},
+    });
+    expect(spec.scales.some((scale) => scale.name === 'y')).toBe(false);
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([0, {signal: 'height'}]);
+    expect(spec.legends.map((legend: any) => legend.fill)).toEqual(['color']);
+  });
+
+  it(
+    'should ignore explicit stacking for area size-thickness ribbons',
+    log.wrap((localLogger) => {
+      const {spec} = compile({
+        data: {values: [{value: 1, center: 2, density: 3}]},
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative', stack: 'zero'},
+          y: {field: 'center', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+
+      expect(
+        spec.data.every((data: any) => !data.transform?.some((transform: any) => transform.type === 'stack')),
+      ).toBe(true);
+      expect(spec.marks[0].encode.update.x).toEqual({scale: 'x', field: 'value'});
+      expect(localLogger.warns).toEqual([log.message.cannotStackAreaWithSize()]);
+    }),
+  );
+
+  it(
+    'should ignore area thickness size and stack on a line overlay',
+    log.wrap((localLogger) => {
+      const {spec} = compile({
+        data: {values: [{date: '2020-01-01', value: 2, density: 3}]},
+        mark: {type: 'area', line: true},
+        encoding: {
+          x: {field: 'date', type: 'temporal'},
+          y: {field: 'value', type: 'quantitative', stack: 'zero'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+
+      expect(
+        spec.data.every((data: any) => !data.transform?.some((transform: any) => transform.type === 'stack')),
+      ).toBe(true);
+      expect(spec.marks[1].encode.update.y).toEqual({scale: 'y', field: 'value'});
+      expect(spec.marks[1].encode.update.strokeWidth).toBeUndefined();
+      expect(localLogger.warns).toEqual([log.message.cannotStackAreaWithSize()]);
+    }),
+  );
+
+  it('should facet area size-thickness ribbons by nominal y groups', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 3000, density: 0.0002, species: 'Adelie'},
+          {value: 3300, density: 0.00045, species: 'Adelie'},
+          {value: 3600, density: 0.0007, species: 'Chinstrap'},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'species', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['species']);
+  });
+
+  it('should use renamed band scales for area size-thickness ranges in layered views', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, density: 0.5, group: 'A'}]},
+      layer: [
+        {
+          mark: 'area',
+          encoding: {
+            x: {field: 'value', type: 'quantitative'},
+            y: {field: 'group', type: 'nominal', scale: {type: 'band'}},
+            size: {field: 'density', type: 'quantitative'},
+          },
+        },
+        {
+          mark: 'area',
+          encoding: {
+            x: {field: 'value', type: 'quantitative'},
+            y: {field: 'group', type: 'nominal', scale: {type: 'band'}},
+            size: {field: 'density', type: 'quantitative'},
+          },
+        },
+      ],
+      resolve: {scale: {y: 'independent', size: 'independent'}},
+    });
+
+    const sizeScales = spec.scales.filter((scale) => scale.name.endsWith('_size'));
+    expect(sizeScales.map((scale) => (scale as any).range)).toEqual([
+      [0, {signal: "bandwidth('layer_0_y')"}],
+      [0, {signal: "bandwidth('layer_1_y')"}],
+    ]);
+  });
+
+  it('should combine nominal yOffset and size thickness for area ribbons', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 3000, density: 0.2, island: 'Biscoe', species: 'Adelie'},
+          {value: 3300, density: 0.4, island: 'Biscoe', species: 'Chinstrap'},
+          {value: 3600, density: 0.3, island: 'Dream', species: 'Adelie'},
+        ],
+      },
+      mark: {type: 'area', opacity: 0.4},
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'island', type: 'nominal'},
+        yOffset: {field: 'species', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative'},
+        color: {field: 'species', type: 'nominal'},
+      },
+    });
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y.offset.signal).toContain('scale("yOffset"');
+    expect(update.y.offset.signal).toContain('scale("size"');
+    expect(update.y2.offset.signal).toContain('scale("yOffset"');
+    expect(update.y2.offset.signal).toContain('scale("size"');
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([
+      0,
+      {
+        signal:
+          "domain('yOffset').length > 1 ? abs(scale('yOffset', domain('yOffset')[1]) - scale('yOffset', domain('yOffset')[0])) : span(range('yOffset'))",
+      },
+    ]);
+  });
+
+  it('should keep area size thickness centered on a quantitative yOffset', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 1, group: 'A', shift: 0.2, density: 0.4},
+          {value: 2, group: 'A', shift: 0.3, density: 0.6},
+        ],
+      },
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {field: 'shift', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['group']);
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y.offset.signal).toContain('scale("yOffset", datum["shift"])');
+    expect(update.y.offset.signal).toContain('0.5 * (scale("size", datum["density"]))');
+    expect(update.y2.offset.signal).toContain('-0.5 * (scale("size", datum["density"]))');
+    expect((spec.scales.find((scale) => scale.name === 'yOffset') as any).zero).toBe(false);
+  });
+
+  it('should combine nominal xOffset and size thickness for horizontal area ribbons', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 3000, density: 0.2, island: 'Biscoe', species: 'Adelie'},
+          {value: 3300, density: 0.4, island: 'Biscoe', species: 'Chinstrap'},
+          {value: 3600, density: 0.3, island: 'Dream', species: 'Adelie'},
+        ],
+      },
+      mark: {type: 'area', opacity: 0.4},
+      encoding: {
+        x: {field: 'island', type: 'nominal'},
+        y: {field: 'value', type: 'quantitative'},
+        xOffset: {field: 'species', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative'},
+        color: {field: 'species', type: 'nominal'},
+      },
+    });
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.x.offset.signal).toContain('scale("xOffset"');
+    expect(update.x.offset.signal).toContain('scale("size"');
+    expect(update.x2.offset.signal).toContain('scale("xOffset"');
+    expect(update.x2.offset.signal).toContain('scale("size"');
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([
+      0,
+      {
+        signal:
+          "domain('xOffset').length > 1 ? abs(scale('xOffset', domain('xOffset')[1]) - scale('xOffset', domain('xOffset')[0])) : span(range('xOffset'))",
+      },
+    ]);
+  });
+
+  it('should preserve explicit area thickness ranges with discrete offsets', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, group: 'A', subgroup: 'B', density: 0.5}]},
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {field: 'subgroup', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative', scale: {range: [0, 40]}},
+      },
+    });
+
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([0, 40]);
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y.offset.signal).not.toContain("domain('yOffset').length");
+  });
+
+  it('should center area ribbons within band offset groups', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, group: 'A', subgroup: 'B', density: 0.5}]},
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {field: 'subgroup', type: 'nominal', scale: {type: 'band'}},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y.offset.signal).toContain('bandwidth("yOffset") * (0.5)');
+    expect((spec.scales.find((scale) => scale.name === 'size') as any).range).toEqual([
+      0,
+      {signal: "bandwidth('yOffset')"},
+    ]);
+  });
+
+  it('should escape field names when composing ribbon and positional offsets', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, group: 'A', subgroup: 'B', "density'quoted": 0.5}]},
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {field: 'subgroup', type: 'nominal'},
+        size: {field: "density\\'quoted", type: 'quantitative'},
+      },
+    });
+
+    expect(() => parse(spec)).not.toThrow();
+  });
+
+  it('should compose constant thickness with a numeric mark offset', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, center: 2}]},
+      mark: {type: 'area', yOffset: 5},
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'center', type: 'quantitative'},
+        size: {value: 10},
+      },
+    });
+
+    const update = (spec.marks[0] as any).encode.update;
+    expect(update.y.offset.signal).toBe('5 + 0.5 * (10)');
+    expect(update.y2.offset.signal).toBe('5 + -0.5 * (10)');
+  });
+
+  it('should compose field thickness with a signal mark offset', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, center: 2, density: 3}]},
+      mark: {type: 'area', yOffset: {expr: 'datum.shift'}},
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'center', type: 'quantitative'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    const update = (spec.marks[0] as any).encode.update;
+    expect(update.y.offset.signal).toContain('(datum.shift)');
+    expect(update.y.offset.signal).toContain('scale("size", datum["density"])');
+  });
+
+  it('should compose field thickness with a scaled datum offset', () => {
+    const {spec} = compile({
+      data: {values: [{value: 1, group: 'A', density: 3}]},
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'group', type: 'nominal'},
+        yOffset: {datum: 'B', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    const update = (spec.marks[0] as any).marks[0].encode.update;
+    expect(update.y.offset.signal).toContain('scale("yOffset", "B")');
+  });
+
+  it('should facet horizontal area size-thickness ribbons by xOffset groups', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {value: 3000, density: 0.2, island: 'Biscoe', species: 'Adelie'},
+          {value: 3300, density: 0.4, island: 'Biscoe', species: 'Chinstrap'},
+          {value: 3600, density: 0.3, island: 'Dream', species: 'Adelie'},
+        ],
+      },
+      mark: {type: 'area', opacity: 0.4},
+      encoding: {
+        y: {field: 'value', type: 'quantitative'},
+        x: {field: 'island', type: 'nominal'},
+        xOffset: {field: 'species', type: 'nominal'},
+        size: {field: 'density', type: 'quantitative'},
+      },
+    });
+
+    expect(spec.marks[0].type).toBe('group');
+    expect((spec.marks[0] as any).from.facet.groupby).toEqual(['species', 'island']);
   });
 
   it('should align layered bar/line/point marks on a shared quantitative yOffset baseline', () => {

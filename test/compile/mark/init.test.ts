@@ -502,6 +502,90 @@ describe('compile/mark/init', () => {
       expect(model.markDef.orient).toBe('horizontal');
     });
 
+    it('should return vertical orient for area with x and size thickness encoding', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          y: {value: 60},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
+
+    it('should center area thickness vertically when y is omitted', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'area', orient: 'horizontal'},
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
+
+    it('should center area thickness horizontally when x is omitted', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'area', orient: 'vertical'},
+        encoding: {
+          y: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
+    it('should use size-thickness orientation with a quantitative offset', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'group', type: 'nominal'},
+          yOffset: {field: 'shift', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
+
+    it('should return horizontal orient for area with quantitative y and nominal x in size-thickness mode', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'Species', type: 'nominal'},
+          y: {field: 'value', type: 'quantitative'},
+          xOffset: {field: 'Sex', type: 'nominal'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
+    it('should return vertical orient for area with quantitative y and temporal x in size-thickness mode', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'Year', type: 'temporal'},
+          y: {field: 'value', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
+
+    it('should respect explicit orient for area size-thickness with two quantitative axes', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'area', orient: 'horizontal'},
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {field: 'y', type: 'quantitative'},
+          size: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
     it('should return vertical orient for area with only yOffset quantitative', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'area',
@@ -513,10 +597,46 @@ describe('compile/mark/init', () => {
       expect(model.markDef.orient).toBe('vertical');
     });
 
+    it('should return vertical orient for area with discrete y and quantitative yOffset', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'group', type: 'nominal'},
+          yOffset: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
+
+    it('should override incompatible orient for a ranged yOffset area', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'area', orient: 'horizontal'},
+        encoding: {
+          x: {field: 'value', type: 'quantitative'},
+          y: {field: 'group', type: 'nominal'},
+          yOffset: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('vertical');
+    });
+
     it('should return horizontal orient for area with only xOffset quantitative', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'area',
         encoding: {
+          y: {field: 'value', type: 'quantitative'},
+          xOffset: {field: 'density', type: 'quantitative'},
+        },
+      });
+      expect(model.markDef.orient).toBe('horizontal');
+    });
+
+    it('should return horizontal orient for area with discrete x and quantitative xOffset', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: 'area',
+        encoding: {
+          x: {field: 'group', type: 'nominal'},
           y: {field: 'value', type: 'quantitative'},
           xOffset: {field: 'density', type: 'quantitative'},
         },

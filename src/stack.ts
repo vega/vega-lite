@@ -5,6 +5,7 @@ import {
   channelDefType,
   FieldName,
   getFieldDef,
+  isDiscrete,
   isFieldDef,
   isFieldOrDatumDef,
   PositionDatumDef,
@@ -14,7 +15,7 @@ import {
   vgField,
 } from './channeldef.js';
 import {CompositeAggregate} from './compositemark/index.js';
-import {channelHasField, channelHasQuantitativeOffset, Encoding, isAggregate} from './encoding.js';
+import {channelHasField, channelHasQuantitativeOffset, Encoding, isAggregate, isAreaSizeThickness} from './encoding.js';
 import * as log from './log/index.js';
 import {
   ARC,
@@ -155,6 +156,13 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
     return null;
   }
 
+  if (isAreaSizeThickness(mark, encoding)) {
+    if ([encoding.x, encoding.y].some((channelDef) => isFieldOrDatumDef(channelDef) && channelDef.stack)) {
+      log.warn(log.message.cannotStackAreaWithSize());
+    }
+    return null;
+  }
+
   // Run potential stacked twice, one for Cartesian and another for Polar,
   // so text marks can be stacked in any of the coordinates.
 
@@ -169,12 +177,18 @@ export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackPrope
 
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
+  const xDef = encoding.x;
+  const yDef = encoding.y;
+  const xRangeFromOffset =
+    fieldChannel === 'y' &&
+    channelHasQuantitativeOffset(encoding, 'x') &&
+    (!xDef || (isFieldOrDatumDef(xDef) && isDiscrete(xDef)));
+  const yRangeFromOffset =
+    fieldChannel === 'x' &&
+    channelHasQuantitativeOffset(encoding, 'y') &&
+    (!yDef || (isFieldOrDatumDef(yDef) && isDiscrete(yDef)));
 
-  if (
-    stackedFieldDef.stack === undefined &&
-    ((fieldChannel === 'x' && !encoding.y && channelHasQuantitativeOffset(encoding, 'y')) ||
-      (fieldChannel === 'y' && !encoding.x && channelHasQuantitativeOffset(encoding, 'x')))
-  ) {
+  if (stackedFieldDef.stack === undefined && (xRangeFromOffset || yRangeFromOffset)) {
     return null;
   }
 
