@@ -71,6 +71,48 @@ describe('compile/legend', () => {
     });
   });
 
+  describe('legend type for discretizing color scales (#9856)', () => {
+    it('keeps an explicit legend.type "symbol" for a threshold color scale', () => {
+      const unitModel = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          color: {
+            field: 'a',
+            type: 'quantitative',
+            scale: {type: 'threshold', domain: [1, 2, 3]},
+            legend: {type: 'symbol'},
+          },
+        },
+      });
+      expect(parseLegend(unitModel).color.get('type')).toBe('symbol');
+    });
+
+    it('keeps an explicit legend.type "symbol" for a quantize color scale', () => {
+      const unitModel = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          color: {
+            field: 'a',
+            type: 'quantitative',
+            scale: {type: 'quantize'},
+            legend: {type: 'symbol'},
+          },
+        },
+      });
+      expect(parseLegend(unitModel).color.get('type')).toBe('symbol');
+    });
+
+    it('still omits the inferred "symbol" type for a discrete (nominal) color scale', () => {
+      const unitModel = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          color: {field: 'a', type: 'nominal'},
+        },
+      });
+      expect(parseLegend(unitModel).color.get('type')).toBeUndefined();
+    });
+  });
+
   describe('parseLegendForChannel()', () => {
     it('should produce a Vega legend object with correct type and scale for color', () => {
       const model = parseUnitModelWithScale({
