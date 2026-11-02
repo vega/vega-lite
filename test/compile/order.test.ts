@@ -55,6 +55,117 @@ describe('datum-based order', () => {
     await view.runAsync();
   }
 
+  function stackSites(view: View, dataName: string, variety = 'v1') {
+    return view
+      .data(dataName)
+      .filter((row) => row.variety === variety)
+      .sort((a, b) => a.sum_yield_start - b.sum_yield_start)
+      .map((row) => row.site);
+  }
+
+  it.each(['ascending', 'descending'] as const)(
+    'breaks selected ties by click order with %s primary ranks',
+    async (sort) => {
+      const descending = sort === 'descending';
+      const {view, stackData} = await run(
+        barSpec({condition: {param: 'pick', datum: descending ? 1 : 0}, datum: descending ? 0 : 1, sort}),
+      );
+      const add = async (site: string) => {
+        view.change('pick_store', changeset().insert({unit: '', fields: [{field: 'site', type: 'E'}], values: [site]}));
+        await view.runAsync();
+      };
+      const expectOrder = (expected: string[]) => {
+        for (const variety of ['v1', 'v2']) {
+          expect(stackSites(view, stackData.name, variety)).toEqual(expected);
+        }
+      };
+
+      await add('C');
+      expectOrder(['C', 'A', 'B']);
+      await add('B');
+      expectOrder(['C', 'B', 'A']);
+      await add('A');
+      expectOrder(['C', 'B', 'A']);
+      view.change(
+        'pick_store',
+        changeset().remove((tuple: {values: string[]}) => tuple.values[0] === 'B'),
+      );
+      await view.runAsync();
+      expectOrder(['C', 'A', 'B']);
+      await add('B');
+      expectOrder(['C', 'A', 'B']);
+      await select(view, []);
+      expectOrder(['A', 'B', 'C']);
+    },
+  );
+
+  it('keeps explicit unequal datum ranks ahead of selection chronology', async () => {
+    const {view, stackData} = await run(
+      barSpec({
+        condition: {param: 'pick', datum: {expr: "datum.site === 'B' ? -1 : 0"}},
+        datum: 1,
+      }),
+    );
+    await select(view, ['C', 'B']);
+    expect(stackSites(view, stackData.name)).toEqual(['B', 'C', 'A']);
+  });
+
+  it('takes tie-breaking from the first matching condition only', async () => {
+    const {view, stackData} = await run(
+      barSpec({
+        condition: [
+          {test: "datum.site !== 'A'", datum: 0},
+          {param: 'pick', datum: 0},
+        ],
+        datum: 1,
+      }),
+    );
+    await select(view, ['C', 'B']);
+    expect(stackSites(view, stackData.name)).toEqual(['B', 'C', 'A']);
+  });
+
+  it('keeps an empty selection neutral when earlier conditions supply the same rank', async () => {
+    const {view, stackData} = await run(
+      barSpec({
+        condition: [
+          {test: "datum.site === 'A'", datum: 0},
+          {param: 'pick', datum: 0},
+        ],
+        datum: 1,
+      }),
+    );
+    expect(stackSites(view, stackData.name)).toEqual(['A', 'B', 'C']);
+    await select(view, ['C', 'B']);
+    await select(view, []);
+    expect(stackSites(view, stackData.name)).toEqual(['A', 'B', 'C']);
+  });
+
+  it.each(['interval', 'id', 'multiple fields', 'binned range', 'non-global', 'variable', 'predicate'])(
+    'keeps input-order ties for a %s condition',
+    async (kind) => {
+      const input = barSpec({condition: {param: 'pick', datum: 0}, datum: 1});
+      if (kind === 'interval') {
+        input.params = [{name: 'pick', select: {type: 'interval', encodings: ['y']}}];
+      } else if (kind === 'id') {
+        input.params = [{name: 'pick', select: 'point'}];
+      } else if (kind === 'multiple fields') {
+        input.params = [{name: 'pick', select: {type: 'point', fields: ['site', 'variety']}}];
+      } else if (kind === 'binned range') {
+        input.params = [{name: 'pick', select: {type: 'point', encodings: ['color']}}];
+        input.encoding.color = {field: 'yield', bin: true, type: 'quantitative'};
+      } else if (kind === 'non-global') {
+        input.params = [{name: 'pick', select: {type: 'point', fields: ['site'], resolve: 'union'}}];
+      } else if (kind === 'variable') {
+        input.params = [{name: 'pick', value: true}];
+      } else {
+        input.encoding.order = {condition: {test: {param: 'pick'}, datum: 0}, datum: 1};
+      }
+      const {stackData} = await run(input);
+      const stack = stackData.transform.find((transform) => transform.type === 'stack');
+      expect(stack.sort.field).toHaveLength(1);
+    },
+  );
+
   it('reorders aggregated stacks from a legend selection without a calculated field', async () => {
     const {spec, view, stackData} = await run(
       barSpec({
@@ -208,6 +319,25 @@ describe('datum-based order', () => {
         .filter((row) => +row.year_date === +selected.year_date)
         .map((row) => row.sum_yield_start),
     ).toEqual([0, 0]);
+
+    const earlier = view.data(stackData.name).find((row) => new Date(row.year_date).getFullYear() === 2020);
+    view.change(
+      'pick_store',
+      changeset().insert({
+        unit: '',
+        fields: [{field: 'year_date', type: 'E'}],
+        values: [+earlier.year_date],
+      }),
+    );
+    await view.runAsync();
+    for (const variety of ['v1', 'v2']) {
+      const years = view
+        .data(stackData.name)
+        .filter((row) => row.variety === variety)
+        .sort((a, b) => a.sum_yield_start - b.sum_yield_start)
+        .map((row) => new Date(row.year_date).getFullYear());
+      expect(years).toEqual([2021, 2020]);
+    }
   });
 
   it.each(['point', 'line'] as const)('sorts unstacked %s marks in the data domain', async (mark) => {
@@ -240,10 +370,10 @@ describe('datum-based order', () => {
     const input = barSpec({condition: {param: 'pick', empty: false, datum: 0}, datum: 1});
     input.mark = 'point';
     const {view} = await run(input);
-    await select(view, ['C']);
+    await select(view, ['C', 'B']);
     const scenegraph = view.scenegraph() as unknown as {root: {items: {items: any[]}[]}};
     const items = scenegraph.root.items[0].items.find((item) => item.name === 'marks').items;
-    expect(items.slice(0, 2).map((item: any) => item.datum.site)).toEqual(['C', 'C']);
+    expect(items.map((item: any) => item.datum.site)).toEqual(['C', 'C', 'B', 'B', 'A', 'A']);
   });
 
   it('tracks sort expression field dependencies without treating expressions as field names', () => {

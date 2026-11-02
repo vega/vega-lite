@@ -14,7 +14,7 @@ import {StackOffset} from '../../stack.js';
 import {StackTransform} from '../../transform.js';
 import {duplicate, getFirstDefined, hash} from '../../util.js';
 import {sortParams} from '../common.js';
-import {orderDatumExpression} from '../order.js';
+import {orderDatumSort} from '../order.js';
 import {UnitModel} from '../unit.js';
 import {DataFlowNode} from './dataflow.js';
 import {getDependentFields} from './expressions.js';
@@ -153,10 +153,7 @@ export class StackNode extends DataFlowNode {
 
     let sort: StackComponent['sort'];
     if (isOrderDatumDef(orderDef)) {
-      sort = {
-        field: [{expr: orderDatumExpression(model, raw)}],
-        order: [orderDef.sort ?? 'ascending'],
-      };
+      sort = orderDatumSort(model, raw);
     } else if (isArray(orderDef) || isFieldDef(orderDef)) {
       sort = sortParams(orderDef);
     } else {

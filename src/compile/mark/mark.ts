@@ -6,7 +6,7 @@ import {AREA, BAR, LINE, Mark, TRAIL, isPathMark} from '../../mark.js';
 import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util.js';
 import {VG_CORNERRADIUS_CHANNELS, VgCompare, VgEncodeEntry} from '../../vega.schema.js';
 import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortParams} from '../common.js';
-import {orderDatumExpression} from '../order.js';
+import {orderDatumSort} from '../order.js';
 import {UnitModel} from '../unit.js';
 import {arc} from './arc.js';
 import {area} from './area.js';
@@ -268,7 +268,7 @@ export function getSort(model: UnitModel): VgCompare {
   ) {
     return undefined;
   } else if (isOrderDatumDef(order) && !stack) {
-    return {field: {expr: orderDatumExpression(model, undefined, true)}, order: order.sort ?? 'ascending'};
+    return orderDatumSort(model, undefined, true);
   } else if ((isArray(order) || isFieldDef(order)) && !stack) {
     // Sort by the order field if it is specified and the field is not stacked. (For stacked field, order specify stack order.)
     return sortParams(order, {expr: 'datum'});

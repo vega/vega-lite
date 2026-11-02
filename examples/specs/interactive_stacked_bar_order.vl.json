@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
-  "description": "Select sites in the legend to move their segments to the start of each stack. Datum-based order changes the stack layout; value-based opacity highlights the selection.",
+  "description": "Select sites in the legend to move their segments to the start of each stack. Shift-click to add sites in click order; deselecting and reselecting a site moves it to the end of the selected group. Datum-based order changes the stack layout; value-based opacity highlights the selection.",
   "data": {"url": "data/barley.json"},
   "mark": "bar",
   "params": [

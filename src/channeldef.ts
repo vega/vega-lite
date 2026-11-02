@@ -662,6 +662,8 @@ export type OrderDatumDef = DatumDef<string, number | ExprRef | SignalRef> &
      * One or more conditional numeric datum definitions used as sort keys.
      * The first matching condition determines the key. If `datum` is omitted,
      * the fallback key is `0`.
+     * For a globally resolved point selection projected over one enumerated
+     * field, equal keys follow selection insertion order (click order).
      */
     condition?:
       | Conditional<DatumDef<string, number | ExprRef | SignalRef>>
