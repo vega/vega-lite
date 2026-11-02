@@ -8,6 +8,8 @@ import {
   functionalTitleFormatter,
   initChannelDef,
   isDiscrete,
+  isOrderDatumDef,
+  isOrderOnlyDef,
   TypedFieldDef,
   vgField,
 } from '../src/channeldef.js';
@@ -370,6 +372,23 @@ describe('fieldDef', () => {
       const fieldDef = {field: 'f', type: TEMPORAL};
       expect(defaultTitle(fieldDef, {})).toBe('f');
     });
+  });
+});
+
+describe('order definitions', () => {
+  it('distinguishes direction-only sorts from field and datum sort keys', () => {
+    expect(isOrderOnlyDef({sort: 'descending'})).toBe(true);
+    expect(isOrderOnlyDef({field: 'rank', type: 'quantitative', sort: 'descending'})).toBe(false);
+    expect(isOrderOnlyDef({datum: 0, sort: 'descending'})).toBe(false);
+    expect(isOrderOnlyDef({condition: {param: 'pick', datum: 0}, sort: 'descending'})).toBe(false);
+  });
+
+  it('recognizes conditional datum keys without confusing them with drawing priorities', () => {
+    expect(isOrderDatumDef({datum: 0})).toBe(true);
+    expect(isOrderDatumDef({condition: {param: 'pick', datum: 0}})).toBe(true);
+    expect(isOrderDatumDef({condition: [{param: 'pick', datum: 0}]})).toBe(true);
+    expect(isOrderDatumDef({condition: {param: 'pick', value: 0}, value: 1})).toBe(false);
+    expect(isOrderDatumDef({sort: 'descending'})).toBe(false);
   });
 });
 

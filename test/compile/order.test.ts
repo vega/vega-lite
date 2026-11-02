@@ -2,6 +2,7 @@ import {changeset, parse, View} from 'vega';
 import {OrderDatumDef} from '../../src/channeldef.js';
 import {compile} from '../../src/compile/compile.js';
 import {StackNode} from '../../src/compile/data/stack.js';
+import {orderDatumSort} from '../../src/compile/order.js';
 import {TopLevelUnitSpec} from '../../src/spec/unit.js';
 import {parseUnitModelWithScale} from '../util.js';
 
@@ -34,6 +35,16 @@ describe('datum-based order', () => {
   const views: View[] = [];
   afterEach(() => {
     views.splice(0).forEach((view) => view.finalize());
+  });
+
+  it.each(['field', 'value'] as const)('leaves %s-based ordering to the existing compiler', (kind) => {
+    const model = parseUnitModelWithScale({
+      mark: 'point',
+      encoding: {
+        order: kind === 'field' ? {field: 'yield', type: 'quantitative'} : {value: 1},
+      },
+    });
+    expect(orderDatumSort(model)).toBeUndefined();
   });
 
   async function run(input: TopLevelUnitSpec<string>) {
