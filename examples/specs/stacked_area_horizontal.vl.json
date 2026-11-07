@@ -1,0 +1,43 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Illustrative soil composition with quantitative depth and proportion axes.",
+  "width": 300,
+  "height": 300,
+  "data": {
+    "values": [
+      {"depth": 0, "proportion": 30, "type": "Clay"},
+      {"depth": 0, "proportion": 70, "type": "Sand"},
+      {"depth": 1, "proportion": 20, "type": "Clay"},
+      {"depth": 1, "proportion": 80, "type": "Sand"},
+      {"depth": 2, "proportion": 25, "type": "Clay"},
+      {"depth": 2, "proportion": 75, "type": "Sand"},
+      {"depth": 4, "proportion": 40, "type": "Clay"},
+      {"depth": 4, "proportion": 60, "type": "Sand"},
+      {"depth": 7, "proportion": 70, "type": "Clay"},
+      {"depth": 7, "proportion": 30, "type": "Sand"},
+      {"depth": 10, "proportion": 60, "type": "Clay"},
+      {"depth": 10, "proportion": 40, "type": "Sand"}
+    ]
+  },
+  "mark": {"type": "area", "orient": "horizontal"},
+  "encoding": {
+    "x": {
+      "aggregate": "sum",
+      "field": "proportion",
+      "type": "quantitative",
+      "title": "Proportion (%)"
+    },
+    "y": {
+      "field": "depth",
+      "type": "quantitative",
+      "scale": {"reverse": true},
+      "title": "Depth (m)"
+    },
+    "color": {
+      "field": "type",
+      "type": "nominal",
+      "title": "Soil type",
+      "scale": {"range": ["#a6761d", "#e6c87a"]}
+    }
+  }
+}

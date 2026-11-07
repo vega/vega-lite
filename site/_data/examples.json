@@ -353,6 +353,11 @@
         "title": "Stacked Area Chart"
       },
       {
+        "name": "stacked_area_horizontal",
+        "title": "Horizontal Stacked Area Chart",
+        "description": "Set area orientation explicitly when both position channels are quantitative. A quantitative depth axis preserves unequal intervals between observations."
+      },
+      {
         "name": "stacked_area_normalize",
         "title": "Normalized Stacked Area Chart"
       },

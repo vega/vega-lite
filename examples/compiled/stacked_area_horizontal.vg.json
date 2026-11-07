@@ -1,0 +1,183 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Illustrative soil composition with quantitative depth and proportion axes.",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"depth": 0, "proportion": 30, "type": "Clay"},
+        {"depth": 0, "proportion": 70, "type": "Sand"},
+        {"depth": 1, "proportion": 20, "type": "Clay"},
+        {"depth": 1, "proportion": 80, "type": "Sand"},
+        {"depth": 2, "proportion": 25, "type": "Clay"},
+        {"depth": 2, "proportion": 75, "type": "Sand"},
+        {"depth": 4, "proportion": 40, "type": "Clay"},
+        {"depth": 4, "proportion": 60, "type": "Sand"},
+        {"depth": 7, "proportion": 70, "type": "Clay"},
+        {"depth": 7, "proportion": 30, "type": "Sand"},
+        {"depth": 10, "proportion": 60, "type": "Clay"},
+        {"depth": 10, "proportion": 40, "type": "Sand"}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "toNumber(datum[\"depth\"])",
+          "as": "depth"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["depth", "type"],
+          "ops": ["sum"],
+          "fields": ["proportion"],
+          "as": ["sum_proportion"]
+        },
+        {
+          "type": "impute",
+          "field": "sum_proportion",
+          "groupby": ["type"],
+          "key": "depth",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["depth"],
+          "field": "sum_proportion",
+          "sort": {"field": ["type"], "order": ["ascending"]},
+          "as": ["sum_proportion_start", "sum_proportion_end"],
+          "offset": "zero"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_main",
+          "data": "data_0",
+          "groupby": ["type"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "marks",
+          "type": "area",
+          "style": ["area"],
+          "sort": {"field": "y"},
+          "from": {"data": "faceted_path_main"},
+          "encode": {
+            "update": {
+              "orient": {"value": "horizontal"},
+              "fill": {"scale": "color", "field": "type"},
+              "description": {
+                "signal": "\"Proportion (%): \" + (format(datum[\"sum_proportion\"], \"\")) + \"; Depth (m): \" + (format(datum[\"depth\"], \"\")) + \"; Soil type: \" + (isValid(datum[\"type\"]) ? isArray(datum[\"type\"]) ? join(datum[\"type\"], ' ') : datum[\"type\"] : \"\"+datum[\"type\"])"
+              },
+              "x": {"scale": "x", "field": "sum_proportion_end"},
+              "x2": {"scale": "x", "field": "sum_proportion_start"},
+              "y": {"scale": "y", "field": "depth"},
+              "defined": {
+                "signal": "isValid(datum[\"sum_proportion\"]) && isFinite(+datum[\"sum_proportion\"]) && isValid(datum[\"depth\"]) && isFinite(+datum[\"depth\"])"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "data": "data_0",
+        "fields": ["sum_proportion_start", "sum_proportion_end"]
+      },
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "depth"},
+      "range": [{"signal": "height"}, 0],
+      "reverse": true,
+      "nice": true,
+      "zero": false
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "type", "sort": true},
+      "range": ["#a6761d", "#e6c87a"]
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Proportion (%)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Depth (m)",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [{"title": "Soil type", "fill": "color", "symbolType": "circle"}]
+}

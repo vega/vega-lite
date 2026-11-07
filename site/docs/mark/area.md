@@ -73,6 +73,14 @@ Adding a color field to area chart creates stacked area chart by default. For ex
 
 <span class="vl-example" data-name="stacked_area"></span>
 
+### Horizontal Stacked Area Chart
+
+When both position channels encode unbinned quantitative fields and no other encoding determines the orientation, Vega-Lite defaults to a vertical area orientation. Set `"orient": "horizontal"` on the mark to draw areas whose widths vary along the `y` axis.
+
+This example shows illustrative soil composition at different depths. Setting `orient` to `"horizontal"` draws the stacked proportions along `x`, while keeping `y` quantitative preserves the unequal intervals between depths. The reversed `y` scale makes depth increase downward.
+
+<span class="vl-example" data-name="stacked_area_horizontal"></span>
+
 ### Normalized Stacked Area Chart
 
 You can also create a normalized stacked area chart by setting `"stack"` to `"normalize"` in the encoding channel. Here we can easily see the percentage of unemployment across industries.
