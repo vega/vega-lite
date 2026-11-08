@@ -108,6 +108,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Kibana](https://github.com/elastic/kibana): a browser-based analytics and search dashboard for Elasticsearch that supports [authoring and embedding Vega and Vega-Lite visualizations](https://www.elastic.co/guide/en/kibana/current/vega.html).
 - [PyGWalker](https://github.com/Kanaries/pygwalker) A python library that turns your data into an interactive visual exploration app with one line of code.
 - [GWalkR](https://github.com/Kanaries/GWalkR) An R library that turns your dataframe into an interactive visual exploration app in RStudio.
+- [Agate](https://github.com/<you>/agate), an Obsidian plugin that renders Vega and Vega-Lite charts from Obsidian Bases.
 
 ## Tools for Embedding Vega-Lite Visualizations
 
