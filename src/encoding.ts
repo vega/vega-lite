@@ -96,7 +96,7 @@ import {AggregatedFieldDef, BinTransform, AggregateFieldOp, TimeUnitTransform} f
 import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type.js';
 import {keys, some} from './util.js';
 import {isSignalRef} from './vega.schema.js';
-import {isBinnedTimeUnit} from './timeunit.js';
+import {isBinnedTimeUnit, normalizeTimeUnit} from './timeunit.js';
 
 export interface Encoding<F extends Field> {
   /**
@@ -486,7 +486,11 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
             });
 
             // define the format type for later compilation
-            const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
+            // (the new field def has no timeUnit anymore, so we need to keep track of UTC time units here)
+            const formatType =
+              isTypedFieldDef(channelDef) &&
+              channelDef.type !== TEMPORAL &&
+              (normalizeTimeUnit(timeUnit)?.utc ? 'utc' : 'time');
             if (formatType) {
               if (channel === TEXT || channel === TOOLTIP) {
                 (newFieldDef as any)['formatType'] = formatType;
