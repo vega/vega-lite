@@ -13,7 +13,15 @@ import {UnitModel} from '../unit.js';
 import {AxisComponent, AxisComponentIndex, AxisComponentProps, AXIS_COMPONENT_PROPERTIES} from './component.js';
 import {getAxisConfig, getAxisConfigs} from './config.js';
 import * as encode from './encode.js';
-import {AxisRuleParams, axisRules, defaultOrient, getFieldDefTitle, getLabelAngle} from './properties.js';
+import {
+  AxisRuleParams,
+  axisRules,
+  defaultLabelAlign,
+  defaultLabelBaseline,
+  defaultOrient,
+  getFieldDefTitle,
+  getLabelAngle,
+} from './properties.js';
 import {guideFormat, guideFormatType} from '../format.js';
 
 export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
@@ -81,6 +89,27 @@ export function parseLayerAxes(model: LayerModel) {
             const oppositeOrient = OPPOSITE_ORIENT[orient];
             if (axisCount[orient] > axisCount[oppositeOrient]) {
               axisComponent.set('orient', oppositeOrient, false);
+              for (const property of keys(axisComponent.labelParams)) {
+                const {axis, fieldOrDatumDef, scaleType, config} = axisComponent.labelParams[property];
+                const axisConfigs = getAxisConfigs(channel, scaleType, oppositeOrient, config);
+                const componentLabelAngle = axisComponent.get('labelAngle');
+                const labelAngle =
+                  typeof componentLabelAngle === 'number' || isSignalRef(componentLabelAngle)
+                    ? componentLabelAngle
+                    : getLabelAngle(fieldOrDatumDef, axis, channel, config.style, axisConfigs);
+                const {configValue, configFrom} = getAxisConfig(property, config.style, axis.style, axisConfigs);
+
+                // recalculate generated defaults without overriding the destination axis configuration
+                const value =
+                  configValue === undefined
+                    ? property === 'labelAlign'
+                      ? defaultLabelAlign(labelAngle, oppositeOrient, channel)
+                      : defaultLabelBaseline(labelAngle, oppositeOrient, channel)
+                    : configFrom !== 'vgAxisConfig' || isConditionalAxisValue(configValue) || isSignalRef(configValue)
+                      ? configValue
+                      : undefined;
+                axisComponent.set(property, value, false);
+              }
             }
           }
           axisCount[orient]++;
@@ -143,9 +172,11 @@ function mergeAxisComponents(
 
 function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisComponent {
   for (const prop of AXIS_COMPONENT_PROPERTIES) {
+    const mergedValue = merged.getWithExplicit(prop);
+    const childValue = child.getWithExplicit(prop);
     const mergedValueWithExplicit = mergeValuesWithExplicit<AxisComponentProps, any>(
-      merged.getWithExplicit(prop),
-      child.getWithExplicit(prop),
+      mergedValue,
+      childValue,
       prop,
       'axis',
 
@@ -164,6 +195,15 @@ function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisCo
       },
     );
     merged.setWithExplicit(prop, mergedValueWithExplicit);
+    if (prop === 'labelAlign' || prop === 'labelBaseline') {
+      const source = mergedValueWithExplicit === childValue ? child : merged;
+      const params = source.labelParams[prop];
+      if (params) {
+        merged.labelParams[prop] = params;
+      } else {
+        delete merged.labelParams[prop];
+      }
+    }
   }
   return merged;
 }
@@ -284,6 +324,9 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       if (hasValue && !hasConfigValue) {
         // only set property if it is explicitly set or has no config value (otherwise we will accidentally override config)
         axisComponent.set(property, value, explicit);
+        if (property === 'labelAlign' || property === 'labelBaseline') {
+          axisComponent.labelParams[property] = {axis, fieldOrDatumDef, scaleType, config};
+        }
       } else if (
         // Cases need implicit values
         // 1. Axis config that aren't available in Vega

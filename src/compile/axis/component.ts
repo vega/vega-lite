@@ -7,9 +7,11 @@ import {
   ConditionalAxisProp,
 } from '../../axis.js';
 import {FieldDefBase} from '../../channeldef.js';
+import {Config} from '../../config.js';
 import {duplicate, Flag, keys} from '../../util.js';
 import {isSignalRef} from '../../vega.schema.js';
 import {Split} from '../split.js';
+import type {AxisRuleParams} from './properties.js';
 
 function isFalseOrNull(v: any) {
   return v === false || v === null;
@@ -34,6 +36,14 @@ const AXIS_COMPONENT_PROPERTIES_INDEX: Flag<keyof AxisComponentProps> = {
 export const AXIS_COMPONENT_PROPERTIES = keys(AXIS_COMPONENT_PROPERTIES_INDEX);
 
 export class AxisComponent extends Split<AxisComponentProps> {
+  // retain the source of generated label defaults when axes are merged or moved
+  public readonly labelParams: Partial<
+    Record<
+      'labelAlign' | 'labelBaseline',
+      Pick<AxisRuleParams, 'axis' | 'fieldOrDatumDef' | 'scaleType'> & {config: Config<SignalRef>}
+    >
+  > = {};
+
   constructor(
     public readonly explicit: Partial<AxisComponentProps> = {},
     public readonly implicit: Partial<AxisComponentProps> = {},
@@ -43,7 +53,9 @@ export class AxisComponent extends Split<AxisComponentProps> {
   }
 
   public clone() {
-    return new AxisComponent(duplicate(this.explicit), duplicate(this.implicit), this.mainExtracted);
+    const clone = new AxisComponent(duplicate(this.explicit), duplicate(this.implicit), this.mainExtracted);
+    Object.assign(clone.labelParams, this.labelParams);
+    return clone;
   }
 
   public hasAxisPart(part: AxisPart) {
