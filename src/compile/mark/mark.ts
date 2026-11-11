@@ -353,9 +353,12 @@ function projectionClip(model: UnitModel) {
 }
 
 /**
- * Only output interactive flags if we have selections defined somewhere in our model hierarchy.
+ * Explicit mark or config values override selection-based interactivity inference.
  */
 function interactiveFlag(model: UnitModel) {
+  const interactive = getMarkPropOrConfig('interactive', model.markDef, model.config);
+  if (interactive !== undefined) return {interactive};
+
   if (!model.component.selection) return null;
   const unitCount = keys(model.component.selection).length;
   let parentCount = unitCount;

@@ -66,7 +66,13 @@ Note: If [mark property encoding channels](encoding.html#mark-prop) are specifie
 
 ### General Mark Properties
 
-{% include table.html props="type,aria,cursor,description,style,tooltip,clip,invalid,order" source="MarkDef" %}
+{% include table.html props="type,aria,cursor,description,style,tooltip,interactive,clip,invalid,order" source="MarkDef" %}
+
+Set `interactive` to `false` on decorative marks, such as labels over a heatmap, to let mouse and touch events reach the marks beneath them. In this example, hovering a label shows the underlying cell's tooltip:
+
+<span class="vl-example" data-name="layer_text_heatmap"></span>
+
+An explicit `true` or `false` overrides the inferred interactivity, including when the mark has a tooltip or selection. When omitted, the existing selection and tooltip inference applies. The property also supports defaults in `config.mark`, mark-specific configuration such as `config.text`, and style configuration. The mark definition takes precedence over style configuration, then mark-specific configuration, then `config.mark`.
 
 {:#offset}
 

@@ -734,6 +734,13 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
 
   redirectTitleConfig(config);
 
+  // Interactivity is compiled onto Vega marks, not their style configuration.
+  for (const style of Object.values(config.style ?? {})) {
+    if ('interactive' in style) {
+      delete style.interactive;
+    }
+  }
+
   // Remove empty config objects.
   for (const prop in config) {
     // @ts-expect-error(TS7053)
