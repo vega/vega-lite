@@ -1,5 +1,5 @@
 import {View} from 'vega';
-import {SelectionType} from '../src/selection.js';
+import {SelectionType, SELECTION_ID} from '../src/selection.js';
 import {brush, embed, getGeoSpec, getSpec, hits as hitsMaster, tuples} from './util.js';
 import {describe, expect, it} from 'vitest';
 
@@ -194,7 +194,7 @@ describe('interval selections at runtime in unit views', () => {
       const store: any = await brush(view, 'drag', 1);
       expect(store).toHaveLength(13);
       for (const t of store) {
-        expect(t).toHaveProperty('_vgsid_');
+        expect(t).toHaveProperty(SELECTION_ID);
       }
       await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/geo_1.svg`);
     });
@@ -204,7 +204,7 @@ describe('interval selections at runtime in unit views', () => {
       const store: any = await brush(view, 'drag', 0);
       expect(store).toHaveLength(20);
       for (const t of store) {
-        expect(t).toHaveProperty('_vgsid_');
+        expect(t).toHaveProperty(SELECTION_ID);
       }
       await expect(await view.toSVG()).toMatchFileSnapshot(`./snapshots/${type}/unit/geo_0.svg`);
     });
