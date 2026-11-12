@@ -1,0 +1,40 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A horizontal word cloud with all words at 0 degrees.",
+  "width": 600,
+  "height": 400,
+  "data": {
+    "values": [
+      {"word": "visualization", "count": 80},
+      {"word": "data", "count": 72},
+      {"word": "chart", "count": 60},
+      {"word": "graph", "count": 55},
+      {"word": "analysis", "count": 50},
+      {"word": "statistics", "count": 45},
+      {"word": "interactive", "count": 42},
+      {"word": "dashboard", "count": 38},
+      {"word": "plot", "count": 35},
+      {"word": "encoding", "count": 32},
+      {"word": "scale", "count": 30},
+      {"word": "axis", "count": 28},
+      {"word": "legend", "count": 25},
+      {"word": "color", "count": 22},
+      {"word": "mark", "count": 20},
+      {"word": "transform", "count": 18},
+      {"word": "filter", "count": 16},
+      {"word": "aggregate", "count": 15},
+      {"word": "selection", "count": 14},
+      {"word": "tooltip", "count": 12}
+    ]
+  },
+  "mark": {"type": "wordcloud", "angle": 0, "padding": 2},
+  "encoding": {
+    "text": {"field": "word", "type": "nominal"},
+    "size": {
+      "field": "count",
+      "type": "quantitative",
+      "scale": {"range": [14, 56]}
+    },
+    "color": {"field": "word", "type": "nominal", "legend": null}
+  }
+}
