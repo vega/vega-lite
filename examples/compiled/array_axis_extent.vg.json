@@ -1,0 +1,253 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "A global grid labelled from the extent carried in its data.",
+  "background": "white",
+  "padding": 5,
+  "width": 340,
+  "height": 170,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {
+          "extent": [-180, 180, -81, 87],
+          "width": 12,
+          "height": 6,
+          "values": [
+            47,
+            42,
+            39,
+            39,
+            42,
+            47,
+            53,
+            58,
+            61,
+            61,
+            58,
+            53,
+            43,
+            30,
+            23,
+            23,
+            30,
+            43,
+            57,
+            70,
+            77,
+            77,
+            70,
+            57,
+            40,
+            23,
+            13,
+            13,
+            23,
+            40,
+            60,
+            77,
+            87,
+            87,
+            77,
+            60,
+            40,
+            22,
+            12,
+            12,
+            22,
+            40,
+            60,
+            78,
+            88,
+            88,
+            78,
+            60,
+            42,
+            28,
+            20,
+            20,
+            28,
+            42,
+            58,
+            72,
+            80,
+            80,
+            72,
+            58,
+            46,
+            39,
+            35,
+            35,
+            39,
+            46,
+            54,
+            61,
+            65,
+            65,
+            61,
+            54
+          ]
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum[\"extent\"] && datum[\"extent\"][\"0\"]",
+          "as": "extent.0"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"extent\"] && datum[\"extent\"][\"2\"]",
+          "as": "extent.2"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"extent\"] && datum[\"extent\"][\"1\"]",
+          "as": "extent.1"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"extent\"] && datum[\"extent\"][\"3\"]",
+          "as": "extent.3"
+        },
+        {
+          "type": "formula",
+          "expr": "{width: datum.width, height: datum.height, values: datum[\"values\"]}",
+          "as": "__array_grid"
+        },
+        {
+          "type": "formula",
+          "expr": "extent(datum[\"values\"])[0]",
+          "as": "array_min_values"
+        },
+        {
+          "type": "formula",
+          "expr": "extent(datum[\"values\"])[1]",
+          "as": "array_max_values"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "image",
+      "style": ["array"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "ariaRoleDescription": {"value": "array"},
+          "description": {
+            "signal": "\"values: \" + (format(extent(datum[\"values\"])[0], \"\") + \" – \" + format(extent(datum[\"values\"])[1], \"\"))"
+          },
+          "x": {
+            "signal": "min(scale('x', datum[\"extent.0\"]), scale('x', datum[\"extent.1\"]))"
+          },
+          "width": {
+            "signal": "abs((scale('x', datum[\"extent.1\"])) - (scale('x', datum[\"extent.0\"])))"
+          },
+          "y": {
+            "signal": "min(scale('y', datum[\"extent.2\"]), scale('y', datum[\"extent.3\"]))"
+          },
+          "height": {
+            "signal": "abs((scale('y', datum[\"extent.3\"])) - (scale('y', datum[\"extent.2\"])))"
+          },
+          "image": {"field": "image"},
+          "aspect": {"value": false}
+        }
+      },
+      "transform": [
+        {
+          "type": "heatmap",
+          "field": "datum.__array_grid",
+          "color": {"expr": "scale('color', datum.$value)"},
+          "opacity": {"expr": "isValid(datum.$value) ? 1 : 0"}
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["extent\\.0", "extent\\.1"]},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["extent\\.2", "extent\\.3"]},
+      "range": [{"signal": "height"}, 0]
+    },
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {
+        "data": "data_0",
+        "fields": ["array_min_values", "array_max_values"]
+      },
+      "range": {"scheme": "viridis"},
+      "interpolate": "hcl",
+      "zero": false
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "title": "values"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "The same elevation grid with smoothing turned off, showing each cell exactly.",
+  "width": 348,
+  "height": 244,
+  "data": {"url": "data/volcano.json"},
+  "mark": {"type": "array", "smooth": false},
+  "encoding": {
+    "color": {
+      "field": "values",
+      "type": "quantitative",
+      "scale": {"scheme": "viridis"}
+    }
+  }
+}
