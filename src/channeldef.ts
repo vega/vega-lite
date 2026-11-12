@@ -1,5 +1,5 @@
 import {Gradient, ScaleType, SignalRef, Text, TimeFormatSpecifier} from 'vega';
-import {isArray, isBoolean, isNumber, isString} from 'vega-util';
+import {array, isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {isPrimitive} from './util.js';
 import {
   Aggregate,
@@ -656,6 +656,27 @@ export interface LegendMixins {
 
 export type OrderFieldDef<F extends Field> = FieldDefWithoutScale<F> & OrderOnlyDef;
 
+export type OrderDatumDef = DatumDef<string, number | ExprRef | SignalRef> &
+  OrderOnlyDef & {
+    /**
+     * One or more conditional numeric datum definitions used as sort keys.
+     * The first matching condition determines the key. If `datum` is omitted,
+     * the fallback key is `0`.
+     * For a globally resolved point selection projected over one enumerated
+     * field, equal keys follow selection insertion order (click order).
+     */
+    condition?:
+      | Conditional<DatumDef<string, number | ExprRef | SignalRef>>
+      | Conditional<DatumDef<string, number | ExprRef | SignalRef>>[];
+  };
+
+export function isOrderDatumDef(orderDef: Encoding<string>['order']): orderDef is OrderDatumDef {
+  return (
+    isDatumDef(orderDef) ||
+    (isConditionalDef(orderDef) && array(orderDef.condition).some((condition) => isDatumDef(condition)))
+  );
+}
+
 export interface OrderOnlyDef {
   /**
    * The sort order. One of `"ascending"` (default) or `"descending"`.
@@ -664,9 +685,14 @@ export interface OrderOnlyDef {
 }
 
 export function isOrderOnlyDef<F extends Field>(
-  orderDef: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef,
+  orderDef: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderDatumDef | OrderValueDef | OrderOnlyDef,
 ): orderDef is OrderOnlyDef {
-  return hasProperty(orderDef, 'sort') && !hasProperty(orderDef, 'field');
+  return (
+    hasProperty(orderDef, 'sort') &&
+    !hasProperty(orderDef, 'field') &&
+    !hasProperty(orderDef, 'datum') &&
+    !hasProperty(orderDef, 'condition')
+  );
 }
 
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;

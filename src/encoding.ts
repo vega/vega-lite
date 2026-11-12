@@ -72,6 +72,7 @@ import {
   NumericArrayMarkPropDef,
   NumericMarkPropDef,
   OffsetDef,
+  OrderDatumDef,
   OrderFieldDef,
   OrderOnlyDef,
   OrderValueDef,
@@ -321,13 +322,14 @@ export interface Encoding<F extends Field> {
 
   /**
    * Order of the marks.
-   * - For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).
+   * - Field and datum definitions encode [stack order](https://vega.github.io/vega-lite/docs/stack.html#order) for stacked marks. Conditional numeric datum definitions can be used to change stack order interactively.
    * - For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{"value": null}` makes the line marks use the original order in the data sources.
    * - Otherwise, this `order` channel encodes layer order of the marks.
+   * - Value definitions set drawing priority (`zindex`) for non-path marks, including stacked marks, without changing stack order.
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
-  order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef | OrderOnlyDef;
+  order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderDatumDef | OrderValueDef | OrderOnlyDef;
 }
 
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
@@ -608,7 +610,11 @@ export function initEncoding(
 
     if (
       channel === DETAIL ||
-      (channel === ORDER && !isArray(channelDef) && !isValueDef(channelDef)) ||
+      (channel === ORDER &&
+        !isArray(channelDef) &&
+        !isValueDef(channelDef) &&
+        !isDatumDef(channelDef) &&
+        !isConditionalDef(channelDef)) ||
       (channel === TOOLTIP && isArray(channelDef))
     ) {
       if (channelDef) {

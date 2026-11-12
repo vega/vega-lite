@@ -445,7 +445,21 @@ In addition to the general [field definition properties](#field-def), field defi
 
 In addition to the constant `value`, [value definitions](#value-def) of the `order` channel can include the `condition` property to specify conditional logic.
 
+For non-path marks, an order value sets drawing priority (`zindex`), including in stacked charts. It does not change stack positions.
+
 {% include table.html props="condition" source="OrderValueDef" %}
+
+### Order Datum Definition
+
+A numeric `datum` supplies a sort key with the same role as an order field: stack order for stacked charts, point order along a line or trail, and drawing order for other marks. A datum can also be an expression reference. Use `sort` to choose `"ascending"` (the default) or `"descending"` order.
+
+Conditional datum definitions can change the sort key based on a parameter or predicate. For example, `"order": {"condition": {"param": "site_pick", "datum": 0}, "datum": 1}` moves selected positive segments closest to the stack baseline without a calculate transform. Conditions are evaluated in order; the first match wins. An omitted fallback `datum` defaults to `0`.
+
+For a direct condition on a globally resolved point selection projected over one enumerated field, equal selected keys follow selection insertion order: Shift-clicked values are added in click order. Removing and reselecting a value moves it to the end of the selected group. This is a secondary sort key; explicit unequal datum ranks always take precedence, and click order remains chronological with either primary sort direction. Clearing the selection restores stable input order.
+
+Other ties retain their input order, including unselected values, predicate and variable-parameter conditions, interval selections, ID-based selections, selections over multiple fields or binned ranges, and non-global selection resolutions.
+
+<span class="vl-example" data-name="interactive_stacked_bar_order"></span>
 
 {:#facet}
 

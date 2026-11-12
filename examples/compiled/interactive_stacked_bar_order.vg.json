@@ -1,0 +1,258 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Select sites in the legend to move their segments to the start of each stack. Shift-click to add sites in click order; deselecting and reselecting a site moves it to the end of the selected group. Datum-based order changes the stack layout; value-based opacity highlights the selection.",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "style": "cell",
+  "data": [
+    {"name": "site_pick_store"},
+    {
+      "name": "source_0",
+      "url": "data/barley.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["variety", "site"],
+          "ops": ["sum"],
+          "fields": ["yield"],
+          "as": ["sum_yield"]
+        },
+        {
+          "type": "stack",
+          "groupby": ["variety"],
+          "field": "sum_yield",
+          "sort": {
+            "field": [
+              {
+                "expr": "(!length(data(\"site_pick_store\")) || vlSelectionTest(\"site_pick_store\", datum)) ? (0) : (1)"
+              },
+              {
+                "expr": "(!length(data(\"site_pick_store\")) || vlSelectionTest(\"site_pick_store\", datum)) ? (length(data(\"site_pick_store\")) ? indexof(pluck(data(\"site_pick_store\"), \"values[0]\"), isDate(datum[\"site\"]) ? time(datum[\"site\"]) : datum[\"site\"]) : 0) : (0)"
+              }
+            ],
+            "order": ["ascending", "ascending"]
+          },
+          "as": ["sum_yield_start", "sum_yield_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_yield\"]) && isFinite(+datum[\"sum_yield\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+    },
+    {
+      "name": "unit",
+      "value": {},
+      "on": [
+        {"events": "pointermove", "update": "isTuple(group()) ? group() : unit"}
+      ]
+    },
+    {
+      "name": "site_pick_site_legend",
+      "value": null,
+      "on": [
+        {
+          "events": [
+            {
+              "source": "view",
+              "type": "click",
+              "markname": "site_legend_symbols"
+            },
+            {
+              "source": "view",
+              "type": "click",
+              "markname": "site_legend_labels"
+            },
+            {
+              "source": "view",
+              "type": "click",
+              "markname": "site_legend_entries"
+            }
+          ],
+          "update": "isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value",
+          "force": true
+        },
+        {
+          "events": [{"source": "view", "type": "click"}],
+          "update": "!event.item || !datum ? null : site_pick_site_legend",
+          "force": true
+        }
+      ]
+    },
+    {
+      "name": "site_pick",
+      "update": "vlSelectionResolve(\"site_pick_store\", \"union\", true, true)"
+    },
+    {
+      "name": "site_pick_tuple",
+      "update": "site_pick_site_legend !== null ? {fields: site_pick_tuple_fields, values: [site_pick_site_legend]} : null"
+    },
+    {
+      "name": "site_pick_tuple_fields",
+      "value": [{"type": "E", "field": "site"}]
+    },
+    {
+      "name": "site_pick_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": {"merge": [{"source": "view", "type": "click"}]},
+          "update": "event.shiftKey"
+        }
+      ]
+    },
+    {
+      "name": "site_pick_modify",
+      "on": [
+        {
+          "events": {"signal": "site_pick_tuple"},
+          "update": "modify(\"site_pick_store\", site_pick_toggle ? null : site_pick_tuple, site_pick_toggle ? null : true, site_pick_toggle ? site_pick_tuple : null)"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "interactive": true,
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "site"},
+          "opacity": [
+            {
+              "test": "!length(data(\"site_pick_store\")) || vlSelectionTest(\"site_pick_store\", datum)",
+              "value": 0.9
+            },
+            {"value": 0.2}
+          ],
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? isArray(datum[\"variety\"]) ? join(datum[\"variety\"], ' ') : datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; site: \" + (isValid(datum[\"site\"]) ? isArray(datum[\"site\"]) ? join(datum[\"site\"], ' ') : datum[\"site\"] : \"\"+datum[\"site\"])"
+          },
+          "x": {"scale": "x", "field": "sum_yield_end"},
+          "x2": {"scale": "x", "field": "sum_yield_start"},
+          "y": {"scale": "y", "field": "variety"},
+          "height": {"signal": "max(0.25, bandwidth('y'))"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["sum_yield_start", "sum_yield_end"]
+      },
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "variety", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "site", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Sum of yield",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "variety",
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "symbolType": "square",
+      "title": "site",
+      "encode": {
+        "labels": {
+          "name": "site_legend_labels",
+          "interactive": true,
+          "update": {
+            "opacity": [
+              {
+                "test": "(!length(data(\"site_pick_store\")) || (site_pick[\"site\"] && indexof(site_pick[\"site\"], datum.value) >= 0))",
+                "value": 1
+              },
+              {"value": 0.35}
+            ],
+            "cursor": {"value": "pointer"}
+          }
+        },
+        "symbols": {
+          "name": "site_legend_symbols",
+          "interactive": true,
+          "update": {
+            "opacity": [
+              {
+                "test": "(!length(data(\"site_pick_store\")) || (site_pick[\"site\"] && indexof(site_pick[\"site\"], datum.value) >= 0))",
+                "value": 0.9
+              },
+              {"value": 0.35}
+            ],
+            "cursor": {"value": "pointer"}
+          }
+        },
+        "entries": {
+          "name": "site_legend_entries",
+          "interactive": true,
+          "update": {
+            "fill": {"value": "transparent"},
+            "cursor": {"value": "pointer"}
+          }
+        }
+      }
+    }
+  ]
+}
