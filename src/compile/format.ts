@@ -24,7 +24,7 @@ import {datumDefToExpr} from './mark/encode/valueref.js';
 import {BIN_RANGE_DELIMITER} from './common.js';
 
 export function isCustomFormatType(formatType: string) {
-  return formatType && formatType !== 'number' && formatType !== 'time';
+  return formatType && formatType !== 'number' && formatType !== 'time' && formatType !== 'utc';
 }
 
 function customFormatExpr(formatType: string, field: string, format: Format) {
@@ -113,7 +113,10 @@ export function formatSignalRef({
       format,
       formatType: config.timeFormatType,
       rawTimeFormat: config.timeFormat,
-      isUTCScale: isUTCUnit || (isScaleFieldDef(fieldOrDatumDef) && fieldOrDatumDef.scale?.type === ScaleType.UTC),
+      isUTCScale:
+        isUTCUnit ||
+        formatType === 'utc' ||
+        (isScaleFieldDef(fieldOrDatumDef) && fieldOrDatumDef.scale?.type === ScaleType.UTC),
     });
     return signal ? {signal} : undefined;
   }
@@ -239,7 +242,10 @@ export function guideFormatType(
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
   scaleType: ScaleType,
 ) {
-  if (formatType && (isSignalRef(formatType) || formatType === 'number' || formatType === 'time')) {
+  if (
+    formatType &&
+    (isSignalRef(formatType) || formatType === 'number' || formatType === 'time' || formatType === 'utc')
+  ) {
     return formatType;
   }
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) && scaleType !== 'time' && scaleType !== 'utc') {

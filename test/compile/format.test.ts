@@ -1,4 +1,4 @@
-import {PositionDatumDef, vgField} from '../../src/channeldef.js';
+import {PositionDatumDef, StringFieldDef, vgField} from '../../src/channeldef.js';
 import {
   formatSignalRef,
   guideFormat,
@@ -179,6 +179,23 @@ describe('Format', () => {
       ).toEqual({
         signal:
           'utcFormat(utcdate_foo, timeUnitSpecifier(["date"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))',
+      });
+    });
+    it('should use utcFormat for field defs with utc formatType', () => {
+      expect(
+        formatSignalRef({
+          fieldOrDatumDef: {
+            field: 'foo',
+            type: ORDINAL,
+            format: '%b %d, %Y',
+            formatType: 'utc',
+          } as StringFieldDef<string>,
+          format: '%b %d, %Y',
+          formatType: 'utc',
+          config: {},
+        }),
+      ).toEqual({
+        signal: 'utcFormat(foo, "%b %d, %Y")',
       });
     });
     it('should format ordinal field defs if format is present', () => {
@@ -380,6 +397,7 @@ describe('Format', () => {
     it('should return existing format type', () => {
       expect(guideFormatType('number', {field: ' foo', type: 'quantitative'}, 'ordinal')).toBe('number');
       expect(guideFormatType('time', {field: ' foo', type: 'quantitative'}, 'ordinal')).toBe('time');
+      expect(guideFormatType('utc', {field: ' foo', type: 'ordinal'}, 'point')).toBe('utc');
     });
 
     it('should return utc for utc time units', () => {
