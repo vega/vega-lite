@@ -1,11 +1,13 @@
 import {isArray} from 'vega-util';
-import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef.js';
+import {getSecondaryRangeChannel, isXorY} from '../../channel.js';
+import {FieldRefOption, getBandPosition, isFieldDef, isValueDef, vgField} from '../../channeldef.js';
 import {DataSourceType} from '../../data.js';
 import {pathGroupingFields} from '../../encoding.js';
 import {AREA, BAR, LINE, Mark, TRAIL, isPathMark} from '../../mark.js';
 import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util.js';
 import {VG_CORNERRADIUS_CHANNELS, VgCompare, VgEncodeEntry} from '../../vega.schema.js';
 import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortParams} from '../common.js';
+import {OFFSETTED_RECT_END_SUFFIX, OFFSETTED_RECT_START_SUFFIX} from '../data/timeunit.js';
 import {UnitModel} from '../unit.js';
 import {arc} from './arc.js';
 import {area} from './area.js';
@@ -181,15 +183,33 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel, cornerRadiusEn
 
   if (model.stack.groupbyChannels?.length > 0) {
     for (const groupbyChannel of model.stack.groupbyChannels) {
-      // For bin and time unit, we have to add bin/timeunit -end channels.
+      // The group encodes the interval position, so retain its endpoints in the facet datum.
       const groupByField = model.fieldDef(groupbyChannel);
       const field = vgField(groupByField);
       if (field) {
         groupby.push(field);
       }
 
-      if (groupByField?.bin || groupByField?.timeUnit) {
+      if (groupByField?.timeUnit) {
+        groupby.push(vgField(groupByField, {suffix: 'end'}));
+        if (
+          isXorY(groupbyChannel) &&
+          getBandPosition({fieldDef: groupByField, markDef: model.markDef, config: model.config}) !== 0.5
+        ) {
+          groupby.push(
+            vgField(groupByField, {suffix: OFFSETTED_RECT_START_SUFFIX}),
+            vgField(groupByField, {suffix: OFFSETTED_RECT_END_SUFFIX}),
+          );
+        }
+      } else if (groupByField?.bin) {
         groupby.push(vgField(groupByField, {binSuffix: 'end'}));
+      }
+
+      if (isXorY(groupbyChannel)) {
+        const fieldDef2 = model.encoding[getSecondaryRangeChannel(groupbyChannel)];
+        if (isFieldDef(fieldDef2)) {
+          groupby.push(vgField(fieldDef2));
+        }
       }
     }
   }
