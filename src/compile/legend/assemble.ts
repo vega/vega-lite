@@ -204,7 +204,7 @@ export function assembleLegends(model: Model): VgLegend[] {
 }
 
 export function assembleLegend(legendCmpt: LegendComponent, config: Config) {
-  const {disable, labelExpr, selections, ...legend} = legendCmpt.combine();
+  const {disable, labelExpr, labelLineBreak, labelTooltip, selections, ...legend} = legendCmpt.combine();
 
   if (disable) {
     return undefined;

@@ -61,6 +61,8 @@ export const legendRules: {
   labelOverlap: ({legend, legendConfig, scaleType}) =>
     legend.labelOverlap ?? legendConfig.labelOverlap ?? defaultLabelOverlap(scaleType),
 
+  labelLineBreak: ({legend}) => legend.labelLineBreak,
+
   symbolType: ({legend, markDef, channel, encoding}) =>
     legend.symbolType ?? defaultSymbolType(markDef.type, channel, encoding.shape, markDef.shape),
 

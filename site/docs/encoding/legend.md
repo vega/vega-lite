@@ -70,7 +70,11 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### Labels
 
-{% include table.html props="format,formatType,labelAlign,labelBaseline,labelColor,labelExpr,labelFont,labelFontSize,labelFontStyle,labelLimit,labelOffset,labelOverlap" source="Legend" %}
+{% include table.html props="format,formatType,labelAlign,labelBaseline,labelColor,labelExpr,labelFont,labelFontSize,labelFontStyle,labelLimit,labelLineBreak,labelOffset,labelOverlap,labelTooltip" source="Legend" %}
+
+Legend labels can be split into multiple lines with `labelLineBreak`. To expose the full backing legend value on hover, set `labelTooltip` to `true`; to customize tooltip text, set `labelTooltip` to a Vega expression.
+
+<div class="vl-example" data-name="bar_legend_label_tooltip_linebreak"></div>
 
 ### Symbols
 

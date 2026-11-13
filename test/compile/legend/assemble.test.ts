@@ -78,6 +78,58 @@ describe('legend/assemble', () => {
     });
   });
 
+  it('correctly applies labelLineBreak and labelTooltip.', () => {
+    const model = parseUnitModelWithScale({
+      data: {url: 'data/cars.json'},
+      mark: 'point',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        color: {
+          field: 'Origin',
+          type: 'nominal',
+          legend: {
+            labelLineBreak: '\n',
+            labelTooltip: true,
+          },
+        },
+      },
+    });
+    model.parseLegends();
+
+    const legends = model.assembleLegends();
+    expect((legends[0] as any).labelLineBreak).toBeUndefined();
+    expect((legends[0] as any).labelTooltip).toBeUndefined();
+    expect(legends[0].encode.labels.update.lineBreak).toEqual({value: '\n'});
+    expect(legends[0].encode.labels.update.tooltip).toEqual({
+      signal: 'datum.value',
+    });
+  });
+
+  it('correctly applies a labelTooltip expression.', () => {
+    const model = parseUnitModelWithScale({
+      data: {url: 'data/cars.json'},
+      mark: 'point',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        color: {
+          field: 'Origin',
+          type: 'nominal',
+          legend: {
+            labelTooltip: "'Origin: ' + datum.label",
+          },
+        },
+      },
+    });
+    model.parseLegends();
+
+    const legends = model.assembleLegends();
+    expect(legends[0].encode.labels.update.tooltip).toEqual({
+      signal: "'Origin: ' + datum.label",
+    });
+  });
+
   it('merges legend of the same field with the default type.', () => {
     const model = parseUnitModelWithScale({
       $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
