@@ -57,8 +57,14 @@
           "force": true
         },
         {
-          "events": [{"source": "view", "type": "click"}],
-          "update": "!event.item || !datum ? null : color_selection_Origin_legend",
+          "events": [
+            {
+              "source": "view",
+              "type": "click",
+              "filter": ["!event.item || !event.item.datum"]
+            }
+          ],
+          "update": "null",
           "force": true
         }
       ]
