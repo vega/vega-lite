@@ -520,6 +520,10 @@
           "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.\n\n__Default value:__ `0`",
           "minimum": 0
         },
+        "interactive": {
+          "description": "Whether the marks generate mouse and touch events. If `false`, events pass through to marks beneath them. Explicit values override the interactivity inferred from selections and tooltips.\n\n__Default value:__ Inferred from selections and tooltips; `true` when no selections are defined.",
+          "type": "boolean"
+        },
         "interpolate": {
           "anyOf": [
             {
@@ -3385,6 +3389,10 @@
           ],
           "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.\n\n__Default value:__ `0`",
           "minimum": 0
+        },
+        "interactive": {
+          "description": "Whether the marks generate mouse and touch events. If `false`, events pass through to marks beneath them. Explicit values override the interactivity inferred from selections and tooltips.\n\n__Default value:__ Inferred from selections and tooltips; `true` when no selections are defined.",
+          "type": "boolean"
         },
         "interpolate": {
           "anyOf": [
@@ -15158,6 +15166,10 @@
           "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.\n\n__Default value:__ `0`",
           "minimum": 0
         },
+        "interactive": {
+          "description": "Whether the marks generate mouse and touch events. If `false`, events pass through to marks beneath them. Explicit values override the interactivity inferred from selections and tooltips.\n\n__Default value:__ Inferred from selections and tooltips; `true` when no selections are defined.",
+          "type": "boolean"
+        },
         "interpolate": {
           "anyOf": [
             {
@@ -16381,6 +16393,10 @@
           "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.\n\n__Default value:__ `0`",
           "minimum": 0
         },
+        "interactive": {
+          "description": "Whether the marks generate mouse and touch events. If `false`, events pass through to marks beneath them. Explicit values override the interactivity inferred from selections and tooltips.\n\n__Default value:__ Inferred from selections and tooltips; `true` when no selections are defined.",
+          "type": "boolean"
+        },
         "interpolate": {
           "anyOf": [
             {
@@ -17234,6 +17250,10 @@
           ],
           "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.\n\n__Default value:__ `0`",
           "minimum": 0
+        },
+        "interactive": {
+          "description": "Whether the marks generate mouse and touch events. If `false`, events pass through to marks beneath them. Explicit values override the interactivity inferred from selections and tooltips.\n\n__Default value:__ Inferred from selections and tooltips; `true` when no selections are defined.",
+          "type": "boolean"
         },
         "interpolate": {
           "anyOf": [
@@ -18822,6 +18842,10 @@
           ],
           "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.\n\n__Default value:__ `0`",
           "minimum": 0
+        },
+        "interactive": {
+          "description": "Whether the marks generate mouse and touch events. If `false`, events pass through to marks beneath them. Explicit values override the interactivity inferred from selections and tooltips.\n\n__Default value:__ Inferred from selections and tooltips; `true` when no selections are defined.",
+          "type": "boolean"
         },
         "interpolate": {
           "anyOf": [
@@ -21116,6 +21140,10 @@
           ],
           "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.\n\n__Default value:__ `0`",
           "minimum": 0
+        },
+        "interactive": {
+          "description": "Whether the marks generate mouse and touch events. If `false`, events pass through to marks beneath them. Explicit values override the interactivity inferred from selections and tooltips.\n\n__Default value:__ Inferred from selections and tooltips; `true` when no selections are defined.",
+          "type": "boolean"
         },
         "interpolate": {
           "anyOf": [
@@ -29017,6 +29045,10 @@
           ],
           "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.\n\n__Default value:__ `0`",
           "minimum": 0
+        },
+        "interactive": {
+          "description": "Whether the marks generate mouse and touch events. If `false`, events pass through to marks beneath them. Explicit values override the interactivity inferred from selections and tooltips.\n\n__Default value:__ Inferred from selections and tooltips; `true` when no selections are defined.",
+          "type": "boolean"
         },
         "interpolate": {
           "anyOf": [

@@ -44,6 +44,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "num_cars"},
+          "tooltip": {
+            "signal": "{\"Origin\": isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], '\\n') : datum[\"Origin\"] : \"\"+datum[\"Origin\"], \"Cylinders\": isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], '\\n') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Count of Records\": format(datum[\"num_cars\"], \"\")}"
+          },
           "description": {
             "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? isArray(datum[\"Cylinders\"]) ? join(datum[\"Cylinders\"], ' ') : datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? isArray(datum[\"Origin\"]) ? join(datum[\"Origin\"], ' ') : datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Count of Records: \" + (format(datum[\"num_cars\"], \"\"))"
           },
@@ -58,6 +61,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
+      "interactive": false,
       "from": {"data": "source_0"},
       "encode": {
         "update": {

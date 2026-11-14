@@ -15,6 +15,11 @@
     {
       "mark": "rect",
       "encoding": {
+        "tooltip": [
+          {"field": "Origin", "type": "ordinal"},
+          {"field": "Cylinders", "type": "ordinal"},
+          {"field": "num_cars", "type": "quantitative", "title": "Count of Records"}
+        ],
         "color": {
           "field": "num_cars",
           "type": "quantitative",
@@ -24,7 +29,7 @@
       }
     },
     {
-      "mark": "text",
+      "mark": {"type": "text", "interactive": false},
       "encoding": {
         "text": {"field": "num_cars", "type": "quantitative"},
         "color": {
