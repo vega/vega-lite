@@ -147,6 +147,50 @@ describe('filter', () => {
       );
     });
 
+    it.each(['utcmonth', {unit: 'month', utc: true}] as const)(
+      'compares both sides of a UTC month predicate in UTC (%j)',
+      (timeUnit) => {
+        const expr = expression(null, {field: 'date', timeUnit, equal: 2});
+        expect(expr).toBe(
+          'time(utc(2012, utcmonth(datum["date"]), 1, 0, 0, 0, 0))===time(utc(2012, 1, 1, 0, 0, 0, 0))',
+        );
+      },
+    );
+
+    it.each([{}, {utc: true}])('compares UTC year and month to a DateTime value (%j)', (timezone) => {
+      const expr = expression(null, {
+        field: 'date',
+        timeUnit: 'utcyearmonth',
+        equal: {year: 2020, month: 2, ...timezone},
+      });
+      expect(expr).toBe(
+        'time(utc(utcyear(datum["date"]), utcmonth(datum["date"]), 1, 0, 0, 0, 0))===time(utc(2020, 1, 1, 0, 0, 0, 0))',
+      );
+    });
+
+    it('respects an explicitly local DateTime bound in a UTC predicate', () => {
+      const expr = expression(null, {
+        field: 'date',
+        timeUnit: 'utcmonth',
+        equal: {month: 2, utc: false},
+      });
+      expect(expr).toBe(
+        'time(utc(2012, utcmonth(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(2012, 1, 1, 0, 0, 0, 0))',
+      );
+    });
+
+    it('uses UTC bounds for an already-binned UTC month', () => {
+      const expr = expression(null, {field: 'date', timeUnit: {unit: 'month', utc: true, binned: true}, range: [2, 3]});
+      expect(expr).toBe(
+        'inrange(time(datum["date"]), [time(utc(2012, 1, 1, 0, 0, 0, 0)), time(utc(2012, 2, 1, 0, 0, 0, 0))])',
+      );
+    });
+
+    it('keeps the day of week when applying UTC to a weekday predicate', () => {
+      const expr = expression(null, {field: 'date', timeUnit: 'utcday', equal: 'Monday'});
+      expect(expr).toBe('time(utc(2012, 0, utcday(datum["date"])+1, 0, 0, 0, 0))===time(utc(2012, 0, 2, 0, 0, 0, 0))');
+    });
+
     it('should return a correct expression for an EqualFilter with datetime object with flat value', () => {
       const expr = expression(null, {
         timeUnit: 'month',

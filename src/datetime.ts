@@ -228,7 +228,7 @@ function dateTimeParts(d: DateTime | DateTimeExpr, normalize: boolean) {
   const parts: (string | number)[] = [];
 
   if (normalize && d.day !== undefined) {
-    if (keys(d).length > 1) {
+    if (keys(d).some((key) => key !== 'day' && key !== 'utc')) {
       log.warn(log.message.droppedDay(d));
       d = duplicate(d);
       delete d.day;

@@ -70,9 +70,9 @@ describe('timeUnit', () => {
     });
 
     it('should return correct field expression with utc for milliseconds', () => {
-      expect(fieldExpr('utcquarter', 'x')).toBe('datetime(2012, (utcquarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)');
+      expect(fieldExpr('utcquarter', 'x')).toBe('utc(2012, (utcquarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)');
 
-      expect(fieldExpr('utcmilliseconds', 'x')).toBe('datetime(2012, 0, 1, 0, 0, 0, utcmilliseconds(datum["x"]))');
+      expect(fieldExpr('utcmilliseconds', 'x')).toBe('utc(2012, 0, 1, 0, 0, 0, utcmilliseconds(datum["x"]))');
     });
   });
 

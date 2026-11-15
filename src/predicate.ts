@@ -210,11 +210,11 @@ export function isFieldPredicate(
   );
 }
 
-function predicateValueExpr(v: number | string | boolean | DateTime | ExprRef | SignalRef, timeUnit: TimeUnit) {
-  return valueExpr(v, {timeUnit, wrapTime: true});
+function predicateValueExpr(v: number | string | boolean | DateTime | ExprRef | SignalRef, timeUnit: TimeUnitParams) {
+  return valueExpr(v, {timeUnit, wrapTime: true, utc: timeUnit?.utc});
 }
 
-function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], timeUnit: TimeUnit) {
+function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], timeUnit: TimeUnitParams) {
   return vals.map((v) => predicateValueExpr(v, timeUnit));
 }
 
@@ -225,32 +225,31 @@ export function fieldFilterExpression(
   expr: 'datum' | 'datum.datum' = 'datum',
 ) {
   const {field} = predicate;
-  const normalizedTimeUnit = normalizeTimeUnit(predicate.timeUnit);
-  const {unit, binned} = normalizedTimeUnit || {};
+  const timeUnit = normalizeTimeUnit(predicate.timeUnit);
+  const {unit, binned} = timeUnit || {};
   const rawFieldExpr = vgField(predicate, {expr});
   const fieldExpr = unit
     ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
       // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
-      // TODO: support utc
-      `time(${!binned ? timeUnitFieldExpr(unit, field, {expr}) : rawFieldExpr})`
+      `time(${!binned ? timeUnitFieldExpr(timeUnit, field, {expr}) : rawFieldExpr})`
     : rawFieldExpr;
 
   if (isFieldEqualPredicate(predicate)) {
-    return `${fieldExpr}===${predicateValueExpr(predicate.equal, unit)}`;
+    return `${fieldExpr}===${predicateValueExpr(predicate.equal, timeUnit)}`;
   } else if (isFieldLTPredicate(predicate)) {
     const upper = predicate.lt;
-    return `${fieldExpr}<${predicateValueExpr(upper, unit)}`;
+    return `${fieldExpr}<${predicateValueExpr(upper, timeUnit)}`;
   } else if (isFieldGTPredicate(predicate)) {
     const lower = predicate.gt;
-    return `${fieldExpr}>${predicateValueExpr(lower, unit)}`;
+    return `${fieldExpr}>${predicateValueExpr(lower, timeUnit)}`;
   } else if (isFieldLTEPredicate(predicate)) {
     const upper = predicate.lte;
-    return `${fieldExpr}<=${predicateValueExpr(upper, unit)}`;
+    return `${fieldExpr}<=${predicateValueExpr(upper, timeUnit)}`;
   } else if (isFieldGTEPredicate(predicate)) {
     const lower = predicate.gte;
-    return `${fieldExpr}>=${predicateValueExpr(lower, unit)}`;
+    return `${fieldExpr}>=${predicateValueExpr(lower, timeUnit)}`;
   } else if (isFieldOneOfPredicate(predicate)) {
-    return `indexof([${predicateValuesExpr(predicate.oneOf, unit).join(',')}], ${fieldExpr}) !== -1`;
+    return `indexof([${predicateValuesExpr(predicate.oneOf, timeUnit).join(',')}], ${fieldExpr}) !== -1`;
   } else if (isFieldValidPredicate(predicate)) {
     return fieldValidPredicate(fieldExpr, predicate.valid);
   } else if (isFieldRangePredicate(predicate)) {
@@ -259,15 +258,15 @@ export function fieldFilterExpression(
     const upper = isSignalRef(range) ? {signal: `${range.signal}[1]`} : range[1];
 
     if (lower !== null && upper !== null && useInRange) {
-      return `inrange(${fieldExpr}, [${predicateValueExpr(lower, unit)}, ${predicateValueExpr(upper, unit)}])`;
+      return `inrange(${fieldExpr}, [${predicateValueExpr(lower, timeUnit)}, ${predicateValueExpr(upper, timeUnit)}])`;
     }
 
     const exprs = [];
     if (lower !== null) {
-      exprs.push(`${fieldExpr} >= ${predicateValueExpr(lower, unit)}`);
+      exprs.push(`${fieldExpr} >= ${predicateValueExpr(lower, timeUnit)}`);
     }
     if (upper !== null) {
-      exprs.push(`${fieldExpr} <= ${predicateValueExpr(upper, unit)}`);
+      exprs.push(`${fieldExpr} <= ${predicateValueExpr(upper, timeUnit)}`);
     }
 
     return exprs.length > 0 ? exprs.join(' && ') : 'true';
