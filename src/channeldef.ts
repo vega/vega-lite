@@ -1397,11 +1397,13 @@ export function valueExpr(
     type,
     wrapTime,
     undefinedIfExprNotRequired,
+    utc,
   }: {
     timeUnit: TimeUnit | TimeUnitParams;
     type?: Type;
     wrapTime?: boolean;
     undefinedIfExprNotRequired?: boolean;
+    utc?: boolean;
   },
 ): string {
   const unit = timeUnit && normalizeTimeUnit(timeUnit)?.unit;
@@ -1414,7 +1416,7 @@ export function valueExpr(
     expr = v.signal;
   } else if (isDateTime(v)) {
     isTime = true;
-    expr = dateTimeToExpr(v);
+    expr = dateTimeToExpr(utc && v.utc === undefined ? {...v, utc} : v);
   } else if (isString(v) || isNumber(v)) {
     if (isTime) {
       expr = `datetime(${stringify(v)})`;
@@ -1422,7 +1424,7 @@ export function valueExpr(
       if (isLocalSingleTimeUnit(unit)) {
         // for single timeUnit, we will use dateTimeToExpr to convert number/string to match the timeUnit
         if ((isNumber(v) && v < 10000) || (isString(v) && isNaN(Date.parse(v)))) {
-          expr = dateTimeToExpr({[unit]: v});
+          expr = dateTimeToExpr({[unit]: v, utc});
         }
       }
     }

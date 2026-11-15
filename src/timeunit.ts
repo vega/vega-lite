@@ -307,29 +307,30 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
  * Returns Vega expression for a given timeUnit and fieldRef
  */
 export function fieldExpr(
-  fullTimeUnit: TimeUnit,
+  fullTimeUnit: TimeUnit | TimeUnitParams,
   field: string,
   {end = false, expr = 'datum'}: {end?: boolean; expr?: 'datum' | 'datum.datum'} = {},
 ): string {
   const fieldRef = accessPathWithDatum(field, expr);
 
-  const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
+  const {unit, utc} = normalizeTimeUnit(fullTimeUnit);
+  const prefix = utc ? 'utc' : '';
 
   function func(timeUnit: TimeUnit) {
     if (timeUnit === 'quarter') {
       // quarter starting at 0 (0,3,6,9).
-      return `(${utc}quarter(${fieldRef})-1)`;
+      return `(${prefix}quarter(${fieldRef})-1)`;
     } else {
-      return `${utc}${timeUnit}(${fieldRef})`;
+      return `${prefix}${timeUnit}(${fieldRef})`;
     }
   }
 
   let lastTimeUnit: TimeUnit;
 
-  const dateExpr: DateTimeExpr = {};
+  const dateExpr: DateTimeExpr = {utc};
 
   for (const part of TIMEUNIT_PARTS) {
-    if (containsTimeUnit(fullTimeUnit, part)) {
+    if (containsTimeUnit(unit, part)) {
       (dateExpr as any)[part] = func(part);
       lastTimeUnit = part;
     }
