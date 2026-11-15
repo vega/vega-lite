@@ -124,9 +124,11 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel, cornerRadiusEn
       x2: {signal: stackFieldGroup('max', 'datum')},
       clip: {value: true},
     };
-    // Inner group should revert the x translation, and pass height through
+    // Inner group should revert the x translation, pass height through, and span the view width (so that clipped marks keep a non-empty clip rect)
     innerGroupUpdate = {
       x: {field: {group: 'x'}, mult: -1},
+      // Extend the inner group to the whole view along the stack direction so that its (clipped) marks keep a non-empty clip rect
+      width: {field: {group: 'width', level: 2}},
       height: {field: {group: 'height'}},
     };
     // The marks should use the same height as group, without y/yc/y2 properties (because it's already done by group)
@@ -145,6 +147,8 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel, cornerRadiusEn
     innerGroupUpdate = {
       y: {field: {group: 'y'}, mult: -1},
       width: {field: {group: 'width'}},
+      // Extend the inner group to the whole view along the stack direction so that its (clipped) marks keep a non-empty clip rect
+      height: {field: {group: 'height', level: 2}},
     };
     mark.encode.update = {
       ...omit(mark.encode.update, ['x', 'xc', 'x2']),

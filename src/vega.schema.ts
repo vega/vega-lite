@@ -99,6 +99,7 @@ export interface VgValueRef {
         datum?: string;
         group?: string;
         parent?: string;
+        level?: number;
       };
   signal?: string;
   scale?: string; // TODO: object

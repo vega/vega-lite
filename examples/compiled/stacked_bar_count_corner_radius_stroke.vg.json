@@ -84,7 +84,8 @@
           "encode": {
             "update": {
               "y": {"field": {"group": "y"}, "mult": -1},
-              "width": {"field": {"group": "width"}}
+              "width": {"field": {"group": "width"}},
+              "height": {"field": {"group": "height", "level": 2}}
             }
           },
           "marks": [
