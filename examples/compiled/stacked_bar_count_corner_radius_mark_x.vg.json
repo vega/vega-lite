@@ -81,6 +81,7 @@
           "encode": {
             "update": {
               "x": {"field": {"group": "x"}, "mult": -1},
+              "width": {"field": {"group": "width", "level": 2}},
               "height": {"field": {"group": "height"}}
             }
           },

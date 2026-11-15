@@ -1,3 +1,5 @@
+import {parse, View} from 'vega';
+import {compile} from '../../../src/compile/compile.js';
 import {getSort, parseMarkGroups} from '../../../src/compile/mark/mark.js';
 import {UnitModel} from '../../../src/compile/unit.js';
 import {GEOSHAPE} from '../../../src/mark.js';
@@ -683,5 +685,45 @@ describe('Mark', () => {
       const markGroup = parseMarkGroups(model);
       expect(markGroup[0].clip).toBeUndefined();
     });
+  });
+
+  describe('rounded bars with clip', () => {
+    it.each([
+      {name: 'vertical', x: {field: 'a', type: 'nominal'}, y: {field: 'b', type: 'quantitative'}},
+      {name: 'horizontal', y: {field: 'a', type: 'nominal'}, x: {field: 'b', type: 'quantitative'}},
+    ] as const)(
+      'keeps a non-empty clip region for $name bars when scales are bound to an interval selection',
+      async ({x, y}) => {
+        const {spec} = compile({
+          data: {
+            values: [
+              {a: 'A', b: 28},
+              {a: 'B', b: 55},
+            ],
+          },
+          mark: {type: 'bar', cornerRadius: 1},
+          encoding: {x, y},
+          params: [{name: 'pan_zoom', bind: 'scales', select: 'interval'}],
+        });
+        const view = new View(parse(spec), {renderer: 'none'});
+        await view.runAsync();
+        // Vega clips a mark with clip: true to the width and height of its parent group.
+        const clipSizes: {width: number; height: number}[] = [];
+        const visit = (item: any) => {
+          if (item.mark?.marktype === 'rect' && item.mark.role === 'mark' && item.mark.clip) {
+            clipSizes.push({width: item.mark.group?.width ?? 0, height: item.mark.group?.height ?? 0});
+          }
+          item.items?.forEach(visit);
+        };
+        visit((view.scenegraph() as unknown as {root: unknown}).root);
+        view.finalize();
+
+        expect(clipSizes).toHaveLength(2);
+        for (const size of clipSizes) {
+          expect(size.width).toBeGreaterThan(0);
+          expect(size.height).toBeGreaterThan(0);
+        }
+      },
+    );
   });
 });
