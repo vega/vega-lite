@@ -1,3 +1,6 @@
+import {parse} from 'vega';
+import {compile} from '../../src/compile/compile.js';
+import {TopLevelSpec} from '../../src/index.js';
 import {parseLayerModel} from '../util.js';
 
 describe('Layer', () => {
@@ -109,6 +112,46 @@ describe('Layer', () => {
 
       expect(model.component.axes['x']).toHaveLength(2);
       expect(model.component.axes['x'][1].implicit.orient).toBe('top');
+    });
+  });
+
+  describe('assembleSignals', () => {
+    // A parameter declared on a layer is pushed into each of its children, so
+    // every child assembles the same selection signals for it.
+    const layeredSelection = {
+      data: {url: 'data/cars.json'},
+      params: [{name: 'sel', select: {type: 'point', fields: ['Origin']}}],
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+      },
+      layer: [{mark: 'point'}, {mark: {type: 'text', dy: -10}, encoding: {text: {field: 'Origin'}}}],
+    } as TopLevelSpec;
+
+    it('should not emit duplicate signals for a layer-level selection', () => {
+      const names = compile(layeredSelection).spec.signals.map((s) => s.name);
+      expect(names).toHaveLength(new Set(names).size);
+    });
+
+    it('should produce a parseable spec for a layer-level selection', () => {
+      expect(() => parse(compile(layeredSelection).spec)).not.toThrow();
+    });
+
+    it('should keep signals that only one child defines', () => {
+      const names = compile({
+        data: {url: 'data/cars.json'},
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        },
+        layer: [
+          {mark: 'point', params: [{name: 'first', select: 'point'}]},
+          {mark: 'point', params: [{name: 'second', select: 'interval'}]},
+        ],
+      } as TopLevelSpec).spec.signals.map((s) => s.name);
+
+      expect(names).toEqual(expect.arrayContaining(['first_tuple', 'second_x']));
+      expect(names).toHaveLength(new Set(names).size);
     });
   });
 });
