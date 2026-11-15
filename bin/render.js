@@ -9,7 +9,7 @@ import {readFileSync} from 'fs';
 import {exit} from 'process';
 
 function load(file) {
-  return readFileSync(file, 'utf8');
+  return JSON.parse(readFileSync(file, 'utf8'));
 }
 
 const Levels = {
@@ -45,10 +45,13 @@ export function render(type, callback, opt) {
   }
 
   // locale options, load custom number/time formats if specified
-  const locale = {
-    number: arg.format ? load(arg.format) : null,
-    time: arg.timeFormat ? load(arg.timeFormat) : null,
-  };
+  const locale =
+    arg.format || arg.timeFormat
+      ? {
+          ...(arg.format ? {number: load(arg.format)} : {}),
+          ...(arg.timeFormat ? {time: load(arg.timeFormat)} : {}),
+        }
+      : undefined;
 
   // instantiate view and invoke headless render method
   function r(vlSpec) {
