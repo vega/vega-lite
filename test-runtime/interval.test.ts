@@ -188,6 +188,36 @@ describe('interval selections at runtime in unit views', () => {
     }
   });
 
+  it('should not re-emit or drift continuous intervals on resize', async () => {
+    const view = await embed(getSpec('unit', 0, {type, encodings: ['x']}));
+    const emissions: unknown[] = [];
+    view.addSignalListener('sel', (_name, value) => {
+      emissions.push(structuredClone(value));
+    });
+
+    await brush(view, 'drag', 0);
+    expect(emissions.length).toBeGreaterThan(0);
+    const initialBounds = structuredClone(view.signal('sel'));
+    const initialPixels = view.signal('sel_x');
+
+    emissions.length = 0;
+    for (const width of [251, 337, 251, 419, 200]) {
+      await view.width(width).runAsync();
+    }
+
+    expect(emissions).toEqual([]);
+    expect(view.signal('sel')).toEqual(initialBounds);
+    expect(view.signal('sel_x')).not.toEqual(initialPixels);
+
+    await brush(view, 'drag', 1);
+    expect(emissions.length).toBeGreaterThan(0);
+
+    emissions.length = 0;
+    await brush(view, 'drag_clear', 1);
+    expect(emissions.length).toBeGreaterThan(0);
+    expect(view.signal('sel')).toEqual({});
+  });
+
   describe('geo-intervals', () => {
     it('should add IDs to the store', async () => {
       const view = await embed(getGeoSpec());
