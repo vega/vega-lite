@@ -87,7 +87,7 @@
       "on": [
         {
           "events": {"signal": "paintbrush_x"},
-          "update": "paintbrush_x[0] === paintbrush_x[1] ? null : invert(\"x\", paintbrush_x)"
+          "update": "paintbrush_x[0] === paintbrush_x[1] ? null : isArray(paintbrush_Horsepower) && paintbrush_x[0] === scale(\"x\", paintbrush_Horsepower[0]) && paintbrush_x[1] === scale(\"x\", paintbrush_Horsepower[1]) ? paintbrush_Horsepower : invert(\"x\", paintbrush_x)"
         }
       ]
     },
@@ -146,7 +146,7 @@
       "on": [
         {
           "events": {"signal": "paintbrush_y"},
-          "update": "paintbrush_y[0] === paintbrush_y[1] ? null : invert(\"y\", paintbrush_y)"
+          "update": "paintbrush_y[0] === paintbrush_y[1] ? null : isArray(paintbrush_Miles_per_Gallon) && paintbrush_y[0] === scale(\"y\", paintbrush_Miles_per_Gallon[0]) && paintbrush_y[1] === scale(\"y\", paintbrush_Miles_per_Gallon[1]) ? paintbrush_Miles_per_Gallon : invert(\"y\", paintbrush_y)"
         }
       ]
     },

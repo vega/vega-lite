@@ -251,7 +251,7 @@
           "on": [
             {
               "events": {"signal": "brush_x"},
-              "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_1_x\", brush_x)"
+              "update": "brush_x[0] === brush_x[1] ? null : isArray(brush_time) && brush_x[0] === scale(\"concat_1_x\", brush_time[0]) && brush_x[1] === scale(\"concat_1_x\", brush_time[1]) ? brush_time : invert(\"concat_1_x\", brush_x)"
             }
           ]
         },

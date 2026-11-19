@@ -206,7 +206,7 @@
           "on": [
             {
               "events": {"signal": "brush_x"},
-              "update": "brush_x[0] === brush_x[1] ? null : invert(\"child__column_distance_x\", brush_x)"
+              "update": "brush_x[0] === brush_x[1] ? null : isArray(brush_distance) && brush_x[0] === scale(\"child__column_distance_x\", brush_distance[0]) && brush_x[1] === scale(\"child__column_distance_x\", brush_distance[1]) ? brush_distance : invert(\"child__column_distance_x\", brush_x)"
             }
           ]
         },
@@ -515,7 +515,7 @@
           "on": [
             {
               "events": {"signal": "brush_x"},
-              "update": "brush_x[0] === brush_x[1] ? null : invert(\"child__column_delay_x\", brush_x)"
+              "update": "brush_x[0] === brush_x[1] ? null : isArray(brush_delay) && brush_x[0] === scale(\"child__column_delay_x\", brush_delay[0]) && brush_x[1] === scale(\"child__column_delay_x\", brush_delay[1]) ? brush_delay : invert(\"child__column_delay_x\", brush_x)"
             }
           ]
         },
@@ -824,7 +824,7 @@
           "on": [
             {
               "events": {"signal": "brush_x"},
-              "update": "brush_x[0] === brush_x[1] ? null : invert(\"child__column_time_x\", brush_x)"
+              "update": "brush_x[0] === brush_x[1] ? null : isArray(brush_time) && brush_x[0] === scale(\"child__column_time_x\", brush_time[0]) && brush_x[1] === scale(\"child__column_time_x\", brush_time[1]) ? brush_time : invert(\"child__column_time_x\", brush_x)"
             }
           ]
         },

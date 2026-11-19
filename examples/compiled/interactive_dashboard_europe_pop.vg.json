@@ -1103,7 +1103,7 @@
           "on": [
             {
               "events": {"signal": "brush_x"},
-              "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_2_x\", brush_x)"
+              "update": "brush_x[0] === brush_x[1] ? null : isArray(brush_Population_ages_65_and_above_of_total) && brush_x[0] === scale(\"concat_2_x\", brush_Population_ages_65_and_above_of_total[0]) && brush_x[1] === scale(\"concat_2_x\", brush_Population_ages_65_and_above_of_total[1]) ? brush_Population_ages_65_and_above_of_total : invert(\"concat_2_x\", brush_x)"
             }
           ]
         },
@@ -1162,7 +1162,7 @@
           "on": [
             {
               "events": {"signal": "brush_y"},
-              "update": "brush_y[0] === brush_y[1] ? null : invert(\"concat_2_y\", brush_y)"
+              "update": "brush_y[0] === brush_y[1] ? null : isArray(brush_Population_ages_15_64_of_total) && brush_y[0] === scale(\"concat_2_y\", brush_Population_ages_15_64_of_total[0]) && brush_y[1] === scale(\"concat_2_y\", brush_Population_ages_15_64_of_total[1]) ? brush_Population_ages_15_64_of_total : invert(\"concat_2_y\", brush_y)"
             }
           ]
         },

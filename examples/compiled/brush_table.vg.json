@@ -149,7 +149,7 @@
           "on": [
             {
               "events": {"signal": "brush_x"},
-              "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_0_x\", brush_x)"
+              "update": "brush_x[0] === brush_x[1] ? null : isArray(brush_Horsepower) && brush_x[0] === scale(\"concat_0_x\", brush_Horsepower[0]) && brush_x[1] === scale(\"concat_0_x\", brush_Horsepower[1]) ? brush_Horsepower : invert(\"concat_0_x\", brush_x)"
             }
           ]
         },
@@ -208,7 +208,7 @@
           "on": [
             {
               "events": {"signal": "brush_y"},
-              "update": "brush_y[0] === brush_y[1] ? null : invert(\"concat_0_y\", brush_y)"
+              "update": "brush_y[0] === brush_y[1] ? null : isArray(brush_Miles_per_Gallon) && brush_y[0] === scale(\"concat_0_y\", brush_Miles_per_Gallon[0]) && brush_y[1] === scale(\"concat_0_y\", brush_Miles_per_Gallon[1]) ? brush_Miles_per_Gallon : invert(\"concat_0_y\", brush_y)"
             }
           ]
         },

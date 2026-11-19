@@ -152,7 +152,7 @@
           "on": [
             {
               "events": {"signal": "brush_x"},
-              "update": "brush_x[0] === brush_x[1] ? null : invert(\"concat_0_x\", brush_x)"
+              "update": "brush_x[0] === brush_x[1] ? null : isArray(brush_monthdate_date) && brush_x[0] === scale(\"concat_0_x\", brush_monthdate_date[0]) && brush_x[1] === scale(\"concat_0_x\", brush_monthdate_date[1]) ? brush_monthdate_date : invert(\"concat_0_x\", brush_x)"
             }
           ]
         },
