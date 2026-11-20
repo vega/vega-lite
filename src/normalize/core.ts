@@ -4,6 +4,7 @@ import {COLUMN, FACET, ROW} from '../channel.js';
 import {Field, FieldName, hasConditionalFieldOrDatumDef, isFieldOrDatumDef, isValueDef} from '../channeldef.js';
 import {SharedCompositeEncoding} from '../compositemark/index.js';
 import {boxPlotNormalizer} from '../compositemark/boxplot.js';
+import {densityNormalizer} from '../compositemark/density.js';
 import {errorBandNormalizer} from '../compositemark/errorband.js';
 import {errorBarNormalizer} from '../compositemark/errorbar.js';
 import {channelHasField, Encoding} from '../encoding.js';
@@ -38,6 +39,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     boxPlotNormalizer,
     errorBarNormalizer,
     errorBandNormalizer,
+    densityNormalizer,
     new PathOverlayNormalizer(),
     new RuleForRangedLineNormalizer(),
   ];
