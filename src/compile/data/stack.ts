@@ -142,7 +142,11 @@ export class StackNode extends DataFlowNode {
     if (isArray(orderDef) || isFieldDef(orderDef)) {
       sort = sortParams(orderDef);
     } else {
-      const sortOrder = isOrderOnlyDef(orderDef) ? orderDef.sort : fieldChannel === 'y' ? 'descending' : 'ascending';
+      const sortOrder = isOrderOnlyDef(orderDef)
+        ? orderDef.sort
+        : fieldChannel === 'y' || fieldChannel === 'yOffset'
+          ? 'descending'
+          : 'ascending';
       // default = descending by stackFields
       // FIXME is the default here correct for binned fields?
       sort = stackby.reduce(

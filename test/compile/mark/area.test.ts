@@ -126,14 +126,42 @@ describe('Mark: Area', () => {
     });
     const props = area.encodeEntry(model);
 
-    it('should use y as one edge and baseline at offset zero', () => {
-      expect(props.y).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross'}});
-      expect(props.y2).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', value: 0}});
+    it('should use y as one edge and default stack the offset', () => {
+      expect(props.y).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross_end'}});
+      expect(props.y2).toEqual({scale: 'y', field: 'Origin', offset: {scale: 'yOffset', field: 'US_Gross_start'}});
     });
 
     it('should not collapse to line geometry', () => {
       expect(props.x2).toBeUndefined();
       expect(props.y2).toBeDefined();
+    });
+  });
+
+  describe('vertical area with stacked yOffset', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'IMDB_Rating', type: 'quantitative'},
+        y: {field: 'Origin', type: 'nominal'},
+        yOffset: {field: 'US_Gross', type: 'quantitative'},
+        color: {field: 'Genre', type: 'nominal'},
+      },
+      data: {url: 'data/movies.json'},
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use stack end and start fields as nested offsets', () => {
+      expect(props.orient).toEqual({value: 'vertical'});
+      expect(props.y).toEqual({
+        scale: 'y',
+        field: 'Origin',
+        offset: {scale: 'yOffset', field: 'US_Gross_end'},
+      });
+      expect(props.y2).toEqual({
+        scale: 'y',
+        field: 'Origin',
+        offset: {scale: 'yOffset', field: 'US_Gross_start'},
+      });
     });
   });
 
@@ -274,6 +302,34 @@ describe('Mark: Area', () => {
 
     it('should have scale for color', () => {
       expect(props.fill).toEqual({scale: COLOR, field: 'Origin'});
+    });
+  });
+
+  describe('horizontal area with stacked xOffset', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'area',
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        xOffset: {field: 'US_Gross', type: 'quantitative'},
+        y: {field: 'IMDB_Rating', type: 'quantitative'},
+        color: {field: 'Genre', type: 'nominal'},
+      },
+      data: {url: 'data/movies.json'},
+    });
+    const props = area.encodeEntry(model);
+
+    it('should use stack end and start fields as nested offsets', () => {
+      expect(props.orient).toEqual({value: 'horizontal'});
+      expect(props.x).toEqual({
+        scale: 'x',
+        field: 'Origin',
+        offset: {scale: 'xOffset', field: 'US_Gross_end'},
+      });
+      expect(props.x2).toEqual({
+        scale: 'x',
+        field: 'Origin',
+        offset: {scale: 'xOffset', field: 'US_Gross_start'},
+      });
     });
   });
 

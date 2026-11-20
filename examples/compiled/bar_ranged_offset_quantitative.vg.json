@@ -23,6 +23,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["quarter", "team"],
+          "field": "score",
+          "sort": {"field": [], "order": []},
+          "as": ["score_start", "score_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"score\"]) && isFinite(+datum[\"score\"])"
         }
@@ -60,12 +68,12 @@
           "y": {
             "scale": "y",
             "field": "team",
-            "offset": {"scale": "yOffset", "field": "score"}
+            "offset": {"scale": "yOffset", "field": "score_end"}
           },
           "y2": {
             "scale": "y",
             "field": "team",
-            "offset": {"scale": "yOffset", "value": 0}
+            "offset": {"scale": "yOffset", "field": "score_start"}
           }
         }
       }
@@ -91,7 +99,7 @@
     {
       "name": "yOffset",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "score"},
+      "domain": {"data": "data_0", "fields": ["score_start", "score_end"]},
       "range": [{"signal": "bandwidth('y')"}, 0],
       "zero": true
     },
