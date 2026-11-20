@@ -1,0 +1,46 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Annual precipitation on a global grid, beside the mean at each latitude.",
+  "data": {"url": "data/annual-precip.json"},
+  "transform": [
+    {"calculate": "datum.translate[0]", "as": "west"},
+    {"calculate": "datum.translate[0] + datum.width / datum.scale[0]", "as": "east"},
+    {"calculate": "datum.translate[1] + datum.height / datum.scale[1]", "as": "south"},
+    {"calculate": "datum.translate[1]", "as": "north"}
+  ],
+  "spacing": 8,
+  "hconcat": [
+    {
+      "width": 340,
+      "height": 170,
+      "mark": "array",
+      "encoding": {
+        "x": {"field": "west", "type": "quantitative", "title": "longitude"},
+        "x2": {"field": "east"},
+        "y": {"field": "south", "type": "quantitative", "title": "latitude"},
+        "y2": {"field": "north"},
+        "color": {
+          "field": "values",
+          "type": "quantitative",
+          "scale": {"scheme": "viridis", "type": "sqrt", "domain": [0, 4000], "clamp": true},
+          "title": "mm"
+        }
+      }
+    },
+    {
+      "width": 90,
+      "height": 170,
+      "transform": [
+        {"flatten": ["values"], "as": ["cell"]},
+        {"window": [{"op": "row_number", "as": "k"}]},
+        {"calculate": "datum.translate[1] + (floor((datum.k - 1) / datum.width) + 0.5) / datum.scale[1]", "as": "lat"},
+        {"aggregate": [{"op": "mean", "field": "cell", "as": "zonal"}], "groupby": ["lat"]}
+      ],
+      "mark": {"type": "line", "orient": "horizontal"},
+      "encoding": {
+        "y": {"field": "lat", "type": "quantitative", "scale": {"domain": [-81, 87]}, "axis": null},
+        "x": {"field": "zonal", "type": "quantitative", "title": "zonal mean", "axis": {"tickCount": 3}}
+      }
+    }
+  ]
+}
