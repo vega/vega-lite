@@ -239,8 +239,9 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
    * - For bar, rule and tick, this determines whether the size of the bar and tick
    * should be applied to x or y dimension.
    * - For area, this property determines the orient property of the Vega output.
-   * - For line and trail marks, this property determines the sort order of the points in the line
-   * if `config.sortLineBy` is not specified.
+   * - For line and trail marks, this property determines the default sort order of the points.
+   * For non-stacked charts, use the [`order`](https://vega.github.io/vega-lite/docs/encoding.html#order) encoding to specify a different sort order.
+   * If no `order` encoding is specified, set `order` to `null` or `false` in the mark definition or mark config to use the original data order.
    *
    * __Default value:__ Inferred from the position encodings. For area and line charts, when both `x` and `y` encode unbinned quantitative fields and no other encoding determines the orientation, the default is `"vertical"`. Set `orient` to `"horizontal"` to override this default.
    */
