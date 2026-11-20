@@ -64,6 +64,36 @@ describe('Mark: Bar', () => {
     expect(props.height).toBeUndefined();
   });
 
+  it('should draw yOffset bars from offset zero when y is omitted', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        x: {field: 'category', type: 'nominal'},
+        yOffset: {field: 'value', type: 'quantitative'},
+      },
+    });
+    const props = bar.encodeEntry(model);
+
+    expect(props.y).toEqual({value: 0, offset: {scale: 'yOffset', field: 'value'}});
+    expect(props.y2).toEqual({value: 0, offset: {scale: 'yOffset', value: 0}});
+    expect(props.x).toEqual({scale: 'x', field: 'category'});
+  });
+
+  it('should draw xOffset bars from offset zero when x is omitted', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        y: {field: 'category', type: 'nominal'},
+        xOffset: {field: 'value', type: 'quantitative'},
+      },
+    });
+    const props = bar.encodeEntry(model);
+
+    expect(props.x).toEqual({value: 0, offset: {scale: 'xOffset', field: 'value'}});
+    expect(props.x2).toEqual({value: 0, offset: {scale: 'xOffset', value: 0}});
+    expect(props.y).toEqual({scale: 'y', field: 'category'});
+  });
+
   it('should draw horizontal bar, with y from zero to field value and bar with quantitative x, x2, and y', () => {
     const x: PositionFieldDef<string> = {field: 'q_start', type: 'quantitative'};
     const x2: SecondaryFieldDef<string> = {field: 'q_end'};
