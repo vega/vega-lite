@@ -1,13 +1,23 @@
-import {Transforms as VgTransform} from 'vega';
+import {ExprRef as VgExprRef, Transforms as VgTransform} from 'vega';
 import {isArray, isString} from 'vega-util';
-import {FieldDef, FieldName, getFieldDef, isFieldDef, isOrderOnlyDef, vgField} from '../../channeldef.js';
+import {
+  FieldDef,
+  FieldName,
+  getFieldDef,
+  isFieldDef,
+  isOrderDatumDef,
+  isOrderOnlyDef,
+  vgField,
+} from '../../channeldef.js';
 import {SortFields, SortOrder} from '../../sort.js';
 import {StackOffset} from '../../stack.js';
 import {StackTransform} from '../../transform.js';
 import {duplicate, getFirstDefined, hash} from '../../util.js';
 import {sortParams} from '../common.js';
+import {orderDatumSort} from '../order.js';
 import {UnitModel} from '../unit.js';
 import {DataFlowNode} from './dataflow.js';
+import {getDependentFields} from './expressions.js';
 import {isValidFiniteNumberExpr} from './filterinvalid.js';
 
 function getStackByFields(model: UnitModel): string[] {
@@ -45,7 +55,10 @@ export interface StackComponent {
    * Field that determines order of levels in the stacked charts.
    * Used in both but optional in transform.
    */
-  sort: SortFields;
+  sort: {
+    field: (FieldName | VgExprRef)[];
+    order?: SortOrder[];
+  };
 
   /** Mode for stacking marks.
    */
@@ -118,7 +131,7 @@ export class StackNode extends DataFlowNode {
     });
   }
 
-  public static makeFromEncoding(parent: DataFlowNode, model: UnitModel) {
+  public static makeFromEncoding(parent: DataFlowNode, model: UnitModel, raw?: DataFlowNode) {
     const stackProperties = model.stack;
     const {encoding} = model;
 
@@ -138,8 +151,10 @@ export class StackNode extends DataFlowNode {
     const stackby = getStackByFields(model);
     const orderDef = model.encoding.order;
 
-    let sort: SortFields;
-    if (isArray(orderDef) || isFieldDef(orderDef)) {
+    let sort: StackComponent['sort'];
+    if (isOrderDatumDef(orderDef)) {
+      sort = orderDatumSort(model, raw);
+    } else if (isArray(orderDef) || isFieldDef(orderDef)) {
       sort = sortParams(orderDef);
     } else {
       const sortOrder = isOrderOnlyDef(orderDef) ? orderDef.sort : fieldChannel === 'y' ? 'descending' : 'ascending';
@@ -187,7 +202,16 @@ export class StackNode extends DataFlowNode {
 
     this.getGroupbyFields().forEach(out.add, out);
     this._stack.facetby.forEach(out.add, out);
-    this._stack.sort.field.forEach(out.add, out);
+    for (const field of this._stack.sort.field) {
+      if (isString(field)) {
+        out.add(field);
+      } else {
+        getDependentFields(field.expr).forEach(out.add, out);
+      }
+    }
+    if (this._stack.impute) {
+      this._stack.stackby.forEach(out.add, out);
+    }
 
     return out;
   }

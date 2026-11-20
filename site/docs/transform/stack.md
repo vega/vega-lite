@@ -109,6 +109,10 @@ If you want to define custom sort order, you can derive a new field using the [`
 
 <div class="vl-example" data-name="stacked_bar_h_order_custom"></div>
 
+To change stack order interactively, use a conditional numeric `datum` in the order channel. For example, `"order": {"condition": {"param": "site_pick", "datum": 0}, "datum": 1}` moves selected positive segments to the baseline. For a globally resolved point selection projected over one enumerated field, selected segments with equal keys follow click order. Unlike an order `value`, which controls drawing priority, an order `datum` changes the stack layout. The condition is evaluated after aggregation and imputation.
+
+<div class="vl-example" data-name="interactive_stacked_bar_order"></div>
+
 Note: we plan to have [a better syntax for customized sort order](https://github.com/vega/vega-lite/issues/2915) in the future.
 
 ### Layering Lines on top of Stacked Area Chart

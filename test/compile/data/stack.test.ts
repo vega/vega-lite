@@ -362,6 +362,20 @@ describe('compile/data/stack', () => {
   });
 
   describe('StackNode.dependentFields', () => {
+    it('retains imputation grouping fields that are absent from the datum sort expression', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'area',
+        encoding: {
+          x: {field: 'b', type: 'quantitative'},
+          y: {aggregate: 'sum', field: 'a', type: 'quantitative'},
+          color: {field: 'c', type: 'nominal'},
+          order: {datum: 0},
+        },
+      });
+      const stack = StackNode.makeFromEncoding(null, model);
+      expect(stack.dependentFields()).toEqual(new Set(['sum_a', 'b', 'c']));
+    });
+
     it('should give dependentFields correctly', () => {
       const transform: Transform = {
         stack: 'foo',

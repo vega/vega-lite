@@ -395,7 +395,7 @@ export function parseData(model: Model): DataComponent {
       }
     }
     head = ImputeNode.makeFromEncoding(head, model) ?? head;
-    head = StackNode.makeFromEncoding(head, model) ?? head;
+    head = StackNode.makeFromEncoding(head, model, raw) ?? head;
   }
 
   let preFilterInvalid: OutputNode | undefined;
