@@ -41,7 +41,7 @@ Selection parameters define _data queries_ that are driven by direct manipulatio
 
 {:#selection-on}
 
-For both selection types, the `select` object can take the following properties:
+For all selection types, the `select` object can take the following properties:
 
 {% include table.html props="type,encodings,fields,on,clear,resolve" source="PointSelectionConfig" %}
 
@@ -51,6 +51,7 @@ A [selection's type](parameter.html#select) determines which data values fall wi
 
 - For `point` selections, only values that have been directly interacted with (e.g., those that have been clicked on) are considered to be "selected."
 - For `interval` selections, values that fall within _both_ the horizontal (`x`) and vertical (`y`) extents are considered to be "selected."
+- For `segment` selections, marks or series whose geometry _crosses_ the dragged line segment are considered to be "selected."
 
 {:#project}
 
@@ -68,6 +69,7 @@ With interval selections, we can use the projection to restrict the region to ju
 
 - Selections projected over aggregated `fields`/`encodings` can only be used within the same view they are defined in.
 - Interval selections can only be projected using `encodings`.
+- Segment selections currently support cartesian `x` / `y` encodings only. For `line` and `trail` marks, Vega-Lite tests whether any path segment intersects the dragged segment. Linked-view series selection is fully supported when Vega-Lite can project a stable grouping field; a single ungrouped line falls back to view-local behavior.
 - Interval selections projected over binned or `timeUnit` fields remain continuous selections. Thus, if the visual encoding discretizes them, conditional encodings will no longer work. Instead, use a layered view as shown in the example below. The bar mark discretizes the binned `Acceleration` field. As a result, to highlight selected bars, we use a second layered view rather than a conditional color encoding within the same view.
 
 <div class="vl-example" data-name="selection_project_binned_interval"></div>
@@ -235,3 +237,29 @@ function buildZoom() {
   changeSpec('zoom', 'selection_zoom_' + type + '_' + event);
 }
 </script>
+
+{:#segment}
+
+## Segment Selection Properties
+
+In addition to all [common selection properties](#selection-props), segment selections support the following property:
+
+{% include table.html props="mark" source="SegmentSelectionConfig" %}
+
+### `mark`
+
+Every segment selection adds a rule mark to depict the dragged segment.
+
+The selection's `mark` property can include the following properties to customize the appearance of this rule mark.
+
+{% include table.html props="cursor,stroke,strokeOpacity,strokeWidth,strokeDash,strokeDashOffset" source="BrushConfig" %}
+
+For `line` and `trail` marks, a segment selection operates at the series level: if any segment of a line's path intersects the dragged segment, the entire series is selected. The example below uses a transparent interaction layer to make the drag target easier to hit and links the selected series to a summary view.
+
+<div class="vl-example" data-name="selection_segment_series_linked"></div>
+
+#### Current Limitations
+
+- Segment selections currently support `line`, `trail`, and explicit `rule` segments in cartesian `x` / `y` views.
+- Segment selections use data-space intersection rather than rendered screen-space geometry.
+- Ungrouped single-line selections fall back to a view-local synthetic key. This works well for highlighting or filtering companion layers in the same view, but stable linked-view behavior still depends on an explicit grouping field such as `detail`, `color`, or `strokeDash`.
