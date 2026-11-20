@@ -358,6 +358,40 @@ describe('compile/compile', () => {
     }
   });
 
+  it('should not impute or default-stack x for density areas with a discrete yOffset baseline', () => {
+    const {spec} = compile({
+      data: {
+        values: [
+          {mass: 3000, species: 'A', sex: 'F'},
+          {mass: 3500, species: 'A', sex: 'M'},
+          {mass: 4000, species: 'B', sex: 'F'},
+          {mass: 4500, species: 'B', sex: 'M'},
+        ],
+      },
+      transform: [
+        {density: 'mass', groupby: ['species', 'sex'], resolve: 'independent'},
+        {calculate: "datum.sex === 'F' ? -datum.density : datum.density", as: 'signed_density'},
+      ],
+      mark: 'area',
+      encoding: {
+        x: {field: 'value', type: 'quantitative'},
+        y: {field: 'species', type: 'nominal'},
+        yOffset: {field: 'signed_density', type: 'quantitative'},
+        detail: [
+          {field: 'sex', type: 'nominal'},
+          {field: 'species', type: 'nominal'},
+        ],
+        color: {field: 'sex', type: 'nominal'},
+      },
+    });
+
+    const transformTypes = spec.data.flatMap(
+      (data: any) => data.transform?.map((transform: any) => transform.type) ?? [],
+    );
+    expect(transformTypes).not.toContain('impute');
+    expect(transformTypes).not.toContain('stack');
+  });
+
   it('should use containerSize for width and autosize to fit-x/padding', () => {
     const {spec} = compile({
       width: 'container',
