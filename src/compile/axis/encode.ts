@@ -1,5 +1,7 @@
+import {stringValue} from 'vega-util';
 import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel.js';
 import {channelDefType, getFieldOrDatumDef, isFieldDef, isPositionFieldOrDatumDef} from '../../channeldef.js';
+import {isSignalRef} from '../../vega.schema.js';
 import {formatCustomType, isCustomFormatType} from '../format.js';
 import {UnitModel} from '../unit.js';
 import {defaultBandPosition} from './properties.js';
@@ -101,11 +103,12 @@ function labelsPositionSpec(model: UnitModel, channel: PositionScaleChannel, spe
     return specifiedLabelsSpec;
   }
 
-  const positionRef = {
-    scale: model.scaleName(channel),
-    signal: 'datum.value',
-    band: bandPosition,
-  };
+  const scaleName = model.scaleName(channel);
+  const positionRef = isSignalRef(bandPosition)
+    ? {
+        signal: `scale(${stringValue(scaleName)}, datum.value) + bandwidth(${stringValue(scaleName)}) * (${bandPosition.signal})`,
+      }
+    : {scale: scaleName, signal: 'datum.value', band: bandPosition};
 
   return {
     ...(channel === 'x' ? {x: positionRef} : {y: positionRef}),
