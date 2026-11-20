@@ -229,6 +229,10 @@ export function assembleLegend(legendCmpt: LegendComponent, config: Config) {
     }
   }
 
+  if (legend.description !== undefined) {
+    setLegendEncode(legend, 'legend', 'description', {value: legend.description});
+  }
+
   if (!legend.title) {
     // title schema doesn't include null, ''
     delete legend.title;
