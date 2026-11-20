@@ -1,0 +1,36 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A word cloud showing word frequencies. Font size encodes frequency and color distinguishes words.",
+  "width": 500,
+  "height": 300,
+  "data": {
+    "values": [
+      {"word": "vega", "count": 90},
+      {"word": "data", "count": 75},
+      {"word": "visualization", "count": 60},
+      {"word": "chart", "count": 55},
+      {"word": "grammar", "count": 50},
+      {"word": "mark", "count": 45},
+      {"word": "encoding", "count": 40},
+      {"word": "scale", "count": 38},
+      {"word": "transform", "count": 35},
+      {"word": "layer", "count": 30},
+      {"word": "field", "count": 28},
+      {"word": "type", "count": 25},
+      {"word": "color", "count": 22},
+      {"word": "axis", "count": 20},
+      {"word": "legend", "count": 18},
+      {"word": "tooltip", "count": 15},
+      {"word": "filter", "count": 12},
+      {"word": "aggregate", "count": 10},
+      {"word": "bin", "count": 8},
+      {"word": "facet", "count": 7}
+    ]
+  },
+  "mark": "wordcloud",
+  "encoding": {
+    "text": {"field": "word", "type": "nominal"},
+    "size": {"field": "count", "type": "quantitative"},
+    "color": {"field": "word", "type": "nominal"}
+  }
+}
