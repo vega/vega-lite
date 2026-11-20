@@ -21,6 +21,7 @@ export const rule: MarkCompiler = {
         orient: 'ignore',
         size: 'ignore',
         theta: 'ignore',
+        angle: 'include',
       }),
       ...encode.pointOrRangePosition('x', model, {
         defaultPos: orient === 'horizontal' ? 'zeroOrMax' : 'mid',

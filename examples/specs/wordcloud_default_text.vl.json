@@ -1,0 +1,29 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A word cloud with no text encoding — all words show the constant 'text' placeholder.",
+  "width": 600,
+  "height": 400,
+  "data": {
+    "values": [
+      {"category": "A", "count": 80},
+      {"category": "B", "count": 72},
+      {"category": "C", "count": 60},
+      {"category": "D", "count": 55},
+      {"category": "E", "count": 50},
+      {"category": "F", "count": 45},
+      {"category": "G", "count": 42},
+      {"category": "H", "count": 38},
+      {"category": "I", "count": 35},
+      {"category": "J", "count": 32}
+    ]
+  },
+  "mark": {"type": "wordcloud", "padding": 2},
+  "encoding": {
+    "size": {
+      "field": "count",
+      "type": "quantitative",
+      "scale": {"range": [14, 56]}
+    },
+    "color": {"field": "category", "type": "nominal", "legend": null}
+  }
+}
