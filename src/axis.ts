@@ -16,7 +16,7 @@ import type {
 import {ConditionalPredicate, Value, ValueDef} from './channeldef.js';
 import {DateTime} from './datetime.js';
 import {ExprRef} from './expr.js';
-import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide.js';
+import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide.js';
 import {Flag, keys} from './util.js';
 import {MapExcludeValueRefAndReplaceSignalWith, VgEncodeChannel} from './vega.schema.js';
 import {hasOwnProperty} from 'vega-util';
@@ -333,10 +333,10 @@ export interface AxisPropsWithCondition<ES extends ExprRef | SignalRef> {
   tickOpacity?: BaseAxisNoValueRefs<ES>['tickOpacity'] | ConditionalAxisNumber<ES>;
   tickSize?: BaseAxisNoValueRefs<ES>['tickSize'] | ConditionalAxisNumber<ES>;
   tickWidth?: BaseAxisNoValueRefs<ES>['tickWidth'] | ConditionalAxisNumber<ES>;
-  title?: TitleMixins['title'];
 }
 
-export type AxisConfig<ES extends ExprRef | SignalRef> = Guide &
+// As in Vega, axis configs cannot set specific titles; `title: null` (from VlOnlyGuideConfig) is the only allowed title value.
+export type AxisConfig<ES extends ExprRef | SignalRef> = Omit<Guide, 'title'> &
   VlOnlyGuideConfig &
   AxisConfigBaseWithConditionalAndSignal<ES> & {
     /**
