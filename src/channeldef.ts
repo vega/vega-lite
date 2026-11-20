@@ -1376,7 +1376,7 @@ export function channelCompatibility(
  */
 export function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef: FieldDef<string> | DatumDef): boolean {
   const {formatType} = getFormatMixins(fieldOrDatumDef);
-  return formatType === 'time' || (!formatType && isTemporalFieldDef(fieldOrDatumDef));
+  return formatType === 'time' || formatType === 'utc' || (!formatType && isTemporalFieldDef(fieldOrDatumDef));
 }
 
 /**
