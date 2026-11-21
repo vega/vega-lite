@@ -132,10 +132,13 @@ export function getMarkConfig<P extends keyof MarkDef, ES extends ExprRef | Sign
   config: Config<SignalRef>,
   {vgChannel}: {vgChannel?: VgEncodeChannel} = {},
 ): MarkDef<Mark, ES>[P] {
+  const vgCfg = vgChannel
+    ? (getMarkStyleConfig(vgChannel as P, mark, config.style) as MarkDef<Mark, ES>[P])
+    : undefined;
   const cfg = getMarkStyleConfig(channel, mark, config.style) as MarkDef<Mark, ES>[P];
   return getFirstDefined<MarkDef<Mark, ES>[P]>(
     // style config has highest precedence
-    vgChannel ? cfg : undefined,
+    vgCfg,
     cfg,
     // then mark-specific config
     vgChannel ? (config[mark.type] as any)[vgChannel] : undefined,
