@@ -156,6 +156,23 @@ describe('compile/data/optimizer', () => {
 
       expect(parent.children).toEqual([leaf]);
     });
+
+    it('should keep a time unit whose band position offsets are not produced by an ancestor', () => {
+      const root = new PlaceholderDataFlowNode(null, 'root');
+
+      const month: TimeUnitComponent = {as: 'month_date', timeUnit: 'month', field: 'date'};
+      const monthBand: TimeUnitComponent = {...month, rectBandPosition: 0};
+
+      const parent = new TimeUnitNode(root, {[hash(month)]: month});
+      const child = new TimeUnitNode(parent, {[hash(monthBand)]: monthBand});
+
+      new RemoveDuplicateTimeUnits().optimize(root);
+
+      expect(parent.children).toEqual([child]);
+      expect(child.producedFields()).toEqual(
+        new Set(['month_date', 'month_date_offsetted_rect_start', 'month_date_offsetted_rect_end']),
+      );
+    });
   });
 
   describe('MergeParse', () => {

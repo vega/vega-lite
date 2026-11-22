@@ -17,6 +17,7 @@ import {
   entries,
   hash,
   isEmpty,
+  keys,
   replacePathInField,
   unescapeSingleQuoteAndPathDot,
   vals,
@@ -144,29 +145,25 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   /**
-   * Remove time units coming from the other node.
+   * Remove time units coming from the other node. Returns true if any time unit was removed.
    */
   public removeFormulas(fields: Set<string>) {
     const newFormula: Dict<TimeUnitComponent> = {};
 
     for (const [key, timeUnitComponent] of entries(this.timeUnits)) {
-      const fieldAs = isTimeUnitTransformComponent(timeUnitComponent)
-        ? timeUnitComponent.as
-        : `${timeUnitComponent.field}_end`;
-      if (!fields.has(fieldAs)) {
+      // only remove a time unit if all of its output fields are already produced
+      if (!outputFields(timeUnitComponent).every((f) => fields.has(f))) {
         newFormula[key] = timeUnitComponent;
       }
     }
 
+    const removed = keys(newFormula).length < keys(this.timeUnits).length;
     this.timeUnits = newFormula;
+    return removed;
   }
 
   public producedFields() {
-    return new Set(
-      vals(this.timeUnits).map((f) => {
-        return isTimeUnitTransformComponent(f) ? f.as : offsetAs(f.field);
-      }),
-    );
+    return new Set(vals(this.timeUnits).flatMap(outputFields));
   }
 
   public dependentFields() {
@@ -222,6 +219,18 @@ export class TimeUnitNode extends DataFlowNode {
 
 export const OFFSETTED_RECT_START_SUFFIX = 'offsetted_rect_start';
 export const OFFSETTED_RECT_END_SUFFIX = 'offsetted_rect_end';
+
+/**
+ * Fields produced by a time unit component, including the offsetted rect fields for band positions.
+ */
+function outputFields(f: TimeUnitComponent): string[] {
+  const [start, produced] = isTimeUnitTransformComponent(f) ? [f.as, f.as] : [f.field, offsetAs(f.field)];
+  const {rectBandPosition} = f;
+  if (rectBandPosition !== undefined && rectBandPosition !== 0.5) {
+    return [produced, `${start}_${OFFSETTED_RECT_START_SUFFIX}`, `${start}_${OFFSETTED_RECT_END_SUFFIX}`];
+  }
+  return [produced];
+}
 
 function offsetExpr({timeUnit, field, reverse}: {timeUnit: TimeUnitParams; field: string; reverse?: boolean}) {
   const {unit, utc} = timeUnit;
