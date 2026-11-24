@@ -11,7 +11,8 @@ import {parseData} from './data/parse.js';
 import {assembleLayoutSignals} from './layoutsize/assemble.js';
 import {parseLayerLayoutSize} from './layoutsize/parse.js';
 import {assembleLegends} from './legend/assemble.js';
-import {Model} from './model.js';
+import {assemblePlacementAvoidMarks} from './mark/placement.js';
+import {isLayerModel, Model} from './model.js';
 import {assembleLayerSelectionMarks} from './selection/assemble.js';
 import {UnitModel} from './unit.js';
 import {isTimerSelection} from './selection/index.js';
@@ -138,12 +139,14 @@ export class LayerModel extends Model {
   }
 
   public assembleMarks(): any[] {
-    return assembleLayerSelectionMarks(
+    const marks = assembleLayerSelectionMarks(
       this,
       this.children.flatMap((child) => {
         return child.assembleMarks();
       }),
     );
+    // Placement resolves `avoid` across every layer of the view, so only the outermost layer does it.
+    return this.parent && isLayerModel(this.parent) ? marks : assemblePlacementAvoidMarks(this, marks);
   }
 
   public assembleLegends(): VgLegend[] {

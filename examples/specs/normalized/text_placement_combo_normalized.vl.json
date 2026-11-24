@@ -1,0 +1,83 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Line labels avoid the bars and the bar labels. The bar labels have no placement, so they stay where they are; the line labels yield to them through a views selector.",
+  "data": {"url": "data/seattle-weather.csv"},
+  "width": 400,
+  "layer": [
+    {
+      "layer": [
+        {
+          "name": "bars",
+          "mark": {"type": "bar", "opacity": 0.5},
+          "encoding": {
+            "x": {"field": "date", "timeUnit": "month", "type": "ordinal"},
+            "y": {
+              "field": "precipitation",
+              "aggregate": "sum",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "name": "bar_labels",
+          "mark": {"type": "text", "baseline": "bottom", "dy": -2},
+          "encoding": {
+            "x": {"field": "date", "timeUnit": "month", "type": "ordinal"},
+            "y": {
+              "field": "precipitation",
+              "aggregate": "sum",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "precipitation",
+              "aggregate": "sum",
+              "type": "quantitative",
+              "format": ".0f"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "layer": [
+        {
+          "mark": {"type": "line", "color": "firebrick"},
+          "encoding": {
+            "x": {"field": "date", "timeUnit": "month", "type": "ordinal"},
+            "y": {
+              "field": "temp_max",
+              "aggregate": "mean",
+              "type": "quantitative"
+            }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "color": "firebrick",
+            "placement": {
+              "anchor": ["top", "bottom"],
+              "offset": [3, 3],
+              "avoid": [{"mark": ["line", "bar"]}, {"views": ["bar_labels"]}]
+            }
+          },
+          "encoding": {
+            "x": {"field": "date", "timeUnit": "month", "type": "ordinal"},
+            "y": {
+              "field": "temp_max",
+              "aggregate": "mean",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "temp_max",
+              "aggregate": "mean",
+              "type": "quantitative",
+              "format": ".1f"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "resolve": {"scale": {"y": "independent"}}
+}

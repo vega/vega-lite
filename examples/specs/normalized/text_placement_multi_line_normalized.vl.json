@@ -1,0 +1,65 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A label on every point of a multi-series line. Labels avoid every series line, the points, and each other.",
+  "data": {"url": "data/stocks.csv"},
+  "width": 400,
+  "layer": [
+    {
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "field": "date",
+              "timeUnit": {"unit": "year"},
+              "type": "temporal"
+            },
+            "y": {
+              "field": "price",
+              "aggregate": "mean",
+              "type": "quantitative"
+            },
+            "color": {"field": "symbol", "type": "nominal"}
+          }
+        },
+        {
+          "mark": {"type": "point", "opacity": 1, "filled": true},
+          "encoding": {
+            "x": {
+              "field": "date",
+              "timeUnit": {"unit": "year"},
+              "type": "temporal"
+            },
+            "y": {
+              "field": "price",
+              "aggregate": "mean",
+              "type": "quantitative"
+            },
+            "color": {"field": "symbol", "type": "nominal"}
+          }
+        }
+      ]
+    },
+    {
+      "mark": {
+        "type": "text",
+        "placement": {
+          "anchor": ["top", "bottom"],
+          "offset": [6, 3],
+          "avoid": [{"mark": ["line", "point"]}]
+        }
+      },
+      "encoding": {
+        "x": {"field": "date", "timeUnit": "year", "type": "temporal"},
+        "y": {"field": "price", "aggregate": "mean", "type": "quantitative"},
+        "color": {"field": "symbol", "type": "nominal"},
+        "text": {
+          "field": "price",
+          "aggregate": "mean",
+          "type": "quantitative",
+          "format": ".0f"
+        }
+      }
+    }
+  ]
+}

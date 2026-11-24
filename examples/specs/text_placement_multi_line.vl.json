@@ -1,0 +1,63 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "A label on every point of a multi-series line. Labels avoid every series line, the points, and each other.",
+  "data": {
+    "url": "data/stocks.csv"
+  },
+  "width": 400,
+  "encoding": {
+    "x": {
+      "field": "date",
+      "timeUnit": "year",
+      "type": "temporal"
+    },
+    "y": {
+      "field": "price",
+      "aggregate": "mean",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "symbol",
+      "type": "nominal"
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "point": true
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "placement": {
+          "anchor": [
+            "top",
+            "bottom"
+          ],
+          "offset": [
+            6,
+            3
+          ],
+          "avoid": [
+            {
+              "mark": [
+                "line",
+                "point"
+              ]
+            }
+          ]
+        }
+      },
+      "encoding": {
+        "text": {
+          "field": "price",
+          "aggregate": "mean",
+          "type": "quantitative",
+          "format": ".0f"
+        }
+      }
+    }
+  ]
+}

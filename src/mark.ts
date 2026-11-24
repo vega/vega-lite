@@ -3,6 +3,7 @@ import {hasOwnProperty} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark/index.js';
 import {ExprRef} from './expr.js';
 import {MarkInvalidMixins} from './invalid.js';
+import {TextPlacementMixins} from './placement.js';
 import {Flag, hasProperty, keys} from './util.js';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema.js';
 
@@ -366,6 +367,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   bar: VL_ONLY_RECT_CONFIG,
   rect: VL_ONLY_RECT_CONFIG,
   line: ['point'],
+  text: ['placement'],
   tick: ['bandSize', 'thickness', ...VL_ONLY_RECT_CONFIG],
 };
 
@@ -377,7 +379,7 @@ export const defaultMarkConfig: MarkConfig<SignalRef> = {
 
 // TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
 export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
-  MarkConfig<ES> | AreaConfig<ES> | BarConfig<ES> | RectConfig<ES> | LineConfig<ES> | TickConfig<ES>;
+  MarkConfig<ES> | AreaConfig<ES> | BarConfig<ES> | RectConfig<ES> | LineConfig<ES> | TextConfig<ES> | TickConfig<ES>;
 
 export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Mark Config */
@@ -416,7 +418,7 @@ export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   square?: MarkConfig<ES>;
 
   /** Text-Specific Config */
-  text?: MarkConfig<ES>;
+  text?: TextConfig<ES>;
 
   /** Tick-Specific Config */
   tick?: TickConfig<ES>;
@@ -511,6 +513,8 @@ export interface PointOverlayMixins<ES extends ExprRef | SignalRef> {
 }
 
 export interface LineConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, PointOverlayMixins<ES> {}
+
+export interface TextConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, TextPlacementMixins {}
 
 export interface LineOverlayMixins<ES extends ExprRef | SignalRef> {
   /**
@@ -622,6 +626,7 @@ export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | Si
         AreaConfig<ES> &
         BarConfig<ES> & // always extends RectConfig
         LineConfig<ES> &
+        TextConfig<ES> &
         TickConfig<ES>,
       'startAngle' | 'endAngle' | 'width' | 'height'
     >,

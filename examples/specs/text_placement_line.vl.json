@@ -1,0 +1,55 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Labels on every point of a line. Each label goes above its point, or below when above collides with the line or another label. Labels that fit nowhere are hidden.",
+  "data": {
+    "url": "data/stocks.csv"
+  },
+  "transform": [
+    {
+      "filter": "datum.symbol === 'GOOG' && year(datum.date) >= 2008"
+    }
+  ],
+  "width": 400,
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "temporal"
+    },
+    "y": {
+      "field": "price",
+      "type": "quantitative"
+    }
+  },
+  "layer": [
+    {
+      "mark": "line"
+    },
+    {
+      "mark": {
+        "type": "text",
+        "placement": {
+          "anchor": [
+            "top",
+            "bottom"
+          ],
+          "offset": [
+            3,
+            3
+          ],
+          "avoid": [
+            {
+              "mark": "line"
+            }
+          ]
+        }
+      },
+      "encoding": {
+        "text": {
+          "field": "price",
+          "type": "quantitative",
+          "format": ".0f"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Line labels avoid the bars and the bar labels. The bar labels have no placement, so they stay where they are; the line labels yield to them through a views selector.",
+  "background": "white",
+  "padding": 5,
+  "width": 400,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/seattle-weather.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["month"],
+          "as": ["month_date", "month_date_end"]
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["month_date"],
+          "ops": ["sum", "mean"],
+          "fields": ["precipitation", "temp_max"],
+          "as": ["sum_precipitation", "mean_temp_max"]
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_precipitation\"]) && isFinite(+datum[\"sum_precipitation\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_temp_max\"]) && isFinite(+datum[\"mean_temp_max\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "bars_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.5},
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of precipitation: \" + (format(datum[\"sum_precipitation\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "month_date"},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
+          "y": {"scale": "layer_0_y", "field": "sum_precipitation"},
+          "y2": {"scale": "layer_0_y", "value": 0}
+        }
+      }
+    },
+    {
+      "name": "bar_labels_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "baseline": {"value": "bottom"},
+          "dy": {"value": -2},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of precipitation: \" + (format(datum[\"sum_precipitation\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "month_date", "band": 0.5},
+          "y": {"scale": "layer_0_y", "field": "sum_precipitation"},
+          "text": {"signal": "format(datum[\"sum_precipitation\"], \".0f\")"},
+          "align": {"value": "center"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "x"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "firebrick"},
+          "description": {
+            "signal": "\"date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of temp_max: \" + (format(datum[\"mean_temp_max\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "month_date", "band": 0.5},
+          "y": {"scale": "layer_1_y", "field": "mean_temp_max"},
+          "defined": {
+            "signal": "isValid(datum[\"mean_temp_max\"]) && isFinite(+datum[\"mean_temp_max\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_1_placement_base",
+      "type": "symbol",
+      "interactive": false,
+      "aria": false,
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "x": {"scale": "x", "field": "month_date", "band": 0.5},
+          "y": {"scale": "layer_1_y", "field": "mean_temp_max"},
+          "size": {"value": 0},
+          "opacity": {"value": 0}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "layer_1_layer_1_placement_base"},
+      "encode": {
+        "update": {
+          "fill": {"value": "firebrick"},
+          "description": {
+            "signal": "\"date (month): \" + (timeFormat(datum.datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of temp_max: \" + (format(datum.datum[\"mean_temp_max\"], \"\"))"
+          },
+          "text": {"signal": "format(datum.datum[\"mean_temp_max\"], \".1f\")"},
+          "dx": {"value": 0},
+          "dy": {"value": 0}
+        }
+      },
+      "transform": [
+        {
+          "type": "label",
+          "size": {"signal": "[width, height]"},
+          "avoidBaseMark": false,
+          "anchor": ["top", "bottom"],
+          "offset": [3, 3],
+          "avoidMarks": [
+            "bars_marks",
+            "bar_labels_marks",
+            "layer_1_layer_0_marks"
+          ]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "month_date"},
+          {"data": "source_0", "field": "month_date"},
+          {"data": "data_1", "field": "month_date"}
+        ],
+        "sort": true
+      },
+      "range": [0, {"signal": "width"}],
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "layer_0_y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "sum_precipitation"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "layer_1_y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "mean_temp_max"},
+          {"data": "data_1", "field": "mean_temp_max"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "layer_0_y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date (month)",
+      "format": {
+        "signal": "timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "formatType": "time",
+      "labelOverlap": true,
+      "tickMinStep": {
+        "signal": "datetime(2001, 1, 1, 0, 0, 0, 0) - datetime(2001, 0, 1, 0, 0, 0, 0)"
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "layer_0_y",
+      "orient": "left",
+      "grid": false,
+      "title": "Sum of precipitation",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "layer_1_y",
+      "orient": "right",
+      "grid": false,
+      "title": "Mean of temp_max",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

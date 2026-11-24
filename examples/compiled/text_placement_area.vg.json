@@ -1,0 +1,217 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v6.json",
+  "description": "Labels avoid the area's line but not its fill, which covers most of the plot.",
+  "background": "white",
+  "padding": 5,
+  "width": 400,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.symbol === 'AAPL' && year(datum.date) >= 2007"
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "impute",
+          "field": "price",
+          "groupby": [],
+          "key": "date",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["date"],
+          "field": "price",
+          "sort": {"field": [], "order": []},
+          "as": ["price_start", "price_end"],
+          "offset": "zero"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_layer_0_marks",
+      "type": "area",
+      "style": ["area"],
+      "sort": {"field": "x"},
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.3},
+          "orient": {"value": "vertical"},
+          "fill": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price_end"},
+          "y2": {"scale": "y", "field": "price_start"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_0_layer_1_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "x"},
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price_end"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_1_placement_base",
+      "type": "symbol",
+      "interactive": false,
+      "aria": false,
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"},
+          "size": {"value": 0},
+          "opacity": {"value": 0}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "layer_1_placement_base"},
+      "encode": {
+        "update": {
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum.datum[\"date\"], \"%b %d, %Y\")) + \"; price: \" + (format(datum.datum[\"price\"], \"\"))"
+          },
+          "text": {"signal": "format(datum.datum[\"price\"], \".0f\")"},
+          "dx": {"value": 0},
+          "dy": {"value": 0}
+        }
+      },
+      "transform": [
+        {
+          "type": "label",
+          "size": {"signal": "[width, height]"},
+          "avoidBaseMark": false,
+          "anchor": ["top", "bottom"],
+          "offset": [3, 3],
+          "avoidMarks": ["layer_0_layer_1_marks"]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "date"},
+          {"data": "data_1", "field": "date"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "price_start"},
+          {"data": "data_0", "field": "price_end"},
+          {"data": "data_1", "field": "price"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}
