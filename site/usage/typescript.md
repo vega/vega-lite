@@ -44,3 +44,14 @@ const config: Config = {
 
 const vegaSpec = compile(vegaLiteSpec, {config}).spec;
 ```
+
+When you declare a specification without an explicit `TopLevelSpec` type annotation, TypeScript may widen literal values such as `"bar"` to `string`. Append `as const` to preserve the literal types, or use `satisfies TopLevelSpec` to validate the specification while preserving its inferred literal types.
+
+```ts
+const vegaLiteSpec = {
+  mark: 'bar',
+  // ...
+} as const;
+
+compile(vegaLiteSpec);
+```
