@@ -307,6 +307,34 @@ describe('normalizeErrorBar with raw data input', () => {
     ]);
   });
 
+  it('should keep every aggregated tooltip entry of a custom tooltip array on an errorbar', () => {
+    const outputSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {type: 'errorbar', extent: 'stdev'},
+        encoding: {
+          x: {field: 'age', type: 'ordinal'},
+          y: {field: 'people', type: 'quantitative'},
+          tooltip: [
+            {field: 'people', aggregate: 'min', type: 'quantitative', title: 'Min'},
+            {field: 'people', aggregate: 'max', type: 'quantitative', title: 'Max'},
+          ],
+        },
+      },
+      defaultConfig,
+    );
+
+    assertIsUnitSpec(outputSpec);
+
+    expect(outputSpec.encoding.tooltip).toEqual([
+      {field: 'min_people', type: 'quantitative', title: 'Min'},
+      {field: 'max_people', type: 'quantitative', title: 'Max'},
+    ]);
+    const aggregate = (outputSpec as any).transform.find((t: any) => t.aggregate).aggregate;
+    expect(aggregate).toContainEqual({op: 'min', field: 'people', as: 'min_people'});
+    expect(aggregate).toContainEqual({op: 'max', field: 'people', as: 'max_people'});
+  });
+
   it('should produce a correct tooltip title for errorbar with stderr extent', () => {
     const outputSpec = normalize(
       {

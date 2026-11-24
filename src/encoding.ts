@@ -415,6 +415,16 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
   const aggregate: AggregatedFieldDef[] = [];
   const encoding: Encoding<string> = {};
 
+  // `forEach` visits every element of an array channel (e.g. `tooltip`, `detail`, which `initEncoding` always
+  // wraps in an array), so collect one def per element rather than letting each element overwrite the previous one.
+  const setChannelDef = (channel: keyof Encoding<any>, def: unknown) => {
+    if (isArray(oldEncoding[channel])) {
+      ((encoding as any)[channel] ??= []).push(def);
+    } else {
+      (encoding as any)[channel] = def;
+    }
+  };
+
   forEach(oldEncoding, (channelDef, channel) => {
     // Extract potential embedded transformations along with remaining properties
     if (isFieldDef(channelDef)) {
@@ -506,16 +516,24 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
         }
 
         // now the field should refer to post-transformed field instead
-        (encoding as any)[channel as any] = newFieldDef;
+        setChannelDef(channel, newFieldDef);
       } else {
         groupby.push(field);
-        (encoding as any)[channel as any] = oldEncoding[channel];
+        setChannelDef(channel, channelDef);
       }
     } else {
       // For value def / signal ref / datum def, just copy
-      (encoding as any)[channel as any] = oldEncoding[channel];
+      setChannelDef(channel, channelDef);
     }
   });
+
+  // As before, an array channel that holds one transformed def is returned as that def, not as an array of one.
+  for (const channel of keys(encoding)) {
+    const defs = (encoding as any)[channel];
+    if (isArray(defs) && isArray(oldEncoding[channel]) && defs.length === 1 && defs[0] !== oldEncoding[channel][0]) {
+      (encoding as any)[channel] = defs[0];
+    }
+  }
 
   return {
     bins,
