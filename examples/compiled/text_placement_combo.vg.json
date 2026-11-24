@@ -146,7 +146,7 @@
           "size": {"signal": "[width, height]"},
           "avoidBaseMark": false,
           "anchor": ["top", "bottom"],
-          "offset": [3, 3],
+          "offset": [8, 8],
           "avoidMarks": [
             "bars_marks",
             "bar_labels_marks",
@@ -175,22 +175,15 @@
     {
       "name": "layer_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "sum_precipitation"},
+      "domain": [0, 800],
       "range": [{"signal": "height"}, 0],
-      "nice": true,
       "zero": true
     },
     {
       "name": "layer_1_y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "mean_temp_max"},
-          {"data": "data_1", "field": "mean_temp_max"}
-        ]
-      },
+      "domain": [-30, 30],
       "range": [{"signal": "height"}, 0],
-      "nice": true,
       "zero": true
     }
   ],

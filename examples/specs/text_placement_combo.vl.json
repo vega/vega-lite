@@ -25,7 +25,13 @@
             "y": {
               "field": "precipitation",
               "aggregate": "sum",
-              "type": "quantitative"
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  0,
+                  800
+                ]
+              }
             }
           }
         },
@@ -40,7 +46,13 @@
             "y": {
               "field": "precipitation",
               "aggregate": "sum",
-              "type": "quantitative"
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  0,
+                  800
+                ]
+              }
             },
             "text": {
               "field": "precipitation",
@@ -63,7 +75,13 @@
             "y": {
               "field": "temp_max",
               "aggregate": "mean",
-              "type": "quantitative"
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  -30,
+                  30
+                ]
+              }
             }
           }
         },
@@ -77,8 +95,8 @@
                 "bottom"
               ],
               "offset": [
-                3,
-                3
+                8,
+                8
               ],
               "avoid": [
                 {
@@ -99,7 +117,13 @@
             "y": {
               "field": "temp_max",
               "aggregate": "mean",
-              "type": "quantitative"
+              "type": "quantitative",
+              "scale": {
+                "domain": [
+                  -30,
+                  30
+                ]
+              }
             },
             "text": {
               "field": "temp_max",
