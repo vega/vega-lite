@@ -240,6 +240,22 @@ export function emptyFieldDef(fieldDef: unknown, channel: ExtendedChannel) {
 export const LINE_WITH_VARYING_SIZE =
   'Line marks cannot encode size with a non-groupby field. You may want to use trail marks instead.';
 
+export function placementOnlyForText(mark: Mark | CompositeMark) {
+  return `Ignoring "placement" for ${mark} mark. Placement only applies to text marks.`;
+}
+
+export function placementIgnoresProperty(property: string) {
+  return `Ignoring "${property}" because the text mark has "placement", which positions each label itself.`;
+}
+
+export function placementDropsOpacity() {
+  return `Ignoring "opacity" because the text mark has both "placement" and "fillOpacity". Placement uses "opacity" to hide labels that do not fit.`;
+}
+
+export function placementAvoidUnnamedMark(mark: Mark) {
+  return `Cannot avoid the ${mark} mark because it compiles to an unnamed group.`;
+}
+
 export function incompatibleChannel(
   channel: ExtendedChannel,
   markOrFacet: Mark | 'facet' | CompositeMark,

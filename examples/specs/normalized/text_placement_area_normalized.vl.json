@@ -1,0 +1,44 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Labels avoid the area's line but not its fill, which covers most of the plot.",
+  "data": {"url": "data/stocks.csv"},
+  "width": 400,
+  "layer": [
+    {
+      "layer": [
+        {
+          "mark": {"type": "area", "opacity": 0.3},
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative"}
+          }
+        },
+        {
+          "mark": {"type": "line"},
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "y": {"field": "price", "type": "quantitative", "stack": "zero"}
+          }
+        }
+      ]
+    },
+    {
+      "mark": {
+        "type": "text",
+        "placement": {
+          "anchor": ["top", "bottom"],
+          "offset": [3, 3],
+          "avoid": [{"mark": "line"}]
+        }
+      },
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"},
+        "text": {"field": "price", "type": "quantitative", "format": ".0f"}
+      }
+    }
+  ],
+  "transform": [
+    {"filter": "datum.symbol === 'AAPL' && year(datum.date) >= 2007"}
+  ]
+}

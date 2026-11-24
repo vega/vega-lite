@@ -49,6 +49,43 @@ A text mark definition can contain any [standard mark properties](mark.html#mark
 
 {% include table.html props="angle,align,baseline,dir,dx,dy,ellipsis,font,fontSize,fontStyle,fontWeight,limit,lineHeight,radius,text,theta" source="MarkDef" %}
 
+{:#placement}
+
+## Label Placement
+
+Set `placement` on a text mark to place each label around its data point so that it does not overlap other labels or the marks listed in `avoid`. Vega-Lite tries each anchor in order and hides a label that collides at every anchor.
+
+{% include table.html props="anchor,offset,avoid,sort,padding" source="TextPlacement" %}
+
+`avoid` takes a list of selectors:
+
+- `{"mark": [...]}` matches layers by mark type, for example `{"mark": ["line", "bar"]}`.
+- `{"views": [...]}` matches layers by their `name`, for example a layer of fixed labels. A named layer that contains other layers selects all of them.
+
+Selectors match layers in the same view only. Labels always avoid the labels of earlier placement layers, so earlier layers win, and `sort` sets the order within a layer.
+
+Placement positions each label itself, so `align`, `baseline`, `angle`, `radius`, and `theta` are ignored. `dx` and `dy` move the data point the label is placed around. `opacity` is compiled to `fillOpacity`, because placement uses `opacity` to hide labels that do not fit.
+
+`placement` in [`config.text`](#config) only provides defaults for text marks that set `placement`. It does not turn placement on.
+
+Placement requires a Vega version that includes the fixes in [vega/vega#4383](https://github.com/vega/vega/issues/4383), [#4384](https://github.com/vega/vega/issues/4384), and [#4385](https://github.com/vega/vega/issues/4385).
+
+### Labels on a Line
+
+<span class="vl-example" data-name="text_placement_line"></span>
+
+### Labels on a Multi-Series Line
+
+<span class="vl-example" data-name="text_placement_multi_line"></span>
+
+### Line Labels That Avoid Bars and Bar Labels
+
+<span class="vl-example" data-name="text_placement_combo"></span>
+
+### Labels That Avoid an Area's Line but Not Its Fill
+
+<span class="vl-example" data-name="text_placement_area"></span>
+
 ## Examples
 
 ### Text Table Heatmap

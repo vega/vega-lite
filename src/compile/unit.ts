@@ -53,6 +53,7 @@ import {parseUnitLayoutSize} from './layoutsize/parse.js';
 import {LegendInternalIndex} from './legend/component.js';
 import {defaultFilled, initMarkdef} from './mark/init.js';
 import {parseMarkGroups} from './mark/mark.js';
+import {assemblePlacementAvoidMarks, assembleTextPlacementMarks, PlacementMarks} from './mark/placement.js';
 import {isLayerModel, Model, ModelWithField} from './model.js';
 import {ScaleIndex} from './scale/component.js';
 import {
@@ -83,6 +84,9 @@ export class UnitModel extends ModelWithField<Encoding<string>> {
 
   public readonly selection: SelectionParameter[] = [];
   public children: Model[] = [];
+
+  /** The base and placed marks of a text mark with `placement`, set when marks are assembled. */
+  public placementMarks: PlacementMarks;
 
   constructor(
     spec: NormalizedUnitSpec,
@@ -355,7 +359,12 @@ export class UnitModel extends ModelWithField<Encoding<string>> {
       marks = assembleUnitSelectionMarks(this, marks);
     }
 
-    return marks.map(this.correctDataNames);
+    marks = assembleTextPlacementMarks(this, marks.map(this.correctDataNames));
+
+    if (!this.parent || !isLayerModel(this.parent)) {
+      marks = assemblePlacementAvoidMarks(this, marks);
+    }
+    return marks;
   }
   public assembleGroupStyle(): string | string[] {
     const {style} = this.view || {};
