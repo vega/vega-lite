@@ -9,17 +9,6 @@ Vega-Lite is written in [TypeScript](https://www.typescriptlang.org). You can us
 
 The main function for Vega-Lite is [`compile`](compile.html). Vega-Lite directly exports this function. The first argument to `compile` is a [Vega-Lite specification]({{ site.baseurl }}/docs/spec.html) of type `TopLevelSpec`. You can use the type, which Vega-Lite directly exports, to type check your specification. Vega-Lite also exports a type `Config` for the [Vega-Lite configuration]({{ site.baseurl }}/docs/config.html).
 
-When you declare a specification without an explicit `TopLevelSpec` type annotation, TypeScript may widen literal values such as `"bar"` to `string`. Append `as const` to preserve the literal types, or use `satisfies TopLevelSpec` to validate the specification while preserving its inferred literal types.
-
-```ts
-const vegaLiteSpec = {
-  mark: 'bar',
-  // ...
-} as const;
-
-compile(vegaLiteSpec);
-```
-
 Below is a short code snippet that uses the `compile` function and the various types exported by Vega-Lite.
 
 ```ts
@@ -54,4 +43,15 @@ const config: Config = {
 };
 
 const vegaSpec = compile(vegaLiteSpec, {config}).spec;
+```
+
+When you declare a specification without an explicit `TopLevelSpec` type annotation, TypeScript may widen literal values such as `"bar"` to `string`. Append `as const` to preserve the literal types, or use `satisfies TopLevelSpec` to validate the specification while preserving its inferred literal types.
+
+```ts
+const vegaLiteSpec = {
+  mark: 'bar',
+  // ...
+} as const;
+
+compile(vegaLiteSpec);
 ```
