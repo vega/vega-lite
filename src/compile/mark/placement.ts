@@ -49,13 +49,10 @@ export function assembleTextPlacementMarks(model: UnitModel, marks: any[]): any[
   if (!placement) {
     return marks;
   }
-  const markName = model.getName('marks');
-  const index = marks.findIndex((m) => m.name === markName);
-  if (index < 0) {
-    return marks;
-  }
+  // A text unit compiles to a single mark named `<unit>_marks`.
+  const index = marks.findIndex((m) => m.name === model.getName('marks'));
   const mark = marks[index];
-  const update = mark.encode?.update ?? {};
+  const update = mark.encode.update;
 
   for (const prop of IGNORED_MARK_PROPERTIES) {
     if (model.markDef[prop] !== undefined || (model.encoding as any)[prop] !== undefined) {
@@ -76,8 +73,8 @@ export function assembleTextPlacementMarks(model: UnitModel, marks: any[]): any[
     from: mark.from,
     encode: {
       update: {
-        x: withOffset(update.x ?? update.xc, dx),
-        y: withOffset(update.y ?? update.yc, dy),
+        x: withOffset(update.x, dx),
+        y: withOffset(update.y, dy),
         size: {value: 0},
         opacity: {value: 0},
       },
@@ -132,7 +129,7 @@ function makeLabelTransform(model: UnitModel, placement: TextPlacement): LabelTr
   };
 }
 
-function valueRef(value: unknown) {
+export function valueRef(value: unknown) {
   if (value === undefined) {
     return undefined;
   }
@@ -147,7 +144,7 @@ function refToExpr(ref: any): string {
 }
 
 /** Adds a `dx`/`dy` value ref to a position value ref, combining it with any existing `offset`. */
-function withOffset(ref: any, delta: any): any {
+export function withOffset(ref: any, delta: any): any {
   if (delta === undefined || ref === undefined) {
     return ref;
   }
@@ -165,7 +162,7 @@ function withOffset(ref: any, delta: any): any {
  * The placed mark reads the base mark's items, which keep the data row under `datum`.
  * So data field references move one level down: `datum.a` becomes `datum.datum.a`.
  */
-function rebaseOntoItemDatum(ref: any): any {
+export function rebaseOntoItemDatum(ref: any): any {
   if (isArray(ref)) {
     return ref.map(rebaseOntoItemDatum);
   }

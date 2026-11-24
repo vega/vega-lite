@@ -1,4 +1,5 @@
 import {compile} from '../../../src/compile/compile.js';
+import {rebaseOntoItemDatum, valueRef, withOffset} from '../../../src/compile/mark/placement.js';
 import * as log from '../../../src/log/index.js';
 import {TopLevelSpec} from '../../../src/spec/index.js';
 
@@ -275,6 +276,119 @@ describe('compile/mark/placement', () => {
         ],
       });
       expect(byName(marks, 'labels_marks').transform[0].avoidMarks).toEqual(['lines_marks']);
+    });
+  });
+
+  it(
+    'warns and drops opacity when fillOpacity is also set',
+    log.wrap((localLogger) => {
+      const marks = marksOf({
+        data: LINE_DATA,
+        mark: {type: 'text', opacity: 0.5, fillOpacity: 0.8, placement: true},
+        encoding: {text: {value: 'a'}},
+      });
+      const update = byName(marks, 'marks').encode.update;
+      expect(update.opacity).toBeUndefined();
+      expect(update.fillOpacity).toEqual({value: 0.8});
+      expect(localLogger.warns).toEqual([log.message.placementDropsOpacity()]);
+    }),
+  );
+
+  it('keeps key and sort on the base, which sets the order of the labels', () => {
+    const marks = marksOf({
+      data: LINE_DATA,
+      mark: {type: 'text', placement: true},
+      encoding: {
+        text: {field: 's', type: 'nominal'},
+        key: {field: 's'},
+        order: {field: 'y', type: 'quantitative'},
+      },
+    });
+    const base = byName(marks, 'placement_base');
+    const placed = byName(marks, 'marks');
+    expect(base.key).toBe('s');
+    expect(base.sort).toEqual({field: ['datum["y"]'], order: ['ascending']});
+    expect(placed.key).toBeUndefined();
+    expect(placed.sort).toBeUndefined();
+  });
+
+  it('passes sort without an order', () => {
+    const marks = marksOf({
+      data: LINE_DATA,
+      mark: {type: 'text', placement: {sort: {field: 'y'}}},
+      encoding: {text: {value: 'a'}},
+    });
+    expect(byName(marks, 'marks').transform[0].sort).toEqual({field: 'datum.y'});
+  });
+
+  it('applies dx from config.text to the base', () => {
+    const marks = marksOf({
+      data: LINE_DATA,
+      config: {text: {dx: 2}},
+      mark: {type: 'text', placement: true},
+      encoding: {x: {field: 'x', type: 'quantitative'}, text: {value: 'a'}},
+    });
+    expect(byName(marks, 'placement_base').encode.update.x).toEqual({scale: 'x', field: 'x', offset: {value: 2}});
+  });
+
+  it(
+    'warns when an avoided mark compiles to an unnamed group',
+    log.wrap((localLogger) => {
+      const marks = marksOf({
+        data: LINE_DATA,
+        encoding: {x: {field: 'x', type: 'ordinal'}},
+        layer: [
+          {
+            mark: {type: 'bar', cornerRadius: 2},
+            encoding: {y: {field: 'y', type: 'quantitative', stack: 'zero'}, color: {field: 's', type: 'nominal'}},
+          },
+          {name: 'labels', mark: {type: 'text', placement: {avoid: [{mark: 'bar'}]}}, encoding: {text: {value: 'a'}}},
+        ],
+      });
+      expect(byName(marks, 'labels_marks').transform[0].avoidMarks).toBeUndefined();
+      expect(localLogger.warns).toEqual([log.message.placementAvoidUnnamedMark('bar')]);
+    }),
+  );
+
+  describe('helpers', () => {
+    it('valueRef wraps values and passes signals through', () => {
+      expect(valueRef(undefined)).toBeUndefined();
+      expect(valueRef(3)).toEqual({value: 3});
+      expect(valueRef({signal: 'a'})).toEqual({signal: 'a'});
+    });
+
+    it('withOffset adds an offset or combines it with an existing one', () => {
+      expect(withOffset(undefined, {value: 1})).toBeUndefined();
+      expect(withOffset({field: 'x'}, undefined)).toEqual({field: 'x'});
+      expect(withOffset({field: 'x'}, {value: 1})).toEqual({field: 'x', offset: {value: 1}});
+      expect(withOffset({field: 'x', offset: 2}, {signal: 'a'})).toEqual({field: 'x', offset: {signal: '2 + (a)'}});
+      expect(withOffset({field: 'x', offset: {value: 2}}, {value: 1})).toEqual({
+        field: 'x',
+        offset: {signal: '2 + 1'},
+      });
+      expect(withOffset([{test: 't', value: 0}, {field: 'x'}], {value: 1})).toEqual([
+        {test: 't', value: 0, offset: {value: 1}},
+        {field: 'x', offset: {value: 1}},
+      ]);
+    });
+
+    it('rebaseOntoItemDatum moves data references one level down and leaves the rest', () => {
+      expect(rebaseOntoItemDatum(3)).toBe(3);
+      expect(
+        rebaseOntoItemDatum({
+          field: 'a',
+          scale: 'color',
+          band: 0.5,
+          mult: {field: {group: 'width'}},
+          signal: 'datum.b + datum["c"]',
+        }),
+      ).toEqual({
+        field: 'datum.a',
+        scale: 'color',
+        band: 0.5,
+        mult: {field: {group: 'width'}},
+        signal: 'datum.datum.b + datum.datum["c"]',
+      });
     });
   });
 });
