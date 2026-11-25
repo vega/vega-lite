@@ -140,13 +140,13 @@ If you don't want to re-bin the data, you can also add `"binned"` prefix.
 
 ### Output
 
-By default, Vega-Lite will output data in local time (even when input is parsed as UTC time). To output data in UTC time, we can specify either a UTC time unit or scale:
+Vega-Lite uses local time by default, even when it parses the input as UTC. Choose a UTC time unit or a UTC scale depending on how you display the data.
 
-1. UTC time unit when input data is in local time.
+1. Use a UTC time unit to group dates by UTC calendar boundaries. This applies to both local timestamps and timestamps already parsed as UTC. For example, use `"timeUnit": "utcyear"` on a [facet field](facet.html#field-def) to group records by UTC year and display that year in the facet header.
 
 <span class="vl-example" data-name="time_output_utc_timeunit"></span>
 
-2. UTC scale type when you have input data in UTC time.
+2. Use a [UTC scale](scale.html#time) to display timestamps on a continuous axis with ticks and labels in UTC.
 
 <span class="vl-example" data-name="time_output_utc_scale"></span>
 
