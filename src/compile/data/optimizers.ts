@@ -93,10 +93,9 @@ export class RemoveDuplicateTimeUnits extends Optimizer {
 
     if (node instanceof TimeUnitNode) {
       producedFields = node.producedFields();
-      if (hasIntersection(producedFields, timeUnitFields)) {
+      if (hasIntersection(producedFields, timeUnitFields) && node.removeFormulas(timeUnitFields)) {
         this.setModified();
-        node.removeFormulas(timeUnitFields);
-        if (node.producedFields.length === 0) {
+        if (node.producedFields().size === 0) {
           node.remove();
         }
       }

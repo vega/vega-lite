@@ -1,6 +1,11 @@
 import {ParseNode} from '../../../src/compile/data/formatparse.js';
 import {ImputeNode} from '../../../src/compile/data/impute.js';
-import {MergeIdenticalNodes, MergeParse, MergeTimeUnits} from '../../../src/compile/data/optimizers.js';
+import {
+  MergeIdenticalNodes,
+  MergeParse,
+  MergeTimeUnits,
+  RemoveDuplicateTimeUnits,
+} from '../../../src/compile/data/optimizers.js';
 import {TimeUnitComponent, TimeUnitNode} from '../../../src/compile/data/timeunit.js';
 import {Transform} from '../../../src/transform.js';
 import {hash} from '../../../src/util.js';
@@ -119,6 +124,54 @@ describe('compile/data/optimizer', () => {
         {field: 'c', as: ['c_yr', 'c_yr_end'], units: ['year'], type: 'timeunit'},
         {field: 'b', as: ['b_yr', 'b_yr_end'], units: ['year'], type: 'timeunit'},
       ]);
+    });
+  });
+
+  describe('RemoveDuplicateTimeUnits', () => {
+    it('should keep the non-duplicate time units of a node', () => {
+      const root = new PlaceholderDataFlowNode(null, 'root');
+
+      const month: TimeUnitComponent = {as: 'month_date', timeUnit: 'month', field: 'date'};
+      const year: TimeUnitComponent = {as: 'year_date', timeUnit: 'year', field: 'date'};
+
+      const parent = new TimeUnitNode(root, {[hash(month)]: month});
+      const child = new TimeUnitNode(parent, {[hash(month)]: month, [hash(year)]: year});
+
+      new RemoveDuplicateTimeUnits().optimize(root);
+
+      expect(parent.children).toEqual([child]);
+      expect(child.producedFields()).toEqual(new Set(['year_date']));
+    });
+
+    it('should remove a node whose time units are all produced by an ancestor', () => {
+      const root = new PlaceholderDataFlowNode(null, 'root');
+
+      const month: TimeUnitComponent = {as: 'month_date', timeUnit: 'month', field: 'date'};
+
+      const parent = new TimeUnitNode(root, {[hash(month)]: month});
+      const child = new TimeUnitNode(parent, {[hash(month)]: month});
+      const leaf = new PlaceholderDataFlowNode(child, 'leaf');
+
+      new RemoveDuplicateTimeUnits().optimize(root);
+
+      expect(parent.children).toEqual([leaf]);
+    });
+
+    it('should keep a time unit whose band position offsets are not produced by an ancestor', () => {
+      const root = new PlaceholderDataFlowNode(null, 'root');
+
+      const month: TimeUnitComponent = {as: 'month_date', timeUnit: 'month', field: 'date'};
+      const monthBand: TimeUnitComponent = {...month, rectBandPosition: 0};
+
+      const parent = new TimeUnitNode(root, {[hash(month)]: month});
+      const child = new TimeUnitNode(parent, {[hash(monthBand)]: monthBand});
+
+      new RemoveDuplicateTimeUnits().optimize(root);
+
+      expect(parent.children).toEqual([child]);
+      expect(child.producedFields()).toEqual(
+        new Set(['month_date', 'month_date_offsetted_rect_start', 'month_date_offsetted_rect_end']),
+      );
     });
   });
 
