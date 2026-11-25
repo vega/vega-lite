@@ -279,6 +279,92 @@ describe('compile/data/facet', () => {
 
       expect(data.find((d) => d.name === 'crossed_facet_domain')).toBeUndefined();
     });
+
+    it('should join custom facet sort metadata from a separate aggregate when the crossed dataset supplies per-cell cardinality (independent discrete child scale with step)', () => {
+      const model = parseFacetModelWithScale({
+        $schema: 'https://vega.github.io/schema/vega-lite/v6.json',
+        data: {
+          name: 'a',
+        },
+        facet: {
+          column: {field: 'c', type: 'nominal', sort: {op: 'median', field: 'v'}},
+          row: {field: 'r', type: 'nominal'},
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'k', type: 'ordinal'},
+            y: {field: 'v', type: 'quantitative'},
+          },
+        },
+        resolve: {scale: {x: 'independent'}},
+      });
+
+      const node = new FacetNode(null, model, 'facetName', 'dataName');
+      const data = node.assemble();
+
+      // The crossed dataset is kept for per-cell cardinality.
+      expect(data.find((d) => d.name === 'cross_column_domain_row_domain')).toBeDefined();
+
+      // The custom sort value is computed over the original data, grouped by the sorted channel
+      // only (not re-aggregated over the crossed per-cell dataset, which would be op-of-op), and
+      // keyed for lookup.
+      expect(data).toContainEqual({
+        name: 'column_domain_sort',
+        source: 'dataName',
+        transform: [
+          {
+            type: 'aggregate',
+            groupby: ['c'],
+            fields: ['v'],
+            ops: ['median'],
+            as: ['median_v'],
+          },
+          {
+            type: 'formula',
+            expr: `join([isValid(datum["c"]) ? length(toString(datum["c"])) + ':' + toString(datum["c"]) : '-1:'], '|')`,
+            as: 'column_facet_key',
+          },
+        ],
+      });
+
+      const columnDomain = data.find((d) => d.name === 'column_domain');
+
+      // Cardinality still comes from the crossed dataset ...
+      expect(columnDomain.source).toBe('cross_column_domain_row_domain');
+      const cardinalityAggregate = columnDomain.transform.find((t) => t.type === 'aggregate') as any;
+      expect(cardinalityAggregate).toEqual({
+        type: 'aggregate',
+        groupby: ['c'],
+        fields: ['distinct_k'],
+        ops: ['max'],
+        as: ['distinct_k'],
+      });
+      // ... and the sort field is NOT re-aggregated over the crossed dataset (which lacks "v").
+      expect(cardinalityAggregate.fields).not.toContain('v');
+
+      // Instead the sort value is joined in by looking it up from the separate sort aggregate.
+      const joinFormula = columnDomain.transform.find((t) => t.type === 'formula') as any;
+      expect(joinFormula.as).toBe('median_v');
+      expect(joinFormula.expr).toContain('indexof(pluck(data("column_domain_sort"), "column_facet_key")');
+      expect(joinFormula.expr).toContain('["median_v"]');
+
+      // The cell lookup domain derives from column_domain, so it carries the joined sort value too.
+      expect(data).toContainEqual({
+        name: 'column_lookup_domain',
+        source: 'column_domain',
+        transform: [
+          {
+            type: 'formula',
+            expr: `join([isValid(datum["c"]) ? length(toString(datum["c"])) + ':' + toString(datum["c"]) : '-1:'], '|')`,
+            as: 'column_facet_key',
+          },
+        ],
+      });
+
+      // The unsorted row channel needs no cardinality and no sort, so it gets no sort aggregate.
+      expect(data.find((d) => d.name === 'row_domain_sort')).toBeUndefined();
+    });
   });
 
   describe('dependentFields', () => {
