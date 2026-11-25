@@ -77,7 +77,14 @@ const legendBindings: SelectionCompiler<'point'> = {
               update: 'isDefined(datum.value) ? datum.value : item().items[0].items[0].datum.value',
               force: true,
             },
-            {events: stream.merge, update: `!event.item || !datum ? null : ${sgName}`, force: true},
+            {
+              events: stream.merge.map((s) => ({
+                ...s,
+                filter: [...array(s.filter ?? []), '!event.item || !event.item.datum'],
+              })),
+              update: 'null',
+              force: true,
+            },
           ],
         });
       }

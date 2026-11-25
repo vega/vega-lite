@@ -78,8 +78,14 @@
           "force": true
         },
         {
-          "events": [{"source": "view", "type": "dblclick"}],
-          "update": "!event.item || !datum ? null : industry_series_legend",
+          "events": [
+            {
+              "source": "view",
+              "type": "dblclick",
+              "filter": ["!event.item || !event.item.datum"]
+            }
+          ],
+          "update": "null",
           "force": true
         }
       ]
