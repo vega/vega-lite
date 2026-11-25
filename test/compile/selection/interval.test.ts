@@ -118,7 +118,8 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'one_x'},
-                  update: 'one_x[0] === one_x[1] ? null : invert("x", one_x)',
+                  update:
+                    'one_x[0] === one_x[1] ? null : isArray(one_Horsepower) && one_x[0] === scale("x", one_Horsepower[0]) && one_x[1] === scale("x", one_Horsepower[1]) ? one_Horsepower : invert("x", one_x)',
                 },
               ],
             },
@@ -176,7 +177,8 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'thr_ee_x'},
-                  update: 'thr_ee_x[0] === thr_ee_x[1] ? null : invert("x", thr_ee_x)',
+                  update:
+                    'thr_ee_x[0] === thr_ee_x[1] ? null : isArray(thr_ee_Horsepower) && thr_ee_x[0] === scale("x", thr_ee_Horsepower[0]) && thr_ee_x[1] === scale("x", thr_ee_Horsepower[1]) ? thr_ee_Horsepower : invert("x", thr_ee_x)',
                 },
               ],
             },
@@ -211,7 +213,8 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'thr_ee_y'},
-                  update: 'thr_ee_y[0] === thr_ee_y[1] ? null : invert("y", thr_ee_y)',
+                  update:
+                    'thr_ee_y[0] === thr_ee_y[1] ? null : isArray(thr_ee_Miles_per_Gallon) && thr_ee_y[0] === scale("y", thr_ee_Miles_per_Gallon[0]) && thr_ee_y[1] === scale("y", thr_ee_Miles_per_Gallon[1]) ? thr_ee_Miles_per_Gallon : invert("y", thr_ee_y)',
                 },
               ],
             },
@@ -256,7 +259,8 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'four_x'},
-                  update: 'four_x[0] === four_x[1] ? null : invert("x", four_x)',
+                  update:
+                    'four_x[0] === four_x[1] ? null : isArray(four_Horsepower) && four_x[0] === scale("x", four_Horsepower[0]) && four_x[1] === scale("x", four_Horsepower[1]) ? four_Horsepower : invert("x", four_x)',
                 },
               ],
             },
@@ -301,7 +305,8 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'five_x'},
-                  update: 'five_x[0] === five_x[1] ? null : invert("x", five_x)',
+                  update:
+                    'five_x[0] === five_x[1] ? null : isArray(five_Horsepower) && five_x[0] === scale("x", five_Horsepower[0]) && five_x[1] === scale("x", five_Horsepower[1]) ? five_Horsepower : invert("x", five_x)',
                 },
               ],
             },
@@ -329,7 +334,8 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'five_y'},
-                  update: 'five_y[0] === five_y[1] ? null : invert("y", five_y)',
+                  update:
+                    'five_y[0] === five_y[1] ? null : isArray(five_Miles_per_Gallon) && five_y[0] === scale("y", five_Miles_per_Gallon[0]) && five_y[1] === scale("y", five_Miles_per_Gallon[1]) ? five_Miles_per_Gallon : invert("y", five_y)',
                 },
               ],
             },
@@ -374,7 +380,8 @@ describe('Interval Selections', () => {
               on: [
                 {
                   events: {signal: 'six_x'},
-                  update: 'six_x[0] === six_x[1] ? null : invert("x", six_x)',
+                  update:
+                    'six_x[0] === six_x[1] ? null : isArray(six_Horsepower) && six_x[0] === scale("x", six_Horsepower[0]) && six_x[1] === scale("x", six_Horsepower[1]) ? six_Horsepower : invert("x", six_x)',
                 },
               ],
             },
@@ -391,6 +398,32 @@ describe('Interval Selections', () => {
             },
           ]),
         );
+      });
+
+      it('keeps plain invert for discrete scales', () => {
+        const discreteModel = parseUnitModelWithScale({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'Origin', type: 'nominal'},
+            y: {field: 'Horsepower', type: 'quantitative'},
+          },
+        });
+        const discreteSelCmpts = (discreteModel.component.selection = parseUnitSelection(discreteModel, [
+          {
+            name: 'disc',
+            select: {type: 'interval', encodings: ['x'], clear: false, translate: false, zoom: false},
+          },
+        ]));
+        const sg = interval.signals(discreteModel, discreteSelCmpts['disc'], []);
+        expect(sg).toContainEqual({
+          name: 'disc_Origin',
+          on: [
+            {
+              events: {signal: 'disc_x'},
+              update: 'disc_x[0] === disc_x[1] ? null : invert("x", disc_x)',
+            },
+          ],
+        });
       });
 
       it('builds trigger signals', () => {

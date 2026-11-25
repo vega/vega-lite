@@ -330,6 +330,10 @@ function channelSignals(
       update: hasContinuousDomain(scaleType) ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]` : `[0, 0]`,
     });
 
+    const dval = hasContinuousDomain(scaleType)
+      ? `isArray(${dname}) && ${vname}[0] === ${scaled(`${dname}[0]`)} && ${vname}[1] === ${scaled(`${dname}[1]`)} ? ${dname} : invert(${scaleName}, ${vname})`
+      : `invert(${scaleName}, ${vname})`;
+
     return hasScales
       ? [{name: dname, on: []}]
       : [
@@ -340,7 +344,7 @@ function channelSignals(
             on: [
               {
                 events: {signal: vname},
-                update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleName}, ${vname})`,
+                update: `${vname}[0] === ${vname}[1] ? null : ${dval}`,
               },
             ],
           },
