@@ -307,7 +307,14 @@ export class FacetModel extends ModelWithField<EncodingFacetMapping<string, Sign
         const {bin, sort} = fieldDef;
 
         if (isBinning(bin)) {
-          groupby.push(vgField(fieldDef, {binSuffix: 'end'}));
+          if (cross) {
+            // Crossing bin start with bin end would create cells for pairs that are not bins.
+            fields.push(vgField(fieldDef, {binSuffix: 'end'}));
+            ops.push('max');
+            as.push(vgField(fieldDef, {binSuffix: 'end', forAs: true}));
+          } else {
+            groupby.push(vgField(fieldDef, {binSuffix: 'end'}));
+          }
         }
 
         if (isSortField(sort)) {

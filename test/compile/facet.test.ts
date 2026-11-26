@@ -729,5 +729,62 @@ describe('FacetModel', () => {
 
       expect(marks[0].from.facet.groupby).toEqual(['bin_maxbins_6_a', 'bin_maxbins_6_a_end']);
     });
+
+    describe('crossed facet with a binned field', () => {
+      const values = [
+        {a: 1, r: 'x', order: 2, v: 1},
+        {a: 11, r: 'x', order: 1, v: 2},
+        {a: 2, r: 'y', order: 2, v: 3},
+      ];
+      const start = 'bin_step_10_a';
+      const end = 'bin_step_10_a_end';
+
+      async function crossedCells(column: Record<string, unknown>) {
+        const {spec} = compile({
+          data: {values},
+          facet: {
+            column: {field: 'a', bin: {step: 10}, type: 'quantitative', ...column},
+            row: {field: 'r', type: 'nominal'},
+          },
+          spec: {mark: 'point', encoding: {x: {field: 'v', type: 'quantitative'}}},
+        } as any);
+        const view = new View(parse(spec), {renderer: 'none'});
+        await view.runAsync();
+        return getFacetLayoutItems(view).cells;
+      }
+
+      it('should create one cell per bin and row', async () => {
+        const cells = await crossedCells({});
+
+        expect(cells.map((item) => [item.datum.r, item.datum[start]])).toEqual([
+          ['x', 0],
+          ['x', 10],
+          ['y', 0],
+          ['y', 10],
+        ]);
+        expect(cells[2].datum[end]).toBe(10);
+      });
+
+      it('should keep custom sort order for an empty cell', async () => {
+        const cells = await crossedCells({sort: {field: 'order', op: 'max'}});
+
+        expect(cells.map((item) => [item.datum.r, item.datum[start]])).toEqual([
+          ['x', 10],
+          ['x', 0],
+          ['y', 10],
+          ['y', 0],
+        ]);
+      });
+
+      it('should keep the full bin range in cell labels', async () => {
+        const cells = await crossedCells({header: {labelOrient: 'left'}});
+        const titles = cells.map((item: any) => {
+          const title = item.items.find((mark: any) => mark.role === 'title');
+          return title?.items[0].items[0].items[0].text;
+        });
+
+        expect(titles).toEqual(['0 – 10', '10 – 20', '0 – 10', undefined]);
+      });
+    });
   });
 });

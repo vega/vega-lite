@@ -35,11 +35,8 @@ export function facetLookupKeyFieldName(model: Model, channel: FacetChannel) {
 }
 
 export function facetLookupKeyExpr(fieldDef: FacetFieldDef<string, SignalRef>, datum: 'datum' | 'datum.datum') {
+  // Bin start alone identifies a bin, and empty crossed cells have no bin end.
   const fields = [vgField(fieldDef, {expr: datum})];
-
-  if (isBinning(fieldDef.bin)) {
-    fields.push(vgField(fieldDef, {expr: datum, binSuffix: 'end'}));
-  }
 
   return `join([${fields
     .map((field) => `isValid(${field}) ? length(toString(${field})) + ':' + toString(${field}) : '-1:'`)
