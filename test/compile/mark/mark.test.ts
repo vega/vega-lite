@@ -1,6 +1,9 @@
+import {parse, View} from 'vega';
+import {compile} from '../../../src/compile/compile.js';
 import {getSort, parseMarkGroups} from '../../../src/compile/mark/mark.js';
 import {UnitModel} from '../../../src/compile/unit.js';
 import {GEOSHAPE} from '../../../src/mark.js';
+import {UnitSpec} from '../../../src/spec/index.js';
 import {
   parseFacetModel,
   parseUnitModel,
@@ -11,6 +14,113 @@ import {
 } from '../../util.js';
 
 describe('Mark', () => {
+  describe('rounded stacked interval bars', () => {
+    const cases: {name: string; encoding: UnitSpec<string>['encoding']}[] = [
+      {
+        name: 'pre-binned time units',
+        encoding: {
+          x: {field: 'day', type: 'temporal', timeUnit: 'binnedutcyearmonthdate'},
+          y: {field: 'value', type: 'quantitative'},
+        },
+      },
+      {
+        name: 'shifted pre-binned time units',
+        encoding: {
+          x: {field: 'day', type: 'temporal', timeUnit: 'binnedutcyearmonthdate', bandPosition: 0},
+          y: {field: 'value', type: 'quantitative'},
+        },
+      },
+      {
+        name: 'shifted generated time units',
+        encoding: {
+          x: {field: 'day', type: 'temporal', timeUnit: 'utcyearmonthdate', bandPosition: 0},
+          y: {field: 'value', type: 'quantitative'},
+        },
+      },
+      {
+        name: 'explicit x2 intervals',
+        encoding: {
+          x: {field: 'day', type: 'temporal'},
+          x2: {field: 'end'},
+          y: {field: 'value', type: 'quantitative'},
+        },
+      },
+      {
+        name: 'explicit y2 intervals',
+        encoding: {
+          y: {field: 'day', type: 'temporal'},
+          y2: {field: 'end'},
+          x: {field: 'value', type: 'quantitative'},
+        },
+      },
+    ];
+
+    it.each(cases)('preserves bar dimensions and stacking for $name', async ({encoding}) => {
+      const data = {
+        values: [
+          {day: '2026-10-01', end: '2026-10-02', value: 100, series: 'a'},
+          {day: '2026-10-01', end: '2026-10-02', value: 50, series: 'b'},
+          {day: '2026-10-02', end: '2026-10-03', value: 200, series: 'a'},
+        ],
+      };
+      const render = async (cornerRadiusEnd: number) => {
+        const {spec} = compile({
+          width: 600,
+          height: 300,
+          data,
+          mark: {type: 'bar', cornerRadiusEnd},
+          encoding: {...encoding, color: {field: 'series', type: 'nominal'}},
+        });
+        const view = new View(parse(spec), {renderer: 'none'});
+        try {
+          await view.runAsync();
+          const bars: {width: number; height: number; start: number; end: number}[] = [];
+          let roundedGroups = 0;
+          const visit = (item: any) => {
+            if (item.mark?.marktype === 'rect' && item.mark.role === 'mark') {
+              bars.push({
+                width: item.width,
+                height: item.height,
+                start: item.datum.value_start,
+                end: item.datum.value_end,
+              });
+            }
+            if (
+              item.clip &&
+              [
+                item.cornerRadiusTopLeft,
+                item.cornerRadiusTopRight,
+                item.cornerRadiusBottomLeft,
+                item.cornerRadiusBottomRight,
+              ].some((radius) => radius > 0)
+            ) {
+              roundedGroups++;
+            }
+            item.items?.forEach(visit);
+          };
+          visit((view.scenegraph() as unknown as {root: unknown}).root);
+          return {bars, roundedGroups};
+        } finally {
+          view.finalize();
+        }
+      };
+
+      const square = await render(0);
+      const rounded = await render(3);
+      expect(rounded.roundedGroups).toBe(2);
+      expect(rounded.bars).toHaveLength(data.values.length);
+      expect(rounded.bars.some((bar) => bar.start > 0)).toBe(true);
+      for (const [index, bar] of rounded.bars.entries()) {
+        expect(bar.width).toBeGreaterThan(0);
+        expect(bar.height).toBeGreaterThan(0);
+        expect(bar.width).toBeCloseTo(square.bars[index].width);
+        expect(bar.height).toBeCloseTo(square.bars[index].height);
+        expect(bar.start).toBe(square.bars[index].start);
+        expect(bar.end).toBe(square.bars[index].end);
+      }
+    });
+  });
+
   describe('parseMarkGroup', () => {
     // PATH
     describe('Multi-series Line', () => {
