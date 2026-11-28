@@ -1140,6 +1140,77 @@ describe('normalizeBoxIQR', () => {
     expect(tooltip).toEqual({field: 'year', type: 'quantitative'});
   });
 
+  it('should keep every aggregated tooltip entry in the box and whiskers layers', () => {
+    const normalizedSpecWithTooltip = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: 'boxplot',
+        encoding: {
+          x: {field: 'age', type: 'ordinal'},
+          y: {field: 'people', type: 'quantitative'},
+          tooltip: [
+            {field: 'people', aggregate: 'mean', type: 'quantitative', title: 'Mean'},
+            {field: 'people', aggregate: 'count', type: 'quantitative', title: 'Count'},
+          ],
+        },
+      },
+      defaultConfig,
+    );
+
+    const expectedTooltip = [
+      {field: 'mean_people', type: 'quantitative', title: 'Mean'},
+      {field: '__count', type: 'quantitative', title: 'Count'},
+    ];
+    const whiskerLayer = (normalizedSpecWithTooltip as any).layer[0].layer[1];
+    for (const whisker of whiskerLayer.layer) {
+      expect(array(whisker['encoding'].tooltip)).toEqual(expectedTooltip);
+    }
+    const boxLayer = (normalizedSpecWithTooltip as any).layer[1];
+    for (const box of boxLayer.layer) {
+      expect(array(box['encoding'].tooltip)).toEqual(expectedTooltip);
+    }
+
+    for (const layer of [whiskerLayer, boxLayer]) {
+      const aggregate = layer['transform'].find((t: any) => t.aggregate).aggregate;
+      expect(aggregate).toContainEqual({op: 'mean', as: 'mean_people', field: 'people'});
+      expect(aggregate).toContainEqual({op: 'count', as: '__count', field: 'people'});
+    }
+  });
+
+  it('should keep every aggregated tooltip entry when a custom tooltip without aggregate is also given', () => {
+    const normalizedSpecWithTooltip = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: 'boxplot',
+        encoding: {
+          x: {field: 'age', type: 'ordinal'},
+          y: {field: 'people', type: 'quantitative'},
+          tooltip: [
+            {field: 'year', type: 'quantitative'},
+            {field: 'people', aggregate: 'mean', type: 'quantitative', title: 'Mean'},
+            {field: 'people', aggregate: 'stderr', type: 'quantitative', title: 'Standard error'},
+          ],
+        },
+      },
+      defaultConfig,
+    );
+
+    const expectedTooltip = [
+      {field: 'mean_people', type: 'quantitative', title: 'Mean'},
+      {field: 'stderr_people', type: 'quantitative', title: 'Standard error'},
+    ];
+    for (const whisker of (normalizedSpecWithTooltip as any).layer[0].layer[1].layer) {
+      expect(array(whisker['encoding'].tooltip)).toEqual(expectedTooltip);
+    }
+    for (const box of (normalizedSpecWithTooltip as any).layer[1].layer) {
+      expect(array(box['encoding'].tooltip)).toEqual(expectedTooltip);
+    }
+    expect((normalizedSpecWithTooltip as any).layer[0].layer[0]['encoding'].tooltip).toEqual({
+      field: 'year',
+      type: 'quantitative',
+    });
+  });
+
   it("should include timeUnit transform in filteredLayerMixins' transform", () => {
     const field = 'Date';
     const timeUnit = 'year';

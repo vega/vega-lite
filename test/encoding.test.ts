@@ -1,3 +1,4 @@
+import {array} from 'vega-util';
 import {
   COLOR,
   DETAIL,
@@ -464,6 +465,83 @@ describe('encoding', () => {
           },
         },
       });
+    });
+    it('should keep every def of an array channel with aggregates and collect all aggregate ops', () => {
+      const output = extractTransformsFromEncoding(
+        {
+          tooltip: [
+            {field: 'b', aggregate: 'mean', type: 'quantitative', title: 'Mean'},
+            {field: 'b', aggregate: 'count', type: 'quantitative', title: 'Count'},
+          ],
+        },
+        defaultConfig,
+      );
+      expect(output).toEqual({
+        bins: [],
+        timeUnits: [],
+        aggregate: [
+          {op: 'mean', field: 'b', as: 'mean_b'},
+          {op: 'count', field: 'b', as: '__count'},
+        ],
+        groupby: [],
+        encoding: {
+          tooltip: [
+            {field: 'mean_b', type: 'quantitative', title: 'Mean'},
+            {field: '__count', type: 'quantitative', title: 'Count'},
+          ],
+        },
+      });
+    });
+    it('should keep a single aggregate tooltip object as an object', () => {
+      const output = extractTransformsFromEncoding(
+        {tooltip: {field: 'b', aggregate: 'mean', type: 'quantitative'}},
+        defaultConfig,
+      );
+      expect(output.aggregate).toEqual([{op: 'mean', field: 'b', as: 'mean_b'}]);
+      expect(output.encoding).toEqual({tooltip: {field: 'mean_b', type: 'quantitative', title: 'Mean of b'}});
+    });
+    it('should keep plain, aggregate and value defs of an array channel in input order', () => {
+      const output = extractTransformsFromEncoding(
+        {
+          tooltip: [
+            {field: 'a', type: 'nominal'},
+            {field: 'b', aggregate: 'mean', type: 'quantitative', title: 'Mean'},
+            {value: 'constant'} as any,
+            {field: 'b', aggregate: 'max', type: 'quantitative', title: 'Max'},
+            {field: 'c', type: 'nominal'},
+          ],
+        },
+        defaultConfig,
+      );
+      expect(output.aggregate).toEqual([
+        {op: 'mean', field: 'b', as: 'mean_b'},
+        {op: 'max', field: 'b', as: 'max_b'},
+      ]);
+      expect(output.groupby).toEqual(['a', 'c']);
+      expect(output.encoding).toEqual({
+        tooltip: [
+          {field: 'a', type: 'nominal'},
+          {field: 'mean_b', type: 'quantitative', title: 'Mean'},
+          {value: 'constant'},
+          {field: 'max_b', type: 'quantitative', title: 'Max'},
+          {field: 'c', type: 'nominal'},
+        ],
+      });
+    });
+    it('should keep every def of a detail array with a time unit and a bin', () => {
+      const output = extractTransformsFromEncoding(
+        {
+          detail: [
+            {field: 'a', timeUnit: 'year', type: 'temporal'},
+            {field: 'b', bin: true, type: 'quantitative'},
+          ],
+        },
+        defaultConfig,
+      );
+      expect(output.timeUnits).toEqual([{timeUnit: 'year', field: 'a', as: 'year_a'}]);
+      expect(output.bins).toEqual([{bin: true, field: 'b', as: 'bin_maxbins_10_b'}]);
+      expect(output.groupby).toEqual(['year_a', 'bin_maxbins_10_b', 'bin_maxbins_10_b_end']);
+      expect(array(output.encoding.detail).map((d: any) => d.field)).toEqual(['year_a', 'bin_maxbins_10_b']);
     });
   });
 
