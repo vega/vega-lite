@@ -216,6 +216,29 @@ describe('encoding', () => {
         type: 'ordinal',
       });
     });
+    it('should produce utc formatType in axis when there is a utc timeUnit', () => {
+      const output = extractTransformsFromEncoding(
+        initEncoding(
+          {
+            x: {field: 'a', type: 'quantitative'},
+            y: {timeUnit: 'utcyearmonthdate', field: 'b', type: 'ordinal'},
+          },
+          'line',
+          false,
+          defaultConfig,
+        ),
+        defaultConfig,
+      );
+
+      expect(output.encoding.y).toEqual({
+        axis: {
+          formatType: 'utc',
+        },
+        field: 'utcyearmonthdate_b',
+        title: 'b (year-month-date)',
+        type: 'ordinal',
+      });
+    });
     it('should not produce formatType in axis when there is timeUnit with type temporal', () => {
       const output = extractTransformsFromEncoding(
         initEncoding(
@@ -305,6 +328,27 @@ describe('encoding', () => {
       expect(output.encoding.text).toEqual({
         formatType: 'time',
         field: 'month_c',
+        title: 'c (month)',
+        type: 'nominal',
+      });
+    });
+    it('should produce utc formatType when there is a utc timeUnit in tooltip channel', () => {
+      const output = extractTransformsFromEncoding(
+        initEncoding(
+          {
+            x: {field: 'a', type: 'quantitative'},
+            y: {field: 'b', type: 'ordinal'},
+            tooltip: {field: 'c', timeUnit: {unit: 'month', utc: true}, type: 'nominal'},
+          },
+          'text',
+          false,
+          defaultConfig,
+        ),
+        defaultConfig,
+      );
+      expect(output.encoding.tooltip).toEqual({
+        formatType: 'utc',
+        field: 'utcmonth_c',
         title: 'c (month)',
         type: 'nominal',
       });

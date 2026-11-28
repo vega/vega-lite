@@ -1,5 +1,7 @@
 import {Y} from '../../../src/channel.js';
 import {parseLayerAxes, parseUnitAxes} from '../../../src/compile/axis/parse.js';
+import {normalize} from '../../../src/normalize/index.js';
+import {NormalizedLayerSpec} from '../../../src/spec/index.js';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util.js';
 
 describe('Axis', () => {
@@ -597,6 +599,25 @@ describe('Axis', () => {
 
       expect(axisComponents.x[0].get('title')).toBe('Hello, World');
       expect(axisComponents.y[0].get('title')).toBeNull();
+    });
+
+    it('keeps utc formatType for ordinal utc time units when layering with an errorband', () => {
+      const model = parseLayerModel(
+        normalize({
+          data: {values: [{date: '2025-01-01', value: 1}]},
+          encoding: {
+            x: {field: 'date', type: 'ordinal', timeUnit: 'utcyearmonthdate'},
+            y: {field: 'value', type: 'quantitative'},
+          },
+          layer: [{mark: 'line'}, {mark: 'errorband'}],
+        }) as NormalizedLayerSpec,
+      );
+      model.parseScale();
+      parseLayerAxes(model);
+      const axisComponents = model.component.axes;
+
+      expect(axisComponents.x).toHaveLength(1);
+      expect(axisComponents.x[0].get('formatType')).toBe('utc');
     });
   });
 });
