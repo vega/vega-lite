@@ -266,6 +266,7 @@ export type VgEncodeChannel =
   | 'fontStyle'
   | 'tooltip'
   | 'href'
+  | 'description'
   | 'defined'
   | 'cornerRadius'
   | 'cornerRadiusTopLeft'
