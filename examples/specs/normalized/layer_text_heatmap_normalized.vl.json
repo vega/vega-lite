@@ -7,6 +7,15 @@
       "encoding": {
         "y": {"field": "Origin", "type": "ordinal"},
         "x": {"field": "Cylinders", "type": "ordinal"},
+        "tooltip": [
+          {"field": "Origin", "type": "ordinal"},
+          {"field": "Cylinders", "type": "ordinal"},
+          {
+            "field": "num_cars",
+            "type": "quantitative",
+            "title": "Count of Records"
+          }
+        ],
         "color": {
           "field": "num_cars",
           "type": "quantitative",
@@ -16,7 +25,7 @@
       }
     },
     {
-      "mark": "text",
+      "mark": {"type": "text", "interactive": false},
       "encoding": {
         "y": {"field": "Origin", "type": "ordinal"},
         "x": {"field": "Cylinders", "type": "ordinal"},

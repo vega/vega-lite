@@ -102,6 +102,14 @@ export interface TooltipContent {
 
 export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorMixins<ES>, MarkInvalidMixins {
   /**
+   * Whether the marks generate mouse and touch events. If `false`, events pass through to marks beneath them.
+   * Explicit values override the interactivity inferred from selections and tooltips.
+   *
+   * __Default value:__ Inferred from selections and tooltips; `true` when no selections are defined.
+   */
+  interactive?: boolean;
+
+  /**
    * Whether the mark's color should be used as fill color instead of stroke color.
    *
    * __Default value:__ `false` for all `point`, `line`, and `rule` marks as well as `geoshape` marks for [`graticule`](https://vega.github.io/vega-lite/docs/data.html#graticule) data sources; otherwise, `true`.
@@ -343,6 +351,7 @@ const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig<any>> = {
   color: 1,
   filled: 1,
   invalid: 1,
+  interactive: 1,
   order: 1,
   radius2: 1,
   theta2: 1,
