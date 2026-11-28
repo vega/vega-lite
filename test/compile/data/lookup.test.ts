@@ -79,6 +79,54 @@ describe('compile/data/lookup', () => {
     });
   });
 
+  describe.each(['flat', 'nested'])('%s lookup defaults', (form) => {
+    it.each([0, false, '', null, 7, 'unknown'])('should preserve default %j', (defaultValue) => {
+      const lookup = new LookupNode(
+        null,
+        {
+          lookup: 'person',
+          from: {
+            data: {url: 'data/lookup_people.csv'},
+            key: 'name',
+            ...(form === 'flat' ? {fields: ['age']} : {}),
+          },
+          as: 'foo',
+          default: defaultValue,
+        },
+        'lookup_0',
+      );
+
+      expect(lookup.assemble()).toEqual({
+        type: 'lookup',
+        from: 'lookup_0',
+        key: 'name',
+        fields: ['person'],
+        ...(form === 'flat' ? {values: ['age']} : {}),
+        as: ['foo'],
+        default: defaultValue,
+      });
+    });
+
+    it('should omit an undefined default', () => {
+      const lookup = new LookupNode(
+        null,
+        {
+          lookup: 'person',
+          from: {
+            data: {url: 'data/lookup_people.csv'},
+            key: 'name',
+            ...(form === 'flat' ? {fields: ['age']} : {}),
+          },
+          as: 'foo',
+          default: undefined,
+        },
+        'lookup_0',
+      );
+
+      expect(lookup.assemble()).not.toHaveProperty('default');
+    });
+  });
+
   it(
     'should warn if fields are not specified and as is missing',
     log.wrap((localLogger) => {

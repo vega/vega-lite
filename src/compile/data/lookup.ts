@@ -103,7 +103,7 @@ export class LookupNode extends DataFlowNode {
       key: this.transform.from.key,
       fields: [this.transform.lookup],
       ...foreign,
-      ...(this.transform.default ? {default: this.transform.default} : {}),
+      ...(this.transform.default !== undefined ? {default: this.transform.default} : {}),
     };
   }
 }
