@@ -2,6 +2,31 @@ import {parseLayerModel, parseUnitModelWithScale} from '../../util.js';
 import * as log from '../../../src/log/index.js';
 
 describe('legend/assemble', () => {
+  it.each([
+    {type: 'nominal' as const, direction: 'horizontal'},
+    {type: 'quantitative' as const, direction: 'vertical'},
+  ])('uses the matching legend direction config for $type color', ({type, direction}) => {
+    const model = parseUnitModelWithScale({
+      mark: 'point',
+      encoding: {color: {field: 'value', type}},
+      config: {legend: {symbolDirection: 'horizontal', gradientDirection: 'vertical'}},
+    });
+    model.parseLegends();
+
+    expect(model.assembleLegends()[0].direction).toBe(direction);
+  });
+
+  it('preserves an explicit legend direction over the symbol direction config', () => {
+    const model = parseUnitModelWithScale({
+      mark: 'point',
+      encoding: {color: {field: 'value', type: 'nominal', legend: {direction: 'vertical'}}},
+      config: {legend: {symbolDirection: 'horizontal'}},
+    });
+    model.parseLegends();
+
+    expect(model.assembleLegends()[0].direction).toBe('vertical');
+  });
+
   it('correctly applies labelExpr.', () => {
     const model = parseUnitModelWithScale({
       data: {url: 'data/cars.json'},
