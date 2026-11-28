@@ -15,6 +15,7 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
       size: 'include',
       orient: 'ignore',
       theta: 'ignore',
+      angle: 'include',
     }),
     ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
     ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
