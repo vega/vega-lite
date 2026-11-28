@@ -28,6 +28,7 @@ import {isLayerRepeatSpec, LayerRepeatSpec, NonLayerRepeatSpec, RepeatSpec} from
 import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit.js';
 import {isEmpty, keys, omit, varName} from '../util.js';
 import {isSignalRef} from '../vega.schema.js';
+import {AutoMarkNormalizer} from './automark.js';
 import {NonFacetUnitNormalizer, NormalizerParams} from './base.js';
 import {PathOverlayNormalizer} from './pathoverlay.js';
 import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from './repeater.js';
@@ -35,6 +36,7 @@ import {RuleForRangedLineNormalizer} from './ruleforrangedline.js';
 
 export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec<Field>, LayerSpec<Field>> {
   private nonFacetUnitNormalizers: NonFacetUnitNormalizer<any>[] = [
+    new AutoMarkNormalizer(),
     boxPlotNormalizer,
     errorBarNormalizer,
     errorBandNormalizer,
