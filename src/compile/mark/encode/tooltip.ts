@@ -1,7 +1,7 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from '../../../aggregate.js';
 import {isBinned} from '../../../bin.js';
-import {Channel, getMainRangeChannel, isXorY, RADIUS, THETA, TOOLTIP} from '../../../channel.js';
+import {Channel, getMainRangeChannel, isXorY, isXorYOffset, RADIUS, THETA, TOOLTIP} from '../../../channel.js';
 import {
   defaultTitle,
   getFieldDef,
@@ -139,7 +139,7 @@ export function tooltipDataTuples(
     const test = tooltipFilterExpression(fieldDef, channel, expr);
 
     if (
-      (isXorY(channel) || channel === THETA || channel === RADIUS) &&
+      (isXorY(channel) || isXorYOffset(channel) || channel === THETA || channel === RADIUS) &&
       stack &&
       stack.fieldChannel === channel &&
       stack.offset === 'normalize'
