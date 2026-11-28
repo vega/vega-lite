@@ -56,7 +56,7 @@ import {
 import {getStepFor, isStep, LayoutSizeMixins, Step} from '../../spec/base.js';
 import {isDiscrete} from '../../type.js';
 import * as util from '../../util.js';
-import {isSignalRef, VgRange} from '../../vega.schema.js';
+import {isSignalRef, isDataRefDomain, VgRange} from '../../vega.schema.js';
 import {exprFromSignalRefOrValue, signalOrStringValue} from '../common.js';
 import {getBinSignalName} from '../data/bin.js';
 import {SignalRefWrapper} from '../signal.js';
@@ -64,7 +64,8 @@ import {Explicit, makeExplicit, makeImplicit} from '../split.js';
 import {UnitModel} from '../unit.js';
 import {ScaleComponentIndex} from './component.js';
 import {durationExpr} from '../../timeunit.js';
-import {isFacetModel} from '../model.js';
+import {isFacetModel, Model} from '../model.js';
+import {FACET_SCALE_PREFIX} from '../data/optimize.js';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
@@ -79,6 +80,23 @@ export function parseUnitScaleRange(model: UnitModel) {
     }
 
     const rangeWithExplicit = parseRangeForChannel(channel, model);
+
+    // For a shared scale of a faceted plot, a data-driven range (e.g. `scale.range.field`) must
+    // reference the data from the cloned subtree after the facet, mirroring the domain remapping in
+    // `parseScaleDomain`. Otherwise the range points to a data source that only exists inside the
+    // facet cell, producing an "Undefined data set name" error (#9706).
+    if (model.component.data.isFaceted) {
+      let facetParent: Model = model;
+      while (!isFacetModel(facetParent) && facetParent.parent) {
+        facetParent = facetParent.parent;
+      }
+
+      const resolve = facetParent.component.resolve.scale[channel];
+      const range = rangeWithExplicit.value;
+      if (resolve === 'shared' && isObject(range) && isDataRefDomain(range)) {
+        range.data = FACET_SCALE_PREFIX + range.data.replace(FACET_SCALE_PREFIX, '');
+      }
+    }
 
     localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
   }
