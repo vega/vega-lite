@@ -402,6 +402,9 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
   const positionScaleCmpt = model.getScaleComponent(positionChannel);
 
   if (!positionScaleCmpt) {
+    if (model.isRangedOffset(positionChannel)) {
+      return fullWidthOrHeightRange(positionChannel, model, offsetScaleType);
+    }
     return fullWidthOrHeightRange(positionChannel, model, offsetScaleType, {center: true});
   }
 
