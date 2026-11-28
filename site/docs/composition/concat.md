@@ -96,7 +96,11 @@ In addition to [common properties of a view specification](spec.html#common), a 
 
 ## Resolve
 
-The default [resolutions](resolve.html) for concatenation are independent scales and axes for [position channels](encoding.html#position) and shared scales and legends for all other channels. Currently, Vega-Lite does not support shared axes for concatenated views.
+The default [resolutions](resolve.html) for concatenation are independent scales and axes for [position channels](encoding.html#position) and shared scales and legends for all other channels.
+
+To use the same x-scale across concatenated views, set `"resolve": {"scale": {"x": "shared"}}` on the concatenation. Each view still draws its own x-axis because concatenation does not merge axes.
+
+To show a single x-axis below vertically concatenated views, keep the x-scale shared and set `"axis": null` in the x encoding of each view above the bottom one. To align marks across views, give the views the same width.
 
 {:#config}
 
