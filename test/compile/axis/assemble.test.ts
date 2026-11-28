@@ -1,5 +1,7 @@
+import {parse, View} from 'vega';
 import {assembleAxis} from '../../../src/compile/axis/assemble.js';
 import {AxisComponent} from '../../../src/compile/axis/component.js';
+import {compile} from '../../../src/compile/compile.js';
 import {defaultConfig} from '../../../src/config.js';
 import {parseUnitModelWithScale} from '../../util.js';
 
@@ -58,6 +60,53 @@ describe('compile/axis/assemble', () => {
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       expect(axis.encode.labels.update.fill).toEqual({signal: 'a'});
+    });
+
+    it('redirects conditional labelOpacity to fillOpacity', () => {
+      const axisCmpt = new AxisComponent({
+        labelOpacity: {
+          condition: {test: 'datum.value >= 5', value: 1},
+          signal: 'a',
+        },
+      });
+      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
+      expect(axis.encode.labels.update.fillOpacity).toEqual([{test: 'datum.value >= 5', value: 1}, {signal: 'a'}]);
+      expect(axis.encode.labels.update.opacity).toBeUndefined();
+    });
+
+    it('applies a labelOpacity expression to labels that are checked for overlap', async () => {
+      const {spec} = compile({
+        data: {values: [{a: 1}, {a: 10}]},
+        params: [{name: 'dim', value: true}],
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', axis: {labelOverlap: true, labelOpacity: {expr: 'dim ? 0.2 : 1'}}},
+        },
+      });
+      const view = new View(parse(spec), {renderer: 'none'});
+
+      // Opacity of the axis labels that are shown, as rendered
+      const getLabelOpacities = () => {
+        const opacities = new Set<number>();
+        (function walk(node: any) {
+          if (node.role === 'axis-label') {
+            for (const item of node.items) {
+              if (item.opacity !== 0) {
+                opacities.add(item.opacity * (item.fillOpacity ?? 1));
+              }
+            }
+          } else if (Array.isArray(node.items)) {
+            node.items.forEach(walk);
+          }
+        })((view.scenegraph() as any).root);
+        return opacities;
+      };
+
+      await view.runAsync();
+      expect(getLabelOpacities()).toEqual(new Set([0.2]));
+
+      await view.signal('dim', false).runAsync();
+      expect(getLabelOpacities()).toEqual(new Set([1]));
     });
 
     it('correctly applies conditional axis tickSize', () => {
