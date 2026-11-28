@@ -48,6 +48,21 @@ describe('compile/compile', () => {
     expect(spec.marks).toHaveLength(1); // just the root group
   });
 
+  it('should let mark styles override fill and stroke', () => {
+    const {spec} = compile({
+      data: {values: [{}]},
+      mark: {type: 'circle', style: ['custom']},
+      config: {
+        style: {
+          custom: {fill: 'red', stroke: 'green'},
+        },
+      },
+    });
+
+    expect(spec.marks[0].encode.update.fill).toEqual({value: 'red'});
+    expect(spec.marks[0].encode.update.stroke).toEqual({value: 'green'});
+  });
+
   it(
     'should drop fit in top-level properties for discrete x discrete chart',
     log.wrap((localLogger) => {
